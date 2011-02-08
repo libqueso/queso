@@ -92,6 +92,14 @@ public:
                                                  unsigned int                         numPos,
                                                  const V&                             unifiedMeanVec,
                                                  V&                                   unifiedSamVec) const;
+        void         subSampleStd               (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
+                                                 const V&                             meanVec,
+                                                 V&                                   stdVec) const;
+        void         unifiedSampleStd           (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
+                                                 const V&                             unifiedMeanVec,
+                                                 V&                                   unifiedStdVec) const;
         void         subPopulationVariance      (unsigned int                         initialPos,
                                                  unsigned int                         numPos,
                                                  const V&                             meanVec,
@@ -141,6 +149,16 @@ public:
                                                  V&                                   gewVec) const;
         void         meanStacc                  (unsigned int                         initialPos,
                                                  V&                                   meanStaccVec) const;
+        void         subCdfPercentageRange      (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
+                                                 double                               range, // \in [0,1]                    
+                                                 V&                                   lowerVec,
+                                                 V&                                   upperVec) const;
+        void         unifiedCdfPercentageRange  (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
+                                                 double                               range, // \in [0,1]                    
+                                                 V&                                   lowerVec,
+                                                 V&                                   upperVec) const;
         void         subMinMax                  (unsigned int                         initialPos,
                                                  unsigned int                         numPos,
                                                  V&                                   minVec,
@@ -1205,6 +1223,77 @@ uqSequenceOfVectorsClass<V,M>::unifiedSampleVariance(
 
 template <class V, class M>
 void
+uqSequenceOfVectorsClass<V,M>::subSampleStd(
+  unsigned int initialPos,
+  unsigned int numPos,
+  const V&     meanVec,
+  V&           stdvec) const
+{
+  bool bRC = ((initialPos              <  this->subSequenceSize()) &&
+              (0                       <  numPos                 ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()) &&
+              (this->vectorSizeLocal() == meanVec.sizeLocal()    ) &&
+              (this->vectorSizeLocal() == stdvec.sizeLocal()     ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorsClass<V,M>::subSampleStd()",
+                      "invalid input data");
+
+  uqScalarSequenceClass<double> data(m_env,0,"");
+
+  unsigned int numParams = this->vectorSizeLocal();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    stdvec[i] = data.subSampleStd(0,
+                                  numPos,
+                                  meanVec[i]);
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::unifiedSampleStd(
+  unsigned int initialPos,
+  unsigned int numPos,
+  const V&     unifiedMeanVec,
+  V&           unifiedStdVec) const
+{
+  bool bRC = ((initialPos              <  this->subSequenceSize()   ) &&
+              (0                       <  numPos                    ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()   ) &&
+              (this->vectorSizeLocal() == unifiedMeanVec.sizeLocal()) &&
+              (this->vectorSizeLocal() == unifiedStdVec.sizeLocal() ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorsClass<V,M>::unifiedSampleStd()",
+                      "invalid input data");
+
+  uqScalarSequenceClass<double> data(m_env,0,"");
+
+  unsigned int numParams = this->vectorSizeLocal();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    unifiedStdVec[i] = data.unifiedSampleStd(m_vectorSpace.numOfProcsForStorage() == 1,
+                                             0,
+                                             numPos,
+                                             unifiedMeanVec[i]);
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
 uqSequenceOfVectorsClass<V,M>::subPopulationVariance(
   unsigned int initialPos,
   unsigned int numPos,
@@ -1629,6 +1718,81 @@ uqSequenceOfVectorsClass<V,M>::meanStacc(
                            i,
                            data);
     meanStaccVec[i] = data.meanStacc(0);
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::subCdfPercentageRange(
+  unsigned int initialPos,
+  unsigned int numPos,
+  double       range, // \in [0,1]
+  V&           lowerVec,
+  V&           upperVec) const
+{
+  bool bRC = ((0                       <  numPos                 ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()) &&
+              (this->vectorSizeLocal() == lowerVec.sizeLocal()   ) &&
+              (this->vectorSizeLocal() == upperVec.sizeLocal()   ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorsClass<V,M>::subCdfPercentageRange()",
+                      "invalid input data");
+
+  unsigned int numParams = this->vectorSizeLocal();
+  uqScalarSequenceClass<double> data(m_env,0,"");
+
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    data.subCdfPercentageRange(0,
+                               numPos,
+                               range,
+                               lowerVec[i],
+                               upperVec[i]);
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::unifiedCdfPercentageRange(
+  unsigned int initialPos,
+  unsigned int numPos,
+  double       range, // \in [0,1]
+  V&           lowerVec,
+  V&           upperVec) const
+{
+  bool bRC = ((0                       <  numPos                 ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()) &&
+              (this->vectorSizeLocal() == lowerVec.sizeLocal()   ) &&
+              (this->vectorSizeLocal() == upperVec.sizeLocal()   ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorsClass<V,M>::unifiedCdfPercentageRange()",
+                      "invalid input data");
+
+  unsigned int numParams = this->vectorSizeLocal();
+  uqScalarSequenceClass<double> data(m_env,0,"");
+
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    data.unifiedCdfPercentageRange(m_vectorSpace.numOfProcsForStorage() == 1,
+                                   0,
+                                   numPos,
+                                   range,
+                                   lowerVec[i],
+                                   upperVec[i]);
   }
 
   return;

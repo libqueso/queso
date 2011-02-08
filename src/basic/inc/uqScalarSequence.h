@@ -109,6 +109,13 @@ public:
                                                    unsigned int                    initialPos,
                                                    unsigned int                    localNumPos,
                                                    const T&                        unifiedMeanValue) const;
+        T            subSampleStd                 (unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   const T&                        meanValue) const;
+        T            unifiedSampleStd             (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   unsigned int                    localNumPos,
+                                                   const T&                        unifiedMeanValue) const;
         T            subPopulationVariance        (unsigned int                    initialPos,
                                                    unsigned int                    numPos,
                                                    const T&                        meanValue) const;
@@ -141,6 +148,17 @@ public:
                                                    double                          ratioNa,
                                                    double                          ratioNb) const;
         T            meanStacc                    (unsigned int                    initialPos) const;
+        void         subCdfPercentageRange        (unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   double                          range, // \in [0,1]                    
+                                                   T&                              lowerValue,
+                                                   T&                              upperValue) const;
+        void         unifiedCdfPercentageRange    (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   double                          range, // \in [0,1]                    
+                                                   T&                              lowerValue,
+                                                   T&                              upperValue) const;
         void         subMinMax                    (unsigned int                    initialPos,
                                                    unsigned int                    numPos,
                                                    T&                              minValue,
@@ -1277,6 +1295,101 @@ uqScalarSequenceClass<T>::unifiedSampleVariance(
 
 template <class T>
 T
+uqScalarSequenceClass<T>::subSampleStd(
+  unsigned int initialPos,
+  unsigned int numPos,
+  const T&     meanValue) const
+{
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.worldRank(),
+                      "uqScalarSequenceClass<T>::subSampleStd()",
+                      "invalid input data");
+
+  unsigned int finalPosPlus1 = initialPos + numPos;
+  T diff;
+  T stdValue = 0.;
+  for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+    diff = m_seq[j] - meanValue;
+    stdValue += diff*diff;
+  }
+
+  stdValue /= (((T) numPos) - 1.);
+  stdValue = sqrt(stdValue);
+
+  return stdValue;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::unifiedSampleStd(
+  bool         useOnlyInter0Comm,
+  unsigned int initialPos,
+  unsigned int numPos,
+  const T&     unifiedMeanValue) const
+{
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subSampleStd(initialPos,
+                                   numPos,
+                                   unifiedMeanValue);
+  }
+
+  // As of 14/Nov/2009, this routine does *not* require sub sequences to have equal size. Good.
+
+  T unifiedStdValue = 0.;
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+                  (0                   <  numPos                 ) &&
+                  ((initialPos+numPos) <= this->subSequenceSize()));
+      UQ_FATAL_TEST_MACRO(bRC == false,
+                          m_env.worldRank(),
+                          "uqScalarSequenceClass<T>::unifiedSampleStd()",
+                          "invalid input data");
+
+      unsigned int finalPosPlus1 = initialPos + numPos;
+      T diff;
+      T localStdValue = 0.;
+      for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+        diff = m_seq[j] - unifiedMeanValue;
+        localStdValue += diff*diff;
+      }
+
+      unsigned int unifiedNumPos = 0;
+      m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, MPI_UNSIGNED, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedSampleStd()",
+                                   "failed MPI.Allreduce() for numPos");
+
+      m_env.inter0Comm().Allreduce((void *) &localStdValue, (void *) &unifiedStdValue, (int) 1, MPI_DOUBLE, MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedSampleStd()",
+                                   "failed MPI.Allreduce() for stdValue");
+
+      unifiedStdValue /= (((T) unifiedNumPos) - 1.);
+      unifiedStdValue = sqrt(unifiedStdValue);
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      this->subSampleStd(initialPos,
+                         numPos,
+                         unifiedMeanValue);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.worldRank(),
+                        "uqScalarSequenceClass<T>::unifiedSampleStd()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return unifiedStdValue;
+}
+
+template <class T>
+T
 uqScalarSequenceClass<T>::subPopulationVariance(
   unsigned int initialPos,
   unsigned int numPos,
@@ -1834,6 +1947,106 @@ uqScalarSequenceClass<T>::meanStacc(
   double value = 0.;
 
   return value;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::subCdfPercentageRange(
+  unsigned int initialPos,
+  unsigned int numPos,
+  double       range, // \in [0,1]                    
+  T&           lowerValue,
+  T&           upperValue) const
+{
+  UQ_FATAL_TEST_MACRO((initialPos+numPos) > this->subSequenceSize(),
+                      m_env.worldRank(),
+                      "uqScalarSequenceClass<T>::subCdfPercetangeRange()",
+                      "invalid input");
+
+  UQ_FATAL_TEST_MACRO((range < 0) || (range > 1.),
+                      m_env.worldRank(),
+                      "uqScalarSequenceClass<T>::subCdfPercetangeRange()",
+                      "invalid 'range' value");
+
+  uqScalarSequenceClass<T> sortedSequence(m_env,0,"");;
+  sortedSequence.resizeSequence(numPos);
+  this->extractScalarSeq(initialPos,
+                         1,
+                         numPos,
+                         sortedSequence);
+  sortedSequence.subSort();
+
+  unsigned int lowerId = (unsigned int) round( 0.5*(1.-range)*((double) numPos) );
+  lowerValue = sortedSequence[lowerId];
+
+  unsigned int upperId = (unsigned int) round( 0.5*(1.+range)*((double) numPos) );
+  if (upperId == numPos) {
+    upperId = upperId-1;
+  }
+  UQ_FATAL_TEST_MACRO(upperId >= numPos,
+                      m_env.worldRank(),
+                      "uqScalarSequenceClass<T>::subCdfPercetangeRange()",
+                      "'upperId' got too big");
+  upperValue = sortedSequence[upperId];
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::unifiedCdfPercentageRange(
+  bool         useOnlyInter0Comm,
+  unsigned int initialPos,
+  unsigned int numPos,
+  double       range, // \in [0,1]                    
+  T&           unifiedLowerValue,
+  T&           unifiedUpperValue) const
+{
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subCdfPercentageRange(initialPos,
+                                       numPos,
+                                       range,
+                                       unifiedLowerValue,
+                                       unifiedUpperValue);
+  }
+
+  // As of 07/Feb/2011, this routine does *not* require sub sequences to have equal size. Good.
+
+  UQ_FATAL_TEST_MACRO((initialPos+numPos) > this->subSequenceSize(),
+                      m_env.worldRank(),
+                      "uqScalarSequenceClass<T>::unifiedCdfPercetangeRange()",
+                      "invalid input");
+
+  UQ_FATAL_TEST_MACRO((range < 0) || (range > 1.),
+                      m_env.worldRank(),
+                      "uqScalarSequenceClass<T>::unifiedCdfPercetangeRange()",
+                      "invalid 'range' value");
+
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.worldRank(),
+                          "uqScalarSequenceClass<T>::unifiedCdfPercentageRange()",
+                          "code not implemented yet");
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      this->subCdfPercentageRange(initialPos,
+                                  numPos,
+                                  unifiedLowerValue,
+                                  unifiedUpperValue);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.worldRank(),
+                        "uqScalarSequenceClass<T>::unifiedCdfPercentageRange()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return;
 }
 
 template <class T>
