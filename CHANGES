@@ -10,6 +10,7 @@ https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.43.0
   * added uqMapClass
   * added uqDistArrayClass
   * queso can now be configured and made withough trilinos, hdf5 and glpk
+  * improved uqScalarSequenceClass and uqSequenceOfVectorsClass
 
 Version 0.42.1 (02 February 2011)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.42.1
