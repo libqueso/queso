@@ -66,7 +66,7 @@ namespace QUESO_Basic_API {
 #ifdef QUESO_HAS_MPI
     m_env         = new uqFullEnvironmentClass(MPI_COMM_WORLD,inputfile,"",NULL);
 #else
-    m_env         = new uqFullEnvironmentClass(uqRawValue_MPI_COMM_SELF,inputfile,"",NULL);
+    m_env         = new uqFullEnvironmentClass(0,inputfile,"",NULL);
 #endif
 
     m_inputfile   = new string(inputfile);

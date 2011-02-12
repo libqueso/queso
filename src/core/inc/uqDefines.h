@@ -42,23 +42,18 @@
 #endif
 
 #ifdef HAVE_TRILINOS
-#define QUESO_HAVE_TRILINOS
+#define QUESO_HAS_TRILINOS
 #endif
 
 #undef  QUESO_HAS_ANN
 #define QUESO_HAS_MPI
-//#define QUESO_HAS_TRILINOS
-//#define QUESO_HAS_HDF5
-//#define QUESO_HAS_GLPK
 
 #ifdef QUESO_HAS_TRILINOS
-
 #ifdef QUESO_HAS_MPI
 // Ok
 #else
 Incompatible combination of defines in QUESO 'uqDefines.h': QUESO_HAS_TRILINOS is defined but QUESO_HAS_MPI is undefined
 #endif
-
 #endif
 
 #include <iostream>

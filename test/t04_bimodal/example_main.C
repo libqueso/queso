@@ -31,16 +31,24 @@
 int main(int argc, char* argv[])
 {
   // Initialize environment
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
+#endif
   uqFullEnvironmentClass* env =
+#ifdef QUESO_HAS_MPI
     new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+#else
+    new uqFullEnvironmentClass(0,argv[1],"",NULL);
+#endif
 
   // Compute
   compute(*env);
 
   // Finalize environment
   delete env;
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

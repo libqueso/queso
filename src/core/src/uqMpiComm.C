@@ -161,8 +161,11 @@ uqMpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, uqRawType_MPI
                       whereMsg,
                       whatMsg);
 #else
-  // prudencio2
+  size_t dataTypeSize = sizeOfDataType(datatype, whereMsg, whatMsg);
+  size_t dataTotal = dataTypeSize*count;
+  memcpy(recvbuf, sendbuf, dataTotal);
 #endif
+
   return;
 }
 
@@ -178,6 +181,8 @@ uqMpiCommClass::Barrier() const // const char* whereMsg, const char* whatMsg) co
                       m_worldRank,
                       "uqMPICommClass::Barrier()", // whereMsg,
                       "mpiRC indicates failure");  // whatMsg);
+#else
+  // Nothing needs to be done
 #endif
   return;
 }
@@ -192,7 +197,7 @@ uqMpiCommClass::Bcast(void* buffer, int count, uqRawType_MPI_Datatype datatype, 
                       whereMsg,
                       whatMsg);
 #else
-  // prudencio2
+  // Nothing needs to be done
 #endif
   return;
 }
@@ -216,7 +221,20 @@ uqMpiCommClass::Gather(
                       whereMsg,
                       whatMsg);
 #else
-  // prudencio2
+  size_t sendDataTypeSize = sizeOfDataType(sendtype, whereMsg, whatMsg);
+  size_t recvDataTypeSize = sizeOfDataType(recvtype, whereMsg, whatMsg);
+  size_t sendTotal = sendDataTypeSize*sendcnt;
+  size_t recvTotal = recvDataTypeSize*recvcount;
+  if (sendTotal != recvTotal) {
+    std::cerr << "uqMpiCommClass::Gather()"
+              << ": sendTotal != recvTotal"
+              << std::endl;
+  }
+  UQ_FATAL_TEST_MACRO(sendTotal != recvTotal,
+                      m_worldRank,
+                      whereMsg,
+                      whatMsg);
+  memcpy(recvbuf, sendbuf, sendTotal);
 #endif
   return;
 }
@@ -240,7 +258,20 @@ uqMpiCommClass::Gatherv(
                       whereMsg,
                       whatMsg);
 #else
-  // prudencio2
+  size_t sendDataTypeSize = sizeOfDataType(sendtype, whereMsg, whatMsg);
+  size_t recvDataTypeSize = sizeOfDataType(recvtype, whereMsg, whatMsg);
+  size_t sendTotal = sendDataTypeSize*sendcnt;
+  size_t recvTotal = recvDataTypeSize*recvcnts[0];
+  if (sendTotal != recvTotal) {
+    std::cerr << "uqMpiCommClass::Gatherv()"
+              << ": sendTotal != recvTotal"
+              << std::endl;
+  }
+  UQ_FATAL_TEST_MACRO(sendTotal != recvTotal,
+                      m_worldRank,
+                      whereMsg,
+                      whatMsg);
+  memcpy(recvbuf, sendbuf, sendTotal);
 #endif
   return;
 }
@@ -257,7 +288,13 @@ uqMpiCommClass::Recv(
                       whereMsg,
                       whatMsg);
 #else
-  // prudencio2
+  std::cerr << "uqMpiCommClass::Recv()"
+            << ": should note be used if there is no 'mpi'"
+            << std::endl;
+  UQ_FATAL_TEST_MACRO(true,
+                      m_worldRank,
+                      whereMsg,
+                      whatMsg);
 #endif
   return;
 }
@@ -274,7 +311,13 @@ uqMpiCommClass::Send(
                       whereMsg,
                       whatMsg);
 #else
-  // prudencio2
+  std::cerr << "uqMpiCommClass::Send()"
+            << ": should note be used if there is no 'mpi'"
+            << std::endl;
+  UQ_FATAL_TEST_MACRO(true,
+                      m_worldRank,
+                      whereMsg,
+                      whatMsg);
 #endif
   return;
 }
@@ -305,3 +348,41 @@ uqMpiCommClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, un
   return;
 }
 
+#ifdef QUESO_HAS_MPI
+#else
+size_t 
+uqMpiCommClass::sizeOfDataType(uqRawType_MPI_Datatype datatype, const char* whereMsg, const char* whatMsg) const
+{
+  size_t dataTypeSize = 0;
+
+  switch (datatype) {
+    case uqRawValue_MPI_CHAR:
+      dataTypeSize = sizeof(char);
+    break;
+
+    case uqRawValue_MPI_INT:
+      dataTypeSize = sizeof(int);
+    break;
+
+    case uqRawValue_MPI_DOUBLE:
+      dataTypeSize = sizeof(double);
+    break;
+
+    case uqRawValue_MPI_UNSIGNED:
+      dataTypeSize = sizeof(unsigned int);
+    break;
+
+    default: 
+      std::cerr << "uqMpiCommClass::Allreduce()"
+                << ": datatype not supported yet"
+                << std::endl;
+      UQ_FATAL_TEST_MACRO(true,
+                          m_worldRank,
+                          whereMsg,
+                          whatMsg);
+    break;
+  }
+
+  return dataTypeSize;
+}
+#endif

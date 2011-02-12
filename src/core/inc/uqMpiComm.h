@@ -115,7 +115,11 @@ public:
 #endif
 
 private:
-  void               copy   (const uqMpiCommClass& src);
+  void               copy          (const uqMpiCommClass& src);
+#ifdef QUESO_HAS_MPI
+#else
+  size_t             sizeOfDataType(uqRawType_MPI_Datatype datatype, const char* whereMsg, const char* whatMsg) const;
+#endif
 
   const uqBaseEnvironmentClass& m_env;
 #ifdef QUESO_HAS_TRILINOS
