@@ -72,7 +72,7 @@ public:
   void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, uqGslVectorClass& outputVec) const;
   void         sort             ();
   void         mpiBcast         (int srcRank, const uqMpiCommClass& bcastComm);
-  void         mpiAllReduce     (MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const;
+  void         mpiAllReduce     (uqRawType_MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const;
   void         mpiAllQuantile   (double probability, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const;
   void         print            (std::ostream& os) const;
   void         subWriteContents (const std::string&            varNamePrefix,

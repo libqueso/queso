@@ -28,6 +28,7 @@
 
 using namespace std;
 
+#include <uqDefines.h>
 #include <basic_classes.h>
 #include <basic_int.h>
 #include <grvy.h>
@@ -62,7 +63,12 @@ namespace QUESO_Basic_API {
 
     // Define new QUESO environment and store inputfile information
 
+#ifdef QUESO_HAS_MPI
     m_env         = new uqFullEnvironmentClass(MPI_COMM_WORLD,inputfile,"",NULL);
+#else
+    m_env         = new uqFullEnvironmentClass(uqRawValue_MPI_COMM_SELF,inputfile,"",NULL);
+#endif
+
     m_inputfile   = new string(inputfile);
 
     m_initialized = 1;

@@ -39,7 +39,6 @@ subdir = examples/infoTheoryProblem/src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/common/acx_mpi.m4 \
-	$(top_srcdir)/m4/common/ann.m4 \
 	$(top_srcdir)/m4/common/ax_add_am_macro.m4 \
 	$(top_srcdir)/m4/common/ax_add_am_trilinos_makefile_export.m4 \
 	$(top_srcdir)/m4/common/ax_am_macros.m4 \
@@ -97,11 +96,6 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
-ANN_CFLAGS = @ANN_CFLAGS@
-ANN_CPPFLAGS = @ANN_CPPFLAGS@
-ANN_DIR = @ANN_DIR@
-ANN_LIBS = @ANN_LIBS@
-ANN_PREFIX = @ANN_PREFIX@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@

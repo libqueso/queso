@@ -71,7 +71,7 @@ uqMiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not
 
   double localValue = (double) inputValue;
   double sumValue = 0.;
-  comm.Allreduce((void *) &localValue, (void *) &sumValue, (int) 1, MPI_DOUBLE, MPI_SUM,
+  comm.Allreduce((void *) &localValue, (void *) &sumValue, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
                  whereString,
                  "failed MPI on 'sumValue' inside uqMiscCheckForSameValueInAllNodes()");
 
@@ -81,7 +81,7 @@ uqMiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not
 #if 1
   unsigned int boolResult = 0;
   if (testValue > acceptableTreshold) boolResult = 1;
-  comm.Allreduce((void *) &boolResult, (void *) &boolSum, (int) 1, MPI_UNSIGNED, MPI_SUM,
+  comm.Allreduce((void *) &boolResult, (void *) &boolSum, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
                  whereString,
                  "failed MPI on 'boolSum' inside uqMiscCheckForSameValueInAllNodes()");
 
@@ -105,7 +105,7 @@ uqMiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not
     }
     comm.Barrier();
 
-    comm.Bcast((void *) &localValue, (int) 1, MPI_DOUBLE, 0,
+    comm.Bcast((void *) &localValue, (int) 1, uqRawValue_MPI_DOUBLE, 0,
                whereString,
                "failed MPI on 'boolSum' inside uqMiscCheckForSameValueInAllNodes()");
     inputValue = localValue; // IMPORTANT

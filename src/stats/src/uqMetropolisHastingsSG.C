@@ -110,11 +110,11 @@ uqMHRawChainInfoStruct::copy(const uqMHRawChainInfoStruct& rhs)
 void
 uqMHRawChainInfoStruct::mpiSum(const uqMpiCommClass& comm, uqMHRawChainInfoStruct& sumInfo) const
 {
-  comm.Allreduce((void *) &runTime, (void *) &sumInfo.runTime, (int) 7, MPI_DOUBLE, MPI_SUM,
+  comm.Allreduce((void *) &runTime, (void *) &sumInfo.runTime, (int) 7, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
                  "uqMHRawChainInfoStruct::mpiSum()",
                  "failed MPI.Allreduce() for sum of doubles");
 
-  comm.Allreduce((void *) &numTargetCalls, (void *) &sumInfo.numTargetCalls, (int) 5, MPI_UNSIGNED, MPI_SUM,
+  comm.Allreduce((void *) &numTargetCalls, (void *) &sumInfo.numTargetCalls, (int) 5, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
                  "uqMHRawChainInfoStruct::mpiSum()",
                  "failed MPI.Allreduce() for sum of unsigned ints");
 

@@ -134,7 +134,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
       //if (m_env.subId() != 0) while (true) sleep(1);
 
       int count = (int) bufferChar.size();
-      m_env.subComm().Bcast((void *) &bufferChar[0], count, MPI_CHAR, 0,
+      m_env.subComm().Bcast((void *) &bufferChar[0], count, uqRawValue_MPI_CHAR, 0,
                             "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
                             "failed broadcast 1 of 3");
 
@@ -153,7 +153,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         }
 
         count = (int) bufferDouble.size();
-        m_env.subComm().Bcast((void *) &bufferDouble[0], count, MPI_DOUBLE, 0,
+        m_env.subComm().Bcast((void *) &bufferDouble[0], count, uqRawValue_MPI_DOUBLE, 0,
                               "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
                               "failed broadcast 2 of 3");
 
@@ -178,7 +178,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
           }
 
           count = (int) bufferDouble.size();
-          m_env.subComm().Bcast((void *) &bufferDouble[0], count, MPI_DOUBLE, 0,
+          m_env.subComm().Bcast((void *) &bufferDouble[0], count, uqRawValue_MPI_DOUBLE, 0,
                                 "uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
                                 "failed broadcast 3 of 3");
 

@@ -39,7 +39,7 @@ uqMpiCommClass::uqMpiCommClass()
                       "should not be called");
 }
 
-uqMpiCommClass::uqMpiCommClass(const uqBaseEnvironmentClass& env, MPI_Comm inputRawComm)
+uqMpiCommClass::uqMpiCommClass(const uqBaseEnvironmentClass& env, uqRawType_MPI_Comm inputRawComm)
   :
   m_env          (env),
 #ifdef QUESO_HAS_TRILINOS
@@ -50,6 +50,7 @@ uqMpiCommClass::uqMpiCommClass(const uqBaseEnvironmentClass& env, MPI_Comm input
   m_myPid        (-1),
   m_numProc      (-1)
 {
+#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       UQ_UNAVAILABLE_RANK,
@@ -67,12 +68,18 @@ uqMpiCommClass::uqMpiCommClass(const uqBaseEnvironmentClass& env, MPI_Comm input
                       m_worldRank,
                       "uqMpiCommClass::constructor()",
                       "failed MPI_Comm_size() on inputRawComm");
+#else
+  m_worldRank = 0;
+  m_myPid     = 0;
+  m_numProc   = 1;
+#endif
 }
 
 uqMpiCommClass::uqMpiCommClass(const uqMpiCommClass& src)
   :
-  m_env          (src.m_env),
+  m_env          (src.m_env)
 #ifdef QUESO_HAS_TRILINOS
+  ,
   m_epetraMpiComm(NULL)
 #endif
 {
@@ -109,7 +116,7 @@ uqMpiCommClass::copy(const uqMpiCommClass& src)
   return;
 }
 
-MPI_Comm
+uqRawType_MPI_Comm
 uqMpiCommClass::Comm() const
 {
 #ifdef QUESO_HAS_TRILINOS
@@ -145,13 +152,17 @@ uqMpiCommClass::NumProc() const
 }
 
 void
-uqMpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op, const char* whereMsg, const char* whatMsg) const
+uqMpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, uqRawType_MPI_Datatype datatype, uqRawType_MPI_Op op, const char* whereMsg, const char* whatMsg) const
 {
+#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Allreduce(sendbuf, recvbuf, count, datatype, op, m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       whereMsg,
                       whatMsg);
+#else
+  // prudencio2
+#endif
   return;
 }
 
@@ -161,35 +172,42 @@ uqMpiCommClass::Barrier() const // const char* whereMsg, const char* whatMsg) co
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->Barrier();
 #endif
+#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Barrier(m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       "uqMPICommClass::Barrier()", // whereMsg,
                       "mpiRC indicates failure");  // whatMsg);
+#endif
   return;
 }
 
 void
-uqMpiCommClass::Bcast(void* buffer, int count, MPI_Datatype datatype, int root, const char* whereMsg, const char* whatMsg) const
+uqMpiCommClass::Bcast(void* buffer, int count, uqRawType_MPI_Datatype datatype, int root, const char* whereMsg, const char* whatMsg) const
 {
+#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Bcast(buffer, count, datatype, root, m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       whereMsg,
                       whatMsg);
+#else
+  // prudencio2
+#endif
   return;
 }
 
 void
 uqMpiCommClass::Gather(
-  void* sendbuf, int sendcnt, MPI_Datatype sendtype, 
-  void* recvbuf, int recvcount, MPI_Datatype recvtype, 
+  void* sendbuf, int sendcnt, uqRawType_MPI_Datatype sendtype, 
+  void* recvbuf, int recvcount, uqRawType_MPI_Datatype recvtype, 
   int root,
   const char* whereMsg, const char* whatMsg) const
 {
   //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
   //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
   //                int root, MPI_Comm comm )
+#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Gather(sendbuf, sendcnt, sendtype,
                          recvbuf, recvcount, recvtype,
                          root, m_rawComm);
@@ -197,19 +215,23 @@ uqMpiCommClass::Gather(
                       m_worldRank,
                       whereMsg,
                       whatMsg);
+#else
+  // prudencio2
+#endif
   return;
 }
  
 void
 uqMpiCommClass::Gatherv(
-  void* sendbuf, int sendcnt, MPI_Datatype sendtype, 
-  void* recvbuf, int* recvcnts, int* displs, MPI_Datatype recvtype, 
+  void* sendbuf, int sendcnt, uqRawType_MPI_Datatype sendtype, 
+  void* recvbuf, int* recvcnts, int* displs, uqRawType_MPI_Datatype recvtype, 
   int root,
   const char* whereMsg, const char* whatMsg) const
 {
   //int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
   //                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype, 
   //                int root, MPI_Comm comm )
+#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Gatherv(sendbuf, sendcnt, sendtype,
                           recvbuf, recvcnts, displs, recvtype,
                           root, m_rawComm);
@@ -217,32 +239,43 @@ uqMpiCommClass::Gatherv(
                       m_worldRank,
                       whereMsg,
                       whatMsg);
+#else
+  // prudencio2
+#endif
   return;
 }
 
 void
 uqMpiCommClass::Recv(
-  void* buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Status* status,
+  void* buf, int count, uqRawType_MPI_Datatype datatype, int source, int tag, uqRawType_MPI_Status* status,
   const char* whereMsg, const char* whatMsg) const
 {
+#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Recv(buf, count, datatype, source, tag, m_rawComm, status);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       whereMsg,
                       whatMsg);
+#else
+  // prudencio2
+#endif
   return;
 }
  
 void
 uqMpiCommClass::Send(
-  void* buf, int count, MPI_Datatype datatype, int dest, int tag,
+  void* buf, int count, uqRawType_MPI_Datatype datatype, int dest, int tag,
   const char* whereMsg, const char* whatMsg) const
 {
+#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Send(buf, count, datatype, dest, tag, m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       whereMsg,
                       whatMsg);
+#else
+  // prudencio2
+#endif
   return;
 }
 

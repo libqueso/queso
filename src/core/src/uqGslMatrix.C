@@ -1102,7 +1102,7 @@ uqGslMatrixClass::mpiSum( const uqMpiCommClass& comm, uqGslMatrixClass& M_global
 	}
     }
 
-  comm.Allreduce((void*) &local[0], (void*) &global[0], size, MPI_DOUBLE, MPI_SUM,
+  comm.Allreduce((void*) &local[0], (void*) &global[0], size, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
                  "uqGslMatrixClass::mpiSum()",
                  "failed MPI.Allreduce()");
 

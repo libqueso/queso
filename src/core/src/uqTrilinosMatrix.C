@@ -35,7 +35,7 @@
 uqTrilinosMatrixClass::uqTrilinosMatrixClass()
   :
   uqMatrixClass(),
-  m_map        (*(new uqMapClass( 1,0,*(new uqMpiCommClass(*(new uqEmptyEnvironmentClass()),MPI_COMM_SELF)) ) )) // avoid using MPI_COMM_WORLD
+  m_map        (*(new uqMapClass( 1,0,*(new uqMpiCommClass(*(new uqEmptyEnvironmentClass()),uqRawValue_MPI_COMM_SELF)) ) )) // avoid using MPI_COMM_WORLD
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.fullRank(),

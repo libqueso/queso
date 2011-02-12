@@ -435,12 +435,12 @@ uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorRun(unsigned int monitorPosit
                 monitorPosition,
                 subMeanVec);
 
-  subMeanVec.mpiAllReduce(MPI_SUM,m_env.inter0Comm(),subMeanInter0Mean);
+  subMeanVec.mpiAllReduce(uqRawValue_MPI_SUM,m_env.inter0Comm(),subMeanInter0Mean);
   subMeanInter0Mean /= ((double) m_env.inter0Comm().NumProc());
 
   V subMeanInter0CltVariance = subMeanVec-subMeanInter0Mean;
   subMeanInter0CltVariance *= subMeanInter0CltVariance;
-  subMeanInter0CltVariance.mpiAllReduce(MPI_SUM,m_env.inter0Comm(),subMeanInter0Clt95);
+  subMeanInter0CltVariance.mpiAllReduce(uqRawValue_MPI_SUM,m_env.inter0Comm(),subMeanInter0Clt95);
   subMeanInter0Clt95 /= ((double) (m_env.inter0Comm().NumProc()-1));
   subMeanInter0Clt95 /= ((double) (m_env.inter0Comm().NumProc()-1));
   subMeanInter0Clt95.cwSqrt();
@@ -452,9 +452,9 @@ uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorRun(unsigned int monitorPosit
   subMeanVec.mpiAllQuantile(.95,m_env.inter0Comm(),subMeanInter0Quantile95);
   subMeanInter0Empirical90 = subMeanInter0Quantile95 - subMeanInter0Quantile5;
 
-  subMeanVec.mpiAllReduce(MPI_MIN,m_env.inter0Comm(),subMeanInter0Min);
+  subMeanVec.mpiAllReduce(uqRawValue_MPI_MIN,m_env.inter0Comm(),subMeanInter0Min);
 
-  subMeanVec.mpiAllReduce(MPI_MAX,m_env.inter0Comm(),subMeanInter0Max);
+  subMeanVec.mpiAllReduce(uqRawValue_MPI_MAX,m_env.inter0Comm(),subMeanInter0Max);
 
   return;
 }

@@ -111,7 +111,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
 
     if (m_env.inter0Rank() >= 0) {
       unsigned int tmpSize = currOptions.m_rawChainSize;
-      m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &unifiedRequestedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM,
+      m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &unifiedRequestedNumSamples, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
                                    "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                                    "failed MPI.Allreduce() for requested num samples in level 0");
     }
@@ -231,7 +231,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step01_inter0(
       unsigned int tmpSize = currOptions->m_rawChainSize;
       // This computed 'unifiedRequestedNumSamples' needs to be recomputed only at the last
       // level, when 'currOptions' is replaced by 'lastLevelOptions' (see step 3 of 11)
-      m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &unifiedRequestedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM,
+      m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &unifiedRequestedNumSamples, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
                                    "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                                    "failed MPI.Allreduce() for requested num samples in step 1");
 
@@ -360,9 +360,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
         m_env.inter0Comm().Barrier();
         unsigned int auxUint = 0;
         if (r > 0) {
-          MPI_Status status;
+          uqRawType_MPI_Status status;
 	  //std::cout << "Rank " << r << " is entering MPI_Recv()" << std::endl;
-          m_env.inter0Comm().Recv((void*) &auxUint, 1, MPI_UNSIGNED, r-1, r-1, &status,
+          m_env.inter0Comm().Recv((void*) &auxUint, 1, uqRawValue_MPI_UNSIGNED, r-1, r-1, &status,
                                   "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                                   "failed MPI.Recv()");
 	  //std::cout << "Rank " << r << " received auxUint = " << auxUint << std::endl;
@@ -372,7 +372,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
         if (r < (m_env.inter0Comm().NumProc()-1)) {
           auxUint = indexOfLastWeight + 1;
 	  //std::cout << "Rank " << r << " is sending auxUint = " << auxUint << std::endl;
-          m_env.inter0Comm().Send((void*) &auxUint, 1, MPI_UNSIGNED, r+1, r,
+          m_env.inter0Comm().Send((void*) &auxUint, 1, uqRawValue_MPI_UNSIGNED, r+1, r,
                                   "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                                   "failed MPI.Send()");
 	  //std::cout << "Rank " << r << " sent auxUint = " << auxUint << std::endl;
@@ -469,7 +469,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
           weightSequence[i] = exp(omegaLnDiffSequence[i]);
           subWeightRatioSum += weightSequence[i];
         }
-        m_env.inter0Comm().Allreduce((void *) &subWeightRatioSum, (void *) &unifiedWeightRatioSum, (int) 1, MPI_DOUBLE, MPI_SUM,
+        m_env.inter0Comm().Allreduce((void *) &subWeightRatioSum, (void *) &unifiedWeightRatioSum, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
                                      "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                                      "failed MPI.Allreduce() for weight ratio sum");
 
@@ -508,7 +508,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
 
         double subQuantity = effectiveSampleSize;
         effectiveSampleSize = 0.;
-        m_env.inter0Comm().Allreduce((void *) &subQuantity, (void *) &effectiveSampleSize, (int) 1, MPI_DOUBLE, MPI_SUM,
+        m_env.inter0Comm().Allreduce((void *) &subQuantity, (void *) &effectiveSampleSize, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
                                      "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                                      "failed MPI.Allreduce() for effective sample size");
 
@@ -663,7 +663,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step04_inter0(
       // Todd Oliver 2010-09-07: compute weighted mean over all processors
       P_V unifiedWeightedMeanVec(m_vectorSpace.zeroVector());
       if (m_env.inter0Rank() >= 0) {
-        subWeightedMeanVec.mpiAllReduce(MPI_SUM,m_env.inter0Comm(),unifiedWeightedMeanVec);
+        subWeightedMeanVec.mpiAllReduce(uqRawValue_MPI_SUM,m_env.inter0Comm(),unifiedWeightedMeanVec);
       }
       else {
         unifiedWeightedMeanVec = subWeightedMeanVec;
@@ -682,7 +682,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step04_inter0(
           double localValue = subCovMatrix(i,j);
           double sumValue = 0.;
           if (m_env.inter0Rank() >= 0) {
-            m_env.inter0Comm().Allreduce((void *) &localValue, (void *) &sumValue, (int) 1, MPI_DOUBLE, MPI_SUM,
+            m_env.inter0Comm().Allreduce((void *) &localValue, (void *) &sumValue, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
                                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                                          "failed MPI.Allreduce() for cov matrix");
           }
@@ -1261,13 +1261,13 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
         if (m_env.inter0Rank() >= 0) { // KAUST
           // If only one cov matrix is used, then the rejection should be assessed among all inter0Comm nodes // KAUST3
           unsigned int nowUnifiedRejections = 0;
-          m_env.inter0Comm().Allreduce((void *) &nowRejections, (void *) &nowUnifiedRejections, (int) 1, MPI_UNSIGNED, MPI_SUM,
+          m_env.inter0Comm().Allreduce((void *) &nowRejections, (void *) &nowUnifiedRejections, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
                                        "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
                                        "failed MPI.Allreduce() for now rejections");
 
 #if 0 // Round Rock 2009 12 29
           unsigned int tmpUnifiedNumSamples = 0;
-          m_env.inter0Comm().Allreduce((void *) &tmpSubNumSamples, (void *) &tmpUnifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM,
+          m_env.inter0Comm().Allreduce((void *) &tmpSubNumSamples, (void *) &tmpUnifiedNumSamples, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
                                        "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
                                        "failed MPI.Allreduce() for num samples in step 9");
 #endif
@@ -1299,7 +1299,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
 
         // KAUST: all nodes in 'subComm' should have the same 'testResult'
         unsigned int tmpUint = (unsigned int) testResult;
-        m_env.subComm().Bcast((void *) &tmpUint, (int) 1, MPI_UNSIGNED, 0, // Yes, 'subComm', important
+        m_env.subComm().Bcast((void *) &tmpUint, (int) 1, uqRawValue_MPI_UNSIGNED, 0, // Yes, 'subComm', important
                               "uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
                               "failed MPI.Bcast() for testResult");
         testResult = (bool) tmpUint;
@@ -1594,7 +1594,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
     // Check if unified size of generated chain matches the unified requested size // KAUST
     unsigned int tmpSize = currChain.subSequenceSize();
     unsigned int unifiedGeneratedNumSamples = 0;
-    m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &unifiedGeneratedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM,
+    m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &unifiedGeneratedNumSamples, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
                                  "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                                  "failed MPI.Allreduce() for generated num samples in step 11");
     //std::cout << "unifiedGeneratedNumSamples = "   << unifiedGeneratedNumSamples
@@ -1607,7 +1607,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
   }
 
   // Compute unified number of rejections
-  m_env.inter0Comm().Allreduce((void *) &cumulativeRawChainRejections, (void *) &unifiedNumberOfRejections, (int) 1, MPI_UNSIGNED, MPI_SUM,
+  m_env.inter0Comm().Allreduce((void *) &cumulativeRawChainRejections, (void *) &unifiedNumberOfRejections, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
                                "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                                "failed MPI.Allreduce() for number of rejections");
 

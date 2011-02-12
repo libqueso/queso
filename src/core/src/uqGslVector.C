@@ -521,7 +521,7 @@ uqGslVectorClass::mpiBcast(int srcRank, const uqMpiCommClass& bcastComm)
   // Check number of participant nodes
   double localNumNodes = 1.;
   double totalNumNodes = 0.;
-  bcastComm.Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, MPI_DOUBLE, MPI_SUM,
+  bcastComm.Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
                       "uqGslVectorClass::mpiBcast()",
                       "failed MPI.Allreduce() for numNodes");
   UQ_FATAL_TEST_MACRO(((int) totalNumNodes) != bcastComm.NumProc(),
@@ -532,7 +532,7 @@ uqGslVectorClass::mpiBcast(int srcRank, const uqMpiCommClass& bcastComm)
   // Check that all participant nodes have the same vector size
   double localVectorSize  = this->sizeLocal();
   double sumOfVectorSizes = 0.; 
-  bcastComm.Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, MPI_DOUBLE, MPI_SUM,
+  bcastComm.Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
                       "uqGslVectorClass::mpiBcast()",
                       "failed MPI.Allreduce() for vectorSize");
 
@@ -557,7 +557,7 @@ uqGslVectorClass::mpiBcast(int srcRank, const uqMpiCommClass& bcastComm)
     }
   }
 
-  bcastComm.Bcast((void *) &dataBuffer[0], (int) localVectorSize, MPI_DOUBLE, srcRank,
+  bcastComm.Bcast((void *) &dataBuffer[0], (int) localVectorSize, uqRawValue_MPI_DOUBLE, srcRank,
                   "uqGslVectorClass::mpiBcast()",
                   "failed MPI.Bcast()");
 
@@ -571,7 +571,7 @@ uqGslVectorClass::mpiBcast(int srcRank, const uqMpiCommClass& bcastComm)
 }
 
 void
-uqGslVectorClass::mpiAllReduce(MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const
+uqGslVectorClass::mpiAllReduce(uqRawType_MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const
 {
   // Filter out those nodes that should not participate
   if (opComm.MyPID() < 0) return;
@@ -585,7 +585,7 @@ uqGslVectorClass::mpiAllReduce(MPI_Op mpiOperation, const uqMpiCommClass& opComm
   for (unsigned int i = 0; i < size; ++i) {
     double srcValue = (*this)[i];
     double resultValue = 0.;
-    opComm.Allreduce((void *) &srcValue, (void *) &resultValue, (int) 1, MPI_DOUBLE, mpiOperation,
+    opComm.Allreduce((void *) &srcValue, (void *) &resultValue, (int) 1, uqRawValue_MPI_DOUBLE, mpiOperation,
                      "uqGslVectorClass::mpiAllReduce()",
                      "failed MPI.Allreduce()");
     resultVec[i] = resultValue;
@@ -614,7 +614,7 @@ uqGslVectorClass::mpiAllQuantile(double probability, const uqMpiCommClass& opCom
   for (unsigned int i = 0; i < size; ++i) {
     double auxDouble = (int) (*this)[i];
     std::vector<double> vecOfDoubles(opComm.NumProc(),0.);
-    opComm.Gather((void *) &auxDouble, 1, MPI_DOUBLE, (void *) &vecOfDoubles[0], (int) 1, MPI_DOUBLE, 0,
+    opComm.Gather((void *) &auxDouble, 1, uqRawValue_MPI_DOUBLE, (void *) &vecOfDoubles[0], (int) 1, uqRawValue_MPI_DOUBLE, 0,
                   "uqGslVectorClass::mpiAllQuantile()",
                   "failed MPI.Gather()");
 
@@ -622,7 +622,7 @@ uqGslVectorClass::mpiAllQuantile(double probability, const uqMpiCommClass& opCom
 
     double result = vecOfDoubles[(unsigned int)( probability*((double)(vecOfDoubles.size()-1)) )];
 
-    opComm.Bcast((void *) &result, (int) 1, MPI_DOUBLE, 0,
+    opComm.Bcast((void *) &result, (int) 1, uqRawValue_MPI_DOUBLE, 0,
                  "uqGslVectorClass::mpiAllQuantile()",
                  "failed MPI.Bcast()");
 

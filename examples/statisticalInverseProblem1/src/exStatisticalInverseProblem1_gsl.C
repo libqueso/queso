@@ -44,13 +44,19 @@ int main(int argc, char* argv[])
   //************************************************
   // Initialize environments
   //************************************************
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
+#endif
 
   UQ_FATAL_TEST_MACRO(argc != 2,
                       UQ_UNAVAILABLE_RANK,
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
+#ifdef QUESO_HAS_MPI
   uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+#else
+  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(0,argv[1],"",NULL);
+#endif
   //std::cout << "proc " << env->fullRank() << ", HERE main 000" << std::endl;
   //env->fullComm().Barrier();
   //std::cout << "proc " << env->fullRank() << ", HERE main 001" << std::endl;
@@ -66,7 +72,9 @@ int main(int argc, char* argv[])
   // Finalize environments
   //************************************************
   delete env;
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

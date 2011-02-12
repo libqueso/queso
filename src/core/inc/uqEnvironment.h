@@ -230,7 +230,7 @@ protected:
   uqMpiCommClass*            m_fullComm;
   int                        m_fullRank;
   int                        m_fullCommSize;
-  MPI_Group                  m_fullGroup;
+  uqRawType_MPI_Group        m_fullGroup;
 
   std::string                m_optionsInputFileName;
   mutable bool               m_optionsInputFileAccessState; // Yes, 'mutable'
@@ -239,14 +239,14 @@ protected:
 
   unsigned int               m_subId;
   std::string                m_subIdString;
-  MPI_Group                  m_subGroup;
+  uqRawType_MPI_Group        m_subGroup;
   uqMpiCommClass*            m_subComm;
   int                        m_subRank;
   int                        m_subCommSize;
 
   uqMpiCommClass*            m_selfComm;
 
-  MPI_Group                  m_inter0Group;
+  uqRawType_MPI_Group        m_inter0Group;
   uqMpiCommClass*            m_inter0Comm;
   int                        m_inter0Rank;
   int                        m_inter0CommSize;
@@ -276,7 +276,7 @@ public:
 //*****************************************************
 class uqFullEnvironmentClass : public uqBaseEnvironmentClass {
 public:
-  uqFullEnvironmentClass(MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, const uqEnvOptionsValuesClass* alternativeOptionsValues);
+  uqFullEnvironmentClass(uqRawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, const uqEnvOptionsValuesClass* alternativeOptionsValues);
  ~uqFullEnvironmentClass();
 
         void        print               (std::ostream& os) const;

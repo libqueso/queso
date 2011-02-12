@@ -26,14 +26,16 @@
 //
 //--------------------------------------------------------------------------
 
-#include <mpi.h>
 #include <uqDefines.h>
+#ifdef QUESO_HAS_MPI
+#include <mpi.h>
+#endif
 
 int uqMyWorldfullRank() {
   int result = 0;
-//#ifdef __UQ_USES_TRILINOS__
+#ifdef QUESO_HAS_MPI
   int iRC;
   iRC = MPI_Comm_rank(MPI_COMM_WORLD,&result);
-//#endif
+#endif
   return result;
 }

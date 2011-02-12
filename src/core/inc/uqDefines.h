@@ -29,9 +29,21 @@
 #ifndef __UQ_DEFINES_H__
 #define __UQ_DEFINES_H__
 
+#undef  QUESO_HAS_ANN
+#define QUESO_HAS_MPI
 #define QUESO_HAS_TRILINOS
 #define QUESO_HAS_HDF5
 #define QUESO_HAS_GLPK
+
+#ifdef QUESO_HAS_TRILINOS
+
+#ifdef QUESO_HAS_MPI
+// Ok
+#else
+Incompatible combination of defines in QUESO 'uqDefines.h': QUESO_HAS_TRILINOS is defined but QUESO_HAS_MPI is undefined
+#endif
+
+#endif
 
 #include <iostream>
 #include <stdlib.h> // For exit()
@@ -87,24 +99,24 @@ private:
 
 #define UQ_RC_MACRO(macroIRc,givenRank,where,what,retValue) \
   if (macroIRc) {                                           \
-    int macroRank = givenRank;                         \
-    if (macroRank < 0) {                               \
-      macroRank = uqMyWorldfullRank();                     \
-    }                                                  \
-    std::cerr << "UQ RC ERROR"                         \
-              << ", rank "  << macroRank               \
-              << ", in "    << where                   \
-              << ": "       << what                    \
-              << ", iRc = " << macroIRc                \
-              << std::endl;                            \
-    return retValue;                                   \
+    int macroRank = givenRank;                              \
+    if (macroRank < 0) {                                    \
+      macroRank = uqMyWorldfullRank();                      \
+    }                                                       \
+    std::cerr << "UQ RC ERROR"                              \
+              << ", rank "  << macroRank                    \
+              << ", in "    << where                        \
+              << ": "       << what                         \
+              << ", iRc = " << macroIRc                     \
+              << std::endl;                                 \
+    return retValue;                                        \
   }
 
 #define UQ_TEST_MACRO(test,givenRank,where,what,retValue) \
   if (test) {                                             \
     int macroRank = givenRank;                            \
     if (macroRank < 0) {                                  \
-      macroRank = uqMyWorldfullRank();                        \
+      macroRank = uqMyWorldfullRank();                    \
     }                                                     \
     std::cerr << "UQ TEST ERROR"                          \
               << ", rank " << macroRank                   \
@@ -116,25 +128,26 @@ private:
 
 #define UQ_FATAL_RC_MACRO(macroIRc,givenRank,where,what) \
   if (macroIRc) {                                        \
-    int macroRank = givenRank;                      \
-    if (macroRank < 0) {                            \
-      macroRank = uqMyWorldfullRank();                  \
-    }                                               \
-    std::cerr << "UQ RC FATAL ERROR"                \
-              << ", rank "  << macroRank            \
-              << ", in "    << where                \
-              << ": "       << what                 \
-              << ", iRC = " << macroIRc             \
-              << ". Exiting..."                     \
-              << std::endl;                         \
-    exit(1);                                        \
+    int macroRank = givenRank;                           \
+    if (macroRank < 0) {                                 \
+      macroRank = uqMyWorldfullRank();                   \
+    }                                                    \
+    std::cerr << "UQ RC FATAL ERROR"                     \
+              << ", rank "  << macroRank                 \
+              << ", in "    << where                     \
+              << ": "       << what                      \
+              << ", iRC = " << macroIRc                  \
+              << ". Exiting..."                          \
+              << std::endl;                              \
+    exit(1);                                             \
   }
 
+#ifdef QUESO_HAS_MPI
 #define UQ_FATAL_TEST_MACRO(test,givenRank,where,what) \
   if (test) {                                          \
     int macroRank = givenRank;                         \
     if (macroRank < 0) {                               \
-      macroRank = uqMyWorldfullRank();                     \
+      macroRank = uqMyWorldfullRank();                 \
     }                                                  \
     std::cerr << "UQ TEST FATAL ERROR"                 \
               << ", rank "  << macroRank               \
@@ -145,6 +158,22 @@ private:
     /*int macroMpiRC = 0;*/                            \
     /*macroMpiRC = */MPI_Abort(MPI_COMM_WORLD,-999);   \
     exit(1);                                           \
-  }                                                    \
+  }
+#else
+#define UQ_FATAL_TEST_MACRO(test,givenRank,where,what) \
+  if (test) {                                          \
+    int macroRank = givenRank;                         \
+    if (macroRank < 0) {                               \
+      macroRank = uqMyWorldfullRank();                 \
+    }                                                  \
+    std::cerr << "UQ TEST FATAL ERROR"                 \
+              << ", rank "  << macroRank               \
+              << ", in "    << where                   \
+              << ": "       << what                    \
+              << ". Exiting..."                        \
+              << std::endl;                            \
+    exit(1);                                           \
+  }
+#endif
 
 #endif // __UQ_DEFINES_H__

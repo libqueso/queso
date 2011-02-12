@@ -62,7 +62,9 @@ int main(int argc, char* argv[])
   //************************************************
   // Initialize environment
   //************************************************
+#ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
+#endif
 
   uqEnvOptionsValuesClass* envOptionsValues = NULL;
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
@@ -70,7 +72,11 @@ int main(int argc, char* argv[])
                       UQ_UNAVAILABLE_RANK,
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
+#ifdef QUESO_HAS_MPI
   uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",envOptionsValues);
+#else
+  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(0,argv[1],"",envOptionsValues);
+#endif
 #else
   envOptionsValues = new uqEnvOptionsValuesClass();
   envOptionsValues->m_subDisplayFileName   = "outputData/display";
@@ -78,7 +84,11 @@ int main(int argc, char* argv[])
   envOptionsValues->m_subDisplayAllowedSet.insert(1);
   envOptionsValues->m_displayVerbosity     = 2;
   envOptionsValues->m_seed                 = 0;
+#ifdef QUESO_HAS_MPI
   uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,"","",envOptionsValues);
+#else
+  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(0,"","",envOptionsValues);
+#endif
 #endif
 
   //************************************************
@@ -95,7 +105,9 @@ int main(int argc, char* argv[])
   //************************************************
   delete env;
   delete envOptionsValues;
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return 0;
 }

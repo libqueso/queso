@@ -384,7 +384,7 @@ uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize() const
   if (useOnlyInter0Comm) {
     if (m_env.inter0Rank() >= 0) {
       unsigned int subNumSamples = this->subSequenceSize();
-      m_env.inter0Comm().Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM,
+      m_env.inter0Comm().Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
                                    "uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize()",
                                    "failed MPI.Allreduce() for unifiedSequenceSize()");
     }
@@ -2658,14 +2658,14 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
   if (useOnlyInter0Comm) {
     if (env.inter0Rank() >= 0) {
       unsigned int unifiedNumSamples = 0;
-      env.inter0Comm().Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, MPI_UNSIGNED, MPI_SUM,
+      env.inter0Comm().Allreduce((void *) &subNumSamples, (void *) &unifiedNumSamples, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
                                  "uqComputeCovCorrMatricesBetweenVectorSequences()",
                                  "failed MPI.Allreduce() for subNumSamples");
 
       for (unsigned i = 0; i < numRowsLocal; ++i) {
         for (unsigned j = 0; j < numCols; ++j) {
           double aux = 0.;
-          env.inter0Comm().Allreduce((void *) &pqCovMatrix(i,j), (void *) &aux, (int) 1, MPI_DOUBLE, MPI_SUM,
+          env.inter0Comm().Allreduce((void *) &pqCovMatrix(i,j), (void *) &aux, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
                                      "uqComputeCovCorrMatricesBetweenVectorSequences()",
                                      "failed MPI.Allreduce() for a matrix position");
           pqCovMatrix(i,j) = aux/((double) (unifiedNumSamples-1)); // Yes, '-1' in order to compensate for the 'N-1' denominator factor in the calculations of sample variances above (whose square roots will be used below)
