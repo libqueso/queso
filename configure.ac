@@ -78,8 +78,7 @@ ACX_MPI([CXX="$MPICXX"], [AC_MSG_ERROR([Could not find MPI.])])
 # External Library Checks
 #-------------------------
 
-# Check for Trilinos
-###AX_TRILINOS_BASE(8.0.7,,AC_MSG_ERROR([Could not find required Trilinos version.]))
+# Check for Trilinos (optional)
 
 AX_TRILINOS_BASE(8.0.7,[HAVE_TRILINOS=1],[HAVE_TRILINOS=0])
 if test "$HAVE_TRILINOS" = "1" ;then
@@ -88,6 +87,7 @@ fi
 
 echo HAVE_TRILINOS=$HAVE_TRILINOS
 AC_SUBST(HAVE_TRILINOS)
+AM_CONDITIONAL(TRILINOS_ENABLED,test x$HAVE_TRILINOS = x1)
 
 ##AX_TRILINOS_EPETRA(AC_DEFINE(HAVE_LIBEPETRA,1,[Define if Epetra is available]),AC_MSG_ERROR([Could not find Epetra.]))
 AC_CACHE_SAVE

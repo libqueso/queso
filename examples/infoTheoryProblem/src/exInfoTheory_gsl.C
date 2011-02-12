@@ -38,7 +38,7 @@
 
 #include <exInfoTheory_appl.h>
 #include <uqGslMatrix.h>
-#include <config.h>
+#include <config_queso.h>
 
 int main(int argc, char* argv[])
 {

@@ -37,7 +37,7 @@
 #include <uqSequenceOfVectors.h>
 #include <uqInfoTheory.h>
 #include <gsl/gsl_sf_psi.h>
-#include <config.h>
+#include <config_queso.h>
 
 //*****************************************************
 // Base class

@@ -29,11 +29,27 @@
 #ifndef __UQ_DEFINES_H__
 #define __UQ_DEFINES_H__
 
+#include <config_queso.h>
+
+// Define available optional libraries (GLPK, HDF5, Trilinos)
+
+#ifdef HAVE_GLPK
+#define QUESO_HAS_GLPK
+#endif
+
+#ifdef HAVE_HDF5
+#define QUESO_HAS_HDF5
+#endif
+
+#ifdef HAVE_TRILINOS
+#define QUESO_HAVE_TRILINOS
+#endif
+
 #undef  QUESO_HAS_ANN
 #define QUESO_HAS_MPI
-#define QUESO_HAS_TRILINOS
-#define QUESO_HAS_HDF5
-#define QUESO_HAS_GLPK
+//#define QUESO_HAS_TRILINOS
+//#define QUESO_HAS_HDF5
+//#define QUESO_HAS_GLPK
 
 #ifdef QUESO_HAS_TRILINOS
 

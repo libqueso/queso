@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <config.h>
+#include <config_queso.h>
 #ifdef HAVE_ANN
 
 #include <uqInfoTheory.h>

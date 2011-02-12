@@ -4,16 +4,22 @@
 # DIST_SUBDIRS = basic stats
 
 AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
-	     -I$(top_srcdir)/src/misc/inc  \
-	     -I$(top_srcdir)/src/basic/inc \
-	     -I$(top_srcdir)/src/stats/inc \
-	     -I$(top_srcdir)/src/interface \
-	       $(BOOST_CPPFLAGS) \
-	       $(GSL_CFLAGS) \
-	       $(GRVY_CFLAGS) \
-	       $(GLPK_CFLAGS) \
-	       $(HDF5_CFLAGS) \
-	       $(ANN_CFLAGS)
+	      -I$(top_srcdir)/src/misc/inc  \
+	      -I$(top_srcdir)/src/basic/inc \
+	      -I$(top_srcdir)/src/stats/inc \
+	      -I$(top_srcdir)/src/interface \
+	        $(BOOST_CPPFLAGS) \
+	        $(GSL_CFLAGS) \
+	        $(GRVY_CFLAGS) \
+	        $(ANN_CFLAGS)
+
+if GLPK_ENABLED	
+  AM_CPPFLAGS += $(GLPK_CFLAGS)
+endif
+
+if HDF5_ENABLED	
+  AM_CPPFLAGS += $(HDF5_CFLAGS) 
+endif
 
 if SVN_CHECKOUT
 BUILT_SOURCES = .license.stamp
@@ -29,16 +35,27 @@ libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
 libqueso_la_LDFLAGS += $(GRVY_LIBS)
 libqueso_la_LDFLAGS += $(GSL_LIBS) 
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
-libqueso_la_LDFLAGS += $(GLPK_LIBS)
-libqueso_la_LDFLAGS += $(HDF5_LIBS)
+#libqueso_la_LDFLAGS += $(GLPK_LIBS)
+#libqueso_la_LDFLAGS += 
 libqueso_la_LDFLAGS += $(ANN_LIBS)
 
-# TODO: cleanup way epetra is handled; it looks like it is being put in LDFLAGS directly. Would like to 
-# have a EPETRA_LIBS or some such variable later.
+if GLPK_ENABLED	
+  libqueso_la_LDFLAGS += $(GLPK_CFLAGS)
+endif
 
-libqueso_la_LDFLAGS += -lepetra
+if HDF5_ENABLED	
+  libqueso_la_LDFLAGS += $(HDF5_LIBS)
+endif
+
+# TODO: cleanup way epetra is handled; it looks like it is being put
+# in LDFLAGS directly. Would like to have a EPETRA_LIBS or some such
+# variable later.
+
+if TRILINOS_ENABLED
+  libqueso_la_LDFLAGS += -lepetra
+endif
+
 #libqueso_la_LDFLAGS += -Wl,-rpath,$(TRILINOS_HOME)/lib -lepetra
-#libqueso_la_LDFLAGS += -Wl,-rpath,=/Users/karl/bin/trilinos-9.0.3/lib/ -lepetra
 
 # Sources from core/src
 
@@ -73,7 +90,7 @@ libqueso_la_SOURCES += \
 # Sources from misc/src withn gsl conditional
 
 if UQBT_GSL
-libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/uqGslAsciiTable.C
+  libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/uqGslAsciiTable.C
 endif
 
 # Sources from basic/src
@@ -85,7 +102,7 @@ libqueso_la_SOURCES += \
 # Sources from basic/src with gsl conditional
 
 if UQBT_GSL
-libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/uqGslVectorSpace.C
+  libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/uqGslVectorSpace.C
 endif
 
 # Sources from stats/src
@@ -199,7 +216,6 @@ bin_PROGRAMS         = version
 version_SOURCES      = $(top_srcdir)/src/core/src/version.C
 version_LDADD        = -L$(top_builddir)/src -lqueso $(HDF5_LIBS) 
 version_DEPENDENCIES = libqueso.la
-
 
 #---------------------------------
 # Embedded license header support
