@@ -53,13 +53,14 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/common/acx_mpi.m4 \
 	$(top_srcdir)/m4/common/coverage.m4 \
 	$(top_srcdir)/m4/common/gl_trilinos_absolute_header.m4 \
 	$(top_srcdir)/m4/common/glpk.m4 \
-	$(top_srcdir)/m4/common/grvy.m4 $(top_srcdir)/m4/common/gsl.m4 \
-	$(top_srcdir)/m4/common/hdf5.m4 \
+	$(top_srcdir)/m4/common/grvy_new.m4 \
+	$(top_srcdir)/m4/common/gsl.m4 \
+	$(top_srcdir)/m4/common/hdf5_new.m4 \
 	$(top_srcdir)/m4/config_summary.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
-CONFIG_HEADER = $(top_builddir)/config.h
+CONFIG_HEADER = $(top_builddir)/config_queso.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
@@ -170,6 +171,7 @@ GREP = @GREP@
 GRVY_CFLAGS = @GRVY_CFLAGS@
 GRVY_DIR = @GRVY_DIR@
 GRVY_FCFLAGS = @GRVY_FCFLAGS@
+GRVY_FLIBS = @GRVY_FLIBS@
 GRVY_LIBS = @GRVY_LIBS@
 GRVY_PREFIX = @GRVY_PREFIX@
 GSL_CFLAGS = @GSL_CFLAGS@
@@ -177,6 +179,10 @@ GSL_CONFIG = @GSL_CONFIG@
 GSL_LIBS = @GSL_LIBS@
 GSL_PREFIX = @GSL_PREFIX@
 HAVE_GCOV_TOOLS = @HAVE_GCOV_TOOLS@
+HAVE_GLPK = @HAVE_GLPK@
+HAVE_GRVY = @HAVE_GRVY@
+HAVE_HDF5 = @HAVE_HDF5@
+HAVE_TRILINOS = @HAVE_TRILINOS@
 HDF5_CFLAGS = @HDF5_CFLAGS@
 HDF5_CPPFLAGS = @HDF5_CPPFLAGS@
 HDF5_CXXLIBS = @HDF5_CXXLIBS@
