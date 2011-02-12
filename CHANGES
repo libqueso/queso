@@ -9,7 +9,8 @@ https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.43.0
   * added uqMpiCommClass
   * added uqMapClass
   * added uqDistArrayClass
-  * queso can now be configured and made withough trilinos, hdf5 and glpk
+  * configure options modified to allow for optional use of Trilinos, HDF5 and GLPK; with the change, 
+    the minimum dependencies for QUESO are Boost, GSL, and GRVY
   * improved uqScalarSequenceClass and uqSequenceOfVectorsClass
 
 Version 0.42.1 (02 February 2011)

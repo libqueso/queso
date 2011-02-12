@@ -27,10 +27,8 @@ echo C++ compiler flags............ : $CXXFLAGS
 echo ' '
 echo GSL_LIBS...................... : $GSL_LIBS
 echo GRVY DIR...................... : $GRVY_PREFIX
-echo GLPK DIR...................... : $GLPK_PREFIX
-echo HDF5 DIR...................... : $HDF5_PREFIX
 echo BOOST_DIR..................... : $BOOST_DIR
-echo Boost program options... ..... : $BOOST_PROGRAM_OPTIONS_LDFLAGS $BOOST_PROGRAM_OPTIONS_LIBS
+###echo Boost program options... ..... : $BOOST_PROGRAM_OPTIONS_LDFLAGS $BOOST_PROGRAM_OPTIONS_LIBS
 echo ' '
 echo Install dir................... : $prefix 
 echo Build user.................... : $USER
@@ -41,17 +39,47 @@ echo SVN revision number........... : $BUILD_VERSION
 echo
 echo Optional Features:
 
-if test "$HAVE_TRILINOS" == "no"; then
+# Optional Features Enabled?
+
+if test "$HAVE_GLPK" = "0"; then
+  echo '   'Link with GLPK............. : no
+else
+  echo '   'Link with GLPK............. : yes
+fi
+
+if test "$HAVE_HDF5" = "0"; then
+  echo '   'Link with HDF5............. : no
+else
+  echo '   'Link with HDF5............. : yes
+fi
+
+if test "$HAVE_TRILINOS" == "0"; then
   echo '   'Link with Trilinos......... : no
 else
   echo '   'Link with Trilinos......... : yes
-  echo '   'Trilinos include path...... : $TRILINOS_INCLUDE
 fi
 
 if test "$HAVE_GCOV_TOOLS" = "0"; then
    echo '   'Enable gcov code coverage.. : no
 else
    echo '   'Enable gcov code coverage.. : yes
+fi
+
+# Paths for optional packages which are enabled
+
+echo 
+echo Optional Feature Paths:
+
+if test "$HAVE_HDF5" = "1"; then
+   echo '   'HDF5 DIR................... : $HDF5_PREFIX
+fi
+
+if test "$HAVE_GLPK" = "1"; then
+   echo '   'GLPK DIR................... : $GLPK_PREFIX
+fi
+
+if test "$HAVE_TRILINOS" = "1"; then
+   echo '   'Trilinos DIR............... : $TRILINOS_HOME
 fi
 
 echo 		   

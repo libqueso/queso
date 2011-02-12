@@ -2,16 +2,16 @@
 # Process this file with autoconf to produce a configure script. 
 
 AC_PREREQ(2.61)
-AC_INIT([queso], [0.42.1], [pecos_dev@ices.utexas.edu])
-AM_CONFIG_HEADER(config.h)
+AC_INIT([queso], [0.43.0], [pecos_dev@ices.utexas.edu])
+AM_CONFIG_HEADER(config_queso.h)
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE
 
 # Release versioning
 
 GENERIC_MAJOR_VERSION=0
-GENERIC_MINOR_VERSION=42
-GENERIC_MICRO_VERSION=1
+GENERIC_MINOR_VERSION=43
+GENERIC_MICRO_VERSION=0
 
 # Generating a libtool library
 
@@ -79,45 +79,49 @@ ACX_MPI([CXX="$MPICXX"], [AC_MSG_ERROR([Could not find MPI.])])
 #-------------------------
 
 # Check for Trilinos
-# TODO: Add AM_CONDITIONAL here to determine whether to build trilinos versions of libs
+###AX_TRILINOS_BASE(8.0.7,,AC_MSG_ERROR([Could not find required Trilinos version.]))
 
-AX_TRILINOS_BASE(8.0.7,,AC_MSG_ERROR([Could not find required Trilinos version.]))
-# AX_TRILINOS_TEUCHOS
-AX_TRILINOS_EPETRA(AC_DEFINE(HAVE_LIBEPETRA,1,[Define if Epetra is available]),AC_MSG_ERROR([Could not find Epetra.]))
+AX_TRILINOS_BASE(8.0.7,[HAVE_TRILINOS=1],[HAVE_TRILINOS=0])
+if test "$HAVE_TRILINOS" = "1" ;then
+   AX_TRILINOS_EPETRA([HAVE_TRILINOS=1],[HAVE_TRILINOS=0])
+fi
+
+echo HAVE_TRILINOS=$HAVE_TRILINOS
+AC_SUBST(HAVE_TRILINOS)
+
+##AX_TRILINOS_EPETRA(AC_DEFINE(HAVE_LIBEPETRA,1,[Define if Epetra is available]),AC_MSG_ERROR([Could not find Epetra.]))
 AC_CACHE_SAVE
 
-# Check for GSL
+# Check for GSL (required)
 
 AC_LANG([C])
 AX_PATH_GSL(1.10,AM_CONDITIONAL([UQBT_GSL], [test 'TRUE']),AC_MSG_ERROR([Could not find required GSL version.]))
 AC_CACHE_SAVE
 
-# Check for boost
+# Check for boost (required)
 
 AC_LANG([C++])
 BOOST_REQUIRE([1.35])
 BOOST_PROGRAM_OPTIONS
 AC_CACHE_SAVE
 
+# Check for GLPK (optional)
+
+AX_PATH_GLPK([4.35],[no])
+
+# Check for HDF5 (optional)
+
+AX_PATH_HDF5_NEW([1.8.0],[no])
+
 # Check for ANN
-AX_PATH_ANN
-# TODO: Make sure that the ANN uses L-infinity (Max) norm
+#### AX_PATH_ANN  - commenting out for 0.43.0 release
+#### TODO: Make sure that the ANN uses L-infinity (Max) norm
 
-# Check for GNU Linear Programming kit
+# Check for libGRVY (required)
 
-AX_PATH_GLPK(4.35,,AC_MSG_ERROR([Could not find required GLPK error]))
-
-# Check for HDF5 library
-
-AX_PATH_HDF5(1.8.0,,AC_MSG_ERROR([Could not find required HDF5 error]))
-
-# libGRVY Config
-
-AX_PATH_GRVY
+AX_PATH_GRVY_NEW([0.29],[yes])
 
 AC_CACHE_SAVE
-
-#PKG_CHECK_MODULES(grvy, grvy >= 0.24)
 
 #----------------
 # Doxygen support
