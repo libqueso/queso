@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <config_queso.h>
+//#include <config_queso.h>
 #ifdef HAVE_ANN
 
 #ifndef __UQ_INFO_THEORY_H__
