@@ -489,6 +489,24 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
           //}
         }
 
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+          *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                  << ", level "                                  << m_currLevel+LEVEL_REF_ID
+                                  << ", step "                                   << m_currStep
+                                  << ": nowAttempt = "                           << nowAttempt
+                                  << ", prevExponent = "                         << prevExponent
+                                  << ", exponents[0] = "                         << exponents[0]
+                                  << ", nowExponent = "                          << nowExponent
+                                  << ", exponents[1] = "                         << exponents[1]
+                                  << ", subWeightRatioSum = "                    << subWeightRatioSum
+                                  << ", unifiedWeightRatioSum = "                << unifiedWeightRatioSum
+                                  << ", unifiedOmegaLnMax = "                    << unifiedOmegaLnMax
+                                  << ", weightSequence.unifiedSequenceSize() = " << weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)
+                                  << ", nowUnifiedEvidenceLnFactor = "           << nowUnifiedEvidenceLnFactor
+                                  << ", effectiveSampleSize = "                  << effectiveSampleSize
+                                  << std::endl;
+        }
+
 #if 0 // For debug only
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
