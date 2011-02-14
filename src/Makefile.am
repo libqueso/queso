@@ -126,6 +126,7 @@ libqueso_la_SOURCES += \
 # Headers to install from core/inc
 
 libqueso_include_HEADERS = \
+	$(top_srcdir)/config_queso.h \
 	$(top_srcdir)/src/core/inc/uqDefines.h \
 	$(top_srcdir)/src/core/inc/uqEnvironment.h \
 	$(top_srcdir)/src/core/inc/uqEnvironmentOptions.h \
