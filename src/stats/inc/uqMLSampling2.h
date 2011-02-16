@@ -1127,7 +1127,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
 
         nowCovMatrix *= nowEta;
 
-        // prudenci 2010/12/09: logic 'originalSubNumSamples += 1' added because of the difference of results between GNU and INTEL compiled codes
+        // prudencio 2010-12-09: logic 'originalSubNumSamples += 1' added because of the difference of results between GNU and INTEL compiled codes
         double       doubSubNumSamples     = (1.-meanRejectionRate)/meanRejectionRate/currOptions->m_covRejectionRate/currOptions->m_covRejectionRate; // e.g. 19.99...; or 20.0; or 20.1; or 20.9
         unsigned int originalSubNumSamples = 1 + (unsigned int) (doubSubNumSamples); // e.g. 20; or 21; or 21; or 21
         double       auxDouble             = (double) originalSubNumSamples; // e.g. 20.0; or 21.0; or 21.0; or 21.0

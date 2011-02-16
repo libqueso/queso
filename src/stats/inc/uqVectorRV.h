@@ -37,7 +37,6 @@
 #include <uqSequenceOfVectors.h>
 #include <uqInfoTheory.h>
 #include <gsl/gsl_sf_psi.h>
-#include <config_queso.h>
 
 //*****************************************************
 // Base class
@@ -59,14 +58,14 @@ public:
 
   virtual void                            print     (std::ostream& os) const = 0;
 
-#ifdef HAVE_ANN
+#ifdef QUESO_HAS_ANN
   virtual double                          estimateENT_ANN() const;
   /*
   virtual double                          estimateENT_ANN( unsigned int k, double eps ) const;
   virtual double                          estimateENTSubset_ANN( const unsigned int dimSel[] ) const;
   virtual double                          estimateENTSubset_ANN( const unsigned int dimSel[], unsigned int k, double eps ) const;
   */
-#endif // HAVE_ANN
+#endif // QUESO_HAS_ANN
 
 protected:
   const   uqBaseEnvironmentClass&         m_env;
@@ -198,7 +197,7 @@ std::ostream& operator<<(std::ostream& os, const uqBaseVectorRVClass<V,M>& obj)
   return os;
 }
 
-#ifdef HAVE_ANN
+#ifdef QUESO_HAS_ANN
 template <class V, class M>
 double 
 uqBaseVectorRVClass<V,M>::estimateENT_ANN() const
@@ -259,7 +258,7 @@ uqBaseVectorRVClass<V,M>::estimateENT_ANN() const
 
   return ENT_est;
 }
-#endif // HAVE_ANN
+#endif // QUESO_HAS_ANN
 
 //*****************************************************
 // Generic class

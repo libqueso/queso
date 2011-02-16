@@ -45,7 +45,10 @@
 #define QUESO_HAS_TRILINOS
 #endif
 
-#undef  QUESO_HAS_ANN
+#ifdef HAVE_ANN
+#define QUESO_HAS_ANN
+#endif
+
 #define QUESO_HAS_MPI
 
 #ifdef QUESO_HAS_TRILINOS

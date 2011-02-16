@@ -26,11 +26,9 @@
 //
 //--------------------------------------------------------------------------
 
-#include <config_queso.h>
-#ifdef HAVE_ANN
-
 #include <uqInfoTheory.h>
 
+#ifdef QUESO_HAS_ANN
 //*****************************************************
 // Function: distANN_XY
 //*****************************************************
@@ -64,5 +62,4 @@ void distANN_XY( const ANNpointArray dataX, const ANNpointArray dataY,
 
   return;
 }
-
-#endif // HAVE_ANN
+#endif // QUESO_HAS_ANN

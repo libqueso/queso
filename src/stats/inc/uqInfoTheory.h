@@ -26,11 +26,11 @@
 //
 //--------------------------------------------------------------------------
 
-//#include <config_queso.h>
-#ifdef HAVE_ANN
-
 #ifndef __UQ_INFO_THEORY_H__
 #define __UQ_INFO_THEORY_H__
+
+#include <uqDefines.h>
+#ifdef QUESO_HAS_ANN
 
 #include <ANN/ANN.h>
 #include <ANN/ANNx.h>
@@ -46,6 +46,6 @@ void distANN_XY( const ANNpointArray dataX, const ANNpointArray dataY,
 		 unsigned int xN, unsigned int yN, 
 		 unsigned int k, double eps );
 
-#endif // HAVE_ANN
+#endif // QUESO_HAS_ANN
 
 #endif // __UQ_INFO_THEORY_H__
