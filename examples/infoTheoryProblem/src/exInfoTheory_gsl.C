@@ -38,12 +38,11 @@
 
 #include <exInfoTheory_appl.h>
 #include <uqGslMatrix.h>
-#include <config_queso.h>
 
 int main(int argc, char* argv[])
 {
 
-#ifdef HAVE_ANN
+#ifdef QUESO_HAS_ANN
 
   //************************************************
   // Initialize environment
@@ -74,11 +73,11 @@ int main(int argc, char* argv[])
   return 0;
 
 
-#else // HAVE_ANN
+#else // QUESO_HAS_ANN
 
   std::cout << "Error: the ANN has not been enabled. Please recompile with --enable-infotheory" << std::endl;
   exit(1);
 
-#endif // HAVE_ANN
+#endif // QUESO_HAS_ANN
 
 }

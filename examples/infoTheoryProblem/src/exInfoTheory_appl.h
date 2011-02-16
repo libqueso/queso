@@ -30,11 +30,11 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-//#include <config_queso.h>
-#ifdef HAVE_ANN
-
 #ifndef __EX_INFO_THEORY_APPL_H__
 #define __EX_INFO_THEORY_APPL_H__
+
+#include <uqDefines.h>
+#ifdef QUESO_HAS_ANN
 
 #include <uqStatisticalForwardProblem.h>
 //#include <exInfoTheory_qoi.h>
@@ -101,6 +101,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   return;
 }
-#endif // __EX_INFO_THEORY_APPL_H__
+#endif // QUESO_HAS_ANN
 
-#endif // HAVE_ANN
+#endif // __EX_INFO_THEORY_APPL_H__
