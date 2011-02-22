@@ -3,8 +3,8 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
-Version 0.43.0 (22 February 2011)
-https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.43.0
+Version 0.44.0 (22 February 2011)
+https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.44.0
 
   * added uqMpiCommClass
   * added uqMapClass
@@ -12,6 +12,11 @@ https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.43.0
   * configure options modified to allow for optional use of Trilinos, HDF5 and GLPK; 
     with the change, the minimum dependencies for QUESO are Boost, GSL, and GRVY
   * improved uqScalarSequenceClass and uqSequenceOfVectorsClass
+
+Version 0.43.0 (24 January 2011)
+https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.43.0
+
+  * release for Sandia/CSRI
 
 Version 0.42.1 (02 February 2011)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.42.1
