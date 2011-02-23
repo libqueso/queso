@@ -140,7 +140,7 @@ uqDistArrayClass<T>::copy(const uqDistArrayClass<T>& src)
 #ifdef QUESO_HAS_TRILINOS
   delete m_epetraDistArray;
 #else
-  for (unsigned int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
+  for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
     m_elements[i].clear();
   }
   m_elements.clear();
@@ -152,7 +152,7 @@ uqDistArrayClass<T>::copy(const uqDistArrayClass<T>& src)
 #else
   m_rowSize = src.m_rowSize;
   m_elements.resize(m_uqMap.NumGlobalElements());
-  for (unsigned int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
+  for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
     m_elements[i].resize(m_rowSize);
     m_elements[i] = src.m_elements[i];
   }
