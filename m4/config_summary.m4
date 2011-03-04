@@ -65,6 +65,12 @@ else
    echo '   'Enable gcov code coverage.. : yes
 fi
 
+if test "$HAVE_ANN" == "0"; then
+   echo '   'Build internal ANN library. : no
+else
+   echo '   'Build internal ANN library. : yes
+fi
+
 # Paths for optional packages which are enabled
 
 echo 
