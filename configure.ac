@@ -114,9 +114,12 @@ AX_PATH_GLPK([4.35],[no])
 
 AX_PATH_HDF5_NEW([1.8.0],[no])
 
-# Check for ANN
-#### AX_PATH_ANN  - commenting out for 0.43.0 release
+# Check for ANN (external library)
+# AX_PATH_ANN 
 #### TODO: Make sure that the ANN uses L-infinity (Max) norm
+
+# Check for ANN feature
+AX_ENABLE_ANN
 
 # Check for libGRVY (required)
 
@@ -154,6 +157,9 @@ AX_SUMMARIZE_ENV
 AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
+	src/contrib/ANN/Makefile
+	src/contrib/ANN/lib/Makefile
+	src/contrib/ANN/test/Makefile
 	src/core/inc/queso.h
 	examples/Makefile
 	examples/infoTheoryProblem/Makefile

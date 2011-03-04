@@ -37,9 +37,13 @@
 #ifdef QUESO_HAS_ANN
 
 #include <uqStatisticalForwardProblem.h>
+#include <uqInfoTheory.h>
+#include <gsl/gsl_linalg.h>
 //#include <exInfoTheory_qoi.h>
 
 static const double Pi = 3.1415926535897932;
+
+#define length(a) ( sizeof ( a ) / sizeof ( *a ) )
 
 //********************************************************
 // The driving routine: called by main()
@@ -53,6 +57,10 @@ uqAppl(const uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
+
+  /*********************************************
+   * Entropy example
+   *********************************************/
   if (env.fullRank() == 0) {
     std::cout << "-----------------------------------------------" << std::endl;
     std::cout << "EX01: Estimate the entropy of a xD Gaussian RV" << std::endl;
@@ -99,8 +107,126 @@ uqAppl(const uqBaseEnvironmentClass& env)
   
   std::cout << "-----------------------------------------------" << std::endl;
 
+  /*********************************************
+   * Kullback-Leibler example
+   *********************************************/
+  if (env.fullRank() == 0) {
+    std::cout << "-----------------------------------------------" << std::endl;
+    std::cout << "EX02: Estimate the Kullback-Leibler divergence" << std::endl;
+    std::cout << "between two Gaussian RV" << std::endl;
+    std::cout << "-----------------------------------------------" << std::endl;
+    std::cout << "No.Smp. \t Analytical \t Estimated \t Abs.Diff." << std::endl;
+  }
+
+  // parameters
+  unsigned int allN[] = {1000, 10000, 50000, 100000, 150000, 200000,
+			 250000, 300000, 500000, 900000};
+  unsigned int k = 1;
+  double eps = UQ_INFTH_ANN_EPS;
+
+  uqVectorSpaceClass<P_V,P_M> paramSpace(env, "param_", 1, NULL);
+
+  // means
+  double muX = 2.0;
+  P_V meanVectorX( paramSpace.zeroVector() );
+  meanVectorX[ 0 ] = muX;
+  double muY = 3.0;
+  P_V meanVectorY( paramSpace.zeroVector() );
+  meanVectorY[ 0 ] = muY;
+
+  // covariance matrix
+  double varX = pow( 0.1, 2.0 );
+  P_M* covMatrixX = paramSpace.newMatrix();
+  (*covMatrixX)(0,0) = varX;
+  double varY = pow( 0.2, 2.0 );
+  P_M* covMatrixY = paramSpace.newMatrix();
+  (*covMatrixY)(0,0) = varY;
+
+  // create Gaussian RV
+  uqGaussianVectorRVClass<P_V,P_M> xRV( "xRV_", paramSpace, meanVectorX, *covMatrixX );
+  uqGaussianVectorRVClass<P_V,P_M> yRV( "yRV_", paramSpace, meanVectorY, *covMatrixY );
+
+  double exact_kl = 0.5 * ( log(varY/varX) + varX/varY + pow(muY-muX,2.0)/varY - 1.0 );
+  
+  unsigned int xDimSel[1] = { 0 };
+  unsigned int yDimSel[1] = { 0 }; 
+
+  for( unsigned int indN = 0; indN < length(allN); ++indN )
+    {
+      unsigned int xN = allN[ indN ]; 
+      unsigned int yN = allN[ indN ];
+      double est_kl = estimateKL_ANN( xRV, yRV, xDimSel, 1, yDimSel, 1, xN, yN, k, eps );
+
+      if (env.fullRank() == 0) {
+	std::cout << xN << " \t\t " << exact_kl << " \t " << est_kl << 
+	  " \t " << fabs( exact_kl - est_kl )  << std::endl;
+      }
+    }
+
+  std::cout << "-----------------------------------------------" << std::endl;
+
+  /*********************************************
+   * Mutual information example
+   *********************************************/
+  if (env.fullRank() == 0) {
+    std::cout << "-----------------------------------------------" << std::endl;
+    std::cout << "EX03: Estimate the Mutual information" << std::endl;
+    std::cout << "between two Gaussian RV" << std::endl;
+    std::cout << "-----------------------------------------------" << std::endl;
+    std::cout << "No.Smp. \t Analytical \t Estimated \t Abs.Diff." << std::endl;
+
+  }
+
+  unsigned int allN_MI[] = {1000, 10000, 50000, 100000};
+  k = UQ_INFTH_ANN_KNN;
+  eps = UQ_INFTH_ANN_EPS;
+
+  unsigned int dim = 2;
+  uqVectorSpaceClass<P_V,P_M> paramSpace_MI(env, "param_", dim, NULL);
+
+  // means
+  P_V meanVector( paramSpace_MI.zeroVector() );
+  meanVector[ 0 ] = 2.0;
+  meanVector[ 1 ] = 4.0;
+
+  // covariance matrix
+  double rho = 0.8;
+  double std1 = 1.0;
+  double std2 = 1.0;
+  P_M* covMatrix = paramSpace_MI.newMatrix();
+  (*covMatrix)(0,0) = std1*std1; (*covMatrix)(0,1) = rho*std1*std2;
+  (*covMatrix)(1,0) = rho*std1*std2; (*covMatrix)(1,1) = std2*std2;
+
+  // create a Gaussian RV
+  uqGaussianVectorRVClass<P_V,P_M> gaussRV( "gaussRV_", paramSpace_MI, meanVector, *covMatrix );
+
+  // get the determinant of the matrix
+  int signum;
+  gsl_permutation* p = gsl_permutation_alloc( dim );
+  gsl_matrix* mat = covMatrix->data();
+  gsl_linalg_LU_decomp ( mat, p, &signum );
+  double matDet = gsl_linalg_LU_det( mat, signum );
+
+  double exact_mutinfo = - 0.5 * log( matDet );
+
+  unsigned int xDimSel_MI[1] = { 0 };
+  unsigned int yDimSel_MI[1] = { 1 }; 
+
+  for( unsigned int indN = 0; indN < length(allN_MI); ++indN )
+    {
+      unsigned int N = allN_MI[ indN ]; 
+      double est_mutinfo = estimateMI_ANN( gaussRV, xDimSel_MI, 1, yDimSel_MI, 1, k, N, eps );
+
+      if (env.fullRank() == 0) {
+	std::cout << N << " \t\t " << exact_mutinfo << " \t " << est_mutinfo << 
+	  " \t " << fabs( exact_mutinfo - est_mutinfo )  << std::endl;
+      }
+    }
+
+
   return;
 }
+
 #endif // QUESO_HAS_ANN
 
 #endif // __EX_INFO_THEORY_APPL_H__

@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
 
 #else // QUESO_HAS_ANN
 
-  std::cout << "Error: the ANN has not been enabled. Please recompile with --enable-infotheory" << std::endl;
+  std::cout << "Error: the ANN has not been enabled. Please recompile with --enable-ann=yes" << std::endl;
   exit(1);
 
 #endif // QUESO_HAS_ANN

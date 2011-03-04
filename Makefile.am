@@ -8,7 +8,12 @@ AUTOMAKE_OPTIONS = foreign
 
 # Build in these directories:
 
-SUBDIRS = src \
+if HAVE_ANN
+EXTRA_SUBDIRS = src/contrib/ANN
+endif
+
+SUBDIRS = $(EXTRA_SUBDIRS) \
+	src \
 	examples \
         test/gsl_tests \
         test \
@@ -64,6 +69,9 @@ MAINTAINERCLEANFILES =     \
 	config.h.in	       \
 	Makefile.in            \
 	src/Makefile.in       \
+	src/contrib/ANN/Makefile.in \
+	src/contrib/ANN/lib/Makefile.in \
+	src/contrib/ANN/test/Makefile.in \
 	src/core/Makefile.in \
 	src/core/src/Makefile.in \
 	src/core/inc/Makefile.in \

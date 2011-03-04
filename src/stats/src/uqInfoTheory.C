@@ -29,6 +29,7 @@
 #include <uqInfoTheory.h>
 
 #ifdef QUESO_HAS_ANN
+
 //*****************************************************
 // Function: distANN_XY
 //*****************************************************
@@ -62,4 +63,68 @@ void distANN_XY( const ANNpointArray dataX, const ANNpointArray dataY,
 
   return;
 }
+
+//*****************************************************
+// Function: normalizeData
+//*****************************************************
+void normalizeANN_XY( ANNpointArray dataXY, unsigned int dimXY,
+		      ANNpointArray dataX, unsigned int dimX,
+		      ANNpointArray dataY, unsigned int dimY,
+		      unsigned int N ) 
+{
+
+  ANNpoint meanXY, stdXY;
+
+  meanXY = annAllocPt(dimXY); // is init with 0
+  stdXY = annAllocPt(dimXY); // is init with 0
+
+  // get mean
+  for( unsigned int i = 0; i < N; i++ ) {
+    for( unsigned int j = 0; j < dimX; j++ ) {
+      meanXY[ j ] += dataXY[ i ][ j ];
+    }
+    for( unsigned int j = 0; j < dimY; j++ ) {
+      meanXY[ dimX + j ] += dataXY[ i ][ dimX + j ];
+    }
+  }
+  for( unsigned int j = 0; j < dimXY; j++ ) {
+    meanXY[ j ] = meanXY[ j ] / (double)N;
+  }
+
+  // get standard deviation
+  for( unsigned int i = 0; i < N; i++ ) {
+    for( unsigned int j = 0; j < dimXY; j++ ) {
+      stdXY[ j ] += pow( dataXY[ i ][ j ] - meanXY[ j ], 2.0 );
+    }
+  }
+  for( unsigned int j = 0; j < dimXY; j++ ) {
+    stdXY[ j ] = sqrt( stdXY[ j ] / ((double)N-1.0) );
+  }
+
+  /*
+  std::cout << "Mean RV - ";
+  annPrintPt( meanXY, dimXY, std::cout );
+  std::cout << std::endl << "Std RV - ";
+  annPrintPt( stdXY, dimXY, std::cout );
+  std::cout << std::endl;
+  */
+
+  // get normalized points and populate marginals
+  for( unsigned int i = 0; i < N; i++ ) {
+    // normalize joint
+    for( unsigned int j = 0; j < dimXY; j++ ) {
+      dataXY[ i ][ j ] = ( dataXY[ i ][ j ] - meanXY[ j ] ) / stdXY[ j ];
+    }
+
+    // populate marginals
+    for( unsigned int j = 0; j < dimX; j++ ) {
+      dataX[ i ][ j ] = dataXY[ i ][ j ];
+    }
+    for( unsigned int j = 0; j < dimY; j++ ) {
+      dataY[ i ][ j ] = dataXY[ i ][ dimX + j ];
+    }
+  }
+
+}
+
 #endif // QUESO_HAS_ANN
