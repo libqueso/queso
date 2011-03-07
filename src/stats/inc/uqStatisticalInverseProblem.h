@@ -121,6 +121,13 @@ public:
 
         void                             print                           (std::ostream& os) const;
 
+	// added by Gabriel ----
+	double                           getLogEvidence() const;
+	double                           getEvidence() const;
+	double                           getExpLogData() const;
+	double                           getInfoGain() const;
+	// end ----
+
 private:
   const uqBaseEnvironmentClass&                 m_env;
 
@@ -144,6 +151,14 @@ private:
 
         uqSipOptionsValuesClass                  m_alternativeOptionsValues;
         uqStatisticalInverseProblemOptionsClass* m_optionsObj;
+
+	// added by Gabriel ----
+	double                                   m_logEvidence;
+	double                                   m_expLogData;
+	double                                   m_infoGain;
+	uqScalarSequenceClass<double>*           m_logLikelihoodValues;
+	// end ----
+
 };
 
 template<class P_V,class P_M>
@@ -187,7 +202,11 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_mlSampler               (NULL),
   m_chain                   (NULL),
   m_alternativeOptionsValues(),
-  m_optionsObj              (NULL)
+  m_optionsObj              (NULL),
+  m_logEvidence             (0),
+  m_expLogData              (0),
+  m_infoGain                (0),
+  m_logLikelihoodValues     (NULL)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering uqSipClass" << std::endl;
@@ -239,6 +258,12 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
     m_chain->clear();
     delete m_chain;
   }
+  // added by Gabriel ----
+  if (m_logLikelihoodValues) {
+    m_logLikelihoodValues->clear();
+    delete m_logLikelihoodValues;
+  }
+  // end ----
   if (m_mlSampler       ) delete m_mlSampler;
   if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
@@ -462,7 +487,11 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
   //                                           initialValues,
   //                                           initialProposalCovMatrix);
 
-  m_mlSampler->generateSequence(*m_chain,NULL,NULL);
+  // added by Gabriel ----
+  //  m_mlSampler->generateSequence(*m_chain,NULL,NULL);
+  m_logLikelihoodValues = new uqScalarSequenceClass<double>(m_env, 0, m_optionsObj->m_prefix+"loglikelihood");
+  m_mlSampler->generateSequence(*m_chain, m_logLikelihoodValues, NULL);
+  // end ----
 
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                                     *m_chain);
@@ -475,6 +504,12 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
 
   m_env.fullComm().syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()",1,3000000);
   m_env.fullComm().Barrier();
+
+  // added by Gabriel ----
+  m_logEvidence = m_mlSampler->getLogEvidence();
+  m_expLogData = m_logLikelihoodValues->subMean( 0, m_logLikelihoodValues->unifiedSequenceSize( true ) );
+  m_infoGain = m_expLogData - m_logEvidence;
+  // end ----
 
   return;
 }
@@ -507,4 +542,31 @@ std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemClas
 
   return os;
 }
+
+// added by Gabriel ----
+template <class P_V,class P_M>
+double uqStatisticalInverseProblemClass<P_V,P_M>::getLogEvidence() const
+{
+  return m_logEvidence;
+}
+
+template <class P_V,class P_M>
+double uqStatisticalInverseProblemClass<P_V,P_M>::getEvidence() const
+{
+  return std::exp( m_logEvidence );
+}
+
+template <class P_V,class P_M>
+double uqStatisticalInverseProblemClass<P_V,P_M>::getExpLogData() const
+{
+  return m_expLogData;
+}
+
+template <class P_V,class P_M>
+double uqStatisticalInverseProblemClass<P_V,P_M>::getInfoGain() const
+{
+  return m_infoGain;
+}
+// end ----
+
 #endif // __UQ_SIP_H__

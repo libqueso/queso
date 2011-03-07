@@ -161,6 +161,10 @@ public:
 
   void   print           (std::ostream& os) const;
 
+  // added by Gabriel ----
+  double getLogEvidence() const;
+  // end ----
+
 private:
   // Methods available at uqMLSampling2.h
   void   restartML                     (uqMLStateStruct<P_V,P_M>&                       restartPrevState,                   // output
@@ -955,4 +959,20 @@ std::ostream& operator<<(std::ostream& os, const uqMLSamplingClass<P_V,P_M>& obj
 
   return os;
 }
+
+// added by Gabriel ----
+template <class P_V,class P_M>
+double uqMLSamplingClass<P_V,P_M>::getLogEvidence() const
+{
+
+    double logEvidence = 0.0;
+    for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
+      logEvidence += m_logEvidenceFactors[i];
+    }
+
+    return logEvidence;
+
+}
+// end ----
+
 #endif // __UQ_MULTI_LEVEL_SAMPLING1_H__
