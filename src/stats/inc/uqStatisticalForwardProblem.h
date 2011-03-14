@@ -110,6 +110,8 @@ public:
 
         void                             print              (std::ostream& os) const;
 
+  const uqBaseVectorSequenceClass<Q_V,Q_M>& getParamChain   () const;
+
 private:
         void                             commonConstructor  ();
 
@@ -554,4 +556,21 @@ std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemClas
 
   return os;
 }
+
+template <class P_V,class P_M,class Q_V,class Q_M>
+  const uqBaseVectorSequenceClass<Q_V,Q_M>&
+  uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::getParamChain() const
+{
+
+  // Make sure this runs after the forward propagation
+  // only then we obtain the actual realizations of the parameters
+  UQ_FATAL_TEST_MACRO(m_paramChain == NULL,
+                      m_env.worldRank(),
+                      (std::string)("uqStatisticalForwardProblemClass<V,M,V,M>::getParamChain()"),
+                      "m_paramChain is NULL");
+
+  return *m_paramChain;
+ 
+}
+
 #endif // __UQ_SFP_H__
