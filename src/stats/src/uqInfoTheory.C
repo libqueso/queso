@@ -127,4 +127,55 @@ void normalizeANN_XY( ANNpointArray dataXY, unsigned int dimXY,
 
 }
 
+//*****************************************************
+// Function: computeMI_ANN
+//*****************************************************
+double computeMI_ANN( ANNpointArray dataXY,
+		      unsigned int dimX, unsigned int dimY,
+		      unsigned int k, unsigned int N, double eps )
+{
+
+  ANNpointArray dataX, dataY;
+  double* distsXY;
+  double MI_est;
+  ANNkd_tree* kdTreeX;
+  ANNkd_tree* kdTreeY;
+  
+  unsigned int dimXY = dimX + dimY;
+
+  // Allocate memory
+  dataX = annAllocPts(N,dimX);
+  dataY = annAllocPts(N,dimY);
+  distsXY = new double[N];
+
+  // Normalize data and populate the marginals dataX, dataY
+  normalizeANN_XY( dataXY, dimXY, dataX, dimX, dataY, dimY, N);
+
+  // Get distance to knn for each point
+  kdTreeX = new ANNkd_tree( dataX, N, dimX );
+  kdTreeY = new ANNkd_tree( dataY, N, dimY );
+  distANN_XY( dataXY, dataXY, distsXY, dimXY, dimXY, N, N, k, eps );
+
+  // Compute mutual information
+  double marginal_contrib = 0.0;
+  for( unsigned int i = 0; i < N; i++ ) {
+    // get the number of points within a specified radius
+    int no_pts_X = kdTreeX->annkFRSearch( dataX[ i ], distsXY[ i ], 0, NULL, NULL, eps);
+    int no_pts_Y = kdTreeY->annkFRSearch( dataY[ i ], distsXY[ i ], 0, NULL, NULL, eps);
+    // digamma evaluations
+    marginal_contrib += gsl_sf_psi_int( no_pts_X+1 ) + gsl_sf_psi_int( no_pts_Y+1 );
+  }
+  MI_est = gsl_sf_psi_int( k ) + gsl_sf_psi_int( N ) - marginal_contrib / (double)N;
+
+  // Deallocate memory
+  delete kdTreeX;
+  delete kdTreeY;
+  delete [] distsXY;
+  annDeallocPts( dataX );  
+  annDeallocPts( dataY );
+
+  return MI_est;
+
+}
+
 #endif // QUESO_HAS_ANN

@@ -52,8 +52,12 @@ void normalizeANN_XY( ANNpointArray dataXY, unsigned int dimXY,
 		      ANNpointArray dataY, unsigned int dimY,
 		      unsigned int N );
 
+double computeMI_ANN( ANNpointArray dataXY,
+		      unsigned int dimX, unsigned int dimY,
+		      unsigned int k, unsigned int N, double eps );
+
 //*****************************************************
-// Function: estimateMI_ANN
+// Function: estimateMI_ANN (using a joint)
 //*****************************************************
 template<template <class P_V, class P_M> class RV, class P_V, class P_M>
 double estimateMI_ANN( const RV<P_V,P_M>& jointRV, 
@@ -62,19 +66,12 @@ double estimateMI_ANN( const RV<P_V,P_M>& jointRV,
 		       unsigned int k, unsigned int N, double eps )
 {
   ANNpointArray dataXY;
-  ANNpointArray dataX, dataY;
-  double* distsXY;
   double MI_est;
-  ANNkd_tree* kdTreeX;
-  ANNkd_tree* kdTreeY;
 
   unsigned int dimXY = dimX + dimY;
 
   // Allocate memory
   dataXY = annAllocPts(N,dimXY);
-  dataX = annAllocPts(N,dimX);
-  dataY = annAllocPts(N,dimY);
-  distsXY = new double[N];
 
   // Copy samples in ANN data structure
   P_V smpRV( jointRV.imageSet().vectorSpace().zeroVector() );
@@ -92,31 +89,63 @@ double estimateMI_ANN( const RV<P_V,P_M>& jointRV,
     // annPrintPt( dataXY[i], dimXY, std::cout ); std::cout << std::endl;
   }
 
-  // Normalize data and populate the marginals dataX, dataY
-  normalizeANN_XY( dataXY, dimXY, dataX, dimX, dataY, dimY, N);
-
-  // Get distance to knn for each point
-  kdTreeX = new ANNkd_tree( dataX, N, dimX );
-  kdTreeY = new ANNkd_tree( dataY, N, dimY );
-  distANN_XY( dataXY, dataXY, distsXY, dimXY, dimXY, N, N, k, eps );
-
-  // Compute mutual information
-  double marginal_contrib = 0.0;
-  for( unsigned int i = 0; i < N; i++ ) {
-    // get the number of points within a specified radius
-    int no_pts_X = kdTreeX->annkFRSearch( dataX[ i ], distsXY[ i ], 0, NULL, NULL, eps);
-    int no_pts_Y = kdTreeY->annkFRSearch( dataY[ i ], distsXY[ i ], 0, NULL, NULL, eps);
-    // digamma evaluations
-    marginal_contrib += gsl_sf_psi_int( no_pts_X+1 ) + gsl_sf_psi_int( no_pts_Y+1 );
-  }
-  MI_est = gsl_sf_psi_int( k ) + gsl_sf_psi_int( N ) - marginal_contrib / (double)N;
+  MI_est = computeMI_ANN( dataXY,
+			  dimX, dimY,
+			  k, N, eps );
 
   // Deallocate memory
-  delete kdTreeX;
-  delete kdTreeY;
-  delete [] distsXY;
-  annDeallocPts( dataX );  
-  annDeallocPts( dataY );
+  annDeallocPts( dataXY );
+
+  return MI_est;
+}
+
+//*****************************************************
+// Function: estimateMI_ANN (using two seperate RVs)
+//*****************************************************
+template<class P_V, class P_M,
+  template <class P_V, class P_M> class RV_1,
+  template <class P_V, class P_M> class RV_2>
+double estimateMI_ANN( const RV_1<P_V,P_M>& xRV, 
+		       const RV_2<P_V,P_M>& yRV, 
+		       const unsigned int xDimSel[], unsigned int dimX,
+		       const unsigned int yDimSel[], unsigned int dimY,
+		       unsigned int k, unsigned int N, double eps )
+{
+  ANNpointArray dataXY;
+  double MI_est;
+
+  unsigned int dimXY = dimX + dimY;
+
+  // Allocate memory
+  dataXY = annAllocPts(N,dimXY);
+
+  // Copy samples in ANN data structure
+  P_V smpRV_x( xRV.imageSet().vectorSpace().zeroVector() );
+  P_V smpRV_y( yRV.imageSet().vectorSpace().zeroVector() );
+
+  for( unsigned int i = 0; i < N; i++ ) {
+    // get a sample from the distribution
+    xRV.realizer().realization( smpRV_x );
+    yRV.realizer().realization( smpRV_y );
+
+    // copy the vector values in the ANN data structure
+    for( unsigned int j = 0; j < dimX; j++ ) {
+      dataXY[ i ][ j ] = smpRV_x[ xDimSel[j] ];
+    }
+    for( unsigned int j = 0; j < dimY; j++ ) {
+      dataXY[ i ][ dimX + j ] = smpRV_y[ yDimSel[j] ];
+    }
+    // annPrintPt( dataXY[i], dimXY, std::cout ); std::cout << std::endl;
+  }
+
+  std::cout << "N1=" << xRV.realizer().subPeriod() << std::endl;
+  std::cout << "N2=" << yRV.realizer().subPeriod() << std::endl;
+
+  MI_est = computeMI_ANN( dataXY,
+			  dimX, dimY,
+			  k, N, eps );
+
+  // Deallocate memory
   annDeallocPts( dataXY );
 
   return MI_est;
@@ -205,6 +234,101 @@ double estimateKL_ANN( RV_1<P_V,P_M>& xRV,
 
   return KL_est;
 }
+
+
+//*****************************************************
+// Function: estimateKL_ANN (xRV - common, yRV1, yRV2)
+//*****************************************************
+template <class P_V, class P_M, 
+  template <class P_V, class P_M> class RV_1,
+  template <class P_V, class P_M> class RV_2,
+  template <class P_V, class P_M> class RV_3>
+double estimateKL_ANN( RV_1<P_V,P_M>& xRV, 
+		       RV_2<P_V,P_M>& yRV1,
+		       RV_3<P_V,P_M>& yRV2,
+		       unsigned int xDimSel[], unsigned int dimX,
+		       unsigned int yDimSel1[], unsigned int dimY1,
+		       unsigned int yDimSel2[], unsigned int dimY2,
+		       unsigned int N, unsigned int k, double eps )
+{
+  ANNpointArray dataX;
+  ANNpointArray dataY;
+  double* distsX;
+  double* distsXY;
+  double KL_est;
+
+  // sanity check
+  if( dimY1 != dimY2 ) {
+    std::cout << "Error-KL: the dimensions should agree" << std::endl;
+    std::exit(1);
+  }
+
+  // FIXME: here we have to make sure that  
+  // the return value is a finite number
+  // unsigned int xN = xRV->realizer().subPeriod();
+  // unsigned int yN = yRV->realizer().subPeriod();
+
+  unsigned int dimXnew = dimX+dimY1;
+  unsigned int dimYnew = dimX+dimY2;
+
+  // Allocate memory
+  dataX = annAllocPts( N, dimXnew );
+  dataY = annAllocPts( N, dimYnew );
+
+  distsX = new double[N];
+  distsXY = new double[N];
+  
+  // Copy X samples in ANN data structure
+  P_V xSmpRV( xRV.imageSet().vectorSpace().zeroVector() );
+  P_V ySmpRV1( yRV1.imageSet().vectorSpace().zeroVector() );
+  P_V ySmpRV2( yRV2.imageSet().vectorSpace().zeroVector() );
+
+  for( unsigned int i = 0; i < N; i++ ) 
+    {
+      // get a sample from the distribution
+      xRV.realizer().realization( xSmpRV );
+      yRV1.realizer().realization( ySmpRV1 );
+      yRV2.realizer().realization( ySmpRV2 );
+      
+      // copy the vector values in the ANN data structure
+      for( unsigned int j = 0; j < dimX; j++ ) {
+	dataX[ i ][ j ] = xSmpRV[ xDimSel[j] ];
+	dataY[ i ][ j ] = xSmpRV[ xDimSel[j] ];
+      }
+      for( unsigned int j = 0; j < dimY1; j++ ) {
+	dataX[ i ][ dimX + j ] = ySmpRV1[ yDimSel1[j] ];
+      }      
+      for( unsigned int j = 0; j < dimY2; j++ ) {
+	dataY[ i ][ dimX + j ] = ySmpRV2[ yDimSel2[j] ];
+      }
+    }
+
+  // Get distance to knn for each point
+  distANN_XY( dataX, dataX, distsX, dimXnew, dimXnew, N, N, k+1, eps ); // k+1 because the 1st nn is itself
+  distANN_XY( dataX, dataY, distsXY, dimXnew, dimYnew, N, N, k, eps );
+  
+  // Compute KL-divergence estimate
+  double sum_log_ratio = 0.0;
+  for( unsigned int i = 0; i < N; i++ ) {
+
+    // FIXME: check if this can fail by given very large numbers
+    double tmp_log = log( distsXY[i] / distsX[i] );
+    // std::cout << tmp_log << std::endl;
+
+    sum_log_ratio += tmp_log;
+  }
+  KL_est = (double)dimX/(double)N * sum_log_ratio + log( (double)N / ((double)N-1.0 ) );
+
+  // Deallocate memory
+  annDeallocPts( dataX );
+  annDeallocPts( dataY );
+  delete [] distsX;
+  delete [] distsXY;
+
+  return KL_est;
+}
+
+
 
 #endif // QUESO_HAS_ANN
 

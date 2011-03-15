@@ -65,7 +65,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
     std::cout << "-----------------------------------------------" << std::endl;
     std::cout << "EX01: Estimate the entropy of a xD Gaussian RV" << std::endl;
     std::cout << "-----------------------------------------------" << std::endl;
-    std::cout << "Dim \t Analytical \t Estimated \t Abs.Diff." << std::endl;
+    std::cout << "Dim \t Analytical \t Estimated \t Rel.Abs.Err[%]" << std::endl;
   }
 
 
@@ -100,7 +100,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
       if (env.fullRank() == 0) {
 	std::cout << dim << " \t " << exact_entropy << " \t " << est_entropy << 
-	  " \t " << fabs( exact_entropy - est_entropy )  << std::endl;
+	  " \t " << fabs(exact_entropy - est_entropy) / fabs(exact_entropy) * 100.0  << std::endl;
       }
 
     }
@@ -115,7 +115,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
     std::cout << "EX02: Estimate the Kullback-Leibler divergence" << std::endl;
     std::cout << "between two Gaussian RV" << std::endl;
     std::cout << "-----------------------------------------------" << std::endl;
-    std::cout << "No.Smp. \t Analytical \t Estimated \t Abs.Diff." << std::endl;
+    std::cout << "No.Smp. \t Analytical \t Estimated \t Rel.Abs.Err[%]" << std::endl;
   }
 
   // parameters
@@ -135,10 +135,10 @@ uqAppl(const uqBaseEnvironmentClass& env)
   meanVectorY[ 0 ] = muY;
 
   // covariance matrix
-  double varX = pow( 0.1, 2.0 );
+  double varX = pow( 1.0, 2.0 );
   P_M* covMatrixX = paramSpace.newMatrix();
   (*covMatrixX)(0,0) = varX;
-  double varY = pow( 0.2, 2.0 );
+  double varY = pow( 1.0, 2.0 );
   P_M* covMatrixY = paramSpace.newMatrix();
   (*covMatrixY)(0,0) = varY;
 
@@ -159,7 +159,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
       if (env.fullRank() == 0) {
 	std::cout << xN << " \t\t " << exact_kl << " \t " << est_kl << 
-	  " \t " << fabs( exact_kl - est_kl )  << std::endl;
+	  " \t " << fabs(exact_kl - est_kl) / fabs(exact_kl) * 100.0  << std::endl;
       }
     }
 
@@ -173,7 +173,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
     std::cout << "EX03: Estimate the Mutual information" << std::endl;
     std::cout << "between two Gaussian RV" << std::endl;
     std::cout << "-----------------------------------------------" << std::endl;
-    std::cout << "No.Smp. \t Analytical \t Estimated \t Abs.Diff." << std::endl;
+    std::cout << "No.Smp. \t Analytical \t Estimated \t Rel.Abs.Err[%]" << std::endl;
 
   }
 
@@ -218,8 +218,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
       double est_mutinfo = estimateMI_ANN( gaussRV, xDimSel_MI, 1, yDimSel_MI, 1, k, N, eps );
 
       if (env.fullRank() == 0) {
-	std::cout << N << " \t\t " << exact_mutinfo << " \t " << est_mutinfo << 
-	  " \t " << fabs( exact_mutinfo - est_mutinfo )  << std::endl;
+	std::cout << N << " \t\t " << exact_mutinfo << " \t " << est_mutinfo <<  " \t " <<
+	  fabs(exact_mutinfo - est_mutinfo) / fabs(exact_mutinfo) * 100.0 << std::endl;
       }
     }
 
