@@ -505,11 +505,13 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
   m_env.fullComm().syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()",1,3000000);
   m_env.fullComm().Barrier();
 
+#if 0
   // added by Gabriel ----
   m_logEvidence = m_mlSampler->getLogEvidence();
   m_expLogData = m_logLikelihoodValues->subMean( 0, m_logLikelihoodValues->unifiedSequenceSize( true ) );
   m_infoGain = m_expLogData - m_logEvidence;
   // end ----
+#endif
 
   return;
 }
