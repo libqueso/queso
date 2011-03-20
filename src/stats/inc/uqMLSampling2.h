@@ -119,9 +119,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
       unifiedRequestedNumSamples = currOptions.m_rawChainSize;
     }
 
-    currChain.setName              (currOptions.m_prefix + "rawChain");
+    currChain.setName              (currOptions.m_prefix + "rawChain"        );
     currLogLikelihoodValues.setName(currOptions.m_prefix + "rawLogLikelihood");
-    currLogTargetValues.setName    (currOptions.m_prefix + "rawLogTarget");
+    currLogTargetValues.setName    (currOptions.m_prefix + "rawLogTarget"    );
 
     currChain.resizeSequence              (currOptions.m_rawChainSize); // Ok to use rawChainSize
     currLogLikelihoodValues.resizeSequence(currOptions.m_rawChainSize); // Ok to use rawChainSize

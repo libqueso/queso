@@ -155,15 +155,15 @@ public:
  ~uqMLSamplingClass();
 
   /*! Operation to generate the chain */
-  void   generateSequence(uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-                          uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
-                          uqScalarSequenceClass<double>*      workingLogTargetValues);
+  void   generateSequence (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
+                           uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
+                           uqScalarSequenceClass<double>*      workingLogTargetValues);
+  double logEvidence      () const;
+  double meanLogLikelihood() const;
+  double eig              () const;
 
   void   print           (std::ostream& os) const;
 
-  // added by Gabriel ----
-  double getLogEvidence() const;
-  // end ----
 
 private:
   // Methods available at uqMLSampling2.h
@@ -346,6 +346,9 @@ private:
         unsigned int                        m_currStep;
         double                              m_debugExponent;
 	std::vector<double>                 m_logEvidenceFactors;
+        double                              m_logEvidence;
+        double                              m_meanLogLikelihood;
+        double                              m_eig;
 };
 
 template<class P_V,class P_M>
@@ -369,7 +372,10 @@ uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
   m_currLevel         (0),
   m_currStep          (0),
   m_debugExponent     (0.),
-  m_logEvidenceFactors(0)
+  m_logEvidenceFactors(0),
+  m_logEvidence       (0.),
+  m_meanLogLikelihood (0.),
+  m_eig               (0.)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::constructor()"
@@ -522,15 +528,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
     if (restartCurrState.m_exponent < 1.) {
       // Ok
-      //m_vectorSpaceDimension
+    //m_vectorSpaceDimension
       m_currLevel                    = 0;
-      //m_logEvidenceFactors           = 0;
+    //m_logEvidenceFactors           = 0;
       currExponent                   = 0;
       currEta                        = 0;
       currUnifiedRequestedNumSamples = 0;
-      //currChain                      = 0;
-      //currLogLikelihoodValues        = 0;
-      //currLogTargetValues            = 0;
+    //currChain                      = 0;
+    //currLogLikelihoodValues        = 0;
+    //currLogTargetValues            = 0;
     }
     else if (restartCurrState.m_exponent == 1.) {
       UQ_FATAL_TEST_MACRO(true,
@@ -911,23 +917,47 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                       "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                       "exponent has not achieved value '1' even after exiting level loop");
 
+  //***********************************************************
+  // Compute information gain
+  // ln( \pi(D|M) ) = E[ln( \pi(D|\theta,M) )] - E[ln( \pi(\theta|D,M) / \pi(\theta|M) )]
+  //***********************************************************
   if (m_env.inter0Rank() >= 0) { // KAUST
     UQ_FATAL_TEST_MACRO((m_currLevel != m_logEvidenceFactors.size()),
                         m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                         "invalid m_currLevel at the exit of the level loop");
-    double logEvidence = 0.;
+    m_logEvidence = 0.;
     for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
-      logEvidence += m_logEvidenceFactors[i];
+      m_logEvidence += m_logEvidenceFactors[i];
     }
+
+    m_meanLogLikelihood = currLogLikelihoodValues.unifiedMean(m_vectorSpace.numOfProcsForStorage() == 1,
+                                                              0,
+                                                              currLogLikelihoodValues.subSequenceSize());
+
+    m_eig = m_meanLogLikelihood - m_logEvidence;
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
-                              << ", log(evidence) = " << logEvidence
-                              << ", evidence = "      << exp(logEvidence)
+                              << ", log(evidence) = "     << m_logEvidence
+                              << ", evidence = "          << exp(m_logEvidence)
+                              << ", meanLogLikelihood = " << m_meanLogLikelihood
+                              << ", eig = "               << m_eig
                               << std::endl;
     }
   }
+
+  m_env.subComm().Bcast((void *) &m_logEvidence, (int) 1, uqRawValue_MPI_DOUBLE, 0, // Yes, 'subComm'
+                        "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                        "failed MPI.Bcast() for m_logEvidence");
+
+  m_env.subComm().Bcast((void *) &m_meanLogLikelihood, (int) 1, uqRawValue_MPI_DOUBLE, 0, // Yes, 'subComm'
+                        "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                        "failed MPI.Bcast() for m_meanLogLikelihood");
+
+  m_env.subComm().Bcast((void *) &m_eig, (int) 1, uqRawValue_MPI_DOUBLE, 0, // Yes, 'subComm'
+                        "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+                        "failed MPI.Bcast() for m_eig");
 
   //***********************************************************
   // Prepare to return
@@ -960,19 +990,22 @@ std::ostream& operator<<(std::ostream& os, const uqMLSamplingClass<P_V,P_M>& obj
   return os;
 }
 
-// added by Gabriel ----
 template <class P_V,class P_M>
-double uqMLSamplingClass<P_V,P_M>::getLogEvidence() const
+double uqMLSamplingClass<P_V,P_M>::logEvidence() const
 {
-
-    double logEvidence = 0.0;
-    for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
-      logEvidence += m_logEvidenceFactors[i];
-    }
-
-    return logEvidence;
-
+  return m_logEvidence;
 }
-// end ----
+
+template <class P_V,class P_M>
+double uqMLSamplingClass<P_V,P_M>::meanLogLikelihood() const
+{
+  return m_meanLogLikelihood;
+}
+
+template <class P_V,class P_M>
+double uqMLSamplingClass<P_V,P_M>::eig() const
+{
+  return m_eig;
+}
 
 #endif // __UQ_MULTI_LEVEL_SAMPLING1_H__
