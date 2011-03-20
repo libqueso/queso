@@ -473,7 +473,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
                                      "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                                      "failed MPI.Allreduce() for weight ratio sum");
 
-        nowUnifiedEvidenceLnFactor = log(unifiedWeightRatioSum) + unifiedOmegaLnMax - log(weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1));
+        unsigned int auxQuantity = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
+        nowUnifiedEvidenceLnFactor = log(unifiedWeightRatioSum) + unifiedOmegaLnMax - log(auxQuantity);
 
         double effectiveSampleSize = 0.;
         for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
@@ -501,7 +502,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
                                   << ", subWeightRatioSum = "                    << subWeightRatioSum
                                   << ", unifiedWeightRatioSum = "                << unifiedWeightRatioSum
                                   << ", unifiedOmegaLnMax = "                    << unifiedOmegaLnMax
-                                  << ", weightSequence.unifiedSequenceSize() = " << weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)
+                                  << ", weightSequence.unifiedSequenceSize() = " << auxQuantity
                                   << ", nowUnifiedEvidenceLnFactor = "           << nowUnifiedEvidenceLnFactor
                                   << ", effectiveSampleSize = "                  << effectiveSampleSize
                                   << std::endl;
@@ -564,6 +565,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
                                   << ", minEffectiveSizeRatio = " << currOptions->m_minEffectiveSizeRatio
                                   << ", nowEffectiveSizeRatio = " << nowEffectiveSizeRatio
                                   << ", maxEffectiveSizeRatio = " << currOptions->m_maxEffectiveSizeRatio
+                                  << ", aux2 = "                  << aux2
+                                  << ", aux3 = "                  << aux3
+                                  << ", testResult = "            << testResult
                                   << std::endl;
         }
         nowAttempt++;
