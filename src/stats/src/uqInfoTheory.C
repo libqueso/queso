@@ -50,10 +50,32 @@ void distANN_XY( const ANNpointArray dataX, const ANNpointArray dataY,
   kdTree = new ANNkd_tree( dataY, yN, dimY );
   
   // Get the distances to all the points
-  for( unsigned int i = 0; i < xN ; i++ ) {
-    kdTree->annkSearch( dataX[ i ], k+1, nnIdx, nnDist, eps );
-    distsXY[ i ] = nnDist[ k ];
-  }
+  for( unsigned int i = 0; i < xN ; i++ ) 
+    {
+      kdTree->annkSearch( dataX[ i ], k+1, nnIdx, nnDist, eps );
+      
+      double my_dist = nnDist[ k ];
+
+      // check to see if the dist is zero (query point same as the kNN)
+      // if so find the next k that gives the next positive distance
+      if( my_dist == 0.0 )
+	{
+	  ANNdistArray nnDist_tmp = new ANNdist[ yN ];
+	  ANNidxArray nnIdx_tmp = new ANNidx[ yN ];
+	  kdTree->annkSearch( dataX[ i ], yN, nnIdx_tmp, nnDist_tmp, eps );
+
+	  for( unsigned int my_k = k + 1; my_k < yN; ++my_k )
+	    if( nnDist_tmp[ my_k ] > 0.0 )
+	      {
+		my_dist = nnDist_tmp[ my_k ];
+		break;
+	      }
+	  delete [] nnIdx_tmp;
+	  delete [] nnDist_tmp;
+	}
+
+      distsXY[ i ] = my_dist;
+    }
 	
   // Deallocate memory
   delete [] nnIdx;
@@ -65,7 +87,9 @@ void distANN_XY( const ANNpointArray dataX, const ANNpointArray dataY,
 }
 
 //*****************************************************
-// Function: normalizeData
+// Function: normalizeANN_XY
+// (used by Mutual Information - marginal normalization
+//  it does not destroy the correlations)
 //*****************************************************
 void normalizeANN_XY( ANNpointArray dataXY, unsigned int dimXY,
 		      ANNpointArray dataX, unsigned int dimX,

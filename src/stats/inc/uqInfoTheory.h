@@ -52,12 +52,16 @@ void normalizeANN_XY( ANNpointArray dataXY, unsigned int dimXY,
 		      ANNpointArray dataY, unsigned int dimY,
 		      unsigned int N );
 
+void whiteningANN_X_Y( ANNpointArray dataX1, ANNpointArray dataX2, 
+		       unsigned int dimX, unsigned int N1, unsigned int N2 );
+
 double computeMI_ANN( ANNpointArray dataXY,
 		      unsigned int dimX, unsigned int dimY,
 		      unsigned int k, unsigned int N, double eps );
 
 //*****************************************************
 // Function: estimateMI_ANN (using a joint)
+// (Mutual Information)
 //*****************************************************
 template<template <class P_V, class P_M> class RV, class P_V, class P_M>
 double estimateMI_ANN( const RV<P_V,P_M>& jointRV, 
@@ -101,6 +105,7 @@ double estimateMI_ANN( const RV<P_V,P_M>& jointRV,
 
 //*****************************************************
 // Function: estimateMI_ANN (using two seperate RVs)
+// (Mutual Information)
 //*****************************************************
 template<class P_V, class P_M,
   template <class P_V, class P_M> class RV_1,
@@ -138,9 +143,6 @@ double estimateMI_ANN( const RV_1<P_V,P_M>& xRV,
     // annPrintPt( dataXY[i], dimXY, std::cout ); std::cout << std::endl;
   }
 
-  std::cout << "N1=" << xRV.realizer().subPeriod() << std::endl;
-  std::cout << "N2=" << yRV.realizer().subPeriod() << std::endl;
-
   MI_est = computeMI_ANN( dataXY,
 			  dimX, dimY,
 			  k, N, eps );
@@ -151,9 +153,9 @@ double estimateMI_ANN( const RV_1<P_V,P_M>& xRV,
   return MI_est;
 }
 
-
 //*****************************************************
 // Function: estimateKL_ANN
+// (Kullback-Leibler divergence)
 //*****************************************************
 template <class P_V, class P_M, 
   template <class P_V, class P_M> class RV_1,
@@ -177,10 +179,55 @@ double estimateKL_ANN( RV_1<P_V,P_M>& xRV,
     std::exit(1);
   }
 
-  // FIXME: here we have to make sure that  
-  // the return value is a finite number
-  // unsigned int xN = xRV->realizer().subPeriod();
-  // unsigned int yN = yRV->realizer().subPeriod();
+  // ---------------
+  // Data whitenning
+  // ---------------
+  /*
+
+  uqBaseVectorSequenceClass<P_V,P_M> augVecSeq = new uqBaseVectorSequenceClass<P_V,P_M>
+    ( xRV.imageSet().vectorSpace(), xN+yN, "augVecSeq" );
+
+  // add the samples from xRV
+  P_V xSmpRV( xRV.imageSet().vectorSpace().zeroVector() );
+  for( unsigned int i = 0; i < xN; i++ ) {
+    xRV.realizer().realization( xSmpRV );
+    augVecSeq[ i ] = xSmpRV;
+  }
+
+  // add the samples from yRV
+  P_V ySmpRV( yRV.imageSet().vectorSpace().zeroVector() );
+  for( unsigned int i = 0; i < yN; i++ ) {
+    yRV.realizer().realization( ySmpRV );
+    augVecSeq[ xN + i ] = ySmpRV;
+  }
+  
+  // compute the covariance matrix
+  M* covarianceMatrix = new M(xRV.env(),
+			      xRV.imageSet().vectorSpace().map(),        // number of rows
+			      xRV.imageSet().vectorSpace().dimGlobal()); // number of cols
+
+  M* correlationMatrix = new M(xRV.env(),
+			       xRV.imageSet().vectorSpace().map(),        // number of rows
+			       xRV.imageSet().vectorSpace().dimGlobal()); // number of cols
+
+  uqComputeCovCorrMatricesBetweenVectorSequences( augVecSeq,
+						  augVecSeq,
+						  xN + yN,
+						  *covarianceMatrix,
+						  *correlationMatrix );
+
+  // compute the mean
+  P_V meanVec( xRV.imageSet().vectorSpace().zeroVector() );
+  augVecSeq.unifiedMean( 0, xN+yN, meanVec );
+
+  // compute the normalized values
+  for( unsigned int i = 0; i < (xN+yN); i++ ) {
+    augVecSeq[ i ] = covarianceMatrix.   augVecSeq[ i ] - meanVec ;
+  } 
+  */
+  // 2. augument the two data sets
+  // 3. uqComputeCovCorrMatricesBetweenVectorSequences ( uqVectorSequence.h )
+
 
   // Allocate memory
   dataX = annAllocPts( xN, dimX );
@@ -216,14 +263,10 @@ double estimateKL_ANN( RV_1<P_V,P_M>& xRV,
   
   // Compute KL-divergence estimate
   double sum_log_ratio = 0.0;
-  for( unsigned int i = 0; i < xN; i++ ) {
-
-    // FIXME: check if this can fail by given very large numbers
-    double tmp_log = log( distsXY[i] / distsX[i] );
-    // std::cout << tmp_log << std::endl;
-
-    sum_log_ratio += tmp_log;
-  }
+  for( unsigned int i = 0; i < xN; i++ ) 
+    {
+      sum_log_ratio += log( distsXY[i] / distsX[i] );
+    }
   KL_est = (double)dimX/(double)xN * sum_log_ratio + log( (double)yN / ((double)xN-1.0 ) );
 
   // Deallocate memory
@@ -237,8 +280,85 @@ double estimateKL_ANN( RV_1<P_V,P_M>& xRV,
 
 
 //*****************************************************
-// Function: estimateKL_ANN (xRV - common, yRV1, yRV2)
+// Function: estimateCE_ANN
+// (Cross Entropy)
 //*****************************************************
+template <class P_V, class P_M, 
+  template <class P_V, class P_M> class RV_1,
+  template <class P_V, class P_M> class RV_2>
+double estimateCE_ANN( RV_1<P_V,P_M>& xRV, 
+		       RV_2<P_V,P_M>& yRV, 
+		       unsigned int xDimSel[], unsigned int dimX,
+		       unsigned int yDimSel[], unsigned int dimY,
+		       unsigned int xN, unsigned int yN,
+		       unsigned int k, double eps )
+{
+  ANNpointArray dataX;
+  ANNpointArray dataY;
+  double* distsXY;
+  double CE_est;
+  ANNkd_tree* kdTree;
+
+  // sanity check
+  if( dimX != dimY ) {
+    std::cout << "Error-CE: the dimensions should agree" << std::endl;
+    std::exit(1);
+  }
+
+  // Allocate memory
+  dataX = annAllocPts( xN, dimX );
+  dataY = annAllocPts( yN, dimY );
+  distsXY = new double[xN];
+  kdTree = new ANNkd_tree( dataY, yN, dimY );
+  
+  // Copy X samples in ANN data structure
+  P_V xSmpRV( xRV.imageSet().vectorSpace().zeroVector() );
+  for( unsigned int i = 0; i < xN; i++ ) {
+    // get a sample from the distribution
+    xRV.realizer().realization( xSmpRV );
+    // copy the vector values in the ANN data structure
+    for( unsigned int j = 0; j < dimX; j++ ) {
+      dataX[ i ][ j ] = xSmpRV[ xDimSel[j] ];
+    }
+  }
+
+  // Copy Y samples in ANN data structure
+  P_V ySmpRV( yRV.imageSet().vectorSpace().zeroVector() );
+  for( unsigned int i = 0; i < yN; i++ ) {
+    // get a sample from the distribution
+    yRV.realizer().realization( ySmpRV );
+    // copy the vector values in the ANN data structure
+    for( unsigned int j = 0; j < dimY; j++ ) {
+      dataY[ i ][ j ] = ySmpRV[ yDimSel[j] ];
+    }
+  }
+
+  // Get distance to knn for each point
+  distANN_XY( dataX, dataY, distsXY, dimX, dimY, xN, yN, k, eps );
+  kdTree = new ANNkd_tree( dataY, yN, dimY );
+
+  // Compute cross entropy estimate
+  double sum_log = 0.0;
+  for( unsigned int i = 0; i < xN; i++ ) 
+    {
+      sum_log += log( distsXY[i] );
+    }
+  CE_est = (double)dimX/(double)xN * sum_log + log( (double)yN ) - gsl_sf_psi_int( k );
+
+  // Deallocate memory
+  annDeallocPts( dataX );
+  annDeallocPts( dataY );
+  delete [] distsXY;
+
+  return CE_est;
+}
+
+
+//*****************************************************
+// Function: estimateKL_ANN (xRV - common, yRV1, yRV2)
+// THIS IS USELESS NOW
+//*****************************************************
+/*
 template <class P_V, class P_M, 
   template <class P_V, class P_M> class RV_1,
   template <class P_V, class P_M> class RV_2,
@@ -262,11 +382,6 @@ double estimateKL_ANN( RV_1<P_V,P_M>& xRV,
     std::cout << "Error-KL: the dimensions should agree" << std::endl;
     std::exit(1);
   }
-
-  // FIXME: here we have to make sure that  
-  // the return value is a finite number
-  // unsigned int xN = xRV->realizer().subPeriod();
-  // unsigned int yN = yRV->realizer().subPeriod();
 
   unsigned int dimXnew = dimX+dimY1;
   unsigned int dimYnew = dimX+dimY2;
@@ -313,7 +428,6 @@ double estimateKL_ANN( RV_1<P_V,P_M>& xRV,
 
     // FIXME: check if this can fail by given very large numbers
     double tmp_log = log( distsXY[i] / distsX[i] );
-    // std::cout << tmp_log << std::endl;
 
     sum_log_ratio += tmp_log;
   }
@@ -327,7 +441,7 @@ double estimateKL_ANN( RV_1<P_V,P_M>& xRV,
 
   return KL_est;
 }
-
+*/
 
 
 #endif // QUESO_HAS_ANN

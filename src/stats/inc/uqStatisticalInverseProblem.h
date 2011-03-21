@@ -499,7 +499,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::postRv() const
 template <class P_V,class P_M>
 double uqStatisticalInverseProblemClass<P_V,P_M>::logEvidence() const
 {
-  UQ_FATAL_TEST_MACRO(m_mlSampler != NULL,
+  UQ_FATAL_TEST_MACRO(m_mlSampler == NULL,
                       m_env.worldRank(),
                       "uqStatisticalInverseProblemClass<P_V,P_M>::logEvidence()",
                       "m_mlSampler is NULL");
@@ -509,7 +509,7 @@ double uqStatisticalInverseProblemClass<P_V,P_M>::logEvidence() const
 template <class P_V,class P_M>
 double uqStatisticalInverseProblemClass<P_V,P_M>::meanLogLikelihood() const
 {
-  UQ_FATAL_TEST_MACRO(m_mlSampler != NULL,
+  UQ_FATAL_TEST_MACRO(m_mlSampler == NULL,
                       m_env.worldRank(),
                       "uqStatisticalInverseProblemClass<P_V,P_M>::meanLogLikelihood()",
                       "m_mlSampler is NULL");
@@ -519,7 +519,7 @@ double uqStatisticalInverseProblemClass<P_V,P_M>::meanLogLikelihood() const
 template <class P_V,class P_M>
 double uqStatisticalInverseProblemClass<P_V,P_M>::eig() const
 {
-  UQ_FATAL_TEST_MACRO(m_mlSampler != NULL,
+  UQ_FATAL_TEST_MACRO(m_mlSampler == NULL,
                       m_env.worldRank(),
                       "uqStatisticalInverseProblemClass<P_V,P_M>::eig()",
                       "m_mlSampler is NULL");

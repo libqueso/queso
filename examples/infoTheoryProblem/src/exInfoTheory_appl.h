@@ -166,11 +166,41 @@ uqAppl(const uqBaseEnvironmentClass& env)
   std::cout << "-----------------------------------------------" << std::endl;
 
   /*********************************************
+   * Cross-entropy example
+   *********************************************/
+  if (env.fullRank() == 0) {
+    std::cout << "-----------------------------------------------" << std::endl;
+    std::cout << "EX03: Estimate the Cross-Entropy" << std::endl;
+    std::cout << "between two Gaussian RV" << std::endl;
+    std::cout << "-----------------------------------------------" << std::endl;
+    std::cout << "No.Smp. \t Analytical \t Estimated \t Rel.Abs.Err[%]" << std::endl;
+
+  }
+
+  double exact_ce = 0.5 * ( log(2.0*Pi) + log(varY) + pow(muY,2.0)/varY + varX/varY +
+			    pow(muX,2.0)/varY - 2.0*muX*muY/varY);
+  
+  for( unsigned int indN = 0; indN < length(allN); ++indN )
+    {
+      unsigned int xN = allN[ indN ]; 
+      unsigned int yN = allN[ indN ];
+      double est_ce = estimateCE_ANN( xRV, yRV, xDimSel, 1, yDimSel, 1, xN, yN, k, eps );
+
+      if (env.fullRank() == 0) {
+	std::cout << xN << " \t\t " << exact_ce << " \t " << est_ce << 
+	  " \t " << fabs(exact_ce - est_ce) / fabs(exact_ce) * 100.0  << std::endl;
+      }
+    }
+
+  std::cout << "-----------------------------------------------" << std::endl;
+
+
+  /*********************************************
    * Mutual information example
    *********************************************/
   if (env.fullRank() == 0) {
     std::cout << "-----------------------------------------------" << std::endl;
-    std::cout << "EX03: Estimate the Mutual information" << std::endl;
+    std::cout << "EX04: Estimate the Mutual information" << std::endl;
     std::cout << "between two Gaussian RV" << std::endl;
     std::cout << "-----------------------------------------------" << std::endl;
     std::cout << "No.Smp. \t Analytical \t Estimated \t Rel.Abs.Err[%]" << std::endl;
