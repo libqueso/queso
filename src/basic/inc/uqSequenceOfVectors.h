@@ -618,7 +618,10 @@ uqSequenceOfVectorsClass<V,M>::copy(const uqSequenceOfVectorsClass<V,M>& src)
 {
   uqBaseVectorSequenceClass<V,M>::copy(src);
   for (unsigned int i = 0; i < (unsigned int) m_seq.size(); ++i) {
-    if (m_seq[i]) delete m_seq[i];
+    if (m_seq[i]) {
+      delete m_seq[i];
+      m_seq[i] = NULL;
+    }
   }
   m_seq.resize(src.subSequenceSize(),NULL);
   for (unsigned int i = 0; i < m_seq.size(); ++i) {
@@ -723,7 +726,10 @@ uqSequenceOfVectorsClass<V,M>::erasePositions(unsigned int initialPos, unsigned 
                       "invalid input data");
 
   for (unsigned int j = 0; j < numPos; ++j) {
-    if (m_seq[initialPos+j] != NULL) delete m_seq[initialPos+j];
+    if (m_seq[initialPos+j] != NULL) {
+      delete m_seq[initialPos+j];
+      m_seq[initialPos+j] = NULL;
+    }
   }
 
   seqVectorPositionIteratorTypedef posIteratorBegin = m_seq.begin();
@@ -782,6 +788,16 @@ uqSequenceOfVectorsClass<V,M>::getPositionValues(unsigned int posId, V& vec) con
                       "uqSequenceOfVectorss<V,M>::getPositionValues()",
                       "posId > subSequenceSize()");
 
+  UQ_FATAL_TEST_MACRO(m_seq[posId] == NULL,
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorss<V,M>::getPositionValues()",
+                      "posId is NULL");
+
+  //if (posId == 0) { // mox
+  //  std::cout << "In uqSequenceOfVectorsClass<V,M>::getPositionValues(): m_seq[0] = " << m_seq[0] << ", *(m_seq[0]) = " << *(m_seq[0])
+  //            << std::endl;
+  //}
+
   vec = *(m_seq[posId]); // *(const_cast<V*>(m_seq[posId])); // prudenci 2010-06-17 mox
 
   return;
@@ -796,10 +812,15 @@ uqSequenceOfVectorsClass<V,M>::setPositionValues(unsigned int posId, const V& ve
                       "uqSequenceOfVectorss<V,M>::setPositionValues()",
                       "posId > subSequenceSize()");
 
+  UQ_FATAL_TEST_MACRO(vec.sizeLocal() != m_vectorSpace.zeroVector().sizeLocal(),
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorss<V,M>::setPositionValues()",
+                      "invalid vec");
+
   if (m_seq[posId] != NULL) delete m_seq[posId];
   m_seq[posId] = new V(vec);
 
-  //if (posId == 0) {
+  //if (posId == 0) { // mox
   //  std::cout << "In uqSequenceOfVectorsClass<V,M>::setPositionValues(): m_seq[0] = " << m_seq[0] << ", *(m_seq[0]) = " << *(m_seq[0])
   //            << std::endl;
   //}
@@ -1455,7 +1476,10 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaFft(
                       "invalid input data");
 
   for (unsigned int j = lags.size(); j < corrVecs.size(); ++j) {
-    if (corrVecs[j] != NULL) delete corrVecs[j];
+    if (corrVecs[j] != NULL) {
+      delete corrVecs[j];
+      corrVecs[j] = NULL;
+    }
   }
   corrVecs.resize(lags.size(),NULL);
   for (unsigned int j = 0;           j < corrVecs.size(); ++j) {

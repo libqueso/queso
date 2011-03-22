@@ -50,13 +50,23 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMa
 
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
-                      "uqGslVectorClass::constructor()",
+                      "uqGslVectorClass::constructor(1)",
                       "null vector generated");
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumMyElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(1)",
+                      "incompatible local vec size");
 
   UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumGlobalElements(),
                       m_env.worldRank(),
-                      "uqGslVectorClass::constructor()",
-                      "incompatible vec size");
+                      "uqGslVectorClass::constructor(1)",
+                      "incompatible global vec size");
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(1)",
+                      "incompatible own vec size");
 
   //std::cout << "In uqGslVectorClass::constructor(env,map)"
   //          << "\n  m_vec->size             = " << m_vec->size
@@ -70,15 +80,31 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMa
 uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double value)
   :
   uqVectorClass(env,map),
-  m_vec(gsl_vector_calloc(map.NumGlobalElements()))
+  m_vec        (gsl_vector_calloc(map.NumGlobalElements()))
 {
   //std::cout << "Entering uqGslVectorClass::constructor(2)" << std::endl;
 
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
-                      "uqGslVectorClass::constructor()",
+                      "uqGslVectorClass::constructor(2)",
                       "null vector generated");
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumMyElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(2)",
+                      "incompatible local vec size");
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumGlobalElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(2)",
+                      "incompatible global vec size");
+
   this->cwSet(value);
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(2)",
+                      "incompatible own vec size");
 
   //std::cout << "Leaving uqGslVectorClass::constructor(2)" << std::endl;
 }
@@ -86,19 +112,34 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMa
 uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const uqMapClass& map)
   :
   uqVectorClass(env,map),
-  m_vec(gsl_vector_calloc(map.NumGlobalElements()))
+  m_vec        (gsl_vector_calloc(map.NumGlobalElements()))
 {
   //std::cout << "Entering uqGslVectorClass::constructor(3)" << std::endl;
 
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
-                      "uqGslVectorClass::constructor(), linspace",
+                      "uqGslVectorClass::constructor(3), linspace",
                       "null vector generated");
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumMyElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(3)",
+                      "incompatible local vec size");
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) map.NumGlobalElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(3)",
+                      "incompatible global vec size");
 
   for (unsigned int i = 0; i < m_vec->size; ++i) {
     double alpha = (double) i / ((double) m_vec->size - 1.);
     (*this)[i] = (1.-alpha)*d1 + alpha*d2;
   }
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(3)",
+                      "incompatible own vec size");
 
   //std::cout << "Leaving uqGslVectorClass::constructor(3)" << std::endl;
 }
@@ -106,19 +147,34 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1,
 uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double d2)
   :
   uqVectorClass(v.env(),v.map()),
-  m_vec(gsl_vector_calloc(v.sizeLocal()))
+  m_vec        (gsl_vector_calloc(v.sizeLocal()))
 {
   //std::cout << "Entering uqGslVectorClass::constructor(4)" << std::endl;
 
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
-                      "uqGslVectorClass::constructor(), linspace",
+                      "uqGslVectorClass::constructor(4), linspace",
                       "null vector generated");
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) v.map().NumMyElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(4)",
+                      "incompatible local vec size");
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) v.map().NumGlobalElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(4)",
+                      "incompatible global vec size");
 
   for (unsigned int i = 0; i < m_vec->size; ++i) {
     double alpha = (double) i / ((double) m_vec->size - 1.);
     (*this)[i] = (1.-alpha)*d1 + alpha*d2;
   }
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(4)",
+                      "incompatible own vec size");
 
   //std::cout << "Leaving uqGslVectorClass::constructor(4)" << std::endl;
 }
@@ -126,16 +182,32 @@ uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double 
 uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v)  // mox
   :
   uqVectorClass(v.env(),v.map()),
-  m_vec(gsl_vector_calloc(v.sizeLocal()))
+  m_vec        (gsl_vector_calloc(v.sizeLocal()))
 {
   //std::cout << "Entering uqGslVectorClass::constructor(5)" << std::endl;
 
   // prudenci 2010-06-17 mox
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
-                      "uqGslVectorClass::constructor(), copy",
+                      "uqGslVectorClass::constructor(5), copy",
                       "null vector generated");
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) v.map().NumMyElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(5)",
+                      "incompatible local vec size");
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) v.map().NumGlobalElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(5)",
+                      "incompatible global vec size");
+
   this->copy(v);
+
+  UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::constructor(5)",
+                      "incompatible own vec size");
 
   //std::cout << "Leaving uqGslVectorClass::constructor(5)" << std::endl;
 }
@@ -148,7 +220,15 @@ uqGslVectorClass::~uqGslVectorClass()
 uqGslVectorClass&
 uqGslVectorClass::operator=(const uqGslVectorClass& rhs)
 {
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != rhs.sizeLocal(), // mox
+  //std::cout << "In uqGslVectorClass::operator=()" // mox
+  //          << ": setting size1"
+  //          << std::endl;
+  unsigned int size1 = this->sizeLocal();
+  //std::cout << "In uqGslVectorClass::operator=()" // mox
+  //          << ": setting size2"
+  //          << std::endl;
+  unsigned int size2 = rhs.sizeLocal();
+  UQ_FATAL_TEST_MACRO(size1 != size2, // mox
                       m_env.worldRank(),
                       "uqGslVectorClass::constructor(), copy",
                       "null vector generated");
@@ -264,11 +344,15 @@ uqGslVectorClass::copy(const uqGslVectorClass& src)
 unsigned int
 uqGslVectorClass::sizeLocal() const
 {
-  //std::cout << "Entering uqGslVectorClass::sizeLocal()" // mox
-  //          << ": m_vec = " << m_vec
-  //          << ", m_vec->size = " << m_vec->size
-  //          << ", &m_map = " << &m_map
-  //          << ", m_map.NumMyElements() = " << m_map.NumMyElements()
+  // mox
+  //std::cout << "Entering uqGslVectorClass::sizeLocal()"
+  //          << ": &m_map = "                << &m_map
+  //          << std::endl;
+  //std::cout << ", m_map.NumMyElements() = " << m_map.NumMyElements()
+  //          << std::endl;
+  //std::cout << ", m_vec = "                 << m_vec
+  //          << std::endl;
+  //std::cout << ", m_vec->size = "           << m_vec->size
   //          << std::endl;
 
   UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
@@ -293,6 +377,7 @@ uqGslVectorClass::sizeGlobal() const
                       m_env.worldRank(),
                       "uqGslVectorClass::sizeGlobal()",
                       "incompatible vec size");
+
   return m_vec->size;
 }
 

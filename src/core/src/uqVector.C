@@ -49,6 +49,10 @@ uqVectorClass::uqVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass
 {
   //std::cout << "Entering uqVectorClass::constructor(env,map)" << std::endl;
 
+  //std::cout << "In uqVectorClass::constructor(env,map)" // mox
+  //          << ", m_map.NumMyElements() = " << m_map.NumMyElements()
+  //          << std::endl;
+
   //std::cout << "Leaving uqVectorClass::constructor(env,map)" << std::endl;
 }
 
