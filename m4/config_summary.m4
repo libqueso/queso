@@ -16,6 +16,8 @@
 AC_DEFUN([AX_SUMMARIZE_CONFIG],
 [
 
+m4_pattern_allow([BOOST_DIR])
+
 echo
 echo '----------------------------------- SUMMARY -----------------------------------'
 echo
@@ -27,7 +29,7 @@ echo C++ compiler flags............ : $CXXFLAGS
 echo ' '
 echo GSL_LIBS...................... : $GSL_LIBS
 echo GRVY DIR...................... : $GRVY_PREFIX
-echo BOOST_DIR..................... : $BOOST_DIR
+echo BOOST_DIR..................... : ${BOOST_DIR}
 ###echo Boost program options... ..... : $BOOST_PROGRAM_OPTIONS_LDFLAGS $BOOST_PROGRAM_OPTIONS_LIBS
 echo ' '
 echo Install dir................... : $prefix 

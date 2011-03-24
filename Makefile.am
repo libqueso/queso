@@ -6,6 +6,8 @@ include $(top_srcdir)/doxygen/aminclude.am
 
 AUTOMAKE_OPTIONS = foreign
 
+ACLOCAL_AMFLAGS  = -I m4 -I m4/common
+
 # Build in these directories:
 
 if HAVE_ANN
