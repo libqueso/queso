@@ -60,49 +60,6 @@ void BIP_routine(glp_tree *tree, void *info);
 
 //---------------------------------------------------------
 
-template <class P_V, class P_M>
-struct uqMLStateStruct
-{
-  uqMLStateStruct(const uqVectorSpaceClass<P_V,P_M>& vectorSpace);
- ~uqMLStateStruct();
-
-  const uqVectorSpaceClass<P_V,P_M>& m_vectorSpace;
-  const uqBaseEnvironmentClass&      m_env;
-  unsigned int                       m_vectorSpaceDimension;
-  int                                m_level; // Yes, 'int', in order to store value '-1'
-  std::vector<double>                m_logEvidenceFactors;
-  double                             m_exponent;
-  double                             m_eta;
-  unsigned int                       m_unifiedRequestedNumSamples;
-  uqSequenceOfVectorsClass<P_V,P_M>  m_chain;
-  uqScalarSequenceClass<double>      m_logLikelihoodValues;
-  uqScalarSequenceClass<double>      m_logTargetValues;
-};
-
-template<class P_V,class P_M>
-uqMLStateStruct<P_V,P_M>::uqMLStateStruct(const uqVectorSpaceClass<P_V,P_M>& vectorSpace)
-  :
-  m_vectorSpace               (vectorSpace),
-  m_env                       (vectorSpace.env()),
-  m_vectorSpaceDimension      (0),
-  m_level                     (-1), // Yes, '-1'
-  m_logEvidenceFactors        (0),
-  m_exponent                  (0.),
-  m_eta                       (1.),
-  m_unifiedRequestedNumSamples(0),
-  m_chain                     (m_vectorSpace,0,""),
-  m_logLikelihoodValues       (m_env,0,""),
-  m_logTargetValues           (m_env,0,"")
-{
-}
-
-template<class P_V,class P_M>
-uqMLStateStruct<P_V,P_M>::~uqMLStateStruct()
-{
-}
-
-//---------------------------------------------------------
-
 struct uqExchangeInfoStruct
 {
   int          originalNodeOfInitialPosition;
@@ -164,12 +121,8 @@ public:
 
   void   print           (std::ostream& os) const;
 
-
 private:
   // Methods available at uqMLSampling2.h
-  void   restartML                     (uqMLStateStruct<P_V,P_M>&                       restartPrevState,                   // output
-                                        uqMLStateStruct<P_V,P_M>&                       restartCurrState);                  // output
-
   void   checkpointML                  (double                                          currExponent,                       // input
                                         double                                          currEta,                            // input
                                         unsigned int                                    currUnifiedRequestedNumSamples,     // input
@@ -177,20 +130,14 @@ private:
                                         const uqScalarSequenceClass<double>&            currLogLikelihoodValues,            // input
                                         const uqScalarSequenceClass<double>&            currLogTargetValues);               // input
 
-  void   checkpointML                  (double                                          prevExponent,                       // input
-                                        double                                          prevEta,                            // input
-                                        unsigned int                                    prevUnifiedRequestedNumSamples,     // input
-                                        const uqSequenceOfVectorsClass<P_V,P_M>&        prevChain,                          // input
-                                        const uqScalarSequenceClass<double>&            prevLogLikelihoodValues,            // input
-                                        const uqScalarSequenceClass<double>&            prevLogTargetValues,                // input
-                                        double                                          currExponent,                       // input
-                                        double                                          currEta,                            // input
-                                        unsigned int                                    currUnifiedRequestedNumSamples,     // input
-                                        const uqSequenceOfVectorsClass<P_V,P_M>&        currChain,                          // input
-                                        const uqScalarSequenceClass<double>&            currLogLikelihoodValues,            // input
-                                        const uqScalarSequenceClass<double>&            currLogTargetValues);               // input
+  void   restartML                     (double&                                         currExponent,                       // output
+                                        double&                                         currEta,                            // output
+                                        unsigned int&                                   currUnifiedRequestedNumSamples,     // output
+                                        uqSequenceOfVectorsClass<P_V,P_M>&              currChain,                          // output
+                                        uqScalarSequenceClass<double>&                  currLogLikelihoodValues,            // output
+                                        uqScalarSequenceClass<double>&                  currLogTargetValues);               // output
 
-  void   generateSequence_Level0_all   (const uqMLSamplingLevelOptionsClass&            defaultLevelOptions,                // input
+  void   generateSequence_Level0_all   (const uqMLSamplingLevelOptionsClass&            currOptions,                        // input
                                         unsigned int&                                   unifiedRequestedNumSamples,         // output
                                         uqSequenceOfVectorsClass<P_V,P_M>&              currChain,                          // output
                                         uqScalarSequenceClass<double>&                  currLogLikelihoodValues,            // output
@@ -342,10 +289,10 @@ private:
 
         uqMLSamplingOptionsClass            m_options;
 
-        unsigned int                        m_currLevel;
+        unsigned int                        m_currLevel; // restate
         unsigned int                        m_currStep;
         double                              m_debugExponent;
-	std::vector<double>                 m_logEvidenceFactors;
+	std::vector<double>                 m_logEvidenceFactors;  // restate
         double                              m_logEvidence;
         double                              m_meanLogLikelihood;
         double                              m_eig;
@@ -408,95 +355,24 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                             << std::endl;
   }
 
-  // ernesto
-  if (m_options.m_restartInputFileName != ".") {
-    workingChain.unifiedReadContents(m_options.m_restartInputFileName,
-                                     m_options.m_restartInputFileType,
-                                     m_options.m_restartChainSize);
-
-    uqMLSamplingLevelOptionsClass defaultLevelOptions(m_env,(m_options.m_prefix + "default_").c_str());
-    defaultLevelOptions.scanOptionsValues(NULL);
-
-    uqMLSamplingLevelOptionsClass lastLevelOptions(m_env,(m_options.m_prefix + "last_").c_str());
-    lastLevelOptions.scanOptionsValues(&defaultLevelOptions);
-
-        if (lastLevelOptions.m_rawChainComputeStats) {
-          uqFilePtrSetStruct filePtrSet;
-          m_env.openOutputFile(lastLevelOptions.m_dataOutputFileName,
-                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
-                               lastLevelOptions.m_dataOutputAllowedSet,
-                               false,
-                               filePtrSet);
-
-          workingChain.computeStatistics(*lastLevelOptions.m_rawChainStatisticalOptionsObj,
-                                         filePtrSet.ofsVar);
-
-          m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
-        }
-
-        if (lastLevelOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-          workingChain.unifiedWriteContents              (lastLevelOptions.m_rawChainDataOutputFileName,lastLevelOptions.m_rawChainDataOutputFileType); // KAUST5
-          //currLogLikelihoodValues.unifiedWriteContents(lastLevelOptions.m_rawChainDataOutputFileName);
-          //currLogTargetValues.unifiedWriteContents    (lastLevelOptions.m_rawChainDataOutputFileName);
-        }
-
-        if (lastLevelOptions.m_filteredChainGenerate) {
-          uqFilePtrSetStruct filePtrSet;
-          m_env.openOutputFile(lastLevelOptions.m_dataOutputFileName,
-                               UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
-                               lastLevelOptions.m_dataOutputAllowedSet,
-                               false,
-                               filePtrSet);
-
-          unsigned int filterInitialPos = (unsigned int) (lastLevelOptions.m_filteredChainDiscardedPortion * (double) workingChain.subSequenceSize());
-          unsigned int filterSpacing    = lastLevelOptions.m_filteredChainLag;
-          if (filterSpacing == 0) {
-            workingChain.computeFilterParams(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
-                                             filePtrSet.ofsVar,
-                                             filterInitialPos,
-                                             filterSpacing);
-          }
-
-          // Filter positions from the converged portion of the chain
-          workingChain.filter(filterInitialPos,
-                           filterSpacing);
-          workingChain.setName(lastLevelOptions.m_prefix + "filtChain");
-
-          //currLogLikelihoodValues.filter(filterInitialPos,
-          //                               filterSpacing);
-          //currLogLikelihoodValues.setName(lastLevelOptions.m_prefix + "filtLogLikelihood");
-
-          //currLogTargetValues.filter(filterInitialPos,
-          //                           filterSpacing);
-          //currLogTargetValues.setName(lastLevelOptions.m_prefix + "filtLogTarget");
-
-          if (lastLevelOptions.m_filteredChainComputeStats) {
-            workingChain.computeStatistics(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
-                                           filePtrSet.ofsVar);
-          }
-
-          m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
-
-          if (lastLevelOptions.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-            workingChain.unifiedWriteContents              (lastLevelOptions.m_filteredChainDataOutputFileName,lastLevelOptions.m_filteredChainDataOutputFileType);
-            //currLogLikelihoodValues.unifiedWriteContents(lastLevelOptions.m_filteredChainDataOutputFileName);
-            //currLogTargetValues.unifiedWriteContents    (lastLevelOptions.m_filteredChainDataOutputFileName);
-          }
-        } // if (lastLevelOptions.m_filteredChainGenerate)
-  }
-  else {
   //***********************************************************
   // Declaration of Variables
   //***********************************************************
+  double                            currExponent                   = 0.; // restate
+  double                            currEta                        = 1.; // restate
+  unsigned int                      currUnifiedRequestedNumSamples = 0;  // restate
+  uqSequenceOfVectorsClass<P_V,P_M> currChain              (m_vectorSpace, // restate
+                                                            0,
+                                                            m_options.m_prefix+"curr_chain");
+  uqScalarSequenceClass<double>     currLogLikelihoodValues(m_env, // restate
+                                                            0,
+                                                            "");
+  uqScalarSequenceClass<double>     currLogTargetValues    (m_env, // restate
+                                                            0,
+                                                            "");
 
-  double                            currExponent = 0.;
-  double                            currEta      = 1.;
-  unsigned int                      currUnifiedRequestedNumSamples = 0;
-  uqSequenceOfVectorsClass<P_V,P_M> currChain(m_vectorSpace,
-                                              0,
-                                              m_options.m_prefix+"curr_chain");
-  uqScalarSequenceClass<double>     currLogLikelihoodValues(m_env,0,"");
-  uqScalarSequenceClass<double>     currLogTargetValues    (m_env,0,"");
+  bool stopAtEndOfLevel = false;
+  char tmpSufix[256];
 
   //***********************************************************
   // Take care of first level (level '0')
@@ -507,67 +383,118 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   uqMLSamplingLevelOptionsClass lastLevelOptions(m_env,(m_options.m_prefix + "last_").c_str());
   lastLevelOptions.scanOptionsValues(&defaultLevelOptions);
 
-  uqMLStateStruct<P_V,P_M> restartPrevState(m_vectorSpace);
-  uqMLStateStruct<P_V,P_M> restartCurrState(m_vectorSpace);
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+  if (m_options.m_restartInput_baseNameForFiles != ".") {
+    restartML(currExponent,                   // output
+              currEta,                        // output
+              currUnifiedRequestedNumSamples, // output
+              currChain,                      // output
+              currLogLikelihoodValues,        // output
+              currLogTargetValues);           // output
 
-  if (m_options.m_restartInputFileName != ".") {
-    restartML(restartPrevState,  // output
-              restartCurrState); // output
+    if (currExponent == 1.) {
+      if (lastLevelOptions.m_rawChainComputeStats) {
+        uqFilePtrSetStruct filePtrSet;
+        m_env.openOutputFile(lastLevelOptions.m_dataOutputFileName,
+                             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
+                             lastLevelOptions.m_dataOutputAllowedSet,
+                             false,
+                             filePtrSet);
 
-    UQ_FATAL_TEST_MACRO(restartCurrState.m_level == -1,
-                        m_env.worldRank(),
-                        "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                        "restartCurrState.m_level should not be '-1'");
+        workingChain.computeStatistics(*lastLevelOptions.m_rawChainStatisticalOptionsObj,
+                                       filePtrSet.ofsVar);
 
-    if (restartCurrState.m_level > 0) {
-      UQ_FATAL_TEST_MACRO(restartPrevState.m_level == -1,
-                          m_env.worldRank(),
-                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                          "restartPrevState.m_level should not be '-1'");
-    }
+        m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
+      }
 
-    if (restartCurrState.m_exponent < 1.) {
-      // Ok
-    //m_vectorSpaceDimension
-      m_currLevel                    = 0;
-    //m_logEvidenceFactors           = 0;
-      currExponent                   = 0;
-      currEta                        = 0;
-      currUnifiedRequestedNumSamples = 0;
-    //currChain                      = 0;
-    //currLogLikelihoodValues        = 0;
-    //currLogTargetValues            = 0;
-    }
-    else if (restartCurrState.m_exponent == 1.) {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                          "restart exponent == 1 is not supported yet");
-    }
-    else {
-      UQ_FATAL_TEST_MACRO(true,
-                          m_env.worldRank(),
-                          "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                          "restart exponent > 1 should not happen");
+      if (lastLevelOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
+        workingChain.unifiedWriteContents             (lastLevelOptions.m_rawChainDataOutputFileName,lastLevelOptions.m_rawChainDataOutputFileType); // KAUST5
+        //currLogLikelihoodValues.unifiedWriteContents(lastLevelOptions.m_rawChainDataOutputFileName);
+        //currLogTargetValues.unifiedWriteContents    (lastLevelOptions.m_rawChainDataOutputFileName);
+      }
+
+      if (lastLevelOptions.m_filteredChainGenerate) {
+        uqFilePtrSetStruct filePtrSet;
+        m_env.openOutputFile(lastLevelOptions.m_dataOutputFileName,
+                             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT, // Yes, always ".m"
+                             lastLevelOptions.m_dataOutputAllowedSet,
+                             false,
+                             filePtrSet);
+
+        unsigned int filterInitialPos = (unsigned int) (lastLevelOptions.m_filteredChainDiscardedPortion * (double) workingChain.subSequenceSize());
+        unsigned int filterSpacing    = lastLevelOptions.m_filteredChainLag;
+        if (filterSpacing == 0) {
+          workingChain.computeFilterParams(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
+                                           filePtrSet.ofsVar,
+                                           filterInitialPos,
+                                           filterSpacing);
+        }
+
+        // Filter positions from the converged portion of the chain
+        workingChain.filter(filterInitialPos,
+                            filterSpacing);
+        workingChain.setName(lastLevelOptions.m_prefix + "filtChain");
+
+        //currLogLikelihoodValues.filter(filterInitialPos,
+        //                               filterSpacing);
+        //currLogLikelihoodValues.setName(lastLevelOptions.m_prefix + "filtLogLikelihood");
+
+        //currLogTargetValues.filter(filterInitialPos,
+        //                           filterSpacing);
+        //currLogTargetValues.setName(lastLevelOptions.m_prefix + "filtLogTarget");
+
+        if (lastLevelOptions.m_filteredChainComputeStats) {
+          workingChain.computeStatistics(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
+                                         filePtrSet.ofsVar);
+        }
+
+        m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
+
+        if (lastLevelOptions.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
+          workingChain.unifiedWriteContents              (lastLevelOptions.m_filteredChainDataOutputFileName,lastLevelOptions.m_filteredChainDataOutputFileType);
+          //currLogLikelihoodValues.unifiedWriteContents(lastLevelOptions.m_filteredChainDataOutputFileName);
+          //currLogTargetValues.unifiedWriteContents    (lastLevelOptions.m_filteredChainDataOutputFileName);
+        }
+      } // if (lastLevelOptions.m_filteredChainGenerate)
     }
   }
   else {
-    generateSequence_Level0_all(defaultLevelOptions,            // input
+#endif
+    sprintf(tmpSufix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
+    uqMLSamplingLevelOptionsClass currOptions(m_env,(m_options.m_prefix + tmpSufix).c_str());
+    currOptions.scanOptionsValues(&defaultLevelOptions);
+
+    generateSequence_Level0_all(currOptions,                    // input
                                 currUnifiedRequestedNumSamples, // output
                                 currChain,                      // output
                                 currLogLikelihoodValues,        // output
                                 currLogTargetValues);           // output
+
+    stopAtEndOfLevel = currOptions.m_stopAtEnd;
+    bool performCheckpoint = stopAtEndOfLevel;
+    if (m_options.m_restartOutput_levelPeriod > 0) {
+      performCheckpoint = ( ((m_currLevel + 1) % m_options.m_restartOutput_levelPeriod) == 0 );
+    }
+    if (performCheckpoint) {
+      checkpointML(currExponent,                   // input
+                   currEta,                        // input
+                   currUnifiedRequestedNumSamples, // input
+                   currChain,                      // input
+                   currLogLikelihoodValues,        // input
+                   currLogTargetValues);           // input
+    }
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   }
+#endif
   //std::cout << "In QUESO: end of level 0. Exiting on purpose" << std::endl;
   //exit(1);
 
   //***********************************************************
   // Take care of next levels
   //***********************************************************
-  bool stopAtEndOfLevel = false;
-  char tmpSufix[256];
-  do { // begin level while
-    m_currLevel++;
+  while ((currExponent     <  1.   ) && // begin level while
+         (stopAtEndOfLevel == false)) {
+    m_currLevel++; // restate
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -600,7 +527,10 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     m_currStep = 2;
     double       prevExponent                   = currExponent;
     double       prevEta                        = currEta;
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
     unsigned int prevUnifiedRequestedNumSamples = currUnifiedRequestedNumSamples;
+#endif
     uqSequenceOfVectorsClass<P_V,P_M> prevChain(m_vectorSpace,
                                                 0,
                                                 m_options.m_prefix+"prev_chain");
@@ -613,9 +543,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     //std::cout << "m_env.inter0Rank() = " << m_env.inter0Rank() << std::endl;
     if (m_env.inter0Rank() >= 0) {
       generateSequence_Step02_inter0(currOptions,             // input
-                                     currChain,               // input/output
-                                     currLogLikelihoodValues, // input/output
-                                     currLogTargetValues,     // input/output
+                                     currChain,               // input/output // restate
+                                     currLogLikelihoodValues, // input/output // restate
+                                     currLogTargetValues,     // input/output // restate
                                      prevChain,               // output
                                      prevLogLikelihoodValues, // output
                                      prevLogTargetValues,     // output
@@ -793,20 +723,24 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                 &currLogLikelihoodValues,     // output // likelihood is important
                                 &currLogTargetValues);        // output);
 
-    if (currOptions->m_checkpointOutputFileName != ".") {
-      checkpointML(prevExponent,                   // input
-                   prevEta,                        // input
-                   prevUnifiedRequestedNumSamples, // input
-                   prevChain,                      // input
-                   prevLogLikelihoodValues,        // input
-                   prevLogTargetValues,            // input
-                   currExponent,                   // input
+    //***********************************************************
+    // Perform checkpoint if necessary
+    //***********************************************************
+    stopAtEndOfLevel = currOptions->m_stopAtEnd;
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+    bool performCheckpoint = stopAtEndOfLevel;
+    if (m_options.m_restartOutput_levelPeriod > 0) {
+      performCheckpoint = ( ((m_currLevel + 1) % m_options.m_restartOutput_levelPeriod) == 0 );
+    }
+    if (performCheckpoint) {
+      checkpointML(currExponent,                   // input
                    currEta,                        // input
                    currUnifiedRequestedNumSamples, // input
                    currChain,                      // input
                    currLogLikelihoodValues,        // input
                    currLogTargetValues);           // input
     }
+#endif
 
     //***********************************************************
     // Just free some memory
@@ -843,9 +777,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     //***********************************************************
     // Prepare to end current level
     //***********************************************************
-    stopAtEndOfLevel = currOptions->m_stopAtEnd;
     double levelRunTime = uqMiscGetEllapsedSeconds(&timevalLevel);
-
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                               << ": ending level "                   << m_currLevel+LEVEL_REF_ID
@@ -909,8 +841,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     }
 
     if (currExponent != 1.) delete currOptions;
-  } while ((currExponent     <  1.   ) &&
-           (stopAtEndOfLevel == false)); // end of level while
+  } // end of level while
 
   UQ_FATAL_TEST_MACRO((currExponent < 1.),
                       m_env.worldRank(),
@@ -972,7 +903,6 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
 
   if (workingLogLikelihoodValues) *workingLogLikelihoodValues = currLogLikelihoodValues;
   if (workingLogTargetValues    ) *workingLogTargetValues     = currLogTargetValues;
-  } // ernesto
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateSequence()"

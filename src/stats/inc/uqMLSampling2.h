@@ -31,73 +31,48 @@
 
 template <class P_V,class P_M>
 void
+uqMLSamplingClass<P_V,P_M>::checkpointML(
+  double                                   currExponent,                   // input
+  double                                   currEta,                        // input
+  unsigned int                             currUnifiedRequestedNumSamples, // input
+  const uqSequenceOfVectorsClass<P_V,P_M>& currChain,                      // input
+  const uqScalarSequenceClass<double>&     currLogLikelihoodValues,        // input
+  const uqScalarSequenceClass<double>&     currLogTargetValues)            // input
+{
+  // ernesto: save vector space dimension
+//m_options.m_restartOutput_baseNameForFile, // input
+                   //m_currLevel,                  // input
+                   //m_logEvidenceFactors,         // input
+  return;
+}
+
+template <class P_V,class P_M>
+void
 uqMLSamplingClass<P_V,P_M>::restartML(
-  uqMLStateStruct<P_V,P_M>& restartPrevState, // output
-  uqMLStateStruct<P_V,P_M>& restartCurrState) // output
+  double&                            currExponent,                   // output
+  double&                            currEta,                        // output
+  unsigned int&                      currUnifiedRequestedNumSamples, // output
+  uqSequenceOfVectorsClass<P_V,P_M>& currChain,                      // output
+  uqScalarSequenceClass<double>&     currLogLikelihoodValues,        // output
+  uqScalarSequenceClass<double>&     currLogTargetValues)            // output
 {
-  // ernesto
-  return;
-}
-
-template <class P_V,class P_M>
-void
-uqMLSamplingClass<P_V,P_M>::checkpointML(
-  double                                   currExponent,                   // input
-  double                                   currEta,                        // input
-  unsigned int                             currUnifiedRequestedNumSamples, // input
-  const uqSequenceOfVectorsClass<P_V,P_M>& currChain,                      // input
-  const uqScalarSequenceClass<double>&     currLogLikelihoodValues,        // input
-  const uqScalarSequenceClass<double>&     currLogTargetValues)            // input
-{
-  UQ_FATAL_TEST_MACRO(m_currLevel != 0,
-                      m_env.worldRank(),
-                      "uqMLSamplingClass<P_V,P_M>::checkpointML(1)",
-                      "m_currLevel should be zero");
-
-  // ernesto
-  return;
-}
-
-template <class P_V,class P_M>
-void
-uqMLSamplingClass<P_V,P_M>::checkpointML(
-  double                                   prevExponent,                   // input
-  double                                   prevEta,                        // input
-  unsigned int                             prevUnifiedRequestedNumSamples, // input
-  const uqSequenceOfVectorsClass<P_V,P_M>& prevChain,                      // input
-  const uqScalarSequenceClass<double>&     prevLogLikelihoodValues,        // input
-  const uqScalarSequenceClass<double>&     prevLogTargetValues,            // input
-  double                                   currExponent,                   // input
-  double                                   currEta,                        // input
-  unsigned int                             currUnifiedRequestedNumSamples, // input
-  const uqSequenceOfVectorsClass<P_V,P_M>& currChain,                      // input
-  const uqScalarSequenceClass<double>&     currLogLikelihoodValues,        // input
-  const uqScalarSequenceClass<double>&     currLogTargetValues)            // input
-{
-  UQ_FATAL_TEST_MACRO(m_currLevel == 0,
-                      m_env.worldRank(),
-                      "uqMLSamplingClass<P_V,P_M>::checkpointML(2)",
-                      "m_currLevel should not be zero");
-
-  // ernesto
+  // ernesto: check vector space dimension
+  //unsigned int                       m_vectorSpaceDimension;
+//m_options.m_restartInput_baseNameForFile, // input
+              //m_currLevel,                  // output
+              //m_logEvidenceFactors,         // output
   return;
 }
 
 template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
-  const uqMLSamplingLevelOptionsClass& defaultLevelOptions,        // input
+  const uqMLSamplingLevelOptionsClass& currOptions,                // input
   unsigned int&                        unifiedRequestedNumSamples, // output
   uqSequenceOfVectorsClass<P_V,P_M>&   currChain,                  // output
   uqScalarSequenceClass<double>&       currLogLikelihoodValues,    // output
   uqScalarSequenceClass<double>&       currLogTargetValues)        // output
 {
-  char tmpSufix[256];
-
-    sprintf(tmpSufix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
-    uqMLSamplingLevelOptionsClass currOptions(m_env,(m_options.m_prefix + tmpSufix).c_str());
-    currOptions.scanOptionsValues(&defaultLevelOptions);
-
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "KEY In uqMLSampling<P_V,P_M>::generateSequence()"
                               << ": beginning level "              << m_currLevel+LEVEL_REF_ID

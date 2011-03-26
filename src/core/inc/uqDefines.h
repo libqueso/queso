@@ -66,6 +66,7 @@ Incompatible combination of defines in QUESO 'uqDefines.h': QUESO_HAS_TRILINOS i
 
 int uqMyWorldfullRank();
 
+#define ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #undef QUESO_MEMORY_DEBUGGING
 #undef UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
 #undef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE

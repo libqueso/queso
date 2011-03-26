@@ -36,7 +36,10 @@
 #define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
 #define UQ_ML_SAMPLING_L_CHECKPOINT_OUTPUT_FILE_NAME_ODV            UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#endif
 #define UQ_ML_SAMPLING_L_STOP_AT_END_ODV                            0
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                  UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                      ""
@@ -93,7 +96,10 @@ public:
 
   std::string                        m_prefix;
 
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
   std::string                        m_checkpointOutputFileName;
+#endif
   bool                               m_stopAtEnd;
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
@@ -156,7 +162,10 @@ private:
 
   std::string                   m_option_help;
 
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
   std::string                   m_option_checkpointOutputFileName;
+#endif
   std::string                   m_option_stopAtEnd;
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;

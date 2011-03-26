@@ -35,11 +35,23 @@
 #define UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value
-#define UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
-#define UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV "m"
-#define UQ_ML_SAMPLING_RESTART_CHAIN_SIZE_ODV      100
-#define UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV   UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
-#define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV ""
+
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+
+#define UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV         0
+#define UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV  UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_RESTART_INPUT_BASE_NAME_FOR_FILES_ODV   UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
+
+#else
+
+#define UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV             UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV             "m"
+#define UQ_ML_SAMPLING_RESTART_CHAIN_SIZE_ODV                  100
+
+#endif
+
+#define UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV               UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV             ""
 
 class uqMLSamplingOptionsClass
 {
@@ -52,9 +64,15 @@ public:
 
   std::string            m_prefix;
 
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+  unsigned int           m_restartOutput_levelPeriod;
+  std::string            m_restartOutput_baseNameForFiles;
+  std::string            m_restartInput_baseNameForFiles;
+#else
   std::string            m_restartInputFileName;
   std::string            m_restartInputFileType;
   unsigned int           m_restartChainSize;
+#endif
   std::string            m_dataOutputFileName;
   std::set<unsigned int> m_dataOutputAllowedSet;
 
@@ -66,9 +84,15 @@ private:
   po::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+  std::string                   m_option_restartOutput_levelPeriod;
+  std::string                   m_option_restartOutput_baseNameForFiles;
+  std::string                   m_option_restartInput_baseNameForFiles;
+#else
   std::string                   m_option_restartInputFileName;
   std::string                   m_option_restartInputFileType;
   std::string                   m_option_restartChainSize;
+#endif
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
 };

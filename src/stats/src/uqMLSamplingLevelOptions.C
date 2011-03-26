@@ -34,7 +34,10 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   const char*                   prefix)
   :
   m_prefix                                   ((std::string)(prefix) + ""),
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
   m_checkpointOutputFileName                 (UQ_ML_SAMPLING_L_CHECKPOINT_OUTPUT_FILE_NAME_ODV),
+#endif
   m_stopAtEnd                                (UQ_ML_SAMPLING_L_STOP_AT_END_ODV),
   m_dataOutputFileName                       (UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV),
 //m_dataOutputAllowedSet                     (),
@@ -87,7 +90,10 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_env                                      (env),
   m_optionsDesc                              (new po::options_description("Multilevel sampling level options")),
   m_option_help                              (m_prefix + "help"                              ),
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
   m_option_checkpointOutputFileName          (m_prefix + "checkpointOutputFileName"          ),
+#endif
   m_option_stopAtEnd                         (m_prefix + "stopAtEnd"                         ),
   m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
   m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
@@ -135,7 +141,10 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
 void
 uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsClass& srcOptions)
 {
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
   m_checkpointOutputFileName            = srcOptions.m_checkpointOutputFileName;
+#endif
   m_stopAtEnd                           = srcOptions.m_stopAtEnd;
   m_dataOutputFileName                  = srcOptions.m_dataOutputFileName;
   m_dataOutputAllowedSet                = srcOptions.m_dataOutputAllowedSet;
@@ -238,7 +247,10 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
 {
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                                              "produce help message for Bayesian Markov chain distr. calculator")
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
     (m_option_checkpointOutputFileName.c_str(),           po::value<std::string >()->default_value(m_checkpointOutputFileName         ), "name of checpoint output file"                                   )
+#endif
     (m_option_stopAtEnd.c_str(),                          po::value<bool        >()->default_value(m_stopAtEnd                        ), "stop at end of such level"                                       )
     (m_option_dataOutputFileName.c_str(),                 po::value<std::string >()->default_value(m_dataOutputFileName               ), "name of generic output file"                                     )
     (m_option_dataOutputAllowedSet.c_str(),               po::value<std::string >()->default_value(m_str1                             ), "subEnvs that will write to generic output file"                  )
@@ -297,9 +309,12 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     }
   }
 
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
   if (m_env.allOptionsMap().count(m_option_checkpointOutputFileName.c_str())) {
     m_checkpointOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_checkpointOutputFileName.c_str()]).as<std::string>();
   }
+#endif
 
   if (m_env.allOptionsMap().count(m_option_stopAtEnd.c_str())) {
     m_stopAtEnd = ((const po::variable_value&) m_env.allOptionsMap()[m_option_stopAtEnd.c_str()]).as<bool>();
@@ -630,7 +645,10 @@ void
 uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
 {
   os <<        "m_prefix"                         << " = " << m_prefix
+#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
+#else
      << "\n" << m_option_checkpointOutputFileName << " = " << m_checkpointOutputFileName
+#endif
      << "\n" << m_option_stopAtEnd                << " = " << m_stopAtEnd
      << "\n" << m_option_dataOutputFileName       << " = " << m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowedSet     << " = ";
