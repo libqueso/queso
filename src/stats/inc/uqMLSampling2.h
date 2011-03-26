@@ -34,15 +34,50 @@ void
 uqMLSamplingClass<P_V,P_M>::checkpointML(
   double                                   currExponent,                   // input
   double                                   currEta,                        // input
-  unsigned int                             currUnifiedRequestedNumSamples, // input
   const uqSequenceOfVectorsClass<P_V,P_M>& currChain,                      // input
   const uqScalarSequenceClass<double>&     currLogLikelihoodValues,        // input
   const uqScalarSequenceClass<double>&     currLogTargetValues)            // input
 {
-  // ernesto: save vector space dimension
-//m_options.m_restartOutput_baseNameForFile, // input
-                   //m_currLevel,                  // input
-                   //m_logEvidenceFactors,         // input
+  //******************************************************************************
+  // Write 'control' file
+  //******************************************************************************
+  if (m_env.fullRank() == 0) {
+    std::ofstream* ofsVar = new std::ofstream((m_options.m_restartOutput_baseNameForFiles + "Control.txt").c_str(), 
+                                              std::ofstream::out | std::ofstream::trunc);
+    *ofsVar << m_currLevel                                                                            << "\n"
+            << m_vectorSpace.dimGlobal()                                                              << "\n"
+            << currExponent                                                                           << "\n"
+            << currEta                                                                                << "\n"
+            << currChain.unifiedSequenceSize()                                                        << "\n"
+            << currLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1) << "\n"
+            << currLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)     << "\n"
+            << m_logEvidenceFactors.size()
+            << std::endl;
+    unsigned int savedPrecision = ofsVar->precision();
+    ofsVar->precision(16);
+    for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
+      *ofsVar << m_logEvidenceFactors[i]
+              << std::endl;
+    }
+    ofsVar->precision(savedPrecision);
+
+    delete ofsVar;
+  }
+  m_env.fullComm().Barrier();
+
+  //******************************************************************************
+  // Write three 'data' files
+  //******************************************************************************
+  char tmpSufix[256];
+  sprintf(tmpSufix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
+
+  currChain.unifiedWriteContents              (m_options.m_restartOutput_baseNameForFiles + "Chain_l" + tmpSufix,
+                                               UQ_FILE_EXTENSION_FOR_HDF_FORMAT);
+  currLogLikelihoodValues.unifiedWriteContents(m_options.m_restartOutput_baseNameForFiles + "LogLike_l" + tmpSufix,
+                                               UQ_FILE_EXTENSION_FOR_HDF_FORMAT);
+  currLogTargetValues.unifiedWriteContents    (m_options.m_restartOutput_baseNameForFiles + "LogTarget_l" + tmpSufix,
+                                               UQ_FILE_EXTENSION_FOR_HDF_FORMAT);
+
   return;
 }
 
@@ -51,16 +86,103 @@ void
 uqMLSamplingClass<P_V,P_M>::restartML(
   double&                            currExponent,                   // output
   double&                            currEta,                        // output
-  unsigned int&                      currUnifiedRequestedNumSamples, // output
   uqSequenceOfVectorsClass<P_V,P_M>& currChain,                      // output
   uqScalarSequenceClass<double>&     currLogLikelihoodValues,        // output
   uqScalarSequenceClass<double>&     currLogTargetValues)            // output
 {
-  // ernesto: check vector space dimension
-  //unsigned int                       m_vectorSpaceDimension;
-//m_options.m_restartInput_baseNameForFile, // input
-              //m_currLevel,                  // output
-              //m_logEvidenceFactors,         // output
+
+  //******************************************************************************
+  // Read 'control' file
+  //******************************************************************************
+  unsigned int subSequenceSize = 1;
+  if (m_env.fullRank() == 0) {
+    std::ifstream* ifsVar = new std::ifstream((m_options.m_restartInput_baseNameForFiles + "Control.txt").c_str(), 
+                                              std::ifstream::in);
+
+    //******************************************************************************
+    // Determine number of lines
+    //******************************************************************************
+    unsigned int numLines = std::count(std::istreambuf_iterator<char>(*ifsVar),
+                                       std::istreambuf_iterator<char>(),
+                                       '\n');
+    ifsVar->seekg(0,std::ios_base::beg);
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "Restart input file has " << numLines
+                              << " lines"
+                              << std::endl;
+    }
+
+    //******************************************************************************
+    // Read all values
+    //******************************************************************************
+    unsigned int vectorSpaceDim         = 0;
+    unsigned int quantity1              = 0;
+    unsigned int quantity2              = 0;
+    unsigned int quantity3              = 0;
+    unsigned int logEvidenceFactorsSize = 0;
+    *ifsVar >> m_currLevel
+            >> vectorSpaceDim
+            >> currExponent
+            >> currEta
+            >> quantity1
+            >> quantity2
+            >> quantity3
+            >> logEvidenceFactorsSize;
+    for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
+      *ifsVar >> m_logEvidenceFactors[i];
+    }
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "Restart input file has the following information:"
+                              << "\n m_currLevel = "      << m_currLevel
+                              << "\n vectorSpaceDim = "   << vectorSpaceDim
+                              << "\n currExponent = "     << currExponent
+                              << "\n currEta = "          << currEta
+                              << "\n quantity1 = "        << quantity1
+                              << "\n quantity2 = "        << quantity2
+                              << "\n quantity3 = "        << quantity3
+                              << "\n logEvFactorsSize = " << logEvidenceFactorsSize;
+      for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
+        *m_env.subDisplayFile() << "\n [" << i << "] = " << m_logEvidenceFactors[i];
+      }
+      *m_env.subDisplayFile() << std::endl;
+    }
+
+#if 0 // For debug only
+    std::string tmpString;
+    for (unsigned int i = 0; i < 11; ++i) {
+      *ifsVar >> tmpString;
+      std::cout << "Just read '" << tmpString << "'" << std::endl;
+    }
+    //while ((lineId < numLines) && (ifsVar->eof() == false)) {
+    //}
+    //ifsVar->ignore(maxCharsPerLine,'\n');
+    UQ_FATAL_TEST_MACRO(lineId != numLines,
+                        m_env.fullRank(),
+                        "readPdlammpsDumpFile()",
+                        "number of lines read is different than pre-established number of lines in the dump file");
+#endif
+    delete ifsVar;
+  }
+  m_env.fullComm().Barrier();
+
+  //******************************************************************************
+  // Read three 'data' files
+  //******************************************************************************
+  char tmpSufix[256];
+  sprintf(tmpSufix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
+
+  currChain.unifiedReadContents              (m_options.m_restartInput_baseNameForFiles + "Chain_l" + tmpSufix,
+                                              UQ_FILE_EXTENSION_FOR_HDF_FORMAT,
+                                              subSequenceSize);
+#if 0
+  currLogLikelihoodValues.unifiedReadContents(m_options.m_restartInput_baseNameForFiles + "LogLike_l" + tmpSufix,
+                                              UQ_FILE_EXTENSION_FOR_HDF_FORMAT,
+                                              subSequenceSize);
+  currLogTargetValues.unifiedReadContents    (m_options.m_restartInput_baseNameForFiles + "LogTarget_l" + tmpSufix,
+                                              UQ_FILE_EXTENSION_FOR_HDF_FORMAT,
+                                              subSequenceSize);
+#endif
   return;
 }
 
@@ -578,7 +700,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
         }
       } while (testResult == false);
       currExponent = nowExponent;
-      m_logEvidenceFactors.push_back(nowUnifiedEvidenceLnFactor);
+      m_logEvidenceFactors.push_back(nowUnifiedEvidenceLnFactor); // restart
 
       unsigned int quantity1 = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {

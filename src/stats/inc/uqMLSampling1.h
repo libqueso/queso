@@ -125,14 +125,12 @@ private:
   // Methods available at uqMLSampling2.h
   void   checkpointML                  (double                                          currExponent,                       // input
                                         double                                          currEta,                            // input
-                                        unsigned int                                    currUnifiedRequestedNumSamples,     // input
                                         const uqSequenceOfVectorsClass<P_V,P_M>&        currChain,                          // input
                                         const uqScalarSequenceClass<double>&            currLogLikelihoodValues,            // input
                                         const uqScalarSequenceClass<double>&            currLogTargetValues);               // input
 
   void   restartML                     (double&                                         currExponent,                       // output
                                         double&                                         currEta,                            // output
-                                        unsigned int&                                   currUnifiedRequestedNumSamples,     // output
                                         uqSequenceOfVectorsClass<P_V,P_M>&              currChain,                          // output
                                         uqScalarSequenceClass<double>&                  currLogLikelihoodValues,            // output
                                         uqScalarSequenceClass<double>&                  currLogTargetValues);               // output
@@ -289,10 +287,10 @@ private:
 
         uqMLSamplingOptionsClass            m_options;
 
-        unsigned int                        m_currLevel; // restate
+        unsigned int                        m_currLevel;           // restart
         unsigned int                        m_currStep;
         double                              m_debugExponent;
-	std::vector<double>                 m_logEvidenceFactors;  // restate
+	std::vector<double>                 m_logEvidenceFactors;  // restart
         double                              m_logEvidence;
         double                              m_meanLogLikelihood;
         double                              m_eig;
@@ -358,16 +356,16 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   //***********************************************************
   // Declaration of Variables
   //***********************************************************
-  double                            currExponent                   = 0.; // restate
-  double                            currEta                        = 1.; // restate
-  unsigned int                      currUnifiedRequestedNumSamples = 0;  // restate
+  double                            currExponent                   = 0.;   // restate
+  double                            currEta                        = 1.;   // restate
+  unsigned int                      currUnifiedRequestedNumSamples = 0;
   uqSequenceOfVectorsClass<P_V,P_M> currChain              (m_vectorSpace, // restate
                                                             0,
                                                             m_options.m_prefix+"curr_chain");
-  uqScalarSequenceClass<double>     currLogLikelihoodValues(m_env, // restate
+  uqScalarSequenceClass<double>     currLogLikelihoodValues(m_env,         // restate
                                                             0,
                                                             "");
-  uqScalarSequenceClass<double>     currLogTargetValues    (m_env, // restate
+  uqScalarSequenceClass<double>     currLogTargetValues    (m_env,         // restate
                                                             0,
                                                             "");
 
@@ -383,14 +381,12 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   uqMLSamplingLevelOptionsClass lastLevelOptions(m_env,(m_options.m_prefix + "last_").c_str());
   lastLevelOptions.scanOptionsValues(&defaultLevelOptions);
 
-#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   if (m_options.m_restartInput_baseNameForFiles != ".") {
-    restartML(currExponent,                   // output
-              currEta,                        // output
-              currUnifiedRequestedNumSamples, // output
-              currChain,                      // output
-              currLogLikelihoodValues,        // output
-              currLogTargetValues);           // output
+    restartML(currExponent,            // output
+              currEta,                 // output
+              currChain,               // output
+              currLogLikelihoodValues, // output
+              currLogTargetValues);    // output
 
     if (currExponent == 1.) {
       if (lastLevelOptions.m_rawChainComputeStats) {
@@ -459,7 +455,6 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     }
   }
   else {
-#endif
     sprintf(tmpSufix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
     uqMLSamplingLevelOptionsClass currOptions(m_env,(m_options.m_prefix + tmpSufix).c_str());
     currOptions.scanOptionsValues(&defaultLevelOptions);
@@ -473,19 +468,16 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     stopAtEndOfLevel = currOptions.m_stopAtEnd;
     bool performCheckpoint = stopAtEndOfLevel;
     if (m_options.m_restartOutput_levelPeriod > 0) {
-      performCheckpoint = ( ((m_currLevel + 1) % m_options.m_restartOutput_levelPeriod) == 0 );
+      performCheckpoint = performCheckpoint || ( ((m_currLevel + 1) % m_options.m_restartOutput_levelPeriod) == 0 );
     }
     if (performCheckpoint) {
-      checkpointML(currExponent,                   // input
-                   currEta,                        // input
-                   currUnifiedRequestedNumSamples, // input
-                   currChain,                      // input
-                   currLogLikelihoodValues,        // input
-                   currLogTargetValues);           // input
+      checkpointML(currExponent,            // input
+                   currEta,                 // input
+                   currChain,               // input
+                   currLogLikelihoodValues, // input
+                   currLogTargetValues);    // input
     }
-#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   }
-#endif
   //std::cout << "In QUESO: end of level 0. Exiting on purpose" << std::endl;
   //exit(1);
 
@@ -525,12 +517,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     // Step 2 of 11: save [chain and corresponding target pdf values] from previous level
     //***********************************************************
     m_currStep = 2;
-    double       prevExponent                   = currExponent;
-    double       prevEta                        = currEta;
-#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
-#else
-    unsigned int prevUnifiedRequestedNumSamples = currUnifiedRequestedNumSamples;
-#endif
+    double       prevExponent       = currExponent;
+    double       prevEta            = currEta;
     uqSequenceOfVectorsClass<P_V,P_M> prevChain(m_vectorSpace,
                                                 0,
                                                 m_options.m_prefix+"prev_chain");
@@ -727,20 +715,17 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     // Perform checkpoint if necessary
     //***********************************************************
     stopAtEndOfLevel = currOptions->m_stopAtEnd;
-#ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
     bool performCheckpoint = stopAtEndOfLevel;
     if (m_options.m_restartOutput_levelPeriod > 0) {
-      performCheckpoint = ( ((m_currLevel + 1) % m_options.m_restartOutput_levelPeriod) == 0 );
+      performCheckpoint = performCheckpoint || ( ((m_currLevel + 1) % m_options.m_restartOutput_levelPeriod) == 0 );
     }
     if (performCheckpoint) {
-      checkpointML(currExponent,                   // input
-                   currEta,                        // input
-                   currUnifiedRequestedNumSamples, // input
-                   currChain,                      // input
-                   currLogLikelihoodValues,        // input
-                   currLogTargetValues);           // input
+      checkpointML(currExponent,            // input
+                   currEta,                 // input
+                   currChain,               // input
+                   currLogLikelihoodValues, // input
+                   currLogTargetValues);    // input
     }
-#endif
 
     //***********************************************************
     // Just free some memory
@@ -843,10 +828,10 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     if (currExponent != 1.) delete currOptions;
   } // end of level while
 
-  UQ_FATAL_TEST_MACRO((currExponent < 1.),
-                      m_env.worldRank(),
-                      "uqMLSamplingClass<P_V,P_M>::generateSequence()",
-                      "exponent has not achieved value '1' even after exiting level loop");
+  //UQ_FATAL_TEST_MACRO((currExponent < 1.),
+  //                    m_env.worldRank(),
+  //                    "uqMLSamplingClass<P_V,P_M>::generateSequence()",
+  //                    "exponent has not achieved value '1' even after exiting level loop");
 
   //***********************************************************
   // Compute information gain
