@@ -32,26 +32,31 @@
 template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::checkpointML(
-  double                                   currExponent,                   // input
-  double                                   currEta,                        // input
-  const uqSequenceOfVectorsClass<P_V,P_M>& currChain,                      // input
-  const uqScalarSequenceClass<double>&     currLogLikelihoodValues,        // input
-  const uqScalarSequenceClass<double>&     currLogTargetValues)            // input
+  double                                   currExponent,            // input
+  double                                   currEta,                 // input
+  const uqSequenceOfVectorsClass<P_V,P_M>& currChain,               // input
+  const uqScalarSequenceClass<double>&     currLogLikelihoodValues, // input
+  const uqScalarSequenceClass<double>&     currLogTargetValues)     // input
 {
   //******************************************************************************
   // Write 'control' file
   //******************************************************************************
+  UQ_FATAL_TEST_MACRO(m_logEvidenceFactors.size() != m_currLevel,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::checkpointML()",
+                      "number of evidence factors is not consistent");
+
   if (m_env.fullRank() == 0) {
     std::ofstream* ofsVar = new std::ofstream((m_options.m_restartOutput_baseNameForFiles + "Control.txt").c_str(), 
                                               std::ofstream::out | std::ofstream::trunc);
-    *ofsVar << m_currLevel                                                                            << "\n"
-            << m_vectorSpace.dimGlobal()                                                              << "\n"
-            << currExponent                                                                           << "\n"
-            << currEta                                                                                << "\n"
-            << currChain.unifiedSequenceSize()                                                        << "\n"
-            << currLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1) << "\n"
-            << currLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)     << "\n"
-            << m_logEvidenceFactors.size()
+    *ofsVar << m_currLevel                                                                            << "\n" // 1
+            << m_vectorSpace.dimGlobal()                                                              << "\n" // 2
+            << currExponent                                                                           << "\n" // 3
+            << currEta                                                                                << "\n" // 4
+            << currChain.unifiedSequenceSize()                                                        << "\n" // 5
+      //<< currLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1) << "\n"
+      //<< currLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)     << "\n"
+            << m_logEvidenceFactors.size()                                                                    // 6
             << std::endl;
     unsigned int savedPrecision = ofsVar->precision();
     ofsVar->precision(16);
@@ -68,15 +73,34 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
   //******************************************************************************
   // Write three 'data' files
   //******************************************************************************
-  char tmpSufix[256];
-  sprintf(tmpSufix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
+  char levelSufix[256];
+  sprintf(levelSufix,"%d",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
 
-  currChain.unifiedWriteContents              (m_options.m_restartOutput_baseNameForFiles + "Chain_l" + tmpSufix,
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "\n CHECKPOINTING chain at level " << m_currLevel
+                            << "\n" << std::endl;
+  }
+  currChain.unifiedWriteContents(m_options.m_restartOutput_baseNameForFiles + "Chain_l" + levelSufix,
+                                 UQ_FILE_EXTENSION_FOR_HDF_FORMAT);
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "\n CHECKPOINTING like at level " << m_currLevel
+                            << "\n" << std::endl;
+  }
+  currLogLikelihoodValues.unifiedWriteContents(m_options.m_restartOutput_baseNameForFiles + "LogLike_l" + levelSufix,
                                                UQ_FILE_EXTENSION_FOR_HDF_FORMAT);
-  currLogLikelihoodValues.unifiedWriteContents(m_options.m_restartOutput_baseNameForFiles + "LogLike_l" + tmpSufix,
-                                               UQ_FILE_EXTENSION_FOR_HDF_FORMAT);
-  currLogTargetValues.unifiedWriteContents    (m_options.m_restartOutput_baseNameForFiles + "LogTarget_l" + tmpSufix,
-                                               UQ_FILE_EXTENSION_FOR_HDF_FORMAT);
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "\n CHECKPOINTING target at level " << m_currLevel
+                            << "\n" << std::endl;
+  }
+  currLogTargetValues.unifiedWriteContents(m_options.m_restartOutput_baseNameForFiles + "LogTarget_l" + levelSufix,
+                                           UQ_FILE_EXTENSION_FOR_HDF_FORMAT);
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "\n CHECKPOINTING done at level " << m_currLevel
+                            << "\n" << std::endl;
+  }
 
   return;
 }
@@ -84,17 +108,16 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
 template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::restartML(
-  double&                            currExponent,                   // output
-  double&                            currEta,                        // output
-  uqSequenceOfVectorsClass<P_V,P_M>& currChain,                      // output
-  uqScalarSequenceClass<double>&     currLogLikelihoodValues,        // output
-  uqScalarSequenceClass<double>&     currLogTargetValues)            // output
+  double&                            currExponent,            // output
+  double&                            currEta,                 // output
+  uqSequenceOfVectorsClass<P_V,P_M>& currChain,               // output
+  uqScalarSequenceClass<double>&     currLogLikelihoodValues, // output
+  uqScalarSequenceClass<double>&     currLogTargetValues)     // output
 {
-
   //******************************************************************************
   // Read 'control' file
   //******************************************************************************
-  unsigned int subSequenceSize = 1;
+  unsigned int subSequenceSize = 0;
   if (m_env.fullRank() == 0) {
     std::ifstream* ifsVar = new std::ifstream((m_options.m_restartInput_baseNameForFiles + "Control.txt").c_str(), 
                                               std::ifstream::in);
@@ -117,17 +140,31 @@ uqMLSamplingClass<P_V,P_M>::restartML(
     //******************************************************************************
     unsigned int vectorSpaceDim         = 0;
     unsigned int quantity1              = 0;
-    unsigned int quantity2              = 0;
-    unsigned int quantity3              = 0;
     unsigned int logEvidenceFactorsSize = 0;
-    *ifsVar >> m_currLevel
-            >> vectorSpaceDim
+    *ifsVar >> m_currLevel;
+    UQ_FATAL_TEST_MACRO(numLines != 6 + m_currLevel,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::restartML()",
+                        "number of lines read is different than pre-established number of lines in control file");
+
+    *ifsVar >> vectorSpaceDim
             >> currExponent
             >> currEta
-            >> quantity1
-            >> quantity2
-            >> quantity3
-            >> logEvidenceFactorsSize;
+            >> quantity1;
+
+    UQ_FATAL_TEST_MACRO((quantity1 % m_env.numSubEnvironments()) != 0,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::restartML()",
+                        "read size of chain should be a multiple of the number of subenvironments");
+    subSequenceSize = ((double) quantity1) / ((double) m_env.numSubEnvironments());
+
+    *ifsVar >> logEvidenceFactorsSize;
+    UQ_FATAL_TEST_MACRO(logEvidenceFactorsSize != m_currLevel,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::restartML()",
+                        "read size of logEvidenceFactors is not consistent");
+    m_logEvidenceFactors.clear();
+    m_logEvidenceFactors.resize(logEvidenceFactorsSize,0.);
     for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
       *ifsVar >> m_logEvidenceFactors[i];
     }
@@ -138,9 +175,7 @@ uqMLSamplingClass<P_V,P_M>::restartML(
                               << "\n vectorSpaceDim = "   << vectorSpaceDim
                               << "\n currExponent = "     << currExponent
                               << "\n currEta = "          << currEta
-                              << "\n quantity1 = "        << quantity1
-                              << "\n quantity2 = "        << quantity2
-                              << "\n quantity3 = "        << quantity3
+                              << "\n quantity1 = "        << quantity1 << " (--> subSequenceSize = " << subSequenceSize << ")"
                               << "\n logEvFactorsSize = " << logEvidenceFactorsSize;
       for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
         *m_env.subDisplayFile() << "\n [" << i << "] = " << m_logEvidenceFactors[i];
@@ -150,39 +185,59 @@ uqMLSamplingClass<P_V,P_M>::restartML(
 
 #if 0 // For debug only
     std::string tmpString;
-    for (unsigned int i = 0; i < 11; ++i) {
+    for (unsigned int i = 0; i < 2; ++i) {
       *ifsVar >> tmpString;
       std::cout << "Just read '" << tmpString << "'" << std::endl;
     }
-    //while ((lineId < numLines) && (ifsVar->eof() == false)) {
-    //}
-    //ifsVar->ignore(maxCharsPerLine,'\n');
-    UQ_FATAL_TEST_MACRO(lineId != numLines,
-                        m_env.fullRank(),
-                        "readPdlammpsDumpFile()",
-                        "number of lines read is different than pre-established number of lines in the dump file");
+    while ((lineId < numLines) && (ifsVar->eof() == false)) {
+    }
+    ifsVar->ignore(maxCharsPerLine,'\n');
 #endif
+
     delete ifsVar;
   }
   m_env.fullComm().Barrier();
 
+  // ernesto
+  //******************************************************************************
+  // MPI_Bcast the information just read
+  //******************************************************************************
+
   //******************************************************************************
   // Read three 'data' files
   //******************************************************************************
-  char tmpSufix[256];
-  sprintf(tmpSufix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
+  char levelSufix[256];
+  sprintf(levelSufix,"%d",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
 
-  currChain.unifiedReadContents              (m_options.m_restartInput_baseNameForFiles + "Chain_l" + tmpSufix,
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "\n RESTARTING chain at level " << m_currLevel
+                            << "\n" << std::endl;
+  }
+  currChain.unifiedReadContents(m_options.m_restartInput_baseNameForFiles + "Chain_l" + levelSufix,
+                                UQ_FILE_EXTENSION_FOR_HDF_FORMAT,
+                                subSequenceSize);
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "\n RESTARTING like at level " << m_currLevel
+                            << "\n" << std::endl;
+  }
+  currLogLikelihoodValues.unifiedReadContents(m_options.m_restartInput_baseNameForFiles + "LogLike_l" + levelSufix,
                                               UQ_FILE_EXTENSION_FOR_HDF_FORMAT,
                                               subSequenceSize);
-#if 0
-  currLogLikelihoodValues.unifiedReadContents(m_options.m_restartInput_baseNameForFiles + "LogLike_l" + tmpSufix,
-                                              UQ_FILE_EXTENSION_FOR_HDF_FORMAT,
-                                              subSequenceSize);
-  currLogTargetValues.unifiedReadContents    (m_options.m_restartInput_baseNameForFiles + "LogTarget_l" + tmpSufix,
-                                              UQ_FILE_EXTENSION_FOR_HDF_FORMAT,
-                                              subSequenceSize);
-#endif
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "\n RESTARTING target at level " << m_currLevel
+                            << "\n" << std::endl;
+  }
+  currLogTargetValues.unifiedReadContents(m_options.m_restartInput_baseNameForFiles + "LogTarget_l" + levelSufix,
+                                          UQ_FILE_EXTENSION_FOR_HDF_FORMAT,
+                                          subSequenceSize);
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "\n RESTARTING done at level " << m_currLevel
+                            << "\n" << std::endl;
+  }
+
   return;
 }
 
@@ -286,16 +341,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
                         m_env.worldRank(),
                         "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                         "currChain (first one) has been generated with invalid size");
-#if 0 // ernesto
-    if (currOptions.m_checkpointOutputFileName != ".") {
-      checkpointML(currExponent,                   // input
-                   currEta,                        // input
-                   currUnifiedRequestedNumSamples, // input
-                   currChain,                      // input
-                   currLogLikelihoodValues,        // input
-                   currLogTargetValues);           // input
-    }
-#endif
+
     double levelRunTime = uqMiscGetEllapsedSeconds(&timevalLevel);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"

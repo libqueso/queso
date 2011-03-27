@@ -37,6 +37,7 @@
 #include <vector>
 #include <complex>
 #include <gsl/gsl_randist.h>
+#include <sys/time.h>
 
 #define SCALAR_SEQUENCE_INIT_MPI_MSG 1
 #define SCALAR_SEQUENCE_SIZE_MPI_MSG 1
@@ -240,6 +241,9 @@ public:
                                                    const std::string&              fileType) const;
         void         unifiedWriteContents         (const std::string&              fileName,
                                                    const std::string&              fileType) const;
+        void         unifiedReadContents          (const std::string&              fileName,
+                                                   const std::string&              fileType,
+                                                   const unsigned int              subSequenceSize);
 private:
         void         copy                         (const uqScalarSequenceClass<T>& src);
         void         extractScalarSeq             (unsigned int                    initialPos,
@@ -3295,12 +3299,39 @@ template <class T>
 void
 uqScalarSequenceClass<T>::unifiedWriteContents(
   const std::string& fileName,
-  const std::string& fileType) const
+  const std::string& inputFileType) const
 {
+  std::string fileType(inputFileType);
+#ifdef QUESO_HAS_HDF5
+  // Do nothing
+#else
+  if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "WARNING in uqScalarSequenceClass<T>::unifiedWriteContents()"
+                              << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                              << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' instead..."
+                              << std::endl;
+    }
+    if (m_env.subRank() == 0) {
+      std::cerr << "WARNING in uqScalarSequenceClass<T>::unifiedWriteContents()"
+                << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' instead..."
+                << std::endl;
+    }
+    fileType = UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT;
+  }
+#endif
+
+  // All processors in 'fullComm' should call this routine...
+
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "Entering uqScalarSequenceClass<T>::unifiedWriteContents()"
-                            << ": worldRank "       << m_env.worldRank()
+                            << ": worldRank "      << m_env.worldRank()
                             << ", subEnvironment " << m_env.subId()
                             << ", subRank "        << m_env.subRank()
                             << ", inter0Rank "     << m_env.inter0Rank()
@@ -3320,45 +3351,439 @@ uqScalarSequenceClass<T>::unifiedWriteContents(
         // bool writeOver = (r == 0);
         bool writeOver = false; // A 'true' causes problems when the user chooses (via options
                                 // in the input file) to use just one file for all outputs.
-        m_env.openUnifiedOutputFile(fileName,
-                                    fileType, // "m or hdf"
-                                    writeOver,
-                                    unifiedFilePtrSet);
+        //std::cout << "\n In uqScalarSequenceClass<T>::unifiedWriteContents(), pos 000 \n" << std::endl;
+        if (m_env.openUnifiedOutputFile(fileName,
+                                        fileType, // "m or hdf"
+                                        writeOver,
+                                        unifiedFilePtrSet)) {
+          //std::cout << "\n In uqScalarSequenceClass<T>::unifiedWriteContents(), pos 001 \n" << std::endl;
 
-        if (r == 0) {
-          *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
-                         << ","                                 << 1
-                         << ");"
-                         << std::endl;
-          *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = [";
-        }
+          unsigned int chainSize = this->subSequenceSize();
+          if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+            if (r == 0) {
+              *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = zeros(" << this->subSequenceSize()*m_env.inter0Comm().NumProc()
+                                        << ","                                 << 1
+                                        << ");"
+                                        << std::endl;
+              *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = [";
+            }
 
-        unsigned int chainSize = this->subSequenceSize();
-        for (unsigned int j = 0; j < chainSize; ++j) {
-          *unifiedFilePtrSet.ofsVar << m_seq[j]
-                         << std::endl;
-        }
+            for (unsigned int j = 0; j < chainSize; ++j) {
+              *unifiedFilePtrSet.ofsVar << m_seq[j]
+                                        << std::endl;
+            }
 
-        m_env.closeFile(unifiedFilePtrSet,fileType);
-      }
+            m_env.closeFile(unifiedFilePtrSet,fileType);
+	  }
+#ifdef QUESO_HAS_HDF5
+          else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+            unsigned int numParams = 1; // m_vectorSpace.dimLocal();
+            if (r == 0) {
+              hid_t datatype = H5Tcopy(H5T_NATIVE_DOUBLE);
+              //std::cout << "In uqScalarSequenceClass<T>::unifiedWriteContents(): h5 case, data type created" << std::endl;
+              hsize_t dimsf[2];
+              dimsf[0] = numParams;
+              dimsf[1] = chainSize;
+              hid_t dataspace = H5Screate_simple(2, dimsf, NULL); // HDF5_rank = 2
+              //std::cout << "In uqScalarSequenceClass<T>::unifiedWriteContents(): h5 case, data space created" << std::endl;
+              hid_t dataset = H5Dcreate2(unifiedFilePtrSet.h5Var,
+                                         "seq_of_vectors",
+                                         datatype,
+                                         dataspace,
+                                         H5P_DEFAULT,  // Link creation property list
+                                         H5P_DEFAULT,  // Dataset creation property list
+                                         H5P_DEFAULT); // Dataset access property list 
+              //std::cout << "In uqScalarSequenceClass<T>::unifiedWriteContents(): h5 case, data set created" << std::endl;
+
+              struct timeval timevalBegin;
+              int iRC = UQ_OK_RC;
+              iRC = gettimeofday(&timevalBegin,NULL);
+
+              double* dataOut[numParams];
+              dataOut[0] = (double*) malloc(numParams*chainSize*sizeof(double));
+              for (unsigned int i = 1; i < numParams; ++i) { // Yes, from '1'
+                dataOut[i] = dataOut[i-1] + chainSize; // Yes, just 'chainSize', not 'chainSize*sizeof(double)'
+              }
+              //std::cout << "In uqScalarSequenceClass<T>::unifiedWriteContents(): h5 case, memory allocated" << std::endl;
+              for (unsigned int j = 0; j < chainSize; ++j) {
+                T tmpScalar = m_seq[j];
+                for (unsigned int i = 0; i < numParams; ++i) {
+                  dataOut[i][j] = tmpScalar;
+                }
+              }
+              //std::cout << "In uqScalarSequenceClass<T>::unifiedWriteContents(): h5 case, memory filled" << std::endl;
+
+              herr_t status;
+              //std::cout << "\n In uqScalarSequenceClass<T>::unifiedWriteContents(), pos 002 \n" << std::endl;
+              status = H5Dwrite(dataset,
+                                H5T_NATIVE_DOUBLE,
+                                H5S_ALL,
+                                H5S_ALL,
+                                H5P_DEFAULT,
+                                (void*) dataOut[0]);
+              //std::cout << "\n In uqScalarSequenceClass<T>::unifiedWriteContents(), pos 003 \n" << std::endl;
+              //std::cout << "In uqScalarSequenceClass<T>::unifiedWriteContents(): h5 case, data written" << std::endl;
+
+              double writeTime = uqMiscGetEllapsedSeconds(&timevalBegin);
+              if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+                *m_env.subDisplayFile() << "Entering uqScalarSequenceClass<T>::unifiedWriteContents()"
+                                        << ": worldRank "      << m_env.worldRank()
+                                        << ", fullRank "       << m_env.fullRank()
+                                        << ", subEnvironment " << m_env.subId()
+                                        << ", subRank "        << m_env.subRank()
+                                        << ", inter0Rank "     << m_env.inter0Rank()
+                                        << ", fileName = "     << fileName
+                                        << ", numParams = "    << numParams
+                                        << ", chainSize = "    << chainSize
+                                        << ", writeTime = "    << writeTime << " seconds"
+                                        << std::endl;
+              }
+
+              H5Dclose(dataset);
+              //std::cout << "In uqScalarSequenceClass<T>::unifiedWriteContents(): h5 case, data set closed" << std::endl;
+              H5Sclose(dataspace);
+              //std::cout << "In uqScalarSequenceClass<T>::unifiedWriteContents(): h5 case, data space closed" << std::endl;
+              H5Tclose(datatype);
+              //std::cout << "In uqScalarSequenceClass<T>::unifiedWriteContents(): h5 case, data type closed" << std::endl;
+              free(dataOut[0]);
+            }
+            else {
+              UQ_FATAL_TEST_MACRO(true,
+                                  m_env.worldRank(),
+                                  "uqScalarSequenceClass<T>::unifiedWriteContents()",
+                                  "hdf file type not supported for multiple subenvironments yet");
+            }
+          }
+#endif
+        } // if (m_env.openUnifiedOutputFile())
+        //std::cout << "\n In uqScalarSequenceClass<T>::unifiedWriteContents(), pos 004 \n" << std::endl;
+      } // if (m_env.inter0Rank() == (int) r)
       m_env.inter0Comm().Barrier();
-    }
+    } // for r
 
     if (m_env.inter0Rank() == 0) {
-      uqFilePtrSetStruct unifiedFilePtrSet;
-      m_env.openUnifiedOutputFile(fileName,
-                                  fileType,
-                                  false, // Yes, 'writeOver = false' in order to close the array for matlab
-                                  unifiedFilePtrSet);
-      *unifiedFilePtrSet.ofsVar << "];\n";
-      m_env.closeFile(unifiedFilePtrSet,fileType);
+      if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+        uqFilePtrSetStruct unifiedFilePtrSet;
+        if (m_env.openUnifiedOutputFile(fileName,
+                                        fileType,
+                                        false, // Yes, 'writeOver = false' in order to close the array for matlab
+                                        unifiedFilePtrSet)) {
+          *unifiedFilePtrSet.ofsVar << "];\n";
+          m_env.closeFile(unifiedFilePtrSet,fileType);
+        }
+      }
+      else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+        // Do nothing
+      }
+      else {
+        UQ_FATAL_TEST_MACRO(true,
+                            m_env.worldRank(),
+                            "uqScalarSequenceClass<T>::unifiedWriteContents(), final",
+                            "invalid file type");
+      }
     }
-  }
+  } // if (m_env.inter0Rank() >= 0)
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "Leaving uqScalarSequenceClass<T>::unifiedWriteContents()"
                             << ", fileName = " << fileName
                             << ", fileType = " << fileType
+                            << std::endl;
+  }
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::unifiedReadContents(
+  const std::string& fileName,
+  const std::string& inputFileType,
+  const unsigned int subReadSize)
+{
+  std::string fileType(inputFileType);
+#ifdef QUESO_HAS_HDF5
+  // Do nothing
+#else
+  if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "WARNING in uqScalarSequenceClass<T>::unifiedReadContents()"
+                              << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                              << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                              << "' instead..."
+                              << std::endl;
+    }
+    if (m_env.subRank() == 0) {
+      std::cerr << "WARNING in uqScalarSequenceClass<T>::unifiedReadContents()"
+                << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' has been requested, but this QUESO library has not been built with 'hdf5'"
+                << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
+                << "' instead..."
+                << std::endl;
+    }
+    fileType = UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT;
+  }
+#endif
+
+  //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqScalarSequenceClass<T>::unifiedReadContents()"
+                            << ": worldRank "                      << m_env.worldRank()
+                            << ", fullRank "                       << m_env.fullRank()
+                            << ", subEnvironment "                 << m_env.subId()
+                            << ", subRank "                        << m_env.subRank()
+                            << ", inter0Rank "                     << m_env.inter0Rank()
+      //<< ", m_env.inter0Comm().NumProc() = " << m_env.inter0Comm().NumProc()
+                            << ", fileName = "                     << fileName
+                            << ", subReadSize = "                  << subReadSize
+      //<< ", unifiedReadSize = "              << unifiedReadSize
+                            << std::endl;
+  }
+
+  this->resizeSequence(subReadSize);
+
+  if (m_env.inter0Rank() >= 0) {
+    double unifiedReadSize = subReadSize*m_env.inter0Comm().NumProc();
+
+    // In the logic below, the id of a line' begins with value 0 (zero)
+    unsigned int idOfMyFirstLine = 1 + m_env.inter0Rank()*subReadSize;
+    unsigned int idOfMyLastLine = (1 + m_env.inter0Rank())*subReadSize;
+    unsigned int numParams = 1; // this->vectorSizeLocal();
+
+    for (unsigned int r = 0; r < (unsigned int) m_env.inter0Comm().NumProc(); ++r) { // "m or hdf"
+      if (m_env.inter0Rank() == (int) r) {
+        // My turn
+        uqFilePtrSetStruct unifiedFilePtrSet;
+        if (m_env.openUnifiedInputFile(fileName,
+                                       fileType,
+                                       unifiedFilePtrSet)) {
+          if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
+            if (r == 0) {
+              // Read number of chain positions in the file by taking care of the first line,
+              // which resembles something like 'variable_name = zeros(n_positions,m_params);'
+	      std::string tmpString;
+
+              // Read 'variable name' string
+              *unifiedFilePtrSet.ifsVar >> tmpString;
+	      //std::cout << "Just read '" << tmpString << "'" << std::endl;
+
+              // Read '=' sign
+              *unifiedFilePtrSet.ifsVar >> tmpString;
+  	      //std::cout << "Just read '" << tmpString << "'" << std::endl;
+              UQ_FATAL_TEST_MACRO(tmpString != "=",
+                                  m_env.worldRank(),
+                                  "uqScalarSequenceClass<T>::unifiedReadContents()",
+                                  "string should be the '=' sign");
+
+              // Read 'zeros(n_positions,n_params)' string
+              *unifiedFilePtrSet.ifsVar >> tmpString;
+	      //std::cout << "Just read '" << tmpString << "'" << std::endl;
+              unsigned int posInTmpString = 6;
+
+              // Isolate 'n_positions' in a string
+              char nPositionsString[tmpString.size()-posInTmpString+1];
+              unsigned int posInPositionsString = 0;
+              do {
+                UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+                                    m_env.worldRank(),
+                                    "uqScalarSequenceClass<T>::unifiedReadContents()",
+                                    "symbol ',' not found in first line of file");
+                nPositionsString[posInPositionsString++] = tmpString[posInTmpString++];
+              } while (tmpString[posInTmpString] != ',');
+              nPositionsString[posInPositionsString] = '\0';
+
+              // Isolate 'n_params' in a string
+              posInTmpString++; // Avoid reading ',' char
+              char nParamsString[tmpString.size()-posInTmpString+1];
+              unsigned int posInParamsString = 0;
+              do {
+                UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+                                    m_env.worldRank(),
+                                    "uqScalarSequenceClass<T>::unifiedReadContents()",
+                                    "symbol ')' not found in first line of file");
+                nParamsString[posInParamsString++] = tmpString[posInTmpString++];
+              } while (tmpString[posInTmpString] != ')');
+              nParamsString[posInParamsString] = '\0';
+
+              // Convert 'n_positions' and 'n_params' strings to numbers
+              unsigned int sizeOfChainInFile = (unsigned int) strtod(nPositionsString,NULL);
+              unsigned int numParamsInFile   = (unsigned int) strtod(nParamsString,   NULL);
+              if (m_env.subDisplayFile()) {
+                *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedReadContents()"
+                                        << ": worldRank "           << m_env.worldRank()
+                                        << ", fullRank "            << m_env.fullRank()
+                                        << ", sizeOfChainInFile = " << sizeOfChainInFile
+                                        << ", numParamsInFile = "   << numParamsInFile
+                                        << std::endl;
+              }
+
+              // Check if [size of chain in file] >= [requested unified sequence size]
+              UQ_FATAL_TEST_MACRO(sizeOfChainInFile < unifiedReadSize,
+                                  m_env.worldRank(),
+                                  "uqScalarSequenceClass<T>::unifiedReadContents()",
+                                  "size of chain in file is not big enough");
+
+              // Check if [num params in file] == [num params in current chain]
+              UQ_FATAL_TEST_MACRO(numParamsInFile != numParams,
+                                  m_env.worldRank(),
+                                  "uqScalarSequenceClass<T>::unifiedReadContents()",
+                                  "number of parameters of chain in file is different than number of parameters in this chain object");
+            } // if (r == 0)
+
+            // Code common to any core in 'inter0Comm', including core of rank 0
+            unsigned int maxCharsPerLine = 64*numParams; // Up to about 60 characters to represent each parameter value
+
+            unsigned int lineId = 0;
+            while (lineId < idOfMyFirstLine) {
+              unifiedFilePtrSet.ifsVar->ignore(maxCharsPerLine,'\n');
+              lineId++;
+            };
+
+            if (r == 0) {
+              // Take care of initial part of the first data line,
+              // which resembles something like 'variable_name = [value1 value2 ...'
+	      std::string tmpString;
+
+              // Read 'variable name' string
+              *unifiedFilePtrSet.ifsVar >> tmpString;
+  	      //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
+
+              // Read '=' sign
+              *unifiedFilePtrSet.ifsVar >> tmpString;
+	      //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
+              UQ_FATAL_TEST_MACRO(tmpString != "=",
+                                  m_env.worldRank(),
+                                  "uqScalarSequenceClass<T>::unifiedReadContents()",
+                                  "in core 0, string should be the '=' sign");
+
+              // Take into account the ' [' portion
+	      std::streampos tmpPos = unifiedFilePtrSet.ifsVar->tellg();
+              unifiedFilePtrSet.ifsVar->seekg(tmpPos+(std::streampos)2);
+            }
+
+            T tmpScalar(0.); // V tmpVec(m_vectorSpace.zeroVector());
+            while (lineId <= idOfMyLastLine) {
+              for (unsigned int i = 0; i < numParams; ++i) {
+                *unifiedFilePtrSet.ifsVar >> tmpScalar;
+              }
+              m_seq[lineId - idOfMyFirstLine] = tmpScalar;
+              lineId++;
+            };
+          }
+#ifdef QUESO_HAS_HDF5
+          else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
+            if (r == 0) {
+              hid_t dataset = H5Dopen2(unifiedFilePtrSet.h5Var,
+                                       "seq_of_vectors",
+                                       H5P_DEFAULT); // Dataset access property list 
+              hid_t datatype  = H5Dget_type(dataset);
+              H5T_class_t t_class = H5Tget_class(datatype);
+              UQ_FATAL_TEST_MACRO(t_class != H5T_FLOAT,
+                                  m_env.worldRank(),
+                                  "uqScalarSequenceClass<T>::unifiedReadContents()",
+                                  "t_class is not H5T_DOUBLE");
+              hid_t dataspace = H5Dget_space(dataset);
+              int   rank      = H5Sget_simple_extent_ndims(dataspace);
+              UQ_FATAL_TEST_MACRO(rank != 2,
+                                  m_env.worldRank(),
+                                  "uqScalarSequenceClass<T>::unifiedReadContents()",
+                                  "hdf rank is not 2");
+              hsize_t dims_in[2];
+              int     status_n;
+              status_n  = H5Sget_simple_extent_dims(dataspace, dims_in, NULL);
+	      //std::cout << "In uqScalarSequenceClass<T>::unifiedReadContents()"
+              //          << ": dims_in[0] = " << dims_in[0]
+              //          << ", dims_in[1] = " << dims_in[1]
+              //          << std::endl;
+              UQ_FATAL_TEST_MACRO(dims_in[0] != numParams,
+                                  m_env.worldRank(),
+                                  "uqScalarSequenceClass<T>::unifiedReadContents()",
+                                  "dims_in[0] is not equal to 'numParams'");
+              UQ_FATAL_TEST_MACRO(dims_in[1] < subReadSize,
+                                  m_env.worldRank(),
+                                  "uqScalarSequenceClass<T>::unifiedReadContents()",
+                                  "dims_in[1] is smaller that requested 'subReadSize'");
+
+              struct timeval timevalBegin;
+              int iRC = UQ_OK_RC;
+              iRC = gettimeofday(&timevalBegin,NULL);
+
+              unsigned int chainSizeIn = (unsigned int) dims_in[1];
+              double* dataIn[numParams];
+              dataIn[0] = (double*) malloc(numParams*chainSizeIn*sizeof(double));
+              for (unsigned int i = 1; i < numParams; ++i) { // Yes, from '1'
+                dataIn[i] = dataIn[i-1] + chainSizeIn; // Yes, just 'chainSizeIn', not 'chainSizeIn*sizeof(double)'
+              }
+              //std::cout << "In uqScalarSequenceClass<T>::unifiedReadContents(): h5 case, memory allocated" << std::endl;
+              herr_t status;
+              status = H5Dread(dataset,
+                               H5T_NATIVE_DOUBLE,
+                               H5S_ALL,
+                               dataspace,
+                               H5P_DEFAULT,
+                               dataIn[0]);
+              //std::cout << "In uqScalarSequenceClass<T>::unifiedReadContents(): h5 case, data read" << std::endl;
+              T tmpScalar(0.); // V tmpVec(m_vectorSpace.zeroVector());
+              for (unsigned int j = 0; j < subReadSize; ++j) { // Yes, 'subReadSize', not 'chainSizeIn'
+                for (unsigned int i = 0; i < numParams; ++i) {
+                  tmpScalar = dataIn[i][j];
+                }
+                m_seq[j] = tmpScalar;
+              }
+
+              double readTime = uqMiscGetEllapsedSeconds(&timevalBegin);
+              if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+                *m_env.subDisplayFile() << "Entering uqScalarSequenceClass<T>::unifiedReadContents()"
+                                        << ": worldRank "      << m_env.worldRank()
+                                        << ", fullRank "       << m_env.fullRank()
+                                        << ", subEnvironment " << m_env.subId()
+                                        << ", subRank "        << m_env.subRank()
+                                        << ", inter0Rank "     << m_env.inter0Rank()
+                                        << ", fileName = "     << fileName
+                                        << ", numParams = "    << numParams
+                                        << ", chainSizeIn = "  << chainSizeIn
+                                        << ", subReadSize = "  << subReadSize
+                                        << ", readTime = "     << readTime << " seconds"
+                                        << std::endl;
+              }
+
+              H5Sclose(dataspace);
+              H5Tclose(datatype);
+              H5Dclose(dataset);
+              free(dataIn[0]);
+            }
+            else {
+              UQ_FATAL_TEST_MACRO(true,
+                                  m_env.worldRank(),
+                                  "uqScalarSequenceClass<T>::unifiedReadContents()",
+                                  "hdf file type not supported for multiple subenvironments yet");
+            }
+          }
+#endif
+          else {
+            UQ_FATAL_TEST_MACRO(true,
+                                m_env.worldRank(),
+                                "uqScalarSequenceClass<T>::unifiedReadContents()",
+                                "invalid file type");
+          }
+          m_env.closeFile(unifiedFilePtrSet,fileType);
+        } // if (m_env.openUnifiedInputFile())
+      } // if (m_env.inter0Rank() == (int) r)
+      m_env.inter0Comm().Barrier();
+    } // for r
+  } // if (m_env.inter0Rank() >= 0)
+  else {
+    T tmpScalar(0.); // V tmpVec(m_vectorSpace.zeroVector());
+    for (unsigned int i = 1; i < subReadSize; ++i) {
+      m_seq[i] = tmpScalar;
+    }
+  }
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqScalarSequenceClass<T>::unifiedReadContents()"
+                            << ", fileName = " << fileName
                             << std::endl;
   }
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...

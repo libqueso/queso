@@ -370,7 +370,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                                             "");
 
   bool stopAtEndOfLevel = false;
-  char tmpSufix[256];
+  char levelPrefix[256];
 
   //***********************************************************
   // Take care of first level (level '0')
@@ -397,16 +397,16 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                              false,
                              filePtrSet);
 
-        workingChain.computeStatistics(*lastLevelOptions.m_rawChainStatisticalOptionsObj,
-                                       filePtrSet.ofsVar);
+        currChain.computeStatistics(*lastLevelOptions.m_rawChainStatisticalOptionsObj,
+                                    filePtrSet.ofsVar);
 
         m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
       }
 
       if (lastLevelOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-        workingChain.unifiedWriteContents             (lastLevelOptions.m_rawChainDataOutputFileName,lastLevelOptions.m_rawChainDataOutputFileType); // KAUST5
-        //currLogLikelihoodValues.unifiedWriteContents(lastLevelOptions.m_rawChainDataOutputFileName);
-        //currLogTargetValues.unifiedWriteContents    (lastLevelOptions.m_rawChainDataOutputFileName);
+        currChain.unifiedWriteContents              (lastLevelOptions.m_rawChainDataOutputFileName,lastLevelOptions.m_rawChainDataOutputFileType);
+        currLogLikelihoodValues.unifiedWriteContents(lastLevelOptions.m_rawChainDataOutputFileName,lastLevelOptions.m_rawChainDataOutputFileType);
+        currLogTargetValues.unifiedWriteContents    (lastLevelOptions.m_rawChainDataOutputFileName,lastLevelOptions.m_rawChainDataOutputFileType);
       }
 
       if (lastLevelOptions.m_filteredChainGenerate) {
@@ -417,46 +417,46 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                              false,
                              filePtrSet);
 
-        unsigned int filterInitialPos = (unsigned int) (lastLevelOptions.m_filteredChainDiscardedPortion * (double) workingChain.subSequenceSize());
+        unsigned int filterInitialPos = (unsigned int) (lastLevelOptions.m_filteredChainDiscardedPortion * (double) currChain.subSequenceSize());
         unsigned int filterSpacing    = lastLevelOptions.m_filteredChainLag;
         if (filterSpacing == 0) {
-          workingChain.computeFilterParams(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
-                                           filePtrSet.ofsVar,
-                                           filterInitialPos,
-                                           filterSpacing);
+          currChain.computeFilterParams(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
+                                        filePtrSet.ofsVar,
+                                        filterInitialPos,
+                                        filterSpacing);
         }
 
         // Filter positions from the converged portion of the chain
-        workingChain.filter(filterInitialPos,
-                            filterSpacing);
-        workingChain.setName(lastLevelOptions.m_prefix + "filtChain");
+        currChain.filter(filterInitialPos,
+                         filterSpacing);
+        currChain.setName(lastLevelOptions.m_prefix + "filtChain");
 
-        //currLogLikelihoodValues.filter(filterInitialPos,
-        //                               filterSpacing);
-        //currLogLikelihoodValues.setName(lastLevelOptions.m_prefix + "filtLogLikelihood");
+        currLogLikelihoodValues.filter(filterInitialPos,
+                                       filterSpacing);
+        currLogLikelihoodValues.setName(lastLevelOptions.m_prefix + "filtLogLikelihood");
 
-        //currLogTargetValues.filter(filterInitialPos,
-        //                           filterSpacing);
-        //currLogTargetValues.setName(lastLevelOptions.m_prefix + "filtLogTarget");
+        currLogTargetValues.filter(filterInitialPos,
+                                   filterSpacing);
+        currLogTargetValues.setName(lastLevelOptions.m_prefix + "filtLogTarget");
 
         if (lastLevelOptions.m_filteredChainComputeStats) {
-          workingChain.computeStatistics(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
-                                         filePtrSet.ofsVar);
+          currChain.computeStatistics(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
+                                      filePtrSet.ofsVar);
         }
 
         m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
 
         if (lastLevelOptions.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-          workingChain.unifiedWriteContents              (lastLevelOptions.m_filteredChainDataOutputFileName,lastLevelOptions.m_filteredChainDataOutputFileType);
-          //currLogLikelihoodValues.unifiedWriteContents(lastLevelOptions.m_filteredChainDataOutputFileName);
-          //currLogTargetValues.unifiedWriteContents    (lastLevelOptions.m_filteredChainDataOutputFileName);
+          currChain.unifiedWriteContents              (lastLevelOptions.m_filteredChainDataOutputFileName,lastLevelOptions.m_filteredChainDataOutputFileType);
+          currLogLikelihoodValues.unifiedWriteContents(lastLevelOptions.m_filteredChainDataOutputFileName,lastLevelOptions.m_filteredChainDataOutputFileType);
+          currLogTargetValues.unifiedWriteContents    (lastLevelOptions.m_filteredChainDataOutputFileName,lastLevelOptions.m_filteredChainDataOutputFileType);
         }
       } // if (lastLevelOptions.m_filteredChainGenerate)
     }
   }
   else {
-    sprintf(tmpSufix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
-    uqMLSamplingLevelOptionsClass currOptions(m_env,(m_options.m_prefix + tmpSufix).c_str());
+    sprintf(levelPrefix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
+    uqMLSamplingLevelOptionsClass currOptions(m_env,(m_options.m_prefix + levelPrefix).c_str());
     currOptions.scanOptionsValues(&defaultLevelOptions);
 
     generateSequence_Level0_all(currOptions,                    // input
@@ -504,8 +504,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     // Step 1 of 11: read options
     //***********************************************************
     m_currStep = 1;
-    sprintf(tmpSufix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
-    uqMLSamplingLevelOptionsClass* currOptions = new uqMLSamplingLevelOptionsClass(m_env,(m_options.m_prefix + tmpSufix).c_str());
+    sprintf(levelPrefix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
+    uqMLSamplingLevelOptionsClass* currOptions = new uqMLSamplingLevelOptionsClass(m_env,(m_options.m_prefix + levelPrefix).c_str());
     currOptions->scanOptionsValues(&defaultLevelOptions);
 
     if (m_env.inter0Rank() >= 0) {
