@@ -49,20 +49,18 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
   if (m_env.fullRank() == 0) {
     std::ofstream* ofsVar = new std::ofstream((m_options.m_restartOutput_baseNameForFiles + "Control.txt").c_str(), 
                                               std::ofstream::out | std::ofstream::trunc);
-    *ofsVar << m_currLevel                                                                            << "\n" // 1
-            << m_vectorSpace.dimGlobal()                                                              << "\n" // 2
-            << currExponent                                                                           << "\n" // 3
-            << currEta                                                                                << "\n" // 4
-            << currChain.unifiedSequenceSize()                                                        << "\n" // 5
-      //<< currLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1) << "\n"
-      //<< currLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)     << "\n"
-            << m_logEvidenceFactors.size()                                                                    // 6
-            << std::endl;
+    *ofsVar << m_currLevel                                                                            << std::endl  // 1
+            << m_vectorSpace.dimGlobal()                                                              << std::endl  // 2
+            << currExponent                                                                           << std::endl  // 3
+            << currEta                                                                                << std::endl  // 4
+            << currChain.unifiedSequenceSize()                                                        << std::endl; // 5 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
+      //<< currLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)
+      //<< currLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)
+      //<< m_logEvidenceFactors.size()
     unsigned int savedPrecision = ofsVar->precision();
     ofsVar->precision(16);
     for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
-      *ofsVar << m_logEvidenceFactors[i]
-              << std::endl;
+      *ofsVar << m_logEvidenceFactors[i] << std::endl;
     }
     ofsVar->precision(savedPrecision);
 
@@ -117,7 +115,8 @@ uqMLSamplingClass<P_V,P_M>::restartML(
   //******************************************************************************
   // Read 'control' file
   //******************************************************************************
-  unsigned int subSequenceSize = 0;
+  unsigned int vectorSpaceDim  = 0;
+  unsigned int quantity1       = 0;
   if (m_env.fullRank() == 0) {
     std::ifstream* ifsVar = new std::ifstream((m_options.m_restartInput_baseNameForFiles + "Control.txt").c_str(), 
                                               std::ifstream::in);
@@ -138,33 +137,18 @@ uqMLSamplingClass<P_V,P_M>::restartML(
     //******************************************************************************
     // Read all values
     //******************************************************************************
-    unsigned int vectorSpaceDim         = 0;
-    unsigned int quantity1              = 0;
-    unsigned int logEvidenceFactorsSize = 0;
-    *ifsVar >> m_currLevel;
-    UQ_FATAL_TEST_MACRO(numLines != 6 + m_currLevel,
+    *ifsVar >> m_currLevel; // 1
+    UQ_FATAL_TEST_MACRO(numLines != (ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA + m_currLevel),
                         m_env.fullRank(),
                         "uqMLSamplingClass<P_V,P_M>::restartML()",
                         "number of lines read is different than pre-established number of lines in control file");
 
-    *ifsVar >> vectorSpaceDim
-            >> currExponent
-            >> currEta
-            >> quantity1;
-
-    UQ_FATAL_TEST_MACRO((quantity1 % m_env.numSubEnvironments()) != 0,
-                        m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::restartML()",
-                        "read size of chain should be a multiple of the number of subenvironments");
-    subSequenceSize = ((double) quantity1) / ((double) m_env.numSubEnvironments());
-
-    *ifsVar >> logEvidenceFactorsSize;
-    UQ_FATAL_TEST_MACRO(logEvidenceFactorsSize != m_currLevel,
-                        m_env.fullRank(),
-                        "uqMLSamplingClass<P_V,P_M>::restartML()",
-                        "read size of logEvidenceFactors is not consistent");
     m_logEvidenceFactors.clear();
-    m_logEvidenceFactors.resize(logEvidenceFactorsSize,0.);
+    m_logEvidenceFactors.resize(m_currLevel,0.);
+    *ifsVar >> vectorSpaceDim // 2
+            >> currExponent   // 3
+            >> currEta        // 4
+            >> quantity1;     // 5 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
     for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
       *ifsVar >> m_logEvidenceFactors[i];
     }
@@ -175,8 +159,7 @@ uqMLSamplingClass<P_V,P_M>::restartML(
                               << "\n vectorSpaceDim = "   << vectorSpaceDim
                               << "\n currExponent = "     << currExponent
                               << "\n currEta = "          << currEta
-                              << "\n quantity1 = "        << quantity1 << " (--> subSequenceSize = " << subSequenceSize << ")"
-                              << "\n logEvFactorsSize = " << logEvidenceFactorsSize;
+                              << "\n quantity1 = "        << quantity1;
       for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
         *m_env.subDisplayFile() << "\n [" << i << "] = " << m_logEvidenceFactors[i];
       }
@@ -195,13 +178,70 @@ uqMLSamplingClass<P_V,P_M>::restartML(
 #endif
 
     delete ifsVar;
-  }
+  } // if (m_env.fullRank() == 0)
   m_env.fullComm().Barrier();
 
-  // ernesto
   //******************************************************************************
-  // MPI_Bcast the information just read
+  // MPI_Bcast 'm_currLevel'
   //******************************************************************************
+  unsigned int tmpUint = (unsigned int) m_currLevel;
+  m_env.fullComm().Bcast((void *) &tmpUint, (int) 1, uqRawValue_MPI_UNSIGNED, 0, // Yes, 'fullComm'
+                         "uqMLSamplingClass<P_V,P_M>::restartML()",
+                         "failed MPI.Bcast() for m_currLevel");
+
+  //******************************************************************************
+  // MPI_Bcast the rest of the information just read
+  //******************************************************************************
+  std::vector<double> tmpData(ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA-1+m_currLevel,0.);
+  if (m_env.fullRank() == 0) {
+    tmpData[0] = vectorSpaceDim;
+    tmpData[1] = currExponent;
+    tmpData[2] = currEta;
+    tmpData[3] = quantity1;
+    for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
+      tmpData[ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA-1+i] = m_logEvidenceFactors[i];
+    }
+  }
+  else {
+    m_logEvidenceFactors.clear();
+    m_logEvidenceFactors.resize(m_currLevel,0.);
+  }
+  m_env.fullComm().Bcast((void *) &tmpData[0], (int) tmpData.size(), uqRawValue_MPI_DOUBLE, 0, // Yes, 'fullComm'
+                         "uqMLSamplingClass<P_V,P_M>::restartML()",
+                         "failed MPI.Bcast() for rest of information read from input file");
+  if (m_env.fullRank() != 0) {
+    vectorSpaceDim = tmpData[0];
+    currExponent   = tmpData[1];
+    currEta        = tmpData[2];
+    quantity1      = tmpData[3];
+    for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
+      m_logEvidenceFactors[i] = tmpData[ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA-1+i];
+    }
+  }
+
+  //******************************************************************************
+  // Process read data in all MPI nodes now
+  //******************************************************************************
+  UQ_FATAL_TEST_MACRO(vectorSpaceDim != m_vectorSpace.dimGlobal(),
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::restartML()",
+                      "read vector space dimension is not consistent");
+  UQ_FATAL_TEST_MACRO((currExponent < 0.) || (currExponent > 1.),
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::restartML()",
+                      "read currExponent is not consistent");
+  UQ_FATAL_TEST_MACRO((quantity1 % m_env.numSubEnvironments()) != 0,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::restartML()",
+                      "read size of chain should be a multiple of the number of subenvironments");
+  unsigned int subSequenceSize = 0;
+  subSequenceSize = ((double) quantity1) / ((double) m_env.numSubEnvironments());
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "Restart input file has the following information"
+                            << ": subSequenceSize = " << subSequenceSize
+                            << std::endl;
+  }
 
   //******************************************************************************
   // Read three 'data' files

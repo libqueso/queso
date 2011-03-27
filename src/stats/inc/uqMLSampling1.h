@@ -46,6 +46,8 @@
 #include <sys/time.h>
 #include <fstream>
 
+#define ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA 5
+
 //---------------------------------------------------------
 
 // aqui 1
