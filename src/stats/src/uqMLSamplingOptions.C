@@ -31,11 +31,13 @@
 
 uqMLSamplingOptionsClass::uqMLSamplingOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
   :
-  m_prefix                               ((std::string)(prefix) + "ml_"                         ),
+  m_prefix                               ((std::string)(prefix) + "ml_"                        ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
-  m_restartOutput_levelPeriod            (UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV        ),
-  m_restartOutput_baseNameForFiles       (UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV ),
-  m_restartInput_baseNameForFiles        (UQ_ML_SAMPLING_RESTART_INPUT_BASE_NAME_FOR_FILES_ODV  ),
+  m_restartOutput_levelPeriod            (UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV       ),
+  m_restartOutput_baseNameForFiles       (UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV),
+  m_restartOutput_fileType               (UQ_ML_SAMPLING_RESTART_OUTPUT_FILE_TYPE_ODV          ),
+  m_restartInput_baseNameForFiles        (UQ_ML_SAMPLING_RESTART_INPUT_BASE_NAME_FOR_FILES_ODV ),
+  m_restartInput_fileType                (UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV           ),
 #else
   m_restartInputFileName                 (UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV),
   m_restartInputFileType                 (UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV),
@@ -49,7 +51,9 @@ uqMLSamplingOptionsClass::uqMLSamplingOptionsClass(const uqBaseEnvironmentClass&
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   m_option_restartOutput_levelPeriod     (m_prefix + "restartOutput_levelPeriod"     ),
   m_option_restartOutput_baseNameForFiles(m_prefix + "restartOutput_baseNameForFiles"),
+  m_option_restartOutput_fileType        (m_prefix + "restartOutput_fileType"        ),
   m_option_restartInput_baseNameForFiles (m_prefix + "restartInput_baseNameForFiles" ),
+  m_option_restartInput_fileType         (m_prefix + "restartInput_fileType"         ),
 #else
   m_option_restartInputFileName          (m_prefix + "restartInputFileName"),
   m_option_restartInputFileType          (m_prefix + "restartInputFileType"),
@@ -87,18 +91,20 @@ void
 uqMLSamplingOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
-    (m_option_help.c_str(),                                                                                                                             "produce help msg for ML sampling options"      )
+    (m_option_help.c_str(),                                                                                                                            "produce help msg for ML sampling options"      )
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
-    (m_option_restartOutput_levelPeriod.c_str(),      po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV),         "restartOutput_levelPeriod"                     )
-    (m_option_restartOutput_baseNameForFiles.c_str(), po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV),  "restartOutput_baseNameForFiles"                )
-    (m_option_restartInput_baseNameForFiles.c_str(),  po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_BASE_NAME_FOR_FILES_ODV),   "restartInput_baseNameForFiles"                 )
+    (m_option_restartOutput_levelPeriod.c_str(),      po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV),        "restartOutput_levelPeriod"                     )
+    (m_option_restartOutput_baseNameForFiles.c_str(), po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV), "restartOutput_baseNameForFiles"                )
+    (m_option_restartOutput_fileType.c_str(),         po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_FILE_TYPE_ODV),           "restartOutput_fileType"                        )
+    (m_option_restartInput_baseNameForFiles.c_str(),  po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_BASE_NAME_FOR_FILES_ODV),  "restartInput_baseNameForFiles"                 )
+    (m_option_restartInput_fileType.c_str(),          po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV),            "restartInput_fileType"                         )
 #else
-    (m_option_restartInputFileName.c_str(),           po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV),             "name of restart input file"                    )
-    (m_option_restartInputFileType.c_str(),           po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV),             "type of restart input file"                    )
-    (m_option_restartChainSize.c_str(),               po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_RESTART_CHAIN_SIZE_ODV),                  "size of restart chain"                         )
+    (m_option_restartInputFileName.c_str(),           po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV),            "name of restart input file"                    )
+    (m_option_restartInputFileType.c_str(),           po::value<std::string >()->default_value(UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV),            "type of restart input file"                    )
+    (m_option_restartChainSize.c_str(),               po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_RESTART_CHAIN_SIZE_ODV),                 "size of restart chain"                         )
 #endif
-    (m_option_dataOutputFileName.c_str(),             po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ),             "name of generic output file"                   )
-    (m_option_dataOutputAllowedSet.c_str(),           po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV),             "subEnvs that will write to generic output file")
+    (m_option_dataOutputFileName.c_str(),             po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV  ),            "name of generic output file"                   )
+    (m_option_dataOutputAllowedSet.c_str(),           po::value<std::string >()->default_value(UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV),            "subEnvs that will write to generic output file")
   ;
 
   return;
@@ -123,8 +129,16 @@ uqMLSamplingOptionsClass::getMyOptionValues(po::options_description& optionsDesc
     m_restartOutput_baseNameForFiles = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartOutput_baseNameForFiles.c_str()]).as<std::string>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_restartOutput_fileType.c_str())) {
+    m_restartOutput_fileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartOutput_fileType.c_str()]).as<std::string>();
+  }
+
   if (m_env.allOptionsMap().count(m_option_restartInput_baseNameForFiles.c_str())) {
     m_restartInput_baseNameForFiles = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartInput_baseNameForFiles.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_restartInput_fileType.c_str())) {
+    m_restartInput_fileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartInput_fileType.c_str()]).as<std::string>();
   }
 #else
   if (m_env.allOptionsMap().count(m_option_restartInputFileName.c_str())) {
@@ -165,7 +179,9 @@ uqMLSamplingOptionsClass::print(std::ostream& os) const
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   os <<         m_option_restartOutput_levelPeriod      << " = " << m_restartOutput_levelPeriod
      << "\n" << m_option_restartOutput_baseNameForFiles << " = " << m_restartOutput_baseNameForFiles
+     << "\n" << m_option_restartOutput_fileType         << " = " << m_restartOutput_fileType
      << "\n" << m_option_restartInput_baseNameForFiles  << " = " << m_restartInput_baseNameForFiles
+     << "\n" << m_option_restartInput_fileType          << " = " << m_restartInput_fileType
 #else
   os <<         m_option_restartInputFileName           << " = " << m_restartInputFileName
      << "\n" << m_option_restartInputFileType           << " = " << m_restartInputFileType

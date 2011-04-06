@@ -46,7 +46,7 @@
 #include <sys/time.h>
 #include <fstream>
 
-#define ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA 5
+#define ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA 6
 
 //---------------------------------------------------------
 
@@ -289,10 +289,10 @@ private:
 
         uqMLSamplingOptionsClass            m_options;
 
-        unsigned int                        m_currLevel;           // restart
+        unsigned int                        m_currLevel;          // restart
         unsigned int                        m_currStep;
         double                              m_debugExponent;
-	std::vector<double>                 m_logEvidenceFactors;  // restart
+	std::vector<double>                 m_logEvidenceFactors; // restart
         double                              m_logEvidence;
         double                              m_meanLogLikelihood;
         double                              m_eig;

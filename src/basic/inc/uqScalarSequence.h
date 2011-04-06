@@ -3426,7 +3426,7 @@ uqScalarSequenceClass<T>::unifiedWriteContents(
 
               double writeTime = uqMiscGetEllapsedSeconds(&timevalBegin);
               if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-                *m_env.subDisplayFile() << "Entering uqScalarSequenceClass<T>::unifiedWriteContents()"
+                *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedWriteContents()"
                                         << ": worldRank "      << m_env.worldRank()
                                         << ", fullRank "       << m_env.fullRank()
                                         << ", subEnvironment " << m_env.subId()
@@ -3491,6 +3491,7 @@ uqScalarSequenceClass<T>::unifiedWriteContents(
                             << std::endl;
   }
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
+  m_env.inter0Comm().Barrier();
 
   return;
 }
@@ -3735,7 +3736,7 @@ uqScalarSequenceClass<T>::unifiedReadContents(
 
               double readTime = uqMiscGetEllapsedSeconds(&timevalBegin);
               if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-                *m_env.subDisplayFile() << "Entering uqScalarSequenceClass<T>::unifiedReadContents()"
+                *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedReadContents()"
                                         << ": worldRank "      << m_env.worldRank()
                                         << ", fullRank "       << m_env.fullRank()
                                         << ", subEnvironment " << m_env.subId()
@@ -3787,6 +3788,7 @@ uqScalarSequenceClass<T>::unifiedReadContents(
                             << std::endl;
   }
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
+  m_env.inter0Comm().Barrier();
 
   return;
 }

@@ -39,24 +39,34 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
   const uqScalarSequenceClass<double>&     currLogTargetValues)     // input
 {
   //******************************************************************************
-  // Write 'control' file
+  // Write 'control' file without 'level' spefication in name
   //******************************************************************************
   UQ_FATAL_TEST_MACRO(m_logEvidenceFactors.size() != m_currLevel,
                       m_env.fullRank(),
                       "uqMLSamplingClass<P_V,P_M>::checkpointML()",
                       "number of evidence factors is not consistent");
 
+  unsigned int quantity1 = currChain.unifiedSequenceSize();
+  unsigned int quantity2 = currLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
+  unsigned int quantity3 = currLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
+  UQ_FATAL_TEST_MACRO(quantity1 != quantity2,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::checkpointML()",
+                      "quantity2 is not consistent");
+  UQ_FATAL_TEST_MACRO(quantity1 != quantity3,
+                      m_env.fullRank(),
+                      "uqMLSamplingClass<P_V,P_M>::checkpointML()",
+                      "quantity3 is not consistent");
+
   if (m_env.fullRank() == 0) {
     std::ofstream* ofsVar = new std::ofstream((m_options.m_restartOutput_baseNameForFiles + "Control.txt").c_str(), 
                                               std::ofstream::out | std::ofstream::trunc);
-    *ofsVar << m_currLevel                                                                            << std::endl  // 1
-            << m_vectorSpace.dimGlobal()                                                              << std::endl  // 2
-            << currExponent                                                                           << std::endl  // 3
-            << currEta                                                                                << std::endl  // 4
-            << currChain.unifiedSequenceSize()                                                        << std::endl; // 5 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
-      //<< currLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)
-      //<< currLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1)
-      //<< m_logEvidenceFactors.size()
+    *ofsVar << m_currLevel               << std::endl  // 1
+            << m_vectorSpace.dimGlobal() << std::endl  // 2
+            << currExponent              << std::endl  // 3
+            << currEta                   << std::endl  // 4
+            << quantity1                 << std::endl  // 5
+            << "COMPLETE"                << std::endl; // 6 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
     unsigned int savedPrecision = ofsVar->precision();
     ofsVar->precision(16);
     for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
@@ -79,21 +89,44 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
                             << "\n" << std::endl;
   }
   currChain.unifiedWriteContents(m_options.m_restartOutput_baseNameForFiles + "Chain_l" + levelSufix,
-                                 UQ_FILE_EXTENSION_FOR_HDF_FORMAT);
+                                 m_options.m_restartOutput_fileType);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "\n CHECKPOINTING like at level " << m_currLevel
                             << "\n" << std::endl;
   }
   currLogLikelihoodValues.unifiedWriteContents(m_options.m_restartOutput_baseNameForFiles + "LogLike_l" + levelSufix,
-                                               UQ_FILE_EXTENSION_FOR_HDF_FORMAT);
+                                               m_options.m_restartOutput_fileType);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "\n CHECKPOINTING target at level " << m_currLevel
                             << "\n" << std::endl;
   }
   currLogTargetValues.unifiedWriteContents(m_options.m_restartOutput_baseNameForFiles + "LogTarget_l" + levelSufix,
-                                           UQ_FILE_EXTENSION_FOR_HDF_FORMAT);
+                                           m_options.m_restartOutput_fileType);
+
+  //******************************************************************************
+  // Write 'control' file *with* 'level' spefication in name
+  //******************************************************************************
+  if (m_env.fullRank() == 0) {
+    std::ofstream* ofsVar = new std::ofstream((m_options.m_restartOutput_baseNameForFiles + "Control_l" + levelSufix + ".txt").c_str(), 
+                                              std::ofstream::out | std::ofstream::trunc);
+    *ofsVar << m_currLevel               << std::endl  // 1
+            << m_vectorSpace.dimGlobal() << std::endl  // 2
+            << currExponent              << std::endl  // 3
+            << currEta                   << std::endl  // 4
+            << quantity1                 << std::endl  // 5
+            << "COMPLETE"                << std::endl; // 6 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
+    unsigned int savedPrecision = ofsVar->precision();
+    ofsVar->precision(16);
+    for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
+      *ofsVar << m_logEvidenceFactors[i] << std::endl;
+    }
+    ofsVar->precision(savedPrecision);
+
+    delete ofsVar;
+  }
+  m_env.fullComm().Barrier();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "\n CHECKPOINTING done at level " << m_currLevel
@@ -117,6 +150,7 @@ uqMLSamplingClass<P_V,P_M>::restartML(
   //******************************************************************************
   unsigned int vectorSpaceDim  = 0;
   unsigned int quantity1       = 0;
+  std::string  checkingString("");
   if (m_env.fullRank() == 0) {
     std::ifstream* ifsVar = new std::ifstream((m_options.m_restartInput_baseNameForFiles + "Control.txt").c_str(), 
                                               std::ifstream::in);
@@ -145,13 +179,18 @@ uqMLSamplingClass<P_V,P_M>::restartML(
 
     m_logEvidenceFactors.clear();
     m_logEvidenceFactors.resize(m_currLevel,0.);
-    *ifsVar >> vectorSpaceDim // 2
-            >> currExponent   // 3
-            >> currEta        // 4
-            >> quantity1;     // 5 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
+    *ifsVar >> vectorSpaceDim  // 2
+            >> currExponent    // 3
+            >> currEta         // 4
+            >> quantity1;      // 5
     for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
       *ifsVar >> m_logEvidenceFactors[i];
     }
+    *ifsVar >> checkingString; // 6 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
+    UQ_FATAL_TEST_MACRO(checkingString != "COMPLETE",
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::restartML()",
+                        "control txt input file is not complete");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
       *m_env.subDisplayFile() << "Restart input file has the following information:"
@@ -199,7 +238,7 @@ uqMLSamplingClass<P_V,P_M>::restartML(
     tmpData[2] = currEta;
     tmpData[3] = quantity1;
     for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
-      tmpData[ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA-1+i] = m_logEvidenceFactors[i];
+      tmpData[4+i] = m_logEvidenceFactors[i];
     }
   }
   else {
@@ -215,7 +254,7 @@ uqMLSamplingClass<P_V,P_M>::restartML(
     currEta        = tmpData[2];
     quantity1      = tmpData[3];
     for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
-      m_logEvidenceFactors[i] = tmpData[ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA-1+i];
+      m_logEvidenceFactors[i] = tmpData[4+i];
     }
   }
 
@@ -254,7 +293,7 @@ uqMLSamplingClass<P_V,P_M>::restartML(
                             << "\n" << std::endl;
   }
   currChain.unifiedReadContents(m_options.m_restartInput_baseNameForFiles + "Chain_l" + levelSufix,
-                                UQ_FILE_EXTENSION_FOR_HDF_FORMAT,
+                                m_options.m_restartInput_fileType,
                                 subSequenceSize);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
@@ -262,7 +301,7 @@ uqMLSamplingClass<P_V,P_M>::restartML(
                             << "\n" << std::endl;
   }
   currLogLikelihoodValues.unifiedReadContents(m_options.m_restartInput_baseNameForFiles + "LogLike_l" + levelSufix,
-                                              UQ_FILE_EXTENSION_FOR_HDF_FORMAT,
+                                              m_options.m_restartInput_fileType,
                                               subSequenceSize);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
@@ -270,7 +309,7 @@ uqMLSamplingClass<P_V,P_M>::restartML(
                             << "\n" << std::endl;
   }
   currLogTargetValues.unifiedReadContents(m_options.m_restartInput_baseNameForFiles + "LogTarget_l" + levelSufix,
-                                          UQ_FILE_EXTENSION_FOR_HDF_FORMAT,
+                                          m_options.m_restartInput_fileType,
                                           subSequenceSize);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
@@ -353,9 +392,12 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
       }
 
       if (currOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-        currChain.unifiedWriteContents              (currOptions.m_rawChainDataOutputFileName,currOptions.m_rawChainDataOutputFileType);
-        currLogLikelihoodValues.unifiedWriteContents(currOptions.m_rawChainDataOutputFileName,currOptions.m_rawChainDataOutputFileType);
-        currLogTargetValues.unifiedWriteContents    (currOptions.m_rawChainDataOutputFileName,currOptions.m_rawChainDataOutputFileType);
+        currChain.unifiedWriteContents              (currOptions.m_rawChainDataOutputFileName,
+                                                     currOptions.m_rawChainDataOutputFileType);
+        currLogLikelihoodValues.unifiedWriteContents(currOptions.m_rawChainDataOutputFileName,
+                                                     currOptions.m_rawChainDataOutputFileType);
+        currLogTargetValues.unifiedWriteContents    (currOptions.m_rawChainDataOutputFileName,
+                                                     currOptions.m_rawChainDataOutputFileType);
       }
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -1723,7 +1765,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
   }
 
   if (currOptions->m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-    currChain.unifiedWriteContents(currOptions->m_rawChainDataOutputFileName,currOptions->m_rawChainDataOutputFileType); // KAUST5
+    currChain.unifiedWriteContents(currOptions->m_rawChainDataOutputFileName,
+                                   currOptions->m_rawChainDataOutputFileType); // KAUST5
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence_Step()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
@@ -1732,8 +1775,10 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
                               << ", currLogLikelihoodValues[0] = " << currLogLikelihoodValues[0]
                               << std::endl;
     }
-    currLogLikelihoodValues.unifiedWriteContents(currOptions->m_rawChainDataOutputFileName,currOptions->m_rawChainDataOutputFileType);
-    currLogTargetValues.unifiedWriteContents    (currOptions->m_rawChainDataOutputFileName,currOptions->m_rawChainDataOutputFileType);
+    currLogLikelihoodValues.unifiedWriteContents(currOptions->m_rawChainDataOutputFileName,
+                                                 currOptions->m_rawChainDataOutputFileType);
+    currLogTargetValues.unifiedWriteContents    (currOptions->m_rawChainDataOutputFileName,
+                                                 currOptions->m_rawChainDataOutputFileType);
   }
 
   if (currOptions->m_filteredChainGenerate) {
@@ -1786,9 +1831,12 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
     m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
 
     if (currOptions->m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
-      currChain.unifiedWriteContents              (currOptions->m_filteredChainDataOutputFileName,currOptions->m_filteredChainDataOutputFileType);
-      currLogLikelihoodValues.unifiedWriteContents(currOptions->m_filteredChainDataOutputFileName,currOptions->m_filteredChainDataOutputFileType);
-      currLogTargetValues.unifiedWriteContents    (currOptions->m_filteredChainDataOutputFileName,currOptions->m_filteredChainDataOutputFileType);
+      currChain.unifiedWriteContents              (currOptions->m_filteredChainDataOutputFileName,
+                                                   currOptions->m_filteredChainDataOutputFileType);
+      currLogLikelihoodValues.unifiedWriteContents(currOptions->m_filteredChainDataOutputFileName,
+                                                   currOptions->m_filteredChainDataOutputFileType);
+      currLogTargetValues.unifiedWriteContents    (currOptions->m_filteredChainDataOutputFileName,
+                                                   currOptions->m_filteredChainDataOutputFileType);
     }
   } // if (currOptions->m_filteredChainGenerate)
 

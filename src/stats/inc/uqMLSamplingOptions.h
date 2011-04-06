@@ -40,12 +40,14 @@
 
 #define UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV         0
 #define UQ_ML_SAMPLING_RESTART_OUTPUT_BASE_NAME_FOR_FILES_ODV  UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_RESTART_OUTPUT_FILE_TYPE_ODV            UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 #define UQ_ML_SAMPLING_RESTART_INPUT_BASE_NAME_FOR_FILES_ODV   UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 
 #else
 
 #define UQ_ML_SAMPLING_RESTART_INPUT_FILE_NAME_ODV             UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
-#define UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV             "m"
+#define UQ_ML_SAMPLING_RESTART_INPUT_FILE_TYPE_ODV             UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_RESTART_CHAIN_SIZE_ODV                  100
 
 #endif
@@ -67,7 +69,9 @@ public:
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   unsigned int           m_restartOutput_levelPeriod;
   std::string            m_restartOutput_baseNameForFiles;
+  std::string            m_restartOutput_fileType;
   std::string            m_restartInput_baseNameForFiles;
+  std::string            m_restartInput_fileType;
 #else
   std::string            m_restartInputFileName;
   std::string            m_restartInputFileType;
@@ -87,7 +91,9 @@ private:
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   std::string                   m_option_restartOutput_levelPeriod;
   std::string                   m_option_restartOutput_baseNameForFiles;
+  std::string                   m_option_restartOutput_fileType;
   std::string                   m_option_restartInput_baseNameForFiles;
+  std::string                   m_option_restartInput_fileType;
 #else
   std::string                   m_option_restartInputFileName;
   std::string                   m_option_restartInputFileType;
