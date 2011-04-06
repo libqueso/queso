@@ -720,6 +720,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     bool performCheckpoint = stopAtEndOfLevel;
     if (m_options.m_restartOutput_levelPeriod > 0) {
       performCheckpoint = performCheckpoint || ( ((m_currLevel + 1) % m_options.m_restartOutput_levelPeriod) == 0 );
+      if (currExponent == 1.) {
+        performCheckpoint = true;
+      }
     }
     if (performCheckpoint) {
       checkpointML(currExponent,            // input

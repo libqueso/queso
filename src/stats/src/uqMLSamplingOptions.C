@@ -129,6 +129,11 @@ uqMLSamplingOptionsClass::getMyOptionValues(po::options_description& optionsDesc
     m_restartOutput_baseNameForFiles = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartOutput_baseNameForFiles.c_str()]).as<std::string>();
   }
 
+  UQ_FATAL_TEST_MACRO((m_restartOutput_levelPeriod > 0) && (m_restartOutput_baseNameForFiles == "."),
+                      m_env.worldRank(),
+                      "uqMLSamplingOptionsClass::getMyOptionsValues()",
+                      "Option 'restartOutput_levelPeriod' is > 0, but 'restartOutput_baseNameForFiles' is not specified...");
+
   if (m_env.allOptionsMap().count(m_option_restartOutput_fileType.c_str())) {
     m_restartOutput_fileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_restartOutput_fileType.c_str()]).as<std::string>();
   }
