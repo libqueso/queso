@@ -38,25 +38,31 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
   const uqScalarSequenceClass<double>&     currLogLikelihoodValues, // input
   const uqScalarSequenceClass<double>&     currLogTargetValues)     // input
 {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "\n CHECKPOINTING initiating at level " << m_currLevel
+                            << "\n" << std::endl;
+  }
+
   //******************************************************************************
   // Write 'control' file without 'level' spefication in name
   //******************************************************************************
-  UQ_FATAL_TEST_MACRO(m_logEvidenceFactors.size() != m_currLevel,
-                      m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::checkpointML()",
-                      "number of evidence factors is not consistent");
-
   unsigned int quantity1 = currChain.unifiedSequenceSize();
   unsigned int quantity2 = currLogLikelihoodValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
   unsigned int quantity3 = currLogTargetValues.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
-  UQ_FATAL_TEST_MACRO(quantity1 != quantity2,
-                      m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::checkpointML()",
-                      "quantity2 is not consistent");
-  UQ_FATAL_TEST_MACRO(quantity1 != quantity3,
-                      m_env.fullRank(),
-                      "uqMLSamplingClass<P_V,P_M>::checkpointML()",
-                      "quantity3 is not consistent");
+  if (m_env.inter0Rank() >= 0) {
+    UQ_FATAL_TEST_MACRO(m_logEvidenceFactors.size() != m_currLevel,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::checkpointML()",
+                        "number of evidence factors is not consistent");
+    UQ_FATAL_TEST_MACRO(quantity1 != quantity2,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::checkpointML()",
+                        "quantity2 is not consistent");
+    UQ_FATAL_TEST_MACRO(quantity1 != quantity3,
+                        m_env.fullRank(),
+                        "uqMLSamplingClass<P_V,P_M>::checkpointML()",
+                        "quantity3 is not consistent");
+  }
 
   if (m_env.fullRank() == 0) {
     std::ofstream* ofsVar = new std::ofstream((m_options.m_restartOutput_baseNameForFiles + "Control.txt").c_str(), 
@@ -90,6 +96,7 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
   }
   currChain.unifiedWriteContents(m_options.m_restartOutput_baseNameForFiles + "Chain_l" + levelSufix,
                                  m_options.m_restartOutput_fileType);
+  m_env.fullComm().Barrier();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "\n CHECKPOINTING like at level " << m_currLevel
@@ -97,6 +104,7 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
   }
   currLogLikelihoodValues.unifiedWriteContents(m_options.m_restartOutput_baseNameForFiles + "LogLike_l" + levelSufix,
                                                m_options.m_restartOutput_fileType);
+  m_env.fullComm().Barrier();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "\n CHECKPOINTING target at level " << m_currLevel
@@ -104,6 +112,7 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
   }
   currLogTargetValues.unifiedWriteContents(m_options.m_restartOutput_baseNameForFiles + "LogTarget_l" + levelSufix,
                                            m_options.m_restartOutput_fileType);
+  m_env.fullComm().Barrier();
 
   //******************************************************************************
   // Write 'control' file *with* 'level' spefication in name
@@ -145,6 +154,11 @@ uqMLSamplingClass<P_V,P_M>::restartML(
   uqScalarSequenceClass<double>&     currLogLikelihoodValues, // output
   uqScalarSequenceClass<double>&     currLogTargetValues)     // output
 {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "\n RESTARTING initiating at level " << m_currLevel
+                            << "\n" << std::endl;
+  }
+
   //******************************************************************************
   // Read 'control' file
   //******************************************************************************
@@ -295,6 +309,7 @@ uqMLSamplingClass<P_V,P_M>::restartML(
   currChain.unifiedReadContents(m_options.m_restartInput_baseNameForFiles + "Chain_l" + levelSufix,
                                 m_options.m_restartInput_fileType,
                                 subSequenceSize);
+  m_env.fullComm().Barrier();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "\n RESTARTING like at level " << m_currLevel
@@ -303,6 +318,7 @@ uqMLSamplingClass<P_V,P_M>::restartML(
   currLogLikelihoodValues.unifiedReadContents(m_options.m_restartInput_baseNameForFiles + "LogLike_l" + levelSufix,
                                               m_options.m_restartInput_fileType,
                                               subSequenceSize);
+  m_env.fullComm().Barrier();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "\n RESTARTING target at level " << m_currLevel
@@ -311,6 +327,7 @@ uqMLSamplingClass<P_V,P_M>::restartML(
   currLogTargetValues.unifiedReadContents(m_options.m_restartInput_baseNameForFiles + "LogTarget_l" + levelSufix,
                                           m_options.m_restartInput_fileType,
                                           subSequenceSize);
+  m_env.fullComm().Barrier();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "\n RESTARTING done at level " << m_currLevel

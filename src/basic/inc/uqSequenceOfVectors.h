@@ -2645,7 +2645,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
       if (m_env.inter0Rank() == (int) r) {
         // My turn
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-          *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+          *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                                   << ": worldRank "      << m_env.worldRank()
                                   << ", fullRank "       << m_env.fullRank()
                                   << ", subEnvironment " << m_env.subId()
@@ -2666,7 +2666,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
                                         writeOver,
                                         unifiedFilePtrSet)) {
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-            *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+            *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                                     << ": worldRank "      << m_env.worldRank()
                                     << ", fullRank "       << m_env.fullRank()
                                     << ", subEnvironment " << m_env.subId()
@@ -2762,7 +2762,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
 
               double writeTime = uqMiscGetEllapsedSeconds(&timevalBegin);
               if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-                *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+                *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                                         << ": worldRank "      << m_env.worldRank()
                                         << ", fullRank "       << m_env.fullRank()
                                         << ", subEnvironment " << m_env.subId()
@@ -2799,7 +2799,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
           }
 
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-            *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+            *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                                     << ": worldRank "      << m_env.worldRank()
                                     << ", fullRank "       << m_env.fullRank()
                                     << ", subEnvironment " << m_env.subId()
@@ -2814,7 +2814,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
           m_env.closeFile(unifiedFilePtrSet,fileType);
 
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-            *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
+            *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                                     << ": worldRank "      << m_env.worldRank()
                                     << ", fullRank "       << m_env.fullRank()
                                     << ", subEnvironment " << m_env.subId()
@@ -3103,7 +3103,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
 
               double readTime = uqMiscGetEllapsedSeconds(&timevalBegin);
               if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-                *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
+                *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
                                         << ": worldRank "      << m_env.worldRank()
                                         << ", fullRank "       << m_env.fullRank()
                                         << ", subEnvironment " << m_env.subId()

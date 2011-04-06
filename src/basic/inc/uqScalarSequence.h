@@ -495,6 +495,8 @@ template <class T>
 void
 uqScalarSequenceClass<T>::resetValues(unsigned int initialPos, unsigned int numPos)
 {
+  if (this->subSequenceSize() == 0) return;
+
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
@@ -514,6 +516,8 @@ template <class T>
 void
 uqScalarSequenceClass<T>::erasePositions(unsigned int initialPos, unsigned int numPos)
 {
+  if (this->subSequenceSize() == 0) return;
+
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
@@ -1006,9 +1010,27 @@ uqScalarSequenceClass<T>::subMean(
   unsigned int initialPos,
   unsigned int numPos) const
 {
+  if (this->subSequenceSize() == 0) return 0.;
+
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
+  if (bRC == false) {
+    std::cerr << "In uqScalarSequenceClass<T>::subMean()"
+              << ": ERROR at fullRank "         << m_env.fullRank()
+              << ", initialPos = "              << initialPos
+              << ", numPos = "                  << numPos
+              << ", this->subSequenceSize() = " << this->subSequenceSize()
+              << std::endl;
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::subMean()"
+                              << ": ERROR at fullRank "         << m_env.fullRank()
+                              << ", initialPos = "              << initialPos
+                              << ", numPos = "                  << numPos
+                              << ", this->subSequenceSize() = " << this->subSequenceSize()
+                              << std::endl;
+    }
+  }
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.worldRank(),
                       "uqScalarSequenceClass<T>::subMean()",
@@ -1114,6 +1136,8 @@ uqScalarSequenceClass<T>::subMeanCltStd(
   unsigned int numPos,
   const T&     meanValue) const
 {
+  if (this->subSequenceSize() == 0) return 0.;
+
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
@@ -1211,6 +1235,8 @@ uqScalarSequenceClass<T>::subSampleVariance(
   unsigned int numPos,
   const T&     meanValue) const
 {
+  if (this->subSequenceSize() == 0) return 0.;
+
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
@@ -1304,6 +1330,8 @@ uqScalarSequenceClass<T>::subSampleStd(
   unsigned int numPos,
   const T&     meanValue) const
 {
+  if (this->subSequenceSize() == 0) return 0.;
+
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
@@ -1399,6 +1427,8 @@ uqScalarSequenceClass<T>::subPopulationVariance(
   unsigned int numPos,
   const T&     meanValue) const
 {
+  if (this->subSequenceSize() == 0) return 0.;
+
   bool bRC = ((initialPos          <  this->subSequenceSize()) &&
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
@@ -3016,7 +3046,7 @@ uqScalarSequenceClass<T>::subScaleForKde(
   const T&     iqrValue,
   unsigned int kdeDimension) const
 {
-  bool bRC = (initialPos <  this->subSequenceSize());
+  bool bRC = (initialPos < this->subSequenceSize());
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.worldRank(),
                       "uqScalarSequenceClass<V>::subScaleForKde()",
@@ -3491,7 +3521,6 @@ uqScalarSequenceClass<T>::unifiedWriteContents(
                             << std::endl;
   }
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
-  m_env.inter0Comm().Barrier();
 
   return;
 }
@@ -3788,7 +3817,6 @@ uqScalarSequenceClass<T>::unifiedReadContents(
                             << std::endl;
   }
   //m_env.fullComm().Barrier(); // Dangerous to barrier on fullComm ...
-  m_env.inter0Comm().Barrier();
 
   return;
 }

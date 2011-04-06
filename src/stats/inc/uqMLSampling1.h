@@ -887,7 +887,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   workingChain.resizeSequence(currChain.subSequenceSize());
   P_V auxVec(m_vectorSpace.zeroVector());
   for (unsigned int i = 0; i < workingChain.subSequenceSize(); ++i) {
-    currChain.getPositionValues(i,auxVec);
+    if (m_env.inter0Rank() >= 0) {
+      currChain.getPositionValues(i,auxVec);
+    }
     workingChain.setPositionValues(i,auxVec);
   }
 
