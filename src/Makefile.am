@@ -1,5 +1,3 @@
-## Process this file with automake to produce Makefile.in
-
 # Build in these directories:
 # DIST_SUBDIRS = basic stats
 
@@ -24,7 +22,6 @@ endif
 if SVN_CHECKOUT
 BUILT_SOURCES = .license.stamp
 endif
-
 
 # Dynamic library build: we include external library linkage here to
 # make it easier for the user.
@@ -126,8 +123,6 @@ libqueso_la_SOURCES += \
 # Headers to install from core/inc
 
 libqueso_include_HEADERS = \
-	$(top_srcdir)/config_queso.h \
-	$(top_srcdir)/src/core/inc/queso.h \
 	$(top_srcdir)/src/core/inc/uqDefines.h \
 	$(top_srcdir)/src/core/inc/uqEnvironment.h \
 	$(top_srcdir)/src/core/inc/uqEnvironmentOptions.h \
