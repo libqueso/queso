@@ -1,32 +1,22 @@
-## Process this file with automake to produce Makefile.in
+AUTOMAKE_OPTIONS = foreign
+ACLOCAL_AMFLAGS  = -I m4 -I m4/common
+EXTRA_DIST       = $(DX_CONFIG) users.pdf CHANGES AUTHORS COPYING LICENSE dist_version
+SUBDIRS          = src examples test/gsl_tests test doxygen
+
+# Doxygen support
 
 include $(top_srcdir)/doxygen/aminclude.am
-
-# Don't require GNU-style project
-
-AUTOMAKE_OPTIONS = foreign
-
-ACLOCAL_AMFLAGS  = -I m4 -I m4/common
 
 # Build in these directories:
 
 if HAVE_ANN
-EXTRA_SUBDIRS = src/contrib/ANN
+  SUBDIRS += src/contrib/ANN
 endif
-
-SUBDIRS = $(EXTRA_SUBDIRS) \
-	src \
-	examples \
-        test/gsl_tests \
-        test \
-	doxygen
 
 # Tools in the auxillary directory
 
 AUX_DIST = build-aux/install-sh    \
            build-aux/missing
-
-EXTRA_DIST = $(DX_CONFIG) users.pdf CHANGES AUTHORS COPYING LICENSE dist_version
 
 if CODE_COVERAGE_ENABLED
 
@@ -104,12 +94,9 @@ MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 # Documentation hooks in with the 'html' target
 
-html-local: doxygen-run
-doc:        doxygen-run
-docs:       doxygen-run
-
-# Required for AX_PROG_DOXYGEN
-#include doxygen.am
+###html-local: doxygen-run
+###doc:        doxygen-run
+###docs:       doxygen-run
 
 # Additional files to be deleted by 'make distclean'
 
