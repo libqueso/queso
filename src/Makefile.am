@@ -219,6 +219,6 @@ version_DEPENDENCIES = libqueso.la
 if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE \
-	$(libqueso_include_HEADERS) $(libqueso_la_SOURCES)
+	$(libqueso_include_HEADERS) $(libqueso_la_SOURCES) $(top_srcdir)/src/core/inc/queso.h
 	echo 'updated source license headers' >$@
 endif
