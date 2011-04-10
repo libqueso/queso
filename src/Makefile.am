@@ -213,10 +213,10 @@ libqueso_include_HEADERS += \
 
 # Standalone binaries
 
-bin_PROGRAMS         = version
-version_SOURCES      = $(top_srcdir)/src/core/src/version.C
-version_LDADD        = -L$(top_builddir)/src -lqueso $(HDF5_LIBS) 
-version_DEPENDENCIES = libqueso.la
+bin_PROGRAMS               = queso_version
+queso_version_SOURCES      = $(top_srcdir)/src/core/src/version.C
+queso_version_LDADD        = -L$(top_builddir)/src -lqueso $(HDF5_LIBS) 
+queso_version_DEPENDENCIES = libqueso.la
 
 #---------------------------------
 # Embedded license header support
