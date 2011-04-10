@@ -197,6 +197,12 @@ libqueso_include_HEADERS += \
 	$(top_srcdir)/src/stats/inc/uqVectorRV.h \
 	$(top_srcdir)/src/stats/inc/uqInfoTheory.h
 
+# Headers to install, but not part of dist
+
+nodist_libqueso_include_HEADERS    =       \
+	$(top_srcdir)/config_queso.h       \
+	$(top_srcdir)/src/core/inc/queso.h
+
 # Headers to install from interface
 
 libqueso_include_HEADERS += \
