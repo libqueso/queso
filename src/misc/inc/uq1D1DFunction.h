@@ -131,10 +131,10 @@ protected:
 //*****************************************************
 class uqPiecewiseLinear1D1DFunctionClass : public uqBase1D1DFunctionClass {
 public:
-  uqPiecewiseLinear1D1DFunctionClass(double minDomainValue,
-                                     double maxDomainValue,
+  uqPiecewiseLinear1D1DFunctionClass(double                     minDomainValue,
+                                     double                     maxDomainValue,
                                      const std::vector<double>& referenceDomainValues,
-                                     double referenceImageValue0,
+                                     double                     referenceImageValue0,
                                      const std::vector<double>& rateValues);
  ~uqPiecewiseLinear1D1DFunctionClass();
 

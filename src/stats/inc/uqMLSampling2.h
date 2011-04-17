@@ -71,14 +71,14 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
             << m_vectorSpace.dimGlobal() << std::endl  // 2
             << currExponent              << std::endl  // 3
             << currEta                   << std::endl  // 4
-            << quantity1                 << std::endl  // 5
-            << "COMPLETE"                << std::endl; // 6 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
+            << quantity1                 << std::endl; // 5
     unsigned int savedPrecision = ofsVar->precision();
     ofsVar->precision(16);
     for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
       *ofsVar << m_logEvidenceFactors[i] << std::endl;
     }
     ofsVar->precision(savedPrecision);
+    *ofsVar << "COMPLETE"                << std::endl; // 6 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
 
     delete ofsVar;
   }
@@ -124,14 +124,14 @@ uqMLSamplingClass<P_V,P_M>::checkpointML(
             << m_vectorSpace.dimGlobal() << std::endl  // 2
             << currExponent              << std::endl  // 3
             << currEta                   << std::endl  // 4
-            << quantity1                 << std::endl  // 5
-            << "COMPLETE"                << std::endl; // 6 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
+            << quantity1                 << std::endl; // 5
     unsigned int savedPrecision = ofsVar->precision();
     ofsVar->precision(16);
     for (unsigned int i = 0; i < m_logEvidenceFactors.size(); ++i) {
       *ofsVar << m_logEvidenceFactors[i] << std::endl;
     }
     ofsVar->precision(savedPrecision);
+    *ofsVar << "COMPLETE"                << std::endl; // 6 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
 
     delete ofsVar;
   }
@@ -241,6 +241,9 @@ uqMLSamplingClass<P_V,P_M>::restartML(
   m_env.fullComm().Bcast((void *) &tmpUint, (int) 1, uqRawValue_MPI_UNSIGNED, 0, // Yes, 'fullComm'
                          "uqMLSamplingClass<P_V,P_M>::restartML()",
                          "failed MPI.Bcast() for m_currLevel");
+  if (m_env.fullRank() != 0) {
+    m_currLevel = tmpUint;
+  }
 
   //******************************************************************************
   // MPI_Bcast the rest of the information just read
