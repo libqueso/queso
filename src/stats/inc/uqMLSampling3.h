@@ -856,7 +856,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
       unsigned int auxIndex = unbalancedLinkControl.unbLinkedChains[chainId].initialPositionIndexInPreviousChain - indexOfFirstWeight; // KAUST4 // Round Rock
       prevChain.getPositionValues(auxIndex,auxInitialPosition); // Round Rock
       tmpChainSize = unbalancedLinkControl.unbLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99/*2*/)) {
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2/*99*/)) {
         *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
                                 << ", level "          << m_currLevel+LEVEL_REF_ID
                                 << ", step "           << m_currStep
