@@ -90,6 +90,7 @@ uqDistArrayClass<T>::uqDistArrayClass(
   m_rowSize(inputRowSize)
 #endif
 {
+  //std::cout << "Entering uqDistArrayClass<T>::constructor(1)" << std::endl;
 #ifdef QUESO_HAS_TRILINOS
 #else
   m_elements.resize(m_uqMap.NumGlobalElements());
@@ -97,6 +98,7 @@ uqDistArrayClass<T>::uqDistArrayClass(
     m_elements[i].resize(m_rowSize);
   }
 #endif
+  //std::cout << "Leaving uqDistArrayClass<T>::constructor(1)" << std::endl;
 }
 
 template<typename T>
@@ -108,13 +110,26 @@ uqDistArrayClass<T>::uqDistArrayClass(const uqDistArrayClass<T>& src)
   m_epetraDistArray(NULL)
 #endif
 {
+  //std::cout << "Entering uqDistArrayClass<T>::constructor(2)" << std::endl;
+#ifdef QUESO_HAS_TRILINOS
+#else
+  m_elements.clear();
+#endif
   this->copy(src);
+  //std::cout << "Leaving uqDistArrayClass<T>::constructor(2)" << std::endl;
 }
 
 template<typename T>
 uqDistArrayClass<T>&
 uqDistArrayClass<T>::operator=(const uqDistArrayClass<T>& rhs)
 {
+#ifdef QUESO_HAS_TRILINOS
+#else
+  for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
+    m_elements[i].clear();
+  }
+  m_elements.clear();
+#endif
   this->copy(rhs);
   return *this;
 }
@@ -122,6 +137,7 @@ uqDistArrayClass<T>::operator=(const uqDistArrayClass<T>& rhs)
 template<typename T>
 uqDistArrayClass<T>::~uqDistArrayClass()
 {
+  //std::cout << "Entering uqDistArrayClass<T>::destructor()" << std::endl;
 #ifdef QUESO_HAS_TRILINOS
   delete m_epetraDistArray;
   m_epetraDistArray = NULL;
@@ -131,19 +147,16 @@ uqDistArrayClass<T>::~uqDistArrayClass()
   }
   m_elements.clear();
 #endif
+  //std::cout << "Leaving uqDistArrayClass<T>::destructor()" << std::endl;
 }
 
 template<typename T>
 void
 uqDistArrayClass<T>::copy(const uqDistArrayClass<T>& src)
 {
+  //std::cout << "Entering uqDistArrayClass<T>::copy()" << std::endl;
 #ifdef QUESO_HAS_TRILINOS
   delete m_epetraDistArray;
-#else
-  for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
-    m_elements[i].clear();
-  }
-  m_elements.clear();
 #endif
 
   m_uqMap   = src.m_uqMap;
@@ -157,6 +170,7 @@ uqDistArrayClass<T>::copy(const uqDistArrayClass<T>& src)
     m_elements[i] = src.m_elements[i];
   }
 #endif
+  //std::cout << "Leaving uqDistArrayClass<T>::copy()" << std::endl;
 
   return;
 }

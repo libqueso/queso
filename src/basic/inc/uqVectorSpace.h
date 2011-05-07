@@ -42,7 +42,7 @@ public:
         uqVectorSpaceClass(const uqBaseEnvironmentClass&   env,
                            const char*                     prefix,
                            unsigned int                    dimGlobalValue,
-                           const std::vector<std::string>* componentsNames);
+                           const std::vector<std::string>* componentsNamesVec);
         uqVectorSpaceClass(const uqVectorSpaceClass<V,M>&  aux);
        ~uqVectorSpaceClass();
 
@@ -66,7 +66,8 @@ public:
   const uqVectorSpaceClass<V,M>&       vectorSpace             () const; // It is virtual in the base class 'uqVectorSetClass'
         bool                           contains                (const V& vec) const;
 
-  const uqDistArrayClass<std::string>* componentsNames         () const;
+  const uqDistArrayClass<std::string>* componentsNamesArray    () const;
+  const std::vector<std::string>*      componentsNamesVec      () const;
   const std::string&                   localComponentName      (unsigned int localComponentId) const;
         void                           printComponentsNames    (std::ostream& os, bool printHorizontally) const;
         void                           print                   (std::ostream& os) const;
@@ -81,7 +82,8 @@ protected:
         unsigned int                   m_dimGlobal;
   const uqMapClass*                    m_map;
         unsigned int                   m_dimLocal;
-        uqDistArrayClass<std::string>* m_componentsNames;
+        uqDistArrayClass<std::string>* m_componentsNamesArray;
+        uqDistArrayClass<std::string>* m_componentsNamesVec;
         std::string                    m_emptyComponentName;
 
         V*                             m_zeroVector;
@@ -103,30 +105,31 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
   const uqBaseEnvironmentClass&   env,
   const char*                     prefix,
         unsigned int              dimGlobalValue,
-  const std::vector<std::string>* componentsNames)
+  const std::vector<std::string>* componentsNamesVec)
   :
-  uqVectorSetClass<V,M>(env,((std::string)(prefix) + "space_").c_str(),INFINITY),
-  m_dimGlobal          (dimGlobalValue),
-  m_map                (newMap()),
-  m_dimLocal           (m_map->NumMyElements()),
-  m_componentsNames    (NULL),
-  m_emptyComponentName (""),
-  m_zeroVector         (new V(m_env,*m_map))
+  uqVectorSetClass<V,M> (env,((std::string)(prefix) + "space_").c_str(),INFINITY),
+  m_dimGlobal           (dimGlobalValue),
+  m_map                 (newMap()),
+  m_dimLocal            (m_map->NumMyElements()),
+  m_componentsNamesArray(NULL),
+  m_componentsNamesVec  (NULL),
+  m_emptyComponentName  (""),
+  m_zeroVector          (new V(m_env,*m_map))
 {
-
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqVectorSpaceClass<V,M>::constructor()"
-                            << ", with m_prefix = " << m_prefix
+    *m_env.subDisplayFile() << "Entering uqVectorSpaceClass<V,M>::constructor(1)"
+                            << ", with m_prefix = "                << m_prefix
                             << "\n  m_zeroVector->sizeGlobal() = " << m_zeroVector->sizeGlobal()
                             << "\n  m_dimGlobal                = " << m_dimGlobal
                             << "\n  m_zeroVector->sizeLocal()  = " << m_zeroVector->sizeLocal()
                             << "\n  m_dimLocal                 = " << m_dimLocal
                             << "\n  m_map->NumGlobalElements() = " << m_map->NumGlobalElements()
+                            << "\n  componentsNamesVec         = " << componentsNamesVec
                             << std::endl;
   }
 
   if (m_zeroVector->sizeGlobal() != m_dimGlobal) {
-    std::cerr << "In uqVectorSpaceClass<V,M>::constructor()"
+    std::cerr << "In uqVectorSpaceClass<V,M>::constructor(1)"
               << ", with m_prefix = " << m_prefix
               << ": m_zeroVector->sizeGlobal() = " << m_zeroVector->sizeGlobal()
               << ", m_dimGlobal = "                << m_dimGlobal
@@ -134,11 +137,11 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
   }
   UQ_FATAL_TEST_MACRO((m_zeroVector->sizeGlobal() != m_dimGlobal),
                       m_env.worldRank(),
-                      "uqVectorSpaceClass<V,M>::constructor()",
+                      "uqVectorSpaceClass<V,M>::constructor(1)",
                       "global size of 'm_zeroVector' is not equal to m_dimGlobal");
 
   if (m_zeroVector->sizeLocal() != m_dimLocal) {
-    std::cerr << "In uqVectorSpaceClass<V,M>::constructor()"
+    std::cerr << "In uqVectorSpaceClass<V,M>::constructor(1)"
               << ", with m_prefix = " << m_prefix
               << ": m_zeroVector->sizeLocal() = " << m_zeroVector->sizeLocal()
               << ", m_dimLocal = "                << m_dimLocal
@@ -146,34 +149,33 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
   }
   UQ_FATAL_TEST_MACRO((m_zeroVector->sizeLocal() != m_dimLocal),
                       m_env.worldRank(),
-                      "uqVectorSpaceClass<V,M>::constructor()",
+                      "uqVectorSpaceClass<V,M>::constructor(1)",
                       "local size of 'm_zeroVector' is not equal to m_dimLocal");
 
-  if (componentsNames != NULL) {
-    UQ_FATAL_TEST_MACRO((componentsNames->size() != (size_t) m_dimGlobal),
+  if (componentsNamesVec != NULL) {
+    UQ_FATAL_TEST_MACRO((componentsNamesVec->size() != (size_t) m_dimGlobal),
                         m_env.worldRank(),
-                        "uqVectorSpaceClass<V,M>::constructor()",
+                        "uqVectorSpaceClass<V,M>::constructor(1)",
                         "global size of 'componentsNames' is not equal to m_dimGlobal");
 
-    m_componentsNames = new uqDistArrayClass<std::string>(*m_map,1);
+    m_componentsNamesArray = new uqDistArrayClass<std::string>(*m_map,1);
     unsigned int myFirstId = this->globalIdOfFirstComponent();
-    //uqDistArrayClass<std::string>& arrayOfStrings = *m_componentsNames;
     for (unsigned int i = 0; i < m_dimLocal; ++i) {
-      (*m_componentsNames)(i,0) = (*componentsNames)[myFirstId+i];
+      (*m_componentsNamesArray)(i,0) = (*componentsNamesVec)[myFirstId+i];
     }
 
-    UQ_FATAL_TEST_MACRO((m_componentsNames->GlobalLength() != (int) m_dimGlobal),
+    UQ_FATAL_TEST_MACRO((m_componentsNamesArray->GlobalLength() != (int) m_dimGlobal),
                         m_env.worldRank(),
-                        "uqVectorSpaceClass<V,M>::constructor()",
-                        "global size of 'm_componentsNames' is not equal to m_dimGlobal");
-    UQ_FATAL_TEST_MACRO((m_componentsNames->MyLength() != (int) m_dimLocal),
+                        "uqVectorSpaceClass<V,M>::constructor(1)",
+                        "global size of 'm_componentsNamesArray' is not equal to m_dimGlobal");
+    UQ_FATAL_TEST_MACRO((m_componentsNamesArray->MyLength() != (int) m_dimLocal),
                         m_env.worldRank(),
-                        "uqVectorSpaceClass<V,M>::constructor()",
-                        "local size of 'm_componentsNames' is not equal to m_dimLocal");
+                        "uqVectorSpaceClass<V,M>::constructor(1)",
+                        "local size of 'm_componentsNamesArray' is not equal to m_dimLocal");
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::constructor(1)"
                             << ", with m_prefix = " << m_prefix
                             << std::endl;
   }
@@ -182,35 +184,49 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
 template <class V, class M>
 uqVectorSpaceClass<V,M>::uqVectorSpaceClass(const uqVectorSpaceClass<V,M>& aux)
   :
-  uqVectorSetClass<V,M>(aux.env(),((std::string)(aux.m_prefix)).c_str(),INFINITY),
-  m_dimGlobal          (aux.m_dimGlobal),
-  m_map                (newMap()),
-  m_dimLocal           (m_map->NumMyElements()),
-  m_componentsNames    (NULL),
-  m_emptyComponentName (""),
-  m_zeroVector         (new V(m_env,*m_map))
+  uqVectorSetClass<V,M> (aux.env(),((std::string)(aux.m_prefix)).c_str(),INFINITY),
+  m_dimGlobal           (aux.m_dimGlobal),
+  m_map                 (newMap()),
+  m_dimLocal            (m_map->NumMyElements()),
+  m_componentsNamesArray(NULL),
+  m_componentsNamesVec  (NULL),
+  m_emptyComponentName  (""),
+  m_zeroVector          (new V(m_env,*m_map))
 {
-  if (aux.m_componentsNames != NULL) {
-    m_componentsNames = new uqDistArrayClass<std::string>(*(aux.m_componentsNames));
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqVectorSpaceClass<V,M>::constructor(2)"
+                            << ": aux.m_componentsNamesArray = " << aux.m_componentsNamesArray
+                            << ", aux.m_componentsNamesVec = "   << aux.m_componentsNamesVec
+                            << std::endl;
+  }
+
+  if (aux.m_componentsNamesArray != NULL) {
+    m_componentsNamesArray = new uqDistArrayClass<std::string>(*(aux.m_componentsNamesArray));
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::constructor(2)"
+                            << std::endl;
   }
 }
 
 template <class V, class M>
 uqVectorSpaceClass<V,M>::~uqVectorSpaceClass()
 {
-  //if (m_env.subDisplayFile()) {
-  //  *m_env.subDisplayFile() << "Entering uqVectorSpaceClass<V,M>::destructor()"
-  //                          << std::endl;
-  //}
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqVectorSpaceClass<V,M>::destructor()"
+                            << std::endl;
+  }
 
-  if (m_zeroVector      != NULL) delete m_zeroVector;
-  if (m_componentsNames != NULL) delete m_componentsNames;
-  if (m_map             != NULL) delete m_map;
+  if (m_zeroVector           != NULL) delete m_zeroVector;
+  if (m_componentsNamesVec   != NULL) delete m_componentsNamesVec;
+  if (m_componentsNamesArray != NULL) delete m_componentsNamesArray;
+  if (m_map                  != NULL) delete m_map;
 
-  //if (m_env.subDisplayFile()) {
-  //  *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::destructor()"
-  //                          << std::endl;
-  //}
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqVectorSpaceClass<V,M>::destructor()"
+                            << std::endl;
+  }
 }
 
 template <class V, class M>
@@ -347,24 +363,24 @@ uqVectorSpaceClass<V,M>::newProposalMatrix(
 
 template <class V, class M>
 const uqDistArrayClass<std::string>* 
-uqVectorSpaceClass<V,M>::componentsNames() const
+uqVectorSpaceClass<V,M>::componentsNamesArray() const
 {
-  return m_componentsNames;
+  return m_componentsNamesArray;
 }
 
 template <class V, class M>
 const std::string&
 uqVectorSpaceClass<V,M>::localComponentName(unsigned int localComponentId) const
 {
-  if (m_componentsNames == NULL) return m_emptyComponentName;
+  if (m_componentsNamesArray == NULL) return m_emptyComponentName;
 
   UQ_FATAL_TEST_MACRO(localComponentId > m_dimLocal,
                       m_env.worldRank(),
                       "uqVectorSpaceClass<V,M>::localComponentName()",
                       "localComponentId is too big");
 
-//return (*(const_cast<uqDistArrayClass<std::string>*>(m_componentsNames)))(localComponentId,0);
-  return (*m_componentsNames)(localComponentId,0);
+//return (*(const_cast<uqDistArrayClass<std::string>*>(m_componentsNamesArray)))(localComponentId,0);
+  return (*m_componentsNamesArray)(localComponentId,0);
 }
 
 template<class V, class M>
