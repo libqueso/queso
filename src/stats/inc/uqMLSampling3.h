@@ -103,8 +103,7 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
                             << std::endl;
   }
 
-  if ((currOptions->m_loadBalanceAlgorithmId > 0) &&
-      (m_env.numSubEnvironments()            > 1)) { // Cannot use 'm_env.inter0Comm().NumProc()' because it might happen that not all nodes at this point of the code belong to 'inter0Comm'
+  if (true) {
     unsigned int Np = 0;
     if (m_env.inter0Rank() >= 0) { // Yes, '>= 0'
       Np = (unsigned int) m_env.inter0Comm().NumProc();
@@ -146,15 +145,17 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
     // Proc 0 prepares information to decide if load balancing is needed
     //////////////////////////////////////////////////////////////////////////
     if (m_env.inter0Rank() == 0) {
-      *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()"
-                              << ", level " << m_currLevel+LEVEL_REF_ID
-                              << ", step "  << m_currStep
-                              << ": original distribution of unified indexes in 'inter0Comm' is as follows"
-                              << std::endl;
-      for (unsigned int r = 0; r < Np; ++r) {
-        *m_env.subDisplayFile() << "  allFirstIndexes[" << r << "] = " << allFirstIndexes[r]
-                                << "  allLastIndexes["  << r << "] = " << allLastIndexes[r]
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()"
+                                << ", level " << m_currLevel+LEVEL_REF_ID
+                                << ", step "  << m_currStep
+                                << ": original distribution of unified indexes in 'inter0Comm' is as follows"
                                 << std::endl;
+        for (unsigned int r = 0; r < Np; ++r) {
+          *m_env.subDisplayFile() << "  allFirstIndexes[" << r << "] = " << allFirstIndexes[r]
+                                  << "  allLastIndexes["  << r << "] = " << allLastIndexes[r]
+                                  << std::endl;
+        }
       }
       for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
         UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
@@ -217,40 +218,48 @@ uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
       for (unsigned int r = 0; r < Np; ++r) {
         totalNumberOfChains += origNumChainsPerNode[r];
       }
-      *m_env.subDisplayFile() << "  KEY"
-                              << ", level " << m_currLevel+LEVEL_REF_ID
-                              << ", step "  << m_currStep
-                              << ", Np = "  << Np
-                              << ", totalNumberOfChains = " << totalNumberOfChains
-                              << std::endl;
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "  KEY"
+                                << ", level " << m_currLevel+LEVEL_REF_ID
+                                << ", step "  << m_currStep
+                                << ", Np = "  << Np
+                                << ", totalNumberOfChains = " << totalNumberOfChains
+                                << std::endl;
+      }
 
       // Check if ratio max/min justifies optimization
       unsigned int origMinPosPerNode  = *std::min_element(origNumPositionsPerNode.begin(), origNumPositionsPerNode.end());
       unsigned int origMaxPosPerNode  = *std::max_element(origNumPositionsPerNode.begin(), origNumPositionsPerNode.end());
-      for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
+          *m_env.subDisplayFile() << "  KEY"
+                                  << ", level " << m_currLevel+LEVEL_REF_ID
+                                  << ", step "  << m_currStep
+                                  << ", origNumChainsPerNode["     << nodeId << "] = " << origNumChainsPerNode[nodeId]
+                                  << ", origNumPositionsPerNode["  << nodeId << "] = " << origNumPositionsPerNode[nodeId]
+                                  << std::endl;
+        }
+      }
+      double origRatioOfPosPerNode = ((double) origMaxPosPerNode ) / ((double) origMinPosPerNode);
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "  KEY"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
                                 << ", step "  << m_currStep
-                                << ", origNumChainsPerNode["     << nodeId << "] = " << origNumChainsPerNode[nodeId]
-                                << ", origNumPositionsPerNode["  << nodeId << "] = " << origNumPositionsPerNode[nodeId]
+                                << ", origRatioOfPosPerNode = "      << origRatioOfPosPerNode
+                                << ", option loadBalanceTreshold = " << currOptions->m_loadBalanceTreshold
                                 << std::endl;
       }
-      double origRatioOfPosPerNode = ((double) origMaxPosPerNode ) / ((double) origMinPosPerNode);
-      *m_env.subDisplayFile() << "  KEY"
-                              << ", level " << m_currLevel+LEVEL_REF_ID
-                              << ", step "  << m_currStep
-                              << ", origRatioOfPosPerNode = "      << origRatioOfPosPerNode
-                              << ", option loadBalanceTreshold = " << currOptions->m_loadBalanceTreshold
-                              << std::endl;
 
       // At this point, only proc 0 is running...
       // Set boolean 'result' for good
-      if ((                   Np < totalNumberOfChains               ) &&
-          (origRatioOfPosPerNode > currOptions->m_loadBalanceTreshold)) {
+      if ((currOptions->m_loadBalanceAlgorithmId > 0                                 ) &&
+          (m_env.numSubEnvironments()            > 1                                 ) && // Cannot use 'm_env.inter0Comm().NumProc()': not all nodes at this point of the code belong to 'inter0Comm'
+          (Np                                    < totalNumberOfChains               ) &&
+          (origRatioOfPosPerNode                 > currOptions->m_loadBalanceTreshold)) {
         result = true;
       }
-    }
-  }
+    } // if (m_env.inter0Rank() == 0)
+  } // if (true)
 
   m_env.fullComm().Barrier();
   unsigned int tmpValue = result;
