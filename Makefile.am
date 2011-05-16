@@ -1,17 +1,13 @@
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS  = -I m4 -I m4/common
 EXTRA_DIST       = $(DX_CONFIG) users.pdf CHANGES AUTHORS COPYING LICENSE dist_version
-SUBDIRS          = src examples test/gsl_tests test doxygen
+
+# Build in these directories:
+SUBDIRS          = src/contrib/ANN src examples test/gsl_tests test doxygen
 
 # Doxygen support
 
 include $(top_srcdir)/doxygen/aminclude.am
-
-# Build in these directories:
-
-if HAVE_ANN
-  SUBDIRS += src/contrib/ANN
-endif
 
 # Tools in the auxillary directory
 

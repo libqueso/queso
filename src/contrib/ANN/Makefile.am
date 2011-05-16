@@ -2,6 +2,9 @@
 
 #Build in these directories:
 
-SUBDIRS    = lib test
+if HAVE_ANN
+  SUBDIRS    = lib test
+endif
+
 ##### EXTRA_DIST = test
 
