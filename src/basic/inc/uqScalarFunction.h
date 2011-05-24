@@ -176,4 +176,56 @@ uqGenericScalarFunctionClass<V,M>::lnValue(const V& domainVector, const V* domai
   }
   return value;
 }
+
+//*****************************************************
+// Constant class
+//*****************************************************
+template<class V,class M>
+class uqConstantScalarFunctionClass : public uqBaseScalarFunctionClass<V,M> {
+public:
+  uqConstantScalarFunctionClass(const char*                  prefix,
+                                const uqVectorSetClass<V,M>& domainSet,
+                                double                       constantValue);
+  virtual ~uqConstantScalarFunctionClass();
+
+  double actualValue      (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double lnValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+
+protected:
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+
+  double m_constantValue;
+};
+
+template<class V,class M>
+uqConstantScalarFunctionClass<V,M>::uqConstantScalarFunctionClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& domainSet,
+  double                       constantValue)
+  :
+  uqBaseScalarFunctionClass<V,M>(((std::string)(prefix)+"gen").c_str(), domainSet),
+  m_constantValue               (constantValue)
+{
+}
+
+template<class V,class M>
+uqConstantScalarFunctionClass<V,M>::~uqConstantScalarFunctionClass()
+{
+}
+
+template<class V,class M>
+double
+uqConstantScalarFunctionClass<V,M>::actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
+{
+  return m_constantValue;
+}
+
+template<class V,class M>
+double
+uqConstantScalarFunctionClass<V,M>::lnValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
+{
+  return 0.;
+}
 #endif // __UQ_SCALAR_FUNCTION_H__
