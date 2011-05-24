@@ -1150,3 +1150,25 @@ uqGslVectorClass operator-(const uqGslVectorClass& x, const uqGslVectorClass& y)
   return answer;
 }
 
+bool
+operator== (const uqGslVectorClass& lhs, const uqGslVectorClass& rhs)
+{
+  bool answer = true;
+
+  unsigned int size1 = lhs.sizeLocal();
+  unsigned int size2 = rhs.sizeLocal();
+  UQ_FATAL_TEST_MACRO((size1 != size2),
+                      lhs.env().worldRank(),
+                      "operator==()",
+                      "different sizes of lhs and rhs");
+
+  for (unsigned int i = 0; i < size1; ++i) {
+    if (lhs[i] != rhs[i]) {
+      answer = false;
+      break;
+    }
+  }
+
+  return answer;
+}
+

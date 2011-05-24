@@ -105,13 +105,14 @@ private:
   gsl_vector* m_vec;
 };
 
-uqGslVectorClass operator/    (      double a,            const uqGslVectorClass& x  );
-uqGslVectorClass operator/    (const uqGslVectorClass& x, const uqGslVectorClass& y  );
-uqGslVectorClass operator*    (      double a,            const uqGslVectorClass& x  );
-uqGslVectorClass operator*    (const uqGslVectorClass& x, const uqGslVectorClass& y  );
-double           scalarProduct(const uqGslVectorClass& x, const uqGslVectorClass& y  );
-uqGslVectorClass operator+    (const uqGslVectorClass& x, const uqGslVectorClass& y  );
-uqGslVectorClass operator-    (const uqGslVectorClass& x, const uqGslVectorClass& y  );
-std::ostream&    operator<<   (std::ostream& os,          const uqGslVectorClass& obj);
+uqGslVectorClass operator/    (      double a,              const uqGslVectorClass& x  );
+uqGslVectorClass operator/    (const uqGslVectorClass& x,   const uqGslVectorClass& y  );
+uqGslVectorClass operator*    (      double a,              const uqGslVectorClass& x  );
+uqGslVectorClass operator*    (const uqGslVectorClass& x,   const uqGslVectorClass& y  );
+double           scalarProduct(const uqGslVectorClass& x,   const uqGslVectorClass& y  );
+uqGslVectorClass operator+    (const uqGslVectorClass& x,   const uqGslVectorClass& y  );
+uqGslVectorClass operator-    (const uqGslVectorClass& x,   const uqGslVectorClass& y  );
+bool             operator==   (const uqGslVectorClass& lhs, const uqGslVectorClass& rhs);
+std::ostream&    operator<<   (std::ostream& os,            const uqGslVectorClass& obj);
 
 #endif // __UQ_GSL_VECTOR_H__
