@@ -181,4 +181,73 @@ uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
   return;
 }
 
+//*****************************************************
+// Constant class
+//*****************************************************
+template<class P_V,class P_M,class Q_V,class Q_M>
+class uqConstantVectorFunctionClass : public uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M> {
+public:
+  uqConstantVectorFunctionClass(const char*                      prefix,
+                                const uqVectorSetClass<P_V,P_M>& domainSet,
+                                const uqVectorSetClass<Q_V,Q_M>& imageSet,
+                                const Q_V&                       constantImageVector);
+  virtual ~uqConstantVectorFunctionClass();
+
+  void compute  (const P_V&                    domainVector,
+                 const P_V*                    domainDirection,
+                       Q_V&                    imageVector,
+                       uqDistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
+                       uqDistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
+                       uqDistArrayClass<P_V*>* hessianEffects) const;
+
+protected:
+  const Q_V* m_constantImageVector;
+
+  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
+  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
+  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_domainSet;
+  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_imageSet;
+};
+
+template<class P_V,class P_M,class Q_V,class Q_M>
+uqConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqConstantVectorFunctionClass(
+  const char*                      prefix,
+  const uqVectorSetClass<P_V,P_M>& domainSet,
+  const uqVectorSetClass<Q_V,Q_M>& imageSet,
+  const Q_V&                       constantImageVector)
+  :
+  uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
+                                             domainSet,
+                                             imageSet),
+  m_constantImageVector(NULL)
+{
+  m_constantImageVector = new Q_V(constantImageVector);
+}
+
+template<class P_V,class P_M,class Q_V,class Q_M>
+uqConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~uqConstantVectorFunctionClass()
+{
+  delete m_constantImageVector;
+}
+
+template<class P_V,class P_M,class Q_V,class Q_M>
+void
+uqConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
+  const P_V&                    domainVector,
+  const P_V*                    domainDirection,
+        Q_V&                    imageVector,
+        uqDistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
+        uqDistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
+        uqDistArrayClass<P_V*>* hessianEffects) const
+{
+  UQ_FATAL_TEST_MACRO(m_constantImageVector == NULL,
+                      domainVector.env().worldRank(),
+                      "uqConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute()",
+                      "m_constantImageVector is NULL");
+
+  imageVector = *m_constantImageVector;
+
+  return;
+}
+
 #endif // __UQ_VECTOR_FUNCTION_H__
