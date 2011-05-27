@@ -90,6 +90,9 @@ public:
         void         subWeigthCdf                 (unsigned int                    numIntervals,
                                                    uqUniformOneDGridClass<T>*&     gridValues,
                                                    std::vector<T>&                 cdfValues) const;
+        void         subWeigthCdf                 (unsigned int                    numIntervals,
+                                                   std::vector<T>&                 gridValues,
+                                                   std::vector<T>&                 cdfValues) const;
 
         T            subMean                      (unsigned int                    initialPos,
                                                    unsigned int                    numPos) const;
@@ -189,6 +192,11 @@ public:
                                                    const T&                        minHorizontalValue,
                                                    const T&                        maxHorizontalValue,
                                                    uqUniformOneDGridClass<T>*&     gridValues,
+                                                   std::vector<unsigned int>&      bins) const;
+        void         subWeigthHistogram           (unsigned int                    initialPos,
+                                                   const T&                        minHorizontalValue,
+                                                   const T&                        maxHorizontalValue,
+                                                   std::vector<T>&                 gridValues,
                                                    std::vector<unsigned int>&      bins) const;
         void         subCdfStacc                  (unsigned int                    initialPos,
                                                    std::vector<double>&            cdfStaccValues,
@@ -973,6 +981,43 @@ uqScalarSequenceClass<T>::subWeigthCdf(
   unsigned int                numEvaluationPoints,
   uqUniformOneDGridClass<T>*& gridValues,
   std::vector<T>&             cdfValues) const
+{
+  T                         tmpMinValue;
+  T                         tmpMaxValue;
+  std::vector<unsigned int> bins(numEvaluationPoints,0);
+
+  subMinMax(0, // initialPos
+            this->subSequenceSize(),
+            tmpMinValue,
+            tmpMaxValue);
+  subWeigthHistogram(0, // initialPos,
+                     tmpMinValue,
+                     tmpMaxValue,
+                     gridValues,
+                     bins);
+
+  unsigned int sumOfBins = 0;
+  for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+    sumOfBins += bins[i];
+  }
+
+  cdfValues.clear();
+  cdfValues.resize(numEvaluationPoints);
+  unsigned int partialSum = 0;
+  for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+    partialSum += bins[i];
+    cdfValues[i] = ((T) partialSum)/((T) sumOfBins);
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::subWeigthCdf(
+  unsigned int    numEvaluationPoints,
+  std::vector<T>& gridValues,
+  std::vector<T>& cdfValues) const
 {
   T                         tmpMinValue;
   T                         tmpMaxValue;
@@ -2413,6 +2458,56 @@ uqScalarSequenceClass<T>::subWeigthHistogram(
                                              bins.size(),
 	                                     minCenter,
 	                                     maxCenter);
+
+  unsigned int dataSize = this->subSequenceSize();
+  for (unsigned int j = 0; j < dataSize; ++j) {
+    double value = m_seq[j];
+    if (value < minHorizontalValue) {
+      bins[0] += value;
+    }
+    else if (value >= maxHorizontalValue) {
+      bins[bins.size()-1] += value;
+    }
+    else {
+      unsigned int index = 1 + (unsigned int) ((value - minHorizontalValue)/horizontalDelta);
+      bins[index] += value;
+    }
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::subWeigthHistogram(
+  unsigned int               initialPos,
+  const T&                   minHorizontalValue,
+  const T&                   maxHorizontalValue,
+  std::vector<T>&            gridValues,
+  std::vector<unsigned int>& bins) const
+{
+  UQ_FATAL_TEST_MACRO(bins.size() < 3,
+                      m_env.worldRank(),
+                      "uqScalarSequenceClass<T>::subWeigthHistogram()",
+                      "number of 'bins' is too small: should be at least 3");
+
+  for (unsigned int j = 0; j < bins.size(); ++j) {
+    bins[j] = 0;
+  }
+
+  double horizontalDelta = (maxHorizontalValue - minHorizontalValue)/(((double) bins.size()) - 2.); // IMPORTANT: -2
+  double minCenter = minHorizontalValue - horizontalDelta/2.;
+  double maxCenter = maxHorizontalValue + horizontalDelta/2.;
+  uqUniformOneDGridClass<T> tmpGrid(m_env,
+                                    "",
+                                    bins.size(),
+	                            minCenter,
+	                            maxCenter);
+  gridValues.clear();
+  gridValues.resize(tmpGrid.size(),0.);
+  for (unsigned int i = 0; i < tmpGrid.size(); ++i) {
+    gridValues[i] = tmpGrid[i];
+  }
 
   unsigned int dataSize = this->subSequenceSize();
   for (unsigned int j = 0; j < dataSize; ++j) {

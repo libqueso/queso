@@ -205,4 +205,93 @@ uqUniformOneDGridClass<T>::findIntervalId(const T& paramValue) const
   return i;
 }
 
+//*****************************************************
+// Std grid class
+//*****************************************************
+template<class T>
+class uqStdOneDGridClass : public uqBaseOneDGridClass<T> {
+public:
+  uqStdOneDGridClass(const uqBaseEnvironmentClass& env,
+                     const char*                   prefix,
+                     const std::vector<T>&         points);
+ ~uqStdOneDGridClass();
+
+  unsigned int size          ()                    const;
+  T            operator[]    (unsigned int i)      const;
+  unsigned int findIntervalId(const T& paramValue) const; 
+
+protected:
+  using uqBaseOneDGridClass<T>::m_env;
+  using uqBaseOneDGridClass<T>::m_prefix;
+
+  std::vector<T> m_points;
+};
+
+template<class T>
+uqStdOneDGridClass<T>::uqStdOneDGridClass(
+  const uqBaseEnvironmentClass& env,
+  const char*                   prefix,
+  const std::vector<T>&         points)
+  :
+  uqBaseOneDGridClass<T>(env,prefix),
+  m_points              (points)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqStdOneDGridClass<T>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqStdOneDGridClass<T>::constructor()"
+                           << ": prefix = " << m_prefix
+                           << std::endl;
+  }
+}
+
+template<class T>
+uqStdOneDGridClass<T>::~uqStdOneDGridClass()
+{
+}
+
+template<class T>
+unsigned int
+uqStdOneDGridClass<T>::size() const
+{
+  return m_points.size();
+}
+
+template<class T>
+T
+uqStdOneDGridClass<T>::operator[](unsigned int i) const
+{
+  UQ_FATAL_TEST_MACRO(i >= m_points.size(),
+                      m_env.worldRank(),
+                      "uqStdOneDGridClass<V,M>::operator[]",
+                      "too large i");
+
+  return m_points[i];
+}
+
+template<class T>
+unsigned int
+uqStdOneDGridClass<T>::findIntervalId(const T& paramValue) const
+{
+  UQ_FATAL_TEST_MACRO((paramValue < m_points[0]) || (m_points[m_points.size()-1] < paramValue),
+                      m_env.worldRank(),
+                      "uqStdOneDGridClass<V,M>::findIntervalId[]",
+                      "paramValue is out of domain");
+
+  unsigned int iMax = m_points.size();
+  unsigned int i = 1; // Yes, '1'
+  for (i = 1; i < iMax; ++i) { // Yes, '1'
+    if (paramValue < m_points[i]) {
+      i--;
+      break;
+    }
+  }
+
+  return i;
+}
+
 #endif // __UQ_ONE_D_GRID_FUNCTION_H__

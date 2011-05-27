@@ -146,7 +146,7 @@ protected:
 
   const uqBaseOneDGridClass<T>& m_cdfGrid;
   const std::vector<double>&    m_cdfValues;
-  //std::vector<double>& m_sortedCdfValues;
+//std::vector<double>&          m_sortedCdfValues;
 };
 
 template<class T>
@@ -363,6 +363,105 @@ uqSampledScalarCdfClass<T>::subWriteContents(
   return;
 }
 
+//*****************************************************
+// Std cumulative distribution function class
+//*****************************************************
+template<class T>
+class uqStdScalarCdfClass : public uqBaseScalarCdfClass<T> {
+public:
+  uqStdScalarCdfClass(const uqBaseEnvironmentClass& env,
+                      const char*                   prefix,
+                      const std::vector<T>&         cdfGrid,
+                      const std::vector<double>&    cdfValues);
+ ~uqStdScalarCdfClass();
+
+  double value           (T             paramValue) const;
+  T      inverse         (double        cdfValue  ) const;
+  void   print           (std::ostream& os        ) const;
+  void   subWriteContents(const std::string&            varNamePrefix,
+                          const std::string&            fileName,
+                          const std::string&            fileType,
+                          const std::set<unsigned int>& allowedSubEnvIds) const;
+
+protected:
+  using uqBaseScalarCdfClass<T>::m_env;
+  using uqBaseScalarCdfClass<T>::m_prefix;
+
+  const uqStdOneDGridClass<T> m_cdfGrid;
+  const std::vector<double>   m_cdfValues;
+  uqSampledScalarCdfClass<T>* m_sampledCdfGrid;
+};
+
+template<class T>
+uqStdScalarCdfClass<T>::uqStdScalarCdfClass(
+  const uqBaseEnvironmentClass& env,
+  const char*                   prefix,
+  const std::vector<T>&         cdfGrid,
+  const std::vector<double>&    cdfValues)
+  :
+  uqBaseScalarCdfClass<T>(env,((std::string)(prefix)+"").c_str()),
+  m_cdfGrid              (env,prefix,cdfGrid),
+  m_cdfValues            (cdfValues),
+  m_sampledCdfGrid       (NULL)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqStdScalarCdfClass<T>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  m_sampledCdfGrid = new uqSampledScalarCdfClass<T>(env,prefix,m_cdfGrid,m_cdfValues);
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqStdScalarCdfClass<T>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class T>
+uqStdScalarCdfClass<T>::~uqStdScalarCdfClass()
+{
+  delete m_sampledCdfGrid;
+}
+
+template<class T>
+double
+uqStdScalarCdfClass<T>::value(T paramValue) const
+{
+  return m_sampledCdfGrid->value(paramValue);
+}
+
+template<class T>
+T
+uqStdScalarCdfClass<T>::inverse(double cdfValue) const
+{
+  return m_sampledCdfGrid->inverse(cdfValue);
+}
+
+template <class T>
+void
+uqStdScalarCdfClass<T>::print(std::ostream& os) const
+{
+  m_sampledCdfGrid->print(os);
+  return;
+}
+
+template<class T>
+void
+uqStdScalarCdfClass<T>::subWriteContents(
+  const std::string&            varNamePrefix,
+  const std::string&            fileName,
+  const std::string&            fileType,
+  const std::set<unsigned int>& allowedSubEnvIds) const
+{
+  m_sampledCdfGrid->subWriteContents(varNamePrefix,fileName,fileType,allowedSubEnvIds);
+  return;
+}
+
+//*****************************************************
+// Horizontal distance
+//*****************************************************
 template <class T>
 double
 horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
