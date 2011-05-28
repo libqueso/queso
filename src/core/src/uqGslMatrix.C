@@ -220,14 +220,23 @@ double&
 uqGslMatrixClass::operator()(unsigned int i, unsigned int j)
 {
   this->resetLU();
-  UQ_FATAL_TEST_MACRO(i >= m_mat->size1,
-                      m_env.worldRank(),
-                      "uqGslMatrixClass::operator(i,j)",
-                      "i is too large");
-  UQ_FATAL_TEST_MACRO(j >= m_mat->size2,
-                      m_env.worldRank(),
-                      "uqGslMatrixClass::operator(i,j)",
-                      "j is too large");
+  if ((i >= m_mat->size1) ||
+      (j >= m_mat->size2)) {
+    std::cerr << "In uqGslMatrixClass::operator(i,j)"
+              << ": i = " << i
+              << ", j = " << j
+              << ", m_mat->size1 = " << m_mat->size1
+              << ", m_mat->size2 = " << m_mat->size2
+              << std::endl;
+    UQ_FATAL_TEST_MACRO(i >= m_mat->size1,
+                        m_env.worldRank(),
+                        "uqGslMatrixClass::operator(i,j)",
+                        "i is too large");
+    UQ_FATAL_TEST_MACRO(j >= m_mat->size2,
+                        m_env.worldRank(),
+                        "uqGslMatrixClass::operator(i,j)",
+                        "j is too large");
+  }
   return *gsl_matrix_ptr(m_mat,i,j);
 }
 
