@@ -478,6 +478,10 @@ uqSampled1D1DFunctionClass::uqSampled1D1DFunctionClass()
   :
   uqBase1D1DFunctionClass(-INFINITY,INFINITY)
 {
+  //UQ_FATAL_TEST_MACRO(true,
+  //                    UQ_UNAVAILABLE_RANK,
+  //                    "uqSampledD1DFunctionClass::deriv()",
+  //                    "invalid constructor");
 }
 
 uqSampled1D1DFunctionClass::uqSampled1D1DFunctionClass(
@@ -658,135 +662,71 @@ uqSampled1D1DFunctionClass::printForMatlab(
 }
 
 //*****************************************************
-// Delta Sequence 1D->1D class
+// Delta Set 1D->1D class
 //*****************************************************
-uqDeltaSeq1D1DFunctionClass::uqDeltaSeq1D1DFunctionClass()
-  :
-  uqSampled1D1DFunctionClass()
-{
-}
-
-uqDeltaSeq1D1DFunctionClass::uqDeltaSeq1D1DFunctionClass(
+uqDeltaSet1D1DFunctionClass::uqDeltaSet1D1DFunctionClass( // july2011
   const std::vector<double>& domainValues,
-  const std::vector<double>& imageValues,
-  const std::vector<double>& integratedValues)
+  double                     domainMin,
+  double                     domainMax,
+  const std::vector<double>& imageValues)
   :
-  uqSampled1D1DFunctionClass(domainValues,imageValues),
-  m_integratedValues        (integratedValues.size(),0.)
+  uqBase1D1DFunctionClass(domainMin,domainMax),
+  m_domainValues         (domainValues),
+  m_imageValues          (imageValues)
 {
-  unsigned int tmpSize = m_integratedValues.size();
-  for (unsigned int i = 0; i < tmpSize; ++i) {
-    m_integratedValues[i] = integratedValues[i];
-  }
 }
 
-uqDeltaSeq1D1DFunctionClass::~uqDeltaSeq1D1DFunctionClass()
+uqDeltaSet1D1DFunctionClass::~uqDeltaSet1D1DFunctionClass()
 {
 }
 
 double
-uqDeltaSeq1D1DFunctionClass::value(double domainValue) const
+uqDeltaSet1D1DFunctionClass::value(double domainValue) const
 {
-  if ((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)) {
-    std::cerr << "In uqDeltaSeq1D1DFunctionClass::value()"
-              << ": requested x ("            << domainValue
-              << ") is out of the interval (" << m_minDomainValue
-              << ", "                         << m_maxDomainValue
-              << ")"
-              << std::endl;
-  }
-
-  UQ_FATAL_TEST_MACRO(((domainValue < m_minDomainValue) || (domainValue > m_maxDomainValue)),
-                      UQ_UNAVAILABLE_RANK,
-                      "uqDeltaSeq1D1DFunctionClass::value()",
-                      "x out of range");
-
-  double returnValue = 0.;
-
   unsigned int tmpSize = m_domainValues.size();
-  //std::cout << "In uqDeltaSeq1D1DFunctionClass::value()"
-  //          << ": domainValue = "         << domainValue
-  //          << ", tmpSize = "             << tmpSize
-  //          << ", m_domainValues[0] = "   << m_domainValues[0]
-  //          << ", m_domainValues[max] = " << m_domainValues[tmpSize-1]
-  //          << std::endl;
-
   UQ_FATAL_TEST_MACRO(tmpSize == 0,
                       UQ_UNAVAILABLE_RANK,
-                      "uqDeltaSeq1D1DFunctionClass::value()",
+                      "uqDeltaSet1D1DFunctionClass::value()",
                       "m_domainValues.size() = 0");
 
-  UQ_FATAL_TEST_MACRO(domainValue < m_domainValues[0],
-                      UQ_UNAVAILABLE_RANK,
-                      "uqDeltaSeq1D1DFunctionClass::value()",
-                      "domainValue < m_domainValues[0]");
-
-  UQ_FATAL_TEST_MACRO(m_domainValues[tmpSize-1] < domainValue,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqDeltaSeq1D1DFunctionClass::value()",
-                      "m_domainValues[max] < domainValue");
-
-  unsigned int i = 0;
-  for (i = 0; i < tmpSize; ++i) {
-    if (domainValue <= m_domainValues[i]) break;
-  }
-
-  if (domainValue == m_domainValues[i]) {
-    //if (domainValueWasMatchedExactly) *domainValueWasMatchedExactly = true;
-    returnValue = m_imageValues[i];
+  double returnValue = 0.;
+  if ((domainValue < m_minDomainValue) ||
+      (domainValue > m_maxDomainValue)) {
+    // Keep returnValue = 0.
   }
   else {
-    // Leave returnValue = 0.;
+    for (unsigned int i = 0; i < tmpSize; ++i) {
+      if (domainValue == m_domainValues[i]) {
+        returnValue += m_imageValues[i];
+      }
+    }
   }
 
   return returnValue;
 }
 
-const std::vector<double>&
-uqDeltaSeq1D1DFunctionClass::integratedValues() const
+double
+uqDeltaSet1D1DFunctionClass::deriv(double domainValue) const
 {
-  return m_integratedValues;
+  return 0.;
 }
 
-void
-uqDeltaSeq1D1DFunctionClass::set(
-  const std::vector<double>& domainValues,
-  const std::vector<double>& imageValues,
-  const std::vector<double>& integratedValues)
+double
+uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder, double* resultWithMultiplicationByTAsWell) const
 {
-  uqSampled1D1DFunctionClass::set(domainValues,imageValues);
-  m_integratedValues.clear();
+  double value = 0.;
 
-  unsigned int tmpSize = integratedValues.size();
-  m_integratedValues.resize(tmpSize,0.);
-  for (unsigned int i = 0; i < tmpSize; ++i) {
-    m_integratedValues[i] = integratedValues[i];
+  // todo
+  UQ_FATAL_TEST_MACRO(true, // july2011
+                      UQ_UNAVAILABLE_RANK,
+                      "uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate()",
+                      "not implemented yet");
+
+  if (resultWithMultiplicationByTAsWell) { // Just to eliminate INTEL compiler warnings
+    func.value((double) quadratureOrder);
   }
 
-  return;
-}
-
-void
-uqDeltaSeq1D1DFunctionClass::printForMatlab(
-  const uqBaseEnvironmentClass& env,
-  std::ofstream&                ofsvar,
-  const std::string&            prefixName) const
-{
-  uqSampled1D1DFunctionClass::printForMatlab(env,ofsvar,prefixName);
-
-  unsigned int tmpSize = m_integratedValues.size();
-  if (tmpSize == 0) {
-    tmpSize = 1;
-    ofsvar << "\n" << prefixName << "intValue_sub" << env.subIdString() << " = zeros("  << tmpSize << ",1);";
-  }
-  else {
-    ofsvar << "\n" << prefixName << "intValue_sub" << env.subIdString() << " = zeros("  << tmpSize << ",1);";
-    for (unsigned int i = 0; i < tmpSize; ++i) {
-      ofsvar << "\n" << prefixName << "intValue_sub" << env.subIdString() << "(" << i+1 << ",1) = " << m_integratedValues[i]  << ";";
-    }
-  }
-
-  return;
+  return value;
 }
 
 //*****************************************************
@@ -1275,7 +1215,7 @@ uqQuadNumerator1D1DFunctionClass::deriv(double domainValue) const
 // Isolated function
 //*****************************************************
 void
-alphaBetaCLoop(
+alphaBetaCLoop( // july2011
   int                                      k,
   double                                   pi_pi_m1,
   const uqQuadCRecursion1D1DFunctionClass& pi_m1,

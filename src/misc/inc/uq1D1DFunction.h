@@ -205,30 +205,26 @@ protected:
 };
 
 //*****************************************************
-// Delta Sequence 1D->1D class
+// Delta Set 1D->1D class
 //*****************************************************
-class uqDeltaSeq1D1DFunctionClass : public uqSampled1D1DFunctionClass {
+class uqDeltaSet1D1DFunctionClass : public uqBase1D1DFunctionClass { // july2011
 public:
-  uqDeltaSeq1D1DFunctionClass();
-  uqDeltaSeq1D1DFunctionClass(const std::vector<double>& domainValues,
-                              const std::vector<double>& imageValues,
-                              const std::vector<double>& integratedValues);
- ~uqDeltaSeq1D1DFunctionClass();
+  uqDeltaSet1D1DFunctionClass(const std::vector<double>& domainValues,
+                              double                     domainMin,
+                              double                     domainMax,
+                              const std::vector<double>& imageValues);
+ ~uqDeltaSet1D1DFunctionClass();
 
-  double                     value(double domainValue) const;
-  const std::vector<double>& integratedValues() const;
-  void                       set(const std::vector<double>& domainValues,
-                                 const std::vector<double>& imageValues,
-                                 const std::vector<double>& integratedValues);
-  void                       printForMatlab(const uqBaseEnvironmentClass& env, std::ofstream& ofsvar, const std::string& prefixName) const;
+  double value               (double domainValue) const;
+  double deriv               (double domainValue) const;
+  double multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder, double* resultWithMultiplicationByTAsWell) const; // july2011
 
 protected:
   using uqBase1D1DFunctionClass::m_minDomainValue;
   using uqBase1D1DFunctionClass::m_maxDomainValue;
-  using uqSampled1D1DFunctionClass::m_domainValues;
-  using uqSampled1D1DFunctionClass::m_imageValues;
 
-  std::vector<double> m_integratedValues;
+  std::vector<double> m_domainValues;
+  std::vector<double> m_imageValues;
 };
 
 //*****************************************************
@@ -460,7 +456,7 @@ computeAlphasAndBetasWithRiemann(
 // Isolated function
 //*****************************************************
 void
-alphaBetaCLoop(
+alphaBetaCLoop( // july2011
   int                                      k,
   double                                   pi_pi_m1,
   const uqQuadCRecursion1D1DFunctionClass& pi_m1,
@@ -475,7 +471,7 @@ alphaBetaCLoop(
 //*****************************************************
 template<class V>
 void
-computeAlphasAndBetasWithCQuadrature(
+computeAlphasAndBetasWithCQuadrature( // july2011
   const uqBase1D1DFunctionClass& function1D1D,
   unsigned int                   integrationOrder,
   V&                             alpha,
@@ -511,11 +507,11 @@ computeAlphasAndBetasWithCQuadrature(
 template<class V, class M>
 void
 computeQuadPtsAndWeights(const uqBase1D1DFunctionClass& function1D1D,
-                         unsigned int integrationMethod,
-                         unsigned int integrationOrder,
-                         double       exactValueToForceOnSumOfWeights,
-                         V&           quadPositions,
-                         V&           quadWeights)
+                         unsigned int                   integrationMethod,
+                         unsigned int                   integrationOrder,
+                         double                         exactValueToForceOnSumOfWeights,
+                         V&                             quadPositions,
+                         V&                             quadWeights)
 {
   const uqBaseEnvironmentClass& env = quadPositions.env();
   unsigned int n = quadPositions.sizeLocal();
