@@ -225,6 +225,11 @@ protected:
 
   std::vector<double> m_domainValues;
   std::vector<double> m_imageValues;
+
+  mutable int                 m_lastInputK;
+  mutable unsigned int        m_lastQuadratureOrder;
+  mutable std::vector<double> m_level_0;
+  mutable std::vector<double> m_level_m1;
 };
 
 //*****************************************************

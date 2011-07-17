@@ -672,7 +672,11 @@ uqDeltaSet1D1DFunctionClass::uqDeltaSet1D1DFunctionClass( // july2011
   :
   uqBase1D1DFunctionClass(domainMin,domainMax),
   m_domainValues         (domainValues),
-  m_imageValues          (imageValues)
+  m_imageValues          (imageValues),
+  m_lastInputK           (-1),
+  m_lastQuadratureOrder  (0),
+  m_level_0              (0),
+  m_level_m1             (0)
 {
 }
 
@@ -715,15 +719,102 @@ double
 uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder, double* resultWithMultiplicationByTAsWell) const
 {
   double value = 0.;
+  double valueWithT = 0.;
 
-  // todo
-  UQ_FATAL_TEST_MACRO(true, // july2011
-                      UQ_UNAVAILABLE_RANK,
-                      "uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate()",
-                      "not implemented yet");
+  unsigned int dataSize = m_domainValues.size();
 
-  if (resultWithMultiplicationByTAsWell) { // Just to eliminate INTEL compiler warnings
-    func.value((double) quadratureOrder);
+  if (resultWithMultiplicationByTAsWell) {
+    bool useFasterMethod = false;
+    const uqQuadDenominator1D1DFunctionClass* functionPtr     = dynamic_cast<const uqQuadDenominator1D1DFunctionClass* >(&func);
+    const uqQuadCRecursion1D1DFunctionClass*  constitutivePtr = NULL;
+    if (functionPtr != NULL) {
+      constitutivePtr = dynamic_cast<const uqQuadCRecursion1D1DFunctionClass* >(&(functionPtr->constitutiveFunction()));
+    }
+
+    int currentK = 0;
+    if (constitutivePtr != NULL) {
+      currentK = constitutivePtr->k();
+      if (currentK == 0) {
+        useFasterMethod       = true;
+        m_lastInputK          = currentK;
+        m_lastQuadratureOrder = quadratureOrder;
+      }
+      else if (currentK == (m_lastInputK+1)) {
+        if (m_lastQuadratureOrder == quadratureOrder) {
+          useFasterMethod       = true;
+          m_lastInputK          = currentK;
+        }
+      }
+
+      if (useFasterMethod == false) {
+        std::cerr << "In uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate()"
+                  << ": weired situation"
+                  << std::endl;
+        m_lastInputK          = -1;
+        m_lastQuadratureOrder = 0;
+        m_level_0.clear();
+        m_level_m1.clear();
+      }
+    }
+
+    if (useFasterMethod) {
+      if (currentK == 0) {
+        m_level_0.resize (dataSize,0.); // Yes, '0..'
+        m_level_m1.resize(dataSize,0.); // Yes, '0.'
+
+        //std::cout << "In uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate()"
+        //          << ": currentK = " << currentK
+        //          << std::endl;
+        for (unsigned int k = 0; k < dataSize; ++k) {
+          double xk   = m_domainValues[k];
+          double yk   = m_imageValues[k];
+          value      +=    yk;
+          valueWithT += xk*yk;
+        }
+      }
+      else { // if (currentK == 0)
+        double alpha = constitutivePtr->alpha()[currentK-1];
+        double beta  = constitutivePtr->beta ()[currentK-1];
+
+        //std::cout << "In uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate()"
+        //          << ": currentK = " << currentK
+        //          << ", alpha = "    << alpha
+        //          << ", beta = "     << beta
+        //          << std::endl;
+        for (unsigned int k = 0; k < dataSize; ++k) {
+          double xk = m_domainValues[k];
+          double yk = m_imageValues[k];
+          double tmpValue = (xk - alpha)*m_level_0[k] - beta*m_level_m1[k];
+          m_level_m1[k] = m_level_0[k];
+          m_level_0 [k] = tmpValue;
+          double auxValue = tmpValue*tmpValue;
+          value      +=    auxValue*yk;
+          valueWithT += xk*auxValue*yk;
+        }
+      }
+    }
+    else { // if (useFasterMethod)
+      for (unsigned int k = 0; k < dataSize; ++k) {
+        double xk = m_domainValues[k];
+        double yk = m_imageValues[k];
+        double auxValue = func.value(xk);
+        value      +=    auxValue*yk;
+        valueWithT += xk*auxValue*yk;
+      }
+    }
+
+    *resultWithMultiplicationByTAsWell = valueWithT;
+  }
+  else { // todo: review
+    UQ_FATAL_TEST_MACRO(true, // july2011
+                        UQ_UNAVAILABLE_RANK,
+                        "uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate()",
+                        "not finished implementing yet");
+    for (unsigned int k = 0; k < dataSize; ++k) {
+      double xk = m_domainValues[k];
+      double yk = m_imageValues[k];
+      value += func.value(xk)*yk;
+    }
   }
 
   return value;
