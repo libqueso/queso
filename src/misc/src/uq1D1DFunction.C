@@ -750,6 +750,10 @@ uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass&
         std::cerr << "In uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate()"
                   << ": weired situation"
                   << std::endl;
+        UQ_FATAL_TEST_MACRO(true, // july2011
+                            UQ_UNAVAILABLE_RANK,
+                            "uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate()",
+                            "not finished checking yet");
         m_lastInputK          = -1;
         m_lastQuadratureOrder = 0;
         m_level_0.clear();
@@ -759,15 +763,16 @@ uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass&
 
     if (useFasterMethod) {
       if (currentK == 0) {
-        m_level_0.resize (dataSize,0.); // Yes, '0..'
+        m_level_0.resize (dataSize,0.); // Yes, '0.'
         m_level_m1.resize(dataSize,0.); // Yes, '0.'
 
-        //std::cout << "In uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate()"
+        //std::cout << "In uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate(), detail"
         //          << ": currentK = " << currentK
         //          << std::endl;
         for (unsigned int k = 0; k < dataSize; ++k) {
-          double xk   = m_domainValues[k];
-          double yk   = m_imageValues[k];
+          double xk = m_domainValues[k];
+          double yk = m_imageValues[k];
+          m_level_0[k] = 1.; // Yes, '1.'
           value      +=    yk;
           valueWithT += xk*yk;
         }
@@ -776,7 +781,7 @@ uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass&
         double alpha = constitutivePtr->alpha()[currentK-1];
         double beta  = constitutivePtr->beta ()[currentK-1];
 
-        //std::cout << "In uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate()"
+        //std::cout << "In uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate(), detail"
         //          << ": currentK = " << currentK
         //          << ", alpha = "    << alpha
         //          << ", beta = "     << beta
@@ -785,6 +790,12 @@ uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass&
           double xk = m_domainValues[k];
           double yk = m_imageValues[k];
           double tmpValue = (xk - alpha)*m_level_0[k] - beta*m_level_m1[k];
+          //std::cout << "In uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate(), detail"
+          //          << ": k = "        << k
+          //          << ", xk = "       << xk
+          //          << ", yk = "       << yk
+	  //         << ", tmpValue = " << tmpValue
+          //          << std::endl;
           m_level_m1[k] = m_level_0[k];
           m_level_0 [k] = tmpValue;
           double auxValue = tmpValue*tmpValue;
@@ -794,6 +805,10 @@ uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionClass&
       }
     }
     else { // if (useFasterMethod)
+      UQ_FATAL_TEST_MACRO(true, // july2011
+                          UQ_UNAVAILABLE_RANK,
+                          "uqDeltaSet1D1DFunctionClass::multiplyAndIntegrate()",
+                          "not finished checking yet (2)");
       for (unsigned int k = 0; k < dataSize; ++k) {
         double xk = m_domainValues[k];
         double yk = m_imageValues[k];
@@ -942,7 +957,7 @@ uqGaussian1dKde1D1DFunctionClass::multiplyAndIntegrate(const uqBase1D1DFunctionC
 
     if (useFasterMethod) {
       if (currentK == 0) {
-        m_level_0.resize (dataSize*numQuadraturePositions,0.); // Yes, '0..'
+        m_level_0.resize (dataSize*numQuadraturePositions,0.); // Yes, '0.'
         m_level_m1.resize(dataSize*numQuadraturePositions,0.); // Yes, '0.'
 
         //std::cout << "In uqGaussian1dKde1D1DFunctionClass::multiplyAndIntegrate()"
@@ -1342,20 +1357,24 @@ alphaBetaCLoop( // july2011
   // Alpha and beta
   alpha[k] = t_pi_pi_0/pi_pi_0;
   beta[k]  = pi_pi_0/pi_pi_m1;
+  UQ_FATAL_TEST_MACRO((pi_pi_0 <= 0.),
+                      UQ_UNAVAILABLE_RANK,
+                      "alphaBetaCLoop()",
+                      "pi_pi_0 should be positive");
   UQ_FATAL_TEST_MACRO((beta[k] < 0.),
                       UQ_UNAVAILABLE_RANK,
                       "alphaBetaCLoop()",
                       "beta is negative");
 
-  std::cout << "In alphaBetaCLoop()"
-            << ": k = "         << k
-    //<< ", pi_0(0.) = "  << pi_0.value(0.)
-    //<< ", pi_pi_m1 = "  << pi_pi_m1
-    //<< ", pi_pi_0 = "   << pi_pi_0
-    //<< ", t_pi_pi_0 = " << t_pi_pi_0
-    //<< ", alpha[k] = "  << alpha[k]
-    //<< ", beta[k] = "   << beta[k]
-            << std::endl;
+  //std::cout << "In alphaBetaCLoop(), detail"
+  //          << ": k = "         << k
+  //          << ", pi_0(0.) = "  << pi_0.value(0.)
+  //          << ", pi_pi_m1 = "  << pi_pi_m1
+  //          << ", pi_pi_0 = "   << pi_pi_0
+  //          << ", t_pi_pi_0 = " << t_pi_pi_0
+  //          << ", alpha[k] = "  << alpha[k]
+  //          << ", beta[k] = "   << beta[k]
+  //          << std::endl;
 
   if (k < (int) (n-1)) {
     uqQuadCRecursion1D1DFunctionClass pi_p1(k+1,
