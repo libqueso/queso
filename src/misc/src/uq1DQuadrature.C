@@ -46,10 +46,10 @@ uqBase1DQuadratureClass::uqBase1DQuadratureClass(
                       UQ_UNAVAILABLE_RANK,
                       "uqBase1DQuadratureClass::constructor()",
                       "min >= max");
-  UQ_FATAL_TEST_MACRO(order == 0,
-                      UQ_UNAVAILABLE_RANK,
-                      "uqBase1DQuadratureClass::constructor()",
-                      "order = 0");
+  //UQ_FATAL_TEST_MACRO(order == 0, // eep2011
+  //                    UQ_UNAVAILABLE_RANK,
+  //                    "uqBase1DQuadratureClass::constructor()",
+  //                    "order = 0");
 }
 
 uqBase1DQuadratureClass::~uqBase1DQuadratureClass()
@@ -144,7 +144,7 @@ uqUniformLegendre1DQuadratureClass::uqUniformLegendre1DQuadratureClass(
   m_weights.resize  (m_order+1,0.); // Yes, '+1'
 
   // http://www.holoborodko.com/pavel/?page_id=679
-  switch (m_order) {
+  switch (m_order) { // eep2011
     case 1:
       m_weights  [0] =  1.;
       m_weights  [1] =  1.;
@@ -459,7 +459,7 @@ uqGaussianHermite1DQuadratureClass::uqGaussianHermite1DQuadratureClass(
   m_weights.resize  (m_order+1,0.); // Yes, '+1'
 
   // http://www.efunda.com/math/num_integration/findgausshermite.cfm
-  switch (m_order) {
+  switch (m_order) { // eep2011
     case 1:
       m_weights  [0] =  sqrt(M_PI)/2.;
       m_weights  [1] =  sqrt(M_PI)/2.;
@@ -649,6 +649,9 @@ uqGaussianHermite1DQuadratureClass::uqGaussianHermite1DQuadratureClass(
     break;
 
     default:
+      std::cerr << "In uqGaussianHermite1DQuadratureClass::constructor()"
+                << ": m_order = " << m_order
+                << std::endl;
       UQ_FATAL_TEST_MACRO(true,
                           UQ_UNAVAILABLE_RANK,
                           "uqGaussianHermite1DQuadratureClass::constructor()",
