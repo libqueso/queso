@@ -1022,11 +1022,14 @@ uqScalarSequenceClass<T>::subWeigthCdf(
   T                         tmpMinValue;
   T                         tmpMaxValue;
   std::vector<unsigned int> bins(numEvaluationPoints,0);
+  gridValues.resize             (numEvaluationPoints,0.);
+  cdfValues.resize              (numEvaluationPoints,0.);
 
   subMinMax(0, // initialPos
             this->subSequenceSize(),
             tmpMinValue,
             tmpMaxValue);
+
   subWeigthHistogram(0, // initialPos,
                      tmpMinValue,
                      tmpMaxValue,
@@ -2523,6 +2526,11 @@ uqScalarSequenceClass<T>::subWeigthHistogram(
       bins[index] += value;
     }
   }
+
+  //std::cout << "In uqScalarSequenceClass<T>::subWeigthHistogram():" << std::endl;
+  //for (unsigned int j = 0; j < bins.size(); ++j) {
+  //  std::cout << "bins[" << j << "] = " << bins[j] << std::endl;
+  //}
 
   return;
 }
