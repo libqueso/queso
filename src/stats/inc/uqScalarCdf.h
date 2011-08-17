@@ -48,9 +48,10 @@ public:
 
           const uqBaseEnvironmentClass& env             () const;
           const std::string&            prefix          () const;
-  virtual       double                  value           (T             paramValue) const = 0;
-  virtual       T                       inverse         (double        cdfValue  ) const = 0;
-  virtual       void                    print           (std::ostream& os        ) const = 0;
+  virtual       double                  value           (T             paramValue          ) const = 0;
+  virtual       T                       inverse         (double        cdfValue            ) const = 0;
+  virtual       void                    getSupport      (T& minHorizontal, T& maxHorizontal) const = 0;
+  virtual       void                    print           (std::ostream& os                  ) const = 0;
   virtual       void                    subWriteContents(const std::string&            varNamePrefix,
                                                          const std::string&            fileName,
                                                          const std::string&            fileType,
@@ -59,6 +60,8 @@ public:
 protected:
   const uqBaseEnvironmentClass& m_env;
         std::string             m_prefix;
+  mutable T                     m_minHorizontal;
+  mutable T                     m_maxHorizontal;
 };
 
 template<class T>
@@ -66,8 +69,10 @@ uqBaseScalarCdfClass<T>::uqBaseScalarCdfClass(
   const uqBaseEnvironmentClass& env,
   const char*                   prefix)
   :
-  m_env   (env),
-  m_prefix((std::string)(prefix)+"")
+  m_env          (env),
+  m_prefix       ((std::string)(prefix)+""),
+  m_minHorizontal(-INFINITY),
+  m_maxHorizontal( INFINITY)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqBaseScalarCdfClass<T>::constructor()"
@@ -133,9 +138,10 @@ public:
                           const std::vector<double>&    cdfValues);
  ~uqSampledScalarCdfClass();
 
-  double value           (T             paramValue) const;
-  T      inverse         (double        cdfValue  ) const;
-  void   print           (std::ostream& os        ) const;
+  double value           (T                       paramValue) const;
+  T      inverse         (double                  cdfValue  ) const;
+  void   getSupport      (T& minHorizontal, T& maxHorizontal) const;
+  void   print           (std::ostream&           os        ) const;
   void   subWriteContents(const std::string&            varNamePrefix,
                           const std::string&            fileName,
                           const std::string&            fileType,
@@ -144,6 +150,8 @@ public:
 protected:
   using uqBaseScalarCdfClass<T>::m_env;
   using uqBaseScalarCdfClass<T>::m_prefix;
+  using uqBaseScalarCdfClass<T>::m_minHorizontal;
+  using uqBaseScalarCdfClass<T>::m_maxHorizontal;
 
   const uqBaseOneDGridClass<T>& m_cdfGrid;
   const std::vector<double>&    m_cdfValues;
@@ -283,6 +291,52 @@ uqSampledScalarCdfClass<T>::inverse(double cdfValue) const
   return result;
 }
 
+template<class T>
+void
+uqSampledScalarCdfClass<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
+{
+  if ((m_minHorizontal == -INFINITY) ||
+      (m_maxHorizontal ==  INFINITY)) {
+    UQ_FATAL_TEST_MACRO((m_minHorizontal != -INFINITY) || (m_maxHorizontal != INFINITY),
+                        m_env.worldRank(),
+                        "uqSampledScalarCdfClass<T>::getSupport()",
+                        "unexpected values of m_minHorizontal and/or m_maxHorizontal");
+
+    unsigned int iMax = m_cdfGrid.size();
+
+    for (unsigned int i = 0; i < iMax; ++i) {
+      if (m_cdfGrid[i] > 0.) {
+        if (i > 0) --i;
+        m_minHorizontal = m_cdfGrid[i];
+        break;
+      }
+    }
+
+    UQ_FATAL_TEST_MACRO(m_minHorizontal == -INFINITY,
+                        m_env.worldRank(),
+                        "uqSampledScalarCdfClass<T>::getSupport()",
+                        "unexpected value for m_minHorizontal");
+
+    for (unsigned int i = 0; i < iMax; ++i) {
+      if (m_cdfGrid[iMax-1-i] < 1.) {
+        if (i < (iMax-1)) ++i;
+        m_maxHorizontal = m_cdfGrid[i];
+        break;
+      }
+    }
+
+    UQ_FATAL_TEST_MACRO(m_maxHorizontal == INFINITY,
+                        m_env.worldRank(),
+                        "uqSampledScalarCdfClass<T>::getSupport()",
+                        "unexpected value for m_maxHorizontal");
+  }
+
+  minHorizontal = m_minHorizontal;
+  maxHorizontal = m_maxHorizontal;
+
+  return;
+}
+
 template <class T>
 void
 uqSampledScalarCdfClass<T>::print(std::ostream& os) const
@@ -376,9 +430,10 @@ public:
                       const std::vector<double>&    cdfValues);
  ~uqStdScalarCdfClass();
 
-  double value           (T             paramValue) const;
-  T      inverse         (double        cdfValue  ) const;
-  void   print           (std::ostream& os        ) const;
+  double value           (T                       paramValue) const;
+  T      inverse         (double                  cdfValue  ) const;
+  void   getSupport      (T& minHorizontal, T& maxHorizontal) const;
+  void   print           (std::ostream&           os        ) const;
   void   subWriteContents(const std::string&            varNamePrefix,
                           const std::string&            fileName,
                           const std::string&            fileType,
@@ -387,6 +442,8 @@ public:
 protected:
   using uqBaseScalarCdfClass<T>::m_env;
   using uqBaseScalarCdfClass<T>::m_prefix;
+  using uqBaseScalarCdfClass<T>::m_minHorizontal;
+  using uqBaseScalarCdfClass<T>::m_maxHorizontal;
 
   const uqStdOneDGridClass<T> m_cdfGrid;
   const std::vector<double>   m_cdfValues;
@@ -438,6 +495,13 @@ T
 uqStdScalarCdfClass<T>::inverse(double cdfValue) const
 {
   return m_sampledCdfGrid->inverse(cdfValue);
+}
+
+template<class T>
+void
+uqStdScalarCdfClass<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
+{
+  return m_sampledCdfGrid->getSupport(minHorizontal,maxHorizontal);
 }
 
 template <class T>
