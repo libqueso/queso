@@ -245,6 +245,12 @@ uqBaseEnvironmentClass::fullComm() const
   return *m_fullComm;
 }
 
+uqRawType_MPI_Group
+uqBaseEnvironmentClass::subGroup() const
+{
+  return m_subGroup;
+}
+
 int
 uqBaseEnvironmentClass::subRank() const
 {

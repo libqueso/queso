@@ -167,6 +167,7 @@ public:
           int                     fullRank                      () const;
           const uqMpiCommClass&   fullComm                      () const; 
 
+          uqRawType_MPI_Group     subGroup                      () const;
           int                     subRank                       () const;
           const uqMpiCommClass&   subComm                       () const; 
 
