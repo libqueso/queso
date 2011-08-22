@@ -1030,6 +1030,18 @@ uqScalarSequenceClass<T>::subWeigthCdf(
             tmpMinValue,
             tmpMaxValue);
 
+  if (tmpMinValue == tmpMaxValue) {
+    if (tmpMinValue < -1.e-12) {
+      tmpMinValue += tmpMinValue*(1.e-8);
+    }
+    else if (tmpMinValue > 1.e-12) {
+      tmpMinValue -= tmpMinValue*(1.e-8);
+    }
+    else {
+      tmpMinValue = 1.e-12;
+    }
+  }
+
   subWeigthHistogram(0, // initialPos,
                      tmpMinValue,
                      tmpMaxValue,

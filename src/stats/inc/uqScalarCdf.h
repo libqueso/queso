@@ -305,7 +305,7 @@ uqSampledScalarCdfClass<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
     unsigned int iMax = m_cdfGrid.size();
 
     for (unsigned int i = 0; i < iMax; ++i) {
-      if (m_cdfGrid[i] > 0.) {
+      if (m_cdfValues[i] > 0.) {
         if (i > 0) --i;
         m_minHorizontal = m_cdfGrid[i];
         break;
@@ -317,10 +317,17 @@ uqSampledScalarCdfClass<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
                         "uqSampledScalarCdfClass<T>::getSupport()",
                         "unexpected value for m_minHorizontal");
 
-    for (unsigned int i = 0; i < iMax; ++i) {
-      if (m_cdfGrid[iMax-1-i] < 1.) {
-        if (i < (iMax-1)) ++i;
-        m_maxHorizontal = m_cdfGrid[i];
+    if (iMax == 1) {
+      UQ_FATAL_TEST_MACRO(m_cdfValues[iMax - 1] != 1.,
+                          m_env.worldRank(),
+                          "uqSampledScalarCdfClass<T>::getSupport()",
+                          "unexpected value for case 'iMax = 1'");
+      m_maxHorizontal = m_cdfGrid[iMax-1];
+    }
+    else for (unsigned int i = 0; i < iMax; ++i) {
+      if (m_cdfValues[iMax-1-i] < 1.) {
+        if (i > 0) --i;
+        m_maxHorizontal = m_cdfGrid[iMax-1-i];
         break;
       }
     }
