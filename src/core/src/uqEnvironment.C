@@ -299,6 +299,14 @@ uqBaseEnvironmentClass::subDisplayFile() const
   return m_subDisplayFile;
 }
 
+std::string
+uqBaseEnvironmentClass::subDisplayFileName() const
+{
+  if (m_optionsObj == NULL) return ".";
+
+  return m_optionsObj->m_ov.m_subDisplayFileName;
+}
+
 unsigned int
 uqBaseEnvironmentClass::numSubEnvironments() const
 {
@@ -1353,26 +1361,27 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
     openFile = true;
   }
 
-  if(openFile && m_worldRank == 0)
-    {
-      //////////////////////////////////////////////////////////////////
-      // Verify parent directory exists (for cases when a user
-      // specifies a relative path for the desired output file).
-      //////////////////////////////////////////////////////////////////
+  if (openFile && m_worldRank == 0) {
+    //////////////////////////////////////////////////////////////////
+    // Verify parent directory exists (for cases when a user
+    // specifies a relative path for the desired output file).
+    //////////////////////////////////////////////////////////////////
+    int irtrn = grvy_check_file_path((m_optionsObj->m_ov.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
+    UQ_FATAL_TEST_MACRO(irtrn < 0,
+                        m_worldRank,
+                        "uqEnvironment::constructor()",
+                        "unable to verify output path");
+  }
 
-      int irtrn = grvy_check_file_path((m_optionsObj->m_ov.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
-      UQ_FATAL_TEST_MACRO(irtrn < 0,
-			  m_worldRank,
-			  "uqEnvironment::constructor()",
-			  "unable to verify output path");
-    }
-
-    m_fullComm->Barrier();	// to ensure that rank 0 has created path if necessary before other tasks use it
+  ////////////////////////////////////////////////////////////////////
+  // Ensure that rank 0 has created path, if necessary, before other tasks use it
+  ////////////////////////////////////////////////////////////////////
+  m_fullComm->Barrier(); 
 
   if (openFile) {
-
+    //////////////////////////////////////////////////////////////////
     // Always write over an eventual pre-existing file
-
+    //////////////////////////////////////////////////////////////////
     m_subDisplayFile = new std::ofstream((m_optionsObj->m_ov.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str(),
                                          std::ofstream::out | std::ofstream::trunc);
     UQ_FATAL_TEST_MACRO((m_subDisplayFile && m_subDisplayFile->is_open()) == false,

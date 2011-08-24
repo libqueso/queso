@@ -177,6 +177,7 @@ public:
           const uqMpiCommClass&   inter0Comm                    () const;
 
           std::ofstream*          subDisplayFile                () const;
+          std::string             subDisplayFileName            () const;
 
           unsigned int            numSubEnvironments            () const;
           unsigned int            subId                         () const;
