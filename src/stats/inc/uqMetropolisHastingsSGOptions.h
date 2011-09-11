@@ -89,6 +89,10 @@ public:
   std::set<unsigned int>             m_dataOutputAllowedSet;
 
   bool                               m_totallyMute;
+  std::string                        m_initialPositionDataInputFileName;
+  std::string                        m_initialPositionDataInputFileType;
+  std::string                        m_initialProposalCovMatrixDataInputFileName;
+  std::string                        m_initialProposalCovMatrixDataInputFileType;
   std::string                        m_rawChainDataInputFileName;
   std::string                        m_rawChainDataInputFileType;
   unsigned int                       m_rawChainSize;
@@ -121,6 +125,8 @@ public:
   double                             m_amEta;
   double                             m_amEpsilon;
   bool                               m_amPrintAdaptedMatrices;
+  std::string                        m_amAdaptedMatricesDataOutputFileName;
+  std::string                        m_amAdaptedMatricesDataOutputFileType;
 
   unsigned int                       m_enableBrooksGelmanConvMonitor;
   unsigned int                       m_BrooksGelmanLag;
@@ -165,6 +171,10 @@ private:
   std::string                   m_option_dataOutputAllowedSet;
 
   std::string                   m_option_totallyMute;
+  std::string                   m_option_initialPosition_dataInputFileName;
+  std::string                   m_option_initialPosition_dataInputFileType;
+  std::string                   m_option_initialProposalCovMatrix_dataInputFileName;
+  std::string                   m_option_initialProposalCovMatrix_dataInputFileType;
   std::string                   m_option_rawChain_dataInputFileName;
   std::string                   m_option_rawChain_dataInputFileType;
   std::string                   m_option_rawChain_size;
@@ -195,6 +205,8 @@ private:
   std::string                   m_option_am_eta;
   std::string                   m_option_am_epsilon;
   std::string                   m_option_am_printAdaptedMatrices;
+  std::string                   m_option_am_adaptedMatrices_dataOutputFileName;
+  std::string                   m_option_am_adaptedMatrices_dataOutputFileType;
 
   std::string                   m_option_enableBrooksGelmanConvMonitor;
   std::string                   m_option_BrooksGelmanLag;

@@ -1209,6 +1209,16 @@ uqGslMatrixClass::subWriteContents(
   return;
 }
 
+void
+uqGslMatrixClass::subReadContents(
+  const std::string&            fileName,
+  const std::string&            fileType,
+  const std::set<unsigned int>& allowedSubEnvIds)
+{
+  // palms
+  return;
+}
+
 std::ostream&
 operator<<(std::ostream& os, const uqGslMatrixClass& obj)
 {

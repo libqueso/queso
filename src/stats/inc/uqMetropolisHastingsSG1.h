@@ -129,7 +129,7 @@ private:
   const uqVectorSpaceClass <P_V,P_M>&               m_vectorSpace;
   const uqBaseJointPdfClass<P_V,P_M>&               m_targetPdf;
         P_V                                         m_initialPosition;
-  const P_M*                                        m_initialProposalCovMatrix;
+        P_M                                         m_initialProposalCovMatrix;
         bool                                        m_nullInputProposalCovMatrix;
   const uqScalarFunctionSynchronizerClass<P_V,P_M>* m_targetPdfSynchronizer;
 
@@ -181,7 +181,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_vectorSpace               (sourceRv.imageSet().vectorSpace()),
   m_targetPdf                 (sourceRv.pdf()),
   m_initialPosition           (initialPosition),
-  m_initialProposalCovMatrix  (inputProposalCovMatrix),
+  m_initialProposalCovMatrix  (m_vectorSpace.zeroVector()),
   m_nullInputProposalCovMatrix(inputProposalCovMatrix == NULL),
   m_targetPdfSynchronizer     (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
   m_tk                        (NULL),
@@ -196,6 +196,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_alternativeOptionsValues  (NULL,NULL),
   m_optionsObj                (NULL)
 {
+  if (inputProposalCovMatrix != NULL) m_initialProposalCovMatrix = *inputProposalCovMatrix;
   if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
   if (m_env.optionsInputFileName() == "") {
     m_optionsObj = new uqMetropolisHastingsSGOptionsClass(m_env,prefix,m_alternativeOptionsValues);
@@ -250,7 +251,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_vectorSpace               (sourceRv.imageSet().vectorSpace()),
   m_targetPdf                 (sourceRv.pdf()),
   m_initialPosition           (initialPosition),
-  m_initialProposalCovMatrix  (inputProposalCovMatrix),
+  m_initialProposalCovMatrix  (m_vectorSpace.zeroVector()),
   m_nullInputProposalCovMatrix(inputProposalCovMatrix == NULL),
   m_targetPdfSynchronizer     (new uqScalarFunctionSynchronizerClass<P_V,P_M>(m_targetPdf,m_initialPosition)),
   m_tk                        (NULL),
@@ -265,7 +266,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_alternativeOptionsValues  (NULL,NULL),
   m_optionsObj                (new uqMetropolisHastingsSGOptionsClass(mlOptions))
 {
-  if ((m_env.subDisplayFile()                              ) &&
+  if (inputProposalCovMatrix != NULL) m_initialProposalCovMatrix = *inputProposalCovMatrix;
+  if ((m_env.subDisplayFile()                   ) &&
       (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::constructor(2)"
                             << std::endl;
@@ -287,12 +289,21 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
   /////////////////////////////////////////////////////////////////
   // Instantiate the appropriate TK (transition kernel)
   /////////////////////////////////////////////////////////////////
-  if ((m_env.subDisplayFile()                              ) &&
+  if ((m_env.subDisplayFile()                   ) &&
       (m_optionsObj->m_ov.m_totallyMute == false)) {
     *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
                             << ": running with UQ_USES_TK_CLASS flag defined"
                             << std::endl;
   }
+
+  if (false) { //m_optionsObj->m_ov.m_initialPositionDataInputFileName != ".") { // palms
+    std::set<unsigned int> tmpSet;
+    tmpSet.insert(m_env.subId());
+    m_initialPosition.subReadContents(m_optionsObj->m_ov.m_initialPositionDataInputFileName,
+                                      m_optionsObj->m_ov.m_initialPositionDataInputFileType,
+                                      tmpSet);
+  }
+
   std::vector<double> drScalesAll(m_optionsObj->m_ov.m_drScalesForExtraStages.size()+1,1.);
   for (unsigned int i = 1; i < (m_optionsObj->m_ov.m_drScalesForExtraStages.size()+1); ++i) {
     drScalesAll[i] = m_optionsObj->m_ov.m_drScalesForExtraStages[i-1];
@@ -302,7 +313,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
                                                          m_vectorSpace,
                                                          drScalesAll,
                                                          *m_targetPdfSynchronizer);
-    if ((m_env.subDisplayFile()                              ) &&
+    if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
                               << ": just instantiated a 'HessianCovMatrices' TK class"
@@ -310,16 +321,25 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
     }
   }
   else {
-    UQ_FATAL_TEST_MACRO((m_initialProposalCovMatrix == NULL),
-                        m_env.worldRank(),
-                        "uqMetropolisHastingsSGClass<P_V,P_M>::constructor()",
-                        "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
+    if (false) { //m_optionsObj->m_ov.m_initialProposalCovMatrixDataInputFileName != ".") { // palms
+      std::set<unsigned int> tmpSet;
+      tmpSet.insert(m_env.subId());
+      m_initialProposalCovMatrix.subReadContents(m_optionsObj->m_ov.m_initialProposalCovMatrixDataInputFileName,
+                                                 m_optionsObj->m_ov.m_initialProposalCovMatrixDataInputFileType,
+                                                 tmpSet);
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(m_nullInputProposalCovMatrix,
+                          m_env.worldRank(),
+                          "uqMetropolisHastingsSGClass<P_V,P_M>::constructor()",
+                          "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
+    }
 
     m_tk = new uqScaledCovMatrixTKGroupClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                       m_vectorSpace,
                                                       drScalesAll,
-                                                      *m_initialProposalCovMatrix);
-    if ((m_env.subDisplayFile()                              ) &&
+                                                      m_initialProposalCovMatrix);
+    if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
                               << ": just instantiated a 'ScaledCovMatrix' TK class"
@@ -349,10 +369,9 @@ uqMetropolisHastingsSGClass<P_V,P_M>::~uqMetropolisHastingsSGClass()
   m_stageIdForDebugging    = 0;
   m_idsOfUniquePositions.clear();
 
-  if (m_tk                        ) delete m_tk;
-  if (m_targetPdfSynchronizer     ) delete m_targetPdfSynchronizer;
-  if (m_nullInputProposalCovMatrix) delete m_initialProposalCovMatrix;
-  if (m_optionsObj                ) delete m_optionsObj;
+  if (m_tk                   ) delete m_tk;
+  if (m_targetPdfSynchronizer) delete m_targetPdfSynchronizer;
+  if (m_optionsObj           ) delete m_optionsObj;
 
   //if (m_env.subDisplayFile()) {
   //  *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::destructor()"

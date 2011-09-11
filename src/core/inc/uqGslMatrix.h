@@ -88,6 +88,9 @@ public:
                                           const std::string&            fileName,
                                           const std::string&            fileType,
                                           const std::set<unsigned int>& allowedSubEnvIds) const;
+  void              subReadContents      (const std::string&            fileName,
+                                          const std::string&            fileType,
+                                          const std::set<unsigned int>& allowedSubEnvIds); // palms
 
   void              getColumn            (const unsigned int column_num, uqGslVectorClass& column) const;
   void              getRow               (const unsigned int row_num, uqGslVectorClass& row) const;
