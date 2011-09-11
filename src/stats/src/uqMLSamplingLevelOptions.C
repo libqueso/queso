@@ -87,6 +87,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_amAdaptInterval                          (UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
   m_amEpsilon                                (UQ_ML_SAMPLING_L_AM_EPSILON_ODV),
+  m_amPrintAdaptedMatrices                   (UQ_ML_SAMPLING_L_AM_PRINT_ADAPTED_MATRICES_ODV),
   m_env                                      (env),
   m_optionsDesc                              (new po::options_description("Multilevel sampling level options")),
   m_option_help                              (m_prefix + "help"                              ),
@@ -134,7 +135,8 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
-  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        )
+  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        ),
+  m_option_am_printAdaptedMatrices           (m_prefix + "am_printAdaptedMatrices"           )
 {
 }
 
@@ -195,6 +197,7 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_amAdaptInterval                     = srcOptions.m_amAdaptInterval;
   m_amEta                               = srcOptions.m_amEta;
   m_amEpsilon                           = srcOptions.m_amEpsilon;
+  m_amPrintAdaptedMatrices              = srcOptions.m_amPrintAdaptedMatrices;
 
   return;
 }
@@ -292,6 +295,7 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(m_amAdaptInterval                  ), "'am' adaptation interval"                                        )
     (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(m_amEta                            ), "'am' eta"                                                        )
     (m_option_am_epsilon.c_str(),                         po::value<double      >()->default_value(m_amEpsilon                        ), "'am' epsilon"                                                    )
+    (m_option_am_printAdaptedMatrices.c_str(),            po::value<bool        >()->default_value(m_amPrintAdaptedMatrices           ), "'am' print adapted matrices"                                     )
   ;
 
   return;
@@ -638,6 +642,10 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon.c_str()]).as<double>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_am_printAdaptedMatrices.c_str())) {
+    m_amPrintAdaptedMatrices = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_printAdaptedMatrices.c_str()]).as<bool>();
+  }
+
   return;
 }
 
@@ -702,6 +710,7 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_am_adaptInterval           << " = " << m_amAdaptInterval
      << "\n" << m_option_am_eta                     << " = " << m_amEta
      << "\n" << m_option_am_epsilon                 << " = " << m_amEpsilon
+     << "\n" << m_option_am_printAdaptedMatrices    << " = " << m_amPrintAdaptedMatrices
      << std::endl;
 
   return;

@@ -81,6 +81,7 @@
 #define UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV                      0
 #define UQ_ML_SAMPLING_L_AM_ETA_ODV                                 1.
 #define UQ_ML_SAMPLING_L_AM_EPSILON_ODV                             1.e-5
+#define UQ_ML_SAMPLING_L_AM_PRINT_ADAPTED_MATRICES_ODV              0
 
 class uqMLSamplingLevelOptionsClass
 {
@@ -151,6 +152,7 @@ public:
   unsigned int                       m_amAdaptInterval;
   double                             m_amEta;
   double                             m_amEpsilon;
+  bool                               m_amPrintAdaptedMatrices;
 
 private:
   void   copyOptionsValues(const uqMLSamplingLevelOptionsClass& srcOptions);
@@ -209,6 +211,7 @@ private:
   std::string                   m_option_am_adaptInterval;
   std::string                   m_option_am_eta;
   std::string                   m_option_am_epsilon;
+  std::string                   m_option_am_printAdaptedMatrices;
 };
 
 std::ostream& operator<<(std::ostream& os, const uqMLSamplingLevelOptionsClass& obj);

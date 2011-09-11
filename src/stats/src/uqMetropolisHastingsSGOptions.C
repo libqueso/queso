@@ -65,6 +65,7 @@ uqMhOptionsValuesClass::uqMhOptionsValuesClass(
   m_amAdaptInterval                   (UQ_MH_SG_AM_ADAPT_INTERVAL_ODV),
   m_amEta                             (UQ_MH_SG_AM_ETA_ODV),
   m_amEpsilon                         (UQ_MH_SG_AM_EPSILON_ODV),
+  m_amPrintAdaptedMatrices            (UQ_MH_SG_AM_PRINT_ADAPTED_MATRICES_ODV),
   m_enableBrooksGelmanConvMonitor     (UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR),
   m_BrooksGelmanLag                   (UQ_MH_SG_BROOKS_GELMAN_LAG),
   m_alternativeRawSsOptionsValues     (),
@@ -129,6 +130,7 @@ uqMhOptionsValuesClass::copy(const uqMhOptionsValuesClass& src)
   m_amAdaptInterval                    = src.m_amAdaptInterval;
   m_amEta                              = src.m_amEta;
   m_amEpsilon                          = src.m_amEpsilon;
+  m_amPrintAdaptedMatrices             = src.m_amPrintAdaptedMatrices;
   m_enableBrooksGelmanConvMonitor      = src.m_enableBrooksGelmanConvMonitor;
   m_BrooksGelmanLag                    = src.m_BrooksGelmanLag;
 
@@ -183,6 +185,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
   m_option_am_epsilon                        (m_prefix + "am_epsilon"                        ),
+  m_option_am_printAdaptedMatrices           (m_prefix + "am_printAdaptedMatrices"           ),
   m_option_enableBrooksGelmanConvMonitor     (m_prefix + "enableBrooksGelmanConvMonitor"     ),
   m_option_BrooksGelmanLag                   (m_prefix + "BrooksGelmanLag"                   )
 {
@@ -238,6 +241,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
   m_option_am_epsilon                        (m_prefix + "am_epsilon"                        ),
+  m_option_am_printAdaptedMatrices           (m_prefix + "am_printAdaptedMatrices"           ),
   m_option_enableBrooksGelmanConvMonitor     (m_prefix + "enableBrooksGelmanConvMonitor"     ),
   m_option_BrooksGelmanLag                   (m_prefix + "BrooksGelmanLag"                   )
 {
@@ -309,6 +313,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
   m_option_am_eta                            (m_prefix + "am_eta"                            ),
   m_option_am_epsilon                        (m_prefix + "am_epsilon"                        ),
+  m_option_am_printAdaptedMatrices           (m_prefix + "am_printAdaptedMatrices"           ),
   m_option_enableBrooksGelmanConvMonitor     (m_prefix + "enableBrooksGelmanConvMonitor"     ),
   m_option_BrooksGelmanLag                   (m_prefix + "BrooksGelmanLag"                   )
 {
@@ -344,6 +349,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_ov.m_amAdaptInterval                    = mlOptions.m_amAdaptInterval;
   m_ov.m_amEta                              = mlOptions.m_amEta;
   m_ov.m_amEpsilon                          = mlOptions.m_amEpsilon;
+  m_ov.m_amPrintAdaptedMatrices             = mlOptions.m_amPrintAdaptedMatrices;
   m_ov.m_enableBrooksGelmanConvMonitor      = UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR;
   m_ov.m_BrooksGelmanLag                    = UQ_MH_SG_BROOKS_GELMAN_LAG;
 
@@ -442,6 +448,7 @@ uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& opt
     (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                     ), "'am' adaptation interval"                                   )
     (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(UQ_MH_SG_AM_ETA_ODV                                ), "'am' eta"                                                   )
     (m_option_am_epsilon.c_str(),                         po::value<double      >()->default_value(UQ_MH_SG_AM_EPSILON_ODV                            ), "'am' epsilon"                                               )
+    (m_option_am_printAdaptedMatrices.c_str(),            po::value<bool        >()->default_value(UQ_MH_SG_AM_PRINT_ADAPTED_MATRICES_ODV             ), "'am' print adapted matrices"                                )
     (m_option_enableBrooksGelmanConvMonitor.c_str(),      po::value<unsigned int>()->default_value(UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR         ), "assess convergence using Brooks-Gelman metric"              )
     (m_option_BrooksGelmanLag.c_str(),                    po::value<unsigned int>()->default_value(UQ_MH_SG_BROOKS_GELMAN_LAG                         ), "number of chain positions before starting to compute metric")
   ;
@@ -651,6 +658,10 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     m_ov.m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon]).as<double>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_am_printAdaptedMatrices)) {
+    m_ov.m_amPrintAdaptedMatrices = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_printAdaptedMatrices]).as<bool>();
+  }
+
   if (m_env.allOptionsMap().count(m_option_enableBrooksGelmanConvMonitor)) {
     m_ov.m_enableBrooksGelmanConvMonitor = ((const po::variable_value&) m_env.allOptionsMap()[m_option_enableBrooksGelmanConvMonitor]).as<unsigned int>();
   }
@@ -708,6 +719,7 @@ uqMetropolisHastingsSGOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_am_adaptInterval              << " = " << m_ov.m_amAdaptInterval
      << "\n" << m_option_am_eta                        << " = " << m_ov.m_amEta
      << "\n" << m_option_am_epsilon                    << " = " << m_ov.m_amEpsilon
+     << "\n" << m_option_am_printAdaptedMatrices       << " = " << m_ov.m_amPrintAdaptedMatrices
      << "\n" << m_option_enableBrooksGelmanConvMonitor << " = " << m_ov.m_enableBrooksGelmanConvMonitor
      << "\n" << m_option_BrooksGelmanLag               << " = " << m_ov.m_BrooksGelmanLag
      << std::endl;
