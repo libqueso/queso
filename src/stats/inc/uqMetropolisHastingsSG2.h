@@ -887,11 +887,17 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                               *m_lastAdaptedCovMatrix);
 
         if (m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileName != ".") { // palms
+          char varNamePrefix[64];
+          sprintf(varNamePrefix,"mat_am%d",positionId);
+
+          char tmpChar[64];
+          sprintf(tmpChar,"_am%d",positionId);
+
           std::set<unsigned int> tmpSet;
           tmpSet.insert(m_env.subId());
-          char varNamePrefix[64];
+
           m_lastAdaptedCovMatrix->subWriteContents(varNamePrefix,
-                                                   m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileName,
+                                                   (m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileName+tmpChar),
                                                    m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileType,
                                                    tmpSet);
           if ((m_env.subDisplayFile()                   ) &&
