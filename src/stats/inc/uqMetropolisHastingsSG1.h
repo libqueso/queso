@@ -296,7 +296,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
                             << std::endl;
   }
 
-  if (false) { //m_optionsObj->m_ov.m_initialPositionDataInputFileName != ".") { // palms
+  if (m_optionsObj->m_ov.m_initialPositionDataInputFileName != ".") { // palms
     std::set<unsigned int> tmpSet;
     tmpSet.insert(m_env.subId());
     m_initialPosition.subReadContents(m_optionsObj->m_ov.m_initialPositionDataInputFileName,
@@ -321,7 +321,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
     }
   }
   else {
-    if (false) { //m_optionsObj->m_ov.m_initialProposalCovMatrixDataInputFileName != ".") { // palms
+    if (m_optionsObj->m_ov.m_initialProposalCovMatrixDataInputFileName != ".") { // palms
       std::set<unsigned int> tmpSet;
       tmpSet.insert(m_env.subId());
       m_initialProposalCovMatrix.subReadContents(m_optionsObj->m_ov.m_initialProposalCovMatrixDataInputFileName,

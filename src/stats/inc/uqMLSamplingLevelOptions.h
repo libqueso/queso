@@ -38,50 +38,55 @@
 // _ODV = option default value
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
-#define UQ_ML_SAMPLING_L_CHECKPOINT_OUTPUT_FILE_NAME_ODV            UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_CHECKPOINT_OUTPUT_FILE_NAME_ODV                      UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #endif
-#define UQ_ML_SAMPLING_L_STOP_AT_END_ODV                            0
-#define UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                  UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
-#define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                      ""
-#define UQ_ML_SAMPLING_L_LOAD_BALANCE_ALGORITHM_ID_ODV              2
-#define UQ_ML_SAMPLING_L_LOAD_BALANCE_TRESHOLD_ODV                  1.
-#define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV               0.85
-#define UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV               0.91
-#define UQ_ML_SAMPLING_L_SCALE_COV_MATRIX_ODV                       1
-#define UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV                     0.50
-#define UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV                     0.75
-#define UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV                     0.25
-#define UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV                           1
-#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
-#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV         UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
-#define UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                         100
-#define UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV               0
-#define UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV               500
-#define UQ_ML_SAMPLING_L_RAW_CHAIN_MEASURE_RUN_TIMES_ODV            1
-#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV        UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
-#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
-#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV      ""
-#define UQ_ML_SAMPLING_L_RAW_CHAIN_COMPUTE_STATS_ODV                0
-#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_GENERATE_ODV                0
-#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DISCARDED_PORTION_ODV       0.
-#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_LAG_ODV                     1
-#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV   UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
-#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV   UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
-#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV ""
-#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_COMPUTE_STATS_ODV           0
-#define UQ_ML_SAMPLING_L_DISPLAY_CANDIDATES_ODV                     0
-#define UQ_ML_SAMPLING_L_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV             1
-#define UQ_ML_SAMPLING_L_TK_USE_LOCAL_HESSIAN_ODV                   0
-#define UQ_ML_SAMPLING_L_TK_USE_NEWTON_COMPONENT_ODV                1
-#define UQ_ML_SAMPLING_L_DR_MAX_NUM_EXTRA_STAGES_ODV                0
-#define UQ_ML_SAMPLING_L_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     "1."
-#define UQ_ML_SAMPLING_L_DR_DURING_AM_NON_ADAPTIVE_INT_ODV          1
-#define UQ_ML_SAMPLING_L_AM_KEEP_INITIAL_MATRIX_ODV                 0
-#define UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV                  0
-#define UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV                      0
-#define UQ_ML_SAMPLING_L_AM_ETA_ODV                                 1.
-#define UQ_ML_SAMPLING_L_AM_EPSILON_ODV                             1.e-5
-#define UQ_ML_SAMPLING_L_AM_PRINT_ADAPTED_MATRICES_ODV              0
+#define UQ_ML_SAMPLING_L_STOP_AT_END_ODV                                      0
+#define UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                            UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                                ""
+#define UQ_ML_SAMPLING_L_LOAD_BALANCE_ALGORITHM_ID_ODV                        2
+#define UQ_ML_SAMPLING_L_LOAD_BALANCE_TRESHOLD_ODV                            1.
+#define UQ_ML_SAMPLING_L_MIN_EFFECTIVE_SIZE_RATIO_ODV                         0.85
+#define UQ_ML_SAMPLING_L_MAX_EFFECTIVE_SIZE_RATIO_ODV                         0.91
+#define UQ_ML_SAMPLING_L_SCALE_COV_MATRIX_ODV                                 1
+#define UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV                               0.50
+#define UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV                               0.75
+#define UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV                               0.25
+#define UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV                                     1
+#define UQ_ML_SAMPLING_L_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV            UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV            UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_ML_SAMPLING_L_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV                   UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV                   UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                                   100
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV                         0
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV                         500
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_MEASURE_RUN_TIMES_ODV                      1
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV                  UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV                  UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV                ""
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_COMPUTE_STATS_ODV                          0
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_GENERATE_ODV                          0
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DISCARDED_PORTION_ODV                 0.
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_LAG_ODV                               1
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV             UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV           ""
+#define UQ_ML_SAMPLING_L_FILTERED_CHAIN_COMPUTE_STATS_ODV                     0
+#define UQ_ML_SAMPLING_L_DISPLAY_CANDIDATES_ODV                               0
+#define UQ_ML_SAMPLING_L_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV                       1
+#define UQ_ML_SAMPLING_L_TK_USE_LOCAL_HESSIAN_ODV                             0
+#define UQ_ML_SAMPLING_L_TK_USE_NEWTON_COMPONENT_ODV                          1
+#define UQ_ML_SAMPLING_L_DR_MAX_NUM_EXTRA_STAGES_ODV                          0
+#define UQ_ML_SAMPLING_L_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV               "1."
+#define UQ_ML_SAMPLING_L_DR_DURING_AM_NON_ADAPTIVE_INT_ODV                    1
+#define UQ_ML_SAMPLING_L_AM_KEEP_INITIAL_MATRIX_ODV                           0
+#define UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV                            0
+#define UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV                                0
+#define UQ_ML_SAMPLING_L_AM_ETA_ODV                                           1.
+#define UQ_ML_SAMPLING_L_AM_EPSILON_ODV                                       1.e-5
+#define UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV        UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 
 class uqMLSamplingLevelOptionsClass
 {
@@ -114,6 +119,10 @@ public:
   double                             m_maxRejectionRate;
   double                             m_covRejectionRate;
   bool                               m_totallyMute;
+  std::string                        m_initialPositionDataInputFileName;
+  std::string                        m_initialPositionDataInputFileType;
+  std::string                        m_initialProposalCovMatrixDataInputFileName;
+  std::string                        m_initialProposalCovMatrixDataInputFileType;
   std::string                        m_rawChainDataInputFileName;
   std::string                        m_rawChainDataInputFileType;
   unsigned int                       m_rawChainSize;
@@ -152,7 +161,8 @@ public:
   unsigned int                       m_amAdaptInterval;
   double                             m_amEta;
   double                             m_amEpsilon;
-  bool                               m_amPrintAdaptedMatrices;
+  std::string                        m_amAdaptedMatricesDataOutputFileName;
+  std::string                        m_amAdaptedMatricesDataOutputFileType;
 
 private:
   void   copyOptionsValues(const uqMLSamplingLevelOptionsClass& srcOptions);
@@ -180,6 +190,10 @@ private:
   std::string                   m_option_maxRejectionRate;
   std::string                   m_option_covRejectionRate;
   std::string                   m_option_totallyMute;
+  std::string                   m_option_initialPosition_dataInputFileName;
+  std::string                   m_option_initialPosition_dataInputFileType;
+  std::string                   m_option_initialProposalCovMatrix_dataInputFileName;
+  std::string                   m_option_initialProposalCovMatrix_dataInputFileType;
   std::string                   m_option_rawChain_dataInputFileName;
   std::string                   m_option_rawChain_dataInputFileType;
   std::string                   m_option_rawChain_size;
@@ -211,7 +225,8 @@ private:
   std::string                   m_option_am_adaptInterval;
   std::string                   m_option_am_eta;
   std::string                   m_option_am_epsilon;
-  std::string                   m_option_am_printAdaptedMatrices;
+  std::string                   m_option_am_adaptedMatrices_dataOutputFileName;
+  std::string                   m_option_am_adaptedMatrices_dataOutputFileType;
 };
 
 std::ostream& operator<<(std::ostream& os, const uqMLSamplingLevelOptionsClass& obj);

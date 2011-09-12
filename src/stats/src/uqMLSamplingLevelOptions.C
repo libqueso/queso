@@ -51,6 +51,10 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_maxRejectionRate                         (UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV),
   m_covRejectionRate                         (UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV),
   m_totallyMute                              (UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV),
+  m_initialPositionDataInputFileName         (UQ_ML_SAMPLING_L_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV),
+  m_initialPositionDataInputFileType         (UQ_ML_SAMPLING_L_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV),
+  m_initialProposalCovMatrixDataInputFileName(UQ_ML_SAMPLING_L_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV),
+  m_initialProposalCovMatrixDataInputFileType(UQ_ML_SAMPLING_L_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV),
   m_rawChainDataInputFileName                (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
   m_rawChainDataInputFileType                (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV),
   m_rawChainSize                             (UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV),
@@ -87,56 +91,62 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_amAdaptInterval                          (UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV),
   m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
   m_amEpsilon                                (UQ_ML_SAMPLING_L_AM_EPSILON_ODV),
-  m_amPrintAdaptedMatrices                   (UQ_ML_SAMPLING_L_AM_PRINT_ADAPTED_MATRICES_ODV),
+  m_amAdaptedMatricesDataOutputFileName      (UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV),
+  m_amAdaptedMatricesDataOutputFileType      (UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV),
   m_env                                      (env),
   m_optionsDesc                              (new po::options_description("Multilevel sampling level options")),
-  m_option_help                              (m_prefix + "help"                              ),
+  m_option_help                                      (m_prefix + "help"                                      ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
-  m_option_checkpointOutputFileName          (m_prefix + "checkpointOutputFileName"          ),
+  m_option_checkpointOutputFileName                  (m_prefix + "checkpointOutputFileName"                  ),
 #endif
-  m_option_stopAtEnd                         (m_prefix + "stopAtEnd"                         ),
-  m_option_dataOutputFileName                (m_prefix + "dataOutputFileName"                ),
-  m_option_dataOutputAllowedSet              (m_prefix + "dataOutputAllowedSet"              ),
-  m_option_loadBalanceAlgorithmId            (m_prefix + "loadBalanceAlgorithmId"            ),
-  m_option_loadBalanceTreshold               (m_prefix + "loadBalanceTreshold"               ),
-  m_option_minEffectiveSizeRatio             (m_prefix + "minEffectiveSizeRatio"             ),
-  m_option_maxEffectiveSizeRatio             (m_prefix + "maxEffectiveSizeRatio"             ),
-  m_option_scaleCovMatrix                    (m_prefix + "scaleCovMatrix"                    ),
-  m_option_minRejectionRate                  (m_prefix + "minRejectionRate"                  ),
-  m_option_maxRejectionRate                  (m_prefix + "maxRejectionRate"                  ),
-  m_option_covRejectionRate                  (m_prefix + "covRejectionRate"                  ),
-  m_option_totallyMute                       (m_prefix + "totallyMute"                       ),
-  m_option_rawChain_dataInputFileName        (m_prefix + "rawChain_dataInputFileName"        ),
-  m_option_rawChain_dataInputFileType        (m_prefix + "rawChain_dataInputFileType"        ),
-  m_option_rawChain_size                     (m_prefix + "rawChain_size"                     ),
-  m_option_rawChain_generateExtra            (m_prefix + "rawChain_generateExtra"            ),
-  m_option_rawChain_displayPeriod            (m_prefix + "rawChain_displayPeriod"            ),
-  m_option_rawChain_measureRunTimes          (m_prefix + "rawChain_measureRunTimes"          ),
-  m_option_rawChain_dataOutputFileName       (m_prefix + "rawChain_dataOutputFileName"       ),
-  m_option_rawChain_dataOutputFileType       (m_prefix + "rawChain_dataOutputFileType"       ),
-  m_option_rawChain_dataOutputAllowedSet     (m_prefix + "rawChain_dataOutputAllowedSet"     ),
-  m_option_rawChain_computeStats             (m_prefix + "rawChain_computeStats"             ),
-  m_option_filteredChain_generate            (m_prefix + "filteredChain_generate"            ),
-  m_option_filteredChain_discardedPortion    (m_prefix + "filteredChain_discardedPortion"    ),
-  m_option_filteredChain_lag                 (m_prefix + "filteredChain_lag"                 ),
-  m_option_filteredChain_dataOutputFileName  (m_prefix + "filteredChain_dataOutputFileName"  ),
-  m_option_filteredChain_dataOutputFileType  (m_prefix + "filteredChain_dataOutputFileType"  ),
-  m_option_filteredChain_dataOutputAllowedSet(m_prefix + "filteredChain_dataOutputAllowedSet"),
-  m_option_filteredChain_computeStats        (m_prefix + "filteredChain_computeStats"        ),
-  m_option_displayCandidates                 (m_prefix + "displayCandidates"                 ),
-  m_option_putOutOfBoundsInChain             (m_prefix + "putOutOfBoundsInChain"             ),
-  m_option_tk_useLocalHessian                (m_prefix + "tk_useLocalHessian"                ),
-  m_option_tk_useNewtonComponent             (m_prefix + "tk_useNewtonComponent"             ),
-  m_option_dr_maxNumExtraStages              (m_prefix + "dr_maxNumExtraStages"              ),
-  m_option_dr_listOfScalesForExtraStages     (m_prefix + "dr_listOfScalesForExtraStages"     ),
-  m_option_dr_duringAmNonAdaptiveInt         (m_prefix + "dr_duringAmNonAdaptiveInt"         ),
-  m_option_am_keepInitialMatrix              (m_prefix + "am_keepInitialMatrix"              ),
-  m_option_am_initialNonAdaptInterval        (m_prefix + "am_initialNonAdaptInterval"        ),
-  m_option_am_adaptInterval                  (m_prefix + "am_adaptInterval"                  ),
-  m_option_am_eta                            (m_prefix + "am_eta"                            ),
-  m_option_am_epsilon                        (m_prefix + "am_epsilon"                        ),
-  m_option_am_printAdaptedMatrices           (m_prefix + "am_printAdaptedMatrices"           )
+  m_option_stopAtEnd                                 (m_prefix + "stopAtEnd"                                 ),
+  m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
+  m_option_dataOutputAllowedSet                      (m_prefix + "dataOutputAllowedSet"                      ),
+  m_option_loadBalanceAlgorithmId                    (m_prefix + "loadBalanceAlgorithmId"                    ),
+  m_option_loadBalanceTreshold                       (m_prefix + "loadBalanceTreshold"                       ),
+  m_option_minEffectiveSizeRatio                     (m_prefix + "minEffectiveSizeRatio"                     ),
+  m_option_maxEffectiveSizeRatio                     (m_prefix + "maxEffectiveSizeRatio"                     ),
+  m_option_scaleCovMatrix                            (m_prefix + "scaleCovMatrix"                            ),
+  m_option_minRejectionRate                          (m_prefix + "minRejectionRate"                          ),
+  m_option_maxRejectionRate                          (m_prefix + "maxRejectionRate"                          ),
+  m_option_covRejectionRate                          (m_prefix + "covRejectionRate"                          ),
+  m_option_totallyMute                               (m_prefix + "totallyMute"                               ),
+  m_option_initialPosition_dataInputFileName         (m_prefix + "initialPosition_dataInputFileName"         ),
+  m_option_initialPosition_dataInputFileType         (m_prefix + "initialPosition_dataInputFileType"         ),
+  m_option_initialProposalCovMatrix_dataInputFileName(m_prefix + "initialProposalCovMatrix_dataInputFileName"),
+  m_option_initialProposalCovMatrix_dataInputFileType(m_prefix + "initialProposalCovMatrix_dataInputFileType"),
+  m_option_rawChain_dataInputFileName                (m_prefix + "rawChain_dataInputFileName"                ),
+  m_option_rawChain_dataInputFileType                (m_prefix + "rawChain_dataInputFileType"                ),
+  m_option_rawChain_size                             (m_prefix + "rawChain_size"                             ),
+  m_option_rawChain_generateExtra                    (m_prefix + "rawChain_generateExtra"                    ),
+  m_option_rawChain_displayPeriod                    (m_prefix + "rawChain_displayPeriod"                    ),
+  m_option_rawChain_measureRunTimes                  (m_prefix + "rawChain_measureRunTimes"                  ),
+  m_option_rawChain_dataOutputFileName               (m_prefix + "rawChain_dataOutputFileName"               ),
+  m_option_rawChain_dataOutputFileType               (m_prefix + "rawChain_dataOutputFileType"               ),
+  m_option_rawChain_dataOutputAllowedSet             (m_prefix + "rawChain_dataOutputAllowedSet"             ),
+  m_option_rawChain_computeStats                     (m_prefix + "rawChain_computeStats"                     ),
+  m_option_filteredChain_generate                    (m_prefix + "filteredChain_generate"                    ),
+  m_option_filteredChain_discardedPortion            (m_prefix + "filteredChain_discardedPortion"            ),
+  m_option_filteredChain_lag                         (m_prefix + "filteredChain_lag"                         ),
+  m_option_filteredChain_dataOutputFileName          (m_prefix + "filteredChain_dataOutputFileName"          ),
+  m_option_filteredChain_dataOutputFileType          (m_prefix + "filteredChain_dataOutputFileType"          ),
+  m_option_filteredChain_dataOutputAllowedSet        (m_prefix + "filteredChain_dataOutputAllowedSet"        ),
+  m_option_filteredChain_computeStats                (m_prefix + "filteredChain_computeStats"                ),
+  m_option_displayCandidates                         (m_prefix + "displayCandidates"                         ),
+  m_option_putOutOfBoundsInChain                     (m_prefix + "putOutOfBoundsInChain"                     ),
+  m_option_tk_useLocalHessian                        (m_prefix + "tk_useLocalHessian"                        ),
+  m_option_tk_useNewtonComponent                     (m_prefix + "tk_useNewtonComponent"                     ),
+  m_option_dr_maxNumExtraStages                      (m_prefix + "dr_maxNumExtraStages"                      ),
+  m_option_dr_listOfScalesForExtraStages             (m_prefix + "dr_listOfScalesForExtraStages"             ),
+  m_option_dr_duringAmNonAdaptiveInt                 (m_prefix + "dr_duringAmNonAdaptiveInt"                 ),
+  m_option_am_keepInitialMatrix                      (m_prefix + "am_keepInitialMatrix"                      ),
+  m_option_am_initialNonAdaptInterval                (m_prefix + "am_initialNonAdaptInterval"                ),
+  m_option_am_adaptInterval                          (m_prefix + "am_adaptInterval"                          ),
+  m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
+  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
+  m_option_am_adaptedMatrices_dataOutputFileName     (m_prefix + "amAdaptedMatrices_dataOutputFileName"      ),
+  m_option_am_adaptedMatrices_dataOutputFileType     (m_prefix + "amAdaptedMatrices_dataOutputFileType"      )
 {
 }
 
@@ -145,59 +155,64 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
 {
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
-  m_checkpointOutputFileName            = srcOptions.m_checkpointOutputFileName;
+  m_checkpointOutputFileName                  = srcOptions.m_checkpointOutputFileName;
 #endif
-  m_stopAtEnd                           = srcOptions.m_stopAtEnd;
-  m_dataOutputFileName                  = srcOptions.m_dataOutputFileName;
-  m_dataOutputAllowedSet                = srcOptions.m_dataOutputAllowedSet;
-  m_str1                                = srcOptions.m_str1;
-  m_loadBalanceAlgorithmId              = srcOptions.m_loadBalanceAlgorithmId;
-  m_loadBalanceTreshold                 = srcOptions.m_loadBalanceTreshold;
-  m_minEffectiveSizeRatio               = srcOptions.m_minEffectiveSizeRatio;
-  m_maxEffectiveSizeRatio               = srcOptions.m_maxEffectiveSizeRatio;
-  m_scaleCovMatrix                      = srcOptions.m_scaleCovMatrix;
-  m_minRejectionRate                    = srcOptions.m_minRejectionRate;
-  m_maxRejectionRate                    = srcOptions.m_maxRejectionRate;
-  m_covRejectionRate                    = srcOptions.m_covRejectionRate;
-  m_totallyMute                         = srcOptions.m_totallyMute;
-  m_rawChainDataInputFileName           = srcOptions.m_rawChainDataInputFileName;
-  m_rawChainDataInputFileType           = srcOptions.m_rawChainDataInputFileType;
-  m_rawChainSize                        = srcOptions.m_rawChainSize;
+  m_stopAtEnd                                 = srcOptions.m_stopAtEnd;
+  m_dataOutputFileName                        = srcOptions.m_dataOutputFileName;
+  m_dataOutputAllowedSet                      = srcOptions.m_dataOutputAllowedSet;
+  m_str1                                      = srcOptions.m_str1;
+  m_loadBalanceAlgorithmId                    = srcOptions.m_loadBalanceAlgorithmId;
+  m_loadBalanceTreshold                       = srcOptions.m_loadBalanceTreshold;
+  m_minEffectiveSizeRatio                     = srcOptions.m_minEffectiveSizeRatio;
+  m_maxEffectiveSizeRatio                     = srcOptions.m_maxEffectiveSizeRatio;
+  m_scaleCovMatrix                            = srcOptions.m_scaleCovMatrix;
+  m_minRejectionRate                          = srcOptions.m_minRejectionRate;
+  m_maxRejectionRate                          = srcOptions.m_maxRejectionRate;
+  m_covRejectionRate                          = srcOptions.m_covRejectionRate;
+  m_totallyMute                               = srcOptions.m_totallyMute;
+  m_initialPositionDataInputFileName          = srcOptions.m_initialPositionDataInputFileName;
+  m_initialPositionDataInputFileType          = srcOptions.m_initialPositionDataInputFileType;
+  m_initialProposalCovMatrixDataInputFileName = srcOptions.m_initialProposalCovMatrixDataInputFileName;
+  m_initialProposalCovMatrixDataInputFileType = srcOptions.m_initialProposalCovMatrixDataInputFileType;
+  m_rawChainDataInputFileName                 = srcOptions.m_rawChainDataInputFileName;
+  m_rawChainDataInputFileType                 = srcOptions.m_rawChainDataInputFileType;
+  m_rawChainSize                              = srcOptions.m_rawChainSize;
 //std::cout << "In copy(), rawChainSize = " << m_rawChainSize << std::endl;
-  m_rawChainGenerateExtra               = srcOptions.m_rawChainGenerateExtra;
-  m_rawChainDisplayPeriod               = srcOptions.m_rawChainDisplayPeriod;
-  m_rawChainMeasureRunTimes             = srcOptions.m_rawChainMeasureRunTimes;
-  m_rawChainDataOutputFileName          = srcOptions.m_rawChainDataOutputFileName;
-  m_rawChainDataOutputFileType          = srcOptions.m_rawChainDataOutputFileType;
-  m_rawChainDataOutputAllowedSet        = srcOptions.m_rawChainDataOutputAllowedSet;
-  m_str2                                = srcOptions.m_str2;
-  m_rawChainComputeStats                = srcOptions.m_rawChainComputeStats;
-  m_rawChainStatisticalOptionsObj       = NULL; // Yes, 'NULL'
-  m_rawChainStatOptsInstantiated        = false;
-  m_filteredChainGenerate               = srcOptions.m_filteredChainGenerate;
-  m_filteredChainDiscardedPortion       = srcOptions.m_filteredChainDiscardedPortion;
-  m_filteredChainLag                    = srcOptions.m_filteredChainLag;
-  m_filteredChainDataOutputFileName     = srcOptions.m_filteredChainDataOutputFileName;
-  m_filteredChainDataOutputFileType     = srcOptions.m_filteredChainDataOutputFileType;
-  m_filteredChainDataOutputAllowedSet   = srcOptions.m_filteredChainDataOutputAllowedSet;
-  m_str3                                = srcOptions.m_str3;
-  m_filteredChainComputeStats           = srcOptions.m_filteredChainComputeStats;
-  m_filteredChainStatisticalOptionsObj  = NULL; // Yes, 'NULL'
-  m_filteredChainStatOptsInstantiated   = false;
-  m_displayCandidates                   = srcOptions.m_displayCandidates;
-  m_putOutOfBoundsInChain               = srcOptions.m_putOutOfBoundsInChain;
-  m_tkUseLocalHessian                   = srcOptions.m_tkUseLocalHessian;
-  m_tkUseNewtonComponent                = srcOptions.m_tkUseNewtonComponent;
-  m_drMaxNumExtraStages                 = srcOptions.m_drMaxNumExtraStages;
-  m_drScalesForExtraStages              = srcOptions.m_drScalesForExtraStages;
-  m_str4                                = srcOptions.m_str4;
-  m_drDuringAmNonAdaptiveInt            = srcOptions.m_drDuringAmNonAdaptiveInt;
-  m_amKeepInitialMatrix                 = srcOptions.m_amKeepInitialMatrix;
-  m_amInitialNonAdaptInterval           = srcOptions.m_amInitialNonAdaptInterval;
-  m_amAdaptInterval                     = srcOptions.m_amAdaptInterval;
-  m_amEta                               = srcOptions.m_amEta;
-  m_amEpsilon                           = srcOptions.m_amEpsilon;
-  m_amPrintAdaptedMatrices              = srcOptions.m_amPrintAdaptedMatrices;
+  m_rawChainGenerateExtra                     = srcOptions.m_rawChainGenerateExtra;
+  m_rawChainDisplayPeriod                     = srcOptions.m_rawChainDisplayPeriod;
+  m_rawChainMeasureRunTimes                   = srcOptions.m_rawChainMeasureRunTimes;
+  m_rawChainDataOutputFileName                = srcOptions.m_rawChainDataOutputFileName;
+  m_rawChainDataOutputFileType                = srcOptions.m_rawChainDataOutputFileType;
+  m_rawChainDataOutputAllowedSet              = srcOptions.m_rawChainDataOutputAllowedSet;
+  m_str2                                      = srcOptions.m_str2;
+  m_rawChainComputeStats                      = srcOptions.m_rawChainComputeStats;
+  m_rawChainStatisticalOptionsObj             = NULL; // Yes, 'NULL'
+  m_rawChainStatOptsInstantiated              = false;
+  m_filteredChainGenerate                     = srcOptions.m_filteredChainGenerate;
+  m_filteredChainDiscardedPortion             = srcOptions.m_filteredChainDiscardedPortion;
+  m_filteredChainLag                          = srcOptions.m_filteredChainLag;
+  m_filteredChainDataOutputFileName           = srcOptions.m_filteredChainDataOutputFileName;
+  m_filteredChainDataOutputFileType           = srcOptions.m_filteredChainDataOutputFileType;
+  m_filteredChainDataOutputAllowedSet         = srcOptions.m_filteredChainDataOutputAllowedSet;
+  m_str3                                      = srcOptions.m_str3;
+  m_filteredChainComputeStats                 = srcOptions.m_filteredChainComputeStats;
+  m_filteredChainStatisticalOptionsObj        = NULL; // Yes, 'NULL'
+  m_filteredChainStatOptsInstantiated         = false;
+  m_displayCandidates                         = srcOptions.m_displayCandidates;
+  m_putOutOfBoundsInChain                     = srcOptions.m_putOutOfBoundsInChain;
+  m_tkUseLocalHessian                         = srcOptions.m_tkUseLocalHessian;
+  m_tkUseNewtonComponent                      = srcOptions.m_tkUseNewtonComponent;
+  m_drMaxNumExtraStages                       = srcOptions.m_drMaxNumExtraStages;
+  m_drScalesForExtraStages                    = srcOptions.m_drScalesForExtraStages;
+  m_str4                                      = srcOptions.m_str4;
+  m_drDuringAmNonAdaptiveInt                  = srcOptions.m_drDuringAmNonAdaptiveInt;
+  m_amKeepInitialMatrix                       = srcOptions.m_amKeepInitialMatrix;
+  m_amInitialNonAdaptInterval                 = srcOptions.m_amInitialNonAdaptInterval;
+  m_amAdaptInterval                           = srcOptions.m_amAdaptInterval;
+  m_amEta                                     = srcOptions.m_amEta;
+  m_amEpsilon                                 = srcOptions.m_amEpsilon;
+  m_amAdaptedMatricesDataOutputFileName       = srcOptions.m_amAdaptedMatricesDataOutputFileName;
+  m_amAdaptedMatricesDataOutputFileType       = srcOptions.m_amAdaptedMatricesDataOutputFileType;
 
   return;
 }
@@ -266,6 +281,10 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_maxRejectionRate.c_str(),                   po::value<double      >()->default_value(m_maxRejectionRate                 ), "maximum allowed attempted rejection rate at current level"       )
     (m_option_covRejectionRate.c_str(),                   po::value<double      >()->default_value(m_covRejectionRate                 ), "c.o.v. for judging attempted rejection rate at current level"    )
     (m_option_totallyMute.c_str(),                        po::value<bool        >()->default_value(m_totallyMute                      ), "totally mute (no printout message)"                              )
+    (m_option_initialPosition_dataInputFileName.c_str(),          po::value<std::string >()->default_value(m_initialPositionDataInputFileName        ), "name of input file for raw chain "                               )
+    (m_option_initialPosition_dataInputFileType.c_str(),          po::value<std::string >()->default_value(m_initialPositionDataInputFileType        ), "type of input file for raw chain "                               )
+    (m_option_initialProposalCovMatrix_dataInputFileName.c_str(), po::value<std::string >()->default_value(m_initialProposalCovMatrixDataInputFileName        ), "name of input file for raw chain "                               )
+    (m_option_initialProposalCovMatrix_dataInputFileType.c_str(), po::value<std::string >()->default_value(m_initialProposalCovMatrixDataInputFileType        ), "type of input file for raw chain "                               )
     (m_option_rawChain_dataInputFileName.c_str(),         po::value<std::string >()->default_value(m_rawChainDataInputFileName        ), "name of input file for raw chain "                               )
     (m_option_rawChain_dataInputFileType.c_str(),         po::value<std::string >()->default_value(m_rawChainDataInputFileType        ), "type of input file for raw chain "                               )
     (m_option_rawChain_size.c_str(),                      po::value<unsigned int>()->default_value(m_rawChainSize                     ), "size of raw chain"                                               )
@@ -295,7 +314,8 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_am_adaptInterval.c_str(),                   po::value<unsigned int>()->default_value(m_amAdaptInterval                  ), "'am' adaptation interval"                                        )
     (m_option_am_eta.c_str(),                             po::value<double      >()->default_value(m_amEta                            ), "'am' eta"                                                        )
     (m_option_am_epsilon.c_str(),                         po::value<double      >()->default_value(m_amEpsilon                        ), "'am' epsilon"                                                    )
-    (m_option_am_printAdaptedMatrices.c_str(),            po::value<bool        >()->default_value(m_amPrintAdaptedMatrices           ), "'am' print adapted matrices"                                     )
+    (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(m_amAdaptedMatricesDataOutputFileName  ), "name of output file for filtered chain"                          )
+    (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),   po::value<std::string >()->default_value(m_amAdaptedMatricesDataOutputFileType  ), "type of output file for filtered chain"                          )
   ;
 
   return;
@@ -446,6 +466,22 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
 
   if (m_env.allOptionsMap().count(m_option_totallyMute.c_str())) {
     m_totallyMute = ((const po::variable_value&) m_env.allOptionsMap()[m_option_totallyMute.c_str()]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_initialPosition_dataInputFileName.c_str())) {
+    m_initialPositionDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialPosition_dataInputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_initialPosition_dataInputFileType.c_str())) {
+    m_initialPositionDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialPosition_dataInputFileType.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileName.c_str())) {
+    m_initialProposalCovMatrixDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileType.c_str())) {
+    m_initialProposalCovMatrixDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileType.c_str()]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName.c_str())) {
@@ -642,8 +678,12 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon.c_str()]).as<double>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_printAdaptedMatrices.c_str())) {
-    m_amPrintAdaptedMatrices = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_printAdaptedMatrices.c_str()]).as<bool>();
+  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileName.c_str())) {
+    m_amAdaptedMatricesDataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileName.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileType.c_str())) {
+    m_amAdaptedMatricesDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileType.c_str()]).as<std::string>();
   }
 
   return;
@@ -663,54 +703,59 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
   for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_loadBalanceAlgorithmId         << " = " << m_loadBalanceAlgorithmId
-     << "\n" << m_option_loadBalanceTreshold            << " = " << m_loadBalanceTreshold
-     << "\n" << m_option_minEffectiveSizeRatio          << " = " << m_minEffectiveSizeRatio
-     << "\n" << m_option_maxEffectiveSizeRatio          << " = " << m_maxEffectiveSizeRatio
-     << "\n" << m_option_scaleCovMatrix                 << " = " << m_scaleCovMatrix
-     << "\n" << m_option_minRejectionRate               << " = " << m_minRejectionRate
-     << "\n" << m_option_maxRejectionRate               << " = " << m_maxRejectionRate
-     << "\n" << m_option_covRejectionRate               << " = " << m_covRejectionRate
-     << "\n" << m_option_totallyMute                    << " = " << m_totallyMute
-     << "\n" << m_option_rawChain_dataInputFileName     << " = " << m_rawChainDataInputFileName
-     << "\n" << m_option_rawChain_dataInputFileType     << " = " << m_rawChainDataInputFileType
-     << "\n" << m_option_rawChain_size                  << " = " << m_rawChainSize
-     << "\n" << m_option_rawChain_generateExtra         << " = " << m_rawChainGenerateExtra
-     << "\n" << m_option_rawChain_displayPeriod         << " = " << m_rawChainDisplayPeriod
-     << "\n" << m_option_rawChain_measureRunTimes       << " = " << m_rawChainMeasureRunTimes
-     << "\n" << m_option_rawChain_dataOutputFileName    << " = " << m_rawChainDataOutputFileName
-     << "\n" << m_option_rawChain_dataOutputFileType    << " = " << m_rawChainDataOutputFileType
-     << "\n" << m_option_rawChain_dataOutputAllowedSet  << " = ";
+  os << "\n" << m_option_loadBalanceAlgorithmId                     << " = " << m_loadBalanceAlgorithmId
+     << "\n" << m_option_loadBalanceTreshold                        << " = " << m_loadBalanceTreshold
+     << "\n" << m_option_minEffectiveSizeRatio                      << " = " << m_minEffectiveSizeRatio
+     << "\n" << m_option_maxEffectiveSizeRatio                      << " = " << m_maxEffectiveSizeRatio
+     << "\n" << m_option_scaleCovMatrix                             << " = " << m_scaleCovMatrix
+     << "\n" << m_option_minRejectionRate                           << " = " << m_minRejectionRate
+     << "\n" << m_option_maxRejectionRate                           << " = " << m_maxRejectionRate
+     << "\n" << m_option_covRejectionRate                           << " = " << m_covRejectionRate
+     << "\n" << m_option_totallyMute                                << " = " << m_totallyMute
+     << "\n" << m_option_initialPosition_dataInputFileName          << " = " << m_initialPositionDataInputFileName
+     << "\n" << m_option_initialPosition_dataInputFileType          << " = " << m_initialPositionDataInputFileType
+     << "\n" << m_option_initialProposalCovMatrix_dataInputFileName << " = " << m_initialProposalCovMatrixDataInputFileName
+     << "\n" << m_option_initialProposalCovMatrix_dataInputFileType << " = " << m_initialProposalCovMatrixDataInputFileType
+     << "\n" << m_option_rawChain_dataInputFileName                 << " = " << m_rawChainDataInputFileName
+     << "\n" << m_option_rawChain_dataInputFileType                 << " = " << m_rawChainDataInputFileType
+     << "\n" << m_option_rawChain_size                              << " = " << m_rawChainSize
+     << "\n" << m_option_rawChain_generateExtra                     << " = " << m_rawChainGenerateExtra
+     << "\n" << m_option_rawChain_displayPeriod                     << " = " << m_rawChainDisplayPeriod
+     << "\n" << m_option_rawChain_measureRunTimes                   << " = " << m_rawChainMeasureRunTimes
+     << "\n" << m_option_rawChain_dataOutputFileName                << " = " << m_rawChainDataOutputFileName
+     << "\n" << m_option_rawChain_dataOutputFileType                << " = " << m_rawChainDataOutputFileType
+     << "\n" << m_option_rawChain_dataOutputAllowedSet              << " = ";
   for (std::set<unsigned int>::iterator setIt = m_rawChainDataOutputAllowedSet.begin(); setIt != m_rawChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_rawChain_computeStats              << " = " << m_rawChainComputeStats
-     << "\n" << m_option_filteredChain_generate             << " = " << m_filteredChainGenerate
-     << "\n" << m_option_filteredChain_discardedPortion     << " = " << m_filteredChainDiscardedPortion
-     << "\n" << m_option_filteredChain_lag                  << " = " << m_filteredChainLag
-     << "\n" << m_option_filteredChain_dataOutputFileName   << " = " << m_filteredChainDataOutputFileName
-     << "\n" << m_option_filteredChain_dataOutputFileType   << " = " << m_filteredChainDataOutputFileType
-     << "\n" << m_option_filteredChain_dataOutputAllowedSet << " = ";
+  os << "\n" << m_option_rawChain_computeStats                      << " = " << m_rawChainComputeStats
+     << "\n" << m_option_filteredChain_generate                     << " = " << m_filteredChainGenerate
+     << "\n" << m_option_filteredChain_discardedPortion             << " = " << m_filteredChainDiscardedPortion
+     << "\n" << m_option_filteredChain_lag                          << " = " << m_filteredChainLag
+     << "\n" << m_option_filteredChain_dataOutputFileName           << " = " << m_filteredChainDataOutputFileName
+     << "\n" << m_option_filteredChain_dataOutputFileType           << " = " << m_filteredChainDataOutputFileType
+     << "\n" << m_option_filteredChain_dataOutputAllowedSet         << " = ";
   for (std::set<unsigned int>::iterator setIt = m_filteredChainDataOutputAllowedSet.begin(); setIt != m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_filteredChain_computeStats    << " = " << m_filteredChainComputeStats
-     << "\n" << m_option_displayCandidates             << " = " << m_displayCandidates
-     << "\n" << m_option_putOutOfBoundsInChain         << " = " << m_putOutOfBoundsInChain
-     << "\n" << m_option_tk_useLocalHessian            << " = " << m_tkUseLocalHessian
-     << "\n" << m_option_tk_useNewtonComponent         << " = " << m_tkUseNewtonComponent
-     << "\n" << m_option_dr_maxNumExtraStages          << " = " << m_drMaxNumExtraStages
-     << "\n" << m_option_dr_listOfScalesForExtraStages << " = ";
+  os << "\n" << m_option_filteredChain_computeStats                 << " = " << m_filteredChainComputeStats
+     << "\n" << m_option_displayCandidates                          << " = " << m_displayCandidates
+     << "\n" << m_option_putOutOfBoundsInChain                      << " = " << m_putOutOfBoundsInChain
+     << "\n" << m_option_tk_useLocalHessian                         << " = " << m_tkUseLocalHessian
+     << "\n" << m_option_tk_useNewtonComponent                      << " = " << m_tkUseNewtonComponent
+     << "\n" << m_option_dr_maxNumExtraStages                       << " = " << m_drMaxNumExtraStages
+     << "\n" << m_option_dr_listOfScalesForExtraStages              << " = ";
   for (unsigned int i = 0; i < m_drScalesForExtraStages.size(); ++i) {
     os << m_drScalesForExtraStages[i] << " ";
   }
-  os << "\n" << m_option_dr_duringAmNonAdaptiveInt  << " = " << m_drDuringAmNonAdaptiveInt
-     << "\n" << m_option_am_keepInitialMatrix       << " = " << m_amKeepInitialMatrix
-     << "\n" << m_option_am_initialNonAdaptInterval << " = " << m_amInitialNonAdaptInterval
-     << "\n" << m_option_am_adaptInterval           << " = " << m_amAdaptInterval
-     << "\n" << m_option_am_eta                     << " = " << m_amEta
-     << "\n" << m_option_am_epsilon                 << " = " << m_amEpsilon
-     << "\n" << m_option_am_printAdaptedMatrices    << " = " << m_amPrintAdaptedMatrices
+  os << "\n" << m_option_dr_duringAmNonAdaptiveInt                  << " = " << m_drDuringAmNonAdaptiveInt
+     << "\n" << m_option_am_keepInitialMatrix                       << " = " << m_amKeepInitialMatrix
+     << "\n" << m_option_am_initialNonAdaptInterval                 << " = " << m_amInitialNonAdaptInterval
+     << "\n" << m_option_am_adaptInterval                           << " = " << m_amAdaptInterval
+     << "\n" << m_option_am_eta                                     << " = " << m_amEta
+     << "\n" << m_option_am_epsilon                                 << " = " << m_amEpsilon
+     << "\n" << m_option_am_adaptedMatrices_dataOutputFileName      << " = " << m_amAdaptedMatricesDataOutputFileName
+     << "\n" << m_option_am_adaptedMatrices_dataOutputFileType      << " = " << m_amAdaptedMatricesDataOutputFileType
      << std::endl;
 
   return;

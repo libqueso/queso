@@ -42,39 +42,44 @@
 #define UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                  UQ_MH_SG_FILENAME_FOR_NO_FILE
 #define UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV                ""
 
-#define UQ_MH_SG_TOTALLY_MUTE_ODV                           0
-#define UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV         UQ_MH_SG_FILENAME_FOR_NO_FILE
-#define UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV         UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
-#define UQ_MH_SG_RAW_CHAIN_SIZE_ODV                         100
-#define UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV               0
-#define UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV               500
-#define UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV            1
-#define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV        UQ_MH_SG_FILENAME_FOR_NO_FILE
-#define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
-#define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV      ""
-#define UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV                0
-#define UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV                0
-#define UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV       0.
-#define UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                     1
-#define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV   UQ_MH_SG_FILENAME_FOR_NO_FILE
-#define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV   UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
-#define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV ""
-#define UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV           0
-#define UQ_MH_SG_DISPLAY_CANDIDATES_ODV                     0
-#define UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV             1
-#define UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                   0
-#define UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV                1
-#define UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                0
-#define UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV     ""
-#define UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV          1
-#define UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                 0
-#define UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                  0
-#define UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                      0
-#define UQ_MH_SG_AM_ETA_ODV                                 1.
-#define UQ_MH_SG_AM_EPSILON_ODV                             1.e-5
-#define UQ_MH_SG_AM_PRINT_ADAPTED_MATRICES_ODV              0
-#define UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR          0
-#define UQ_MH_SG_BROOKS_GELMAN_LAG                          100
+#define UQ_MH_SG_TOTALLY_MUTE_ODV                                     0
+#define UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV            UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV            UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV                   UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV                   UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_MH_SG_RAW_CHAIN_SIZE_ODV                                   100
+#define UQ_MH_SG_RAW_CHAIN_GENERATE_EXTRA_ODV                         0
+#define UQ_MH_SG_RAW_CHAIN_DISPLAY_PERIOD_ODV                         500
+#define UQ_MH_SG_RAW_CHAIN_MEASURE_RUN_TIMES_ODV                      1
+#define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV                  UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV                  UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV                ""
+#define UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV                          0
+#define UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV                          0
+#define UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV                 0.
+#define UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                               1
+#define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV             UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV           ""
+#define UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV                     0
+#define UQ_MH_SG_DISPLAY_CANDIDATES_ODV                               0
+#define UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV                       1
+#define UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                             0
+#define UQ_MH_SG_TK_USE_NEWTON_COMPONENT_ODV                          1
+#define UQ_MH_SG_DR_MAX_NUM_EXTRA_STAGES_ODV                          0
+#define UQ_MH_SG_DR_LIST_OF_SCALES_FOR_EXTRA_STAGES_ODV               ""
+#define UQ_MH_SG_DR_DURING_AM_NON_ADAPTIVE_INT_ODV                    1
+#define UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                           0
+#define UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                            0
+#define UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                                0
+#define UQ_MH_SG_AM_ETA_ODV                                           1.
+#define UQ_MH_SG_AM_EPSILON_ODV                                       1.e-5
+#define UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV        UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                    0
+#define UQ_MH_SG_BROOKS_GELMAN_LAG                                    100
 
 class uqMhOptionsValuesClass
 {
@@ -124,7 +129,6 @@ public:
   unsigned int                       m_amAdaptInterval;
   double                             m_amEta;
   double                             m_amEpsilon;
-  bool                               m_amPrintAdaptedMatrices;
   std::string                        m_amAdaptedMatricesDataOutputFileName;
   std::string                        m_amAdaptedMatricesDataOutputFileType;
 
@@ -204,7 +208,6 @@ private:
   std::string                   m_option_am_adaptInterval;
   std::string                   m_option_am_eta;
   std::string                   m_option_am_epsilon;
-  std::string                   m_option_am_printAdaptedMatrices;
   std::string                   m_option_am_adaptedMatrices_dataOutputFileName;
   std::string                   m_option_am_adaptedMatrices_dataOutputFileType;
 

@@ -886,7 +886,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                               *m_lastMean,
                               *m_lastAdaptedCovMatrix);
 
-        if (false) { //m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileName != ".") { // palms
+        if (m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileName != ".") { // palms
           std::set<unsigned int> tmpSet;
           tmpSet.insert(m_env.subId());
           m_lastAdaptedCovMatrix->subReadContents(m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileName,
