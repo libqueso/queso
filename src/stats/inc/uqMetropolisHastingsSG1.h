@@ -291,8 +291,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
   /////////////////////////////////////////////////////////////////
   if ((m_env.subDisplayFile()                   ) &&
       (m_optionsObj->m_ov.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
-                            << ": running with UQ_USES_TK_CLASS flag defined"
+    *m_env.subDisplayFile() << "Entering uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
                             << std::endl;
   }
 
@@ -302,6 +301,12 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
     m_initialPosition.subReadContents(m_optionsObj->m_ov.m_initialPositionDataInputFileName,
                                       m_optionsObj->m_ov.m_initialPositionDataInputFileType,
                                       tmpSet);
+    if ((m_env.subDisplayFile()                   ) &&
+        (m_optionsObj->m_ov.m_totallyMute == false)) {
+      *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
+                              << ": just read initial position contents = " << m_initialPosition
+                              << std::endl;
+    }
   }
 
   std::vector<double> drScalesAll(m_optionsObj->m_ov.m_drScalesForExtraStages.size()+1,1.);
@@ -327,6 +332,12 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
       m_initialProposalCovMatrix.subReadContents(m_optionsObj->m_ov.m_initialProposalCovMatrixDataInputFileName,
                                                  m_optionsObj->m_ov.m_initialProposalCovMatrixDataInputFileType,
                                                  tmpSet);
+      if ((m_env.subDisplayFile()                   ) &&
+          (m_optionsObj->m_ov.m_totallyMute == false)) {
+        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
+                                << ": just read initial proposal cov matrix contents = " << m_initialProposalCovMatrix
+                                << std::endl;
+      }
     }
     else {
       UQ_FATAL_TEST_MACRO(m_nullInputProposalCovMatrix,
@@ -347,6 +358,11 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
     }
   }
 
+  if ((m_env.subDisplayFile()                   ) &&
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
+    *m_env.subDisplayFile() << "Leaving uqMetropolisHastingsSGClass<P_V,P_M>::constructor()"
+                            << std::endl;
+  }
   return;
 }
 

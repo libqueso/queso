@@ -1189,9 +1189,9 @@ uqGslMatrixClass::subWriteContents(
     unsigned int nRows = this->numRowsLocal();
     unsigned int nCols = this->numCols();
     *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = zeros(" << nRows
-            << ","                                                           << nCols
-            << ");"
-            << std::endl;
+                       << ","                                                           << nCols
+                       << ");"
+                       << std::endl;
     *filePtrSet.ofsVar << varNamePrefix << "_sub" << m_env.subIdString() << " = [";
 
     for (unsigned int i = 0; i < nRows; ++i) {
@@ -1215,7 +1215,31 @@ uqGslMatrixClass::subReadContents(
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds)
 {
-  // palms
+  UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::subReadContents()",
+                      "unexpected subRank");
+
+  UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::subReadContents()",
+                      "implemented just for sequential vectors for now");
+
+  uqFilePtrSetStruct filePtrSet;
+  if (m_env.openInputFile(fileName,
+                          fileType, // "m or hdf"
+                          allowedSubEnvIds,
+                          filePtrSet)) {
+
+     // palms
+
+     m_env.closeFile(filePtrSet,fileType);
+  }
+
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::subReadContents()",
+                      "not implemented yet");
   return;
 }
 

@@ -956,7 +956,7 @@ uqGslVectorClass::subReadContents(
 
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In uqGslVectorClass::subReadContents()"
-                              << ": beginning to read linear with numbers only"
+                              << ": beginning to read lines with numbers only"
                               << ", lineId = " << lineId
                               << ", idOfMyFirstLine = " << idOfMyFirstLine
                               << ", idOfMyLastLine = " << idOfMyLastLine

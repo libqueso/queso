@@ -889,9 +889,17 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
         if (m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileName != ".") { // palms
           std::set<unsigned int> tmpSet;
           tmpSet.insert(m_env.subId());
-          m_lastAdaptedCovMatrix->subReadContents(m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileName,
-                                                  m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileType,
-                                                  tmpSet);
+          char varNamePrefix[64];
+          m_lastAdaptedCovMatrix->subWriteContents(varNamePrefix,
+                                                   m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileName,
+                                                   m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileType,
+                                                   tmpSet);
+          if ((m_env.subDisplayFile()                   ) &&
+              (m_optionsObj->m_ov.m_totallyMute == false)) {
+            *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                    << ": just wrote last adapted proposal cov matrix contents = " << *m_lastAdaptedCovMatrix
+                                    << std::endl;
+          }
         }
 
         bool tmpCholIsPositiveDefinite = false;
