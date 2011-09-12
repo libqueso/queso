@@ -33,7 +33,7 @@
 #ifndef __EX_TGA_VALIDATION_CYCLE_APPL_H__
 #define __EX_TGA_VALIDATION_CYCLE_APPL_H__
 
-#undef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
+#define UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 
 #include <exTgaValidationCycle_likelihood.h>
 #include <exTgaValidationCycle_qoi.h>

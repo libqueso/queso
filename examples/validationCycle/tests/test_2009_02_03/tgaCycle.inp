@@ -28,6 +28,10 @@ cycle_cal_ip_mh_help                 = anything
 cycle_cal_ip_mh_dataOutputFileName   = outputData/tgaCalOutput
 cycle_cal_ip_mh_dataOutputAllowedSet = 0 1
 
+cycle_cal_ip_mh_initialPosition_dataInputFileName          = .
+cycle_cal_ip_mh_initialPosition_dataInputFileType          = m
+cycle_cal_ip_mh_initialProposalCovMatrix_dataInputFileName = .
+cycle_cal_ip_mh_initialProposalCovMatrix_dataInputFileType = m
 cycle_cal_ip_mh_rawChain_dataInputFileName    = . # outputData/file_cal_ip_raw_input
 cycle_cal_ip_mh_rawChain_size                 = 1048576
 cycle_cal_ip_mh_rawChain_generateExtra        = 0
@@ -43,10 +47,12 @@ cycle_cal_ip_mh_tk_useLocalHessian            = 0
 cycle_cal_ip_mh_tk_useNewtonComponent         = 1
 cycle_cal_ip_mh_dr_maxNumExtraStages          = 1
 cycle_cal_ip_mh_dr_listOfScalesForExtraStages = 5. 4. 3.
-cycle_cal_ip_mh_am_initialNonAdaptInterval    = 0
-cycle_cal_ip_mh_am_adaptInterval              = 100
+cycle_cal_ip_mh_am_initialNonAdaptInterval    = 10000
+cycle_cal_ip_mh_am_adaptInterval              = 10000
 cycle_cal_ip_mh_am_eta                        = 1.92
 cycle_cal_ip_mh_am_epsilon                    = 1.e-5
+cycle_cal_ip_mh_am_adaptedMatrices_dataOutputFileName = . # outputData/adaptedMatrix
+cycle_cal_ip_mh_am_adaptedMatrices_dataOutputFileType = m
 
 cycle_cal_ip_mh_filteredChain_generate             = 1
 cycle_cal_ip_mh_filteredChain_discardedPortion     = 0.
