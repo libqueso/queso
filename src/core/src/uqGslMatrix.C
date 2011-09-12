@@ -1232,8 +1232,136 @@ uqGslMatrixClass::subReadContents(
                           filePtrSet)) {
 
      // palms
+    double nRowsLocal = this->numRowsLocal();
 
-     m_env.closeFile(filePtrSet,fileType);
+    // In the logic below, the id of a line' begins with value 0 (zero)
+    unsigned int idOfMyFirstLine = 1;
+    unsigned int idOfMyLastLine = nRowsLocal;
+    unsigned int nCols = this->numCols();
+
+    // Read number of matrix rows in the file by taking care of the first line,
+    // which resembles something like 'variable_name = zeros(n_rows,n_cols);'
+    std::string tmpString;
+
+    // Read 'variable name' string
+    *filePtrSet.ifsVar >> tmpString;
+    //std::cout << "Just read '" << tmpString << "'" << std::endl;
+
+    // Read '=' sign
+    *filePtrSet.ifsVar >> tmpString;
+    //std::cout << "Just read '" << tmpString << "'" << std::endl;
+    UQ_FATAL_TEST_MACRO(tmpString != "=",
+                        m_env.worldRank(),
+                        "uqGslMatrixClass::subReadContents()",
+                        "string should be the '=' sign");
+
+    // Read 'zeros(n_rows,n_cols)' string
+    *filePtrSet.ifsVar >> tmpString;
+    //std::cout << "Just read '" << tmpString << "'" << std::endl;
+    unsigned int posInTmpString = 6;
+
+    // Isolate 'n_rows' in a string
+    char nRowsString[tmpString.size()-posInTmpString+1];
+    unsigned int posInRowsString = 0;
+    do {
+      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+                          m_env.worldRank(),
+                          "uqGslMatrixClass::subReadContents()",
+                          "symbol ',' not found in first line of file");
+      nRowsString[posInRowsString++] = tmpString[posInTmpString++];
+    } while (tmpString[posInTmpString] != ',');
+    nRowsString[posInRowsString] = '\0';
+
+    // Isolate 'n_cols' in a string
+    posInTmpString++; // Avoid reading ',' char
+    char nColsString[tmpString.size()-posInTmpString+1];
+    unsigned int posInColsString = 0;
+    do {
+      UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
+                          m_env.worldRank(),
+                          "uqGslMatrixClass::subReadContents()",
+                          "symbol ')' not found in first line of file");
+      nColsString[posInColsString++] = tmpString[posInTmpString++];
+    } while (tmpString[posInTmpString] != ')');
+    nColsString[posInColsString] = '\0';
+
+    // Convert 'n_rows' and 'n_cols' strings to numbers
+    unsigned int numRowsInFile = (unsigned int) strtod(nRowsString,NULL);
+    unsigned int numColsInFile = (unsigned int) strtod(nColsString,NULL);
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGslMatrixClass::subReadContents()"
+                              << ": fullRank "        << m_env.fullRank()
+                              << ", numRowsInFile = " << numRowsInFile
+                              << ", numColsInFile = " << numColsInFile
+                              << ", nRowsLocal = "    << nRowsLocal
+                              << ", nCols = "         << nCols
+                              << std::endl;
+    }
+
+    // Check if [num of rows in file] == [requested matrix row size]
+    UQ_FATAL_TEST_MACRO(numRowsInFile != nRowsLocal,
+                        m_env.worldRank(),
+                        "uqGslMatrixClass::subReadContents()",
+                        "size of vec in file is not big enough");
+
+    // Check if [num of cols in file] == [num cols in current matrix]
+    UQ_FATAL_TEST_MACRO(numColsInFile != nCols,
+                        m_env.worldRank(),
+                        "uqGslMatrixClass::subReadContents()",
+                        "number of parameters of vec in file is different than number of parameters in this vec object");
+
+    // Code common to any core in a communicator
+    unsigned int maxCharsPerLine = 64*nCols; // Up to about 60 characters to represent each parameter value
+
+    unsigned int lineId = 0;
+    while (lineId < idOfMyFirstLine) {
+      filePtrSet.ifsVar->ignore(maxCharsPerLine,'\n');
+      lineId++;
+    };
+
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGslMatrixClass::subReadContents()"
+                              << ": beginning to read input actual data"
+                              << std::endl;
+    }
+
+    // Take care of initial part of the first data line,
+    // which resembles something like 'variable_name = [value1 value2 ...'
+    // Read 'variable name' string
+    *filePtrSet.ifsVar >> tmpString;
+    //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
+
+    // Read '=' sign
+    *filePtrSet.ifsVar >> tmpString;
+    //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
+    UQ_FATAL_TEST_MACRO(tmpString != "=",
+                        m_env.worldRank(),
+                        "uqGslMatrixClass::subReadContents()",
+                        "in core 0, string should be the '=' sign");
+
+    // Take into account the ' [' portion
+    std::streampos tmpPos = filePtrSet.ifsVar->tellg();
+    filePtrSet.ifsVar->seekg(tmpPos+(std::streampos)2);
+
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqGslMatrixClass::subReadContents()"
+                              << ": beginning to read lines with numbers only"
+                              << ", lineId = "          << lineId
+                              << ", idOfMyFirstLine = " << idOfMyFirstLine
+                              << ", idOfMyLastLine = "  << idOfMyLastLine
+                              << std::endl;
+    }
+
+    double tmpRead;
+    while (lineId <= idOfMyLastLine) {
+      for (unsigned int j = 0; j < nCols; ++j) {
+        *filePtrSet.ifsVar >> tmpRead;
+        (*this)(lineId-idOfMyFirstLine,j) = tmpRead;
+      }
+      lineId++;
+    };
+
+    m_env.closeFile(filePtrSet,fileType);
   }
 
   UQ_FATAL_TEST_MACRO(true,
