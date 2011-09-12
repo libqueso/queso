@@ -1364,10 +1364,6 @@ uqGslMatrixClass::subReadContents(
     m_env.closeFile(filePtrSet,fileType);
   }
 
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "uqGslMatrixClass::subReadContents()",
-                      "not implemented yet");
   return;
 }
 
