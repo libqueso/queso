@@ -49,10 +49,11 @@ cycle_cal_ip_mh_dr_maxNumExtraStages          = 1
 cycle_cal_ip_mh_dr_listOfScalesForExtraStages = 5. 4. 3.
 cycle_cal_ip_mh_am_initialNonAdaptInterval    = 0 # 10000
 cycle_cal_ip_mh_am_adaptInterval              = 100 # 10000
-cycle_cal_ip_mh_am_eta                        = 1.92
-cycle_cal_ip_mh_am_epsilon                    = 1.e-5
+cycle_cal_ip_mh_am_adaptedMatrices_dataOutputPeriod   = 60000
 cycle_cal_ip_mh_am_adaptedMatrices_dataOutputFileName = . # outputData/adaptedMatrix
 cycle_cal_ip_mh_am_adaptedMatrices_dataOutputFileType = m
+cycle_cal_ip_mh_am_eta                        = 1.92
+cycle_cal_ip_mh_am_epsilon                    = 1.e-5
 
 cycle_cal_ip_mh_filteredChain_generate             = 1
 cycle_cal_ip_mh_filteredChain_discardedPortion     = 0.
