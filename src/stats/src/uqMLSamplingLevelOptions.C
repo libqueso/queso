@@ -89,10 +89,11 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_amKeepInitialMatrix                      (UQ_ML_SAMPLING_L_AM_KEEP_INITIAL_MATRIX_ODV),
   m_amInitialNonAdaptInterval                (UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV),
   m_amAdaptInterval                          (UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV),
-  m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
-  m_amEpsilon                                (UQ_ML_SAMPLING_L_AM_EPSILON_ODV),
+  m_amAdaptedMatricesDataOutputPeriod        (UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV),
   m_amAdaptedMatricesDataOutputFileName      (UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV),
   m_amAdaptedMatricesDataOutputFileType      (UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV),
+  m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
+  m_amEpsilon                                (UQ_ML_SAMPLING_L_AM_EPSILON_ODV),
   m_env                                      (env),
   m_optionsDesc                              (new po::options_description("Multilevel sampling level options")),
   m_option_help                                      (m_prefix + "help"                                      ),
@@ -143,10 +144,11 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_am_keepInitialMatrix                      (m_prefix + "am_keepInitialMatrix"                      ),
   m_option_am_initialNonAdaptInterval                (m_prefix + "am_initialNonAdaptInterval"                ),
   m_option_am_adaptInterval                          (m_prefix + "am_adaptInterval"                          ),
-  m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
-  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
+  m_option_am_adaptedMatrices_dataOutputPeriod       (m_prefix + "amAdaptedMatrices_dataOutputPeriod"        ),
   m_option_am_adaptedMatrices_dataOutputFileName     (m_prefix + "amAdaptedMatrices_dataOutputFileName"      ),
-  m_option_am_adaptedMatrices_dataOutputFileType     (m_prefix + "amAdaptedMatrices_dataOutputFileType"      )
+  m_option_am_adaptedMatrices_dataOutputFileType     (m_prefix + "amAdaptedMatrices_dataOutputFileType"      ),
+  m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
+  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                )
 {
 }
 
@@ -209,10 +211,11 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_amKeepInitialMatrix                       = srcOptions.m_amKeepInitialMatrix;
   m_amInitialNonAdaptInterval                 = srcOptions.m_amInitialNonAdaptInterval;
   m_amAdaptInterval                           = srcOptions.m_amAdaptInterval;
-  m_amEta                                     = srcOptions.m_amEta;
-  m_amEpsilon                                 = srcOptions.m_amEpsilon;
+  m_amAdaptedMatricesDataOutputPeriod         = srcOptions.m_amAdaptedMatricesDataOutputPeriod;
   m_amAdaptedMatricesDataOutputFileName       = srcOptions.m_amAdaptedMatricesDataOutputFileName;
   m_amAdaptedMatricesDataOutputFileType       = srcOptions.m_amAdaptedMatricesDataOutputFileType;
+  m_amEta                                     = srcOptions.m_amEta;
+  m_amEpsilon                                 = srcOptions.m_amEpsilon;
 
   return;
 }
@@ -312,10 +315,11 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_am_keepInitialMatrix.c_str(),                       po::value<bool        >()->default_value(m_amKeepInitialMatrix                      ), "'am' keep initial (given) matrix"                                )
     (m_option_am_initialNonAdaptInterval.c_str(),                 po::value<unsigned int>()->default_value(m_amInitialNonAdaptInterval                ), "'am' initial non adaptation interval"                            )
     (m_option_am_adaptInterval.c_str(),                           po::value<unsigned int>()->default_value(m_amAdaptInterval                          ), "'am' adaptation interval"                                        )
+    (m_option_am_adaptedMatrices_dataOutputPeriod.c_str(),        po::value<unsigned int>()->default_value(m_amAdaptedMatricesDataOutputPeriod        ), "period for outputing 'am' adapted matrices"                      )
+    (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),      po::value<std::string >()->default_value(m_amAdaptedMatricesDataOutputFileName      ), "name of output file for 'am' adapted matrices"                   )
+    (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),      po::value<std::string >()->default_value(m_amAdaptedMatricesDataOutputFileType      ), "type of output file for 'am' adapted matrices"                   )
     (m_option_am_eta.c_str(),                                     po::value<double      >()->default_value(m_amEta                                    ), "'am' eta"                                                        )
     (m_option_am_epsilon.c_str(),                                 po::value<double      >()->default_value(m_amEpsilon                                ), "'am' epsilon"                                                    )
-    (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),      po::value<std::string >()->default_value(m_amAdaptedMatricesDataOutputFileName      ), "name of output file for adapted matrices"                        )
-    (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),      po::value<std::string >()->default_value(m_amAdaptedMatricesDataOutputFileType      ), "type of output file for adapted matrices"                        )
   ;
 
   return;
@@ -670,12 +674,8 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_amAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptInterval.c_str()]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_eta.c_str())) {
-    m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta.c_str()]).as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_am_epsilon.c_str())) {
-    m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon.c_str()]).as<double>();
+  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputPeriod.c_str())) {
+    m_amAdaptedMatricesDataOutputPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputPeriod.c_str()]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileName.c_str())) {
@@ -684,6 +684,14 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
 
   if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileType.c_str())) {
     m_amAdaptedMatricesDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileType.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_am_eta.c_str())) {
+    m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta.c_str()]).as<double>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_am_epsilon.c_str())) {
+    m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon.c_str()]).as<double>();
   }
 
   return;
@@ -752,10 +760,11 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_am_keepInitialMatrix                       << " = " << m_amKeepInitialMatrix
      << "\n" << m_option_am_initialNonAdaptInterval                 << " = " << m_amInitialNonAdaptInterval
      << "\n" << m_option_am_adaptInterval                           << " = " << m_amAdaptInterval
-     << "\n" << m_option_am_eta                                     << " = " << m_amEta
-     << "\n" << m_option_am_epsilon                                 << " = " << m_amEpsilon
+     << "\n" << m_option_am_adaptedMatrices_dataOutputPeriod        << " = " << m_amAdaptedMatricesDataOutputPeriod
      << "\n" << m_option_am_adaptedMatrices_dataOutputFileName      << " = " << m_amAdaptedMatricesDataOutputFileName
      << "\n" << m_option_am_adaptedMatrices_dataOutputFileType      << " = " << m_amAdaptedMatricesDataOutputFileType
+     << "\n" << m_option_am_eta                                     << " = " << m_amEta
+     << "\n" << m_option_am_epsilon                                 << " = " << m_amEpsilon
      << std::endl;
 
   return;

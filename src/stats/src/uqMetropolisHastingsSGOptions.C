@@ -67,10 +67,11 @@ uqMhOptionsValuesClass::uqMhOptionsValuesClass(
   m_amKeepInitialMatrix                      (UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV),
   m_amInitialNonAdaptInterval                (UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV),
   m_amAdaptInterval                          (UQ_MH_SG_AM_ADAPT_INTERVAL_ODV),
-  m_amEta                                    (UQ_MH_SG_AM_ETA_ODV),
-  m_amEpsilon                                (UQ_MH_SG_AM_EPSILON_ODV),
+  m_amAdaptedMatricesDataOutputPeriod        (UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV),
   m_amAdaptedMatricesDataOutputFileName      (UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV),
   m_amAdaptedMatricesDataOutputFileType      (UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV),
+  m_amEta                                    (UQ_MH_SG_AM_ETA_ODV),
+  m_amEpsilon                                (UQ_MH_SG_AM_EPSILON_ODV),
   m_enableBrooksGelmanConvMonitor            (UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR),
   m_BrooksGelmanLag                          (UQ_MH_SG_BROOKS_GELMAN_LAG),
   m_alternativeRawSsOptionsValues            (),
@@ -137,10 +138,11 @@ uqMhOptionsValuesClass::copy(const uqMhOptionsValuesClass& src)
   m_amKeepInitialMatrix                       = src.m_amKeepInitialMatrix;
   m_amInitialNonAdaptInterval                 = src.m_amInitialNonAdaptInterval;
   m_amAdaptInterval                           = src.m_amAdaptInterval;
-  m_amEta                                     = src.m_amEta;
-  m_amEpsilon                                 = src.m_amEpsilon;
+  m_amAdaptedMatricesDataOutputPeriod         = src.m_amAdaptedMatricesDataOutputPeriod;
   m_amAdaptedMatricesDataOutputFileName       = src.m_amAdaptedMatricesDataOutputFileName;
   m_amAdaptedMatricesDataOutputFileType       = src.m_amAdaptedMatricesDataOutputFileType;
+  m_amEta                                     = src.m_amEta;
+  m_amEpsilon                                 = src.m_amEpsilon;
   m_enableBrooksGelmanConvMonitor             = src.m_enableBrooksGelmanConvMonitor;
   m_BrooksGelmanLag                           = src.m_BrooksGelmanLag;
 
@@ -197,10 +199,11 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_am_keepInitialMatrix                      (m_prefix + "am_keepInitialMatrix"                       ),
   m_option_am_initialNonAdaptInterval                (m_prefix + "am_initialNonAdaptInterval"                 ),
   m_option_am_adaptInterval                          (m_prefix + "am_adaptInterval"                           ),
-  m_option_am_eta                                    (m_prefix + "am_eta"                                     ),
-  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                 ),
+  m_option_am_adaptedMatrices_dataOutputPeriod       (m_prefix + "am_adaptedMatrices_dataOutputPeriod"        ),
   m_option_am_adaptedMatrices_dataOutputFileName     (m_prefix + "am_adaptedMatrices_dataOutputFileName"      ),
   m_option_am_adaptedMatrices_dataOutputFileType     (m_prefix + "am_adaptedMatrices_dataOutputFileType"      ),
+  m_option_am_eta                                    (m_prefix + "am_eta"                                     ),
+  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                 ),
   m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"              ),
   m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                            )
 {
@@ -258,10 +261,11 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_am_keepInitialMatrix                      (m_prefix + "am_keepInitialMatrix"                      ),
   m_option_am_initialNonAdaptInterval                (m_prefix + "am_initialNonAdaptInterval"                ),
   m_option_am_adaptInterval                          (m_prefix + "am_adaptInterval"                          ),
-  m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
-  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
+  m_option_am_adaptedMatrices_dataOutputPeriod       (m_prefix + "am_adaptedMatrices_dataOutputPeriod"       ),
   m_option_am_adaptedMatrices_dataOutputFileName     (m_prefix + "am_adaptedMatrices_dataOutputFileName"     ),
   m_option_am_adaptedMatrices_dataOutputFileType     (m_prefix + "am_adaptedMatrices_dataOutputFileType"     ),
+  m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
+  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
   m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"             ),
   m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           )
 {
@@ -335,10 +339,11 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_option_am_keepInitialMatrix                      (m_prefix + "am_keepInitialMatrix"                      ),
   m_option_am_initialNonAdaptInterval                (m_prefix + "am_initialNonAdaptInterval"                ),
   m_option_am_adaptInterval                          (m_prefix + "am_adaptInterval"                          ),
-  m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
-  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
+  m_option_am_adaptedMatrices_dataOutputPeriod       (m_prefix + "am_adaptedMatrices_dataOutputPeriod"       ),
   m_option_am_adaptedMatrices_dataOutputFileName     (m_prefix + "am_adaptedMatrices_dataOutputFileName"     ),
   m_option_am_adaptedMatrices_dataOutputFileType     (m_prefix + "am_adaptedMatrices_dataOutputFileType"     ),
+  m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
+  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
   m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"             ),
   m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           )
 {
@@ -376,10 +381,11 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   m_ov.m_amKeepInitialMatrix                       = mlOptions.m_amKeepInitialMatrix;
   m_ov.m_amInitialNonAdaptInterval                 = mlOptions.m_amInitialNonAdaptInterval;
   m_ov.m_amAdaptInterval                           = mlOptions.m_amAdaptInterval;
-  m_ov.m_amEta                                     = mlOptions.m_amEta;
-  m_ov.m_amEpsilon                                 = mlOptions.m_amEpsilon;
+  m_ov.m_amAdaptedMatricesDataOutputPeriod         = mlOptions.m_amAdaptedMatricesDataOutputPeriod;
   m_ov.m_amAdaptedMatricesDataOutputFileName       = mlOptions.m_amAdaptedMatricesDataOutputFileName;
   m_ov.m_amAdaptedMatricesDataOutputFileType       = mlOptions.m_amAdaptedMatricesDataOutputFileType;
+  m_ov.m_amEta                                     = mlOptions.m_amEta;
+  m_ov.m_amEpsilon                                 = mlOptions.m_amEpsilon;
   m_ov.m_enableBrooksGelmanConvMonitor             = UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR;
   m_ov.m_BrooksGelmanLag                           = UQ_MH_SG_BROOKS_GELMAN_LAG;
 
@@ -480,10 +486,11 @@ uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& opt
     (m_option_am_keepInitialMatrix.c_str(),                       po::value<bool        >()->default_value(UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                          ), "'am' keep initial (given) matrix"                           )
     (m_option_am_initialNonAdaptInterval.c_str(),                 po::value<unsigned int>()->default_value(UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                           ), "'am' initial non adaptation interval"                       )
     (m_option_am_adaptInterval.c_str(),                           po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                               ), "'am' adaptation interval"                                   )
-    (m_option_am_eta.c_str(),                                     po::value<double      >()->default_value(UQ_MH_SG_AM_ETA_ODV                                          ), "'am' eta"                                                   )
-    (m_option_am_epsilon.c_str(),                                 po::value<double      >()->default_value(UQ_MH_SG_AM_EPSILON_ODV                                      ), "'am' epsilon"                                               )
+    (m_option_am_adaptedMatrices_dataOutputPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV          ), "period for outputing 'am' adapted matrices"                 )
     (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV       ), "name of output file for 'am' adapted matrices"              )
     (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV       ), "type of output file for 'am' adapted matrices"              )
+    (m_option_am_eta.c_str(),                                     po::value<double      >()->default_value(UQ_MH_SG_AM_ETA_ODV                                          ), "'am' eta"                                                   )
+    (m_option_am_epsilon.c_str(),                                 po::value<double      >()->default_value(UQ_MH_SG_AM_EPSILON_ODV                                      ), "'am' epsilon"                                               )
     (m_option_enableBrooksGelmanConvMonitor.c_str(),              po::value<unsigned int>()->default_value(UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                   ), "assess convergence using Brooks-Gelman metric"              )
     (m_option_BrooksGelmanLag.c_str(),                            po::value<unsigned int>()->default_value(UQ_MH_SG_BROOKS_GELMAN_LAG                                   ), "number of chain positions before starting to compute metric")
   ;
@@ -701,12 +708,8 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
     m_ov.m_amAdaptInterval = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptInterval]).as<unsigned int>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_am_eta)) {
-    m_ov.m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta]).as<double>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_am_epsilon)) {
-    m_ov.m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon]).as<double>();
+  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputPeriod)) {
+    m_ov.m_amAdaptedMatricesDataOutputPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputPeriod]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileName)) {
@@ -715,6 +718,14 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
 
   if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputFileType)) {
     m_ov.m_amAdaptedMatricesDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileType]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_am_eta)) {
+    m_ov.m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta]).as<double>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_am_epsilon)) {
+    m_ov.m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_enableBrooksGelmanConvMonitor)) {
@@ -777,10 +788,11 @@ uqMetropolisHastingsSGOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_am_keepInitialMatrix                       << " = " << m_ov.m_amKeepInitialMatrix
      << "\n" << m_option_am_initialNonAdaptInterval                 << " = " << m_ov.m_amInitialNonAdaptInterval
      << "\n" << m_option_am_adaptInterval                           << " = " << m_ov.m_amAdaptInterval
-     << "\n" << m_option_am_eta                                     << " = " << m_ov.m_amEta
-     << "\n" << m_option_am_epsilon                                 << " = " << m_ov.m_amEpsilon
+     << "\n" << m_option_am_adaptedMatrices_dataOutputPeriod        << " = " << m_ov.m_amAdaptedMatricesDataOutputPeriod
      << "\n" << m_option_am_adaptedMatrices_dataOutputFileName      << " = " << m_ov.m_amAdaptedMatricesDataOutputFileName
      << "\n" << m_option_am_adaptedMatrices_dataOutputFileType      << " = " << m_ov.m_amAdaptedMatricesDataOutputFileType
+     << "\n" << m_option_am_eta                                     << " = " << m_ov.m_amEta
+     << "\n" << m_option_am_epsilon                                 << " = " << m_ov.m_amEpsilon
      << "\n" << m_option_enableBrooksGelmanConvMonitor              << " = " << m_ov.m_enableBrooksGelmanConvMonitor
      << "\n" << m_option_BrooksGelmanLag                            << " = " << m_ov.m_BrooksGelmanLag
      << std::endl;

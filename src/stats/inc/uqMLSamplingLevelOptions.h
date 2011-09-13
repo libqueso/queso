@@ -83,10 +83,11 @@
 #define UQ_ML_SAMPLING_L_AM_KEEP_INITIAL_MATRIX_ODV                           0
 #define UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV                            0
 #define UQ_ML_SAMPLING_L_AM_ADAPT_INTERVAL_ODV                                0
-#define UQ_ML_SAMPLING_L_AM_ETA_ODV                                           1.
-#define UQ_ML_SAMPLING_L_AM_EPSILON_ODV                                       1.e-5
+#define UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV           0
 #define UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV        UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_ML_SAMPLING_L_AM_ETA_ODV                                           1.
+#define UQ_ML_SAMPLING_L_AM_EPSILON_ODV                                       1.e-5
 
 class uqMLSamplingLevelOptionsClass
 {
@@ -159,10 +160,11 @@ public:
   bool                               m_amKeepInitialMatrix;
   unsigned int                       m_amInitialNonAdaptInterval;
   unsigned int                       m_amAdaptInterval;
-  double                             m_amEta;
-  double                             m_amEpsilon;
+  unsigned int                       m_amAdaptedMatricesDataOutputPeriod;
   std::string                        m_amAdaptedMatricesDataOutputFileName;
   std::string                        m_amAdaptedMatricesDataOutputFileType;
+  double                             m_amEta;
+  double                             m_amEpsilon;
 
 private:
   void   copyOptionsValues(const uqMLSamplingLevelOptionsClass& srcOptions);
@@ -223,10 +225,11 @@ private:
   std::string                   m_option_am_keepInitialMatrix;
   std::string                   m_option_am_initialNonAdaptInterval;
   std::string                   m_option_am_adaptInterval;
-  std::string                   m_option_am_eta;
-  std::string                   m_option_am_epsilon;
+  std::string                   m_option_am_adaptedMatrices_dataOutputPeriod;
   std::string                   m_option_am_adaptedMatrices_dataOutputFileName;
   std::string                   m_option_am_adaptedMatrices_dataOutputFileType;
+  std::string                   m_option_am_eta;
+  std::string                   m_option_am_epsilon;
 };
 
 std::ostream& operator<<(std::ostream& os, const uqMLSamplingLevelOptionsClass& obj);

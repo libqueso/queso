@@ -856,6 +856,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       uqSequenceOfVectorsClass<P_V,P_M> partialChain(m_vectorSpace,0,m_optionsObj->m_prefix+"partialChain");
 
       // Check if now is indeed the moment to adapt
+      bool printAdaptedMatrix = false;
       if (positionId < m_optionsObj->m_ov.m_amInitialNonAdaptInterval) {
         // Do nothing
       }
@@ -864,12 +865,19 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
         partialChain.resizeSequence(m_optionsObj->m_ov.m_amInitialNonAdaptInterval+1);
         m_lastMean             = m_vectorSpace.newVector();
         m_lastAdaptedCovMatrix = m_vectorSpace.newMatrix();
+        printAdaptedMatrix = true;
       }
       else {
         unsigned int interval = positionId - m_optionsObj->m_ov.m_amInitialNonAdaptInterval;
         if ((interval % m_optionsObj->m_ov.m_amAdaptInterval) == 0) {
           idOfFirstPositionInSubChain = positionId - m_optionsObj->m_ov.m_amAdaptInterval;
           partialChain.resizeSequence(m_optionsObj->m_ov.m_amAdaptInterval);
+
+          if (m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputPeriod > 0) {
+            if ((interval % m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputPeriod) == 0) {
+              printAdaptedMatrix = true;
+            }
+          }
         }
       }
 
@@ -886,7 +894,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                               *m_lastMean,
                               *m_lastAdaptedCovMatrix);
 
-        if (m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileName != ".") { // palms
+        if ((printAdaptedMatrix                                       == true) &&
+            (m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileName != "." )) { // palms
           char varNamePrefix[64];
           sprintf(varNamePrefix,"mat_am%d",positionId);
 
@@ -906,7 +915,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                     << ": just wrote last adapted proposal cov matrix contents = " << *m_lastAdaptedCovMatrix
                                     << std::endl;
           }
-        }
+        } // if (printAdaptedMatrix && ...)
 
         bool tmpCholIsPositiveDefinite = false;
         P_M tmpChol(*m_lastAdaptedCovMatrix);
