@@ -87,12 +87,12 @@ public:
                               const P_M*                           inputProposalCovMatrix);
  ~uqMetropolisHastingsSGClass();
 
-  void         generateSequence         (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-                                         uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
-                                         uqScalarSequenceClass<double>*      workingLogTargetValues);
-  void         getRawChainInfo          (uqMHRawChainInfoStruct& info) const;
+  void         generateSequence   (uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
+                                   uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
+                                   uqScalarSequenceClass<double>*      workingLogTargetValues);
+  void         getRawChainInfo    (uqMHRawChainInfoStruct& info) const;
 
-  void   print                          (std::ostream& os) const;
+  void   print                    (std::ostream& os) const;
 
 
 private:
@@ -559,9 +559,9 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
   if (inputPositionsData[0          ]->outOfTargetSupport()) return 0.;
   if (inputPositionsData[inputSize-1]->outOfTargetSupport()) return 0.;
 
-  if ((inputPositionsData[0]->logTarget() == -INFINITY) ||
-      (inputPositionsData[0]->logTarget() ==  INFINITY) ||
-      ( (boost::math::isnan)(inputPositionsData[0]->logTarget())      )) {
+  if ((inputPositionsData[0]->logTarget() == -INFINITY           ) ||
+      (inputPositionsData[0]->logTarget() ==  INFINITY           ) ||
+      ( (boost::math::isnan)(inputPositionsData[0]->logTarget()) )) {
     std::cerr << "WARNING In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
               << ", worldRank "      << m_env.worldRank()
               << ", fullRank "       << m_env.fullRank()
@@ -577,9 +577,9 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
               << std::endl;
     return 0.;
   }
-  else if ((inputPositionsData[inputSize - 1]->logTarget() == -INFINITY) ||
-           (inputPositionsData[inputSize - 1]->logTarget() ==  INFINITY) ||
-           ( (boost::math::isnan)(inputPositionsData[inputSize - 1]->logTarget())      )) {
+  else if ((inputPositionsData[inputSize - 1]->logTarget() == -INFINITY           ) ||
+           (inputPositionsData[inputSize - 1]->logTarget() ==  INFINITY           ) ||
+           ( (boost::math::isnan)(inputPositionsData[inputSize - 1]->logTarget()) )) {
     std::cerr << "WARNING In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(vec)"
               << ", worldRank "      << m_env.worldRank()
               << ", fullRank "       << m_env.fullRank()
