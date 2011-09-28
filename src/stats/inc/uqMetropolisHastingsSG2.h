@@ -512,6 +512,10 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     }
   }
   else for (unsigned int positionId = 1; positionId < workingChain.subSequenceSize(); ++positionId) {
+    //****************************************************
+    // Point 1/6 of logic for new position
+    // Loop: initialize variables and print some information
+    //****************************************************
     m_positionIdForDebugging = positionId;
     if ((m_env.subDisplayFile()                   ) &&
         (m_env.displayVerbosity() >= 10           ) &&
@@ -550,8 +554,10 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                         "initial position should not be an invalid pre computing position");
 
     //****************************************************
+    // Point 2/6 of logic for new position
     // Loop: generate new position
     //****************************************************
+    // sep2011
     bool keepGeneratingCandidates = true;
     while (keepGeneratingCandidates) {
       if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
@@ -676,8 +682,10 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     }
 
     //****************************************************
+    // Point 3/6 of logic for new position
     // Loop: delayed rejection
     //****************************************************
+    // sep2011
     std::vector<uqMarkovChainPositionDataClass<P_V>*> drPositionsData(stageId+2,NULL);
     std::vector<unsigned int> tkStageIds (stageId+2,0);
     if ((accept                                   == false) &&
@@ -809,6 +817,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     }
 
     //****************************************************
+    // Point 4/6 of logic for new position
     // Loop: update chain
     //****************************************************
     if (accept) {
@@ -844,8 +853,10 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     }
       
     //****************************************************
+    // Point 5/6 of logic for new position
     // Loop: adaptive Metropolis (adaptation of covariance matrix)
     //****************************************************
+    // sep2011
     if ((m_optionsObj->m_ov.m_tkUseLocalHessian ==    false) && // IMPORTANT
         (m_optionsObj->m_ov.m_amInitialNonAdaptInterval > 0) &&
         (m_optionsObj->m_ov.m_amAdaptInterval           > 0)) {
@@ -1036,6 +1047,10 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) m_rawChainInfo.amRunTime += uqMiscGetEllapsedSeconds(&timevalAM);
     } // End of 'adaptive Metropolis' logic
 
+    //****************************************************
+    // Point 6/6 of logic for new position
+    // Loop: print some information before going to the next chain position
+    //****************************************************
     if ((m_env.subDisplayFile()                   ) &&
         (m_env.displayVerbosity() >= 10           ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {

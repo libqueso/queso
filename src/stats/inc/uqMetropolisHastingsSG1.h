@@ -324,7 +324,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
   for (unsigned int i = 1; i < (m_optionsObj->m_ov.m_drScalesForExtraStages.size()+1); ++i) {
     drScalesAll[i] = m_optionsObj->m_ov.m_drScalesForExtraStages[i-1];
   }
-  if (m_optionsObj->m_ov.m_tkUseLocalHessian) {
+  if (m_optionsObj->m_ov.m_tkUseLocalHessian) { // sep2011
     m_tk = new uqHessianCovMatricesTKGroupClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                          m_vectorSpace,
                                                          drScalesAll,
