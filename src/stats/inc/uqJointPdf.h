@@ -713,6 +713,198 @@ uqUniformJointPdfClass<V,M>::lnValue(
 }
 
 //*****************************************************
+// Beta probability density class
+//*****************************************************
+template<class V, class M>
+class uqBetaJointPdfClass : public uqBaseJointPdfClass<V,M> {
+public:
+  uqBetaJointPdfClass(const char*                  prefix,
+                      const uqVectorSetClass<V,M>& domainSet,
+                      const V&                     alpha,
+                      const V&                     beta);
+ ~uqBetaJointPdfClass();
+
+  double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+
+protected:
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+
+  V m_alpha;
+  V m_beta;
+};
+
+template<class V,class M>
+uqBetaJointPdfClass<V,M>::uqBetaJointPdfClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& domainSet,
+  const V&                     alpha,
+  const V&                     beta)
+  :
+  uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"uni").c_str(),domainSet),
+  m_alpha(alpha),
+  m_beta (beta)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Entering uqBetaJointPdfClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Leaving uqBetaJointPdfClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V,class M>
+uqBetaJointPdfClass<V,M>::~uqBetaJointPdfClass()
+{
+}
+
+template<class V, class M>
+double
+uqBetaJointPdfClass<V,M>::actualValue(
+  const V& domainVector,
+  const V* domainDirection,
+        V* gradVector,
+        M* hessianMatrix,
+        V* hessianEffect) const
+{
+  UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
+                      m_env.worldRank(),
+                      "uqBetaJointPdfClass<V,M>::actualValue()",
+                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+  return exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+#else
+  return exp(-0.5*this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+#endif
+}
+
+template<class V, class M>
+double
+uqBetaJointPdfClass<V,M>::lnValue(
+  const V& domainVector,
+  const V* domainDirection,
+        V* gradVector,
+        M* hessianMatrix,
+        V* hessianEffect) const
+{
+  UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
+                      m_env.worldRank(),
+                      "uqBetaJointPdfClass<V,M>::lnValue()",
+                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+
+  double result = 0.;
+  for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
+    result += gsl_ran_beta_pdf(domainVector[i],m_alpha[i],m_beta[i]);
+  }
+
+  return result;
+}
+
+//*****************************************************
+// Gamma probability density class
+//*****************************************************
+template<class V, class M>
+class uqGammaJointPdfClass : public uqBaseJointPdfClass<V,M> {
+public:
+  uqGammaJointPdfClass(const char*                  prefix,
+                       const uqVectorSetClass<V,M>& domainSet,
+                       const V&                     a,
+                       const V&                     b);
+ ~uqGammaJointPdfClass();
+
+  double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+
+protected:
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+
+  V m_a;
+  V m_b;
+};
+
+template<class V,class M>
+uqGammaJointPdfClass<V,M>::uqGammaJointPdfClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& domainSet,
+  const V&                     a,
+  const V&                     b)
+  :
+  uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"uni").c_str(),domainSet),
+  m_a(a),
+  m_b(b)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Entering uqGammaJointPdfClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Leaving uqGammaJointPdfClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V,class M>
+uqGammaJointPdfClass<V,M>::~uqGammaJointPdfClass()
+{
+}
+
+template<class V, class M>
+double
+uqGammaJointPdfClass<V,M>::actualValue(
+  const V& domainVector,
+  const V* domainDirection,
+        V* gradVector,
+        M* hessianMatrix,
+        V* hessianEffect) const
+{
+  UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
+                      m_env.worldRank(),
+                      "uqGammaJointPdfClass<V,M>::actualValue()",
+                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+  return exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+#else
+  return exp(-0.5*this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+#endif
+}
+
+template<class V, class M>
+double
+uqGammaJointPdfClass<V,M>::lnValue(
+  const V& domainVector,
+  const V* domainDirection,
+        V* gradVector,
+        M* hessianMatrix,
+        V* hessianEffect) const
+{
+  UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
+                      m_env.worldRank(),
+                      "uqGammaJointPdfClass<V,M>::lnValue()",
+                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+
+  double result = 0.;
+  for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
+    result += gsl_ran_gamma_pdf(domainVector[i],m_a[i],m_b[i]);
+  }
+
+  return result;
+}
+
+//*****************************************************
 // InverseGamma probability density class
 //*****************************************************
 template<class V, class M>

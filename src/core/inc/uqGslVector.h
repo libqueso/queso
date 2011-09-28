@@ -64,6 +64,8 @@ public:
   void         cwSetGaussian    (const gsl_rng* rng, double mean, double stdDev);
   void         cwSetGaussian    (const gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec);
   void         cwSetUniform     (const gsl_rng* rng, const uqGslVectorClass& aVec,    const uqGslVectorClass& bVec     );
+  void         cwSetBeta        (const gsl_rng* rng, const uqGslVectorClass& alpha,   const uqGslVectorClass& beta     );
+  void         cwSetGamma       (const gsl_rng* rng, const uqGslVectorClass& a,       const uqGslVectorClass& b        );
   void         cwSetInverseGamma(const gsl_rng* rng, const uqGslVectorClass& alpha,   const uqGslVectorClass& beta     );
   void         cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVectorClass& v2);
   void         cwExtract        (unsigned int initialPos, uqGslVectorClass& vec) const;

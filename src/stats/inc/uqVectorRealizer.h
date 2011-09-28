@@ -503,6 +503,128 @@ uqUniformVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
+// Beta class
+//*****************************************************
+template<class V, class M>
+class uqBetaVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
+public:
+  uqBetaVectorRealizerClass(const char*                  prefix,
+                            const uqVectorSetClass<V,M>& unifiedImageSet,
+                            const V&                     alpha,
+                            const V&                     beta);
+ ~uqBetaVectorRealizerClass();
+
+  void realization(V& nextValues) const;
+
+private:
+  using uqBaseVectorRealizerClass<V,M>::m_env;
+  using uqBaseVectorRealizerClass<V,M>::m_prefix;
+  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
+  using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
+
+  V m_alpha;
+  V m_beta;
+};
+
+template<class V, class M>
+uqBetaVectorRealizerClass<V,M>::uqBetaVectorRealizerClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& unifiedImageSet,
+  const V&                     alpha,
+  const V&                     beta)
+  :
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
+  m_alpha(alpha),
+  m_beta (beta)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqBetaVectorRealizerClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqBetaVectorRealizerClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqBetaVectorRealizerClass<V,M>::~uqBetaVectorRealizerClass()
+{
+}
+
+template<class V, class M>
+void
+uqBetaVectorRealizerClass<V,M>::realization(V& nextValues) const
+{
+  nextValues.cwSetBeta(m_env.rng(),m_alpha,m_beta);
+  return;
+}
+
+//*****************************************************
+// Gamma class
+//*****************************************************
+template<class V, class M>
+class uqGammaVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
+public:
+  uqGammaVectorRealizerClass(const char*                  prefix,
+                             const uqVectorSetClass<V,M>& unifiedImageSet,
+                             const V&                     a,
+                             const V&                     b);
+ ~uqGammaVectorRealizerClass();
+
+  void realization(V& nextValues) const;
+
+private:
+  using uqBaseVectorRealizerClass<V,M>::m_env;
+  using uqBaseVectorRealizerClass<V,M>::m_prefix;
+  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
+  using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
+
+  V m_a;
+  V m_b;
+};
+
+template<class V, class M>
+uqGammaVectorRealizerClass<V,M>::uqGammaVectorRealizerClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& unifiedImageSet,
+  const V&                     a,
+  const V&                     b)
+  :
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
+  m_a(a),
+  m_b(b)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqGammaVectorRealizerClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqGammaVectorRealizerClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqGammaVectorRealizerClass<V,M>::~uqGammaVectorRealizerClass()
+{
+}
+
+template<class V, class M>
+void
+uqGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
+{
+  nextValues.cwSetGamma(m_env.rng(),m_a,m_b);
+  return;
+}
+
+//*****************************************************
 // InverseGamma class
 //*****************************************************
 template<class V, class M>

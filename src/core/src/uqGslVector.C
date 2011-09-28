@@ -473,6 +473,44 @@ uqGslVectorClass::cwSetUniform(const gsl_rng* rng, const uqGslVectorClass& aVec,
 }
 
 void
+uqGslVectorClass::cwSetBeta(const gsl_rng* rng, const uqGslVectorClass& alpha, const uqGslVectorClass& beta)
+{
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqGslVectorsClass::cwSetBeta()",
+                      "incompatible alpha size");
+
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqGslVectorsClass::cwSetBeta()",
+                      "incompatible beta size");
+
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+    (*this)[i] = gsl_ran_beta(rng,alpha[i],beta[i]);
+  }
+  return;
+}
+
+void
+uqGslVectorClass::cwSetGamma(const gsl_rng* rng, const uqGslVectorClass& a, const uqGslVectorClass& b)
+{
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != a.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqGslVectorsClass::cwSetGamma()",
+                      "incompatible a size");
+
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != b.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqGslVectorsClass::cwSetGamma()",
+                      "incompatible b size");
+
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+    (*this)[i] = gsl_ran_gamma(rng,a[i],b[i]);
+  }
+  return;
+}
+
+void
 uqGslVectorClass::cwSetInverseGamma(const gsl_rng* rng, const uqGslVectorClass& alpha, const uqGslVectorClass& beta)
 {
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),

@@ -698,6 +698,160 @@ uqUniformVectorRVClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
+// Beta class
+//*****************************************************
+template<class V, class M>
+class uqBetaVectorRVClass : public uqBaseVectorRVClass<V,M> {
+public:
+  uqBetaVectorRVClass(const char*                  prefix,
+                      const uqVectorSetClass<V,M>& imageSet,
+                      const V&                     alpha,
+                      const V&                     beta);
+  virtual ~uqBetaVectorRVClass();
+
+  void print(std::ostream& os) const;
+
+private:
+  using uqBaseVectorRVClass<V,M>::m_env;
+  using uqBaseVectorRVClass<V,M>::m_prefix;
+  using uqBaseVectorRVClass<V,M>::m_imageSet;
+  using uqBaseVectorRVClass<V,M>::m_pdf;
+  using uqBaseVectorRVClass<V,M>::m_realizer;
+  using uqBaseVectorRVClass<V,M>::m_subCdf;
+  using uqBaseVectorRVClass<V,M>::m_unifiedCdf;
+  using uqBaseVectorRVClass<V,M>::m_mdf;
+};
+
+template<class V, class M>
+uqBetaVectorRVClass<V,M>::uqBetaVectorRVClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& imageSet,
+  const V&                     alpha,
+  const V&                     beta)
+  :
+  uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Entering uqBetaVectorRVClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  m_pdf        = new uqBetaJointPdfClass<V,M>(m_prefix.c_str(),
+                                              m_imageSet,
+                                              alpha,
+                                              beta);
+  m_realizer   = new uqBetaVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                    m_imageSet,
+                                                    alpha,
+                                                    beta);
+  m_subCdf     = NULL; // FIX ME: complete code
+  m_unifiedCdf = NULL; // FIX ME: complete code
+  m_mdf        = NULL; // FIX ME: complete code
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Leaving uqBetaVectorRVClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqBetaVectorRVClass<V,M>::~uqBetaVectorRVClass()
+{
+  delete m_mdf;
+  delete m_unifiedCdf;
+  delete m_subCdf;
+  delete m_realizer;
+  delete m_pdf;
+}
+
+template <class V, class M>
+void
+uqBetaVectorRVClass<V,M>::print(std::ostream& os) const
+{
+  os << "uqBetaVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  return;
+}
+
+//*****************************************************
+// Gamma class
+//*****************************************************
+template<class V, class M>
+class uqGammaVectorRVClass : public uqBaseVectorRVClass<V,M> {
+public:
+  uqGammaVectorRVClass(const char*                  prefix,
+                       const uqVectorSetClass<V,M>& imageSet,
+                       const V&                     a,
+                       const V&                     b);
+  virtual ~uqGammaVectorRVClass();
+
+  void print(std::ostream& os) const;
+
+private:
+  using uqBaseVectorRVClass<V,M>::m_env;
+  using uqBaseVectorRVClass<V,M>::m_prefix;
+  using uqBaseVectorRVClass<V,M>::m_imageSet;
+  using uqBaseVectorRVClass<V,M>::m_pdf;
+  using uqBaseVectorRVClass<V,M>::m_realizer;
+  using uqBaseVectorRVClass<V,M>::m_subCdf;
+  using uqBaseVectorRVClass<V,M>::m_unifiedCdf;
+  using uqBaseVectorRVClass<V,M>::m_mdf;
+};
+
+template<class V, class M>
+uqGammaVectorRVClass<V,M>::uqGammaVectorRVClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& imageSet,
+  const V&                     a,
+  const V&                     b)
+  :
+  uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Entering uqGammaVectorRVClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  m_pdf        = new uqGammaJointPdfClass<V,M>(m_prefix.c_str(),
+                                               m_imageSet,
+                                               a,
+                                               b);
+  m_realizer   = new uqGammaVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                     m_imageSet,
+                                                     a,
+                                                     b);
+  m_subCdf     = NULL; // FIX ME: complete code
+  m_unifiedCdf = NULL; // FIX ME: complete code
+  m_mdf        = NULL; // FIX ME: complete code
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Leaving uqGammaVectorRVClass<V,M>::constructor()"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqGammaVectorRVClass<V,M>::~uqGammaVectorRVClass()
+{
+  delete m_mdf;
+  delete m_unifiedCdf;
+  delete m_subCdf;
+  delete m_realizer;
+  delete m_pdf;
+}
+
+template <class V, class M>
+void
+uqGammaVectorRVClass<V,M>::print(std::ostream& os) const
+{
+  os << "uqGammaVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  return;
+}
+
+//*****************************************************
 // InverseGamma class
 //*****************************************************
 template<class V, class M>
