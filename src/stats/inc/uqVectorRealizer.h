@@ -215,7 +215,7 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
 								  const V& lawExpVector,
 								  const M& lowerCholLawCovMatrix)
   :
-  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, 0 ),
+  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, std::numeric_limits<unsigned int>::max()), // 2011/Oct/02 - Correction thanks to Corey
   m_unifiedLawExpVector  (new V(lawExpVector)),
   m_unifiedLawVarVector  (unifiedImageSet.vectorSpace().newVector( INFINITY)), // FIX ME
   m_lowerCholLawCovMatrix(new M(lowerCholLawCovMatrix)),
@@ -246,7 +246,7 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
 								  const V& vecSsqrt,
 								  const M& matVt)
   :
-  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, 0 ),
+  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, std::numeric_limits<unsigned int>::max()), // 2011/Oct/02 - Correction thanks to Corey
   m_unifiedLawExpVector  (new V(lawExpVector)),
   m_unifiedLawVarVector  (unifiedImageSet.vectorSpace().newVector( INFINITY)), // FIX ME
   m_lowerCholLawCovMatrix(NULL),
@@ -787,7 +787,7 @@ uqConcatenatedVectorRealizerClass<V,M>::uqConcatenatedVectorRealizerClass(
   const uqBaseVectorRealizerClass<V,M>& realizer2,
   const uqVectorSetClass<V,M>&          unifiedImageSet)
   :
-  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
+  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::min(realizer1.subPeriod(),realizer2.subPeriod()) ), // 2011/Oct/02
   m_realizer1(realizer1),
   m_realizer2(realizer2)
 {

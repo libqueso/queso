@@ -392,7 +392,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Starting the generation of qoi sequence " << workingQSeq.name()
-                            << ", with "                                   << requestedSeqSize
+                            << ", with "                                  << requestedSeqSize
                             << " samples..."
                             << std::endl;
   }
