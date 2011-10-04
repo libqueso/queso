@@ -524,11 +524,20 @@ uqGaussianJointPdfClass<V,M>::actualValue(
                       "uqGaussianJointPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
+  double returnValue = 0.;
+
+  bool outOfSupport = !(this->m_domainSet.contains(domainVector));
+
+  if (outOfSupport) { // prudenci 2011-Oct-04
+    returnValue = 0.;
+  }
+  else {
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
-  double returnValue = std::exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+    returnValue = std::exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
 #else
-  double returnValue = std::exp(-0.5*this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+    returnValue = std::exp(-0.5*this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
 #endif
+  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianJointPdfClass<V,M>::actualValue()"
@@ -559,22 +568,29 @@ uqGaussianJointPdfClass<V,M>::lnValue(
                             << std::endl;
   }
 
-  double returnValue = 0.;
-
-  if (m_diagonalCovMatrix) {
-    V diffVec(domainVector - this->lawExpVector());
-    returnValue = ((diffVec*diffVec)/this->lawVarVector()).sumOfComponents();
-  }
-  else {
-    V diffVec(domainVector - this->lawExpVector());
-    V tmpVec = this->m_lawCovMatrix->invertMultiply(diffVec);
-    returnValue = (diffVec*tmpVec).sumOfComponents();
-  }
-
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
                       "uqGaussianJointPdfClass<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+
+  double returnValue = 0.;
+
+  bool outOfSupport = !(this->m_domainSet.contains(domainVector));
+
+  if (outOfSupport) { // prudenci 2011-Oct-04
+    returnValue = -INFINITY;
+  }
+  else {
+    if (m_diagonalCovMatrix) {
+      V diffVec(domainVector - this->lawExpVector());
+      returnValue = ((diffVec*diffVec)/this->lawVarVector()).sumOfComponents();
+    }
+    else {
+      V diffVec(domainVector - this->lawExpVector());
+      V tmpVec = this->m_lawCovMatrix->invertMultiply(diffVec);
+      returnValue = (diffVec*tmpVec).sumOfComponents();
+    }
+  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianJointPdfClass<V,M>::lnValue()"

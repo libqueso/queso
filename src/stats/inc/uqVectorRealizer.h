@@ -299,20 +299,26 @@ void
 uqGaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
 {
   V iidGaussianVector(m_unifiedImageSet.vectorSpace().zeroVector());
-  iidGaussianVector.cwSetGaussian(m_env.rng(), 0.0, 1.0);
 
-  if (m_lowerCholLawCovMatrix) {
-    nextValues = (*m_unifiedLawExpVector) + (*m_lowerCholLawCovMatrix)*iidGaussianVector;
-  }
-  else if (m_matU && m_vecSsqrt && m_matVt) {
-    nextValues = (*m_unifiedLawExpVector) + (*m_matU)*( (*m_vecSsqrt) * ((*m_matVt)*iidGaussianVector) );
-  }
-  else {
-    UQ_FATAL_TEST_MACRO(true,
-                        m_env.worldRank(),
-                        "uqGaussianVectorRealizerClass<V,M>::realization()",
-                        "inconsistent internal state");
-  }
+  bool outOfSupport = true;
+  do {
+    iidGaussianVector.cwSetGaussian(m_env.rng(), 0.0, 1.0);
+
+    if (m_lowerCholLawCovMatrix) {
+      nextValues = (*m_unifiedLawExpVector) + (*m_lowerCholLawCovMatrix)*iidGaussianVector;
+    }
+    else if (m_matU && m_vecSsqrt && m_matVt) {
+      nextValues = (*m_unifiedLawExpVector) + (*m_matU)*( (*m_vecSsqrt) * ((*m_matVt)*iidGaussianVector) );
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.worldRank(),
+                          "uqGaussianVectorRealizerClass<V,M>::realization()",
+                          "inconsistent internal state");
+    }
+
+    outOfSupport = !(this->m_unifiedImageSet.contains(nextValues));
+  } while (outOfSupport); // prudenci 2011-Oct-04
 
   return;
 }
