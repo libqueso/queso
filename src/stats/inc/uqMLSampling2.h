@@ -382,8 +382,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
     uqScalarFunctionSynchronizerClass<P_V,P_M> likelihoodSynchronizer(m_likelihoodFunction,auxVec); // prudencio 2010-08-01
     for (unsigned int i = 0; i < currChain.subSequenceSize(); ++i) {
       //std::cout << "In QUESO: before prior realizer with i = " << i << std::endl;
-      m_priorRv.realizer().realization(auxVec);
-      auxVec.mpiBcast(0, m_env.subComm()); // prudencio 2010-08-01
+      bool outOfSupport = true;
+      do {
+
+        m_priorRv.realizer().realization(auxVec);
+        auxVec.mpiBcast(0, m_env.subComm()); // prudencio 2010-08-01
+
+        outOfSupport = !(m_targetDomain->contains(auxVec));
+      } while (outOfSupport); // prudenci 2011-Oct-04
+      
       currChain.setPositionValues(i,auxVec);
       // KAUST: all nodes should call likelihood
 #if 1 // prudencio 2010-08-01
