@@ -198,6 +198,7 @@ public:
           const gsl_rng*          rng                           () const;
           int                     seed                          () const;
           void                    resetGslSeed                  (int newSeedOption);
+	  std::string             platformName                  () const;
 	  std::string             identifyingString             () const;
           void                    resetIdentifyingString        (const std::string& newString) const; // Yes, const
           bool                    isThereInputFile              () const;

@@ -104,6 +104,7 @@ public:
   unsigned int           m_displayVerbosity;
   unsigned int           m_syncVerbosity;
   int                    m_seed;
+  std::string            m_platformName;
   std::string            m_identifyingString;
   unsigned int           m_numDebugParams;
   std::vector<double>    m_debugParams;

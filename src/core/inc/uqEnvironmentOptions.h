@@ -43,6 +43,7 @@
 #define UQ_ENV_SYNC_VERBOSITY_ODV          0
 #define UQ_ENV_SEED_ODV                    0
 #define UQ_ENV_IDENTIFYING_STRING_ODV      ""
+#define UQ_ENV_PLATFORM_NAME_ODV           ""
 #define UQ_ENV_NUM_DEBUG_PARAMS_ODV        0
 #define UQ_ENV_DEBUG_PARAM_ODV             0.
 
@@ -75,6 +76,7 @@ private:
   std::string              m_option_displayVerbosity;
   std::string              m_option_syncVerbosity;
   std::string              m_option_seed;
+  std::string              m_option_platformName;
   std::string              m_option_identifyingString;
 };
 

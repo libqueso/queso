@@ -485,6 +485,12 @@ uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
 }
 
 std::string
+uqBaseEnvironmentClass::platformName() const
+{
+  return m_optionsObj->m_ov.m_platformName;
+}
+
+std::string
 uqBaseEnvironmentClass::identifyingString() const
 {
   return m_optionsObj->m_ov.m_identifyingString;
