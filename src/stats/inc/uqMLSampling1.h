@@ -350,8 +350,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
   uqScalarSequenceClass<double>*      workingLogTargetValues)
 {
+  struct timeval timevalRoutineBegin;
+  /*int iRC = 0;*/
+  /*iRC = */gettimeofday(&timevalRoutineBegin, NULL);
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::generateSequence()..."
+    *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::generateSequence()"
+                            << ", at  "   << ctime(&timevalRoutineBegin.tv_sec)
+                            << ", after " << timevalRoutineBegin.tv_sec - m_env.timevalBegin().tv_sec
+                            << " seconds from queso environment instatiation..."
                             << std::endl;
   }
 
@@ -490,9 +497,18 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
          (stopAtEndOfLevel == false)) {
     m_currLevel++; // restate
 
+    struct timeval timevalLevelBegin;
+    /*int iRC = 0;*/
+    /*iRC = */gettimeofday(&timevalLevelBegin, NULL);
+
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                               << ": beginning level " << m_currLevel+LEVEL_REF_ID
+                              << ", at  "   << ctime(&timevalLevelBegin.tv_sec)
+                              << ", after " << timevalLevelBegin.tv_sec - timevalRoutineBegin.tv_sec
+                              << " seconds from entering the routine"
+                              << ", after " << timevalLevelBegin.tv_sec - m_env.timevalBegin().tv_sec
+                              << " seconds from queso environment instatiation"
                               << std::endl;
     }
 
@@ -831,6 +847,21 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     }
 
     if (currExponent != 1.) delete currOptions;
+
+    struct timeval timevalLevelEnd;
+    /*int iRC = 0;*/
+    /*iRC = */gettimeofday(&timevalLevelEnd, NULL);
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "Getting at the end of level " << m_currLevel+LEVEL_REF_ID
+                              << ", as part of a 'while' on levels"
+                              << ", at  "   << ctime(&timevalLevelEnd.tv_sec)
+                              << ", after " << timevalLevelEnd.tv_sec - timevalRoutineBegin.tv_sec
+                              << " seconds from entering the routine"
+                              << ", after " << timevalLevelEnd.tv_sec - m_env.timevalBegin().tv_sec
+                              << " seconds from queso environment instatiation"
+                              << std::endl;
+    }
   } // end of level while
 
   //UQ_FATAL_TEST_MACRO((currExponent < 1.),
@@ -896,8 +927,17 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   if (workingLogLikelihoodValues) *workingLogLikelihoodValues = currLogLikelihoodValues;
   if (workingLogTargetValues    ) *workingLogTargetValues     = currLogTargetValues;
 
+  struct timeval timevalRoutineEnd;
+  /*int iRC = 0;*/
+  /*iRC = */gettimeofday(&timevalRoutineEnd, NULL);
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateSequence()"
+                            << ", at  "   << ctime(&timevalRoutineEnd.tv_sec)
+                            << ", after " << timevalRoutineEnd.tv_sec - timevalRoutineBegin.tv_sec
+                            << " seconds from entering the routine"
+                            << ", after " << timevalRoutineEnd.tv_sec - m_env.timevalBegin().tv_sec
+                            << " seconds from queso environment instatiation"
                             << std::endl;
   }
 

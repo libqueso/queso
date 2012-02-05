@@ -1478,7 +1478,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
         unsigned int savedDrMaxNumExtraStages   = currOptions->m_drMaxNumExtraStages;
         unsigned int savedAmAdaptInterval       = currOptions->m_amAdaptInterval;
 
-        currOptions->m_totallyMute           = true;
+        currOptions->m_totallyMute = true;
         if (m_env.displayVerbosity() >= 100) {
           currOptions->m_totallyMute = false;
         }
@@ -1678,7 +1678,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step10_all(
       bool         savedRawChainComputeStats  = currOptions.m_rawChainComputeStats;
       bool         savedFilteredChainGenerate = currOptions.m_filteredChainGenerate;
 
-      currOptions.m_totallyMute           = true;
+      currOptions.m_totallyMute = true;
       if (m_env.displayVerbosity() >= 100) {
         currOptions.m_totallyMute = false;
       }

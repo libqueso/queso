@@ -503,6 +503,12 @@ uqBaseEnvironmentClass::resetIdentifyingString(const std::string& newString) con
   return;
 }
 
+struct timeval
+uqBaseEnvironmentClass::timevalBegin() const
+{
+  return m_timevalBegin;
+}
+
 bool
 uqBaseEnvironmentClass::openOutputFile(
   const std::string&            baseFileName,

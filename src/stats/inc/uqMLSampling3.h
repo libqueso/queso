@@ -666,18 +666,26 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
                               << std::endl;
     }
   }
+  if ((m_debugExponent == 1.) && 
+      (m_currStep      == 10)) {
+    //m_env.setExceptionalCircunstance(true);
+  }
+  unsigned int cumulativeNumPositions = 0;
   for (unsigned int chainId = 0; chainId < chainIdMax; ++chainId) {
     unsigned int tmpChainSize = 0;
     if (m_env.inter0Rank() >= 0) {
       // aqui 4
       auxInitialPosition = *(balancedLinkControl.balLinkedChains[chainId].initialPosition); // Round Rock
       tmpChainSize = balancedLinkControl.balLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99/*2*/)) {
+      if ((m_env.subDisplayFile()       ) &&
+          (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
-                                << ", level "          << m_currLevel+LEVEL_REF_ID
-                                << ", step "           << m_currStep
-                                << ": chainId = "      << chainId
-                                << ", tmpChainSize = " << tmpChainSize
+                                << ", level "            << m_currLevel+LEVEL_REF_ID
+                                << ", step "             << m_currStep
+                                << ", chainId = "        << chainId
+                                << " < "                 << chainIdMax
+                                << ": begin generating " << tmpChainSize
+                                << " chain positions"
                                 << std::endl;
       }
     }
@@ -722,22 +730,31 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
     cumulativeRejections += mcRawInfo.numRejections;
 
     if (m_env.inter0Rank() >= 0) {
-      if ((m_env.subDisplayFile()       ) &&
-          (m_env.displayVerbosity() >= 0)) { // detailed output debug
-        for (unsigned int i = 0; i < tmpLogLikelihoodValues.subSequenceSize(); ++i) {
-          *m_env.subDisplayFile() << "tmpLogLikelihoodValues[" << i << "] = " << tmpLogLikelihoodValues[i]
-                                  << ", tmpLogTargetValues["   << i << "] = " << tmpLogTargetValues[i]
-                                  << std::endl;
+      if (m_env.exceptionalCircunstance()) {
+        if ((m_env.subDisplayFile()       ) &&
+            (m_env.displayVerbosity() >= 0)) { // detailed output debug
+          P_V tmpVec(m_vectorSpace.zeroVector());
+          for (unsigned int i = 0; i < tmpLogLikelihoodValues.subSequenceSize(); ++i) {
+            tmpChain.getPositionValues(i,tmpVec);
+            *m_env.subDisplayFile() << "DEBUG finalChain[" << cumulativeNumPositions+i << "] "
+                                    << "= tmpChain["               << i << "] = " << tmpVec 
+                                    << ", tmpLogLikelihoodValues[" << i << "] = " << tmpLogLikelihoodValues[i]
+                                    << ", tmpLogTargetValues["     << i << "] = " << tmpLogTargetValues[i]
+                                    << std::endl;
+          }
         }
-      }
+      } // exceptional
+
+      cumulativeNumPositions += tmpChainSize;
+      if (cumulativeNumPositions > 100) m_env.setExceptionalCircunstance(false);
         
-      if ((m_env.subDisplayFile()             ) &&
-          (m_env.displayVerbosity()   >= 0    ) &&
-          (inputOptions.m_totallyMute == false)) {
+      if ((m_env.subDisplayFile()       ) &&
+          (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateBalLinkedChains_all()"
                                 << ", level "               << m_currLevel+LEVEL_REF_ID
                                 << ", step "                << m_currStep
                                 << ", chainId = "           << chainId
+                                << " < "                    << chainIdMax
                                 << ": finished generating " << tmpChain.subSequenceSize()
                                 << " chain positions"
                                 << std::endl;
@@ -765,7 +782,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
         currLogTargetValues->append    (tmpLogTargetValues,    1,tmpLogTargetValues.subSequenceSize()-1    ); // IMPORTANT: '1' in order to discard initial position
       }
     }
-  } // for
+  } // for 'chainId'
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
@@ -865,12 +882,15 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
       unsigned int auxIndex = unbalancedLinkControl.unbLinkedChains[chainId].initialPositionIndexInPreviousChain - indexOfFirstWeight; // KAUST4 // Round Rock
       prevChain.getPositionValues(auxIndex,auxInitialPosition); // Round Rock
       tmpChainSize = unbalancedLinkControl.unbLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99/*99*/)) {
+      if ((m_env.subDisplayFile()       ) &&
+          (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
-                                << ", level "          << m_currLevel+LEVEL_REF_ID
-                                << ", step "           << m_currStep
-                                << ": chainId = "      << chainId
-                                << ", tmpChainSize = " << tmpChainSize
+                                << ", level "            << m_currLevel+LEVEL_REF_ID
+                                << ", step "             << m_currStep
+                                << ", chainId = "        << chainId
+                                << " < "                 << chainIdMax
+                                << ": begin generating " << tmpChainSize
+                                << " chain positions"
                                 << std::endl;
       }
     }
@@ -933,13 +953,13 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
       cumulativeNumPositions += tmpChainSize;
       if (cumulativeNumPositions > 100) m_env.setExceptionalCircunstance(false);
         
-      if ((m_env.subDisplayFile()             ) &&
-          (m_env.displayVerbosity()   >= 0    ) &&
-          (inputOptions.m_totallyMute == false)) {
+      if ((m_env.subDisplayFile()       ) &&
+          (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateUnbLinkedChains_all()"
                                 << ", level "               << m_currLevel+LEVEL_REF_ID
                                 << ", step "                << m_currStep
                                 << ", chainId = "           << chainId
+                                << " < "                    << chainIdMax
                                 << ": finished generating " << tmpChain.subSequenceSize()
                                 << " chain positions"
                                 << std::endl;

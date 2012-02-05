@@ -202,6 +202,7 @@ public:
 	  std::string             identifyingString             () const;
           void                    resetIdentifyingString        (const std::string& newString) const; // Yes, const
           bool                    isThereInputFile              () const;
+          struct timeval          timevalBegin                  () const;
 
           bool                    openOutputFile                (const std::string&            fileName,
                                                                  const std::string&            fileType,
