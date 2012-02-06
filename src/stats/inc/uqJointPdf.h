@@ -236,6 +236,11 @@ uqBayesianJointPdfClass<V,M>::actualValue(
                             << std::endl;
   }
 
+  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "uqBayesianJointPdfClass<V,M>::actualValue()",
+                      "invalid input");
+
   V* gradVLike = NULL;
   if (gradVector) gradVLike = &m_tmpVector1;
 
@@ -245,7 +250,7 @@ uqBayesianJointPdfClass<V,M>::actualValue(
   V* hessianELike = NULL;
   if (hessianEffect) hessianELike = &m_tmpVector2;
 
-  double value1 = m_priorDensity.actualValue      (domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
+  double value1 = m_priorDensity.actualValue (domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
   double value2 = 1.;
   if (m_likelihoodExponent != 0.) {
     value2 = m_likelihoodFunction.actualValue(domainVector,domainDirection,gradVLike ,hessianMLike ,hessianELike );
@@ -515,6 +520,11 @@ uqGaussianJointPdfClass<V,M>::actualValue(
                             << std::endl;
   }
 
+  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "uqGaussianJointPdfClass<V,M>::actualValue()",
+                      "invalid input");
+
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
                       "uqGaussianJointPdfClass<V,M>::actualValue()",
@@ -674,6 +684,11 @@ uqUniformJointPdfClass<V,M>::actualValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
+  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "uqUniformJointPdfClass<V,M>::actualValue()",
+                      "invalid input");
+
   if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
   if (hessianMatrix) *hessianMatrix *= 0.;
   if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
@@ -775,6 +790,11 @@ uqBetaJointPdfClass<V,M>::actualValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
+  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "uqBetaJointPdfClass<V,M>::actualValue()",
+                      "invalid input");
+
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
                       "uqBetaJointPdfClass<V,M>::actualValue()",
@@ -867,6 +887,11 @@ uqGammaJointPdfClass<V,M>::actualValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
+  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "uqGammaJointPdfClass<V,M>::actualValue()",
+                      "invalid input");
+
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
                       "uqGammaJointPdfClass<V,M>::actualValue()",
@@ -959,6 +984,11 @@ uqInverseGammaJointPdfClass<V,M>::actualValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
+  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "uqInverseGammaJointPdfClass<V,M>::actualValue()",
+                      "invalid input");
+
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
                       "uqInverseGammaJointPdfClass<V,M>::actualValue()",
@@ -1061,6 +1091,11 @@ uqPoweredJointPdfClass<V,M>::actualValue(
                             << ": domainVector = " << domainVector
                             << std::endl;
   }
+
+  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "uqPoweredJointPdfClass<V,M>::actualValue()",
+                      "invalid input");
 
   double value = m_srcDensity.actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
 
@@ -1183,6 +1218,11 @@ uqWignerJointPdfClass<V,M>::actualValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
+  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "uqWignerJointPdfClass<V,M>::actualValue()",
+                      "invalid input");
+
   if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
   if (hessianMatrix) *hessianMatrix *= 0.;
   if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
@@ -1304,10 +1344,17 @@ uqLogNormalJointPdfClass<V,M>::actualValue(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
     *m_env.subDisplayFile() << "Entering uqLogNormalJointPdfClass<V,M>::actualValue()"
-                            << ", meanVector = "   << *m_lawExpVector
-                            << ": domainVector = " << domainVector
+                            << ", meanVector = "               << *m_lawExpVector
+                            << ": domainVector = "             << domainVector
+                            << ", domainVector.sizeLocal() = " << domainVector.sizeLocal()
+                            << ", this->m_domainSet.vectorSpace().dimLocal() = " << this->m_domainSet.vectorSpace().dimLocal()
                             << std::endl;
   }
+
+  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "uqLogNormalJointPdfClass<V,M>::actualValue()",
+                      "invalid input");
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
@@ -1465,6 +1512,11 @@ uqConcatenatedJointPdfClass<V,M>::actualValue(
                             << ": domainVector = " << domainVector
                             << std::endl;
   }
+
+  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "uqConcatenatedJointPdfClass<V,M>::actualValue()",
+                      "invalid input");
 
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
