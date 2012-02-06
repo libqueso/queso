@@ -1019,18 +1019,18 @@ uqGslVectorClass::data() const
 }
 
 bool
-uqGslVectorClass::atLeastOneComponentSmallerThan(const uqGslVectorClass& rhs) const
+uqGslVectorClass::atLeastOneComponentSmallerOrEqualThan(const uqGslVectorClass& rhs) const
 {
   UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
                       m_env.worldRank(),
-                      "uqGslVectorClass::atLeastOneComponentSmallerThan()",
+                      "uqGslVectorClass::atLeastOneComponentSmallerOrEqualThan()",
                       "vectors have different sizes");
 
   bool result = false;
   unsigned int i = 0;
   unsigned int size = this->sizeLocal();
   while ((i < size) && (result == false)) {
-    result = ( (*this)[i] < rhs[i] );
+    result = ( (*this)[i] <= rhs[i] ); // prudencio 2012-02-06
     i++;
   };
 
@@ -1038,18 +1038,18 @@ uqGslVectorClass::atLeastOneComponentSmallerThan(const uqGslVectorClass& rhs) co
 }
 
 bool
-uqGslVectorClass::atLeastOneComponentBiggerThan (const uqGslVectorClass& rhs) const
+uqGslVectorClass::atLeastOneComponentBiggerOrEqualThan(const uqGslVectorClass& rhs) const
 {
   UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
                       m_env.worldRank(),
-                      "uqGslVectorClass::atLeastOneComponentBiggerThan()",
+                      "uqGslVectorClass::atLeastOneComponentBiggerOrEqualThan()",
                       "vectors have different sizes");
 
   bool result = false;
   unsigned int i = 0;
   unsigned int size = this->sizeLocal();
   while ((i < size) && (result == false)) {
-    result = ( (*this)[i] > rhs[i] );
+    result = ( (*this)[i] >= rhs[i] ); // prudencio 2012-02-06
     i++;
   };
 

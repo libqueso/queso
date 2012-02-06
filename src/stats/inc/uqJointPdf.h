@@ -361,11 +361,7 @@ uqBayesianJointPdfClass<V,M>::lnValue(
     returnValue += value2*m_likelihoodExponent;
   } // prudenci 2010/03/05
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
   m_lastComputedLogLikelihood = m_likelihoodExponent*value2;
-#else
-  m_lastComputedLogLikelihood = -.5*m_likelihoodExponent*value2;
-#endif
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqBayesianJointPdfClass<V,M>::lnValue()"
@@ -526,17 +522,11 @@ uqGaussianJointPdfClass<V,M>::actualValue(
 
   double returnValue = 0.;
 
-  bool outOfSupport = !(this->m_domainSet.contains(domainVector));
-
-  if (outOfSupport) { // prudenci 2011-Oct-04
+  if (this->m_domainSet.contains(domainVector) == false) { // prudenci 2011-Oct-04
     returnValue = 0.;
   }
   else {
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
     returnValue = std::exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
-#else
-    returnValue = std::exp(-0.5*this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
-#endif
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
@@ -575,9 +565,7 @@ uqGaussianJointPdfClass<V,M>::lnValue(
 
   double returnValue = 0.;
 
-  bool outOfSupport = !(this->m_domainSet.contains(domainVector));
-
-  if (outOfSupport) { // prudenci 2011-Oct-04
+  if (this->m_domainSet.contains(domainVector) == false) { // prudenci 2011-Oct-04
     returnValue = -INFINITY;
   }
   else {
@@ -590,6 +578,7 @@ uqGaussianJointPdfClass<V,M>::lnValue(
       V tmpVec = this->m_lawCovMatrix->invertMultiply(diffVec);
       returnValue = (diffVec*tmpVec).sumOfComponents();
     }
+    returnValue *= -0.5;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
@@ -601,11 +590,7 @@ uqGaussianJointPdfClass<V,M>::lnValue(
                             << std::endl;
   }
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
-  return -.5*returnValue;
-#else
   return returnValue;
-#endif
 }
 
 template<class V, class M>
@@ -795,11 +780,7 @@ uqBetaJointPdfClass<V,M>::actualValue(
                       "uqBetaJointPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
   return exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
-#else
-  return exp(-0.5*this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
-#endif
 }
 
 template<class V, class M>
@@ -891,11 +872,7 @@ uqGammaJointPdfClass<V,M>::actualValue(
                       "uqGammaJointPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
   return exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
-#else
-  return exp(-0.5*this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
-#endif
 }
 
 template<class V, class M>
@@ -987,11 +964,7 @@ uqInverseGammaJointPdfClass<V,M>::actualValue(
                       "uqInverseGammaJointPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
   return exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
-#else
-  return exp(-0.5*this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
-#endif
 }
 
 template<class V, class M>
@@ -1343,17 +1316,16 @@ uqLogNormalJointPdfClass<V,M>::actualValue(
 
   double returnValue = 0.;
 
-  bool outOfSupport = !(this->m_domainSet.contains(domainVector));
-
-  if (outOfSupport) { // prudenci 2011-Oct-04
+  V zeroVector(domainVector);
+  zeroVector.cwSet(0.);
+  if (domainVector.atLeastOneComponentSmallerOrEqualThan(zeroVector)) {
+    returnValue = 0.;
+  }
+  else if (this->m_domainSet.contains(domainVector) == false) { // prudenci 2011-Oct-04
     returnValue = 0.;
   }
   else {
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
     returnValue = std::exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
-#else
-    returnValue = std::exp(-0.5*this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
-#endif
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
@@ -1390,15 +1362,25 @@ uqLogNormalJointPdfClass<V,M>::lnValue(
 
   double returnValue = 0.;
 
-  bool outOfSupport = !(this->m_domainSet.contains(domainVector));
-
-  if (outOfSupport) { // prudenci 2011-Oct-04
+  V zeroVector(domainVector);
+  zeroVector.cwSet(0.);
+  if (domainVector.atLeastOneComponentSmallerOrEqualThan(zeroVector)) {
+    returnValue = -INFINITY;
+  }
+  else if (this->m_domainSet.contains(domainVector) == false) { // prudenci 2011-Oct-04
     returnValue = -INFINITY;
   }
   else {
     if (m_diagonalCovMatrix) {
-      V diffVec(domainVector - this->lawExpVector());
+      V diffVec(zeroVector);
+      for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
+        diffVec[i] = std::log(domainVector[i]) - this->lawExpVector()[i];
+      }
       returnValue = ((diffVec*diffVec)/this->lawVarVector()).sumOfComponents();
+      returnValue *= -0.5;
+      for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
+        returnValue -= std::log(domainVector[i] * std::sqrt(2. * M_PI * this->lawVarVector()[i])); // Contribution of 1/(x\sqrt{2\pi\sigma^2})
+      }
     }
     else {
       UQ_FATAL_TEST_MACRO(true,
@@ -1416,11 +1398,7 @@ uqLogNormalJointPdfClass<V,M>::lnValue(
                             << std::endl;
   }
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
-  return -.5*returnValue;
-#else
   return returnValue;
-#endif
 }
 
 //*****************************************************

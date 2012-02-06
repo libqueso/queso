@@ -191,8 +191,8 @@ uqBoxSubsetClass<V,M>::contains(const V& vec) const
 
   //return result;
 
-  return (!vec.atLeastOneComponentSmallerThan(m_minValues) &&
-          !vec.atLeastOneComponentBiggerThan (m_maxValues));
+  return (!vec.atLeastOneComponentSmallerOrEqualThan(m_minValues) &&
+          !vec.atLeastOneComponentBiggerOrEqualThan (m_maxValues));
 }
 
 template<class V, class M>

@@ -85,8 +85,8 @@ public:
                                  const std::string&            fileType,
                                  const std::set<unsigned int>& allowedSubEnvIds);
 
-  bool         atLeastOneComponentSmallerThan(const uqGslVectorClass& rhs) const;
-  bool         atLeastOneComponentBiggerThan (const uqGslVectorClass& rhs) const;
+  bool         atLeastOneComponentSmallerOrEqualThan(const uqGslVectorClass& rhs) const;
+  bool         atLeastOneComponentBiggerOrEqualThan (const uqGslVectorClass& rhs) const;
 
   // Necessary for uqGslMatrixClass::invertMultiply() and uqGslMatrixClass::setRow/Column
   gsl_vector*  data                          () const; 

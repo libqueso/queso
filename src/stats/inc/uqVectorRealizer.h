@@ -782,14 +782,9 @@ public:
 
   ~uqLogNormalVectorRealizerClass();
 
-  const V&   unifiedLawExpVector        ()              const;
-  const V&   unifiedLawVarVector        ()              const;
-        void realization                (V& nextValues) const;
-        void updateLawExpVector         (const V& newLawExpVector);
-        void updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix);
-        void updateLowerCholLawCovMatrix(const M& matU,
-                                         const V& vecSsqrt,
-                                         const M& matVt);
+  const V&   unifiedLawExpVector ()              const;
+  const V&   unifiedLawVarVector ()              const;
+        void realization         (V& nextValues) const;
     
 private:
   V* m_unifiedLawExpVector;
@@ -825,8 +820,6 @@ uqLogNormalVectorRealizerClass<V,M>::uqLogNormalVectorRealizerClass(const char* 
                             << std::endl;
   }
 
-  *m_unifiedLawExpVector = lawExpVector; // ????
-
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqLogNormalVectorRealizerClass<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
@@ -855,8 +848,6 @@ uqLogNormalVectorRealizerClass<V,M>::uqLogNormalVectorRealizerClass(const char* 
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
-
-  *m_unifiedLawExpVector = lawExpVector; // ????
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqLogNormalVectorRealizerClass<V,M>::constructor() [2]"
@@ -913,59 +904,12 @@ uqLogNormalVectorRealizerClass<V,M>::realization(V& nextValues) const
                           "inconsistent internal state");
     }
 
+    for (unsigned int i = 0; i < nextValues.sizeLocal(); ++i) {
+      nextValues[i] = std::exp(nextValues[i]);
+    }
+
     outOfSupport = !(this->m_unifiedImageSet.contains(nextValues));
   } while (outOfSupport); // prudenci 2011-Oct-04
-
-  return;
-}
-
-template<class V, class M>
-void
-uqLogNormalVectorRealizerClass<V,M>::updateLawExpVector(const V& newLawExpVector)
-{
-  // delete old expected values (alloced at construction or last call to this function)
-  delete m_unifiedLawExpVector;
-
-  m_unifiedLawExpVector = new V(newLawExpVector);
- 
-  return;
-}
-
-template<class V, class M>
-void
-uqLogNormalVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix)
-{
-  // delete old expected values (alloced at construction or last call to this function)
-  delete m_lowerCholLawCovMatrix;
-  delete m_matU;
-  delete m_vecSsqrt;
-  delete m_matVt;
-
-  m_lowerCholLawCovMatrix = new M(newLowerCholLawCovMatrix);
-  m_matU                  = NULL;
-  m_vecSsqrt              = NULL;
-  m_matVt                 = NULL;
-
-  return;
-}
-
-template<class V, class M>
-void
-uqLogNormalVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(
-  const M& matU,
-  const V& vecSsqrt,
-  const M& matVt)
-{
-  // delete old expected values (alloced at construction or last call to this function)
-  delete m_lowerCholLawCovMatrix;
-  delete m_matU;
-  delete m_vecSsqrt;
-  delete m_matVt;
-
-  m_lowerCholLawCovMatrix = NULL;
-  m_matU                  = new M(matU);
-  m_vecSsqrt              = new V(vecSsqrt);
-  m_matVt                 = new M(matVt);
 
   return;
 }
