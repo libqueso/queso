@@ -1240,6 +1240,190 @@ uqWignerJointPdfClass<V,M>::lnValue(
 }
 
 //*****************************************************
+// LogNormal probability density class
+//*****************************************************
+template<class V, class M>
+class uqLogNormalJointPdfClass : public uqBaseJointPdfClass<V,M> {
+public:
+  uqLogNormalJointPdfClass(const char*                  prefix,
+                           const uqVectorSetClass<V,M>& domainSet,
+                           const V&                     lawExpVector,
+                           const V&                     lawVarVector);
+ ~uqLogNormalJointPdfClass();
+
+  double   actualValue (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double   lnValue     (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+
+  const V& lawExpVector() const;
+  const V& lawVarVector() const;
+
+protected:
+  using uqBaseScalarFunctionClass<V,M>::m_env;
+  using uqBaseScalarFunctionClass<V,M>::m_prefix;
+  using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+  V*   m_lawExpVector;
+  V*   m_lawVarVector;
+  bool m_diagonalCovMatrix;
+};
+
+template<class V,class M>
+uqLogNormalJointPdfClass<V,M>::uqLogNormalJointPdfClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& domainSet,
+  const V&                     lawExpVector,
+  const V&                     lawVarVector)
+  :
+  uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet),
+  m_lawExpVector     (new V(lawExpVector)),
+  m_lawVarVector     (new V(lawVarVector)),
+  m_diagonalCovMatrix(true)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Entering uqLogNormalJointPdfClass<V,M>::constructor() [1]"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
+    *m_env.subDisplayFile() << "In uqLogNormalJointPdfClass<V,M>::constructor()"
+                          //<< ", prefix = "     << m_prefix
+                            << ": meanVector = " << this->lawExpVector()
+	                    << ", Variances = "  << this->lawVarVector()
+                            << std::endl;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Leaving uqLogNormalJointPdfClass<V,M>::constructor() [1]"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V,class M>
+uqLogNormalJointPdfClass<V,M>::~uqLogNormalJointPdfClass()
+{
+  delete m_lawVarVector;
+  delete m_lawExpVector;
+}
+
+template <class V, class M>
+const V&
+uqLogNormalJointPdfClass<V,M>::lawExpVector() const
+{
+  return *m_lawExpVector;
+}
+
+template <class V, class M>
+const V&
+uqLogNormalJointPdfClass<V,M>::lawVarVector() const
+{
+  return *m_lawVarVector;
+}
+
+template<class V, class M>
+double
+uqLogNormalJointPdfClass<V,M>::actualValue(
+  const V& domainVector,
+  const V* domainDirection,
+        V* gradVector,
+        M* hessianMatrix,
+        V* hessianEffect) const
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
+    *m_env.subDisplayFile() << "Entering uqLogNormalJointPdfClass<V,M>::actualValue()"
+                            << ", meanVector = "   << *m_lawExpVector
+                            << ": domainVector = " << domainVector
+                            << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
+                      m_env.worldRank(),
+                      "uqLogNormalJointPdfClass<V,M>::actualValue()",
+                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+
+  double returnValue = 0.;
+
+  bool outOfSupport = !(this->m_domainSet.contains(domainVector));
+
+  if (outOfSupport) { // prudenci 2011-Oct-04
+    returnValue = 0.;
+  }
+  else {
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+    returnValue = std::exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+#else
+    returnValue = std::exp(-0.5*this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+#endif
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
+    *m_env.subDisplayFile() << "Leaving uqLogNormalJointPdfClass<V,M>::actualValue()"
+                            << ", meanVector = "   << *m_lawExpVector
+                            << ": domainVector = " << domainVector
+                            << ", returnValue = "  << returnValue
+                            << std::endl;
+  }
+
+  return returnValue;
+}
+
+template<class V, class M>
+double
+uqLogNormalJointPdfClass<V,M>::lnValue(
+  const V& domainVector,
+  const V* domainDirection,
+        V* gradVector,
+        M* hessianMatrix,
+        V* hessianEffect) const
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
+    *m_env.subDisplayFile() << "Entering uqLogNormalJointPdfClass<V,M>::lnValue()"
+                            << ", meanVector = "   << *m_lawExpVector
+                            << ": domainVector = " << domainVector
+                            << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
+                      m_env.worldRank(),
+                      "uqLogNormalJointPdfClass<V,M>::lnValue()",
+                      "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+
+  double returnValue = 0.;
+
+  bool outOfSupport = !(this->m_domainSet.contains(domainVector));
+
+  if (outOfSupport) { // prudenci 2011-Oct-04
+    returnValue = -INFINITY;
+  }
+  else {
+    if (m_diagonalCovMatrix) {
+      V diffVec(domainVector - this->lawExpVector());
+      returnValue = ((diffVec*diffVec)/this->lawVarVector()).sumOfComponents();
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.worldRank(),
+                          "uqLogNormalJointPdfClass<V,M>::lnValue()",
+                          "situation with a non-diagonal covariance matrix makes no sense");
+    }
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
+    *m_env.subDisplayFile() << "Leaving uqLogNormalJointPdfClass<V,M>::lnValue()"
+                            << ", meanVector = "   << *m_lawExpVector
+                            << ": domainVector = " << domainVector
+                            << ", returnValue = "  << returnValue
+                            << std::endl;
+  }
+
+#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
+  return -.5*returnValue;
+#else
+  return returnValue;
+#endif
+}
+
+//*****************************************************
 // Concatenated probability density class
 //*****************************************************
 template<class V, class M>

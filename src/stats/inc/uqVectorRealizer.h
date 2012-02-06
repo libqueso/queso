@@ -763,6 +763,214 @@ uqWignerVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
+// LogNormal class
+//*****************************************************
+template<class V, class M>
+class uqLogNormalVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
+public:
+  uqLogNormalVectorRealizerClass(const char*                  prefix,
+                                 const uqVectorSetClass<V,M>& unifiedImageSet,
+                                 const V&                     lawExpVector, // vector of mean values
+                                 const M&                     lowerCholLawCovMatrix); // lower triangular matrix resulting from Cholesky decomposition of the covariance matrix
+
+  uqLogNormalVectorRealizerClass(const char*                  prefix,
+                                 const uqVectorSetClass<V,M>& unifiedImageSet,
+                                 const V&                     lawExpVector, // vector of mean values
+                                 const M&                     matU,
+                                 const V&                     vecSsqrt,
+                                 const M&                     matVt);
+
+  ~uqLogNormalVectorRealizerClass();
+
+  const V&   unifiedLawExpVector        ()              const;
+  const V&   unifiedLawVarVector        ()              const;
+        void realization                (V& nextValues) const;
+        void updateLawExpVector         (const V& newLawExpVector);
+        void updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix);
+        void updateLowerCholLawCovMatrix(const M& matU,
+                                         const V& vecSsqrt,
+                                         const M& matVt);
+    
+private:
+  V* m_unifiedLawExpVector;
+  V* m_unifiedLawVarVector;
+  M* m_lowerCholLawCovMatrix;
+  M* m_matU;
+  V* m_vecSsqrt;
+  M* m_matVt;
+
+  using uqBaseVectorRealizerClass<V,M>::m_env;
+  using uqBaseVectorRealizerClass<V,M>::m_prefix;
+  using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
+  using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
+};
+
+template<class V, class M>
+uqLogNormalVectorRealizerClass<V,M>::uqLogNormalVectorRealizerClass(const char* prefix,
+                                                                    const uqVectorSetClass<V,M>& unifiedImageSet,
+                                                                    const V& lawExpVector,
+                                                                    const M& lowerCholLawCovMatrix)
+  :
+  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, std::numeric_limits<unsigned int>::max()), // 2011/Oct/02 - Correction thanks to Corey
+  m_unifiedLawExpVector  (new V(lawExpVector)),
+  m_unifiedLawVarVector  (unifiedImageSet.vectorSpace().newVector( INFINITY)), // FIX ME
+  m_lowerCholLawCovMatrix(new M(lowerCholLawCovMatrix)),
+  m_matU                 (NULL),
+  m_vecSsqrt             (NULL),
+  m_matVt                (NULL)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqLogNormalVectorRealizerClass<V,M>::constructor() [1]"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  *m_unifiedLawExpVector = lawExpVector; // ????
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqLogNormalVectorRealizerClass<V,M>::constructor() [1]"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+								  
+template<class V, class M>
+uqLogNormalVectorRealizerClass<V,M>::uqLogNormalVectorRealizerClass(const char* prefix,
+                                                                    const uqVectorSetClass<V,M>& unifiedImageSet,
+                                                                    const V& lawExpVector,
+                                                                    const M& matU,
+                                                                    const V& vecSsqrt,
+                                                                    const M& matVt)
+  :
+  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, std::numeric_limits<unsigned int>::max()), // 2011/Oct/02 - Correction thanks to Corey
+  m_unifiedLawExpVector  (new V(lawExpVector)),
+  m_unifiedLawVarVector  (unifiedImageSet.vectorSpace().newVector( INFINITY)), // FIX ME
+  m_lowerCholLawCovMatrix(NULL),
+  m_matU                 (new M(matU)),
+  m_vecSsqrt             (new V(vecSsqrt)),
+  m_matVt                (new M(matVt))
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqLogNormalVectorRealizerClass<V,M>::constructor() [2]"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  *m_unifiedLawExpVector = lawExpVector; // ????
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqLogNormalVectorRealizerClass<V,M>::constructor() [2]"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+								  
+template<class V, class M>
+uqLogNormalVectorRealizerClass<V,M>::~uqLogNormalVectorRealizerClass()
+{
+  delete m_matVt;
+  delete m_vecSsqrt;
+  delete m_matU;
+  delete m_lowerCholLawCovMatrix;
+  delete m_unifiedLawVarVector;
+  delete m_unifiedLawExpVector;
+}
+
+template <class V, class M>
+const V&
+uqLogNormalVectorRealizerClass<V,M>::unifiedLawExpVector() const
+{
+  return *m_unifiedLawExpVector;
+}
+
+template <class V, class M>
+const V&
+uqLogNormalVectorRealizerClass<V,M>::unifiedLawVarVector() const
+{
+  return *m_unifiedLawVarVector;
+}
+
+template<class V, class M>
+void
+uqLogNormalVectorRealizerClass<V,M>::realization(V& nextValues) const
+{
+  V iidGaussianVector(m_unifiedImageSet.vectorSpace().zeroVector());
+
+  bool outOfSupport = true;
+  do {
+    iidGaussianVector.cwSetGaussian(m_env.rng(), 0.0, 1.0);
+
+    if (m_lowerCholLawCovMatrix) {
+      nextValues = (*m_unifiedLawExpVector) + (*m_lowerCholLawCovMatrix)*iidGaussianVector;
+    }
+    else if (m_matU && m_vecSsqrt && m_matVt) {
+      nextValues = (*m_unifiedLawExpVector) + (*m_matU)*( (*m_vecSsqrt) * ((*m_matVt)*iidGaussianVector) );
+    }
+    else {
+      UQ_FATAL_TEST_MACRO(true,
+                          m_env.worldRank(),
+                          "uqLogNormalVectorRealizerClass<V,M>::realization()",
+                          "inconsistent internal state");
+    }
+
+    outOfSupport = !(this->m_unifiedImageSet.contains(nextValues));
+  } while (outOfSupport); // prudenci 2011-Oct-04
+
+  return;
+}
+
+template<class V, class M>
+void
+uqLogNormalVectorRealizerClass<V,M>::updateLawExpVector(const V& newLawExpVector)
+{
+  // delete old expected values (alloced at construction or last call to this function)
+  delete m_unifiedLawExpVector;
+
+  m_unifiedLawExpVector = new V(newLawExpVector);
+ 
+  return;
+}
+
+template<class V, class M>
+void
+uqLogNormalVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix)
+{
+  // delete old expected values (alloced at construction or last call to this function)
+  delete m_lowerCholLawCovMatrix;
+  delete m_matU;
+  delete m_vecSsqrt;
+  delete m_matVt;
+
+  m_lowerCholLawCovMatrix = new M(newLowerCholLawCovMatrix);
+  m_matU                  = NULL;
+  m_vecSsqrt              = NULL;
+  m_matVt                 = NULL;
+
+  return;
+}
+
+template<class V, class M>
+void
+uqLogNormalVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(
+  const M& matU,
+  const V& vecSsqrt,
+  const M& matVt)
+{
+  // delete old expected values (alloced at construction or last call to this function)
+  delete m_lowerCholLawCovMatrix;
+  delete m_matU;
+  delete m_vecSsqrt;
+  delete m_matVt;
+
+  m_lowerCholLawCovMatrix = NULL;
+  m_matU                  = new M(matU);
+  m_vecSsqrt              = new V(vecSsqrt);
+  m_matVt                 = new M(matVt);
+
+  return;
+}
+
+//*****************************************************
 // Concatenated class
 //*****************************************************
 template<class V, class M>

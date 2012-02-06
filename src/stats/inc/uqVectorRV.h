@@ -1011,6 +1011,115 @@ uqWignerVectorRVClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
+// LogNormal class
+//*****************************************************
+template<class V, class M>
+class uqLogNormalVectorRVClass : public uqBaseVectorRVClass<V,M> {
+public:
+  uqLogNormalVectorRVClass(const char*                  prefix,
+                           const uqVectorSetClass<V,M>& imageSet,
+                           const V&                     lawExpVector,
+                           const V&                     lawVarVector);
+  virtual ~uqLogNormalVectorRVClass();
+
+ 
+  void print(std::ostream& os) const;
+
+private:
+  using uqBaseVectorRVClass<V,M>::m_env;
+  using uqBaseVectorRVClass<V,M>::m_prefix;
+  using uqBaseVectorRVClass<V,M>::m_imageSet;
+  using uqBaseVectorRVClass<V,M>::m_pdf;
+  using uqBaseVectorRVClass<V,M>::m_realizer;
+  using uqBaseVectorRVClass<V,M>::m_subCdf;
+  using uqBaseVectorRVClass<V,M>::m_unifiedCdf;
+  using uqBaseVectorRVClass<V,M>::m_mdf;
+};
+
+template<class V, class M>
+uqLogNormalVectorRVClass<V,M>::uqLogNormalVectorRVClass(
+  const char*                  prefix,
+  const uqVectorSetClass<V,M>& imageSet,
+  const V&                     lawExpVector,
+  const V&                     lawVarVector)
+  :
+  uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Entering uqLogNormalVectorRVClass<V,M>::constructor() [1]"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  m_pdf = new uqLogNormalJointPdfClass<V,M>(m_prefix.c_str(),
+                                            m_imageSet,
+                                            lawExpVector,
+                                            lawVarVector);
+
+  M lowerCholLawCovMatrix(lawVarVector);
+  int iRC = lowerCholLawCovMatrix.chol();
+  lowerCholLawCovMatrix.zeroUpper(false);
+  if (iRC) {
+    std::cerr << "In uqLogNormalVectorRVClass<V,M>::constructor() [1]: chol failed, will use svd\n";
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqLogNormalVectorRVClass<V,M>::constructor() [1]: chol failed; will use svd; lawVarVector contents are\n";
+      *m_env.subDisplayFile() << lawVarVector; // FIX ME: might demand parallelism
+      *m_env.subDisplayFile() << std::endl;
+    }
+    M matU (lawVarVector);
+    M matVt(m_imageSet.vectorSpace().zeroVector());
+    V vecS (m_imageSet.vectorSpace().zeroVector());
+    iRC = matU.svd(matVt,vecS);
+    UQ_FATAL_TEST_MACRO(iRC,
+                        m_env.worldRank(),
+                        "uqLogNormalVectorRVClass<V,M>::constructor() [1]",
+                        "Cholesky decomposition of covariance matrix failed.");
+
+    vecS.cwSqrt();
+    m_realizer = new uqLogNormalVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                         m_imageSet,
+                                                         lawExpVector,
+                                                         matU,
+                                                         vecS, // already square rooted
+                                                         matVt);
+  }
+  else {
+    m_realizer = new uqLogNormalVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                        m_imageSet,
+                                                        lawExpVector,
+                                                        lowerCholLawCovMatrix);
+  }
+
+  m_subCdf     = NULL; // FIX ME: complete code
+  m_unifiedCdf = NULL; // FIX ME: complete code
+  m_mdf        = NULL; // FIX ME: complete code
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Leaving uqLogNormalVectorRVClass<V,M>::constructor() [1]"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqLogNormalVectorRVClass<V,M>::~uqLogNormalVectorRVClass()
+{
+  delete m_mdf;
+  delete m_unifiedCdf;
+  delete m_subCdf;
+  delete m_realizer;
+  delete m_pdf;
+}
+
+template <class V, class M>
+void
+uqLogNormalVectorRVClass<V,M>::print(std::ostream& os) const
+{
+  os << "uqLogNormalVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  return;
+}
+
+//*****************************************************
 // Concatenated class
 //*****************************************************
 template<class V, class M>
