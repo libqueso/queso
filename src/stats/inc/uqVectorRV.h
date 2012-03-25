@@ -1129,6 +1129,9 @@ public:
                               const uqBaseVectorRVClass<V,M>& rv1,
                               const uqBaseVectorRVClass<V,M>& rv2,
                               const uqVectorSetClass<V,M>&    imageSet);
+  uqConcatenatedVectorRVClass(const char*                                          prefix,
+                              const std::vector<const uqBaseVectorRVClass<V,M>* >& rvs,
+                              const uqVectorSetClass<V,M>&                         imageSet);
   virtual ~uqConcatenatedVectorRVClass();
 
   void print(std::ostream& os) const;
@@ -1143,8 +1146,7 @@ private:
   using uqBaseVectorRVClass<V,M>::m_unifiedCdf;
   using uqBaseVectorRVClass<V,M>::m_mdf;
 
-  const uqBaseVectorRVClass<V,M>& m_rv1;
-  const uqBaseVectorRVClass<V,M>& m_rv2;
+  std::vector<const uqBaseVectorRVClass<V,M>* > m_rvs;
 };
 
 template<class V, class M>
@@ -1155,30 +1157,72 @@ uqConcatenatedVectorRVClass<V,M>::uqConcatenatedVectorRVClass(
   const uqVectorSetClass<V,M>&    imageSet)
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"concat").c_str(),imageSet),
-  m_rv1(rv1),
-  m_rv2(rv2)
+  m_rvs                   (2,(const uqBaseVectorRVClass<V,M>*) NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering uqConcatenatedVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering uqConcatenatedVectorRVClass<V,M>::constructor(1)"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
+  m_rvs[0] = &rv1;
+  m_rvs[1] = &rv2;
+
   m_pdf        = new uqConcatenatedJointPdfClass<V,M>(m_prefix.c_str(),
-                                                      m_rv1.pdf(),
-                                                      m_rv2.pdf(),
+                                                      m_rvs[0]->pdf(),
+                                                      m_rvs[1]->pdf(),
                                                       m_imageSet);
 
   m_realizer   = new uqConcatenatedVectorRealizerClass<V,M>(m_prefix.c_str(),
-                                                            m_rv1.realizer(),
-                                                            m_rv2.realizer(),
+                                                            m_rvs[0]->realizer(),
+                                                            m_rvs[1]->realizer(),
                                                             m_imageSet);
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving uqConcatenatedVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving uqConcatenatedVectorRVClass<V,M>::constructor(1)"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+}
+
+template<class V, class M>
+uqConcatenatedVectorRVClass<V,M>::uqConcatenatedVectorRVClass(
+  const char*                                          prefix,
+  const std::vector<const uqBaseVectorRVClass<V,M>* >& rvs,
+  const uqVectorSetClass<V,M>&                         imageSet)
+  :
+  uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"concat").c_str(),imageSet),
+  m_rvs                   (rvs.size(),(const uqBaseVectorRVClass<V,M>*) NULL)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Entering uqConcatenatedVectorRVClass<V,M>::constructor(2)"
+                            << ": prefix = " << m_prefix
+                            << std::endl;
+  }
+
+  for (unsigned int i = 0; i < m_rvs.size(); ++i) {
+    m_rvs[i] = rvs[i];
+  }
+#if 0 // todo_r
+  m_pdf        = new uqConcatenatedJointPdfClass<V,M>(m_prefix.c_str(),
+                                                      m_rvs[0]->pdf(),
+                                                      m_rvs[1]->pdf(),
+                                                      m_imageSet);
+
+  m_realizer   = new uqConcatenatedVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                            m_rvs[0]->realizer(),
+                                                            m_rvs[1]->realizer(),
+                                                            m_imageSet);
+#endif
+  m_subCdf     = NULL; // FIX ME: complete code
+  m_unifiedCdf = NULL; // FIX ME: complete code
+  m_mdf        = NULL; // FIX ME: complete code
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "Leaving uqConcatenatedVectorRVClass<V,M>::constructor(2)"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
