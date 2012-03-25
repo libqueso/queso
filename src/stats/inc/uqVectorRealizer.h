@@ -926,6 +926,7 @@ public:
                                     const uqVectorSetClass<V,M>&          unifiedImageSet);
   uqConcatenatedVectorRealizerClass(const char*                                                prefix,
                                     const std::vector<const uqBaseVectorRealizerClass<V,M>* >& realizers,
+                                    unsigned int                                               minPeriod,
                                     const uqVectorSetClass<V,M>&                               unifiedImageSet);
  ~uqConcatenatedVectorRealizerClass();
 
@@ -937,8 +938,7 @@ private:
   using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
   using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
 
-  const uqBaseVectorRealizerClass<V,M>& m_realizer1;
-  const uqBaseVectorRealizerClass<V,M>& m_realizer2;
+  std::vector<const uqBaseVectorRealizerClass<V,M>* > m_realizers;
 };
 
 template<class V, class M>
@@ -949,14 +949,16 @@ uqConcatenatedVectorRealizerClass<V,M>::uqConcatenatedVectorRealizerClass(
   const uqVectorSetClass<V,M>&          unifiedImageSet)
   :
   uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::min(realizer1.subPeriod(),realizer2.subPeriod()) ), // 2011/Oct/02
-  m_realizer1(realizer1),
-  m_realizer2(realizer2)
+  m_realizers(2,(const uqBaseVectorRealizerClass<V,M>*) NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering uqConcatenatedVectorRealizerClass<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
+
+  m_realizers[0] = &realizer1;
+  m_realizers[1] = &realizer2;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Leaving uqConcatenatedVectorRealizerClass<V,M>::constructor()"
@@ -969,13 +971,15 @@ template<class V, class M>
 uqConcatenatedVectorRealizerClass<V,M>::uqConcatenatedVectorRealizerClass(
   const char*                                                prefix,
   const std::vector<const uqBaseVectorRealizerClass<V,M>* >& realizers,
+  unsigned int                                               minPeriod,
   const uqVectorSetClass<V,M>&                               unifiedImageSet)
   :
-  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::min(realizers[0]->subPeriod(),realizers[1]->subPeriod()) ),
-  m_realizer1(*(realizers[0])),
-  m_realizer2(*(realizers[1]))
+  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gen").c_str(),unifiedImageSet,minPeriod),
+  m_realizers(realizers.size(),(const uqBaseVectorRealizerClass<V,M>*) NULL)
 {
-  // todo_r
+  for (unsigned int i = 0; i < m_realizers.size(); ++i) {
+    m_realizers[i] = realizers[i];
+  }
 }
 
 template<class V, class M>
@@ -987,13 +991,15 @@ template<class V, class M>
 void
 uqConcatenatedVectorRealizerClass<V,M>::realization(V& nextValues) const
 {
-  V v1(m_realizer1.unifiedImageSet().vectorSpace().zeroVector());
-  V v2(m_realizer2.unifiedImageSet().vectorSpace().zeroVector());
+  // todo_r
+
+  V v1(m_realizers[0]->unifiedImageSet().vectorSpace().zeroVector());
+  V v2(m_realizers[1]->unifiedImageSet().vectorSpace().zeroVector());
 
   //std::cout << "In uqConcatenatedVectorRealizerClass<V,M>::realization: v1.sizeLocal() = " << v1.sizeLocal() << std::endl;
-  m_realizer1.realization(v1);
+  m_realizers[0]->realization(v1);
   //std::cout << "In uqConcatenatedVectorRealizerClass<V,M>::realization: v2.sizeLocal() = " << v2.sizeLocal() << std::endl;
-  m_realizer2.realization(v2);
+  m_realizers[1]->realization(v2);
 
   //std::cout << "In uqConcatenatedVectorRealizerClass<V,M>::realization: nextValues.sizeLocal() = " << nextValues.sizeLocal() << std::endl;
   nextValues.cwSetConcatenated(v1,v2);

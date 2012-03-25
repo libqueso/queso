@@ -1223,8 +1223,16 @@ uqConcatenatedVectorRVClass<V,M>::uqConcatenatedVectorRVClass(
                                                       m_pdfs,
                                                       m_imageSet);
 
+  unsigned int minPeriod = m_realizers[0]->subPeriod();
+  for (unsigned int i = 0; i < m_realizers.size(); ++i) {
+    if (minPeriod > m_realizers[i]->subPeriod()) {
+      minPeriod = m_realizers[i]->subPeriod();
+    }
+  }
+
   m_realizer   = new uqConcatenatedVectorRealizerClass<V,M>(m_prefix.c_str(),
                                                             m_realizers,
+                                                            minPeriod,
                                                             m_imageSet);
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code

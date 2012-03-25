@@ -534,7 +534,7 @@ uqGslVectorClass::cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVecto
 {
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != v1.sizeLocal() + v2.sizeLocal(),
                       m_env.worldRank(),
-                      "uqGslVectorsClass::cwSetConcatenated()",
+                      "uqGslVectorsClass::cwSetConcatenated(1)",
                       "incompatible vector sizes");
 
   for (unsigned int i = 0; i < v1.sizeLocal(); ++i) {
@@ -547,6 +547,14 @@ uqGslVectorClass::cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVecto
 
   return;
 }
+
+void
+uqGslVectorClass::cwSetConcatenated(const std::vector<const uqGslVectorClass*>& vecs)
+{
+  // todo_r
+  return;
+}
+
 
 void
 uqGslVectorClass::cwExtract(unsigned int initialPos, uqGslVectorClass& vec) const

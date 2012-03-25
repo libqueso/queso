@@ -1471,8 +1471,7 @@ protected:
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
 
-  const uqBaseJointPdfClass      <V,M>& m_density1;
-  const uqBaseScalarFunctionClass<V,M>& m_density2;
+  std::vector<const uqBaseJointPdfClass<V,M>* > m_densities;
 };
 
 template<class V,class M>
@@ -1483,16 +1482,18 @@ uqConcatenatedJointPdfClass<V,M>::uqConcatenatedJointPdfClass(
   const uqVectorSetClass   <V,M>& concatenatedDomain)
   :
   uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"concat").c_str(),concatenatedDomain),
-  m_density1              (density1),
-  m_density2              (density2)
+  m_densities             (2,(const uqBaseJointPdfClass<V,M>*) NULL)
 {
-  unsigned int size1 = m_density1.domainSet().vectorSpace().dimLocal();
-  unsigned int size2 = m_density2.domainSet().vectorSpace().dimLocal();
+  m_densities[0] = &density1;
+  m_densities[1] = &density2;
+
+  unsigned int size1 = m_densities[0]->domainSet().vectorSpace().dimLocal();
+  unsigned int size2 = m_densities[1]->domainSet().vectorSpace().dimLocal();
   unsigned int size  = concatenatedDomain.vectorSpace().dimLocal();
 
   UQ_FATAL_TEST_MACRO((size1+size2) != size,
                       m_env.worldRank(),
-                      "uqConcatenatedJointPdfClass<V,M>::constructor()",
+                      "uqConcatenatedJointPdfClass<V,M>::constructor(1)",
                       "incompatible dimensions");
 }
 
@@ -1503,10 +1504,20 @@ uqConcatenatedJointPdfClass<V,M>::uqConcatenatedJointPdfClass(
   const uqVectorSetClass<V,M>&                         concatenatedDomain)
   :
   uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"concat").c_str(),concatenatedDomain),
-  m_density1              (*(densities[0])),
-  m_density2              (*(densities[1]))
+  m_densities             (densities.size(),(const uqBaseJointPdfClass<V,M>*) NULL)
 {
-  // todo_r
+  unsigned int sumSizes = 0;
+  for (unsigned i = 0; i < m_densities.size(); ++i) {
+    m_densities[i] = densities[i];
+    sumSizes += m_densities[i]->domainSet().vectorSpace().dimLocal();
+  }
+
+  unsigned int size  = concatenatedDomain.vectorSpace().dimLocal();
+
+  UQ_FATAL_TEST_MACRO(sumSizes != size,
+                      m_env.worldRank(),
+                      "uqConcatenatedJointPdfClass<V,M>::constructor(2)",
+                      "incompatible dimensions");
 }
 
 template<class V,class M>
@@ -1539,14 +1550,16 @@ uqConcatenatedJointPdfClass<V,M>::actualValue(
                       "uqConcatenatedJointPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  V v1(m_density1.domainSet().vectorSpace().zeroVector());
-  V v2(m_density2.domainSet().vectorSpace().zeroVector());
+  // todo_r
+
+  V v1(m_densities[0]->domainSet().vectorSpace().zeroVector());
+  V v2(m_densities[1]->domainSet().vectorSpace().zeroVector());
 
   domainVector.cwExtract(             0,v1);
   domainVector.cwExtract(v1.sizeLocal(),v2);
 
-  double value1 = m_density1.actualValue(v1,NULL,NULL,NULL,NULL);
-  double value2 = m_density2.actualValue(v2,NULL,NULL,NULL,NULL);
+  double value1 = m_densities[0]->actualValue(v1,NULL,NULL,NULL,NULL);
+  double value2 = m_densities[1]->actualValue(v2,NULL,NULL,NULL,NULL);
   double returnValue = value1*value2;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
@@ -1579,14 +1592,16 @@ uqConcatenatedJointPdfClass<V,M>::lnValue(
                       "uqConcatenatedJointPdfClass<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  V v1(m_density1.domainSet().vectorSpace().zeroVector());
-  V v2(m_density2.domainSet().vectorSpace().zeroVector());
+  // todo_r
+
+  V v1(m_densities[0]->domainSet().vectorSpace().zeroVector());
+  V v2(m_densities[1]->domainSet().vectorSpace().zeroVector());
 
   domainVector.cwExtract(             0,v1);
   domainVector.cwExtract(v1.sizeLocal(),v2);
 
-  double value1 = m_density1.lnValue(v1,NULL,NULL,NULL,NULL);
-  double value2 = m_density2.lnValue(v2,NULL,NULL,NULL,NULL);
+  double value1 = m_densities[0]->lnValue(v1,NULL,NULL,NULL,NULL);
+  double value2 = m_densities[1]->lnValue(v2,NULL,NULL,NULL,NULL);
   double returnValue = value1 + value2;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
