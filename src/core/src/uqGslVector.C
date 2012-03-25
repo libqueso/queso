@@ -551,7 +551,19 @@ uqGslVectorClass::cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVecto
 void
 uqGslVectorClass::cwSetConcatenated(const std::vector<const uqGslVectorClass*>& vecs)
 {
-  // todo_r
+  unsigned int cummulativeSize = 0;
+  for (unsigned int i = 0; i < vecs.size(); ++i) {
+    uqGslVectorClass tmpVec(*(vecs[i]));
+    for (unsigned int j = 0; j < vecs[i]->sizeLocal(); ++j) {
+      (*this)[cummulativeSize+j] = tmpVec[j];
+    }
+    cummulativeSize += vecs[i]->sizeLocal();
+  }
+
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != cummulativeSize,
+                      m_env.worldRank(),
+                      "uqGslVectorsClass::cwSetConcatenated(1)",
+                      "incompatible vector sizes");
   return;
 }
 

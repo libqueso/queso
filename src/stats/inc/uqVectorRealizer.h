@@ -991,19 +991,24 @@ template<class V, class M>
 void
 uqConcatenatedVectorRealizerClass<V,M>::realization(V& nextValues) const
 {
-  // todo_r
-
-  V v1(m_realizers[0]->unifiedImageSet().vectorSpace().zeroVector());
-  V v2(m_realizers[1]->unifiedImageSet().vectorSpace().zeroVector());
-
-  //std::cout << "In uqConcatenatedVectorRealizerClass<V,M>::realization: v1.sizeLocal() = " << v1.sizeLocal() << std::endl;
-  m_realizers[0]->realization(v1);
-  //std::cout << "In uqConcatenatedVectorRealizerClass<V,M>::realization: v2.sizeLocal() = " << v2.sizeLocal() << std::endl;
-  m_realizers[1]->realization(v2);
+  std::vector<V*> vecs(m_realizers.size(),(V*)NULL);
+  for (unsigned int i = 0; i < vecs.size(); ++i) {
+    vecs[i] = new V(m_realizers[i]->unifiedImageSet().vectorSpace().zeroVector());
+    //std::cout << "In uqConcatenatedVectorRealizerClass<V,M>::realization: v[i]->sizeLocal() = " << v[i]->sizeLocal() << std::endl;
+    m_realizers[i]->realization(*(vecs[i]));
+  }
 
   //std::cout << "In uqConcatenatedVectorRealizerClass<V,M>::realization: nextValues.sizeLocal() = " << nextValues.sizeLocal() << std::endl;
-  nextValues.cwSetConcatenated(v1,v2);
+  std::vector<const V*> constVecs(m_realizers.size(),(V*)NULL);
+  for (unsigned int i = 0; i < vecs.size(); ++i) {
+    constVecs[i] = vecs[i];
+  }
+  nextValues.cwSetConcatenated(constVecs);
   //std::cout << "In uqConcatenatedVectorRealizerClass<V,M>::realization: succeeded" << std::endl;
+
+  for (unsigned int i = 0; i < vecs.size(); ++i) {
+    delete vecs[i];
+  }
 
   return;
 }

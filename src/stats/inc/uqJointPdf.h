@@ -1550,17 +1550,18 @@ uqConcatenatedJointPdfClass<V,M>::actualValue(
                       "uqConcatenatedJointPdfClass<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  // todo_r
-
-  V v1(m_densities[0]->domainSet().vectorSpace().zeroVector());
-  V v2(m_densities[1]->domainSet().vectorSpace().zeroVector());
-
-  domainVector.cwExtract(             0,v1);
-  domainVector.cwExtract(v1.sizeLocal(),v2);
-
-  double value1 = m_densities[0]->actualValue(v1,NULL,NULL,NULL,NULL);
-  double value2 = m_densities[1]->actualValue(v2,NULL,NULL,NULL,NULL);
-  double returnValue = value1*value2;
+  std::vector<V*> vecs(m_densities.size(),(V*) NULL);
+  std::vector<double> values(m_densities.size(),0.);
+  double returnValue = 1.;
+  unsigned int cummulativeSize = 0;
+  for (unsigned int i = 0; i < vecs.size(); ++i) {
+    vecs[i] = new V(m_densities[i]->domainSet().vectorSpace().zeroVector());
+    domainVector.cwExtract(cummulativeSize,*(vecs[i]));
+    values[i] = m_densities[i]->actualValue(*(vecs[i]),NULL,NULL,NULL,NULL);
+    returnValue *= values[i];
+    cummulativeSize += vecs[i]->sizeLocal();
+    delete vecs[i];
+  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqConcatenatedJointPdfClass<V,M>::actualValue()"
@@ -1592,17 +1593,18 @@ uqConcatenatedJointPdfClass<V,M>::lnValue(
                       "uqConcatenatedJointPdfClass<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
-  // todo_r
-
-  V v1(m_densities[0]->domainSet().vectorSpace().zeroVector());
-  V v2(m_densities[1]->domainSet().vectorSpace().zeroVector());
-
-  domainVector.cwExtract(             0,v1);
-  domainVector.cwExtract(v1.sizeLocal(),v2);
-
-  double value1 = m_densities[0]->lnValue(v1,NULL,NULL,NULL,NULL);
-  double value2 = m_densities[1]->lnValue(v2,NULL,NULL,NULL,NULL);
-  double returnValue = value1 + value2;
+  std::vector<V*> vecs(m_densities.size(),(V*) NULL);
+  std::vector<double> values(m_densities.size(),0.);
+  double returnValue = 0.;
+  unsigned int cummulativeSize = 0;
+  for (unsigned int i = 0; i < vecs.size(); ++i) {
+    vecs[i] = new V(m_densities[i]->domainSet().vectorSpace().zeroVector());
+    domainVector.cwExtract(cummulativeSize,*(vecs[i]));
+    values[i] = m_densities[i]->lnValue(*(vecs[i]),NULL,NULL,NULL,NULL);
+    returnValue += values[i];
+    cummulativeSize += vecs[i]->sizeLocal();
+    delete vecs[i];
+  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqConcatenatedJointPdfClass<V,M>::lnValue()"
