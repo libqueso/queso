@@ -924,6 +924,9 @@ public:
                                     const uqBaseVectorRealizerClass<V,M>& realizer1,
                                     const uqBaseVectorRealizerClass<V,M>& realizer2,
                                     const uqVectorSetClass<V,M>&          unifiedImageSet);
+  uqConcatenatedVectorRealizerClass(const char*                                                prefix,
+                                    const std::vector<const uqBaseVectorRealizerClass<V,M>* >& realizers,
+                                    const uqVectorSetClass<V,M>&                               unifiedImageSet);
  ~uqConcatenatedVectorRealizerClass();
 
   void realization(V& nextValues) const;
@@ -960,6 +963,19 @@ uqConcatenatedVectorRealizerClass<V,M>::uqConcatenatedVectorRealizerClass(
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
+}
+
+template<class V, class M>
+uqConcatenatedVectorRealizerClass<V,M>::uqConcatenatedVectorRealizerClass(
+  const char*                                                prefix,
+  const std::vector<const uqBaseVectorRealizerClass<V,M>* >& realizers,
+  const uqVectorSetClass<V,M>&                               unifiedImageSet)
+  :
+  uqBaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::min(realizers[0]->subPeriod(),realizers[1]->subPeriod()) ),
+  m_realizer1(*(realizers[0])),
+  m_realizer2(*(realizers[1]))
+{
+  // todo_r
 }
 
 template<class V, class M>

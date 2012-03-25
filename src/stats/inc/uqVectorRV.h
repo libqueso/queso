@@ -1146,7 +1146,9 @@ private:
   using uqBaseVectorRVClass<V,M>::m_unifiedCdf;
   using uqBaseVectorRVClass<V,M>::m_mdf;
 
-  std::vector<const uqBaseVectorRVClass<V,M>* > m_rvs;
+  std::vector<const uqBaseVectorRVClass      <V,M>* > m_rvs;
+  std::vector<const uqBaseJointPdfClass      <V,M>* > m_pdfs;
+  std::vector<const uqBaseVectorRealizerClass<V,M>* > m_realizers;
 };
 
 template<class V, class M>
@@ -1157,7 +1159,9 @@ uqConcatenatedVectorRVClass<V,M>::uqConcatenatedVectorRVClass(
   const uqVectorSetClass<V,M>&    imageSet)
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"concat").c_str(),imageSet),
-  m_rvs                   (2,(const uqBaseVectorRVClass<V,M>*) NULL)
+  m_rvs                   (2,(const uqBaseVectorRVClass      <V,M>*) NULL),
+  m_pdfs                  (2,(const uqBaseJointPdfClass      <V,M>*) NULL),
+  m_realizers             (2,(const uqBaseVectorRealizerClass<V,M>*) NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqConcatenatedVectorRVClass<V,M>::constructor(1)"
@@ -1165,18 +1169,22 @@ uqConcatenatedVectorRVClass<V,M>::uqConcatenatedVectorRVClass(
                             << std::endl;
   }
 
-  m_rvs[0] = &rv1;
-  m_rvs[1] = &rv2;
+  m_rvs[0]       = &rv1;
+  m_rvs[1]       = &rv2;
+  m_pdfs[0]      = &(m_rvs[0]->pdf());
+  m_pdfs[1]      = &(m_rvs[1]->pdf());
+  m_realizers[0] = &(m_rvs[0]->realizer());
+  m_realizers[1] = &(m_rvs[1]->realizer());
 
-  m_pdf        = new uqConcatenatedJointPdfClass<V,M>(m_prefix.c_str(),
-                                                      m_rvs[0]->pdf(),
-                                                      m_rvs[1]->pdf(),
-                                                      m_imageSet);
+  m_pdf          = new uqConcatenatedJointPdfClass<V,M>(m_prefix.c_str(),
+                                                        *(m_pdfs[0]),
+                                                        *(m_pdfs[1]),
+                                                        m_imageSet);
 
-  m_realizer   = new uqConcatenatedVectorRealizerClass<V,M>(m_prefix.c_str(),
-                                                            m_rvs[0]->realizer(),
-                                                            m_rvs[1]->realizer(),
-                                                            m_imageSet);
+  m_realizer     = new uqConcatenatedVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                              *(m_realizers[0]),
+                                                              *(m_realizers[1]),
+                                                              m_imageSet);
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
@@ -1195,7 +1203,9 @@ uqConcatenatedVectorRVClass<V,M>::uqConcatenatedVectorRVClass(
   const uqVectorSetClass<V,M>&                         imageSet)
   :
   uqBaseVectorRVClass<V,M>(((std::string)(prefix)+"concat").c_str(),imageSet),
-  m_rvs                   (rvs.size(),(const uqBaseVectorRVClass<V,M>*) NULL)
+  m_rvs                   (rvs.size(),(const uqBaseVectorRVClass      <V,M>*) NULL),
+  m_pdfs                  (rvs.size(),(const uqBaseJointPdfClass      <V,M>*) NULL),
+  m_realizers             (rvs.size(),(const uqBaseVectorRealizerClass<V,M>*) NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqConcatenatedVectorRVClass<V,M>::constructor(2)"
@@ -1204,19 +1214,18 @@ uqConcatenatedVectorRVClass<V,M>::uqConcatenatedVectorRVClass(
   }
 
   for (unsigned int i = 0; i < m_rvs.size(); ++i) {
-    m_rvs[i] = rvs[i];
+    m_rvs [i]      = rvs[i];
+    m_pdfs[i]      = &(m_rvs[i]->pdf());
+    m_realizers[i] = &(m_rvs[i]->realizer());
   }
-#if 0 // todo_r
+
   m_pdf        = new uqConcatenatedJointPdfClass<V,M>(m_prefix.c_str(),
-                                                      m_rvs[0]->pdf(),
-                                                      m_rvs[1]->pdf(),
+                                                      m_pdfs,
                                                       m_imageSet);
 
   m_realizer   = new uqConcatenatedVectorRealizerClass<V,M>(m_prefix.c_str(),
-                                                            m_rvs[0]->realizer(),
-                                                            m_rvs[1]->realizer(),
+                                                            m_realizers,
                                                             m_imageSet);
-#endif
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code

@@ -352,28 +352,47 @@ template<class V, class M>
 bool
 uqConcatenationSubsetClass<V,M>::contains(const V& vec) const
 {
-  V v1(m_sets[0]->vectorSpace().zeroVector()); // todo_r
-  V v2(m_sets[1]->vectorSpace().zeroVector());
+  bool result = true;
 
-  UQ_FATAL_TEST_MACRO((vec.sizeLocal() != (v1.sizeLocal()+v2.sizeLocal())),
+  std::vector<V*> vecs(m_sets.size(),(V*) NULL);
+  for (unsigned int i = 0; i < vecs.size(); ++i) {
+    vecs[i] = new V(m_sets[i]->vectorSpace().zeroVector());
+  }
+
+  unsigned int cummulativeSize = 0;
+  for (unsigned int i = 0; i < vecs.size(); ++i) {
+    vec.cwExtract(cummulativeSize,*(vecs[i]));
+    cummulativeSize += vecs[i]->sizeLocal();
+  }
+
+  UQ_FATAL_TEST_MACRO(vec.sizeLocal() != cummulativeSize,
                       m_env.worldRank(),
                       "uqConcatenationSubsetClass<V,M>::contains()",
                       "incompatible vector sizes");
 
-  vec.cwExtract(             0,v1);
-  vec.cwExtract(v1.sizeLocal(),v2);
+  for (unsigned int i = 0; i < m_sets.size(); ++i) {
+    result = result && m_sets[i]->contains(*(vecs[i]));
+  }
+  for (unsigned int i = 0; i < vecs.size(); ++i) {
+    delete vecs[i];
+  }
 
-  return (m_sets[0]->contains(v1) && m_sets[1]->contains(v2));
+  return (result);
 }
 
 template <class V, class M>
 void
 uqConcatenationSubsetClass<V,M>::print(std::ostream& os) const
 {
-  os << "In uqConcatenationSubsetClass<V,M>::print()" // todo_r
-     << ": m_sets[0] = " << *(m_sets[0])
-     << ", m_sets[1] = " << *(m_sets[1])
-     << std::endl;
+  os << "In uqConcatenationSubsetClass<V,M>::print()"
+     << ": ";
+  for (unsigned int i = 0; i < m_sets.size(); ++i) {
+    os << "m_sets[" << i << "] = " << *(m_sets[i]);
+    if (i < (m_sets.size()-1)) {
+      os << ", ";
+    }
+  }
+  os << std::endl;
 
   return;
 }

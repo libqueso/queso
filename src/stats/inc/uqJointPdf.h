@@ -1458,6 +1458,9 @@ public:
                               const uqBaseJointPdfClass<V,M>& density1,
                               const uqBaseJointPdfClass<V,M>& density2,
                               const uqVectorSetClass   <V,M>& concatenatedDomain); 
+  uqConcatenatedJointPdfClass(const char*                                          prefix,
+                              const std::vector<const uqBaseJointPdfClass<V,M>* >& densities,
+                              const uqVectorSetClass<V,M>&                         concatenatedDomain); 
  ~uqConcatenatedJointPdfClass();
 
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
@@ -1491,6 +1494,19 @@ uqConcatenatedJointPdfClass<V,M>::uqConcatenatedJointPdfClass(
                       m_env.worldRank(),
                       "uqConcatenatedJointPdfClass<V,M>::constructor()",
                       "incompatible dimensions");
+}
+
+template<class V,class M>
+uqConcatenatedJointPdfClass<V,M>::uqConcatenatedJointPdfClass(
+  const char*                                          prefix,
+  const std::vector<const uqBaseJointPdfClass<V,M>* >& densities,
+  const uqVectorSetClass<V,M>&                         concatenatedDomain)
+  :
+  uqBaseJointPdfClass<V,M>(((std::string)(prefix)+"concat").c_str(),concatenatedDomain),
+  m_density1              (*(densities[0])),
+  m_density2              (*(densities[1]))
+{
+  // todo_r
 }
 
 template<class V,class M>
