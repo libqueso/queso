@@ -69,8 +69,8 @@ public:
   void              zeroUpper               (bool includeDiagonal = false);
   uqGslMatrixClass  transpose               () const;
   uqGslMatrixClass  inverse                 () const;
-  void              fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >& blockMatrices);
-  void              fillWithBlocksSideways  (const std::vector<uqGslMatrixClass* >& blockMatrices);
+  void              fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >& matrices);
+  void              fillWithBlocksSideways  (const std::vector<uqGslMatrixClass* >& matrices);
   void              fillWithTensorProduct   (const uqGslMatrixClass& mat1, const uqGslMatrixClass& mat2);
   void              fillWithTensorProduct   (const uqGslMatrixClass& mat1, const uqGslVectorClass& vec2);
   double            determinant             () const;
