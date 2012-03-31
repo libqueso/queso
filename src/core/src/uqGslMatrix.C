@@ -446,7 +446,7 @@ uqGslMatrixClass::zeroUpper(bool includeDiagonal)
 }
 
 uqGslMatrixClass
-uqGslMatrixClass::transpose () const
+uqGslMatrixClass::transpose() const
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
@@ -496,6 +496,30 @@ uqGslMatrixClass::inverse() const
   }
 
   return *m_inverse;
+}
+
+void
+uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >& blockMatrices)
+{
+  return;
+}
+
+void
+uqGslMatrixClass::fillWithBlocksSideways(const std::vector<uqGslMatrixClass* >& blockMatrices)
+{
+  return;
+}
+
+void
+uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGslMatrixClass& mat2)
+{
+  return;
+}
+
+void
+uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGslVectorClass& vec2)
+{
+  return;
 }
 
 double
