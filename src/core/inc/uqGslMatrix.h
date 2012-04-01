@@ -63,6 +63,7 @@ public:
   unsigned int      numCols                 () const;
   double            normFrob                () const;
   double            normMax                 () const;
+  void              cwSet                   (double value);
   int               chol                    ();
   int               svd                     (uqGslMatrixClass& matVt, uqGslVectorClass& vecS);
   void              zeroLower               (bool includeDiagonal = false);

@@ -342,6 +342,21 @@ uqGslMatrixClass::normMax() const
   return value;
 }
 
+void
+uqGslMatrixClass::cwSet(double value)
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+
+  for (unsigned int row = 0; row < nRows; ++row) {
+    for (unsigned int col = 0; col < nCols; ++col) {
+      *gsl_matrix_ptr(m_mat,row,col) = value;
+    }
+  }
+
+  return;
+}
+
 int
 uqGslMatrixClass::chol()
 {
