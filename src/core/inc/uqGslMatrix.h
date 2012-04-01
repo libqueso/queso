@@ -64,6 +64,7 @@ public:
   double            normFrob                () const;
   double            normMax                 () const;
   void              cwSet                   (double value);
+  void              cwSet                   (unsigned int rowId, unsigned int colId, const uqGslMatrixClass& mat);
   int               chol                    ();
   int               svd                     (uqGslMatrixClass& matVt, uqGslVectorClass& vecS);
   void              zeroLower               (bool includeDiagonal = false);

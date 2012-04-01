@@ -477,12 +477,12 @@ uqGslVectorClass::cwSetBeta(const gsl_rng* rng, const uqGslVectorClass& alpha, c
 {
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
                       m_env.worldRank(),
-                      "uqGslVectorsClass::cwSetBeta()",
+                      "uqGslVectorClass::cwSetBeta()",
                       "incompatible alpha size");
 
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
                       m_env.worldRank(),
-                      "uqGslVectorsClass::cwSetBeta()",
+                      "uqGslVectorClass::cwSetBeta()",
                       "incompatible beta size");
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
@@ -496,12 +496,12 @@ uqGslVectorClass::cwSetGamma(const gsl_rng* rng, const uqGslVectorClass& a, cons
 {
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != a.sizeLocal(),
                       m_env.worldRank(),
-                      "uqGslVectorsClass::cwSetGamma()",
+                      "uqGslVectorClass::cwSetGamma()",
                       "incompatible a size");
 
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != b.sizeLocal(),
                       m_env.worldRank(),
-                      "uqGslVectorsClass::cwSetGamma()",
+                      "uqGslVectorClass::cwSetGamma()",
                       "incompatible b size");
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
@@ -515,12 +515,12 @@ uqGslVectorClass::cwSetInverseGamma(const gsl_rng* rng, const uqGslVectorClass& 
 {
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
                       m_env.worldRank(),
-                      "uqGslVectorsClass::cwSetInverseGamma()",
+                      "uqGslVectorClass::cwSetInverseGamma()",
                       "incompatible alpha size");
 
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
                       m_env.worldRank(),
-                      "uqGslVectorsClass::cwSetInverseGamma()",
+                      "uqGslVectorClass::cwSetInverseGamma()",
                       "incompatible beta size");
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
@@ -534,7 +534,7 @@ uqGslVectorClass::cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVecto
 {
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != v1.sizeLocal() + v2.sizeLocal(),
                       m_env.worldRank(),
-                      "uqGslVectorsClass::cwSetConcatenated(1)",
+                      "uqGslVectorClass::cwSetConcatenated(1)",
                       "incompatible vector sizes");
 
   for (unsigned int i = 0; i < v1.sizeLocal(); ++i) {
@@ -562,23 +562,43 @@ uqGslVectorClass::cwSetConcatenated(const std::vector<const uqGslVectorClass*>& 
 
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != cummulativeSize,
                       m_env.worldRank(),
-                      "uqGslVectorsClass::cwSetConcatenated(1)",
+                      "uqGslVectorClass::cwSetConcatenated(1)",
                       "incompatible vector sizes");
   return;
 }
 
 
 void
-uqGslVectorClass::cwExtract(unsigned int initialPos, uqGslVectorClass& vec) const
+uqGslVectorClass::cwSet(unsigned int initialPos, const uqGslVectorClass& vec)
 {
   UQ_FATAL_TEST_MACRO(initialPos >= this->sizeLocal(),
                       m_env.worldRank(),
-                      "uqGslVectorsClass::cwExtract()",
+                      "uqGslVectorClass::cwSet()",
                       "invalid initialPos");
 
   UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
                       m_env.worldRank(),
-                      "uqGslVectorsClass::cwExtract()",
+                      "uqGslVectorClass::cwSet()",
+                      "invalid vec.sizeLocal()");
+
+  for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
+    (*this)[initialPos+i] = vec[i];
+  }
+
+  return;
+}
+
+void
+uqGslVectorClass::cwExtract(unsigned int initialPos, uqGslVectorClass& vec) const
+{
+  UQ_FATAL_TEST_MACRO(initialPos >= this->sizeLocal(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::cwExtract()",
+                      "invalid initialPos");
+
+  UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::cwExtract()",
                       "invalid vec.sizeLocal()");
 
   for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
@@ -620,12 +640,12 @@ uqGslVectorClass::matlabDiff(
 
   UQ_FATAL_TEST_MACRO(firstPositionToStoreDiff > 1,
                       m_env.worldRank(),
-                      "uqGslVectorsClass::matlabDiff()",
+                      "uqGslVectorClass::matlabDiff()",
                       "invalid firstPositionToStoreDiff");
 
   UQ_FATAL_TEST_MACRO(size != outputVec.sizeLocal(),
                       m_env.worldRank(),
-                      "uqGslVectorsClass::matlabDiff()",
+                      "uqGslVectorClass::matlabDiff()",
                       "invalid size of outputVecs");
 
   for (unsigned int i = 0; i < (size-1); ++i) {
@@ -844,7 +864,7 @@ uqGslVectorClass::subWriteContents(
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
                       m_env.worldRank(),
-                      "uqGslVectorsClass::subWriteContents()",
+                      "uqGslVectorClass::subWriteContents()",
                       "unexpected subRank");
 
   UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
@@ -889,7 +909,7 @@ uqGslVectorClass::subReadContents(
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
                       m_env.worldRank(),
-                      "uqGslVectorsClass::subReadContents()",
+                      "uqGslVectorClass::subReadContents()",
                       "unexpected subRank");
 
   UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,

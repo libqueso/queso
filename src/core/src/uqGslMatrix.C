@@ -357,6 +357,41 @@ uqGslMatrixClass::cwSet(double value)
   return;
 }
 
+void
+uqGslMatrixClass::cwSet(
+  unsigned int rowId,
+  unsigned int colId,
+  const uqGslMatrixClass& mat)
+{
+  UQ_FATAL_TEST_MACRO(rowId >= this->numRowsLocal(),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::cwSet()",
+                      "invalid rowId");
+
+  UQ_FATAL_TEST_MACRO((rowId + mat.numRowsLocal()) > this->numRowsLocal(),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::cwSet()",
+                      "invalid vec.numRowsLocal()");
+
+  UQ_FATAL_TEST_MACRO(colId >= this->numCols(),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::cwSet()",
+                      "invalid colId");
+
+  UQ_FATAL_TEST_MACRO((colId + mat.numCols()) > this->numCols(),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::cwSet()",
+                      "invalid vec.numCols()");
+
+  for (unsigned int i = 0; i < mat.numRowsLocal(); ++i) {
+    for (unsigned int j = 0; j < mat.numCols(); ++j) {
+      (*this)(rowId+i,colId+j) = mat(i,j);
+    }
+  }
+
+  return;
+}
+
 int
 uqGslMatrixClass::chol()
 {
@@ -514,7 +549,7 @@ uqGslMatrixClass::inverse() const
 }
 
 void
-uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >& matrices)
+uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >& matrices) // todo_r
 {
   unsigned int sumNumRowsLocals = 0;
   unsigned int sumNumCols       = 0;
@@ -535,7 +570,7 @@ uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >
 }
 
 void
-uqGslMatrixClass::fillWithBlocksSideways(const std::vector<uqGslMatrixClass* >& matrices)
+uqGslMatrixClass::fillWithBlocksSideways(const std::vector<uqGslMatrixClass* >& matrices) // todo_r
 {
   unsigned int sumNumCols = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
@@ -554,7 +589,7 @@ uqGslMatrixClass::fillWithBlocksSideways(const std::vector<uqGslMatrixClass* >& 
 }
 
 void
-uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGslMatrixClass& mat2)
+uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGslMatrixClass& mat2) // todo_r
 {
   UQ_FATAL_TEST_MACRO(this->numRowsLocal() != (mat1.numRowsLocal() * mat2.numRowsLocal()),
                       m_env.worldRank(),
@@ -569,7 +604,7 @@ uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGs
 }
 
 void
-uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGslVectorClass& vec2)
+uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGslVectorClass& vec2) // todo_r
 {
   UQ_FATAL_TEST_MACRO(this->numRowsLocal() != (mat1.numRowsLocal() * vec2.sizeLocal()),
                       m_env.worldRank(),

@@ -69,6 +69,7 @@ public:
   void         cwSetInverseGamma(const gsl_rng* rng, const uqGslVectorClass& alpha,   const uqGslVectorClass& beta     );
   void         cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVectorClass& v2);
   void         cwSetConcatenated(const std::vector<const uqGslVectorClass*>& vecs);
+  void         cwSet            (unsigned int initialPos, const uqGslVectorClass& vec);
   void         cwExtract        (unsigned int initialPos, uqGslVectorClass& vec) const;
   void         cwInvert         ();
   void         cwSqrt           ();
