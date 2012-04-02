@@ -501,6 +501,11 @@ uqGslMatrixClass::transpose() const
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
+  UQ_FATAL_TEST_MACRO((nRows != nCols),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::transpose()",
+                      "routine works only for square matrices");
+
   uqGslMatrixClass mat(m_env,m_map,nCols);
   for (unsigned int row = 0; row < nRows; ++row) {
     for (unsigned int col = 0; col < nCols; ++col) {
@@ -614,6 +619,29 @@ uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGs
                       m_env.worldRank(),
                       "uqGslMatrixClass::fillTensorProduct(mat ant vec)",
                       "inconsistent local number of columns");
+
+  return;
+}
+
+void
+uqGslMatrixClass::fillWithTranspose(const uqGslMatrixClass& mat)
+{
+  unsigned int nRows = mat.numRowsLocal();
+  unsigned int nCols = mat.numCols();
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != nCols,
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::fillWithTranspose()",
+                      "inconsistent local number of rows");
+  UQ_FATAL_TEST_MACRO(this->numCols() != nRows,
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::fillWithTranspose()",
+                      "inconsistent number of cols");
+
+  for (unsigned int row = 0; row < nRows; ++row) {
+    for (unsigned int col = 0; col < nCols; ++col) {
+      (*this)(col,row) = mat(row,col);
+    }
+  }
 
   return;
 }

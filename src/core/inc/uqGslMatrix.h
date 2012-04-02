@@ -75,6 +75,7 @@ public:
   void              fillWithBlocksSideways  (const std::vector<uqGslMatrixClass* >& matrices);
   void              fillWithTensorProduct   (const uqGslMatrixClass& mat1, const uqGslMatrixClass& mat2);
   void              fillWithTensorProduct   (const uqGslMatrixClass& mat1, const uqGslVectorClass& vec2);
+  void              fillWithTranspose       (const uqGslMatrixClass& mat);
   double            determinant             () const;
   double            lnDeterminant           () const;
   uqGslVectorClass  multiply                (const uqGslVectorClass& x) const;
