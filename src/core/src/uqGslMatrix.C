@@ -554,6 +554,27 @@ uqGslMatrixClass::inverse() const
 }
 
 void
+uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<const uqGslMatrixClass* >& matrices) // todo_r
+{
+  unsigned int sumNumRowsLocals = 0;
+  unsigned int sumNumCols       = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    sumNumRowsLocals += matrices[i]->numRowsLocal();
+    sumNumCols       += matrices[i]->numCols();
+  }
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRowsLocals,
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::fillWithBlocksDiagonally(const)",
+                      "inconsistent local number of rows");
+  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::fillWithBlocksDiagonally(const)",
+                      "inconsistent number of cols");
+
+  return;
+}
+
+void
 uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >& matrices) // todo_r
 {
   unsigned int sumNumRowsLocals = 0;
@@ -569,6 +590,25 @@ uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >
   UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
                       m_env.worldRank(),
                       "uqGslMatrixClass::fillWithBlocksDiagonally()",
+                      "inconsistent number of cols");
+
+  return;
+}
+
+void
+uqGslMatrixClass::fillWithBlocksSideways(const std::vector<const uqGslMatrixClass* >& matrices) // todo_r
+{
+  unsigned int sumNumCols = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    UQ_FATAL_TEST_MACRO(this->numRowsLocal() != matrices[i]->numRowsLocal(),
+                        m_env.worldRank(),
+                        "uqGslMatrixClass::fillWithBlocksSideways(const)",
+                        "inconsistent local number of rows");
+    sumNumCols += matrices[i]->numCols();
+  }
+  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::fillWithBlocksSideways(const)",
                       "inconsistent number of cols");
 
   return;
@@ -602,8 +642,8 @@ uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGs
                       "inconsistent local number of rows");
   UQ_FATAL_TEST_MACRO(this->numCols() != (mat1.numCols() * mat2.numCols()),
                       m_env.worldRank(),
-                      "uqGslMatrixClass::fillTensorProduct(mat ant mat)",
-                      "inconsistent local number of columns");
+                      "uqGslMatrixClass::fillTensorProduct(mat and mat)",
+                      "inconsistent number of columns");
 
   return;
 }
@@ -617,8 +657,8 @@ uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGs
                       "inconsistent local number of rows");
   UQ_FATAL_TEST_MACRO(this->numCols() != (mat1.numCols() * 1),
                       m_env.worldRank(),
-                      "uqGslMatrixClass::fillTensorProduct(mat ant vec)",
-                      "inconsistent local number of columns");
+                      "uqGslMatrixClass::fillTensorProduct(mat and vec)",
+                      "inconsistent number of columns");
 
   return;
 }
