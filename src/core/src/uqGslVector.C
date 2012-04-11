@@ -230,8 +230,8 @@ uqGslVectorClass::operator=(const uqGslVectorClass& rhs)
   unsigned int size2 = rhs.sizeLocal();
   UQ_FATAL_TEST_MACRO(size1 != size2, // mox
                       m_env.worldRank(),
-                      "uqGslVectorClass::constructor(), copy",
-                      "null vector generated");
+                      "uqGslVectorClass::operator=()",
+                      "sizes are not compatible");
   this->copy(rhs);
   return *this;
 }
