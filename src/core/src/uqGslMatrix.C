@@ -1144,6 +1144,11 @@ uqGslMatrixClass::getColumn(unsigned int column_num, uqGslVectorClass& column) c
                       "uqGslMatrixClass::getColumn",
                       "Specified row number not within range");
 
+  UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqGslMatrixClass::getColumn",
+                      "column vector not same size as this matrix");
+
   // Temporary working vector
   gsl_vector* gsl_column = gsl_vector_alloc( column.sizeLocal() );
 
@@ -1173,6 +1178,11 @@ uqGslMatrixClass::getRow(unsigned int row_num, uqGslVectorClass& row) const
                       UQ_UNAVAILABLE_RANK,
                       "uqGslMatrixClass::getRow",
                       "Specified row number not within range");
+
+  UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numCols()),
+                      UQ_UNAVAILABLE_RANK,
+                      "uqGslMatrixClass::getRow",
+                      "row vector not same size as this matrix");
 
   // Temporary working vector
   gsl_vector* gsl_row = gsl_vector_alloc( row.sizeLocal() );
