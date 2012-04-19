@@ -1,69 +1,112 @@
-all:	all_texs
+vectorsources := $(shell find rawfigs/ ../common/rawfigs/ -name '*.dia' -o -name '*.eps' -o -name '*.m' -o -name '*.ps' -o -name '*.pdf' -o -name '*.svg' 2>/dev/null)
+rastersources := $(shell find rawfigs/ ../common/rawfigs/ -name '*.jpg' -o -name '*.gif' 2>/dev/null)
+readysources := $(shell find rawfigs/ ../common/rawfigs/ -name '*.png' -o -name '*.pdf' 2>/dev/null)
+texsource := $(wildcard talk.tex paper.tex poster.tex proposal.tex users.tex)
 
-cheese: tab_mac_cheese
+vectorfigs := $(shell echo ' ' $(vectorsources) ' ' | sed -e 's> \(../common/\)*raw> >g' -e 's/\.[^. ]* /.pdf /g')
+rasterfigs := $(shell echo ' ' $(rastersources) ' ' | sed -e 's> \(../common/\)*raw> >g' -e 's/\.[^. ]* /.png /g')
+readyfigs := $(shell echo ' ' $(readysources) ' ' | sed -e 's> \(../common/\)*raw> >g')
+figures := $(vectorfigs) $(rasterfigs) $(readyfigs)
+texroot := $(patsubst %.tex, %, $(texsource))
+texfinal := QUESO_users_manual.pdf
+#texfinal := $(texroot).pdf
+##dirname  := $(shell pwd)
+##texfinal := $(shell basename $(dirname)).pdf
 
-clean: clean_texs clean_exec
+bibfiles := $(wildcard *.bib)
+styfiles := $(wildcard *.sty ../common/*.sty)
+clsfiles := $(wildcard *.cls ../common/*.cls)
 
-clean_texs:
-	rm -f *.aux
-	rm -f *.log
-	rm -f *.dvi
-	rm -f *.toc
-	rm -f *.blg
-	rm -f *.bbl
-	rm -f users*.ps
-	rm -f *.pdf
+PDFLATEX = TEXINPUTS=../common:$$TEXINPUTS pdflatex -halt-on-error
+LATEX = TEXINPUTS=../common:$$TEXINPUTS latex -halt-on-error
 
-clean_exec:
-	rm -f *~
+.PHONY: all figures clean cleanlatex cleanfigs
 
-OBJS_convert = figs/uqEnvironment.eps \
-	figs/uqEnvironmentOptions.eps \
-	figs/uqVectorSet.eps \
-	figs/uqVector.eps \
-	figs/uqMatrix.eps \
-	figs/uqScalarFunction.eps \
-	figs/uqVectorFunction.eps \
-	figs/uqScalarSequence.eps \
-	figs/uqVectorSequence.eps \
-	figs/uqSip.eps \
-	figs/uqSipOptions.eps \
-	figs/uqSfp.eps \
-	figs/uqSfpOptions.eps \
-	figs/uqMetropolisHastingsSG.eps \
-	figs/uqMetropolisHastingsSGOptions.eps \
-	figs/uqMonteCarloSG.eps \
-	figs/uqMonteCarloSGOptions.eps \
-	figs/uqSequenceStatisticalOptions.eps \
-	figs/uqVectorRandomVariable.eps \
-	figs/paper_plot1.eps \
-	figs/paper_plot2.eps \
-	figs/paper_plot3.eps \
-	figs/paper_plot4.eps \
-	figs/paper_plot5.eps \
-	figs/queso_paper1_03.eps \
-	figs/queso_paper1_09.eps \
-	figs/queso_paper1_10.eps
+#cheese: tab_mac_cheese
 
-all_texs: $(OBJS_convert)
-	latex users.tex
-	latex users.tex
-	bibtex users
-	latex users.tex
-	latex users.tex
-	dvips -t letter users.dvi -o users.ps
-	ps2pdf users.ps users_0_41_0.pdf
+all: $(texfinal)
 
-tab_mac_cheese:
-	latex McCheese
-	latex McCheese
-	dvips -t letter McCheese.dvi -o McCheese.ps
-	ps2pdf McCheese.ps McCheese.pdf
+figures: $(figures)
 
-.SUFFIXES: .eps .png .dia
+$(texfinal): *.tex $(bibfiles) $(figures) $(clsfiles) 
+	if ls *.bib 2>&1; then $(PDFLATEX) $(texroot) && bibtex $(texroot); fi
+	$(PDFLATEX) $(texroot) && $(PDFLATEX) $(texroot) && $(PDFLATEX) $(texroot)
+	cp $(texroot).pdf "$(texfinal)"
+	rm -f $(texroot).pdf
 
-%.eps: %.png
-	convert $< $(basename $<).eps
+clean: cleanlatex cleanfigs
 
-%.eps: %.dia
-	dia -t eps $<
+cleanlatex:
+	rm -f $(patsubst %.tex, %.aux, $(wildcard *.tex)) 
+	rm -f $(texroot).bbl $(texroot).blg $(texroot).log $(texroot).dvi $(texroot).nav $(texroot).out $(texroot).pdf $(texroot).snm $(texroot).toc $(texroot).vrb 
+	rm -f QUESO_users_manual.pdf McCheese.pdf McCheese.log McCheese.dvi McCheese.out McCheese.ps
+
+cleanfigs:
+	rm -rf figs/
+
+figs/%.pdf: rawfigs/%.dia
+	@mkdir -p $(dir $@)
+	dia -t eps-builtin -e $?_roytemp.eps $? && epstopdf $?_roytemp.eps -o=$@
+	@rm -f $?_roytemp.eps
+
+figs/%.pdf: rawfigs/%.eps
+	@mkdir -p $(dir $@)
+	epstopdf $? -o=$@
+
+figs/%.pdf: rawfigs/%.m
+	@mkdir -p $(dir $@)
+	@cd $(dir $?) && octave $(notdir $?)
+	@epstopdf $?.eps -o=$@ && rm -f $?.eps
+
+figs/%.pdf: rawfigs/%.pdf
+	@mkdir -p $(dir $@)
+	@reldir=`echo $(dir $@) | sed -e 's>[^/]*/*>../>g'`; ln -sf $${reldir}$? $@
+
+figs/%.pdf: rawfigs/%.ps
+	@mkdir -p $(dir $@)
+	ps2pdf $? $@
+
+#figs/%.pdf: rawfigs/%.png
+#       convert $? $@
+
+figs/%.pdf: rawfigs/%.svg
+	@mkdir -p $(dir $@)
+	inkscape $? -z --export-pdf=$@
+
+figs/%.png: rawfigs/%.jpg
+	@mkdir -p $(dir $@)
+	convert $? $@
+
+figs/%.png: ../common/rawfigs/%.jpg
+	@mkdir -p $(dir $@)
+	convert $? $@
+
+figs/%.png: rawfigs/%.png
+	@mkdir -p $(dir $@)
+	@reldir=`echo $(dir $@) | sed -e 's>[^/]*/*>../>g'`; ln -sf $${reldir}$? $@
+
+figs/%.png: ../common/rawfigs/%.png
+	@mkdir -p $(dir $@)
+	@reldir=`echo $(dir $@) | sed -e 's>[^/]*/*>../>g'`; ln -sf $${reldir}$? $@
+
+figs/%.pdf: ../common/rawfigs/%.pdf
+	@mkdir -p $(dir $@)
+	@reldir=`echo $(dir $@) | sed -e 's>[^/]*/*>../>g'`; ln -sf $${reldir}$? $@
+
+figs/%.pdf: ../common/rawfigs/%.eps
+	@mkdir -p $(dir $@)
+	epstopdf $? -o=$@                
+
+figs/%.pdf: ../common/rawfigs/%.ps
+	@mkdir -p $(dir $@)
+	ps2pdf $? $@
+
+figs/%.pdf: ../common/rawfigs/%.svg
+	@mkdir -p $(dir $@)
+	inkscape $? -z --export-pdf=$@
+
+#tab_mac_cheese:
+#	latex McCheese
+#	latex McCheese
+#	dvips -t letter McCheese.dvi -o McCheese.ps
+#	ps2pdf McCheese.ps McCheese.pdf
