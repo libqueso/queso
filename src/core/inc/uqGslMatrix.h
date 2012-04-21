@@ -63,6 +63,7 @@ public:
   unsigned int      numCols                 () const;
   double            normFrob                () const;
   double            normMax                 () const;
+  double            max                     () const;
   void              cwSet                   (double value);
   void              cwSet                   (unsigned int rowId, unsigned int colId, const uqGslMatrixClass& mat);
   int               chol                    ();
@@ -109,6 +110,7 @@ public:
   void              setRow                  (const unsigned int row_num, const uqGslVectorClass& row);
 
   void              mpiSum                  (const uqMpiCommClass& comm, uqGslMatrixClass& M_global) const;
+  void              matlabLinearInterpExtrap(const uqGslVectorClass& x1Vec, const uqGslMatrixClass& y1Mat, const uqGslVectorClass& x2Vec);
 
   gsl_matrix*       data                    ();
 

@@ -342,6 +342,23 @@ uqGslMatrixClass::normMax() const
   return value;
 }
 
+double
+uqGslMatrixClass::max() const
+{
+  double value = -INFINITY;
+
+  unsigned int dim = this->numRowsLocal();
+  double aux = 0.;
+  for (unsigned int i = 0; i < dim; i++) {
+    for (unsigned int j = 0; j < dim; j++) {
+      aux = (*this)(i,j);
+      if (aux > value) value = aux;
+    }
+  }
+
+  return value;
+}
+
 void
 uqGslMatrixClass::cwSet(double value)
 {
@@ -543,11 +560,11 @@ uqGslMatrixClass::inverse() const
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "In uqGslMatrixClass::inverse():"
-                           << "\n M = "        << *this
-                           << "\n M^{-1} = "   << *m_inverse
-			   << "\n M*M^{-1} = " << (*this)*(*m_inverse)
-			   << "\n M^{-1}*M = " << (*m_inverse)*(*this)
-                           << std::endl;
+                            << "\n M = "        << *this
+                            << "\n M^{-1} = "   << *m_inverse
+                            << "\n M*M^{-1} = " << (*this)*(*m_inverse)
+                            << "\n M^{-1}*M = " << (*m_inverse)*(*this)
+                            << std::endl;
   }
 
   return *m_inverse;
@@ -1322,6 +1339,17 @@ uqGslMatrixClass::mpiSum( const uqMpiCommClass& comm, uqGslMatrixClass& M_global
 	  M_global(i,j) = global[k];
 	}
     }
+
+  return;
+}
+
+void
+uqGslMatrixClass::matlabLinearInterpExtrap(
+  const uqGslVectorClass& x1Vec,
+  const uqGslMatrixClass& y1Mat,
+  const uqGslVectorClass& x2Vec)
+{
+  // todo_r
 
   return;
 }

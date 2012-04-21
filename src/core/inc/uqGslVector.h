@@ -74,6 +74,7 @@ public:
   void         cwInvert         ();
   void         cwSqrt           ();
   void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, uqGslVectorClass& outputVec) const;
+  void         matlabLinearInterpExtrap(const uqGslVectorClass& x1Vec, const uqGslVectorClass& y1Vec, const uqGslVectorClass& x2Vec);
   void         sort             ();
   void         mpiBcast         (int srcRank, const uqMpiCommClass& bcastComm);
   void         mpiAllReduce     (uqRawType_MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const;

@@ -662,6 +662,17 @@ uqGslVectorClass::matlabDiff(
 }
 
 void
+uqGslVectorClass::matlabLinearInterpExtrap(
+  const uqGslVectorClass& x1Vec,
+  const uqGslVectorClass& y1Vec,
+  const uqGslVectorClass& x2Vec)
+{
+  // todo_r
+
+  return;
+}
+
+void
 uqGslVectorClass::sort()
 {
   gsl_sort_vector(m_vec);
