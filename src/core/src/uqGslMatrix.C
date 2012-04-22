@@ -417,6 +417,12 @@ uqGslMatrixClass::chol()
   gsl_error_handler_t* oldHandler;
   oldHandler = gsl_set_error_handler_off();
   iRC = gsl_linalg_cholesky_decomp(m_mat);
+  if (iRC != 0) {
+    std::cout << "In uqGslMatrixClass::chol()"
+              << ": iRC = " << iRC
+              << ", gsl error message = " << gsl_strerror(iRC)
+              << std::endl;
+  }
   gsl_set_error_handler(oldHandler);
   //std::cout << "Returned from gsl_linalg_cholesky_decomp() with iRC = " << iRC << std::endl;
   UQ_RC_MACRO(iRC, // Yes, *not* a fatal check on RC
@@ -434,8 +440,11 @@ uqGslMatrixClass::svd(uqGslMatrixClass& matVt, uqGslVectorClass& vecS)
   int iRC;
   uqGslMatrixClass matV(matVt);
   //uqGslVectorClass vecWork(vecS);
-  std::cout << "Calling gsl_linalg_SV_decomp_jacobi()..." << std::endl;
-
+  std::cout << "In uqGslMatrixClass::svd()"
+            << ", calling gsl_linalg_SV_decomp_jacobi()..."
+            << ": numRows = " << this->numRowsLocal()
+            << ", numCols = " << this->numCols()
+            << std::endl;
   struct timeval timevalBegin;
   gettimeofday(&timevalBegin, NULL);
   gsl_error_handler_t* oldHandler;
@@ -445,7 +454,14 @@ uqGslMatrixClass::svd(uqGslMatrixClass& matVt, uqGslVectorClass& vecS)
 #else
   iRC = gsl_linalg_SV_decomp(m_mat, matV.data(), vecS.data(), vecWork.data());
 #endif
+  if (iRC != 0) {
+    std::cout << "In uqGslMatrixClass::svd()"
+              << ": iRC = " << iRC
+              << ", gsl error message = " << gsl_strerror(iRC)
+              << std::endl;
+  }
   gsl_set_error_handler(oldHandler);
+
   struct timeval timevalNow;
   gettimeofday(&timevalNow, NULL);
   std::cout << "Returned from gsl_linalg_SV_decomp_jacobi() with iRC = " << iRC
@@ -571,7 +587,7 @@ uqGslMatrixClass::inverse() const
 }
 
 void
-uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<const uqGslMatrixClass* >& matrices) // todo_r
+uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<const uqGslMatrixClass* >& matrices)
 {
   unsigned int sumNumRowsLocals = 0;
   unsigned int sumNumCols       = 0;
@@ -588,11 +604,23 @@ uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<const uqGslMatrixCl
                       "uqGslMatrixClass::fillWithBlocksDiagonally(const)",
                       "inconsistent number of cols");
 
+  unsigned int cumulativeRowId = 0;
+  unsigned int cumulativeColId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int numRows = matrices[i]->numRowsLocal();
+    unsigned int numCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < numRows; ++rowId) {
+      for (unsigned int colId = 0; colId < numCols; ++colId) {
+        (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
+      }
+    } 
+  }
+
   return;
 }
 
 void
-uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >& matrices) // todo_r
+uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >& matrices)
 {
   unsigned int sumNumRowsLocals = 0;
   unsigned int sumNumCols       = 0;
@@ -609,11 +637,23 @@ uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >
                       "uqGslMatrixClass::fillWithBlocksDiagonally()",
                       "inconsistent number of cols");
 
+  unsigned int cumulativeRowId = 0;
+  unsigned int cumulativeColId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int numRows = matrices[i]->numRowsLocal();
+    unsigned int numCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < numRows; ++rowId) {
+      for (unsigned int colId = 0; colId < numCols; ++colId) {
+        (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
+      }
+    } 
+  }
+
   return;
 }
 
 void
-uqGslMatrixClass::fillWithBlocksSideways(const std::vector<const uqGslMatrixClass* >& matrices) // todo_r
+uqGslMatrixClass::fillWithBlocksSideways(const std::vector<const uqGslMatrixClass* >& matrices)
 {
   unsigned int sumNumCols = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
@@ -628,11 +668,22 @@ uqGslMatrixClass::fillWithBlocksSideways(const std::vector<const uqGslMatrixClas
                       "uqGslMatrixClass::fillWithBlocksSideways(const)",
                       "inconsistent number of cols");
 
+  unsigned int cumulativeColId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int numRows = matrices[i]->numRowsLocal();
+    unsigned int numCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < numRows; ++rowId) {
+      for (unsigned int colId = 0; colId < numCols; ++colId) {
+        (*this)(rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
+      }
+    } 
+  }
+
   return;
 }
 
 void
-uqGslMatrixClass::fillWithBlocksSideways(const std::vector<uqGslMatrixClass* >& matrices) // todo_r
+uqGslMatrixClass::fillWithBlocksSideways(const std::vector<uqGslMatrixClass* >& matrices)
 {
   unsigned int sumNumCols = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
@@ -646,6 +697,17 @@ uqGslMatrixClass::fillWithBlocksSideways(const std::vector<uqGslMatrixClass* >& 
                       m_env.worldRank(),
                       "uqGslMatrixClass::fillWithBlocksSideways()",
                       "inconsistent number of cols");
+
+  unsigned int cumulativeColId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int numRows = matrices[i]->numRowsLocal();
+    unsigned int numCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < numRows; ++rowId) {
+      for (unsigned int colId = 0; colId < numCols; ++colId) {
+        (*this)(rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
+      }
+    } 
+  }
 
   return;
 }
