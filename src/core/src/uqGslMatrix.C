@@ -713,7 +713,7 @@ uqGslMatrixClass::fillWithBlocksSideways(const std::vector<uqGslMatrixClass* >& 
 }
 
 void
-uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGslMatrixClass& mat2) // todo_r
+uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGslMatrixClass& mat2)
 {
   UQ_FATAL_TEST_MACRO(this->numRowsLocal() != (mat1.numRowsLocal() * mat2.numRowsLocal()),
                       m_env.worldRank(),
@@ -724,11 +724,24 @@ uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGs
                       "uqGslMatrixClass::fillTensorProduct(mat and mat)",
                       "inconsistent number of columns");
 
+  for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
+    for (unsigned int colId1 = 0; colId1 < mat1.numCols(); ++colId1) {
+      double multiplicativeFactor = mat1(rowId1,colId1);
+      unsigned int targetRowId = rowId1 * mat2.numRowsLocal();
+      unsigned int targetColId = colId1 * mat2.numCols();
+      for (unsigned int rowId2 = 0; rowId2 < mat2.numRowsLocal(); ++rowId2) {
+        for (unsigned int colId2 = 0; colId2 < mat2.numCols(); ++colId2) {
+          (*this)(targetRowId + rowId2, targetColId + colId2) = multiplicativeFactor * mat2(rowId2,colId2);
+        }
+      }
+    }
+  } 
+
   return;
 }
 
 void
-uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGslVectorClass& vec2) // todo_r
+uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGslVectorClass& vec2)
 {
   UQ_FATAL_TEST_MACRO(this->numRowsLocal() != (mat1.numRowsLocal() * vec2.sizeLocal()),
                       m_env.worldRank(),
@@ -738,6 +751,20 @@ uqGslMatrixClass::fillWithTensorProduct(const uqGslMatrixClass& mat1, const uqGs
                       m_env.worldRank(),
                       "uqGslMatrixClass::fillTensorProduct(mat and vec)",
                       "inconsistent number of columns");
+
+  for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
+    for (unsigned int colId1 = 0; colId1 < mat1.numCols(); ++colId1) {
+      double multiplicativeFactor = mat1(rowId1,colId1);
+      unsigned int targetRowId = rowId1 * vec2.sizeLocal();
+      unsigned int targetColId = colId1 * 1;
+      for (unsigned int rowId2 = 0; rowId2 < vec2.sizeLocal(); ++rowId2) {
+        for (unsigned int colId2 = 0; colId2 < 1; ++colId2) {
+          (*this)(targetRowId + rowId2, targetColId + colId2) = multiplicativeFactor * vec2[rowId2];
+        }
+      }
+    }
+  } 
+
 
   return;
 }
