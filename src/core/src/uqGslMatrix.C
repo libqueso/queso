@@ -613,7 +613,9 @@ uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<const uqGslMatrixCl
       for (unsigned int colId = 0; colId < numCols; ++colId) {
         (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
       }
-    } 
+    }
+    cumulativeRowId += numRows;
+    cumulativeColId += numCols;
   }
 
   return;
@@ -647,6 +649,8 @@ uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >
         (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
       }
     } 
+    cumulativeRowId += numRows;
+    cumulativeColId += numCols;
   }
 
   return;
@@ -676,7 +680,8 @@ uqGslMatrixClass::fillWithBlocksSideways(const std::vector<const uqGslMatrixClas
       for (unsigned int colId = 0; colId < numCols; ++colId) {
         (*this)(rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
       }
-    } 
+    }
+    cumulativeColId += numCols;
   }
 
   return;
@@ -706,7 +711,8 @@ uqGslMatrixClass::fillWithBlocksSideways(const std::vector<uqGslMatrixClass* >& 
       for (unsigned int colId = 0; colId < numCols; ++colId) {
         (*this)(rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
       }
-    } 
+    }
+    cumulativeColId += numCols;
   }
 
   return;
@@ -1438,7 +1444,33 @@ uqGslMatrixClass::matlabLinearInterpExtrap(
   const uqGslMatrixClass& y1Mat,
   const uqGslVectorClass& x2Vec)
 {
-  // todo_r
+  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() <= 1,
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::matlabLinearInterpExtrap()",
+                      "invalid 'x1' size");
+
+  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() != y1Mat.numRowsLocal(),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::matlabLinearInterpExtrap()",
+                      "invalid 'x1' and 'y1' sizes");
+
+  UQ_FATAL_TEST_MACRO(x2Vec.sizeLocal() != this->numRowsLocal(),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::matlabLinearInterpExtrap()",
+                      "invalid 'x2' and 'this' sizes");
+
+  UQ_FATAL_TEST_MACRO(y1Mat.numCols() != this->numCols(),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::matlabLinearInterpExtrap()",
+                      "invalid 'y1' and 'this' sizes");
+
+  uqGslVectorClass y1Vec(x1Vec);
+  uqGslVectorClass y2Vec(x2Vec);
+  for (unsigned int colId = 0; colId < y1Mat.numCols(); ++colId) {
+    y1Mat.getColumn(colId,y1Vec);
+    y2Vec.matlabLinearInterpExtrap(x1Vec,y1Vec,x2Vec);
+    this->setColumn(colId,y2Vec);
+  }
 
   return;
 }
