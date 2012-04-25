@@ -6,6 +6,8 @@
 \usepackage[dvips]{epsfig}
 \usepackage{rotating}
 \usepackage{color}
+\usepackage{url}
+\usepackage{fancyvrb}
 
 \setlength{\textwidth}{6.6in}
 \setlength{\topmargin}{-0.25in}
@@ -19,7 +21,11 @@
 \renewcommand{\chaptername}{\vspace*{-1.45in}{\Huge\bf Chapter}}
 \renewcommand{\appendixname}{\vspace*{-1.45in}{\Huge\bf Appendix}}
 \renewcommand{\bibname}{\vspace*{-1.0in}{\Huge\bf Bibliography}}
+\newcommand{\Quesoweb}{\url{https://red.ices.utexas.edu/projects/software}}
+\newcommand{\Queso}{QUESO}
+\newcommand{\todo}[1]{ {\color{red} TODO: #1} }
 
+\newcommand{\myverb}[1]{ \indent{ \begin{verbatim} #1 \end{verbatim} } }
 \begin{document}
 
 \setlength{\unitlength}{1.0in}
@@ -58,6 +64,6 @@
 \end{appendix}
 
 \addcontentsline{toc}{chapter}{Bibliography (Incomplete)}
-\bibliography{../../../uq.bib}
-%\bibliography{uq.bib}
+%\bibliography{../../../uq.bib}
+\bibliography{uq.bib}
 \end{document}
