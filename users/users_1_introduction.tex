@@ -14,6 +14,57 @@ environments.
 
 \section{Key Statistical Concepts}
 
+
+Inverse problems are defined as the inverse of direct or forward problems, as the term itself suggests.
+Inverse problems apply, in general, to situations were certain quantities of interest are different from the ones that are accessible to measurements \cite{Andersen2001}. 
+
+% A typical feature of inverse problems is that they often fail to fulfill Hadamard's presumptions of well-posedness, i.e., a unique solution may not exist or may not depend continuously  on the given data.
+% By reformulating inverse problems for statistical inference,  regularization of ill-posed problems may be obtained through Bayesian approach ( 
+% by assuming that the a priori beliefs about the solution before having observed any data can be described by a prior distribution). 
+
+% Statistical inverse theory reformulates inverse problems as problems of statistical inference by means of Bayesian statistics. In Bayesian statistics all quantities are modeled as random variable. The randomness, which reflects the observer's uncertainty concerning their values, is coded in the probability distribution of the quantities. From the perspective of statistical inversion theory, the solution to an inverse problem is the probability distribution of the quantity of interest when all information available has been incorporated in the model. This distribution, called the posterior distribution, describes the degree of confidence about the quantity after the measurement has been performed.
+
+Statistical inverse theory reformulates inverse problems as problems of statistical inference by means of Bayesian statistics: all quantities are modeled as random variables, and probability distribution of the quantities encapsulates the uncertainty observed in their values. The solution to the inverse problem is then the probability distribution of the quantity of interest when all information available has been incorporated in the model. This (posterior) distribution describes the degree of confidence about the quantity after the measurement has been performed \cite{KaSo05}.
+
+Thus, the solution to the statistical inverse problem may be given by Bayes' formula, which express the posterior distribution as a function of the prior distribution and the data represented through the likelihood function.
+
+The likelihood function has an open-form and its evaluation is highly computer intensive.  Moreover, simulation-based posterior inference requires a large number of forward calculations to be performed, therefore, fast and efficient sampling techniques are required for posterior inference.
+
+It is often not straightforward to obtain explicit posterior point estimates of the solution, since it usually involves the evaluation of a high-dimensional integral with respect to a possibly non-smooth posterior distribution. In such cases, an alternative integration technique is the Markov chain Monte Carlo method: posterior means may be estimated using the sample mean from a series of random draws from the posterior distribution.
+
+QUESO library provides tools for sampling algorithms for statistical inverse problems, following Bayes' formula, and statistical forward problems. It contains MCMC and Monte Carlo solvers, as well as the DRAM \cite{HaLaMiSa06}; it also has the capacity to handle many chains or sequences in parallel,
+each chain or sequence itself demanding many computing nodes because of the computational model being statistically explored \cite{PrSc09}.
+
+
+A computational model is a combination of a
+mathematical model and a discretization that enables the approximate
+solution of the mathematical model using computer algorithms and  might be used in two different types of problems:
+forward or inverse. 
+
+Any computational model is composed of a vector $\boldsymbol{\theta}$ of $n$ {\it parameters}, {\it state variables} $\mathbf{u}$, and {\it state equations} $\mathbf{r}(\boldsymbol{\theta},\mathbf{u}) = \mathbf{0}$.
+Once the solution $\mathbf{u}$ is available, the computational model also includes extra functions for e.g.
+the calculation of {\it model output data} $\mathbf{y} = \mathbf{y}(\boldsymbol{\theta},\mathbf{u})$, and the {\it prediction} of a
+vector $\mathbf{q} = \mathbf{q}(\boldsymbol{\theta},\mathbf{u})$ of $m$~quantities~of~interest\text{ (QoI)},
+
+Parameters designate all model variables that are neither state variables
+nor further quantities computed by the model, such as: material properties, coefficients, constitutive parameters, boundary conditions, initial conditions,
+external forces, parameters for modeling the model error, characteristics of an experimental apparatus (collection of devices and procedures),
+discretization choices and numerical algorithm options.
+
+% Some parameters might be directly measurable, e.g. room temperature,
+% but some may not, e.g. a material property.
+% Parameters that cannot be measured directly need to be {\it estimated}
+% through the solution of an {\it inverse problem}.
+
+
+In the case of a forward problem, the parameters $\boldsymbol{\theta}$ are given and
+one then needs to compute $\mathbf{u}$, $\mathbf{y}$ and/or $\mathbf{q}$.
+In the case of an inverse problem, however, experimental data $\mathbf{d}$ is given and
+one then needs to {\it estimate} the values of the parameters $\boldsymbol{\theta}$ that
+cause $\mathbf{y}$ to best fit  $\mathbf{d}$.
+%where ``best'' is an algorithm dependent concept.
+
+
 \begin{figure}[h!]
 \centerline{
 \includegraphics[scale=0.45,clip=true,viewport=1.0in 2.5in 10.0in 5.5in]{figs/queso_paper1_09}
