@@ -32,8 +32,7 @@ The likelihood function has an open-form and its evaluation is highly computer i
 
 It is often not straightforward to obtain explicit posterior point estimates of the solution, since it usually involves the evaluation of a high-dimensional integral with respect to a possibly non-smooth posterior distribution. In such cases, an alternative integration technique is the Markov chain Monte Carlo method: posterior means may be estimated using the sample mean from a series of random draws from the posterior distribution.
 
-QUESO library provides tools for sampling algorithms for statistical inverse problems, following Bayes' formula, and statistical forward problems. It contains MCMC and Monte Carlo solvers, as well as the DRAM \cite{HaLaMiSa06}; it also has the capacity to handle many chains or sequences in parallel,
-each chain or sequence itself demanding many computing nodes because of the computational model being statistically explored \cite{PrSc09}.
+QUESO library provides tools for sampling algorithms for statistical inverse problems, following Bayes' formula, and statistical forward problems. It contains Monte Carlo solvers, MCMC (e.g. Metropolis Hastings \cite{Metr_1953,Hast_1970}) as well as the DRAM \cite{HaLaMiSa06}; it also has the capacity to handle many chains or sequences in parallel, each chain or sequence itself demanding many computing nodes because of the computational model being statistically explored \cite{PrSc09}.
 
 
 A computational model is a combination of a
@@ -64,6 +63,37 @@ one then needs to {\it estimate} the values of the parameters $\boldsymbol{\thet
 cause $\mathbf{y}$ to best fit  $\mathbf{d}$.
 %where ``best'' is an algorithm dependent concept.
 
+%The process of parameter estimation is also referred to as model calibration or model update, and it usually precedes the computation of a QoI, a process called model prediction. 
+
+Figure~\ref{fig-generic-problems} represents general inverse and forward problems respectively.
+\begin{figure}[htbp]
+\vspace{-10pt}
+\begin{center}
+% \subfigure[]{\includegraphics[scale=0.50,clip=true,viewport=1.7in 3.0in 8.5in 5.5in]{figs/queso_paper1_08.png}}
+% \subfigure[]{\includegraphics[scale=0.50,clip=true,viewport=1.8in 3.0in 8.4in 5.5in]{figs/queso_paper1_07.png}}
+\subfigure[]{\includegraphics[scale=0.45,clip=true,viewport=1.9in 3.0in 8.5in 5.5in]{figs/queso_paper1_07.png}}\quad\quad
+\subfigure[]{\includegraphics[scale=0.45,clip=true,viewport=1.9in 3.0in 8.5in 5.5in]{figs/queso_paper1_08.png}}
+\end{center}
+\vspace{-20pt}
+\caption{The representation of (a) a generic forward problem and (b) a generic inverse problem.}
+\label{fig-generic-problems}
+\end{figure}
+
+
+
+There are many possible sources of uncertainty on a computational model. %procedures (a) and (b) above. 
+First, $\mathbf{d}$ need not be equal to the actual values of observables because of errors in the measurement process. Second, the values of the input parameters to the phenomenon might not be precisely known. Third, the appropriate set of
+equations governing the phenomenon might not be well understood. 
+
+Computational models can be classified as either deterministic or stochastic -- which are the ones of interest here.  In deterministic models, all parameters are assigned numbers, and no parameter is related to the parametrization of a random variable (RV) or field. As a
+consequence, a deterministic model assigns a number to each of the components of quantities $\mathbf{u}$, $\mathbf{y}$ and $\mathbf{q}$. In stochastic models, however, at least one parameter is assigned a probability density function (PDF) or is related to the parametrization of a RV or field, causing u, y and q to become random variables.  Note that not all components of $\boldsymbol{\theta}$ need to be treated as random. As long as at least one component is random, $\boldsymbol{\theta}$ is a random vector, and the problem is stochastic.
+
+
+
+In the case of forward problems, statistical forward problems can be represented very similarly to deterministic forward problems,
+as seen in Figure \ref{fig-sfp-queso}.
+In the case of inverse problems, as depicted in Figure \ref{fig-sip-queso}, however, the conceptual connection between deterministic and statistical problems
+is not as straightforward.
 
 \begin{figure}[h!]
 \centerline{
@@ -92,6 +122,19 @@ $\mathbf{d}$ denotes experimental data.
 }
 \label{fig-sip-queso}
 \end{figure}
+
+
+QUESO adopts a Bayesian analysis \cite{KaSo05, Ro04} for statistical inverse problems, interpreting the posterior PDF
+\begin{equation}\label{eq-Bayes-solution}
+\pi_{\text{posterior}}(\boldsymbol{\theta}|\mathbf{d})=\frac{\pi_{\text{prior}}(\boldsymbol{\theta})\pi_{\text{likelihood}}(\mathbf{d}|\boldsymbol{\theta})}{\pi(\mathbf{d})}
+\end{equation}
+as the solution. Such solutions combine the prior information $\pi_{\text{prior}}(\boldsymbol{\theta})$ of the parameters,
+the information $\pi(\mathbf{d})$ on the data, and the likelihood $\pi_{\text{likelihood}}(\mathbf{d}|\boldsymbol{\theta})$ that the model computes certain data values with a given set of input parameters.
+
+This semantic interpretation of achieving a posterior knowledge on the parameters (on the model)
+after combining some prior model knowledge with experimental information provides an important mechanism for dealing with uncertainty.
+Although mathematically simple, is not computationally trivial. 
+
 
 \section{The Software Stack of an Application Using QUESO}
 
