@@ -34,7 +34,7 @@ It is often not straightforward to obtain explicit posterior point estimates of 
 
 QUESO is designed in an abstract way so that it can be used by any computational model, as long as a likelihood function (in the case of statistical inverse problems) and a quantity of interest (QoI) function (in the case of statistical forward problems) is provided by the user application.
 
-QUESO library provides tools for sampling algorithms for statistical inverse problems, following Bayes' formula, and statistical forward problems. It contains Monte Carlo solvers, MCMC (e.g. Metropolis Hastings \cite{Metr_1953,Hast_1970}) as well as the DRAM \cite{HaLaMiSa06}; it also has the capacity to handle many chains or sequences in parallel, each chain or sequence itself demanding many computing nodes because of the computational model being statistically explored \cite{PrSc09}.
+QUESO library provides tools for both sampling algorithms for statistical inverse problems, following Bayes' formula, and statistical forward problems. It contains Monte Carlo solvers (for autocorrelation, kernel density estimation ans accuracy assessment), MCMC (e.g. Metropolis Hastings \cite{Metr_1953,Hast_1970}) as well as the DRAM \cite{HaLaMiSa06} (for sampling from probability distributions); it also has the capacity to handle many chains or sequences in parallel, each chain or sequence itself demanding many computing nodes because of the computational model being statistically explored \cite{PrSc09}.
 
 
 
@@ -140,23 +140,109 @@ Although mathematically simple, is not computationally trivial.
 
 
 \section{The Software Stack of an Application Using QUESO}
+%TAKEN FROM QUESO PAPER, SECTION 3
 
-\begin{figure}[h!]
-\centerline{
-\includegraphics[scale=0.50,clip=true]{figs/queso_paper1_03}
-}
-\caption{
-Overview of the software stack of a typical application that uses QUESO.
-The symbol $\boldsymbol{\theta}$ represents a vector of $n\geqslant 1$ parameters.
+% Section \ref{sc-concepts} identified many mathematical entities present in the description of statistical problems and in some algorithms used for their solution.
+% As part of the design, QUESO attempts to conceptually implement these entities in order to allow algorithmic researchers to manipulate
+% them at the library level, as well as for algorithm users (the modelers interested in UQ) to manipulate them at the application level.
+% Examples of entities are 
+% vector space $\mathbb{R}^n$;
+% vector subset $B\subset\mathbb{R}^n$;
+% vector $\boldsymbol{\theta}\in B$;
+% matrix $\mathbf{C}\in \mathbb{R}^n\times\mathbb{R}^n$;
+% function $\pi:\mathbb{R}^n\rightarrow\mathbb{R}_+$, e.g. joint PDF;
+% function $\pi:\mathbb{R}\rightarrow\mathbb{R}_+$, e.g. marginal PDF;
+% function $\pi:\mathbb{R}\rightarrow[0,1]$, e.g. cumulative distribution function;
+% realizer function;
+% function $\mathbf{q}:\mathbb{R}^n\rightarrow\mathbb{R}^m$;
+% sequences of scalars; and
+% sequences of vectors.
+% QUESO tries to naturally map such entities through an object-oriented design.
+% Indeed, QUESO C++ classes include vector spaces, subsets, scalar sequences, PDFs, and RVs.
+
+
+An application using QUESO will fall into three categories: a statistical IP, a statistical FP, or combinations of both.
+In each problem the user might deal with up to five vectors of potentially very different sizes:
+parameters $\boldsymbol{\theta}$, state $\mathbf{u}$, output $\mathbf{y}$, data $\mathbf{d}$ and QoIs $\mathbf{q}$.
+
 Algorithms in the QUESO library require the supply
 of a likelihood routine $\pi_{\text{like}}:\mathbb{R}^n\rightarrow\mathbb{R}_+$ for statistical inverse problems and 
-of a qoi routine $\mathbf{q}:\mathbb{R}^n\rightarrow\mathbb{R}^m$ for statistical forward problems. These routines
+of a QoI routine $\mathbf{q}:\mathbb{R}^n\rightarrow\mathbb{R}^m$ for statistical forward problems. These routines
 exist at the application level and provide the necessary bridge between the statistical algorithms in QUESO,
 model knowledge in the model library and scenario and experimental data in the disk space.
-Concepts are further detailed in Chapter \ref{ch-introduction}.
+%Concepts are further detailed in Chapter \ref{ch-introduction}.
+
+Figure~\ref{fig-sw-stack} shows the software stack of a typical application that uses QUESO. In the figure, the symbol $\boldsymbol{\theta}$ represents a vector of $n\geqslant 1$ parameters. 
+%
+\begin{figure}[!htbp]
+\centerline{
+\includegraphics[scale=0.4,clip=true]{rawfigs/quesoSwStack_09_2010.png}
+}
+\caption{
+An application software stack.
+QUESO requires the input
+%supply
+of a likelihood routine $\pi_{\text{like}}:\mathbb{R}^n\rightarrow\mathbb{R}_+$ for IPs and 
+of a QoI routine $\mathbf{q}:\mathbb{R}^n\rightarrow\mathbb{R}^m$ for FPs.
+These application level routines provide the bridge between
+% among
+the statistical algorithms in QUESO,
+physics 
+%model
+knowledge in the model library, and relevant calibration
+    and validation data.
+%model specific data in the disk space.
 }
 \label{fig-sw-stack}
 \end{figure}
+
+% \begin{figure}[h!]
+% \centerline{
+% \includegraphics[scale=0.50,clip=true]{figs/queso_paper1_03}
+% }
+% \caption{
+% Overview of the software stack of a typical application that uses QUESO.
+% The symbol $\boldsymbol{\theta}$ represents a vector of $n\geqslant 1$ parameters.
+% Algorithms in the QUESO library require the supply
+% of a likelihood routine $\pi_{\text{like}}:\mathbb{R}^n\rightarrow\mathbb{R}_+$ for statistical inverse problems and 
+% of a qoi routine $\mathbf{q}:\mathbb{R}^n\rightarrow\mathbb{R}^m$ for statistical forward problems. These routines
+% exist at the application level and provide the necessary bridge between the statistical algorithms in QUESO,
+% model knowledge in the model library and scenario and experimental data in the disk space.
+% Concepts are further detailed in Chapter \ref{ch-introduction}.
+% }
+% \label{fig-sw-stack}
+% \end{figure}
+%
+Even though QUESO deals directly with $\boldsymbol{\theta}$ and $\mathbf{q}$ only,
+it is usually the case the one of the other three vectors ($\mathbf{u}$, $\mathbf{y}$ and $\mathbf{d}$) will have the biggest number of components and will therefore
+dictate the size of the minimum parallel environment to be used in a problem.
+So, for example, even though one processor might be sufficient for handling $\boldsymbol{\theta}$, $\mathbf{y}$, $\mathbf{d}$ and $\mathbf{q}$,
+eight processors at least might be necessary to solve for $\mathbf{u}$.
+QUESO currently only requires that the amounts $n$ and $m$ can be handled by the memory available to one processor,
+which allows the analysis of problems with thousands of parameters and QoIs, a large amount even for state of the art UQ algorithms.
+
+QUESO currently supports three modes of parallel execution:
+an application user may simultaneously run
+\begin{description}
+\item[(a)] multiple instances of a problem where the physical model requires a single processor, or
+\item[(b)] multiple instances of a problem where the physical model requires multiple processors, or
+\item[(c)] independent sets of types (a) and (b).
+\end{description}
+
+
+%
+For example, suppose an user wants to use the MH algorithm to solve a statistical IP, and that 1,024 processors are available.
+If the physical model is simple enough to be handled efficiently by a single processor, then the user can run 1,024 chains simultaneously, as in case (a).
+If the model is more complex and requires, say, 16 processors, then the user can run 64 chains simultaneously, as in case (b), with 16 processors per chain.
+QUESO treats this situation by using only 1 of the 16 processors to handle the chain.
+When a likelihood evaluation is required, all 16 processors call the likelihood routine simultaneously.
+Once the likelihood returns its value, QUESO puts  15 processors into idle state until the routine is called again or the chain completes.
+Case (c) is useful, for instance, in the case of a computational procedure involving two models,
+where a group of processors can be split into two groups, each handling one model.
+Once the two model analysis end, the combined model can use the full set of processors.\footnote{The parallel capabilities of QUESO have been exercised on the Ranger system of the TACC \cite{tacc} with up to 1,024 processors \cite{ChOlPr10}.}
+
+
+
 
 \subsection{A QUESO Environment}
 
