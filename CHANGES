@@ -6,6 +6,21 @@ Simulation, and Optimization.
 Version 0.45.1 (In Progress)
   * bug fixes with multi-level restart capability
   * bug fixes with uqDistArrayClass copy constructor
+  * imposing bounds on Gaussian random variables, if such bounds are indeed requested
+  * added gamma random variable
+  * added inverse gamma random variable
+  * added beta random variable
+  * added wigner random variable
+  * added log-normal random variable
+  * added DRAM option to read the initial position of the chain
+  * added DRAM option to read the initial proposal covariance matrix
+  * added DRAM option to write the adapted matrices, with writing period
+  * improved concatenation (more than 2 objects at once) of RV, pdf, realizer, subset, and uqGslVector classes
+  * added tranpose operation of non-square matrices
+  * added block-diagonal and block-sideways filling of matrices
+  * added tensor product operation of matrices and vectors
+  * improved cwSet() operation ('cw' = component wise) on matrices and vectors
+  * improved trace and error messages
 
 Version 0.45.0 (10 April 2011)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.45.0
