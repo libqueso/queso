@@ -146,8 +146,8 @@ doxygen-run: @DX_DOCDIR@/@PACKAGE@.tag
 
 doxygen-doc: doxygen-run $(DX_PS_GOAL) $(DX_PDF_GOAL)
 
-#doc:  doxygen-doc
-#docs: doxygen-doc
+doc:  doxygen-doc
+docs: doxygen-doc
 
 @DX_DOCDIR@/@PACKAGE@.tag: $(DX_CONFIG) $(pkginclude_HEADERS) $(PECOS_extra_dependencies)
 	  rm -rf @DX_DOCDIR@
