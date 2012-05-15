@@ -141,7 +141,7 @@ DX_XML_FEATURE(OFF)
 DX_PDF_FEATURE(ON)
 DX_PS_FEATURE(OFF)
 
-DX_INIT_DOXYGEN([queso],[doxygen/queso.dox],docs)
+DX_INIT_DOXYGEN([queso],[doxygen/queso.dox] ,docs)
 
 #--------------------------
 # Checks for code coverage
