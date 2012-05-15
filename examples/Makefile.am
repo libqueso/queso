@@ -2,5 +2,5 @@
 
 #Build in these directories:
 SUBDIRS = statisticalForwardProblem statisticalInverseProblem1 \
-	  validationCycle validationCycle2 validationPyramid basic_interface \
+	  validationCycle validationCycle2 validationPyramid   \
 	  infoTheoryProblem
