@@ -116,9 +116,9 @@ libqueso_la_SOURCES += \
 
 # Sources from interface 
 
-libqueso_la_SOURCES += \
-	$(top_srcdir)/src/interface/basic_classes.cpp \
-	$(top_srcdir)/src/interface/basic_interface.cpp
+#libqueso_la_SOURCES += \
+#	$(top_srcdir)/src/interface/basic_classes.cpp \
+#	$(top_srcdir)/src/interface/basic_interface.cpp
 
 # Headers to install from core/inc
 
