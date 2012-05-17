@@ -4,6 +4,9 @@ Simulation, and Optimization.
 -----------------------------------------------------
 
 Version 0.45.1 (In Progress)
+
+  * updated autotools bootstrapping mechanism to use autoreconf
+  * increased minimum autoconf requirement to v2.68
   * bug fixes with multi-level restart capability
   * bug fixes with uqDistArrayClass copy constructor
   * imposing bounds on Gaussian random variables, if such bounds are indeed requested
