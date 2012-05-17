@@ -5,7 +5,6 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
 	      -I$(top_srcdir)/src/misc/inc  \
 	      -I$(top_srcdir)/src/basic/inc \
 	      -I$(top_srcdir)/src/stats/inc \
-	      -I$(top_srcdir)/src/interface \
 	        $(BOOST_CPPFLAGS) \
 	        $(GSL_CFLAGS) \
 	        $(GRVY_CFLAGS) \
@@ -205,12 +204,12 @@ nodist_libqueso_include_HEADERS    =       \
 
 # Headers to install from interface
 
-libqueso_include_HEADERS += \
-	$(top_srcdir)/src/interface/queso_basic.h     \
-	$(top_srcdir)/src/interface/basic_classes.h   \
-	$(top_srcdir)/src/interface/basic_interface.h \
-        $(top_srcdir)/src/interface/basic_int.h
-
+# libqueso_include_HEADERS += \
+# 	$(top_srcdir)/src/interface/queso_basic.h     \
+# 	$(top_srcdir)/src/interface/basic_classes.h   \
+# 	$(top_srcdir)/src/interface/basic_interface.h \
+#       $(top_srcdir)/src/interface/basic_int.h
+ 
 # Standalone binaries
 
 bin_PROGRAMS               = queso_version

@@ -1,7 +1,7 @@
 # -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script. 
 
-AC_PREREQ(2.68)
+AC_PREREQ(2.65)
 AC_INIT([queso], [0.45.1], [pecos_dev@ices.utexas.edu])
 AC_CONFIG_MACRO_DIR([m4])
 AM_CONFIG_HEADER(config_queso.h)
@@ -179,7 +179,6 @@ AC_CONFIG_FILES([
 	examples/validationCycle2/src/Makefile
 	examples/statisticalForwardProblem/Makefile
 	examples/statisticalForwardProblem/src/Makefile
-	examples/basic_interface/Makefile
 	test/Makefile
 	test/t01_valid_cycle/Makefile
 	test/t02_sip_sfp/Makefile
