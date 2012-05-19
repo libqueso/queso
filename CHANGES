@@ -11,7 +11,6 @@ Version 0.45.1 (In Progress)
   * bug fixes with uqDistArrayClass copy constructor
   * imposing bounds on Gaussian random variables, if such bounds are indeed requested
   * added gamma random variable
-  * added inverse gamma random variable
   * added beta random variable
   * added wigner random variable
   * added log-normal random variable

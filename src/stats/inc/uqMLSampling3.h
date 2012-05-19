@@ -678,7 +678,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
       auxInitialPosition = *(balancedLinkControl.balLinkedChains[chainId].initialPosition); // Round Rock
       tmpChainSize = balancedLinkControl.balLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
       if ((m_env.subDisplayFile()       ) &&
-          (m_env.displayVerbosity() >= 0)) {
+          (m_env.displayVerbosity() >= 3)) {
         *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
                                 << ", level "            << m_currLevel+LEVEL_REF_ID
                                 << ", step "             << m_currStep
@@ -749,7 +749,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
       if (cumulativeNumPositions > 100) m_env.setExceptionalCircunstance(false);
         
       if ((m_env.subDisplayFile()       ) &&
-          (m_env.displayVerbosity() >= 0)) {
+          (m_env.displayVerbosity() >= 3)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateBalLinkedChains_all()"
                                 << ", level "               << m_currLevel+LEVEL_REF_ID
                                 << ", step "                << m_currStep
@@ -883,7 +883,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
       prevChain.getPositionValues(auxIndex,auxInitialPosition); // Round Rock
       tmpChainSize = unbalancedLinkControl.unbLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
       if ((m_env.subDisplayFile()       ) &&
-          (m_env.displayVerbosity() >= 0)) {
+          (m_env.displayVerbosity() >= 3)) {
         *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
                                 << ", level "            << m_currLevel+LEVEL_REF_ID
                                 << ", step "             << m_currStep
@@ -954,7 +954,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
       if (cumulativeNumPositions > 100) m_env.setExceptionalCircunstance(false);
         
       if ((m_env.subDisplayFile()       ) &&
-          (m_env.displayVerbosity() >= 0)) {
+          (m_env.displayVerbosity() >= 3)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateUnbLinkedChains_all()"
                                 << ", level "               << m_currLevel+LEVEL_REF_ID
                                 << ", step "                << m_currStep
