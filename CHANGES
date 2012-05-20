@@ -3,10 +3,11 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
-Version 0.45.1 (In Progress)
+Version 0.45.1 (20 May 2012)
+https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.45.1
 
   * updated autotools bootstrapping mechanism to use autoreconf
-  * increased minimum autoconf requirement to v2.68
+  * increased minimum autoconf requirement to v2.65
   * bug fixes with multi-level restart capability
   * bug fixes with uqDistArrayClass copy constructor
   * imposing bounds on Gaussian random variables, if such bounds are indeed requested
@@ -18,7 +19,7 @@ Version 0.45.1 (In Progress)
   * added DRAM option to read the initial proposal covariance matrix
   * added DRAM option to write the adapted matrices, with writing period
   * improved concatenation (more than 2 objects at once) of RV, pdf, realizer, subset, and uqGslVector classes
-  * added tranpose operation of non-square matrices
+  * added transpose operation of non-square matrices
   * added block-diagonal and block-sideways filling of matrices
   * added tensor product operation of matrices and vectors
   * improved cwSet() operation ('cw' = component wise) on matrices and vectors
