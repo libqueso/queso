@@ -161,7 +161,7 @@ Although mathematically simple, is not computationally trivial.
 % Indeed, QUESO C++ classes include vector spaces, subsets, scalar sequences, PDFs, and RVs.
 
 
-An application using QUESO will fall into three categories: a statistical IP, a statistical FP, or combinations of both.
+An application using QUESO falls into three categories: a statistical inverse problem (IP), a statistical forward problem (FP), or combinations of both.
 In each problem the user might deal with up to five vectors of potentially very different sizes:
 parameters $\boldsymbol{\theta}$, state $\mathbf{u}$, output $\mathbf{y}$, data $\mathbf{d}$ and QoIs $\mathbf{q}$.
 
@@ -171,12 +171,12 @@ of a QoI routine $\mathbf{q}:\mathbb{R}^n\rightarrow\mathbb{R}^m$ for statistica
 exist at the application level and provide the necessary bridge between the statistical algorithms in QUESO,
 model knowledge in the model library and scenario and experimental data in the disk space.
 %Concepts are further detailed in Chapter \ref{ch-introduction}.
-
+%
 Figure~\ref{fig-sw-stack} shows the software stack of a typical application that uses QUESO. In the figure, the symbol $\boldsymbol{\theta}$ represents a vector of $n\geqslant 1$ parameters. 
 %
 \begin{figure}[!htbp]
 \centerline{
-\includegraphics[scale=0.4,clip=true]{rawfigs/quesoSwStack_09_2010.png}
+%\includegraphics[scale=0.4,clip=true]{rawfigs/quesoSwStack_09_2010.png}
 }
 \caption{
 An application software stack.
@@ -189,8 +189,9 @@ These application level routines provide the bridge between
 the statistical algorithms in QUESO,
 physics 
 %model
-knowledge in the model library, and relevant calibration
-    and validation data.
+knowledge in the model library, and relevant 
+experimental (calibration
+    and validation) data.
 %model specific data in the disk space.
 }
 \label{fig-sw-stack}
@@ -216,20 +217,19 @@ knowledge in the model library, and relevant calibration
 Even though QUESO deals directly with $\boldsymbol{\theta}$ and $\mathbf{q}$ only,
 it is usually the case the one of the other three vectors ($\mathbf{u}$, $\mathbf{y}$ and $\mathbf{d}$) will have the biggest number of components and will therefore
 dictate the size of the minimum parallel environment to be used in a problem.
+%
 So, for example, even though one processor might be sufficient for handling $\boldsymbol{\theta}$, $\mathbf{y}$, $\mathbf{d}$ and $\mathbf{q}$,
 eight processors at least might be necessary to solve for $\mathbf{u}$.
 QUESO currently only requires that the amounts $n$ and $m$ can be handled by the memory available to one processor,
 which allows the analysis of problems with thousands of parameters and QoIs, a large amount even for state of the art UQ algorithms.
 
 QUESO currently supports three modes of parallel execution:
-an application user may simultaneously run
+an application user may simultaneously run:
 \begin{description}
 \item[(a)] multiple instances of a problem where the physical model requires a single processor, or
 \item[(b)] multiple instances of a problem where the physical model requires multiple processors, or
 \item[(c)] independent sets of types (a) and (b).
 \end{description}
-
-
 %
 For example, suppose an user wants to use the MH algorithm to solve a statistical IP, and that 1,024 processors are available.
 If the physical model is simple enough to be handled efficiently by a single processor, then the user can run 1,024 chains simultaneously, as in case (a).
@@ -245,6 +245,169 @@ Once the two model analysis end, the combined model can use the full set of proc
 
 
 \subsection{A QUESO Environment}
+
+Classes in QUESO can be divided in four main groups:
+\begin{itemize}
+\item core: environment (and options), vector, matrix;
+\item templated basic: vector sets (and subsets, vector spaces),  scalar function, vector function, scalar sequence, vector sequence;
+%\item Vector sets, subsets and spaces (see Figure \ref{fig-vector-space-subset-classes}),
+%\item Scalar function (see Figure \ref{fig-scalar-function-class}),
+%\item Vector function (see Figure \ref{fig-vector-function-class}),
+%\item Scalar sequence (see Figure \ref{fig-scalar-sequence-class}), and
+%\item Vector sequence (see Figure \ref{fig-vector-sequence-class}).
+\item templated statistical: vector realizer, vector RV, statistical IP (and options), MH solver (and options), statistical FP (and options), MC solver (and options), sequence statistical options; and
+%\item Vector RV (concatenation)
+%\item Statistical IP (and options)
+%\item Metropolis Hastings solver (and options)
+%\item Statistical FP (and options)
+%\item MC solver (and options)
+%\item Sequence statistical options
+\item miscellaneous: C and FORTRAN interfaces.
+\end{itemize}
+The templated basic classes are necessary for the definition and description of other entities, such as RVs, Bayesian solutions of IPs, sampling algorithms and chains.
+%
+In the following we briefly explain 10 QUESO classes.
+
+\subsubsection{Environment Class}
+%
+This class sets up the environment underlying the use of the QUESO library by an executable.
+The constructor of the environment class requires a communicator, the name of an options input file,
+and the eventual prefix of the environment in order for the proper options to be read (multiple environments can coexist, as explained further below).
+The environment class:
+\begin{itemize}
+ \item[(a)] assigns rank numbers, other than the world rank, to nodes participating in a parallel job,
+\item[(b)] provides MPI communicators for generating a sequence of vectors in a distributed way,
+\item[(c)] provides functionality to read options from the options input file (whose name is passed in the constructor of this environment class),
+\item[(d)] opens output files for messages that would otherwise be written to the screen (one output file per allowed rank is opened and allowed ranks can be specified through the options input file).
+ 
+\end{itemize}
+
+
+
+Let $S \geqslant 1$ be the number of problems a QUESO environment will be handling at the same time, in parallel.
+$S$ has default value of $1$ and is an option read by QUESO from the input file provided by the user.
+The QUESO environment class manages five types of communicators, referred to as:
+\begin{description}
+\item[{\it world}:] MPI\_WORLD\_COMM;
+\item[{\it full}:] communicator passed to the environment constructor, of size $F$ and usually equal to the world communicator;
+\item[{\it sub}:] communicator of size $F/S$ that contains the number of MPI nodes necessary to solve a statistical IP or a statistical FP;
+\item[{\it self}:] MPI\_SELF\_COMM, of size 1; and
+\item[{\it inter0}:] communicator of size $S$ formed by all MPI nodes that have subrank 0 in their respective subcommunicators.
+\end{description}
+
+
+A {\it subenvironment} in QUESO is the smallest collection of processors necessary for the proper run of the model code.
+An {\it environment} in QUESO is the collection of all subenvironments, if there is more than one subenvironment.
+So, for instance, if the model code requires 16 processors to run and the user decides to run 64 Markov chains in parallel,
+then the environment will consist of a total of $F=1024$ processors and $S=64$ subenvironments, each subenvironment with $F/S=16$ processors.
+Any given computing node in a QUESO run has potentially five different ranks.
+Each subenvironment is assigned a subid varying from $0$ (zero) to $S-1$, and is able to handle a statistical IP and/or a statistical FP.
+That is, each subenvironment is able to handle a {\it sub} Markov chain (a sequence) of vectors and/or a {\it sub} MC sequence of output vectors.
+The {\it sub} sequences form an unified sequence in a distributed way.
+QUESO takes care of the unification of results for the application programming and for output files.
+
+$~$\\
+{
+\setlength{\parindent}{0cm}{\bf\underline{Vector Set Class:}}
+%%\label{subsc-vector-set}
+%
+The vector set class is fundamental for the proper handling of many mathematical entities.
+Indeed, the definition of a scalar function like $\pi:\mathbf{B}\subset\mathbb{R}^n\rightarrow\mathbb{R}$ requires the
+specification of the domain $\mathbf{B}$, which is a {\it subset} of the {\it vector space} $\mathbb{R}^n$, which is itself a {\it set}.
+The relationship among the classes set, subset and vector space is sketched in Figure \ref{fig-vector-space-subset-classes}.
+An attribute of the {\it subset} class is the {\it vector space} which it belongs to, and in fact a reference to a vector space is required by the constructor of the subset class.
+The power of an object-oriented design is clearly featured here.
+The {\it intersection} subset derived class is useful for handling a posterior PDF \eqref{eq-Bayes-solution},
+since its domain is the intersection of the domain of the prior PDF with the domain of the likelihood function.
+}
+
+\begin{figure}[!h]
+\centerline{
+%\includegraphics[scale=0.35,clip=true]{figs/uqVectorSetConcise.eps}
+}
+\caption{
+The class diagram for vector set, vector subset and vector space classes.
+}
+\label{fig-vector-space-subset-classes}
+\end{figure}
+
+$~$\\
+{
+\setlength{\parindent}{0cm}{\bf\underline{Scalar Function and Vector Function Classes:}}
+%
+PDFs are examples of scalar functions.
+QUESO currently supports basic PDFs such as uniform and Gaussian.
+See Diagram \ref{fig-scalar-function-class}.
+%%The handling of vector functions is as easy.
+%%Indeed,
+The definition of a vector function $\mathbf{q}:\mathbf{B}\subset\mathbb{R}^n\rightarrow\mathbb{R}^m$ requires only the extra specification of the image vector space $\mathbb{R}^m$.
+}
+
+\begin{figure}[!h]
+\centerline{
+%\includegraphics[scale=0.35,clip=true]{figs/uqScalarFunctionConcise.eps}
+}
+\caption{
+The class diagram for the scalar function class.
+}
+\label{fig-scalar-function-class}
+\end{figure}
+
+$~$\\
+{
+\setlength{\parindent}{0cm}{\bf\underline{Scalar Sequence and Vector Sequence Classes:}}
+%
+The scalar sequence class contemplates {\it scalar} samples generated by an algorithm, as well as operations that can
+be done over them, e.g., calculation of means, variances, and convergence indices.
+%% such as Geweke and Brooks-Gelman.
+Similarly, the vector sequence class contemplates {\it vector} samples and operations such as means, correlation matrices and covariance matrices.
+}
+
+$~$\\
+{
+\setlength{\parindent}{0cm}{\bf\underline{Vector Realizer Class:}}
+%
+A {\it realizer} is an object that, simply put, contains a {\it realization()} operation that returns a sample of a vector RV.
+QUESO currently supports basic realizers such as uniform and Gaussian.
+It also contains a {\it sequence realizer} class for storing samples of a MH algorithm, for instance.
+}
+
+$~$\\
+{
+\setlength{\parindent}{0cm}{\bf\underline{Vector Random Variable Class:}}
+%
+Vector RVs are expected to have two basic functionalities:
+compute the value of its PDF at a point, and generate realizations following such PDF.
+The joint PDF and vector realizer classes allow a straightforward definition and manipulation of vector RVs.
+QUESO currently supports basic vector RVs such as uniform and Gaussian.
+A derived class called {\it generic vector RV} allows QUESO to store the solution of an statistical IP:
+a {\it Bayesian joint PDF} becomes the PDF of the posterior RV, while a {\it sequence vector realizer} becomes the realizer of the same posterior RV.
+QUESO also allows users to form new RVs through the concatenation of existing RVs.
+}
+
+$~$\\
+{
+\setlength{\parindent}{0cm}{\bf\underline{Statistical Inverse and Forward Problem Classes:}}
+%
+For QUESO, a statistical IP has two input entities, a prior RV and a likelihood routine, and one output entity, the posterior RV.
+Similarly, a statistical FP has two input entities, an input RV and a QoI routine, and one output entity, the output RV.
+QUESO differentiates the entities that allow us to define a problem from the entities that allow us to solve it.
+Indeed, QUESO defines the MH and MC sequence generator classes.
+The former expects the specification of a target distribution, a proposal covariance matrix, and the initial position in the chain,
+while the latter expects the specification of an input RV, a QoI function, and an output RV.
+The proper definition, by QUESO, of more basic entities allows an easy specification of more complex entities such as statistical problems and solvers.
+}
+
+$~$\\
+{
+\setlength{\parindent}{0cm}{\bf\underline{Software Engineering:}}
+We utilize various community tools to manage the QUESO development cycle.
+Source code traceability is provided via subversion and the GNU autotools suite is used to provide a portable, flexible build system,
+with the standard \texttt{configure; make; make check; make install} steps.
+We employ an active regression testing
+and utilize the BuildBot system in order to have a continuous integration analysis of source code commits.
+We also utilize the Redmine project management system, which provides a web-based mechanism to manage milestone developments, issues, bugs, and source code changes.
+}
 
 \subsection{Using Other C++ Classes in the Library}
 
