@@ -195,7 +195,11 @@ libqueso_include_HEADERS += \
 	$(top_srcdir)/src/stats/inc/uqVectorMdf.h \
 	$(top_srcdir)/src/stats/inc/uqVectorRealizer.h \
 	$(top_srcdir)/src/stats/inc/uqVectorRV.h \
-	$(top_srcdir)/src/stats/inc/uqInfoTheory.h
+	$(top_srcdir)/src/stats/inc/uqInfoTheory.h \
+	$(top_srcdir)/src/stats/inc/uqScalarCovarianceFunction.h \
+	$(top_srcdir)/src/stats/inc/uqMatrixCovarianceFunction.h \
+	$(top_srcdir)/src/stats/inc/uqScalarGaussianRandomField.h \
+	$(top_srcdir)/src/stats/inc/uqVectorGaussianRandomField.h
 
 # Headers to install, but not part of dist
 
