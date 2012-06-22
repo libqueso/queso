@@ -70,6 +70,8 @@ public:
   int               svd                     (uqGslMatrixClass& matVt, uqGslVectorClass& vecS);
   void              zeroLower               (bool includeDiagonal = false);
   void              zeroUpper               (bool includeDiagonal = false);
+  void              filterSmallValues       (double thresholdValue);
+  void              filterLargeValues       (double thresholdValue);
   uqGslMatrixClass  transpose               () const;
   uqGslMatrixClass  inverse                 () const;
   void              fillWithBlocksDiagonally(const std::vector<const uqGslMatrixClass* >& matrices);
