@@ -848,6 +848,11 @@ double
 uqGslMatrixClass::determinant() const
 {
   if (m_determinant == -INFINITY) {
+    if (m_LU == NULL) {
+      uqGslVectorClass tmpB(m_env,m_map);
+      uqGslVectorClass tmpX(m_env,m_map);
+      this->invertMultiply(tmpB,tmpX);
+    }
     m_determinant   = gsl_linalg_LU_det(m_LU,m_signum); 
     m_lnDeterminant = gsl_linalg_LU_lndet(m_LU);
   }
@@ -859,6 +864,11 @@ double
 uqGslMatrixClass::lnDeterminant() const
 {
   if (m_lnDeterminant == -INFINITY) {
+    if (m_LU == NULL) {
+      uqGslVectorClass tmpB(m_env,m_map);
+      uqGslVectorClass tmpX(m_env,m_map);
+      this->invertMultiply(tmpB,tmpX);
+    }
     m_determinant   = gsl_linalg_LU_det(m_LU,m_signum); 
     m_lnDeterminant = gsl_linalg_LU_lndet(m_LU);
   }
