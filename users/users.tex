@@ -1,5 +1,6 @@
 \documentclass[12pt,letterpaper,twoside,onecolumn,portrait,leqno]{book}
 \bibliographystyle{plain}
+\usepackage[Sonny]{fncychap} %Bjornstrup, Sonny
 \usepackage{amssymb,amsfonts,amsmath,amscd,amsthm}
 %\usepackage[draft]{graphicx}
 \usepackage{graphicx}
@@ -9,29 +10,39 @@
 \usepackage{url}
 \usepackage{fancyvrb}
 \usepackage{subfigure}
+\usepackage{wrapfig}
 
+% Sonny
+% \ChNameVar{\Large\sf}
+% \ChRuleWidth{0.5pt}
+% \ChNumVar{\Huge}
+% \ChNameUpperCase
+% \ChTitleVar{\Large\sf}
+
+
+\setcounter{secnumdepth}{4}                 %%% Habilita 4 nível de numeração
 \setlength{\textwidth}{6.6in}
 \setlength{\topmargin}{-0.25in}
 \setlength{\textheight}{8.60in}
 \setlength{\oddsidemargin}{0.2in}
 \setlength{\evensidemargin}{-0.3in}
 
-\renewcommand{\contentsname}{\vspace*{-1.45in}\centerline{\Large\bf Contents}\vspace*{-0.4in}}
-\renewcommand{\listtablename}{\vspace*{-1.45in}\centerline{\Large\bf List of Tables}\vspace*{-0.4in}}
-\renewcommand{\listfigurename}{\vspace*{-1.45in}\centerline{\Large\bf List of Figures}\vspace*{-0.4in}}
-\renewcommand{\chaptername}{\vspace*{-1.45in}{\Huge\bf Chapter}}
-\renewcommand{\appendixname}{\vspace*{-1.45in}{\Huge\bf Appendix}}
-\renewcommand{\bibname}{\vspace*{-1.0in}{\Huge\bf Bibliography}}
+% \renewcommand{\contentsname}{\vspace*{-1.45in}\centerline{\Large\bf Contents}\vspace*{-0.4in}}
+% \renewcommand{\listtablename}{\vspace*{-1.45in}\centerline{\Large\bf List of Tables}\vspace*{-0.4in}}
+% \renewcommand{\listfigurename}{\vspace*{-1.45in}\centerline{\Large\bf List of Figures}\vspace*{-0.4in}}
+% \renewcommand{\chaptername}{\vspace*{-1.45in}{\Huge\bf Chapter}}
+% \renewcommand{\appendixname}{\vspace*{-1.45in}{\Huge\bf Appendix}}
+% \renewcommand{\bibname}{\vspace*{-1.0in}{\Huge\bf Bibliography}}
 \newcommand{\Quesoweb}{\url{https://red.ices.utexas.edu/projects/software}}
 \newcommand{\Queso}{QUESO}
-\newcommand{\todo}[1]{ {\color{red} TODO: #1} }
+\newcommand{\todo}[1]{ {\color{red} To do: #1} }
 
 \newcommand{\myverb}[1]{ \indent{ \begin{verbatim} #1 \end{verbatim} } }
 \begin{document}
 
 \setlength{\unitlength}{1.0in}
-\setlength{\parindent}{0cm}
-\setlength{\parskip}{2ex}
+%\setlength{\parindent}{0cm}
+%\setlength{\parskip}{2ex}
 \pagestyle{headings}
 \markright{}
 \pagenumbering{roman}

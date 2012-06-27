@@ -6,8 +6,8 @@
 \put(0,0.1){\line(1,0){6.6}}
 \end{picture}
 $~$\hfill User's Manual\\
-$~$\hfill Version 0.41.0\\
-$~$\hfill October 30, 2009\\
+$~$\hfill Version 0.45.0\\
+$~$\hfill October 30, 2012\\
 
 \vfill
 $~$\\
@@ -29,6 +29,7 @@ $~$\\
 {\bf Contributors:}\hfill \\
 $~\hspace{10pt}$ {\em{Paul T. Bauman}}  \hfill \\
 $~\hspace{10pt}$ {\em{Sai Hung Cheung}} \hfill \\
+$~\hspace{10pt}$ {\em{Kemelli C. Estacio-Hiroms}} \hfill \\
 $~\hspace{10pt}$ {\em{Todd A. Oliver}}  \hfill \\
 $~\hspace{10pt}$ {\em{Ernesto E. Prudencio}} \hfill\\ 
 $~\hspace{10pt}$ {\em{Karl W. Schulz}}  \hfill \\
@@ -41,7 +42,13 @@ Center for Predictive Engineering and Computational Sciences (PECOS) \hfill\\
 Institute for Computational and Engineering Sciences (ICES) \hfill\\
 The University of Texas at Austin\hfill\\
 \end{center}
-
+% %
+% \begin{figure}[!h]
+% \vspace*{-1cm}
+% {\includegraphics[scale=0.4]{figs/ices_logo.png}}\hfill
+% {\includegraphics[scale=0.1]{figs/grand_logo}}
+% \end{figure}
+%
 \vfill
 $~$\\
 \begin{picture}(8,0.1)
@@ -98,21 +105,21 @@ $~$\\
 %------------------------------------------------------------------
 \addcontentsline{toc}{chapter}{Disclaimer}
 %\thispagestyle{empty}
-\centerline{\Large\bf Disclaimer (To be checked by Karl)}
+\centerline{\Large\bf Disclaimer \todo{(To be checked by Karl)}}
 $~$\\
-    THIS DOCUMENT WAS PREPARED
-    BY THE UNIVERSITY OF TEXAS AT AUSTIN.
-    NEITHER THE UNIVERSITY OF TEXAS
-    AT AUSTIN, NOR ANY OF ITS INSTITUTES, DEPARTMENTS AND EMPLOYEES, MAKES ANY WARRANTY, EXPRESS OR IMPLIED,
-    OR ASSUMES ANY LEGAL LIABILITY OR RESPONSIBILITY FOR THE ACCURACY, COMPLETENESS, OR
-    USEFULNESS OF ANY INFORMATION, APPARATUS, PRODUCT, OR PROCESS DISCLOSED, OR REPRESENTS
-    THAT ITS USE WOULD NOT INFRINGE PRIVATELY OWNED RIGHTS. REFERENCE HEREIN TO ANY SPECIFIC
-    COMMERCIAL PRODUCT, PROCESS, OR SERVICE BY TRADE NAME, TRADEMARK, MANUFACTURER, OR OTHERWISE,
-    DOES NOT NECESSARILY CONSTITUTE OR IMPLY ITS ENDORSEMENT, RECOMMENDATION, OR FAVORING BY
-    THE UNIVERSITY OF TEXAS AT AUSTIN OR ANY OF ITS INSTITUTES, DEPARTMENTS AND EMPLOYEES THEREOF.
-    THE VIEW AND OPINIONS EXPRESSED HEREIN DO NOT NECESSARILY STATE OR REFLECT
-    THOSE OF THE UNIVERSITY OF TEXAS AT AUSTIN OR ANY INSTITUTE OR DEPARTMENT
-    THEREOF.
+    This document was prepared
+    by The University of Texas at Austin.
+    neither the University of Texas
+    at Austin, nor any of its institutes, departments and employees, makes any warranty, express or implied,
+    or assume any legal liability or responsibility for the accuracy, completeness, or
+    usefulness of any information, apparatus, product, or process disclosed, or represent
+    that its use would not infringe privately owned rights. reference herein to any specific
+    commercial product, process, or service by trade name, trademark, manufacturer, or otherwise,
+    does not necessarily constitute or imply its endorsement, recommendation, or favoring by
+    The University of Texas at Austin or any of its institutes, departments and employees thereof.
+    the views and opinions expressed herein do not necessarily state or reflect
+    those of The University of Texas at Austin or any institute or department
+    thereof.
 
 \clearpage
 %------------------------------------------------------------------
@@ -159,7 +166,7 @@ Sai Hung Cheung,
 Todd A. Oliver,
 Ernesto E. Prudencio,
 Karl W. Schulz, and
-Rhys Ulerich.
+Rhys Ulerich.\\
 
 {\bf Contact Information:}\\
 Ernesto E. Prudencio\\
@@ -175,6 +182,22 @@ $~$\\
 
 When referencing the QUESO library in a publication, please cite the following:
 \begin{verbatim}
+@incollection{QUESO,
+  author = "Ernesto Prudencio and Karl W. Schulz",
+  title = {The Parallel C++ Statistical Library `QUESO':
+           Quantification of Uncertainty for Estimation,
+           Simulation and Optimization},
+  booktitle = {Euro-Par 2011: Parallel Processing Workshops},
+  series = {Lecture Notes in Computer Science},
+  publisher = {Springer Berlin / Heidelberg},
+  isbn = {978-3-642-29736-6},
+  keyword = {Computer Science},
+  pages = {398-407},
+  volume = {7155},
+  url = {http://dx.doi.org/10.1007/978-3-642-29737-3_44},
+  year = {2012}
+}
+
 @Misc{queso-web-page,
    Author = "Ernesto E. Prudencio and Paul T. Bauman and Sai Hung Cheung
              and Todd A. Oliver and Karl W. Schulz and Rhys Ulerich",
