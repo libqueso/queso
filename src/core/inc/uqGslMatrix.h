@@ -58,68 +58,70 @@ public:
             double& operator()(unsigned int i, unsigned int j);
       const double& operator()(unsigned int i, unsigned int j) const;
 
-  unsigned int      numRowsLocal            () const;
-  unsigned int      numRowsGlobal           () const;
-  unsigned int      numCols                 () const;
-  double            normFrob                () const;
-  double            normMax                 () const;
-  double            max                     () const;
-  void              cwSet                   (double value);
-  void              cwSet                   (unsigned int rowId, unsigned int colId, const uqGslMatrixClass& mat);
-  int               chol                    ();
-  int               svd                     (uqGslMatrixClass& matVt, uqGslVectorClass& vecS);
-  void              zeroLower               (bool includeDiagonal = false);
-  void              zeroUpper               (bool includeDiagonal = false);
-  void              filterSmallValues       (double thresholdValue);
-  void              filterLargeValues       (double thresholdValue);
-  uqGslMatrixClass  transpose               () const;
-  uqGslMatrixClass  inverse                 () const;
-  void              fillWithBlocksDiagonally(const std::vector<const uqGslMatrixClass* >& matrices);
-  void              fillWithBlocksDiagonally(const std::vector<      uqGslMatrixClass* >& matrices);
-  void              fillWithBlocksSideways  (const std::vector<const uqGslMatrixClass* >& matrices);
-  void              fillWithBlocksSideways  (const std::vector<      uqGslMatrixClass* >& matrices);
-  void              fillWithTensorProduct   (const uqGslMatrixClass& mat1, const uqGslMatrixClass& mat2);
-  void              fillWithTensorProduct   (const uqGslMatrixClass& mat1, const uqGslVectorClass& vec2);
-  void              fillWithTranspose       (const uqGslMatrixClass& mat);
-  double            determinant             () const;
-  double            lnDeterminant           () const;
-  uqGslVectorClass  multiply                (const uqGslVectorClass& x) const;
-  uqGslVectorClass  invertMultiply          (const uqGslVectorClass& b) const;
-  void              invertMultiply          (const uqGslVectorClass& b, uqGslVectorClass& x) const;
-  void              invertMultiply          (const uqGslMatrixClass& B, uqGslMatrixClass& X) const;
+  unsigned int      numRowsLocal              () const;
+  unsigned int      numRowsGlobal             () const;
+  unsigned int      numCols                   () const;
+  double            normFrob                  () const;
+  double            normMax                   () const;
+  double            max                       () const;
+  void              cwSet                     (double value);
+  void              cwSet                     (unsigned int rowId, unsigned int colId, const uqGslMatrixClass& mat);
+  int               chol                      ();
+  int               svd                       (uqGslMatrixClass& matVt, uqGslVectorClass& vecS);
+  void              zeroLower                 (bool includeDiagonal = false);
+  void              zeroUpper                 (bool includeDiagonal = false);
+  void              filterSmallValues         (double thresholdValue);
+  void              filterLargeValues         (double thresholdValue);
+  uqGslMatrixClass  transpose                 () const;
+  uqGslMatrixClass  inverse                   () const;
+  void              fillWithBlocksDiagonally  (const std::vector<const uqGslMatrixClass* >& matrices);
+  void              fillWithBlocksDiagonally  (const std::vector<      uqGslMatrixClass* >& matrices);
+  void              fillWithBlocksHorizontally(const std::vector<const uqGslMatrixClass* >& matrices);
+  void              fillWithBlocksHorizontally(const std::vector<      uqGslMatrixClass* >& matrices);
+  void              fillWithBlocksVertically  (const std::vector<const uqGslMatrixClass* >& matrices);
+  void              fillWithBlocksVertically  (const std::vector<      uqGslMatrixClass* >& matrices);
+  void              fillWithTensorProduct     (const uqGslMatrixClass& mat1, const uqGslMatrixClass& mat2);
+  void              fillWithTensorProduct     (const uqGslMatrixClass& mat1, const uqGslVectorClass& vec2);
+  void              fillWithTranspose         (const uqGslMatrixClass& mat);
+  double            determinant               () const;
+  double            lnDeterminant             () const;
+  uqGslVectorClass  multiply                  (const uqGslVectorClass& x) const;
+  uqGslVectorClass  invertMultiply            (const uqGslVectorClass& b) const;
+  void              invertMultiply            (const uqGslVectorClass& b, uqGslVectorClass& x) const;
+  void              invertMultiply            (const uqGslMatrixClass& B, uqGslMatrixClass& X) const;
 
-  void              eigen                   (uqGslVectorClass& eigenValues, uqGslMatrixClass* eigenVectors) const;
-  void              largestEigen            (double& eigenValue, uqGslVectorClass& eigenVector) const;
-  void              smallestEigen           (double& eigenValue, uqGslVectorClass& eigenVector) const;
+  void              eigen                     (uqGslVectorClass& eigenValues, uqGslMatrixClass* eigenVectors) const;
+  void              largestEigen              (double& eigenValue, uqGslVectorClass& eigenVector) const;
+  void              smallestEigen             (double& eigenValue, uqGslVectorClass& eigenVector) const;
 
-  uqGslVectorClass  invertMultiplyForceLU   (const uqGslVectorClass& b) const;
-  void              invertMultiplyForceLU   (const uqGslVectorClass& b, uqGslVectorClass& x) const;
+  uqGslVectorClass  invertMultiplyForceLU     (const uqGslVectorClass& b) const;
+  void              invertMultiplyForceLU     (const uqGslVectorClass& b, uqGslVectorClass& x) const;
 
-  void              print                   (std::ostream& os) const;
-  void              subWriteContents        (const std::string&            varNamePrefix,
-                                             const std::string&            fileName,
-                                             const std::string&            fileType,
-                                             const std::set<unsigned int>& allowedSubEnvIds) const;
-  void              subReadContents         (const std::string&            fileName,
-                                             const std::string&            fileType,
-                                             const std::set<unsigned int>& allowedSubEnvIds);
+  void              print                     (std::ostream& os) const;
+  void              subWriteContents          (const std::string&            varNamePrefix,
+                                               const std::string&            fileName,
+                                               const std::string&            fileType,
+                                               const std::set<unsigned int>& allowedSubEnvIds) const;
+  void              subReadContents           (const std::string&            fileName,
+                                               const std::string&            fileType,
+                                               const std::set<unsigned int>& allowedSubEnvIds);
 
-  void              getColumn               (const unsigned int column_num, uqGslVectorClass& column) const;
-  void              getRow                  (const unsigned int row_num, uqGslVectorClass& row) const;
-  uqGslVectorClass  getColumn               (const unsigned int column_num) const;
-  uqGslVectorClass  getRow                  (const unsigned int row_num) const;
-  void              setColumn               (const unsigned int column_num, const uqGslVectorClass& column);
-  void              setRow                  (const unsigned int row_num, const uqGslVectorClass& row);
+  void              getColumn                 (const unsigned int column_num, uqGslVectorClass& column) const;
+  void              getRow                    (const unsigned int row_num, uqGslVectorClass& row) const;
+  uqGslVectorClass  getColumn                 (const unsigned int column_num) const;
+  uqGslVectorClass  getRow                    (const unsigned int row_num) const;
+  void              setColumn                 (const unsigned int column_num, const uqGslVectorClass& column);
+  void              setRow                    (const unsigned int row_num, const uqGslVectorClass& row);
 
-  void              mpiSum                  (const uqMpiCommClass& comm, uqGslMatrixClass& M_global) const;
-  void              matlabLinearInterpExtrap(const uqGslVectorClass& x1Vec, const uqGslMatrixClass& y1Mat, const uqGslVectorClass& x2Vec);
+  void              mpiSum                    (const uqMpiCommClass& comm, uqGslMatrixClass& M_global) const;
+  void              matlabLinearInterpExtrap  (const uqGslVectorClass& x1Vec, const uqGslMatrixClass& y1Mat, const uqGslVectorClass& x2Vec);
 
-  gsl_matrix*       data                    ();
+  gsl_matrix*       data                      ();
 
 private:
-  void              copy                    (const uqGslMatrixClass& src);
-  void              resetLU                 ();
-  void              multiply                (const uqGslVectorClass& x, uqGslVectorClass& y) const;
+  void              copy                      (const uqGslMatrixClass& src);
+  void              resetLU                   ();
+  void              multiply                  (const uqGslVectorClass& x, uqGslVectorClass& y) const;
 
           gsl_matrix*       m_mat;
   mutable gsl_matrix*       m_LU;

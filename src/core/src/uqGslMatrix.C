@@ -703,19 +703,19 @@ uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >
 }
 
 void
-uqGslMatrixClass::fillWithBlocksSideways(const std::vector<const uqGslMatrixClass* >& matrices)
+uqGslMatrixClass::fillWithBlocksHorizontally(const std::vector<const uqGslMatrixClass* >& matrices)
 {
   unsigned int sumNumCols = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
     UQ_FATAL_TEST_MACRO(this->numRowsLocal() != matrices[i]->numRowsLocal(),
                         m_env.worldRank(),
-                        "uqGslMatrixClass::fillWithBlocksSideways(const)",
+                        "uqGslMatrixClass::fillWithBlocksHorizontally(const)",
                         "inconsistent local number of rows");
     sumNumCols += matrices[i]->numCols();
   }
   UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
                       m_env.worldRank(),
-                      "uqGslMatrixClass::fillWithBlocksSideways(const)",
+                      "uqGslMatrixClass::fillWithBlocksHorizontally(const)",
                       "inconsistent number of cols");
 
   unsigned int cumulativeColId = 0;
@@ -734,19 +734,19 @@ uqGslMatrixClass::fillWithBlocksSideways(const std::vector<const uqGslMatrixClas
 }
 
 void
-uqGslMatrixClass::fillWithBlocksSideways(const std::vector<uqGslMatrixClass* >& matrices)
+uqGslMatrixClass::fillWithBlocksHorizontally(const std::vector<uqGslMatrixClass* >& matrices)
 {
   unsigned int sumNumCols = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
     UQ_FATAL_TEST_MACRO(this->numRowsLocal() != matrices[i]->numRowsLocal(),
                         m_env.worldRank(),
-                        "uqGslMatrixClass::fillWithBlocksSideways()",
+                        "uqGslMatrixClass::fillWithBlocksHorizontally()",
                         "inconsistent local number of rows");
     sumNumCols += matrices[i]->numCols();
   }
   UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
                       m_env.worldRank(),
-                      "uqGslMatrixClass::fillWithBlocksSideways()",
+                      "uqGslMatrixClass::fillWithBlocksHorizontally()",
                       "inconsistent number of cols");
 
   unsigned int cumulativeColId = 0;
@@ -759,6 +759,68 @@ uqGslMatrixClass::fillWithBlocksSideways(const std::vector<uqGslMatrixClass* >& 
       }
     }
     cumulativeColId += numCols;
+  }
+
+  return;
+}
+
+void
+uqGslMatrixClass::fillWithBlocksVertically(const std::vector<const uqGslMatrixClass* >& matrices)
+{
+  unsigned int sumNumRows = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    UQ_FATAL_TEST_MACRO(this->numCols() != matrices[i]->numCols(),
+                        m_env.worldRank(),
+                        "uqGslMatrixClass::fillWithBlocksVertically(const)",
+                        "inconsistent local number of cols");
+    sumNumRows += matrices[i]->numRowsLocal();
+  }
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRows,
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::fillWithBlocksVertically(const)",
+                      "inconsistent number of rows");
+
+  unsigned int cumulativeRowId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int numRows = matrices[i]->numRowsLocal();
+    unsigned int numCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < numRows; ++rowId) {
+      for (unsigned int colId = 0; colId < numCols; ++colId) {
+        (*this)(cumulativeRowId + rowId, colId) = (*(matrices[i]))(rowId,colId);
+      }
+    }
+    cumulativeRowId += numRows;
+  }
+
+  return;
+}
+
+void
+uqGslMatrixClass::fillWithBlocksVertically(const std::vector<uqGslMatrixClass* >& matrices)
+{
+  unsigned int sumNumRows = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    UQ_FATAL_TEST_MACRO(this->numCols() != matrices[i]->numCols(),
+                        m_env.worldRank(),
+                        "uqGslMatrixClass::fillWithBlocksVertically()",
+                        "inconsistent local number of cols");
+    sumNumRows += matrices[i]->numRowsLocal();
+  }
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRows,
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::fillWithBlocksVertically()",
+                      "inconsistent number of rows");
+
+  unsigned int cumulativeRowId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int numRows = matrices[i]->numRowsLocal();
+    unsigned int numCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < numRows; ++rowId) {
+      for (unsigned int colId = 0; colId < numCols; ++colId) {
+        (*this)(cumulativeRowId + rowId, colId) = (*(matrices[i]))(rowId,colId);
+      }
+    }
+    cumulativeRowId += numRows;
   }
 
   return;
