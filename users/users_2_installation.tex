@@ -2,59 +2,77 @@
 \thispagestyle{headings}
 \markboth{Chapter \ref{ch-install}: Installation}{Chapter \ref{ch-install}: Installation}
 
-This chapter describes how to install QUESO, test it and use it to create your application.
+%This chapter describes how to install QUESO, test it and use it to create your application.
 
   
+This chapter covers some of the basics that a user will need to know when beginning to use QUESO, such as 
+how to obtain, configure, build, install, test \Queso\footnote{For the most up-to-date information,
+please visit the online \Queso{} Home Page: \Quesoweb. The most accurate and complete information will be kept at this site.}
+and use it to create your application.
+
 
         
-\section{Installation Steps}
+\section{Pre-QUESO Installation Steps}
 
-Herein, suppose you want to install QUESO and its dependencies on \texttt{/home/johndoe/Installations/} so that you will not need root access rights. %In this post I'll assume that you want to build only the regex library and to install all the built files into $HOME/opt/boost ().
 
-There are eight steps to make the QUESO Library available at your LINUX computing system. 
-They are listed below, with examples of commands:
+Herein, suppose you want to install QUESO and its dependencies on 
+\begin{center}
+\texttt{/home/username/Installations/} 
+\end{center}
 %
-\begin{enumerate}
+so that you will not need root access rights. 
 
-\item Obtain QUESO
-
-The latest supported public release of QUESO is available from \Quesoweb{}.
-For Unix and UNIX-like platforms, it is available in tar format compressed with gzip.  %For Microsoft Windows, it is in ZIP format.
-
-\item {Install QUESO dependencies:
-
-We suggest downloading and installing QUESO and its dependencies as a regular/non-root user, perhaps in \texttt{/home/johndoe/Installations/}. %, as it is a  It is good policy and common practice to place important libraries into the /lib directory.
-
-%install five packages: % item 2
-\begin{itemize}
-\item GNU Scientific Library (GSL)~\cite{Gsl}, e.g GSL 1.12
-\item Boost C++ Libraries~\cite{Boost}, e.g. Boost 1.37.0
-\item MPI Library, e.g. Open MPI~\cite{Openmpi} or MPICH~\cite{Mpich}
-
-%The parallel version of the library is built upon the foundation provided by MPI. If this library is not available when \Queso{} is configured, only a serial version of \Queso{} can be built.
-
-\item Trilinos Library~\cite{Trilinos} (optional), e.g. Trilinos 9.0.2
-\item HDF5~\cite{HDF5} (optional), e.g. HDF5  5-1.8.8 
-%\item {High Performance Computing Toolkit (HPCT)~\cite{Hpct}, e.g. HPCT 0.25.1
-\item{ The Groovy Toolkit (GRVY) ~\cite{grvy}, e.g. GRVY 0.31.0
-%\begin{itemize}
-%\item {
-\begin{verbatim}
-$ ./configure --prefix=/home/johndoe/Installations/grvy_0_31_0 \
-  --with-boost=/home/johndoe/Installations/boost_1_37_0
-$ make 
-$ make install
-\end{verbatim}
-%}
-%\item 
-Note: the directory \texttt{/home/johndoe/Installations/grvy\_0\_31\_0} does not need to exist in advance, since it will be created by the command 'make install' above.
-%\end{itemize}
-}
-\end{itemize}
-}
+There are two main steps to prepare your LINUX computing system  for  the QUESO Library: obtain and install \Queso{} dependencies, and to define a number of environmental variables. These steps are discussed bellow.
 
 
-\item {Prepare your LINUX environment % item 1
+\subsection{Obtain and install \Queso{} dependencies}
+
+\Queso{} interfaces to a number of high-quality software packages to provide certain functionality. While some of them are required for the successful installation of \Queso{}, other may be used for enhancing its performance. 
+
+\Queso dependencies are:
+\begin{enumerate}%{itemize}
+
+  \item \textbf{STL}: The Standard Template Library is a C++ library of container classes, algorithms, and iterators; it provides many of the basic algorithms and data structures of computer science~\cite{STL}. % The STL is a generic library, meaning that its components are heavily parameterized: almost every component in the STL is a template. You should make sure that you understand how templates work in C++ before you use the STL.
+
+  \item \textbf{GSL}: The GNU Scientific Library is a numerical library for C and C++ programmers. It provides a wide range of mathematical routines such as random number generators, special functions and least-squares fitting. E.g. GSL 1.12~\cite{Gsl}. %There are over 1000 functions in total with an extensive test suite.
+
+  \item \textbf{Boost}: Boost provides free peer-reviewed portable C++ source libraries, which can be used with the C++ Standard Library. E.g. Boost 1.37.0~\cite{Boost}.
+
+  \item \textbf{MPI}: The Message Passing Interface is a standard for parallel programming using the message passing model. E.g. Open MPI~\cite{Openmpi} or MPICH~\cite{Mpich}. 
+
+  \item \textbf{GRVY}: The Groovy Toolkit (GRVY) is a library used to house various support functions often required for application development of high-performance, scientific applications. The library is written in C++, but provides an API for development in C and Fortran. E.g. GRVY 0.31.0 ~\cite{grvy}.
+
+\end{enumerate}%{itemize}
+
+\Queso{} also works with the following optional libraries:
+
+\begin{enumerate}%{itemize}
+\item \textbf{HDF5}: The Hierarchical Data Format 5 is a technology suite that makes possible the management of extremely large and complex data collections. E.g. e.g. HDF5  5-1.8.8~\cite{HDF5}.
+
+\item \textbf{GLPK}: The GNU Linear Programming Kit package is is a set of routines written in ANSI C and organized in the form of a callable library for solving large-scale linear programming, mixed integer programming, and other related problems~\cite{GLPK}. 
+
+\item \textbf{PETSc}: The Portable, Extensible Toolkit for Scientific Computation (PETSc) is a suite of data structures and routines for the scalable (parallel) solution of scientific applications modeled by partial differential equations, including parallel linear and nonlinear solvers~\cite{Petsc}.
+
+\item \textbf{Trilinos}: The Trilinos Project is an effort to develop and implement robust algorithms and enabling technologies using modern object-oriented software design, while still leveraging the value of established libraries. It emphasizes abstract interfaces for maximum flexibility of component interchanging, and provides a full-featured set of concrete classes that implement all abstract interfaces.  E.g. Trilinos 9.0.2~\cite{Trilinos}.
+\end{enumerate}%{itemize}
+
+PETSc requires MPI for its functionality. \Queso makes use of MPI to when running in parallel for certain operations.
+\todo{Is this true? $\Longrightarrow$ } {\color{blue}The parallel version of the library is built upon the foundation provided by MPI. If this library is not available when \Queso{} is configured, only a serial version of \Queso{} can be built.}
+
+% \paragraph*{Note:}
+% The basic steps to install GRYV are: 
+% \begin{verbatim}
+% $ ./configure --prefix=/home/username/Installations/grvy_0_31_0 \
+%   --with-boost=/home/username/Installations/boost_1_37_0
+% $ make 
+% $ make install
+% \end{verbatim}
+% %
+% The directory \texttt{/home/username/Installations/grvy\_0\_31\_0} does not need to exist in advance, since it will be created by the command 'make install' above.
+
+
+
+\subsection{Prepare your LINUX environment}
 
 % Step one may differ whether your installation will performed in a stand-alone machine or in a network system which comprises Environment Modules\footnote{\url{http://www.modules.sourceforge.net}}~\footnote{\url{http://www.ices.utexas.edu/sysdocs/linux/modules.html}} to provide easy access to software, such as the one employed in ICES.
 
@@ -64,9 +82,9 @@ of the QUESO's dependencies: GSL, Boost and GVRY. For example, under the UNIX C 
 %export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/home/kemelli/LIBRARIES/QUESO_0.45.0/lib
 \begin{verbatim}
 $ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
-       /home/johndoe/Installations/gsl_1_12/lib:
-       /home/johndoe/Installations/boost_1_37_0/lib:
-       /home/johndoe/Installations/grvy_0_31_0/lib
+       /home/username/Installations/gsl_1_12/lib:
+       /home/username/Installations/boost_1_37_0/lib:
+       /home/username/Installations/grvy_0_31_0/lib
 \end{verbatim}
 can be placed in the user's .bashrc or other startup file. In addition, the user must set the following environmental
 variables
@@ -89,26 +107,77 @@ is replaced with
 $ export CC=gcc
 \end{verbatim}
 
+
+
+
+\section{Obtaining a copy of \Queso{}}
+
+The latest supported public release of \Queso{} is available in the form of a tarball  from \Quesoweb{}.
+
+
+On most systems, the following commands can be used to expand the tarball:
+
+%
+\begin{enumerate}
+
+\item Obtain QUESO
+
+The latest supported public release of QUESO is available from \Quesoweb{}.
+For Unix and UNIX-like platforms, it is available in tar format compressed with gzip.  %For Microsoft Windows, it is in ZIP format.
+
+\item {Install QUESO dependencies:
+
+We suggest downloading and installing QUESO and its dependencies as a regular/non-root user, perhaps in \texttt{/home/username/Installations/}. %, as it is a  It is good policy and common practice to place important libraries into the /lib directory.
+
+%install five packages: % item 2
+\begin{itemize}
+\item GNU Scientific Library (GSL)~\cite{Gsl}, e.g GSL 1.12
+\item Boost C++ Libraries~\cite{Boost}, e.g. Boost 1.37.0
+\item MPI Library, e.g. Open MPI~\cite{Openmpi} or MPICH~\cite{Mpich}
+
+%The parallel version of the library is built upon the foundation provided by MPI. If this library is not available when \Queso{} is configured, only a serial version of \Queso{} can be built.
+
+\item Trilinos Library~\cite{Trilinos} (optional), e.g. Trilinos 9.0.2
+\item HDF5~\cite{HDF5} (optional), e.g. HDF5  5-1.8.8 
+%\item {High Performance Computing Toolkit (HPCT)~\cite{Hpct}, e.g. HPCT 0.25.1
+\item{ The Groovy Toolkit (GRVY) ~\cite{grvy}, e.g. GRVY 0.31.0
+%\begin{itemize}
+%\item {
+\begin{verbatim}
+$ ./configure --prefix=/home/username/Installations/grvy_0_31_0 \
+  --with-boost=/home/username/Installations/boost_1_37_0
+$ make 
+$ make install
+\end{verbatim}
+%}
+%\item 
+Note: the directory \texttt{/home/username/Installations/grvy\_0\_31\_0} does not need to exist in advance, since it will be created by the command 'make install' above.
+%\end{itemize}
 }
+\end{itemize}
+}
+
 
 
 
 
 \item {Untar the QUESO tar.gz file (more comments in Section \ref{sc-source-dir-structure}): % item 3
 
-Supposing you have downloaded the file `queso-0.41.0.tar.gz' into \texttt{/home/johndoe/queso\_download/}, follow the steps:
-% \item cd /home/johndoe
+Supposing you have downloaded the file `queso-0.41.0.tar.gz' into \texttt{/home/username/queso\_download/}, follow the steps:
+% \item cd /home/username
 % \item mkdir queso\_download
-% \item cd /home/johndoe/queso\_download
+% \item cd /home/username/queso\_download
 % \item mv $<$ORIGINAL\_LOCATION$>$queso-0.41.0.tar.gz .
 % \item tar -zxvf queso-0.41.0.tar
 
 \begin{verbatim}
-$ cd /home/johndoe/queso_download/
+$ cd /home/username/queso_download/
 $ gunzip < queso-0.41.0.tar.gz  | tar xf -
-$ cd /home/johndoe/queso_download/queso-0.41.0   #enter the folder 
+$ cd /home/username/queso_download/queso-0.41.0   #enter the folder 
 \end{verbatim}
 }
+
+
 \item {Configure the QUESO building environment: % item 4
 
 \Queso{} uses the GNU autoconf system for configuration, which detects various features of the host system and creates the Makefiles. %On most systems it should be sufficient to say:
@@ -130,17 +199,17 @@ $ ./configure  --help
 
 
 
-The basic steps to configure QUESO using GRVY, Boost, Trilinos and GSL for installation at `\texttt{/home/johndoe/Installations/queso\_0\_41\_0\_gnu}' are:
+The basic steps to configure QUESO using GRVY, Boost, Trilinos and GSL for installation at `\texttt{/home/username/Installations/queso\_0\_41\_0\_gnu}' are:
 \begin{verbatim}
-$ ./configure --prefix=/home/johndoe/Installations/queso_0_41_0_gnu \
-  --with-trilinos=/home/johndoe/Installations/trilinos_9_0_2 \
-  --with-boost=/home/johndoe/Installations/boost_1_37_0 \
-  --with-gsl-prefix=/home/johndoe/Installations/gsl_1_12 \
-  --with-gvry=/home/johndoe/Installations/grvy_0_31_0 \
+$ ./configure --prefix=/home/username/Installations/queso_0_41_0_gnu \
+  --with-trilinos=/home/username/Installations/trilinos_9_0_2 \
+  --with-boost=/home/username/Installations/boost_1_37_0 \
+  --with-gsl-prefix=/home/username/Installations/gsl_1_12 \
+  --with-gvry=/home/username/Installations/grvy_0_31_0 \
   CXXFLAGS=''-DMPICH_IGNORE_CXX_SEEK -O3 -Wall -wd383 -wd981 -wd1572''
 \end{verbatim}
 
-Note: the directory `\Verb+/home/johndoe/Installations/queso_0_41_0_gnu+' does not need to exist in advance, since it will be created in step 7.
+Note: the directory `\Verb+/home/username/Installations/queso_0_41_0_gnu+' does not need to exist in advance, since it will be created in step 7.
 }
 %verbatim: '\Verb+' -> begin of environment
 %          '+'      -> end of environment
@@ -172,11 +241,27 @@ The files are installed under the directory specified with `\texttt{--prefix=DIR
         created automatically.%, provided the mkdir command supports the -p  option.
 
 \item {create the documentation in html format: % item 8
-\todo{this is out-of-date}
-\begin{itemize}
-\item make docs
-\item firefox docs/html/index.html
-\end{itemize}
+\begin{verbatim}
+$ make docs
+\end{verbatim}
+
+A folder named \Verb+docs+ will be created in \Verb+/home/username/queso_download/queso-0.41.0+ (your current path) and you may access the code documentation in two different ways:
+\begin{enumerate}
+\item HyperText Markup Language (HTML)  format:
+\begin{verbatim}
+$ cd docs/html
+$ firefox index.html
+\end{verbatim}
+
+\item Portable Document Format (PDF) format:
+\begin{verbatim}
+$ cd docs
+$ acroread queso.pdf
+\end{verbatim}
+
+\end{enumerate}
+
+
 }
 \end{enumerate}
 %%
@@ -329,7 +414,7 @@ print messages during execution to make it clearer what is going on.
 
 Just run the following commands:
 \begin{itemize}
-\item cd /home/johndoe/queso\_download/queso-0.41.0/
+\item cd /home/username/queso\_download/queso-0.41.0/
 \item cd examples/statisticalInverseProblem1/tests/test\_2009\_02\_03/
 \item rm outputData/*
 \item ../../src/exStatisticalInverseProblem1\_gsl sip.inp [this will take some seconds]
@@ -344,7 +429,7 @@ Just run the following commands:
 
 Just run the following commands:
 \begin{itemize}
-\item cd /home/johndoe/queso\_download/queso-0.41.0/
+\item cd /home/username/queso\_download/queso-0.41.0/
 \item cd examples/statisticalForwardProblem1/tests/test\_2009\_02\_11/
 \item rm outputData/*
 \item ../../src/exStatisticalForwardProblem1\_gsl sfp.inp [this will take some seconds]
@@ -363,7 +448,7 @@ Just run the following commands:
 
 Just run the following commands:
 \begin{itemize}
-\item cd /home/johndoe/queso\_download/queso-0.41.0/
+\item cd /home/username/queso\_download/queso-0.41.0/
 \item cd test/t02\_sip\_sfp/sip\_sfp/
 \item rm outputData/*
 \item ./SipSfpExample\_gsl example.inp [this will take some seconds]
@@ -394,17 +479,17 @@ The QUESO installed directory contains three main directories:
 Prepare your environment by running
 \begin{verbatim}
 setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
-       /home/johndoe/Installations/queso_0_41_0_gnu/lib
+       /home/username/Installations/queso_0_41_0_gnu/lib
 \end{verbatim}
 
 An example Makefile is given below:
 \begin{verbatim}
 # BEGIN OF MAKEFILE
-QUESO_DIR = /home/johndoe/Installations/queso_0_41_0_gnu/
-TRILINOS_DIR = /home/johndoe/Installations/trilinos_9_0_2/
-BOOST_DIR = /home/johndoe/Installations/boost_1_37_0/
-GSL_DIR = /home/johndoe/Installations/gsl_1_12/
-HPCT_DIR = /home/johndoe/Installations/hpct_0_25_1/
+QUESO_DIR = /home/username/Installations/queso_0_41_0_gnu/
+TRILINOS_DIR = /home/username/Installations/trilinos_9_0_2/
+BOOST_DIR = /home/username/Installations/boost_1_37_0/
+GSL_DIR = /home/username/Installations/gsl_1_12/
+HPCT_DIR = /home/username/Installations/hpct_0_25_1/
 
 include $(TRILINOS_DIR)/include/Makefile.export.epetra
 
