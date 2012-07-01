@@ -628,6 +628,81 @@ uqGaussianVectorRVClass<V,M>::print(std::ostream& os) const
   return;
 }
 
+template<class V, class M>
+void
+uqComputeConditionalGaussianVectorRV(
+  const V& muVec1,
+  const V& muVec2,
+  const M& sigmaMat11,
+  const M& sigmaMat12,
+  const M& sigmaMat21,
+  const M& sigmaMat22,
+  const V& sampleVec2,
+        V& muVec1_cond_on_2,
+        M& sigmaMat11_cond_on_2)
+{
+  const uqBaseEnvironmentClass& env = muVec1.env();
+  unsigned int dim1 = muVec1.sizeLocal();
+  unsigned int dim2 = muVec2.sizeLocal();
+
+  UQ_FATAL_TEST_MACRO((sigmaMat11.numRowsLocal() != dim1) || (sigmaMat11.numCols() != dim1),
+                      env.worldRank(),
+                      "uqComputeConditionalGaussianVectorRV()",
+                      "invalid sigmaMat11");
+
+  UQ_FATAL_TEST_MACRO((sigmaMat12.numRowsLocal() != dim1) || (sigmaMat12.numCols() != dim2),
+                      env.worldRank(),
+                      "uqComputeConditionalGaussianVectorRV()",
+                      "invalid sigmaMat12");
+
+  UQ_FATAL_TEST_MACRO((sigmaMat21.numRowsLocal() != dim2) || (sigmaMat21.numCols() != dim1),
+                      env.worldRank(),
+                      "uqComputeConditionalGaussianVectorRV()",
+                      "invalid sigmaMat21");
+
+  UQ_FATAL_TEST_MACRO((sigmaMat22.numRowsLocal() != dim2) || (sigmaMat22.numCols() != dim2),
+                      env.worldRank(),
+                      "uqComputeConditionalGaussianVectorRV()",
+                      "invalid sigmaMat22");
+
+  // Check transpose operation
+  M mat_tt(sigmaMat12);
+  mat_tt.cwSet(0.);
+  mat_tt.fillWithTranspose(sigmaMat21);
+  double auxNorm = (mat_tt - sigmaMat12).normFrob();
+  if (auxNorm >= 1.e-12) {
+    if (env.subDisplayFile()) {
+      *env.subDisplayFile() << "In uqComputeConditionalGaussianVectorRV()"
+                            << ": WARNING, ||sigmaMat21^T - sigmaMat12||_2 = " << auxNorm
+                            << std::endl;
+    }
+  }
+  UQ_FATAL_TEST_MACRO(auxNorm >= 1.e-12,
+                      env.worldRank(),
+                      "uqComputeConditionalGaussianVectorRV()",
+                      "sigmaMat12 and sigmaMat21 are not transpose of each other");
+
+  UQ_FATAL_TEST_MACRO((sampleVec2.sizeLocal() != dim2),
+                      env.worldRank(),
+                      "uqComputeConditionalGaussianVectorRV()",
+                      "invalid sampleVec2");
+
+  UQ_FATAL_TEST_MACRO((muVec1_cond_on_2.sizeLocal() != dim1),
+                      env.worldRank(),
+                      "uqComputeConditionalGaussianVectorRV()",
+                      "invalid muVec1_cond_on_2");
+
+  UQ_FATAL_TEST_MACRO((sigmaMat11_cond_on_2.numRowsLocal() != dim1) || (sigmaMat11_cond_on_2.numCols() != dim1),
+                      env.worldRank(),
+                      "uqComputeConditionalGaussianVectorRV()",
+                      "invalid sigmaMat11_cond_on_2");
+
+  muVec1_cond_on_2     = muVec1     + sigmaMat12 * sigmaMat22.invertMultiply(sampleVec2 - muVec2);
+  sigmaMat11_cond_on_2 = sigmaMat11 - sigmaMat12 * sigmaMat22.invertMultiply(sigmaMat21);
+
+  return;
+}
+
 //*****************************************************
 // Uniform class
 //*****************************************************

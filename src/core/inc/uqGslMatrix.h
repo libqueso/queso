@@ -88,6 +88,7 @@ public:
   uqGslVectorClass  multiply                  (const uqGslVectorClass& x) const;
   uqGslVectorClass  invertMultiply            (const uqGslVectorClass& b) const;
   void              invertMultiply            (const uqGslVectorClass& b, uqGslVectorClass& x) const;
+  uqGslMatrixClass  invertMultiply            (const uqGslMatrixClass& B) const;
   void              invertMultiply            (const uqGslMatrixClass& B, uqGslMatrixClass& X) const;
 
   void              eigen                     (uqGslVectorClass& eigenValues, uqGslMatrixClass* eigenVectors) const;

@@ -1074,23 +1074,31 @@ uqGslMatrixClass::invertMultiply(
   return;
 }
 
+uqGslMatrixClass
+uqGslMatrixClass::invertMultiply(const uqGslMatrixClass& B) const
+{
+  uqGslMatrixClass X(m_env,m_map,B.numCols());
+  this->invertMultiply(B,X);
+
+  return X;
+}
+
 void              
 uqGslMatrixClass::invertMultiply(const uqGslMatrixClass& B, uqGslMatrixClass& X) const
 {
   
   // Sanity Checks
-  UQ_FATAL_RC_MACRO( ((B.numRowsLocal() != X.numRowsLocal()) ||
-		      (B.numCols()      != B.numCols()     )   ),
-		      m_env.worldRank(),
-		      "uqGslMatrixClass::invertMultiply()",
-		      "Matrices B and X are incompatible");
+  UQ_FATAL_RC_MACRO(((B.numRowsLocal() != X.numRowsLocal()) ||
+		     (B.numCols()      != X.numCols()     )),
+                    m_env.worldRank(),
+		    "uqGslMatrixClass::invertMultiply()",
+		    "Matrices B and X are incompatible");
 
   
-  UQ_FATAL_RC_MACRO( ((this->numRowsLocal() != X.numRowsLocal()) ||
-		      (this->numCols()      != X.numCols()     )   ),
-		      m_env.worldRank(),
-		      "uqGslMatrixClass::invertMultiply()",
-		      "This and X matrices are incompatible");
+  UQ_FATAL_RC_MACRO((this->numRowsLocal() != X.numRowsLocal()),
+                    m_env.worldRank(),
+		    "uqGslMatrixClass::invertMultiply()",
+		    "This and X matrices are incompatible");
 
   // Some local variables used within the loop.
   uqGslVectorClass b(m_env, m_map);
