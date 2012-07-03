@@ -720,6 +720,18 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
           omegaLnDiffSequence[i] -= unifiedOmegaLnMax;
           weightSequence[i] = exp(omegaLnDiffSequence[i]);
           subWeightRatioSum += weightSequence[i];
+          if ((m_currLevel == 1) && (nowAttempt == 6))  {
+            if (m_env.subDisplayFile() && (m_env.displayVerbosity() >= 99)) {
+              *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                      << ", level "                    << m_currLevel+LEVEL_REF_ID
+                                      << ", step "                     << m_currStep
+                                      << ", i = "                      << i
+                                      << ", omegaLnDiffSequence[i] = " << omegaLnDiffSequence[i]
+                                      << ", weightSequence[i] = "      << weightSequence[i]
+                                      << ", subWeightRatioSum = "      << subWeightRatioSum
+                                      << std::endl;
+            }
+          }
         }
         m_env.inter0Comm().Allreduce((void *) &subWeightRatioSum, (void *) &unifiedWeightRatioSum, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
                                      "uqMLSamplingClass<P_V,P_M>::generateSequence()",
