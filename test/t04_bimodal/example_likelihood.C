@@ -29,6 +29,8 @@
 #include <example_likelihood.h>
 #include <cmath>
 
+static unsigned int likelihoodCounter = 0;
+
 double likelihoodRoutine(
   const uqGslVectorClass& paramValues,
   const uqGslVectorClass* paramDirection,
@@ -46,39 +48,46 @@ double likelihoodRoutine(
 
   //return scalarProduct(diffVec, covMatrix.invertMultiply(diffVec));
 
+  likelihoodCounter++;
+
   double x = paramValues[0];
 
   double mean1  = 10.;
   double sigma1 = 1.;
-  double y1 = (x-mean1)*(x-mean1)/(2.*sigma1*sigma1);
-  double z1 = (1./sigma1/sqrt(2*M_PI))*exp(-y1);
+  double y1     = (x-mean1)*(x-mean1)/(2.*sigma1*sigma1);
+//double z1     = (1./sigma1/sqrt(2*M_PI))*exp(-y1);
+  double ln_z1  = log(1./sigma1/M_PI/sqrt(2*M_PI)) - y1;
 
   double mean2  = 100.;
   double sigma2 = 5.;
-  double y2 = (x-mean2)*(x-mean2)/(2.*sigma2*sigma2);
-  double z2 = (1./sigma2/sqrt(2*M_PI))*exp(-y2);
+  double y2     = (x-mean2)*(x-mean2)/(2.*sigma2*sigma2);
+//double z2     = (1./sigma2/sqrt(2*M_PI))*exp(-y2);
+  double ln_z2  = log(1./sigma2/M_PI/sqrt(2*M_PI)) - y2;
+ 
 
-  double resultValue = -2*log((z1+2.*z2)/3.);
+//double resultValue = log((z1+2.*z2)/3.);
+  double ln_zMin     = std::min(log(1./3.)+ln_z1, log(2./3.)+ln_z2);
+  double ln_zMax     = std::max(log(1./3.)+ln_z1, log(2./3.)+ln_z2);
+  double resultValue = log(1. + exp(ln_zMin - ln_zMax)) + ln_zMax;
 
-  if (resultValue == INFINITY) {
-    //std::cerr << "WARNING In likelihoodRoutine"
-    //          << ", fullRank "       << paramValues.env().fullRank()
-    //          << ", subEnvironment " << paramValues.env().subId()
-    //          << ", subRank "        << paramValues.env().subRank()
-    //          << ", inter0Rank "     << paramValues.env().inter0Rank()
-    //          << ": x = "            << x
-    //          << ", z1 = "           << z1
-    //          << ", z2 = "           << z2
-    //          << ", resultValue = "  << resultValue
-    //          << std::endl;
-    resultValue = 1040.;
+  if (resultValue == -INFINITY) {
+#if 1
+    std::cerr << "WARNING In likelihoodRoutine"
+              << ", likelihoodCounter =" << likelihoodCounter
+              << ", fullRank "           << paramValues.env().fullRank()
+              << ", subEnvironment "     << paramValues.env().subId()
+              << ", subRank "            << paramValues.env().subRank()
+              << ", inter0Rank "         << paramValues.env().inter0Rank()
+              << ": x = "                << x
+              << ", ln_z1 = "            << ln_z1
+              << ", ln_z2 = "            << ln_z2
+              << ", resultValue = "      << resultValue
+              << std::endl;
+#endif
+    resultValue = -520.;
   }
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
-  double returnValue = -.5*resultValue;
-#else
-  double returnValue = resultValue; 
-#endif
+  double returnValue = resultValue;
 
   if (paramValues.env().exceptionalCircunstance()) {
     if ((paramValues.env().subDisplayFile()       ) &&
