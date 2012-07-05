@@ -444,6 +444,16 @@ uqBaseEnvironmentClass::syncVerbosity() const
   return m_optionsObj->m_ov.m_syncVerbosity;
 }
 
+unsigned int
+uqBaseEnvironmentClass::checkingLevel() const
+{
+  UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
+                      m_worldRank,
+                      "uqBaseEnvironmentClass::checkingLevel()",
+                      "m_optionsObj variable is NULL");
+  return m_optionsObj->m_ov.m_checkingLevel;
+}
+
 const gsl_rng*
 uqBaseEnvironmentClass::rng() const
 {

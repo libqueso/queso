@@ -195,6 +195,7 @@ public:
           void                    scanInputFileForMyOptions     (const po::options_description& optionsDesc) const;
           unsigned int            displayVerbosity              () const;
           unsigned int            syncVerbosity                 () const;
+          unsigned int            checkingLevel                 () const;
           const gsl_rng*          rng                           () const;
           int                     seed                          () const;
           void                    resetGslSeed                  (int newSeedOption);

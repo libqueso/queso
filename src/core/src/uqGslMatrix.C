@@ -620,6 +620,12 @@ uqGslMatrixClass::inverse() const
       }
     }
   }
+  if (m_env.checkingLevel() >= 1) {
+    *m_env.subDisplayFile() << "CHECKING In uqGslMatrixClass::inverse()"
+                            << ": M.lnDet = "      << this->lnDeterminant()
+                            << ", M^{-1}.lnDet = " << m_inverse->lnDeterminant()
+                            << std::endl;
+  }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "In uqGslMatrixClass::inverse():"
                             << "\n M = "        << *this

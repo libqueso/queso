@@ -103,6 +103,7 @@ public:
   std::set<unsigned int> m_subDisplayAllowedSet;
   unsigned int           m_displayVerbosity;
   unsigned int           m_syncVerbosity;
+  unsigned int           m_checkingLevel;
   int                    m_seed;
   std::string            m_platformName;
   std::string            m_identifyingString;

@@ -575,19 +575,26 @@ uqGaussianJointPdfClass<V,M>::lnValue(
 
   double returnValue = 0.;
 
+  double lnDeterminant = 0.;
   if (this->m_domainSet.contains(domainVector) == false) { // prudenci 2011-Oct-04
     returnValue = -INFINITY;
   }
   else {
+    V diffVec(domainVector - this->lawExpVector());
     if (m_diagonalCovMatrix) {
-      V diffVec(domainVector - this->lawExpVector());
       returnValue = ((diffVec*diffVec)/this->lawVarVector()).sumOfComponents();
+      unsigned int iMax = this->lawVarVector().sizeLocal();
+      for (unsigned int i = 0; i < iMax; ++i) {
+        lnDeterminant += log(this->lawVarVector()[i]);
+      }
     }
     else {
-      V diffVec(domainVector - this->lawExpVector());
       V tmpVec = this->m_lawCovMatrix->invertMultiply(diffVec);
       returnValue = (diffVec*tmpVec).sumOfComponents();
+      lnDeterminant = this->m_lawCovMatrix->lnDeterminant();
     }
+    returnValue += log(2*M_PI);   // normalization of pdf
+    returnValue += lnDeterminant; // normalization of pdf
     returnValue *= -0.5;
   }
 
