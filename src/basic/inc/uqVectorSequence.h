@@ -68,14 +68,17 @@ public:
   const    uqBoxSubsetClass<V,M>&   subBoxPlain                 () const;
   const    uqBoxSubsetClass<V,M>&   unifiedBoxPlain             () const;
            void                     deleteStoredVectors         ();
+           void                     append                      (const uqBaseVectorSequenceClass<V,M>& src,
+                                                                       unsigned int                    initialPos,
+                                                                       unsigned int                    numPos);             /* This routine deletes all stored computed vectors */
 
-  virtual  void                     resizeSequence              (unsigned int newSubSequenceSize) = 0;/*-*/
-  virtual  void                     resetValues                 (unsigned int initialPos, unsigned int numPos) = 0;/*-*/
-  virtual  void                     erasePositions              (unsigned int initialPos, unsigned int numPos) = 0;/*-*/
+  virtual  void                     resizeSequence              (unsigned int newSubSequenceSize) = 0;                      /* This routine deletes all stored computed vectors */
+  virtual  void                     resetValues                 (unsigned int initialPos, unsigned int numPos) = 0;         /* This routine deletes all stored computed vectors */
+  virtual  void                     erasePositions              (unsigned int initialPos, unsigned int numPos) = 0;         /* This routine deletes all stored computed vectors */
   virtual  void                     getPositionValues           (unsigned int posId,       V& vec) const = 0;
-  virtual  void                     setPositionValues           (unsigned int posId, const V& vec) = 0;/*-*/
-  virtual  void                     setGaussian                 (const gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
-  virtual  void                     setUniform                  (const gsl_rng* rng, const V& aVec,    const V& bVec     ) = 0;
+  virtual  void                     setPositionValues           (unsigned int posId, const V& vec) = 0;                     /* This routine deletes all stored computed vectors */
+           void                     setGaussian                 (const gsl_rng* rng, const V& meanVec, const V& stdDevVec); /* This routine deletes all stored computed vectors */
+           void                     setUniform                  (const gsl_rng* rng, const V& aVec,    const V& bVec     ); /* This routine deletes all stored computed vectors */
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   virtual  void                     subUniformlySampledMdf      (const V&                       numEvaluationPointsVec,
                                                                  uqArrayOfOneDGridsClass <V,M>& mdfGrids,
@@ -223,7 +226,7 @@ public:
                                                                  unsigned int                             paramId,
                                                                  uqScalarSequenceClass<double>&           scalarSeq) const = 0;
 protected:
-           void                     copy                        (const uqBaseVectorSequenceClass<V,M>&    src);
+           void                     copy                        (const uqBaseVectorSequenceClass<V,M>&    src); /* This routine deletes all stored computed vectors */
            void                     computeMeanVars             (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  std::ofstream*                           passedOfs,
                                                                  V*                                       subMeanPtr,
@@ -354,7 +357,7 @@ template <class V, class M>
 uqBaseVectorSequenceClass<V,M>::~uqBaseVectorSequenceClass()
 {
   //clear();
-  deleteStoredVectors();
+  this->deleteStoredVectors();
   if (m_fftObj != NULL) delete m_fftObj;
 }
 
@@ -370,7 +373,7 @@ uqBaseVectorSequenceClass<V,M>::copy(const uqBaseVectorSequenceClass<V,M>& src)
                       "incompatible vector space dimensions");
 
   m_name = src.m_name;
-  deleteStoredVectors();
+  this->deleteStoredVectors();
 
   return;
 }
@@ -626,6 +629,66 @@ uqBaseVectorSequenceClass<V,M>::deleteStoredVectors()
     delete m_unifiedBoxPlain;
     m_unifiedBoxPlain = NULL;
   }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::append(
+  const uqBaseVectorSequenceClass<V,M>& src,
+  unsigned int                          initialPos,
+  unsigned int                          numPos)
+{
+  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+1)),
+                      m_env.worldRank(),
+                      "uqVectorSequence<V,M>::append()",
+                      "initialPos is too big");
+
+  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+numPos)),
+                      m_env.worldRank(),
+                      "uqVectorSequence<V,M>::append()",
+                      "numPos is too big");
+
+  this->deleteStoredVectors();
+  unsigned int currentSize = this->subSequenceSize();
+  this->resizeSequence(currentSize+numPos);
+  V tmpVec(src.vectorSpace().zeroVector());
+  for (unsigned int i = 0; i < numPos; ++i) {
+    src.getPositionValues(initialPos+i,tmpVec);
+    this->setPositionValues(currentSize+i,tmpVec);
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::setGaussian(const gsl_rng* rng, const V& meanVec, const V& stdDevVec)
+{
+  V gaussianVector(m_vectorSpace.zeroVector());
+  for (unsigned int j = 0; j < this->subSequenceSize(); ++j) {
+    gaussianVector.cwSetGaussian(m_env.rng(),meanVec,stdDevVec);
+    this->setPositionValues(j,gaussianVector);
+  }
+
+  this->deleteStoredVectors();
+
+  return;
+}
+
+
+template <class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, const V& bVec)
+{
+  V uniformVector(m_vectorSpace.zeroVector());
+  for (unsigned int j = 0; j < this->subSequenceSize(); ++j) {
+    uniformVector.cwSetUniform(m_env.rng(),aVec,bVec);
+    this->setPositionValues(j,uniformVector);
+  }
+
+  this->deleteStoredVectors();
 
   return;
 }

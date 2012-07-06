@@ -47,17 +47,15 @@ public:
   uqSequenceOfVectorsClass<V,M>& operator= (const uqSequenceOfVectorsClass<V,M>& rhs);
 
         unsigned int subSequenceSize            () const;
-        void         resizeSequence             (unsigned int newSubSequenceSize);/*-*/
-        void         resetValues                (unsigned int initialPos, unsigned int numPos);/*-*/
-        void         erasePositions             (unsigned int initialPos, unsigned int numPos);/*-*/
+        void         resizeSequence             (unsigned int newSubSequenceSize);              /* This routine deletes all stored computed vectors */
+        void         resetValues                (unsigned int initialPos, unsigned int numPos); /* This routine deletes all stored computed vectors */
+        void         erasePositions             (unsigned int initialPos, unsigned int numPos); /* This routine deletes all stored computed vectors */
 #ifdef UQ_SEQ_VEC_USES_OPERATOR
 	const V*     operator[]                 (unsigned int posId) const;
 	const V*&    operator[]                 (unsigned int posId);
 #endif
         void         getPositionValues          (unsigned int posId,       V& vec) const;
-        void         setPositionValues          (unsigned int posId, const V& vec);/*-*/
-        void         setGaussian                (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
-        void         setUniform                 (const gsl_rng* rng, const V& aVec,    const V& bVec     );
+        void         setPositionValues          (unsigned int posId, const V& vec);             /* This routine deletes all stored computed vectors */
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         void         subUniformlySampledMdf     (const V&                             numEvaluationPointsVec,
                                                  uqArrayOfOneDGridsClass <V,M>&       mdfGrids,
@@ -223,10 +221,6 @@ public:
 
         double       estimateConvBrooksGelman   (unsigned int                         initialPos,
                                                  unsigned int                         numPos) const;
-
-        void         append                     (const uqSequenceOfVectorsClass<V,M>& src,
-                                                 unsigned int                         initialPos,
-                                                 unsigned int                         numPos);/*-*/
 
         void         extractScalarSeq           (unsigned int                         initialPos,
                                                  unsigned int                         spacing,
@@ -642,33 +636,6 @@ uqSequenceOfVectorsClass<V,M>::copy(const uqSequenceOfVectorsClass<V,M>& src)
 }
 
 template <class V, class M>
-void
-uqSequenceOfVectorsClass<V,M>::append(
-  const uqSequenceOfVectorsClass<V,M>& src,
-  unsigned int                         initialPos,
-  unsigned int                         numPos)
-{
-  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+1)),
-                      m_env.worldRank(),
-                      "uqSequenceOfVectorsClass<T>::append()",
-                      "initialPos is too big");
-
-  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+numPos)),
-                      m_env.worldRank(),
-                      "uqSequenceOfVectorsClass<T>::append()",
-                      "numPos is too big");
-
-  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
-  unsigned int currentSize = this->subSequenceSize();
-  m_seq.resize(currentSize+numPos,NULL);
-  for (unsigned int i = 0; i < numPos; ++i) {
-    m_seq[currentSize+i] = new V(*(src.m_seq[initialPos+i]));
-  }
-
-  return;
-}
-
-template <class V, class M>
 unsigned int
 uqSequenceOfVectorsClass<V,M>::subSequenceSize() const
 {
@@ -685,9 +652,8 @@ uqSequenceOfVectorsClass<V,M>::resizeSequence(unsigned int newSubSequenceSize)
     }
     m_seq.resize(newSubSequenceSize,NULL);
     std::vector<const V*>(m_seq).swap(m_seq);
+    uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
   }
-
-  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
 
  return;
 }
@@ -834,39 +800,6 @@ uqSequenceOfVectorsClass<V,M>::setPositionValues(unsigned int posId, const V& ve
   //  std::cout << "In uqSequenceOfVectorsClass<V,M>::setPositionValues(): m_seq[0] = " << m_seq[0] << ", *(m_seq[0]) = " << *(m_seq[0])
   //            << std::endl;
   //}
-
-  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
-
-  return;
-}
-
-template <class V, class M>
-void
-uqSequenceOfVectorsClass<V,M>::setGaussian(const gsl_rng* rng, const V& meanVec, const V& stdDevVec)
-{
-  V gaussianVector(m_vectorSpace.zeroVector());
-  for (unsigned int j = 0; j < this->subSequenceSize(); ++j) {
-    gaussianVector.cwSetGaussian(m_env.rng(),meanVec,stdDevVec);
-    if (m_seq[j] != NULL) delete m_seq[j];
-    m_seq[j] = new V(gaussianVector);
-  }
-
-  uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
-
-  return;
-}
-
-
-template <class V, class M>
-void
-uqSequenceOfVectorsClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, const V& bVec)
-{
-  V uniformVector(m_vectorSpace.zeroVector());
-  for (unsigned int j = 0; j < this->subSequenceSize(); ++j) {
-    uniformVector.cwSetUniform(m_env.rng(),aVec,bVec);
-    if (m_seq[j] != NULL) delete m_seq[j];
-    m_seq[j] = new V(uniformVector);
-  }
 
   uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
 

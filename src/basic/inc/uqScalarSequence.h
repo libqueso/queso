@@ -62,11 +62,11 @@ public:
         void         clear                        ();
         unsigned int subSequenceSize              () const;
         unsigned int unifiedSequenceSize          (bool useOnlyInter0Comm) const;
-        void         resizeSequence               (unsigned int newSequenceSize); /*-*/
-        void         resetValues                  (unsigned int initialPos, unsigned int numPos);/*-*/
-        void         erasePositions               (unsigned int initialPos, unsigned int numPos);/*-*/
+        void         resizeSequence               (unsigned int newSequenceSize);                 /* This routine deletes all stored computed vectors */
+        void         resetValues                  (unsigned int initialPos, unsigned int numPos); /* This routine deletes all stored computed vectors */
+        void         erasePositions               (unsigned int initialPos, unsigned int numPos); /* This routine deletes all stored computed vectors */
   const T&           operator[]                   (unsigned int posId) const;
-        T&           operator[]                   (unsigned int posId);/*-*/
+        T&           operator[]                   (unsigned int posId);                           /* This routine deletes all stored computed vectors */
         void         getUnifiedContentsAtProc0Only(bool useOnlyInter0Comm,
                                                    std::vector<T>& outputVec) const;
 
@@ -80,8 +80,8 @@ public:
   const T&           unifiedSampleVariancePlain   (bool                            useOnlyInter0Comm) const;
         void         deleteStoredScalars          ();
 
-        void         setGaussian                  (const gsl_rng* rng, const T& mean, const T& stdDev);
-        void         setUniform                   (const gsl_rng* rng, const T& a,    const T& b     );
+        void         setGaussian                  (const gsl_rng* rng, const T& mean, const T& stdDev); /* This routine deletes all stored computed vectors */
+        void         setUniform                   (const gsl_rng* rng, const T& a,    const T& b     ); /* This routine deletes all stored computed vectors */
         void         subUniformlySampledMdf       (unsigned int                    numIntervals,
                                                    T&                              minDomainValue,
                                                    T&                              maxDomainValue,
@@ -251,7 +251,7 @@ public:
 
         void         append                       (const uqScalarSequenceClass<T>& src,
                                                    unsigned int                    initialPos,
-                                                   unsigned int                    numPos);/*-*/
+                                                   unsigned int                    numPos); /* This routine deletes all stored computed vectors */
 
         void         subWriteContents             (const std::string&              fileName,
                                                    const std::string&              fileType,
@@ -264,7 +264,7 @@ public:
                                                    const std::string&              fileType,
                                                    const unsigned int              subSequenceSize);
 private:
-        void         copy                         (const uqScalarSequenceClass<T>& src);
+        void         copy                         (const uqScalarSequenceClass<T>& src); /* This routine deletes all stored computed vectors */
         void         extractScalarSeq             (unsigned int                    initialPos,
                                                    unsigned int                    spacing,
                                                    unsigned int                    numPos,
@@ -473,6 +473,7 @@ uqScalarSequenceClass<T>::append(
                       "uqScalarSequenceClass<T>::append()",
                       "numPos is too big");
 
+  deleteStoredScalars();
   unsigned int currentSize = this->subSequenceSize();
   m_seq.resize(currentSize+numPos,0.);
   for (unsigned int i = 0; i < numPos; ++i) {
@@ -564,6 +565,7 @@ uqScalarSequenceClass<T>::resizeSequence(unsigned int newSequenceSize)
   if (newSequenceSize != this->subSequenceSize()) {
     m_seq.resize(newSequenceSize,0.);
     std::vector<T>(m_seq).swap(m_seq);
+    deleteStoredScalars();
   }
 
   return;
@@ -586,6 +588,8 @@ uqScalarSequenceClass<T>::resetValues(unsigned int initialPos, unsigned int numP
   for (unsigned int j = 0; j < numPos; ++j) {
     m_seq[initialPos+j] = 0.;
   }
+
+  deleteStoredScalars();
 
   return;
 }
@@ -619,6 +623,8 @@ uqScalarSequenceClass<T>::erasePositions(unsigned int initialPos, unsigned int n
                       m_env.worldRank(),
                       "uqScalarSequences<T>::erasePositions()",
                       "(oldSequenceSize - numPos) != this->subSequenceSize()");
+
+  deleteStoredScalars();
 
   return;
 }
@@ -655,6 +661,8 @@ uqScalarSequenceClass<T>::operator[](unsigned int posId)
                       m_env.worldRank(),
                       "uqScalarSequences<T>::operator[]",
                       "posId > subSequenceSize()");
+
+  deleteStoredScalars();
 
   return m_seq[posId];
 }
@@ -887,6 +895,8 @@ uqScalarSequenceClass<T>::setGaussian(const gsl_rng* rng, const T& meanValue, co
     }
   }
 
+  deleteStoredScalars();
+
   return;
 }
 
@@ -919,6 +929,8 @@ uqScalarSequenceClass<T>::setUniform(const gsl_rng* rng, const T& a, const T& b)
       }
     }
   }
+
+  deleteStoredScalars();
 
   return;
 }
