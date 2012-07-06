@@ -883,9 +883,13 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       m_logEvidence += m_logEvidenceFactors[i];
     }
 
-    m_meanLogLikelihood = currLogLikelihoodValues.unifiedMean(m_vectorSpace.numOfProcsForStorage() == 1,
-                                                              0,
-                                                              currLogLikelihoodValues.subSequenceSize());
+#if 1 // prudenci-2012-07-06
+    m_meanLogLikelihood = currLogLikelihoodValues.unifiedMeanPlain(m_vectorSpace.numOfProcsForStorage() == 1);
+#else
+    m_meanLogLikelihood = currLogLikelihoodValues.unifiedMeanExtra(m_vectorSpace.numOfProcsForStorage() == 1,
+                                                                   0,
+                                                                   currLogLikelihoodValues.subSequenceSize());
+#endif
 
     m_eig = m_meanLogLikelihood - m_logEvidence;
 

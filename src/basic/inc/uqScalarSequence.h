@@ -62,13 +62,24 @@ public:
         void         clear                        ();
         unsigned int subSequenceSize              () const;
         unsigned int unifiedSequenceSize          (bool useOnlyInter0Comm) const;
-        void         resizeSequence               (unsigned int newSequenceSize);
-        void         resetValues                  (unsigned int initialPos, unsigned int numPos);
-        void         erasePositions               (unsigned int initialPos, unsigned int numPos);
+        void         resizeSequence               (unsigned int newSequenceSize); /*-*/
+        void         resetValues                  (unsigned int initialPos, unsigned int numPos);/*-*/
+        void         erasePositions               (unsigned int initialPos, unsigned int numPos);/*-*/
   const T&           operator[]                   (unsigned int posId) const;
-        T&           operator[]                   (unsigned int posId);
+        T&           operator[]                   (unsigned int posId);/*-*/
         void         getUnifiedContentsAtProc0Only(bool useOnlyInter0Comm,
                                                    std::vector<T>& outputVec) const;
+
+  const T&           subMinPlain                  () const;
+  const T&           unifiedMinPlain              (bool                            useOnlyInter0Comm) const;
+  const T&           subMaxPlain                  () const;
+  const T&           unifiedMaxPlain              (bool                            useOnlyInter0Comm) const;
+  const T&           subMeanPlain                 () const;
+  const T&           unifiedMeanPlain             (bool                            useOnlyInter0Comm) const;
+  const T&           subSampleVariancePlain       () const;
+  const T&           unifiedSampleVariancePlain   (bool                            useOnlyInter0Comm) const;
+        void         deleteStoredScalars          ();
+
         void         setGaussian                  (const gsl_rng* rng, const T& mean, const T& stdDev);
         void         setUniform                   (const gsl_rng* rng, const T& a,    const T& b     );
         void         subUniformlySampledMdf       (unsigned int                    numIntervals,
@@ -94,9 +105,9 @@ public:
                                                    std::vector<T>&                 gridValues,
                                                    std::vector<T>&                 cdfValues) const;
 
-        T            subMean                      (unsigned int                    initialPos,
+        T            subMeanExtra                 (unsigned int                    initialPos,
                                                    unsigned int                    numPos) const;
-        T            unifiedMean                  (bool                            useOnlyInter0Comm,
+        T            unifiedMeanExtra             (bool                            useOnlyInter0Comm,
                                                    unsigned int                    initialPos,
                                                    unsigned int                    localNumPos) const;
         T            subMeanCltStd                (unsigned int                    initialPos,
@@ -106,10 +117,10 @@ public:
                                                    unsigned int                    initialPos,
                                                    unsigned int                    localNumPos,
                                                    const T&                        unifiedMeanValue) const;
-        T            subSampleVariance            (unsigned int                    initialPos,
+        T            subSampleVarianceExtra       (unsigned int                    initialPos,
                                                    unsigned int                    numPos,
                                                    const T&                        meanValue) const;
-        T            unifiedSampleVariance        (bool                            useOnlyInter0Comm,
+        T            unifiedSampleVarianceExtra   (bool                            useOnlyInter0Comm,
                                                    unsigned int                    initialPos,
                                                    unsigned int                    localNumPos,
                                                    const T&                        unifiedMeanValue) const;
@@ -163,11 +174,11 @@ public:
                                                    double                          range, // \in [0,1]                    
                                                    T&                              lowerValue,
                                                    T&                              upperValue) const;
-        void         subMinMax                    (unsigned int                    initialPos,
+        void         subMinMaxExtra               (unsigned int                    initialPos,
                                                    unsigned int                    numPos,
                                                    T&                              minValue,
                                                    T&                              maxValue) const;
-        void         unifiedMinMax                (bool                            useOnlyInter0Comm,
+        void         unifiedMinMaxExtra           (bool                            useOnlyInter0Comm,
                                                    unsigned int                    initialPos,
                                                    unsigned int                    numPos,
                                                    T&                              unifiedMinValue,
@@ -240,7 +251,7 @@ public:
 
         void         append                       (const uqScalarSequenceClass<T>& src,
                                                    unsigned int                    initialPos,
-                                                   unsigned int                    numPos);
+                                                   unsigned int                    numPos);/*-*/
 
         void         subWriteContents             (const std::string&              fileName,
                                                    const std::string&              fileType,
@@ -271,6 +282,15 @@ private:
   const uqBaseEnvironmentClass& m_env;
   std::string                   m_name;
   std::vector<T>                m_seq;
+
+  mutable T*                    m_subMinPlain;
+  mutable T*                    m_unifiedMinPlain;
+  mutable T*                    m_subMaxPlain;
+  mutable T*                    m_unifiedMaxPlain;
+  mutable T*                    m_subMeanPlain;
+  mutable T*                    m_unifiedMeanPlain;
+  mutable T*                    m_subSampleVariancePlain;
+  mutable T*                    m_unifiedSampleVariancePlain;
 };
 
 template <class T>
@@ -279,15 +299,24 @@ uqScalarSequenceClass<T>::uqScalarSequenceClass(
         unsigned int            subSequenceSize,
   const std::string&            name)
   :
-  m_env (env),
-  m_name(name),
-  m_seq (subSequenceSize,0.)
+  m_env                       (env),
+  m_name                      (name),
+  m_seq                       (subSequenceSize,0.),
+  m_subMinPlain               (NULL),
+  m_unifiedMinPlain           (NULL),
+  m_subMaxPlain               (NULL),
+  m_unifiedMaxPlain           (NULL),
+  m_subMeanPlain              (NULL),
+  m_unifiedMeanPlain          (NULL),
+  m_subSampleVariancePlain    (NULL),
+  m_unifiedSampleVariancePlain(NULL)
 {
 }
 
 template <class T>
 uqScalarSequenceClass<T>::~uqScalarSequenceClass()
 {
+  deleteStoredScalars();
 }
 
 template <class T>
@@ -307,6 +336,47 @@ uqScalarSequenceClass<T>::copy(const uqScalarSequenceClass<T>& src)
   m_seq.resize(src.subSequenceSize(),0.);
   for (unsigned int i = 0; i < m_seq.size(); ++i) {
     m_seq[i] = src.m_seq[i];
+  }
+  deleteStoredScalars();
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::deleteStoredScalars()
+{
+  if (m_subMinPlain) {
+    delete m_subMinPlain;
+    m_subMinPlain                = NULL;
+  }
+  if (m_unifiedMinPlain) {
+    delete m_unifiedMinPlain;
+    m_unifiedMinPlain            = NULL;
+  }
+  if (m_subMaxPlain) {
+    delete m_subMaxPlain;
+    m_subMaxPlain                = NULL;
+  }
+  if (m_unifiedMaxPlain) {
+    delete m_unifiedMaxPlain;
+    m_unifiedMaxPlain            = NULL;
+  }
+  if (m_subMeanPlain) {
+    delete m_subMeanPlain;
+    m_subMeanPlain               = NULL;
+  }
+  if (m_unifiedMeanPlain) {
+    delete m_unifiedMeanPlain;
+    m_unifiedMeanPlain           = NULL;
+  }
+  if (m_subSampleVariancePlain) {
+    delete m_subSampleVariancePlain;
+    m_subSampleVariancePlain     = NULL;
+  }
+  if (m_unifiedSampleVariancePlain) {
+    delete m_unifiedSampleVariancePlain;
+    m_unifiedSampleVariancePlain = NULL;
   }
 
   return;
@@ -702,6 +772,106 @@ uqScalarSequenceClass<T>::getUnifiedContentsAtProc0Only(
 }
 
 template <class T>
+const T&
+uqScalarSequenceClass<T>::subMinPlain() const
+{
+  if (m_subMinPlain == NULL) {
+    m_subMinPlain = new T(0.);
+    if (m_subMaxPlain == NULL) m_subMaxPlain = new T(0.);
+    subMinMaxExtra(0,this->subSequenceSize(),*m_subMinPlain,*m_subMaxPlain);
+  }
+
+  return *m_subMinPlain;
+}
+
+template <class T>
+const T&
+uqScalarSequenceClass<T>::unifiedMinPlain(bool useOnlyInter0Comm) const
+{
+  if (m_unifiedMinPlain == NULL) {
+    m_unifiedMinPlain = new T(0.);
+    if (m_unifiedMaxPlain == NULL) m_unifiedMaxPlain = new T(0.);
+    unifiedMinMaxExtra(useOnlyInter0Comm,0,this->subSequenceSize(),*m_unifiedMinPlain,*m_unifiedMaxPlain);
+  }
+
+  return *m_unifiedMinPlain;
+}
+
+template <class T>
+const T&
+uqScalarSequenceClass<T>::subMaxPlain() const
+{
+  if (m_subMaxPlain == NULL) {
+    if (m_subMinPlain == NULL) m_subMinPlain = new T(0.);
+    m_subMaxPlain = new T(0.);
+    subMinMaxExtra(0,this->subSequenceSize(),*m_subMinPlain,*m_subMaxPlain);
+  }
+
+  return *m_subMaxPlain;
+}
+
+template <class T>
+const T&
+uqScalarSequenceClass<T>::unifiedMaxPlain(bool useOnlyInter0Comm) const
+{
+  if (m_unifiedMaxPlain == NULL) {
+    if (m_unifiedMinPlain == NULL) m_unifiedMinPlain = new T(0.);
+    m_unifiedMaxPlain = new T(0.);
+    unifiedMinMaxExtra(useOnlyInter0Comm,0,this->subSequenceSize(),*m_unifiedMinPlain,*m_unifiedMaxPlain);
+  }
+
+  return *m_unifiedMaxPlain;
+}
+
+template <class T>
+const T&
+uqScalarSequenceClass<T>::subMeanPlain() const
+{
+  if (m_subMeanPlain == NULL) {
+    m_subMeanPlain = new T(0.);
+    *m_subMeanPlain = subMeanExtra(0,subSequenceSize());
+  }
+
+  return *m_subMeanPlain;
+}
+
+template <class T>
+const T&
+uqScalarSequenceClass<T>::unifiedMeanPlain(bool useOnlyInter0Comm) const
+{
+  if (m_unifiedMeanPlain == NULL) {
+    m_unifiedMeanPlain = new T(0.);
+    *m_unifiedMeanPlain = unifiedMeanExtra(useOnlyInter0Comm,0,subSequenceSize());
+  }
+
+  return *m_unifiedMeanPlain;
+}
+
+template <class T>
+const T&
+uqScalarSequenceClass<T>::subSampleVariancePlain() const
+{
+  if (m_subSampleVariancePlain == NULL) {
+    m_subSampleVariancePlain = new T(0.);
+    *m_subSampleVariancePlain = subSampleVarianceExtra(0,subSequenceSize(),subMeanPlain());
+  }
+
+  return *m_subSampleVariancePlain;
+}
+
+template <class T>
+const T&
+uqScalarSequenceClass<T>::unifiedSampleVariancePlain(bool useOnlyInter0Comm) const
+{
+  if (m_unifiedSampleVariancePlain == NULL) {
+    m_unifiedSampleVariancePlain = new T(0.);
+    *m_unifiedSampleVariancePlain = unifiedSampleVarianceExtra(useOnlyInter0Comm,0,subSequenceSize(),unifiedMeanPlain());
+  }
+
+  return *m_unifiedSampleVariancePlain;
+}
+
+template <class T>
 void
 uqScalarSequenceClass<T>::setGaussian(const gsl_rng* rng, const T& meanValue, const T& stdDev)
 {
@@ -766,10 +936,10 @@ uqScalarSequenceClass<T>::subUniformlySampledMdf(
   std::vector<T>            centers(numEvaluationPoints,0.);
   std::vector<unsigned int> bins   (numEvaluationPoints,0);
 
-  subMinMax(0, // initialPos
-            this->subSequenceSize(),
-            tmpMinValue,
-            tmpMaxValue);
+  subMinMaxExtra(0, // initialPos
+                 this->subSequenceSize(),
+                 tmpMinValue,
+                 tmpMaxValue);
   subHistogram(0, // initialPos,
                tmpMinValue,
                tmpMaxValue,
@@ -807,10 +977,10 @@ uqScalarSequenceClass<T>::subUniformlySampledCdf(
   std::vector<T>            centers(numEvaluationPoints,0.);
   std::vector<unsigned int> bins   (numEvaluationPoints,0);
 
-  subMinMax(0, // initialPos
-            this->subSequenceSize(),
-            tmpMinValue,
-            tmpMaxValue);
+  subMinMaxExtra(0, // initialPos
+                 this->subSequenceSize(),
+                 tmpMinValue,
+                 tmpMaxValue);
   subHistogram(0, // initialPos,
                tmpMinValue,
                tmpMaxValue,
@@ -867,11 +1037,11 @@ uqScalarSequenceClass<T>::unifiedUniformlySampledCdf(
       std::vector<T>            unifiedCenters(numEvaluationPoints,0.);
       std::vector<unsigned int> unifiedBins   (numEvaluationPoints,0);
 
-      this->unifiedMinMax(useOnlyInter0Comm,
-                          0, // initialPos
-                          this->subSequenceSize(),
-                          unifiedTmpMinValue,
-                          unifiedTmpMaxValue);
+      this->unifiedMinMaxExtra(useOnlyInter0Comm,
+                               0, // initialPos
+                               this->subSequenceSize(),
+                               unifiedTmpMinValue,
+                               unifiedTmpMaxValue);
       this->unifiedHistogram(useOnlyInter0Comm,
                              0, // initialPos
                              unifiedTmpMinValue,
@@ -949,10 +1119,10 @@ uqScalarSequenceClass<T>::subBasicCdf(
   T                         tmpMaxValue;
   std::vector<unsigned int> bins(numEvaluationPoints,0);
 
-  subMinMax(0, // initialPos
-            this->subSequenceSize(),
-            tmpMinValue,
-            tmpMaxValue);
+  subMinMaxExtra(0, // initialPos
+                 this->subSequenceSize(),
+                 tmpMinValue,
+                 tmpMaxValue);
   subBasicHistogram(0, // initialPos,
                     tmpMinValue,
                     tmpMaxValue,
@@ -986,10 +1156,10 @@ uqScalarSequenceClass<T>::subWeigthCdf(
   T                         tmpMaxValue;
   std::vector<unsigned int> bins(numEvaluationPoints,0);
 
-  subMinMax(0, // initialPos
-            this->subSequenceSize(),
-            tmpMinValue,
-            tmpMaxValue);
+  subMinMaxExtra(0, // initialPos
+                 this->subSequenceSize(),
+                 tmpMinValue,
+                 tmpMaxValue);
   subWeigthHistogram(0, // initialPos,
                      tmpMinValue,
                      tmpMaxValue,
@@ -1025,10 +1195,10 @@ uqScalarSequenceClass<T>::subWeigthCdf(
   gridValues.resize             (numEvaluationPoints,0.);
   cdfValues.resize              (numEvaluationPoints,0.);
 
-  subMinMax(0, // initialPos
-            this->subSequenceSize(),
-            tmpMinValue,
-            tmpMaxValue);
+  subMinMaxExtra(0, // initialPos
+                 this->subSequenceSize(),
+                 tmpMinValue,
+                 tmpMaxValue);
 
   if (tmpMinValue == tmpMaxValue) {
     if (tmpMinValue < -1.e-12) {
@@ -1066,7 +1236,7 @@ uqScalarSequenceClass<T>::subWeigthCdf(
 
 template <class T>
 T
-uqScalarSequenceClass<T>::subMean(
+uqScalarSequenceClass<T>::subMeanExtra(
   unsigned int initialPos,
   unsigned int numPos) const
 {
@@ -1076,14 +1246,14 @@ uqScalarSequenceClass<T>::subMean(
               (0                   <  numPos                 ) &&
               ((initialPos+numPos) <= this->subSequenceSize()));
   if (bRC == false) {
-    std::cerr << "In uqScalarSequenceClass<T>::subMean()"
+    std::cerr << "In uqScalarSequenceClass<T>::subMeanExtra()"
               << ": ERROR at fullRank "         << m_env.fullRank()
               << ", initialPos = "              << initialPos
               << ", numPos = "                  << numPos
               << ", this->subSequenceSize() = " << this->subSequenceSize()
               << std::endl;
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::subMean()"
+      *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::subMeanExtra()"
                               << ": ERROR at fullRank "         << m_env.fullRank()
                               << ", initialPos = "              << initialPos
                               << ", numPos = "                  << numPos
@@ -1093,7 +1263,7 @@ uqScalarSequenceClass<T>::subMean(
   }
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.worldRank(),
-                      "uqScalarSequenceClass<T>::subMean()",
+                      "uqScalarSequenceClass<T>::subMeanExtra()",
                       "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
@@ -1107,14 +1277,14 @@ uqScalarSequenceClass<T>::subMean(
 
 template <class T>
 T
-uqScalarSequenceClass<T>::unifiedMean(
+uqScalarSequenceClass<T>::unifiedMeanExtra(
   bool         useOnlyInter0Comm,
   unsigned int initialPos,
   unsigned int numPos) const
 {
   if (m_env.numSubEnvironments() == 1) {
-    return this->subMean(initialPos,
-                         numPos);
+    return this->subMeanExtra(initialPos,
+                              numPos);
   }
 
   // As of 14/Nov/2009, this routine does *not* require sub sequences to have equal size. Good.
@@ -1127,7 +1297,7 @@ uqScalarSequenceClass<T>::unifiedMean(
                   ((initialPos+numPos) <= this->subSequenceSize()));
       UQ_FATAL_TEST_MACRO(bRC == false,
                           m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedMean()",
+                          "uqScalarSequenceClass<T>::unifiedMeanExtra()",
                           "invalid input data");
 
       unsigned int finalPosPlus1 = initialPos + numPos;
@@ -1137,7 +1307,7 @@ uqScalarSequenceClass<T>::unifiedMean(
       }
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMean()"
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMeanExtra()"
                                 << ": initialPos = " << initialPos
                                 << ", numPos = "     << numPos
                                 << ", before MPI.Allreduce"
@@ -1148,24 +1318,24 @@ uqScalarSequenceClass<T>::unifiedMean(
       //sleep(1);
       unsigned int unifiedNumPos = 0;
       m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
-                                   "uqScalarSequenceClass<T>::unifiedMean()",
+                                   "uqScalarSequenceClass<T>::unifiedMeanExtra()",
                                    "failed MPI.Allreduce() for numPos");
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMean()"
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMeanExtra()"
                                 << ": numPos = "        << numPos
                                 << ", unifiedNumPos = " << unifiedNumPos
                                 << std::endl;
       }
 
       m_env.inter0Comm().Allreduce((void *) &localSum, (void *) &unifiedMeanValue, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
-                                   "uqScalarSequenceClass<T>::unifiedMean()",
+                                   "uqScalarSequenceClass<T>::unifiedMeanExtra()",
                                    "failed MPI.Allreduce() for sum");
 
       unifiedMeanValue /= ((T) unifiedNumPos);
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMean()"
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMeanExtra()"
                                 << ": localSum = "         << localSum
                                 << ", unifiedMeanValue = " << unifiedMeanValue
                                 << std::endl;
@@ -1173,14 +1343,14 @@ uqScalarSequenceClass<T>::unifiedMean(
     }
     else {
       // Node not in the 'inter0' communicator
-      this->subMean(initialPos,
-                    numPos);
+      this->subMeanExtra(initialPos,
+                         numPos);
     }
   }
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_env.worldRank(),
-                        "uqScalarSequenceClass<T>::unifiedMean()",
+                        "uqScalarSequenceClass<T>::unifiedMeanExtra()",
                         "parallel vectors not supported yet");
   }
 
@@ -1290,7 +1460,7 @@ uqScalarSequenceClass<T>::unifiedMeanCltStd(
 
 template <class T>
 T
-uqScalarSequenceClass<T>::subSampleVariance(
+uqScalarSequenceClass<T>::subSampleVarianceExtra(
   unsigned int initialPos,
   unsigned int numPos,
   const T&     meanValue) const
@@ -1302,7 +1472,7 @@ uqScalarSequenceClass<T>::subSampleVariance(
               ((initialPos+numPos) <= this->subSequenceSize()));
   UQ_FATAL_TEST_MACRO(bRC == false,
                       m_env.worldRank(),
-                      "uqScalarSequenceClass<T>::subSampleVariance()",
+                      "uqScalarSequenceClass<T>::subSampleVarianceExtra()",
                       "invalid input data");
 
   unsigned int finalPosPlus1 = initialPos + numPos;
@@ -1320,16 +1490,16 @@ uqScalarSequenceClass<T>::subSampleVariance(
 
 template <class T>
 T
-uqScalarSequenceClass<T>::unifiedSampleVariance(
+uqScalarSequenceClass<T>::unifiedSampleVarianceExtra(
   bool         useOnlyInter0Comm,
   unsigned int initialPos,
   unsigned int numPos,
   const T&     unifiedMeanValue) const
 {
   if (m_env.numSubEnvironments() == 1) {
-    return this->subSampleVariance(initialPos,
-                                   numPos,
-                                   unifiedMeanValue);
+    return this->subSampleVarianceExtra(initialPos,
+                                        numPos,
+                                        unifiedMeanValue);
   }
 
   // As of 14/Nov/2009, this routine does *not* require sub sequences to have equal size. Good.
@@ -1342,7 +1512,7 @@ uqScalarSequenceClass<T>::unifiedSampleVariance(
                   ((initialPos+numPos) <= this->subSequenceSize()));
       UQ_FATAL_TEST_MACRO(bRC == false,
                           m_env.worldRank(),
-                          "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                          "uqScalarSequenceClass<T>::unifiedSampleVarianceExtra()",
                           "invalid input data");
 
       unsigned int finalPosPlus1 = initialPos + numPos;
@@ -1355,26 +1525,26 @@ uqScalarSequenceClass<T>::unifiedSampleVariance(
 
       unsigned int unifiedNumPos = 0;
       m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
-                                   "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                                   "uqScalarSequenceClass<T>::unifiedSampleVarianceExtra()",
                                    "failed MPI.Allreduce() for numPos");
 
       m_env.inter0Comm().Allreduce((void *) &localSamValue, (void *) &unifiedSamValue, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
-                                   "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                                   "uqScalarSequenceClass<T>::unifiedSampleVarianceExtra()",
                                    "failed MPI.Allreduce() for samValue");
 
       unifiedSamValue /= (((T) unifiedNumPos) - 1.);
     }
     else {
       // Node not in the 'inter0' communicator
-      this->subSampleVariance(initialPos,
-                              numPos,
-                              unifiedMeanValue);
+      this->subSampleVarianceExtra(initialPos,
+                                   numPos,
+                                   unifiedMeanValue);
     }
   }
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_env.worldRank(),
-                        "uqScalarSequenceClass<T>::unifiedSampleVariance()",
+                        "uqScalarSequenceClass<T>::unifiedSampleVarianceExtra()",
                         "parallel vectors not supported yet");
   }
 
@@ -1624,8 +1794,8 @@ uqScalarSequenceClass<T>::autoCorrViaDef(
                       "uqScalarSequenceClass<T>::autoCorrViaDef()",
                       "invalid input data");
 
-  T meanValue = this->subMean(initialPos,
-                              numPos);
+  T meanValue = this->subMeanExtra(initialPos,
+                                   numPos);
 
   T covValueZero = this->autoCovariance(initialPos,
                                         numPos,
@@ -1673,8 +1843,8 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
                        1, // spacing
                        numPos,
                        rawDataVec);
-  T meanValue = this->subMean(initialPos,
-                              numPos);
+  T meanValue = this->subMeanExtra(initialPos,
+                                   numPos);
   for (unsigned int j = 0; j < numPos; ++j) {
     rawDataVec[j] -= meanValue; // IMPORTANT
   }
@@ -1749,8 +1919,8 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
                        1, // spacing
                        numPos,
                        rawDataVec);
-  T meanValue = this->subMean(initialPos,
-                              numPos);
+  T meanValue = this->subMeanExtra(initialPos,
+                                   numPos);
   for (unsigned int j = 0; j < numPos; ++j) {
     rawDataVec[j] -= meanValue; // IMPORTANT
   }
@@ -1806,21 +1976,21 @@ uqScalarSequenceClass<T>::bmm(
   uqScalarSequenceClass<T> batchMeans(m_env,numberOfBatches,"");
 
   for (unsigned int batchId = 0; batchId < numberOfBatches; batchId++) {
-    batchMeans[batchId] = this->subMean(initialPos + batchId*batchLength,
-                                        batchLength);
+    batchMeans[batchId] = this->subMeanExtra(initialPos + batchId*batchLength,
+                                             batchLength);
   }
 
-  T meanOfBatchMeans = batchMeans.subMean(0,
-                                          batchMeans.subSequenceSize());
+  T meanOfBatchMeans = batchMeans.subMeanExtra(0,
+                                               batchMeans.subSequenceSize());
 
   //T covLag0OfBatchMeans = batchMeans.autoCovariance(0,
   //                                                  batchMeans.subSequenceSize(),
   //                                                  meanOfBatchMeans,
   //                                                  0); // lag
 
-  T bmmValue = batchMeans.subSampleVariance(0,
-                                            batchMeans.subSequenceSize(),
-                                            meanOfBatchMeans);
+  T bmmValue = batchMeans.subSampleVarianceExtra(0,
+                                                 batchMeans.subSequenceSize(),
+                                                 meanOfBatchMeans);
 
   bmmValue /= (T) batchMeans.subSequenceSize();           // CHECK
 //bmmValue *= (T) (this->subSequenceSize() - initialPos); // CHECK
@@ -1847,8 +2017,8 @@ uqScalarSequenceClass<T>::psd(
 
   unsigned int dataSize = this->subSequenceSize() - initialPos;
 
-  T meanValue = this->subMean(initialPos,
-                              dataSize);
+  T meanValue = this->subMeanExtra(initialPos,
+                                   dataSize);
 
   // Determine hopSize and blockSize
   unsigned int hopSize = 0;
@@ -1981,8 +2151,8 @@ uqScalarSequenceClass<T>::geweke(
                          1,
                          dataSizeA,
                          tmpSeq);
-  double meanA = tmpSeq.subMean(0,
-                                dataSizeA);
+  double meanA = tmpSeq.subMeanExtra(0,
+                                     dataSizeA);
   tmpSeq.psd(0,
              (unsigned int) std::sqrt((double) dataSizeA),  // numBlocks
              .5, // hopSizeRatio
@@ -1997,8 +2167,8 @@ uqScalarSequenceClass<T>::geweke(
                          1,
                          dataSizeB,
                          tmpSeq);
-  double meanB = tmpSeq.subMean(0,
-                                dataSizeB);
+  double meanB = tmpSeq.subMeanExtra(0,
+                                     dataSizeB);
   tmpSeq.psd(0,
              (unsigned int) std::sqrt((double) dataSizeB),  // numBlocks
              .5, // hopSizeRatio
@@ -2145,7 +2315,7 @@ uqScalarSequenceClass<T>::unifiedCdfPercentageRange(
 
 template <class T>
 void
-uqScalarSequenceClass<T>::subMinMax(
+uqScalarSequenceClass<T>::subMinMaxExtra(
   unsigned int initialPos,
   unsigned int numPos,
   T&           minValue,
@@ -2153,7 +2323,7 @@ uqScalarSequenceClass<T>::subMinMax(
 {
   UQ_FATAL_TEST_MACRO((initialPos+numPos) > this->subSequenceSize(),
                       m_env.worldRank(),
-                      "uqScalarSequenceClass<T>::subMinMax()",
+                      "uqScalarSequenceClass<T>::subMinMaxExtra()",
                       "invalid input");
 
   seqScalarPositionConstIteratorTypedef pos1 = m_seq.begin();
@@ -2165,7 +2335,7 @@ uqScalarSequenceClass<T>::subMinMax(
   if ((initialPos+numPos) == this->subSequenceSize()) {
     UQ_FATAL_TEST_MACRO(pos2 != m_seq.end(),
                         m_env.worldRank(),
-                        "uqScalarSequenceClass<T>::subMinMax()",
+                        "uqScalarSequenceClass<T>::subMinMaxExtra()",
                         "invalid state");
   }
 
@@ -2180,7 +2350,7 @@ uqScalarSequenceClass<T>::subMinMax(
 
 template <class T>
 void
-uqScalarSequenceClass<T>::unifiedMinMax(
+uqScalarSequenceClass<T>::unifiedMinMaxExtra(
   bool         useOnlyInter0Comm,
   unsigned int initialPos,
   unsigned int numPos,
@@ -2188,10 +2358,10 @@ uqScalarSequenceClass<T>::unifiedMinMax(
   T&           unifiedMaxValue) const
 {
   if (m_env.numSubEnvironments() == 1) {
-    return this->subMinMax(initialPos,
-                           numPos,
-                           unifiedMinValue,
-                           unifiedMaxValue);
+    return this->subMinMaxExtra(initialPos,
+                                numPos,
+                                unifiedMinValue,
+                                unifiedMaxValue);
   }
 
   // As of 14/Nov/2009, this routine does *not* require sub sequences to have equal size. Good.
@@ -2201,10 +2371,10 @@ uqScalarSequenceClass<T>::unifiedMinMax(
       // Find local min and max
       T minValue;
       T maxValue;
-      this->subMinMax(initialPos,
-                      numPos,
-                      minValue,
-                      maxValue);
+      this->subMinMaxExtra(initialPos,
+                           numPos,
+                           minValue,
+                           maxValue);
 
       // Get overall min
       std::vector<double> sendBuf(1,0.);
@@ -2212,7 +2382,7 @@ uqScalarSequenceClass<T>::unifiedMinMax(
         sendBuf[i] = minValue;
       }
       m_env.inter0Comm().Allreduce((void *) &sendBuf[0], (void *) &unifiedMinValue, (int) sendBuf.size(), uqRawValue_MPI_DOUBLE, uqRawValue_MPI_MIN,
-                                   "uqScalarSequenceClass<T>::unifiedMinMax()",
+                                   "uqScalarSequenceClass<T>::unifiedMinMaxExtra()",
                                    "failed MPI.Allreduce() for min");
 
       // Get overall max
@@ -2220,11 +2390,11 @@ uqScalarSequenceClass<T>::unifiedMinMax(
         sendBuf[i] = maxValue;
       }
       m_env.inter0Comm().Allreduce((void *) &sendBuf[0], (void *) &unifiedMaxValue, (int) sendBuf.size(), uqRawValue_MPI_DOUBLE, uqRawValue_MPI_MAX,
-                                   "uqScalarSequenceClass<T>::unifiedMinMax()",
+                                   "uqScalarSequenceClass<T>::unifiedMinMaxExtra()",
                                    "failed MPI.Allreduce() for max");
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMinMax()"
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMinMaxExtra()"
                                 << ": localMinValue = "   << minValue
                                 << ", localMaxValue = "   << maxValue
                                 << ", unifiedMinValue = " << unifiedMinValue
@@ -2234,16 +2404,16 @@ uqScalarSequenceClass<T>::unifiedMinMax(
     }
     else {
       // Node not in the 'inter0' communicator
-      this->subMinMax(initialPos,
-                      numPos,
-                      unifiedMinValue,
-                      unifiedMaxValue);
+      this->subMinMaxExtra(initialPos,
+                           numPos,
+                           unifiedMinValue,
+                           unifiedMaxValue);
     }
   }
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_env.worldRank(),
-                        "uqScalarSequenceClass<T>::unifiedMinMax()",
+                        "uqScalarSequenceClass<T>::unifiedMinMaxExtra()",
                         "parallel vectors not supported yet");
   }
 
@@ -3169,12 +3339,12 @@ uqScalarSequenceClass<T>::subScaleForKde(
 
   unsigned int dataSize = this->subSequenceSize() - initialPos;
 
-  T meanValue = this->subMean(initialPos,
-                              dataSize);
+  T meanValue = this->subMeanExtra(initialPos,
+                                   dataSize);
 
-  T samValue = this->subSampleVariance(initialPos,
-                                       dataSize,
-                                       meanValue);
+  T samValue = this->subSampleVarianceExtra(initialPos,
+                                            dataSize,
+                                            meanValue);
 
   T scaleValue;
   if (iqrValue <= 0.) {
@@ -3224,14 +3394,14 @@ uqScalarSequenceClass<T>::unifiedScaleForKde(
 
       unsigned int localDataSize = this->subSequenceSize() - initialPos;
 
-      T unifiedMeanValue = this->unifiedMean(useOnlyInter0Comm,
-                                             initialPos,
-                                             localDataSize);
+      T unifiedMeanValue = this->unifiedMeanExtra(useOnlyInter0Comm,
+                                                  initialPos,
+                                                  localDataSize);
 
-      T unifiedSamValue = this->unifiedSampleVariance(useOnlyInter0Comm,
-                                                      initialPos,
-                                                      localDataSize,
-                                                      unifiedMeanValue);
+      T unifiedSamValue = this->unifiedSampleVarianceExtra(useOnlyInter0Comm,
+                                                           initialPos,
+                                                           localDataSize,
+                                                           unifiedMeanValue);
 
       unsigned int unifiedDataSize = 0;
       m_env.inter0Comm().Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
@@ -4150,8 +4320,8 @@ uqComputeCovCorrBetweenScalarSequences(
   T tmpQ = 0.;
 
   // For both P and Q vector sequences: compute the unified mean
-  T unifiedMeanP = subPSeq.unifiedMean(true,0,subNumSamples);
-  T unifiedMeanQ = subQSeq.unifiedMean(true,0,subNumSamples);
+  T unifiedMeanP = subPSeq.unifiedMeanExtra(true,0,subNumSamples);
+  T unifiedMeanQ = subQSeq.unifiedMeanExtra(true,0,subNumSamples);
 
   // Compute "sub" covariance matrix
   covValue = 0.;
@@ -4163,15 +4333,15 @@ uqComputeCovCorrBetweenScalarSequences(
   }
 
   // For both P and Q vector sequences: compute the unified variance
-  T unifiedSampleVarianceP = subPSeq.unifiedSampleVariance(true,
-                                                           0,
-                                                           subNumSamples,
-                                                           unifiedMeanP);
+  T unifiedSampleVarianceP = subPSeq.unifiedSampleVarianceExtra(true,
+                                                                0,
+                                                                subNumSamples,
+                                                                unifiedMeanP);
 
-  T unifiedSampleVarianceQ = subQSeq.unifiedSampleVariance(true,
-                                                           0,
-                                                           subNumSamples,
-                                                           unifiedMeanQ);
+  T unifiedSampleVarianceQ = subQSeq.unifiedSampleVarianceExtra(true,
+                                                                0,
+                                                                subNumSamples,
+                                                                unifiedMeanQ);
 
   // Compute unified covariance
   if (env.inter0Rank() >= 0) {

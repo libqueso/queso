@@ -371,7 +371,7 @@ uqArrayOfSequencesClass<V,M>::mean(
   uqArrayOfSequencesClass<V,M>* tmp = const_cast<uqArrayOfSequencesClass<V,M>*>(this);
   for (unsigned int i = 0; i < meanVec.size(); ++i) {
     const uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
-    meanVec[i] = seq.subMean(initialPos, numPos);
+    meanVec[i] = seq.subMeanExtra(initialPos, numPos);
   }
 
   return;
@@ -808,7 +808,7 @@ uqArrayOfSequencesClass<V,M>::minMax(
   unsigned int numParams = this->vectorSize();
   for (unsigned int i = 0; i < numParams; ++i) {
     uqScalarSequenceClass<double>& seq = *(tmp->m_scalarSequences(i,0));
-    seq.subMinMax(initialPos,minVec[i],maxVec[i]);
+    seq.subMinMaxExtra(initialPos,minVec[i],maxVec[i]);
   }
 
   return;

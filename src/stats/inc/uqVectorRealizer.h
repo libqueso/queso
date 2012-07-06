@@ -405,11 +405,11 @@ uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
   const char*                           prefix,
   const uqBaseVectorSequenceClass<V,M>& chain)
   :
-  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),chain.unifiedValuesBox(),chain.subSequenceSize()),
+  uqBaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),chain.unifiedBoxPlain(),chain.subSequenceSize()),
   m_chain                 (chain),
   m_currentChainPos       (0),
-  m_unifiedSampleExpVector(new V(chain.unifiedMeanValues()          )), // IMPORTANT
-  m_unifiedSampleVarVector(new V(chain.unifiedSampleVarianceValues()))  // IMPORTANT
+  m_unifiedSampleExpVector(new V(chain.unifiedMeanPlain()          )), // IMPORTANT
+  m_unifiedSampleVarVector(new V(chain.unifiedSampleVariancePlain()))  // IMPORTANT
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In uqSequentialVectorRealizerClass<V,M>::constructor()"

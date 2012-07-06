@@ -709,13 +709,18 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
           omegaLnDiffSequence[i] = prevLogLikelihoodValues[i]*auxExponent; // likelihood is important
         }
 
+#if 1 // prudenci-2012-07-06
+        double unifiedOmegaLnMax = omegaLnDiffSequence.unifiedMaxPlain(m_vectorSpace.numOfProcsForStorage() == 1);
+      //double unifiedOmegaLnMin = omegaLnDiffSequence.unifiedMinPlain(m_vectorSpace.numOfProcsForStorage() == 1);
+#else
         double unifiedOmegaLnMax = 0.;
         double unifiedOmegaLnMin = 0.;
-        omegaLnDiffSequence.unifiedMinMax(m_vectorSpace.numOfProcsForStorage() == 1, // KAUST3
-                                          0,
-                                          omegaLnDiffSequence.subSequenceSize(),
-                                          unifiedOmegaLnMin,
-                                          unifiedOmegaLnMax);
+        omegaLnDiffSequence.unifiedMinMaxExtra(m_vectorSpace.numOfProcsForStorage() == 1, // KAUST3
+                                               0,
+                                               omegaLnDiffSequence.subSequenceSize(),
+                                               unifiedOmegaLnMin,
+                                               unifiedOmegaLnMax);
+#endif
         for (unsigned int i = 0; i < weightSequence.subSequenceSize(); ++i) {
           omegaLnDiffSequence[i] -= unifiedOmegaLnMax;
           weightSequence[i] = exp(omegaLnDiffSequence[i]);

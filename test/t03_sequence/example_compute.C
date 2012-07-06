@@ -105,10 +105,10 @@ void compute(const uqFullEnvironmentClass& env) {
   // Step 7 of 9: Compute min, max, mean, covariance and correlation matrices
   uqGslVectorClass minVec (paramSpace.zeroVector());
   uqGslVectorClass maxVec (paramSpace.zeroVector());
-  auxSeq.unifiedMinMax(0,auxSeq.subSequenceSize(),minVec,maxVec);
+  auxSeq.unifiedMinMaxExtra(0,auxSeq.subSequenceSize(),minVec,maxVec);
 
   uqGslVectorClass meanVec(paramSpace.zeroVector());
-  auxSeq.unifiedMean(0,auxSeq.subSequenceSize(),meanVec);
+  auxSeq.unifiedMeanExtra(0,auxSeq.subSequenceSize(),meanVec);
 
   uqGslMatrixClass covarianceMatrix  = uqGslMatrixClass(paramSpace.zeroVector());
   uqGslMatrixClass correlationMatrix = uqGslMatrixClass(paramSpace.zeroVector());

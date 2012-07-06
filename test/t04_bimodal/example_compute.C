@@ -134,27 +134,27 @@ void compute(const uqFullEnvironmentClass& env) {
     seqAll[i] = auxVec[0];
   }
 
-  double mean1 = seq1.subMean(0,seq1.subSequenceSize());
+  double mean1 = seq1.subMeanExtra(0,seq1.subSequenceSize());
   if (env.subDisplayFile()) {
     *env.subDisplayFile() << "seq1.size() = "    << seq1.subSequenceSize()
                           << "\n seq1.mean() = " << mean1
-                          << "\n seq1.std() = "  << sqrt(seq1.subSampleVariance(0,seq1.subSequenceSize(),mean1))
+                          << "\n seq1.std() = "  << sqrt(seq1.subSampleVarianceExtra(0,seq1.subSequenceSize(),mean1))
                           << std::endl;
   }
 
-  double mean2 = seq2.subMean(0,seq2.subSequenceSize());
+  double mean2 = seq2.subMeanExtra(0,seq2.subSequenceSize());
   if (env.subDisplayFile()) {
     *env.subDisplayFile() << "seq2.size() = "    << seq2.subSequenceSize()
                           << "\n seq2.mean() = " << mean2
-                          << "\n seq2.std() = "  << sqrt(seq2.subSampleVariance(0,seq2.subSequenceSize(),mean2))
+                          << "\n seq2.std() = "  << sqrt(seq2.subSampleVarianceExtra(0,seq2.subSequenceSize(),mean2))
                           << std::endl;
   }
 
-  double meanAll = seqAll.subMean(0,seqAll.subSequenceSize());
+  double meanAll = seqAll.subMeanExtra(0,seqAll.subSequenceSize());
   if (env.subDisplayFile()) {
     *env.subDisplayFile() << "seqAll.size() = "    << seqAll.subSequenceSize()
                           << "\n seqAll.mean() = " << meanAll
-                          << "\n seqAll.std() = "  << sqrt(seqAll.subSampleVariance(0,seqAll.subSequenceSize(),meanAll))
+                          << "\n seqAll.std() = "  << sqrt(seqAll.subSampleVarianceExtra(0,seqAll.subSequenceSize(),meanAll))
                           << std::endl;
   }
 

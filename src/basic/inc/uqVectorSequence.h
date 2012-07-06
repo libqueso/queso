@@ -29,6 +29,8 @@
 #ifndef __UQ_VECTOR_SEQUENCE_H__
 #define __UQ_VECTOR_SEQUENCE_H__
 
+#define  UQ_CODE_HAS_MONITORS
+
 #include <uqVectorSubset.h>
 #include <uqScalarSequence.h>
 #include <uqSequenceStatisticalOptions.h>
@@ -47,282 +49,282 @@ public:
                                      const std::string&             name);
   virtual ~uqBaseVectorSequenceClass();
 
-  virtual  unsigned int             subSequenceSize            () const = 0;
-           unsigned int             unifiedSequenceSize        () const;
-           unsigned int             vectorSizeLocal            () const;
-           unsigned int             vectorSizeGlobal           () const;
-  const    uqVectorSpaceClass<V,M>& vectorSpace                () const;
-  const    std::string&             name                       () const;
-           void                     setName                    (const std::string& newName);
-           void                     clear                      ();
-  const    V&                       subMinValues               () const;
-  const    V&                       unifiedMinValues           () const;
-  const    V&                       subMaxValues               () const;
-  const    V&                       unifiedMaxValues           () const;
-  const    V&                       subMeanValues              () const;
-  const    V&                       unifiedMeanValues          () const;
-  const    V&                       subSampleVarianceValues    () const;
-  const    V&                       unifiedSampleVarianceValues() const;
-  const    uqBoxSubsetClass<V,M>&   subValuesBox               () const;
-  const    uqBoxSubsetClass<V,M>&   unifiedValuesBox           () const;
-           void                     deleteStoredVectors        ();
+  virtual  unsigned int             subSequenceSize             () const = 0;
+           unsigned int             unifiedSequenceSize         () const;
+           unsigned int             vectorSizeLocal             () const;
+           unsigned int             vectorSizeGlobal            () const;
+  const    uqVectorSpaceClass<V,M>& vectorSpace                 () const;
+  const    std::string&             name                        () const;
+           void                     setName                     (const std::string& newName);
+           void                     clear                       ();
+  const    V&                       subMinPlain                 () const;
+  const    V&                       unifiedMinPlain             () const;
+  const    V&                       subMaxPlain                 () const;
+  const    V&                       unifiedMaxPlain             () const;
+  const    V&                       subMeanPlain                () const;
+  const    V&                       unifiedMeanPlain            () const;
+  const    V&                       subSampleVariancePlain      () const;
+  const    V&                       unifiedSampleVariancePlain  () const;
+  const    uqBoxSubsetClass<V,M>&   subBoxPlain                 () const;
+  const    uqBoxSubsetClass<V,M>&   unifiedBoxPlain             () const;
+           void                     deleteStoredVectors         ();
 
-  virtual  void                     resizeSequence             (unsigned int newSubSequenceSize) = 0;
-  virtual  void                     resetValues                (unsigned int initialPos, unsigned int numPos) = 0;
-  virtual  void                     erasePositions             (unsigned int initialPos, unsigned int numPos) = 0;
-  virtual  void                     getPositionValues          (unsigned int posId,       V& vec) const = 0;
-  virtual  void                     setPositionValues          (unsigned int posId, const V& vec) = 0;
-  virtual  void                     setGaussian                (const gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
-  virtual  void                     setUniform                 (const gsl_rng* rng, const V& aVec,    const V& bVec     ) = 0;
+  virtual  void                     resizeSequence              (unsigned int newSubSequenceSize) = 0;/*-*/
+  virtual  void                     resetValues                 (unsigned int initialPos, unsigned int numPos) = 0;/*-*/
+  virtual  void                     erasePositions              (unsigned int initialPos, unsigned int numPos) = 0;/*-*/
+  virtual  void                     getPositionValues           (unsigned int posId,       V& vec) const = 0;
+  virtual  void                     setPositionValues           (unsigned int posId, const V& vec) = 0;/*-*/
+  virtual  void                     setGaussian                 (const gsl_rng* rng, const V& meanVec, const V& stdDevVec) = 0;
+  virtual  void                     setUniform                  (const gsl_rng* rng, const V& aVec,    const V& bVec     ) = 0;
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
-  virtual  void                     subUniformlySampledMdf     (const V&                       numEvaluationPointsVec,
-                                                                uqArrayOfOneDGridsClass <V,M>& mdfGrids,
-                                                                uqArrayOfOneDTablesClass<V,M>& mdfValues) const = 0;
+  virtual  void                     subUniformlySampledMdf      (const V&                       numEvaluationPointsVec,
+                                                                 uqArrayOfOneDGridsClass <V,M>& mdfGrids,
+                                                                 uqArrayOfOneDTablesClass<V,M>& mdfValues) const = 0;
 #endif
-  virtual  void                     subUniformlySampledCdf     (const V&                       numEvaluationPointsVec,
-                                                                uqArrayOfOneDGridsClass <V,M>& cdfGrids,
-                                                                uqArrayOfOneDTablesClass<V,M>& cdfValues) const = 0;
-  virtual  void                     unifiedUniformlySampledCdf (const V&                       numEvaluationPointsVec,
-                                                                uqArrayOfOneDGridsClass <V,M>& unifiedCdfGrids,
-                                                                uqArrayOfOneDTablesClass<V,M>& unifieddfValues) const = 0;
+  virtual  void                     subUniformlySampledCdf      (const V&                       numEvaluationPointsVec,
+                                                                 uqArrayOfOneDGridsClass <V,M>& cdfGrids,
+                                                                 uqArrayOfOneDTablesClass<V,M>& cdfValues) const = 0;
+  virtual  void                     unifiedUniformlySampledCdf  (const V&                       numEvaluationPointsVec,
+                                                                 uqArrayOfOneDGridsClass <V,M>& unifiedCdfGrids,
+                                                                 uqArrayOfOneDTablesClass<V,M>& unifieddfValues) const = 0;
 
-  virtual  void                     subMean                    (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                V&                                       meanVec) const = 0;
-  virtual  void                     unifiedMean                (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                V&                                       unifiedMeanVec) const = 0;
-  virtual  void                     subSampleVariance          (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                const V&                                 meanVec,
-                                                                V&                                       samVec) const = 0;
-  virtual  void                     unifiedSampleVariance      (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                const V&                                 unifiedMeanVec,
-                                                                V&                                       unifiedSamVec) const = 0;
-  virtual  void                     subPopulationVariance      (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                const V&                                 meanVec,
-                                                                V&                                       popVec) const = 0;
-  virtual  void                     unifiedPopulationVariance  (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                const V&                                 unifiedMeanVec,
-                                                                V&                                       unifiedPopVec) const = 0;
+  virtual  void                     subMeanExtra                (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 V&                                       meanVec) const = 0;
+  virtual  void                     unifiedMeanExtra            (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 V&                                       unifiedMeanVec) const = 0;
+  virtual  void                     subSampleVarianceExtra      (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 const V&                                 meanVec,
+                                                                 V&                                       samVec) const = 0;
+  virtual  void                     unifiedSampleVarianceExtra  (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 const V&                                 unifiedMeanVec,
+                                                                 V&                                       unifiedSamVec) const = 0;
+  virtual  void                     subPopulationVariance       (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 const V&                                 meanVec,
+                                                                 V&                                       popVec) const = 0;
+  virtual  void                     unifiedPopulationVariance   (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 const V&                                 unifiedMeanVec,
+                                                                 V&                                       unifiedPopVec) const = 0;
 
-  virtual  void                     autoCovariance             (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                const V&                                 meanVec,
-                                                                unsigned int                             lag,
-                                                                V&                                       covVec) const = 0;
-  virtual  void                     autoCorrViaDef             (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                unsigned int                             lag,
-                                                                V&                                       corrVec) const = 0;
-  virtual  void                     autoCorrViaFft             (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                const std::vector<unsigned int>&         lags,
-                                                                std::vector<V*>&                         corrVecs) const = 0;
-  virtual  void                     autoCorrViaFft             (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                unsigned int                             numSum,
-                                                                V&                                       autoCorrsSumVec) const = 0;
-  virtual  void                     bmm                        (unsigned int                             initialPos,
-                                                                unsigned int                             batchLength,
-                                                                V&                                       bmmVec) const = 0;
-  virtual  void                     fftForward                 (unsigned int                             initialPos,
-                                                                unsigned int                             fftSize,
-                                                                unsigned int                             paramId,
-                                                                std::vector<std::complex<double> >&      fftResult) const = 0;
-//virtual  void                     fftInverse                 (unsigned int                             fftSize) = 0;
-  virtual  void                     psd                        (unsigned int                             initialPos,
-                                                                unsigned int                             numBlocks,
-                                                                double                                   hopSizeRatio,
-                                                                unsigned int                             paramId,
-                                                                std::vector<double>&                     psdResult) const = 0;
-  virtual  void                     psdAtZero                  (unsigned int                             initialPos,
-                                                                unsigned int                             numBlocks,
-                                                                double                                   hopSizeRatio,
-                                                                V&                                       psdVec) const = 0;
-  virtual  void                     geweke                     (unsigned int                             initialPos,
-                                                                double                                   ratioNa,
-                                                                double                                   ratioNb,
-                                                                V&                                       gewVec) const = 0;
-  virtual  void                     meanStacc                  (unsigned int                             initialPos,
-                                                                V&                                       meanStaccVec) const = 0;
-  virtual  void                     subMinMax                  (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                V&                                       minVec,
-                                                                V&                                       maxVec) const = 0;
-  virtual  void                     unifiedMinMax              (unsigned int                             initialPos,
-                                                                unsigned int                             numPos,
-                                                                V&                                       unifiedMinVec,
-                                                                V&                                       unifiedMaxVec) const = 0;
-  virtual  void                     subHistogram               (unsigned int                             initialPos,
-                                                                const V&                                 minVec,
-                                                                const V&                                 maxVec,
-                                                                std::vector<V*>&                         centersForAllBins,
-                                                                std::vector<V*>&                         quanttsForAllBins) const = 0;
-  virtual  void                     unifiedHistogram           (unsigned int                             initialPos,
-                                                                const V&                                 unifiedMinVec,
-                                                                const V&                                 unifiedMaxVec,
-                                                                std::vector<V*>&                         unifiedCentersForAllBins,
-                                                                std::vector<V*>&                         unifiedQuanttsForAllBins) const = 0;
-  virtual  void                     subCdfStacc                (unsigned int                             initialPos,
-                                                                const std::vector<V*>&                   evalPositionsVecs,
-                                                                std::vector<V*>&                         cdfStaccVecs) const = 0;
-  virtual  void                     subInterQuantileRange      (unsigned int                             initialPos,
-                                                                V&                                       iqrVec) const = 0;
-  virtual  void                     unifiedInterQuantileRange  (unsigned int                             initialPos,
+  virtual  void                     autoCovariance              (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 const V&                                 meanVec,
+                                                                 unsigned int                             lag,
+                                                                 V&                                       covVec) const = 0;
+  virtual  void                     autoCorrViaDef              (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 unsigned int                             lag,
+                                                                 V&                                       corrVec) const = 0;
+  virtual  void                     autoCorrViaFft              (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 const std::vector<unsigned int>&         lags,
+                                                                 std::vector<V*>&                         corrVecs) const = 0;
+  virtual  void                     autoCorrViaFft              (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 unsigned int                             numSum,
+                                                                 V&                                       autoCorrsSumVec) const = 0;
+  virtual  void                     bmm                         (unsigned int                             initialPos,
+                                                                 unsigned int                             batchLength,
+                                                                 V&                                       bmmVec) const = 0;
+  virtual  void                     fftForward                  (unsigned int                             initialPos,
+                                                                 unsigned int                             fftSize,
+                                                                 unsigned int                             paramId,
+                                                                 std::vector<std::complex<double> >&      fftResult) const = 0;
+//virtual  void                     fftInverse                  (unsigned int                             fftSize) = 0;
+  virtual  void                     psd                         (unsigned int                             initialPos,
+                                                                 unsigned int                             numBlocks,
+                                                                 double                                   hopSizeRatio,
+                                                                 unsigned int                             paramId,
+                                                                 std::vector<double>&                     psdResult) const = 0;
+  virtual  void                     psdAtZero                   (unsigned int                             initialPos,
+                                                                 unsigned int                             numBlocks,
+                                                                 double                                   hopSizeRatio,
+                                                                 V&                                       psdVec) const = 0;
+  virtual  void                     geweke                      (unsigned int                             initialPos,
+                                                                 double                                   ratioNa,
+                                                                 double                                   ratioNb,
+                                                                 V&                                       gewVec) const = 0;
+  virtual  void                     meanStacc                   (unsigned int                             initialPos,
+                                                                 V&                                       meanStaccVec) const = 0;
+  virtual  void                     subMinMaxExtra              (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 V&                                       minVec,
+                                                                 V&                                       maxVec) const = 0;
+  virtual  void                     unifiedMinMaxExtra          (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 V&                                       unifiedMinVec,
+                                                                 V&                                       unifiedMaxVec) const = 0;
+  virtual  void                     subHistogram                (unsigned int                             initialPos,
+                                                                 const V&                                 minVec,
+                                                                 const V&                                 maxVec,
+                                                                 std::vector<V*>&                         centersForAllBins,
+                                                                 std::vector<V*>&                         quanttsForAllBins) const = 0;
+  virtual  void                     unifiedHistogram            (unsigned int                             initialPos,
+                                                                 const V&                                 unifiedMinVec,
+                                                                 const V&                                 unifiedMaxVec,
+                                                                 std::vector<V*>&                         unifiedCentersForAllBins,
+                                                                 std::vector<V*>&                         unifiedQuanttsForAllBins) const = 0;
+  virtual  void                     subCdfStacc                 (unsigned int                             initialPos,
+                                                                 const std::vector<V*>&                   evalPositionsVecs,
+                                                                 std::vector<V*>&                         cdfStaccVecs) const = 0;
+  virtual  void                     subInterQuantileRange       (unsigned int                             initialPos,
+                                                                 V&                                       iqrVec) const = 0;
+  virtual  void                     unifiedInterQuantileRange   (unsigned int                             initialPos,
                                                                 V&                                       unifiedIqrVec) const = 0;
-  virtual  void                     subScalesForKde            (unsigned int                             initialPos,
-                                                                const V&                                 iqrVec,
-                                                                unsigned int                             kdeDimension,
-                                                                V&                                       scaleVec) const = 0;
-  virtual  void                     unifiedScalesForKde        (unsigned int                             initialPos,
-                                                                const V&                                 unifiedIqrVec,
-                                                                unsigned int                             kdeDimension,
-                                                                V&                                       unifiedScaleVec) const = 0;
-  virtual  void                     subGaussian1dKde           (unsigned int                             initialPos,
-                                                                const V&                                 scaleVec,
-                                                                const std::vector<V*>&                   evaluationParamVecs,
-                                                                std::vector<V*>&                         densityVecs) const = 0;
-  virtual  void                     unifiedGaussian1dKde       (unsigned int                             initialPos,
-                                                                const V&                                 unifiedScaleVec,
-                                                                const std::vector<V*>&                   unifiedEvaluationParamVecs,
-                                                                std::vector<V*>&                         unifiedDensityVecs) const = 0;
-  virtual  void                     subWriteContents           (const std::string&                       fileName,
-                                                                const std::string&                       fileType,
-                                                                const std::set<unsigned int>&            allowedSubEnvIds) const = 0;
-  virtual  void                     subWriteContents           (std::ofstream&                           ofsvar,
-                                                                const std::string&                       fileType) const = 0;
-  virtual  void                     unifiedWriteContents       (const std::string&                       fileName,
-                                                                const std::string&                       fileType) const = 0;
-  virtual  void                     unifiedReadContents        (const std::string&                       fileName,
-                                                                const std::string&                       fileType,
-                                                                const unsigned int                       subSequenceSize) = 0;
-  virtual  void                     select                     (const std::vector<unsigned int>&         idsOfUniquePositions) = 0;
-  virtual  void                     filter                     (unsigned int                             initialPos,
-                                                                unsigned int                             spacing) = 0;
+  virtual  void                     subScalesForKde             (unsigned int                             initialPos,
+                                                                 const V&                                 iqrVec,
+                                                                 unsigned int                             kdeDimension,
+                                                                 V&                                       scaleVec) const = 0;
+  virtual  void                     unifiedScalesForKde         (unsigned int                             initialPos,
+                                                                 const V&                                 unifiedIqrVec,
+                                                                 unsigned int                             kdeDimension,
+                                                                 V&                                       unifiedScaleVec) const = 0;
+  virtual  void                     subGaussian1dKde            (unsigned int                             initialPos,
+                                                                 const V&                                 scaleVec,
+                                                                 const std::vector<V*>&                   evaluationParamVecs,
+                                                                 std::vector<V*>&                         densityVecs) const = 0;
+  virtual  void                     unifiedGaussian1dKde        (unsigned int                             initialPos,
+                                                                 const V&                                 unifiedScaleVec,
+                                                                 const std::vector<V*>&                   unifiedEvaluationParamVecs,
+                                                                 std::vector<V*>&                         unifiedDensityVecs) const = 0;
+  virtual  void                     subWriteContents            (const std::string&                       fileName,
+                                                                 const std::string&                       fileType,
+                                                                 const std::set<unsigned int>&            allowedSubEnvIds) const = 0;
+  virtual  void                     subWriteContents            (std::ofstream&                           ofsvar,
+                                                                 const std::string&                       fileType) const = 0;
+  virtual  void                     unifiedWriteContents        (const std::string&                       fileName,
+                                                                 const std::string&                       fileType) const = 0;
+  virtual  void                     unifiedReadContents         (const std::string&                       fileName,
+                                                                 const std::string&                       fileType,
+                                                                 const unsigned int                       subSequenceSize) = 0;
+  virtual  void                     select                      (const std::vector<unsigned int>&         idsOfUniquePositions) = 0;
+  virtual  void                     filter                      (unsigned int                             initialPos,
+                                                                 unsigned int                             spacing) = 0;
 
-           void                     computeStatistics          (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                std::ofstream*                           passedOfs);
+           void                     computeStatistics           (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 std::ofstream*                           passedOfs);
 
-           void                     computeFilterParams        (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                std::ofstream*                           passedOfs,
-                                                                unsigned int   &                         initialPos,
-                                                                unsigned int   &                         spacing);
+           void                     computeFilterParams         (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 std::ofstream*                           passedOfs,
+                                                                 unsigned int   &                         initialPos,
+                                                                 unsigned int   &                         spacing);
 
-  virtual  double                   estimateConvBrooksGelman   (unsigned int                             initialPos,
-                                                                unsigned int                             numPos) const = 0;
+  virtual  double                   estimateConvBrooksGelman    (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos) const = 0;
 
-  virtual  void                     extractScalarSeq           (unsigned int                             initialPos,
-                                                                unsigned int                             spacing,
-                                                                unsigned int                             numPos,
-                                                                unsigned int                             paramId,
-                                                                uqScalarSequenceClass<double>&           scalarSeq) const = 0;
+  virtual  void                     extractScalarSeq            (unsigned int                             initialPos,
+                                                                 unsigned int                             spacing,
+                                                                 unsigned int                             numPos,
+                                                                 unsigned int                             paramId,
+                                                                 uqScalarSequenceClass<double>&           scalarSeq) const = 0;
 protected:
-           void                     copy                       (const uqBaseVectorSequenceClass<V,M>&    src);
-           void                     computeMeanVars            (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                std::ofstream*                           passedOfs,
-                                                                V*                                       subMeanPtr,
-                                                                V*                                       subSampleVarPtr,
-                                                                V*                                       subPopulVarPtr);
+           void                     copy                        (const uqBaseVectorSequenceClass<V,M>&    src);
+           void                     computeMeanVars             (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 std::ofstream*                           passedOfs,
+                                                                 V*                                       subMeanPtr,
+                                                                 V*                                       subSampleVarPtr,
+                                                                 V*                                       subPopulVarPtr);
 
-  virtual  void                     subMeanMonitorAlloc        (unsigned int numberOfMonitorPositions) = 0;
-  virtual  void                     subMeanInter0MonitorAlloc  (unsigned int numberOfMonitorPositions) = 0;
-  virtual  void                     unifiedMeanMonitorAlloc    (unsigned int numberOfMonitorPositions) = 0;
+  virtual  void                     subMeanMonitorAlloc         (unsigned int numberOfMonitorPositions) = 0;
+  virtual  void                     subMeanInter0MonitorAlloc   (unsigned int numberOfMonitorPositions) = 0;
+  virtual  void                     unifiedMeanMonitorAlloc     (unsigned int numberOfMonitorPositions) = 0;
 
-  virtual  void                     subMeanMonitorRun          (unsigned int monitorPosition,
-                                                                V&           subMeanVec,
-                                                                V&           subMeanCltStd) = 0;
-  virtual  void                     subMeanInter0MonitorRun    (unsigned int monitorPosition,
-                                                                V&           subMeanInter0Mean,
-                                                                V&           subMeanInter0Clt95,
-                                                                V&           subMeanInter0Empirical90,
-                                                                V&           subMeanInter0Min,
-                                                                V&           subMeanInter0Max) = 0;
-  virtual  void                     unifiedMeanMonitorRun      (unsigned int monitorPosition,
-                                                                V&           unifiedMeanVec,
-                                                                V&           unifiedMeanCltStd) = 0;
+  virtual  void                     subMeanMonitorRun           (unsigned int monitorPosition,
+                                                                 V&           subMeanVec,
+                                                                 V&           subMeanCltStd) = 0;
+  virtual  void                     subMeanInter0MonitorRun     (unsigned int monitorPosition,
+                                                                 V&           subMeanInter0Mean,
+                                                                 V&           subMeanInter0Clt95,
+                                                                 V&           subMeanInter0Empirical90,
+                                                                 V&           subMeanInter0Min,
+                                                                 V&           subMeanInter0Max) = 0;
+  virtual  void                     unifiedMeanMonitorRun       (unsigned int monitorPosition,
+                                                                 V&           unifiedMeanVec,
+                                                                 V&           unifiedMeanCltStd) = 0;
 
-  virtual  void                     subMeanMonitorStore        (unsigned int i,
-                                                                unsigned int monitorPosition,
-                                                                const V&     subMeanVec,
-                                                                const V&     subMeanCltStd) = 0;
-  virtual  void                     subMeanInter0MonitorStore  (unsigned int i,
-                                                                unsigned int monitorPosition,
-                                                                const V&     subMeanInter0Mean,
-                                                                const V&     subMeanInter0Clt95,
-                                                                const V&     subMeanInter0Empirical90,
-                                                                const V&     subMeanInter0Min,
-                                                                const V&     subMeanInter0Max) = 0;
-  virtual  void                     unifiedMeanMonitorStore    (unsigned int i,
-                                                                unsigned int monitorPosition,
-                                                                V&           unifiedMeanVec,
-                                                                V&           unifiedMeanCltStd) = 0;
+  virtual  void                     subMeanMonitorStore         (unsigned int i,
+                                                                 unsigned int monitorPosition,
+                                                                 const V&     subMeanVec,
+                                                                 const V&     subMeanCltStd) = 0;
+  virtual  void                     subMeanInter0MonitorStore   (unsigned int i,
+                                                                 unsigned int monitorPosition,
+                                                                 const V&     subMeanInter0Mean,
+                                                                 const V&     subMeanInter0Clt95,
+                                                                 const V&     subMeanInter0Empirical90,
+                                                                 const V&     subMeanInter0Min,
+                                                                 const V&     subMeanInter0Max) = 0;
+  virtual  void                     unifiedMeanMonitorStore     (unsigned int i,
+                                                                 unsigned int monitorPosition,
+                                                                 V&           unifiedMeanVec,
+                                                                 V&           unifiedMeanCltStd) = 0;
 
-  virtual  void                     subMeanMonitorWrite        (std::ofstream& ofs) = 0;
-  virtual  void                     subMeanInter0MonitorWrite  (std::ofstream& ofs) = 0;
-  virtual  void                     unifiedMeanMonitorWrite    (std::ofstream& ofs) = 0;
+  virtual  void                     subMeanMonitorWrite         (std::ofstream& ofs) = 0;
+  virtual  void                     subMeanInter0MonitorWrite   (std::ofstream& ofs) = 0;
+  virtual  void                     unifiedMeanMonitorWrite     (std::ofstream& ofs) = 0;
 
-  virtual  void                     subMeanMonitorFree         () = 0;
-  virtual  void                     subMeanInter0MonitorFree   () = 0;
-  virtual  void                     unifiedMeanMonitorFree     () = 0;
+  virtual  void                     subMeanMonitorFree          () = 0;
+  virtual  void                     subMeanInter0MonitorFree    () = 0;
+  virtual  void                     unifiedMeanMonitorFree      () = 0;
 
-           void                     computeMeanEvolution       (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                std::ofstream*                           passedOfs);
-           void                     computeBMM                 (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&         initialPosForStatistics,
-                                                                std::ofstream*                           passedOfs);
-           void                     computeFFT                 (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&         initialPosForStatistics,
-                                                                std::ofstream*                           passedOfs);
-           void                     computePSD                 (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&         initialPosForStatistics,
-                                                                std::ofstream*                           passedOfs);
-           void                     computePSDAtZero           (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&         initialPosForStatistics,
-                                                                std::ofstream*                           passedOfs);
-           void                     computeGeweke              (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&         initialPosForStatistics,
-                                                                std::ofstream*                           passedOfs);
-           void                     computeMeanStacc           (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&         initialPosForStatistics,
-                                                                std::ofstream*                           passedOfs);
-           void                     computeAutoCorrViaDef      (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&         initialPosForStatistics,
-                                                                const std::vector<unsigned int>&         lagsForCorrs,
-                                                                std::ofstream*                           passedOfs);
-           void                     computeAutoCorrViaFFT      (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                const std::vector<unsigned int>&         initialPosForStatistics,
-                                                                const std::vector<unsigned int>&         lagsForCorrs,
-                                                                std::ofstream*                           passedOfs);
-           void                     computeHistCdfstaccKde     (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                std::ofstream*                           passedOfs);
-           void                     computeCovCorrMatrices     (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                std::ofstream*                           passedOfs);
+           void                     computeMeanEvolution        (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 std::ofstream*                           passedOfs);
+           void                     computeBMM                  (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                 std::ofstream*                           passedOfs);
+           void                     computeFFT                  (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                 std::ofstream*                           passedOfs);
+           void                     computePSD                  (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                 std::ofstream*                           passedOfs);
+           void                     computePSDAtZero            (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                 std::ofstream*                           passedOfs);
+           void                     computeGeweke               (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                 std::ofstream*                           passedOfs);
+           void                     computeMeanStacc            (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                 std::ofstream*                           passedOfs);
+           void                     computeAutoCorrViaDef       (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                 const std::vector<unsigned int>&         lagsForCorrs,
+                                                                 std::ofstream*                           passedOfs);
+           void                     computeAutoCorrViaFFT       (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 const std::vector<unsigned int>&         initialPosForStatistics,
+                                                                 const std::vector<unsigned int>&         lagsForCorrs,
+                                                                 std::ofstream*                           passedOfs);
+           void                     computeHistCdfstaccKde      (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 std::ofstream*                           passedOfs);
+           void                     computeCovCorrMatrices      (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 std::ofstream*                           passedOfs);
 
-  virtual  void                     extractRawData             (unsigned int                             initialPos,
-                                                                unsigned int                             spacing,
-                                                                unsigned int                             numPos,
-                                                                unsigned int                             paramId,
-                                                                std::vector<double>&                     rawData) const = 0;
+  virtual  void                     extractRawData              (unsigned int                             initialPos,
+                                                                 unsigned int                             spacing,
+                                                                 unsigned int                             numPos,
+                                                                 unsigned int                             paramId,
+                                                                 std::vector<double>&                     rawData) const = 0;
 
   const uqBaseEnvironmentClass&  m_env;
   const uqVectorSpaceClass<V,M>& m_vectorSpace;
   std::string                    m_name;
 
   mutable uqFftClass<double>*    m_fftObj;
-  mutable V*                     m_subMinValues;
-  mutable V*                     m_unifiedMinValues;
-  mutable V*                     m_subMaxValues;
-  mutable V*                     m_unifiedMaxValues;
-  mutable V*                     m_subMeanValues;
-  mutable V*                     m_unifiedMeanValues;
-  mutable V*                     m_subSampleVarianceValues;
-  mutable V*                     m_unifiedSampleVarianceValues;
-  mutable uqBoxSubsetClass<V,M>* m_subValuesBox;
-  mutable uqBoxSubsetClass<V,M>* m_unifiedValuesBox;
+  mutable V*                     m_subMinPlain;
+  mutable V*                     m_unifiedMinPlain;
+  mutable V*                     m_subMaxPlain;
+  mutable V*                     m_unifiedMaxPlain;
+  mutable V*                     m_subMeanPlain;
+  mutable V*                     m_unifiedMeanPlain;
+  mutable V*                     m_subSampleVariancePlain;
+  mutable V*                     m_unifiedSampleVariancePlain;
+  mutable uqBoxSubsetClass<V,M>* m_subBoxPlain;
+  mutable uqBoxSubsetClass<V,M>* m_unifiedBoxPlain;
 };
 
 template <class V, class M>
@@ -331,20 +333,20 @@ uqBaseVectorSequenceClass<V,M>::uqBaseVectorSequenceClass(
   unsigned int                   subSequenceSize,
   const std::string&             name)
   :
-  m_env                        (vectorSpace.env()),
-  m_vectorSpace                (vectorSpace),
-  m_name                       (name),
-  m_fftObj                     (new uqFftClass<double>(m_env)),
-  m_subMinValues               (NULL),
-  m_unifiedMinValues           (NULL),
-  m_subMaxValues               (NULL),
-  m_unifiedMaxValues           (NULL),
-  m_subMeanValues              (NULL),
-  m_unifiedMeanValues          (NULL),
-  m_subSampleVarianceValues    (NULL),
-  m_unifiedSampleVarianceValues(NULL),
-  m_subValuesBox               (NULL),
-  m_unifiedValuesBox           (NULL)
+  m_env                       (vectorSpace.env()),
+  m_vectorSpace               (vectorSpace),
+  m_name                      (name),
+  m_fftObj                    (new uqFftClass<double>(m_env)),
+  m_subMinPlain               (NULL),
+  m_unifiedMinPlain           (NULL),
+  m_subMaxPlain               (NULL),
+  m_unifiedMaxPlain           (NULL),
+  m_subMeanPlain              (NULL),
+  m_unifiedMeanPlain          (NULL),
+  m_subSampleVariancePlain    (NULL),
+  m_unifiedSampleVariancePlain(NULL),
+  m_subBoxPlain               (NULL),
+  m_unifiedBoxPlain           (NULL)
 {
 }
 
@@ -454,157 +456,176 @@ uqBaseVectorSequenceClass<V,M>::clear()
 
 template <class V, class M>
 const V&
-uqBaseVectorSequenceClass<V,M>::subMinValues() const
+uqBaseVectorSequenceClass<V,M>::subMinPlain() const
 {
-  if (m_subMinValues == NULL) {
-    m_subMinValues = m_vectorSpace.newVector();
-    if (m_subMaxValues == NULL) m_subMaxValues = m_vectorSpace.newVector();
-    subMinMax(0,this->subSequenceSize(),*m_subMinValues,*m_subMaxValues);
+  if (m_subMinPlain == NULL) {
+    m_subMinPlain = m_vectorSpace.newVector();
+    if (m_subMaxPlain == NULL) m_subMaxPlain = m_vectorSpace.newVector();
+    subMinMaxExtra(0,this->subSequenceSize(),*m_subMinPlain,*m_subMaxPlain);
   }
 
-  return *m_subMinValues;
+  return *m_subMinPlain;
 }
 
 template <class V, class M>
 const V&
-uqBaseVectorSequenceClass<V,M>::unifiedMinValues() const
+uqBaseVectorSequenceClass<V,M>::unifiedMinPlain() const
 {
-  if (m_unifiedMinValues == NULL) {
-    m_unifiedMinValues = m_vectorSpace.newVector();
-    if (m_unifiedMaxValues == NULL) m_unifiedMaxValues = m_vectorSpace.newVector();
-    unifiedMinMax(0,this->subSequenceSize(),*m_unifiedMinValues,*m_unifiedMaxValues);
+  if (m_unifiedMinPlain == NULL) {
+    m_unifiedMinPlain = m_vectorSpace.newVector();
+    if (m_unifiedMaxPlain == NULL) m_unifiedMaxPlain = m_vectorSpace.newVector();
+    unifiedMinMaxExtra(0,this->subSequenceSize(),*m_unifiedMinPlain,*m_unifiedMaxPlain);
   }
 
-  return *m_unifiedMinValues;
+  return *m_unifiedMinPlain;
 }
 
 template <class V, class M>
 const V&
-uqBaseVectorSequenceClass<V,M>::subMaxValues() const
+uqBaseVectorSequenceClass<V,M>::subMaxPlain() const
 {
-  if (m_subMaxValues == NULL) {
-    if (m_subMinValues == NULL) m_subMinValues = m_vectorSpace.newVector();
-    m_subMaxValues = m_vectorSpace.newVector();
-    subMinMax(0,this->subSequenceSize(),*m_subMinValues,*m_subMaxValues);
+  if (m_subMaxPlain == NULL) {
+    if (m_subMinPlain == NULL) m_subMinPlain = m_vectorSpace.newVector();
+    m_subMaxPlain = m_vectorSpace.newVector();
+    subMinMaxExtra(0,this->subSequenceSize(),*m_subMinPlain,*m_subMaxPlain);
   }
 
-  return *m_subMaxValues;
+  return *m_subMaxPlain;
 }
 
 template <class V, class M>
 const V&
-uqBaseVectorSequenceClass<V,M>::unifiedMaxValues() const
+uqBaseVectorSequenceClass<V,M>::unifiedMaxPlain() const
 {
-  if (m_unifiedMaxValues == NULL) {
-    if (m_unifiedMinValues == NULL) m_unifiedMinValues = m_vectorSpace.newVector();
-    m_unifiedMaxValues = m_vectorSpace.newVector();
-    unifiedMinMax(0,this->subSequenceSize(),*m_unifiedMinValues,*m_unifiedMaxValues);
+  if (m_unifiedMaxPlain == NULL) {
+    if (m_unifiedMinPlain == NULL) m_unifiedMinPlain = m_vectorSpace.newVector();
+    m_unifiedMaxPlain = m_vectorSpace.newVector();
+    unifiedMinMaxExtra(0,this->subSequenceSize(),*m_unifiedMinPlain,*m_unifiedMaxPlain);
   }
 
-  return *m_unifiedMaxValues;
+  return *m_unifiedMaxPlain;
 }
 
 template <class V, class M>
 const V&
-uqBaseVectorSequenceClass<V,M>::subMeanValues() const
+uqBaseVectorSequenceClass<V,M>::subMeanPlain() const
 {
-  if (m_subMeanValues == NULL) {
-    m_subMeanValues = m_vectorSpace.newVector();
-    subMean(0,subSequenceSize(),*m_subMeanValues);
+  if (m_subMeanPlain == NULL) {
+    m_subMeanPlain = m_vectorSpace.newVector();
+    subMeanExtra(0,subSequenceSize(),*m_subMeanPlain);
   }
 
-  return *m_subMeanValues;
+  return *m_subMeanPlain;
 }
 
 template <class V, class M>
 const V&
-uqBaseVectorSequenceClass<V,M>::unifiedMeanValues() const
+uqBaseVectorSequenceClass<V,M>::unifiedMeanPlain() const
 {
-  if (m_unifiedMeanValues == NULL) {
-    m_unifiedMeanValues = m_vectorSpace.newVector();
-    unifiedMean(0,subSequenceSize(),*m_unifiedMeanValues);
+  if (m_unifiedMeanPlain == NULL) {
+    m_unifiedMeanPlain = m_vectorSpace.newVector();
+    unifiedMeanExtra(0,subSequenceSize(),*m_unifiedMeanPlain);
   }
 
-  return *m_unifiedMeanValues;
+  return *m_unifiedMeanPlain;
 }
 
 template <class V, class M>
 const V&
-uqBaseVectorSequenceClass<V,M>::subSampleVarianceValues() const
+uqBaseVectorSequenceClass<V,M>::subSampleVariancePlain() const
 {
-  if (m_subSampleVarianceValues == NULL) {
-    m_subSampleVarianceValues = m_vectorSpace.newVector();
-    subSampleVariance(0,subSequenceSize(),subMeanValues(),*m_subSampleVarianceValues);
+  if (m_subSampleVariancePlain == NULL) {
+    m_subSampleVariancePlain = m_vectorSpace.newVector();
+    subSampleVarianceExtra(0,subSequenceSize(),subMeanPlain(),*m_subSampleVariancePlain);
   }
 
-  return *m_subSampleVarianceValues;
+  return *m_subSampleVariancePlain;
 }
 
 template <class V, class M>
 const V&
-uqBaseVectorSequenceClass<V,M>::unifiedSampleVarianceValues() const
+uqBaseVectorSequenceClass<V,M>::unifiedSampleVariancePlain() const
 {
-  if (m_unifiedSampleVarianceValues == NULL) {
-    m_unifiedSampleVarianceValues = m_vectorSpace.newVector();
-    unifiedSampleVariance(0,subSequenceSize(),unifiedMeanValues(),*m_unifiedSampleVarianceValues);
+  if (m_unifiedSampleVariancePlain == NULL) {
+    m_unifiedSampleVariancePlain = m_vectorSpace.newVector();
+    unifiedSampleVarianceExtra(0,subSequenceSize(),unifiedMeanPlain(),*m_unifiedSampleVariancePlain);
   }
 
-  return *m_unifiedSampleVarianceValues;
+  return *m_unifiedSampleVariancePlain;
 }
 
 template <class V, class M>
 const uqBoxSubsetClass<V,M>&
-uqBaseVectorSequenceClass<V,M>::subValuesBox() const
+uqBaseVectorSequenceClass<V,M>::subBoxPlain() const
 {
-  if (m_subValuesBox == NULL) {
-    m_subValuesBox = new uqBoxSubsetClass<V,M>(m_name.c_str(),
-                                               m_vectorSpace,
-                                               this->subMinValues(),
-                                               this->subMaxValues());
+  if (m_subBoxPlain == NULL) {
+    m_subBoxPlain = new uqBoxSubsetClass<V,M>(m_name.c_str(),
+                                              m_vectorSpace,
+                                              this->subMinPlain(),
+                                              this->subMaxPlain());
   }
 
-  return *m_subValuesBox;
+  return *m_subBoxPlain;
 }
 
 template <class V, class M>
 const uqBoxSubsetClass<V,M>&
-uqBaseVectorSequenceClass<V,M>::unifiedValuesBox() const
+uqBaseVectorSequenceClass<V,M>::unifiedBoxPlain() const
 {
-  if (m_unifiedValuesBox == NULL) {
-    m_unifiedValuesBox = new uqBoxSubsetClass<V,M>(m_name.c_str(),
-                                                   m_vectorSpace,
-                                                   this->unifiedMinValues(),
-                                                   this->unifiedMaxValues());
+  if (m_unifiedBoxPlain == NULL) {
+    m_unifiedBoxPlain = new uqBoxSubsetClass<V,M>(m_name.c_str(),
+                                                  m_vectorSpace,
+                                                  this->unifiedMinPlain(),
+                                                  this->unifiedMaxPlain());
   }
 
-  return *m_unifiedValuesBox;
+  return *m_unifiedBoxPlain;
 }
 
 template <class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::deleteStoredVectors()
 {
-  delete m_subMinValues;
-  delete m_unifiedMinValues;
-  delete m_subMaxValues;
-  delete m_unifiedMaxValues;
-  delete m_subMeanValues;
-  delete m_unifiedMeanValues;
-  delete m_subSampleVarianceValues;
-  delete m_unifiedSampleVarianceValues;
-  delete m_subValuesBox;
-  delete m_unifiedValuesBox;
-
-  m_subMinValues                = NULL;
-  m_unifiedMinValues            = NULL;
-  m_subMaxValues                = NULL;
-  m_unifiedMaxValues            = NULL;
-  m_subMeanValues               = NULL;
-  m_unifiedMeanValues           = NULL;
-  m_subSampleVarianceValues     = NULL;
-  m_unifiedSampleVarianceValues = NULL;
-  m_subValuesBox                = NULL;
-  m_unifiedValuesBox            = NULL;
+  if (m_subMinPlain) {
+    delete m_subMinPlain;
+    m_subMinPlain                = NULL;
+  }
+  if (m_unifiedMinPlain) {
+    delete m_unifiedMinPlain;
+    m_unifiedMinPlain            = NULL;
+  }
+  if (m_subMaxPlain) {
+    delete m_subMaxPlain;
+    m_subMaxPlain                = NULL;
+  }
+  if (m_unifiedMaxPlain) {
+    delete m_unifiedMaxPlain;
+    m_unifiedMaxPlain            = NULL;
+  }
+  if (m_subMeanPlain) {
+    delete m_subMeanPlain;
+    m_subMeanPlain               = NULL;
+  }
+  if (m_unifiedMeanPlain) {
+    delete m_unifiedMeanPlain;
+    m_unifiedMeanPlain           = NULL;
+  }
+  if (m_subSampleVariancePlain) {
+    delete m_subSampleVariancePlain;
+    m_subSampleVariancePlain     = NULL;
+  }
+  if (m_unifiedSampleVariancePlain) {
+    delete m_unifiedSampleVariancePlain;
+    m_unifiedSampleVariancePlain = NULL;
+  }
+  if (m_subBoxPlain) {
+    delete m_subBoxPlain;
+    m_subBoxPlain     = NULL;
+  }
+  if (m_unifiedBoxPlain) {
+    delete m_unifiedBoxPlain;
+    m_unifiedBoxPlain = NULL;
+  }
 
   return;
 }
@@ -821,15 +842,15 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
   }
 
   V subChainMean(m_vectorSpace.zeroVector());
-  this->subMean(0,
-                this->subSequenceSize(),
-                subChainMean);
+  this->subMeanExtra(0,
+                     this->subSequenceSize(),
+                     subChainMean);
 
   V subChainSampleVariance(m_vectorSpace.zeroVector());
-  this->subSampleVariance(0,
-                          this->subSequenceSize(),
-                          subChainMean,
-                          subChainSampleVariance);
+  this->subSampleVarianceExtra(0,
+                               this->subSequenceSize(),
+                               subChainMean,
+                               subChainSampleVariance);
 
   if ((m_env.displayVerbosity() >= 5) && (m_env.subDisplayFile())) {
     *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeMeanVars()"
@@ -915,15 +936,15 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
     // Write unified min-max
     if (m_vectorSpace.numOfProcsForStorage() == 1) {
       V unifiedChainMean(m_vectorSpace.zeroVector());
-      this->unifiedMean(0,
-                        this->subSequenceSize(),
-                        unifiedChainMean);
+      this->unifiedMeanExtra(0,
+                             this->subSequenceSize(),
+                             unifiedChainMean);
 
       V unifiedChainSampleVariance(m_vectorSpace.zeroVector());
-      this->unifiedSampleVariance(0,
-                                  this->subSequenceSize(),
-                                  unifiedChainMean,
-                                  unifiedChainSampleVariance);
+      this->unifiedSampleVarianceExtra(0,
+                                       this->subSequenceSize(),
+                                       unifiedChainMean,
+                                       unifiedChainSampleVariance);
 
       V unifiedChainPopulationVariance(m_vectorSpace.zeroVector());
       this->unifiedPopulationVariance(0,
@@ -1779,14 +1800,14 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       unsigned int initialPos = initialPosForStatistics[initialPosId];
 
-      this->subMean(initialPos,
-                    this->subSequenceSize()-initialPos,
-                    subChainMean);
+      this->subMeanExtra(initialPos,
+                         this->subSequenceSize()-initialPos,
+                         subChainMean);
 
-      this->subSampleVariance(initialPos,
-                              this->subSequenceSize()-initialPos,
-                              subChainMean,
-                              subChainSampleVariance);
+      this->subSampleVarianceExtra(initialPos,
+                                   this->subSequenceSize()-initialPos,
+                                   subChainMean,
+                                   subChainSampleVariance);
 
       if (m_env.subDisplayFile()) {
         *m_env.subDisplayFile() << "\nEstimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
@@ -1949,10 +1970,10 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
   V statsMinPositions(m_vectorSpace.zeroVector());
   V statsMaxPositions(m_vectorSpace.zeroVector());
-  this->subMinMax(0, // Use the whole chain
-                  this->subSequenceSize(),
-                  statsMinPositions,
-                  statsMaxPositions);
+  this->subMinMaxExtra(0, // Use the whole chain
+                       this->subSequenceSize(),
+                       statsMinPositions,
+                       statsMaxPositions);
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\nComputed min values and max values for chain '" << m_name << "'"
@@ -1989,10 +2010,10 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
   V unifiedStatsMaxPositions(statsMaxPositions);
   if (m_env.numSubEnvironments() > 1) {
     // Compute unified min-max
-    this->unifiedMinMax(0, // Use the whole chain
-                        this->subSequenceSize(),
-                        unifiedStatsMinPositions,
-                        unifiedStatsMaxPositions);
+    this->unifiedMinMaxExtra(0, // Use the whole chain
+                             this->subSequenceSize(),
+                             unifiedStatsMinPositions,
+                             unifiedStatsMaxPositions);
 
     // Write unified min-max
     if (m_env.subDisplayFile()) {
@@ -2615,10 +2636,10 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
 
   // For both P and Q vector sequences: compute the unified mean
   P_V unifiedMeanP(subPSeq.vectorSpace().zeroVector());
-  subPSeq.unifiedMean(0,subNumSamples,unifiedMeanP);
+  subPSeq.unifiedMeanExtra(0,subNumSamples,unifiedMeanP);
 
   Q_V unifiedMeanQ(subQSeq.vectorSpace().zeroVector());
-  subQSeq.unifiedMean(0,subNumSamples,unifiedMeanQ);
+  subQSeq.unifiedMeanExtra(0,subNumSamples,unifiedMeanQ);
 
   // Compute "sub" covariance matrix
   for (unsigned i = 0; i < numRowsLocal; ++i) {
@@ -2643,16 +2664,16 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
 
   // For both P and Q vector sequences: compute the unified variance
   P_V unifiedSampleVarianceP(subPSeq.vectorSpace().zeroVector());
-  subPSeq.unifiedSampleVariance(0,
-                                subNumSamples,
-                                unifiedMeanP,
-                                unifiedSampleVarianceP);
+  subPSeq.unifiedSampleVarianceExtra(0,
+                                     subNumSamples,
+                                     unifiedMeanP,
+                                     unifiedSampleVarianceP);
 
   Q_V unifiedSampleVarianceQ(subQSeq.vectorSpace().zeroVector());
-  subQSeq.unifiedSampleVariance(0,
-                                subNumSamples,
-                                unifiedMeanQ,
-                                unifiedSampleVarianceQ);
+  subQSeq.unifiedSampleVarianceExtra(0,
+                                     subNumSamples,
+                                     unifiedMeanQ,
+                                     unifiedSampleVarianceQ);
 
   // Compute unified covariance matrix
   if (useOnlyInter0Comm) {

@@ -1168,7 +1168,11 @@ uqMetropolisHastingsSGClass<P_V,P_M>::updateAdaptedCovMatrix(
                         "uqMetropolisHastingsSGClass<P_V,P_M>::updateAdaptedCovMatrix()",
                         "'partialChain.subSequenceSize()' should be >= 2");
 
-    partialChain.subMean(0,partialChain.subSequenceSize(),lastMean);
+#if 1 // prudenci-2012-07-06
+    lastMean = partialChain.subMeanPlain();
+#else
+    partialChain.subMeanExtra(0,partialChain.subSequenceSize(),lastMean);
+#endif
 
     P_V tmpVec(m_vectorSpace.zeroVector());
     lastAdaptedCovMatrix = -doubleSubChainSize * matrixProduct(lastMean,lastMean);
