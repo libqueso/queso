@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------bl-
+//-----------------------------------------------------------------------Bl-
 //--------------------------------------------------------------------------
 // 
 // QUESO - a library to support the Quantification of Uncertainty
@@ -63,14 +63,22 @@ public:
   const    V&                       unifiedMaxPlain             () const;
   const    V&                       subMeanPlain                () const;
   const    V&                       unifiedMeanPlain            () const;
+  const    V&                       subMedianPlain              () const;
+  const    V&                       unifiedMedianPlain          () const;
   const    V&                       subSampleVariancePlain      () const;
   const    V&                       unifiedSampleVariancePlain  () const;
   const    uqBoxSubsetClass<V,M>&   subBoxPlain                 () const;
   const    uqBoxSubsetClass<V,M>&   unifiedBoxPlain             () const;
            void                     deleteStoredVectors         ();
+
            void                     append                      (const uqBaseVectorSequenceClass<V,M>& src,
                                                                        unsigned int                    initialPos,
                                                                        unsigned int                    numPos);             /* This routine deletes all stored computed vectors */
+
+           void                     subPositionsOfMaximum       (const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
+                                                                 uqBaseVectorSequenceClass<V,M>&      subPositionsOfMaximum);
+           void                     unifiedPositionsOfMaximum   (const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
+                                                                 uqBaseVectorSequenceClass<V,M>&      unifiedPositionsOfMaximum);
 
   virtual  void                     resizeSequence              (unsigned int newSubSequenceSize) = 0;                      /* This routine deletes all stored computed vectors */
   virtual  void                     resetValues                 (unsigned int initialPos, unsigned int numPos) = 0;         /* This routine deletes all stored computed vectors */
@@ -96,6 +104,12 @@ public:
                                                                  V&                                       meanVec) const = 0;
   virtual  void                     unifiedMeanExtra            (unsigned int                             initialPos,
                                                                  unsigned int                             numPos,
+                                                                 V&                                       unifiedMeanVec) const = 0;
+  virtual  void                     subMedianExtra              (unsigned int                             initialPos,
+                                                                 unsigned int                             numPos,
+                                                                 V&                                       meanVec) const = 0;
+  virtual  void                     unifiedMedianExtra          (unsigned int                             initialPos,
+                                                                 unsigned int                             localNumPos,
                                                                  V&                                       unifiedMeanVec) const = 0;
   virtual  void                     subSampleVarianceExtra      (unsigned int                             initialPos,
                                                                  unsigned int                             numPos,
@@ -324,6 +338,8 @@ protected:
   mutable V*                     m_unifiedMaxPlain;
   mutable V*                     m_subMeanPlain;
   mutable V*                     m_unifiedMeanPlain;
+  mutable V*                     m_subMedianPlain;
+  mutable V*                     m_unifiedMedianPlain;
   mutable V*                     m_subSampleVariancePlain;
   mutable V*                     m_unifiedSampleVariancePlain;
   mutable uqBoxSubsetClass<V,M>* m_subBoxPlain;
@@ -346,6 +362,8 @@ uqBaseVectorSequenceClass<V,M>::uqBaseVectorSequenceClass(
   m_unifiedMaxPlain           (NULL),
   m_subMeanPlain              (NULL),
   m_unifiedMeanPlain          (NULL),
+  m_subMedianPlain            (NULL),
+  m_unifiedMedianPlain        (NULL),
   m_subSampleVariancePlain    (NULL),
   m_unifiedSampleVariancePlain(NULL),
   m_subBoxPlain               (NULL),
@@ -535,6 +553,30 @@ uqBaseVectorSequenceClass<V,M>::unifiedMeanPlain() const
 
 template <class V, class M>
 const V&
+uqBaseVectorSequenceClass<V,M>::subMedianPlain() const
+{
+  if (m_subMedianPlain == NULL) {
+    m_subMedianPlain = m_vectorSpace.newVector();
+    *m_subMedianPlain = subMedianExtra(0,subSequenceSize());
+  }
+
+  return *m_subMedianPlain;
+}
+
+template <class V, class M>
+const V&
+uqBaseVectorSequenceClass<V,M>::unifiedMedianPlain() const
+{
+  if (m_unifiedMedianPlain == NULL) {
+    m_unifiedMedianPlain = m_vectorSpace.newVector();
+    *m_unifiedMedianPlain = unifiedMedianExtra(0,subSequenceSize());
+  }
+
+  return *m_unifiedMedianPlain;
+}
+
+template <class V, class M>
+const V&
 uqBaseVectorSequenceClass<V,M>::subSampleVariancePlain() const
 {
   if (m_subSampleVariancePlain == NULL) {
@@ -613,6 +655,14 @@ uqBaseVectorSequenceClass<V,M>::deleteStoredVectors()
     delete m_unifiedMeanPlain;
     m_unifiedMeanPlain           = NULL;
   }
+  if (m_subMedianPlain) {
+    delete m_subMedianPlain;
+    m_subMedianPlain             = NULL;
+  }
+  if (m_unifiedMedianPlain) {
+    delete m_unifiedMedianPlain;
+    m_unifiedMedianPlain         = NULL;
+  }
   if (m_subSampleVariancePlain) {
     delete m_subSampleVariancePlain;
     m_subSampleVariancePlain     = NULL;
@@ -642,12 +692,12 @@ uqBaseVectorSequenceClass<V,M>::append(
 {
   UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+1)),
                       m_env.worldRank(),
-                      "uqVectorSequence<V,M>::append()",
+                      "uqBaseVectorSequence<V,M>::append()",
                       "initialPos is too big");
 
   UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+numPos)),
                       m_env.worldRank(),
-                      "uqVectorSequence<V,M>::append()",
+                      "uqBaseVectorSequence<V,M>::append()",
                       "numPos is too big");
 
   this->deleteStoredVectors();
@@ -657,6 +707,68 @@ uqBaseVectorSequenceClass<V,M>::append(
   for (unsigned int i = 0; i < numPos; ++i) {
     src.getPositionValues(initialPos+i,tmpVec);
     this->setPositionValues(currentSize+i,tmpVec);
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::subPositionsOfMaximum(
+  const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
+  uqBaseVectorSequenceClass<V,M>&      subPositionsOfMaximum)
+{
+  UQ_FATAL_TEST_MACRO(subCorrespondingScalarValues.subSequenceSize() != this->subSequenceSize(),
+                      m_env.worldRank(),
+                      "uqBaseVectorSequenceClass<V,M>::subPositionsOfMaximum()",
+                      "invalid input");
+
+  double maxValue = subCorrespondingScalarValues.subMaxPlain();
+  unsigned int iMax = subCorrespondingScalarValues.subSequenceSize();
+
+  unsigned int numPos = 0;
+  for (unsigned int i = 0; i < iMax; ++i) {
+    if (subCorrespondingScalarValues[i] == maxValue) {
+      numPos++;
+    }
+  }
+
+  subPositionsOfMaximum.resizeSequence(numPos);
+  for (unsigned int i = 0; i < iMax; ++i) {
+    if (subCorrespondingScalarValues[i] == maxValue) {
+      subPositionsOfMaximum[i] = (*this)[i];
+    }
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum( // rr0
+  const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
+  uqBaseVectorSequenceClass<V,M>&      unifiedPositionsOfMaximum)
+{
+  UQ_FATAL_TEST_MACRO(subCorrespondingScalarValues.subSequenceSize() != this->subSequenceSize(),
+                      m_env.worldRank(),
+                      "uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()",
+                      "invalid input");
+
+  double maxValue = subCorrespondingScalarValues.subMaxPlain();
+  unsigned int iMax = subCorrespondingScalarValues.subSequenceSize();
+
+  unsigned int numPos = 0;
+  for (unsigned int i = 0; i < iMax; ++i) {
+    if (subCorrespondingScalarValues[i] == maxValue) {
+      numPos++;
+    }
+  }
+
+  unifiedPositionsOfMaximum.resizeSequence(numPos);
+  for (unsigned int i = 0; i < iMax; ++i) {
+    if (subCorrespondingScalarValues[i] == maxValue) {
+      unifiedPositionsOfMaximum[i] = (*this)[i];
+    }
   }
 
   return;

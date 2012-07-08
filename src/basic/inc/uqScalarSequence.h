@@ -76,6 +76,8 @@ public:
   const T&           unifiedMaxPlain              (bool                            useOnlyInter0Comm) const;
   const T&           subMeanPlain                 () const;
   const T&           unifiedMeanPlain             (bool                            useOnlyInter0Comm) const;
+  const T&           subMedianPlain               () const;
+  const T&           unifiedMedianPlain           (bool                            useOnlyInter0Comm) const;
   const T&           subSampleVariancePlain       () const;
   const T&           unifiedSampleVariancePlain   (bool                            useOnlyInter0Comm) const;
         void         deleteStoredScalars          ();
@@ -108,6 +110,11 @@ public:
         T            subMeanExtra                 (unsigned int                    initialPos,
                                                    unsigned int                    numPos) const;
         T            unifiedMeanExtra             (bool                            useOnlyInter0Comm,
+                                                   unsigned int                    initialPos,
+                                                   unsigned int                    localNumPos) const;
+        T            subMedianExtra               (unsigned int                    initialPos,
+                                                   unsigned int                    numPos) const;
+        T            unifiedMedianExtra           (bool                            useOnlyInter0Comm,
                                                    unsigned int                    initialPos,
                                                    unsigned int                    localNumPos) const;
         T            subMeanCltStd                (unsigned int                    initialPos,
@@ -250,8 +257,13 @@ public:
                                                    unsigned int                    spacing) const;
 
         void         append                       (const uqScalarSequenceClass<T>& src,
-                                                   unsigned int                    initialPos,
-                                                   unsigned int                    numPos); /* This routine deletes all stored computed vectors */
+                                                   unsigned int                    srcInitialPos,
+                                                   unsigned int                    srcNumPos); /* This routine deletes all stored computed vectors */
+
+        void         subPositionsOfMaximum        (const uqScalarSequenceClass<T>& subCorrespondingScalarValues,
+                                                   uqScalarSequenceClass<T>&       subPositionsOfMaximum);
+        void         unifiedPositionsOfMaximum    (const uqScalarSequenceClass<T>& subCorrespondingScalarValues,
+                                                   uqScalarSequenceClass<T>&       unifiedPositionsOfMaximum);
 
         void         subWriteContents             (const std::string&              fileName,
                                                    const std::string&              fileType,
@@ -289,6 +301,8 @@ private:
   mutable T*                    m_unifiedMaxPlain;
   mutable T*                    m_subMeanPlain;
   mutable T*                    m_unifiedMeanPlain;
+  mutable T*                    m_subMedianPlain;
+  mutable T*                    m_unifiedMedianPlain;
   mutable T*                    m_subSampleVariancePlain;
   mutable T*                    m_unifiedSampleVariancePlain;
 };
@@ -308,6 +322,8 @@ uqScalarSequenceClass<T>::uqScalarSequenceClass(
   m_unifiedMaxPlain           (NULL),
   m_subMeanPlain              (NULL),
   m_unifiedMeanPlain          (NULL),
+  m_subMedianPlain            (NULL),
+  m_unifiedMedianPlain        (NULL),
   m_subSampleVariancePlain    (NULL),
   m_unifiedSampleVariancePlain(NULL)
 {
@@ -369,6 +385,14 @@ uqScalarSequenceClass<T>::deleteStoredScalars()
   if (m_unifiedMeanPlain) {
     delete m_unifiedMeanPlain;
     m_unifiedMeanPlain           = NULL;
+  }
+  if (m_subMedianPlain) {
+    delete m_subMedianPlain;
+    m_subMedianPlain             = NULL;
+  }
+  if (m_unifiedMedianPlain) {
+    delete m_unifiedMedianPlain;
+    m_unifiedMedianPlain         = NULL;
   }
   if (m_subSampleVariancePlain) {
     delete m_subSampleVariancePlain;
@@ -460,24 +484,86 @@ template <class T>
 void
 uqScalarSequenceClass<T>::append(
   const uqScalarSequenceClass<T>& src,
-  unsigned int                    initialPos,
-  unsigned int                    numPos)
+  unsigned int                    srcInitialPos,
+  unsigned int                    srcNumPos)
 {
-  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+1)),
+  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (srcInitialPos+1)),
                       m_env.worldRank(),
                       "uqScalarSequenceClass<T>::append()",
-                      "initialPos is too big");
+                      "srcInitialPos is too big");
 
-  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (initialPos+numPos)),
+  UQ_FATAL_TEST_MACRO((src.subSequenceSize() < (srcInitialPos+srcNumPos)),
                       m_env.worldRank(),
                       "uqScalarSequenceClass<T>::append()",
-                      "numPos is too big");
+                      "srcNumPos is too big");
 
   deleteStoredScalars();
   unsigned int currentSize = this->subSequenceSize();
-  m_seq.resize(currentSize+numPos,0.);
-  for (unsigned int i = 0; i < numPos; ++i) {
-    m_seq[currentSize+i] = src.m_seq[initialPos+i];
+  m_seq.resize(currentSize+srcNumPos,0.);
+  for (unsigned int i = 0; i < srcNumPos; ++i) {
+    m_seq[currentSize+i] = src.m_seq[srcInitialPos+i];
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::subPositionsOfMaximum(
+  const uqScalarSequenceClass<T>& subCorrespondingScalarValues,
+  uqScalarSequenceClass<T>&       subPositionsOfMaximum)
+{
+  UQ_FATAL_TEST_MACRO(subCorrespondingScalarValues.sequenceSize() != this->subSequenceSize(),
+                      m_env.worldRank(),
+                      "uqScalarSequenceClass<T>::subPositionsOfMaximum()",
+                      "invalid input");
+
+  T maxValue = subCorrespondingScalarValues.subMaxPlain();
+  unsigned int iMax = subCorrespondingScalarValues.sequenceSize();
+
+  unsigned int numPos = 0;
+  for (unsigned int i = 0; i < iMax; ++i) {
+    if (subCorrespondingScalarValues[i] == maxValue) {
+      numPos++;
+    }
+  }
+
+  subPositionsOfMaximum.resizeSequence(numPos);
+  for (unsigned int i = 0; i < iMax; ++i) {
+    if (subCorrespondingScalarValues[i] == maxValue) {
+      subPositionsOfMaximum[i] = (*this)[i];
+    }
+  }
+
+  return;
+}
+
+template <class T>
+void
+uqScalarSequenceClass<T>::unifiedPositionsOfMaximum( // rr0
+  const uqScalarSequenceClass<T>& subCorrespondingScalarValues,
+  uqScalarSequenceClass<T>&       unifiedPositionsOfMaximum)
+{
+  UQ_FATAL_TEST_MACRO(subCorrespondingScalarValues.sequenceSize() != this->subSequenceSize(),
+                      m_env.worldRank(),
+                      "uqScalarSequenceClass<T>::unifiedPositionsOfMaximum()",
+                      "invalid input");
+
+  T maxValue = subCorrespondingScalarValues.subMaxPlain();
+  unsigned int iMax = subCorrespondingScalarValues.sequenceSize();
+
+  unsigned int numPos = 0;
+  for (unsigned int i = 0; i < iMax; ++i) {
+    if (subCorrespondingScalarValues[i] == maxValue) {
+      numPos++;
+    }
+  }
+
+  unifiedPositionsOfMaximum.resizeSequence(numPos);
+  for (unsigned int i = 0; i < iMax; ++i) {
+    if (subCorrespondingScalarValues[i] == maxValue) {
+      unifiedPositionsOfMaximum[i] = (*this)[i];
+    }
   }
 
   return;
@@ -853,6 +939,30 @@ uqScalarSequenceClass<T>::unifiedMeanPlain(bool useOnlyInter0Comm) const
   }
 
   return *m_unifiedMeanPlain;
+}
+
+template <class T>
+const T&
+uqScalarSequenceClass<T>::subMedianPlain() const
+{
+  if (m_subMedianPlain == NULL) {
+    m_subMedianPlain = new T(0.);
+    *m_subMedianPlain = subMedianExtra(0,subSequenceSize());
+  }
+
+  return *m_subMedianPlain;
+}
+
+template <class T>
+const T&
+uqScalarSequenceClass<T>::unifiedMedianPlain(bool useOnlyInter0Comm) const
+{
+  if (m_unifiedMedianPlain == NULL) {
+    m_unifiedMedianPlain = new T(0.);
+    *m_unifiedMedianPlain = unifiedMedianExtra(useOnlyInter0Comm,0,subSequenceSize());
+  }
+
+  return *m_unifiedMedianPlain;
 }
 
 template <class T>
@@ -1369,6 +1479,142 @@ uqScalarSequenceClass<T>::unifiedMeanExtra(
   //m_env.fullComm().Barrier();
 
   return unifiedMeanValue;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::subMedianExtra(
+  unsigned int initialPos,
+  unsigned int numPos) const
+{
+  if (this->subSequenceSize() == 0) return 0.;
+
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()));
+  if (bRC == false) {
+    std::cerr << "In uqScalarSequenceClass<T>::subMedianExtra()"
+              << ": ERROR at fullRank "         << m_env.fullRank()
+              << ", initialPos = "              << initialPos
+              << ", numPos = "                  << numPos
+              << ", this->subSequenceSize() = " << this->subSequenceSize()
+              << std::endl;
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::subMedianExtra()"
+                              << ": ERROR at fullRank "         << m_env.fullRank()
+                              << ", initialPos = "              << initialPos
+                              << ", numPos = "                  << numPos
+                              << ", this->subSequenceSize() = " << this->subSequenceSize()
+                              << std::endl;
+    }
+  }
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.worldRank(),
+                      "uqScalarSequenceClass<T>::subMedianExtra()",
+                      "invalid input data");
+
+  uqScalarSequenceClass sortedSequence(m_env,0,"");
+  sortedSequence.resizeSequence(numPos);
+  this->extractScalarSeq(initialPos,
+                         1,
+                         numPos,
+                         sortedSequence);
+  sortedSequence.subSort();
+
+  unsigned int tmpPos = (unsigned int) (0.5 * (double) numPos);
+  T resultValue = sortedSequence[tmpPos];
+
+  return resultValue;
+}
+
+template <class T>
+T
+uqScalarSequenceClass<T>::unifiedMedianExtra( // rr0
+  bool         useOnlyInter0Comm,
+  unsigned int initialPos,
+  unsigned int numPos) const
+{
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subMedianExtra(initialPos,
+                                numPos);
+  }
+
+  // As of 07/Jul/2012, this routine does *not* require sub sequences to have equal size. Good.
+
+  T unifiedMedianValue = 0.;
+  if (useOnlyInter0Comm) {
+    if (m_env.inter0Rank() >= 0) {
+      bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+                  (0                   <  numPos                 ) &&
+                  ((initialPos+numPos) <= this->subSequenceSize()));
+      UQ_FATAL_TEST_MACRO(bRC == false,
+                          m_env.worldRank(),
+                          "uqScalarSequenceClass<T>::unifiedMedianExtra()",
+                          "invalid input data");
+
+      uqScalarSequenceClass unifiedSortedSequence(m_env,0,"");
+      this->unifiedSort(useOnlyInter0Comm,
+                        initialPos,
+                        unifiedSortedSequence);
+      unsigned int unifiedDataSize = unifiedSortedSequence.subSequenceSize();
+
+      unsigned int finalPosPlus1 = initialPos + numPos;
+      T localSum = 0.;
+      for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
+        localSum += m_seq[j];
+      }
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMedianExtra()"
+                                << ": initialPos = " << initialPos
+                                << ", numPos = "     << numPos
+                                << ", before MPI.Allreduce"
+                                << std::endl;
+      }
+      //std::cout << m_env.inter0Comm().MyPID()
+      //          << std::endl;
+      //sleep(1);
+      unsigned int unifiedNumPos = 0;
+      m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedMedianExtra()",
+                                   "failed MPI.Allreduce() for numPos");
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMedianExtra()"
+                                << ": numPos = "        << numPos
+                                << ", unifiedNumPos = " << unifiedNumPos
+                                << std::endl;
+      }
+
+      m_env.inter0Comm().Allreduce((void *) &localSum, (void *) &unifiedMedianValue, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
+                                   "uqScalarSequenceClass<T>::unifiedMedianExtra()",
+                                   "failed MPI.Allreduce() for sum");
+
+      unifiedMedianValue /= ((T) unifiedNumPos);
+
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMedianExtra()"
+                                << ": localSum = "         << localSum
+                                << ", unifiedMedianValue = " << unifiedMedianValue
+                                << std::endl;
+      }
+    }
+    else {
+      // Node not in the 'inter0' communicator
+      this->subMedianExtra(initialPos,
+                         numPos);
+    }
+  }
+  else {
+    UQ_FATAL_TEST_MACRO(true,
+                        m_env.worldRank(),
+                        "uqScalarSequenceClass<T>::unifiedMedianExtra()",
+                        "parallel vectors not supported yet");
+  }
+
+  //m_env.fullComm().Barrier();
+
+  return unifiedMedianValue;
 }
 
 template <class T>

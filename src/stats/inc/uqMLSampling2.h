@@ -710,11 +710,11 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
         }
 
 #if 1 // prudenci-2012-07-06
-        double unifiedOmegaLnMax = omegaLnDiffSequence.unifiedMaxPlain(m_vectorSpace.numOfProcsForStorage() == 1);
       //double unifiedOmegaLnMin = omegaLnDiffSequence.unifiedMinPlain(m_vectorSpace.numOfProcsForStorage() == 1);
+        double unifiedOmegaLnMax = omegaLnDiffSequence.unifiedMaxPlain(m_vectorSpace.numOfProcsForStorage() == 1);
 #else
-        double unifiedOmegaLnMax = 0.;
         double unifiedOmegaLnMin = 0.;
+        double unifiedOmegaLnMax = 0.;
         omegaLnDiffSequence.unifiedMinMaxExtra(m_vectorSpace.numOfProcsForStorage() == 1, // KAUST3
                                                0,
                                                omegaLnDiffSequence.subSequenceSize(),

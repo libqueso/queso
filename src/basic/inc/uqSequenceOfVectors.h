@@ -74,6 +74,12 @@ public:
         void         unifiedMeanExtra           (unsigned int                         initialPos,
                                                  unsigned int                         numPos,
                                                  V&                                   unifiedMeanVec) const;
+        void         subMedianExtra             (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
+                                                 V&                                   medianVec) const;
+        void         unifiedMedianExtra         (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
+                                                 V&                                   unifiedMedianVec) const;
         void         subMeanCltStd              (unsigned int                         initialPos,
                                                  unsigned int                         numPos,
                                                  const V&                             meanVec,
@@ -1038,6 +1044,58 @@ uqSequenceOfVectorsClass<V,M>::unifiedMeanExtra(
                            << ", unified sequence size = " << tmpUnif
                            << ", unifiedMeanVec = "        << unifiedMeanVec
                            << std::endl;
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::subMedianExtra( // rr0
+  unsigned int initialPos,
+  unsigned int numPos,
+  V&           medianExtra) const
+{
+  if (this->subSequenceSize() == 0) return;
+
+  bool bRC = ((initialPos          <  this->subSequenceSize()) &&
+              (0                   <  numPos                 ) &&
+              ((initialPos+numPos) <= this->subSequenceSize()));
+  if (bRC == false) {
+    std::cerr << "In uqSequenceOfVectorsClass<V,M>::subMedianExtra()"
+              << ": ERROR at fullRank "         << m_env.fullRank()
+              << ", initialPos = "              << initialPos
+              << ", numPos = "                  << numPos
+              << ", this->subSequenceSize() = " << this->subSequenceSize()
+              << std::endl;
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::subMedianExtra()"
+                              << ": ERROR at fullRank "         << m_env.fullRank()
+                              << ", initialPos = "              << initialPos
+                              << ", numPos = "                  << numPos
+                              << ", this->subSequenceSize() = " << this->subSequenceSize()
+                              << std::endl;
+    }
+  }
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorsClass<V,M>::subMedianExtra()",
+                      "invalid input data");
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::unifiedMedianExtra( // rr0
+  unsigned int initialPos,
+  unsigned int numPos,
+  V&           unifiedMedianExtra) const
+{
+  if (m_env.numSubEnvironments() == 1) {
+    return this->subMedianExtra(initialPos,
+                                numPos,
+                                unifiedMedianExtra);
   }
 
   return;
