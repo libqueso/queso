@@ -29,7 +29,7 @@
 #ifndef __UQ_VECTOR_SEQUENCE_H__
 #define __UQ_VECTOR_SEQUENCE_H__
 
-#undef  UQ_CODE_HAS_MONITORS
+#define UQ_CODE_HAS_MONITORS
 
 #include <uqVectorSubset.h>
 #include <uqScalarSequence.h>
@@ -857,20 +857,19 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   //****************************************************
   // Compute mean, median, sample std, population std
   //****************************************************
-  if (statisticalOptions.meanMonitorPeriod() == 0) {
-    this->computeMeanVars(statisticalOptions,
-                          passedOfs,
-                          NULL,
-                          NULL,
-                          NULL,
-                          NULL);
-  }
-  else {
+  this->computeMeanVars(statisticalOptions,
+                        passedOfs,
+                        NULL,
+                        NULL,
+                        NULL,
+                        NULL);
+
 #ifdef UQ_CODE_HAS_MONITORS
+  if (statisticalOptions.meanMonitorPeriod() != 0) {
     this->computeMeanEvolution(statisticalOptions,
                                passedOfs);
-#endif
   }
+#endif
 
   //****************************************************
   // Compute variance of sample mean through the 'batch means method' (BMM)
