@@ -1,0 +1,1238 @@
+--------------------------------------------------------------------------------------------------------------
+QUESO Library: Version = 0.45.1 (4501)
+
+Development Build
+
+Build Date   = 2012-07-03 19:27
+Build Host   = ernesto-prudencis-macbook-air-2.local
+Build User   = ernesto
+Build Arch   = i386-apple-darwin9.8.0
+Build Rev    = 31736M
+
+C++ Config   = mpic++ -g -Wall
+
+Trilinos DIR = no
+GSL Libs     = -L/opt/local/lib -lgsl -lgslcblas -lm
+GRVY DIR     = /Users/ernesto/Installations/grvy_0_26_0
+GLPK DIR     = no
+HDF5 DIR     = /Users/ernesto/Installations/hdf5_1_8_5
+--------------------------------------------------------------------------------------------------------------
+Beginning run at Mon Jul  9 01:03:48 2012
+
+In uqFullEnvironmentClass::commonConstructor():
+  m_seed = -1
+  internal seed = 1
+Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor(): prefix = , alternativeOptionsValues = 0, m_env.optionsInputFileName() = example_1chain.inp
+In uqStatisticalInverseProblemOptionsClass::scanOptionsValues(): after reading values of options with prefix 'ip_', state of  object is:
+
+ip_computeSolution = 1
+ip_dataOutputFileName = outputData/sipOutput
+ip_dataOutputAllowedSet = 0 
+
+Leaving uqStatisticalInverseProblemClass<P_V,P_M>::constructor(): prefix = ip_
+In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling(): computing solution, as requested by user
+Entering uqMLSamplingClass<P_V,P_M>::constructor()
+In uqMLSamplingOptionsClass::scanOptionsValues(): after getting values of options with prefix 'ip_ml_', state of object is:
+ip_ml_restartOutput_levelPeriod = 0
+ip_ml_restartOutput_baseNameForFiles = .
+ip_ml_restartOutput_fileType = m
+ip_ml_restartInput_baseNameForFiles = .
+ip_ml_restartInput_fileType = m
+ip_ml_dataOutputFileName = outputData/sipOutput_ml
+ip_ml_dataOutputAllowedSet = 0 1 
+
+Leaving uqMLSamplingClass<P_V,P_M>::constructor()
+Entering uqMLSamplingClass<P_V,P_M>::generateSequence(), at  Mon Jul  9 01:03:48 2012
+, after 0 seconds from queso environment instatiation...
+In uqMLSamplingLevelOptionsClass::scanOptionsValues(): after getting values of options with prefix 'ip_ml_default_', state of object is:
+m_prefix = ip_ml_default_
+ip_ml_default_stopAtEnd = 0
+ip_ml_default_dataOutputFileName = .
+ip_ml_default_dataOutputAllowedSet = 
+ip_ml_default_loadBalanceAlgorithmId = 2
+ip_ml_default_loadBalanceTreshold = 1
+ip_ml_default_minEffectiveSizeRatio = 0.49
+ip_ml_default_maxEffectiveSizeRatio = 0.51
+ip_ml_default_scaleCovMatrix = 1
+ip_ml_default_minRejectionRate = 0.24
+ip_ml_default_maxRejectionRate = 0.4
+ip_ml_default_covRejectionRate = 0.25
+ip_ml_default_totallyMute = 1
+ip_ml_default_initialPosition_dataInputFileName = .
+ip_ml_default_initialPosition_dataInputFileType = m
+ip_ml_default_initialProposalCovMatrix_dataInputFileName = .
+ip_ml_default_initialProposalCovMatrix_dataInputFileType = m
+ip_ml_default_rawChain_dataInputFileName = .
+ip_ml_default_rawChain_dataInputFileType = m
+ip_ml_default_rawChain_size = 5000
+ip_ml_default_rawChain_generateExtra = 0
+ip_ml_default_rawChain_displayPeriod = 500
+ip_ml_default_rawChain_measureRunTimes = 1
+ip_ml_default_rawChain_dataOutputFileName = .
+ip_ml_default_rawChain_dataOutputFileType = m
+ip_ml_default_rawChain_dataOutputAllowedSet = 
+ip_ml_default_rawChain_computeStats = 0
+ip_ml_default_filteredChain_generate = 0
+ip_ml_default_filteredChain_discardedPortion = 0
+ip_ml_default_filteredChain_lag = 1
+ip_ml_default_filteredChain_dataOutputFileName = .
+ip_ml_default_filteredChain_dataOutputFileType = m
+ip_ml_default_filteredChain_dataOutputAllowedSet = 
+ip_ml_default_filteredChain_computeStats = 0
+ip_ml_default_displayCandidates = 0
+ip_ml_default_putOutOfBoundsInChain = 0
+ip_ml_default_tk_useLocalHessian = 0
+ip_ml_default_tk_useNewtonComponent = 1
+ip_ml_default_dr_maxNumExtraStages = 0
+ip_ml_default_dr_listOfScalesForExtraStages = 
+ip_ml_default_dr_duringAmNonAdaptiveInt = 1
+ip_ml_default_am_keepInitialMatrix = 0
+ip_ml_default_am_initialNonAdaptInterval = 0
+ip_ml_default_am_adaptInterval = 0
+ip_ml_default_amAdaptedMatrices_dataOutputPeriod = 0
+ip_ml_default_amAdaptedMatrices_dataOutputFileName = .
+ip_ml_default_amAdaptedMatrices_dataOutputFileType = m
+ip_ml_default_am_eta = 1
+ip_ml_default_am_epsilon = 1e-05
+
+In uqMLSamplingLevelOptionsClass::scanOptionsValues(): after getting values of options with prefix 'ip_ml_last_', state of object is:
+m_prefix = ip_ml_last_
+ip_ml_last_stopAtEnd = 0
+ip_ml_last_dataOutputFileName = outputData/sipOutput_ml
+ip_ml_last_dataOutputAllowedSet = 0 1 
+ip_ml_last_loadBalanceAlgorithmId = 2
+ip_ml_last_loadBalanceTreshold = 1
+ip_ml_last_minEffectiveSizeRatio = 0.49
+ip_ml_last_maxEffectiveSizeRatio = 0.51
+ip_ml_last_scaleCovMatrix = 1
+ip_ml_last_minRejectionRate = 0.24
+ip_ml_last_maxRejectionRate = 0.4
+ip_ml_last_covRejectionRate = 0.25
+ip_ml_last_totallyMute = 1
+ip_ml_last_initialPosition_dataInputFileName = .
+ip_ml_last_initialPosition_dataInputFileType = m
+ip_ml_last_initialProposalCovMatrix_dataInputFileName = .
+ip_ml_last_initialProposalCovMatrix_dataInputFileType = m
+ip_ml_last_rawChain_dataInputFileName = .
+ip_ml_last_rawChain_dataInputFileType = m
+ip_ml_last_rawChain_size = 10000
+ip_ml_last_rawChain_generateExtra = 0
+ip_ml_last_rawChain_displayPeriod = 500
+ip_ml_last_rawChain_measureRunTimes = 1
+ip_ml_last_rawChain_dataOutputFileName = outputData/rawChain_ml
+ip_ml_last_rawChain_dataOutputFileType = m
+ip_ml_last_rawChain_dataOutputAllowedSet = 0 
+ip_ml_last_rawChain_computeStats = 1
+ip_ml_last_filteredChain_generate = 1
+ip_ml_last_filteredChain_discardedPortion = 0
+ip_ml_last_filteredChain_lag = 2
+ip_ml_last_filteredChain_dataOutputFileName = outputData/filtChain_ml
+ip_ml_last_filteredChain_dataOutputFileType = m
+ip_ml_last_filteredChain_dataOutputAllowedSet = 0 
+ip_ml_last_filteredChain_computeStats = 1
+ip_ml_last_displayCandidates = 0
+ip_ml_last_putOutOfBoundsInChain = 0
+ip_ml_last_tk_useLocalHessian = 0
+ip_ml_last_tk_useNewtonComponent = 1
+ip_ml_last_dr_maxNumExtraStages = 1
+ip_ml_last_dr_listOfScalesForExtraStages = 5 
+ip_ml_last_dr_duringAmNonAdaptiveInt = 1
+ip_ml_last_am_keepInitialMatrix = 0
+ip_ml_last_am_initialNonAdaptInterval = 0
+ip_ml_last_am_adaptInterval = 0
+ip_ml_last_amAdaptedMatrices_dataOutputPeriod = 0
+ip_ml_last_amAdaptedMatrices_dataOutputFileName = .
+ip_ml_last_amAdaptedMatrices_dataOutputFileType = m
+ip_ml_last_am_eta = 1
+ip_ml_last_am_epsilon = 1e-05
+
+Entering uqSequenceStatisticalOptions::constructor(1), prefix = ip_ml_last_rawChain_stats_
+After reading values of options with prefix 'ip_ml_last_rawChain_stats_', state of uqSequenceStatisticalOptionsClass object is:
+
+ip_ml_last_rawChain_stats_initialDiscardedPortions = 0 
+ip_ml_last_rawChain_stats_mean_monitorPeriod = 0
+ip_ml_last_rawChain_stats_bmm_run = 0
+ip_ml_last_rawChain_stats_bmm_lengths = 0 
+ip_ml_last_rawChain_stats_fft_compute = 0
+ip_ml_last_rawChain_stats_fft_paramId = 0
+ip_ml_last_rawChain_stats_fft_size = 2048
+ip_ml_last_rawChain_stats_fft_testInversion = 0
+ip_ml_last_rawChain_stats_fft_write = 0
+ip_ml_last_rawChain_stats_psd_compute = 0
+ip_ml_last_rawChain_stats_psd_paramId = 0
+ip_ml_last_rawChain_stats_psd_numBlocks = 8
+ip_ml_last_rawChain_stats_psd_hopSizeRatio = 0
+ip_ml_last_rawChain_stats_psd_write = 0
+ip_ml_last_rawChain_stats_psdAtZero_compute = 0
+ip_ml_last_rawChain_stats_psdAtZero_numBlocks = 8 
+ip_ml_last_rawChain_stats_psdAtZero_hopSizeRatio = 0.5
+ip_ml_last_rawChain_stats_psdAtZero_display = 0
+ip_ml_last_rawChain_stats_psdAtZero_write = 0
+ip_ml_last_rawChain_stats_geweke_compute = 0
+ip_ml_last_rawChain_stats_geweke_naRatio = 0.1
+ip_ml_last_rawChain_stats_geweke_nbRatio = 0.5
+ip_ml_last_rawChain_stats_geweke_display = 0
+ip_ml_last_rawChain_stats_geweke_write = 0
+ip_ml_last_rawChain_stats_autoCorr_computeViaDef = 0
+ip_ml_last_rawChain_stats_autoCorr_computeViaFft = 0
+ip_ml_last_rawChain_stats_autoCorr_secondLag = 0
+ip_ml_last_rawChain_stats_autoCorr_lagSpacing = 0
+ip_ml_last_rawChain_stats_autoCorr_numLags = 0
+ip_ml_last_rawChain_stats_autoCorr_display = 0
+ip_ml_last_rawChain_stats_autoCorr_write = 0
+ip_ml_last_rawChain_stats_meanStacc_compute = 0
+ip_ml_last_rawChain_stats_hist_compute = 0
+ip_ml_last_rawChain_stats_hist_numInternalBins = 100
+ip_ml_last_rawChain_stats_cdfStacc_compute = 0
+ip_ml_last_rawChain_stats_cdfStacc_numEvalPositions = 50
+ip_ml_last_rawChain_stats_kde_compute = 1
+ip_ml_last_rawChain_stats_kde_numEvalPositions = 200
+ip_ml_last_rawChain_stats_covMatrix_compute = 1
+ip_ml_last_rawChain_stats_corrMatrix_compute = 1
+
+Leaving uqSequenceStatisticalOptions::constructor(1), prefix = ip_ml_last_rawChain_stats_
+Entering uqSequenceStatisticalOptions::constructor(1), prefix = ip_ml_last_filteredChain_stats_
+After reading values of options with prefix 'ip_ml_last_filteredChain_stats_', state of uqSequenceStatisticalOptionsClass object is:
+
+ip_ml_last_filteredChain_stats_initialDiscardedPortions = 0 
+ip_ml_last_filteredChain_stats_mean_monitorPeriod = 0
+ip_ml_last_filteredChain_stats_bmm_run = 0
+ip_ml_last_filteredChain_stats_bmm_lengths = 0 
+ip_ml_last_filteredChain_stats_fft_compute = 0
+ip_ml_last_filteredChain_stats_fft_paramId = 0
+ip_ml_last_filteredChain_stats_fft_size = 2048
+ip_ml_last_filteredChain_stats_fft_testInversion = 0
+ip_ml_last_filteredChain_stats_fft_write = 0
+ip_ml_last_filteredChain_stats_psd_compute = 0
+ip_ml_last_filteredChain_stats_psd_paramId = 0
+ip_ml_last_filteredChain_stats_psd_numBlocks = 8
+ip_ml_last_filteredChain_stats_psd_hopSizeRatio = 0
+ip_ml_last_filteredChain_stats_psd_write = 0
+ip_ml_last_filteredChain_stats_psdAtZero_compute = 0
+ip_ml_last_filteredChain_stats_psdAtZero_numBlocks = 8 
+ip_ml_last_filteredChain_stats_psdAtZero_hopSizeRatio = 0.5
+ip_ml_last_filteredChain_stats_psdAtZero_display = 0
+ip_ml_last_filteredChain_stats_psdAtZero_write = 0
+ip_ml_last_filteredChain_stats_geweke_compute = 0
+ip_ml_last_filteredChain_stats_geweke_naRatio = 0.1
+ip_ml_last_filteredChain_stats_geweke_nbRatio = 0.5
+ip_ml_last_filteredChain_stats_geweke_display = 0
+ip_ml_last_filteredChain_stats_geweke_write = 0
+ip_ml_last_filteredChain_stats_autoCorr_computeViaDef = 0
+ip_ml_last_filteredChain_stats_autoCorr_computeViaFft = 0
+ip_ml_last_filteredChain_stats_autoCorr_secondLag = 0
+ip_ml_last_filteredChain_stats_autoCorr_lagSpacing = 0
+ip_ml_last_filteredChain_stats_autoCorr_numLags = 0
+ip_ml_last_filteredChain_stats_autoCorr_display = 0
+ip_ml_last_filteredChain_stats_autoCorr_write = 0
+ip_ml_last_filteredChain_stats_meanStacc_compute = 0
+ip_ml_last_filteredChain_stats_hist_compute = 0
+ip_ml_last_filteredChain_stats_hist_numInternalBins = 100
+ip_ml_last_filteredChain_stats_cdfStacc_compute = 0
+ip_ml_last_filteredChain_stats_cdfStacc_numEvalPositions = 50
+ip_ml_last_filteredChain_stats_kde_compute = 1
+ip_ml_last_filteredChain_stats_kde_numEvalPositions = 200
+ip_ml_last_filteredChain_stats_covMatrix_compute = 1
+ip_ml_last_filteredChain_stats_corrMatrix_compute = 1
+
+Leaving uqSequenceStatisticalOptions::constructor(1), prefix = ip_ml_last_filteredChain_stats_
+In uqMLSamplingLevelOptionsClass::scanOptionsValues(): after getting values of options with prefix 'ip_ml_0_', state of object is:
+m_prefix = ip_ml_0_
+ip_ml_0_stopAtEnd = 0
+ip_ml_0_dataOutputFileName = .
+ip_ml_0_dataOutputAllowedSet = 
+ip_ml_0_loadBalanceAlgorithmId = 2
+ip_ml_0_loadBalanceTreshold = 1
+ip_ml_0_minEffectiveSizeRatio = 0.49
+ip_ml_0_maxEffectiveSizeRatio = 0.51
+ip_ml_0_scaleCovMatrix = 1
+ip_ml_0_minRejectionRate = 0.24
+ip_ml_0_maxRejectionRate = 0.4
+ip_ml_0_covRejectionRate = 0.25
+ip_ml_0_totallyMute = 1
+ip_ml_0_initialPosition_dataInputFileName = .
+ip_ml_0_initialPosition_dataInputFileType = m
+ip_ml_0_initialProposalCovMatrix_dataInputFileName = .
+ip_ml_0_initialProposalCovMatrix_dataInputFileType = m
+ip_ml_0_rawChain_dataInputFileName = .
+ip_ml_0_rawChain_dataInputFileType = m
+ip_ml_0_rawChain_size = 5000
+ip_ml_0_rawChain_generateExtra = 0
+ip_ml_0_rawChain_displayPeriod = 500
+ip_ml_0_rawChain_measureRunTimes = 1
+ip_ml_0_rawChain_dataOutputFileName = .
+ip_ml_0_rawChain_dataOutputFileType = m
+ip_ml_0_rawChain_dataOutputAllowedSet = 
+ip_ml_0_rawChain_computeStats = 0
+ip_ml_0_filteredChain_generate = 0
+ip_ml_0_filteredChain_discardedPortion = 0
+ip_ml_0_filteredChain_lag = 1
+ip_ml_0_filteredChain_dataOutputFileName = .
+ip_ml_0_filteredChain_dataOutputFileType = m
+ip_ml_0_filteredChain_dataOutputAllowedSet = 
+ip_ml_0_filteredChain_computeStats = 0
+ip_ml_0_displayCandidates = 0
+ip_ml_0_putOutOfBoundsInChain = 0
+ip_ml_0_tk_useLocalHessian = 0
+ip_ml_0_tk_useNewtonComponent = 1
+ip_ml_0_dr_maxNumExtraStages = 0
+ip_ml_0_dr_listOfScalesForExtraStages = 
+ip_ml_0_dr_duringAmNonAdaptiveInt = 1
+ip_ml_0_am_keepInitialMatrix = 0
+ip_ml_0_am_initialNonAdaptInterval = 0
+ip_ml_0_am_adaptInterval = 0
+ip_ml_0_amAdaptedMatrices_dataOutputPeriod = 0
+ip_ml_0_amAdaptedMatrices_dataOutputFileName = .
+ip_ml_0_amAdaptedMatrices_dataOutputFileType = m
+ip_ml_0_am_eta = 1
+ip_ml_0_am_epsilon = 1e-05
+
+KEY In uqMLSampling<P_V,P_M>::generateSequence(): beginning level 0, currOptions.m_rawChainSize = 5000
+In uqMLSampling<P_V,P_M>::generateSequence(), level 0: finished generating 5000 chain positions
+In uqMLSampling<P_V,P_M>::generateSequence(): ending level 0, total level time = 0.017107 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(): beginning level 1, at  Mon Jul  9 01:03:48 2012
+, after 0 seconds from entering the routine, after 0 seconds from queso environment instatiation
+In uqMLSamplingLevelOptionsClass::scanOptionsValues(): after getting values of options with prefix 'ip_ml_1_', state of object is:
+m_prefix = ip_ml_1_
+ip_ml_1_stopAtEnd = 0
+ip_ml_1_dataOutputFileName = .
+ip_ml_1_dataOutputAllowedSet = 
+ip_ml_1_loadBalanceAlgorithmId = 2
+ip_ml_1_loadBalanceTreshold = 1
+ip_ml_1_minEffectiveSizeRatio = 0.49
+ip_ml_1_maxEffectiveSizeRatio = 0.51
+ip_ml_1_scaleCovMatrix = 1
+ip_ml_1_minRejectionRate = 0.24
+ip_ml_1_maxRejectionRate = 0.4
+ip_ml_1_covRejectionRate = 0.25
+ip_ml_1_totallyMute = 1
+ip_ml_1_initialPosition_dataInputFileName = .
+ip_ml_1_initialPosition_dataInputFileType = m
+ip_ml_1_initialProposalCovMatrix_dataInputFileName = .
+ip_ml_1_initialProposalCovMatrix_dataInputFileType = m
+ip_ml_1_rawChain_dataInputFileName = .
+ip_ml_1_rawChain_dataInputFileType = m
+ip_ml_1_rawChain_size = 5000
+ip_ml_1_rawChain_generateExtra = 0
+ip_ml_1_rawChain_displayPeriod = 500
+ip_ml_1_rawChain_measureRunTimes = 1
+ip_ml_1_rawChain_dataOutputFileName = .
+ip_ml_1_rawChain_dataOutputFileType = m
+ip_ml_1_rawChain_dataOutputAllowedSet = 
+ip_ml_1_rawChain_computeStats = 0
+ip_ml_1_filteredChain_generate = 0
+ip_ml_1_filteredChain_discardedPortion = 0
+ip_ml_1_filteredChain_lag = 1
+ip_ml_1_filteredChain_dataOutputFileName = .
+ip_ml_1_filteredChain_dataOutputFileType = m
+ip_ml_1_filteredChain_dataOutputAllowedSet = 
+ip_ml_1_filteredChain_computeStats = 0
+ip_ml_1_displayCandidates = 0
+ip_ml_1_putOutOfBoundsInChain = 0
+ip_ml_1_tk_useLocalHessian = 0
+ip_ml_1_tk_useNewtonComponent = 1
+ip_ml_1_dr_maxNumExtraStages = 0
+ip_ml_1_dr_listOfScalesForExtraStages = 
+ip_ml_1_dr_duringAmNonAdaptiveInt = 1
+ip_ml_1_am_keepInitialMatrix = 0
+ip_ml_1_am_initialNonAdaptInterval = 0
+ip_ml_1_am_adaptInterval = 0
+ip_ml_1_amAdaptedMatrices_dataOutputPeriod = 0
+ip_ml_1_amAdaptedMatrices_dataOutputFileName = .
+ip_ml_1_amAdaptedMatrices_dataOutputFileType = m
+ip_ml_1_am_eta = 1
+ip_ml_1_am_epsilon = 1e-05
+
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 1: beginning step 1 of 11
+KEY In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 1, currOptions->m_rawChainSize = 5000
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 1, after 1.4e-05 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 2: beginning step 2 of 11
+In uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 2, prevLogLikelihoodValues[0] = -1943.14
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 2: prevChain.unifiedSequenceSize() = 5000, currChain.unifiedSequenceSize() = 0, prevLogLikelihoodValues.unifiedSequenceSize() = 5000, currLogLikelihoodValues.unifiedSequenceSize() = 0, prevLogTargetValues.unifiedSequenceSize() = 5000, currLogTargetValues.unifiedSequenceSize() = 0
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 2, after 0.008622 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: beginning step 3 of 11
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: entering loop for computing next exponent, with nowAttempt = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 0, prevExponent = 0, exponents[0] = 0, nowExponent = 1, exponents[1] = 1, subWeightRatioSum = 74.9557, unifiedWeightRatioSum = 74.9557, unifiedOmegaLnMax = -3.16228, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -7.36258, effectiveSampleSize = 0.0049713
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 0, prevExponent = 0, exponents[0] = 0, nowExponent = 1, exponents[1] = 1, effectiveSampleSize = 201.155, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.0402309, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: entering loop for computing next exponent, with nowAttempt = 1
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 1, prevExponent = 0, exponents[0] = 0, nowExponent = 0.5, exponents[1] = 1, subWeightRatioSum = 150.885, unifiedWeightRatioSum = 150.885, unifiedOmegaLnMax = -1.58114, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -5.08182, effectiveSampleSize = 0.00329241
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 1, prevExponent = 0, exponents[0] = 0, nowExponent = 0.5, exponents[1] = 1, effectiveSampleSize = 303.729, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.0607458, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: entering loop for computing next exponent, with nowAttempt = 2
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 2, prevExponent = 0, exponents[0] = 0, nowExponent = 0.25, exponents[1] = 0.5, subWeightRatioSum = 254.679, unifiedWeightRatioSum = 254.679, unifiedOmegaLnMax = -0.79057, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -3.76776, effectiveSampleSize = 0.00232626
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 2, prevExponent = 0, exponents[0] = 0, nowExponent = 0.25, exponents[1] = 0.5, effectiveSampleSize = 429.875, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.085975, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: entering loop for computing next exponent, with nowAttempt = 3
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 3, prevExponent = 0, exponents[0] = 0, nowExponent = 0.125, exponents[1] = 0.25, subWeightRatioSum = 394.684, unifiedWeightRatioSum = 394.684, unifiedOmegaLnMax = -0.395285, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -2.93439, effectiveSampleSize = 0.00163491
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 3, prevExponent = 0, exponents[0] = 0, nowExponent = 0.125, exponents[1] = 0.25, effectiveSampleSize = 611.653, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.122331, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: entering loop for computing next exponent, with nowAttempt = 4
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 4, prevExponent = 0, exponents[0] = 0, nowExponent = 0.0625, exponents[1] = 0.125, subWeightRatioSum = 586.715, unifiedWeightRatioSum = 586.715, unifiedOmegaLnMax = -0.197643, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -2.3403, effectiveSampleSize = 0.00114655
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 4, prevExponent = 0, exponents[0] = 0, nowExponent = 0.0625, exponents[1] = 0.125, effectiveSampleSize = 872.178, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.174436, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: entering loop for computing next exponent, with nowAttempt = 5
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 5, prevExponent = 0, exponents[0] = 0, nowExponent = 0.03125, exponents[1] = 0.0625, subWeightRatioSum = 849.164, unifiedWeightRatioSum = 849.164, unifiedOmegaLnMax = -0.0988213, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -1.87176, effectiveSampleSize = 0.000813662
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 5, prevExponent = 0, exponents[0] = 0, nowExponent = 0.03125, exponents[1] = 0.0625, effectiveSampleSize = 1229.01, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.245802, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: entering loop for computing next exponent, with nowAttempt = 6
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 6, prevExponent = 0, exponents[0] = 0, nowExponent = 0.015625, exponents[1] = 0.03125, subWeightRatioSum = 1185.54, unifiedWeightRatioSum = 1185.54, unifiedOmegaLnMax = -0.0494106, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -1.48865, effectiveSampleSize = 0.000604174
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 6, prevExponent = 0, exponents[0] = 0, nowExponent = 0.015625, exponents[1] = 0.03125, effectiveSampleSize = 1655.15, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.331031, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: entering loop for computing next exponent, with nowAttempt = 7
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 7, prevExponent = 0, exponents[0] = 0, nowExponent = 0.0078125, exponents[1] = 0.015625, subWeightRatioSum = 1592.03, unifiedWeightRatioSum = 1592.03, unifiedOmegaLnMax = -0.0247053, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -1.16913, effectiveSampleSize = 0.000467748
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 7, prevExponent = 0, exponents[0] = 0, nowExponent = 0.0078125, exponents[1] = 0.015625, effectiveSampleSize = 2137.9, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.427581, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: entering loop for computing next exponent, with nowAttempt = 8
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 8, prevExponent = 0, exponents[0] = 0, nowExponent = 0.00390625, exponents[1] = 0.0078125, subWeightRatioSum = 2082.84, unifiedWeightRatioSum = 2082.84, unifiedOmegaLnMax = -0.0123527, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -0.888057, effectiveSampleSize = 0.000366977
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 8, prevExponent = 0, exponents[0] = 0, nowExponent = 0.00390625, exponents[1] = 0.0078125, effectiveSampleSize = 2724.97, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.544993, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: entering loop for computing next exponent, with nowAttempt = 9
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 9, prevExponent = 0, exponents[0] = 0.00390625, nowExponent = 0.00585938, exponents[1] = 0.0078125, subWeightRatioSum = 1784.87, unifiedWeightRatioSum = 1784.87, unifiedOmegaLnMax = -0.018529, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -1.04862, effectiveSampleSize = 0.000422209
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 9, prevExponent = 0, exponents[0] = 0.00390625, nowExponent = 0.00585938, exponents[1] = 0.0078125, effectiveSampleSize = 2368.49, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.473699, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: entering loop for computing next exponent, with nowAttempt = 10
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 10, prevExponent = 0, exponents[0] = 0.00390625, nowExponent = 0.00488281, exponents[1] = 0.00585938, subWeightRatioSum = 1915.05, unifiedWeightRatioSum = 1915.05, unifiedOmegaLnMax = -0.0154408, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -0.975136, effectiveSampleSize = 0.000396111
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: nowAttempt = 10, prevExponent = 0, exponents[0] = 0.00390625, nowExponent = 0.00488281, exponents[1] = 0.00585938, effectiveSampleSize = 2524.55, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.504909, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 1, testResult = 1
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 3: weightSequence.subSequenceSize() = 5000, weightSequence.unifiedSequenceSize() = 5000, currExponent = 0.00488281, effective ratio = 0.504909, log(evidence factor) = -0.975136, evidence factor = 0.377141
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 3, after 0.082152 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 4: beginning step 4 of 11
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 4: unifiedCovMatrix = 4704.98 
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 4, after 0.018296 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 5: beginning step 5 of 11
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 1, step 5: unifiedRequestedNumSamples = 5000, unifiedWeightStdVectorAtProc0Only.size() = 5000
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 5, after 0.009993 seconds
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 1, step 6: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 1, step 6: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 1, step 6, Np = 1, totalNumberOfChains = 2271
+  KEY, level 1, step 6, origNumChainsPerNode[0] = 2271, origNumPositionsPerNode[0] = 5000
+  KEY, level 1, step 6, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 1, step 6: result = 0
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 6, after 0.00182 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 7: beginning step 7 of 11
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 7: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 7: subNumSamples = 5000, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 7: minModifiedSubNumSamples = 5000, avgModifiedSubNumSamples = 5000, maxModifiedSubNumSamples = 5000
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 7: numberOfPositionsToGuaranteeForNode = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 7: unbalancedLinkControl.unbLinkedChains.size() = 2271
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 7: balancedLinkControl.balLinkedChains.size() = 0, unbalancedLinkControl.unbLinkedChains.size() = 2271
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 7, after 0.001557 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 8: beginning step 8 of 11
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 8, after 8e-06 seconds
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: beginning step 9 of 11
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: entering loop for assessing rejection rate, with nowAttempt = 0, nowRejectionRate = 0
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: in loop for assessing rejection rate, about to sample 35 indexes, meanRejectionRate = 0.32, covRejectionRate = 0.25
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 1, step 9: unifiedRequestedNumSamples = 35, unifiedWeightStdVectorAtProc0Only.size() = 5000
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: in loop for assessing rejection rate, about to distribute sampled assessment indexes
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 1, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 1, step 9: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 1, step 9, Np = 1, totalNumberOfChains = 33
+  KEY, level 1, step 9, origNumChainsPerNode[0] = 33, origNumPositionsPerNode[0] = 35
+  KEY, level 1, step 9, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 1, step 9: result = 0
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 9: subNumSamples = 35, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 9: minModifiedSubNumSamples = 35, avgModifiedSubNumSamples = 35, maxModifiedSubNumSamples = 35
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 9: numberOfPositionsToGuaranteeForNode = 35
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 9: unbalancedLinkControl.unbLinkedChains.size() = 33
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: in loop for assessing rejection rate, about to generate assessment chain
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 33, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 1, step 9: chainIdMax = 33, numberOfPositions = 35
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 1, step 9: minNumberOfPositions = 35, avgNumberOfPositions = 35, maxNumberOfPositions = 35
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: in loop for assessing rejection rate, nowAttempt = 0, beforeEta = 1, etas[0] = 1, nowEta = 1, etas[1] = 1, minRejectionRate = 0.24, nowRejectionRate = 0.171429, maxRejectionRate = 0.4
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: entering loop for assessing rejection rate, with nowAttempt = 1, nowRejectionRate = 0.171429
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: in loop for assessing rejection rate, with nowAttempt = 1, useMiddlePointLogicForEta = false, nowEta just updated to value (to be tested) 4
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: in loop for assessing rejection rate, about to sample 35 indexes, meanRejectionRate = 0.32, covRejectionRate = 0.25
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 1, step 9: unifiedRequestedNumSamples = 35, unifiedWeightStdVectorAtProc0Only.size() = 5000
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: in loop for assessing rejection rate, about to distribute sampled assessment indexes
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 1, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 1, step 9: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 1, step 9, Np = 1, totalNumberOfChains = 34
+  KEY, level 1, step 9, origNumChainsPerNode[0] = 34, origNumPositionsPerNode[0] = 35
+  KEY, level 1, step 9, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 1, step 9: result = 0
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 9: subNumSamples = 35, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 9: minModifiedSubNumSamples = 35, avgModifiedSubNumSamples = 35, maxModifiedSubNumSamples = 35
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 9: numberOfPositionsToGuaranteeForNode = 35
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 1, step 9: unbalancedLinkControl.unbLinkedChains.size() = 34
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: in loop for assessing rejection rate, about to generate assessment chain
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 34, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 1, step 9: chainIdMax = 34, numberOfPositions = 35
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 1, step 9: minNumberOfPositions = 35, avgNumberOfPositions = 35, maxNumberOfPositions = 35
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: in loop for assessing rejection rate, nowAttempt = 1, beforeEta = 1, etas[0] = 1, nowEta = 4, etas[1] = 1, minRejectionRate = 0.24, nowRejectionRate = 0.342857, maxRejectionRate = 0.4
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 1, step 9: weightSequence.subSequenceSize() = 5000, weightSequence.unifiedSequenceSize() = 5000, currEta = 4, assessed rejection rate = 0.342857
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 9, after 0.023175 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 10: beginning step 10 of 11, currLogLikelihoodValues = 0xbfffefbc
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 2271, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 1, step 10: chainIdMax = 2271, numberOfPositions = 5000
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 1, step 10: minNumberOfPositions = 5000, avgNumberOfPositions = 5000, maxNumberOfPositions = 5000
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 10, after chain generatrion, currLogLikelihoodValues[0] = -0.0438532
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 10, after 0.421617 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1, step 11: beginning step 11 of 11
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 1, step 11, after 1.2e-05 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(): ending level 1, having generated 5000 chain positions, cumulativeRawChainRunTime = 0.105464 seconds, total level time = 0.570041 seconds, cumulativeRawChainRejections = 1874 (37.48% at this processor) (37.48% over all processors), stopAtEndOfLevel = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 1: min cumul seconds = 0.105464, avg cumul seconds = 0.105464, max cumul seconds = 0.105464, min level seconds = 0.570041, avg level seconds = 0.570041, max level seconds = 0.570041
+Getting at the end of level 1, as part of a 'while' on levels, at  Mon Jul  9 01:03:48 2012
+, after 0 seconds from entering the routine, after 0 seconds from queso environment instatiation
+In uqMLSampling<P_V,P_M>::generateSequence(): beginning level 2, at  Mon Jul  9 01:03:48 2012
+, after 0 seconds from entering the routine, after 0 seconds from queso environment instatiation
+In uqMLSamplingLevelOptionsClass::scanOptionsValues(): after getting values of options with prefix 'ip_ml_2_', state of object is:
+m_prefix = ip_ml_2_
+ip_ml_2_stopAtEnd = 0
+ip_ml_2_dataOutputFileName = .
+ip_ml_2_dataOutputAllowedSet = 
+ip_ml_2_loadBalanceAlgorithmId = 2
+ip_ml_2_loadBalanceTreshold = 1
+ip_ml_2_minEffectiveSizeRatio = 0.49
+ip_ml_2_maxEffectiveSizeRatio = 0.51
+ip_ml_2_scaleCovMatrix = 1
+ip_ml_2_minRejectionRate = 0.24
+ip_ml_2_maxRejectionRate = 0.4
+ip_ml_2_covRejectionRate = 0.25
+ip_ml_2_totallyMute = 1
+ip_ml_2_initialPosition_dataInputFileName = .
+ip_ml_2_initialPosition_dataInputFileType = m
+ip_ml_2_initialProposalCovMatrix_dataInputFileName = .
+ip_ml_2_initialProposalCovMatrix_dataInputFileType = m
+ip_ml_2_rawChain_dataInputFileName = .
+ip_ml_2_rawChain_dataInputFileType = m
+ip_ml_2_rawChain_size = 5000
+ip_ml_2_rawChain_generateExtra = 0
+ip_ml_2_rawChain_displayPeriod = 500
+ip_ml_2_rawChain_measureRunTimes = 1
+ip_ml_2_rawChain_dataOutputFileName = .
+ip_ml_2_rawChain_dataOutputFileType = m
+ip_ml_2_rawChain_dataOutputAllowedSet = 
+ip_ml_2_rawChain_computeStats = 0
+ip_ml_2_filteredChain_generate = 0
+ip_ml_2_filteredChain_discardedPortion = 0
+ip_ml_2_filteredChain_lag = 1
+ip_ml_2_filteredChain_dataOutputFileName = .
+ip_ml_2_filteredChain_dataOutputFileType = m
+ip_ml_2_filteredChain_dataOutputAllowedSet = 
+ip_ml_2_filteredChain_computeStats = 0
+ip_ml_2_displayCandidates = 0
+ip_ml_2_putOutOfBoundsInChain = 0
+ip_ml_2_tk_useLocalHessian = 0
+ip_ml_2_tk_useNewtonComponent = 1
+ip_ml_2_dr_maxNumExtraStages = 0
+ip_ml_2_dr_listOfScalesForExtraStages = 
+ip_ml_2_dr_duringAmNonAdaptiveInt = 1
+ip_ml_2_am_keepInitialMatrix = 0
+ip_ml_2_am_initialNonAdaptInterval = 0
+ip_ml_2_am_adaptInterval = 0
+ip_ml_2_amAdaptedMatrices_dataOutputPeriod = 0
+ip_ml_2_amAdaptedMatrices_dataOutputFileName = .
+ip_ml_2_amAdaptedMatrices_dataOutputFileType = m
+ip_ml_2_am_eta = 1
+ip_ml_2_am_epsilon = 1e-05
+
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 1: beginning step 1 of 11
+KEY In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 1, currOptions->m_rawChainSize = 5000
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 1, after 1.3e-05 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 2: beginning step 2 of 11
+In uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 2, prevLogLikelihoodValues[0] = -0.0438532
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 2: prevChain.unifiedSequenceSize() = 5000, currChain.unifiedSequenceSize() = 0, prevLogLikelihoodValues.unifiedSequenceSize() = 5000, currLogLikelihoodValues.unifiedSequenceSize() = 0, prevLogTargetValues.unifiedSequenceSize() = 5000, currLogTargetValues.unifiedSequenceSize() = 0
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 2, after 0.008746 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: beginning step 3 of 11
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: entering loop for computing next exponent, with nowAttempt = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 0, prevExponent = 0.00488281, exponents[0] = 0.00488281, nowExponent = 1, exponents[1] = 1, subWeightRatioSum = 191.743, unifiedWeightRatioSum = 191.743, unifiedOmegaLnMax = -3.14684, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -6.40788, effectiveSampleSize = 0.00214483
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 0, prevExponent = 0.00488281, exponents[0] = 0.00488281, nowExponent = 1, exponents[1] = 1, effectiveSampleSize = 466.237, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.0932474, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: entering loop for computing next exponent, with nowAttempt = 1
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 1, prevExponent = 0.00488281, exponents[0] = 0.00488281, nowExponent = 0.502441, exponents[1] = 1, subWeightRatioSum = 383.332, unifiedWeightRatioSum = 383.332, unifiedOmegaLnMax = -1.57342, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -4.14171, effectiveSampleSize = 0.00130488
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 1, prevExponent = 0.00488281, exponents[0] = 0.00488281, nowExponent = 0.502441, exponents[1] = 1, effectiveSampleSize = 766.357, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.153271, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: entering loop for computing next exponent, with nowAttempt = 2
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 2, prevExponent = 0.00488281, exponents[0] = 0.00488281, nowExponent = 0.253662, exponents[1] = 0.502441, subWeightRatioSum = 654.55, unifiedWeightRatioSum = 654.55, unifiedOmegaLnMax = -0.78671, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -2.81996, effectiveSampleSize = 0.000894725
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 2, prevExponent = 0.00488281, exponents[0] = 0.00488281, nowExponent = 0.253662, exponents[1] = 0.502441, effectiveSampleSize = 1117.66, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.223532, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: entering loop for computing next exponent, with nowAttempt = 3
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 3, prevExponent = 0.00488281, exponents[0] = 0.00488281, nowExponent = 0.129272, exponents[1] = 0.253662, subWeightRatioSum = 1017.28, unifiedWeightRatioSum = 1017.28, unifiedOmegaLnMax = -0.393355, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -1.98566, effectiveSampleSize = 0.0006325
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 3, prevExponent = 0.00488281, exponents[0] = 0.00488281, nowExponent = 0.129272, exponents[1] = 0.253662, effectiveSampleSize = 1581.03, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.316206, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: entering loop for computing next exponent, with nowAttempt = 4
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 4, prevExponent = 0.00488281, exponents[0] = 0.00488281, nowExponent = 0.0670776, exponents[1] = 0.129272, subWeightRatioSum = 1488.73, unifiedWeightRatioSum = 1488.73, unifiedOmegaLnMax = -0.196678, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -1.4082, effectiveSampleSize = 0.000458999
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 4, prevExponent = 0.00488281, exponents[0] = 0.00488281, nowExponent = 0.0670776, exponents[1] = 0.129272, effectiveSampleSize = 2178.65, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.435731, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: entering loop for computing next exponent, with nowAttempt = 5
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 5, prevExponent = 0.00488281, exponents[0] = 0.00488281, nowExponent = 0.0359802, exponents[1] = 0.0670776, subWeightRatioSum = 2078.53, unifiedWeightRatioSum = 2078.53, unifiedOmegaLnMax = -0.0983388, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -0.976114, effectiveSampleSize = 0.000344588
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 5, prevExponent = 0.00488281, exponents[0] = 0.00488281, nowExponent = 0.0359802, exponents[1] = 0.0670776, effectiveSampleSize = 2902.01, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.580403, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: entering loop for computing next exponent, with nowAttempt = 6
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 6, prevExponent = 0.00488281, exponents[0] = 0.0359802, nowExponent = 0.0515289, exponents[1] = 0.0670776, subWeightRatioSum = 1719.55, unifiedWeightRatioSum = 1719.55, unifiedOmegaLnMax = -0.147508, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -1.21488, effectiveSampleSize = 0.000405431
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: nowAttempt = 6, prevExponent = 0.00488281, exponents[0] = 0.0359802, nowExponent = 0.0515289, exponents[1] = 0.0670776, effectiveSampleSize = 2466.51, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.493303, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 1, testResult = 1
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 3: weightSequence.subSequenceSize() = 5000, weightSequence.unifiedSequenceSize() = 5000, currExponent = 0.0515289, effective ratio = 0.493303, log(evidence factor) = -1.21488, evidence factor = 0.296745
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 3, after 0.051885 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 4: beginning step 4 of 11
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 4: unifiedCovMatrix = 1591.43 
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 4, after 0.017537 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 5: beginning step 5 of 11
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 2, step 5: unifiedRequestedNumSamples = 5000, unifiedWeightStdVectorAtProc0Only.size() = 5000
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 5, after 0.009541 seconds
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 2, step 6: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 2, step 6: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 2, step 6, Np = 1, totalNumberOfChains = 2258
+  KEY, level 2, step 6, origNumChainsPerNode[0] = 2258, origNumPositionsPerNode[0] = 5000
+  KEY, level 2, step 6, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 2, step 6: result = 0
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 6, after 0.00164 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 7: beginning step 7 of 11
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 7: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 7: subNumSamples = 5000, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 7: minModifiedSubNumSamples = 5000, avgModifiedSubNumSamples = 5000, maxModifiedSubNumSamples = 5000
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 7: numberOfPositionsToGuaranteeForNode = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 7: unbalancedLinkControl.unbLinkedChains.size() = 2258
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 7: balancedLinkControl.balLinkedChains.size() = 0, unbalancedLinkControl.unbLinkedChains.size() = 2258
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 7, after 0.001304 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 8: beginning step 8 of 11
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 8, after 7e-06 seconds
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: beginning step 9 of 11
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: entering loop for assessing rejection rate, with nowAttempt = 0, nowRejectionRate = 0
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, about to sample 35 indexes, meanRejectionRate = 0.32, covRejectionRate = 0.25
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 2, step 9: unifiedRequestedNumSamples = 35, unifiedWeightStdVectorAtProc0Only.size() = 5000
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, about to distribute sampled assessment indexes
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 2, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 2, step 9: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 2, step 9, Np = 1, totalNumberOfChains = 35
+  KEY, level 2, step 9, origNumChainsPerNode[0] = 35, origNumPositionsPerNode[0] = 35
+  KEY, level 2, step 9, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 2, step 9: result = 0
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: subNumSamples = 35, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: minModifiedSubNumSamples = 35, avgModifiedSubNumSamples = 35, maxModifiedSubNumSamples = 35
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: numberOfPositionsToGuaranteeForNode = 35
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: unbalancedLinkControl.unbLinkedChains.size() = 35
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, about to generate assessment chain
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 35, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 2, step 9: chainIdMax = 35, numberOfPositions = 35
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 2, step 9: minNumberOfPositions = 35, avgNumberOfPositions = 35, maxNumberOfPositions = 35
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, nowAttempt = 0, beforeEta = 4, etas[0] = 4, nowEta = 4, etas[1] = 1, minRejectionRate = 0.24, nowRejectionRate = 0.6, maxRejectionRate = 0.4
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: entering loop for assessing rejection rate, with nowAttempt = 1, nowRejectionRate = 0.6
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, with nowAttempt = 1, useMiddlePointLogicForEta = false, nowEta just updated to value (to be tested) 1
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, about to sample 35 indexes, meanRejectionRate = 0.32, covRejectionRate = 0.25
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 2, step 9: unifiedRequestedNumSamples = 35, unifiedWeightStdVectorAtProc0Only.size() = 5000
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, about to distribute sampled assessment indexes
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 2, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 2, step 9: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 2, step 9, Np = 1, totalNumberOfChains = 35
+  KEY, level 2, step 9, origNumChainsPerNode[0] = 35, origNumPositionsPerNode[0] = 35
+  KEY, level 2, step 9, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 2, step 9: result = 0
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: subNumSamples = 35, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: minModifiedSubNumSamples = 35, avgModifiedSubNumSamples = 35, maxModifiedSubNumSamples = 35
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: numberOfPositionsToGuaranteeForNode = 35
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: unbalancedLinkControl.unbLinkedChains.size() = 35
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, about to generate assessment chain
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 35, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 2, step 9: chainIdMax = 35, numberOfPositions = 35
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 2, step 9: minNumberOfPositions = 35, avgNumberOfPositions = 35, maxNumberOfPositions = 35
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, nowAttempt = 1, beforeEta = 4, etas[0] = 4, nowEta = 1, etas[1] = 1, minRejectionRate = 0.24, nowRejectionRate = 0.514286, maxRejectionRate = 0.4
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: entering loop for assessing rejection rate, with nowAttempt = 2, nowRejectionRate = 0.514286
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, with nowAttempt = 2, useMiddlePointLogicForEta = false, nowEta just updated to value (to be tested) 0.25
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, about to sample 35 indexes, meanRejectionRate = 0.32, covRejectionRate = 0.25
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 2, step 9: unifiedRequestedNumSamples = 35, unifiedWeightStdVectorAtProc0Only.size() = 5000
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, about to distribute sampled assessment indexes
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 2, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 2, step 9: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 2, step 9, Np = 1, totalNumberOfChains = 35
+  KEY, level 2, step 9, origNumChainsPerNode[0] = 35, origNumPositionsPerNode[0] = 35
+  KEY, level 2, step 9, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 2, step 9: result = 0
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: subNumSamples = 35, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: minModifiedSubNumSamples = 35, avgModifiedSubNumSamples = 35, maxModifiedSubNumSamples = 35
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: numberOfPositionsToGuaranteeForNode = 35
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 2, step 9: unbalancedLinkControl.unbLinkedChains.size() = 35
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, about to generate assessment chain
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 35, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 2, step 9: chainIdMax = 35, numberOfPositions = 35
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 2, step 9: minNumberOfPositions = 35, avgNumberOfPositions = 35, maxNumberOfPositions = 35
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: in loop for assessing rejection rate, nowAttempt = 2, beforeEta = 1, etas[0] = 4, nowEta = 0.25, etas[1] = 1, minRejectionRate = 0.24, nowRejectionRate = 0.257143, maxRejectionRate = 0.4
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 2, step 9: weightSequence.subSequenceSize() = 5000, weightSequence.unifiedSequenceSize() = 5000, currEta = 0.25, assessed rejection rate = 0.257143
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 9, after 0.034073 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 10: beginning step 10 of 11, currLogLikelihoodValues = 0xbfffefbc
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 2258, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 2, step 10: chainIdMax = 2258, numberOfPositions = 5000
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 2, step 10: minNumberOfPositions = 5000, avgNumberOfPositions = 5000, maxNumberOfPositions = 5000
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 10, after chain generatrion, currLogLikelihoodValues[0] = -0.263406
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 10, after 0.416092 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2, step 11: beginning step 11 of 11
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 2, step 11, after 8e-06 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(): ending level 2, having generated 5000 chain positions, cumulativeRawChainRunTime = 0.102598 seconds, total level time = 0.543394 seconds, cumulativeRawChainRejections = 1744 (34.88% at this processor) (34.88% over all processors), stopAtEndOfLevel = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 2: min cumul seconds = 0.102598, avg cumul seconds = 0.102598, max cumul seconds = 0.102598, min level seconds = 0.543394, avg level seconds = 0.543394, max level seconds = 0.543394
+Getting at the end of level 2, as part of a 'while' on levels, at  Mon Jul  9 01:03:49 2012
+, after 1 seconds from entering the routine, after 1 seconds from queso environment instatiation
+In uqMLSampling<P_V,P_M>::generateSequence(): beginning level 3, at  Mon Jul  9 01:03:49 2012
+, after 1 seconds from entering the routine, after 1 seconds from queso environment instatiation
+In uqMLSamplingLevelOptionsClass::scanOptionsValues(): after getting values of options with prefix 'ip_ml_3_', state of object is:
+m_prefix = ip_ml_3_
+ip_ml_3_stopAtEnd = 0
+ip_ml_3_dataOutputFileName = .
+ip_ml_3_dataOutputAllowedSet = 
+ip_ml_3_loadBalanceAlgorithmId = 2
+ip_ml_3_loadBalanceTreshold = 1
+ip_ml_3_minEffectiveSizeRatio = 0.49
+ip_ml_3_maxEffectiveSizeRatio = 0.51
+ip_ml_3_scaleCovMatrix = 1
+ip_ml_3_minRejectionRate = 0.24
+ip_ml_3_maxRejectionRate = 0.4
+ip_ml_3_covRejectionRate = 0.25
+ip_ml_3_totallyMute = 1
+ip_ml_3_initialPosition_dataInputFileName = .
+ip_ml_3_initialPosition_dataInputFileType = m
+ip_ml_3_initialProposalCovMatrix_dataInputFileName = .
+ip_ml_3_initialProposalCovMatrix_dataInputFileType = m
+ip_ml_3_rawChain_dataInputFileName = .
+ip_ml_3_rawChain_dataInputFileType = m
+ip_ml_3_rawChain_size = 5000
+ip_ml_3_rawChain_generateExtra = 0
+ip_ml_3_rawChain_displayPeriod = 500
+ip_ml_3_rawChain_measureRunTimes = 1
+ip_ml_3_rawChain_dataOutputFileName = .
+ip_ml_3_rawChain_dataOutputFileType = m
+ip_ml_3_rawChain_dataOutputAllowedSet = 
+ip_ml_3_rawChain_computeStats = 0
+ip_ml_3_filteredChain_generate = 0
+ip_ml_3_filteredChain_discardedPortion = 0
+ip_ml_3_filteredChain_lag = 1
+ip_ml_3_filteredChain_dataOutputFileName = .
+ip_ml_3_filteredChain_dataOutputFileType = m
+ip_ml_3_filteredChain_dataOutputAllowedSet = 
+ip_ml_3_filteredChain_computeStats = 0
+ip_ml_3_displayCandidates = 0
+ip_ml_3_putOutOfBoundsInChain = 0
+ip_ml_3_tk_useLocalHessian = 0
+ip_ml_3_tk_useNewtonComponent = 1
+ip_ml_3_dr_maxNumExtraStages = 0
+ip_ml_3_dr_listOfScalesForExtraStages = 
+ip_ml_3_dr_duringAmNonAdaptiveInt = 1
+ip_ml_3_am_keepInitialMatrix = 0
+ip_ml_3_am_initialNonAdaptInterval = 0
+ip_ml_3_am_adaptInterval = 0
+ip_ml_3_amAdaptedMatrices_dataOutputPeriod = 0
+ip_ml_3_amAdaptedMatrices_dataOutputFileName = .
+ip_ml_3_amAdaptedMatrices_dataOutputFileType = m
+ip_ml_3_am_eta = 1
+ip_ml_3_am_epsilon = 1e-05
+
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 1: beginning step 1 of 11
+KEY In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 1, currOptions->m_rawChainSize = 5000
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 1, after 1.2e-05 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 2: beginning step 2 of 11
+In uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 2, prevLogLikelihoodValues[0] = -0.263406
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 2: prevChain.unifiedSequenceSize() = 5000, currChain.unifiedSequenceSize() = 0, prevLogLikelihoodValues.unifiedSequenceSize() = 5000, currLogLikelihoodValues.unifiedSequenceSize() = 0, prevLogTargetValues.unifiedSequenceSize() = 5000, currLogTargetValues.unifiedSequenceSize() = 0
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 2, after 0.008674 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: beginning step 3 of 11
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: entering loop for computing next exponent, with nowAttempt = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: nowAttempt = 0, prevExponent = 0.0515289, exponents[0] = 0.0515289, nowExponent = 1, exponents[1] = 1, subWeightRatioSum = 555.733, unifiedWeightRatioSum = 555.733, unifiedOmegaLnMax = -2.99933, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -5.19624, effectiveSampleSize = 0.000789088
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: nowAttempt = 0, prevExponent = 0.0515289, exponents[0] = 0.0515289, nowExponent = 1, exponents[1] = 1, effectiveSampleSize = 1267.29, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.253457, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: entering loop for computing next exponent, with nowAttempt = 1
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: nowAttempt = 1, prevExponent = 0.0515289, exponents[0] = 0.0515289, nowExponent = 0.525764, exponents[1] = 1, subWeightRatioSum = 1044.8, unifiedWeightRatioSum = 1044.8, unifiedOmegaLnMax = -1.49967, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -3.06528, effectiveSampleSize = 0.000509095
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: nowAttempt = 1, prevExponent = 0.0515289, exponents[0] = 0.0515289, nowExponent = 0.525764, exponents[1] = 1, effectiveSampleSize = 1964.27, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.392854, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: entering loop for computing next exponent, with nowAttempt = 2
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: nowAttempt = 2, prevExponent = 0.0515289, exponents[0] = 0.0515289, nowExponent = 0.288647, exponents[1] = 0.525764, subWeightRatioSum = 1678.76, unifiedWeightRatioSum = 1678.76, unifiedOmegaLnMax = -0.749833, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -1.84121, effectiveSampleSize = 0.000370727
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: nowAttempt = 2, prevExponent = 0.0515289, exponents[0] = 0.0515289, nowExponent = 0.288647, exponents[1] = 0.525764, effectiveSampleSize = 2697.4, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.53948, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: entering loop for computing next exponent, with nowAttempt = 3
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: nowAttempt = 3, prevExponent = 0.0515289, exponents[0] = 0.288647, nowExponent = 0.407206, exponents[1] = 0.525764, subWeightRatioSum = 1292.21, unifiedWeightRatioSum = 1292.21, unifiedOmegaLnMax = -1.12475, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -2.47783, effectiveSampleSize = 0.00044258
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: nowAttempt = 3, prevExponent = 0.0515289, exponents[0] = 0.288647, nowExponent = 0.407206, exponents[1] = 0.525764, effectiveSampleSize = 2259.48, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.451896, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 0, testResult = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: entering loop for computing next exponent, with nowAttempt = 4
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: nowAttempt = 4, prevExponent = 0.0515289, exponents[0] = 0.288647, nowExponent = 0.347926, exponents[1] = 0.407206, subWeightRatioSum = 1460.9, unifiedWeightRatioSum = 1460.9, unifiedOmegaLnMax = -0.937291, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -2.16767, effectiveSampleSize = 0.000407628
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: nowAttempt = 4, prevExponent = 0.0515289, exponents[0] = 0.288647, nowExponent = 0.347926, exponents[1] = 0.407206, effectiveSampleSize = 2453.22, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.490643, maxEffectiveSizeRatio = 0.51, aux2 = 0, aux3 = 1, testResult = 1
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 3: weightSequence.subSequenceSize() = 5000, weightSequence.unifiedSequenceSize() = 5000, currExponent = 0.347926, effective ratio = 0.490643, log(evidence factor) = -2.16767, evidence factor = 0.114444
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 3, after 0.037208 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 4: beginning step 4 of 11
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 4: unifiedCovMatrix = 1436.48 
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 4, after 0.017636 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 5: beginning step 5 of 11
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 3, step 5: unifiedRequestedNumSamples = 5000, unifiedWeightStdVectorAtProc0Only.size() = 5000
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 5, after 0.00961 seconds
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 3, step 6: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 3, step 6: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 3, step 6, Np = 1, totalNumberOfChains = 2288
+  KEY, level 3, step 6, origNumChainsPerNode[0] = 2288, origNumPositionsPerNode[0] = 5000
+  KEY, level 3, step 6, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 3, step 6: result = 0
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 6, after 0.001693 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 7: beginning step 7 of 11
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 7: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 7: subNumSamples = 5000, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 7: minModifiedSubNumSamples = 5000, avgModifiedSubNumSamples = 5000, maxModifiedSubNumSamples = 5000
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 7: numberOfPositionsToGuaranteeForNode = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 7: unbalancedLinkControl.unbLinkedChains.size() = 2288
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 7: balancedLinkControl.balLinkedChains.size() = 0, unbalancedLinkControl.unbLinkedChains.size() = 2288
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 7, after 0.001309 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 8: beginning step 8 of 11
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 8, after 7e-06 seconds
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: beginning step 9 of 11
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: entering loop for assessing rejection rate, with nowAttempt = 0, nowRejectionRate = 0
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, about to sample 35 indexes, meanRejectionRate = 0.32, covRejectionRate = 0.25
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 3, step 9: unifiedRequestedNumSamples = 35, unifiedWeightStdVectorAtProc0Only.size() = 5000
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, about to distribute sampled assessment indexes
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 3, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 3, step 9: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 3, step 9, Np = 1, totalNumberOfChains = 35
+  KEY, level 3, step 9, origNumChainsPerNode[0] = 35, origNumPositionsPerNode[0] = 35
+  KEY, level 3, step 9, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 3, step 9: result = 0
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: subNumSamples = 35, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: minModifiedSubNumSamples = 35, avgModifiedSubNumSamples = 35, maxModifiedSubNumSamples = 35
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: numberOfPositionsToGuaranteeForNode = 35
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: unbalancedLinkControl.unbLinkedChains.size() = 35
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, about to generate assessment chain
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 35, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 3, step 9: chainIdMax = 35, numberOfPositions = 35
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 3, step 9: minNumberOfPositions = 35, avgNumberOfPositions = 35, maxNumberOfPositions = 35
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, nowAttempt = 0, beforeEta = 0.25, etas[0] = 0.25, nowEta = 0.25, etas[1] = 1, minRejectionRate = 0.24, nowRejectionRate = 0.571429, maxRejectionRate = 0.4
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: entering loop for assessing rejection rate, with nowAttempt = 1, nowRejectionRate = 0.571429
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, with nowAttempt = 1, useMiddlePointLogicForEta = false, nowEta just updated to value (to be tested) 0.0625
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, about to sample 35 indexes, meanRejectionRate = 0.32, covRejectionRate = 0.25
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 3, step 9: unifiedRequestedNumSamples = 35, unifiedWeightStdVectorAtProc0Only.size() = 5000
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, about to distribute sampled assessment indexes
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 3, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 3, step 9: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 3, step 9, Np = 1, totalNumberOfChains = 35
+  KEY, level 3, step 9, origNumChainsPerNode[0] = 35, origNumPositionsPerNode[0] = 35
+  KEY, level 3, step 9, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 3, step 9: result = 0
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: subNumSamples = 35, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: minModifiedSubNumSamples = 35, avgModifiedSubNumSamples = 35, maxModifiedSubNumSamples = 35
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: numberOfPositionsToGuaranteeForNode = 35
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: unbalancedLinkControl.unbLinkedChains.size() = 35
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, about to generate assessment chain
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 35, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 3, step 9: chainIdMax = 35, numberOfPositions = 35
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 3, step 9: minNumberOfPositions = 35, avgNumberOfPositions = 35, maxNumberOfPositions = 35
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, nowAttempt = 1, beforeEta = 0.25, etas[0] = 0.25, nowEta = 0.0625, etas[1] = 1, minRejectionRate = 0.24, nowRejectionRate = 0.457143, maxRejectionRate = 0.4
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: entering loop for assessing rejection rate, with nowAttempt = 2, nowRejectionRate = 0.457143
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, with nowAttempt = 2, useMiddlePointLogicForEta = false, nowEta just updated to value (to be tested) 0.015625
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, about to sample 35 indexes, meanRejectionRate = 0.32, covRejectionRate = 0.25
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 3, step 9: unifiedRequestedNumSamples = 35, unifiedWeightStdVectorAtProc0Only.size() = 5000
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, about to distribute sampled assessment indexes
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 3, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 3, step 9: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 3, step 9, Np = 1, totalNumberOfChains = 35
+  KEY, level 3, step 9, origNumChainsPerNode[0] = 35, origNumPositionsPerNode[0] = 35
+  KEY, level 3, step 9, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 3, step 9: result = 0
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: subNumSamples = 35, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: minModifiedSubNumSamples = 35, avgModifiedSubNumSamples = 35, maxModifiedSubNumSamples = 35
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: numberOfPositionsToGuaranteeForNode = 35
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 3, step 9: unbalancedLinkControl.unbLinkedChains.size() = 35
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, about to generate assessment chain
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 35, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 3, step 9: chainIdMax = 35, numberOfPositions = 35
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 3, step 9: minNumberOfPositions = 35, avgNumberOfPositions = 35, maxNumberOfPositions = 35
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: in loop for assessing rejection rate, nowAttempt = 2, beforeEta = 0.0625, etas[0] = 0.25, nowEta = 0.015625, etas[1] = 1, minRejectionRate = 0.24, nowRejectionRate = 0.314286, maxRejectionRate = 0.4
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 3, step 9: weightSequence.subSequenceSize() = 5000, weightSequence.unifiedSequenceSize() = 5000, currEta = 0.015625, assessed rejection rate = 0.314286
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 9, after 0.03405 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 10: beginning step 10 of 11, currLogLikelihoodValues = 0xbfffefbc
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 2288, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 3, step 10: chainIdMax = 2288, numberOfPositions = 5000
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 3, step 10: minNumberOfPositions = 5000, avgNumberOfPositions = 5000, maxNumberOfPositions = 5000
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 10, after chain generatrion, currLogLikelihoodValues[0] = -1.76423
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 10, after 0.418414 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3, step 11: beginning step 11 of 11
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 3, step 11, after 9e-06 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(): ending level 3, having generated 5000 chain positions, cumulativeRawChainRunTime = 0.099981 seconds, total level time = 0.531422 seconds, cumulativeRawChainRejections = 1277 (25.54% at this processor) (25.54% over all processors), stopAtEndOfLevel = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 3: min cumul seconds = 0.099981, avg cumul seconds = 0.099981, max cumul seconds = 0.099981, min level seconds = 0.531422, avg level seconds = 0.531422, max level seconds = 0.531422
+Getting at the end of level 3, as part of a 'while' on levels, at  Mon Jul  9 01:03:49 2012
+, after 1 seconds from entering the routine, after 1 seconds from queso environment instatiation
+In uqMLSampling<P_V,P_M>::generateSequence(): beginning level 4, at  Mon Jul  9 01:03:49 2012
+, after 1 seconds from entering the routine, after 1 seconds from queso environment instatiation
+In uqMLSamplingLevelOptionsClass::scanOptionsValues(): after getting values of options with prefix 'ip_ml_4_', state of object is:
+m_prefix = ip_ml_4_
+ip_ml_4_stopAtEnd = 0
+ip_ml_4_dataOutputFileName = .
+ip_ml_4_dataOutputAllowedSet = 
+ip_ml_4_loadBalanceAlgorithmId = 2
+ip_ml_4_loadBalanceTreshold = 1
+ip_ml_4_minEffectiveSizeRatio = 0.49
+ip_ml_4_maxEffectiveSizeRatio = 0.51
+ip_ml_4_scaleCovMatrix = 1
+ip_ml_4_minRejectionRate = 0.24
+ip_ml_4_maxRejectionRate = 0.4
+ip_ml_4_covRejectionRate = 0.25
+ip_ml_4_totallyMute = 1
+ip_ml_4_initialPosition_dataInputFileName = .
+ip_ml_4_initialPosition_dataInputFileType = m
+ip_ml_4_initialProposalCovMatrix_dataInputFileName = .
+ip_ml_4_initialProposalCovMatrix_dataInputFileType = m
+ip_ml_4_rawChain_dataInputFileName = .
+ip_ml_4_rawChain_dataInputFileType = m
+ip_ml_4_rawChain_size = 5000
+ip_ml_4_rawChain_generateExtra = 0
+ip_ml_4_rawChain_displayPeriod = 500
+ip_ml_4_rawChain_measureRunTimes = 1
+ip_ml_4_rawChain_dataOutputFileName = .
+ip_ml_4_rawChain_dataOutputFileType = m
+ip_ml_4_rawChain_dataOutputAllowedSet = 
+ip_ml_4_rawChain_computeStats = 0
+ip_ml_4_filteredChain_generate = 0
+ip_ml_4_filteredChain_discardedPortion = 0
+ip_ml_4_filteredChain_lag = 1
+ip_ml_4_filteredChain_dataOutputFileName = .
+ip_ml_4_filteredChain_dataOutputFileType = m
+ip_ml_4_filteredChain_dataOutputAllowedSet = 
+ip_ml_4_filteredChain_computeStats = 0
+ip_ml_4_displayCandidates = 0
+ip_ml_4_putOutOfBoundsInChain = 0
+ip_ml_4_tk_useLocalHessian = 0
+ip_ml_4_tk_useNewtonComponent = 1
+ip_ml_4_dr_maxNumExtraStages = 0
+ip_ml_4_dr_listOfScalesForExtraStages = 
+ip_ml_4_dr_duringAmNonAdaptiveInt = 1
+ip_ml_4_am_keepInitialMatrix = 0
+ip_ml_4_am_initialNonAdaptInterval = 0
+ip_ml_4_am_adaptInterval = 0
+ip_ml_4_amAdaptedMatrices_dataOutputPeriod = 0
+ip_ml_4_amAdaptedMatrices_dataOutputFileName = .
+ip_ml_4_amAdaptedMatrices_dataOutputFileType = m
+ip_ml_4_am_eta = 1
+ip_ml_4_am_epsilon = 1e-05
+
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 1: beginning step 1 of 11
+KEY In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 1, currOptions->m_rawChainSize = 5000
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 1, after 1.3e-05 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 2: beginning step 2 of 11
+In uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 2, prevLogLikelihoodValues[0] = -1.76423
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 2: prevChain.unifiedSequenceSize() = 5000, currChain.unifiedSequenceSize() = 0, prevLogLikelihoodValues.unifiedSequenceSize() = 5000, currLogLikelihoodValues.unifiedSequenceSize() = 0, prevLogTargetValues.unifiedSequenceSize() = 5000, currLogTargetValues.unifiedSequenceSize() = 0
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 2, after 0.008679 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 3: beginning step 3 of 11
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 3: entering loop for computing next exponent, with nowAttempt = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 3: nowAttempt = 0, prevExponent = 0.347926, exponents[0] = 0.347926, nowExponent = 1, exponents[1] = 1, subWeightRatioSum = 1840.42, unifiedWeightRatioSum = 1840.42, unifiedOmegaLnMax = -2.06204, weightSequence.unifiedSequenceSize() = 5000, nowUnifiedEvidenceLnFactor = -3.06149, effectiveSampleSize = 0.000289314
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 3: nowAttempt = 0, prevExponent = 0.347926, exponents[0] = 0.347926, nowExponent = 1, exponents[1] = 1, effectiveSampleSize = 3456.45, weightSequenceSize = 5000, minEffectiveSizeRatio = 0.49, nowEffectiveSizeRatio = 0.691289, maxEffectiveSizeRatio = 0.51, aux2 = 1, aux3 = 0, testResult = 1
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 3: weightSequence.subSequenceSize() = 5000, weightSequence.unifiedSequenceSize() = 5000, currExponent = 1, effective ratio = 0.691289, log(evidence factor) = -3.06149, evidence factor = 0.046818
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 3, after 0.007563 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 3: copying 'last' level options to current options
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 3: after copying 'last' level options to current options, the current options are
+m_prefix = ip_ml_last_
+ip_ml_last_stopAtEnd = 0
+ip_ml_last_dataOutputFileName = outputData/sipOutput_ml
+ip_ml_last_dataOutputAllowedSet = 0 1 
+ip_ml_last_loadBalanceAlgorithmId = 2
+ip_ml_last_loadBalanceTreshold = 1
+ip_ml_last_minEffectiveSizeRatio = 0.49
+ip_ml_last_maxEffectiveSizeRatio = 0.51
+ip_ml_last_scaleCovMatrix = 1
+ip_ml_last_minRejectionRate = 0.24
+ip_ml_last_maxRejectionRate = 0.4
+ip_ml_last_covRejectionRate = 0.25
+ip_ml_last_totallyMute = 1
+ip_ml_last_initialPosition_dataInputFileName = .
+ip_ml_last_initialPosition_dataInputFileType = m
+ip_ml_last_initialProposalCovMatrix_dataInputFileName = .
+ip_ml_last_initialProposalCovMatrix_dataInputFileType = m
+ip_ml_last_rawChain_dataInputFileName = .
+ip_ml_last_rawChain_dataInputFileType = m
+ip_ml_last_rawChain_size = 10000
+ip_ml_last_rawChain_generateExtra = 0
+ip_ml_last_rawChain_displayPeriod = 500
+ip_ml_last_rawChain_measureRunTimes = 1
+ip_ml_last_rawChain_dataOutputFileName = outputData/rawChain_ml
+ip_ml_last_rawChain_dataOutputFileType = m
+ip_ml_last_rawChain_dataOutputAllowedSet = 0 
+ip_ml_last_rawChain_computeStats = 1
+ip_ml_last_filteredChain_generate = 1
+ip_ml_last_filteredChain_discardedPortion = 0
+ip_ml_last_filteredChain_lag = 2
+ip_ml_last_filteredChain_dataOutputFileName = outputData/filtChain_ml
+ip_ml_last_filteredChain_dataOutputFileType = m
+ip_ml_last_filteredChain_dataOutputAllowedSet = 0 
+ip_ml_last_filteredChain_computeStats = 1
+ip_ml_last_displayCandidates = 0
+ip_ml_last_putOutOfBoundsInChain = 0
+ip_ml_last_tk_useLocalHessian = 0
+ip_ml_last_tk_useNewtonComponent = 1
+ip_ml_last_dr_maxNumExtraStages = 1
+ip_ml_last_dr_listOfScalesForExtraStages = 5 
+ip_ml_last_dr_duringAmNonAdaptiveInt = 1
+ip_ml_last_am_keepInitialMatrix = 0
+ip_ml_last_am_initialNonAdaptInterval = 0
+ip_ml_last_am_adaptInterval = 0
+ip_ml_last_amAdaptedMatrices_dataOutputPeriod = 0
+ip_ml_last_amAdaptedMatrices_dataOutputFileName = .
+ip_ml_last_amAdaptedMatrices_dataOutputFileType = m
+ip_ml_last_am_eta = 1
+ip_ml_last_am_epsilon = 1e-05
+
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 4: beginning step 4 of 11
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 4: unifiedCovMatrix = 1776.45 
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 4, after 0.01765 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 5: beginning step 5 of 11
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 4, step 5: unifiedRequestedNumSamples = 10000, unifiedWeightStdVectorAtProc0Only.size() = 5000
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 5, after 0.01305 seconds
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 4, step 6: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 4, step 6: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 4, step 6, Np = 1, totalNumberOfChains = 3633
+  KEY, level 4, step 6, origNumChainsPerNode[0] = 3633, origNumPositionsPerNode[0] = 10000
+  KEY, level 4, step 6, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 4, step 6: result = 0
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 6, after 0.001911 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 7: beginning step 7 of 11
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 7: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 7: subNumSamples = 10000, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 7: minModifiedSubNumSamples = 10000, avgModifiedSubNumSamples = 10000, maxModifiedSubNumSamples = 10000
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 7: numberOfPositionsToGuaranteeForNode = 10000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 7: unbalancedLinkControl.unbLinkedChains.size() = 3633
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 7: balancedLinkControl.balLinkedChains.size() = 0, unbalancedLinkControl.unbLinkedChains.size() = 3633
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 7, after 0.001635 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 8: beginning step 8 of 11
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 8, after 7e-06 seconds
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: beginning step 9 of 11
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: entering loop for assessing rejection rate, with nowAttempt = 0, nowRejectionRate = 0
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: in loop for assessing rejection rate, about to sample 35 indexes, meanRejectionRate = 0.32, covRejectionRate = 0.25
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 4, step 9: unifiedRequestedNumSamples = 35, unifiedWeightStdVectorAtProc0Only.size() = 5000
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: in loop for assessing rejection rate, about to distribute sampled assessment indexes
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 4, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 4, step 9: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 4, step 9, Np = 1, totalNumberOfChains = 35
+  KEY, level 4, step 9, origNumChainsPerNode[0] = 35, origNumPositionsPerNode[0] = 35
+  KEY, level 4, step 9, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 4, step 9: result = 0
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 9: subNumSamples = 35, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 9: minModifiedSubNumSamples = 35, avgModifiedSubNumSamples = 35, maxModifiedSubNumSamples = 35
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 9: numberOfPositionsToGuaranteeForNode = 35
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 9: unbalancedLinkControl.unbLinkedChains.size() = 35
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: in loop for assessing rejection rate, about to generate assessment chain
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 35, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 4, step 9: chainIdMax = 35, numberOfPositions = 35
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 4, step 9: minNumberOfPositions = 35, avgNumberOfPositions = 35, maxNumberOfPositions = 35
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: in loop for assessing rejection rate, nowAttempt = 0, beforeEta = 0.015625, etas[0] = 0.015625, nowEta = 0.015625, etas[1] = 1, minRejectionRate = 0.24, nowRejectionRate = 0.514286, maxRejectionRate = 0.4
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: entering loop for assessing rejection rate, with nowAttempt = 1, nowRejectionRate = 0.514286
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: in loop for assessing rejection rate, with nowAttempt = 1, useMiddlePointLogicForEta = false, nowEta just updated to value (to be tested) 0.00390625
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: in loop for assessing rejection rate, about to sample 35 indexes, meanRejectionRate = 0.32, covRejectionRate = 0.25
+Entering uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(), level 4, step 9: unifiedRequestedNumSamples = 35, unifiedWeightStdVectorAtProc0Only.size() = 5000
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: in loop for assessing rejection rate, about to distribute sampled assessment indexes
+Entering uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 4, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+In uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 4, step 9: original distribution of unified indexes in 'inter0Comm' is as follows
+  allFirstIndexes[0] = 0  allLastIndexes[0] = 4999
+  KEY, level 4, step 9, Np = 1, totalNumberOfChains = 34
+  KEY, level 4, step 9, origNumChainsPerNode[0] = 34, origNumPositionsPerNode[0] = 35
+  KEY, level 4, step 9, origRatioOfPosPerNode = 1, option loadBalanceTreshold = 1
+Leaving uqMLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(), level 4, step 9: result = 0
+Entering uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 9: indexOfFirstWeight = 0, indexOfLastWeight = 4999
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 9: subNumSamples = 35, unifiedIndexCountersAtAllProcs.size() = 5000
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 9: minModifiedSubNumSamples = 35, avgModifiedSubNumSamples = 35, maxModifiedSubNumSamples = 35
+KEY In uqMLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 9: numberOfPositionsToGuaranteeForNode = 35
+KEY Leaving uqMLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(), level 4, step 9: unbalancedLinkControl.unbLinkedChains.size() = 34
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: in loop for assessing rejection rate, about to generate assessment chain
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 34, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 4, step 9: chainIdMax = 34, numberOfPositions = 35
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 4, step 9: minNumberOfPositions = 35, avgNumberOfPositions = 35, maxNumberOfPositions = 35
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: in loop for assessing rejection rate, nowAttempt = 1, beforeEta = 0.015625, etas[0] = 0.015625, nowEta = 0.00390625, etas[1] = 1, minRejectionRate = 0.24, nowRejectionRate = 0.4, maxRejectionRate = 0.4
+In uqMLSampling<P_V,P_M>::generateSequence_Step09_all(), level 4, step 9: weightSequence.subSequenceSize() = 5000, weightSequence.unifiedSequenceSize() = 5000, currEta = 0.00390625, assessed rejection rate = 0.4
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 9, after 0.026979 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 10: beginning step 10 of 11, currLogLikelihoodValues = 0xbfffefbc
+Entering uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(): unbalancedLinkControl.unbLinkedChains.size() = 3633, indexOfFirstWeight = 0
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 4, step 10: chainIdMax = 3633, numberOfPositions = 10000
+KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(), level 4, step 10: minNumberOfPositions = 10000, avgNumberOfPositions = 10000, maxNumberOfPositions = 10000
+Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()
+In uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 10, after chain generatrion, currLogLikelihoodValues[0] = -5.2602
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 10, after 1.24872 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4, step 11: beginning step 11 of 11
+
+
+-----------------------------------------------------
+ Computing statistics for chain 'ip_ml_4_rawChain' ...
+-----------------------------------------------------
+
+In uqBaseVectorSequenceClass<V,M>::computeStatistics(): statisticalOptions.initialDiscardedPortions()[0] = 0, initialPosForStatistics[0] = 0
+In uqBaseVectorSequenceClass<V,M>::computeStatistics(): initial positions for statistics = 0
+
+-----------------------------------------------------
+Computing mean, sample variance and population variance
+
+Estimated variance of sample mean for the whole chain 'ip_ml_4_rawChain', under independence assumption:
+0.178373
+
+
+Estimated standard deviation of sample mean for the whole chain 'ip_ml_4_rawChain', under independence assumption:
+0.422342
+
+Sub Mean, median, and variances took 0.016706 seconds
+
+Sub mean, median, sample std, population std
+Parameter    Mean      Median         SampleStd         Popul.Std
+           7.0702e+01   9.6440e+01   4.2234e+01   4.2232e+01
+
+Ended computing mean, sample variance and population variance
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+ Computing histogram and/or cdf stacc and/or Kde for chain 'ip_ml_4_rawChain' ...
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+Computing min and max for histograms and Kde
+
+Computed min values and max values for chain 'ip_ml_4_rawChain'
+Parameter         min         max
+           6.6870e+00   1.1763e+02
+Chain min and max took 0.002774 seconds
+
+-----------------------------------------------------
+Computing Kde
+In uqScalarSequenceClass<T>::subInterQuantileRange(): iqrValue = 90.6246, dataSize = 10000, pos1 = 2499, pos3 = 7499, value1 = 10.7961, value3 = 101.421
+In uqScalarSequenceClass<T>::subScaleForKde(): iqrValue = 90.6246, meanValue = 70.7025, samValue = 1783.73, dataSize = 10000, scaleValue = 7.0953
+
+Computed inter quantile ranges for chain 'ip_ml_4_rawChain'
+Parameter         iqr
+           9.0625e+01
+Chain Kde took 0.25394 seconds
+
+-----------------------------------------------------
+ Finished computing histogram and/or cdf stacc and/or Kde for chain 'ip_ml_4_rawChain'
+-----------------------------------------------------
+
+
+
+-----------------------------------------------------
+ Computing covariance and correlation matrices for chain 'ip_ml_4_rawChain' ...
+-----------------------------------------------------
+
+
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain ip_ml_4_rawChain: contents of covariance matrix are
+1783.73 
+
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain ip_ml_4_rawChain: contents of correlation matrix are
+1 
+
+-----------------------------------------------------
+ Finished computing covariance and correlation matrices for chain 'ip_ml_4_rawChain'
+-----------------------------------------------------
+
+All statistics of chain 'ip_ml_4_rawChain' took 0.289491 seconds
+
+-----------------------------------------------------
+ Finished computing statistics for chain 'ip_ml_4_rawChain'
+-----------------------------------------------------
+
+In uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 11, before calling currLogLikelihoodValues.unifiedWriteContents(), currLogLikelihoodValues[0] = -5.2602
+Entering uqSequenceOfVectorsClass<V,M>::filter(): initialPos = 0, spacing = 2, subSequenceSize = 10000
+Leaving uqSequenceOfVectorsClass<V,M>::filter(): initialPos = 0, spacing = 2, subSequenceSize = 5000
+Entering uqScalarSequenceClass<V,M>::filter(): initialPos = 0, spacing = 2, subSequenceSize = 10000
+Leaving uqScalarSequenceClass<V,M>::filter(): initialPos = 0, spacing = 2, subSequenceSize = 5000
+Entering uqScalarSequenceClass<V,M>::filter(): initialPos = 0, spacing = 2, subSequenceSize = 10000
+Leaving uqScalarSequenceClass<V,M>::filter(): initialPos = 0, spacing = 2, subSequenceSize = 5000
+
+
+-----------------------------------------------------
+ Computing statistics for chain 'ip_ml_last_filtChain' ...
+-----------------------------------------------------
+
+In uqBaseVectorSequenceClass<V,M>::computeStatistics(): statisticalOptions.initialDiscardedPortions()[0] = 0, initialPosForStatistics[0] = 0
+In uqBaseVectorSequenceClass<V,M>::computeStatistics(): initial positions for statistics = 0
+
+-----------------------------------------------------
+Computing mean, sample variance and population variance
+
+Estimated variance of sample mean for the whole chain 'ip_ml_last_filtChain', under independence assumption:
+0.356154
+
+
+Estimated standard deviation of sample mean for the whole chain 'ip_ml_last_filtChain', under independence assumption:
+0.596786
+
+Sub Mean, median, and variances took 0.008278 seconds
+
+Sub mean, median, sample std, population std
+Parameter    Mean      Median         SampleStd         Popul.Std
+           7.0761e+01   9.6442e+01   4.2199e+01   4.2195e+01
+
+Ended computing mean, sample variance and population variance
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+ Computing histogram and/or cdf stacc and/or Kde for chain 'ip_ml_last_filtChain' ...
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+Computing min and max for histograms and Kde
+
+Computed min values and max values for chain 'ip_ml_last_filtChain'
+Parameter         min         max
+           6.6870e+00   1.1725e+02
+Chain min and max took 0.001435 seconds
+
+-----------------------------------------------------
+Computing Kde
+In uqScalarSequenceClass<T>::subInterQuantileRange(): iqrValue = 90.6309, dataSize = 5000, pos1 = 1249, pos3 = 3749, value1 = 10.7961, value3 = 101.427
+In uqScalarSequenceClass<T>::subScaleForKde(): iqrValue = 90.6309, meanValue = 70.7612, samValue = 1780.77, dataSize = 5000, scaleValue = 8.14359
+
+Computed inter quantile ranges for chain 'ip_ml_last_filtChain'
+Parameter         iqr
+           9.0631e+01
+Chain Kde took 0.128688 seconds
+
+-----------------------------------------------------
+ Finished computing histogram and/or cdf stacc and/or Kde for chain 'ip_ml_last_filtChain'
+-----------------------------------------------------
+
+
+
+-----------------------------------------------------
+ Computing covariance and correlation matrices for chain 'ip_ml_last_filtChain' ...
+-----------------------------------------------------
+
+
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain ip_ml_last_filtChain: contents of covariance matrix are
+1780.77 
+
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain ip_ml_last_filtChain: contents of correlation matrix are
+1 
+
+-----------------------------------------------------
+ Finished computing covariance and correlation matrices for chain 'ip_ml_last_filtChain'
+-----------------------------------------------------
+
+All statistics of chain 'ip_ml_last_filtChain' took 0.146663 seconds
+
+-----------------------------------------------------
+ Finished computing statistics for chain 'ip_ml_last_filtChain'
+-----------------------------------------------------
+
+Leaving uqMLSampling<P_V,P_M>::generateSequence_Step(), level 4, step 11, after 0.822683 seconds
+In uqMLSampling<P_V,P_M>::generateSequence(): ending level 4, having generated 5000 chain positions, cumulativeRawChainRunTime = 0.334247 seconds, total level time = 2.15193 seconds, cumulativeRawChainRejections = 477 (4.77% at this processor) (4.77% over all processors), stopAtEndOfLevel = 0
+In uqMLSampling<P_V,P_M>::generateSequence(), level 4: min cumul seconds = 0.334247, avg cumul seconds = 0.334247, max cumul seconds = 0.334247, min level seconds = 2.15193, avg level seconds = 2.15193, max level seconds = 2.15193
+Getting at the end of level 4, as part of a 'while' on levels, at  Mon Jul  9 01:03:52 2012
+, after 4 seconds from entering the routine, after 4 seconds from queso environment instatiation
+In uqMLSampling<P_V,P_M>::generateSequence(), log(evidence) = -7.41918, evidence = 0.000599641, meanLogLikelihood = -4.32658, eig = 3.0926
+Leaving uqMLSamplingClass<P_V,P_M>::generateSequence(), at  Mon Jul  9 01:03:52 2012
+, after 4 seconds from entering the routine, after 4 seconds from queso environment instatiation
+In uqSequentialVectorRealizerClass<V,M>::constructor(): m_chain.subSequenceSize() = 5000
+
+numPosTotal = 5000
+numPosSmallerThan40 = 1616, ratio = 0.3232
+seq1.size() = 1616
+ seq1.mean() = 10.0214
+ seq1.std() = 1.05051
+seq2.size() = 3384
+ seq2.mean() = 99.7669
+ seq2.std() = 5.1944
+seqAll.size() = 5000
+ seqAll.mean() = 70.7612
+ seqAll.std() = 42.1992
+integral = 0.31831
+Ending run at Mon Jul  9 01:03:52 2012
+Total run time = 4 seconds

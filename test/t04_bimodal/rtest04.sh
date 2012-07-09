@@ -33,7 +33,8 @@ verify_file_exists $EXE
 #VERIFY_DATE="07-12-2009"
 #VERIFY_DATE="09-22-2010"
 #VERIFY_DATE="12-09-2010"
-VERIFY_DATE="07-03-2012"
+#VERIFY_DATE="07-03-2012"
+VERIFY_DATE="07-09-2012"
 TEST_DIR="./"
 SOLDIR="outputData"
 EXE="./BimodalExample_gsl"   # executable name

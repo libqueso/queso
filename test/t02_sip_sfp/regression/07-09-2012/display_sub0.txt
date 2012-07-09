@@ -1,0 +1,760 @@
+--------------------------------------------------------------------------------------------------------------
+QUESO Library: Version = 0.45.1 (4501)
+
+Development Build
+
+Build Date   = 2012-07-03 19:27
+Build Host   = ernesto-prudencis-macbook-air-2.local
+Build User   = ernesto
+Build Arch   = i386-apple-darwin9.8.0
+Build Rev    = 31736M
+
+C++ Config   = mpic++ -g -Wall
+
+Trilinos DIR = no
+GSL Libs     = -L/opt/local/lib -lgsl -lgslcblas -lm
+GRVY DIR     = /Users/ernesto/Installations/grvy_0_26_0
+GLPK DIR     = no
+HDF5 DIR     = /Users/ernesto/Installations/hdf5_1_8_5
+--------------------------------------------------------------------------------------------------------------
+Beginning run at Mon Jul  9 00:47:55 2012
+
+In uqFullEnvironmentClass::commonConstructor():
+  m_seed = 0
+  internal seed = 0
+Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor(): prefix = , alternativeOptionsValues = 0, m_env.optionsInputFileName() = example.inp
+In uqStatisticalInverseProblemOptionsClass::scanOptionsValues(): after reading values of options with prefix 'ip_', state of  object is:
+
+ip_computeSolution = 1
+ip_dataOutputFileName = outputData/sipOutput
+ip_dataOutputAllowedSet = 0 
+
+Leaving uqStatisticalInverseProblemClass<P_V,P_M>::constructor(): prefix = ip_
+In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(): computing solution, as requested by user
+In uqMetropolisHastingsSGOptionsClass::scanOptionsValues(): after reading values of options with prefix 'ip_mh_', state of object is:
+ip_mh_dataOutputFileName = outputData/sipOutput
+ip_mh_dataOutputAllowedSet = 0 1 
+ip_mh_totallyMute = 0
+ip_mh_initialPosition_dataInputFileName = .
+ip_mh_initialPosition_dataInputFileType = m
+ip_mh_initialProposalCovMatrix_dataInputFileName = .
+ip_mh_initialProposalCovMatrix_dataInputFileType = m
+ip_mh_rawChain_dataInputFileName = .
+ip_mh_rawChain_dataInputFileType = m
+ip_mh_rawChain_size = 32768
+ip_mh_rawChain_generateExtra = 0
+ip_mh_rawChain_displayPeriod = 50000
+ip_mh_rawChain_measureRunTimes = 1
+ip_mh_rawChain_dataOutputFileName = outputData/ip_raw_chain
+ip_mh_rawChain_dataOutputFileType = m
+ip_mh_rawChain_dataOutputAllowedSet = 0 1 
+ip_mh_rawChain_computeStats = 1
+ip_mh_filteredChain_generate = 1
+ip_mh_filteredChain_discardedPortion = 0
+ip_mh_filteredChain_lag = 16
+ip_mh_filteredChain_dataOutputFileName = outputData/ip_filt_chain
+ip_mh_filteredChain_dataOutputFileType = m
+ip_mh_filteredChain_dataOutputAllowedSet = 0 1 
+ip_mh_filteredChain_computeStats = 1
+ip_mh_displayCandidates = 0
+ip_mh_putOutOfBoundsInChain = 1
+ip_mh_tk_useLocalHessian = 0
+ip_mh_tk_useNewtonComponent = 1
+ip_mh_dr_maxNumExtraStages = 1
+ip_mh_dr_listOfScalesForExtraStages = 5 
+ip_mh_dr_duringAmNonAdaptiveInt = 1
+ip_mh_am_keepInitialMatrix = 0
+ip_mh_am_initialNonAdaptInterval = 0
+ip_mh_am_adaptInterval = 100
+ip_mh_am_adaptedMatrices_dataOutputPeriod = 0
+ip_mh_am_adaptedMatrices_dataOutputFileName = .
+ip_mh_am_adaptedMatrices_dataOutputFileType = m
+ip_mh_am_eta = 1.92
+ip_mh_am_epsilon = 1e-05
+ip_mh_enableBrooksGelmanConvMonitor = 0
+ip_mh_BrooksGelmanLag = 100
+
+Entering uqSequenceStatisticalOptions::constructor(1), prefix = ip_mh_rawChain_stats_
+After reading values of options with prefix 'ip_mh_rawChain_stats_', state of uqSequenceStatisticalOptionsClass object is:
+
+ip_mh_rawChain_stats_initialDiscardedPortions = 0 
+ip_mh_rawChain_stats_mean_monitorPeriod = 0
+ip_mh_rawChain_stats_bmm_run = 0
+ip_mh_rawChain_stats_bmm_lengths = 0 
+ip_mh_rawChain_stats_fft_compute = 0
+ip_mh_rawChain_stats_fft_paramId = 0
+ip_mh_rawChain_stats_fft_size = 2048
+ip_mh_rawChain_stats_fft_testInversion = 0
+ip_mh_rawChain_stats_fft_write = 0
+ip_mh_rawChain_stats_psd_compute = 0
+ip_mh_rawChain_stats_psd_paramId = 0
+ip_mh_rawChain_stats_psd_numBlocks = 8
+ip_mh_rawChain_stats_psd_hopSizeRatio = 0
+ip_mh_rawChain_stats_psd_write = 0
+ip_mh_rawChain_stats_psdAtZero_compute = 0
+ip_mh_rawChain_stats_psdAtZero_numBlocks = 8 
+ip_mh_rawChain_stats_psdAtZero_hopSizeRatio = 0.5
+ip_mh_rawChain_stats_psdAtZero_display = 0
+ip_mh_rawChain_stats_psdAtZero_write = 0
+ip_mh_rawChain_stats_geweke_compute = 0
+ip_mh_rawChain_stats_geweke_naRatio = 0.1
+ip_mh_rawChain_stats_geweke_nbRatio = 0.5
+ip_mh_rawChain_stats_geweke_display = 0
+ip_mh_rawChain_stats_geweke_write = 0
+ip_mh_rawChain_stats_autoCorr_computeViaDef = 0
+ip_mh_rawChain_stats_autoCorr_computeViaFft = 1
+ip_mh_rawChain_stats_autoCorr_secondLag = 2
+ip_mh_rawChain_stats_autoCorr_lagSpacing = 2
+ip_mh_rawChain_stats_autoCorr_numLags = 10
+ip_mh_rawChain_stats_autoCorr_display = 1
+ip_mh_rawChain_stats_autoCorr_write = 1
+ip_mh_rawChain_stats_meanStacc_compute = 0
+ip_mh_rawChain_stats_hist_compute = 1
+ip_mh_rawChain_stats_hist_numInternalBins = 250
+ip_mh_rawChain_stats_cdfStacc_compute = 0
+ip_mh_rawChain_stats_cdfStacc_numEvalPositions = 50
+ip_mh_rawChain_stats_kde_compute = 0
+ip_mh_rawChain_stats_kde_numEvalPositions = 250
+ip_mh_rawChain_stats_covMatrix_compute = 1
+ip_mh_rawChain_stats_corrMatrix_compute = 1
+
+Leaving uqSequenceStatisticalOptions::constructor(1), prefix = ip_mh_rawChain_stats_
+Entering uqSequenceStatisticalOptions::constructor(1), prefix = ip_mh_filteredChain_stats_
+After reading values of options with prefix 'ip_mh_filteredChain_stats_', state of uqSequenceStatisticalOptionsClass object is:
+
+ip_mh_filteredChain_stats_initialDiscardedPortions = 0 
+ip_mh_filteredChain_stats_mean_monitorPeriod = 0
+ip_mh_filteredChain_stats_bmm_run = 0
+ip_mh_filteredChain_stats_bmm_lengths = 0 
+ip_mh_filteredChain_stats_fft_compute = 0
+ip_mh_filteredChain_stats_fft_paramId = 0
+ip_mh_filteredChain_stats_fft_size = 2048
+ip_mh_filteredChain_stats_fft_testInversion = 0
+ip_mh_filteredChain_stats_fft_write = 0
+ip_mh_filteredChain_stats_psd_compute = 0
+ip_mh_filteredChain_stats_psd_paramId = 0
+ip_mh_filteredChain_stats_psd_numBlocks = 8
+ip_mh_filteredChain_stats_psd_hopSizeRatio = 0
+ip_mh_filteredChain_stats_psd_write = 0
+ip_mh_filteredChain_stats_psdAtZero_compute = 0
+ip_mh_filteredChain_stats_psdAtZero_numBlocks = 8 
+ip_mh_filteredChain_stats_psdAtZero_hopSizeRatio = 0.5
+ip_mh_filteredChain_stats_psdAtZero_display = 0
+ip_mh_filteredChain_stats_psdAtZero_write = 0
+ip_mh_filteredChain_stats_geweke_compute = 0
+ip_mh_filteredChain_stats_geweke_naRatio = 0.1
+ip_mh_filteredChain_stats_geweke_nbRatio = 0.5
+ip_mh_filteredChain_stats_geweke_display = 0
+ip_mh_filteredChain_stats_geweke_write = 0
+ip_mh_filteredChain_stats_autoCorr_computeViaDef = 0
+ip_mh_filteredChain_stats_autoCorr_computeViaFft = 1
+ip_mh_filteredChain_stats_autoCorr_secondLag = 2
+ip_mh_filteredChain_stats_autoCorr_lagSpacing = 2
+ip_mh_filteredChain_stats_autoCorr_numLags = 10
+ip_mh_filteredChain_stats_autoCorr_display = 1
+ip_mh_filteredChain_stats_autoCorr_write = 1
+ip_mh_filteredChain_stats_meanStacc_compute = 0
+ip_mh_filteredChain_stats_hist_compute = 1
+ip_mh_filteredChain_stats_hist_numInternalBins = 250
+ip_mh_filteredChain_stats_cdfStacc_compute = 0
+ip_mh_filteredChain_stats_cdfStacc_numEvalPositions = 50
+ip_mh_filteredChain_stats_kde_compute = 1
+ip_mh_filteredChain_stats_kde_numEvalPositions = 250
+ip_mh_filteredChain_stats_covMatrix_compute = 1
+ip_mh_filteredChain_stats_corrMatrix_compute = 1
+
+Leaving uqSequenceStatisticalOptions::constructor(1), prefix = ip_mh_filteredChain_stats_
+Entering uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1): prefix = ip_, alternativeOptionsValues = 0, m_env.optionsInputFileName() = example.inp, m_initialProposalCovMatrix = 8 4 ; 4 16 
+Entering uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
+In uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor(): just instantiated a 'ScaledCovMatrix' TK class
+Leaving uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
+Leaving uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)
+Starting the generation of Markov chain ip_mh_rawChain, with 32768 positions...
+
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): contents of initial position are:0.1 -1.4 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): targetPdf.domaintSet() info is:In uqBoxSubsetClass<V,M>::print(): m_minValues = -inf -inf , m_maxValues = inf inf , m_volume = inf
+
+Finished the generation of Markov chain ip_mh_rawChain, with sub 32768 positions
+Some information about this chain:
+  Chain run time       = 1.75094 seconds
+
+ Breaking of the chain run time:
+
+  Candidate run time   = 0.400428 seconds (22.8693%)
+  Num target calls  = 58468
+  Target d. run time   = 0.16702 seconds (9.53889%)
+  Avg target run time   = 2.85661e-06 seconds
+  Mh alpha run time    = 0.011308 seconds (0.645825%)
+  Dr alpha run time    = 0.734983 seconds (41.9765%)
+----------------------   --------------
+  Sum                  = 1.31374 seconds (75.0306%)
+
+ Other run times:
+  DR run time          = 1.13846 seconds (65.0203%)
+  AM run time          = 0 seconds (0%)
+  Number of DRs = 25700(num_DRs/chain_size = 0.784302)
+  Out of target support in DR = 0
+  Rejection percentage = 23.8525 %
+  Out of target support percentage = 0 %
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, chain name = ip_mh_rawChain: about to try to open generic output file 'outputData/sipOutput.m', subId = 0, subenv is allowed to write (1/true or 0/false) = 1...
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: returned from opening generic output file 'outputData/sipOutput.m', subId = 0
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: about to try to write sub raw chain output file 'outputData/ip_raw_chain.m', subId = 0, subenv is allowed to write  1/true or 0/false) = 1...
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: returned from writing sub raw chain output file 'outputData/ip_raw_chain.m', subId = 0
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: about to try to write unified raw chain output file 'outputData/ip_raw_chain.m', subId = 0...
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: returned from writing unified raw chain output file 'outputData/ip_raw_chain.m', subId = 0
+
+
+-----------------------------------------------------
+ Writing more information about the Markov chain ip_mh_rawChain to output file ...
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+ Finished writing more information about the Markov chain ip_mh_rawChain
+-----------------------------------------------------
+
+
+
+-----------------------------------------------------
+ Computing statistics for chain 'ip_mh_rawChain' ...
+-----------------------------------------------------
+
+In uqBaseVectorSequenceClass<V,M>::computeStatistics(): statisticalOptions.initialDiscardedPortions()[0] = 0, initialPosForStatistics[0] = 0
+In uqBaseVectorSequenceClass<V,M>::computeStatistics(): initial positions for statistics = 0
+
+-----------------------------------------------------
+Computing mean, sample variance and population variance
+
+Estimated variance of sample mean for the whole chain 'ip_mh_rawChain', under independence assumption:
+0.000118191
+3.0671e-05
+
+
+Estimated standard deviation of sample mean for the whole chain 'ip_mh_rawChain', under independence assumption:
+0.0108716
+0.00553814
+
+Sub Mean, median, and variances took 0.105362 seconds
+
+Sub mean, median, sample std, population std
+Parameter    Mean      Median         SampleStd         Popul.Std
+          -1.0099e+00  -1.0127e+00   1.9680e+00   1.9679e+00
+           2.0075e+00   1.9972e+00   1.0025e+00   1.0025e+00
+
+Ended computing mean, sample variance and population variance
+-----------------------------------------------------
+
+-----------------------------------------------------
+Computing autocorrelation coefficients (via fft)
+In uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(): lags for autocorrelation (via fft) =  1 2 4 6 8 10 12 14 16 18
+In uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(): about to call chain.autoCorrViaFft() with initialPos = 0, numPos = 32768, lagsForCorrs.size() = 10, corrVecs.size() = 10
+
+Estimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position 0
+0.000589027
+5.53826e-05
+
+
+Computed autocorrelation coefficients (via fft), for subchain beggining at position 0 (each column corresponds to a different lag)
+Parameter            1            2            4            6            8           10           12           14           16           18
+            8.6514e-01   7.5078e-01   5.6269e-01   4.2415e-01   3.1981e-01   2.4315e-01   1.8823e-01   1.4600e-01   1.1205e-01   8.4454e-02
+            6.1953e-01   3.8278e-01   1.5339e-01   6.1220e-02   2.6731e-02   1.1928e-02   1.0187e-02   8.4409e-03   1.6659e-03   1.0446e-03
+Chain autocorrelation (via fft) took 0.374273 seconds
+
+
+-----------------------------------------------------
+ Computing histogram and/or cdf stacc and/or Kde for chain 'ip_mh_rawChain' ...
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+Computing min and max for histograms and Kde
+
+Computed min values and max values for chain 'ip_mh_rawChain'
+Parameter         min         max
+          -8.7366e+00   6.3216e+00
+          -1.9936e+00   6.1102e+00
+Chain min and max took 0.019568 seconds
+
+-----------------------------------------------------
+Computing histograms
+Chain histograms took 0.03318 seconds
+
+-----------------------------------------------------
+ Finished computing histogram and/or cdf stacc and/or Kde for chain 'ip_mh_rawChain'
+-----------------------------------------------------
+
+
+
+-----------------------------------------------------
+ Computing covariance and correlation matrices for chain 'ip_mh_rawChain' ...
+-----------------------------------------------------
+
+
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain ip_mh_rawChain: contents of covariance matrix are
+3.87289 0.0259448 ; 0.0259448 1.00503 
+
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain ip_mh_rawChain: contents of correlation matrix are
+1 0.0131505 ; 0.0131505 1 
+
+-----------------------------------------------------
+ Finished computing covariance and correlation matrices for chain 'ip_mh_rawChain'
+-----------------------------------------------------
+
+All statistics of chain 'ip_mh_rawChain' took 0.636591 seconds
+
+-----------------------------------------------------
+ Finished computing statistics for chain 'ip_mh_rawChain'
+-----------------------------------------------------
+
+Entering uqSequenceOfVectorsClass<V,M>::filter(): initialPos = 0, spacing = 16, subSequenceSize = 32768
+Leaving uqSequenceOfVectorsClass<V,M>::filter(): initialPos = 0, spacing = 16, subSequenceSize = 2048
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_: checking necessity of opening output files for filtered chain ip_mh_filtChain...
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_: closed sub output file 'outputData/ip_filt_chain' for filtered chain ip_mh_filtChain
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_: closed unified output file 'outputData/ip_filt_chain' for filtered chain ip_mh_filtChain
+
+
+-----------------------------------------------------
+ Computing statistics for chain 'ip_mh_filtChain' ...
+-----------------------------------------------------
+
+In uqBaseVectorSequenceClass<V,M>::computeStatistics(): statisticalOptions.initialDiscardedPortions()[0] = 0, initialPosForStatistics[0] = 0
+In uqBaseVectorSequenceClass<V,M>::computeStatistics(): initial positions for statistics = 0
+
+-----------------------------------------------------
+Computing mean, sample variance and population variance
+
+Estimated variance of sample mean for the whole chain 'ip_mh_filtChain', under independence assumption:
+0.00194597
+0.000478615
+
+
+Estimated standard deviation of sample mean for the whole chain 'ip_mh_filtChain', under independence assumption:
+0.0441131
+0.0218773
+
+Sub Mean, median, and variances took 0.007235 seconds
+
+Sub mean, median, sample std, population std
+Parameter    Mean      Median         SampleStd         Popul.Std
+          -9.9652e-01  -1.0024e+00   1.9963e+00   1.9958e+00
+           2.0202e+00   2.0092e+00   9.9005e-01   9.8981e-01
+
+Ended computing mean, sample variance and population variance
+-----------------------------------------------------
+
+-----------------------------------------------------
+Computing autocorrelation coefficients (via fft)
+In uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(): lags for autocorrelation (via fft) =  1 2 4 6 8 10 12 14 16 18
+In uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(): about to call chain.autoCorrViaFft() with initialPos = 0, numPos = 2048, lagsForCorrs.size() = 10, corrVecs.size() = 10
+
+Estimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position 0
+0.000391698
+0.000216028
+
+
+Computed autocorrelation coefficients (via fft), for subchain beggining at position 0 (each column corresponds to a different lag)
+Parameter            1            2            4            6            8           10           12           14           16           18
+            1.1788e-01  -1.2989e-02   1.6701e-02  -1.6713e-02  -1.6246e-02  -1.4297e-02  -1.2687e-02   1.9928e-02   6.8664e-03   1.9064e-02
+            5.6715e-03  -4.6440e-02   4.6240e-02   3.7479e-03   4.8575e-02   1.6436e-02   9.7021e-03   8.9280e-03   2.5203e-02   2.1048e-02
+Chain autocorrelation (via fft) took 0.025484 seconds
+
+
+-----------------------------------------------------
+ Computing histogram and/or cdf stacc and/or Kde for chain 'ip_mh_filtChain' ...
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+Computing min and max for histograms and Kde
+
+Computed min values and max values for chain 'ip_mh_filtChain'
+Parameter         min         max
+          -8.0136e+00   5.4596e+00
+          -1.4000e+00   5.4773e+00
+Chain min and max took 0.001261 seconds
+
+-----------------------------------------------------
+Computing histograms
+Chain histograms took 0.012176 seconds
+
+-----------------------------------------------------
+Computing Kde
+In uqScalarSequenceClass<T>::subInterQuantileRange(): iqrValue = 2.67423, dataSize = 2048, pos1 = 511, pos3 = 1535, value1 = -2.31636, value3 = 0.357872
+In uqScalarSequenceClass<T>::subInterQuantileRange(): iqrValue = 1.28714, dataSize = 2048, pos1 = 511, pos3 = 1535, value1 = 1.37997, value3 = 2.66711
+In uqScalarSequenceClass<T>::subScaleForKde(): iqrValue = 2.67423, meanValue = -0.996522, samValue = 3.98534, dataSize = 2048, scaleValue = 0.460399
+In uqScalarSequenceClass<T>::subScaleForKde(): iqrValue = 1.28714, meanValue = 2.02021, samValue = 0.980204, dataSize = 2048, scaleValue = 0.221596
+
+Computed inter quantile ranges for chain 'ip_mh_filtChain'
+Parameter         iqr
+           2.6742e+00
+           1.2871e+00
+Chain Kde took 0.152997 seconds
+
+-----------------------------------------------------
+ Finished computing histogram and/or cdf stacc and/or Kde for chain 'ip_mh_filtChain'
+-----------------------------------------------------
+
+
+
+-----------------------------------------------------
+ Computing covariance and correlation matrices for chain 'ip_mh_filtChain' ...
+-----------------------------------------------------
+
+
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain ip_mh_filtChain: contents of covariance matrix are
+3.98534 0.0383035 ; 0.0383035 0.980204 
+
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain ip_mh_filtChain: contents of correlation matrix are
+1 0.0193797 ; 0.0193797 1 
+
+-----------------------------------------------------
+ Finished computing covariance and correlation matrices for chain 'ip_mh_filtChain'
+-----------------------------------------------------
+
+All statistics of chain 'ip_mh_filtChain' took 0.206249 seconds
+
+-----------------------------------------------------
+ Finished computing statistics for chain 'ip_mh_filtChain'
+-----------------------------------------------------
+
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_: closed generic output file 'outputData/sipOutput' (chain name is ip_mh_filtChain)
+
+In uqSequentialVectorRealizerClass<V,M>::constructor(): m_chain.subSequenceSize() = 2048
+
+Entering uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor(): prefix = , alternativeOptionsValues = 0, m_env.optionsInputFileName() = example.inp
+In uqStatisticalForwardProblemOptionsClass::scanOptionsValues(): after reading values of options with prefix 'fp_', state of  object is:
+fp_computeSolution = 1
+fp_computeCovariances = 1
+fp_computeCorrelations = 1
+fp_dataOutputFileName = outputData/sfpOutput
+fp_dataOutputAllowedSet = 0 1 
+
+Leaving uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor(): prefix = fp_
+In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(): computing solution, as requested by user
+Entering uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor(): prefix = fp_, alternativeOptionsValues = 0, m_env.optionsInputFileName() = example.inp
+In uqMonteCarloSGOptionsClass::scanOptionsValues(): after reading values of options with prefix 'fp_mc_', state of object is:
+fp_mc_dataOutputFileName = outputData/sfpOutput
+fp_mc_dataOutputAllowedSet = 0 1 
+fp_mc_pseq_dataOutputFileName = outputData/fp_p_seq
+fp_mc_pseq_dataOutputFileType = m
+fp_mc_pseq_dataOutputAllowedSet = 0 1 
+fp_mc_pseq_computeStats = 1
+fp_mc_qseq_dataInputFileName = .
+fp_mc_qseq_dataInputFileType = m
+fp_mc_qseq_size = 1048576
+fp_mc_qseq_displayPeriod = 20000
+fp_mc_qseq_measureRunTimes = 1
+fp_mc_qseq_dataOutputFileName = outputData/fp_q_seq
+fp_mc_qseq_dataOutputFileType = m
+fp_mc_qseq_dataOutputAllowedSet = 0 1 
+fp_mc_qseq_computeStats = 1
+Entering uqSequenceStatisticalOptions::constructor(1), prefix = fp_mc_pseq_stats_
+After reading values of options with prefix 'fp_mc_pseq_stats_', state of uqSequenceStatisticalOptionsClass object is:
+
+fp_mc_pseq_stats_initialDiscardedPortions = 0 
+fp_mc_pseq_stats_mean_monitorPeriod = 0
+fp_mc_pseq_stats_bmm_run = 0
+fp_mc_pseq_stats_bmm_lengths = 0 
+fp_mc_pseq_stats_fft_compute = 0
+fp_mc_pseq_stats_fft_paramId = 0
+fp_mc_pseq_stats_fft_size = 2048
+fp_mc_pseq_stats_fft_testInversion = 0
+fp_mc_pseq_stats_fft_write = 0
+fp_mc_pseq_stats_psd_compute = 0
+fp_mc_pseq_stats_psd_paramId = 0
+fp_mc_pseq_stats_psd_numBlocks = 8
+fp_mc_pseq_stats_psd_hopSizeRatio = 0
+fp_mc_pseq_stats_psd_write = 0
+fp_mc_pseq_stats_psdAtZero_compute = 0
+fp_mc_pseq_stats_psdAtZero_numBlocks = 8 
+fp_mc_pseq_stats_psdAtZero_hopSizeRatio = 0.5
+fp_mc_pseq_stats_psdAtZero_display = 0
+fp_mc_pseq_stats_psdAtZero_write = 0
+fp_mc_pseq_stats_geweke_compute = 0
+fp_mc_pseq_stats_geweke_naRatio = 0.1
+fp_mc_pseq_stats_geweke_nbRatio = 0.5
+fp_mc_pseq_stats_geweke_display = 0
+fp_mc_pseq_stats_geweke_write = 0
+fp_mc_pseq_stats_autoCorr_computeViaDef = 0
+fp_mc_pseq_stats_autoCorr_computeViaFft = 0
+fp_mc_pseq_stats_autoCorr_secondLag = 0
+fp_mc_pseq_stats_autoCorr_lagSpacing = 0
+fp_mc_pseq_stats_autoCorr_numLags = 0
+fp_mc_pseq_stats_autoCorr_display = 0
+fp_mc_pseq_stats_autoCorr_write = 0
+fp_mc_pseq_stats_meanStacc_compute = 0
+fp_mc_pseq_stats_hist_compute = 1
+fp_mc_pseq_stats_hist_numInternalBins = 250
+fp_mc_pseq_stats_cdfStacc_compute = 0
+fp_mc_pseq_stats_cdfStacc_numEvalPositions = 50
+fp_mc_pseq_stats_kde_compute = 1
+fp_mc_pseq_stats_kde_numEvalPositions = 250
+fp_mc_pseq_stats_covMatrix_compute = 1
+fp_mc_pseq_stats_corrMatrix_compute = 1
+
+Leaving uqSequenceStatisticalOptions::constructor(1), prefix = fp_mc_pseq_stats_
+Entering uqSequenceStatisticalOptions::constructor(1), prefix = fp_mc_qseq_stats_
+After reading values of options with prefix 'fp_mc_qseq_stats_', state of uqSequenceStatisticalOptionsClass object is:
+
+fp_mc_qseq_stats_initialDiscardedPortions = 0 
+fp_mc_qseq_stats_mean_monitorPeriod = 0
+fp_mc_qseq_stats_bmm_run = 0
+fp_mc_qseq_stats_bmm_lengths = 0 
+fp_mc_qseq_stats_fft_compute = 0
+fp_mc_qseq_stats_fft_paramId = 0
+fp_mc_qseq_stats_fft_size = 2048
+fp_mc_qseq_stats_fft_testInversion = 0
+fp_mc_qseq_stats_fft_write = 0
+fp_mc_qseq_stats_psd_compute = 0
+fp_mc_qseq_stats_psd_paramId = 0
+fp_mc_qseq_stats_psd_numBlocks = 8
+fp_mc_qseq_stats_psd_hopSizeRatio = 0
+fp_mc_qseq_stats_psd_write = 0
+fp_mc_qseq_stats_psdAtZero_compute = 0
+fp_mc_qseq_stats_psdAtZero_numBlocks = 8 
+fp_mc_qseq_stats_psdAtZero_hopSizeRatio = 0.5
+fp_mc_qseq_stats_psdAtZero_display = 0
+fp_mc_qseq_stats_psdAtZero_write = 0
+fp_mc_qseq_stats_geweke_compute = 0
+fp_mc_qseq_stats_geweke_naRatio = 0.1
+fp_mc_qseq_stats_geweke_nbRatio = 0.5
+fp_mc_qseq_stats_geweke_display = 0
+fp_mc_qseq_stats_geweke_write = 0
+fp_mc_qseq_stats_autoCorr_computeViaDef = 0
+fp_mc_qseq_stats_autoCorr_computeViaFft = 1
+fp_mc_qseq_stats_autoCorr_secondLag = 2
+fp_mc_qseq_stats_autoCorr_lagSpacing = 1
+fp_mc_qseq_stats_autoCorr_numLags = 15
+fp_mc_qseq_stats_autoCorr_display = 1
+fp_mc_qseq_stats_autoCorr_write = 1
+fp_mc_qseq_stats_meanStacc_compute = 0
+fp_mc_qseq_stats_hist_compute = 1
+fp_mc_qseq_stats_hist_numInternalBins = 250
+fp_mc_qseq_stats_cdfStacc_compute = 0
+fp_mc_qseq_stats_cdfStacc_numEvalPositions = 50
+fp_mc_qseq_stats_kde_compute = 1
+fp_mc_qseq_stats_kde_numEvalPositions = 250
+fp_mc_qseq_stats_covMatrix_compute = 1
+fp_mc_qseq_stats_corrMatrix_compute = 1
+
+Leaving uqSequenceStatisticalOptions::constructor(1), prefix = fp_mc_qseq_stats_
+Leaving uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): m_optionsObj->m_ov.m_qseqSize = 1048576, paramRv.realizer().subPeriod() = 2048, about to call actualGenerateSequence() with subActualSize = 2048
+Starting the generation of qoi sequence fp_mc_QoiSeq, with 2048 samples...
+Finished the generation of qoi sequence fp_mc_QoiSeq, with sub 2048 samples
+Some information about this sequence:
+  Sequence run time = 0.00432 seconds
+
+ Breaking of the seq run time:
+
+  QoI function run time   = 0.000552 seconds (12.7778%)
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): returned from call to actualGenerateSequence() with subActualSize = 2048
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening generic output file (qseq name is fp_mc_QoiSeq) ...
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening output files for pseq fp_mc_ParamSeq...
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: closed unified data output file 'outputData/fp_p_seq' for pseq fp_mc_ParamSeq
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): about to call 'workingPSeq.computeStatistics()'
+
+
+-----------------------------------------------------
+ Computing statistics for chain 'fp_mc_ParamSeq' ...
+-----------------------------------------------------
+
+In uqBaseVectorSequenceClass<V,M>::computeStatistics(): statisticalOptions.initialDiscardedPortions()[0] = 0, initialPosForStatistics[0] = 0
+In uqBaseVectorSequenceClass<V,M>::computeStatistics(): initial positions for statistics = 0
+
+-----------------------------------------------------
+Computing mean, sample variance and population variance
+
+Estimated variance of sample mean for the whole chain 'fp_mc_ParamSeq', under independence assumption:
+0.00194597
+0.000478615
+
+
+Estimated standard deviation of sample mean for the whole chain 'fp_mc_ParamSeq', under independence assumption:
+0.0441131
+0.0218773
+
+Sub Mean, median, and variances took 0.007216 seconds
+
+Sub mean, median, sample std, population std
+Parameter    Mean      Median         SampleStd         Popul.Std
+          -9.9652e-01  -1.0024e+00   1.9963e+00   1.9958e+00
+           2.0202e+00   2.0092e+00   9.9005e-01   9.8981e-01
+
+Ended computing mean, sample variance and population variance
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+ Computing histogram and/or cdf stacc and/or Kde for chain 'fp_mc_ParamSeq' ...
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+Computing min and max for histograms and Kde
+
+Computed min values and max values for chain 'fp_mc_ParamSeq'
+Parameter         min         max
+          -8.0136e+00   5.4596e+00
+          -1.4000e+00   5.4773e+00
+Chain min and max took 0.001279 seconds
+
+-----------------------------------------------------
+Computing histograms
+Chain histograms took 0.012057 seconds
+
+-----------------------------------------------------
+Computing Kde
+In uqScalarSequenceClass<T>::subInterQuantileRange(): iqrValue = 2.67423, dataSize = 2048, pos1 = 511, pos3 = 1535, value1 = -2.31636, value3 = 0.357872
+In uqScalarSequenceClass<T>::subInterQuantileRange(): iqrValue = 1.28714, dataSize = 2048, pos1 = 511, pos3 = 1535, value1 = 1.37997, value3 = 2.66711
+In uqScalarSequenceClass<T>::subScaleForKde(): iqrValue = 2.67423, meanValue = -0.996522, samValue = 3.98534, dataSize = 2048, scaleValue = 0.460399
+In uqScalarSequenceClass<T>::subScaleForKde(): iqrValue = 1.28714, meanValue = 2.02021, samValue = 0.980204, dataSize = 2048, scaleValue = 0.221596
+
+Computed inter quantile ranges for chain 'fp_mc_ParamSeq'
+Parameter         iqr
+           2.6742e+00
+           1.2871e+00
+Chain Kde took 0.154077 seconds
+
+-----------------------------------------------------
+ Finished computing histogram and/or cdf stacc and/or Kde for chain 'fp_mc_ParamSeq'
+-----------------------------------------------------
+
+
+
+-----------------------------------------------------
+ Computing covariance and correlation matrices for chain 'fp_mc_ParamSeq' ...
+-----------------------------------------------------
+
+
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain fp_mc_ParamSeq: contents of covariance matrix are
+3.98534 0.0383035 ; 0.0383035 0.980204 
+
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain fp_mc_ParamSeq: contents of correlation matrix are
+1 0.0193797 ; 0.0193797 1 
+
+-----------------------------------------------------
+ Finished computing covariance and correlation matrices for chain 'fp_mc_ParamSeq'
+-----------------------------------------------------
+
+All statistics of chain 'fp_mc_ParamSeq' took 0.181255 seconds
+
+-----------------------------------------------------
+ Finished computing statistics for chain 'fp_mc_ParamSeq'
+-----------------------------------------------------
+
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): returned from call to 'workingPSeq.computeStatistics()'
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening output files for qseq fp_mc_QoiSeq...
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: closed unified data output file 'outputData/fp_q_seq' for qseq fp_mc_QoiSeq
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): about to call 'workingQSeq.computeStatistics()'
+
+
+-----------------------------------------------------
+ Computing statistics for chain 'fp_mc_QoiSeq' ...
+-----------------------------------------------------
+
+In uqBaseVectorSequenceClass<V,M>::computeStatistics(): statisticalOptions.initialDiscardedPortions()[0] = 0, initialPosForStatistics[0] = 0
+In uqBaseVectorSequenceClass<V,M>::computeStatistics(): initial positions for statistics = 0
+
+-----------------------------------------------------
+Computing mean, sample variance and population variance
+
+Estimated variance of sample mean for the whole chain 'fp_mc_QoiSeq', under independence assumption:
+0.00246199
+
+
+Estimated standard deviation of sample mean for the whole chain 'fp_mc_QoiSeq', under independence assumption:
+0.0496184
+
+Sub Mean, median, and variances took 0.003815 seconds
+
+Sub mean, median, sample std, population std
+Parameter    Mean      Median         SampleStd         Popul.Std
+           1.0237e+00   1.0131e+00   2.2455e+00   2.2449e+00
+
+Ended computing mean, sample variance and population variance
+-----------------------------------------------------
+
+-----------------------------------------------------
+Computing autocorrelation coefficients (via fft)
+In uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(): lags for autocorrelation (via fft) =  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+In uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(): about to call chain.autoCorrViaFft() with initialPos = 0, numPos = 2048, lagsForCorrs.size() = 15, corrVecs.size() = 15
+
+Estimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position 0
+0.000397905
+
+
+Computed autocorrelation coefficients (via fft), for subchain beggining at position 0 (each column corresponds to a different lag)
+Parameter            1            2            3            4            5            6            7            8            9           10           11           12           13           14           15
+            9.6879e-02  -3.5594e-02  -4.1248e-03   8.1145e-03  -1.7359e-02  -9.7033e-03   1.4843e-02  -2.9065e-03  -4.5724e-03  -8.2599e-03   2.2668e-02  -2.0157e-03   1.0709e-02   1.4544e-02   1.3156e-02
+Chain autocorrelation (via fft) took 0.013098 seconds
+
+
+-----------------------------------------------------
+ Computing histogram and/or cdf stacc and/or Kde for chain 'fp_mc_QoiSeq' ...
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+Computing min and max for histograms and Kde
+
+Computed min values and max values for chain 'fp_mc_QoiSeq'
+Parameter         min         max
+          -6.8894e+00   9.5406e+00
+Chain min and max took 0.000729 seconds
+
+-----------------------------------------------------
+Computing histograms
+Chain histograms took 0.006334 seconds
+
+-----------------------------------------------------
+Computing Kde
+In uqScalarSequenceClass<T>::subInterQuantileRange(): iqrValue = 3.00422, dataSize = 2048, pos1 = 511, pos3 = 1535, value1 = -0.529782, value3 = 2.47444
+In uqScalarSequenceClass<T>::subScaleForKde(): iqrValue = 3.00422, meanValue = 1.02369, samValue = 5.04215, dataSize = 2048, scaleValue = 0.51721
+
+Computed inter quantile ranges for chain 'fp_mc_QoiSeq'
+Parameter         iqr
+           3.0042e+00
+Chain Kde took 0.0782 seconds
+
+-----------------------------------------------------
+ Finished computing histogram and/or cdf stacc and/or Kde for chain 'fp_mc_QoiSeq'
+-----------------------------------------------------
+
+
+
+-----------------------------------------------------
+ Computing covariance and correlation matrices for chain 'fp_mc_QoiSeq' ...
+-----------------------------------------------------
+
+
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain fp_mc_QoiSeq: contents of covariance matrix are
+5.04215 
+
+uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices, chain fp_mc_QoiSeq: contents of correlation matrix are
+1 
+
+-----------------------------------------------------
+ Finished computing covariance and correlation matrices for chain 'fp_mc_QoiSeq'
+-----------------------------------------------------
+
+All statistics of chain 'fp_mc_QoiSeq' took 0.106473 seconds
+
+-----------------------------------------------------
+ Finished computing statistics for chain 'fp_mc_QoiSeq'
+-----------------------------------------------------
+
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): returned from call to 'workingQSeq.computeStatistics()'
+In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: closed generic data output file 'outputData/sfpOutput' for qoi sequence fp_mc_QoiSeq
+
+In uqSequentialVectorRealizerClass<V,M>::constructor(): m_chain.subSequenceSize() = 2048
+In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: instantiating cov and corr matrices
+In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: contents of covariance matrix are
+4.02364 ; 1.01851 
+In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: contents of correlation matrix are
+0.897592 ; 0.45814 
+In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: checking necessity of opening data output file 'outputData/sfpOutput'
+In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: closed data output file 'outputData/sfpOutput'
+
+Ending run at Mon Jul  9 00:47:59 2012
+Total run time = 4 seconds

@@ -31,7 +31,8 @@ verify_file_exists $EXE
 # Regresion Test #1: Validation cycle with TGA example 
 
 #VERIFY_DATE="07-12-2009"
-VERIFY_DATE="09-06-2009"
+#VERIFY_DATE="09-06-2009"
+VERIFY_DATE="07-09-2012"
 TEST_DIR="./"
 SOLDIR="outputData"
 EXE="./SipSfpExample_gsl"   # executable name

@@ -29,7 +29,7 @@
 #ifndef __UQ_VECTOR_SEQUENCE_H__
 #define __UQ_VECTOR_SEQUENCE_H__
 
-#define  UQ_CODE_HAS_MONITORS
+#undef  UQ_CODE_HAS_MONITORS
 
 #include <uqVectorSubset.h>
 #include <uqScalarSequence.h>
@@ -107,10 +107,10 @@ public:
                                                                  V&                                       unifiedMeanVec) const = 0;
   virtual  void                     subMedianExtra              (unsigned int                             initialPos,
                                                                  unsigned int                             numPos,
-                                                                 V&                                       meanVec) const = 0;
+                                                                 V&                                       medianVec) const = 0;
   virtual  void                     unifiedMedianExtra          (unsigned int                             initialPos,
                                                                  unsigned int                             localNumPos,
-                                                                 V&                                       unifiedMeanVec) const = 0;
+                                                                 V&                                       unifiedMedianVec) const = 0;
   virtual  void                     subSampleVarianceExtra      (unsigned int                             initialPos,
                                                                  unsigned int                             numPos,
                                                                  const V&                                 meanVec,
@@ -244,9 +244,11 @@ protected:
            void                     computeMeanVars             (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  std::ofstream*                           passedOfs,
                                                                  V*                                       subMeanPtr,
+                                                                 V*                                       subMedianPtr,
                                                                  V*                                       subSampleVarPtr,
                                                                  V*                                       subPopulVarPtr);
 
+#ifdef UQ_CODE_HAS_MONITORS
   virtual  void                     subMeanMonitorAlloc         (unsigned int numberOfMonitorPositions) = 0;
   virtual  void                     subMeanInter0MonitorAlloc   (unsigned int numberOfMonitorPositions) = 0;
   virtual  void                     unifiedMeanMonitorAlloc     (unsigned int numberOfMonitorPositions) = 0;
@@ -290,6 +292,7 @@ protected:
 
            void                     computeMeanEvolution        (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  std::ofstream*                           passedOfs);
+#endif
            void                     computeBMM                  (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  const std::vector<unsigned int>&         initialPosForStatistics,
                                                                  std::ofstream*                           passedOfs);
@@ -852,18 +855,21 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   }
 
   //****************************************************
-  // Compute mean, sample std, population std
+  // Compute mean, median, sample std, population std
   //****************************************************
   if (statisticalOptions.meanMonitorPeriod() == 0) {
     this->computeMeanVars(statisticalOptions,
                           passedOfs,
                           NULL,
                           NULL,
+                          NULL,
                           NULL);
   }
   else {
+#ifdef UQ_CODE_HAS_MONITORS
     this->computeMeanEvolution(statisticalOptions,
                                passedOfs);
+#endif
   }
 
   //****************************************************
@@ -1002,6 +1008,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
   const uqSequenceStatisticalOptionsClass& statisticalOptions,
   std::ofstream*                           passedOfs,
   V*                                       subMeanPtr,
+  V*                                       subMedianPtr,
   V*                                       subSampleVarPtr,
   V*                                       subPopulVarPtr)
 {
@@ -1021,6 +1028,11 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
                      this->subSequenceSize(),
                      subChainMean);
 
+  V subChainMedian(m_vectorSpace.zeroVector());
+  this->subMedianExtra(0,
+                     this->subSequenceSize(),
+                     subChainMedian);
+
   V subChainSampleVariance(m_vectorSpace.zeroVector());
   this->subSampleVarianceExtra(0,
                                this->subSequenceSize(),
@@ -1031,6 +1043,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
     *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeMeanVars()"
                             << ": subChainMean.sizeLocal() = "           << subChainMean.sizeLocal()
                             << ", subChainMean = "                       << subChainMean
+                            << ", subChainMedian = "                     << subChainMedian
                             << ", subChainSampleVariance.sizeLocal() = " << subChainSampleVariance.sizeLocal()
                             << ", subChainSampleVariance = "             << subChainSampleVariance
                             << std::endl;
@@ -1070,19 +1083,21 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
 
   tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Sub Mean and variances took " << tmpRunTime
+    *m_env.subDisplayFile() << "Sub Mean, median, and variances took " << tmpRunTime
                             << " seconds"
                             << std::endl;
   }
 
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\nSub mean, sample std, population std"
+    *m_env.subDisplayFile() << "\nSub mean, median, sample std, population std"
                             << std::endl;
     char line[512];
-    sprintf(line,"%s%4s%s%9s%s%9s%s",
+    sprintf(line,"%s%4s%s%6s%s%9s%s%9s%s",
 	    "Parameter",
             " ",
             "Mean",
+            " ",
+            "Median",
             " ",
             "SampleStd",
             " ",
@@ -1090,10 +1105,12 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
     *m_env.subDisplayFile() << line;
 
     for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
-      sprintf(line,"\n%8.8s%2s%11.4e%2s%11.4e%2s%11.4e",
+      sprintf(line,"\n%8.8s%2s%11.4e%2s%11.4e%2s%11.4e%2s%11.4e",
               m_vectorSpace.localComponentName(i).c_str(), /*.*/
               " ",
 	      subChainMean[i],
+              " ",
+	      subChainMedian[i],
               " ",
               std::sqrt(subChainSampleVariance[i]),
               " ",
@@ -1104,6 +1121,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
   }
 
   if (subMeanPtr     ) *subMeanPtr      = subChainMean;
+  if (subMedianPtr   ) *subMedianPtr    = subChainMedian;
   if (subSampleVarPtr) *subSampleVarPtr = subChainSampleVariance;
   if (subPopulVarPtr ) *subPopulVarPtr  = subChainPopulationVariance;
 
@@ -1114,6 +1132,11 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
       this->unifiedMeanExtra(0,
                              this->subSequenceSize(),
                              unifiedChainMean);
+
+      V unifiedChainMedian(m_vectorSpace.zeroVector());
+      this->unifiedMedianExtra(0,
+                               this->subSequenceSize(),
+                               unifiedChainMedian);
 
       V unifiedChainSampleVariance(m_vectorSpace.zeroVector());
       this->unifiedSampleVarianceExtra(0,
@@ -1129,13 +1152,15 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
 
       if (m_env.inter0Rank() == 0) {
         if (m_env.subDisplayFile()) {
-          *m_env.subDisplayFile() << "\nUnif mean, sample std, population std"
+          *m_env.subDisplayFile() << "\nUnif mean, median, sample std, population std"
                                   << std::endl;
           char line[512];
-          sprintf(line,"%s%4s%s%9s%s%9s%s",
+          sprintf(line,"%s%4s%s%6s%s%9s%s%9s%s",
 	          "Parameter",
                   " ",
                   "Mean",
+                  " ",
+                  "Median",
                   " ",
                   "SampleStd",
                   " ",
@@ -1143,10 +1168,12 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
           *m_env.subDisplayFile() << line;
 
           for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
-            sprintf(line,"\n%8.8s%2s%11.4e%2s%11.4e%2s%11.4e",
+            sprintf(line,"\n%8.8s%2s%11.4e%2s%11.4e%2s%11.4e%2s%11.4e",
                     m_vectorSpace.localComponentName(i).c_str(), /*.*/
                     " ",
 	            unifiedChainMean[i],
+                    " ",
+	            unifiedChainMedian[i],
                     " ",
                     std::sqrt(unifiedChainSampleVariance[i]),
                     " ",
@@ -1174,6 +1201,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
   return;
 }
 
+#ifdef UQ_CODE_HAS_MONITORS
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeMeanEvolution(
@@ -1279,6 +1307,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanEvolution(
 
   return;
 }
+#endif
 
 template<class V, class M>
 void

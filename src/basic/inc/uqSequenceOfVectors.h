@@ -1051,10 +1051,10 @@ uqSequenceOfVectorsClass<V,M>::unifiedMeanExtra(
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::subMedianExtra( // rr0
+uqSequenceOfVectorsClass<V,M>::subMedianExtra(
   unsigned int initialPos,
   unsigned int numPos,
-  V&           medianExtra) const
+  V&           medianVec) const
 {
   if (this->subSequenceSize() == 0) return;
 
@@ -1082,20 +1082,88 @@ uqSequenceOfVectorsClass<V,M>::subMedianExtra( // rr0
                       "uqSequenceOfVectorsClass<V,M>::subMedianExtra()",
                       "invalid input data");
 
+  uqScalarSequenceClass<double> data(m_env,0,"");
+
+  unsigned int numParams = this->vectorSizeLocal();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    medianVec[i] = data.subMedianExtra(0,
+                                       numPos);
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::subMedianExtra()"
+                           << ": initialPos = "        << initialPos
+                           << ", numPos = "            << numPos
+                           << ", sub sequence size = " << this->subSequenceSize()
+                           << ", medianVec = "         << medianVec
+                           << std::endl;
+  }
+
   return;
 }
 
 template <class V, class M>
 void
-uqSequenceOfVectorsClass<V,M>::unifiedMedianExtra( // rr0
+uqSequenceOfVectorsClass<V,M>::unifiedMedianExtra(
   unsigned int initialPos,
   unsigned int numPos,
-  V&           unifiedMedianExtra) const
+  V&           unifiedMedianVec) const
 {
-  if (m_env.numSubEnvironments() == 1) {
-    return this->subMedianExtra(initialPos,
-                                numPos,
-                                unifiedMedianExtra);
+  unsigned int tmpUnif = this->unifiedSequenceSize();
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Entering uqSequenceOfVectorsClass<V,M>::unifiedMedianExtra()"
+                            << ": initialPos = "            << initialPos
+                            << ", numPos = "                << numPos
+                            << ", sub sequence size = "     << this->subSequenceSize()
+                            << ", unified sequence size = " << tmpUnif
+                            << std::endl;
+  }
+
+  bool bRC = ((initialPos              <  this->subSequenceSize()     ) &&
+              (0                       <  numPos                      ) &&
+              ((initialPos+numPos)     <= this->subSequenceSize()     ) &&
+              (this->vectorSizeLocal() == unifiedMedianVec.sizeLocal()));
+  if ((bRC == false) && (m_env.subDisplayFile())) {
+    *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedMedianExtra()"
+                            << ", initialPos = "                   << initialPos
+                            << ", this->subSequenceSize() = "      << this->subSequenceSize()
+                            << ", numPos = "                       << numPos
+                            << ", this->vectorSizeLocal() = "      << this->vectorSizeLocal()
+                            << ", unifiedMedianVec.sizeLocal() = " << unifiedMedianVec.sizeLocal()
+                            << std::endl;
+  }
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorsClass<V,M>::unifiedMedianExtra()",
+                      "invalid input data");
+
+  uqScalarSequenceClass<double> data(m_env,0,"");
+
+  unsigned int numParams = this->vectorSizeLocal();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    unifiedMedianVec[i] = data.unifiedMedianExtra(m_vectorSpace.numOfProcsForStorage() == 1,
+                                                  0,
+                                                  numPos);
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "Leaving uqSequenceOfVectorsClass<V,M>::unifiedMedianExtra()"
+                            << ": initialPos = "            << initialPos
+                            << ", numPos = "                << numPos
+                            << ", sub sequence size = "     << this->subSequenceSize()
+                            << ", unified sequence size = " << tmpUnif
+                            << ", unifiedMedianVec = "      << unifiedMedianVec
+                            << std::endl;
   }
 
   return;

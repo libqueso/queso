@@ -1556,45 +1556,8 @@ uqScalarSequenceClass<T>::unifiedMedianExtra( // rr0
       this->unifiedSort(useOnlyInter0Comm,
                         initialPos,
                         unifiedSortedSequence);
-      unsigned int unifiedDataSize = unifiedSortedSequence.subSequenceSize();
-
-      unsigned int finalPosPlus1 = initialPos + numPos;
-      T localSum = 0.;
-      for (unsigned int j = initialPos; j < finalPosPlus1; ++j) {
-        localSum += m_seq[j];
-      }
-
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
         *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMedianExtra()"
-                                << ": initialPos = " << initialPos
-                                << ", numPos = "     << numPos
-                                << ", before MPI.Allreduce"
-                                << std::endl;
-      }
-      //std::cout << m_env.inter0Comm().MyPID()
-      //          << std::endl;
-      //sleep(1);
-      unsigned int unifiedNumPos = 0;
-      m_env.inter0Comm().Allreduce((void *) &numPos, (void *) &unifiedNumPos, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
-                                   "uqScalarSequenceClass<T>::unifiedMedianExtra()",
-                                   "failed MPI.Allreduce() for numPos");
-
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMedianExtra()"
-                                << ": numPos = "        << numPos
-                                << ", unifiedNumPos = " << unifiedNumPos
-                                << std::endl;
-      }
-
-      m_env.inter0Comm().Allreduce((void *) &localSum, (void *) &unifiedMedianValue, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
-                                   "uqScalarSequenceClass<T>::unifiedMedianExtra()",
-                                   "failed MPI.Allreduce() for sum");
-
-      unifiedMedianValue /= ((T) unifiedNumPos);
-
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
-        *m_env.subDisplayFile() << "In uqScalarSequenceClass<T>::unifiedMedianExtra()"
-                                << ": localSum = "         << localSum
                                 << ", unifiedMedianValue = " << unifiedMedianValue
                                 << std::endl;
       }
@@ -1602,7 +1565,7 @@ uqScalarSequenceClass<T>::unifiedMedianExtra( // rr0
     else {
       // Node not in the 'inter0' communicator
       this->subMedianExtra(initialPos,
-                         numPos);
+                           numPos);
     }
   }
   else {
