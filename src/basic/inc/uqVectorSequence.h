@@ -736,10 +736,12 @@ uqBaseVectorSequenceClass<V,M>::subPositionsOfMaximum(
     }
   }
 
+  V tmpVec(this->vectorSpace().zeroVector());
   subPositionsOfMaximum.resizeSequence(numPos);
   for (unsigned int i = 0; i < iMax; ++i) {
     if (subCorrespondingScalarValues[i] == maxValue) {
-      subPositionsOfMaximum[i] = (*this)[i];
+      this->getPositionValues                (i,tmpVec);
+      subPositionsOfMaximum.setPositionValues(i,tmpVec);
     }
   }
 
@@ -767,10 +769,12 @@ uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum( // rr0
     }
   }
 
+  V tmpVec(this->vectorSpace().zeroVector());
   unifiedPositionsOfMaximum.resizeSequence(numPos);
   for (unsigned int i = 0; i < iMax; ++i) {
     if (subCorrespondingScalarValues[i] == maxValue) {
-      unifiedPositionsOfMaximum[i] = (*this)[i];
+      this->getPositionValues                (i,tmpVec);
+      unifiedPositionsOfMaximum.setPositionValues(i,tmpVec);
     }
   }
 

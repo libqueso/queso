@@ -409,6 +409,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         currChain.computeStatistics(*lastLevelOptions.m_rawChainStatisticalOptionsObj,
                                     filePtrSet.ofsVar);
 
+        // Compute MLE and MAP
+        // rr0
+
         m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
       }
 
@@ -451,6 +454,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         if (lastLevelOptions.m_filteredChainComputeStats) {
           currChain.computeStatistics(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
                                       filePtrSet.ofsVar);
+          // Compute MLE and MAP
+          // rr0
         }
 
         m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);

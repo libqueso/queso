@@ -220,6 +220,17 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   if (m_optionsObj->m_ov.m_rawChainComputeStats) {
     workingChain.computeStatistics(*m_optionsObj->m_rawChainStatisticalOptionsObj,
                                    genericFilePtrSet.ofsVar);
+    // Compute MLE and MAP
+    // rr0
+    if (workingLogLikelihoodValues) {
+      uqSequenceOfVectorsClass<P_V,P_M> subPositionsOfMaximum(m_vectorSpace,0,m_optionsObj->m_prefix+"subMLEseq");
+      workingChain.subPositionsOfMaximum(*workingLogLikelihoodValues,
+                                         subPositionsOfMaximum);
+
+      uqSequenceOfVectorsClass<P_V,P_M> unifiedPositionsOfMaximum(m_vectorSpace,0,m_optionsObj->m_prefix+"unifiedMLEseq");
+      workingChain.unifiedPositionsOfMaximum(*workingLogLikelihoodValues,
+                                             unifiedPositionsOfMaximum);
+    }
   }
 
 #if 0 // 2009 03 29, prudenci: do not throw code away yet; just comment code for now
@@ -252,6 +263,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     if (m_uniqueChainComputeStats) {
       workingChain.computeStatistics(*m_uniqueChainStatisticalOptions,
                                      genericFilePtrSet.ofsVar);
+      // Compute MLE and MAP: to be done
     }
   }
 #endif
@@ -328,6 +340,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     if (m_optionsObj->m_ov.m_filteredChainComputeStats) {
       workingChain.computeStatistics(*m_optionsObj->m_filteredChainStatisticalOptionsObj,
                                      genericFilePtrSet.ofsVar);
+      // Compute MLE and MAP
+      // rr0
     }
   }
 

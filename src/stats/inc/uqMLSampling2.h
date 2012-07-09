@@ -415,6 +415,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
         currChain.computeStatistics(*currOptions.m_rawChainStatisticalOptionsObj,
                                     filePtrSet.ofsVar);
 
+        // Compute MLE and MAP
+        // rr0
+
         m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
       }
 
@@ -444,6 +447,19 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
         //*m_env.subDisplayFile() << "Number of zeros in currTargetValues = " << numZeros
         //                        << std::endl;
       }
+
+      if (currOptions.m_filteredChainGenerate) {
+        // todo
+        if (currOptions.m_filteredChainComputeStats) {
+          // todo
+
+          // Compute MLE and MAP
+          // rr0
+          //currChain.computeStatistics(*currOptions.m_filteredChainStatisticalOptionsObj,
+          //                            filePtrSet.ofsVar);
+        }
+      }
+
     } // KAUST
 
     UQ_FATAL_TEST_MACRO((currChain.subSequenceSize() != currOptions.m_rawChainSize), // Ok to use rawChainSize
@@ -1808,6 +1824,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
     currChain.computeStatistics(*currOptions->m_rawChainStatisticalOptionsObj,
                                 filePtrSet.ofsVar);
 
+    // Compute MLE and MAP
+    // rr0
+    
     m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
   }
 
@@ -1873,6 +1892,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
       //m_env.syncPrintDebugMsg("At step 11, calling computeStatistics for filtered chain",1,10,m_env.inter0Comm()); // output debug
       currChain.computeStatistics(*currOptions->m_filteredChainStatisticalOptionsObj,
                                   filePtrSet.ofsVar);
+
+      // Compute MLE and MAP
+      // rr0
     }
 
     m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
