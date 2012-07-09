@@ -85,6 +85,7 @@ public:
   void              fillWithTranspose         (const uqGslMatrixClass& mat);
   double            determinant               () const;
   double            lnDeterminant             () const;
+  unsigned int      rank                      () const;
   uqGslVectorClass  multiply                  (const uqGslVectorClass& x) const;
   uqGslVectorClass  invertMultiply            (const uqGslVectorClass& b) const;
   void              invertMultiply            (const uqGslVectorClass& b, uqGslVectorClass& x) const;
@@ -129,6 +130,7 @@ private:
   mutable uqGslMatrixClass* m_inverse;
   mutable double            m_determinant;
   mutable double            m_lnDeterminant;
+  mutable double            m_rank;
   mutable gsl_permutation*  m_permutation;
   mutable int               m_signum;
 };

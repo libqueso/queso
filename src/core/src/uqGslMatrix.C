@@ -55,6 +55,7 @@ uqGslMatrixClass::uqGslMatrixClass( // can be a rectangular matrix
   m_inverse      (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
+  m_rank         (-INFINITY),
   m_permutation  (NULL),
   m_signum       (0)
 {
@@ -75,6 +76,7 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
   m_inverse      (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
+  m_rank         (-INFINITY),
   m_permutation  (NULL),
   m_signum       (0)
 {
@@ -98,6 +100,7 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
   m_inverse      (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
+  m_rank         (-INFINITY),
   m_permutation  (NULL),
   m_signum       (0)
 {
@@ -119,6 +122,7 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v) // square matrix
   m_inverse      (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
+  m_rank         (-INFINITY),
   m_permutation  (NULL),
   m_signum       (0)
 {
@@ -141,6 +145,7 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslMatrixClass& B) // can be a rectan
   m_inverse      (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
+  m_rank         (-INFINITY),
   m_permutation  (NULL),
   m_signum       (0)
 {
@@ -281,6 +286,7 @@ uqGslMatrixClass::resetLU()
   }
   m_determinant   = -INFINITY;
   m_lnDeterminant = -INFINITY;
+  m_rank          = -INFINITY;
   if (m_permutation) {
     gsl_permutation_free(m_permutation);
     m_permutation = NULL;
@@ -944,6 +950,24 @@ uqGslMatrixClass::lnDeterminant() const
   return m_lnDeterminant;
 }
 
+unsigned int
+uqGslMatrixClass::rank() const
+{
+  if (m_rank == -INFINITY) {
+    // rr0
+#if 0
+    if (m_LU == NULL) {
+      uqGslVectorClass tmpB(m_env,m_map);
+      uqGslVectorClass tmpX(m_env,m_map);
+      this->invertMultiply(tmpB,tmpX);
+    }
+    m_rank = gsl_linalg_LU_lndet(m_LU);
+#endif
+  }
+
+  return m_rank;
+}
+
 uqGslVectorClass
 uqGslMatrixClass::multiply(
   const uqGslVectorClass& x) const
@@ -1201,13 +1225,13 @@ uqGslMatrixClass::eigen(uqGslVectorClass& eigenValues, uqGslMatrixClass* eigenVe
   unsigned int n = eigenValues.sizeLocal();
 
   UQ_FATAL_TEST_MACRO((n == 0),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::eigen()",
                       "invalid input vector size");
 
   if (eigenVectors) {
     UQ_FATAL_TEST_MACRO((eigenValues.sizeLocal() != eigenVectors->numRowsLocal()),
-                        UQ_UNAVAILABLE_RANK,
+                        env().fullRank(),
                         "uqGslVectorClass::eigen()",
                         "different input vector sizes");
   }
@@ -1235,7 +1259,7 @@ uqGslMatrixClass::largestEigen(double& eigenValue, uqGslVectorClass& eigenVector
   unsigned int n = eigenVector.sizeLocal();
 
   UQ_FATAL_TEST_MACRO((n == 0),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::largestEigen()",
                       "invalid input vector size");
 
@@ -1294,7 +1318,7 @@ uqGslMatrixClass::largestEigen(double& eigenValue, uqGslVectorClass& eigenVector
   // TODO: We know we failed at this point - need a way to not need a test
   // TODO: Just specify the error.
   UQ_FATAL_TEST_MACRO((residual >= tolerance),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::largestEigen()",
                       "Maximum num iterations exceeded");
 
@@ -1309,7 +1333,7 @@ uqGslMatrixClass::smallestEigen(double& eigenValue, uqGslVectorClass& eigenVecto
   unsigned int n = eigenVector.sizeLocal();
 
   UQ_FATAL_TEST_MACRO((n == 0),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::smallestEigen()",
                       "invalid input vector size");
 
@@ -1372,7 +1396,7 @@ uqGslMatrixClass::smallestEigen(double& eigenValue, uqGslVectorClass& eigenVecto
   // TODO: We know we failed at this point - need a way to not need a test
   // TODO: Just specify the error.
   UQ_FATAL_TEST_MACRO((residual >= tolerance),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::smallestEigen()",
                       "Maximum num iterations exceeded");
 
@@ -1384,12 +1408,12 @@ uqGslMatrixClass::getColumn(unsigned int column_num, uqGslVectorClass& column) c
 {
   // Sanity checks
   UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::getColumn",
                       "Specified row number not within range");
 
   UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::getColumn",
                       "column vector not same size as this matrix");
 
@@ -1398,7 +1422,7 @@ uqGslMatrixClass::getColumn(unsigned int column_num, uqGslVectorClass& column) c
 
   int error_code = gsl_matrix_get_col( gsl_column, m_mat, column_num );
   UQ_FATAL_RC_MACRO( (error_code != 0),
-		     UQ_UNAVAILABLE_RANK,
+		     env().fullRank(),
 		     "uqGslMatrixClass::getColumn()",
 		     "gsl_matrix_get_col failed");
 
@@ -1419,12 +1443,12 @@ uqGslMatrixClass::getRow(unsigned int row_num, uqGslVectorClass& row) const
 {
   // Sanity checks
   UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::getRow",
                       "Specified row number not within range");
 
   UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numCols()),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::getRow",
                       "row vector not same size as this matrix");
 
@@ -1433,7 +1457,7 @@ uqGslMatrixClass::getRow(unsigned int row_num, uqGslVectorClass& row) const
 
   int error_code = gsl_matrix_get_row( gsl_row, m_mat, row_num );
   UQ_FATAL_RC_MACRO( (error_code != 0),
-		     UQ_UNAVAILABLE_RANK,
+		     env().fullRank(),
 		     "uqGslMatrixClass::getRow()",
 		     "gsl_matrix_get_row failed");
 
@@ -1481,12 +1505,12 @@ uqGslMatrixClass::setRow(unsigned int row_num, const uqGslVectorClass& row)
   this->resetLU();
   // Sanity checks
   UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::setRow",
                       "Specified row number not within range");
 
   UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numCols()),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::setRow",
                       "row vector not same size as this matrix");
 
@@ -1494,7 +1518,7 @@ uqGslMatrixClass::setRow(unsigned int row_num, const uqGslVectorClass& row)
 
   int error_code = gsl_matrix_set_row( m_mat, row_num, gsl_row );
   UQ_FATAL_RC_MACRO( (error_code != 0),
-		     UQ_UNAVAILABLE_RANK,
+		     env().fullRank(),
 		     "uqGslMatrixClass::setRow()",
 		     "gsl_matrix_set_row failed");
 
@@ -1507,12 +1531,12 @@ uqGslMatrixClass::setColumn(unsigned int column_num, const uqGslVectorClass& col
   this->resetLU();
   // Sanity checks
   UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::setColumn",
                       "Specified column number not within range");
 
   UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
-                      UQ_UNAVAILABLE_RANK,
+                      env().fullRank(),
                       "uqGslMatrixClass::setColumn",
                       "column vector not same size as this matrix");
 
@@ -1520,7 +1544,7 @@ uqGslMatrixClass::setColumn(unsigned int column_num, const uqGslVectorClass& col
 
   int error_code = gsl_matrix_set_col( m_mat, column_num, gsl_column );
   UQ_FATAL_RC_MACRO( (error_code != 0),
-		     UQ_UNAVAILABLE_RANK,
+		     env().fullRank(),
 		     "uqGslMatrixClass::setColumn()",
 		     "gsl_matrix_set_col failed");
 
@@ -1531,11 +1555,11 @@ void
 uqGslMatrixClass::mpiSum( const uqMpiCommClass& comm, uqGslMatrixClass& M_global ) const
 {
   // Sanity Checks
-  UQ_FATAL_RC_MACRO( ( (this->numRowsLocal() != M_global.numRowsLocal()) ||
-		       (this->numCols() != M_global.numCols())             ),
-		       UQ_UNAVAILABLE_RANK,
-		       "uqGslMatrixClass::mpiSum()",
-		       "local and global matrices incompatible");
+  UQ_FATAL_RC_MACRO(((this->numRowsLocal() != M_global.numRowsLocal()) ||
+                     (this->numCols()      != M_global.numCols()     )),
+		    env().fullRank(),
+		    "uqGslMatrixClass::mpiSum()",
+		    "local and global matrices incompatible");
 
   /* TODO: Probably a better way to handle this unpacking/packing of data */
   int size = M_global.numRowsLocal()*M_global.numCols();
