@@ -1021,7 +1021,7 @@ uqGslMatrixClass::rank(double zeroThreshold) const
   int iRC = 0;
   iRC = internalSvd();
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "In uqGslMatrixClass::rank()"
                             << ": this->numRowsLocal() = " << this->numRowsLocal()
                             << ", this->numCols() = "      << this->numCols()
