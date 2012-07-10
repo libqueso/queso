@@ -1016,22 +1016,30 @@ uqGslMatrixClass::lnDeterminant() const
 }
 
 unsigned int
-uqGslMatrixClass::rank(double zeroThreshold) const
+uqGslMatrixClass::rank(double zeroRelativeThreshold) const
 {
   int iRC = 0;
   iRC = internalSvd();
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "In uqGslMatrixClass::rank()"
-                            << ": this->numRowsLocal() = " << this->numRowsLocal()
-                            << ", this->numCols() = "      << this->numCols()
-                            << ", m_svdSvec = "            << *m_svdSvec
-                            << std::endl;
+  uqGslVectorClass relativeVec(*m_svdSvec);
+  if (relativeVec[0] > 0.) {
+    relativeVec = (1./relativeVec[0])*relativeVec;
   }
 
   unsigned int rankValue = 0;
-  for (unsigned int i = 0; i < m_svdSvec->sizeLocal(); ++i) {
-    if ((*m_svdSvec)[i] >= zeroThreshold) rankValue += 1;
+  for (unsigned int i = 0; i < relativeVec.sizeLocal(); ++i) {
+    if (relativeVec[i] >= zeroRelativeThreshold) rankValue += 1;
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "In uqGslMatrixClass::rank()"
+                            << ": this->numRowsLocal() = "  << this->numRowsLocal()
+                            << ", this->numCols() = "       << this->numCols()
+                            << ", zeroRelativeThreshold = " << zeroRelativeThreshold
+                            << ", rankValue = "             << rankValue
+                            << ", m_svdSvec = "             << *m_svdSvec
+                            << ", relativeVec = "           << relativeVec
+                            << std::endl;
   }
 
   return rankValue;
