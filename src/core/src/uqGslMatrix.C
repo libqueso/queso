@@ -299,8 +299,8 @@ uqGslMatrixClass::resetLU()
     delete m_inverse;
     m_inverse = NULL;
   }
-  if (m_svdUmat) {
-    delete m_svdUmat;
+  if (m_svdColMap) {
+    delete m_svdColMap;
   }
   if (m_svdUmat) {
     delete m_svdUmat;
@@ -469,8 +469,6 @@ uqGslMatrixClass::chol()
 int
 uqGslMatrixClass::svd(uqGslMatrixClass& matU, uqGslVectorClass& vecS, uqGslMatrixClass& matVt) const
 {
-  int iRC = internalSvd();
-
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
@@ -488,6 +486,8 @@ uqGslMatrixClass::svd(uqGslMatrixClass& matU, uqGslVectorClass& vecS, uqGslMatri
                       m_env.worldRank(),
                       "uqGslMatrixClass::svd()",
                       "invalid matVt");
+
+  int iRC = internalSvd();
 
   matU  = *m_svdUmat;
   vecS  = *m_svdSvec;
@@ -507,8 +507,8 @@ uqGslMatrixClass::internalSvd() const
     m_svdSvec   = new uqGslVectorClass(m_env,*m_svdColMap);
     m_svdVTmat  = new uqGslMatrixClass(*m_svdSvec);
     
-    uqGslMatrixClass matV(*m_svdVTmat);
-  //uqGslVectorClass vecWork(*m_svdSvec);
+    uqGslMatrixClass matV   (*m_svdVTmat);
+  //uqGslVectorClass vecWork(*m_svdSvec );
     std::cout << "In uqGslMatrixClass::internalSvd()"
               << ", calling gsl_linalg_SV_decomp_jacobi()..."
               << ": numRows = " << this->numRowsLocal()
@@ -533,7 +533,8 @@ uqGslMatrixClass::internalSvd() const
 
     struct timeval timevalNow;
     gettimeofday(&timevalNow, NULL);
-    std::cout << "Returned from gsl_linalg_SV_decomp_jacobi() with iRC = " << iRC
+    std::cout << "In uqGslMatrixClass::internalSvd()"
+              << ": returned from gsl_linalg_SV_decomp_jacobi() with iRC = " << iRC
               << " after " << timevalNow.tv_sec - timevalBegin.tv_sec
               << " seconds"
               << std::endl;
@@ -1019,6 +1020,14 @@ uqGslMatrixClass::rank(double zeroThreshold) const
 {
   int iRC = 0;
   iRC = internalSvd();
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "In uqGslMatrixClass::rank()"
+                            << ": this->numRowsLocal() = " << this->numRowsLocal()
+                            << ", this->numCols() = "      << this->numCols()
+                            << ", m_svdSvec = "            << *m_svdSvec
+                            << std::endl;
+  }
 
   unsigned int rankValue = 0;
   for (unsigned int i = 0; i < m_svdSvec->sizeLocal(); ++i) {
