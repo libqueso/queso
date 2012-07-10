@@ -53,9 +53,12 @@ uqGslMatrixClass::uqGslMatrixClass( // can be a rectangular matrix
   m_mat          (gsl_matrix_calloc(map.NumGlobalElements(),numCols)),
   m_LU           (NULL),
   m_inverse      (NULL),
+  m_svdColMap    (NULL),
+  m_svdUmat      (NULL),
+  m_svdSvec      (NULL),
+  m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  m_rank         (-INFINITY),
   m_permutation  (NULL),
   m_signum       (0)
 {
@@ -74,9 +77,12 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
   m_mat          (gsl_matrix_calloc(map.NumGlobalElements(),map.NumGlobalElements())),
   m_LU           (NULL),
   m_inverse      (NULL),
+  m_svdColMap    (NULL),
+  m_svdUmat      (NULL),
+  m_svdSvec      (NULL),
+  m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  m_rank         (-INFINITY),
   m_permutation  (NULL),
   m_signum       (0)
 {
@@ -98,9 +104,12 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
   m_mat          (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
   m_LU           (NULL),
   m_inverse      (NULL),
+  m_svdColMap    (NULL),
+  m_svdUmat      (NULL),
+  m_svdSvec      (NULL),
+  m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  m_rank         (-INFINITY),
   m_permutation  (NULL),
   m_signum       (0)
 {
@@ -120,9 +129,12 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v) // square matrix
   m_mat          (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
   m_LU           (NULL),
   m_inverse      (NULL),
+  m_svdColMap    (NULL),
+  m_svdUmat      (NULL),
+  m_svdSvec      (NULL),
+  m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  m_rank         (-INFINITY),
   m_permutation  (NULL),
   m_signum       (0)
 {
@@ -143,9 +155,12 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslMatrixClass& B) // can be a rectan
   m_mat          (gsl_matrix_calloc(B.numRowsLocal(),B.numCols())),
   m_LU           (NULL),
   m_inverse      (NULL),
+  m_svdColMap    (NULL),
+  m_svdUmat      (NULL),
+  m_svdSvec      (NULL),
+  m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  m_rank         (-INFINITY),
   m_permutation  (NULL),
   m_signum       (0)
 {
@@ -284,9 +299,20 @@ uqGslMatrixClass::resetLU()
     delete m_inverse;
     m_inverse = NULL;
   }
+  if (m_svdUmat) {
+    delete m_svdUmat;
+  }
+  if (m_svdUmat) {
+    delete m_svdUmat;
+  }
+  if (m_svdSvec) {
+    delete m_svdSvec;
+  }
+  if (m_svdVTmat) {
+    delete m_svdVTmat;
+  }
   m_determinant   = -INFINITY;
   m_lnDeterminant = -INFINITY;
-  m_rank          = -INFINITY;
   if (m_permutation) {
     gsl_permutation_free(m_permutation);
     m_permutation = NULL;
@@ -441,45 +467,83 @@ uqGslMatrixClass::chol()
 }
 
 int
-uqGslMatrixClass::svd(uqGslMatrixClass& matVt, uqGslVectorClass& vecS)
+uqGslMatrixClass::svd(uqGslMatrixClass& matU, uqGslVectorClass& vecS, uqGslMatrixClass& matVt) const
 {
-  int iRC;
-  uqGslMatrixClass matV(matVt);
-  //uqGslVectorClass vecWork(vecS);
-  std::cout << "In uqGslMatrixClass::svd()"
-            << ", calling gsl_linalg_SV_decomp_jacobi()..."
-            << ": numRows = " << this->numRowsLocal()
-            << ", numCols = " << this->numCols()
-            << std::endl;
-  struct timeval timevalBegin;
-  gettimeofday(&timevalBegin, NULL);
-  gsl_error_handler_t* oldHandler;
-  oldHandler = gsl_set_error_handler_off();
-#if 1
-  iRC = gsl_linalg_SV_decomp_jacobi(m_mat, matV.data(), vecS.data());
-#else
-  iRC = gsl_linalg_SV_decomp(m_mat, matV.data(), vecS.data(), vecWork.data());
-#endif
-  if (iRC != 0) {
-    std::cout << "In uqGslMatrixClass::svd()"
-              << ": iRC = " << iRC
-              << ", gsl error message = " << gsl_strerror(iRC)
-              << std::endl;
-  }
-  gsl_set_error_handler(oldHandler);
+  int iRC = internalSvd();
 
-  struct timeval timevalNow;
-  gettimeofday(&timevalNow, NULL);
-  std::cout << "Returned from gsl_linalg_SV_decomp_jacobi() with iRC = " << iRC
-            << " after " << timevalNow.tv_sec - timevalBegin.tv_sec
-            << " seconds"
-            << std::endl;
-  UQ_RC_MACRO(iRC, // Yes, *not* a fatal check on RC
-              m_env.worldRank(),
-              "uqGslMatrixClass::svd()",
-              "matrix svd failed",
-              UQ_MATRIX_IS_NOT_POS_DEFINITE_RC);
-  matVt = matV.transpose();
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+
+  UQ_FATAL_TEST_MACRO((matU.numRowsLocal() != nRows) || (matU.numCols() != nCols),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::svd()",
+                      "invalid matU");
+
+  UQ_FATAL_TEST_MACRO((vecS.sizeLocal() != nCols), //std::min(nRows,nRows)),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::svd()",
+                      "invalid vecS");
+
+  UQ_FATAL_TEST_MACRO((matVt.numRowsLocal() != nCols) || (matVt.numCols() != nCols),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::svd()",
+                      "invalid matVt");
+
+  matU  = *m_svdUmat;
+  vecS  = *m_svdSvec;
+  matVt = *m_svdVTmat;
+
+  return iRC;
+}
+
+int
+uqGslMatrixClass::internalSvd() const
+{
+  int iRC = 0;
+
+  if (m_svdColMap == NULL) {
+    m_svdColMap = new uqMapClass(this->numCols(),0,this->map().Comm()); // see 'uqVectorSpaceClass<.,.>::newMap()' in src/basic/src/uqGslVectorSpace.C
+    m_svdUmat   = new uqGslMatrixClass(*this); // Yes, 'this'
+    m_svdSvec   = new uqGslVectorClass(m_env,*m_svdColMap);
+    m_svdVTmat  = new uqGslMatrixClass(*m_svdSvec);
+    
+    uqGslMatrixClass matV(*m_svdVTmat);
+  //uqGslVectorClass vecWork(*m_svdSvec);
+    std::cout << "In uqGslMatrixClass::internalSvd()"
+              << ", calling gsl_linalg_SV_decomp_jacobi()..."
+              << ": numRows = " << this->numRowsLocal()
+              << ", numCols = " << this->numCols()
+              << std::endl;
+    struct timeval timevalBegin;
+    gettimeofday(&timevalBegin, NULL);
+    gsl_error_handler_t* oldHandler;
+    oldHandler = gsl_set_error_handler_off();
+#if 1
+    iRC = gsl_linalg_SV_decomp_jacobi(m_svdUmat->data(), matV.data(), m_svdSvec->data());
+#else
+    iRC = gsl_linalg_SV_decomp(m_svdUmat->data(), matV.data(), m_svdSvec->data(), vecWork.data());
+#endif
+    if (iRC != 0) {
+      std::cout << "In uqGslMatrixClass::internalSvd()"
+                << ": iRC = " << iRC
+                << ", gsl error message = " << gsl_strerror(iRC)
+                << std::endl;
+    }
+    gsl_set_error_handler(oldHandler);
+
+    struct timeval timevalNow;
+    gettimeofday(&timevalNow, NULL);
+    std::cout << "Returned from gsl_linalg_SV_decomp_jacobi() with iRC = " << iRC
+              << " after " << timevalNow.tv_sec - timevalBegin.tv_sec
+              << " seconds"
+              << std::endl;
+    UQ_RC_MACRO(iRC, // Yes, *not* a fatal check on RC
+                m_env.worldRank(),
+                "uqGslMatrixClass::internalSvd()",
+                "matrix svd failed",
+                UQ_MATRIX_SVD_FAILED_RC);
+    *m_svdVTmat = matV.transpose();
+  }
 
   return iRC;
 }
@@ -951,21 +1015,17 @@ uqGslMatrixClass::lnDeterminant() const
 }
 
 unsigned int
-uqGslMatrixClass::rank() const
+uqGslMatrixClass::rank(double zeroThreshold) const
 {
-  if (m_rank == -INFINITY) {
-    // rr0
-#if 0
-    if (m_LU == NULL) {
-      uqGslVectorClass tmpB(m_env,m_map);
-      uqGslVectorClass tmpX(m_env,m_map);
-      this->invertMultiply(tmpB,tmpX);
-    }
-    m_rank = gsl_linalg_LU_lndet(m_LU);
-#endif
+  int iRC = 0;
+  iRC = internalSvd();
+
+  unsigned int rankValue = 0;
+  for (unsigned int i = 0; i < m_svdSvec->sizeLocal(); ++i) {
+    if ((*m_svdSvec)[i] >= zeroThreshold) rankValue += 1;
   }
 
-  return m_rank;
+  return rankValue;
 }
 
 uqGslVectorClass

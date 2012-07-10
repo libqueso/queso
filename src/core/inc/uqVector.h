@@ -68,7 +68,11 @@ protected:
   virtual void                    copy                (const uqVectorClass& src);
 
   const uqBaseEnvironmentClass& m_env;
+#ifdef QUESO_CLASSES_INSTANTIATE_NEW_MAPS
+  const uqMapClass              m_map;
+#else
   const uqMapClass&             m_map;
+#endif
   mutable bool                  m_printHorizontally;
   mutable bool                  m_printScientific;
 };

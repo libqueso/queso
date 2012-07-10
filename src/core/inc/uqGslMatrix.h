@@ -67,7 +67,7 @@ public:
   void              cwSet                     (double value);
   void              cwSet                     (unsigned int rowId, unsigned int colId, const uqGslMatrixClass& mat);
   int               chol                      ();
-  int               svd                       (uqGslMatrixClass& matVt, uqGslVectorClass& vecS);
+  int               svd                       (uqGslMatrixClass& matU, uqGslVectorClass& vecS, uqGslMatrixClass& matVt) const;
   void              zeroLower                 (bool includeDiagonal = false);
   void              zeroUpper                 (bool includeDiagonal = false);
   void              filterSmallValues         (double thresholdValue);
@@ -85,7 +85,7 @@ public:
   void              fillWithTranspose         (const uqGslMatrixClass& mat);
   double            determinant               () const;
   double            lnDeterminant             () const;
-  unsigned int      rank                      () const;
+  unsigned int      rank                      (double zeroThreshold) const;
   uqGslVectorClass  multiply                  (const uqGslVectorClass& x) const;
   uqGslVectorClass  invertMultiply            (const uqGslVectorClass& b) const;
   void              invertMultiply            (const uqGslVectorClass& b, uqGslVectorClass& x) const;
@@ -124,13 +124,17 @@ private:
   void              copy                      (const uqGslMatrixClass& src);
   void              resetLU                   ();
   void              multiply                  (const uqGslVectorClass& x, uqGslVectorClass& y) const;
+  int               internalSvd               () const;
 
           gsl_matrix*       m_mat;
   mutable gsl_matrix*       m_LU;
   mutable uqGslMatrixClass* m_inverse;
+  mutable uqMapClass*       m_svdColMap;
+  mutable uqGslMatrixClass* m_svdUmat;
+  mutable uqGslVectorClass* m_svdSvec;
+  mutable uqGslMatrixClass* m_svdVTmat;
   mutable double            m_determinant;
   mutable double            m_lnDeterminant;
-  mutable double            m_rank;
   mutable gsl_permutation*  m_permutation;
   mutable int               m_signum;
 };

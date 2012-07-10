@@ -462,10 +462,11 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
       *m_env.subDisplayFile() << lawVarVector; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
-    M matU (lawVarVector);
-    M matVt(m_imageSet.vectorSpace().zeroVector());
-    V vecS (m_imageSet.vectorSpace().zeroVector());
-    iRC = matU.svd(matVt,vecS);
+    M matLaw(lawVarVector);
+    M matU  (lawVarVector);
+    M matVt (m_imageSet.vectorSpace().zeroVector());
+    V vecS  (m_imageSet.vectorSpace().zeroVector());
+    iRC = matLaw.svd(matU,vecS,matVt);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.worldRank(),
                         "uqGaussianVectorRVClass<V,M>::constructor() [1]",
@@ -531,7 +532,7 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
     M matU (lawCovMatrix);
     M matVt(m_imageSet.vectorSpace().zeroVector());
     V vecS (m_imageSet.vectorSpace().zeroVector());
-    iRC = matU.svd(matVt,vecS);
+    iRC = lawCovMatrix.svd(matU,vecS,matVt);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.worldRank(),
                         "uqGaussianVectorRVClass<V,M>::constructor() [2]",
@@ -603,7 +604,7 @@ uqGaussianVectorRVClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
     M matU (newLawCovMatrix);
     M matVt(m_imageSet.vectorSpace().zeroVector());
     V vecS (m_imageSet.vectorSpace().zeroVector());
-    iRC = matU.svd(matVt,vecS);
+    iRC = newLawCovMatrix.svd(matU,vecS,matVt);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.worldRank(),
                         "uqGaussianVectorRVClass<V,M>::updateLawCovMatrix()",
@@ -1141,10 +1142,11 @@ uqLogNormalVectorRVClass<V,M>::uqLogNormalVectorRVClass(
       *m_env.subDisplayFile() << lawVarVector; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
-    M matU (lawVarVector);
-    M matVt(m_imageSet.vectorSpace().zeroVector());
-    V vecS (m_imageSet.vectorSpace().zeroVector());
-    iRC = matU.svd(matVt,vecS);
+    M matLaw(lawVarVector);
+    M matU  (lawVarVector);
+    M matVt (m_imageSet.vectorSpace().zeroVector());
+    V vecS  (m_imageSet.vectorSpace().zeroVector());
+    iRC = matLaw.svd(matU,vecS,matVt);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.worldRank(),
                         "uqLogNormalVectorRVClass<V,M>::constructor() [1]",
