@@ -68,6 +68,8 @@ public:
   void              cwSet                     (unsigned int rowId, unsigned int colId, const uqGslMatrixClass& mat);
   int               chol                      ();
   int               svd                       (uqGslMatrixClass& matU, uqGslVectorClass& vecS, uqGslMatrixClass& matVt) const;
+  int               svdSolve                  (const uqGslVectorClass& rhsVec, uqGslVectorClass& solVec) const;
+  int               svdSolve                  (const uqGslMatrixClass& rhsMat, uqGslMatrixClass& solMat) const;
   void              zeroLower                 (bool includeDiagonal = false);
   void              zeroUpper                 (bool includeDiagonal = false);
   void              filterSmallValues         (double thresholdValue);
@@ -132,6 +134,7 @@ private:
   mutable uqMapClass*       m_svdColMap;
   mutable uqGslMatrixClass* m_svdUmat;
   mutable uqGslVectorClass* m_svdSvec;
+  mutable uqGslMatrixClass* m_svdVmat;
   mutable uqGslMatrixClass* m_svdVTmat;
   mutable double            m_determinant;
   mutable double            m_lnDeterminant;

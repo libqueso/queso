@@ -56,6 +56,7 @@ uqGslMatrixClass::uqGslMatrixClass( // can be a rectangular matrix
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
   m_svdSvec      (NULL),
+  m_svdVmat      (NULL),
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
@@ -80,6 +81,7 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
   m_svdSvec      (NULL),
+  m_svdVmat      (NULL),
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
@@ -107,6 +109,7 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
   m_svdSvec      (NULL),
+  m_svdVmat      (NULL),
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
@@ -132,6 +135,7 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v) // square matrix
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
   m_svdSvec      (NULL),
+  m_svdVmat      (NULL),
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
@@ -158,6 +162,7 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslMatrixClass& B) // can be a rectan
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
   m_svdSvec      (NULL),
+  m_svdVmat      (NULL),
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
@@ -307,6 +312,9 @@ uqGslMatrixClass::resetLU()
   }
   if (m_svdSvec) {
     delete m_svdSvec;
+  }
+  if (m_svdVmat) {
+    delete m_svdVmat;
   }
   if (m_svdVTmat) {
     delete m_svdVTmat;
@@ -497,6 +505,63 @@ uqGslMatrixClass::svd(uqGslMatrixClass& matU, uqGslVectorClass& vecS, uqGslMatri
 }
 
 int
+uqGslMatrixClass::svdSolve(const uqGslVectorClass& rhsVec, uqGslVectorClass& solVec) const
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+
+  UQ_FATAL_TEST_MACRO((rhsVec.sizeLocal() != nRows),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::svdSolve()",
+                      "invalid rhsVec");
+
+  UQ_FATAL_TEST_MACRO((solVec.sizeLocal() != nCols),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::svdSolve()",
+                      "invalid solVec");
+
+  int iRC = internalSvd();
+
+  iRC = gsl_linalg_SV_solve(m_svdUmat->data(), m_svdVmat->data(), m_svdSvec->data(), rhsVec.data(), rhsVec.data());
+
+  return iRC;
+}
+
+int
+uqGslMatrixClass::svdSolve(const uqGslMatrixClass& rhsMat, uqGslMatrixClass& solMat) const
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+
+  UQ_FATAL_TEST_MACRO((rhsMat.numRowsLocal() != nRows),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::svdSolve()",
+                      "invalid rhsMat");
+
+  UQ_FATAL_TEST_MACRO((solMat.numRowsLocal() != nCols),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::svdSolve()",
+                      "invalid solMat");
+
+  UQ_FATAL_TEST_MACRO((rhsMat.numCols() != solMat.numCols()),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::svdSolve()",
+                      "rhsMat and solMat are not compatible");
+
+  int iRC = internalSvd();
+
+  uqGslVectorClass rhsVec(m_env,rhsMat.map());
+  uqGslVectorClass solVec(m_env,solMat.map());
+  for (unsigned int j = 0; j < rhsMat.numCols(); ++j) {
+    rhsVec = rhsMat.getColumn(j);
+    this->svdSolve(rhsVec, solVec);
+    solMat.setColumn(j,solVec);
+  }
+
+  return iRC;
+}
+
+int
 uqGslMatrixClass::internalSvd() const
 {
   int iRC = 0;
@@ -505,9 +570,9 @@ uqGslMatrixClass::internalSvd() const
     m_svdColMap = new uqMapClass(this->numCols(),0,this->map().Comm()); // see 'uqVectorSpaceClass<.,.>::newMap()' in src/basic/src/uqGslVectorSpace.C
     m_svdUmat   = new uqGslMatrixClass(*this); // Yes, 'this'
     m_svdSvec   = new uqGslVectorClass(m_env,*m_svdColMap);
+    m_svdVmat   = new uqGslMatrixClass(*m_svdSvec);
     m_svdVTmat  = new uqGslMatrixClass(*m_svdSvec);
     
-    uqGslMatrixClass matV   (*m_svdVTmat);
   //uqGslVectorClass vecWork(*m_svdSvec );
     std::cout << "In uqGslMatrixClass::internalSvd()"
               << ", calling gsl_linalg_SV_decomp_jacobi()..."
@@ -519,9 +584,9 @@ uqGslMatrixClass::internalSvd() const
     gsl_error_handler_t* oldHandler;
     oldHandler = gsl_set_error_handler_off();
 #if 1
-    iRC = gsl_linalg_SV_decomp_jacobi(m_svdUmat->data(), matV.data(), m_svdSvec->data());
+    iRC = gsl_linalg_SV_decomp_jacobi(m_svdUmat->data(), m_svdVmat->data(), m_svdSvec->data());
 #else
-    iRC = gsl_linalg_SV_decomp(m_svdUmat->data(), matV.data(), m_svdSvec->data(), vecWork.data());
+    iRC = gsl_linalg_SV_decomp(m_svdUmat->data(), m_svdVmat->data(), m_svdSvec->data(), vecWork.data());
 #endif
     if (iRC != 0) {
       std::cout << "In uqGslMatrixClass::internalSvd()"
@@ -543,7 +608,7 @@ uqGslMatrixClass::internalSvd() const
                 "uqGslMatrixClass::internalSvd()",
                 "matrix svd failed",
                 UQ_MATRIX_SVD_FAILED_RC);
-    *m_svdVTmat = matV.transpose();
+    *m_svdVTmat = m_svdVmat->transpose();
   }
 
   return iRC;
