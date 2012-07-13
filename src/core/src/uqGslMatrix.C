@@ -522,7 +522,21 @@ uqGslMatrixClass::svdSolve(const uqGslVectorClass& rhsVec, uqGslVectorClass& sol
 
   int iRC = internalSvd();
 
-  if (iRC == 0) iRC = gsl_linalg_SV_solve(m_svdUmat->data(), m_svdVmat->data(), m_svdSvec->data(), rhsVec.data(), rhsVec.data());
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "In uqGslMatrixClass::svdSolve():"
+                            << "\n this->numRowsLocal()      = " << this->numRowsLocal()
+                            << ", this->numCols()      = "       << this->numCols()
+                            << "\n m_svdUmat->numRowsLocal() = " << m_svdUmat->numRowsLocal()
+                            << ", m_svdUmat->numCols() = "       << m_svdUmat->numCols()
+                            << "\n m_svdVmat->numRowsLocal() = " << m_svdVmat->numRowsLocal()
+                            << ", m_svdVmat->numCols() = "       << m_svdVmat->numCols()
+                            << "\n m_svdSvec->sizeLocal()    = " << m_svdSvec->sizeLocal()
+                            << "\n rhsVec.sizeLocal()        = " << rhsVec.sizeLocal()
+                            << "\n solVec.sizeLocal()        = " << solVec.sizeLocal()
+                            << std::endl;
+  }
+
+  if (iRC == 0) iRC = gsl_linalg_SV_solve(m_svdUmat->data(), m_svdVmat->data(), m_svdSvec->data(), rhsVec.data(), solVec.data());
 
   return iRC;
 }
@@ -576,6 +590,13 @@ uqGslMatrixClass::internalSvd() const
   int iRC = 0;
 
   if (m_svdColMap == NULL) {
+    unsigned int nRows = this->numRowsLocal();
+    unsigned int nCols = this->numCols();
+    UQ_FATAL_TEST_MACRO(nRows < nCols,
+                        m_env.worldRank(),
+                        "uqGslMatrixClass::internalSvd()",
+                        "GSL only supports cases where nRows >= nCols");
+
     m_svdColMap = new uqMapClass(this->numCols(),0,this->map().Comm()); // see 'uqVectorSpaceClass<.,.>::newMap()' in src/basic/src/uqGslVectorSpace.C
     m_svdUmat   = new uqGslMatrixClass(*this); // Yes, 'this'
     m_svdSvec   = new uqGslVectorClass(m_env,*m_svdColMap);
@@ -585,8 +606,8 @@ uqGslMatrixClass::internalSvd() const
   //uqGslVectorClass vecWork(*m_svdSvec );
     std::cout << "In uqGslMatrixClass::internalSvd()"
               << ", calling gsl_linalg_SV_decomp_jacobi()..."
-              << ": numRows = " << this->numRowsLocal()
-              << ", numCols = " << this->numCols()
+              << ": nRows = " << nRows
+              << ", nCols = " << nCols
               << std::endl;
     struct timeval timevalBegin;
     gettimeofday(&timevalBegin, NULL);
