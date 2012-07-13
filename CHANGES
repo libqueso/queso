@@ -6,6 +6,7 @@ Simulation, and Optimization.
 Version 0.45.2 (xx July 2012)
 Under construction
 
+  * possibility of using svd to solve a system of linear equations
   * calculation of matrix rank
   * calculation of median
   * option for filtered printout of matrices, for debugging purposes (if value is too small in magnitude, it is printed as zero)

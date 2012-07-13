@@ -522,7 +522,7 @@ uqGslMatrixClass::svdSolve(const uqGslVectorClass& rhsVec, uqGslVectorClass& sol
 
   int iRC = internalSvd();
 
-  iRC = gsl_linalg_SV_solve(m_svdUmat->data(), m_svdVmat->data(), m_svdSvec->data(), rhsVec.data(), rhsVec.data());
+  if (iRC == 0) iRC = gsl_linalg_SV_solve(m_svdUmat->data(), m_svdVmat->data(), m_svdSvec->data(), rhsVec.data(), rhsVec.data());
 
   return iRC;
 }
@@ -548,17 +548,26 @@ uqGslMatrixClass::svdSolve(const uqGslMatrixClass& rhsMat, uqGslMatrixClass& sol
                       "uqGslMatrixClass::svdSolve()",
                       "rhsMat and solMat are not compatible");
 
-  int iRC = internalSvd();
-
   uqGslVectorClass rhsVec(m_env,rhsMat.map());
   uqGslVectorClass solVec(m_env,solMat.map());
+  int iRC = 0;
   for (unsigned int j = 0; j < rhsMat.numCols(); ++j) {
     rhsVec = rhsMat.getColumn(j);
-    this->svdSolve(rhsVec, solVec);
+    iRC = this->svdSolve(rhsVec, solVec);
+    if (iRC) break;
     solMat.setColumn(j,solVec);
   }
 
   return iRC;
+}
+
+const uqGslMatrixClass&
+uqGslMatrixClass::svdMatU() const
+{
+  int iRC = 0;
+  iRC = internalSvd();
+
+  return *m_svdUmat;
 }
 
 int
