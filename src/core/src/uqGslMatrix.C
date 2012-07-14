@@ -47,10 +47,10 @@ uqGslMatrixClass::uqGslMatrixClass()
 uqGslMatrixClass::uqGslMatrixClass( // can be a rectangular matrix
   const uqBaseEnvironmentClass& env,
   const uqMapClass&             map,
-  unsigned int                  numCols)
+  unsigned int                  nCols)
   :
   uqMatrixClass  (env,map),
-  m_mat          (gsl_matrix_calloc(map.NumGlobalElements(),numCols)),
+  m_mat          (gsl_matrix_calloc(map.NumGlobalElements(),nCols)),
   m_LU           (NULL),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
@@ -353,10 +353,11 @@ uqGslMatrixClass::normFrob() const
 {
   double value = 0.;
 
-  unsigned int dim = this->numRowsLocal();
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
   double aux = 0.;
-  for (unsigned int i = 0; i < dim; i++) {
-    for (unsigned int j = 0; j < dim; j++) {
+  for (unsigned int i = 0; i < nRows; i++) {
+    for (unsigned int j = 0; j < nCols; j++) {
       aux = (*this)(i,j);
       value += aux*aux;
     }
@@ -370,10 +371,11 @@ uqGslMatrixClass::normMax() const
 {
   double value = 0.;
 
-  unsigned int dim = this->numRowsLocal();
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
   double aux = 0.;
-  for (unsigned int i = 0; i < dim; i++) {
-    for (unsigned int j = 0; j < dim; j++) {
+  for (unsigned int i = 0; i < nRows; i++) {
+    for (unsigned int j = 0; j < nCols; j++) {
       aux = fabs((*this)(i,j));
       if (aux > value) value = aux;
     }
@@ -387,10 +389,11 @@ uqGslMatrixClass::max() const
 {
   double value = -INFINITY;
 
-  unsigned int dim = this->numRowsLocal();
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
   double aux = 0.;
-  for (unsigned int i = 0; i < dim; i++) {
-    for (unsigned int j = 0; j < dim; j++) {
+  for (unsigned int i = 0; i < nRows; i++) {
+    for (unsigned int j = 0; j < nCols; j++) {
       aux = (*this)(i,j);
       if (aux > value) value = aux;
     }
@@ -647,19 +650,25 @@ uqGslMatrixClass::internalSvd() const
 void
 uqGslMatrixClass::zeroLower(bool includeDiagonal)
 {
-  this->resetLU();
-  if (this->numRowsLocal() != this->numCols()) return;
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
 
-  unsigned int dim = this->numRowsLocal();
+  UQ_FATAL_TEST_MACRO((nRows != nCols),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::zeroLower()",
+                      "routine works only for square matrices");
+
+  this->resetLU();
+
   if (includeDiagonal) {
-    for (unsigned int i = 0; i < dim; i++) {
+    for (unsigned int i = 0; i < nRows; i++) {
       for (unsigned int j = 0; j <= i; j++) {
         (*this)(i,j) = 0.;
       }
     }
   }
   else {
-    for (unsigned int i = 0; i < dim; i++) {
+    for (unsigned int i = 0; i < nRows; i++) {
       for (unsigned int j = 0; j < i; j++) {
         (*this)(i,j) = 0.;
       }
@@ -672,20 +681,26 @@ uqGslMatrixClass::zeroLower(bool includeDiagonal)
 void
 uqGslMatrixClass::zeroUpper(bool includeDiagonal)
 {
-  this->resetLU();
-  if (this->numRowsLocal() != this->numCols()) return;
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
 
-  unsigned int dim = this->numRowsLocal();
+  UQ_FATAL_TEST_MACRO((nRows != nCols),
+                      m_env.worldRank(),
+                      "uqGslMatrixClass::zeroUpper()",
+                      "routine works only for square matrices");
+
+  this->resetLU();
+
   if (includeDiagonal) {
-    for (unsigned int i = 0; i < dim; i++) {
-      for (unsigned int j = i; j < dim; j++) {
+    for (unsigned int i = 0; i < nRows; i++) {
+      for (unsigned int j = i; j < nCols; j++) {
         (*this)(i,j) = 0.;
       }
     }
   }
   else {
-    for (unsigned int i = 0; i < dim; i++) {
-      for (unsigned int j = (i+1); j < dim; j++) {
+    for (unsigned int i = 0; i < nRows; i++) {
+      for (unsigned int j = (i+1); j < nCols; j++) {
         (*this)(i,j) = 0.;
       }
     }
@@ -697,10 +712,10 @@ uqGslMatrixClass::zeroUpper(bool includeDiagonal)
 void
 uqGslMatrixClass::filterSmallValues(double thresholdValue)
 {
-  unsigned int numRows = this->numRowsLocal();
-  unsigned int numCols = this->numCols();
-  for (unsigned int i = 0; i < numRows; ++i) {
-    for (unsigned int j = 0; j < numCols; ++j) {
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+  for (unsigned int i = 0; i < nRows; ++i) {
+    for (unsigned int j = 0; j < nCols; ++j) {
       double aux = (*this)(i,j);
       // If 'thresholdValue' is negative, no values will be filtered
       if ((aux             < 0. ) &&
@@ -720,10 +735,10 @@ uqGslMatrixClass::filterSmallValues(double thresholdValue)
 void
 uqGslMatrixClass::filterLargeValues(double thresholdValue)
 {
-  unsigned int numRows = this->numRowsLocal();
-  unsigned int numCols = this->numCols();
-  for (unsigned int i = 0; i < numRows; ++i) {
-    for (unsigned int j = 0; j < numCols; ++j) {
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+  for (unsigned int i = 0; i < nRows; ++i) {
+    for (unsigned int j = 0; j < nCols; ++j) {
       double aux = (*this)(i,j);
       // If 'thresholdValue' is negative, no values will be filtered
       if ((aux             < 0. ) &&
@@ -825,15 +840,15 @@ uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<const uqGslMatrixCl
   unsigned int cumulativeRowId = 0;
   unsigned int cumulativeColId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    unsigned int numRows = matrices[i]->numRowsLocal();
-    unsigned int numCols = matrices[i]->numCols();
-    for (unsigned int rowId = 0; rowId < numRows; ++rowId) {
-      for (unsigned int colId = 0; colId < numCols; ++colId) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
         (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
       }
     }
-    cumulativeRowId += numRows;
-    cumulativeColId += numCols;
+    cumulativeRowId += nRows;
+    cumulativeColId += nCols;
   }
 
   return;
@@ -860,15 +875,15 @@ uqGslMatrixClass::fillWithBlocksDiagonally(const std::vector<uqGslMatrixClass* >
   unsigned int cumulativeRowId = 0;
   unsigned int cumulativeColId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    unsigned int numRows = matrices[i]->numRowsLocal();
-    unsigned int numCols = matrices[i]->numCols();
-    for (unsigned int rowId = 0; rowId < numRows; ++rowId) {
-      for (unsigned int colId = 0; colId < numCols; ++colId) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
         (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
       }
     } 
-    cumulativeRowId += numRows;
-    cumulativeColId += numCols;
+    cumulativeRowId += nRows;
+    cumulativeColId += nCols;
   }
 
   return;
@@ -892,14 +907,14 @@ uqGslMatrixClass::fillWithBlocksHorizontally(const std::vector<const uqGslMatrix
 
   unsigned int cumulativeColId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    unsigned int numRows = matrices[i]->numRowsLocal();
-    unsigned int numCols = matrices[i]->numCols();
-    for (unsigned int rowId = 0; rowId < numRows; ++rowId) {
-      for (unsigned int colId = 0; colId < numCols; ++colId) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
         (*this)(rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
       }
     }
-    cumulativeColId += numCols;
+    cumulativeColId += nCols;
   }
 
   return;
@@ -923,14 +938,14 @@ uqGslMatrixClass::fillWithBlocksHorizontally(const std::vector<uqGslMatrixClass*
 
   unsigned int cumulativeColId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    unsigned int numRows = matrices[i]->numRowsLocal();
-    unsigned int numCols = matrices[i]->numCols();
-    for (unsigned int rowId = 0; rowId < numRows; ++rowId) {
-      for (unsigned int colId = 0; colId < numCols; ++colId) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
         (*this)(rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
       }
     }
-    cumulativeColId += numCols;
+    cumulativeColId += nCols;
   }
 
   return;
@@ -954,14 +969,14 @@ uqGslMatrixClass::fillWithBlocksVertically(const std::vector<const uqGslMatrixCl
 
   unsigned int cumulativeRowId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    unsigned int numRows = matrices[i]->numRowsLocal();
-    unsigned int numCols = matrices[i]->numCols();
-    for (unsigned int rowId = 0; rowId < numRows; ++rowId) {
-      for (unsigned int colId = 0; colId < numCols; ++colId) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
         (*this)(cumulativeRowId + rowId, colId) = (*(matrices[i]))(rowId,colId);
       }
     }
-    cumulativeRowId += numRows;
+    cumulativeRowId += nRows;
   }
 
   return;
@@ -985,14 +1000,14 @@ uqGslMatrixClass::fillWithBlocksVertically(const std::vector<uqGslMatrixClass* >
 
   unsigned int cumulativeRowId = 0;
   for (unsigned int i = 0; i < matrices.size(); ++i) {
-    unsigned int numRows = matrices[i]->numRowsLocal();
-    unsigned int numCols = matrices[i]->numCols();
-    for (unsigned int rowId = 0; rowId < numRows; ++rowId) {
-      for (unsigned int colId = 0; colId < numCols; ++colId) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
         (*this)(cumulativeRowId + rowId, colId) = (*(matrices[i]))(rowId,colId);
       }
     }
-    cumulativeRowId += numRows;
+    cumulativeRowId += nRows;
   }
 
   return;
@@ -1220,7 +1235,7 @@ uqGslMatrixClass::invertMultiply(
                         "uqGslMatrixClass::invertMultiply()",
                         "m_permutation should be NULL");
 
-    m_LU = gsl_matrix_calloc(numRowsLocal(),numCols());
+    m_LU = gsl_matrix_calloc(this->numRowsLocal(),this->numCols());
     UQ_FATAL_TEST_MACRO((m_LU == NULL),
                         m_env.worldRank(),
                         "uqGslMatrixClass::invertMultiply()",
@@ -1357,7 +1372,7 @@ uqGslMatrixClass::invertMultiplyForceLU(
                         m_env.worldRank(),
                         "uqGslMatrixClass::invertMultiplyForceLU()",
                         "m_permutation should be NULL");
-    m_LU = gsl_matrix_calloc(numRowsLocal(),numCols());
+    m_LU = gsl_matrix_calloc(this->numRowsLocal(),this->numCols());
   }
   UQ_FATAL_TEST_MACRO((m_LU == NULL),
 		      m_env.worldRank(),
@@ -2109,13 +2124,13 @@ uqGslMatrixClass operator-(const uqGslMatrixClass& m1, const uqGslMatrixClass& m
 
 uqGslMatrixClass matrixProduct(const uqGslVectorClass& v1, const uqGslVectorClass& v2)
 {
-  unsigned int numRowsLocal = v1.sizeLocal();
-  unsigned int numCols = v2.sizeLocal();
-  uqGslMatrixClass answer(v1.env(),v1.map(),numCols);
+  unsigned int nRows = v1.sizeLocal();
+  unsigned int nCols = v2.sizeLocal();
+  uqGslMatrixClass answer(v1.env(),v1.map(),nCols);
 
-  for (unsigned int i = 0; i < numRowsLocal; ++i) {
+  for (unsigned int i = 0; i < nRows; ++i) {
     double value1 = v1[i];
-    for (unsigned int j = 0; j < numCols; ++j) {
+    for (unsigned int j = 0; j < nCols; ++j) {
       answer(i,j) = value1*v2[j];
     }
   }
