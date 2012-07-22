@@ -71,6 +71,7 @@ public:
         int               svdSolve                  (const uqGslVectorClass& rhsVec, uqGslVectorClass& solVec) const;
         int               svdSolve                  (const uqGslMatrixClass& rhsMat, uqGslMatrixClass& solMat) const;
   const uqGslMatrixClass& svdMatU                   () const;
+  const uqGslMatrixClass& svdMatV                   () const;
         void              zeroLower                 (bool includeDiagonal = false);
         void              zeroUpper                 (bool includeDiagonal = false);
         void              filterSmallValues         (double thresholdValue);

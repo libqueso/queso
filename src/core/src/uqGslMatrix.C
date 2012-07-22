@@ -587,6 +587,15 @@ uqGslMatrixClass::svdMatU() const
   return *m_svdUmat;
 }
 
+const uqGslMatrixClass&
+uqGslMatrixClass::svdMatV() const
+{
+  int iRC = 0;
+  iRC = internalSvd();
+
+  return *m_svdVmat;
+}
+
 int
 uqGslMatrixClass::internalSvd() const
 {
