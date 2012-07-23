@@ -89,7 +89,7 @@ public:
         void              fillWithTranspose         (const uqGslMatrixClass& mat);
         double            determinant               () const;
         double            lnDeterminant             () const;
-        unsigned int      rank                      (double zeroThreshold) const;
+        unsigned int      rank                      (double absoluteZeroThreshold, double relativeZeroThreshold) const;
         uqGslVectorClass  multiply                  (const uqGslVectorClass& x) const;
         uqGslVectorClass  invertMultiply            (const uqGslVectorClass& b) const;
         void              invertMultiply            (const uqGslVectorClass& b, uqGslVectorClass& x) const;

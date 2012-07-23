@@ -1135,7 +1135,7 @@ uqGslMatrixClass::lnDeterminant() const
 }
 
 unsigned int
-uqGslMatrixClass::rank(double zeroRelativeThreshold) const
+uqGslMatrixClass::rank(double absoluteZeroThreshold, double relativeZeroThreshold) const
 {
   int iRC = 0;
   iRC = internalSvd();
@@ -1147,14 +1147,18 @@ uqGslMatrixClass::rank(double zeroRelativeThreshold) const
 
   unsigned int rankValue = 0;
   for (unsigned int i = 0; i < relativeVec.sizeLocal(); ++i) {
-    if (relativeVec[i] >= zeroRelativeThreshold) rankValue += 1;
+    if (( (*m_svdSvec)[i] >= absoluteZeroThreshold ) &&
+        ( relativeVec [i] >= relativeZeroThreshold )) {
+       rankValue += 1;
+    }
   }
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
     *m_env.subDisplayFile() << "In uqGslMatrixClass::rank()"
                             << ": this->numRowsLocal() = "  << this->numRowsLocal()
                             << ", this->numCols() = "       << this->numCols()
-                            << ", zeroRelativeThreshold = " << zeroRelativeThreshold
+                            << ", absoluteZeroThreshold = " << absoluteZeroThreshold
+                            << ", relativeZeroThreshold = " << relativeZeroThreshold
                             << ", rankValue = "             << rankValue
                             << ", m_svdSvec = "             << *m_svdSvec
                             << ", relativeVec = "           << relativeVec
