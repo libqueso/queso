@@ -3,16 +3,17 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
-Version 0.45.2 (xx July 2012)
-Under construction
+Version 0.45.2 (24 July 2012)
+https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.45.2
 
-  * possibility of using svd to solve a system of linear equations
-  * calculation of matrix rank
-  * calculation of median
-  * option for filtered printout of matrices, for debugging purposes (if value is too small in magnitude, it is printed as zero)
-  * calculation of determinants
-  * possibility of concatenating matrices vertically
-  * calculation of conditional Gaussian vector RVs
+  * added option to use svd for linear system solve
+  * added calculation of matrix rank
+  * added calculation of median
+  * added debug option for filtered matrix output
+    (if value is too small in magnitude, it is printed as zero)
+  * include calculation of determinants
+  * allow possibility of concatenating matrices vertically
+  * added calculation of conditional Gaussian vector RVs
 
 Version 0.45.1 (22 May 2012)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.45.1
