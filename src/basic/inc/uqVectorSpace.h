@@ -33,6 +33,7 @@
 #include <uqMap.h>
 #include <uqVectorSet.h>
 #include <cmath>
+//#include <math.h>
 
 template <class V, class M>
 class uqVectorSpaceClass : public uqVectorSetClass<V,M>

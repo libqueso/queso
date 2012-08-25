@@ -306,18 +306,23 @@ uqGslMatrixClass::resetLU()
   }
   if (m_svdColMap) {
     delete m_svdColMap;
+    m_svdColMap = NULL;
   }
   if (m_svdUmat) {
     delete m_svdUmat;
+    m_svdUmat = NULL;
   }
   if (m_svdSvec) {
     delete m_svdSvec;
+    m_svdSvec = NULL;
   }
   if (m_svdVmat) {
     delete m_svdVmat;
+    m_svdVmat = NULL;
   }
   if (m_svdVTmat) {
     delete m_svdVTmat;
+    m_svdVTmat = NULL;
   }
   m_determinant   = -INFINITY;
   m_lnDeterminant = -INFINITY;
@@ -615,12 +620,11 @@ uqGslMatrixClass::internalSvd() const
     m_svdVmat   = new uqGslMatrixClass(*m_svdSvec);
     m_svdVTmat  = new uqGslMatrixClass(*m_svdSvec);
     
-  //uqGslVectorClass vecWork(*m_svdSvec );
-    std::cout << "In uqGslMatrixClass::internalSvd()"
-              << ", calling gsl_linalg_SV_decomp_jacobi()..."
-              << ": nRows = " << nRows
-              << ", nCols = " << nCols
-              << std::endl;
+    //std::cout << "In uqGslMatrixClass::internalSvd()"
+    //          << ", calling gsl_linalg_SV_decomp_jacobi()..."
+    //          << ": nRows = " << nRows
+    //          << ", nCols = " << nCols
+    //          << std::endl;
     struct timeval timevalBegin;
     gettimeofday(&timevalBegin, NULL);
     gsl_error_handler_t* oldHandler;
@@ -628,6 +632,7 @@ uqGslMatrixClass::internalSvd() const
 #if 1
     iRC = gsl_linalg_SV_decomp_jacobi(m_svdUmat->data(), m_svdVmat->data(), m_svdSvec->data());
 #else
+    uqGslVectorClass vecWork(*m_svdSvec );
     iRC = gsl_linalg_SV_decomp(m_svdUmat->data(), m_svdVmat->data(), m_svdSvec->data(), vecWork.data());
 #endif
     if (iRC != 0) {
@@ -640,11 +645,11 @@ uqGslMatrixClass::internalSvd() const
 
     struct timeval timevalNow;
     gettimeofday(&timevalNow, NULL);
-    std::cout << "In uqGslMatrixClass::internalSvd()"
-              << ": returned from gsl_linalg_SV_decomp_jacobi() with iRC = " << iRC
-              << " after " << timevalNow.tv_sec - timevalBegin.tv_sec
-              << " seconds"
-              << std::endl;
+    //std::cout << "In uqGslMatrixClass::internalSvd()"
+    //          << ": returned from gsl_linalg_SV_decomp_jacobi() with iRC = " << iRC
+    //          << " after " << timevalNow.tv_sec - timevalBegin.tv_sec
+    //          << " seconds"
+    //          << std::endl;
     UQ_RC_MACRO(iRC, // Yes, *not* a fatal check on RC
                 m_env.worldRank(),
                 "uqGslMatrixClass::internalSvd()",
