@@ -455,7 +455,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
       if (m_tk->symmetric()) {
         alphaQuotient = std::exp(yLogTargetToUse - x.logTarget());
         if ((m_env.subDisplayFile()                   ) &&
-            (m_env.displayVerbosity() >= 10           ) &&
+            (m_env.displayVerbosity() >= 3            ) &&
             (m_optionsObj->m_ov.m_totallyMute == false)) {
           *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                                  << ": symmetric proposal case"
@@ -503,7 +503,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
                                  x.logTarget() -
                                  qxy);
         if ((m_env.subDisplayFile()                   ) &&
-            (m_env.displayVerbosity() >= 10           ) &&
+            (m_env.displayVerbosity() >= 3            ) &&
             (m_optionsObj->m_ov.m_totallyMute == false)) {
           *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
                                  << ": unsymmetric proposal case"

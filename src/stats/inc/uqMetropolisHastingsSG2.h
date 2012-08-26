@@ -461,6 +461,15 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 #endif
   if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += uqMiscGetEllapsedSeconds(&timevalTarget);
   m_rawChainInfo.numTargetCalls++;
+  if ((m_env.subDisplayFile()                   ) &&
+      (m_env.displayVerbosity() >= 3            ) &&
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
+    *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                            << ": just returned from likelihood() for initial chain position"
+                            << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
+                            << ", logTarget = " << logTarget
+                            << std::endl;
+  }
 
   //*m_env.subDisplayFile() << "AQUI 001" << std::endl;
   uqMarkovChainPositionDataClass<P_V> currentPositionData(m_env,
@@ -628,6 +637,15 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 #endif
       if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += uqMiscGetEllapsedSeconds(&timevalTarget);
       m_rawChainInfo.numTargetCalls++;
+      if ((m_env.subDisplayFile()                   ) &&
+          (m_env.displayVerbosity() >= 3            ) &&
+          (m_optionsObj->m_ov.m_totallyMute == false)) {
+        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                << ": just returned from likelihood() for chain position of id " << positionId
+                                << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
+                                << ", logTarget = " << logTarget
+                                << std::endl;
+      }
     }
     currentCandidateData.set(tmpVecValues,
                              outOfTargetSupport,
@@ -789,6 +807,16 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 #endif
             if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += uqMiscGetEllapsedSeconds(&timevalTarget);
             m_rawChainInfo.numTargetCalls++;
+            if ((m_env.subDisplayFile()                   ) &&
+                (m_env.displayVerbosity() >= 3            ) &&
+                (m_optionsObj->m_ov.m_totallyMute == false)) {
+              *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                      << ": just returned from likelihood() for chain position of id " << positionId
+                                      << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
+                                      << ", stageId = "   << stageId
+                                      << ", logTarget = " << logTarget
+                                      << std::endl;
+            }
           }
           currentCandidateData.set(tmpVecValues,
                                    outOfTargetSupport,
@@ -1066,10 +1094,13 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     // Loop: print some information before going to the next chain position
     //****************************************************
     if ((m_env.subDisplayFile()                   ) &&
-        (m_env.displayVerbosity() >= 10           ) &&
+        (m_env.displayVerbosity() >= 3            ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
                               << ": finishing chain position of id = " << positionId
+                              << ", accept = "                         << accept
+                              << ", curLogTarget  = "                  << currentPositionData.logTarget()
+                              << ", canLogTarget  = "                  << currentCandidateData.logTarget()
                               << std::endl;
     }
 
@@ -1091,7 +1122,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                               << "\n"
                               << std::endl;
     }
-  } // end chain loop
+  } // end chain loop [for (unsigned int positionId = 1; positionId < workingChain.subSequenceSize(); ++positionId) {]
 
   if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
       (m_initialPosition.numOfProcsForStorage() == 1                         ) &&
