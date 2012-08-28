@@ -172,6 +172,7 @@ public:
 
   double actualValue              (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   double lnValue                  (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double lastComputedLogPrior     () const;
   double lastComputedLogLikelihood() const;
 
 protected:
@@ -182,6 +183,7 @@ protected:
   const uqBaseJointPdfClass      <V,M>& m_priorDensity;
   const uqBaseScalarFunctionClass<V,M>& m_likelihoodFunction;
         double                          m_likelihoodExponent;
+  mutable double                        m_lastComputedLogPrior;
   mutable double                        m_lastComputedLogLikelihood;
 
   mutable V  m_tmpVector1;
@@ -201,6 +203,7 @@ uqBayesianJointPdfClass<V,M>::uqBayesianJointPdfClass(
   m_priorDensity             (priorDensity),
   m_likelihoodFunction       (likelihoodFunction),
   m_likelihoodExponent       (likelihoodExponent),
+  m_lastComputedLogPrior     (0.),
   m_lastComputedLogLikelihood(0.),
   m_tmpVector1               (m_domainSet.vectorSpace().zeroVector()),
   m_tmpVector2               (m_domainSet.vectorSpace().zeroVector()),
@@ -212,6 +215,13 @@ template<class V,class M>
 uqBayesianJointPdfClass<V,M>::~uqBayesianJointPdfClass()
 {
   delete m_tmpMatrix;
+}
+
+template<class V,class M>
+double
+uqBayesianJointPdfClass<V,M>::lastComputedLogPrior() const
+{
+  return m_lastComputedLogPrior;
 }
 
 template<class V,class M>
@@ -272,6 +282,7 @@ uqBayesianJointPdfClass<V,M>::actualValue(
     returnValue *= pow(value2,m_likelihoodExponent);
   }
 
+  m_lastComputedLogPrior      = log(value1);
   m_lastComputedLogLikelihood = m_likelihoodExponent*log(value2);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
@@ -366,6 +377,7 @@ uqBayesianJointPdfClass<V,M>::lnValue(
     returnValue += value2*m_likelihoodExponent;
   } // prudenci 2010/03/05
 
+  m_lastComputedLogPrior      = value1;
   m_lastComputedLogLikelihood = m_likelihoodExponent*value2;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {

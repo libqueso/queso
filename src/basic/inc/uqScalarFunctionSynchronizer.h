@@ -45,7 +45,8 @@ public:
                             V* gradVector,
                             M* hessianMatrix,
                             V* hessianEffect,
-                            double* extraOutput) const;
+                            double* extraOutput1,
+                            double* extraOutput2) const;
 private:
   const uqBaseEnvironmentClass&         m_env;
   const uqBaseScalarFunctionClass<V,M>& m_scalarFunction;
@@ -85,7 +86,8 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
         V* gradVector,
         M* hessianMatrix,
         V* hessianEffect,
-        double* extraOutput) const
+        double* extraOutput1,
+        double* extraOutput2) const
 {
   double result = 0.;
 
@@ -229,9 +231,14 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
                                           internalGrad,    // output
                                           internalHessian, // output
                                           internalEffect); // output
-        if (extraOutput) {
+        if (extraOutput1) {
           if (m_bayesianJointPdfPtr) {
-            *extraOutput = m_bayesianJointPdfPtr->lastComputedLogLikelihood();
+            *extraOutput1 = m_bayesianJointPdfPtr->lastComputedLogPrior();
+          }
+        }
+        if (extraOutput2) {
+          if (m_bayesianJointPdfPtr) {
+            *extraOutput2 = m_bayesianJointPdfPtr->lastComputedLogLikelihood();
           }
         }
       } // if (bufferChar[0] == '1')
@@ -266,9 +273,14 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
                                       gradVector,
                                       hessianMatrix,
                                       hessianEffect);
-    if (extraOutput) {
+    if (extraOutput1) {
       if (m_bayesianJointPdfPtr) {
-        *extraOutput = m_bayesianJointPdfPtr->lastComputedLogLikelihood();
+        *extraOutput1 = m_bayesianJointPdfPtr->lastComputedLogPrior();
+      }
+    }
+    if (extraOutput2) {
+      if (m_bayesianJointPdfPtr) {
+        *extraOutput2 = m_bayesianJointPdfPtr->lastComputedLogLikelihood();
       }
     }
   }

@@ -453,11 +453,12 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                       "uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()",
                       "initial position should not be out of target pdf support");
   if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
+  double logPrior      = 0.;
   double logLikelihood = 0.;
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
-  double logTarget =        m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+  double logTarget =        m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
 #else
-  double logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+  double logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
 #endif
   if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += uqMiscGetEllapsedSeconds(&timevalTarget);
   m_rawChainInfo.numTargetCalls++;
@@ -467,7 +468,9 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
                             << ": just returned from likelihood() for initial chain position"
                             << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
-                            << ", logTarget = " << logTarget
+                            << ", logPrior = "      << logPrior
+                            << ", logLikelihood = " << logLikelihood
+                            << ", logTarget = "     << logTarget
                             << std::endl;
   }
 
@@ -522,6 +525,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     // subRank != 0 --> Enter the barrier and wait for processor 0 to decide to call the targetPdf
     double aux = 0.;
     aux = m_targetPdfSynchronizer->callFunction(NULL,
+                                                NULL,
                                                 NULL,
                                                 NULL,
                                                 NULL,
@@ -625,15 +629,16 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
     if (outOfTargetSupport) {
       m_rawChainInfo.numOutOfTargetSupport++;
+      logPrior      = -INFINITY;
       logLikelihood = -INFINITY;
       logTarget     = -INFINITY;
     }
     else {
       if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
-      logTarget =        m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+      logTarget =        m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
 #else
-      logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+      logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
 #endif
       if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += uqMiscGetEllapsedSeconds(&timevalTarget);
       m_rawChainInfo.numTargetCalls++;
@@ -643,7 +648,9 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
         *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
                                 << ": just returned from likelihood() for chain position of id " << positionId
                                 << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
-                                << ", logTarget = " << logTarget
+                                << ", logPrior = "      << logPrior
+                                << ", logLikelihood = " << logLikelihood
+                                << ", logTarget = "     << logTarget
                                 << std::endl;
       }
     }
@@ -795,15 +802,16 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
           if (outOfTargetSupport) {
             m_rawChainInfo.numOutOfTargetSupportInDR++; // new 2010/May/12
+            logPrior      = -INFINITY;
             logLikelihood = -INFINITY;
             logTarget     = -INFINITY;
           }
           else {
             if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
-            logTarget =        m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+            logTarget =        m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
 #else
-            logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logLikelihood); // Might demand parallel environment
+            logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&tmpVecValues,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
 #endif
             if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += uqMiscGetEllapsedSeconds(&timevalTarget);
             m_rawChainInfo.numTargetCalls++;
@@ -813,8 +821,10 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
               *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
                                       << ": just returned from likelihood() for chain position of id " << positionId
                                       << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
-                                      << ", stageId = "   << stageId
-                                      << ", logTarget = " << logTarget
+                                      << ", stageId = "       << stageId
+                                      << ", logPrior = "      << logPrior
+                                      << ", logLikelihood = " << logLikelihood
+                                      << ", logTarget = "     << logTarget
                                       << std::endl;
             }
           }
@@ -1130,6 +1140,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     // subRank == 0 --> Tell all other processors to exit barrier now that the chain has been fully generated
     double aux = 0.;
     aux = m_targetPdfSynchronizer->callFunction(NULL,
+                                                NULL,
                                                 NULL,
                                                 NULL,
                                                 NULL,
