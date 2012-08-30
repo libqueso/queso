@@ -48,10 +48,10 @@ public:
                                const uqVectorSetClass<V,M>& domainSet);
   virtual ~uqBaseJointPdfClass();
 
-  virtual       double                        actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
-  virtual       double                        lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
+  virtual       double                   actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
+  virtual       double                   lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
+//  const  uqBaseScalarPdfClass<double>& component  (unsigned int componentId) const;
 
-//        const uqBaseScalarPdfClass<double>& component      (unsigned int componentId) const;
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
@@ -836,9 +836,19 @@ uqBetaJointPdfClass<V,M>::lnValue(
                       "uqBetaJointPdfClass<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
+  double aux = 0.;
   double result = 0.;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
-    result += gsl_ran_beta_pdf(domainVector[i],m_alpha[i],m_beta[i]);
+    aux = log(gsl_ran_beta_pdf(domainVector[i],m_alpha[i],m_beta[i]));
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqBetaJointPdfClass<V,M>::lnValue()"
+                              << ": domainVector[" << i << "]) = " << domainVector[i]
+                              << ", m_alpha[" << i << "] = "       << m_alpha[i]
+                              << ", m_beta[" << i << "] = "        << m_beta[i]
+                              << ", log(pdf)= "                    << aux
+                              << std::endl;
+    }
+    result += aux;
   }
 
   return result;
@@ -935,7 +945,7 @@ uqGammaJointPdfClass<V,M>::lnValue(
 
   double result = 0.;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
-    result += gsl_ran_gamma_pdf(domainVector[i],m_a[i],m_b[i]);
+    result += log(gsl_ran_gamma_pdf(domainVector[i],m_a[i],m_b[i]));
   }
 
   return result;
@@ -1578,6 +1588,13 @@ uqConcatenatedJointPdfClass<V,M>::actualValue(
     domainVector.cwExtract(cummulativeSize,*(vecs[i]));
     values[i] = m_densities[i]->actualValue(*(vecs[i]),NULL,NULL,NULL,NULL);
     returnValue *= values[i];
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqConcatenatedJointPdfClass<V,M>::actualValue()"
+                              << ", *(vecs[" << i << "]) = "       << *(vecs[i])
+                              << ": values[" << i << "] = "        << values[i]
+                              << ", temporary cumulative value = " << returnValue
+                              << std::endl;
+    }
     cummulativeSize += vecs[i]->sizeLocal();
     delete vecs[i];
   }
@@ -1621,6 +1638,13 @@ uqConcatenatedJointPdfClass<V,M>::lnValue(
     domainVector.cwExtract(cummulativeSize,*(vecs[i]));
     values[i] = m_densities[i]->lnValue(*(vecs[i]),NULL,NULL,NULL,NULL);
     returnValue += values[i];
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqConcatenatedJointPdfClass<V,M>::lnValue()"
+                              << ", *(vecs[" << i << "]) = "       << *(vecs[i])
+                              << ": values[" << i << "] = "        << values[i]
+                              << ", temporary cumulative value = " << returnValue
+                              << std::endl;
+    }
     cummulativeSize += vecs[i]->sizeLocal();
     delete vecs[i];
   }

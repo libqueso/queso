@@ -487,6 +487,15 @@ uqGslVectorClass::cwSetBeta(const gsl_rng* rng, const uqGslVectorClass& alpha, c
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
     (*this)[i] = gsl_ran_beta(rng,alpha[i],beta[i]);
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqGslVectorClass::cwSetBeta()"
+                              << ": fullRank "   << m_env.fullRank()
+                              << ", i = "        << i
+                              << ", alpha[i] = " << alpha[i]
+                              << ", beta[i] = "  << beta[i]
+                              << ", sample = "   << (*this)[i]
+                              << std::endl;
+    }
   }
   return;
 }
