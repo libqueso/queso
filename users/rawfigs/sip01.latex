@@ -1,0 +1,31 @@
+\setlength{\unitlength}{3500sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(3807,1284)(796,-703)%(3987,1284)(526,-703)
+\thicklines
+{\color[rgb]{0,0,0}\put(3241,-61){\vector( 1, 0){1260}}
+}%
+{\color[rgb]{0,0,0}\put(2161,-691){\framebox(1080,1260){}}
+}%
+{\color[rgb]{0,0,0}\put(811,-331){\vector( 1, 0){1350}}
+}%
+{\color[rgb]{0,0,0}\put(811,209){\vector( 1, 0){1350}}
+}%
+\put(3331, 29){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Posterior rv $\boldsymbol{\Theta}$}%
+}}}}
+\put(2300,119){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Statistical}%
+}}}}
+\put(2340,-421){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Problem}%
+}}}}
+\put(2400,-151){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Inverse}%
+}}}}
+\put(811,254){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Prior rv $\boldsymbol{\Theta}$}%
+}}}}
+\put(760,-241){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$\pi_{\mbox{\scriptsize{like}}}(\mathbf{d}\,|\,\mathbf{y},\mathbf{r},\boldsymbol{\Theta})$}%
+}}}}
+\end{picture}%

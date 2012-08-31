@@ -75,19 +75,24 @@ cause $\mathbf{y}$ to best fit  $\mathbf{d}$.
 %The process of parameter estimation is also referred to as model calibration or model update, and it usually precedes the computation of a QoI, a process called model prediction. 
 
 Figure~\ref{fig-generic-problems} represents general inverse and forward problems respectively.
-\begin{figure}[htbp]
-\vspace{-10pt}
-\begin{center}
-% \subfigure[]{\includegraphics[scale=0.50,clip=true,viewport=1.7in 3.0in 8.5in 5.5in]{figs/queso_paper1_08.png}}
-% \subfigure[]{\includegraphics[scale=0.50,clip=true,viewport=1.8in 3.0in 8.4in 5.5in]{figs/queso_paper1_07.png}}
-\subfigure[]{\includegraphics[scale=0.45,clip=true,viewport=1.9in 3.0in 8.5in 5.5in]{figs/queso_paper1_07.png}}\quad\quad
-\subfigure[]{\includegraphics[scale=0.45,clip=true,viewport=1.9in 3.0in 8.5in 5.5in]{figs/queso_paper1_08.png}}
-\end{center}
+%
+\begin{figure*}[htb]
+\begin{minipage}[b]{0.5\textwidth}
+\input{rawfigs/gfp01.latex}\\
+\centering
+(a)
+\end{minipage}%\hfill
+\begin{minipage}[b]{0.5\textwidth}
+
+\input{rawfigs/gip01.latex}\\
+\centering 
+(b)
+\end{minipage}
+%\end{center}
 \vspace{-20pt}
 \caption{The representation of (a) a generic forward problem and (b) a generic inverse problem.}
 \label{fig-generic-problems}
-\end{figure}
-
+\end{figure*}
 
 
 There are many possible sources of uncertainty on a computational model. %procedures (a) and (b) above. 
@@ -106,7 +111,7 @@ is not as straightforward.
 
 \begin{figure}[h!]
 \centerline{
-\includegraphics[scale=0.45,clip=true,viewport=1.0in 2.5in 10.0in 5.5in]{figs/queso_paper1_09}
+\input{rawfigs/sfp01.latex}\\
 }
 \caption{
 The representation of a statistical forward problem.
@@ -119,7 +124,7 @@ $\mathbf{Q}$ denotes a random variable related to quantities of interest.
 
 \begin{figure}[h!]
 \centerline{
-\includegraphics[scale=0.45,clip=true,viewport=1.0in 3.0in 10.0in 5.5in]{figs/queso_paper1_10}
+\input{rawfigs/sip01.latex}\\
 }
 \caption{
 The representation of a statistical inverse problem.
