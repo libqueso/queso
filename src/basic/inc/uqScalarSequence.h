@@ -84,6 +84,7 @@ public:
 
         void         setGaussian                  (const gsl_rng* rng, const T& mean, const T& stdDev); /* This routine deletes all stored computed vectors */
         void         setUniform                   (const gsl_rng* rng, const T& a,    const T& b     ); /* This routine deletes all stored computed vectors */
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
         void         subUniformlySampledMdf       (unsigned int                    numIntervals,
                                                    T&                              minDomainValue,
                                                    T&                              maxDomainValue,
@@ -106,7 +107,7 @@ public:
         void         subWeigthCdf                 (unsigned int                    numIntervals,
                                                    std::vector<T>&                 gridValues,
                                                    std::vector<T>&                 cdfValues) const;
-
+#endif
         T            subMeanExtra                 (unsigned int                    initialPos,
                                                    unsigned int                    numPos) const;
         T            unifiedMeanExtra             (bool                            useOnlyInter0Comm,
@@ -117,6 +118,7 @@ public:
         T            unifiedMedianExtra           (bool                            useOnlyInter0Comm,
                                                    unsigned int                    initialPos,
                                                    unsigned int                    localNumPos) const;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
         T            subMeanCltStd                (unsigned int                    initialPos,
                                                    unsigned int                    numPos,
                                                    const T&                        meanValue) const;
@@ -124,6 +126,7 @@ public:
                                                    unsigned int                    initialPos,
                                                    unsigned int                    localNumPos,
                                                    const T&                        unifiedMeanValue) const;
+#endif
         T            subSampleVarianceExtra       (unsigned int                    initialPos,
                                                    unsigned int                    numPos,
                                                    const T&                        meanValue) const;
@@ -160,6 +163,7 @@ public:
                                                    unsigned int                    numPos,
                                                    unsigned int                    numSum,
                                                    T&                              autoCorrsSum) const;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
         T            bmm                          (unsigned int                    initialPos,
                                                    unsigned int                    batchLength) const;
         void         psd                          (unsigned int                    initialPos,
@@ -181,6 +185,7 @@ public:
                                                    double                          range, // \in [0,1]                    
                                                    T&                              lowerValue,
                                                    T&                              upperValue) const;
+#endif
         void         subMinMaxExtra               (unsigned int                    initialPos,
                                                    unsigned int                    numPos,
                                                    T&                              minValue,
@@ -216,6 +221,7 @@ public:
                                                    const T&                        maxHorizontalValue,
                                                    std::vector<T>&                 gridValues,
                                                    std::vector<unsigned int>&      bins) const;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
         void         subCdfStacc                  (unsigned int                    initialPos,
                                                    std::vector<double>&            cdfStaccValues,
                                                    std::vector<double>&            cdfStaccValuesup,
@@ -224,6 +230,7 @@ public:
         void         subCdfStacc                  (unsigned int                    initialPos,
                                                    const std::vector<T>&           evaluationPositions,
                                                    std::vector<double>&            cdfStaccValues) const;
+#endif
         void         subSort                      (unsigned int                    initialPos,
                                                    uqScalarSequenceClass<T>&       sortedSequence) const;
         void         unifiedSort                  (bool                            useOnlyInter0Comm,
@@ -1045,6 +1052,7 @@ uqScalarSequenceClass<T>::setUniform(const gsl_rng* rng, const T& a, const T& b)
   return;
 }
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template <class T>
 void
 uqScalarSequenceClass<T>::subUniformlySampledMdf(
@@ -1355,6 +1363,7 @@ uqScalarSequenceClass<T>::subWeigthCdf(
 
   return;
 }
+#endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 
 template <class T>
 T
@@ -1580,6 +1589,7 @@ uqScalarSequenceClass<T>::unifiedMedianExtra( // rr0
   return unifiedMedianValue;
 }
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template <class T>
 T
 uqScalarSequenceClass<T>::subMeanCltStd(
@@ -1678,6 +1688,7 @@ uqScalarSequenceClass<T>::unifiedMeanCltStd(
 
   return unifiedStdValue;
 }
+#endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 
 template <class T>
 T
@@ -2180,6 +2191,7 @@ uqScalarSequenceClass<T>::autoCorrViaFft(
   return;
 }
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template <class T>
 T
 uqScalarSequenceClass<T>::bmm(
@@ -2533,6 +2545,7 @@ uqScalarSequenceClass<T>::unifiedCdfPercentageRange(
 
   return;
 }
+#endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 
 template <class T>
 void
@@ -2938,6 +2951,7 @@ uqScalarSequenceClass<T>::subWeigthHistogram(
   return;
 }
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template <class T>
 void
 uqScalarSequenceClass<T>::subCdfStacc(
@@ -3067,6 +3081,7 @@ uqScalarSequenceClass<T>::subCdfStacc(
 
   return;
 }
+#endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 
 template <class T>
 void
@@ -3626,7 +3641,7 @@ uqScalarSequenceClass<T>::unifiedScaleForKde(
 
       unsigned int unifiedDataSize = 0;
       m_env.inter0Comm().Allreduce((void *) &localDataSize, (void *) &unifiedDataSize, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
-                                   "uqScalarSequenceClass<T>::unifiedUniformlySampledCdf()",
+                                   "uqScalarSequenceClass<T>::unifiedScaleForKde()",
                                    "failed MPI.Allreduce() for data size");
 
       if (unifiedIqrValue <= 0.) {

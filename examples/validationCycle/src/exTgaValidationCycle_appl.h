@@ -175,6 +175,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   ssOptionsValues1.m_initialDiscardedPortions[6] = 0.30;
   ssOptionsValues1.m_initialDiscardedPortions[7] = 0.35;
   ssOptionsValues1.m_initialDiscardedPortions[8] = 0.40;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   ssOptionsValues1.m_bmmRun                      = false;
   ssOptionsValues1.m_fftCompute                  = false;
   ssOptionsValues1.m_psdCompute                  = false;
@@ -184,6 +185,10 @@ uqAppl(const uqBaseEnvironmentClass& env)
   ssOptionsValues1.m_gewekeNbRatio               = .5;
   ssOptionsValues1.m_gewekeDisplay               = true;
   ssOptionsValues1.m_gewekeWrite                 = true;
+  ssOptionsValues1.m_meanStaccCompute            = false;
+  ssOptionsValues1.m_histCompute                 = false;
+  ssOptionsValues1.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues1.m_autoCorrComputeViaDef       = false;
   ssOptionsValues1.m_autoCorrComputeViaFft       = true;
   ssOptionsValues1.m_autoCorrSecondLag           = 2;
@@ -191,20 +196,23 @@ uqAppl(const uqBaseEnvironmentClass& env)
   ssOptionsValues1.m_autoCorrNumLags             = 15;
   ssOptionsValues1.m_autoCorrDisplay             = true;
   ssOptionsValues1.m_autoCorrWrite               = true;
-  ssOptionsValues1.m_meanStaccCompute            = false;
-  ssOptionsValues1.m_histCompute                 = false;
-  ssOptionsValues1.m_cdfStaccCompute             = false;
   ssOptionsValues1.m_kdeCompute                  = false;
   ssOptionsValues1.m_covMatrixCompute            = true;
   ssOptionsValues1.m_corrMatrixCompute           = true;
 
   ssOptionsValues2.m_initialDiscardedPortions.resize(1);
   ssOptionsValues2.m_initialDiscardedPortions[0] = 0.;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   ssOptionsValues2.m_bmmRun                      = false;
   ssOptionsValues2.m_fftCompute                  = false;
   ssOptionsValues2.m_psdCompute                  = false;
   ssOptionsValues2.m_psdAtZeroCompute            = false;
   ssOptionsValues2.m_gewekeCompute               = false;
+  ssOptionsValues2.m_meanStaccCompute            = false;
+  ssOptionsValues2.m_histCompute                 = true;
+  ssOptionsValues2.m_histNumInternalBins         = 250;
+  ssOptionsValues2.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues2.m_autoCorrComputeViaDef       = false;
   ssOptionsValues2.m_autoCorrComputeViaFft       = true;
   ssOptionsValues2.m_autoCorrSecondLag           = 2;
@@ -212,10 +220,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
   ssOptionsValues2.m_autoCorrNumLags             = 15;
   ssOptionsValues2.m_autoCorrDisplay             = true;
   ssOptionsValues2.m_autoCorrWrite               = true;
-  ssOptionsValues2.m_meanStaccCompute            = false;
-  ssOptionsValues2.m_histCompute                 = true;
-  ssOptionsValues2.m_histNumInternalBins         = 250;
-  ssOptionsValues2.m_cdfStaccCompute             = false;
   ssOptionsValues2.m_kdeCompute                  = true;
   ssOptionsValues2.m_kdeNumEvalPositions         = 250;
   ssOptionsValues2.m_covMatrixCompute            = true;
@@ -296,10 +300,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   ssOptionsValues3.m_initialDiscardedPortions.resize(1);
   ssOptionsValues3.m_initialDiscardedPortions[0] = 0.;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   ssOptionsValues3.m_meanStaccCompute            = false;
   ssOptionsValues3.m_histCompute                 = true;
   ssOptionsValues3.m_histNumInternalBins         = 250;
   ssOptionsValues3.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues3.m_kdeCompute                  = true;
   ssOptionsValues3.m_kdeNumEvalPositions         = 250;
   ssOptionsValues3.m_covMatrixCompute            = true;
@@ -307,11 +313,17 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   ssOptionsValues4.m_initialDiscardedPortions.resize(1);
   ssOptionsValues4.m_initialDiscardedPortions[0] = 0.;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   ssOptionsValues4.m_bmmRun                      = false;
   ssOptionsValues4.m_fftCompute                  = false;
   ssOptionsValues4.m_psdCompute                  = false;
   ssOptionsValues4.m_psdAtZeroCompute            = false;
   ssOptionsValues4.m_gewekeCompute               = false;
+  ssOptionsValues4.m_meanStaccCompute            = false;
+  ssOptionsValues4.m_histCompute                 = true;
+  ssOptionsValues4.m_histNumInternalBins         = 250;
+  ssOptionsValues4.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues4.m_autoCorrComputeViaDef       = false;
   ssOptionsValues4.m_autoCorrComputeViaFft       = true;
   ssOptionsValues4.m_autoCorrSecondLag           = 2;
@@ -319,10 +331,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
   ssOptionsValues4.m_autoCorrNumLags             = 15;
   ssOptionsValues4.m_autoCorrDisplay             = true;
   ssOptionsValues4.m_autoCorrWrite               = true;
-  ssOptionsValues4.m_meanStaccCompute            = false;
-  ssOptionsValues4.m_histCompute                 = true;
-  ssOptionsValues4.m_histNumInternalBins         = 250;
-  ssOptionsValues4.m_cdfStaccCompute             = false;
   ssOptionsValues4.m_kdeCompute                  = true;
   ssOptionsValues4.m_kdeNumEvalPositions         = 250;
   ssOptionsValues4.m_covMatrixCompute            = true;
@@ -416,6 +424,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   ssOptionsValues5.m_initialDiscardedPortions[6] = 0.30;
   ssOptionsValues5.m_initialDiscardedPortions[7] = 0.35;
   ssOptionsValues5.m_initialDiscardedPortions[8] = 0.40;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   ssOptionsValues5.m_bmmRun                      = false;
   ssOptionsValues5.m_fftCompute                  = false;
   ssOptionsValues5.m_psdCompute                  = false;
@@ -425,6 +434,10 @@ uqAppl(const uqBaseEnvironmentClass& env)
   ssOptionsValues5.m_gewekeNbRatio               = .5;
   ssOptionsValues5.m_gewekeDisplay               = true;
   ssOptionsValues5.m_gewekeWrite                 = true;
+  ssOptionsValues5.m_meanStaccCompute            = false;
+  ssOptionsValues5.m_histCompute                 = false;
+  ssOptionsValues5.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues5.m_autoCorrComputeViaDef       = false;
   ssOptionsValues5.m_autoCorrComputeViaFft       = true;
   ssOptionsValues5.m_autoCorrSecondLag           = 2;
@@ -432,20 +445,23 @@ uqAppl(const uqBaseEnvironmentClass& env)
   ssOptionsValues5.m_autoCorrNumLags             = 15;
   ssOptionsValues5.m_autoCorrDisplay             = true;
   ssOptionsValues5.m_autoCorrWrite               = true;
-  ssOptionsValues5.m_meanStaccCompute            = false;
-  ssOptionsValues5.m_histCompute                 = false;
-  ssOptionsValues5.m_cdfStaccCompute             = false;
   ssOptionsValues5.m_kdeCompute                  = false;
   ssOptionsValues5.m_covMatrixCompute            = true;
   ssOptionsValues5.m_corrMatrixCompute           = true;
 
   ssOptionsValues6.m_initialDiscardedPortions.resize(1);
   ssOptionsValues6.m_initialDiscardedPortions[0] = 0.;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   ssOptionsValues6.m_bmmRun                      = false;
   ssOptionsValues6.m_fftCompute                  = false;
   ssOptionsValues6.m_psdCompute                  = false;
   ssOptionsValues6.m_psdAtZeroCompute            = false;
   ssOptionsValues6.m_gewekeCompute               = false;
+  ssOptionsValues6.m_meanStaccCompute            = false;
+  ssOptionsValues6.m_histCompute                 = true;
+  ssOptionsValues6.m_histNumInternalBins         = 250;
+  ssOptionsValues6.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues6.m_autoCorrComputeViaDef       = false;
   ssOptionsValues6.m_autoCorrComputeViaFft       = true;
   ssOptionsValues6.m_autoCorrSecondLag           = 2;
@@ -453,10 +469,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
   ssOptionsValues6.m_autoCorrNumLags             = 15;
   ssOptionsValues6.m_autoCorrDisplay             = true;
   ssOptionsValues6.m_autoCorrWrite               = true;
-  ssOptionsValues6.m_meanStaccCompute            = false;
-  ssOptionsValues6.m_histCompute                 = true;
-  ssOptionsValues6.m_histNumInternalBins         = 250;
-  ssOptionsValues6.m_cdfStaccCompute             = false;
   ssOptionsValues6.m_kdeCompute                  = true;
   ssOptionsValues6.m_kdeNumEvalPositions         = 250;
   ssOptionsValues6.m_covMatrixCompute            = true;
@@ -533,10 +545,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   ssOptionsValues7.m_initialDiscardedPortions.resize(1);
   ssOptionsValues7.m_initialDiscardedPortions[0] = 0.;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   ssOptionsValues7.m_meanStaccCompute            = false;
   ssOptionsValues7.m_histCompute                 = true;
   ssOptionsValues7.m_histNumInternalBins         = 250;
   ssOptionsValues7.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues7.m_kdeCompute                  = true;
   ssOptionsValues7.m_kdeNumEvalPositions         = 250;
   ssOptionsValues7.m_covMatrixCompute            = true;
@@ -544,11 +558,17 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   ssOptionsValues8.m_initialDiscardedPortions.resize(1);
   ssOptionsValues8.m_initialDiscardedPortions[0] = 0.;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   ssOptionsValues8.m_bmmRun                      = false;
   ssOptionsValues8.m_fftCompute                  = false;
   ssOptionsValues8.m_psdCompute                  = false;
   ssOptionsValues8.m_psdAtZeroCompute            = false;
   ssOptionsValues8.m_gewekeCompute               = false;
+  ssOptionsValues8.m_meanStaccCompute            = false;
+  ssOptionsValues8.m_histCompute                 = true;
+  ssOptionsValues8.m_histNumInternalBins         = 250;
+  ssOptionsValues8.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues8.m_autoCorrComputeViaDef       = false;
   ssOptionsValues8.m_autoCorrComputeViaFft       = true;
   ssOptionsValues8.m_autoCorrSecondLag           = 2;
@@ -556,10 +576,6 @@ uqAppl(const uqBaseEnvironmentClass& env)
   ssOptionsValues8.m_autoCorrNumLags             = 15;
   ssOptionsValues8.m_autoCorrDisplay             = true;
   ssOptionsValues8.m_autoCorrWrite               = true;
-  ssOptionsValues8.m_meanStaccCompute            = false;
-  ssOptionsValues8.m_histCompute                 = true;
-  ssOptionsValues8.m_histNumInternalBins         = 250;
-  ssOptionsValues8.m_cdfStaccCompute             = false;
   ssOptionsValues8.m_kdeCompute                  = true;
   ssOptionsValues8.m_kdeNumEvalPositions         = 250;
   ssOptionsValues8.m_covMatrixCompute            = true;
@@ -644,6 +660,7 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
     Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
     Q_V epsilonVec     (cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
 
@@ -717,6 +734,7 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                                     << ", cdfDistancesVec = " << cdfDistancesVec
                                     << std::endl;
     }
+#endif
   }
 
   return;
@@ -731,6 +749,7 @@ uqAppl_UnifiedComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
     Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
     Q_V epsilonVec     (cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
 
@@ -804,6 +823,7 @@ uqAppl_UnifiedComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
                 << ", unifiedCdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
     }
+#endif
   }
 
   return;

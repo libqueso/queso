@@ -29,7 +29,7 @@
 #ifndef __UQ_VECTOR_SEQUENCE_H__
 #define __UQ_VECTOR_SEQUENCE_H__
 
-#define UQ_CODE_HAS_MONITORS
+#undef UQ_CODE_HAS_MONITORS
 
 #include <uqVectorSubset.h>
 #include <uqScalarSequence.h>
@@ -92,13 +92,14 @@ public:
                                                                  uqArrayOfOneDGridsClass <V,M>& mdfGrids,
                                                                  uqArrayOfOneDTablesClass<V,M>& mdfValues) const = 0;
 #endif
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   virtual  void                     subUniformlySampledCdf      (const V&                       numEvaluationPointsVec,
                                                                  uqArrayOfOneDGridsClass <V,M>& cdfGrids,
                                                                  uqArrayOfOneDTablesClass<V,M>& cdfValues) const = 0;
   virtual  void                     unifiedUniformlySampledCdf  (const V&                       numEvaluationPointsVec,
                                                                  uqArrayOfOneDGridsClass <V,M>& unifiedCdfGrids,
                                                                  uqArrayOfOneDTablesClass<V,M>& unifieddfValues) const = 0;
-
+#endif
   virtual  void                     subMeanExtra                (unsigned int                             initialPos,
                                                                  unsigned int                             numPos,
                                                                  V&                                       meanVec) const = 0;
@@ -145,6 +146,7 @@ public:
                                                                  unsigned int                             numPos,
                                                                  unsigned int                             numSum,
                                                                  V&                                       autoCorrsSumVec) const = 0;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   virtual  void                     bmm                         (unsigned int                             initialPos,
                                                                  unsigned int                             batchLength,
                                                                  V&                                       bmmVec) const = 0;
@@ -168,6 +170,10 @@ public:
                                                                  V&                                       gewVec) const = 0;
   virtual  void                     meanStacc                   (unsigned int                             initialPos,
                                                                  V&                                       meanStaccVec) const = 0;
+  virtual  void                     subCdfStacc                 (unsigned int                             initialPos,
+                                                                 const std::vector<V*>&                   evalPositionsVecs,
+                                                                 std::vector<V*>&                         cdfStaccVecs) const = 0;
+#endif
   virtual  void                     subMinMaxExtra              (unsigned int                             initialPos,
                                                                  unsigned int                             numPos,
                                                                  V&                                       minVec,
@@ -186,13 +192,12 @@ public:
                                                                  const V&                                 unifiedMaxVec,
                                                                  std::vector<V*>&                         unifiedCentersForAllBins,
                                                                  std::vector<V*>&                         unifiedQuanttsForAllBins) const = 0;
-  virtual  void                     subCdfStacc                 (unsigned int                             initialPos,
-                                                                 const std::vector<V*>&                   evalPositionsVecs,
-                                                                 std::vector<V*>&                         cdfStaccVecs) const = 0;
   virtual  void                     subInterQuantileRange       (unsigned int                             initialPos,
                                                                  V&                                       iqrVec) const = 0;
   virtual  void                     unifiedInterQuantileRange   (unsigned int                             initialPos,
                                                                 V&                                       unifiedIqrVec) const = 0;
+           void                     computeHistCdfstaccKde      (const uqSequenceStatisticalOptionsClass& statisticalOptions,
+                                                                 std::ofstream*                           passedOfs);
   virtual  void                     subScalesForKde             (unsigned int                             initialPos,
                                                                  const V&                                 iqrVec,
                                                                  unsigned int                             kdeDimension,
@@ -318,8 +323,6 @@ protected:
            void                     computeAutoCorrViaFFT       (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  const std::vector<unsigned int>&         initialPosForStatistics,
                                                                  const std::vector<unsigned int>&         lagsForCorrs,
-                                                                 std::ofstream*                           passedOfs);
-           void                     computeHistCdfstaccKde      (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  std::ofstream*                           passedOfs);
            void                     computeCovCorrMatrices      (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  std::ofstream*                           passedOfs);
@@ -878,6 +881,7 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   //****************************************************
   // Compute variance of sample mean through the 'batch means method' (BMM)
   //****************************************************
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if ((statisticalOptions.bmmRun()               ) &&
       (initialPosForStatistics.size()         > 0) &&
       (statisticalOptions.bmmLengths().size() > 0)) { 
@@ -885,30 +889,33 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
                      initialPosForStatistics,
                      passedOfs);
   }
-
+#endif
   //****************************************************
   // Compute FFT of chain, for one parameter only
   //****************************************************
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if ((statisticalOptions.fftCompute()   ) &&
       (initialPosForStatistics.size() > 0)) {
     this->computeFFT(statisticalOptions,
                      initialPosForStatistics,
                      passedOfs);
   }
-
+#endif
   //****************************************************
   // Compute power spectral density (PSD) of chain, for one parameter only
   //****************************************************
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if ((statisticalOptions.psdCompute()   ) &&
       (initialPosForStatistics.size() > 0)) {
     this->computePSD(statisticalOptions,
                      initialPosForStatistics,
                      passedOfs);
   }
-
+#endif
   //****************************************************
   // Compute power spectral density (PSD) of chain at zero frequency
   //****************************************************
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if ((statisticalOptions.psdAtZeroCompute()             ) &&
       (initialPosForStatistics.size()                 > 0) &&
       (statisticalOptions.psdAtZeroNumBlocks().size() > 0)) { 
@@ -916,27 +923,29 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
                            initialPosForStatistics,
                            passedOfs);
   }
-
+#endif
   //****************************************************
   // Compute Geweke
   //****************************************************
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if ((statisticalOptions.gewekeCompute()) &&
       (initialPosForStatistics.size() > 0)) {
     this->computeGeweke(statisticalOptions,
                         initialPosForStatistics,
                         passedOfs);
   }
-
+#endif
   //****************************************************
   // Compute mean statistical accuracy
   //****************************************************
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if ((statisticalOptions.meanStaccCompute()) &&
       (initialPosForStatistics.size() > 0   )) {
     this->computeMeanStacc(statisticalOptions,
                            initialPosForStatistics,
                            passedOfs);
   }
-
+#endif
   // Set lags for the computation of chain autocorrelations
   std::vector<unsigned int> lagsForCorrs(statisticalOptions.autoCorrNumLags(),1);
   for (unsigned int i = 1; i < lagsForCorrs.size(); ++i) {
@@ -947,8 +956,8 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   // Compute autocorrelation coefficients via definition
   //****************************************************
   if ((statisticalOptions.autoCorrComputeViaDef()) &&
-      (initialPosForStatistics.size() > 0    ) &&
-      (lagsForCorrs.size()            > 0    )) { 
+      (initialPosForStatistics.size() > 0        ) &&
+      (lagsForCorrs.size()            > 0        )) { 
     this->computeAutoCorrViaDef(statisticalOptions,
                                 initialPosForStatistics,
                                 lagsForCorrs,
@@ -970,9 +979,13 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
   //****************************************************
   // Compute histogram and/or cdf stacc and/or Kde
   //****************************************************
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if ((statisticalOptions.histCompute    ()) ||
       (statisticalOptions.cdfStaccCompute()) ||
       (statisticalOptions.kdeCompute     ())) {
+#else
+    if (statisticalOptions.kdeCompute()) {
+#endif
     this->computeHistCdfstaccKde(statisticalOptions,
                                  passedOfs);
   }
@@ -1312,6 +1325,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanEvolution(
 }
 #endif
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeBMM(
@@ -1811,6 +1825,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanStacc(
 
   return;
 }
+#endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 
 template<class V, class M>
 void
@@ -2276,6 +2291,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
   //****************************************************
   // Compute histograms
   //****************************************************
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if ((statisticalOptions.histCompute()            ) &&
       (statisticalOptions.histNumInternalBins() > 0)) {
     tmpRunTime = 0.;
@@ -2414,7 +2430,8 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                               << std::endl;
     }
   }
-
+#endif
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   //****************************************************
   // Compute cdf statistical accuracy
   //****************************************************
@@ -2446,7 +2463,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
                               << std::endl;
     }
   }
-
+#endif
   //****************************************************
   // Compute estimations of probability densities
   //****************************************************

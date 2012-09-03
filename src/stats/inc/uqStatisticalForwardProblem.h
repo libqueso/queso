@@ -78,8 +78,6 @@
 /*! Upon return from a solution operation, the qoi rv is available through
     the operation 'qoiRv()'. Such qoi rv is able to provide:
 <list type=number>
-<item> cdfs of qoi components through the operation 'qoiRv().unifiedCdf()',
-       which returns an instance of the class 'uqBaseVectorCdfClass<Q_V,Q_M>', and
 <item> a vector realizer through the operation 'qoiRv().realizer()', which returns an
        instance of the class 'uqBaseVectorRealizerClass<Q_V,Q_M>'.
 </list>
@@ -106,8 +104,11 @@ public:
         bool                             computeSolutionFlag() const;
         void                             solveWithMonteCarlo(const uqMcOptionsValuesClass* alternativeOptionsValues); // dakota
   const uqGenericVectorRVClass<Q_V,Q_M>& qoiRv              () const;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+  //<item> cdfs of qoi components through the operation 'qoiRv().unifiedCdf()',
+  //     which returns an instance of the class 'uqBaseVectorCdfClass<Q_V,Q_M>', and
   const uqBaseVectorCdfClass  <Q_V,Q_M>& qoiRv_unifiedCdf   () const;
-
+#endif
         void                             print              (std::ostream& os) const;
 
   const uqBaseVectorSequenceClass<Q_V,Q_M>& getParamChain   () const;
@@ -131,6 +132,7 @@ private:
         uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subMdfGrids;
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_subMdfValues;
 #endif
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
         uqBaseVectorMdfClass     <Q_V,Q_M>*         m_subSolutionMdf;
         uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subCdfGrids;
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_subCdfValues;
@@ -139,7 +141,7 @@ private:
         uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_unifiedCdfGrids;
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_unifiedCdfValues;
         uqBaseVectorCdfClass     <Q_V,Q_M>*         m_unifiedSolutionCdf;
-
+#endif
         uqBaseJointPdfClass      <Q_V,Q_M>*         m_solutionPdf;
 
         uqSfpOptionsValuesClass                     m_alternativeOptionsValues;
@@ -188,6 +190,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   m_subMdfGrids             (NULL),
   m_subMdfValues            (NULL),
 #endif
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   m_subSolutionMdf          (NULL),
   m_subCdfGrids             (NULL),
   m_subCdfValues            (NULL),
@@ -195,6 +198,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   m_unifiedCdfGrids         (NULL),
   m_unifiedCdfValues        (NULL),
   m_unifiedSolutionCdf      (NULL),
+#endif
   m_solutionPdf             (NULL),
   m_alternativeOptionsValues(),
   m_optionsObj              (NULL)
@@ -239,6 +243,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~uqStatisticalForwardProblemC
 {
   if (m_solutionPdf       ) delete m_solutionPdf;
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if (m_unifiedSolutionCdf) delete m_unifiedSolutionCdf;
   if (m_unifiedCdfValues  ) delete m_unifiedCdfValues;
   if (m_unifiedCdfGrids   ) delete m_unifiedCdfGrids;
@@ -248,6 +253,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~uqStatisticalForwardProblemC
   if (m_subCdfGrids       ) delete m_subCdfGrids;
 
   if (m_subSolutionMdf    ) delete m_subSolutionMdf;
+#endif
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   if (m_subMdfValues      ) delete m_subMdfValues;
   if (m_subMdfGrids       ) delete m_subMdfGrids;
@@ -293,9 +299,9 @@ bool
 <item> instantiates 'uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>' (the Monte Carlo algorithm),
 <item> populates the output sequence with the Monte Carlo algorithm,
 <item> sets the realizer of 'm_qoiRv' with the contents of the output sequence, and
-<item> computes the cdfs of the components of 'm_qoiRv' as instances of 'uqSampledVectorCdfClass<Q_V,Q_M>'
 </list>
 */
+//<item> computes the cdfs of the components of 'm_qoiRv' as instances of 'uqSampledVectorCdfClass<Q_V,Q_M>'
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
@@ -320,6 +326,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
 
   if (m_solutionPdf       ) delete m_solutionPdf;
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if (m_unifiedSolutionCdf) delete m_unifiedSolutionCdf;
   if (m_unifiedCdfValues  ) delete m_unifiedCdfValues;
   if (m_unifiedCdfGrids   ) delete m_unifiedCdfGrids;
@@ -329,6 +336,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
   if (m_subCdfGrids       ) delete m_subCdfGrids;
 
   if (m_subSolutionMdf    ) delete m_subSolutionMdf;
+#endif
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   if (m_subMdfValues      ) delete m_subMdfValues;
   if (m_subMdfGrids       ) delete m_subMdfGrids;
@@ -379,6 +387,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
 #endif
 
   // Compute output cdf: uniform sampling approach
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   std::string subCoreName_qoiCdf(m_optionsObj->m_prefix+    "QoiCdf_");
   std::string uniCoreName_qoiCdf(m_optionsObj->m_prefix+"unifQoiCdf_");
   if (m_env.numSubEnvironments() == 1) subCoreName_qoiCdf = uniCoreName_qoiCdf;
@@ -414,7 +423,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
                                                                 *m_unifiedCdfValues);
     m_qoiRv.setUnifiedCdf(*m_unifiedSolutionCdf);
   }
-
+#endif
   // Compute (just unified one) covariance matrix, if requested
   // Compute (just unified one) correlation matrix, if requested
   P_M* pqCovarianceMatrix  = NULL;
@@ -472,12 +481,15 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
     m_qoiRv.mdf().print(*filePtrSet.ofsVar);
 #endif
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
     *filePtrSet.ofsVar << m_qoiRv.subCdf();
+#endif
 
     //if (pqCovarianceMatrix ) *filePtrSet.ofsVar << *pqCovarianceMatrix;  // FIX ME: output matrix in matlab format
     //if (pqCorrelationMatrix) *filePtrSet.ofsVar << *pqCorrelationMatrix; // FIX ME: output matrix in matlab format
 
     // Write unified cdf if necessary
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
     if (m_env.numSubEnvironments() > 1) {
       if (m_qoiRv.imageSet().vectorSpace().numOfProcsForStorage() == 1) {
         if (m_env.inter0Rank() == 0) {
@@ -491,7 +503,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
                             "unifed cdf writing, parallel vectors not supported yet");
       }
     }
-
+#endif
     // Close data output file
     m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
     if (m_env.subDisplayFile()) {
@@ -522,6 +534,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv() const
   return m_qoiRv;
 }
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template <class P_V,class P_M,class Q_V,class Q_M>
 const uqBaseVectorCdfClass<Q_V,Q_M>&
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf() const
@@ -540,7 +553,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf() const
   //                    "variable is NULL");
   return m_qoiRv.unifiedCdf(); //*m_unifiedSolutionCdf;
 }
-
+#endif
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void

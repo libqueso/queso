@@ -254,6 +254,7 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<uqGslVectorClass,uqGslMatrixC
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
     uqGslVectorClass cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
     uqGslVectorClass epsilonVec     (cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
 
@@ -327,6 +328,7 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<uqGslVectorClass,uqGslMatrixC
                                     << ", cdfDistancesVec = " << cdfDistancesVec
                                     << std::endl;
     }
+#endif
   }
 
   return;
@@ -340,6 +342,7 @@ uqAppl_UnifiedComparisonStage(uqValidationCycleClass<uqGslVectorClass,uqGslMatri
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
     uqGslVectorClass cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
     uqGslVectorClass epsilonVec     (cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
 
@@ -413,6 +416,7 @@ uqAppl_UnifiedComparisonStage(uqValidationCycleClass<uqGslVectorClass,uqGslMatri
                 << ", unifiedCdfDistancesVec = " << cdfDistancesVec
                 << std::endl;
     }
+#endif
   }
 
   return;

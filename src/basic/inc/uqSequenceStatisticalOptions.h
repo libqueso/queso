@@ -32,6 +32,7 @@
 #include <uqEnvironment.h>
 
 #define UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV   "0."
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 #define UQ_SEQUENCE_MEAN_MONITOR_PERIOD_ODV          0
 #define UQ_SEQUENCE_BMM_RUN_ODV                      0
 #define UQ_SEQUENCE_BMM_LENGTHS_ODV                  "0"
@@ -57,6 +58,12 @@
 #define UQ_SEQUENCE_GEWEKE_NB_RATIO_ODV              .5
 #define UQ_SEQUENCE_GEWEKE_DISPLAY_ODV               0
 #define UQ_SEQUENCE_GEWEKE_WRITE_ODV                 0
+#define UQ_SEQUENCE_MEAN_STACC_COMPUTE_ODV           0
+#define UQ_SEQUENCE_HIST_COMPUTE_ODV                 0
+#define UQ_SEQUENCE_HIST_NUM_INTERNAL_BINS_ODV       100
+#define UQ_SEQUENCE_CDF_STACC_COMPUTE_ODV            0
+#define UQ_SEQUENCE_CDF_STACC_NUM_EVAL_POSITIONS_ODV 50
+#endif
 #define UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_DEF_ODV    0
 #define UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_FFT_ODV    0
 #define UQ_SEQUENCE_AUTO_CORR_SECOND_LAG_ODV         0
@@ -64,11 +71,6 @@
 #define UQ_SEQUENCE_AUTO_CORR_NUM_LAGS_ODV           0
 #define UQ_SEQUENCE_AUTO_CORR_DISPLAY_ODV            0
 #define UQ_SEQUENCE_AUTO_CORR_WRITE_ODV              0
-#define UQ_SEQUENCE_MEAN_STACC_COMPUTE_ODV           0
-#define UQ_SEQUENCE_HIST_COMPUTE_ODV                 0
-#define UQ_SEQUENCE_HIST_NUM_INTERNAL_BINS_ODV       100
-#define UQ_SEQUENCE_CDF_STACC_COMPUTE_ODV            0
-#define UQ_SEQUENCE_CDF_STACC_NUM_EVAL_POSITIONS_ODV 50
 #define UQ_SEQUENCE_KDE_COMPUTE_ODV                  0
 #define UQ_SEQUENCE_KDE_NUM_EVAL_POSITIONS_ODV       100
 #define UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV           0
@@ -83,7 +85,7 @@ public:
  ~uqSsOptionsValuesClass            ();
 
   std::vector<double>       m_initialDiscardedPortions;
-
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   unsigned int              m_meanMonitorPeriod;
 
   bool                      m_bmmRun;
@@ -115,14 +117,6 @@ public:
   bool                      m_gewekeDisplay;
   bool                      m_gewekeWrite;
 
-  bool                      m_autoCorrComputeViaDef;
-  bool                      m_autoCorrComputeViaFft;
-  unsigned int              m_autoCorrSecondLag;
-  unsigned int              m_autoCorrLagSpacing;
-  unsigned int              m_autoCorrNumLags;
-  bool                      m_autoCorrDisplay;
-  bool                      m_autoCorrWrite;
-
   bool                      m_meanStaccCompute;
 
   bool                      m_histCompute;
@@ -130,6 +124,14 @@ public:
 
   bool                      m_cdfStaccCompute;
   unsigned int              m_cdfStaccNumEvalPositions;
+#endif
+  bool                      m_autoCorrComputeViaDef;
+  bool                      m_autoCorrComputeViaFft;
+  unsigned int              m_autoCorrSecondLag;
+  unsigned int              m_autoCorrLagSpacing;
+  unsigned int              m_autoCorrNumLags;
+  bool                      m_autoCorrDisplay;
+  bool                      m_autoCorrWrite;
 
   bool                      m_kdeCompute;
   unsigned int              m_kdeNumEvalPositions;
@@ -155,6 +157,7 @@ public:
  ~uqSequenceStatisticalOptionsClass();
 
   const std::vector<double>&       initialDiscardedPortions() const;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 
         unsigned int               meanMonitorPeriod() const;
 
@@ -187,14 +190,6 @@ public:
         bool                       gewekeDisplay() const;
         bool                       gewekeWrite  () const;
 
-        bool                       autoCorrComputeViaDef() const;
-        bool                       autoCorrComputeViaFft() const;
-        unsigned int               autoCorrSecondLag    () const;
-        unsigned int               autoCorrLagSpacing   () const;
-        unsigned int               autoCorrNumLags      () const;
-        bool                       autoCorrDisplay      () const;
-        bool                       autoCorrWrite        () const;
-
         bool                       meanStaccCompute() const;
 
         bool                       histCompute        () const;
@@ -202,6 +197,14 @@ public:
 
         bool                       cdfStaccCompute         () const;
         unsigned int               cdfStaccNumEvalPositions() const;
+#endif
+        bool                       autoCorrComputeViaDef() const;
+        bool                       autoCorrComputeViaFft() const;
+        unsigned int               autoCorrSecondLag    () const;
+        unsigned int               autoCorrLagSpacing   () const;
+        unsigned int               autoCorrNumLags      () const;
+        bool                       autoCorrDisplay      () const;
+        bool                       autoCorrWrite        () const;
 
         bool                       kdeCompute         () const;
         unsigned int               kdeNumEvalPositions() const;
@@ -223,6 +226,7 @@ private:
 
   std::string                   m_option_help;
   std::string                   m_option_initialDiscardedPortions;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   std::string                   m_option_mean_monitorPeriod;
   std::string                   m_option_bmm_run;
   std::string                   m_option_bmm_lengths;
@@ -248,6 +252,12 @@ private:
   std::string                   m_option_geweke_nbRatio;
   std::string                   m_option_geweke_display;
   std::string                   m_option_geweke_write;
+  std::string                   m_option_meanStacc_compute;
+  std::string                   m_option_hist_compute;
+  std::string                   m_option_hist_numInternalBins;
+  std::string                   m_option_cdfStacc_compute;
+  std::string                   m_option_cdfStacc_numEvalPositions;
+#endif
   std::string                   m_option_autoCorr_computeViaDef;
   std::string                   m_option_autoCorr_computeViaFft;
   std::string                   m_option_autoCorr_secondLag;
@@ -255,11 +265,6 @@ private:
   std::string                   m_option_autoCorr_numLags;
   std::string                   m_option_autoCorr_display;
   std::string                   m_option_autoCorr_write;
-  std::string                   m_option_meanStacc_compute;
-  std::string                   m_option_hist_compute;
-  std::string                   m_option_hist_numInternalBins;
-  std::string                   m_option_cdfStacc_compute;
-  std::string                   m_option_cdfStacc_numEvalPositions;
   std::string                   m_option_kde_compute;
   std::string                   m_option_kde_numEvalPositions;
   std::string                   m_option_covMatrix_compute;

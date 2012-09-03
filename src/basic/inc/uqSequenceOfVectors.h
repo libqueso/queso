@@ -80,6 +80,7 @@ public:
         void         unifiedMedianExtra         (unsigned int                         initialPos,
                                                  unsigned int                         numPos,
                                                  V&                                   unifiedMedianVec) const;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
         void         subMeanCltStd              (unsigned int                         initialPos,
                                                  unsigned int                         numPos,
                                                  const V&                             meanVec,
@@ -88,6 +89,7 @@ public:
                                                  unsigned int                         numPos,
                                                  const V&                             unifiedMeanVec,
                                                  V&                                   unifiedSamVec) const;
+#endif
         void         subSampleVarianceExtra     (unsigned int                         initialPos,
                                                  unsigned int                         numPos,
                                                  const V&                             meanVec,
@@ -130,6 +132,7 @@ public:
                                                  unsigned int                         numPos,
                                                  unsigned int                         numSum,
                                                  V&                                   autoCorrsSumVec) const;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
         void         bmm                        (unsigned int                         initialPos,
                                                  unsigned int                         batchLength,
                                                  V&                                   bmmVec) const;
@@ -163,6 +166,15 @@ public:
                                                  double                               range, // \in [0,1]                    
                                                  V&                                   lowerVec,
                                                  V&                                   upperVec) const;
+        void         subCdfStacc                (unsigned int                         initialPos,
+                                                 std::vector<V*>&                     cdfStaccVecs,
+                                                 std::vector<V*>&                     cdfStaccVecsUp,
+                                                 std::vector<V*>&                     cdfStaccVecsLow,												 
+                                                 std::vector<V*>&                     sortedDataVecs) const;
+        void         subCdfStacc                (unsigned int                         initialPos,
+                                                 const std::vector<V*>&               evalPositionsVecs,
+                                                 std::vector<V*>&                     cdfStaccVecs) const;
+#endif
         void         subMinMaxExtra             (unsigned int                         initialPos,
                                                  unsigned int                         numPos,
                                                  V&                                   minVec,
@@ -181,14 +193,6 @@ public:
                                                  const V&                             unifiedMaxVec,
                                                  std::vector<V*>&                     unifiedCentersForAllBins,
                                                  std::vector<V*>&                     unifiedQuanttsForAllBins) const;
-        void         subCdfStacc                (unsigned int                         initialPos,
-                                                 std::vector<V*>&                     cdfStaccVecs,
-                                                 std::vector<V*>&                     cdfStaccVecsUp,
-                                                 std::vector<V*>&                     cdfStaccVecsLow,												 
-                                                 std::vector<V*>&                     sortedDataVecs) const;
-        void         subCdfStacc                (unsigned int                         initialPos,
-                                                 const std::vector<V*>&               evalPositionsVecs,
-                                                 std::vector<V*>&                     cdfStaccVecs) const;
         void         subInterQuantileRange      (unsigned int                         initialPos,
                                                  V&                                   iqrVec) const;
         void         unifiedInterQuantileRange  (unsigned int                         initialPos,
@@ -848,6 +852,7 @@ uqSequenceOfVectorsClass<V,M>::subUniformlySampledMdf(
   return;
 }
 #endif
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subUniformlySampledCdf(
@@ -928,7 +933,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf(
 
   return;
 }
-
+#endif
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanExtra(
@@ -1169,6 +1174,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedMedianExtra(
   return;
 }
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanCltStd(
@@ -1239,7 +1245,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedMeanCltStd(
 
   return;
 }
-
+#endif
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subSampleVarianceExtra(
@@ -1626,6 +1632,7 @@ uqSequenceOfVectorsClass<V,M>::autoCorrViaFft(
   return;
 }
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::bmm(
@@ -1893,6 +1900,111 @@ uqSequenceOfVectorsClass<V,M>::unifiedCdfPercentageRange(
 
 template <class V, class M>
 void
+uqSequenceOfVectorsClass<V,M>::subCdfStacc(
+  unsigned int     initialPos,
+  std::vector<V*>& cdfStaccVecs,
+  std::vector<V*>& cdfStaccVecsUp,
+  std::vector<V*>& cdfStaccVecsLow,  
+  std::vector<V*>& sortedDataVecs) const
+{
+  bool bRC = (initialPos < this->subSequenceSize());
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorsClass<V,M>::subCdfStacc()",
+                      "invalid input data");
+
+  unsigned int numPos = this->subSequenceSize() - initialPos;
+  unsigned int numEvals = numPos;
+  for (unsigned int j = 0; j < numEvals; ++j) {
+    cdfStaccVecs   [j] = new V(m_vectorSpace.zeroVector());
+    cdfStaccVecsUp [j] = new V(m_vectorSpace.zeroVector());
+    cdfStaccVecsLow[j] = new V(m_vectorSpace.zeroVector());
+    sortedDataVecs [j] = new V(m_vectorSpace.zeroVector());
+  }
+  std::vector<double> cdfStaccs   (numEvals,0.);
+  std::vector<double> cdfStaccsup (numEvals,0.);
+  std::vector<double> cdfStaccslow(numEvals,0.);
+
+  uqScalarSequenceClass<double> data      (m_env,0,"");
+  uqScalarSequenceClass<double> sortedData(m_env,0,"");
+  unsigned int numParams = this->vectorSizeLocal();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+    //std::cout << "x-data" << data<< std::endl;
+    data.subSort(initialPos,sortedData);
+    data.subCdfStacc(initialPos,
+                     cdfStaccs,
+                     cdfStaccsup,
+                     cdfStaccslow,
+                     sortedData);
+
+    for (unsigned int j = 0; j < numEvals; ++j) {
+      (*sortedDataVecs [j])[i] = sortedData  [j];
+      (*cdfStaccVecs   [j])[i] = cdfStaccs   [j];
+      (*cdfStaccVecsUp [j])[i] = cdfStaccsup [j];
+      (*cdfStaccVecsLow[j])[i] = cdfStaccslow[j];
+    }
+  }
+
+  return;
+}
+
+template <class V, class M>
+void
+uqSequenceOfVectorsClass<V,M>::subCdfStacc(
+  unsigned int           initialPos,
+  const std::vector<V*>& evalPositionsVecs,
+  std::vector<V*>&       cdfStaccVecs) const
+{
+  bool bRC = ((initialPos               <  this->subSequenceSize() ) &&
+              (0                        <  evalPositionsVecs.size()) &&
+              (evalPositionsVecs.size() == cdfStaccVecs.size()     ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorsClass<V,M>::subCdfStacc()",
+                      "invalid input data");
+
+  unsigned int numPos = this->subSequenceSize() - initialPos;
+  uqScalarSequenceClass<double> data(m_env,0,"");
+
+  unsigned int numEvals = evalPositionsVecs.size();
+  for (unsigned int j = 0; j < numEvals; ++j) {
+    cdfStaccVecs[j] = new V(m_vectorSpace.zeroVector());
+  }
+  std::vector<double> evalPositions(numEvals,0.);
+  std::vector<double> cdfStaccs    (numEvals,0.);
+
+  unsigned int numParams = this->vectorSizeLocal();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+
+    for (unsigned int j = 0; j < numEvals; ++j) {
+      evalPositions[j] = (*evalPositionsVecs[j])[i];
+    }
+
+    data.subCdfStacc(0,
+                     evalPositions,
+                     cdfStaccs);
+
+    for (unsigned int j = 0; j < numEvals; ++j) {
+      (*cdfStaccVecs[j])[i] = cdfStaccs[j];
+    }
+  }
+
+  return;
+}
+#endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+
+template <class V, class M>
+void
 uqSequenceOfVectorsClass<V,M>::subMinMaxExtra(
   unsigned int initialPos,
   unsigned int numPos,
@@ -2054,110 +2166,6 @@ uqSequenceOfVectorsClass<V,M>::unifiedHistogram(
     for (unsigned int j = 0; j < unifiedQuantts.size(); ++j) {
       (*(unifiedCentersForAllBins[j]))[i] = unifiedCenters[j];
       (*(unifiedQuanttsForAllBins[j]))[i] = (double) unifiedQuantts[j];
-    }
-  }
-
-  return;
-}
-
-template <class V, class M>
-void
-uqSequenceOfVectorsClass<V,M>::subCdfStacc(
-  unsigned int     initialPos,
-  std::vector<V*>& cdfStaccVecs,
-  std::vector<V*>& cdfStaccVecsUp,
-  std::vector<V*>& cdfStaccVecsLow,  
-  std::vector<V*>& sortedDataVecs) const
-{
-  bool bRC = (initialPos < this->subSequenceSize());
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "uqSequenceOfVectorsClass<V,M>::subCdfStacc()",
-                      "invalid input data");
-
-  unsigned int numPos = this->subSequenceSize() - initialPos;
-  unsigned int numEvals = numPos;
-  for (unsigned int j = 0; j < numEvals; ++j) {
-    cdfStaccVecs   [j] = new V(m_vectorSpace.zeroVector());
-    cdfStaccVecsUp [j] = new V(m_vectorSpace.zeroVector());
-    cdfStaccVecsLow[j] = new V(m_vectorSpace.zeroVector());
-    sortedDataVecs [j] = new V(m_vectorSpace.zeroVector());
-  }
-  std::vector<double> cdfStaccs   (numEvals,0.);
-  std::vector<double> cdfStaccsup (numEvals,0.);
-  std::vector<double> cdfStaccslow(numEvals,0.);
-
-  uqScalarSequenceClass<double> data      (m_env,0,"");
-  uqScalarSequenceClass<double> sortedData(m_env,0,"");
-  unsigned int numParams = this->vectorSizeLocal();
-  for (unsigned int i = 0; i < numParams; ++i) {
-    this->extractScalarSeq(initialPos,
-                           1, // spacing
-                           numPos,
-                           i,
-                           data);
-    //std::cout << "x-data" << data<< std::endl;
-    data.subSort(initialPos,sortedData);
-    data.subCdfStacc(initialPos,
-                     cdfStaccs,
-                     cdfStaccsup,
-                     cdfStaccslow,
-                     sortedData);
-
-    for (unsigned int j = 0; j < numEvals; ++j) {
-      (*sortedDataVecs [j])[i] = sortedData  [j];
-      (*cdfStaccVecs   [j])[i] = cdfStaccs   [j];
-      (*cdfStaccVecsUp [j])[i] = cdfStaccsup [j];
-      (*cdfStaccVecsLow[j])[i] = cdfStaccslow[j];
-    }
-  }
-
-  return;
-}
-
-template <class V, class M>
-void
-uqSequenceOfVectorsClass<V,M>::subCdfStacc(
-  unsigned int           initialPos,
-  const std::vector<V*>& evalPositionsVecs,
-  std::vector<V*>&       cdfStaccVecs) const
-{
-  bool bRC = ((initialPos               <  this->subSequenceSize() ) &&
-              (0                        <  evalPositionsVecs.size()) &&
-              (evalPositionsVecs.size() == cdfStaccVecs.size()     ));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "uqSequenceOfVectorsClass<V,M>::subCdfStacc()",
-                      "invalid input data");
-
-  unsigned int numPos = this->subSequenceSize() - initialPos;
-  uqScalarSequenceClass<double> data(m_env,0,"");
-
-  unsigned int numEvals = evalPositionsVecs.size();
-  for (unsigned int j = 0; j < numEvals; ++j) {
-    cdfStaccVecs[j] = new V(m_vectorSpace.zeroVector());
-  }
-  std::vector<double> evalPositions(numEvals,0.);
-  std::vector<double> cdfStaccs    (numEvals,0.);
-
-  unsigned int numParams = this->vectorSizeLocal();
-  for (unsigned int i = 0; i < numParams; ++i) {
-    this->extractScalarSeq(initialPos,
-                           1, // spacing
-                           numPos,
-                           i,
-                           data);
-
-    for (unsigned int j = 0; j < numEvals; ++j) {
-      evalPositions[j] = (*evalPositionsVecs[j])[i];
-    }
-
-    data.subCdfStacc(0,
-                     evalPositions,
-                     cdfStaccs);
-
-    for (unsigned int j = 0; j < numEvals; ++j) {
-      (*cdfStaccVecs[j])[i] = cdfStaccs[j];
     }
   }
 

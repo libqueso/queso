@@ -127,6 +127,7 @@ void compute(const uqFullEnvironmentClass& env) {
               << std::endl;
   }
   
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   // Step 8 of 9: Compute cdf accuracy
   std::vector<uqGslVectorClass*> cdfStaccVecs   (numSamples,NULL);
   std::vector<uqGslVectorClass*> cdfStaccVecsUp (numSamples,NULL);
@@ -178,7 +179,7 @@ void compute(const uqFullEnvironmentClass& env) {
     delete cdfStaccVecsLow[i];
     delete sortedDataVecs [i];
   }
-
+#endif
 #if 0
   uqGslVectorClass deltaVec(maxVec-minVec);
   deltaVec *= (1./(double) (auxSize-1));

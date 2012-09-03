@@ -55,10 +55,11 @@ public:
                                            uqArrayOfOneDGridsClass <V,M>& mdfGrids,
                                            uqArrayOfOneDTablesClass<V,M>& mdfValues) const;
 #endif
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
         void         uniformlySampledCdf  (const V&                       numEvaluationPointsVec,
                                            uqArrayOfOneDGridsClass <V,M>& cdfGrids,
                                            uqArrayOfOneDTablesClass<V,M>& cdfValues) const;
-
+#endif
         void         mean                 (unsigned int             initialPos,
                                            unsigned int             numPos,
                                            V&                       meanVec) const;
@@ -95,6 +96,7 @@ public:
                                            unsigned int             numPos,
                                            unsigned int             numSum,
                                            V&                       autoCorrsSumVec) const;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
         void         bmm                  (unsigned int             initialPos,
                                            unsigned int             batchLength,
                                            V&                       bmmVec) const;
@@ -116,6 +118,7 @@ public:
                                            double                   ratioNa,
                                            double                   ratioNb,
                                            V&                       gewVec) const;
+#endif
         void         minMax               (unsigned int             initialPos,
                                            V&                       minVec,
                                            V&                       maxVec) const;
@@ -318,6 +321,7 @@ uqArrayOfSequencesClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, cons
   return;
 }
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template <class V, class M>
 void
 uqArrayOfSequencesClass<V,M>::uniformlySampledCdf(
@@ -345,7 +349,7 @@ uqArrayOfSequencesClass<V,M>::uniformlySampledCdf(
 
   return;
 }
-
+#endif
 template <class V, class M>
 void
 uqArrayOfSequencesClass<V,M>::mean(
@@ -572,6 +576,43 @@ uqArrayOfSequencesClass<V,M>::autoCorrViaFft(
 
 template <class V, class M>
 void
+uqArrayOfSequencesClass<V,M>::autoCorrViaFft(
+  unsigned int initialPos,
+  unsigned int numPos,
+  unsigned int numSum,
+  V&           autoCorrsSumVec) const
+{
+#if 0
+  bool bRC = ((initialPos             <  this->subSequenceSize()) &&
+              (0                      <  numPos                 ) &&
+              ((initialPos+numPos)    <= this->subSequenceSize()) &&
+              (autoCorrsSumVec.size() == this->vectorSize()     ));
+  UQ_FATAL_TEST_MACRO(bRC == false,
+                      m_env.worldRank(),
+                      "uqArrayOfSequencesClass<V,M>::autoCorrViaFft(), for sum",
+                      "invalid input data");
+
+  uqScalarSequenceClass<double> data(m_env,0);
+
+  unsigned int numParams = this->vectorSize();
+  for (unsigned int i = 0; i < numParams; ++i) {
+    this->extractScalarSeq(initialPos,
+                           1, // spacing
+                           numPos,
+                           i,
+                           data);
+
+    data.autoCorrViaFft(0,
+                        numPos,
+                        autoCorrsSumVec[i]);
+  }
+#endif
+  return;
+}
+
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+template <class V, class M>
+void
 uqArrayOfSequencesClass<V,M>::bmm(
   unsigned int initialPos,
   unsigned int batchLength,
@@ -628,42 +669,6 @@ uqArrayOfSequencesClass<V,M>::bmm(
         if (batchMeans[batchId] != NULL) delete batchMeans[batchId];
       }
     }
-  }
-#endif
-  return;
-}
-
-template <class V, class M>
-void
-uqArrayOfSequencesClass<V,M>::autoCorrViaFft(
-  unsigned int initialPos,
-  unsigned int numPos,
-  unsigned int numSum,
-  V&           autoCorrsSumVec) const
-{
-#if 0
-  bool bRC = ((initialPos             <  this->subSequenceSize()) &&
-              (0                      <  numPos                 ) &&
-              ((initialPos+numPos)    <= this->subSequenceSize()) &&
-              (autoCorrsSumVec.size() == this->vectorSize()     ));
-  UQ_FATAL_TEST_MACRO(bRC == false,
-                      m_env.worldRank(),
-                      "uqArrayOfSequencesClass<V,M>::autoCorrViaFft(), for sum",
-                      "invalid input data");
-
-  uqScalarSequenceClass<double> data(m_env,0);
-
-  unsigned int numParams = this->vectorSize();
-  for (unsigned int i = 0; i < numParams; ++i) {
-    this->extractScalarSeq(initialPos,
-                           1, // spacing
-                           numPos,
-                           i,
-                           data);
-
-    data.autoCorrViaFft(0,
-                        numPos,
-                        autoCorrsSumVec[i]);
   }
 #endif
   return;
@@ -795,6 +800,7 @@ uqArrayOfSequencesClass<V,M>::geweke(
 #endif
   return;
 }
+#endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 
 template <class V, class M>
 void

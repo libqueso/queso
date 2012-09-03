@@ -277,6 +277,7 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
     Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
 
     // Epsilon = 0.02
@@ -351,6 +352,7 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
     }
 
     delete epsilonVec;
+#endif
   }
 
   return;
@@ -365,6 +367,7 @@ uqAppl_UnifiedComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
     Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
 
     // Epsilon = 0.02
@@ -439,6 +442,7 @@ uqAppl_UnifiedComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
     }
 
     delete epsilonVec;
+#endif
   }
 
   return;

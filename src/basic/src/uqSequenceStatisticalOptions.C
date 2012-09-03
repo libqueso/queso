@@ -32,6 +32,7 @@
 uqSsOptionsValuesClass::uqSsOptionsValuesClass()
   :
   m_initialDiscardedPortions(0                                           ),//,0.),
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   m_meanMonitorPeriod       (UQ_SEQUENCE_MEAN_MONITOR_PERIOD_ODV         ),
   m_bmmRun                  (UQ_SEQUENCE_BMM_RUN_ODV                     ),
   m_bmmLengths              (0                                           ),//,0),
@@ -55,6 +56,12 @@ uqSsOptionsValuesClass::uqSsOptionsValuesClass()
   m_gewekeNbRatio           (UQ_SEQUENCE_GEWEKE_NB_RATIO_ODV             ),
   m_gewekeDisplay           (UQ_SEQUENCE_GEWEKE_DISPLAY_ODV              ),
   m_gewekeWrite             (UQ_SEQUENCE_GEWEKE_WRITE_ODV                ),
+  m_meanStaccCompute        (UQ_SEQUENCE_MEAN_STACC_COMPUTE_ODV          ),
+  m_histCompute             (UQ_SEQUENCE_HIST_COMPUTE_ODV                ),
+  m_histNumInternalBins     (UQ_SEQUENCE_HIST_NUM_INTERNAL_BINS_ODV      ),
+  m_cdfStaccCompute         (UQ_SEQUENCE_CDF_STACC_COMPUTE_ODV           ),
+  m_cdfStaccNumEvalPositions(UQ_SEQUENCE_CDF_STACC_NUM_EVAL_POSITIONS_ODV),
+#endif
   m_autoCorrComputeViaDef   (UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_DEF_ODV   ),
   m_autoCorrComputeViaFft   (UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_FFT_ODV   ),
   m_autoCorrSecondLag       (UQ_SEQUENCE_AUTO_CORR_SECOND_LAG_ODV        ),
@@ -62,11 +69,6 @@ uqSsOptionsValuesClass::uqSsOptionsValuesClass()
   m_autoCorrNumLags         (UQ_SEQUENCE_AUTO_CORR_NUM_LAGS_ODV          ),
   m_autoCorrDisplay         (UQ_SEQUENCE_AUTO_CORR_DISPLAY_ODV           ),
   m_autoCorrWrite           (UQ_SEQUENCE_AUTO_CORR_WRITE_ODV             ),
-  m_meanStaccCompute        (UQ_SEQUENCE_MEAN_STACC_COMPUTE_ODV          ),
-  m_histCompute             (UQ_SEQUENCE_HIST_COMPUTE_ODV                ),
-  m_histNumInternalBins     (UQ_SEQUENCE_HIST_NUM_INTERNAL_BINS_ODV      ),
-  m_cdfStaccCompute         (UQ_SEQUENCE_CDF_STACC_COMPUTE_ODV           ),
-  m_cdfStaccNumEvalPositions(UQ_SEQUENCE_CDF_STACC_NUM_EVAL_POSITIONS_ODV),
   m_kdeCompute              (UQ_SEQUENCE_KDE_COMPUTE_ODV                 ),
   m_kdeNumEvalPositions     (UQ_SEQUENCE_KDE_NUM_EVAL_POSITIONS_ODV      ),
   m_covMatrixCompute        (UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV          ),
@@ -94,6 +96,7 @@ void
 uqSsOptionsValuesClass::copy(const uqSsOptionsValuesClass& src)
 {
   m_initialDiscardedPortions = src.m_initialDiscardedPortions;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   m_meanMonitorPeriod        = src.m_meanMonitorPeriod;
   m_bmmRun                   = src.m_bmmRun;
   m_bmmLengths               = src.m_bmmLengths;
@@ -117,6 +120,12 @@ uqSsOptionsValuesClass::copy(const uqSsOptionsValuesClass& src)
   m_gewekeNbRatio            = src.m_gewekeNbRatio;
   m_gewekeDisplay            = src.m_gewekeDisplay;
   m_gewekeWrite              = src.m_gewekeWrite;
+  m_meanStaccCompute         = src.m_meanStaccCompute;
+  m_histCompute              = src.m_histCompute;
+  m_histNumInternalBins      = src.m_histNumInternalBins;
+  m_cdfStaccCompute          = src.m_cdfStaccCompute;
+  m_cdfStaccNumEvalPositions = src.m_cdfStaccNumEvalPositions;
+#endif
   m_autoCorrComputeViaDef    = src.m_autoCorrComputeViaDef;
   m_autoCorrComputeViaFft    = src.m_autoCorrComputeViaFft;
   m_autoCorrSecondLag        = src.m_autoCorrSecondLag;
@@ -124,11 +133,6 @@ uqSsOptionsValuesClass::copy(const uqSsOptionsValuesClass& src)
   m_autoCorrNumLags          = src.m_autoCorrNumLags;
   m_autoCorrDisplay          = src.m_autoCorrDisplay;
   m_autoCorrWrite            = src.m_autoCorrWrite;
-  m_meanStaccCompute         = src.m_meanStaccCompute;
-  m_histCompute              = src.m_histCompute;
-  m_histNumInternalBins      = src.m_histNumInternalBins;
-  m_cdfStaccCompute          = src.m_cdfStaccCompute;
-  m_cdfStaccNumEvalPositions = src.m_cdfStaccNumEvalPositions;
   m_kdeCompute               = src.m_kdeCompute;
   m_kdeNumEvalPositions      = src.m_kdeNumEvalPositions;
   m_covMatrixCompute         = src.m_covMatrixCompute;
@@ -147,6 +151,7 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
   m_optionsDesc                     (new po::options_description("Chain statistical options")),
   m_option_help                     (m_prefix + "help"                     ),
   m_option_initialDiscardedPortions (m_prefix + "initialDiscardedPortions" ),
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   m_option_mean_monitorPeriod       (m_prefix + "mean_monitorPeriod"       ),
   m_option_bmm_run                  (m_prefix + "bmm_run"                  ),
   m_option_bmm_lengths              (m_prefix + "bmm_lengths"              ),
@@ -172,6 +177,12 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
   m_option_geweke_nbRatio           (m_prefix + "geweke_nbRatio"           ),
   m_option_geweke_display           (m_prefix + "geweke_display"           ),
   m_option_geweke_write             (m_prefix + "geweke_write"             ),
+  m_option_meanStacc_compute        (m_prefix + "meanStacc_compute"        ),
+  m_option_hist_compute             (m_prefix + "hist_compute"             ),
+  m_option_hist_numInternalBins     (m_prefix + "hist_numInternalBins"     ),
+  m_option_cdfStacc_compute         (m_prefix + "cdfStacc_compute"         ),
+  m_option_cdfStacc_numEvalPositions(m_prefix + "cdfStacc_numEvalPositions"),
+#endif
   m_option_autoCorr_computeViaDef   (m_prefix + "autoCorr_computeViaDef"   ),
   m_option_autoCorr_computeViaFft   (m_prefix + "autoCorr_computeViaFft"   ),
   m_option_autoCorr_secondLag       (m_prefix + "autoCorr_secondLag"       ),
@@ -179,11 +190,6 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
   m_option_autoCorr_numLags         (m_prefix + "autoCorr_numLags"         ),
   m_option_autoCorr_display         (m_prefix + "autoCorr_display"         ),
   m_option_autoCorr_write           (m_prefix + "autoCorr_write"           ),
-  m_option_meanStacc_compute        (m_prefix + "meanStacc_compute"        ),
-  m_option_hist_compute             (m_prefix + "hist_compute"             ),
-  m_option_hist_numInternalBins     (m_prefix + "hist_numInternalBins"     ),
-  m_option_cdfStacc_compute         (m_prefix + "cdfStacc_compute"         ),
-  m_option_cdfStacc_numEvalPositions(m_prefix + "cdfStacc_numEvalPositions"),
   m_option_kde_compute              (m_prefix + "kde_compute"              ),
   m_option_kde_numEvalPositions     (m_prefix + "kde_numEvalPositions"     ),
   m_option_covMatrix_compute        (m_prefix + "covMatrix_compute"        ),
@@ -229,6 +235,7 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
   m_optionsDesc                     (NULL),
   m_option_help                     (m_prefix + "help"                     ),
   m_option_initialDiscardedPortions (m_prefix + "initialDiscardedPortions" ),
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   m_option_mean_monitorPeriod       (m_prefix + "mean_monitorPeriod"       ),
   m_option_bmm_run                  (m_prefix + "bmm_run"                  ),
   m_option_bmm_lengths              (m_prefix + "bmm_lengths"              ),
@@ -254,6 +261,12 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
   m_option_geweke_nbRatio           (m_prefix + "geweke_nbRatio"           ),
   m_option_geweke_display           (m_prefix + "geweke_display"           ),
   m_option_geweke_write             (m_prefix + "geweke_write"             ),
+  m_option_meanStacc_compute        (m_prefix + "meanStacc_compute"        ),
+  m_option_hist_compute             (m_prefix + "hist_compute"             ),
+  m_option_hist_numInternalBins     (m_prefix + "hist_numInternalBins"     ),
+  m_option_cdfStacc_compute         (m_prefix + "cdfStacc_compute"         ),
+  m_option_cdfStacc_numEvalPositions(m_prefix + "cdfStacc_numEvalPositions"),
+#endif
   m_option_autoCorr_computeViaDef   (m_prefix + "autoCorr_computeViaDef"   ),
   m_option_autoCorr_computeViaFft   (m_prefix + "autoCorr_computeViaFft"   ),
   m_option_autoCorr_secondLag       (m_prefix + "autoCorr_secondLag"       ),
@@ -261,11 +274,6 @@ uqSequenceStatisticalOptionsClass::uqSequenceStatisticalOptionsClass(
   m_option_autoCorr_numLags         (m_prefix + "autoCorr_numLags"         ),
   m_option_autoCorr_display         (m_prefix + "autoCorr_display"         ),
   m_option_autoCorr_write           (m_prefix + "autoCorr_write"           ),
-  m_option_meanStacc_compute        (m_prefix + "meanStacc_compute"        ),
-  m_option_hist_compute             (m_prefix + "hist_compute"             ),
-  m_option_hist_numInternalBins     (m_prefix + "hist_numInternalBins"     ),
-  m_option_cdfStacc_compute         (m_prefix + "cdfStacc_compute"         ),
-  m_option_cdfStacc_numEvalPositions(m_prefix + "cdfStacc_numEvalPositions"),
   m_option_kde_compute              (m_prefix + "kde_compute"              ),
   m_option_kde_numEvalPositions     (m_prefix + "kde_numEvalPositions"     ),
   m_option_covMatrix_compute        (m_prefix + "covMatrix_compute"        ),
@@ -308,6 +316,7 @@ uqSequenceStatisticalOptionsClass::defineMyOptions(
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                    "produce help message for chain statistical options"             )
     (m_option_initialDiscardedPortions.c_str(),       po::value<std::string >()->default_value(UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV      ), "list of initial discarded portions for chain statistics"        )
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
     (m_option_mean_monitorPeriod.c_str(),             po::value<unsigned int>()->default_value(UQ_SEQUENCE_MEAN_MONITOR_PERIOD_ODV             ), "period for monitoring mean"                                     )
     (m_option_bmm_run.c_str(),                        po::value<bool        >()->default_value(UQ_SEQUENCE_BMM_RUN_ODV                         ), "compute variance of sample mean with batch means method"        )
     (m_option_bmm_lengths.c_str(),                    po::value<std::string >()->default_value(UQ_SEQUENCE_BMM_LENGTHS_ODV                     ), "list of batch lenghts for BMM"                                  )
@@ -331,6 +340,12 @@ uqSequenceStatisticalOptionsClass::defineMyOptions(
     (m_option_geweke_nbRatio.c_str(),                 po::value<double      >()->default_value(UQ_SEQUENCE_GEWEKE_NB_RATIO_ODV                 ), "ratio NB for Geweke"                                            )
     (m_option_geweke_display.c_str(),                 po::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_DISPLAY_ODV                  ), "display computed Geweke on screen"                              )
     (m_option_geweke_write.c_str(),                   po::value<bool        >()->default_value(UQ_SEQUENCE_GEWEKE_WRITE_ODV                    ), "write computed Geweke to the output file"                       )
+    (m_option_meanStacc_compute.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_MEAN_STACC_COMPUTE_ODV              ), "compute statistical accuracy of mean"                           )
+    (m_option_hist_compute.c_str(),                   po::value<bool        >()->default_value(UQ_SEQUENCE_HIST_COMPUTE_ODV                    ), "compute histograms"                                             )
+    (m_option_hist_numInternalBins.c_str(),           po::value<unsigned int>()->default_value(UQ_SEQUENCE_HIST_NUM_INTERNAL_BINS_ODV          ), "number of internal bins"                                        )
+    (m_option_cdfStacc_compute.c_str(),               po::value<bool        >()->default_value(UQ_SEQUENCE_CDF_STACC_COMPUTE_ODV               ), "compute statisical accuracy of cdf"                             )
+    (m_option_cdfStacc_numEvalPositions.c_str(),      po::value<unsigned int>()->default_value(UQ_SEQUENCE_CDF_STACC_NUM_EVAL_POSITIONS_ODV    ), "number of evaluations points for statistical accuracy of cdf"   )
+#endif
     (m_option_autoCorr_computeViaDef.c_str(),         po::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_DEF_ODV       ), "compute correlations via definition"                            )
     (m_option_autoCorr_computeViaFft.c_str(),         po::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_COMPUTE_VIA_FFT_ODV       ), "compute correlations via fft"                                   )
     (m_option_autoCorr_secondLag.c_str(),             po::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_SECOND_LAG_ODV            ), "second lag for computation of autocorrelations"                 )
@@ -338,11 +353,6 @@ uqSequenceStatisticalOptionsClass::defineMyOptions(
     (m_option_autoCorr_numLags.c_str(),               po::value<unsigned int>()->default_value(UQ_SEQUENCE_AUTO_CORR_NUM_LAGS_ODV              ), "number of lags for computation of autocorrelations"             )
     (m_option_autoCorr_display.c_str(),               po::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_DISPLAY_ODV               ), "display computed autocorrelations on the screen"                )
     (m_option_autoCorr_write.c_str(),                 po::value<bool        >()->default_value(UQ_SEQUENCE_AUTO_CORR_WRITE_ODV                 ), "write computed autocorrelations to the output file"             )
-    (m_option_meanStacc_compute.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_MEAN_STACC_COMPUTE_ODV              ), "compute statistical accuracy of mean"                           )
-    (m_option_hist_compute.c_str(),                   po::value<bool        >()->default_value(UQ_SEQUENCE_HIST_COMPUTE_ODV                    ), "compute histograms"                                             )
-    (m_option_hist_numInternalBins.c_str(),           po::value<unsigned int>()->default_value(UQ_SEQUENCE_HIST_NUM_INTERNAL_BINS_ODV          ), "number of internal bins"                                        )
-    (m_option_cdfStacc_compute.c_str(),               po::value<bool        >()->default_value(UQ_SEQUENCE_CDF_STACC_COMPUTE_ODV               ), "compute statisical accuracy of cdf"                             )
-    (m_option_cdfStacc_numEvalPositions.c_str(),      po::value<unsigned int>()->default_value(UQ_SEQUENCE_CDF_STACC_NUM_EVAL_POSITIONS_ODV    ), "number of evaluations points for statistical accuracy of cdf"   )
     (m_option_kde_compute.c_str(),                    po::value<bool        >()->default_value(UQ_SEQUENCE_KDE_COMPUTE_ODV                     ), "compute kernel density estimators"                              )
     (m_option_kde_numEvalPositions.c_str(),           po::value<unsigned int>()->default_value(UQ_SEQUENCE_KDE_NUM_EVAL_POSITIONS_ODV          ), "number of evaluation positions"                                 )
     (m_option_covMatrix_compute.c_str(),              po::value<bool        >()->default_value(UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV              ), "compute covariance matrix"                                      )
@@ -384,6 +394,7 @@ uqSequenceStatisticalOptionsClass::getMyOptionValues(
     }
   }
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if (m_env.allOptionsMap().count(m_option_mean_monitorPeriod)) {
     m_ov.m_meanMonitorPeriod = m_env.allOptionsMap()[m_option_mean_monitorPeriod].as<unsigned int>();
   }
@@ -510,6 +521,26 @@ uqSequenceStatisticalOptionsClass::getMyOptionValues(
     m_ov.m_gewekeWrite = m_env.allOptionsMap()[m_option_geweke_write].as<bool>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_meanStacc_compute)) {
+    m_ov.m_meanStaccCompute = m_env.allOptionsMap()[m_option_meanStacc_compute].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_hist_compute)) {
+    m_ov.m_histCompute = m_env.allOptionsMap()[m_option_hist_compute].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_hist_numInternalBins)) {
+    m_ov.m_histNumInternalBins = m_env.allOptionsMap()[m_option_hist_numInternalBins].as<unsigned int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_cdfStacc_compute)) {
+    m_ov.m_cdfStaccCompute = m_env.allOptionsMap()[m_option_cdfStacc_compute].as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_cdfStacc_numEvalPositions)) {
+    m_ov.m_cdfStaccNumEvalPositions = m_env.allOptionsMap()[m_option_cdfStacc_numEvalPositions].as<unsigned int>();
+  }
+#endif
   if (m_env.allOptionsMap().count(m_option_autoCorr_computeViaDef)) {
     m_ov.m_autoCorrComputeViaDef = m_env.allOptionsMap()[m_option_autoCorr_computeViaDef].as<bool>();
   }
@@ -538,26 +569,6 @@ uqSequenceStatisticalOptionsClass::getMyOptionValues(
     m_ov.m_autoCorrWrite = m_env.allOptionsMap()[m_option_autoCorr_write].as<bool>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_meanStacc_compute)) {
-    m_ov.m_meanStaccCompute = m_env.allOptionsMap()[m_option_meanStacc_compute].as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_hist_compute)) {
-    m_ov.m_histCompute = m_env.allOptionsMap()[m_option_hist_compute].as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_hist_numInternalBins)) {
-    m_ov.m_histNumInternalBins = m_env.allOptionsMap()[m_option_hist_numInternalBins].as<unsigned int>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_cdfStacc_compute)) {
-    m_ov.m_cdfStaccCompute = m_env.allOptionsMap()[m_option_cdfStacc_compute].as<bool>();
-  }
-
-  if (m_env.allOptionsMap().count(m_option_cdfStacc_numEvalPositions)) {
-    m_ov.m_cdfStaccNumEvalPositions = m_env.allOptionsMap()[m_option_cdfStacc_numEvalPositions].as<unsigned int>();
-  }
-
   if (m_env.allOptionsMap().count(m_option_kde_compute)) {
     m_ov.m_kdeCompute = m_env.allOptionsMap()[m_option_kde_compute].as<bool>();
   }
@@ -583,6 +594,7 @@ uqSequenceStatisticalOptionsClass::initialDiscardedPortions() const
   return m_ov.m_initialDiscardedPortions;
 }
 
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 unsigned int
 uqSequenceStatisticalOptionsClass::meanMonitorPeriod() const
 {
@@ -734,6 +746,36 @@ uqSequenceStatisticalOptionsClass::gewekeWrite() const
 }
 
 bool
+uqSequenceStatisticalOptionsClass::meanStaccCompute() const
+{
+  return m_ov.m_meanStaccCompute;
+}
+
+bool
+uqSequenceStatisticalOptionsClass::histCompute() const
+{
+  return m_ov.m_histCompute;
+}
+
+unsigned int
+uqSequenceStatisticalOptionsClass::histNumInternalBins() const
+{
+  return m_ov.m_histNumInternalBins;
+}
+
+bool
+uqSequenceStatisticalOptionsClass::cdfStaccCompute() const
+{
+  return m_ov.m_cdfStaccCompute;
+}
+
+unsigned int
+uqSequenceStatisticalOptionsClass::cdfStaccNumEvalPositions() const
+{
+  return m_ov.m_cdfStaccNumEvalPositions;
+}
+#endif
+bool
 uqSequenceStatisticalOptionsClass::autoCorrComputeViaDef() const
 {
   return m_ov.m_autoCorrComputeViaDef;
@@ -776,36 +818,6 @@ uqSequenceStatisticalOptionsClass::autoCorrWrite() const
 }
 
 bool
-uqSequenceStatisticalOptionsClass::meanStaccCompute() const
-{
-  return m_ov.m_meanStaccCompute;
-}
-
-bool
-uqSequenceStatisticalOptionsClass::histCompute() const
-{
-  return m_ov.m_histCompute;
-}
-
-unsigned int
-uqSequenceStatisticalOptionsClass::histNumInternalBins() const
-{
-  return m_ov.m_histNumInternalBins;
-}
-
-bool
-uqSequenceStatisticalOptionsClass::cdfStaccCompute() const
-{
-  return m_ov.m_cdfStaccCompute;
-}
-
-unsigned int
-uqSequenceStatisticalOptionsClass::cdfStaccNumEvalPositions() const
-{
-  return m_ov.m_cdfStaccNumEvalPositions;
-}
-
-bool
 uqSequenceStatisticalOptionsClass::kdeCompute() const
 {
   return m_ov.m_kdeCompute;
@@ -836,7 +848,9 @@ uqSequenceStatisticalOptionsClass::print(std::ostream& os) const
   for (unsigned int i = 0; i < m_ov.m_initialDiscardedPortions.size(); ++i) {
     os << m_ov.m_initialDiscardedPortions[i] << " ";
   }
-  os << "\n" << m_option_mean_monitorPeriod << " = " << m_ov.m_meanMonitorPeriod
+  os
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+     << "\n" << m_option_mean_monitorPeriod << " = " << m_ov.m_meanMonitorPeriod
      << "\n" << m_option_bmm_run            << " = " << m_ov.m_bmmRun
      << "\n" << m_option_bmm_lengths        << " = ";
   for (unsigned int i = 0; i < m_ov.m_bmmLengths.size(); ++i) {
@@ -865,6 +879,12 @@ uqSequenceStatisticalOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_geweke_nbRatio            << " = " << m_ov.m_gewekeNbRatio
      << "\n" << m_option_geweke_display            << " = " << m_ov.m_gewekeDisplay
      << "\n" << m_option_geweke_write              << " = " << m_ov.m_gewekeWrite
+     << "\n" << m_option_meanStacc_compute         << " = " << m_ov.m_meanStaccCompute
+     << "\n" << m_option_hist_compute              << " = " << m_ov.m_histCompute
+     << "\n" << m_option_hist_numInternalBins      << " = " << m_ov.m_histNumInternalBins
+     << "\n" << m_option_cdfStacc_compute          << " = " << m_ov.m_cdfStaccCompute
+     << "\n" << m_option_cdfStacc_numEvalPositions << " = " << m_ov.m_cdfStaccNumEvalPositions
+#endif
      << "\n" << m_option_autoCorr_computeViaDef    << " = " << m_ov.m_autoCorrComputeViaDef
      << "\n" << m_option_autoCorr_computeViaFft    << " = " << m_ov.m_autoCorrComputeViaFft
      << "\n" << m_option_autoCorr_secondLag        << " = " << m_ov.m_autoCorrSecondLag
@@ -872,11 +892,6 @@ uqSequenceStatisticalOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_autoCorr_numLags          << " = " << m_ov.m_autoCorrNumLags
      << "\n" << m_option_autoCorr_display          << " = " << m_ov.m_autoCorrDisplay
      << "\n" << m_option_autoCorr_write            << " = " << m_ov.m_autoCorrWrite
-     << "\n" << m_option_meanStacc_compute         << " = " << m_ov.m_meanStaccCompute
-     << "\n" << m_option_hist_compute              << " = " << m_ov.m_histCompute
-     << "\n" << m_option_hist_numInternalBins      << " = " << m_ov.m_histNumInternalBins
-     << "\n" << m_option_cdfStacc_compute          << " = " << m_ov.m_cdfStaccCompute
-     << "\n" << m_option_cdfStacc_numEvalPositions << " = " << m_ov.m_cdfStaccNumEvalPositions
      << "\n" << m_option_kde_compute               << " = " << m_ov.m_kdeCompute
      << "\n" << m_option_kde_numEvalPositions      << " = " << m_ov.m_kdeNumEvalPositions
      << "\n" << m_option_covMatrix_compute         << " = " << m_ov.m_covMatrixCompute
