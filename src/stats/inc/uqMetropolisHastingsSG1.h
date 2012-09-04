@@ -193,7 +193,11 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_lastChainSize             (0),
   m_lastMean                  (NULL),
   m_lastAdaptedCovMatrix      (NULL),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_alternativeOptionsValues  (NULL,NULL),
+#else
+  m_alternativeOptionsValues  (),
+#endif
   m_optionsObj                (NULL)
 {
   if (inputProposalCovMatrix != NULL) {
@@ -266,7 +270,11 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_lastChainSize             (0),
   m_lastMean                  (NULL),
   m_lastAdaptedCovMatrix      (NULL),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_alternativeOptionsValues  (NULL,NULL),
+#else
+  m_alternativeOptionsValues  (),
+#endif
   m_optionsObj                (new uqMetropolisHastingsSGOptionsClass(mlOptions))
 {
   if (inputProposalCovMatrix != NULL) {

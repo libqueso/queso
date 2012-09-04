@@ -217,22 +217,25 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                       "improper writeInfo() return");
   }
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_optionsObj->m_ov.m_rawChainComputeStats) {
     workingChain.computeStatistics(*m_optionsObj->m_rawChainStatisticalOptionsObj,
                                    genericFilePtrSet.ofsVar);
-    // Compute MLE and MAP
-    // rr0
-    if (workingLogLikelihoodValues) {
-      uqSequenceOfVectorsClass<P_V,P_M> subPositionsOfMaximum(m_vectorSpace,0,m_optionsObj->m_prefix+"subMLEseq");
-      workingChain.subPositionsOfMaximum(*workingLogLikelihoodValues,
-                                         subPositionsOfMaximum);
-
-      uqSequenceOfVectorsClass<P_V,P_M> unifiedPositionsOfMaximum(m_vectorSpace,0,m_optionsObj->m_prefix+"unifiedMLEseq");
-      workingChain.unifiedPositionsOfMaximum(*workingLogLikelihoodValues,
-                                             unifiedPositionsOfMaximum);
-    }
   }
+#endif
+  // Compute MLE and MAP
+  // rr0
+#if 0
+  if (workingLogLikelihoodValues) {
+    uqSequenceOfVectorsClass<P_V,P_M> subPositionsOfMaximum(m_vectorSpace,0,m_optionsObj->m_prefix+"subMLEseq");
+    workingChain.subPositionsOfMaximum(*workingLogLikelihoodValues,
+                                       subPositionsOfMaximum);
 
+    uqSequenceOfVectorsClass<P_V,P_M> unifiedPositionsOfMaximum(m_vectorSpace,0,m_optionsObj->m_prefix+"unifiedMLEseq");
+    workingChain.unifiedPositionsOfMaximum(*workingLogLikelihoodValues,
+                                           unifiedPositionsOfMaximum);
+  }
+#endif
 #if 0 // 2009 03 29, prudenci: do not throw code away yet; just comment code for now
   //****************************************************
   // Eventually:
@@ -260,11 +263,13 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     }
 
     // Compute statistics
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     if (m_uniqueChainComputeStats) {
       workingChain.computeStatistics(*m_uniqueChainStatisticalOptions,
                                      genericFilePtrSet.ofsVar);
-      // Compute MLE and MAP: to be done
     }
+#endif
+    // Compute MLE and MAP: to be done
   }
 #endif
 
@@ -279,8 +284,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     unsigned int filterInitialPos = (unsigned int) (m_optionsObj->m_ov.m_filteredChainDiscardedPortion * (double) workingChain.subSequenceSize());
     unsigned int filterSpacing    = m_optionsObj->m_ov.m_filteredChainLag;
     if (filterSpacing == 0) {
-      workingChain.computeFilterParams(*m_optionsObj->m_filteredChainStatisticalOptionsObj,
-                                       genericFilePtrSet.ofsVar,
+      workingChain.computeFilterParams(genericFilePtrSet.ofsVar,
                                        filterInitialPos,
                                        filterSpacing);
     }
@@ -337,12 +341,14 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     }
 
     // Compute statistics
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     if (m_optionsObj->m_ov.m_filteredChainComputeStats) {
       workingChain.computeStatistics(*m_optionsObj->m_filteredChainStatisticalOptionsObj,
                                      genericFilePtrSet.ofsVar);
-      // Compute MLE and MAP
-      // rr0
     }
+#endif
+   // Compute MLE and MAP
+   // rr0
   }
 
   //****************************************************

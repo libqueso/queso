@@ -65,9 +65,11 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_rawChainDataOutputFileType               (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
 //m_rawChainDataOutputAllowedSet             (),
   m_str2                                     (""),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_rawChainComputeStats                     (UQ_ML_SAMPLING_L_RAW_CHAIN_COMPUTE_STATS_ODV),
   m_rawChainStatisticalOptionsObj            (NULL),
   m_rawChainStatOptsInstantiated             (false),
+#endif
   m_filteredChainGenerate                    (UQ_ML_SAMPLING_L_FILTERED_CHAIN_GENERATE_ODV),
   m_filteredChainDiscardedPortion            (UQ_ML_SAMPLING_L_FILTERED_CHAIN_DISCARDED_PORTION_ODV),
   m_filteredChainLag                         (UQ_ML_SAMPLING_L_FILTERED_CHAIN_LAG_ODV),
@@ -75,9 +77,11 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_filteredChainDataOutputFileType          (UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
 //m_filteredChainDataOutputAllowedSet        (),
   m_str3                                     (""),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_filteredChainComputeStats                (UQ_ML_SAMPLING_L_FILTERED_CHAIN_COMPUTE_STATS_ODV),
   m_filteredChainStatisticalOptionsObj       (NULL),
   m_filteredChainStatOptsInstantiated        (false),
+#endif
   m_displayCandidates                        (UQ_ML_SAMPLING_L_DISPLAY_CANDIDATES_ODV),
   m_putOutOfBoundsInChain                    (UQ_ML_SAMPLING_L_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV),
   m_tkUseLocalHessian                        (UQ_ML_SAMPLING_L_TK_USE_LOCAL_HESSIAN_ODV),
@@ -126,14 +130,18 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_rawChain_dataOutputFileName               (m_prefix + "rawChain_dataOutputFileName"               ),
   m_option_rawChain_dataOutputFileType               (m_prefix + "rawChain_dataOutputFileType"               ),
   m_option_rawChain_dataOutputAllowedSet             (m_prefix + "rawChain_dataOutputAllowedSet"             ),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_option_rawChain_computeStats                     (m_prefix + "rawChain_computeStats"                     ),
+#endif
   m_option_filteredChain_generate                    (m_prefix + "filteredChain_generate"                    ),
   m_option_filteredChain_discardedPortion            (m_prefix + "filteredChain_discardedPortion"            ),
   m_option_filteredChain_lag                         (m_prefix + "filteredChain_lag"                         ),
   m_option_filteredChain_dataOutputFileName          (m_prefix + "filteredChain_dataOutputFileName"          ),
   m_option_filteredChain_dataOutputFileType          (m_prefix + "filteredChain_dataOutputFileType"          ),
   m_option_filteredChain_dataOutputAllowedSet        (m_prefix + "filteredChain_dataOutputAllowedSet"        ),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_option_filteredChain_computeStats                (m_prefix + "filteredChain_computeStats"                ),
+#endif
   m_option_displayCandidates                         (m_prefix + "displayCandidates"                         ),
   m_option_putOutOfBoundsInChain                     (m_prefix + "putOutOfBoundsInChain"                     ),
   m_option_tk_useLocalHessian                        (m_prefix + "tk_useLocalHessian"                        ),
@@ -187,9 +195,11 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_rawChainDataOutputFileType                = srcOptions.m_rawChainDataOutputFileType;
   m_rawChainDataOutputAllowedSet              = srcOptions.m_rawChainDataOutputAllowedSet;
   m_str2                                      = srcOptions.m_str2;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_rawChainComputeStats                      = srcOptions.m_rawChainComputeStats;
   m_rawChainStatisticalOptionsObj             = NULL; // Yes, 'NULL'
   m_rawChainStatOptsInstantiated              = false;
+#endif
   m_filteredChainGenerate                     = srcOptions.m_filteredChainGenerate;
   m_filteredChainDiscardedPortion             = srcOptions.m_filteredChainDiscardedPortion;
   m_filteredChainLag                          = srcOptions.m_filteredChainLag;
@@ -197,9 +207,11 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_filteredChainDataOutputFileType           = srcOptions.m_filteredChainDataOutputFileType;
   m_filteredChainDataOutputAllowedSet         = srcOptions.m_filteredChainDataOutputAllowedSet;
   m_str3                                      = srcOptions.m_str3;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_filteredChainComputeStats                 = srcOptions.m_filteredChainComputeStats;
   m_filteredChainStatisticalOptionsObj        = NULL; // Yes, 'NULL'
   m_filteredChainStatOptsInstantiated         = false;
+#endif
   m_displayCandidates                         = srcOptions.m_displayCandidates;
   m_putOutOfBoundsInChain                     = srcOptions.m_putOutOfBoundsInChain;
   m_tkUseLocalHessian                         = srcOptions.m_tkUseLocalHessian;
@@ -227,8 +239,10 @@ uqMLSamplingLevelOptionsClass::~uqMLSamplingLevelOptionsClass()
   //          << ", m_rawChainStatOptsInstantiated = "      << m_rawChainStatOptsInstantiated
   //          << std::endl;
   //sleep(1);
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_filteredChainStatOptsInstantiated) delete m_filteredChainStatisticalOptionsObj;
   if (m_rawChainStatOptsInstantiated     ) delete m_rawChainStatisticalOptionsObj;
+#endif
   if (m_optionsDesc                      ) delete m_optionsDesc;
 } 
 
@@ -251,6 +265,7 @@ uqMLSamplingLevelOptionsClass::scanOptionsValues(const uqMLSamplingLevelOptionsC
                             << std::endl;
   }
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_rawChainComputeStats) {
     m_rawChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
     m_rawChainStatOptsInstantiated  = true;
@@ -259,7 +274,7 @@ uqMLSamplingLevelOptionsClass::scanOptionsValues(const uqMLSamplingLevelOptionsC
     m_filteredChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
     m_filteredChainStatOptsInstantiated  = true;
   }
-
+#endif
   return;
 }
 
@@ -297,14 +312,18 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_rawChain_dataOutputFileName.c_str(),                po::value<std::string >()->default_value(m_rawChainDataOutputFileName               ), "name of output file for raw chain "                              )
     (m_option_rawChain_dataOutputFileType.c_str(),                po::value<std::string >()->default_value(m_rawChainDataOutputFileType               ), "type of output file for raw chain "                              )
     (m_option_rawChain_dataOutputAllowedSet.c_str(),              po::value<std::string >()->default_value(m_str2                                     ), "subEnvs that will write to output file for raw chain"            )
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     (m_option_rawChain_computeStats.c_str(),                      po::value<bool        >()->default_value(m_rawChainComputeStats                     ), "compute statistics on raw chain"                                 )
+#endif
     (m_option_filteredChain_generate.c_str(),                     po::value<bool        >()->default_value(m_filteredChainGenerate                    ), "generate filtered chain"                                         )
     (m_option_filteredChain_discardedPortion.c_str(),             po::value<double      >()->default_value(m_filteredChainDiscardedPortion            ), "initial discarded portion for chain filtering"                   )
     (m_option_filteredChain_lag.c_str(),                          po::value<unsigned int>()->default_value(m_filteredChainLag                         ), "spacing for chain filtering"                                     )
     (m_option_filteredChain_dataOutputFileName.c_str(),           po::value<std::string >()->default_value(m_filteredChainDataOutputFileName          ), "name of output file for filtered chain"                          )
     (m_option_filteredChain_dataOutputFileType.c_str(),           po::value<std::string >()->default_value(m_filteredChainDataOutputFileType          ), "type of output file for filtered chain"                          )
     (m_option_filteredChain_dataOutputAllowedSet.c_str(),         po::value<std::string >()->default_value(m_str3                                     ), "subEnvs that will write to output file for filtered chain"       )
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     (m_option_filteredChain_computeStats.c_str(),                 po::value<bool        >()->default_value(m_filteredChainComputeStats                ), "compute statistics on filtered chain"                            )
+#endif
     (m_option_displayCandidates.c_str(),                          po::value<bool        >()->default_value(m_displayCandidates                        ), "display candidates generated in the core MH algorithm"           )
     (m_option_putOutOfBoundsInChain.c_str(),                      po::value<bool        >()->default_value(m_putOutOfBoundsInChain                    ), "put 'out of bound' candidates in chain as well"                  )
     (m_option_tk_useLocalHessian.c_str(),                         po::value<bool        >()->default_value(m_tkUseLocalHessian                        ), "'proposal' use local Hessian"                                    )
@@ -537,10 +556,11 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_str2 += " ";
   }
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_env.allOptionsMap().count(m_option_rawChain_computeStats.c_str())) {
     m_rawChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_computeStats.c_str()]).as<bool>();
   }
-
+#endif
   if (m_env.allOptionsMap().count(m_option_rawChain_generateExtra.c_str())) {
     m_rawChainGenerateExtra = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_generateExtra.c_str()]).as<bool>();
   }
@@ -598,10 +618,11 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_str3 += " ";
   }
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_env.allOptionsMap().count(m_option_filteredChain_computeStats.c_str())) {
     m_filteredChainComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_computeStats.c_str()]).as<bool>();
   }
-
+#endif
   if (m_env.allOptionsMap().count(m_option_displayCandidates.c_str())) {
     m_displayCandidates = ((const po::variable_value&) m_env.allOptionsMap()[m_option_displayCandidates.c_str()]).as<bool>();
   }
@@ -736,7 +757,10 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
   for (std::set<unsigned int>::iterator setIt = m_rawChainDataOutputAllowedSet.begin(); setIt != m_rawChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_rawChain_computeStats                      << " = " << m_rawChainComputeStats
+  os
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+     << "\n" << m_option_rawChain_computeStats                      << " = " << m_rawChainComputeStats
+#endif
      << "\n" << m_option_filteredChain_generate                     << " = " << m_filteredChainGenerate
      << "\n" << m_option_filteredChain_discardedPortion             << " = " << m_filteredChainDiscardedPortion
      << "\n" << m_option_filteredChain_lag                          << " = " << m_filteredChainLag
@@ -746,7 +770,10 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
   for (std::set<unsigned int>::iterator setIt = m_filteredChainDataOutputAllowedSet.begin(); setIt != m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_filteredChain_computeStats                 << " = " << m_filteredChainComputeStats
+  os
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+     << "\n" << m_option_filteredChain_computeStats                 << " = " << m_filteredChainComputeStats
+#endif
      << "\n" << m_option_displayCandidates                          << " = " << m_displayCandidates
      << "\n" << m_option_putOutOfBoundsInChain                      << " = " << m_putOutOfBoundsInChain
      << "\n" << m_option_tk_useLocalHessian                         << " = " << m_tkUseLocalHessian

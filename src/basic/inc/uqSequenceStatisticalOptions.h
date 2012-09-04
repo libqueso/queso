@@ -29,6 +29,9 @@
 #ifndef __UQ_SEQUENCE_STATISTICAL_OPTIONS_H__
 #define __UQ_SEQUENCE_STATISTICAL_OPTIONS_H__
 
+#include <uqDefines.h>
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+
 #include <uqEnvironment.h>
 
 #define UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV   "0."
@@ -272,6 +275,8 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const uqSequenceStatisticalOptionsClass& obj);
+
+#endif // ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
 #endif // __UQ_SEQUENCE_STATISTICAL_OPTIONS_H__
 

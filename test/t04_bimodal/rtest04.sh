@@ -71,8 +71,10 @@ for file in display_sub0.txt ; do
 
 #    pwd
 #    echo $SOLREFS/$file
-    grep "e-\|e+" $SOLREFS/$file | grep -v sec | grep -v Arch > $SOLDIR/nada0
-    grep "e-\|e+" $SOLDIR/$file | grep -v sec | grep -v Arch > $SOLDIR/nada1
+#    grep "e-\|e+" $SOLREFS/$file | grep -v sec | grep -v Arch > $SOLDIR/nada0
+#    grep "e-\|e+" $SOLDIR/$file | grep -v sec | grep -v Arch > $SOLDIR/nada1
+    grep "seq" $SOLREFS/$file | grep "()" | grep -v Arch > $SOLDIR/nada0
+    grep "seq" $SOLDIR/$file | grep "()" | grep -v Arch > $SOLDIR/nada1
     diff $SOLDIR/nada0 $SOLDIR/nada1
     let igot="$igot + $?"
 

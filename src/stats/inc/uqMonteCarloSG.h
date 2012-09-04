@@ -110,7 +110,11 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   m_paramSpace              (m_paramRv.imageSet().vectorSpace()),
   m_qoiSpace                (m_qoiFunction.imageSet().vectorSpace()),
   m_qoiFunctionSynchronizer (new uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>(m_qoiFunction,m_paramRv.imageSet().vectorSpace().zeroVector(),m_qoiFunction.imageSet().vectorSpace().zeroVector())),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_alternativeOptionsValues(NULL,NULL),
+#else
+  m_alternativeOptionsValues(),
+#endif
   m_optionsObj              (NULL)
 {
   if (m_env.subDisplayFile()) {
@@ -289,6 +293,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 
   // Take case of other aspects of pseq
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_optionsObj->m_ov.m_pseqComputeStats) {
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
@@ -303,7 +308,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                               << std::endl;
     }
   }
-
+#endif
   //****************************************************
   // Eventually:
   // --> write qoi sequence
@@ -344,6 +349,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 
   // Take case of other aspects of qseq
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_optionsObj->m_ov.m_qseqComputeStats) {
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
@@ -358,7 +364,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                               << std::endl;
     }
   }
-
+#endif
   //****************************************************
   // Close generic output file      
   //****************************************************

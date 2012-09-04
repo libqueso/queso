@@ -26,6 +26,9 @@
 //
 //--------------------------------------------------------------------------
 
+#include <uqDefines.h>
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+
 #include <uqSequenceStatisticalOptions.h>
 #include <uqMiscellaneous.h>
 
@@ -908,3 +911,5 @@ operator<<(std::ostream& os, const uqSequenceStatisticalOptionsClass& obj)
 
   return os;
 }
+
+#endif // ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS

@@ -196,8 +196,10 @@ public:
                                                                  V&                                       iqrVec) const = 0;
   virtual  void                     unifiedInterQuantileRange   (unsigned int                             initialPos,
                                                                 V&                                       unifiedIqrVec) const = 0;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
            void                     computeHistCdfstaccKde      (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  std::ofstream*                           passedOfs);
+#endif
   virtual  void                     subScalesForKde             (unsigned int                             initialPos,
                                                                  const V&                                 iqrVec,
                                                                  unsigned int                             kdeDimension,
@@ -228,11 +230,11 @@ public:
   virtual  void                     filter                      (unsigned int                             initialPos,
                                                                  unsigned int                             spacing) = 0;
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
            void                     computeStatistics           (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  std::ofstream*                           passedOfs);
-
-           void                     computeFilterParams         (const uqSequenceStatisticalOptionsClass& statisticalOptions,
-                                                                 std::ofstream*                           passedOfs,
+#endif
+           void                     computeFilterParams         (std::ofstream*                           passedOfs,
                                                                  unsigned int   &                         initialPos,
                                                                  unsigned int   &                         spacing);
 
@@ -246,13 +248,14 @@ public:
                                                                  uqScalarSequenceClass<double>&           scalarSeq) const = 0;
 protected:
            void                     copy                        (const uqBaseVectorSequenceClass<V,M>&    src); /* This routine deletes all stored computed vectors */
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
            void                     computeMeanVars             (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  std::ofstream*                           passedOfs,
                                                                  V*                                       subMeanPtr,
                                                                  V*                                       subMedianPtr,
                                                                  V*                                       subSampleVarPtr,
                                                                  V*                                       subPopulVarPtr);
-
+#endif
 #ifdef UQ_CODE_HAS_MONITORS
   virtual  void                     subMeanMonitorAlloc         (unsigned int numberOfMonitorPositions) = 0;
   virtual  void                     subMeanInter0MonitorAlloc   (unsigned int numberOfMonitorPositions) = 0;
@@ -298,6 +301,7 @@ protected:
            void                     computeMeanEvolution        (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  std::ofstream*                           passedOfs);
 #endif
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
            void                     computeBMM                  (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  const std::vector<unsigned int>&         initialPosForStatistics,
                                                                  std::ofstream*                           passedOfs);
@@ -316,6 +320,8 @@ protected:
            void                     computeMeanStacc            (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  const std::vector<unsigned int>&         initialPosForStatistics,
                                                                  std::ofstream*                           passedOfs);
+#endif
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
            void                     computeAutoCorrViaDef       (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  const std::vector<unsigned int>&         initialPosForStatistics,
                                                                  const std::vector<unsigned int>&         lagsForCorrs,
@@ -326,7 +332,7 @@ protected:
                                                                  std::ofstream*                           passedOfs);
            void                     computeCovCorrMatrices      (const uqSequenceStatisticalOptionsClass& statisticalOptions,
                                                                  std::ofstream*                           passedOfs);
-
+#endif
   virtual  void                     extractRawData              (unsigned int                             initialPos,
                                                                  unsigned int                             spacing,
                                                                  unsigned int                             numPos,
@@ -815,6 +821,7 @@ uqBaseVectorSequenceClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, co
   return;
 }
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeStatistics(
@@ -1017,7 +1024,9 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
 
   return;
 }
+#endif // #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeMeanVars(
@@ -1216,7 +1225,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
 
   return;
 }
-
+#endif // #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 #ifdef UQ_CODE_HAS_MONITORS
 template<class V, class M>
 void
@@ -1827,6 +1836,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanStacc(
 }
 #endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaDef(
@@ -2120,14 +2130,13 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
 
   return;
 }
-
+#endif // #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeFilterParams(
-  const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  std::ofstream*                        passedOfs,
-  unsigned int&                         initialPos,
-  unsigned int&                         spacing)
+  std::ofstream* passedOfs,
+  unsigned int&  initialPos,
+  unsigned int&  spacing)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n"
@@ -2161,11 +2170,12 @@ uqBaseVectorSequenceClass<V,M>::computeFilterParams(
   return;
 }
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
   const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  std::ofstream*                        passedOfs)
+  std::ofstream*                           passedOfs)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "\n"
@@ -2815,6 +2825,7 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
 
   return;
 }
+#endif // #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
 template <class P_V, class P_M, class Q_V, class Q_M>
 void

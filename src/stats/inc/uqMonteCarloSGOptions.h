@@ -56,8 +56,12 @@
 class uqMcOptionsValuesClass
 {
 public:
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   uqMcOptionsValuesClass            (const uqSsOptionsValuesClass* alternativePSsOptionsValues,
                                      const uqSsOptionsValuesClass* alternativeQSsOptionsValues);
+#else
+  uqMcOptionsValuesClass            ();
+#endif
   uqMcOptionsValuesClass            (const uqMcOptionsValuesClass& src);
   uqMcOptionsValuesClass& operator= (const uqMcOptionsValuesClass& rhs);
  ~uqMcOptionsValuesClass            ();
@@ -83,9 +87,11 @@ public:
 private:
   void copy(const uqMcOptionsValuesClass& src);
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   friend class uqMonteCarloSGOptionsClass;
   uqSsOptionsValuesClass             m_alternativePSsOptionsValues;
   uqSsOptionsValuesClass             m_alternativeQSsOptionsValues;
+#endif
 };
 
 class uqMonteCarloSGOptionsClass
@@ -99,8 +105,10 @@ public:
   void print            (std::ostream& os) const;
 
   uqMcOptionsValuesClass             m_ov;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   uqSequenceStatisticalOptionsClass* m_pseqStatisticalOptionsObj;
   uqSequenceStatisticalOptionsClass* m_qseqStatisticalOptionsObj;
+#endif
   std::string                        m_prefix;
 
 private:
@@ -117,7 +125,9 @@ private:
   std::string                   m_option_pseq_dataOutputFileName;
   std::string                   m_option_pseq_dataOutputFileType;
   std::string                   m_option_pseq_dataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   std::string                   m_option_pseq_computeStats;
+#endif
 
   std::string                   m_option_qseq_dataInputFileName;
   std::string                   m_option_qseq_dataInputFileType;
@@ -127,7 +137,9 @@ private:
   std::string                   m_option_qseq_dataOutputFileName;
   std::string                   m_option_qseq_dataOutputFileType;
   std::string                   m_option_qseq_dataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   std::string                   m_option_qseq_computeStats;
+#endif
 };
 
 std::ostream& operator<<(std::ostream& os, const uqMonteCarloSGOptionsClass& obj);

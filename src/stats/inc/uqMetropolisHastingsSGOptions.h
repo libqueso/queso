@@ -56,14 +56,18 @@
 #define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV                  UQ_MH_SG_FILENAME_FOR_NO_FILE
 #define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV                  UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 #define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV                ""
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 #define UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV                          0
+#endif
 #define UQ_MH_SG_FILTERED_CHAIN_GENERATE_ODV                          0
 #define UQ_MH_SG_FILTERED_CHAIN_DISCARDED_PORTION_ODV                 0.
 #define UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                               1
 #define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV             UQ_MH_SG_FILENAME_FOR_NO_FILE
 #define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 #define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV           ""
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 #define UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV                     0
+#endif
 #define UQ_MH_SG_DISPLAY_CANDIDATES_ODV                               0
 #define UQ_MH_SG_PUT_OUT_OF_BOUNDS_IN_CHAIN_ODV                       1
 #define UQ_MH_SG_TK_USE_LOCAL_HESSIAN_ODV                             0
@@ -85,8 +89,12 @@
 class uqMhOptionsValuesClass
 {
 public:
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   uqMhOptionsValuesClass            (const uqSsOptionsValuesClass* alternativeRawSsOptionsValues,
                                      const uqSsOptionsValuesClass* alternativeFilteredSsOptionsValues);
+#else
+  uqMhOptionsValuesClass            ();
+#endif
   uqMhOptionsValuesClass            (const uqMhOptionsValuesClass& src);
   uqMhOptionsValuesClass& operator= (const uqMhOptionsValuesClass& rhs);
  ~uqMhOptionsValuesClass            ();
@@ -108,7 +116,9 @@ public:
   std::string                        m_rawChainDataOutputFileName;
   std::string                        m_rawChainDataOutputFileType;
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   bool                               m_rawChainComputeStats;
+#endif
 
   bool                               m_filteredChainGenerate;
   double                             m_filteredChainDiscardedPortion; // input or set during run time
@@ -116,7 +126,9 @@ public:
   std::string                        m_filteredChainDataOutputFileName;
   std::string                        m_filteredChainDataOutputFileType;
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   bool                               m_filteredChainComputeStats;
+#endif
 
   bool                               m_displayCandidates;
   bool                               m_putOutOfBoundsInChain;
@@ -140,9 +152,11 @@ public:
 private:
   void copy(const uqMhOptionsValuesClass& src);
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   friend class uqMetropolisHastingsSGOptionsClass;
   uqSsOptionsValuesClass             m_alternativeRawSsOptionsValues;
   uqSsOptionsValuesClass             m_alternativeFilteredSsOptionsValues;
+#endif
 };
 
 class uqMetropolisHastingsSGOptionsClass
@@ -157,11 +171,12 @@ public:
   void print            (std::ostream& os) const;
 
   uqMhOptionsValuesClass             m_ov;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptionsObj;
   bool                               m_rawChainStatOptsInstantiated;
   uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptionsObj;
   bool                               m_filteredChainStatOptsInstantiated;
-
+#endif
   std::string                        m_prefix;
 
 private:
@@ -190,14 +205,18 @@ private:
   std::string                   m_option_rawChain_dataOutputFileName;
   std::string                   m_option_rawChain_dataOutputFileType;
   std::string                   m_option_rawChain_dataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   std::string                   m_option_rawChain_computeStats;
+#endif
   std::string                   m_option_filteredChain_generate;
   std::string                   m_option_filteredChain_discardedPortion;
   std::string                   m_option_filteredChain_lag;
   std::string                   m_option_filteredChain_dataOutputFileName;
   std::string                   m_option_filteredChain_dataOutputFileType;
   std::string                   m_option_filteredChain_dataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   std::string                   m_option_filteredChain_computeStats;
+#endif
   std::string                   m_option_displayCandidates;
   std::string                   m_option_putOutOfBoundsInChain;
   std::string                   m_option_tk_useLocalHessian;

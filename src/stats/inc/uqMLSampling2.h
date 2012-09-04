@@ -403,6 +403,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
     }
 
     if (m_env.inter0Rank() >= 0) { // KAUST
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
       if (currOptions.m_rawChainComputeStats) {
         uqFilePtrSetStruct filePtrSet;
         m_env.openOutputFile(currOptions.m_dataOutputFileName,
@@ -415,12 +416,11 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
         currChain.computeStatistics(*currOptions.m_rawChainStatisticalOptionsObj,
                                     filePtrSet.ofsVar);
 
-        // Compute MLE and MAP
-        // rr0
-
         m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
       }
-
+      // Compute MLE and MAP
+      // rr0
+#endif
       if (currOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
         currChain.unifiedWriteContents              (currOptions.m_rawChainDataOutputFileName,
                                                      currOptions.m_rawChainDataOutputFileType);
@@ -450,14 +450,16 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
 
       if (currOptions.m_filteredChainGenerate) {
         // todo
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
         if (currOptions.m_filteredChainComputeStats) {
           // todo
 
-          // Compute MLE and MAP
-          // rr0
           //currChain.computeStatistics(*currOptions.m_filteredChainStatisticalOptionsObj,
           //                            filePtrSet.ofsVar);
         }
+        // Compute MLE and MAP
+        // rr0
+#endif
       }
 
     } // KAUST
@@ -1509,17 +1511,21 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
         // KAUST: all nodes should call here
         bool         savedTotallyMute           = currOptions->m_totallyMute; // HERE - ENHANCEMENT
         unsigned int savedRawChainSize          = currOptions->m_rawChainSize; // Ok to use rawChainSize
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
         bool         savedRawChainComputeStats  = currOptions->m_rawChainComputeStats;
+#endif
         bool         savedFilteredChainGenerate = currOptions->m_filteredChainGenerate;
         unsigned int savedDrMaxNumExtraStages   = currOptions->m_drMaxNumExtraStages;
         unsigned int savedAmAdaptInterval       = currOptions->m_amAdaptInterval;
 
         currOptions->m_totallyMute = true;
-        if (m_env.displayVerbosity() >= 100) {
+        if (m_env.displayVerbosity() >= 999999) {
           currOptions->m_totallyMute = false;
         }
         currOptions->m_rawChainSize          = 0; // will be set inside generateXYZLinkedChains()
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
         currOptions->m_rawChainComputeStats  = false;
+#endif
         currOptions->m_filteredChainGenerate = false;
         currOptions->m_drMaxNumExtraStages   = 0;
         currOptions->m_amAdaptInterval       = 0;
@@ -1553,7 +1559,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
         // KAUST: all nodes should call here
         currOptions->m_totallyMute           = savedTotallyMute;
         currOptions->m_rawChainSize          = savedRawChainSize;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
         currOptions->m_rawChainComputeStats  = savedRawChainComputeStats;
+#endif
         currOptions->m_filteredChainGenerate = savedFilteredChainGenerate; // FIX ME
         currOptions->m_drMaxNumExtraStages   = savedDrMaxNumExtraStages;
         currOptions->m_amAdaptInterval       = savedAmAdaptInterval;
@@ -1711,15 +1719,19 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step10_all(
       // All nodes should call here
       bool         savedTotallyMute           = currOptions.m_totallyMute; // HERE - ENHANCEMENT
       unsigned int savedRawChainSize          = currOptions.m_rawChainSize; // Ok to use rawChainSize
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
       bool         savedRawChainComputeStats  = currOptions.m_rawChainComputeStats;
+#endif
       bool         savedFilteredChainGenerate = currOptions.m_filteredChainGenerate;
 
       currOptions.m_totallyMute = true;
-      if (m_env.displayVerbosity() >= 100) {
+      if (m_env.displayVerbosity() >= 999999) {
         currOptions.m_totallyMute = false;
       }
       currOptions.m_rawChainSize          = 0; // will be set inside generateXYZLinkedChains()
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
       currOptions.m_rawChainComputeStats  = false;
+#endif
       currOptions.m_filteredChainGenerate = false;
 
       // All nodes should call here
@@ -1762,7 +1774,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step10_all(
       // All nodes should call here
       currOptions.m_totallyMute           = savedTotallyMute;
       currOptions.m_rawChainSize          = savedRawChainSize;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
       currOptions.m_rawChainComputeStats  = savedRawChainComputeStats;
+#endif
       currOptions.m_filteredChainGenerate = savedFilteredChainGenerate; // FIX ME
 
   double stepRunTime = uqMiscGetEllapsedSeconds(&timevalStep);
@@ -1802,6 +1816,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
 
   //if (m_env.subComm().MyPID() == 0) std::cout << "Aqui 000" << std::endl;
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (currOptions->m_rawChainComputeStats) {
     uqFilePtrSetStruct filePtrSet;
     m_env.openOutputFile(currOptions->m_dataOutputFileName,
@@ -1818,18 +1833,17 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
                               << ". Ofstream pointer value = " << filePtrSet.ofsVar
                               << ", statistical options are"
                               << "\n" << *currOptions->m_rawChainStatisticalOptionsObj
-                                    << std::endl;
+                              << std::endl;
     }
     //m_env.syncPrintDebugMsg("At step 11, calling computeStatistics for raw chain",1,10,m_env.inter0Comm()); // output debug
     currChain.computeStatistics(*currOptions->m_rawChainStatisticalOptionsObj,
                                 filePtrSet.ofsVar);
 
-    // Compute MLE and MAP
-    // rr0
-    
     m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
   }
-
+  // Compute MLE and MAP
+  // rr0
+#endif
   if (currOptions->m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
     currChain.unifiedWriteContents(currOptions->m_rawChainDataOutputFileName,
                                    currOptions->m_rawChainDataOutputFileType); // KAUST5
@@ -1858,8 +1872,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
     unsigned int filterInitialPos = (unsigned int) (currOptions->m_filteredChainDiscardedPortion * (double) currChain.subSequenceSize());
     unsigned int filterSpacing    = currOptions->m_filteredChainLag;
     if (filterSpacing == 0) {
-      currChain.computeFilterParams(*currOptions->m_filteredChainStatisticalOptionsObj,
-                                    filePtrSet.ofsVar,
+      currChain.computeFilterParams(filePtrSet.ofsVar,
                                     filterInitialPos,
                                     filterSpacing);
     }
@@ -1877,6 +1890,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
                                filterSpacing);
     currLogTargetValues.setName(currOptions->m_prefix + "filtLogTarget");
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     if (currOptions->m_filteredChainComputeStats) {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) { // output debug
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence_Step()"
@@ -1893,10 +1907,10 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
       currChain.computeStatistics(*currOptions->m_filteredChainStatisticalOptionsObj,
                                   filePtrSet.ofsVar);
 
-      // Compute MLE and MAP
-      // rr0
     }
-
+#endif
+    // Compute MLE and MAP
+    // rr0
     m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
 
     if (currOptions->m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {

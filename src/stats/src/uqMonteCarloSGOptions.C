@@ -30,29 +30,39 @@
 #include <uqMiscellaneous.h>
 
 uqMcOptionsValuesClass::uqMcOptionsValuesClass(
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   const uqSsOptionsValuesClass* alternativePSsOptionsValues,
-  const uqSsOptionsValuesClass* alternativeQSsOptionsValues)
+  const uqSsOptionsValuesClass* alternativeQSsOptionsValues
+#endif
+  )
   :
   m_dataOutputFileName         (UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV     ),
 //m_dataOutputAllowedSet       (),
   m_pseqDataOutputFileName     (UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_NAME_ODV),
   m_pseqDataOutputFileType     (UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_TYPE_ODV),
 //m_pseqDataOutputAllowedSet   (),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_pseqComputeStats           (UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV        ),
+#endif
   m_qseqDataInputFileName      (UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_NAME_ODV ),
   m_qseqDataInputFileType      (UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_TYPE_ODV ),
   m_qseqSize                   (UQ_MOC_SG_QSEQ_SIZE_ODV                 ),
   m_qseqDisplayPeriod          (UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV       ),
   m_qseqMeasureRunTimes        (UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV    ),
   m_qseqDataOutputFileName     (UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV),
-  m_qseqDataOutputFileType     (UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV),
+  m_qseqDataOutputFileType     (UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV)
 //m_qseqDataOutputAllowedSet   (),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  ,
   m_qseqComputeStats           (UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV        ),
   m_alternativePSsOptionsValues(),
   m_alternativeQSsOptionsValues()
+#endif
 {
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (alternativePSsOptionsValues) m_alternativePSsOptionsValues = *alternativePSsOptionsValues;
   if (alternativeQSsOptionsValues) m_alternativeQSsOptionsValues = *alternativeQSsOptionsValues;
+#endif
 }
 
 uqMcOptionsValuesClass::~uqMcOptionsValuesClass()
@@ -79,7 +89,9 @@ uqMcOptionsValuesClass::copy(const uqMcOptionsValuesClass& src)
   m_pseqDataOutputFileName      = src.m_pseqDataOutputFileName;
   m_pseqDataOutputFileType      = src.m_pseqDataOutputFileType;
   m_pseqDataOutputAllowedSet    = src.m_pseqDataOutputAllowedSet; 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_pseqComputeStats            = src.m_pseqComputeStats;
+#endif
   m_qseqDataInputFileName       = src.m_qseqDataInputFileName;
   m_qseqDataInputFileType       = src.m_qseqDataInputFileType;
   m_qseqSize                    = src.m_qseqSize;
@@ -88,10 +100,14 @@ uqMcOptionsValuesClass::copy(const uqMcOptionsValuesClass& src)
   m_qseqDataOutputFileName      = src.m_qseqDataOutputFileName;
   m_qseqDataOutputFileType      = src.m_qseqDataOutputFileType;
   m_qseqDataOutputAllowedSet    = src.m_qseqDataOutputAllowedSet; 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_qseqComputeStats            = src.m_qseqComputeStats;
+#endif
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_alternativePSsOptionsValues = src.m_alternativePSsOptionsValues;
   m_alternativeQSsOptionsValues = src.m_alternativeQSsOptionsValues;
+#endif
 
   return;
 }
@@ -100,9 +116,13 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   const uqBaseEnvironmentClass& env, 
   const char*                   prefix)
   :
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_ov                              (NULL,NULL),
   m_pseqStatisticalOptionsObj       (NULL),
   m_qseqStatisticalOptionsObj       (NULL),
+#else
+  m_ov                              (),
+#endif
   m_prefix                          ((std::string)(prefix) + "mc_"),
   m_env                             (env),
   m_optionsDesc                     (new po::options_description("Monte Carlo options")),
@@ -112,7 +132,9 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   m_option_pseq_dataOutputFileName  (m_prefix + "pseq_dataOutputFileName"    ),
   m_option_pseq_dataOutputFileType  (m_prefix + "pseq_dataOutputFileType"    ),
   m_option_pseq_dataOutputAllowedSet(m_prefix + "pseq_dataOutputAllowedSet"  ),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_option_pseq_computeStats        (m_prefix + "pseq_computeStats"          ),
+#endif
   m_option_qseq_dataInputFileName   (m_prefix + "qseq_dataInputFileName"     ),
   m_option_qseq_dataInputFileType   (m_prefix + "qseq_dataInputFileType"     ),
   m_option_qseq_size                (m_prefix + "qseq_size"                  ),
@@ -120,8 +142,11 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   m_option_qseq_measureRunTimes     (m_prefix + "qseq_measureRunTimes"       ),
   m_option_qseq_dataOutputFileName  (m_prefix + "qseq_dataOutputFileName"    ),
   m_option_qseq_dataOutputFileType  (m_prefix + "qseq_dataOutputFileType"    ),
-  m_option_qseq_dataOutputAllowedSet(m_prefix + "qseq_dataOutputAllowedSet"  ),
+  m_option_qseq_dataOutputAllowedSet(m_prefix + "qseq_dataOutputAllowedSet"  )
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  ,
   m_option_qseq_computeStats        (m_prefix + "qseq_computeStats"          )
+#endif
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
@@ -134,9 +159,13 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   const char*                   prefix,
   const uqMcOptionsValuesClass& alternativeOptionsValues)
   :
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_ov                              (alternativeOptionsValues),
   m_pseqStatisticalOptionsObj       (NULL),
   m_qseqStatisticalOptionsObj       (NULL),
+#else
+  m_ov                              (),
+#endif
   m_prefix                          ((std::string)(prefix) + "mc_"),
   m_env                             (env),
   m_optionsDesc                     (NULL),
@@ -146,7 +175,9 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   m_option_pseq_dataOutputFileName  (m_prefix + "pseq_dataOutputFileName"  ),
   m_option_pseq_dataOutputFileType  (m_prefix + "pseq_dataOutputFileType"  ),
   m_option_pseq_dataOutputAllowedSet(m_prefix + "pseq_dataOutputAllowedSet"),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_option_pseq_computeStats        (m_prefix + "pseq_computeStats"        ),
+#endif
   m_option_qseq_dataInputFileName   (m_prefix + "qseq_dataInputFileName"   ),
   m_option_qseq_dataInputFileType   (m_prefix + "qseq_dataInputFileType"   ),
   m_option_qseq_size                (m_prefix + "qseq_size"                ),
@@ -154,8 +185,11 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   m_option_qseq_measureRunTimes     (m_prefix + "qseq_measureRunTimes"     ),
   m_option_qseq_dataOutputFileName  (m_prefix + "qseq_dataOutputFileName"  ),
   m_option_qseq_dataOutputFileType  (m_prefix + "qseq_dataOutputFileType"  ),
-  m_option_qseq_dataOutputAllowedSet(m_prefix + "qseq_dataOutputAllowedSet"),
+  m_option_qseq_dataOutputAllowedSet(m_prefix + "qseq_dataOutputAllowedSet")
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  ,
   m_option_qseq_computeStats        (m_prefix + "qseq_computeStats"        )
+#endif
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
@@ -171,16 +205,20 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   }
 
   // dakota
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_ov.m_pseqComputeStats) m_pseqStatisticalOptionsObj =
     new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "pseq_",m_ov.m_alternativePSsOptionsValues);
   if (m_ov.m_qseqComputeStats) m_qseqStatisticalOptionsObj =
     new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "qseq_",m_ov.m_alternativeQSsOptionsValues);
+#endif
 }
 
 uqMonteCarloSGOptionsClass::~uqMonteCarloSGOptionsClass()
 {
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_pseqStatisticalOptionsObj) delete m_pseqStatisticalOptionsObj; // dakota
   if (m_qseqStatisticalOptionsObj) delete m_qseqStatisticalOptionsObj; // dakota
+#endif
   if (m_optionsDesc              ) delete m_optionsDesc;
 } 
 
@@ -205,11 +243,12 @@ uqMonteCarloSGOptionsClass::scanOptionsValues()
   }
 
   // dakota
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_ov.m_pseqComputeStats) m_pseqStatisticalOptionsObj =
     new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "pseq_");
   if (m_ov.m_qseqComputeStats) m_qseqStatisticalOptionsObj =
     new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "qseq_");
-
+#endif
   return;
 }
 
@@ -223,7 +262,9 @@ uqMonteCarloSGOptionsClass::defineMyOptions(po::options_description& optionsDesc
     (m_option_pseq_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file for parameters"                     )
     (m_option_pseq_dataOutputFileType.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of data output file for parameters"                     )
     (m_option_pseq_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MOC_SG_PSEQ_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file for parameters"  )
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     (m_option_pseq_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MOC_SG_PSEQ_COMPUTE_STATS_ODV          ), "compute statistics on sequence of parameter"                 )
+#endif
     (m_option_qseq_dataInputFileName.c_str(),    po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_NAME_ODV   ), "name of data input file for qois"                            )
     (m_option_qseq_dataInputFileType.c_str(),    po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_INPUT_FILE_TYPE_ODV   ), "type of data input file for qois"                            )
     (m_option_qseq_size.c_str(),                 po::value<unsigned int>()->default_value(UQ_MOC_SG_QSEQ_SIZE_ODV                   ), "size of qoi sequence"                                        )
@@ -232,7 +273,9 @@ uqMonteCarloSGOptionsClass::defineMyOptions(po::options_description& optionsDesc
     (m_option_qseq_dataOutputFileName.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV  ), "name of data output file for qois"                           )
     (m_option_qseq_dataOutputFileType.c_str(),   po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV  ), "type of data output file for qois"                           )
     (m_option_qseq_dataOutputAllowedSet.c_str(), po::value<std::string >()->default_value(UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV), "subEnvs that will write to data output file for qois"        )
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     (m_option_qseq_computeStats.c_str(),         po::value<bool        >()->default_value(UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV          ), "compute statistics on sequence of qoi"                       )
+#endif
    ;
 
   return;
@@ -286,10 +329,11 @@ uqMonteCarloSGOptionsClass::getMyOptionValues(po::options_description& optionsDe
     }
   }
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_env.allOptionsMap().count(m_option_pseq_computeStats)) {
     m_ov.m_pseqComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_pseq_computeStats]).as<bool>();
   }
-
+#endif
   if (m_env.allOptionsMap().count(m_option_qseq_dataInputFileName)) {
     m_ov.m_qseqDataInputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_dataInputFileName]).as<std::string>();
   }
@@ -331,10 +375,11 @@ uqMonteCarloSGOptionsClass::getMyOptionValues(po::options_description& optionsDe
     }
   }
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_env.allOptionsMap().count(m_option_qseq_computeStats)) {
     m_ov.m_qseqComputeStats = ((const po::variable_value&) m_env.allOptionsMap()[m_option_qseq_computeStats]).as<bool>();
   }
-
+#endif
   return;
 }
 
@@ -352,7 +397,10 @@ uqMonteCarloSGOptionsClass::print(std::ostream& os) const
   for (std::set<unsigned int>::iterator setIt = m_ov.m_pseqDataOutputAllowedSet.begin(); setIt != m_ov.m_pseqDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
-  os << "\n" << m_option_pseq_computeStats         << " = " << m_ov.m_pseqComputeStats
+  os
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+     << "\n" << m_option_pseq_computeStats         << " = " << m_ov.m_pseqComputeStats
+#endif
      << "\n" << m_option_qseq_dataInputFileName    << " = " << m_ov.m_qseqDataInputFileName
      << "\n" << m_option_qseq_dataInputFileType    << " = " << m_ov.m_qseqDataInputFileType
      << "\n" << m_option_qseq_size                 << " = " << m_ov.m_qseqSize
@@ -364,7 +412,9 @@ uqMonteCarloSGOptionsClass::print(std::ostream& os) const
   for (std::set<unsigned int>::iterator setIt = m_ov.m_qseqDataOutputAllowedSet.begin(); setIt != m_ov.m_qseqDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
   }
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   os << "\n" << m_option_qseq_computeStats << " = " << m_ov.m_qseqComputeStats;
+#endif
 
   return;
 }

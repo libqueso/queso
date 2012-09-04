@@ -398,6 +398,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
               currLogTargetValues);    // output
 
     if (currExponent == 1.) {
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
       if (lastLevelOptions.m_rawChainComputeStats) {
         uqFilePtrSetStruct filePtrSet;
         m_env.openOutputFile(lastLevelOptions.m_dataOutputFileName,
@@ -409,11 +410,11 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         currChain.computeStatistics(*lastLevelOptions.m_rawChainStatisticalOptionsObj,
                                     filePtrSet.ofsVar);
 
-        // Compute MLE and MAP
-        // rr0
-
         m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
       }
+#endif
+      // Compute MLE and MAP
+      // rr0
 
       if (lastLevelOptions.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
         currChain.unifiedWriteContents              (lastLevelOptions.m_rawChainDataOutputFileName,lastLevelOptions.m_rawChainDataOutputFileType);
@@ -432,8 +433,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
         unsigned int filterInitialPos = (unsigned int) (lastLevelOptions.m_filteredChainDiscardedPortion * (double) currChain.subSequenceSize());
         unsigned int filterSpacing    = lastLevelOptions.m_filteredChainLag;
         if (filterSpacing == 0) {
-          currChain.computeFilterParams(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
-                                        filePtrSet.ofsVar,
+          currChain.computeFilterParams(filePtrSet.ofsVar,
                                         filterInitialPos,
                                         filterSpacing);
         }
@@ -451,13 +451,14 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                    filterSpacing);
         currLogTargetValues.setName(lastLevelOptions.m_prefix + "filtLogTarget");
 
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
         if (lastLevelOptions.m_filteredChainComputeStats) {
           currChain.computeStatistics(*lastLevelOptions.m_filteredChainStatisticalOptionsObj,
                                       filePtrSet.ofsVar);
-          // Compute MLE and MAP
-          // rr0
         }
-
+#endif
+        // Compute MLE and MAP
+        // rr0
         m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
 
         if (lastLevelOptions.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) {
