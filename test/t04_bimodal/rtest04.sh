@@ -60,24 +60,33 @@ fi
 
 # Verify results
 
-verify_file_exists $SOLDIR/display_sub0.txt
-verify_file_exists $SOLREFS/display_sub0.txt
+#verify_file_exists $SOLDIR/display_sub0.txt
+#verify_file_exists $SOLREFS/display_sub0.txt
+
+verify_file_exists $SOLDIR/rawChain_ml.m
+verify_file_exists $SOLREFS/rawChain_ml.m
 
 igot=0
 
 # Compare outputs from 1 output file.
 
-for file in display_sub0.txt ; do
+#for file in display_sub0.txt ; do
+#
+##    pwd
+##    echo $SOLREFS/$file
+##    grep "e-\|e+" $SOLREFS/$file | grep -v sec | grep -v Arch > $SOLDIR/nada0
+##    grep "e-\|e+" $SOLDIR/$file | grep -v sec | grep -v Arch > $SOLDIR/nada1
+#    grep "seq" $SOLREFS/$file | grep "()" | grep -v Arch > $SOLDIR/nada0
+#    grep "seq" $SOLDIR/$file | grep "()" | grep -v Arch > $SOLDIR/nada1
+#    diff $SOLDIR/nada0 $SOLDIR/nada1
+#    let igot="$igot + $?"
+#
+#done
 
-#    pwd
-#    echo $SOLREFS/$file
-#    grep "e-\|e+" $SOLREFS/$file | grep -v sec | grep -v Arch > $SOLDIR/nada0
-#    grep "e-\|e+" $SOLDIR/$file | grep -v sec | grep -v Arch > $SOLDIR/nada1
-    grep "seq" $SOLREFS/$file | grep "()" | grep -v Arch > $SOLDIR/nada0
-    grep "seq" $SOLDIR/$file | grep "()" | grep -v Arch > $SOLDIR/nada1
-    diff $SOLDIR/nada0 $SOLDIR/nada1
-    let igot="$igot + $?"
+for file in rawChain_ml.m ; do
 
+    $RUNDIR/$COMMONDIR/compare.pl $SOLDIR/$file $SOLREFS/$file
+    let igot="$igot * $?"
 done
 
 cd - >& /dev/null
