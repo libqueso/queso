@@ -6,9 +6,10 @@
 
   
 This chapter covers some of the basics that a user will need to know when beginning to use QUESO, such as 
-how to obtain, configure, build, install, test \Queso\footnote{For the most up-to-date information,
-please visit the online \Queso{} Home Page: \Quesoweb. The most accurate and complete information will be kept at this site.}
-and use it to create your application.
+how to obtain, configure, build, install, test \Queso{} and use it to create your application.  This manual is current at the time of
+printing; however, QUESO library  is under active development, For the most up-to-date information,
+please visit the online \Queso{} Home Page\footnote{\Quesoweb}. The most accurate and complete information will be kept at this site.
+
 
 
         
@@ -27,9 +28,9 @@ There are two main steps to prepare your LINUX computing system  for  the QUESO 
 
 \subsection{Obtain and install \Queso{} dependencies}
 
-\Queso{} interfaces to a number of high-quality software packages to provide certain functionality. While some of them are required for the successful installation of \Queso{}, other may be used for enhancing its performance. 
+\Queso{} interfaces to a number of high-quality software packages to provide certain functionalities. While some of them are required for the successful installation of \Queso{}, other may be used for enhancing its performance. 
 
-\Queso dependencies are:
+\Queso{} dependencies are:
 \begin{enumerate}%{itemize}
 
   \item \textbf{STL}: The Standard Template Library is a C++ library of container classes, algorithms, and iterators; it provides many of the basic algorithms and data structures of computer science~\cite{STL}. % The STL is a generic library, meaning that its components are heavily parameterized: almost every component in the STL is a template. You should make sure that you understand how templates work in C++ before you use the STL.
@@ -404,32 +405,36 @@ print messages during execution to make it clearer what is going on.
 
 
 Just run the following commands:
-\begin{itemize}
-\item cd \$HOME/queso\_download/queso-0.45.1/
-\item cd examples/statisticalInverseProblem1/tests/test\_2009\_02\_03/
-\item rm outputData/*
-\item ../../src/exStatisticalInverseProblem1\_gsl sip.inp [this will take some seconds]
-\item matlab
-\item {[inside matlab]} sip\_plot
-\item {[press the left button of the mouse at a picture displayed by 'sip\_plot.m', in order to display the next picture]}
-\item {[inside matlab]} exit
-\item ls -l outputData/*.png
-\end{itemize}
+\begin{verbatim}
+$ cd $HOME/queso_download/queso-0.45.1/
+$ cd examples/statisticalInverseProblem1/tests/test_2009_02_03/
+$ rm outputData/*
+$ ../../src/exStatisticalInverseProblem1_gsl sip.inp    #this may take some time (seconds)
+$ matlab
+   $ sip_plot	           # inside matlab
+   # press the left button of the mouse at a picture displayed by 'sip_plot.m', 
+     in order to display the next picture
+   $ exit                  # inside matlab
+$ ls -l outputData/*.png
+\end{verbatim}
+
+At the end of the run, the user should have created a few *.png plots.
 
 \subsubsection{Executable at 'examples/statisticalForwardProblem/'}
 
 Just run the following commands:
-\begin{itemize}
-\item cd \$HOME/queso\_download/queso-0.45.1/
-\item cd examples/statisticalForwardProblem1/tests/test\_2009\_02\_11/
-\item rm outputData/*
-\item ../../src/exStatisticalForwardProblem1\_gsl sfp.inp [this will take some seconds]
-\item matlab
-\item {[inside matlab] sfp\_plot}
-\item {[press the left button of the mouse at a picture displayed by 'sfp\_plot.m', in order to display the next picture]}
-\item {[inside matlab]} exit
-\item ls -l outputData/*.png
-\end{itemize}
+\begin{verbatim}
+$ cd $HOME/queso_download/queso-0.45.1/
+$ cd examples/statisticalForwardProblem1/tests/test_2009_02_11/
+$ rm outputData/*
+$ ../../src/exStatisticalForwardProblem1_gsl sfp.inp [this will take some seconds]
+$ matlab
+   $ sfp_plot       # inside matlab
+   # press the left button of the mouse at a picture displayed by 'sfp_plot.m', 
+     in order to display the next picture
+   $ exit           # inside matlab
+$ ls -l outputData/*.png
+\end{verbatim}
 
 %\subsection{Executable at 'examples/validationCycle/'}
 
@@ -438,17 +443,18 @@ Just run the following commands:
 \subsubsection{Executable at 'test/t02\_sip\_sfp/sip\_sfp/'}\label{subsc-t02}
 
 Just run the following commands:
-\begin{itemize}
-\item cd \$HOME/queso\_download/queso-0.45.1/
-\item cd test/t02\_sip\_sfp/sip\_sfp/
-\item rm outputData/*
-\item ./SipSfpExample\_gsl example.inp [this will take some seconds]
-\item matlab
-\item {[inside matlab]} example\_plots
-\item {[press the left button of the mouse at a picture displayed by 'example\_plots.m', in order to display the next picture]}
-\item {[inside matlab]} exit
-\item ls -l outputData/*.png
-\end{itemize}
+\begin{verbatim}
+$ cd $HOME/queso_download/queso-0.45.1/
+$ cd test/t02_sip_sfp/sip_sfp/
+$ rm outputData/*
+$ ./SipSfpExample_gsl example.inp [this will take some seconds]
+$ matlab
+   $ example_plots            # inside matlab
+   # press the left button of the mouse at a picture displayed by 'example_plots.m', 
+    in order to display the next picture
+   $ exit                     # inside matlab
+$ ls -l outputData/*.png
+\end{verbatim}
 
 \section{The Installed Directory Structure} \label{sc-installed-dir-structure}
 
