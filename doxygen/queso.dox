@@ -298,17 +298,17 @@ SYMBOL_CACHE_SIZE      = 0
 # Private class members and static file members will be hidden unless 
 # the EXTRACT_PRIVATE and EXTRACT_STATIC tags are set to YES
 
-EXTRACT_ALL            = NO
+EXTRACT_ALL            = YES 
 
 # If the EXTRACT_PRIVATE tag is set to YES all private members of a class 
 # will be included in the documentation.
 
-EXTRACT_PRIVATE        = NO
+EXTRACT_PRIVATE        = YES
 
 # If the EXTRACT_STATIC tag is set to YES all static members of a file 
 # will be included in the documentation.
 
-EXTRACT_STATIC         = NO
+EXTRACT_STATIC         = YES
 
 # If the EXTRACT_LOCAL_CLASSES tag is set to YES classes (and structs) 
 # defined locally in source files will be included in the documentation. 
@@ -567,15 +567,11 @@ WARN_LOGFILE           =
 
 INPUT  = doxygen/queso.page \
       	 doxygen/txt_common \
-         libs/core/inc \
-      	 libs/core/src \
-      	 libs/misc/inc \
-      	 libs/misc/src \
-      	 libs/basic/inc \
-      	 libs/basic/src \
-      	 libs/stats/inc \
-      	 libs/stats/src \
-      	 libs/interface \
+      	 src/core \
+      	 src/misc \
+      	 src/basic \
+      	 src/stats \
+      	 src/interface \
       	 examples/statisticalInverseProblem1/src \
       	 examples/statisticalInverseProblem1/tests/test_2009_02_03/ \
       	 examples/statisticalForwardProblem/src \
@@ -601,13 +597,13 @@ INPUT_ENCODING         = UTF-8
 # *.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i++ *.inl *.h *.hh *.hxx 
 # *.hpp *.h++ *.idl *.odl *.cs *.php *.php3 *.inc *.m *.mm *.py *.f90
 
-FILE_PATTERNS          = *.cpp *.f90 *.F90 *.h *.c *.txt *.page
+FILE_PATTERNS          = *.C *.cpp *.f90 *.F90 *.h *.c *.txt *.page
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories 
 # should be searched for input files as well. Possible values are YES and NO. 
 # If left blank NO is used.
 
-RECURSIVE              = NO
+RECURSIVE              = YES
 
 # The EXCLUDE tag can be used to specify files and/or directories that should 
 # excluded from the INPUT source files. This way you can easily exclude a 
@@ -700,12 +696,12 @@ FILTER_SOURCE_FILES    = NO
 # Note: To get rid of all source code in the generated output, make sure also 
 # VERBATIM_HEADERS is set to NO.
 
-SOURCE_BROWSER         = NO
+SOURCE_BROWSER         = YES 
 
 # Setting the INLINE_SOURCES tag to YES will include the body 
 # of functions and classes directly in the documentation.
 
-INLINE_SOURCES         = NO
+INLINE_SOURCES         = YES 
 
 # Setting the STRIP_CODE_COMMENTS tag to YES (the default) will instruct 
 # doxygen to hide any special comment blocks from generated source code 
@@ -717,13 +713,13 @@ STRIP_CODE_COMMENTS    = YES
 # then for each documented function all documented 
 # functions referencing it will be listed.
 
-REFERENCED_BY_RELATION = NO
+REFERENCED_BY_RELATION = YES 
 
 # If the REFERENCES_RELATION tag is set to YES 
 # then for each documented function all documented entities 
 # called/used by that function will be listed.
 
-REFERENCES_RELATION    = NO
+REFERENCES_RELATION    = YES
 
 # If the REFERENCES_LINK_SOURCE tag is set to YES (the default) 
 # and SOURCE_BROWSER tag is set to YES, then the hyperlinks from 
@@ -739,7 +735,7 @@ REFERENCES_LINK_SOURCE = YES
 # tagging system (see http://www.gnu.org/software/global/global.html). You 
 # will need version 4.8.6 or higher.
 
-USE_HTAGS              = NO
+USE_HTAGS              = NO 
 
 # If the VERBATIM_HEADERS tag is set to YES (the default) then Doxygen 
 # will generate a verbatim copy of the header file for each class for 
@@ -755,7 +751,7 @@ VERBATIM_HEADERS       = YES
 # of all compounds will be generated. Enable this if the project 
 # contains a lot of classes, structs, unions or interfaces.
 
-ALPHABETICAL_INDEX     = NO
+ALPHABETICAL_INDEX     = YES 
 
 # If the alphabetical index is enabled (see ALPHABETICAL_INDEX) then 
 # the COLS_IN_ALPHA_INDEX tag can be used to specify the number of columns 
