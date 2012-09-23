@@ -38,6 +38,7 @@
 #define UQ_MOC_SG_DATA_OUTPUT_FILE_NAME_ODV        UQ_MOC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MOC_SG_DATA_OUTPUT_ALLOWED_SET_ODV      ""
 
+#define UQ_MOC_SG_PSEQ_DATA_OUTPUT_PERIOD_ODV      0
 #define UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_NAME_ODV   UQ_MOC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MOC_SG_PSEQ_DATA_OUTPUT_FILE_TYPE_ODV   UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 #define UQ_MOC_SG_PSEQ_DATA_OUTPUT_ALLOWED_SET_ODV ""
@@ -48,6 +49,7 @@
 #define UQ_MOC_SG_QSEQ_SIZE_ODV                    100
 #define UQ_MOC_SG_QSEQ_DISPLAY_PERIOD_ODV          500
 #define UQ_MOC_SG_QSEQ_MEASURE_RUN_TIMES_ODV       0
+#define UQ_MOC_SG_QSEQ_DATA_OUTPUT_PERIOD_ODV      0
 #define UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_NAME_ODV   UQ_MOC_SG_FILENAME_FOR_NO_FILE
 #define UQ_MOC_SG_QSEQ_DATA_OUTPUT_FILE_TYPE_ODV   UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 #define UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV ""
@@ -69,20 +71,26 @@ public:
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
 
+  unsigned int                       m_pseqDataOutputPeriod;
   std::string                        m_pseqDataOutputFileName;
   std::string                        m_pseqDataOutputFileType;
   std::set<unsigned int>             m_pseqDataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   bool                               m_pseqComputeStats;
+#endif
 
   std::string                        m_qseqDataInputFileName;
   std::string                        m_qseqDataInputFileType;
   unsigned int                       m_qseqSize;
   unsigned int                       m_qseqDisplayPeriod;
   bool                               m_qseqMeasureRunTimes;
+  unsigned int                       m_qseqDataOutputPeriod;
   std::string                        m_qseqDataOutputFileName;
   std::string                        m_qseqDataOutputFileType;
   std::set<unsigned int>             m_qseqDataOutputAllowedSet;
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   bool                               m_qseqComputeStats;
+#endif
 
 private:
   void copy(const uqMcOptionsValuesClass& src);
@@ -122,6 +130,7 @@ private:
   std::string                   m_option_dataOutputFileName;
   std::string                   m_option_dataOutputAllowedSet;
 
+  std::string                   m_option_pseq_dataOutputPeriod;
   std::string                   m_option_pseq_dataOutputFileName;
   std::string                   m_option_pseq_dataOutputFileType;
   std::string                   m_option_pseq_dataOutputAllowedSet;
@@ -134,6 +143,7 @@ private:
   std::string                   m_option_qseq_size;
   std::string                   m_option_qseq_displayPeriod;
   std::string                   m_option_qseq_measureRunTimes;
+  std::string                   m_option_qseq_dataOutputPeriod;
   std::string                   m_option_qseq_dataOutputFileName;
   std::string                   m_option_qseq_dataOutputFileType;
   std::string                   m_option_qseq_dataOutputAllowedSet;

@@ -169,8 +169,14 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                                     m_optionsObj->m_ov.m_rawChainDataOutputFileName,
                                     m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                     m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
+      if ((m_env.subDisplayFile()                   ) &&
+          (m_optionsObj->m_ov.m_totallyMute == false)) {
+        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
+                                << ": just wrote remaining chain positions (per period request)"
+                                << std::endl;
+      }
+      m_numPositionsNotSubWritten = 0;
     }
-    m_numPositionsNotSubWritten = 0;
 
     if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
@@ -479,6 +485,23 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
   unsigned int uniquePos = 0;
   workingChain.setPositionValues(0,currentPositionData.vecValues());
   m_numPositionsNotSubWritten++;
+  if ((m_optionsObj->m_ov.m_rawChainDataOutputPeriod           >  0  ) && 
+      (((0+1) % m_optionsObj->m_ov.m_rawChainDataOutputPeriod) == 0  ) &&
+      (m_optionsObj->m_ov.m_rawChainDataOutputFileName         != ".")) {
+    workingChain.subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
+                                  0, 
+                                  m_optionsObj->m_ov.m_rawChainDataOutputFileName,
+                                  m_optionsObj->m_ov.m_rawChainDataOutputFileType,
+                                  m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
+    m_numPositionsNotSubWritten = 0;
+    if ((m_env.subDisplayFile()                   ) &&
+        (m_optionsObj->m_ov.m_totallyMute == false)) {
+      *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                              << ": just wrote initial chain position (per period request)"
+                              << std::endl;
+    }
+  }
+
   if (workingLogLikelihoodValues) (*workingLogLikelihoodValues)[0] = currentPositionData.logLikelihood();
   if (workingLogTargetValues    ) (*workingLogTargetValues    )[0] = currentPositionData.logTarget();
   if (true/*m_uniqueChainGenerate*/) m_idsOfUniquePositions[uniquePos++] = 0;
@@ -866,6 +889,23 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       m_rawChainInfo.numRejections++;
     }
     m_numPositionsNotSubWritten++;
+    if ((m_optionsObj->m_ov.m_rawChainDataOutputPeriod                    >  0  ) && 
+        (((positionId+1) % m_optionsObj->m_ov.m_rawChainDataOutputPeriod) == 0  ) &&
+        (m_optionsObj->m_ov.m_rawChainDataOutputFileName                  != ".")) {
+      workingChain.subWriteContents(positionId + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
+                                    positionId, 
+                                    m_optionsObj->m_ov.m_rawChainDataOutputFileName,
+                                    m_optionsObj->m_ov.m_rawChainDataOutputFileType,
+                                    m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
+      m_numPositionsNotSubWritten = 0;
+      if ((m_env.subDisplayFile()                   ) &&
+          (m_optionsObj->m_ov.m_totallyMute == false)) {
+        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                << ": just wrote chain positions (per period request)"
+                                << std::endl;
+      }
+    }
+
 
     if (workingLogLikelihoodValues) (*workingLogLikelihoodValues)[positionId] = currentPositionData.logLikelihood();
     if (workingLogTargetValues    ) (*workingLogTargetValues    )[positionId] = currentPositionData.logTarget();
@@ -1105,23 +1145,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
           (m_optionsObj->m_ov.m_totallyMute == false)) {
         *m_env.subDisplayFile() << "Finished generating " << positionId+1
                                 << " positions"
-                                << std::endl;
-      }
-    }
-
-    if ((m_optionsObj->m_ov.m_rawChainDataOutputPeriod                    >  0  ) && 
-        (((positionId+1) % m_optionsObj->m_ov.m_rawChainDataOutputPeriod) == 0  ) &&
-        (m_optionsObj->m_ov.m_rawChainDataOutputFileName                  != ".")) {
-      workingChain.subWriteContents(positionId + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                    positionId, 
-                                    m_optionsObj->m_ov.m_rawChainDataOutputFileName,
-                                    m_optionsObj->m_ov.m_rawChainDataOutputFileType,
-                                    m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
-      m_numPositionsNotSubWritten = 0;
-      if ((m_env.subDisplayFile()                   ) &&
-          (m_optionsObj->m_ov.m_totallyMute == false)) {
-        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
-                                << ": just wrote last adapted proposal cov matrix contents = " << *m_lastAdaptedCovMatrix
                                 << std::endl;
       }
     }

@@ -73,6 +73,8 @@ private:
   const uqVectorSpaceClass               <P_V,P_M>&         m_paramSpace;
   const uqVectorSpaceClass               <Q_V,Q_M>&         m_qoiSpace;
   const uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>* m_qoiFunctionSynchronizer;
+        unsigned int                                        m_numPsNotSubWritten;
+        unsigned int                                        m_numQsNotSubWritten;
 
         uqMcOptionsValuesClass                              m_alternativeOptionsValues;
         uqMonteCarloSGOptionsClass*                         m_optionsObj;
@@ -110,6 +112,8 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   m_paramSpace              (m_paramRv.imageSet().vectorSpace()),
   m_qoiSpace                (m_qoiFunction.imageSet().vectorSpace()),
   m_qoiFunctionSynchronizer (new uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>(m_qoiFunction,m_paramRv.imageSet().vectorSpace().zeroVector(),m_qoiFunction.imageSet().vectorSpace().zeroVector())),
+  m_numPsNotSubWritten      (0),
+  m_numQsNotSubWritten      (0),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_alternativeOptionsValues(NULL,NULL),
 #else
@@ -267,12 +271,19 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 
   // Take "sub" care of pseq
-  if (m_optionsObj->m_ov.m_pseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
-    workingPSeq.subWriteContents(0,
-                                 workingPSeq.subSequenceSize(),
+  if ((m_numPsNotSubWritten                        >  0                             ) &&
+      (m_optionsObj->m_ov.m_pseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE)) {
+    workingPSeq.subWriteContents(subActualSizeBeforeGeneration - m_numPsNotSubWritten,
+                                 subActualSizeBeforeGeneration - 1, 
                                  m_optionsObj->m_ov.m_pseqDataOutputFileName,
                                  m_optionsObj->m_ov.m_pseqDataOutputFileType,
                                  m_optionsObj->m_ov.m_pseqDataOutputAllowedSet);
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqMonteCarloGClass<P_V,P_M>::internGenerateSequence()"
+                              << ": just wrote remaining pseq positions (per period request)"
+                              << std::endl;
+    }
+    m_numPsNotSubWritten = 0;
     //if (m_env.subDisplayFile()) {
     //  *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
     //                          << ", prefix = "                 << m_optionsObj->m_prefix
@@ -325,12 +336,19 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   }
 
   // Take "sub" care of qseq
-  if (m_optionsObj->m_ov.m_qseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
-    workingQSeq.subWriteContents(0,
-                                 workingQSeq.subSequenceSize(),
+  if ((m_numQsNotSubWritten                        >  0                             ) &&
+      (m_optionsObj->m_ov.m_qseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE)) {
+    workingQSeq.subWriteContents(subActualSizeBeforeGeneration - m_numQsNotSubWritten,
+                                 subActualSizeBeforeGeneration - 1, 
                                  m_optionsObj->m_ov.m_qseqDataOutputFileName,
                                  m_optionsObj->m_ov.m_qseqDataOutputFileType,
                                  m_optionsObj->m_ov.m_qseqDataOutputAllowedSet);
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << "In uqMonteCarloGClass<P_V,P_M>::internGenerateSequence()"
+                              << ": just wrote remaining qseq positions (per period request)"
+                              << std::endl;
+    }
+    m_numQsNotSubWritten = 0;
     //if (m_env.subDisplayFile()) {
     //  *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
     //                          << ", prefix = "                 << m_optionsObj->m_prefix
@@ -418,7 +436,10 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
   if (iRC) {}; // just to remover compiler warning
 
   workingPSeq.resizeSequence(requestedSeqSize);
+  m_numPsNotSubWritten = 0;
   workingQSeq.resizeSequence(requestedSeqSize);
+  m_numQsNotSubWritten = 0;
+
   P_V tmpP(m_paramSpace.zeroVector());
   Q_V tmpQ(m_qoiSpace.zeroVector());
 
@@ -458,8 +479,43 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
 
     //if (allQsAreFinite) { // FIXME: this will cause different processors to have sequences of different sizes
       workingPSeq.setPositionValues(i,tmpP);
+      m_numPsNotSubWritten++;
+      if ((m_optionsObj->m_ov.m_pseqDataOutputPeriod           >  0  ) && 
+          (((i+1) % m_optionsObj->m_ov.m_pseqDataOutputPeriod) == 0  ) &&
+          (m_optionsObj->m_ov.m_pseqDataOutputFileName         != ".")) {
+        workingPSeq.subWriteContents(i + 1 - m_optionsObj->m_ov.m_pseqDataOutputPeriod,
+                                     i, 
+                                     m_optionsObj->m_ov.m_pseqDataOutputFileName,
+                                     m_optionsObj->m_ov.m_pseqDataOutputFileType,
+                                     m_optionsObj->m_ov.m_pseqDataOutputAllowedSet);
+        if (m_env.subDisplayFile()) {
+          *m_env.subDisplayFile() << "In uqMonteCarloGClass<P_V,P_M>::actualGenerateSequence()"
+                                  << ": just wrote pseq positions (per period request)"
+                                  << std::endl;
+        }
+        m_numPsNotSubWritten = 0;
+      }
+
       workingQSeq.setPositionValues(i,tmpQ);
+      m_numQsNotSubWritten++;
+      if ((m_optionsObj->m_ov.m_qseqDataOutputPeriod           >  0  ) && 
+          (((i+1) % m_optionsObj->m_ov.m_qseqDataOutputPeriod) == 0  ) &&
+          (m_optionsObj->m_ov.m_qseqDataOutputFileName         != ".")) {
+        workingQSeq.subWriteContents(i + 1 - m_optionsObj->m_ov.m_qseqDataOutputPeriod,
+                                     i, 
+                                     m_optionsObj->m_ov.m_qseqDataOutputFileName,
+                                     m_optionsObj->m_ov.m_qseqDataOutputFileType,
+                                     m_optionsObj->m_ov.m_qseqDataOutputAllowedSet);
+        if (m_env.subDisplayFile()) {
+          *m_env.subDisplayFile() << "In uqMonteCarloGClass<P_V,P_M>::actualGenerateSequence()"
+                                  << ": just wrote qseq positions (per period request)"
+                                  << std::endl;
+        }
+        m_numQsNotSubWritten = 0;
+      }
+
       actualSeqSize++;
+
     //}
 
     if ((m_optionsObj->m_ov.m_qseqDisplayPeriod            > 0) && 
