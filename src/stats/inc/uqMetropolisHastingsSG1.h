@@ -142,6 +142,7 @@ private:
         double                                      m_lastChainSize;
         P_V*                                        m_lastMean;
         P_M*                                        m_lastAdaptedCovMatrix;
+        unsigned int                                m_numPositionsNotSubWritten;
 
         uqMHRawChainInfoStruct                      m_rawChainInfo;
 
@@ -193,6 +194,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   m_lastChainSize             (0),
   m_lastMean                  (NULL),
   m_lastAdaptedCovMatrix      (NULL),
+  m_numPositionsNotSubWritten (0),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_alternativeOptionsValues  (NULL,NULL),
 #else

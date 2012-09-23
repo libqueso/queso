@@ -351,8 +351,9 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   uqScalarSequenceClass<double>*      workingLogTargetValues)
 {
   struct timeval timevalRoutineBegin;
-  /*int iRC = 0;*/
-  /*iRC = */gettimeofday(&timevalRoutineBegin, NULL);
+  int iRC = 0;
+  iRC = gettimeofday(&timevalRoutineBegin, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Entering uqMLSamplingClass<P_V,P_M>::generateSequence()"
@@ -504,8 +505,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     m_currLevel++; // restate
 
     struct timeval timevalLevelBegin;
-    /*int iRC = 0;*/
-    /*iRC = */gettimeofday(&timevalLevelBegin, NULL);
+    iRC = 0;
+    iRC = gettimeofday(&timevalLevelBegin, NULL);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -518,7 +519,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                               << std::endl;
     }
 
-    int iRC = UQ_OK_RC;
+    iRC = UQ_OK_RC;
     struct timeval timevalLevel;
     iRC = gettimeofday(&timevalLevel, NULL);
     double       cumulativeRawChainRunTime    = 0.;
@@ -855,8 +856,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     if (currExponent != 1.) delete currOptions;
 
     struct timeval timevalLevelEnd;
-    /*int iRC = 0;*/
-    /*iRC = */gettimeofday(&timevalLevelEnd, NULL);
+    iRC = 0;
+    iRC = gettimeofday(&timevalLevelEnd, NULL);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "Getting at the end of level " << m_currLevel+LEVEL_REF_ID
@@ -938,8 +939,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   if (workingLogTargetValues    ) *workingLogTargetValues     = currLogTargetValues;
 
   struct timeval timevalRoutineEnd;
-  /*int iRC = 0;*/
-  /*iRC = */gettimeofday(&timevalRoutineEnd, NULL);
+  iRC = 0;
+  iRC = gettimeofday(&timevalRoutineEnd, NULL);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateSequence()"

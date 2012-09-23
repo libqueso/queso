@@ -36,6 +36,7 @@ int uqMyWorldfullRank() {
 #ifdef QUESO_HAS_MPI
   int iRC;
   iRC = MPI_Comm_rank(MPI_COMM_WORLD,&result);
+  if (iRC) {}; // just to remove compiler warning
 #endif
   return result;
 }

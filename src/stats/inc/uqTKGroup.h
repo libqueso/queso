@@ -672,6 +672,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
                                                      NULL,
                                                      &logPrior,
                                                      &logLikelihood);
+    if (logTarget) {}; // just to remove compiler warning
 
     // IMPORTANT: covariance matrix = (Hessian)^{-1} !!!
     V unitVector(m_vectorSpace->zeroVector());

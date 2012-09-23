@@ -162,9 +162,15 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                               << std::endl;
     }
 
-    workingChain.subWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName,
-                                  m_optionsObj->m_ov.m_rawChainDataOutputFileType,
-                                  m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
+    if ((m_numPositionsNotSubWritten                     >  0  ) &&
+        (m_optionsObj->m_ov.m_rawChainDataOutputFileName != ".")) {
+      workingChain.subWriteContents(m_optionsObj->m_ov.m_rawChainSize - m_numPositionsNotSubWritten,
+                                    m_optionsObj->m_ov.m_rawChainSize - 1, 
+                                    m_optionsObj->m_ov.m_rawChainDataOutputFileName,
+                                    m_optionsObj->m_ov.m_rawChainDataOutputFileType,
+                                    m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
+    }
+    m_numPositionsNotSubWritten = 0;
 
     if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
@@ -236,42 +242,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                                            unifiedPositionsOfMaximum);
   }
 #endif
-#if 0 // 2009 03 29, prudenci: do not throw code away yet; just comment code for now
-  //****************************************************
-  // Eventually:
-  // --> generate unique chain
-  // --> write it
-  // --> compute statistics on it
-  //****************************************************
-  if (m_uniqueChainGenerate) {
-    std::ofstream* uniqueChainOfsVar = NULL;
-
-    // Select only the unique positions
-    workingChain.select(m_idsOfUniquePositions);
-    //chainVectorPositionIteratorTypedef positionIterator = m_uniqueChain1.begin();
-    //std::advance(positionIterator,uniquePos);
-    //m_uniqueChain1.erase(positionIterator,m_uniqueChain1.end());
-    //UQ_FATAL_TEST_MACRO((uniquePos != m_uniqueChain1.size()),
-    //                    m_env.worldRank(),
-    //                    "uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",
-    //                    "uniquePos != m_uniqueChain1.size()");
-
-    // Write unique chain
-    workingChain.setName(m_optionsObj->m_prefix + "uniqueChain");
-    if (uniqueChainOfsVar) {
-      workingChain.subWriteContents(*uniqueChainOfsVar);
-    }
-
-    // Compute statistics
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-    if (m_uniqueChainComputeStats) {
-      workingChain.computeStatistics(*m_uniqueChainStatisticalOptions,
-                                     genericFilePtrSet.ofsVar);
-    }
-#endif
-    // Compute MLE and MAP: to be done
-  }
-#endif
 
   //****************************************************
   // Eventually:
@@ -313,7 +283,9 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     // Take "sub" care of filtered chain
     if ((m_optionsObj->m_ov.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
         (m_optionsObj->m_ov.m_totallyMute == false                                            )) {
-      workingChain.subWriteContents(m_optionsObj->m_ov.m_filteredChainDataOutputFileName,
+      workingChain.subWriteContents(0,
+                                    workingChain.subSequenceSize(),
+                                    m_optionsObj->m_ov.m_filteredChainDataOutputFileName,
                                     m_optionsObj->m_ov.m_filteredChainDataOutputFileType,
                                     m_optionsObj->m_ov.m_filteredChainDataOutputAllowedSet);
       if ((m_env.subDisplayFile()                   ) &&
@@ -492,9 +464,10 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
   uqMarkovChainPositionDataClass<P_V> currentCandidateData(m_env);
 
   //****************************************************
-  // Begin chain loop from positionId = 1
+  // Set chain position with positionId = 0
   //****************************************************
   workingChain.resizeSequence(chainSize); 
+  m_numPositionsNotSubWritten = 0;
   if (workingLogLikelihoodValues) workingLogLikelihoodValues->resizeSequence(chainSize);
   if (workingLogTargetValues    ) workingLogTargetValues->resizeSequence    (chainSize);
   if (true/*m_uniqueChainGenerate*/) m_idsOfUniquePositions.resize(chainSize,0); 
@@ -505,6 +478,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
   unsigned int uniquePos = 0;
   workingChain.setPositionValues(0,currentPositionData.vecValues());
+  m_numPositionsNotSubWritten++;
   if (workingLogLikelihoodValues) (*workingLogLikelihoodValues)[0] = currentPositionData.logLikelihood();
   if (workingLogTargetValues    ) (*workingLogTargetValues    )[0] = currentPositionData.logTarget();
   if (true/*m_uniqueChainGenerate*/) m_idsOfUniquePositions[uniquePos++] = 0;
@@ -525,6 +499,9 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
   //m_env.syncPrintDebugMsg("In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), right before main loop",3,3000000,m_env.fullComm()); // Dangerous to barrier on fullComm ... // KAUST
 
+  //****************************************************
+  // Begin chain loop from positionId = 1
+  //****************************************************
   if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
       (m_initialPosition.numOfProcsForStorage() == 1                         ) &&
       (m_env.subRank()                          != 0                         )) {
@@ -537,6 +514,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                                 NULL,
                                                 NULL,
                                                 NULL);
+    if (aux) {}; // just to remove compiler warning
     for (unsigned int positionId = 1; positionId < workingChain.subSequenceSize(); ++positionId) {
       // Multiply by position valules by 'positionId' in order to avoid a constant sequence,
       // which would cause zero variance and eventually OVERFLOW flags raised
@@ -887,6 +865,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       workingChain.setPositionValues(positionId,currentPositionData.vecValues());
       m_rawChainInfo.numRejections++;
     }
+    m_numPositionsNotSubWritten++;
 
     if (workingLogLikelihoodValues) (*workingLogLikelihoodValues)[positionId] = currentPositionData.logLikelihood();
     if (workingLogTargetValues    ) (*workingLogTargetValues    )[positionId] = currentPositionData.logTarget();
@@ -1130,6 +1109,23 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       }
     }
 
+    if ((m_optionsObj->m_ov.m_rawChainDataOutputPeriod                    >  0  ) && 
+        (((positionId+1) % m_optionsObj->m_ov.m_rawChainDataOutputPeriod) == 0  ) &&
+        (m_optionsObj->m_ov.m_rawChainDataOutputFileName                  != ".")) {
+      workingChain.subWriteContents(positionId + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
+                                    positionId, 
+                                    m_optionsObj->m_ov.m_rawChainDataOutputFileName,
+                                    m_optionsObj->m_ov.m_rawChainDataOutputFileType,
+                                    m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
+      m_numPositionsNotSubWritten = 0;
+      if ((m_env.subDisplayFile()                   ) &&
+          (m_optionsObj->m_ov.m_totallyMute == false)) {
+        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                << ": just wrote last adapted proposal cov matrix contents = " << *m_lastAdaptedCovMatrix
+                                << std::endl;
+      }
+    }
+
     if ((m_env.subDisplayFile()                   ) &&
         (m_env.displayVerbosity() >= 10           ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
@@ -1152,6 +1148,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                                 NULL,
                                                 NULL,
                                                 NULL);
+    if (aux) {}; // just to remove compiler warning
   }
 
   //****************************************************

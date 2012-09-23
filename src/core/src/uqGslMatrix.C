@@ -588,6 +588,7 @@ uqGslMatrixClass::svdMatU() const
 {
   int iRC = 0;
   iRC = internalSvd();
+  if (iRC) {}; // just to remove compiler warning
 
   return *m_svdUmat;
 }
@@ -597,6 +598,7 @@ uqGslMatrixClass::svdMatV() const
 {
   int iRC = 0;
   iRC = internalSvd();
+  if (iRC) {}; // just to remove compiler warning
 
   return *m_svdVmat;
 }
@@ -1144,6 +1146,7 @@ uqGslMatrixClass::rank(double absoluteZeroThreshold, double relativeZeroThreshol
 {
   int iRC = 0;
   iRC = internalSvd();
+  if (iRC) {}; // just to remove compiler warning
 
   uqGslVectorClass relativeVec(*m_svdSvec);
   if (relativeVec[0] > 0.) {

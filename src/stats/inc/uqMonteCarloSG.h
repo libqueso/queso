@@ -268,7 +268,9 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 
   // Take "sub" care of pseq
   if (m_optionsObj->m_ov.m_pseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
-    workingPSeq.subWriteContents(m_optionsObj->m_ov.m_pseqDataOutputFileName,
+    workingPSeq.subWriteContents(0,
+                                 workingPSeq.subSequenceSize(),
+                                 m_optionsObj->m_ov.m_pseqDataOutputFileName,
                                  m_optionsObj->m_ov.m_pseqDataOutputFileType,
                                  m_optionsObj->m_ov.m_pseqDataOutputAllowedSet);
     //if (m_env.subDisplayFile()) {
@@ -324,7 +326,9 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 
   // Take "sub" care of qseq
   if (m_optionsObj->m_ov.m_qseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
-    workingQSeq.subWriteContents(m_optionsObj->m_ov.m_qseqDataOutputFileName,
+    workingQSeq.subWriteContents(0,
+                                 workingQSeq.subSequenceSize(),
+                                 m_optionsObj->m_ov.m_qseqDataOutputFileName,
                                  m_optionsObj->m_ov.m_qseqDataOutputFileType,
                                  m_optionsObj->m_ov.m_qseqDataOutputAllowedSet);
     //if (m_env.subDisplayFile()) {
@@ -411,6 +415,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
   double qoiFunctionRunTime = 0;
 
   iRC = gettimeofday(&timevalSeq, NULL);
+  if (iRC) {}; // just to remover compiler warning
 
   workingPSeq.resizeSequence(requestedSeqSize);
   workingQSeq.resizeSequence(requestedSeqSize);
@@ -449,6 +454,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
         break;
       }
     }
+    if (allQsAreFinite) {}; // just to remover compiler warning
 
     //if (allQsAreFinite) { // FIXME: this will cause different processors to have sequences of different sizes
       workingPSeq.setPositionValues(i,tmpP);

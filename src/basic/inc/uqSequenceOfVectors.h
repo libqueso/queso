@@ -213,12 +213,18 @@ public:
                                                  const V&                             unifiedScaleVec,
                                                  const std::vector<V*>&               unifiedEvalParamVecs,
                                                  std::vector<V*>&                     unifiedDensityVecs) const;
-        void         subWriteContents           (const std::string&                   fileName,
+        void         subWriteContents           (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
+                                                 const std::string&                   fileName,
                                                  const std::string&                   fileType,
                                                  const std::set<unsigned int>&        allowedSubEnvIds) const;
-        void         subWriteContents           (uqFilePtrSetStruct&                  filePtrSet,
+        void         subWriteContents           (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
+                                                 uqFilePtrSetStruct&                  filePtrSet,
                                                  const std::string&                   fileType) const;
-        void         subWriteContents           (std::ofstream&                       ofs,
+        void         subWriteContents           (unsigned int                         initialPos,
+                                                 unsigned int                         numPos,
+                                                 std::ofstream&                       ofs,
                                                  const std::string&                   fileType) const;
         void         unifiedWriteContents       (const std::string&                   fileName,
                                                  const std::string&                   fileType) const;
@@ -542,9 +548,9 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanMonitorWrite(std::ofstream& ofs)
 {
-  m_subMeanMonitorPosSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
-  m_subMeanVecSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
-  m_subMeanCltStdSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanMonitorPosSeq->subWriteContents(0,m_subMeanMonitorPosSeq->subSequenceSize(),ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanVecSeq->subWriteContents       (0,m_subMeanVecSeq->subSequenceSize(),       ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanCltStdSeq->subWriteContents    (0,m_subMeanCltStdSeq->subSequenceSize(),    ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
 
   return;
 }
@@ -553,12 +559,12 @@ template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanInter0MonitorWrite(std::ofstream& ofs)
 {
-  m_subMeanInter0MonitorPosSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
-  m_subMeanInter0Mean->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
-  m_subMeanInter0Clt95->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
-  m_subMeanInter0Empirical90->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
-  m_subMeanInter0Min->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
-  m_subMeanInter0Max->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanInter0MonitorPosSeq->subWriteContents(0,m_subMeanInter0MonitorPosSeq->subSequenceSize(),ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanInter0Mean->subWriteContents         (0,m_subMeanInter0Mean->subSequenceSize(),         ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanInter0Clt95->subWriteContents        (0,m_subMeanInter0Clt95->subSequenceSize(),        ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanInter0Empirical90->subWriteContents  (0,m_subMeanInter0Empirical90->subSequenceSize(),  ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanInter0Min->subWriteContents          (0,m_subMeanInter0Min->subSequenceSize(),          ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
+  m_subMeanInter0Max->subWriteContents          (0,m_subMeanInter0Max->subSequenceSize(),          ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"
 
   return;
 }
@@ -569,9 +575,9 @@ uqSequenceOfVectorsClass<V,M>::unifiedMeanMonitorWrite(std::ofstream& ofs)
 {
   // std::set<unsigned int> tmpSet;
   // tmpSet.insert(0);
-  m_unifiedMeanMonitorPosSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m" // Yes, 'subWriteContents()'
-  m_unifiedMeanVecSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"        // Yes, 'subWriteContents()'
-  m_unifiedMeanCltStdSeq->subWriteContents(ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m"     // Yes, 'subWriteContents()'
+  m_unifiedMeanMonitorPosSeq->subWriteContents(0,m_unifiedMeanMonitorPosSeq->subSequenceSize(),ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m" // Yes, 'subWriteContents()'
+  m_unifiedMeanVecSeq->subWriteContents       (0,m_unifiedMeanVecSeq->subSequenceSize(),       ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m" // Yes, 'subWriteContents()'
+  m_unifiedMeanCltStdSeq->subWriteContents    (0,m_unifiedMeanCltStdSeq->subSequenceSize(),    ofs,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT); // Yes, always ".m" // Yes, 'subWriteContents()'
 
   return;
 }
@@ -2591,6 +2597,8 @@ uqSequenceOfVectorsClass<V,M>::estimateConvBrooksGelman(
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subWriteContents(
+  unsigned int                  initialPos,
+  unsigned int                  numPos,
   const std::string&            fileName,
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
@@ -2607,7 +2615,10 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
                            false, // A 'true' causes problems when the user chooses (via options
                                   // in the input file) to use just one file for all outputs.
                            filePtrSet)) {
-    this->subWriteContents(filePtrSet,fileType);
+    this->subWriteContents(initialPos,
+                           numPos,
+                           filePtrSet,
+                           fileType);
     m_env.closeFile(filePtrSet,fileType);
   }
   m_env.subComm().Barrier();
@@ -2618,6 +2629,8 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subWriteContents(
+  unsigned int        initialPos,
+  unsigned int        numPos,
   uqFilePtrSetStruct& filePtrSet,
   const std::string&  fileType) const // "m or hdf"
 {
@@ -2627,7 +2640,10 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
                       "filePtrSet.ofsVar should not be NULL");
 
   if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
-    this->subWriteContents(*filePtrSet.ofsVar,fileType);
+    this->subWriteContents(initialPos,
+                           numPos,
+                           *filePtrSet.ofsVar,
+                           fileType);
   }
   else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
     UQ_FATAL_TEST_MACRO(true,
@@ -2648,17 +2664,25 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subWriteContents(
+  unsigned int       initialPos,
+  unsigned int       numPos,
   std::ofstream&     ofs,
   const std::string& fileType) const // "m or hdf"
 {
-  ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
-      << ","                                                    << this->vectorSizeLocal()
-      << ");"
-      << std::endl;
-  ofs << m_name << "_sub" << m_env.subIdString() << " = [";
+  UQ_FATAL_TEST_MACRO((initialPos+numPos) > this->subSequenceSize(),
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorsClass<V,M>::subWriteContents(3)",
+                      "invalid routine input parameters");
 
-  unsigned int chainSize = this->subSequenceSize();
-  for (unsigned int j = 0; j < chainSize; ++j) {
+  if (initialPos == 0) {
+    ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
+        << ","                                                    << this->vectorSizeLocal()
+        << ");"
+        << std::endl;
+    ofs << m_name << "_sub" << m_env.subIdString() << " = [";
+  }
+
+  for (unsigned int j = initialPos; j < initialPos+numPos; ++j) {
     bool savedVectorPrintScientific = m_seq[j]->getPrintScientific();
     bool savedVectorPrintState      = m_seq[j]->getPrintHorizontally();
     m_seq[j]->setPrintScientific  (true);
@@ -2670,7 +2694,9 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
     m_seq[j]->setPrintHorizontally(savedVectorPrintState);
     m_seq[j]->setPrintScientific  (savedVectorPrintScientific);
   }
-  ofs << "];\n";
+  if ((initialPos+numPos) == this->subSequenceSize()) {
+    ofs << "];\n";
+  }
 
   return;
 }
@@ -2817,6 +2843,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
               struct timeval timevalBegin;
               int iRC = UQ_OK_RC;
               iRC = gettimeofday(&timevalBegin,NULL);
+              if (iRC) {}; // just to remover compiler warning
 
               double* dataOut[numParams];
               dataOut[0] = (double*) malloc(numParams*chainSize*sizeof(double));
@@ -2839,6 +2866,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
                                 H5S_ALL,
                                 H5P_DEFAULT,
                                 (void*) dataOut[0]);
+              if (status) {}; // just to remover compiler warning
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data written" << std::endl;
 
               double writeTime = uqMiscGetEllapsedSeconds(&timevalBegin);
@@ -3142,6 +3170,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
               hsize_t dims_in[2];
               int     status_n;
               status_n  = H5Sget_simple_extent_dims(dataspace, dims_in, NULL);
+              if (status_n) {}; // just to remover compiler warning
 	      //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
               //          << ": dims_in[0] = " << dims_in[0]
               //          << ", dims_in[1] = " << dims_in[1]
@@ -3158,6 +3187,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
               struct timeval timevalBegin;
               int iRC = UQ_OK_RC;
               iRC = gettimeofday(&timevalBegin,NULL);
+              if (iRC) {}; // just to remover compiler warning
 
               unsigned int chainSizeIn = (unsigned int) dims_in[1];
               double* dataIn[numParams];
@@ -3173,6 +3203,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
                                dataspace,
                                H5P_DEFAULT,
                                dataIn[0]);
+              if (status) {}; // just to remover compiler warning
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents(): h5 case, data read" << std::endl;
               V tmpVec(m_vectorSpace.zeroVector());
               for (unsigned int j = 0; j < subReadSize; ++j) { // Yes, 'subReadSize', not 'chainSizeIn'

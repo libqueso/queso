@@ -3160,6 +3160,7 @@ uqScalarSequenceClass<T>::unifiedSort(
         m_env.inter0Comm().Recv((void *) uintBuffer, 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_ANY_SOURCE, SCALAR_SEQUENCE_INIT_MPI_MSG, &status,
                                 "uqScalarSequenceClass<T>::unifiedSort()",
                                 "failed MPI.Recv() for init");
+	//if (status) {}; // just to remove compiler warning
 
         unsigned int treeLevel = uintBuffer[0];
         this->parallelMerge(unifiedSortedSequence.rawData(),
@@ -3277,6 +3278,7 @@ uqScalarSequenceClass<T>::parallelMerge(
       m_env.inter0Comm().Recv((void *) uintBuffer, 1, uqRawValue_MPI_UNSIGNED, rightChildNode, SCALAR_SEQUENCE_SIZE_MPI_MSG, &status,
                               "uqScalarSequenceClass<T>::parallelMerge()",
                               "failed MPI.Recv() for size");
+      //if (status) {}; // just to remove compiler warning
 
       unsigned int rightSize = uintBuffer[0];
       std::vector<T> rightSortedBuffer(rightSize,0.);
@@ -3949,6 +3951,7 @@ uqScalarSequenceClass<T>::unifiedWriteContents(
               struct timeval timevalBegin;
               int iRC = UQ_OK_RC;
               iRC = gettimeofday(&timevalBegin,NULL);
+              if (iRC) {}; // just to remove compiler warning
 
               double* dataOut[numParams];
               dataOut[0] = (double*) malloc(numParams*chainSize*sizeof(double));
@@ -3972,6 +3975,8 @@ uqScalarSequenceClass<T>::unifiedWriteContents(
                                 H5S_ALL,
                                 H5P_DEFAULT,
                                 (void*) dataOut[0]);
+              if (status) {}; // just to remove compiler warning
+
               //std::cout << "\n In uqScalarSequenceClass<T>::unifiedWriteContents(), pos 003 \n" << std::endl;
               //std::cout << "In uqScalarSequenceClass<T>::unifiedWriteContents(): h5 case, data written" << std::endl;
 
@@ -4244,6 +4249,7 @@ uqScalarSequenceClass<T>::unifiedReadContents(
               hsize_t dims_in[2];
               int     status_n;
               status_n  = H5Sget_simple_extent_dims(dataspace, dims_in, NULL);
+              if (status_n) {}; // just to remove compiler warning
 	      //std::cout << "In uqScalarSequenceClass<T>::unifiedReadContents()"
               //          << ": dims_in[0] = " << dims_in[0]
               //          << ", dims_in[1] = " << dims_in[1]
@@ -4260,6 +4266,7 @@ uqScalarSequenceClass<T>::unifiedReadContents(
               struct timeval timevalBegin;
               int iRC = UQ_OK_RC;
               iRC = gettimeofday(&timevalBegin,NULL);
+              if (iRC) {}; // just to remove compiler warning
 
               unsigned int chainSizeIn = (unsigned int) dims_in[1];
               double* dataIn[numParams];
@@ -4275,6 +4282,7 @@ uqScalarSequenceClass<T>::unifiedReadContents(
                                dataspace,
                                H5P_DEFAULT,
                                dataIn[0]);
+              if (status) {}; // just to remove compiler warning
               //std::cout << "In uqScalarSequenceClass<T>::unifiedReadContents(): h5 case, data read" << std::endl;
               T tmpScalar(0.); // V tmpVec(m_vectorSpace.zeroVector());
               for (unsigned int j = 0; j < subReadSize; ++j) { // Yes, 'subReadSize', not 'chainSizeIn'

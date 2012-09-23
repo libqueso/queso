@@ -61,6 +61,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_rawChainGenerateExtra                    (UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV),
   m_rawChainDisplayPeriod                    (UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV),
   m_rawChainMeasureRunTimes                  (UQ_ML_SAMPLING_L_RAW_CHAIN_MEASURE_RUN_TIMES_ODV),
+  m_rawChainDataOutputPeriod                 (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV),
   m_rawChainDataOutputFileName               (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
   m_rawChainDataOutputFileType               (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
 //m_rawChainDataOutputAllowedSet             (),
@@ -127,6 +128,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_rawChain_generateExtra                    (m_prefix + "rawChain_generateExtra"                    ),
   m_option_rawChain_displayPeriod                    (m_prefix + "rawChain_displayPeriod"                    ),
   m_option_rawChain_measureRunTimes                  (m_prefix + "rawChain_measureRunTimes"                  ),
+  m_option_rawChain_dataOutputPeriod                 (m_prefix + "rawChain_dataOutputPeriod"                 ),
   m_option_rawChain_dataOutputFileName               (m_prefix + "rawChain_dataOutputFileName"               ),
   m_option_rawChain_dataOutputFileType               (m_prefix + "rawChain_dataOutputFileType"               ),
   m_option_rawChain_dataOutputAllowedSet             (m_prefix + "rawChain_dataOutputAllowedSet"             ),
@@ -191,6 +193,7 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_rawChainGenerateExtra                     = srcOptions.m_rawChainGenerateExtra;
   m_rawChainDisplayPeriod                     = srcOptions.m_rawChainDisplayPeriod;
   m_rawChainMeasureRunTimes                   = srcOptions.m_rawChainMeasureRunTimes;
+  m_rawChainDataOutputPeriod                  = srcOptions.m_rawChainDataOutputPeriod;
   m_rawChainDataOutputFileName                = srcOptions.m_rawChainDataOutputFileName;
   m_rawChainDataOutputFileType                = srcOptions.m_rawChainDataOutputFileType;
   m_rawChainDataOutputAllowedSet              = srcOptions.m_rawChainDataOutputAllowedSet;
@@ -309,6 +312,7 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_rawChain_generateExtra.c_str(),                     po::value<bool        >()->default_value(m_rawChainGenerateExtra                    ), "generate extra information about raw chain"                      )
     (m_option_rawChain_displayPeriod.c_str(),                     po::value<unsigned int>()->default_value(m_rawChainDisplayPeriod                    ), "period of message display during raw chain generation"           )
     (m_option_rawChain_measureRunTimes.c_str(),                   po::value<bool        >()->default_value(m_rawChainMeasureRunTimes                  ), "measure run times"                                               )
+    (m_option_rawChain_dataOutputPeriod.c_str(),                  po::value<unsigned int>()->default_value(m_rawChainDataOutputPeriod                 ), "period of message display during raw chain generation"           )
     (m_option_rawChain_dataOutputFileName.c_str(),                po::value<std::string >()->default_value(m_rawChainDataOutputFileName               ), "name of output file for raw chain "                              )
     (m_option_rawChain_dataOutputFileType.c_str(),                po::value<std::string >()->default_value(m_rawChainDataOutputFileType               ), "type of output file for raw chain "                              )
     (m_option_rawChain_dataOutputAllowedSet.c_str(),              po::value<std::string >()->default_value(m_str2                                     ), "subEnvs that will write to output file for raw chain"            )
@@ -527,6 +531,10 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
 
   if (m_env.allOptionsMap().count(m_option_rawChain_measureRunTimes.c_str())) {
     m_rawChainMeasureRunTimes = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_measureRunTimes.c_str()]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputPeriod.c_str())) {
+    m_rawChainDataOutputPeriod = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputPeriod.c_str()]).as<unsigned int>();
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputFileName.c_str())) {
@@ -751,6 +759,7 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_rawChain_generateExtra                     << " = " << m_rawChainGenerateExtra
      << "\n" << m_option_rawChain_displayPeriod                     << " = " << m_rawChainDisplayPeriod
      << "\n" << m_option_rawChain_measureRunTimes                   << " = " << m_rawChainMeasureRunTimes
+     << "\n" << m_option_rawChain_dataOutputPeriod                  << " = " << m_rawChainDataOutputPeriod
      << "\n" << m_option_rawChain_dataOutputFileName                << " = " << m_rawChainDataOutputFileName
      << "\n" << m_option_rawChain_dataOutputFileType                << " = " << m_rawChainDataOutputFileType
      << "\n" << m_option_rawChain_dataOutputAllowedSet              << " = ";

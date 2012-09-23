@@ -112,6 +112,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   //********************************************************
 
   iRC = gettimeofday(&timevalRef, NULL);
+  if (iRC) {}; // just to remove compiler warning
   if (env.fullRank() == 0) {
     std::cout << "Beginning 'calibration stage' at " << ctime(&timevalRef.tv_sec)
               << std::endl;

@@ -141,6 +141,8 @@ exPhysics1LikelihoodRoutine(
     computeWAndLambdaGradsAlso = true;
   }
   if (hessianEffect) computeLambda = true;
+  if (computeLambda) {};              // just to remove compiler warning
+  if (computeWAndLambdaGradsAlso) {}; // just to remove compiler warning
 
   // Loop on scenarios
   const std::vector<exPhysics1LikelihoodInfoStruct<P_V,P_M> *>& vecInfo = *((const std::vector<exPhysics1LikelihoodInfoStruct<P_V,P_M> *> *) functionDataPtr);

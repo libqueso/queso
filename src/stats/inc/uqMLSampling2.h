@@ -359,6 +359,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
     int iRC = UQ_OK_RC;
     struct timeval timevalLevel;
     iRC = gettimeofday(&timevalLevel, NULL);
+    if (iRC) {}; // just to remove compiler warning
 
     if (m_env.inter0Rank() >= 0) {
       unsigned int tmpSize = currOptions.m_rawChainSize;
@@ -489,6 +490,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step01_inter0(
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
   iRC = gettimeofday(&timevalStep, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -541,6 +543,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
   iRC = gettimeofday(&timevalStep, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -674,6 +677,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
   iRC = gettimeofday(&timevalStep, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -956,6 +960,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step04_inter0(
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
   iRC = gettimeofday(&timevalStep, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -1036,6 +1041,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step05_inter0(
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
   iRC = gettimeofday(&timevalStep, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -1120,6 +1126,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step06_all(
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
   iRC = gettimeofday(&timevalStep, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
   useBalancedChains = decideOnBalancedChains_all(currOptions,                     // input
                                                  indexOfFirstWeight,              // input
@@ -1155,6 +1162,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step07_inter0(
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
   iRC = gettimeofday(&timevalStep, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -1207,6 +1215,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step08_all(
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
   iRC = gettimeofday(&timevalStep, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -1247,6 +1256,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
   iRC = gettimeofday(&timevalStep, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
     if (currOptions->m_scaleCovMatrix == false) {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -1706,6 +1716,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step10_all(
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
   iRC = gettimeofday(&timevalStep, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -1805,6 +1816,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
   iRC = gettimeofday(&timevalStep, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"

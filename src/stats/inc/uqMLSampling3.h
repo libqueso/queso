@@ -1010,6 +1010,7 @@ uqMLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   int iRC = UQ_OK_RC;
   struct timeval timevalBIP;
   iRC = gettimeofday(&timevalBIP, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
   unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
   unsigned int Nc = exchangeStdVec.size();
@@ -1405,6 +1406,7 @@ uqMLSamplingClass<P_V,P_M>::justBalance_proc0(
   int iRC = UQ_OK_RC;
   struct timeval timevalBal;
   iRC = gettimeofday(&timevalBal, NULL);
+  if (iRC) {}; // just to remove compiler warning
 
   unsigned int Np = m_env.numSubEnvironments();
   unsigned int Nc = exchangeStdVec.size();

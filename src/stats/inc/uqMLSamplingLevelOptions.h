@@ -62,6 +62,7 @@
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV                         0
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV                         500
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_MEASURE_RUN_TIMES_ODV                      1
+#define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV                     0
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV                  UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV                  UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV                ""
@@ -134,6 +135,7 @@ public:
   bool                               m_rawChainGenerateExtra;
   unsigned int                       m_rawChainDisplayPeriod;
   bool                               m_rawChainMeasureRunTimes;
+  unsigned int                       m_rawChainDataOutputPeriod;
   std::string                        m_rawChainDataOutputFileName;
   std::string                        m_rawChainDataOutputFileType;
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
@@ -210,6 +212,7 @@ private:
   std::string                   m_option_rawChain_generateExtra;
   std::string                   m_option_rawChain_displayPeriod;
   std::string                   m_option_rawChain_measureRunTimes;
+  std::string                   m_option_rawChain_dataOutputPeriod;
   std::string                   m_option_rawChain_dataOutputFileName;
   std::string                   m_option_rawChain_dataOutputFileType;
   std::string                   m_option_rawChain_dataOutputAllowedSet;

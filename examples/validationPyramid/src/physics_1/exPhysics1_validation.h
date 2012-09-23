@@ -240,6 +240,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   struct timeval timevalNow;
 
   iRC = gettimeofday(&timevalRef, NULL);
+  if (iRC) {}; // just to remove compiler warning
   if (m_env.fullRank() == 0) {
     std::cout << "Entering exPhysics1Validation::runCalibrationStage() at " << ctime(&timevalRef.tv_sec)
               << std::endl;
@@ -306,6 +307,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   struct timeval timevalNow;
 
   iRC = gettimeofday(&timevalRef, NULL);
+  if (iRC) {}; // just to remove compiler warning
   if (m_env.fullRank() == 0) {
     std::cout << "Entering exPhysics1Validation::runValidationStage() at " << ctime(&timevalRef.tv_sec)
               << std::endl;
@@ -367,6 +369,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
   struct timeval timevalNow;
 
   iRC = gettimeofday(&timevalRef, NULL);
+  if (iRC) {}; // just to remove compiler warning
   if (m_env.fullRank() == 0) {
     std::cout << "Entering exPhysics1Validation::runComparisonStage() at " << ctime(&timevalRef.tv_sec)
               << std::endl;
