@@ -8,6 +8,8 @@ Under construction
 
   * set some uqGslMatrixClass private variables to NULL after deletion (bug correction)
   * simplified statistical post processing of Markov chains and Monte Carlo sequences
+  * removed warnings related to gcc 4.7.2
+  * allowed intermediated writings of MCMC sample, of MC input parameters, and of MC output qois
 
 Version 0.45.2 (24 July 2012)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.45.2
