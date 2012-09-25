@@ -50,6 +50,12 @@ double likelihoodRoutine(
 
   likelihoodCounter++;
 
+  if (paramDirection  ||
+      functionDataPtr ||
+      gradVector      ||
+      hessianMatrix   ||
+      hessianEffect) {}; // just to remove compiler warning
+
   double x = paramValues[0];
 
   double mean1  = 10.;
@@ -90,8 +96,8 @@ double likelihoodRoutine(
   double returnValue = resultValue;
 
   if (paramValues.env().exceptionalCircunstance()) {
-    if ((paramValues.env().subDisplayFile()       ) &&
-        (paramValues.env().displayVerbosity() >= 0)) { // detailed output debug
+    if ((paramValues.env().subDisplayFile()      ) &&
+        (paramValues.env().displayVerbosity() > 0)) { // detailed output debug
       *paramValues.env().subDisplayFile() << "Leaving likelihood function"
                                           << ": paramValues = " << paramValues
                                           << ", returnValue = " << returnValue

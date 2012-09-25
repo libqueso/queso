@@ -246,14 +246,12 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   const char*                   prefix,
   const uqMhOptionsValuesClass& alternativeOptionsValues)
   :
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_ov                                               (alternativeOptionsValues),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_rawChainStatisticalOptionsObj                    (NULL),
   m_rawChainStatOptsInstantiated                     (false),
   m_filteredChainStatisticalOptionsObj               (NULL),
   m_filteredChainStatOptsInstantiated                (false),
-#else
-  m_ov                                               (),
 #endif
   m_prefix                                           ((std::string)(prefix) + "mh_"),
   m_env                                              (env),

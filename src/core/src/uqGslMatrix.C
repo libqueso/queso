@@ -1942,8 +1942,8 @@ uqGslMatrixClass::subReadContents(
                           allowedSubEnvIds,
                           filePtrSet)) {
 
-     // palms
-    double nRowsLocal = this->numRowsLocal();
+    // palms
+    unsigned int nRowsLocal = this->numRowsLocal();
 
     // In the logic below, the id of a line' begins with value 0 (zero)
     unsigned int idOfMyFirstLine = 1;

@@ -712,6 +712,7 @@ uqDeltaSet1D1DFunctionClass::value(double domainValue) const
 double
 uqDeltaSet1D1DFunctionClass::deriv(double domainValue) const
 {
+  if (domainValue) {}; // just to remove compiler warning
   return 0.;
 }
 

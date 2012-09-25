@@ -165,12 +165,10 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   const char*                   prefix,
   const uqMcOptionsValuesClass& alternativeOptionsValues)
   :
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_ov                              (alternativeOptionsValues),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_pseqStatisticalOptionsObj       (NULL),
   m_qseqStatisticalOptionsObj       (NULL),
-#else
-  m_ov                              (),
 #endif
   m_prefix                          ((std::string)(prefix) + "mc_"),
   m_env                             (env),
