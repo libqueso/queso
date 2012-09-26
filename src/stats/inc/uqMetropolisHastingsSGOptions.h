@@ -39,8 +39,9 @@
 #define UQ_MH_SG_FILENAME_FOR_NO_FILE   "."
 
 // _ODV = option default value
-#define UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                  UQ_MH_SG_FILENAME_FOR_NO_FILE
-#define UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV                ""
+#define UQ_MH_SG_DATA_OUTPUT_FILE_NAME_ODV                            UQ_MH_SG_FILENAME_FOR_NO_FILE
+#define UQ_MH_SG_DATA_OUTPUT_ALLOW_ALL_ODV                            0
+#define UQ_MH_SG_DATA_OUTPUT_ALLOWED_SET_ODV                          ""
 
 #define UQ_MH_SG_TOTALLY_MUTE_ODV                                     0
 #define UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV            UQ_MH_SG_FILENAME_FOR_NO_FILE
@@ -56,6 +57,7 @@
 #define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV                     0
 #define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV                  UQ_MH_SG_FILENAME_FOR_NO_FILE
 #define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV                  UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV                  0
 #define UQ_MH_SG_RAW_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV                ""
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 #define UQ_MH_SG_RAW_CHAIN_COMPUTE_STATS_ODV                          0
@@ -65,6 +67,7 @@
 #define UQ_MH_SG_FILTERED_CHAIN_LAG_ODV                               1
 #define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV             UQ_MH_SG_FILENAME_FOR_NO_FILE
 #define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV             UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV             0
 #define UQ_MH_SG_FILTERED_CHAIN_DATA_OUTPUT_ALLOWED_SET_ODV           ""
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 #define UQ_MH_SG_FILTERED_CHAIN_COMPUTE_STATS_ODV                     0
@@ -101,6 +104,7 @@ public:
  ~uqMhOptionsValuesClass            ();
 
   std::string                        m_dataOutputFileName;
+  bool                               m_dataOutputAllowAll;
   std::set<unsigned int>             m_dataOutputAllowedSet;
 
   bool                               m_totallyMute;
@@ -117,6 +121,7 @@ public:
   unsigned int                       m_rawChainDataOutputPeriod;
   std::string                        m_rawChainDataOutputFileName;
   std::string                        m_rawChainDataOutputFileType;
+  bool                               m_rawChainDataOutputAllowAll;
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   bool                               m_rawChainComputeStats;
@@ -127,6 +132,7 @@ public:
   unsigned int                       m_filteredChainLag;              // input or set during run time
   std::string                        m_filteredChainDataOutputFileName;
   std::string                        m_filteredChainDataOutputFileType;
+  bool                               m_filteredChainDataOutputAllowAll;
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   bool                               m_filteredChainComputeStats;
@@ -191,6 +197,7 @@ private:
   std::string                   m_option_help;
 
   std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowAll;
   std::string                   m_option_dataOutputAllowedSet;
 
   std::string                   m_option_totallyMute;
@@ -207,6 +214,7 @@ private:
   std::string                   m_option_rawChain_dataOutputPeriod;
   std::string                   m_option_rawChain_dataOutputFileName;
   std::string                   m_option_rawChain_dataOutputFileType;
+  std::string                   m_option_rawChain_dataOutputAllowAll;
   std::string                   m_option_rawChain_dataOutputAllowedSet;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   std::string                   m_option_rawChain_computeStats;
@@ -216,6 +224,7 @@ private:
   std::string                   m_option_filteredChain_lag;
   std::string                   m_option_filteredChain_dataOutputFileName;
   std::string                   m_option_filteredChain_dataOutputFileType;
+  std::string                   m_option_filteredChain_dataOutputAllowAll;
   std::string                   m_option_filteredChain_dataOutputAllowedSet;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   std::string                   m_option_filteredChain_computeStats;

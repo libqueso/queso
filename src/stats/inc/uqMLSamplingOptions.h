@@ -53,6 +53,7 @@
 #endif
 
 #define UQ_ML_SAMPLING_DATA_OUTPUT_FILE_NAME_ODV               UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE
+#define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOW_ALL_ODV               0
 #define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV             ""
 
 class uqMLSamplingOptionsClass
@@ -78,6 +79,7 @@ public:
   unsigned int           m_restartChainSize;
 #endif
   std::string            m_dataOutputFileName;
+  bool                   m_dataOutputAllowAll;
   std::set<unsigned int> m_dataOutputAllowedSet;
 
 private:
@@ -100,6 +102,7 @@ private:
   std::string                   m_option_restartChainSize;
 #endif
   std::string                   m_option_dataOutputFileName;
+  std::string                   m_option_dataOutputAllowAll;
   std::string                   m_option_dataOutputAllowedSet;
 };
 

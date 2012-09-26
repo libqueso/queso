@@ -172,7 +172,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
       if ((m_env.subDisplayFile()                   ) &&
           (m_optionsObj->m_ov.m_totallyMute == false)) {
         *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
-                                << ": just wrote remaining chain positions (per period request)"
+                                << ": just wrote (per period request) remaining " << m_numPositionsNotSubWritten << " chain positions "
+                                << ", " << m_optionsObj->m_ov.m_rawChainSize - m_numPositionsNotSubWritten << " <= pos <= " << m_optionsObj->m_ov.m_rawChainSize - 1
                                 << std::endl;
       }
       m_numPositionsNotSubWritten = 0;
@@ -493,13 +494,14 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                   m_optionsObj->m_ov.m_rawChainDataOutputFileName,
                                   m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                   m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
-    m_numPositionsNotSubWritten = 0;
     if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
-                              << ": just wrote initial chain position (per period request)"
+                              << ": just wrote (per period request) " << m_numPositionsNotSubWritten << " chain positions "
+                              << ", " << 0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod << " <= pos <= " << 0
                               << std::endl;
     }
+    m_numPositionsNotSubWritten = 0;
   }
 
   if (workingLogLikelihoodValues) (*workingLogLikelihoodValues)[0] = currentPositionData.logLikelihood();
@@ -552,7 +554,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     //****************************************************
     m_positionIdForDebugging = positionId;
     if ((m_env.subDisplayFile()                   ) &&
-        (m_env.displayVerbosity() >= 10           ) &&
+        (m_env.displayVerbosity() >= 3            ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
                               << ": beginning chain position of id = "  << positionId
@@ -897,13 +899,14 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                     m_optionsObj->m_ov.m_rawChainDataOutputFileName,
                                     m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                     m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
-      m_numPositionsNotSubWritten = 0;
       if ((m_env.subDisplayFile()                   ) &&
           (m_optionsObj->m_ov.m_totallyMute == false)) {
         *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
-                                << ": just wrote chain positions (per period request)"
+                                << ": just wrote (per period request) " << m_numPositionsNotSubWritten << " chain positions "
+                                << ", " << positionId + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod << " <= pos <= " << positionId
                                 << std::endl;
       }
+      m_numPositionsNotSubWritten = 0;
     }
 
 
