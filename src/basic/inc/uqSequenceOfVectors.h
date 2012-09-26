@@ -2609,17 +2609,36 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
                       "unexpected subRank");
 
   uqFilePtrSetStruct filePtrSet;
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+    *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::subWriteContents()"
+                            << ": about to try to open file '" << fileName << "." << fileType
+                            << "'"
+                            << ", initialPos = " << initialPos
+                            << ", numPos = "     << numPos
+                            << std::endl;
+  }
   if (m_env.openOutputFile(fileName,
                            fileType,
                            allowedSubEnvIds,
                            false, // A 'true' causes problems when the user chooses (via options
                                   // in the input file) to use just one file for all outputs.
                            filePtrSet)) {
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::subWriteContents()"
+                              << ": successfully opened file '" << fileName << "." << fileType
+                              << "'"
+                              << std::endl;
+    }
     this->subWriteContents(initialPos,
                            numPos,
                            filePtrSet,
                            fileType);
     m_env.closeFile(filePtrSet,fileType);
+  }
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+    *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::subWriteContents()"
+                            << ": before Barrier()"
+                            << std::endl;
   }
   m_env.subComm().Barrier();
 

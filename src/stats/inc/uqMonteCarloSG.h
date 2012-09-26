@@ -274,7 +274,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   if ((m_numPsNotSubWritten                        >  0                             ) &&
       (m_optionsObj->m_ov.m_pseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE)) {
     workingPSeq.subWriteContents(subActualSizeBeforeGeneration - m_numPsNotSubWritten,
-                                 subActualSizeBeforeGeneration - 1, 
+                                 m_numPsNotSubWritten, 
                                  m_optionsObj->m_ov.m_pseqDataOutputFileName,
                                  m_optionsObj->m_ov.m_pseqDataOutputFileType,
                                  m_optionsObj->m_ov.m_pseqDataOutputAllowedSet);
@@ -339,7 +339,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   if ((m_numQsNotSubWritten                        >  0                             ) &&
       (m_optionsObj->m_ov.m_qseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE)) {
     workingQSeq.subWriteContents(subActualSizeBeforeGeneration - m_numQsNotSubWritten,
-                                 subActualSizeBeforeGeneration - 1, 
+                                 m_numQsNotSubWritten, 
                                  m_optionsObj->m_ov.m_qseqDataOutputFileName,
                                  m_optionsObj->m_ov.m_qseqDataOutputFileType,
                                  m_optionsObj->m_ov.m_qseqDataOutputAllowedSet);
@@ -484,7 +484,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
           (((i+1) % m_optionsObj->m_ov.m_pseqDataOutputPeriod) == 0  ) &&
           (m_optionsObj->m_ov.m_pseqDataOutputFileName         != ".")) {
         workingPSeq.subWriteContents(i + 1 - m_optionsObj->m_ov.m_pseqDataOutputPeriod,
-                                     i, 
+                                     m_optionsObj->m_ov.m_pseqDataOutputPeriod, 
                                      m_optionsObj->m_ov.m_pseqDataOutputFileName,
                                      m_optionsObj->m_ov.m_pseqDataOutputFileType,
                                      m_optionsObj->m_ov.m_pseqDataOutputAllowedSet);
@@ -502,7 +502,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
           (((i+1) % m_optionsObj->m_ov.m_qseqDataOutputPeriod) == 0  ) &&
           (m_optionsObj->m_ov.m_qseqDataOutputFileName         != ".")) {
         workingQSeq.subWriteContents(i + 1 - m_optionsObj->m_ov.m_qseqDataOutputPeriod,
-                                     i, 
+                                     m_optionsObj->m_ov.m_qseqDataOutputPeriod, 
                                      m_optionsObj->m_ov.m_qseqDataOutputFileName,
                                      m_optionsObj->m_ov.m_qseqDataOutputFileType,
                                      m_optionsObj->m_ov.m_qseqDataOutputAllowedSet);

@@ -165,7 +165,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     if ((m_numPositionsNotSubWritten                     >  0  ) &&
         (m_optionsObj->m_ov.m_rawChainDataOutputFileName != ".")) {
       workingChain.subWriteContents(m_optionsObj->m_ov.m_rawChainSize - m_numPositionsNotSubWritten,
-                                    m_optionsObj->m_ov.m_rawChainSize - 1, 
+                                    m_numPositionsNotSubWritten,
                                     m_optionsObj->m_ov.m_rawChainDataOutputFileName,
                                     m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                     m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
@@ -490,7 +490,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
       (((0+1) % m_optionsObj->m_ov.m_rawChainDataOutputPeriod) == 0  ) &&
       (m_optionsObj->m_ov.m_rawChainDataOutputFileName         != ".")) {
     workingChain.subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                  0, 
+                                  m_optionsObj->m_ov.m_rawChainDataOutputPeriod, 
                                   m_optionsObj->m_ov.m_rawChainDataOutputFileName,
                                   m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                   m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
@@ -894,14 +894,24 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     if ((m_optionsObj->m_ov.m_rawChainDataOutputPeriod                    >  0  ) && 
         (((positionId+1) % m_optionsObj->m_ov.m_rawChainDataOutputPeriod) == 0  ) &&
         (m_optionsObj->m_ov.m_rawChainDataOutputFileName                  != ".")) {
+      if ((m_env.subDisplayFile()                   ) &&
+          (m_env.displayVerbosity()         >= 10   ) &&
+          (m_optionsObj->m_ov.m_totallyMute == false)) {
+        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                << ", for chain position of id = " << positionId
+                                << ": about to write (per period request) " << m_numPositionsNotSubWritten << " chain positions "
+                                << ", " << positionId + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod << " <= pos <= " << positionId
+                                << std::endl;
+      }
       workingChain.subWriteContents(positionId + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                    positionId, 
+                                    m_optionsObj->m_ov.m_rawChainDataOutputPeriod, 
                                     m_optionsObj->m_ov.m_rawChainDataOutputFileName,
                                     m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                     m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
       if ((m_env.subDisplayFile()                   ) &&
           (m_optionsObj->m_ov.m_totallyMute == false)) {
         *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+                                << ", for chain position of id = " << positionId
                                 << ": just wrote (per period request) " << m_numPositionsNotSubWritten << " chain positions "
                                 << ", " << positionId + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod << " <= pos <= " << positionId
                                 << std::endl;
