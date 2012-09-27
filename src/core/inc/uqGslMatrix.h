@@ -142,6 +142,7 @@ private:
   mutable double            m_lnDeterminant;
   mutable gsl_permutation*  m_permutation;
   mutable int               m_signum;
+  mutable bool              m_isSingular;
 };
 
 uqGslMatrixClass operator*       (double a,                    const uqGslMatrixClass& mat);

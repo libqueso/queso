@@ -61,7 +61,8 @@ uqGslMatrixClass::uqGslMatrixClass( // can be a rectangular matrix
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
   m_permutation  (NULL),
-  m_signum       (0)
+  m_signum       (0),
+  m_isSingular   (false)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
@@ -86,7 +87,8 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
   m_permutation  (NULL),
-  m_signum       (0)
+  m_signum       (0),
+  m_isSingular   (false)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
@@ -114,7 +116,8 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
   m_permutation  (NULL),
-  m_signum       (0)
+  m_signum       (0),
+  m_isSingular   (false)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
@@ -140,7 +143,8 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v) // square matrix
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
   m_permutation  (NULL),
-  m_signum       (0)
+  m_signum       (0),
+  m_isSingular   (false)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
@@ -167,7 +171,8 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslMatrixClass& B) // can be a rectan
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
   m_permutation  (NULL),
-  m_signum       (0)
+  m_signum       (0),
+  m_isSingular   (false)
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
@@ -331,6 +336,7 @@ uqGslMatrixClass::resetLU()
     m_permutation = NULL;
   }
   m_signum = 0;
+  m_isSingular = false;
 
   return;
 }
@@ -466,7 +472,7 @@ uqGslMatrixClass::chol()
   oldHandler = gsl_set_error_handler_off();
   iRC = gsl_linalg_cholesky_decomp(m_mat);
   if (iRC != 0) {
-    std::cout << "In uqGslMatrixClass::chol()"
+    std::cerr << "In uqGslMatrixClass::chol()"
               << ": iRC = " << iRC
               << ", gsl error message = " << gsl_strerror(iRC)
               << std::endl;
@@ -638,7 +644,7 @@ uqGslMatrixClass::internalSvd() const
     iRC = gsl_linalg_SV_decomp(m_svdUmat->data(), m_svdVmat->data(), m_svdSvec->data(), vecWork.data());
 #endif
     if (iRC != 0) {
-      std::cout << "In uqGslMatrixClass::internalSvd()"
+      std::cerr << "In uqGslMatrixClass::internalSvd()"
                 << ": iRC = " << iRC
                 << ", gsl error message = " << gsl_strerror(iRC)
                 << std::endl;
@@ -1116,10 +1122,35 @@ uqGslMatrixClass::determinant() const
     if (m_LU == NULL) {
       uqGslVectorClass tmpB(m_env,m_map);
       uqGslVectorClass tmpX(m_env,m_map);
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+        *m_env.subDisplayFile() << "In uqGslMatrixClass::determinant()"
+                                << ": before 'this->invertMultiply()'"
+                                << std::endl;
+      }
       this->invertMultiply(tmpB,tmpX);
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+        *m_env.subDisplayFile() << "In uqGslMatrixClass::determinant()"
+                                << ": after 'this->invertMultiply()'"
+                                << std::endl;
+      }
+    }
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqGslMatrixClass::determinant()"
+                              << ": before 'gsl_linalg_LU_det()'"
+                              << std::endl;
     }
     m_determinant   = gsl_linalg_LU_det(m_LU,m_signum); 
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqGslMatrixClass::determinant()"
+                              << ": after 'gsl_linalg_LU_det()'"
+                              << std::endl;
+    }
     m_lnDeterminant = gsl_linalg_LU_lndet(m_LU);
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqGslMatrixClass::determinant()"
+                              << ": after 'gsl_linalg_LU_lndet()'"
+                              << std::endl;
+    }
   }
 
   return m_determinant;
@@ -1132,10 +1163,35 @@ uqGslMatrixClass::lnDeterminant() const
     if (m_LU == NULL) {
       uqGslVectorClass tmpB(m_env,m_map);
       uqGslVectorClass tmpX(m_env,m_map);
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+        *m_env.subDisplayFile() << "In uqGslMatrixClass::lnDeterminant()"
+                                << ": before 'this->invertMultiply()'"
+                                << std::endl;
+      }
       this->invertMultiply(tmpB,tmpX);
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+        *m_env.subDisplayFile() << "In uqGslMatrixClass::lnDeterminant()"
+                                << ": after 'this->invertMultiply()'"
+                                << std::endl;
+      }
+    }
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqGslMatrixClass::lnDeterminant()"
+                              << ": before 'gsl_linalg_LU_det()'"
+                              << std::endl;
     }
     m_determinant   = gsl_linalg_LU_det(m_LU,m_signum); 
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqGslMatrixClass::lnDeterminant()"
+                              << ": after 'gsl_linalg_LU_det()'"
+                              << std::endl;
+    }
     m_lnDeterminant = gsl_linalg_LU_lndet(m_LU);
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqGslMatrixClass::lnDeterminant()"
+                              << ": before 'gsl_linalg_LU_lndet()'"
+                              << std::endl;
+    }
   }
 
   return m_lnDeterminant;
@@ -1281,7 +1337,28 @@ uqGslMatrixClass::invertMultiply(
       std::cout << std::endl;
     }
 
+    gsl_error_handler_t* oldHandler;
+    oldHandler = gsl_set_error_handler_off();
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqGslMatrixClass::invertMultiply()"
+                              << ": before 'gsl_linalg_LU_decomp()'"
+                              << std::endl;
+    }
     iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&m_signum); 
+    if (iRC != 0) {
+      std::cerr << "In uqGslMatrixClass::invertMultiply()"
+                << ", after gsl_linalg_LU_decomp()"
+                << ": iRC = " << iRC
+                << ", gsl error message = " << gsl_strerror(iRC)
+                << std::endl;
+    } 
+    gsl_set_error_handler(oldHandler);
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqGslMatrixClass::invertMultiply()"
+                              << ": after 'gsl_linalg_LU_decomp()'"
+                              << ", IRC = " << iRC
+                              << std::endl;
+    }
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.worldRank(),
                       "uqGslMatrixClass::invertMultiply()",
@@ -1295,11 +1372,34 @@ uqGslMatrixClass::invertMultiply(
     }
   }
 
+  gsl_error_handler_t* oldHandler;
+  oldHandler = gsl_set_error_handler_off();
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+    *m_env.subDisplayFile() << "In uqGslMatrixClass::invertMultiply()"
+                            << ": before 'gsl_linalg_LU_solve()'"
+                            << std::endl;
+  }
   iRC = gsl_linalg_LU_solve(m_LU,m_permutation,b.data(),x.data()); 
-  UQ_FATAL_RC_MACRO(iRC,
-                    m_env.worldRank(),
-                    "uqGslMatrixClass::invertMultiply()",
-                    "gsl_linalg_LU_solve() failed");
+  if (iRC != 0) {
+    m_isSingular = true;
+    std::cerr << "In uqGslMatrixClass::invertMultiply()"
+              << ", after gsl_linalg_LU_solve()"
+              << ": iRC = " << iRC
+              << ", gsl error message = " << gsl_strerror(iRC)
+              << std::endl;
+  } 
+  gsl_set_error_handler(oldHandler);
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+    *m_env.subDisplayFile() << "In uqGslMatrixClass::invertMultiply()"
+                            << ": after 'gsl_linalg_LU_solve()'"
+                            << ", IRC = " << iRC
+                            << std::endl;
+  }
+  // prudenci, 2012-09-26: commented the 'UQ_FATAL_RC_MACRO' below
+  //UQ_FATAL_RC_MACRO(iRC,
+  //                  m_env.worldRank(),
+  //                  "uqGslMatrixClass::invertMultiply()",
+  //                  "gsl_linalg_LU_solve() failed");
 
   if (m_inDebugMode) {
     uqGslVectorClass tmpVec(b - (*this)*x);
@@ -1419,6 +1519,9 @@ uqGslMatrixClass::invertMultiplyForceLU(
 		    "gsl_linalg_LU_decomp() failed");
 
   iRC = gsl_linalg_LU_solve(m_LU,m_permutation,b.data(),x.data()); 
+  if (iRC != 0) {
+    m_isSingular = true;
+  }
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.worldRank(),
                     "uqGslMatrixClass::invertMultiplyForceLU()",
