@@ -428,7 +428,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
     *m_env.subDisplayFile() << "ERROR: In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
                             << ": contents of initial position are:\n";
     *m_env.subDisplayFile() << valuesOf1stPosition; // FIX ME: might need parallelism
-    *m_env.subDisplayFile() << "ERROR: In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
+    *m_env.subDisplayFile() << "\nERROR: In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain()"
                             << ": targetPdf.domaintSet() info is:\n"
                             << m_targetPdf.domainSet();
     *m_env.subDisplayFile() << std::endl;

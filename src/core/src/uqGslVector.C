@@ -1150,6 +1150,44 @@ uqGslVectorClass::data() const
 }
 
 bool
+uqGslVectorClass::atLeastOneComponentSmallerThan(const uqGslVectorClass& rhs) const
+{
+  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::atLeastOneComponentSmallerThan()",
+                      "vectors have different sizes");
+
+  bool result = false;
+  unsigned int i = 0;
+  unsigned int size = this->sizeLocal();
+  while ((i < size) && (result == false)) {
+    result = ( (*this)[i] < rhs[i] );
+    i++;
+  };
+
+  return result;
+}
+
+bool
+uqGslVectorClass::atLeastOneComponentBiggerThan(const uqGslVectorClass& rhs) const
+{
+  UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),
+                      m_env.worldRank(),
+                      "uqGslVectorClass::atLeastOneComponentBiggerThan()",
+                      "vectors have different sizes");
+
+  bool result = false;
+  unsigned int i = 0;
+  unsigned int size = this->sizeLocal();
+  while ((i < size) && (result == false)) {
+    result = ( (*this)[i] > rhs[i] );
+    i++;
+  };
+
+  return result;
+}
+
+bool
 uqGslVectorClass::atLeastOneComponentSmallerOrEqualThan(const uqGslVectorClass& rhs) const
 {
   UQ_FATAL_TEST_MACRO((this->sizeLocal() != rhs.sizeLocal()),

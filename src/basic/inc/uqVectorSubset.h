@@ -183,16 +183,11 @@ template<class V, class M>
 bool
 uqBoxSubsetClass<V,M>::contains(const V& vec) const
 {
-  //bool result = true;
-
-  //for (unsigned int i = 0; (i < m_vectorSpace->dimLocal()) && (result == true); ++i) {
-  //  result = (m_maxValues[i] <= vec[i]) && (vec[i] <= m_minValues[i]);
-  //}
-
-  //return result;
-
-  return (!vec.atLeastOneComponentSmallerOrEqualThan(m_minValues) &&
-          !vec.atLeastOneComponentBiggerOrEqualThan (m_maxValues));
+  // prudenci, 2012-09-26: allow boundary values because of 'beta' realizer, which can generate a sample with boundary value '1'
+  //return (!vec.atLeastOneComponentSmallerOrEqualThan(m_minValues) &&
+  //        !vec.atLeastOneComponentBiggerOrEqualThan (m_maxValues));
+  return (!vec.atLeastOneComponentSmallerThan(m_minValues) &&
+          !vec.atLeastOneComponentBiggerThan (m_maxValues));
 }
 
 template<class V, class M>
@@ -385,7 +380,8 @@ void
 uqConcatenationSubsetClass<V,M>::print(std::ostream& os) const
 {
   os << "In uqConcatenationSubsetClass<V,M>::print()"
-     << ": ";
+     << ": m_sets.size() = " << m_sets.size()
+     << std::endl;
   for (unsigned int i = 0; i < m_sets.size(); ++i) {
     os << "m_sets[" << i << "] = " << *(m_sets[i]);
     if (i < (m_sets.size()-1)) {
