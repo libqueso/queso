@@ -42,7 +42,7 @@
 #endif
 #define UQ_ML_SAMPLING_L_STOP_AT_END_ODV                                      0
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV                            UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
-#define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ODV                                0
+#define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ALL_ODV                            0
 #define UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOWED_SET_ODV                          ""
 #define UQ_ML_SAMPLING_L_LOAD_BALANCE_ALGORITHM_ID_ODV                        2
 #define UQ_ML_SAMPLING_L_LOAD_BALANCE_TRESHOLD_ODV                            1.
@@ -94,6 +94,8 @@
 #define UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV           0
 #define UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV        UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV        0
+#define UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOWED_SET_ODV      ""
 #define UQ_ML_SAMPLING_L_AM_ETA_ODV                                           1.
 #define UQ_ML_SAMPLING_L_AM_EPSILON_ODV                                       1.e-5
 
@@ -179,6 +181,9 @@ public:
   unsigned int                       m_amAdaptedMatricesDataOutputPeriod;
   std::string                        m_amAdaptedMatricesDataOutputFileName;
   std::string                        m_amAdaptedMatricesDataOutputFileType;
+  bool                               m_amAdaptedMatricesDataOutputAllowAll;
+  std::set<unsigned int>             m_amAdaptedMatricesDataOutputAllowedSet;
+  std::string                        m_str5;
   double                             m_amEta;
   double                             m_amEpsilon;
 
@@ -252,6 +257,8 @@ private:
   std::string                   m_option_am_adaptedMatrices_dataOutputPeriod;
   std::string                   m_option_am_adaptedMatrices_dataOutputFileName;
   std::string                   m_option_am_adaptedMatrices_dataOutputFileType;
+  std::string                   m_option_am_adaptedMatrices_dataOutputAllowAll;
+  std::string                   m_option_am_adaptedMatrices_dataOutputAllowedSet;
   std::string                   m_option_am_eta;
   std::string                   m_option_am_epsilon;
 };

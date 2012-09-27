@@ -85,6 +85,8 @@
 #define UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV           0
 #define UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV        UQ_MH_SG_FILENAME_FOR_NO_FILE
 #define UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV        UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV        0
+#define UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOWED_SET_ODV      ""
 #define UQ_MH_SG_AM_ETA_ODV                                           1.
 #define UQ_MH_SG_AM_EPSILON_ODV                                       1.e-5
 #define UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                    0
@@ -151,6 +153,8 @@ public:
   unsigned int                       m_amAdaptedMatricesDataOutputPeriod;
   std::string                        m_amAdaptedMatricesDataOutputFileName;
   std::string                        m_amAdaptedMatricesDataOutputFileType;
+  bool                               m_amAdaptedMatricesDataOutputAllowAll;
+  std::set<unsigned int>             m_amAdaptedMatricesDataOutputAllowedSet;
   double                             m_amEta;
   double                             m_amEpsilon;
 
@@ -242,6 +246,8 @@ private:
   std::string                   m_option_am_adaptedMatrices_dataOutputPeriod;
   std::string                   m_option_am_adaptedMatrices_dataOutputFileName;
   std::string                   m_option_am_adaptedMatrices_dataOutputFileType;
+  std::string                   m_option_am_adaptedMatrices_dataOutputAllowAll;
+  std::string                   m_option_am_adaptedMatrices_dataOutputAllowedSet;
   std::string                   m_option_am_eta;
   std::string                   m_option_am_epsilon;
 

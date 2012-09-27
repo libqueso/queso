@@ -40,6 +40,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
 #endif
   m_stopAtEnd                                (UQ_ML_SAMPLING_L_STOP_AT_END_ODV),
   m_dataOutputFileName                       (UQ_ML_SAMPLING_L_DATA_OUTPUT_FILE_NAME_ODV),
+  m_dataOutputAllowAll                       (UQ_ML_SAMPLING_L_DATA_OUTPUT_ALLOW_ALL_ODV),
 //m_dataOutputAllowedSet                     (),
   m_str1                                     (""),
   m_loadBalanceAlgorithmId                   (UQ_ML_SAMPLING_L_LOAD_BALANCE_ALGORITHM_ID_ODV),
@@ -64,6 +65,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_rawChainDataOutputPeriod                 (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_PERIOD_ODV),
   m_rawChainDataOutputFileName               (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
   m_rawChainDataOutputFileType               (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
+  m_rawChainDataOutputAllowAll               (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV),
 //m_rawChainDataOutputAllowedSet             (),
   m_str2                                     (""),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -76,6 +78,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_filteredChainLag                         (UQ_ML_SAMPLING_L_FILTERED_CHAIN_LAG_ODV),
   m_filteredChainDataOutputFileName          (UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_NAME_ODV),
   m_filteredChainDataOutputFileType          (UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
+  m_filteredChainDataOutputAllowAll          (UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV),
 //m_filteredChainDataOutputAllowedSet        (),
   m_str3                                     (""),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -97,6 +100,9 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_amAdaptedMatricesDataOutputPeriod        (UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV),
   m_amAdaptedMatricesDataOutputFileName      (UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV),
   m_amAdaptedMatricesDataOutputFileType      (UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV),
+  m_amAdaptedMatricesDataOutputAllowAll      (UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV),
+//m_amAdaptedMatricesDataOutputAllowedSet    (),
+  m_str5                                     (""),
   m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
   m_amEpsilon                                (UQ_ML_SAMPLING_L_AM_EPSILON_ODV),
   m_env                                      (env),
@@ -108,6 +114,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
 #endif
   m_option_stopAtEnd                                 (m_prefix + "stopAtEnd"                                 ),
   m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
+  m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
   m_option_dataOutputAllowedSet                      (m_prefix + "dataOutputAllowedSet"                      ),
   m_option_loadBalanceAlgorithmId                    (m_prefix + "loadBalanceAlgorithmId"                    ),
   m_option_loadBalanceTreshold                       (m_prefix + "loadBalanceTreshold"                       ),
@@ -131,6 +138,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_rawChain_dataOutputPeriod                 (m_prefix + "rawChain_dataOutputPeriod"                 ),
   m_option_rawChain_dataOutputFileName               (m_prefix + "rawChain_dataOutputFileName"               ),
   m_option_rawChain_dataOutputFileType               (m_prefix + "rawChain_dataOutputFileType"               ),
+  m_option_rawChain_dataOutputAllowAll               (m_prefix + "rawChain_dataOutputAllowAll"               ),
   m_option_rawChain_dataOutputAllowedSet             (m_prefix + "rawChain_dataOutputAllowedSet"             ),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_option_rawChain_computeStats                     (m_prefix + "rawChain_computeStats"                     ),
@@ -140,6 +148,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_filteredChain_lag                         (m_prefix + "filteredChain_lag"                         ),
   m_option_filteredChain_dataOutputFileName          (m_prefix + "filteredChain_dataOutputFileName"          ),
   m_option_filteredChain_dataOutputFileType          (m_prefix + "filteredChain_dataOutputFileType"          ),
+  m_option_filteredChain_dataOutputAllowAll          (m_prefix + "filteredChain_dataOutputAllowAll"          ),
   m_option_filteredChain_dataOutputAllowedSet        (m_prefix + "filteredChain_dataOutputAllowedSet"        ),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_option_filteredChain_computeStats                (m_prefix + "filteredChain_computeStats"                ),
@@ -157,6 +166,8 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_am_adaptedMatrices_dataOutputPeriod       (m_prefix + "amAdaptedMatrices_dataOutputPeriod"        ),
   m_option_am_adaptedMatrices_dataOutputFileName     (m_prefix + "amAdaptedMatrices_dataOutputFileName"      ),
   m_option_am_adaptedMatrices_dataOutputFileType     (m_prefix + "amAdaptedMatrices_dataOutputFileType"      ),
+  m_option_am_adaptedMatrices_dataOutputAllowAll     (m_prefix + "amAdaptedMatrices_dataOutputAllowAll"      ),
+  m_option_am_adaptedMatrices_dataOutputAllowedSet   (m_prefix + "amAdaptedMatrices_dataOutputAllowedSet"    ),
   m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
   m_option_am_epsilon                                (m_prefix + "am_epsilon"                                )
 {
@@ -171,6 +182,7 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
 #endif
   m_stopAtEnd                                 = srcOptions.m_stopAtEnd;
   m_dataOutputFileName                        = srcOptions.m_dataOutputFileName;
+  m_dataOutputAllowAll                        = srcOptions.m_dataOutputAllowAll;
   m_dataOutputAllowedSet                      = srcOptions.m_dataOutputAllowedSet;
   m_str1                                      = srcOptions.m_str1;
   m_loadBalanceAlgorithmId                    = srcOptions.m_loadBalanceAlgorithmId;
@@ -196,6 +208,7 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_rawChainDataOutputPeriod                  = srcOptions.m_rawChainDataOutputPeriod;
   m_rawChainDataOutputFileName                = srcOptions.m_rawChainDataOutputFileName;
   m_rawChainDataOutputFileType                = srcOptions.m_rawChainDataOutputFileType;
+  m_rawChainDataOutputAllowAll                = srcOptions.m_rawChainDataOutputAllowAll;
   m_rawChainDataOutputAllowedSet              = srcOptions.m_rawChainDataOutputAllowedSet;
   m_str2                                      = srcOptions.m_str2;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -208,6 +221,7 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_filteredChainLag                          = srcOptions.m_filteredChainLag;
   m_filteredChainDataOutputFileName           = srcOptions.m_filteredChainDataOutputFileName;
   m_filteredChainDataOutputFileType           = srcOptions.m_filteredChainDataOutputFileType;
+  m_filteredChainDataOutputAllowAll           = srcOptions.m_filteredChainDataOutputAllowAll;
   m_filteredChainDataOutputAllowedSet         = srcOptions.m_filteredChainDataOutputAllowedSet;
   m_str3                                      = srcOptions.m_str3;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -229,6 +243,9 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_amAdaptedMatricesDataOutputPeriod         = srcOptions.m_amAdaptedMatricesDataOutputPeriod;
   m_amAdaptedMatricesDataOutputFileName       = srcOptions.m_amAdaptedMatricesDataOutputFileName;
   m_amAdaptedMatricesDataOutputFileType       = srcOptions.m_amAdaptedMatricesDataOutputFileType;
+  m_amAdaptedMatricesDataOutputAllowAll       = srcOptions.m_amAdaptedMatricesDataOutputAllowAll;
+  m_amAdaptedMatricesDataOutputAllowedSet     = srcOptions.m_amAdaptedMatricesDataOutputAllowedSet;
+  m_str5                                      = srcOptions.m_str5;
   m_amEta                                     = srcOptions.m_amEta;
   m_amEpsilon                                 = srcOptions.m_amEpsilon;
 
@@ -292,6 +309,7 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
 #endif
     (m_option_stopAtEnd.c_str(),                                  po::value<bool        >()->default_value(m_stopAtEnd                                ), "stop at end of such level"                                       )
     (m_option_dataOutputFileName.c_str(),                         po::value<std::string >()->default_value(m_dataOutputFileName                       ), "name of generic output file"                                     )
+    (m_option_dataOutputAllowAll.c_str(),                         po::value<bool        >()->default_value(m_dataOutputAllowAll                       ), "subEnvs that will write to generic output file"                  )
     (m_option_dataOutputAllowedSet.c_str(),                       po::value<std::string >()->default_value(m_str1                                     ), "subEnvs that will write to generic output file"                  )
     (m_option_loadBalanceAlgorithmId.c_str(),                     po::value<unsigned int>()->default_value(m_loadBalanceAlgorithmId                   ), "Perform load balancing with chosen algorithm (0 = no balancing)" )
     (m_option_loadBalanceTreshold.c_str(),                        po::value<double      >()->default_value(m_loadBalanceTreshold                      ), "Perform load balancing if load unbalancing ratio > treshold"     )
@@ -315,6 +333,7 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_rawChain_dataOutputPeriod.c_str(),                  po::value<unsigned int>()->default_value(m_rawChainDataOutputPeriod                 ), "period of message display during raw chain generation"           )
     (m_option_rawChain_dataOutputFileName.c_str(),                po::value<std::string >()->default_value(m_rawChainDataOutputFileName               ), "name of output file for raw chain "                              )
     (m_option_rawChain_dataOutputFileType.c_str(),                po::value<std::string >()->default_value(m_rawChainDataOutputFileType               ), "type of output file for raw chain "                              )
+    (m_option_rawChain_dataOutputAllowAll.c_str(),                po::value<bool        >()->default_value(m_rawChainDataOutputAllowAll               ), "subEnvs that will write to output file for raw chain"            )
     (m_option_rawChain_dataOutputAllowedSet.c_str(),              po::value<std::string >()->default_value(m_str2                                     ), "subEnvs that will write to output file for raw chain"            )
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     (m_option_rawChain_computeStats.c_str(),                      po::value<bool        >()->default_value(m_rawChainComputeStats                     ), "compute statistics on raw chain"                                 )
@@ -324,6 +343,7 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_filteredChain_lag.c_str(),                          po::value<unsigned int>()->default_value(m_filteredChainLag                         ), "spacing for chain filtering"                                     )
     (m_option_filteredChain_dataOutputFileName.c_str(),           po::value<std::string >()->default_value(m_filteredChainDataOutputFileName          ), "name of output file for filtered chain"                          )
     (m_option_filteredChain_dataOutputFileType.c_str(),           po::value<std::string >()->default_value(m_filteredChainDataOutputFileType          ), "type of output file for filtered chain"                          )
+    (m_option_filteredChain_dataOutputAllowAll.c_str(),           po::value<bool        >()->default_value(m_filteredChainDataOutputAllowAll          ), "subEnvs that will write to output file for filtered chain"       )
     (m_option_filteredChain_dataOutputAllowedSet.c_str(),         po::value<std::string >()->default_value(m_str3                                     ), "subEnvs that will write to output file for filtered chain"       )
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     (m_option_filteredChain_computeStats.c_str(),                 po::value<bool        >()->default_value(m_filteredChainComputeStats                ), "compute statistics on filtered chain"                            )
@@ -341,6 +361,8 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_am_adaptedMatrices_dataOutputPeriod.c_str(),        po::value<unsigned int>()->default_value(m_amAdaptedMatricesDataOutputPeriod        ), "period for outputing 'am' adapted matrices"                      )
     (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),      po::value<std::string >()->default_value(m_amAdaptedMatricesDataOutputFileName      ), "name of output file for 'am' adapted matrices"                   )
     (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),      po::value<std::string >()->default_value(m_amAdaptedMatricesDataOutputFileType      ), "type of output file for 'am' adapted matrices"                   )
+    (m_option_am_adaptedMatrices_dataOutputAllowAll.c_str(),      po::value<bool        >()->default_value(m_amAdaptedMatricesDataOutputAllowAll      ), "type of output file for 'am' adapted matrices"                   )
+    (m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str(),    po::value<std::string >()->default_value(m_str5                                     ), "type of output file for 'am' adapted matrices"                   )
     (m_option_am_eta.c_str(),                                     po::value<double      >()->default_value(m_amEta                                    ), "'am' eta"                                                        )
     (m_option_am_epsilon.c_str(),                                 po::value<double      >()->default_value(m_amEpsilon                                ), "'am' epsilon"                                                    )
   ;
@@ -375,7 +397,14 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_dataOutputAllowAll.c_str())) {
+    m_dataOutputAllowAll = m_env.allOptionsMap()[m_option_dataOutputAllowAll].as<bool>();
+  }
+
+  if (m_dataOutputAllowAll) {
+    m_dataOutputAllowedSet.insert(m_env.subId());
+  }
+  else if (m_env.allOptionsMap().count(m_option_dataOutputAllowedSet.c_str())) {
     m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
@@ -545,7 +574,14 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_rawChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rawChain_dataOutputFileType.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowedSet.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowAll.c_str())) {
+    m_rawChainDataOutputAllowAll = m_env.allOptionsMap()[m_option_rawChain_dataOutputAllowAll].as<bool>();
+  }
+
+  if (m_rawChainDataOutputAllowAll) {
+    m_rawChainDataOutputAllowedSet.insert(m_env.subId());
+  }
+  else if (m_env.allOptionsMap().count(m_option_rawChain_dataOutputAllowedSet.c_str())) {
     m_rawChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_rawChain_dataOutputAllowedSet.c_str()].as<std::string>();
@@ -607,7 +643,14 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_filteredChainDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_filteredChain_dataOutputFileType.c_str()]).as<std::string>();
   }
 
-  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowedSet.c_str())) {
+  if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowAll.c_str())) {
+    m_filteredChainDataOutputAllowAll = m_env.allOptionsMap()[m_option_filteredChain_dataOutputAllowAll].as<bool>();
+  }
+
+  if (m_filteredChainDataOutputAllowAll) {
+    m_filteredChainDataOutputAllowedSet.insert(m_env.subId());
+  }
+  else if (m_env.allOptionsMap().count(m_option_filteredChain_dataOutputAllowedSet.c_str())) {
     m_filteredChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_filteredChain_dataOutputAllowedSet.c_str()].as<std::string>();
@@ -715,6 +758,32 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_amAdaptedMatricesDataOutputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputFileType.c_str()]).as<std::string>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputAllowAll.c_str())) {
+    m_amAdaptedMatricesDataOutputAllowAll = m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputAllowAll].as<bool>();
+  }
+
+  if (m_amAdaptedMatricesDataOutputAllowAll) {
+    m_amAdaptedMatricesDataOutputAllowedSet.insert(m_env.subId());
+  }
+  else if (m_env.allOptionsMap().count(m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str())) {
+    m_amAdaptedMatricesDataOutputAllowedSet.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str()].as<std::string>();
+    uqMiscReadDoublesFromString(inputString,tmpAllow);
+
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_amAdaptedMatricesDataOutputAllowedSet.insert((unsigned int) tmpAllow[i]);
+      }
+    }
+  }
+  m_str5.clear();
+  for (std::set<unsigned int>::iterator setIt = m_amAdaptedMatricesDataOutputAllowedSet.begin(); setIt != m_amAdaptedMatricesDataOutputAllowedSet.end(); ++setIt) {
+    sprintf(tmpStr,"%d",(int)(*setIt));
+    m_str5 += tmpStr;
+    m_str5 += " ";
+  }
+
   if (m_env.allOptionsMap().count(m_option_am_eta.c_str())) {
     m_amEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_eta.c_str()]).as<double>();
   }
@@ -736,6 +805,7 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
 #endif
      << "\n" << m_option_stopAtEnd                << " = " << m_stopAtEnd
      << "\n" << m_option_dataOutputFileName       << " = " << m_dataOutputFileName
+     << "\n" << m_option_dataOutputAllowAll       << " = " << m_dataOutputAllowAll
      << "\n" << m_option_dataOutputAllowedSet     << " = ";
   for (std::set<unsigned int>::iterator setIt = m_dataOutputAllowedSet.begin(); setIt != m_dataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
@@ -762,6 +832,7 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_rawChain_dataOutputPeriod                  << " = " << m_rawChainDataOutputPeriod
      << "\n" << m_option_rawChain_dataOutputFileName                << " = " << m_rawChainDataOutputFileName
      << "\n" << m_option_rawChain_dataOutputFileType                << " = " << m_rawChainDataOutputFileType
+     << "\n" << m_option_rawChain_dataOutputAllowAll                << " = " << m_rawChainDataOutputAllowAll
      << "\n" << m_option_rawChain_dataOutputAllowedSet              << " = ";
   for (std::set<unsigned int>::iterator setIt = m_rawChainDataOutputAllowedSet.begin(); setIt != m_rawChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
@@ -775,6 +846,7 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_filteredChain_lag                          << " = " << m_filteredChainLag
      << "\n" << m_option_filteredChain_dataOutputFileName           << " = " << m_filteredChainDataOutputFileName
      << "\n" << m_option_filteredChain_dataOutputFileType           << " = " << m_filteredChainDataOutputFileType
+     << "\n" << m_option_filteredChain_dataOutputAllowAll           << " = " << m_filteredChainDataOutputAllowAll
      << "\n" << m_option_filteredChain_dataOutputAllowedSet         << " = ";
   for (std::set<unsigned int>::iterator setIt = m_filteredChainDataOutputAllowedSet.begin(); setIt != m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
     os << *setIt << " ";
@@ -799,7 +871,12 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_am_adaptedMatrices_dataOutputPeriod        << " = " << m_amAdaptedMatricesDataOutputPeriod
      << "\n" << m_option_am_adaptedMatrices_dataOutputFileName      << " = " << m_amAdaptedMatricesDataOutputFileName
      << "\n" << m_option_am_adaptedMatrices_dataOutputFileType      << " = " << m_amAdaptedMatricesDataOutputFileType
-     << "\n" << m_option_am_eta                                     << " = " << m_amEta
+     << "\n" << m_option_am_adaptedMatrices_dataOutputAllowAll      << " = " << m_amAdaptedMatricesDataOutputAllowAll
+     << "\n" << m_option_am_adaptedMatrices_dataOutputAllowedSet    << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_amAdaptedMatricesDataOutputAllowedSet.begin(); setIt != m_amAdaptedMatricesDataOutputAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+  os << "\n" << m_option_am_eta                                     << " = " << m_amEta
      << "\n" << m_option_am_epsilon                                 << " = " << m_amEpsilon
      << std::endl;
 
