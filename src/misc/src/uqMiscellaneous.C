@@ -318,3 +318,33 @@ double uqMiscGaussianDensity(double x, double mu, double sigma)
   return (1./std::sqrt(2*M_PI*sigma2))*std::exp(-.5*diff*diff/sigma2);
 }
 
+unsigned int uqMiscUintDebugMessage(
+ unsigned int value,
+ bool         printPassage)
+{
+  if (printPassage) {
+    std::cout << "Passing in uqMiscUintDebugMessage()" << std::endl;
+  }
+  return value;
+}
+
+int uqMiscIntDebugMessage(
+ int  value,
+ bool printPassage)
+{
+  if (printPassage) {
+    std::cout << "Passing in uqMiscIntDebugMessage()" << std::endl;
+  }
+  return value;
+}
+
+double uqMiscDoubleDebugMessage(
+ double value,
+ bool   printPassage)
+{
+  if (printPassage) {
+    std::cout << "Passing in uqMiscDoubleDebugMessage()" << std::endl;
+  }
+  return value;
+}
+

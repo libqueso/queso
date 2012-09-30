@@ -35,29 +35,38 @@
 #include <vector>
 #include <math.h>
 
-void   uqMiscReadDoublesFromString      (const std::string&   inputString,
-                                         std::vector<double>& outputDoubles);
-void   uqMiscReadWordsFromString        (const std::string&        inputString,
-                                         std::vector<std::string>& outputWords);
-//void   uqMiscExtractDoubleFromString    (std::string& inputString,
-//                                         double&      outputDouble);
-//void   uqMiscExtractWordFromString      (std::string& inputString,
-//                                         std::string& outputWord);
-int    uqMiscReadStringAndDoubleFromFile(std::ifstream& ifs,
-                                         std::string&   termString,
-                                         double*        termValue);
-int    uqMiscReadCharsAndDoubleFromFile (std::ifstream& ifs,
-                                         std::string&   termString,
-                                         double*        termValue,
-                                         bool&          endOfLineAchieved);
-double uqMiscGammar                     (double         a,
-                                         double         b,
-                                         const gsl_rng* rng);
-double uqMiscGetEllapsedSeconds         (struct timeval *timeval0);
-
-double uqMiscHammingWindow              (unsigned int N, unsigned int j);
-
-double uqMiscGaussianDensity            (double x, double mu, double sigma);
+void         uqMiscReadDoublesFromString      (const std::string&        inputString,
+                                               std::vector<double>&      outputDoubles);
+void         uqMiscReadWordsFromString        (const std::string&        inputString,
+                                               std::vector<std::string>& outputWords);
+#if 0
+void         uqMiscExtractDoubleFromString    (std::string&              inputString,
+                                               double&                   outputDouble);
+void         uqMiscExtractWordFromString      (std::string&              inputString,
+                                               std::string&              outputWord);
+#endif
+int          uqMiscReadStringAndDoubleFromFile(std::ifstream&            ifs,
+                                               std::string&              termString,
+                                               double*                   termValue);
+int          uqMiscReadCharsAndDoubleFromFile (std::ifstream&            ifs,
+                                               std::string&              termString,
+                                               double*                   termValue,
+                                               bool&                     endOfLineAchieved);
+double       uqMiscGammar                     (double                    a,
+                                               double                    b,
+                                               const gsl_rng*            rng);
+double       uqMiscGetEllapsedSeconds         (struct timeval*           timeval0);
+double       uqMiscHammingWindow              (unsigned int              N,
+                                               unsigned int              j);
+double       uqMiscGaussianDensity            (double                    x,
+                                               double                    mu,
+                                               double                    sigma);
+unsigned int uqMiscUintDebugMessage           (unsigned int              value,
+                                               bool                      printPassage);
+int          uqMiscIntDebugMessage            (int                       value,
+                                               bool                      printPassage);
+double       uqMiscDoubleDebugMessage         (double                    value,
+                                               bool                      printPassage);
 
 template <class T>
 bool
