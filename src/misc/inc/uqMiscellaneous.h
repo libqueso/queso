@@ -62,11 +62,11 @@ double       uqMiscGaussianDensity            (double                    x,
                                                double                    mu,
                                                double                    sigma);
 unsigned int uqMiscUintDebugMessage           (unsigned int              value,
-                                               bool                      printPassage);
+                                               const char*               message);
 int          uqMiscIntDebugMessage            (int                       value,
-                                               bool                      printPassage);
+                                               const char*               message);
 double       uqMiscDoubleDebugMessage         (double                    value,
-                                               bool                      printPassage);
+                                               const char*               message);
 
 template <class T>
 bool

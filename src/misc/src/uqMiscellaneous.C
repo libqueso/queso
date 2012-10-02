@@ -319,31 +319,31 @@ double uqMiscGaussianDensity(double x, double mu, double sigma)
 }
 
 unsigned int uqMiscUintDebugMessage(
- unsigned int value,
- bool         printPassage)
+  unsigned int value,
+  const char*  message)
 {
-  if (printPassage) {
-    std::cout << "Passing in uqMiscUintDebugMessage()" << std::endl;
+  if (message) {
+    std::cout << "Passing in uqMiscUintDebugMessage(), value = " << value << ", message = " << message << std::endl;
   }
   return value;
 }
 
 int uqMiscIntDebugMessage(
- int  value,
- bool printPassage)
+  int         value,
+  const char* message)
 {
-  if (printPassage) {
-    std::cout << "Passing in uqMiscIntDebugMessage()" << std::endl;
+  if (message) {
+    std::cout << "Passing in uqMiscIntDebugMessage(), value = " << value << ", message = " << message << std::endl;
   }
   return value;
 }
 
 double uqMiscDoubleDebugMessage(
- double value,
- bool   printPassage)
+  double     value,
+  const char* message)
 {
-  if (printPassage) {
-    std::cout << "Passing in uqMiscDoubleDebugMessage()" << std::endl;
+  if (message) {
+    std::cout << "Passing in uqMiscDoubleDebugMessage(), value = " << value << ", message = " << message << std::endl;
   }
   return value;
 }
