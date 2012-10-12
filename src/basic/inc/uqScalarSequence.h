@@ -89,6 +89,7 @@ public:
                                                    T&                              minDomainValue,
                                                    T&                              maxDomainValue,
                                                    std::vector<T>&                 mdfValues) const;
+#endif
         void         subUniformlySampledCdf       (unsigned int                    numIntervals,
                                                    T&                              minDomainValue,
                                                    T&                              maxDomainValue,
@@ -102,12 +103,11 @@ public:
                                                    uqUniformOneDGridClass<T>*&     gridValues,
                                                    std::vector<T>&                 cdfValues) const;
         void         subWeigthCdf                 (unsigned int                    numIntervals,
-                                                   uqUniformOneDGridClass<T>*&     gridValues,
-                                                   std::vector<T>&                 cdfValues) const;
-        void         subWeigthCdf                 (unsigned int                    numIntervals,
                                                    std::vector<T>&                 gridValues,
                                                    std::vector<T>&                 cdfValues) const;
-#endif
+        void         subWeigthCdf                 (unsigned int                    numIntervals,
+                                                   uqUniformOneDGridClass<T>*&     gridValues,
+                                                   std::vector<T>&                 cdfValues) const;
         T            subMeanExtra                 (unsigned int                    initialPos,
                                                    unsigned int                    numPos) const;
         T            unifiedMeanExtra             (bool                            useOnlyInter0Comm,
@@ -1093,6 +1093,7 @@ uqScalarSequenceClass<T>::subUniformlySampledMdf(
 
   return;
 }
+#endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 
 template <class T>
 void
@@ -1278,43 +1279,6 @@ uqScalarSequenceClass<T>::subBasicCdf(
 template <class T>
 void
 uqScalarSequenceClass<T>::subWeigthCdf(
-  unsigned int                numEvaluationPoints,
-  uqUniformOneDGridClass<T>*& gridValues,
-  std::vector<T>&             cdfValues) const
-{
-  T                         tmpMinValue;
-  T                         tmpMaxValue;
-  std::vector<unsigned int> bins(numEvaluationPoints,0);
-
-  subMinMaxExtra(0, // initialPos
-                 this->subSequenceSize(),
-                 tmpMinValue,
-                 tmpMaxValue);
-  subWeigthHistogram(0, // initialPos,
-                     tmpMinValue,
-                     tmpMaxValue,
-                     gridValues,
-                     bins);
-
-  unsigned int sumOfBins = 0;
-  for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
-    sumOfBins += bins[i];
-  }
-
-  cdfValues.clear();
-  cdfValues.resize(numEvaluationPoints);
-  unsigned int partialSum = 0;
-  for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
-    partialSum += bins[i];
-    cdfValues[i] = ((T) partialSum)/((T) sumOfBins);
-  }
-
-  return;
-}
-
-template <class T>
-void
-uqScalarSequenceClass<T>::subWeigthCdf(
   unsigned int    numEvaluationPoints,
   std::vector<T>& gridValues,
   std::vector<T>& cdfValues) const
@@ -1363,7 +1327,43 @@ uqScalarSequenceClass<T>::subWeigthCdf(
 
   return;
 }
-#endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+
+template <class T>
+void
+uqScalarSequenceClass<T>::subWeigthCdf(
+  unsigned int                numEvaluationPoints,
+  uqUniformOneDGridClass<T>*& gridValues,
+  std::vector<T>&             cdfValues) const
+{
+  T                         tmpMinValue;
+  T                         tmpMaxValue;
+  std::vector<unsigned int> bins(numEvaluationPoints,0);
+
+  subMinMaxExtra(0, // initialPos
+                 this->subSequenceSize(),
+                 tmpMinValue,
+                 tmpMaxValue);
+  subWeigthHistogram(0, // initialPos,
+                     tmpMinValue,
+                     tmpMaxValue,
+                     gridValues,
+                     bins);
+
+  unsigned int sumOfBins = 0;
+  for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+    sumOfBins += bins[i];
+  }
+
+  cdfValues.clear();
+  cdfValues.resize(numEvaluationPoints);
+  unsigned int partialSum = 0;
+  for (unsigned int i = 0; i < numEvaluationPoints; ++i) {
+    partialSum += bins[i];
+    cdfValues[i] = ((T) partialSum)/((T) sumOfBins);
+  }
+
+  return;
+}
 
 template <class T>
 T

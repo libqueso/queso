@@ -858,7 +858,7 @@ uqSequenceOfVectorsClass<V,M>::subUniformlySampledMdf(
   return;
 }
 #endif
-#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subUniformlySampledCdf(
@@ -939,7 +939,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedUniformlySampledCdf(
 
   return;
 }
-#endif
+
 template <class V, class M>
 void
 uqSequenceOfVectorsClass<V,M>::subMeanExtra(
