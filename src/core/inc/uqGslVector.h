@@ -24,62 +24,165 @@
 // 
 // $Id$
 //
+// Doxygen comments added by kemelli @ violeta Thu Nov  1 16:25:13 PDT 2012
 //--------------------------------------------------------------------------
 
 #ifndef __UQ_GSL_VECTOR_H__
 #define __UQ_GSL_VECTOR_H__
 
+/*! \file uqGslvector.h
+    \brief Vector class using GSL
+*/
+
 #include <uqVector.h>
 #include <gsl/gsl_vector.h>
+
+/*! \class uqGslVectorClass
+    \brief This class creates and provides basic support for vectors of templated 
+    type as a specialization of uqVectorClass using GSL vectors, which are defined 
+    by an encapsulated gsl_vector structure.
+*/
 
 class uqGslVectorClass : public uqVectorClass
 {
 public:
+  
+  //! @name Constructor/Destructor methods.
+  //@{ 
+
+  //! Default Constructor
+  /*! Creates an empty vector of no length.*/
   uqGslVectorClass();
+  
   uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map);
   uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double value);
   uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const uqMapClass& map); // MATLAB linspace
   uqGslVectorClass(const uqGslVectorClass&         v, double d1, double d2);                        // MATLAB linspace
   uqGslVectorClass(const uqGslVectorClass&         y);
- ~uqGslVectorClass();
-
+  
+  //! Destructor
+  ~uqGslVectorClass();
+  //@}
+ 
+  //! @name Set methods.
+  //@{ 
+  //! 	Copies values from vector rhs to \c this. 
   uqGslVectorClass& operator= (const uqGslVectorClass& rhs);
+  
+  //! Stores in \c this the cordinate-wise multiplication of \c this and a.
   uqGslVectorClass& operator*=(double a);
+  
+  //! Stores in \c this the cordinate-wise division of \c this by a.
   uqGslVectorClass& operator/=(double a);
+  
+  //! Stores in \c this the cordinate-wise multipication of \c this with rhs.
   uqGslVectorClass& operator*=(const uqGslVectorClass& rhs);
+  
+  //! Stores in \c this the cordinate-wise division of \c this by rhs.
   uqGslVectorClass& operator/=(const uqGslVectorClass& rhs);
+  
+   //! Stores in \c this the cordinate-wise adition of \c this and rhs.
   uqGslVectorClass& operator+=(const uqGslVectorClass& rhs);
+  
+  //! Stores in \c this the cordinate-wise subtraction of \c this by rhs.
   uqGslVectorClass& operator-=(const uqGslVectorClass& rhs);
+  //@}
+  
+  //! @name Accessor methods.
+  //@{
+  //! Element access method (non-const).
+  /*! Returns the ith element if x[i] is specified, the expression x(i) will return the same element.*/  
             double& operator[](unsigned int i);
+	    
+  //! Element access method (const).
+  /*! Returns the ith element if x[i] is specified, the expression x(i) will return the same element.*/ 
+	    
       const double& operator[](unsigned int i) const;
+  //@}
 
+  //! @name Attribute methods.
+  //@{ 
+  //! Returns the length of this vector.
   unsigned int sizeLocal        () const;
+
+  //! Returns the global length of this vector.
   unsigned int sizeGlobal       () const;
+  //@}
+  
+  //! @name Mathematical methods.
+  //@{ 
+  //! Returns the norm of the vector, as the square root of 2-norm of this vector.
   double       norm2Sq          () const;
+  
+  //! Returns the 2-norm (Euclidean norm) of the vector.
   double       norm2            () const;
+  
+  //! Returns the 1-norm of the vector.
   double       norm1            () const;
+  
+  //! Returns the infinity-norm (maximum norm) of the vector.
   double       normInf          () const;
+  
+  //! Returns the sum of the components of the vector.
   double       sumOfComponents  () const;
+  //@}
+  
+  //! @name Set methods.
+  //@{ 
+  //! Component-wise set all values to \c this with value.
   void         cwSet            (double value);
+  
+  //! This function sets component-wise Gaussian random variates, with mean mean and standard deviation stdDev.
   void         cwSetGaussian    (const gsl_rng* rng, double mean, double stdDev);
+  
+  //! This function sets component-wise Gaussian random variates, with vectors for mean and standard deviation.
   void         cwSetGaussian    (const gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec);
+  
+  //! This function sets component-wise a number uniformly distributed in the range of elements of [aVec,bVec].
   void         cwSetUniform     (const gsl_rng* rng, const uqGslVectorClass& aVec,    const uqGslVectorClass& bVec     );
+  
+  //! This function returns a random variate from the beta distribution, with vector parameters alpha and beta.
   void         cwSetBeta        (const gsl_rng* rng, const uqGslVectorClass& alpha,   const uqGslVectorClass& beta     );
+  
+  //! This function returns a random variate from the gamma distribution with vector parameters a and b. 
   void         cwSetGamma       (const gsl_rng* rng, const uqGslVectorClass& a,       const uqGslVectorClass& b        );
+  
+  //! This function returns a random variate from the inverse gamma distribution with vector parameters alpha and beta. 
   void         cwSetInverseGamma(const gsl_rng* rng, const uqGslVectorClass& alpha,   const uqGslVectorClass& beta     );
+  
+  //! This function concatenates uqGslVectorClass v1 and uqGslVectorClass v2 into  \c this.
   void         cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVectorClass& v2);
+  
+  //TODO
   void         cwSetConcatenated(const std::vector<const uqGslVectorClass* >& vecs);
+  
+  //! This function sets the vector vec into \c this starting at position initialPos.  
   void         cwSet            (unsigned int initialPos, const uqGslVectorClass& vec);
+
+  //! This function sets the values of this starting at position initialPos ans saves them in vector vec.  
   void         cwExtract        (unsigned int initialPos, uqGslVectorClass& vec) const;
+  
+  //! This function inverts component-wise the element values of \c this.  
   void         cwInvert         ();
+  
+  //! This function returns compoments-wise the square-root of \c this.  
   void         cwSqrt           ();
+  //@}
+
+//! @name I/O methods.
+  //@{ 
+  //! Print method.  Defines the behavior of the std::ostream << operator inherited from the Object class.
+  void         print            (std::ostream& os) const;
+  //@}
+
+  //! This function sorts the elements of the vector \c this into ascending numerical order. 
+  void         sort             ();
+    
   void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, uqGslVectorClass& outputVec) const;
   void         matlabLinearInterpExtrap(const uqGslVectorClass& x1Vec, const uqGslVectorClass& y1Vec, const uqGslVectorClass& x2Vec);
-  void         sort             ();
   void         mpiBcast         (int srcRank, const uqMpiCommClass& bcastComm);
   void         mpiAllReduce     (uqRawType_MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const;
   void         mpiAllQuantile   (double probability, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const;
-  void         print            (std::ostream& os) const;
   void         subWriteContents (const std::string&            varNamePrefix,
                                  const std::string&            fileName,
                                  const std::string&            fileType,
@@ -88,29 +191,57 @@ public:
                                  const std::string&            fileType,
                                  const std::set<unsigned int>& allowedSubEnvIds);
 
+//! @name Comparison methods.
+  //@{ 
+  //! This function returns true if at least one component of \c this is smaller than the respective component of rhs.
   bool         atLeastOneComponentSmallerThan       (const uqGslVectorClass& rhs) const;
+  
+  //! This function returns true if at least one component of \c this is bigger than the respective component of rhs. 
   bool         atLeastOneComponentBiggerThan        (const uqGslVectorClass& rhs) const;
+  
+  //! This function returns true if at least one component of \c this is smaller than or equal to the respective component of rhs.
   bool         atLeastOneComponentSmallerOrEqualThan(const uqGslVectorClass& rhs) const;
+  
+  //! This function returns true if at least one component of \c this is bigger than or equal to the respective component of rhs. 
   bool         atLeastOneComponentBiggerOrEqualThan (const uqGslVectorClass& rhs) const;
+  //@}
 
   // Necessary for uqGslMatrixClass::invertMultiply() and uqGslMatrixClass::setRow/Column
   gsl_vector*  data                          () const; 
 
+//! @name Attribute methods.
+  //@{ 
+  //! Returns the maximum value in the vector \c this.
   double       getMaxValue      () const;
+  
+  //! Returns minimum value in the vector \c this.
   double       getMinValue      () const;
+  
+  //! This function returns the index of the maximum value in the vector \c this.
   int          getMaxValueIndex () const;
+  
+  //! This function returns the index of the minimum value in the vector \c this.
   int          getMinValueIndex () const;
+  
+  //! This function returns maximum value in the vector \c this and its the index.
   void         getMaxValueAndIndex( double& value, int& index );
+  
+  //! This function returns minimum value in the vector \c this and its the index.
   void         getMinValueAndIndex( double& value, int& index );
 
+  //! This function returns absolute value of elements in \c this.
   uqGslVectorClass abs() const;
-
+ //@}
 private:
 
+  //! This function copies the elements of the vector src into \c this.
   void         copy             (const uqGslVectorClass& src);
 
+  //! GSL vector.
   gsl_vector* m_vec;
 };
+
+// Coments in this part of file don't appear in the doxygen docs.
 
 uqGslVectorClass operator/    (      double a,              const uqGslVectorClass& x  );
 uqGslVectorClass operator/    (const uqGslVectorClass& x,   const uqGslVectorClass& y  );
