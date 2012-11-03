@@ -48,15 +48,17 @@ public:
                                const uqVectorSetClass<V,M>& domainSet);
   virtual ~uqBaseJointPdfClass();
 
-  virtual       double                   actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
-  virtual       double                   lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
-//  const  uqBaseScalarPdfClass<double>& component  (unsigned int componentId) const;
+  virtual double actualValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
+  virtual double lnValue              (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
+  virtual void   setNormalizationStyle(unsigned int value) const;
+//const uqBaseScalarPdfClass<double>& component(unsigned int componentId) const;
 
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
 
+  mutable unsigned int m_normalizationStyle;
 //std::vector<uqBaseScalarPdfClass<double>*> m_components; // FIXME: will need to be a parallel vector in case of a very large number of components
 //uqBaseScalarPdfClass<double>               m_dummyComponent;
 };
@@ -66,7 +68,8 @@ uqBaseJointPdfClass<V,M>::uqBaseJointPdfClass(
   const char*                  prefix,
   const uqVectorSetClass<V,M>& domainSet)
   :
-  uqBaseScalarFunctionClass<V,M>(((std::string)(prefix)+"pd_").c_str(), domainSet)
+  uqBaseScalarFunctionClass<V,M>(((std::string)(prefix)+"pd_").c_str(), domainSet),
+  m_normalizationStyle(0)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqBaseJointPdfClass<V,M>::constructor() [3]"
@@ -84,6 +87,14 @@ uqBaseJointPdfClass<V,M>::uqBaseJointPdfClass(
 template<class V, class M>
 uqBaseJointPdfClass<V,M>::~uqBaseJointPdfClass()
 {
+}
+
+template<class V,class M>
+void
+uqBaseJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
+{
+  m_normalizationStyle = value;
+  return;
 }
 
 #if 0
@@ -174,6 +185,7 @@ public:
   double lnValue                  (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   double lastComputedLogPrior     () const;
   double lastComputedLogLikelihood() const;
+  void   setNormalizationStyle    (unsigned int value) const;
 
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
@@ -215,6 +227,14 @@ template<class V,class M>
 uqBayesianJointPdfClass<V,M>::~uqBayesianJointPdfClass()
 {
   delete m_tmpMatrix;
+}
+
+template<class V,class M>
+void
+uqBayesianJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
+{
+  m_priorDensity.setNormalizationStyle(value);
+  return;
 }
 
 template<class V,class M>
@@ -319,7 +339,21 @@ uqBayesianJointPdfClass<V,M>::lnValue(
   V* hessianELike = NULL;
   if (hessianEffect) hessianELike = &m_tmpVector2;
 
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "In uqBayesianJointPdfClass<V,M>::lnValue()"
+                            << ", domainVector = " << domainVector
+                            << ": about to call prior()"
+                            << std::endl;
+  }
+
   double value1 = m_priorDensity.lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
+    *m_env.subDisplayFile() << "In uqBayesianJointPdfClass<V,M>::lnValue()"
+                            << ", domainVector = " << domainVector
+                            << ": lnPrior = " << value1
+                            << std::endl;
+  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "In uqBayesianJointPdfClass<V,M>::lnValue()"
@@ -419,6 +453,7 @@ protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+  using uqBaseJointPdfClass<V,M>::m_normalizationStyle;
   V*       m_lawExpVector;
   V*       m_lawVarVector;
   bool     m_diagonalCovMatrix;
@@ -595,27 +630,34 @@ uqGaussianJointPdfClass<V,M>::lnValue(
     V diffVec(domainVector - this->lawExpVector());
     if (m_diagonalCovMatrix) {
       returnValue = ((diffVec*diffVec)/this->lawVarVector()).sumOfComponents();
-      unsigned int iMax = this->lawVarVector().sizeLocal();
-      for (unsigned int i = 0; i < iMax; ++i) {
-        lnDeterminant += log(this->lawVarVector()[i]);
+      if (m_normalizationStyle == 0) {
+        unsigned int iMax = this->lawVarVector().sizeLocal();
+        for (unsigned int i = 0; i < iMax; ++i) {
+          lnDeterminant += log(this->lawVarVector()[i]);
+        }
       }
     }
     else {
       V tmpVec = this->m_lawCovMatrix->invertMultiply(diffVec);
       returnValue = (diffVec*tmpVec).sumOfComponents();
-      lnDeterminant = this->m_lawCovMatrix->lnDeterminant();
+      if (m_normalizationStyle == 0) {
+        lnDeterminant = this->m_lawCovMatrix->lnDeterminant();
+      }
     }
-    returnValue += log(2*M_PI);   // normalization of pdf
-    returnValue += lnDeterminant; // normalization of pdf
+    if (m_normalizationStyle == 0) {
+      returnValue += log(2*M_PI);   // normalization of pdf
+      returnValue += lnDeterminant; // normalization of pdf
+    }
     returnValue *= -0.5;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
     *m_env.subDisplayFile() << "Leaving uqGaussianJointPdfClass<V,M>::lnValue()"
-                            << ", meanVector = "   << *m_lawExpVector
-	                    << ", lawCovMatrix = " << *m_lawCovMatrix
-                            << ": domainVector = " << domainVector
-                            << ", returnValue = "  << returnValue
+                            << ", m_normalizationStyle = " << m_normalizationStyle
+                            << ", meanVector = "           << *m_lawExpVector
+	                    << ", lawCovMatrix = "         << *m_lawCovMatrix
+                            << ": domainVector = "         << domainVector
+                            << ", returnValue = "          << returnValue
                             << std::endl;
   }
 
@@ -666,6 +708,7 @@ protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+  using uqBaseJointPdfClass<V,M>::m_normalizationStyle;
 };
 
 template<class V,class M>
@@ -716,7 +759,8 @@ uqUniformJointPdfClass<V,M>::actualValue(
   if (((boost::math::isnan)(volume)) ||
       (volume == -INFINITY         ) ||
       (volume ==  INFINITY         ) ||
-      (volume <= 0.                )) {
+      (volume <= 0.                ) ||
+      (m_normalizationStyle != 0   )) {
     volume = 1.;
   }
 
@@ -740,7 +784,8 @@ uqUniformJointPdfClass<V,M>::lnValue(
   if (((boost::math::isnan)(volume)) ||
       (volume == -INFINITY         ) ||
       (volume ==  INFINITY         ) ||
-      (volume <= 0.                )) {
+      (volume <= 0.                ) ||
+      (m_normalizationStyle != 0   )) {
     volume = 1.;
   }
 
@@ -766,6 +811,7 @@ protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+  using uqBaseJointPdfClass<V,M>::m_normalizationStyle;
 
   V m_alpha;
   V m_beta;
@@ -839,13 +885,19 @@ uqBetaJointPdfClass<V,M>::lnValue(
   double aux = 0.;
   double result = 0.;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
-    aux = log(gsl_ran_beta_pdf(domainVector[i],m_alpha[i],m_beta[i]));
+    if (m_normalizationStyle == 0) {
+      aux = log(gsl_ran_beta_pdf(domainVector[i],m_alpha[i],m_beta[i]));
+    }
+    else {
+      aux = (m_alpha[i]-1.)*log(domainVector[i]) + (m_beta[i]-1.)*log(1.-domainVector[i]);
+    }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In uqBetaJointPdfClass<V,M>::lnValue()"
-                              << ": domainVector[" << i << "]) = " << domainVector[i]
-                              << ", m_alpha[" << i << "] = "       << m_alpha[i]
-                              << ", m_beta[" << i << "] = "        << m_beta[i]
-                              << ", log(pdf)= "                    << aux
+                              << ", m_normalizationStyle = "      << m_normalizationStyle
+                              << ": domainVector[" << i << "] = " << domainVector[i]
+                              << ", m_alpha[" << i << "] = "      << m_alpha[i]
+                              << ", m_beta[" << i << "] = "       << m_beta[i]
+                              << ", log(pdf)= "                   << aux
                               << std::endl;
     }
     result += aux;
@@ -873,6 +925,7 @@ protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+  using uqBaseJointPdfClass<V,M>::m_normalizationStyle;
 
   V m_a;
   V m_b;
@@ -943,9 +996,25 @@ uqGammaJointPdfClass<V,M>::lnValue(
                       "uqGammaJointPdfClass<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
+  double aux = 0.;
   double result = 0.;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
-    result += log(gsl_ran_gamma_pdf(domainVector[i],m_a[i],m_b[i]));
+    if (m_normalizationStyle == 0) {
+      aux = log(gsl_ran_gamma_pdf(domainVector[i],m_a[i],m_b[i]));
+    }
+    else {
+      aux = (m_a[i]-1.)*log(domainVector[i]) - domainVector[i]/m_b[i];
+    }
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqGammaJointPdfClass<V,M>::lnValue()"
+                              << ", m_normalizationStyle = "      << m_normalizationStyle
+                              << ": domainVector[" << i << "] = " << domainVector[i]
+                              << ", m_a[" << i << "] = "          << m_a[i]
+                              << ", m_b[" << i << "] = "          << m_b[i]
+                              << ", log(pdf)= "                   << aux
+                              << std::endl;
+    }
+    result += aux;
   }
 
   return result;
@@ -970,6 +1039,7 @@ protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+  using uqBaseJointPdfClass<V,M>::m_normalizationStyle;
 
   V m_alpha;
   V m_beta;
@@ -1044,6 +1114,9 @@ uqInverseGammaJointPdfClass<V,M>::lnValue(
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
     result -= (m_alpha[i]+1.)*log(domainVector[i]);
     result -= m_beta[i]/domainVector[i];
+    if (m_normalizationStyle == 0) {
+      // Code needs to be done yet
+    }
   }
 
   return result;
@@ -1060,8 +1133,9 @@ public:
                                double                    exponent);
  ~uqPoweredJointPdfClass();
 
-  double   actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  double   lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double actualValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double lnValue              (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  void   setNormalizationStyle(unsigned int value) const;
 
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
@@ -1104,6 +1178,14 @@ uqPoweredJointPdfClass<V,M>::uqPoweredJointPdfClass(
 template<class V,class M>
 uqPoweredJointPdfClass<V,M>::~uqPoweredJointPdfClass()
 {
+}
+
+template<class V,class M>
+void
+uqPoweredJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
+{
+  m_srcDensity.setNormalizationStyle(value);
+  return;
 }
 
 template<class V, class M>
@@ -1303,6 +1385,7 @@ protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
   using uqBaseScalarFunctionClass<V,M>::m_domainSet;
+  using uqBaseJointPdfClass<V,M>::m_normalizationStyle;
   V*   m_lawExpVector;
   V*   m_lawVarVector;
   bool m_diagonalCovMatrix;
@@ -1454,8 +1537,10 @@ uqLogNormalJointPdfClass<V,M>::lnValue(
       }
       returnValue = ((diffVec*diffVec)/this->lawVarVector()).sumOfComponents();
       returnValue *= -0.5;
-      for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
-        returnValue -= std::log(domainVector[i] * std::sqrt(2. * M_PI * this->lawVarVector()[i])); // Contribution of 1/(x\sqrt{2\pi\sigma^2})
+      if (m_normalizationStyle == 0) {
+        for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
+          returnValue -= std::log(domainVector[i] * std::sqrt(2. * M_PI * this->lawVarVector()[i])); // Contribution of 1/(x\sqrt{2\pi\sigma^2})
+        }
       }
     }
     else {
@@ -1492,8 +1577,9 @@ public:
                               const uqVectorSetClass<V,M>&                         concatenatedDomain); 
  ~uqConcatenatedJointPdfClass();
 
-  double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
-  double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double actualValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  double lnValue              (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  void   setNormalizationStyle(unsigned int value) const;
 
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
@@ -1552,6 +1638,16 @@ uqConcatenatedJointPdfClass<V,M>::uqConcatenatedJointPdfClass(
 template<class V,class M>
 uqConcatenatedJointPdfClass<V,M>::~uqConcatenatedJointPdfClass()
 {
+}
+
+template<class V,class M>
+void
+uqConcatenatedJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
+{
+  for (unsigned i = 0; i < m_densities.size(); ++i) {
+    m_densities[i]->setNormalizationStyle(value);
+  }
+  return;
 }
 
 template<class V, class M>
