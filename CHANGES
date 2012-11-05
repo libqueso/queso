@@ -3,7 +3,7 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
-Version 0.45.3 (11 November 2012)
+Version 0.45.3 (05 November 2012)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.45.3
 
   * bug fix: set uqGslMatrixClass private variables to NULL after deletion
