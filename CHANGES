@@ -3,12 +3,12 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
-Version 0.45.3 (dd mmm yyyy)
-Under construction
+Version 0.45.3 (11 November 2012)
+https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.45.3
 
-  * set some uqGslMatrixClass private variables to NULL after deletion (bug correction)
+  * bug fix: set uqGslMatrixClass private variables to NULL after deletion
   * simplified statistical post processing of Markov chains and Monte Carlo sequences
-  * removed warnings related to gcc 4.7.2
+  * resolved compilation warnings related to gcc 4.7.2
   * allowed intermediated writings of MCMC samples, of MC input parameters, and of MC output qois
   * allowed optional calculation of unnormalized pdfs
   * added 'AllowAll' boolean options for the sampling classes

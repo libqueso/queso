@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script. 
 
 AC_PREREQ(2.65)
-AC_INIT([queso], [0.45.2], [pecos_dev@ices.utexas.edu])
+AC_INIT([queso], [0.45.3], [pecos_dev@ices.utexas.edu])
 AC_CONFIG_MACRO_DIR([m4])
 AM_CONFIG_HEADER(config_queso.h)
 AC_CONFIG_AUX_DIR([build-aux])
