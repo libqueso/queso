@@ -30,7 +30,7 @@
 #ifndef __UQ_GSL_VECTOR_H__
 #define __UQ_GSL_VECTOR_H__
 
-/*! \file uqGslvector.h
+/*! \file uqGslVector.h
     \brief Vector class using GSL
 */
 
@@ -81,7 +81,7 @@ public:
   //! Stores in \c this the cordinate-wise division of \c this by rhs.
   uqGslVectorClass& operator/=(const uqGslVectorClass& rhs);
   
-   //! Stores in \c this the cordinate-wise adition of \c this and rhs.
+   //! Stores in \c this the cordinate-wise addition of \c this and rhs.
   uqGslVectorClass& operator+=(const uqGslVectorClass& rhs);
   
   //! Stores in \c this the cordinate-wise subtraction of \c this by rhs.

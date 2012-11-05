@@ -29,15 +29,36 @@
 #ifndef __UQ_GSL_MATRIX_H__
 #define __UQ_GSL_MATRIX_H__
 
+/*! \file uqGslMatrix.h
+    \brief QUESO matrix class using GSL.
+*/
+
 #include <uqMatrix.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_permutation.h>
 #include <uqGslVector.h>
 
+/*! \class uqGslMatrixClass
+    \brief This class creates and provides basic support for matrices of templated 
+    type as a specialization of uqMatrixClass using GSL matrices, which are defined 
+    by an encapsulated gsl_matrix structure.
+*/
+
 class uqGslMatrixClass : public uqMatrixClass
 {
 public:
+ //! @name Constructor/Destructor methods.
+  //@{ 
+
+  //! Default Constructor
+  /*! Creates an empty matrix vector of no dimension. The Shaping methods should be used to size this matrix.
+    Values of this matrix should be set using the [], (), or = operators.*/
   uqGslMatrixClass();
+  
+   //! Shaped Constructor
+  
+  //!Creates a shaped matrix with \c numCols cols.  All values are initialized to 0 when \c zeroOut is true.
+  /*!   \param numCols - Number of columns in matrix. */  
   uqGslMatrixClass(const uqBaseEnvironmentClass& env,
                    const uqMapClass&             map,
                    unsigned int                  numCols);
@@ -48,32 +69,101 @@ public:
                    double                        diagValue); // MATLAB eye
   uqGslMatrixClass(const uqGslVectorClass&       v);         // MATLAB diag
   uqGslMatrixClass(const uqGslMatrixClass&       B);
- ~uqGslMatrixClass();
+  
+  //! Destructor
+  ~uqGslMatrixClass();
+  //@}
 
+
+  //! @name Set methods.
+  //@{ 
+  //! 	Copies values from matrix rhs to \c this. 
   uqGslMatrixClass& operator= (const uqGslMatrixClass& rhs);
+  
+  //! Stores in \c this the cordinate-wise multiplication of \c this and a.
   uqGslMatrixClass& operator*=(double a);
+  
+  //! Stores in \c this the cordinate-wise division of \c this by a.
   uqGslMatrixClass& operator/=(double a);
+  
+  //! Stores in \c this the cordinate-wise addition of \c this and rhs.
   uqGslMatrixClass& operator+=(const uqGslMatrixClass& rhs);
+  
+  //! Stores in \c this the cordinate-wise subtraction of \c this by rhs.
   uqGslMatrixClass& operator-=(const uqGslMatrixClass& rhs);
+  //@}
+  
+  
+  //! @name Accessor methods.
+  //@{
+  //! Element access method (non-const).
             double& operator()(unsigned int i, unsigned int j);
-      const double& operator()(unsigned int i, unsigned int j) const;
+            
+  //! Element access method (const).  
+        const double& operator()(unsigned int i, unsigned int j) const;
+  //@}
 
+  //! @name Attribute methods.
+  //@{ 
+  //! Returns the local row dimension of this matrix.
         unsigned int      numRowsLocal              () const;
+        
+  //! Returns the global row dimension of this matrix.
         unsigned int      numRowsGlobal             () const;
+        
+  //! Returns the column dimension of this matrix.
         unsigned int      numCols                   () const;
+  //@}
+  
+  //! @name Norm methods.
+  //@{ 
+  //! Returns the Frobenius norm of the matrix.
         double            normFrob                  () const;
+  //! Returns the Frobenius norm of the matrix.
         double            normMax                   () const;
-        double            max                       () const;
+  //@}
+       
+
+  
+  //! @name Set methods.
+  //@{ 
+  //! Component-wise set all values to \c this with value.
         void              cwSet                     (double value);
+        
+  //! Set the componts of \c which positions are greater than (rowId,colId) with the value of mat(rowId,colId).
+  // TODO: improve this description
         void              cwSet                     (unsigned int rowId, unsigned int colId, const uqGslMatrixClass& mat);
+  //@}
+  
+  
+  //! @name Mathematical methods.
+  //@{ 
+  //! Returns the maximum element value of the matrix.
+        double            max                       () const;
+  
+  //! Cholesky decomposition of \thic as long as \this is a symmetric, positive definite square matrix
         int               chol                      ();
         int               svd                       (uqGslMatrixClass& matU, uqGslVectorClass& vecS, uqGslMatrixClass& matVt) const;
+        
+  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with uqGslMatrixClass::svd (x=solVec, b=rhsVec). 
         int               svdSolve                  (const uqGslVectorClass& rhsVec, uqGslVectorClass& solVec) const;
+        
+  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with uqGslMatrixClass::svd (x=solMat, b=rhsMat).
         int               svdSolve                  (const uqGslMatrixClass& rhsMat, uqGslMatrixClass& solMat) const;
+        
+        
+  //! This function calls private member uqGslMatrixClass::internalSvd() to set a M-by-N orthogonal matrix U of the singular value decomposition (svd) of a general rectangular M-by-N matrix A. 
+  /*! A general rectangular M-by-N matrix A has a singular value decomposition (svd) into the product of an M-by-N orthogonal matrix U, an N-by-N diagonal matrix of singular values S and the transpose of an N-by-N orthogonal square matrix V,  A = U S V^T.  */
   const uqGslMatrixClass& svdMatU                   () const;
+  
+  //! This function calls private member  uqGslMatrixClass::internalSvd() to set a N-by-N orthogonal square matrix V of the singular value decomposition (svd) of a general rectangular M-by-N matrix A. 
+  /*! A general rectangular M-by-N matrix A has a singular value decomposition (svd) into the product of an M-by-N orthogonal matrix U, an N-by-N diagonal matrix of singular values S and the transpose of an N-by-N orthogonal square matrix V,  A = U S V^T.  */
   const uqGslMatrixClass& svdMatV                   () const;
+  
         void              zeroLower                 (bool includeDiagonal = false);
         void              zeroUpper                 (bool includeDiagonal = false);
+        
+  //@}      
         void              filterSmallValues         (double thresholdValue);
         void              filterLargeValues         (double thresholdValue);
         uqGslMatrixClass  transpose                 () const;
@@ -128,6 +218,8 @@ private:
         void              copy                      (const uqGslMatrixClass& src);
         void              resetLU                   ();
         void              multiply                  (const uqGslVectorClass& x, uqGslVectorClass& y) const;
+        
+        //! This function factorizes the M-by-N matrix A into the singular value decomposition A = U S V^T for M >= N. On output the matrix A is replaced by U.
         int               internalSvd               () const;
 
           gsl_matrix*       m_mat;
