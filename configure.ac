@@ -164,6 +164,7 @@ AC_CONFIG_FILES([
 	src/contrib/ANN/test/Makefile
 	src/core/inc/queso.h
 	examples/Makefile
+        examples/basic_interface/Makefile
 	examples/infoTheoryProblem/Makefile
 	examples/infoTheoryProblem/src/Makefile
 	examples/statisticalInverseProblem1/Makefile
