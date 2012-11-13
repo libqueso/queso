@@ -48,7 +48,7 @@ R = chol(c95*sip_appl_covMatrix_sub0(1:2,1:2));
 x = sip_appl_paramMeans_sub0(1) + R(1,1).*cos(t);
 y = sip_appl_paramMeans_sub0(2) + R(1,2).*cos(t) + R(2,2).*sin(t);
 plot(x,y,'r--','LineWidth',2);
-
+grid minor;
 print -dpng fig1.png
 waitforbuttonpress;
 clf;
@@ -56,12 +56,17 @@ clf;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Plot marginal posterior pdfs of all 4 parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plot(ip_mh_rawChain_unifGkdePosits_sub0(1,:),ip_mh_rawChain_unifGkdeValues_sub0(1,:),'-b');
-hold
-plot(ip_mh_rawChain_unifGkdePosits_sub0(2,:),ip_mh_rawChain_unifGkdeValues_sub0(2,:),'-r');
-plot(ip_mh_rawChain_unifGkdePosits_sub0(3,:),ip_mh_rawChain_unifGkdeValues_sub0(3,:),'--b');
-plot(ip_mh_rawChain_unifGkdePosits_sub0(4,:),ip_mh_rawChain_unifGkdeValues_sub0(4,:),'--r');
-
+% KDE plots ---------------------------------------------------------------
+[f1,x1] = ksdensity(ip_mh_rawChain_unified(1,:),'function','pdf');
+plot(x1,f1,'-b','linewidth',3)
+hold;
+[f2,x2] = ksdensity(ip_mh_rawChain_unified(2,:),'function','pdf');
+plot(x2,f2,'-r','linewidth',3)
+[f3,x3] = ksdensity(ip_mh_rawChain_unified(3,:),'function','pdf');
+plot(x3,f3,'--b','linewidth',3)
+[f4,x4] = ksdensity(ip_mh_rawChain_unified(4,:),'function','pdf');
+plot(x4,f4,'--r','linewidth',3)
+hold;
 ylabel('marginal pdf','fontsize',20);
 xlabel('Parameter values','fontsize',20);
 title('Posterior marginal pdfs of parameters','fontsize',20);
@@ -73,3 +78,5 @@ legend('param1',...
        'param4',...
        'location','northwest');
 print -dpng fig2.png
+
+cd ..
