@@ -57,7 +57,9 @@ public:
   uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map);
   uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double value);
   uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const uqMapClass& map); // MATLAB linspace
-  uqGslVectorClass(const uqGslVectorClass&         v, double d1, double d2);                        // MATLAB linspace
+
+  //! Fill \c v with evenly spaced numbers from \c start to \c end, inclusive
+  uqGslVectorClass(const uqGslVectorClass&         v, double start, double end);
   uqGslVectorClass(const uqGslVectorClass&         y);
   
   //! Destructor

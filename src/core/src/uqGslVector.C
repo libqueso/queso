@@ -168,7 +168,7 @@ uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double 
 
   for (unsigned int i = 0; i < m_vec->size; ++i) {
     double alpha = (double) i / ((double) m_vec->size - 1.);
-    (*this)[i] = (1.-alpha)*d1 + alpha*d2;
+    (*this)[i] = (1. - alpha) * start + alpha * end;
   }
 
   UQ_FATAL_TEST_MACRO(m_vec->size != (unsigned int) m_map.NumMyElements(),
