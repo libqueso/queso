@@ -16,7 +16,7 @@
 }%
 {\color[rgb]{0,0,0}\put(811,209){\vector( 1, 0){1350}}
 }%
-\put(3331, 29){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Posterior rv $\boldsymbol{\Theta}$}%
+\put(3331, 29){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Posterior RV $\boldsymbol{\Theta}$}%
 }}}}
 \put(2300,119){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Statistical}%
 }}}}
@@ -24,7 +24,7 @@
 }}}}
 \put(2400,-151){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Inverse}%
 }}}}
-\put(811,254){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Prior rv $\boldsymbol{\Theta}$}%
+\put(811,254){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Prior RV $\boldsymbol{\Theta}$}%
 }}}}
 \put(760,-241){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$\pi_{\mbox{\scriptsize{like}}}(\mathbf{d}\,|\,\mathbf{y},\mathbf{r},\boldsymbol{\Theta})$}%
 }}}}

@@ -12,13 +12,13 @@
 % inference, including are many variants of MCMC and the multi-level algorithm.  It is able to handle uni- and multi-processor Linux
 % environments and to provide a wide range of diagnostics.
 
-The purpose of this chapter is to introduce relevant terminology, mathematical concepts, and statistical algorithms, together with an overall description of QUESO library.
+The purpose of this chapter is to introduce relevant terminology, mathematical and statistical concepts, and statistical algorithms, together with an overall description of QUESO library.
 
 % It is a parallel object-oriented statistical library dedicated to the research of 
 % statistically robust, scalable, load balanced, and fault-tolerant mathematical algorithms for the
 % quantification of uncertainty in realistic computational models and predictions related to natural and engineering systems.
 
-\section{Key Statistical Concepts}
+\section{Preliminaries}
 
 
 Inverse problems are defined as the inverse of direct or forward problems, as the term itself suggests.
@@ -42,7 +42,7 @@ QUESO is designed in an abstract way so that it can be used by any computational
 
 QUESO library provides tools for both sampling algorithms for statistical inverse problems, following Bayes' formula, and statistical forward problems. It contains Monte Carlo solvers (for autocorrelation, kernel density estimation ans accuracy assessment), MCMC (e.g. Metropolis Hastings \cite{Metr_1953,Hast_1970}) as well as the DRAM \cite{HaLaMiSa06} (for sampling from probability distributions); it also has the capacity to handle many chains or sequences in parallel, each chain or sequence itself demanding many computing nodes because of the computational model being statistically explored \cite{PrSc09}.
 
-
+\section{Key Statistical Concepts}
 
 A computational model is a combination of a
 mathematical model and a discretization that enables the approximate

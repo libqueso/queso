@@ -24,8 +24,8 @@
 }}}}
 \put(811,-241){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$\mathbf{q}(\boldsymbol{\theta})$}%
 }}}}
-\put(811,299){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Input rv $\boldsymbol{\Theta}$}%
+\put(811,299){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Input RV $\boldsymbol{\Theta}$}%
 }}}}
-\put(3321, 29){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Output rv $\mathbf{Q}$}%
+\put(3321, 29){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Output RV $\mathbf{Q}$}%
 }}}}
 \end{picture}%
