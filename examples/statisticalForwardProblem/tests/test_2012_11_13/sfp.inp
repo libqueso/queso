@@ -1,0 +1,42 @@
+###############################################
+# UQ Environment
+###############################################
+#env_help                 = anything
+env_numSubEnvironments   = 1
+env_subDisplayFileName   = outputData/display
+env_subDisplayAllowAll   = 0
+env_subDisplayAllowedSet = 0 1
+env_displayVerbosity     = 2
+env_syncVerbosity        = 0
+env_seed                 = 0
+
+###############################################
+# Statistical forward problem (fp)
+###############################################
+fp_help                 = anything
+fp_computeSolution      = 1
+fp_computeCovariances   = 1
+fp_computeCorrelations  = 1
+fp_dataOutputFileName   = outputData/sfpOutput
+fp_dataOutputAllowedSet = 0 1
+
+###############################################
+# 'fp_': information for Monte Carlo algorithm
+#
+# '_numSamples' examples 16K   128K   1M      2M      16M
+#                        16384 131072 1048576 2097152 16777216
+###############################################
+fp_mc_help                 = anything
+fp_mc_dataOutputFileName   = outputData/sfpOutput
+fp_mc_dataOutputAllowedSet = 0 1
+
+fp_mc_pseq_dataOutputFileName   = .
+fp_mc_pseq_dataOutputAllowedSet = 0 1
+
+fp_mc_qseq_dataInputFileName    = . # outputData/file_sfp_qoi_input
+fp_mc_qseq_size                 = 16384
+fp_mc_qseq_displayPeriod        = 20000
+fp_mc_qseq_measureRunTimes      = 1
+fp_mc_qseq_dataOutputFileName   = outputData/file_sfp_qoi
+fp_mc_qseq_dataOutputAllowedSet = 0 1
+
