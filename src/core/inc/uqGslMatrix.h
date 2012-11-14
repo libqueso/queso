@@ -243,7 +243,11 @@ uqGslMatrixClass operator*       (const uqGslMatrixClass& m1,  const uqGslMatrix
 uqGslMatrixClass operator+       (const uqGslMatrixClass& m1,  const uqGslMatrixClass& m2 );
 uqGslMatrixClass operator-       (const uqGslMatrixClass& m1,  const uqGslMatrixClass& m2 );
 uqGslMatrixClass matrixProduct   (const uqGslVectorClass& v1,  const uqGslVectorClass& v2 );
+
+//! Row \c i of the returned matrix is equal to row \c i of \c mat multiplied by element \c i of \c v.
 uqGslMatrixClass leftDiagScaling (const uqGslVectorClass& vec, const uqGslMatrixClass& mat);
+
+//! Column \c j of the returned matrix is equal to column \c j of \c mat multiplied by element \c j of \c v.
 uqGslMatrixClass rightDiagScaling(const uqGslMatrixClass& mat, const uqGslVectorClass& vec);
 std::ostream&    operator<<      (std::ostream& os,            const uqGslMatrixClass& obj);
 
