@@ -144,7 +144,7 @@ uqGslVectorClass::uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1,
   //std::cout << "Leaving uqGslVectorClass::constructor(3)" << std::endl;
 }
 
-uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double d1, double d2)
+uqGslVectorClass::uqGslVectorClass(const uqGslVectorClass& v, double start, double end)
   :
   uqVectorClass(v.env(),v.map()),
   m_vec        (gsl_vector_calloc(v.sizeLocal()))
