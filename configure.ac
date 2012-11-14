@@ -167,8 +167,8 @@ AC_CONFIG_FILES([
         examples/basic_interface/Makefile
 	examples/infoTheoryProblem/Makefile
 	examples/infoTheoryProblem/src/Makefile
-	examples/statisticalInverseProblem1/Makefile
-	examples/statisticalInverseProblem1/src/Makefile	
+	examples/statisticalInverseProblem/Makefile
+	examples/statisticalInverseProblem/src/Makefile	
 	examples/validationPyramid/Makefile
 	examples/validationPyramid/src/Makefile
 	examples/validationPyramid/src/physics_1/Makefile

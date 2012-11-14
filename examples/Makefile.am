@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
 #Build in these directories:
-SUBDIRS = statisticalForwardProblem statisticalInverseProblem1 \
+SUBDIRS = statisticalForwardProblem statisticalInverseProblem \
 	  validationCycle validationCycle2 validationPyramid   \
 	  infoTheoryProblem basic_interface

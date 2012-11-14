@@ -49,7 +49,7 @@ public:
 
   const uqMpiCommClass& Comm             () const;
   int                   NumGlobalElements() const;
-  int                   IndexBase        () const;
+  int                   IndexBase        () const;//1st position in the global processor in my processors
   int                   NumMyElements    () const;
   int                   MinMyGID         () const;
 #ifdef QUESO_HAS_TRILINOS
