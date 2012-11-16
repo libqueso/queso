@@ -38,7 +38,7 @@ host_triplet = @host@
 @GLPK_ENABLED_TRUE@am__append_2 = $(GLPK_CFLAGS)
 @HDF5_ENABLED_TRUE@am__append_3 = $(HDF5_CFLAGS) 
 noinst_PROGRAMS = exStatisticalInverseProblem1_gsl$(EXEEXT)
-subdir = examples/statisticalInverseProblem1/src
+subdir = examples/statisticalInverseProblem/src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/common/acx_mpi.m4 \
@@ -328,9 +328,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign examples/statisticalInverseProblem1/src/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign examples/statisticalInverseProblem/src/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign examples/statisticalInverseProblem1/src/Makefile
+	  $(AUTOMAKE) --foreign examples/statisticalInverseProblem/src/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \

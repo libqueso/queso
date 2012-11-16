@@ -28,6 +28,10 @@ cycle_cal_ip_mh_help                 = anything
 cycle_cal_ip_mh_dataOutputFileName   = outputData/tgaCalOutput
 cycle_cal_ip_mh_dataOutputAllowedSet = 0 1
 
+cycle_cal_ip_mh_initialPosition_dataInputFileName          = . # inputData/initPos
+cycle_cal_ip_mh_initialPosition_dataInputFileType          = m
+cycle_cal_ip_mh_initialProposalCovMatrix_dataInputFileName = . # inputData/adaptedMatrix_am910000
+cycle_cal_ip_mh_initialProposalCovMatrix_dataInputFileType = m
 cycle_cal_ip_mh_rawChain_dataInputFileName    = . # outputData/file_cal_ip_raw_input
 cycle_cal_ip_mh_rawChain_size                 = 1048576
 cycle_cal_ip_mh_rawChain_generateExtra        = 0
@@ -42,8 +46,11 @@ cycle_cal_ip_mh_tk_useLocalHessian            = 0
 cycle_cal_ip_mh_tk_useNewtonComponent         = 1
 cycle_cal_ip_mh_dr_maxNumExtraStages          = 1
 cycle_cal_ip_mh_dr_listOfScalesForExtraStages = 5. 4. 3.
-cycle_cal_ip_mh_am_initialNonAdaptInterval    = 0
-cycle_cal_ip_mh_am_adaptInterval              = 100
+cycle_cal_ip_mh_am_initialNonAdaptInterval    = 0 # 10000
+cycle_cal_ip_mh_am_adaptInterval              = 100 # 10000
+cycle_cal_ip_mh_am_adaptedMatrices_dataOutputPeriod   = 60000
+cycle_cal_ip_mh_am_adaptedMatrices_dataOutputFileName = . # outputData/adaptedMatrix
+cycle_cal_ip_mh_am_adaptedMatrices_dataOutputFileType = m
 cycle_cal_ip_mh_am_eta                        = 1.92
 cycle_cal_ip_mh_am_epsilon                    = 1.e-5
 
@@ -52,7 +59,6 @@ cycle_cal_ip_mh_filteredChain_discardedPortion     = 0.
 cycle_cal_ip_mh_filteredChain_lag                  = 20
 cycle_cal_ip_mh_filteredChain_dataOutputFileName   = .
 cycle_cal_ip_mh_filteredChain_dataOutputAllowedSet = 0 1
-
 
 ###############################################
 # Calibration (cal) stage: statistical forward problem (fp)
@@ -130,11 +136,11 @@ cycle_val_ip_mh_filteredChain_dataOutputAllowedSet = 0 1
 ###############################################
 # Validation (val) stage: statistical forward problem (fp)
 ###############################################
-cycle_val_fp_help                = anything
-cycle_val_fp_computeSolution     = 1
-cycle_val_fp_computeCovariances  = 1
-cycle_val_fp_computeCorrelations = 1
-cycle_val_fp_dataOutputFileName  = outputData/tgaValOutput
+cycle_val_fp_help                 = anything
+cycle_val_fp_computeSolution      = 1
+cycle_val_fp_computeCovariances   = 1
+cycle_val_fp_computeCorrelations  = 1
+cycle_val_fp_dataOutputFileName   = outputData/tgaValOutput
 cycle_val_fp_dataOutputAllowedSet = 0 1
 
 ###############################################
@@ -149,6 +155,7 @@ cycle_val_fp_mc_dataOutputAllowedSet = 0 1
 
 cycle_val_fp_mc_pseq_dataOutputFileName   = .
 cycle_val_fp_mc_pseq_dataOutputAllowedSet = 0 1
+
 
 cycle_val_fp_mc_qseq_dataInputFileName    = . # outputData/file_val_fp_qoi1
 cycle_val_fp_mc_qseq_size                 = 1048576
