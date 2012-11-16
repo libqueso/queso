@@ -65,9 +65,11 @@ likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(
     inp = fopen(inpName1,"r");
 
     // Read kinetic parameters and convert heating rate to K/s
-    fscanf(inp,"%lf %lf",&m_beta1,&m_variance1);
+    int aux1 = fscanf(inp,"%lf %lf",&m_beta1,&m_variance1);
     m_beta1 /= 60.;
   
+    if(aux1) {}; // just to eliminate warnings
+
     unsigned int numObservations = 0;
     double tmpTe;
     double tmpMe;
@@ -99,9 +101,11 @@ likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(
     inp = fopen(inpName2,"r");
 
     // Read kinetic parameters and convert heating rate to K/s
-    fscanf(inp,"%lf %lf",&m_beta2,&m_variance2);
+    int aux2 = fscanf(inp,"%lf %lf",&m_beta2,&m_variance2);
     m_beta2 /= 60.;
   
+    if(aux2) {}; // just to eliminate warnings
+
     unsigned int numObservations = 0;
     double tmpTe;
     double tmpMe;
@@ -133,9 +137,11 @@ likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(
     inp = fopen(inpName3,"r");
 
     // Read kinetic parameters and convert heating rate to K/s
-    fscanf(inp,"%lf %lf",&m_beta3,&m_variance3);
+    int aux3 = fscanf(inp,"%lf %lf",&m_beta3,&m_variance3);
     m_beta3 /= 60.;
   
+    if(aux3) {}; // just to eliminate warnings
+
     unsigned int numObservations = 0;
     double tmpTe;
     double tmpMe;
