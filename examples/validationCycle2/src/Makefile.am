@@ -24,18 +24,29 @@ endif
 
 LIBS        = -L$(top_builddir)/src/ -lqueso 
 
+# 11/16/2012: No longer creating examples in the installed QUESO directory
+#exampledir  	 = @prefix@/examples/advanced
+#example_DATA     = tga2_gsl.C \
+#		   tga2_appl.C \
+#		   tga2_appl.h \
+#		   tga2_likelihood.C \
+#		   tga2_likelihood.h \
+#		   tga2_qoi.C \
+#		   tga2_qoi.h \
+#		   tga2_func.C \
+#		   tga2_func.h
+#example_PROGRAMS = tga2_gsl
+#tga2_gsl_SOURCES = tga2_gsl.C \
+#		   tga2_appl.C \
+#		   tga2_appl.h \
+#		   tga2_likelihood.C \
+#		   tga2_likelihood.h \
+#		   tga2_qoi.C \
+#		   tga2_qoi.h \
+#		   tga2_func.C \
+#		   tga2_func.h
 
-exampledir  	 = @prefix@/examples/advanced
-example_DATA     = tga2_gsl.C \
-		   tga2_appl.C \
-		   tga2_appl.h \
-		   tga2_likelihood.C \
-		   tga2_likelihood.h \
-		   tga2_qoi.C \
-		   tga2_qoi.h \
-		   tga2_func.C \
-		   tga2_func.h
-example_PROGRAMS = tga2_gsl
+noinst_PROGRAMS = tga2_gsl
 tga2_gsl_SOURCES = tga2_gsl.C \
 		   tga2_appl.C \
 		   tga2_appl.h \

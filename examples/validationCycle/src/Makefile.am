@@ -24,15 +24,21 @@ endif
 
 LIBS        = -L$(top_builddir)/src/ -lqueso
 
+# 11/16/2012: No longer creating examples in the installed QUESO directory
+#exampledir  	 = @prefix@/examples/advanced
+#example_DATA     = exTgaValidationCycle_gsl.C exTgaValidationCycle_appl.h \
+#		   exTgaValidationCycle_likelihood.h exTgaValidationCycle_qoi.h
+#example_PROGRAMS = exTgaValidationCycle_gsl
+#
+#exTgaValidationCycle_gsl_SOURCES = exTgaValidationCycle_gsl.C exTgaValidationCycle_appl.h \
+#				   exTgaValidationCycle_likelihood.h exTgaValidationCycle_qoi.h
 
-exampledir  	 = @prefix@/examples/advanced
-example_DATA     = exTgaValidationCycle_gsl.C exTgaValidationCycle_appl.h \
-		   exTgaValidationCycle_likelihood.h exTgaValidationCycle_qoi.h
-example_PROGRAMS = exTgaValidationCycle_gsl
+noinst_PROGRAMS = exTgaValidationCycle_gsl
 
-exTgaValidationCycle_gsl_SOURCES = exTgaValidationCycle_gsl.C exTgaValidationCycle_appl.h \
-				   exTgaValidationCycle_likelihood.h exTgaValidationCycle_qoi.h
-
+exTgaValidationCycle_gsl_SOURCES = exTgaValidationCycle_gsl.C \
+								exTgaValidationCycle_appl.h \
+								exTgaValidationCycle_likelihood.h \
+								exTgaValidationCycle_qoi.h
 
 #bin_PROGRAMS += exTgaValidationCycle_tri
 #exTgaValidationCycle_tri_SOURCES = exTgaValidationCycle_tri.C exTgaValidationCycle_appl.h exTgaValidationCycle_likelihood.h exTgaValidationCycle_qoi.h
