@@ -36,7 +36,7 @@
  *
  * It is easier to understand this example after undertanding three other simpler
  * examples:
- * (1) examples/statisticalInverseProblem1/src/exStatisticalInverseProblem1_gsl.C
+ * (1) examples/statisticalInverseProblem/src/exStatisticalInverseProblem_gsl.C
  * (2) examples/statisticalForwardProblem/src/exStatisticalForwardProblem_gsl.C
  * (3) test/t02_sip_sfp/sip_sfp/example_main.C
  *
