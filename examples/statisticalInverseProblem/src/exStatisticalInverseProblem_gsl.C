@@ -23,7 +23,7 @@
  *
  *--------------------------------------------------------------------------
  *
- * $Id: exStatisticalInverseProblem1_gsl.C 17566 2011-02-12 18:21:56Z prudenci $
+ * $Id: exStatisticalInverseProblem_gsl.C 17566 2011-02-12 18:21:56Z prudenci $
  *
  * Brief description of this file: 
  * 
@@ -31,12 +31,12 @@
  * using QUESO classes and algorithms. The code itself is in the templated
  * routine 'uqAppl(*env)'. This routine is called right after the initialization
  * of the MPI environment and of the QUESO environment and is available in
- * file 'exStatisticalInverseProblem1_appl.h'
+ * file 'exStatisticalInverseProblem_appl.h'
  *
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#include <exStatisticalInverseProblem1_appl.h>
+#include <exStatisticalInverseProblem_appl.h>
 #include <uqGslMatrix.h>
 
 int main(int argc, char* argv[])

@@ -30,8 +30,8 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H__
-#define __EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H__
+#ifndef __EX_STATISTICAL_INVERSE_PROBLEM_LIKELIHOOD_H__
+#define __EX_STATISTICAL_INVERSE_PROBLEM_LIKELIHOOD_H__
 
 //********************************************************
 // The likelihood routine: provided by user and called by QUESO
@@ -75,4 +75,4 @@ likelihoodRoutine(
   return result;
 #endif
 }
-#endif // __EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H__
+#endif // __EX_STATISTICAL_INVERSE_PROBLEM_LIKELIHOOD_H__

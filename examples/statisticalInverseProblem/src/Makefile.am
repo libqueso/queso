@@ -23,12 +23,12 @@ endif
 
 LIBS        = -L$(top_builddir)/src/ -lqueso $(HDF5_LIBS)
 
-noinst_PROGRAMS = exStatisticalInverseProblem1_gsl
+noinst_PROGRAMS = exStatisticalInverseProblem_gsl
 
-exStatisticalInverseProblem1_gsl_SOURCES = \
-	exStatisticalInverseProblem1_gsl.C \
-	exStatisticalInverseProblem1_appl.h \
-	exStatisticalInverseProblem1_likelihood.h
+exStatisticalInverseProblem_gsl_SOURCES = \
+	exStatisticalInverseProblem_gsl.C \
+	exStatisticalInverseProblem_appl.h \
+	exStatisticalInverseProblem_likelihood.h
 
 # Required for AX_AM_MACROS
 @INC_AMINCLUDE@

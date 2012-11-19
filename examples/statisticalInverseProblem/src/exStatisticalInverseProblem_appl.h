@@ -23,17 +23,17 @@
  *
  *--------------------------------------------------------------------------
  *
- * $Id: exStatisticalInverseProblem1_appl.h 14596 2010-10-03 15:10:42Z karl $
+ * $Id: exStatisticalInverseProblem_appl.h 14596 2010-10-03 15:10:42Z karl $
  *
  * Brief description of this file: 
  * 
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_STATISTICAL_INVERSE_PROBLEM_1_APPL_H__
-#define __EX_STATISTICAL_INVERSE_PROBLEM_1_APPL_H__
+#ifndef __EX_STATISTICAL_INVERSE_PROBLEM_APPL_H__
+#define __EX_STATISTICAL_INVERSE_PROBLEM_APPL_H__
 
-#include <exStatisticalInverseProblem1_likelihood.h>
+#include <exStatisticalInverseProblem_likelihood.h>
 #include <uqStatisticalInverseProblem.h>
 #include <uqCovCond.h>
 
@@ -45,7 +45,7 @@ void
 uqAppl(const uqBaseEnvironmentClass& env)
 {
   if (env.fullRank() == 0) {
-    std::cout << "Beginning run of 'exStatisticalInverseProblem1_example'\n"
+    std::cout << "Beginning run of 'exStatisticalInverseProblem_example'\n"
               << std::endl;
   }
 
@@ -207,10 +207,10 @@ uqAppl(const uqBaseEnvironmentClass& env)
   delete covMatrix;
 
   if (env.fullRank() == 0) {
-    std::cout << "Finishing run of 'exStatisticalInverseProblem1_example'"
+    std::cout << "Finishing run of 'exStatisticalInverseProblem_example'"
               << std::endl;
   }
 
   return;
 }
-#endif // __EX_STATISTICAL_INVERSE_PROBLEM_1_APPL_H__
+#endif // __EX_STATISTICAL_INVERSE_PROBLEM_APPL_H__

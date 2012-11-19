@@ -37,7 +37,7 @@ host_triplet = x86_64-unknown-linux-gnu
 #am__append_1 = -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
 #am__append_2 = $(GLPK_CFLAGS)
 am__append_3 = $(HDF5_CFLAGS) 
-noinst_PROGRAMS = exStatisticalInverseProblem1_gsl$(EXEEXT)
+noinst_PROGRAMS = exStatisticalInverseProblem_gsl$(EXEEXT)
 subdir = examples/statisticalInverseProblem/src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -72,11 +72,11 @@ CONFIG_HEADER = $(top_builddir)/config_queso.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
-am_exStatisticalInverseProblem1_gsl_OBJECTS =  \
-	exStatisticalInverseProblem1_gsl.$(OBJEXT)
-exStatisticalInverseProblem1_gsl_OBJECTS =  \
-	$(am_exStatisticalInverseProblem1_gsl_OBJECTS)
-exStatisticalInverseProblem1_gsl_LDADD = $(LDADD)
+am_exStatisticalInverseProblem_gsl_OBJECTS =  \
+	exStatisticalInverseProblem_gsl.$(OBJEXT)
+exStatisticalInverseProblem_gsl_OBJECTS =  \
+	$(am_exStatisticalInverseProblem_gsl_OBJECTS)
+exStatisticalInverseProblem_gsl_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__depfiles_maybe = depfiles
@@ -99,8 +99,8 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(exStatisticalInverseProblem1_gsl_SOURCES)
-DIST_SOURCES = $(exStatisticalInverseProblem1_gsl_SOURCES)
+SOURCES = $(exStatisticalInverseProblem_gsl_SOURCES)
+DIST_SOURCES = $(exStatisticalInverseProblem_gsl_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -310,10 +310,10 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
 	-I$(top_srcdir)/src/stats/inc $(BOOST_CPPFLAGS) $(GSL_CFLAGS) \
 	$(GRVY_CFLAGS) $(ANN_CFLAGS) $(am__append_1) $(am__append_2) \
 	$(am__append_3)
-exStatisticalInverseProblem1_gsl_SOURCES = \
-	exStatisticalInverseProblem1_gsl.C \
-	exStatisticalInverseProblem1_appl.h \
-	exStatisticalInverseProblem1_likelihood.h
+exStatisticalInverseProblem_gsl_SOURCES = \
+	exStatisticalInverseProblem_gsl.C \
+	exStatisticalInverseProblem_appl.h \
+	exStatisticalInverseProblem_likelihood.h
 
 all: all-am
 
@@ -358,9 +358,9 @@ clean-noinstPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-exStatisticalInverseProblem1_gsl$(EXEEXT): $(exStatisticalInverseProblem1_gsl_OBJECTS) $(exStatisticalInverseProblem1_gsl_DEPENDENCIES) 
-	@rm -f exStatisticalInverseProblem1_gsl$(EXEEXT)
-	$(CXXLINK) $(exStatisticalInverseProblem1_gsl_OBJECTS) $(exStatisticalInverseProblem1_gsl_LDADD) $(LIBS)
+exStatisticalInverseProblem_gsl$(EXEEXT): $(exStatisticalInverseProblem_gsl_OBJECTS) $(exStatisticalInverseProblem_gsl_DEPENDENCIES) 
+	@rm -f exStatisticalInverseProblem_gsl$(EXEEXT)
+	$(CXXLINK) $(exStatisticalInverseProblem_gsl_OBJECTS) $(exStatisticalInverseProblem_gsl_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -368,7 +368,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-include ./$(DEPDIR)/exStatisticalInverseProblem1_gsl.Po
+include ./$(DEPDIR)/exStatisticalInverseProblem_gsl.Po
 
 .C.o:
 	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
