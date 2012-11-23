@@ -22,13 +22,18 @@ int main(int argc, char **argv) {
   fread(&seed, sizeof(int), 1, fpRand);
   fclose(fpRand);
 
-  MPI_Init(&argc, &argv);
-
   uqEnvOptionsValuesClass *opts = new uqEnvOptionsValuesClass();
   opts->m_seed = seed;
 
-  uqFullEnvironmentClass *env = new uqFullEnvironmentClass(MPI_COMM_WORLD,
-      NULL, "", opts);
+#ifdef QUESO_HAS_MPI
+  MPI_Init(&argc, &argv);
+#endif
+  uqFullEnvironmentClass *env =
+#ifdef QUESO_HAS_MPI
+    new uqFullEnvironmentClass(MPI_COMM_WORLD, NULL, "", opts);
+#else
+    new uqFullEnvironmentClass(0, NULL, "", opts);
+#endif
 
   uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> *param_space;
   param_space = new uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass>(
@@ -106,7 +111,17 @@ int main(int argc, char **argv) {
   }
 
   delete env;
+  delete opts;
+  delete mean;
+  delete var;
+  delete delta;
+  delete sumsq;
+  delete param_space;
+  delete param_domain;
+  delete prior;
+#ifdef QUESO_HAS_MPI
   MPI_Finalize();
+#endif
 
   return return_val;
 }
