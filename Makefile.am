@@ -3,7 +3,7 @@ ACLOCAL_AMFLAGS  = -I m4 -I m4/common
 EXTRA_DIST       = $(DX_CONFIG) users.pdf CHANGES AUTHORS COPYING LICENSE dist_version
 
 # Build in these directories:
-SUBDIRS          = src/contrib/ANN src examples test/gsl_tests test doxygen
+SUBDIRS          = src/contrib/ANN src examples test/gsl_tests test doxygen test/test_uqGaussianVectorRVClass
 
 # Doxygen support
 

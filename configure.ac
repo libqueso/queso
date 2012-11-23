@@ -186,6 +186,7 @@ AC_CONFIG_FILES([
 	test/t03_sequence/Makefile
 	test/t04_bimodal/Makefile
         test/gsl_tests/Makefile
+  test/test_uqGaussianVectorRVClass/Makefile
 	doxygen/Makefile
 ])
 
