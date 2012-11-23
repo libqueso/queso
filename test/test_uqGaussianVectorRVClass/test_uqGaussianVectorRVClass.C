@@ -11,17 +11,24 @@
 using namespace std;
 
 int main(int argc, char **argv) {
-  int i, j, num_samples = 1e5;
+  int i, j, num_samples = 1e5, seed;
   double sigmasq = 1.0;
   double *mean;
   double *var;
   double *sumsq;
   double *delta;
+  FILE *fpRand = fopen("/dev/random", "r");
+
+  fread(&seed, sizeof(int), 1, fpRand);
+  fclose(fpRand);
 
   MPI_Init(&argc, &argv);
 
+  uqEnvOptionsValuesClass *opts = new uqEnvOptionsValuesClass();
+  opts->m_seed = seed;
+
   uqFullEnvironmentClass *env = new uqFullEnvironmentClass(MPI_COMM_WORLD,
-      "test.inp", "", NULL);
+      NULL, "", opts);
 
   uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> *param_space;
   param_space = new uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass>(
