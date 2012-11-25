@@ -93,6 +93,11 @@ const int UQ_MATRIX_SVD_FAILED_RC          = -11;
 #define UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT "m"
 #define UQ_FILE_EXTENSION_FOR_HDF_FORMAT    "h5"
 
+/*! \class uqEnvOptionsValuesClass
+ *  \brief This class provides a suite options one can pass to a QUESO
+ *         environment.
+ */
+
 class uqEnvOptionsValuesClass
 {
 public:
@@ -108,6 +113,8 @@ public:
   unsigned int           m_displayVerbosity;
   unsigned int           m_syncVerbosity;
   unsigned int           m_checkingLevel;
+
+  //! Sets the seed of the random number generator.
   int                    m_seed;
   std::string            m_platformName;
   std::string            m_identifyingString;
