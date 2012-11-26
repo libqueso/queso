@@ -403,9 +403,19 @@ uqGenericVectorRVClass<V,M>::print(std::ostream& os) const
 //*****************************************************
 // Gaussian class
 //*****************************************************
+
+/*!
+ * \class uqGaussianVectorRVClass
+ * \brief A class representing a Gaussian random vector
+ */
+
 template<class V, class M>
 class uqGaussianVectorRVClass : public uqBaseVectorRVClass<V,M> {
 public:
+  //! @name Constructor/Destructor methods
+  //@{
+
+  //! Construct a Gaussian random vector with mean \c lawExpVector and diagonal covariance \c lawVarVector whose variates live in \c imageSet
   uqGaussianVectorRVClass(const char*                  prefix,
                           const uqVectorSetClass<V,M>& imageSet,
                           const V&                     lawExpVector,
@@ -415,6 +425,7 @@ public:
                           const V&                     lawExpVector,
                           const M&                     lawCovMatrix);
   virtual ~uqGaussianVectorRVClass();
+  //@}
 
   void updateLawExpVector(const V& newLawExpVector);
   void updateLawCovMatrix(const M& newLawCovMatrix);
