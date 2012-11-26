@@ -118,14 +118,29 @@ uqVectorSubsetClass<V,M>::print(std::ostream& os) const
 //*****************************************************
 // Box class
 //*****************************************************
+
+/*!
+ * \class uqBoxSubsetClass
+ * \brief Class representing a subset of a vector space shaped like a hypercube
+ *
+ * This class is determined by a 
+ */
+
 template<class V, class M>
 class uqBoxSubsetClass : public uqVectorSubsetClass<V,M> {
 public:
+  //! @name Constructor/Destructor methods
+  //@{
+
+  //! Construct a subspace of \c vectorSpace, with min and max values \c minValues and \c maxValues, respectively
   uqBoxSubsetClass(const char*                    prefix,
                    const uqVectorSpaceClass<V,M>& vectorSpace,
                    const V&                       minValues,
                    const V&                       maxValues);
- ~uqBoxSubsetClass();
+
+  //! Destructor
+  ~uqBoxSubsetClass();
+  //@}
 
         bool contains (const V& vec)     const;
   const V&   minValues()                 const;
