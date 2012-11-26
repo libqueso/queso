@@ -35,17 +35,34 @@
 #include <cmath>
 //#include <math.h>
 
+/*!
+ * \class uqVectorSpaceClass
+ * \brief A class representing a vector space.
+ *
+ * Template classes \c V and \c M are to represent a vector class and a
+ * matrix class respectively.
+ */
+
 template <class V, class M>
 class uqVectorSpaceClass : public uqVectorSetClass<V,M>
 {
 public:
-        uqVectorSpaceClass();
-        uqVectorSpaceClass(const uqBaseEnvironmentClass&   env,
-                           const char*                     prefix,
-                           unsigned int                    dimGlobalValue,
-                           const std::vector<std::string>* componentsNamesVec);
-        uqVectorSpaceClass(const uqVectorSpaceClass<V,M>&  aux);
-       ~uqVectorSpaceClass();
+  //! @name Constructor/Destructor methods
+  //@{
+
+  //! Default constructor
+  uqVectorSpaceClass();
+
+  //! Construct a vector space with QUESO environment \c env and of dimension \c dimGlobalValue
+  uqVectorSpaceClass(const uqBaseEnvironmentClass&   env,
+                     const char*                     prefix,
+                     unsigned int                    dimGlobalValue,
+                     const std::vector<std::string>* componentsNamesVec);
+  uqVectorSpaceClass(const uqVectorSpaceClass<V,M>&  aux);
+
+  //! Destructor
+  ~uqVectorSpaceClass();
+  //@}
 
   const uqBaseEnvironmentClass&        env                     () const;
   const uqMapClass&                    map                     () const;
@@ -54,6 +71,7 @@ public:
         unsigned int                   dimGlobal               () const;
         unsigned int                   globalIdOfFirstComponent() const;
 
+  //! Returns a vector filled with zeros
   const V&                             zeroVector              () const;
         V*                             newVector               () const; // See template specialization
         V*                             newVector               (double value) const; // See template specialization
