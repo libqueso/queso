@@ -83,11 +83,6 @@ int main(int argc, char **argv) {
     var[j] = sumsq[j] / (num_samples - 1);
   }
 
-  cout << var[0] << " "
-       << var[1] << " "
-       << var[2] << " "
-       << var[3] << endl;
-
   double mean_min = -3.0 * sqrt(sigmasq) / sqrt(num_samples);
   double mean_max =  3.0 * sqrt(sigmasq) / sqrt(num_samples);
 
