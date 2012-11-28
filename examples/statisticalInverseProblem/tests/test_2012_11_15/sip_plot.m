@@ -14,9 +14,10 @@ appl_output_sub0
 %
 % Acknowledgments:
 % ===============
-% Figure 'fig1.png' has the purpose of being compared with
-% the output of the normal test at the MCMC toolbox for
-% MATLAB, available at www.helsinki.fi/~mjlaine/mcmc/.
+% Figure 'parameters_samples_plane.png' has the purpose 
+% of being compared with the output of the normal test 
+% at the MCMC toolbox for MATLAB, available at 
+% www.helsinki.fi/~mjlaine/mcmc/.
 % Some of the commands below indeed resamble part of
 % the code available at such toolbox.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -26,6 +27,7 @@ cc50 = sum(sip_appl_d_sub0<c50)./nsimu;
 cc95 = sum(sip_appl_d_sub0<c95)./nsimu;
 
 plot(ip_mh_rawChain_unified(:,1),ip_mh_rawChain_unified(:,2),'.');
+set(gca,'fontsize',20);
 xlabel('\theta_1');
 ylabel('\theta_2');
 title(sprintf('Rejected = %.1f%%, c50 = %.1f%%, c95 = %.1f%%', ...
@@ -49,7 +51,7 @@ x = sip_appl_paramMeans_sub0(1) + R(1,1).*cos(t);
 y = sip_appl_paramMeans_sub0(2) + R(1,2).*cos(t) + R(2,2).*sin(t);
 plot(x,y,'r--','LineWidth',2);
 grid minor;
-print -dpng fig1.png
+print -dpng parameters_samples_plane.png
 waitforbuttonpress;
 clf;
 
@@ -77,6 +79,6 @@ legend('param1',...
        'param3',...
        'param4',...
        'location','northwest');
-print -dpng fig2.png
+print -dpng parameters_PDF.png
 
 cd ..
