@@ -87,7 +87,7 @@ $ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
 		$HOME/LIBRARIES/boost_1_37_0/lib:
 		$HOME/LIBRARIES/grvy_0_31_0/lib
 \end{lstlisting}
-can be placed in the user's \verb+.cshrc+ or other startup file (\verb+.bashrc+ for UNIX bash shell). In addition, the user must set the following environmental
+can be placed in the user's \verb+.cshrc+ or other startup file (\verb+.bashrc+ for UNIX bash shell\footnote{Under the UNIX bash shell, the command analogous to \texttt{setenv} is \texttt{export}.}). In addition, the user must set the following environmental
 variables
 \begin{lstlisting}
 $ setenv CC gcc
@@ -98,7 +98,7 @@ $ setenv F77 f77
 $ setenv FC gfortran 
 \end{lstlisting}
 
-Under the UNIX bash shell you may need to replace \texttt{setenv} with \texttt{export} and make necessary arrangements\footnote{a command of the form \texttt{'\$ setenv CC gcc'} in C shell has analogous command \texttt{'\$ export CC=gcc'} in bash shell.}.
+
 
 \section{Obtaining a copy of \Queso{}}
 
@@ -356,13 +356,12 @@ information about them can be obtained with the Developer's documentation from S
 \item \texttt{src/contrib/}.
 \end{enumerate}
 
-\item \texttt{\bf examples}, with six subdirectories:
+\item \texttt{\bf examples}, with five subdirectories:
 \begin{enumerate}
 \item \texttt{examples/statisticalForwardProblem/},
 \item \texttt{examples/statisticalInverseProblem/},
 \item \texttt{examples/validationCycle/}, 
 \item \texttt{examples/validationCycle2/},
-\item \texttt{examples/validationPyramid/},
 \item \texttt{examples/infoTheoryProblem/},
 \end{enumerate}
 
@@ -391,7 +390,7 @@ The codes listed in this section have explanations inside themselves, and some o
 print messages during execution to make clearer which problem they are solving and how. 
 
 
-The two following subsection illustrates how to run the executables provided under the \verb+examples/statisticalInverseProblem/+ and \verb+examples/statisticalForwardProblem/+. For the remaining four examples, the steps should be analogous, except for \verb+infoTheoryProblem+, which requires QUESO to be compiled with ANN library \cite{ANN}.
+The two following subsection illustrates how to run the executables provided under the \verb+examples/statisticalInverseProblem/+ and \verb+examples/statisticalForwardProblem/+. For the remaining three examples, the steps should be analogous, except for \verb+infoTheoryProblem+, which requires QUESO to be compiled with ANN library \cite{ANN}.
 
 \subsubsection{A Simple Statistical Inverse Problem}\label{sec:executable_sip}
 
@@ -458,7 +457,6 @@ setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
 Supposing your application code together consists of the files: \linebreak \verb+example_main.C+, \verb+example_qoi.C+,  \verb+example_likelihood.C, example_compute.C+ and respective \verb+.h+ files. Your application code may be linked with QUESO library through a Makefile such as the one displayed as follows:
 
 \begin{lstlisting}[label={},caption={},deletekeywords={export,rm}]
-# BEGIN OF MAKEFILE
 QUESO_DIR = $HOME/LIBRARIES/queso_0_45_3_gnu/
 TRILINOS_DIR = $HOME/LIBRARIES/trilinos_9_0_2/
 BOOST_DIR = $HOME/LIBRARIES/boost_1_37_0/
@@ -470,7 +468,6 @@ include $(TRILINOS_DIR)/include/Makefile.export.epetra
 INC_PATHS = \
 	-I. \
 	-I$(QUESO_DIR)/include \
-	-I$(MPI_DIR)/include \
 	-I$(BOOST_DIR)/include/boost_1_37_0 \
 	-I$(GSL_DIR)/include \
 	-I$(GRVY_DIR)/include \
@@ -479,10 +476,9 @@ INC_PATHS = \
 LIBS = \
 	-L$(QUESO_DIR)/lib \
 	-lqueso \
-	-L$(MPI_DIR)/lib \
 	-L$(BOOST_DIR)/lib \
 	-lboost_program_options \
-    -L$(TRILINOS_DIR)/lib \
+	-L$(TRILINOS_DIR)/lib \
 	-L$(GSL_DIR)/lib \
 	-lgsl \
 	-L$(GRVY_DIR)/lib \
@@ -501,18 +497,14 @@ all:	ex_gsl
 clean:
 	rm -f *~
 	rm -f *.o
-	rm -f example
+	rm -f example_gsl
 
 ex_gsl: example_main.o example_likelihood.o example_qoi.o example_compute.o
-	$(CXX) example_main.o \
-	       example_likelihood.o \
-	       example_qoi.o \
-	       example_compute.o \
-	       -o example_gsl $(LIBS)
+	$(CXX) example_main.o example_likelihood.o example_qoi.o \
+	       example_compute.o -o example_gsl $(LIBS)
 
 %.o: %.C
 	$(CXX) $(INC_PATHS) $(CXXFLAGS) $<
-# END OF MAKEFILE
 \end{lstlisting}
-
-More documentation is provided in Chapter \ref{ch-appl-example}.
+% 
+% More documentation is provided in Chapter \ref{ch-appl-example}.
