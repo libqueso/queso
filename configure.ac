@@ -163,17 +163,11 @@ AC_CONFIG_FILES([
 	src/contrib/ANN/lib/Makefile
 	src/contrib/ANN/test/Makefile
 	src/core/inc/queso.h
-	examples/Makefile
-        examples/basic_interface/Makefile
+	examples/Makefile        
 	examples/infoTheoryProblem/Makefile
 	examples/infoTheoryProblem/src/Makefile
 	examples/statisticalInverseProblem/Makefile
 	examples/statisticalInverseProblem/src/Makefile	
-	examples/validationPyramid/Makefile
-	examples/validationPyramid/src/Makefile
-	examples/validationPyramid/src/physics_1/Makefile
-	examples/validationPyramid/src/physics_2/Makefile
-	examples/validationPyramid/src/physics_1_2/Makefile
 	examples/validationCycle/Makefile
 	examples/validationCycle/src/Makefile
 	examples/validationCycle2/Makefile
@@ -185,8 +179,8 @@ AC_CONFIG_FILES([
 	test/t02_sip_sfp/Makefile
 	test/t03_sequence/Makefile
 	test/t04_bimodal/Makefile
-        test/gsl_tests/Makefile
-  test/test_uqGaussianVectorRVClass/Makefile
+    test/gsl_tests/Makefile
+    test/test_uqGaussianVectorRVClass/Makefile
 	doxygen/Makefile
 ])
 
