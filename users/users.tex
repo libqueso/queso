@@ -12,12 +12,20 @@
 \usepackage{subfigure}
 \usepackage{wrapfig}
 
+
+\usepackage{titlesec}
+\titleformat{\section}{\LARGE\sffamily}{\thesection}{1em}{}
+\titleformat{\subsection}{\Large\sffamily}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\large\sffamily}{\thesubsubsection}{1em}{}
+% \usepackage{sectsty}
+% \sectionfont{\sffamily}
+
 % Sonny
-% \ChNameVar{\Large\sf}
+ %\ChNameVar{\Huge\sf}
 % \ChRuleWidth{0.5pt}
 % \ChNumVar{\Huge}
 % \ChNameUpperCase
-% \ChTitleVar{\Large\sf}
+ \ChTitleVar{\huge\sf}
 
 
 \usepackage{hyperref}                       %%% cria links no arquivo .pdf
@@ -122,8 +130,8 @@ aboveskip =10pt,
 \include{users_3_classes}
 
 \include{users_4_appl_example}
-
-%\include{users_5_interfaces}
+ 
+\include{users_5_interfaces}
 
 \begin{appendix}
 

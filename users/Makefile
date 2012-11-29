@@ -17,6 +17,7 @@ bibfiles := $(wildcard *.bib)
 styfiles := $(wildcard *.sty ../common/*.sty)
 clsfiles := $(wildcard *.cls ../common/*.cls)
 
+
 PDFLATEX = TEXINPUTS=../common:$$TEXINPUTS pdflatex -halt-on-error
 LATEX = TEXINPUTS=../common:$$TEXINPUTS latex -halt-on-error
 
@@ -38,7 +39,7 @@ clean: cleanlatex cleanfigs
 
 cleanlatex:
 	rm -f $(patsubst %.tex, %.aux, $(wildcard *.tex)) 
-	rm -f $(texroot).bbl $(texroot).blg $(texroot).log $(texroot).dvi $(texroot).nav $(texroot).out $(texroot).pdf $(texroot).snm $(texroot).toc $(texroot).vrb 
+	rm -f $(texroot).bbl $(texroot).blg $(texroot).log $(texroot).dvi $(texroot).nav $(texroot).out $(texroot).pdf $(texroot).snm $(texroot).toc $(texroot).vrb *.tex~ *.tex.backup
 	rm -f QUESO_users_manual.pdf McCheese.pdf McCheese.log McCheese.dvi McCheese.out McCheese.ps
 
 cleanfigs:

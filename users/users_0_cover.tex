@@ -1,56 +1,62 @@
 	%------------------------------------------------------------------
 \thispagestyle{empty}
-{\setlength{\parindent}{0cm}\bf{The QUESO Library}}\hfill $~$\\
+{\setlength{\parindent}{0cm}\bf{\sf The QUESO Library}}\hfill $~$\\
 \begin{picture}(8,0.1)
 \linethickness{3pt}
 \put(0,0.1){\line(1,0){6.6}}
 \end{picture}
-$~$\hfill User's Manual\\
-$~$\hfill Version 0.45.1\\
-$~$\hfill October 30, 2012\\
+
+\begin{flushright}
+\sf
+User's Manual\\
+Version 0.45.3\\
+October 30, 2012\\
+\end{flushright}
 
 \vfill
-$~$\\
-\begin{center}
-{\large\bf Quantification of Uncertainty for Estimation,}\\
-{\large\bf Simulation, and Optimization (QUESO)}\\
-\end{center}
-$~$\\
 
-%\vfill
-%$~$\\
-%{\bf TERMINOLOGY USED IN THIS MANUAL IS SUBJECT TO CHANGE}
+\begin{center}
+\begin{LARGE}
+\sf\bf 
+Quantification of Uncertainty for Estimation,\\
+Simulation, and Optimization (QUESO)\\
+\end{LARGE}
+\end{center}
+
 
 \vfill
 %$~$\\
 %{\bf Lead Developer:}\hfill \\
 %$~\hspace{10pt}$ {\em{Ernesto E. Prudencio}}\hfill\\ 
 $~$\\
-{\bf Contributors:}\hfill \\
-$~\hspace{10pt}$ {\em{Paul T. Bauman}}  \hfill \\
-$~\hspace{10pt}$ {\em{Sai Hung Cheung}} \hfill \\
-$~\hspace{10pt}$ {\em{Kemelli C. Estacio-Hiroms}} \hfill \\
-$~\hspace{10pt}$ {\em{Todd A. Oliver}}  \hfill \\
-$~\hspace{10pt}$ {\em{Ernesto E. Prudencio}} \hfill\\ 
-$~\hspace{10pt}$ {\em{Karl W. Schulz}}  \hfill \\
-$~\hspace{10pt}$ {\em{Rhys Ulerich}}    \hfill \\
+% {\bf Contributors:}\hfill \\
+% $~\hspace{10pt}$ {\em{Paul T. Bauman}}  \hfill \\
+% $~\hspace{10pt}$ {\em{Sai Hung Cheung}} \hfill \\
+% $~\hspace{10pt}$ {\em{Kemelli C. Estacio-Hiroms}} \hfill \\
+% $~\hspace{10pt}$ {\em{Todd A. Oliver}}  \hfill \\
+% $~\hspace{10pt}$ {\em{Ernesto E. Prudencio}} \hfill\\ 
+% $~\hspace{10pt}$ {\em{Karl W. Schulz}}  \hfill \\
+% $~\hspace{10pt}$ {\em{Rhys Ulerich}}    \hfill \\
+
+\noindent
+{\bf\sf Editors:}\hfill \\
+{\sf Kemelli C. Estacio-Hiroms}  \\
+{\sf Ernesto E. Prudencio} \\ 
+
 
 \vfill
-$~$\\
-\begin{center}
+
+\begin{minipage}[b]{0.20\linewidth}
+\includegraphics[height=4\baselineskip]{figs/ices_logo}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.80\linewidth}
+\small\sf
 Center for Predictive Engineering and Computational Sciences (PECOS) \hfill\\
 Institute for Computational and Engineering Sciences (ICES) \hfill\\
 The University of Texas at Austin\hfill\\
-\end{center}
-
-% %
-% \begin{figure}[!h]
-% \vspace*{-1cm}
-% {\includegraphics[scale=0.4]{figs/ices_logo.png}}\hfill
-% {\includegraphics[scale=0.1]{figs/grand_logo}}
-% \end{figure}
-%
-\vfill
+Austin, TX 78712, USA
+\end{minipage}
 $~$\\
 \begin{picture}(8,0.1)
 \linethickness{1.5pt}
@@ -106,19 +112,19 @@ $~$\\
 %------------------------------------------------------------------
 \addcontentsline{toc}{chapter}{Disclaimer}
 %\thispagestyle{empty}
-\centerline{\Large\bf Disclaimer \todo{(To be checked by Karl)}}
+\centerline{\Large\bf Disclaimer}
 $~$\\
     This document was prepared
     by The University of Texas at Austin.
-    neither the University of Texas
-    at Austin, nor any of its institutes, departments and employees, makes any warranty, express or implied,
+    Neither the University of Texas
+    at Austin, nor any of its institutes, departments and employees, make any warranty, express or implied,
     or assume any legal liability or responsibility for the accuracy, completeness, or
     usefulness of any information, apparatus, product, or process disclosed, or represent
-    that its use would not infringe privately owned rights. reference herein to any specific
+    that its use would not infringe privately owned rights. Reference herein to any specific
     commercial product, process, or service by trade name, trademark, manufacturer, or otherwise,
     does not necessarily constitute or imply its endorsement, recommendation, or favoring by
     The University of Texas at Austin or any of its institutes, departments and employees thereof.
-    the views and opinions expressed herein do not necessarily state or reflect
+    The views and opinions expressed herein do not necessarily state or reflect
     those of The University of Texas at Austin or any institute or department
     thereof.
 
@@ -161,13 +167,13 @@ The QUESO library, since its first version, has been publicly released as open s
 under the GNU General Public License and is available for free download world-wide.
 See http://www.gnu.org/licenses/gpl.html for more information on the GPL software use agreement.
 
-The QUESO development team currently consists of
-Paul T. Bauman,
-Sai Hung Cheung,
-Todd A. Oliver,
-Ernesto E. Prudencio,
-Karl W. Schulz, and
-Rhys Ulerich.\\
+% The QUESO development team currently consists of
+% Paul T. Bauman,
+% Sai Hung Cheung,
+% Todd A. Oliver,
+% Ernesto E. Prudencio,
+% Karl W. Schulz, and
+% Rhys Ulerich.\\
 
 {\bf Contact Information:}\\
 Ernesto E. Prudencio\\
@@ -183,45 +189,65 @@ $~$\\
 When referencing the QUESO library in a publication, please cite the following:
 \begin{verbatim}
 @incollection{QUESO,
-  author = "Ernesto Prudencio and Karl W. Schulz",
-  title = {The Parallel C++ Statistical Library `QUESO':
-           Quantification of Uncertainty for Estimation,
-           Simulation and Optimization},
+  author    = "Ernesto Prudencio and Karl W. Schulz",
+  title     = {The Parallel C++ Statistical Library `QUESO':
+               Quantification of Uncertainty for Estimation,
+               Simulation and Optimization},
   booktitle = {Euro-Par 2011: Parallel Processing Workshops},
-  series = {Lecture Notes in Computer Science},
+  series    = {Lecture Notes in Computer Science},
   publisher = {Springer Berlin / Heidelberg},
-  isbn = {978-3-642-29736-6},
-  keyword = {Computer Science},
-  pages = {398-407},
-  volume = {7155},
-  url = {http://dx.doi.org/10.1007/978-3-642-29737-3_44},
-  year = {2012}
+  isbn      = {978-3-642-29736-6},
+  keyword   = {Computer Science},
+  pages     = {398-407},
+  volume    = {7155},
+  url       = {http://dx.doi.org/10.1007/978-3-642-29737-3_44},
+  year      = {2012}
 }
 
 @Misc{queso-web-page,
-   Author = "Ernesto E. Prudencio and Paul T. Bauman and Sai Hung Cheung
-             and Todd A. Oliver and Karl W. Schulz and Rhys Ulerich",
-   Title  = "{T}he {QUESO} {L}ibrary: {Q}uantification of {U}ncertainty
-             for {E}stimation, {S}imulation and {O}ptimization",
-   Note   = "http://pecos.ices.utexas.edu",
-   Year   = "2008-2009"}
+   Author = {Ernesto E. Prudencio and Paul T. Bauman and Sai Hung Cheung
+             and Todd A. Oliver and Karl W. Schulz and Rhys Ulerich},
+   Title  = {{T}he {QUESO} {L}ibrary: {Q}uantification of {U}ncertainty
+             for {E}stimation, {S}imulation and {O}ptimization},
+   Note   = {http://pecos.ices.utexas.edu},
+   Year   = {2008-2009}
+}
 
 @TechReport{queso-user-ref,
-   Author      = "Ernesto E. Prudencio and Paul T. Bauman and Sai Hung Cheung
-                  and Todd A. Oliver and Karl W. Schulz and Rhys Ulerich",
-   Title       = "{T}he {QUESO} {L}ibrary, {U}ser's {M}anual, {ICES} {T}echnical
-                  {R}eport XXYYZZ",
-   Institution = "Center for Predictive Engineering and Computational Sciences
+   Author      = {Kemelli C. Estacio-Hiroms and Ernesto E. Prudencio},
+   Title       = {{T}he {QUESO} {L}ibrary, {U}ser's {M}anual, {ICES} {T}echnical
+                  {R}eport },
+   Institution = {Center for Predictive Engineering and Computational Sciences
                   (PECOS), at the Institute for Computational and Engineering
-                  Sciences (ICES), The University of Texas at Austin",
-   Year        = "2008-2009"}
+                  Sciences (ICES), The University of Texas at Austin},
+   Note        = {in preparation},
+   Year        = {2012"}
+}
 \end{verbatim}
+$~$\\
+$~$\\
+
+
+\centerline{\bf \Queso{} Developement Team}
+The QUESO development team currently consists of
+Paul T. Bauman,
+Sai Hung Cheung,
+Kemelli C. Estacio-Hiroms,
+Damon McDougall,
+Todd A. Oliver,
+Ernesto E. Prudencio (lead developer),
+Karl W. Schulz, and
+Rhys Ulerich.
+
 $~$\\
 $~$\\
 
 \centerline{\bf Acknowledgments}
 
-Portions of this material is based upon work supported by the Department of Energy [National Nuclear Security Administration] under Award Number [DE-FC52-08NA28615].
+This work has been supported by the United States Department of Energy,
+under the National Nuclear Security Administration Predictive Science Academic Alliance Program (PSAAP) award number [DE-FC52-08NA28615], and
+under the Office of Science Scientific Discovery through Advanced Computing (SciDAC) award number [DE-SC0006656].
+
 
 We would also like to thank
 James Martin,
