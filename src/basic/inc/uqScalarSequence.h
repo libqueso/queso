@@ -272,10 +272,14 @@ public:
         T            unifiedPositionsOfMaximum    (const uqScalarSequenceClass<T>& subCorrespondingScalarValues,
                                                    uqScalarSequenceClass<T>&       unifiedPositionsOfMaximum);
 
-        void         subWriteContents             (const std::string&              fileName,
+        void         subWriteContents             (unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   const std::string&              fileName,
                                                    const std::string&              fileType,
                                                    const std::set<unsigned int>&   allowedSubEnvIds) const;
-        void         subWriteContents             (std::ofstream&                  ofs,
+        void         subWriteContents             (unsigned int                    initialPos,
+                                                   unsigned int                    numPos,
+                                                   std::ofstream&                  ofs,
                                                    const std::string&              fileType) const;
         void         unifiedWriteContents         (const std::string&              fileName,
                                                    const std::string&              fileType) const;
@@ -525,24 +529,26 @@ uqScalarSequenceClass<T>::subPositionsOfMaximum(
                       "uqScalarSequenceClass<T>::subPositionsOfMaximum()",
                       "invalid input");
 
-  T maxValue = subCorrespondingScalarValues.subMaxPlain();
+  T subMaxValue = subCorrespondingScalarValues.subMaxPlain();
   unsigned int iMax = subCorrespondingScalarValues.sequenceSize();
 
-  unsigned int numPos = 0;
+  unsigned int subNumPos = 0;
   for (unsigned int i = 0; i < iMax; ++i) {
-    if (subCorrespondingScalarValues[i] == maxValue) {
-      numPos++;
+    if (subCorrespondingScalarValues[i] == subMaxValue) {
+      subNumPos++;
     }
   }
 
-  subPositionsOfMaximum.resizeSequence(numPos);
+  subPositionsOfMaximum.resizeSequence(subNumPos);
+  unsigned int j = 0;
   for (unsigned int i = 0; i < iMax; ++i) {
-    if (subCorrespondingScalarValues[i] == maxValue) {
-      subPositionsOfMaximum[i] = (*this)[i];
+    if (subCorrespondingScalarValues[i] == subMaxValue) {
+      subPositionsOfMaximum[j] = (*this)[i];
+      j++;
     }
   }
 
-  return maxValue;
+  return subMaxValue;
 }
 
 template <class T>
@@ -567,9 +573,11 @@ uqScalarSequenceClass<T>::unifiedPositionsOfMaximum( // rr0
   }
 
   unifiedPositionsOfMaximum.resizeSequence(numPos);
+  unsigned int j = 0;
   for (unsigned int i = 0; i < iMax; ++i) {
     if (subCorrespondingScalarValues[i] == maxValue) {
-      unifiedPositionsOfMaximum[i] = (*this)[i];
+      unifiedPositionsOfMaximum[j] = (*this)[i];
+      j++;
     }
   }
 
@@ -3804,6 +3812,8 @@ uqScalarSequenceClass<T>::unifiedGaussian1dKde(
 template <class T>
 void
 uqScalarSequenceClass<T>::subWriteContents(
+  unsigned int                  initialPos,
+  unsigned int                  numPos,
   const std::string&            fileName,
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
@@ -3820,8 +3830,11 @@ uqScalarSequenceClass<T>::subWriteContents(
                            false, // A 'true' causes problems when the user chooses (via options
                                   // in the input file) to use just one file for all outputs.
                            filePtrSet)) {
-    this->subWriteContents(filePtrSet,fileType);
-    this->closeFile(filePtrSet,fileType);
+    this->subWriteContents(initialPos,
+                           numPos,
+                           *filePtrSet.ofsVar,
+                           fileType);
+    m_env.closeFile(filePtrSet,fileType);
   }
 
   return;
@@ -3829,7 +3842,9 @@ uqScalarSequenceClass<T>::subWriteContents(
 
 template <class T>
 void
-uqScalarSequenceClass<T>::subWriteContents(
+uqScalarSequenceClass<T>::subWriteContents( // rr0
+  unsigned int       initialPos,
+  unsigned int       numPos,
   std::ofstream&     ofs,
   const std::string& fileType) const // "m or hdf"
 {

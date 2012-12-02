@@ -734,31 +734,45 @@ uqBaseVectorSequenceClass<V,M>::subPositionsOfMaximum(
   const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
   uqBaseVectorSequenceClass<V,M>&      subPositionsOfMaximum)
 {
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqBaseVectorSequenceClass<V,M>::subPositionsOfMaximum()"
+                            << ": subCorrespondingScalarValues,subSequenceSize() = " << subCorrespondingScalarValues.subSequenceSize()
+                            << ", this->subSequenceSize = " << this->subSequenceSize()
+                            << std::endl;
+  }
+
   UQ_FATAL_TEST_MACRO(subCorrespondingScalarValues.subSequenceSize() != this->subSequenceSize(),
                       m_env.worldRank(),
                       "uqBaseVectorSequenceClass<V,M>::subPositionsOfMaximum()",
                       "invalid input");
 
-  double maxValue = subCorrespondingScalarValues.subMaxPlain();
+  double subMaxValue = subCorrespondingScalarValues.subMaxPlain();
   unsigned int iMax = subCorrespondingScalarValues.subSequenceSize();
 
-  unsigned int numPos = 0;
+  unsigned int subNumPos = 0;
   for (unsigned int i = 0; i < iMax; ++i) {
-    if (subCorrespondingScalarValues[i] == maxValue) {
-      numPos++;
+    if (subCorrespondingScalarValues[i] == subMaxValue) {
+      subNumPos++;
     }
   }
 
   V tmpVec(this->vectorSpace().zeroVector());
-  subPositionsOfMaximum.resizeSequence(numPos);
+  subPositionsOfMaximum.resizeSequence(subNumPos);
+  unsigned int j = 0;
   for (unsigned int i = 0; i < iMax; ++i) {
-    if (subCorrespondingScalarValues[i] == maxValue) {
+    if (subCorrespondingScalarValues[i] == subMaxValue) {
       this->getPositionValues                (i,tmpVec);
-      subPositionsOfMaximum.setPositionValues(i,tmpVec);
+      subPositionsOfMaximum.setPositionValues(j,tmpVec);
+      j++;
     }
   }
 
-  return maxValue;
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqBaseVectorSequenceClass<V,M>::subPositionsOfMaximum()"
+                            << std::endl;
+  }
+
+  return subMaxValue;
 }
 
 template <class V, class M>
@@ -767,31 +781,148 @@ uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum( // rr0
   const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
   uqBaseVectorSequenceClass<V,M>&      unifiedPositionsOfMaximum)
 {
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()"
+                            << ": subCorrespondingScalarValues,subSequenceSize() = " << subCorrespondingScalarValues.subSequenceSize()
+                            << ", this->subSequenceSize = " << this->subSequenceSize()
+                            << std::endl;
+  }
+
   UQ_FATAL_TEST_MACRO(subCorrespondingScalarValues.subSequenceSize() != this->subSequenceSize(),
                       m_env.worldRank(),
                       "uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()",
                       "invalid input");
 
-  double maxValue = subCorrespondingScalarValues.subMaxPlain();
-  unsigned int iMax = subCorrespondingScalarValues.subSequenceSize();
+  double subMaxValue = subCorrespondingScalarValues.subMaxPlain();
 
-  unsigned int numPos = 0;
+  //******************************************************************
+  // Get overall max
+  //******************************************************************
+  double unifiedMaxValue;
+  std::vector<double> sendbufPos(1,0.);
+  for (unsigned int i = 0; i < sendbufPos.size(); ++i) {
+    sendbufPos[i] = subMaxValue;
+  }
+  m_env.inter0Comm().Allreduce((void *) &sendbufPos[0], (void *) &unifiedMaxValue, (int) sendbufPos.size(), uqRawValue_MPI_DOUBLE, uqRawValue_MPI_MAX,
+                               "uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()",
+                               "failed MPI.Allreduce() for max");
+
+  unsigned int iMax = subCorrespondingScalarValues.subSequenceSize();
+  int subNumPos = 0; // Yes, 'int', due to MPI to be used soon
   for (unsigned int i = 0; i < iMax; ++i) {
-    if (subCorrespondingScalarValues[i] == maxValue) {
-      numPos++;
+    if (subCorrespondingScalarValues[i] == unifiedMaxValue) {
+      subNumPos++;
     }
   }
 
   V tmpVec(this->vectorSpace().zeroVector());
-  unifiedPositionsOfMaximum.resizeSequence(numPos);
+  unifiedPositionsOfMaximum.resizeSequence(subNumPos);
+  unsigned int j = 0;
   for (unsigned int i = 0; i < iMax; ++i) {
-    if (subCorrespondingScalarValues[i] == maxValue) {
-      this->getPositionValues                (i,tmpVec);
+    if (subCorrespondingScalarValues[i] == unifiedMaxValue) {
+      this->getPositionValues                    (i,tmpVec);
+      unifiedPositionsOfMaximum.setPositionValues(j,tmpVec);
+      j++;
+    }
+  }
+
+  std::vector<int> auxBuf(1,0);
+  int unifiedNumPos = 0; // Yes, 'int', due to MPI to be used soon
+  auxBuf[0] = subNumPos;
+  m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &unifiedNumPos, (int) auxBuf.size(), uqRawValue_MPI_INT, uqRawValue_MPI_SUM,
+                               "uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()",
+                               "failed MPI.Allreduce() for sum");
+  unifiedPositionsOfMaximum.resizeSequence(unifiedNumPos);
+
+  //******************************************************************
+  // Use MPI_Gatherv for number of positions
+  //******************************************************************
+  unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
+
+  std::vector<int> recvcntsPos(Np,0); // '0' is NOT the correct value for recvcntsPos[0]
+  m_env.inter0Comm().Gather((void *) &subNumPos, 1, uqRawValue_MPI_INT, (void *) &recvcntsPos[0], (int) 1, uqRawValue_MPI_INT, 0,
+                            "uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()",
+                            "failed MPI.Gatherv()");
+  if (m_env.inter0Rank() == 0) {
+    UQ_FATAL_TEST_MACRO(recvcntsPos[0] != (int) subNumPos,
+                        m_env.worldRank(),
+                        "uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()",
+                        "failed MPI.Gather() result at proc 0 (recvcntsPos[0])");
+  }
+
+  std::vector<int> displsPos(Np,0);
+  for (unsigned int nodeId = 1; nodeId < Np; ++nodeId) { // Yes, from '1' on
+    displsPos[nodeId] = displsPos[nodeId-1] + recvcntsPos[nodeId-1];
+  }
+  if (m_env.inter0Rank() == 0) {
+    UQ_FATAL_TEST_MACRO(unifiedNumPos != (displsPos[Np - 1] + recvcntsPos[Np - 1]),
+                        m_env.worldRank(),
+                        "uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()",
+                        "failed MPI.Gather() result at proc 0 (unifiedNumPos)");
+  }
+
+  //******************************************************************
+  // Use MPI_Gatherv for number of doubles
+  //******************************************************************
+  unsigned int dimSize = m_vectorSpace.dimLocal();
+  int subNumDbs = subNumPos * dimSize; // Yes, 'int', due to MPI to be used soon
+  std::vector<int> recvcntsDbs(Np,0); // '0' is NOT the correct value for recvcntsDbs[0]
+  m_env.inter0Comm().Gather((void *) &subNumDbs, 1, uqRawValue_MPI_INT, (void *) &recvcntsDbs[0], (int) 1, uqRawValue_MPI_INT, 0,
+                            "uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()",
+                            "failed MPI.Gatherv()");
+  if (m_env.inter0Rank() == 0) {
+    UQ_FATAL_TEST_MACRO(recvcntsDbs[0] != (int) subNumDbs,
+                        m_env.worldRank(),
+                        "uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()",
+                        "failed MPI.Gather() result at proc 0 (recvcntsDbs[0])");
+  }
+
+  std::vector<int> displsDbs(Np,0);
+  for (unsigned int nodeId = 1; nodeId < Np; ++nodeId) { // Yes, from '1' on
+    displsDbs[nodeId] = displsDbs[nodeId-1] + recvcntsDbs[nodeId-1];
+  }
+  if (m_env.inter0Rank() == 0) {
+    UQ_FATAL_TEST_MACRO(((int) (unifiedNumPos*dimSize)) != (displsDbs[Np - 1] + recvcntsDbs[Np - 1]),
+                        m_env.worldRank(),
+                        "uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()",
+                        "failed MPI.Gather() result at proc 0 (unifiedNumPos*dimSize)");
+  }
+
+  //******************************************************************
+  // Prepare counters and buffers for gatherv of maximum positions
+  //******************************************************************
+  std::vector<double> sendbufDbs(subNumDbs,0.);
+  for (unsigned int i = 0; i < (unsigned int) subNumPos; ++i) {
+    unifiedPositionsOfMaximum.getPositionValues(i,tmpVec);
+    for (unsigned int j = 0; j < dimSize; ++j) {
+      sendbufDbs[i*dimSize + j] = tmpVec[j];
+    }
+  }
+
+  std::vector<double> recvbufDbs(unifiedNumPos * dimSize);
+
+  m_env.inter0Comm().Gatherv((void *) &sendbufDbs[0], (int) subNumDbs, uqRawValue_MPI_DOUBLE, (void *) &recvbufDbs[0], (int *) &recvcntsDbs[0], (int *) &displsDbs[0], uqRawValue_MPI_DOUBLE, 0,
+                             "uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()",
+                             "failed MPI.Gatherv()");
+
+  //******************************************************************
+  // Transfer data from 'recvbuf' to 'unifiedPositionsOfMaximum'
+  //******************************************************************
+  if (m_env.inter0Rank() == (int) 0) {
+    for (unsigned int i = 0; i < (unsigned int) unifiedNumPos; ++i) {
+      for (unsigned int j = 0; j < dimSize; ++j) {
+        tmpVec[j] = recvbufDbs[i*dimSize + j];
+      }
       unifiedPositionsOfMaximum.setPositionValues(i,tmpVec);
     }
   }
 
-  return maxValue;
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum()"
+                            << std::endl;
+  }
+
+  return unifiedMaxValue;
 }
 
 template <class V, class M>

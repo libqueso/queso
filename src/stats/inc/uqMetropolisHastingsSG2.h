@@ -177,6 +177,22 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                                 << std::endl;
       }
 
+      if (workingLogLikelihoodValues) {
+        workingLogLikelihoodValues->subWriteContents(m_optionsObj->m_ov.m_rawChainSize - m_numPositionsNotSubWritten,
+                                                     m_numPositionsNotSubWritten,
+                                                     m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
+                                                     m_optionsObj->m_ov.m_rawChainDataOutputFileType,
+                                                     m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
+      }
+
+      if (workingLogTargetValues) {
+        workingLogTargetValues->subWriteContents(m_optionsObj->m_ov.m_rawChainSize - m_numPositionsNotSubWritten,
+                                                 m_numPositionsNotSubWritten,
+                                                 m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
+                                                 m_optionsObj->m_ov.m_rawChainDataOutputFileType,
+                                                 m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
+      }
+
       m_numPositionsNotSubWritten = 0;
     }
 
@@ -252,7 +268,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
 
     workingChain.unifiedWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName,
                                       m_optionsObj->m_ov.m_rawChainDataOutputFileType);
-
     if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
@@ -262,6 +277,16 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                               << "."                                                       << m_optionsObj->m_ov.m_rawChainDataOutputFileType
                               << "', subId = "                                             << m_env.subId()
                               << std::endl;
+    }
+
+    if (workingLogLikelihoodValues) {
+      workingLogLikelihoodValues->unifiedWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
+                                                       m_optionsObj->m_ov.m_rawChainDataOutputFileType);
+    }
+
+    if (workingLogTargetValues) {
+      workingLogTargetValues->unifiedWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
+                                                   m_optionsObj->m_ov.m_rawChainDataOutputFileType);
     }
 
     // Compute raw unified MLE
@@ -384,6 +409,22 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                                 << "' for filtered chain "      << workingChain.name()
                                 << std::endl;
       }
+
+      if (workingLogLikelihoodValues) {
+        workingLogLikelihoodValues->subWriteContents(0,
+                                                     workingChain.subSequenceSize(),
+                                                     m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_likelihood",
+                                                     m_optionsObj->m_ov.m_filteredChainDataOutputFileType,
+                                                     m_optionsObj->m_ov.m_filteredChainDataOutputAllowedSet);
+      }
+
+      if (workingLogTargetValues) {
+        workingLogTargetValues->subWriteContents(0,
+                                                 workingChain.subSequenceSize(),
+                                                 m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_target",
+                                                 m_optionsObj->m_ov.m_filteredChainDataOutputFileType,
+                                                 m_optionsObj->m_ov.m_filteredChainDataOutputAllowedSet);
+      }
     }
 
     // Compute sub filtered MLE and sub filtered MAP
@@ -391,7 +432,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
     // Take "unified" care of filtered chain
     if ((m_optionsObj->m_ov.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
         (m_optionsObj->m_ov.m_totallyMute == false                                            )) {
-      workingChain.unifiedWriteContents(m_optionsObj->m_ov.m_filteredChainDataOutputFileName,m_optionsObj->m_ov.m_filteredChainDataOutputFileType);
+      workingChain.unifiedWriteContents(m_optionsObj->m_ov.m_filteredChainDataOutputFileName,
+                                        m_optionsObj->m_ov.m_filteredChainDataOutputFileType);
       if ((m_env.subDisplayFile()                   ) &&
           (m_optionsObj->m_ov.m_totallyMute == false)) {
         *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
@@ -399,6 +441,16 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                                 << ": closed unified output file '" << m_optionsObj->m_ov.m_filteredChainDataOutputFileName
                                 << "' for filtered chain "          << workingChain.name()
                                 << std::endl;
+      }
+
+      if (workingLogLikelihoodValues) {
+        workingLogLikelihoodValues->unifiedWriteContents(m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_likelihood",
+                                                         m_optionsObj->m_ov.m_filteredChainDataOutputFileType);
+      }
+
+      if (workingLogTargetValues) {
+        workingLogTargetValues->unifiedWriteContents(m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_target",
+                                                     m_optionsObj->m_ov.m_filteredChainDataOutputFileType);
       }
     }
 
@@ -584,6 +636,23 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                               << ", " << 0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod << " <= pos <= " << 0
                               << std::endl;
     }
+
+    if (workingLogLikelihoodValues) {
+      workingLogLikelihoodValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
+                                                   m_optionsObj->m_ov.m_rawChainDataOutputPeriod, 
+                                                   m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
+                                                   m_optionsObj->m_ov.m_rawChainDataOutputFileType,
+                                                   m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
+    }
+
+    if (workingLogTargetValues) {
+      workingLogTargetValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
+                                               m_optionsObj->m_ov.m_rawChainDataOutputPeriod, 
+                                               m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
+                                               m_optionsObj->m_ov.m_rawChainDataOutputFileType,
+                                               m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
+    }
+
     m_numPositionsNotSubWritten = 0;
   }
 
@@ -999,6 +1068,23 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                 << ", " << positionId + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod << " <= pos <= " << positionId
                                 << std::endl;
       }
+
+      if (workingLogLikelihoodValues) {
+        workingLogLikelihoodValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
+                                                     m_optionsObj->m_ov.m_rawChainDataOutputPeriod, 
+                                                     m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
+                                                     m_optionsObj->m_ov.m_rawChainDataOutputFileType,
+                                                     m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
+      }
+
+      if (workingLogTargetValues) {
+        workingLogTargetValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
+                                                 m_optionsObj->m_ov.m_rawChainDataOutputPeriod, 
+                                                 m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
+                                                 m_optionsObj->m_ov.m_rawChainDataOutputFileType,
+                                                 m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
+      }
+
       m_numPositionsNotSubWritten = 0;
     }
 

@@ -360,7 +360,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
                                                               initialProposalCovMatrix);
 
   m_mhSeqGenerator->generateSequence(*m_chain,
-                                     NULL,//m_logLikelihoodValues,
+                                     NULL, //m_logLikelihoodValues,
                                      NULL);//m_logTargetValues);
 
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
