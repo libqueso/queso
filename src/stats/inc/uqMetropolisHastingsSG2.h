@@ -49,7 +49,7 @@
 /*! -------------------------------------------------------------
 */
 /*! Acknowledgments: this operation 'generateSequence()' begun on July of 2008 as a translation
-    of the core routine at the MCMC toolbox for MATLAB, available at www.helsinki.fi/~mjlaine/mcmc/.
+v    of the core routine at the MCMC toolbox for MATLAB, available at www.helsinki.fi/~mjlaine/mcmc/.
     Indeed, the example available in examples/statisticalInverseProblem1/tests/test_2009_02_03/ is
     related to the 'normal example' in the toolbox.
     Over time, though:
@@ -140,11 +140,11 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   }
 
 
-  //****************************************************
+  //****************************************************************************************
   // Eventually:
   // --> write raw chain
   // --> compute statistics on it
-  //****************************************************
+  //****************************************************************************************
   if ((m_optionsObj->m_ov.m_rawChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
       (m_optionsObj->m_ov.m_totallyMute == false                                       )) {
 
@@ -154,7 +154,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
                               << ", prefix = "                                         << m_optionsObj->m_prefix
                               << ", raw chain name = "                                 << workingChain.name()
-                              << ": about to try to write sub raw chain output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
+                              << ": about to try to write raw sub chain output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
                               << "."                                                   << m_optionsObj->m_ov.m_rawChainDataOutputFileType
                               << "', subId = "                                         << m_env.subId()
                               << ", subenv is allowed to write  1/true or 0/false) = " << (m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet.end())
@@ -176,7 +176,54 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                                 << ", " << m_optionsObj->m_ov.m_rawChainSize - m_numPositionsNotSubWritten << " <= pos <= " << m_optionsObj->m_ov.m_rawChainSize - 1
                                 << std::endl;
       }
+
       m_numPositionsNotSubWritten = 0;
+    }
+
+    // Compute raw sub MLE
+    if (workingLogLikelihoodValues) {
+      uqSequenceOfVectorsClass<P_V,P_M> rawSubMLEpositions(m_vectorSpace,0,m_optionsObj->m_prefix+"rawSubMLEseq");
+      double rawSubMLEvalue = workingChain.subPositionsOfMaximum(*workingLogLikelihoodValues,
+                                                                 rawSubMLEpositions);
+      UQ_FATAL_TEST_MACRO(rawSubMLEpositions.subSequenceSize() == 0,
+                          m_env.worldRank(),
+                          "uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",
+                          "rawSubMLEpositions.subSequenceSize() = 0");
+
+      if ((m_env.subDisplayFile()                   ) &&
+          (m_optionsObj->m_ov.m_totallyMute == false)) {
+        P_V tmpVec(m_vectorSpace.zeroVector());
+        rawSubMLEpositions.getPositionValues(0,tmpVec);
+        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
+                                << ": just computed MLE"
+                                << ", rawSubMLEvalue = "                       << rawSubMLEvalue
+                                << ", rawSubMLEpositions.subSequenceSize() = " << rawSubMLEpositions.subSequenceSize()
+                                << ", rawSubMLEpositions[0] = "                << tmpVec
+                                << std::endl;
+      }
+    }
+
+    // Compute raw sub MAP
+    if (workingLogTargetValues) {
+      uqSequenceOfVectorsClass<P_V,P_M> rawSubMAPpositions(m_vectorSpace,0,m_optionsObj->m_prefix+"rawSubMAPseq");
+      double rawSubMAPvalue = workingChain.subPositionsOfMaximum(*workingLogTargetValues,
+                                                                 rawSubMAPpositions);
+      UQ_FATAL_TEST_MACRO(rawSubMAPpositions.subSequenceSize() == 0,
+                          m_env.worldRank(),
+                          "uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",
+                          "rawSubMAPpositions.subSequenceSize() = 0");
+
+      if ((m_env.subDisplayFile()                   ) &&
+          (m_optionsObj->m_ov.m_totallyMute == false)) {
+        P_V tmpVec(m_vectorSpace.zeroVector());
+        rawSubMAPpositions.getPositionValues(0,tmpVec);
+        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
+                                << ": just computed MAP"
+                                << ", rawSubMAPvalue = "                       << rawSubMAPvalue
+                                << ", rawSubMAPpositions.subSequenceSize() = " << rawSubMAPpositions.subSequenceSize()
+                                << ", rawSubMAPpositions[0] = "                << tmpVec
+                                << std::endl;
+      }
     }
 
     if ((m_env.subDisplayFile()                   ) &&
@@ -184,7 +231,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
                               << ", prefix = "                                         << m_optionsObj->m_prefix
                               << ", raw chain name = "                                 << workingChain.name()
-                              << ": returned from writing sub raw chain output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
+                              << ": returned from writing raw sub chain output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
                               << "."                                                   << m_optionsObj->m_ov.m_rawChainDataOutputFileType
                               << "', subId = "                                         << m_env.subId()
                               << std::endl;
@@ -196,7 +243,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
                               << ", prefix = "                                             << m_optionsObj->m_prefix
                               << ", raw chain name = "                                     << workingChain.name()
-                              << ": about to try to write unified raw chain output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
+                              << ": about to try to write raw unified chain output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
                               << "."                                                       << m_optionsObj->m_ov.m_rawChainDataOutputFileType
                               << "', subId = "                                             << m_env.subId()
                               << "..."
@@ -211,10 +258,57 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
       *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
                               << ", prefix = "                                             << m_optionsObj->m_prefix
                               << ", raw chain name = "                                     << workingChain.name()
-                              << ": returned from writing unified raw chain output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
+                              << ": returned from writing raw unified chain output file '" << m_optionsObj->m_ov.m_rawChainDataOutputFileName
                               << "."                                                       << m_optionsObj->m_ov.m_rawChainDataOutputFileType
                               << "', subId = "                                             << m_env.subId()
                               << std::endl;
+    }
+
+    // Compute raw unified MLE
+    if (workingLogLikelihoodValues) {
+      uqSequenceOfVectorsClass<P_V,P_M> rawUnifiedMLEpositions(m_vectorSpace,0,m_optionsObj->m_prefix+"rawUnifiedMLEseq");
+      double rawUnifiedMLEvalue = workingChain.unifiedPositionsOfMaximum(*workingLogLikelihoodValues,
+                                                                         rawUnifiedMLEpositions);
+      UQ_FATAL_TEST_MACRO(rawUnifiedMLEpositions.subSequenceSize() == 0,
+                          m_env.worldRank(),
+                          "uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",
+                          "rawUnifiedMLEpositions.subSequenceSize() = 0");
+
+      if ((m_env.subDisplayFile()                   ) &&
+          (m_optionsObj->m_ov.m_totallyMute == false)) {
+        P_V tmpVec(m_vectorSpace.zeroVector());
+        rawUnifiedMLEpositions.getPositionValues(0,tmpVec);
+        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
+                                << ": just computed MLE"
+                                << ", rawUnifiedMLEvalue = "                       << rawUnifiedMLEvalue
+                                << ", rawUnifiedMLEpositions.subSequenceSize() = " << rawUnifiedMLEpositions.subSequenceSize()
+                                << ", rawUnifiedMLEpositions[0] = "                << tmpVec
+                                << std::endl;
+      }
+    }
+
+    // Compute raw unified MAP
+    if (workingLogTargetValues) {
+      uqSequenceOfVectorsClass<P_V,P_M> rawUnifiedMAPpositions(m_vectorSpace,0,m_optionsObj->m_prefix+"rawUnifiedMAPseq");
+      double rawUnifiedMAPvalue = workingChain.unifiedPositionsOfMaximum(*workingLogTargetValues,
+                                                                         rawUnifiedMAPpositions);
+
+      UQ_FATAL_TEST_MACRO(rawUnifiedMAPpositions.subSequenceSize() == 0,
+                          m_env.worldRank(),
+                          "uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()",
+                          "rawUnifiedMAPpositions.subSequenceSize() = 0");
+
+      if ((m_env.subDisplayFile()                   ) &&
+          (m_optionsObj->m_ov.m_totallyMute == false)) {
+        P_V tmpVec(m_vectorSpace.zeroVector());
+        rawUnifiedMAPpositions.getPositionValues(0,tmpVec);
+        *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence()"
+                                << ": just computed MAP"
+                                << ", rawUnifiedMAPvalue = "                       << rawUnifiedMAPvalue
+                                << ", rawUnifiedMAPpositions.subSequenceSize() = " << rawUnifiedMAPpositions.subSequenceSize()
+                                << ", rawUnifiedMAPpositions[0] = "                << tmpVec
+                                << std::endl;
+      }
     }
   }
 
@@ -236,26 +330,13 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                                    genericFilePtrSet.ofsVar);
   }
 #endif
-  // Compute MLE and MAP
-  // rr0
-#if 0
-  if (workingLogLikelihoodValues) {
-    uqSequenceOfVectorsClass<P_V,P_M> subPositionsOfMaximum(m_vectorSpace,0,m_optionsObj->m_prefix+"subMLEseq");
-    workingChain.subPositionsOfMaximum(*workingLogLikelihoodValues,
-                                       subPositionsOfMaximum);
 
-    uqSequenceOfVectorsClass<P_V,P_M> unifiedPositionsOfMaximum(m_vectorSpace,0,m_optionsObj->m_prefix+"unifiedMLEseq");
-    workingChain.unifiedPositionsOfMaximum(*workingLogLikelihoodValues,
-                                           unifiedPositionsOfMaximum);
-  }
-#endif
-
-  //****************************************************
+  //****************************************************************************************
   // Eventually:
   // --> filter the raw chain
   // --> write it
   // --> compute statistics on it
-  //****************************************************
+  //****************************************************************************************
   if (m_optionsObj->m_ov.m_filteredChainGenerate) {
     // Compute filter parameters
     unsigned int filterInitialPos = (unsigned int) (m_optionsObj->m_ov.m_filteredChainDiscardedPortion * (double) workingChain.subSequenceSize());
@@ -305,6 +386,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
       }
     }
 
+    // Compute sub filtered MLE and sub filtered MAP
+
     // Take "unified" care of filtered chain
     if ((m_optionsObj->m_ov.m_filteredChainDataOutputFileName != UQ_MH_SG_FILENAME_FOR_NO_FILE) &&
         (m_optionsObj->m_ov.m_totallyMute == false                                            )) {
@@ -319,6 +402,8 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
       }
     }
 
+    // Compute unified filtered MLE and unified filtered MAP
+
     // Compute statistics
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     if (m_optionsObj->m_ov.m_filteredChainComputeStats) {
@@ -326,8 +411,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                                      genericFilePtrSet.ofsVar);
     }
 #endif
-   // Compute MLE and MAP
-   // rr0
   }
 
   //****************************************************

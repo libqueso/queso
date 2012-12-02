@@ -267,9 +267,9 @@ public:
                                                    unsigned int                    srcInitialPos,
                                                    unsigned int                    srcNumPos); /* This routine deletes all stored computed vectors */
 
-        void         subPositionsOfMaximum        (const uqScalarSequenceClass<T>& subCorrespondingScalarValues,
+        T            subPositionsOfMaximum        (const uqScalarSequenceClass<T>& subCorrespondingScalarValues,
                                                    uqScalarSequenceClass<T>&       subPositionsOfMaximum);
-        void         unifiedPositionsOfMaximum    (const uqScalarSequenceClass<T>& subCorrespondingScalarValues,
+        T            unifiedPositionsOfMaximum    (const uqScalarSequenceClass<T>& subCorrespondingScalarValues,
                                                    uqScalarSequenceClass<T>&       unifiedPositionsOfMaximum);
 
         void         subWriteContents             (const std::string&              fileName,
@@ -515,7 +515,7 @@ uqScalarSequenceClass<T>::append(
 }
 
 template <class T>
-void
+T
 uqScalarSequenceClass<T>::subPositionsOfMaximum(
   const uqScalarSequenceClass<T>& subCorrespondingScalarValues,
   uqScalarSequenceClass<T>&       subPositionsOfMaximum)
@@ -542,11 +542,11 @@ uqScalarSequenceClass<T>::subPositionsOfMaximum(
     }
   }
 
-  return;
+  return maxValue;
 }
 
 template <class T>
-void
+T
 uqScalarSequenceClass<T>::unifiedPositionsOfMaximum( // rr0
   const uqScalarSequenceClass<T>& subCorrespondingScalarValues,
   uqScalarSequenceClass<T>&       unifiedPositionsOfMaximum)
@@ -573,7 +573,7 @@ uqScalarSequenceClass<T>::unifiedPositionsOfMaximum( // rr0
     }
   }
 
-  return;
+  return maxValue;
 }
 
 template <class T>

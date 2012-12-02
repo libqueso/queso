@@ -75,9 +75,9 @@ public:
                                                                        unsigned int                    initialPos,
                                                                        unsigned int                    numPos);             /* This routine deletes all stored computed vectors */
 
-           void                     subPositionsOfMaximum       (const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
+           double                   subPositionsOfMaximum       (const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
                                                                  uqBaseVectorSequenceClass<V,M>&      subPositionsOfMaximum);
-           void                     unifiedPositionsOfMaximum   (const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
+           double                   unifiedPositionsOfMaximum   (const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
                                                                  uqBaseVectorSequenceClass<V,M>&      unifiedPositionsOfMaximum);
 
   virtual  void                     resizeSequence              (unsigned int newSubSequenceSize) = 0;                      /* This routine deletes all stored computed vectors */
@@ -729,7 +729,7 @@ uqBaseVectorSequenceClass<V,M>::append(
 }
 
 template <class V, class M>
-void
+double
 uqBaseVectorSequenceClass<V,M>::subPositionsOfMaximum(
   const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
   uqBaseVectorSequenceClass<V,M>&      subPositionsOfMaximum)
@@ -758,11 +758,11 @@ uqBaseVectorSequenceClass<V,M>::subPositionsOfMaximum(
     }
   }
 
-  return;
+  return maxValue;
 }
 
 template <class V, class M>
-void
+double
 uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum( // rr0
   const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
   uqBaseVectorSequenceClass<V,M>&      unifiedPositionsOfMaximum)
@@ -791,7 +791,7 @@ uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum( // rr0
     }
   }
 
-  return;
+  return maxValue;
 }
 
 template <class V, class M>

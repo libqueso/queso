@@ -140,6 +140,8 @@ private:
         uqMetropolisHastingsSGClass<P_V,P_M>*   m_mhSeqGenerator;
         uqMLSamplingClass          <P_V,P_M>*   m_mlSampler;
         uqBaseVectorSequenceClass  <P_V,P_M>*   m_chain;
+        uqScalarSequenceClass      <double>*    m_logLikelihoodValues;
+        uqScalarSequenceClass      <double>*    m_logTargetValues;
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         uqArrayOfOneDGridsClass    <P_V,P_M>*   m_subMdfGrids;
         uqArrayOfOneDTablesClass   <P_V,P_M>*   m_subMdfValues;
@@ -189,6 +191,8 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   m_mhSeqGenerator          (NULL),
   m_mlSampler               (NULL),
   m_chain                   (NULL),
+  m_logLikelihoodValues     (NULL),
+  m_logTargetValues         (NULL),
   m_alternativeOptionsValues(),
   m_optionsObj              (NULL)
 {
@@ -241,6 +245,14 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
   if (m_chain) {
     m_chain->clear();
     delete m_chain;
+  }
+  if (m_logLikelihoodValues) {
+    m_logLikelihoodValues->clear();
+    delete m_logLikelihoodValues;
+  }
+  if (m_logTargetValues) {
+    m_logTargetValues->clear();
+    delete m_logTargetValues;
   }
   if (m_mlSampler       ) delete m_mlSampler;
   if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
@@ -338,17 +350,21 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
   m_postRv.setPdf(*m_solutionPdf);
 
   // Compute output realizer: Metropolis-Hastings approach
-  m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
+  m_chain               = new uqSequenceOfVectorsClass<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
+  m_logLikelihoodValues = new uqScalarSequenceClass<double>    (m_env,0,m_optionsObj->m_prefix+"logLike"  );
+  m_logTargetValues     = new uqScalarSequenceClass<double>    (m_env,0,m_optionsObj->m_prefix+"logTarget");
   m_mhSeqGenerator = new uqMetropolisHastingsSGClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(), // dakota
                                                               alternativeOptionsValues,
                                                               m_postRv,
                                                               initialValues,
                                                               initialProposalCovMatrix);
 
-  m_mhSeqGenerator->generateSequence(*m_chain,NULL,NULL);
+  m_mhSeqGenerator->generateSequence(*m_chain,
+                                     NULL,//m_logLikelihoodValues,
+                                     NULL);//m_logTargetValues);
 
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
-                                                                   *m_chain);
+                                                                    *m_chain);
 
   m_postRv.setRealizer(*m_solutionRealizer);
 
@@ -465,7 +481,9 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
   //                                           initialValues,
   //                                           initialProposalCovMatrix);
 
-  m_mlSampler->generateSequence(*m_chain,NULL,NULL);
+  m_mlSampler->generateSequence(*m_chain,
+                                NULL,
+                                NULL);
 
   m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                                     *m_chain);
