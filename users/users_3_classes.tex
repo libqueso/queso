@@ -1,4 +1,4 @@
-\chapter{C++ Classes in the Library (Incomplete)}\label{ch-classes}
+\chapter{C++ Classes in the Library}\label{ch-classes}
 \thispagestyle{headings}
 \markboth{Chapter \ref{ch-classes}: C++ Classes in the Library}{Chapter \ref{ch-classes}: C++ Classes in the Library}
 
@@ -16,197 +16,290 @@
 
 \section{Core Classes}
 
-There are four core classes:
-\begin{itemize}
-\item environment and environment options (Figures \ref{fig-env-class} and \ref{fig-env-options-class}, pages \pageref{fig-env-class} and \pageref{fig-env-options-class}),
-\item vector (Figure \ref{fig-vector-class}, page \pageref{fig-vector-class}),
-\item matrix (Figure \ref{fig-matrix-class}, page \pageref{fig-matrix-class}).
-\end{itemize}
 
-\clearpage
-\subsection{Environment (and Options)}
 
-\begin{figure}[h!]
-\begin{center}
+Classes in QUESO can be divided in four main groups:
+\begin{description}
+\item[ core:] environment (and options), vector, matrix;
+
+\item[ templated basic:] vector sets (and subsets, vector spaces),  scalar function, vector function, scalar sequence, vector sequence;
+
+The templated basic classes are necessary for the definition and description of other entities, such as RVs, Bayesian solutions of IPs, sampling algorithms and chains.
+
+%\item Vector sets, subsets and spaces (see Figure \ref{fig-vector-space-subset-classes}),
+%\item Scalar function (see Figure \ref{fig-scalar-function-class}),
+%\item Vector function (see Figure \ref{fig-vector-function-class}),
+%\item Scalar sequence (see Figure \ref{fig-scalar-sequence-class}), and
+%\item Vector sequence (see Figure \ref{fig-vector-sequence-class}).
+
+\item[ templated statistical:] vector realizer, vector RV, statistical IP (and options), MH solver (and options), statistical FP (and options), MC solver (and options), sequence statistical options;
+%\item Vector RV (concatenation)
+%\item Statistical IP (and options)
+%\item Metropolis Hastings solver (and options)
+%\item Statistical FP (and options)
+%\item MC solver (and options)
+%\item Sequence statistical options
+\item[ miscellaneous:] C and FORTRAN interfaces.
+\end{description}
+
+
+
+\subsection{Environment Class (and Options)}
+
+%
+The Environment class sets up the environment underlying the use of the QUESO library by an executable.
+The constructor of the environment class requires a communicator, the name of an options input file,
+and the eventual prefix of the environment in order for the proper options to be read (multiple environments can coexist, as explained further below).
+The environment class has four primary tasks:
+\begin{enumerate}
+\item assign rank numbers, other than the world rank, to nodes participating in a parallel job,
+\item provide MPI communicators for generating a sequence of vectors in a distributed way,
+\item provide functionality to read options from the options input file (whose name is passed in the constructor of this environment class), and
+\item open output files for messages that would otherwise be written to the screen (one output file per allowed rank is opened and allowed ranks can be specified through the options input file).
+ 
+\end{enumerate}
+
+
+
+Let $S \geqslant 1$ be the number of problems a QUESO environment will be handling at the same time, in parallel.
+$S$ has default value of $1$ and is an option read by QUESO from the input file provided by the user.
+The QUESO environment class manages five types of communicators, referred to as:
+\begin{description}
+\item[{\it world} :] MPI\_WORLD\_COMM;
+\item[{\it full} :] communicator passed to the environment constructor, of size $F$ and usually equal to the world communicator;
+\item[{\it sub} :] communicator of size $F/S$ that contains the number of MPI nodes necessary to solve a statistical IP or a statistical FP;
+\item[{\it self} :] MPI\_SELF\_COMM, of size 1; and
+\item[{\it inter0} :] communicator of size $S$ formed by all MPI nodes that have subrank 0 in their respective subcommunicators.
+\end{description}
+
+
+A {\it subenvironment} in QUESO is the smallest collection of processors necessary for the proper run of the model code.
+An {\it environment} in QUESO is the collection of all subenvironments, if there is more than one subenvironment.
+So, for instance, if the model code requires 16 processors to run and the user decides to run 64 Markov chains in parallel,
+then the environment will consist of a total of $F=1024$ processors and $S=64$ subenvironments, each subenvironment with $F/S=16$ processors.
+Any given computing node in a QUESO run has potentially five different ranks.
+Each subenvironment is assigned a subid varying from $0$ (zero) to $S-1$, and is able to handle a statistical IP and/or a statistical FP.
+That is, each subenvironment is able to handle a {\it sub} Markov chain (a sequence) of vectors and/or a {\it sub} MC sequence of output vectors.
+The {\it sub} sequences form an unified sequence in a distributed way.
+QUESO takes care of the unification of results for the application programming and for output files.
+
+
+Figure \ref{fig-env-class} depicts class diagram for the environment class; and Figure  \ref{fig-env-options-class} displays environment options class.%, pages \pageref{fig-env-class} and \pageref{fig-env-options-class}),
+
+\begin{figure}[!hp]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqEnvironment}
-%\includegraphics[scale=0.55,clip=true]{figs/uqEnvironment}
-\end{center}
-\caption{
-The class diagram for the environment class.
-}
+\vspace*{-8pt}
+\caption{The class diagram for the environment class.}
 \label{fig-env-class}
 \end{figure}
 
-\begin{figure}[h!]
-\begin{center}
+\begin{figure}[hp]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqEnvironmentOptions}
-\end{center}
-\caption{
-The environment options class.
-}
+\vspace*{-8pt}
+\caption{The environment options class.}
 \label{fig-env-options-class}
 \end{figure}
 
+\subsubsection{Input File Options}
+The input file options for a QUESO environment is presented in Table \ref{tab-env-options}.
 \begin{table}[!h]
 \begin{center}
-\begin{tabular}{|l|c|c|}
-\hline
-\multicolumn{1}{|c|}{Option}                      & Default & Description \\
-\multicolumn{1}{|c|}{Name}                        & Value   &             \\
-\hline
-\hline
+\caption{Input file options for a QUESO environment.}\label{tab-env-options}
+\ttfamily
+\begin{tabular}{l|c|c}
+\toprule
+\rmfamily Option name                      & \rmfamily Default  value &\rmfamily Description \\
+\midrule\midrule
+
 $\langle$PREFIX$\rangle$env\_help                 &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$env\_numSubEnvironments   &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$env\_subDisplayFileName   &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$env\_subDisplayAllowAll   &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$env\_subDisplayAllowedSet &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$env\_displayVerbosity     &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$env\_syncVerbosity        &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$env\_seed                 &         &             \\
-\hline
+\bottomrule
 \end{tabular}
 \end{center}
-\caption{
-Input file options for a QUESO environment.
-}
-\label{tab-env-options}
 \end{table}
 
-\clearpage
+
+
+%\clearpage
 \subsection{Vector}
 
-\begin{figure}[h!]
-\centerline{
+
+The Vector class handles handles all the vector operations carried out in QUESO, and its class diagram is presented in Figure \ref{fig-vector-class}.
+Vector class has two derived classes: \verb+uqGslVectorClass+ and \verb+uqTrilinosVectorClass+. \verb+uqGslVectorClass+ is based on the GSL vector structure; whereas \verb+uqTrilinosVectorClass+ is based on Trilinos Epetra vector structure.
+
+
+\begin{figure}[!hpt]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqVector}
-}
-\caption{
-The class diagram for the vector class.
-}
+\vspace*{-8pt}
+\caption{ The class diagram for the vector class.}
 \label{fig-vector-class}
 \end{figure}
 
-\clearpage
+
+
 \subsection{Matrix}
 
-\begin{figure}[h!]
-\centerline{
+
+The Matrix class handles handles all the matrix operations carried out in QUESO, and its class diagram is presented in Figure \ref{fig-matrix-class}. Analogously to the Vector class case,
+Matrix class has two derived classes: \verb+uqGslMatrixClass+ and \verb+uqTrilinosMatrixClass+. \verb+uqGslMatrixClass+ is based on the GSL matrix structure; whereas \verb+uqTrilinosMatrixClass+ is based on Trilinos Epetra matrix structure.
+
+
+\begin{figure}[!hp]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqMatrix}
-}
-\caption{
-The class diagram for the matrix class.
-}
+\vspace*{-8pt}
+\caption{The class diagram for the matrix class.}
 \label{fig-matrix-class}
 \end{figure}
 
-\clearpage
-\section{Miscellaneous Classes and Routines}
 
-\clearpage
+%\clearpage
 \section{Templated Basic Classes}
+The classes in this group are: Vector sets, subsets and spaces (Section \ref{sec:vector-set-space}), scalar and vector function classes (Section \ref{sec:scalar-vector-function}), and scalar and vector sequences (Section \ref{sec:scalar-vector-sequence}).
 
-The classes in this group are:
-\begin{itemize}
-\item Vector sets, subsets and spaces (see Figure \ref{fig-vector-space-subset-classes}),
-\item Scalar function (see Figure \ref{fig-scalar-function-class}),
-\item Vector function (see Figure \ref{fig-vector-function-class}),
-\item Scalar sequence (see Figure \ref{fig-scalar-sequence-class}), and
-\item Vector sequence (see Figure \ref{fig-vector-sequence-class}).
-\end{itemize}
 These classes constitute the core entities necessary for the formal
 mathematical definition and description of other entities, such as
 random variables, Bayesian solutions of inverse problems, sampling algorithms and chains.
 
-\clearpage
-\subsection{Vector Subset and Vector Space}
+%\clearpage
 
-\begin{figure}[h!]
-\centerline{
+
+\subsection{Vector Set  and Vector Space Classes}\label{sec:vector-set-space}
+%
+The vector set class is fundamental for the proper handling of many mathematical entities.
+Indeed, the definition of a scalar function such as $\pi:\mathbf{B}\subset\mathbb{R}^n\rightarrow\mathbb{R}$ requires the
+specification of the domain $\mathbf{B}$, which is a {\it subset} of the {\it vector space} $\mathbb{R}^n$, which is itself a {\it set}.
+The relationship among the classes set, subset and vector space is sketched in Figure \ref{fig-vector-space-subset-classes}.
+
+An attribute of the {\it subset} class is the {\it vector space} which it belongs to, and in fact a reference to a vector space is required by the constructor of the subset class.
+The power of an object-oriented design is clearly featured here.
+The {\it intersection} subset derived class is useful for handling a posterior PDF \eqref{eq-Bayes-solution},
+since its domain is the intersection of the domain of the prior PDF with the domain of the likelihood function.
+
+\begin{figure}[hp]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqVectorSet}
-}
-\caption{
-The class diagram for vector set, vector subset and vector space classes.
-}
+\vspace*{-8pt}
+\caption{The class diagram for vector set, vector subset and vector space classes.}
 \label{fig-vector-space-subset-classes}
 \end{figure}
 
-\clearpage
-\subsection{Scalar Function}
+%\clearpage
+\subsection{Scalar Function and Vector Function Classes}\label{sec:scalar-vector-function}
 
+
+PDFs are examples of scalar functions.
+QUESO currently supports basic PDFs such as uniform and Gaussian.
+See Diagram \ref{fig-scalar-function-class} for the scalar function class.
+
+The handling of vector functions within QUESO is as easy. Indeed,
+The definition of a vector function $\mathbf{q}:\mathbf{B}\subset\mathbb{R}^n\rightarrow\mathbb{R}^m$ requires only the extra specification of the image vector space $\mathbb{R}^m$. Diagram \ref{fig-vector-function-class} represents the vector function class.
 \begin{figure}[h!]
-\centerline{
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqScalarFunction}
-}
-\caption{
-The class diagram for the scalar function class.
-}
+\vspace{-8pt}
+\caption{The class diagram for the scalar function class.}
 \label{fig-scalar-function-class}
 \end{figure}
 
-\clearpage
-\subsection{Vector Function}
-
 \begin{figure}[h!]
-\centerline{
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqVectorFunction}
-}
-\caption{
-The class diagram for the vector function class.
-}
+\vspace{-8pt}
+\caption{The class diagram for the vector function class.}
 \label{fig-vector-function-class}
 \end{figure}
 
-\clearpage
-\subsection{Scalar Sequence}
+%\clearpage
+
+\subsection{Scalar Sequence and Vector Sequence Classes}\label{sec:scalar-vector-sequence}
+%
+The scalar sequence class contemplates {\it scalar} samples generated by an algorithm, as well as operations that can
+be done over them, e.g., calculation of means, variances, and convergence indices.
+%% such as Geweke and Brooks-Gelman.
+Similarly, the vector sequence class contemplates {\it vector} samples and operations such as means, correlation matrices and covariance matrices.
+
+Figures \ref{fig-scalar-sequence-class} and \ref{fig-vector-sequence-class} display the class diagram for the scalar sequence  and vector sequence classes, respectively.
 
 \begin{figure}[h!]
-\centerline{
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqScalarSequence}
-}
-\caption{
-The class diagram for the scalar sequence class.
-}
+\vspace{-8pt}
+\caption{The class diagram for the scalar sequence class.}
 \label{fig-scalar-sequence-class}
 \end{figure}
 
-\clearpage
-\subsection{Vector Sequence}
-
 \begin{figure}[h!]
-\centerline{
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqVectorSequence}
-}
-\caption{
-The class diagram for the vector sequence class.
-}
+\vspace{-8pt}
+\caption{The class diagram for the vector sequence class.}
 \label{fig-vector-sequence-class}
 \end{figure}
 
-\clearpage
+
+
+%\clearpage
 \section{Templated Statistical Classes}
 
-\begin{itemize}
-\item Vector random variable
-\item Statistical inverse problem (and options)
-\item Metropolis-Hastings solver (and options)
-\item Statistical forward problem (and options)
-\item Monte Carlo solver (and options)
-\item Sequence statistical options
-\end{itemize}
+The classes in this group are: Vector realizer, Vector random variable, Statistical inverse problem (and options), Metropolis-Hastings solver (and options), Statistical forward problem (and options), Monte Carlo solver (and options), and Sequence statistical options.
 
 For QUESO, a statistical inverse problem has two input entities, a prior random variable and
 a likelihood routine, and one output entity, the posterior random variable, as shown in Figure \ref{fig-sip-queso}.
-
+%
 Similarly, a statistical forward problem for QUESO has two input entities, a input random variable and
 a qoi routine, and one output entity, the output random variable, as shown in Figure \ref{fig-sfp-queso}.
 
-\clearpage
+
+\subsection{Vector Realizer Class}
+%
+A {\it realizer} is an object that, simply put, contains a {\it realization()} operation that returns a sample of a vector RV.
+QUESO currently supports basic realizers such as uniform and Gaussian.
+It also contains a {\it sequence realizer} class for storing samples of a MH algorithm, for instance.
+
+
+
+
+\subsection{Vector Random Variable Class}
+%
+Vector RVs are expected to have two basic functionalities:
+compute the value of its PDF at a point, and generate realizations following such PDF.
+The joint PDF and vector realizer classes allow a straightforward definition and manipulation of vector RVs.
+QUESO currently supports basic vector RVs such as uniform and Gaussian.
+A derived class called {\it generic vector RV} allows QUESO to store the solution of an statistical IP:
+a {\it Bayesian joint PDF} becomes the PDF of the posterior RV, while a {\it sequence vector realizer} becomes the realizer of the same posterior RV.
+QUESO also allows users to form new RVs through the concatenation of existing RVs.
+
+
+
+\subsection{Statistical Inverse and Forward Problem Classes}
+%
+For QUESO, a statistical IP has two input entities, a prior RV and a likelihood routine, and one output entity, the posterior RV.
+Similarly, a statistical FP has two input entities, an input RV and a QoI routine, and one output entity, the output RV.
+QUESO differentiates the entities that allow us to define a problem from the entities that allow us to solve it.
+Indeed, QUESO defines the MH and MC sequence generator classes.
+The former expects the specification of a target distribution, a proposal covariance matrix, and the initial position in the chain,
+while the latter expects the specification of an input RV, a QoI function, and an output RV.
+The proper definition, by QUESO, of more basic entities allows an easy specification of more complex entities such as statistical problems and solvers.
+
+
+%\clearpage
 \subsection{Vector Random Variable}
 
 \begin{figure}[h!]
@@ -219,7 +312,7 @@ a qoi routine, and one output entity, the output random variable, as shown in Fi
 \label{fig-vector-rv-class}
 \end{figure}
 
-\clearpage
+%\clearpage
 \subsection{Statistical Inverse Problem (and Options)}
 
 \begin{figure}[h!]
@@ -266,7 +359,7 @@ Input file options for a QUESO statistical inverse problem.
 \label{tab-sip-options}
 \end{table}
 
-\clearpage
+%\clearpage
 \subsection{Metropolis-Hastings Solver (and Options)}
 
 \begin{figure}[h!]
@@ -359,7 +452,7 @@ Input file options for a QUESO Metropolis-Hastings solver.
 \label{tab-metropolis-hastings-options}
 \end{table}
 
-\clearpage
+%\clearpage
 \subsection{Statistical Forward Problem (and Options)}
 
 \begin{figure}[h!]
@@ -410,7 +503,7 @@ Input file options for a QUESO statistical forward problem.
 \label{tab-sfp-options}
 \end{table}
 
-\clearpage
+%\clearpage
 \subsection{Monte Carlo Solver (and Options)}
 
 \begin{figure}[h!]
@@ -475,7 +568,7 @@ Input file options for a QUESO Monte Carlo solver.
 \label{tab-monte-carlo-options}
 \end{table}
 
-\clearpage
+%\clearpage
 \subsection{Options for Statistical Analysis of Sequences}
 
 \begin{figure}[h!]
@@ -599,5 +692,20 @@ Input file options for a the statistical analysis of sequences.
 \label{tab-seq-statistical-options}
 \end{table}
 
-\clearpage
+
+%\clearpage
+\section{Miscellaneous Classes and Routines}
+
+%\clearpage
 \section{Interface Classes}
+
+
+
+\subsection{Using Other C++ Classes in the Library}
+
+https://svn.ices.utexas.edu/repos/pecos/turbulence/IncompRansCal/calDataLevModUncert/README
+
+
+\subsection{Input and Output Files}
+
+
