@@ -184,10 +184,13 @@ random variables, Bayesian solutions of inverse problems, sampling algorithms an
 %
 The vector set class is fundamental for the proper handling of many mathematical entities.
 Indeed, the definition of a scalar function such as $\pi:\mathbf{B}\subset\mathbb{R}^n\rightarrow\mathbb{R}$ requires the
-specification of the domain $\mathbf{B}$, which is a {\it subset} of the {\it vector space} $\mathbb{R}^n$, which is itself a {\it set}.
-The relationship among the classes set, subset and vector space is sketched in Figure \ref{fig-vector-space-subset-classes}.
+specification of the domain $\mathbf{B}$, which is a {\it subset} of the {\it vector space} $\mathbb{R}^n$, which is itself a {\it set}. Indeed, 
+ SIPs need a likelihood routine $\pi_{\text{like}}:\mathbb{R}^n\rightarrow\mathbb{R}_+$,
+and SFPs need a QoI routine $\mathbf{q}:\mathbb{R}^n\rightarrow\mathbb{R}^m$; the \textit{sets} $\mathbb{R}^n$, $\mathbb{R}^m$, etc., are {\it vector spaces}.
 
-An attribute of the {\it subset} class is the {\it vector space} which it belongs to, and in fact a reference to a vector space is required by the constructor of the subset class.
+The relationship among the classes set, subset and vector space is sketched in Figure \ref{fig-vector-space-subset-classes}.
+%
+An attribute of the {\it subset} class is the {\it vector space} which it belongs to, and in fact a reference to a vector space is required by the constructor of the subset class. An example of this case is the definition of a scalar function such as $\pi:\mathbf{B}\subset\mathbb{R}^n\rightarrow\mathbb{R}$, which requires the specification of the domain $\mathbf{B}$, which is a {\it subset} of the {\it vector space} $\mathbb{R}^n$, which is itself a {\it set}.
 The power of an object-oriented design is clearly featured here.
 The {\it intersection} subset derived class is useful for handling a posterior PDF \eqref{eq-Bayes-solution},
 since its domain is the intersection of the domain of the prior PDF with the domain of the likelihood function.
@@ -203,10 +206,9 @@ since its domain is the intersection of the domain of the prior PDF with the dom
 %\clearpage
 \subsection{Scalar Function and Vector Function Classes}\label{sec:scalar-vector-function}
 
-
-PDFs are examples of scalar functions.
+Joint PDF, marginal PDF, and CDF are all examples of scalar functions present in statistical problems. 
 QUESO currently supports basic PDFs such as uniform and Gaussian.
-See Diagram \ref{fig-scalar-function-class} for the scalar function class.
+See Diagram~\ref{fig-scalar-function-class} for the scalar function class.
 
 The handling of vector functions within QUESO is as easy. Indeed,
 The definition of a vector function $\mathbf{q}:\mathbf{B}\subset\mathbb{R}^n\rightarrow\mathbb{R}^m$ requires only the extra specification of the image vector space $\mathbb{R}^m$. Diagram \ref{fig-vector-function-class} represents the vector function class.
@@ -287,21 +289,6 @@ a {\it Bayesian joint PDF} becomes the PDF of the posterior RV, while a {\it seq
 QUESO also allows users to form new RVs through the concatenation of existing RVs.
 
 
-
-\subsection{Statistical Inverse and Forward Problem Classes}
-%
-For QUESO, a statistical IP has two input entities, a prior RV and a likelihood routine, and one output entity, the posterior RV.
-Similarly, a statistical FP has two input entities, an input RV and a QoI routine, and one output entity, the output RV.
-QUESO differentiates the entities that allow us to define a problem from the entities that allow us to solve it.
-Indeed, QUESO defines the MH and MC sequence generator classes.
-The former expects the specification of a target distribution, a proposal covariance matrix, and the initial position in the chain,
-while the latter expects the specification of an input RV, a QoI function, and an output RV.
-The proper definition, by QUESO, of more basic entities allows an easy specification of more complex entities such as statistical problems and solvers.
-
-
-%\clearpage
-\subsection{Vector Random Variable}
-
 \begin{figure}[h!]
 \centerline{
 \includegraphics[scale=0.40,clip=true]{figs/uqVectorRandomVariable}
@@ -312,8 +299,23 @@ The proper definition, by QUESO, of more basic entities allows an easy specifica
 \label{fig-vector-rv-class}
 \end{figure}
 
+
+
 %\clearpage
 \subsection{Statistical Inverse Problem (and Options)}
+Similarly to its mathematical concepts, a SIP in QUESO also expects two input entities, a prior RV and a likelihood routine, and one output entity, the posterior RV.
+The SIP is represented in QUESO through the templated class \verb+uqStatisticalInverseProblemClass<P_V,P_M>+.
+One important characteristic of the QUESO design is that it  separates `what the problem is' from `how the problem is solved'.
+The prior and the posterior RV are instances of the \verb+uqBaseVectorRvClass<V,M>+ class, while
+the likelihood function is an instance of the \verb+uqBaseScalarFunctionClass<V,M>+ class.
+
+The solution of a SIP is computed by calling the \verb+solveWithBayesMetropolisHastings(...)+ member function of the \verb+uqStatisticalInverseProblemClass<P_V,P_M>+ class.
+Upon return from a solution operation, the posterior RV is available through the \verb+postRv()+ member function.
+
+%For the specific problem for inferring the acceleration of gravity (Section \ref{sec:sip}),
+%the uniform prior is chosen as an instance of \verb+uqUniformeVectorRvClass<V,M>+,
+%the likelihood is an instance of \verb+uqGenericScalarFunctionClass<V,M>+, and
+%the posterior is an instance of  \verb+uqGenericVectorRvClass<V,M>+. 
 
 \begin{figure}[h!]
 \centerline{
@@ -454,6 +456,17 @@ Input file options for a QUESO Metropolis-Hastings solver.
 
 %\clearpage
 \subsection{Statistical Forward Problem (and Options)}
+
+A SFP in QUESO also has two input entities, the input (parameter) RV and a QoI function, and one output entity, the QoI RV. 
+The SIP is represented through the templated class \verb+uqStatisticalForwardProblemClass<P_V,P_M>+.
+The input RV and the output QoI RV are instances of the \verb+uqBaseVectorRvClass<V,M>+ class, while
+the QoI function is an instance of \verb+uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>+.
+In the template parameters, the prefix \verb+P_+ refers to the parameters, whereas the prefix \verb+Q_+ refers to the QoIs.
+
+In order to find the solution of a SFP, one must call the \verb+solveWithMonteCarlo(...)+ member function of the \verb+uqStatisticalForwardProblemClass<P_V,P_M>+ class.
+Upon return from a solution operation, the QoI RV is available through the \verb+qoiRv()+ member function.
+%it provides both CDFs of QoI components through the operation \verb+qoiRv().unifiedCdf()+,  which returns an instance of the class \verb+uqBaseVectorCdfClass<Q_V,Q_M>+, and
+%a vector realizer through the operation \verb+qoiRv().realizer()+, which returns an instance of the class \verb+uqBaseVectorRealizerClass<Q_V,Q_M>+.
 
 \begin{figure}[h!]
 \centerline{
