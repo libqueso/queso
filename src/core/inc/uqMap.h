@@ -38,12 +38,19 @@
 class uqMapClass
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{
+
+  //! Default constructor. Do not call this directly.
   uqMapClass();
   uqMapClass(int                   numGlobalElements,
              int                   indexBase,
              const uqMpiCommClass& comm);
   uqMapClass(const uqMapClass& src);
+
+  //! Destructor
  ~uqMapClass();
+ //@}
 
   uqMapClass& operator= (const uqMapClass& rhs);
 
