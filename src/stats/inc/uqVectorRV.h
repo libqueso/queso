@@ -458,46 +458,25 @@ uqGaussianVectorRVClass<V,M>::uqGaussianVectorRVClass(
                             << std::endl;
   }
 
+  UQ_FATAL_TEST_MACRO((lawVarVector.getMinValue() <= 0.0),
+                      m_env.worldRank(),
+                      "uqGaussianVectorRVClass<V,M>::constructor() [1]",
+                      "Covariance matrix is not symmetric positive definite.");
+
   m_pdf = new uqGaussianJointPdfClass<V,M>(m_prefix.c_str(),
                                             m_imageSet,
                                             lawExpVector,
                                             lawVarVector);
 
-  M lowerCholLawCovMatrix(lawVarVector);
-  int iRC = lowerCholLawCovMatrix.chol();
+  V cholDiag(lawVarVector);
+  cholDiag.cwSqrt();
+  M lowerCholLawCovMatrix(cholDiag);
   lowerCholLawCovMatrix.zeroUpper(false);
-  if (iRC) {
-    std::cerr << "In uqGaussianVectorRVClass<V,M>::constructor() [1]: chol failed, will use svd\n";
-    if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGaussianVectorRVClass<V,M>::constructor() [1]: chol failed; will use svd; lawVarVector contents are\n";
-      *m_env.subDisplayFile() << lawVarVector; // FIX ME: might demand parallelism
-      *m_env.subDisplayFile() << std::endl;
-    }
-    M matLaw(lawVarVector);
-    M matU  (lawVarVector);
-    M matVt (m_imageSet.vectorSpace().zeroVector());
-    V vecS  (m_imageSet.vectorSpace().zeroVector());
-    iRC = matLaw.svd(matU,vecS,matVt);
-    UQ_FATAL_TEST_MACRO(iRC,
-                        m_env.worldRank(),
-                        "uqGaussianVectorRVClass<V,M>::constructor() [1]",
-                        "Cholesky decomposition of covariance matrix failed.");
 
-    vecS.cwSqrt();
-    m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
-                                                        m_imageSet,
-                                                        lawExpVector,
-                                                        matU,
-                                                        vecS, // already square rooted
-                                                        matVt);
-    //lowerCholLawCovMatrix = matU * leftDiagScaling(vecS,matVt);
-  }
-  else {
-    m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
-                                                        m_imageSet,
-                                                        lawExpVector,
-                                                        lowerCholLawCovMatrix);
-  }
+  m_realizer = new uqGaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+                                                      m_imageSet,
+                                                      lawExpVector,
+                                                      lowerCholLawCovMatrix);
 
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
