@@ -624,9 +624,9 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
                         "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
                         "failed MPI.Bcast() for chainIdMax");
 
-  struct timeval timevalNow;
+  struct timeval timevalEntering;
   int iRC = 0;
-  iRC = gettimeofday(&timevalNow, NULL);
+  iRC = gettimeofday(&timevalEntering, NULL);
   if (iRC) {}; // just to remove compiler warning
 
   if (m_env.inter0Rank() >= 0) {
@@ -661,7 +661,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
                               << ", step "                << m_currStep
                               << ": chainIdMax = "        << chainIdMax
                               << ", numberOfPositions = " << numberOfPositions
-                              << ", at "                  << ctime(&timevalNow.tv_sec)
+                              << ", at "                  << ctime(&timevalEntering.tv_sec)
                               << std::endl;
       *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
                               << ", level "                  << m_currLevel+LEVEL_REF_ID
@@ -790,22 +790,31 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
     }
   } // for 'chainId'
 
-  iRC = gettimeofday(&timevalNow, NULL);
+  struct timeval timevalBarrier;
+  iRC = gettimeofday(&timevalBarrier, NULL);
   if (iRC) {}; // just to remove compiler warning
+  double loopTime = uqMiscGetEllapsedSeconds(&timevalEntering);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
-                            << ": ended chain loop"
-                            << ", calling fullComm().Barrier() at " << ctime(&timevalNow.tv_sec)
+                            << ", level " << m_currLevel+LEVEL_REF_ID
+                            << ", step "  << m_currStep
+                            << ": ended chain loop after " << loopTime << " seconds"
+                            << ", calling fullComm().Barrier() at " << ctime(&timevalBarrier.tv_sec)
                             << std::endl;
   }
 
   m_env.fullComm().Barrier(); // KAUST4
 
-  iRC = gettimeofday(&timevalNow, NULL);
+  struct timeval timevalLeaving;
+  iRC = gettimeofday(&timevalLeaving, NULL);
   if (iRC) {}; // just to remove compiler warning
+  double barrierTime = uqMiscGetEllapsedSeconds(&timevalBarrier);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
-                            << ": at " << ctime(&timevalNow.tv_sec)
+                            << ", level " << m_currLevel+LEVEL_REF_ID
+                            << ", step "  << m_currStep
+                            << ": after " << barrierTime << " seconds in fullComm().Barrier()"
+                            << ", at " << ctime(&timevalLeaving.tv_sec)
                             << std::endl;
   }
 
@@ -847,9 +856,9 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
                         "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
                         "failed MPI.Bcast() for chainIdMax");
 
-  struct timeval timevalNow;
+  struct timeval timevalEntering;
   int iRC = 0;
-  iRC = gettimeofday(&timevalNow, NULL);
+  iRC = gettimeofday(&timevalEntering, NULL);
   if (iRC) {}; // just to remove compiler warning
 
   if (m_env.inter0Rank() >= 0) {
@@ -884,7 +893,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
                               << ", step "                << m_currStep
                               << ": chainIdMax = "        << chainIdMax
                               << ", numberOfPositions = " << numberOfPositions
-                              << ", at "                  << ctime(&timevalNow.tv_sec)
+                              << ", at "                  << ctime(&timevalEntering.tv_sec)
                               << std::endl;
       *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
                               << ", level "                  << m_currLevel+LEVEL_REF_ID
@@ -1013,22 +1022,31 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
     }
   } // for 'chainId'
 
-  iRC = gettimeofday(&timevalNow, NULL);
+  struct timeval timevalBarrier;
+  iRC = gettimeofday(&timevalBarrier, NULL);
   if (iRC) {}; // just to remove compiler warning
+  double loopTime = uqMiscGetEllapsedSeconds(&timevalEntering);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
-                            << ": ended chain loop"
-                            << ", calling fullComm().Barrier() at " << ctime(&timevalNow.tv_sec)
+                            << ", level " << m_currLevel+LEVEL_REF_ID
+                            << ", step "  << m_currStep
+                            << ": ended chain loop after " << loopTime << " seconds"
+                            << ", calling fullComm().Barrier() at " << ctime(&timevalBarrier.tv_sec)
                             << std::endl;
   }
 
   m_env.fullComm().Barrier(); // KAUST4
 
-  iRC = gettimeofday(&timevalNow, NULL);
+  struct timeval timevalLeaving;
+  iRC = gettimeofday(&timevalLeaving, NULL);
   if (iRC) {}; // just to remove compiler warning
+  double barrierTime = uqMiscGetEllapsedSeconds(&timevalBarrier);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
-                            << ": at " << ctime(&timevalNow.tv_sec)
+                            << ", level " << m_currLevel+LEVEL_REF_ID
+                            << ", step "  << m_currStep
+                            << ": after " << barrierTime << " seconds in fullComm().Barrier()"
+                            << ", at " << ctime(&timevalLeaving.tv_sec)
                             << std::endl;
   }
 
