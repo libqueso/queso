@@ -624,6 +624,11 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
                         "uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
                         "failed MPI.Bcast() for chainIdMax");
 
+  struct timeval timevalNow;
+  int iRC = 0;
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (iRC) {}; // just to remove compiler warning
+
   if (m_env.inter0Rank() >= 0) {
     unsigned int numberOfPositions = 0;
     for (unsigned int chainId = 0; chainId < chainIdMax; ++chainId) {
@@ -656,6 +661,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
                               << ", step "                << m_currStep
                               << ": chainIdMax = "        << chainIdMax
                               << ", numberOfPositions = " << numberOfPositions
+                              << ", at "                  << ctime(&timevalNow.tv_sec)
                               << std::endl;
       *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
                               << ", level "                  << m_currLevel+LEVEL_REF_ID
@@ -784,12 +790,24 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
     }
   } // for 'chainId'
 
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (iRC) {}; // just to remove compiler warning
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
+    *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
+                            << ": ended chain loop"
+                            << ", calling fullComm().Barrier() at " << ctime(&timevalNow.tv_sec)
                             << std::endl;
   }
 
   m_env.fullComm().Barrier(); // KAUST4
+
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (iRC) {}; // just to remove compiler warning
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
+                            << ": at " << ctime(&timevalNow.tv_sec)
+                            << std::endl;
+  }
 
   return;
 }
@@ -829,6 +847,11 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
                         "uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
                         "failed MPI.Bcast() for chainIdMax");
 
+  struct timeval timevalNow;
+  int iRC = 0;
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (iRC) {}; // just to remove compiler warning
+
   if (m_env.inter0Rank() >= 0) {
     unsigned int numberOfPositions = 0;
     for (unsigned int chainId = 0; chainId < chainIdMax; ++chainId) {
@@ -861,6 +884,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
                               << ", step "                << m_currStep
                               << ": chainIdMax = "        << chainIdMax
                               << ", numberOfPositions = " << numberOfPositions
+                              << ", at "                  << ctime(&timevalNow.tv_sec)
                               << std::endl;
       *m_env.subDisplayFile() << "KEY In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
                               << ", level "                  << m_currLevel+LEVEL_REF_ID
@@ -987,14 +1011,26 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
         currLogTargetValues->append    (tmpLogTargetValues,    1,tmpLogTargetValues.subSequenceSize()-1    ); // IMPORTANT: '1' in order to discard initial position
       }
     }
-  } // for
+  } // for 'chainId'
 
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (iRC) {}; // just to remove compiler warning
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
+    *m_env.subDisplayFile() << "In uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
+                            << ": ended chain loop"
+                            << ", calling fullComm().Barrier() at " << ctime(&timevalNow.tv_sec)
                             << std::endl;
   }
 
   m_env.fullComm().Barrier(); // KAUST4
+
+  iRC = gettimeofday(&timevalNow, NULL);
+  if (iRC) {}; // just to remove compiler warning
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "Leaving uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
+                            << ": at " << ctime(&timevalNow.tv_sec)
+                            << std::endl;
+  }
 
   return;
 }
