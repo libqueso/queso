@@ -34,6 +34,7 @@
 #include <sys/time.h>
 #include <cmath>
 
+// Default constructor -------------------------------------------------
 uqGslMatrixClass::uqGslMatrixClass()
   :
   uqMatrixClass()
@@ -69,7 +70,8 @@ uqGslMatrixClass::uqGslMatrixClass( // can be a rectangular matrix
                       "uqGslMatrixClass::constructor()",
                       "null matrix generated");
 }
- 
+
+// Shaped constructor --------------------------------------------------
 uqGslMatrixClass::uqGslMatrixClass( // square matrix
   const uqBaseEnvironmentClass& env,
   const uqMapClass&             map,
@@ -99,7 +101,7 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
     (*this)(i,i) = diagValue;
   }
 }
-
+// Shaped constructor --------------------------------------------------
 uqGslMatrixClass::uqGslMatrixClass( // square matrix
   const uqGslVectorClass& v,
   double                  diagValue)
@@ -128,7 +130,7 @@ uqGslMatrixClass::uqGslMatrixClass( // square matrix
     (*this)(i,i) = diagValue;
   }
 }
-
+// Shaped constructor --------------------------------------------------
 uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v) // square matrix
   :
   uqMatrixClass  (v.env(),v.map()),
@@ -157,6 +159,7 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslVectorClass& v) // square matrix
   }
 }
 
+// Shaped constructor --------------------------------------------------
 uqGslMatrixClass::uqGslMatrixClass(const uqGslMatrixClass& B) // can be a rectangular matrix
   :
   uqMatrixClass  (B.env(),B.map()),
@@ -182,12 +185,14 @@ uqGslMatrixClass::uqGslMatrixClass(const uqGslMatrixClass& B) // can be a rectan
   this->copy(B);
 }
 
+// Destructor ----------------------------------------------------------
 uqGslMatrixClass::~uqGslMatrixClass()
 {
   this->resetLU();
   if (m_mat) gsl_matrix_free(m_mat);
 }
 
+// Set methods (operators) ---------------------------------------------
 uqGslMatrixClass&
 uqGslMatrixClass::operator=(const uqGslMatrixClass& obj)
 {
@@ -246,6 +251,7 @@ uqGslMatrixClass::operator-=(const uqGslMatrixClass& rhs)
   return *this;
 }
 
+// Acessor methods (operators) ----------------------------------------
 double&
 uqGslMatrixClass::operator()(unsigned int i, unsigned int j)
 {
@@ -668,6 +674,8 @@ uqGslMatrixClass::internalSvd() const
 
   return iRC;
 }
+
+
 
 void
 uqGslMatrixClass::zeroLower(bool includeDiagonal)
