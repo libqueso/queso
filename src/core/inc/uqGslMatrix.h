@@ -339,8 +339,7 @@ private:
   //! This function multiplies \c this matrix by vector \c x and stores the resulting vector in \c y.
   void              multiply                  (const uqGslVectorClass& x, uqGslVectorClass& y) const;
         
-  //! This function factorizes the M-by-N matrix A into the singular value decomposition A = U S V^T for M >= N. On output the matrix A is replaced
-by U.
+  //! This function factorizes the M-by-N matrix A into the singular value decomposition A = U S V^T for M >= N. On output the matrix A is replaced by U.
   int               internalSvd               () const;
 
   //! GSL matrix, also referred to as \c this matrix.
