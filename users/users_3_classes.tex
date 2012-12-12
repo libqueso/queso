@@ -104,7 +104,7 @@ Figure \ref{fig-env-class} depicts class diagram for the environment class; and 
 
 \subsubsection{Input File Options}
 The input file options for a QUESO environment is presented in Table \ref{tab-env-options}.
-\begin{table}[!h]
+\begin{table}[htpb]
 \begin{center}
 \caption{Input file options for a QUESO environment.}\label{tab-env-options}
 \ttfamily
@@ -212,7 +212,7 @@ See Diagram~\ref{fig-scalar-function-class} for the scalar function class.
 
 The handling of vector functions within QUESO is as easy. Indeed,
 The definition of a vector function $\mathbf{q}:\mathbf{B}\subset\mathbb{R}^n\rightarrow\mathbb{R}^m$ requires only the extra specification of the image vector space $\mathbb{R}^m$. Diagram \ref{fig-vector-function-class} represents the vector function class.
-\begin{figure}[h!]
+\begin{figure}[htpb]
 \centering
 \includegraphics[scale=0.40,clip=true]{figs/uqScalarFunction}
 \vspace{-8pt}
@@ -220,7 +220,7 @@ The definition of a vector function $\mathbf{q}:\mathbf{B}\subset\mathbb{R}^n\ri
 \label{fig-scalar-function-class}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htpb]
 \centering
 \includegraphics[scale=0.40,clip=true]{figs/uqVectorFunction}
 \vspace{-8pt}
@@ -239,7 +239,7 @@ Similarly, the vector sequence class contemplates {\it vector} samples and opera
 
 Figures \ref{fig-scalar-sequence-class} and \ref{fig-vector-sequence-class} display the class diagram for the scalar sequence  and vector sequence classes, respectively.
 
-\begin{figure}[h!]
+\begin{figure}[htpb]
 \centering
 \includegraphics[scale=0.40,clip=true]{figs/uqScalarSequence}
 \vspace{-8pt}
@@ -247,7 +247,7 @@ Figures \ref{fig-scalar-sequence-class} and \ref{fig-vector-sequence-class} disp
 \label{fig-scalar-sequence-class}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htpb]
 \centering
 \includegraphics[scale=0.40,clip=true]{figs/uqVectorSequence}
 \vspace{-8pt}
@@ -289,13 +289,11 @@ a {\it Bayesian joint PDF} becomes the PDF of the posterior RV, while a {\it seq
 QUESO also allows users to form new RVs through the concatenation of existing RVs.
 
 
-\begin{figure}[h!]
-\centerline{
+\begin{figure}[htpb]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqVectorRandomVariable}
-}
-\caption{
-{\color{red}{The class diagram for the vector random variable class}}.
-}
+\vspace{-8pt}
+\caption{The class diagram for the vector random variable class.}
 \label{fig-vector-rv-class}
 \end{figure}
 
@@ -317,140 +315,130 @@ Upon return from a solution operation, the posterior RV is available through the
 %the likelihood is an instance of \verb+uqGenericScalarFunctionClass<V,M>+, and
 %the posterior is an instance of  \verb+uqGenericVectorRvClass<V,M>+. 
 
-\begin{figure}[h!]
-\centerline{
+\begin{figure}[htp!]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqSip}
-}
-\caption{
-The statistical inverse problem class. It implements the representation in Figure \ref{fig-sip-queso}.
-}
+\vspace{-8pt}
+\caption{The statistical inverse problem class. It implements the representation in Figure~\ref{fig-sip-queso}.}
 \label{fig-sip-class}
 \end{figure}
 
-\begin{figure}[h!]
-\begin{center}
+\begin{figure}[htp!]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqSipOptions}
-\end{center}
-\caption{
-The statistical inverse problem options class.
-}
+\vspace{-8pt}
+\caption{The statistical inverse problem options class.}
 \label{fig-sip-options-class}
 \end{figure}
 
-\begin{table}[!h]
+\begin{table}[htpb]
 \begin{center}
-\begin{tabular}{|l|c|c|}
-\hline
-\multicolumn{1}{|c|}{Option}                     & Default & Description \\
-\multicolumn{1}{|c|}{Name}                       & Value   &             \\
-\hline
-\hline
+\caption{Input file options for a QUESO statistical inverse problem.}
+\ttfamily
+
+\begin{tabular}{l|c|c}
+\toprule
+\rmfamily Option name                    & \rmfamily Default  Value & \rmfamily Description \\
+\midrule\midrule
 $\langle$PREFIX$\rangle$ip\_help                 &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$ip\_computeSolution      &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$ip\_dataOutputFileName   &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$ip\_dataOutputAllowedSet &         &             \\
-\hline
+\bottomrule
 \end{tabular}
 \end{center}
-\caption{
-Input file options for a QUESO statistical inverse problem.
-}
+
 \label{tab-sip-options}
 \end{table}
+
+
 
 %\clearpage
 \subsection{Metropolis-Hastings Solver (and Options)}
 
-\begin{figure}[h!]
-\centerline{
+\begin{figure}[htpb]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqMetropolisHastingsSG}
-}
-\caption{
-The Metropolis-Hastings sequence generator class.
-}
+\vspace*{-8pt}
+\caption{The Metropolis-Hastings sequence generator class.}
 \label{fig-metropolis-hastings-solver-class}
 \end{figure}
 
-\begin{figure}[h!]
-\begin{center}
+\begin{figure}[htpb]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqMetropolisHastingsSGOptions}
-\end{center}
-\caption{
-The Metropolis-Hastings sequence generator options class.
-}
+\vspace*{-8pt}
+\caption{The Metropolis-Hastings sequence generator options class.}
 \label{fig-metropolis-hastings-options-class}
 \end{figure}
 
-\begin{table}[!h]
+\begin{table}[htpb]
 \begin{center}
-\begin{tabular}{|l|c|c|}
-\hline
-\multicolumn{1}{|c|}{Option}                                    & Default & Description \\
-\multicolumn{1}{|c|}{Name}                                      & Value   &             \\
-\hline
-\hline
+\caption{Input file options for a QUESO Metropolis-Hastings solver.}
+\ttfamily
+\begin{tabular}{l|c|c}
+\toprule
+\rmfamily Option Name                                    & \rmfamily Default Value& \rmfamily Description \\
+\midrule\midrule
 $\langle$PREFIX$\rangle$mh\_help                                &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_dataOutputFileName                  &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_dataOutputAllowedSet                &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_rawChain\_dataInputFileName         &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_rawChain\_size                      &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_rawChain\_generateExtra             &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_rawChain\_displayPeriod             &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_rawChain\_measureRunTimes           &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_rawChain\_dataOutputFileName        &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_rawChain\_dataOutputAllowedSet      &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_rawChain\_computeStats              &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_filteredChain\_generate             &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_filteredChain\_discardedPortion     &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_filteredChain\_lag                  &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_filteredChain\_dataOutputFileName   &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_filteredChain\_dataOutputAllowedSet &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_filteredChain\_computeStats         &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_displayCandidates                   &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_putOutOfBoundsInChain               &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_tk\_useLocalHessian                 &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_tk\_useNewtonComponent              &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_dr\_maxNumExtraStages               &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_dr\_scalesForExtraStages            &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_am\_initialNonAdaptInterval         &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_am\_adaptInterval                   &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_am\_eta                             &         &             \\
-\hline
+
 $\langle$PREFIX$\rangle$mh\_am\_epsilon                         &         &             \\
-\hline
+\bottomrule
 \end{tabular}
 \end{center}
-\caption{
-Input file options for a QUESO Metropolis-Hastings solver.
-}
 \label{tab-metropolis-hastings-options}
 \end{table}
 
@@ -468,240 +456,223 @@ Upon return from a solution operation, the QoI RV is available through the \verb
 %it provides both CDFs of QoI components through the operation \verb+qoiRv().unifiedCdf()+,  which returns an instance of the class \verb+uqBaseVectorCdfClass<Q_V,Q_M>+, and
 %a vector realizer through the operation \verb+qoiRv().realizer()+, which returns an instance of the class \verb+uqBaseVectorRealizerClass<Q_V,Q_M>+.
 
-\begin{figure}[h!]
-\centerline{
+\begin{figure}[htpb]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqSfp}
-}
-\caption{
-The statistical forward problem class. It implements the representation in Figure \ref{fig-sfp-queso}.
-}
+\vspace*{-8pt}
+\caption{The statistical forward problem class. It implements the representation in Figure \ref{fig-sfp-queso}.}
 \label{fig-sfp-class}
 \end{figure}
 
-\begin{figure}[h!]
-\begin{center}
+\begin{figure}[htpb]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqSfpOptions}
-\end{center}
-\caption{
-The statistical forward problem options class.
-}
+\vspace*{-8pt}
+\caption{The statistical forward problem options class.}
 \label{fig-sfp-options-class}
 \end{figure}
 
-\begin{table}[!h]
+\begin{table}[htpb]
+\caption{Input file options for a QUESO statistical forward problem.}
+\vspace{-8pt}
+\ttfamily
 \begin{center}
-\begin{tabular}{|l|c|c|}
-\hline
-\multicolumn{1}{|c|}{Option}                     & Default & Description \\
-\multicolumn{1}{|c|}{Name}                       & Value   &             \\
-\hline
-\hline
+\begin{tabular}{l|c|c}
+\toprule
+ \rmfamily Option Name                     & \rmfamily Default Value& \rmfamily Description \\
+\midrule
 $\langle$PREFIX$\rangle$fp\_help                 &         &             \\
-\hline
+%\hline
 $\langle$PREFIX$\rangle$fp\_computeSolution      &         &             \\
-\hline
+%\hline
 $\langle$PREFIX$\rangle$fp\_computeCovariances   &         &             \\
-\hline
+%\hline
 $\langle$PREFIX$\rangle$fp\_computeCorrelations  &         &             \\
-\hline
+%\hline
 $\langle$PREFIX$\rangle$fp\_dataOutputFileName   &         &             \\
-\hline
+%\hline
 $\langle$PREFIX$\rangle$fp\_dataOutputAllowedSet &         &             \\
-\hline
+\bottomrule
 \end{tabular}
 \end{center}
-\caption{
-Input file options for a QUESO statistical forward problem.
-}
+
 \label{tab-sfp-options}
 \end{table}
 
 %\clearpage
 \subsection{Monte Carlo Solver (and Options)}
 
-\begin{figure}[h!]
-\centerline{
+\begin{figure}[htpb]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqMonteCarloSG}
-}
-\caption{
-{\color{red}{The Monte Carlo sequence generator class}}.
-}
+\vspace*{-8pt}
+\caption{{\color{red}{The Monte Carlo sequence generator class}}.}
 \label{fig-monte-carlo-solver-class}
 \end{figure}
 
-\begin{figure}[h!]
-\begin{center}
+\begin{figure}[htpb]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqMonteCarloSGOptions}
-\end{center}
-\caption{
-{\color{red}{The Monte Carlo sequence generator options class}}.
-}
+\vspace*{-8pt}
+\caption{{\color{red}{The Monte Carlo sequence generator options class}}.}
 \label{fig-monte-carlo-options-class}
 \end{figure}
 
-\begin{table}[!h]
+\begin{table}[htpb]
 \begin{center}
+\caption{Input file options for a QUESO statistical forward problem.}
+\ttfamily
 \begin{tabular}{|l|c|c|}
-\hline
-\multicolumn{1}{|c|}{Option}                            & Default & Description \\
-\multicolumn{1}{|c|}{Name}                              & Value   &             \\
-\hline
-\hline
+\toprule
+\rmfamily Option Name     & \rmfamily Default Value &  \rmfamily Description \\
+\midrule\midrule
 $\langle$PREFIX$\rangle$mc\_help                        &         &             \\
-\hline
+%\hline
 $\langle$PREFIX$\rangle$mc\_dataOutputFileName          &         &             \\
-\hline
+%\hline
 $\langle$PREFIX$\rangle$mc\_dataOutputAllowedSet        &         &             \\
-\hline
+%\hline
 $\langle$PREFIX$\rangle$mc\_pseq\_dataOutputFileName     &         &             \\
-\hline
+%\hline
 $\langle$PREFIX$\rangle$mc\_pseq\_dataOutputAllowedSet   &         &             \\
-\hline
+%\hline
 $\langle$PREFIX$\rangle$mc\_pseq\_computeStats           &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$mc\_qseq\_dataInputFileName      &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$mc\_qseq\_size                   &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$mc\_qseq\_displayPeriod          &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$mc\_qseq\_measureRunTimes        &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$mc\_qseq\_dataOutputFileName     &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$mc\_qseq\_dataOutputAllowedSet   &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$mc\_qseq\_computeStats           &         &             \\
-\hline
+\bottomrule
 \end{tabular}
 \end{center}
-\caption{
-Input file options for a QUESO Monte Carlo solver.
-}
 \label{tab-monte-carlo-options}
 \end{table}
 
 %\clearpage
 \subsection{Options for Statistical Analysis of Sequences}
 
-\begin{figure}[h!]
-\centerline{
+\begin{figure}[htpb]
+\centering
 \includegraphics[scale=0.40,clip=true]{figs/uqSequenceStatisticalOptions}
-}
-\caption{
-{\color{red}{The sequence statistical options class}}.
-}
+\vspace*{-8pt}
+\caption{{\color{red}{The sequence statistical options class}}.}
 \label{fig-seq-statistical-options-class}
 \end{figure}
 
-\begin{table}[!h]
+\begin{table}[htpb]
 \begin{center}
-\begin{tabular}{|l|c|c|}
-\hline
-\multicolumn{1}{|c|}{Option}                             & Default & Description \\
-\multicolumn{1}{|c|}{Name}                               & Value   &             \\
-\hline
-\hline
+\caption{Input file options for a the statistical analysis of sequences.}
+\ttfamily
+\begin{tabular}{l|c|c}
+\toprule
+\rmfamily Option Name  & \rmfamily Default Value & \rmfamily Description \\
+\midrule\midrule
 $\langle$PREFIX$\rangle$stats\_help                      &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_initialDiscardedPortions  &         &             \\
-\hline
+% \hline
 \hline
 $\langle$PREFIX$\rangle$stats\_bmm\_run                   &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_bmm\_lengths               &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_bmm\_display               &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_bmm\_write                 &         &             \\
-\hline
+% \hline
 \hline
 $\langle$PREFIX$\rangle$stats\_fft\_compute               &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_fft\_paramId               &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_fft\_size                  &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_fft\_testInversion         &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_fft\_write                 &         &             \\
-\hline
+% \hline
 \hline
 $\langle$PREFIX$\rangle$stats\_psd\_compute               &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_psd\_numBlocks             &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_psd\_hopSizeRatio          &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_psd\_paramId               &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_psd\_write                 &         &             \\
-\hline
+% \hline
 \hline
 $\langle$PREFIX$\rangle$stats\_psdAtZero\_compute         &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_psdAtZero\_numBlocks       &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_psdAtZero\_hopSizeRatio    &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_psdAtZero\_display         &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_psdAtZero\_write           &         &             \\
-\hline
+% \hline
 \hline
 $\langle$PREFIX$\rangle$stats\_geweke\_compute            &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_geweke\_naRatio            &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_geweke\_nbRatio            &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_geweke\_display            &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_geweke\_write              &         &             \\
-\hline
+% \hline
 \hline
 $\langle$PREFIX$\rangle$stats\_autoCorr\_computeViaDef    &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_autoCorr\_computeViaFft    &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_autoCorr\_secondLag        &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_autoCorr\_lagSpacing       &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_autoCorr\_numLags          &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_autoCorr\_display          &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_autoCorr\_write            &         &             \\
-\hline
+% \hline
 \hline
 $\langle$PREFIX$\rangle$stats\_meanStacc\_compute         &         &             \\
-\hline
+% \hline
 \hline
 $\langle$PREFIX$\rangle$stats\_hist\_compute              &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_hist\_numInternalBins      &         &             \\
-\hline
+% \hline
 \hline
 $\langle$PREFIX$\rangle$stats\_cdfStacc\_compute          &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_cdfStacc\_numEvalPositions &         &             \\
-\hline
+% \hline
 \hline
 $\langle$PREFIX$\rangle$stats\_kde\_compute               &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_kde\_numEvalPositions      &         &             \\
-\hline
+% \hline
 \hline
 $\langle$PREFIX$\rangle$stats\_covMatrix\_compute         &         &             \\
-\hline
+% \hline
 $\langle$PREFIX$\rangle$stats\_corrMatrix\_compute        &         &             \\
-\hline
+\bottomrule
 \end{tabular}
 \end{center}
-\caption{
-Input file options for a the statistical analysis of sequences.
-}
 \label{tab-seq-statistical-options}
 \end{table}
 
