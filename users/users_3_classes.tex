@@ -107,33 +107,38 @@ The input file options for a QUESO environment is presented in Table \ref{tab-en
 \begin{table}[htpb]
 \begin{center}
 \caption{Input file options for a QUESO environment.}\label{tab-env-options}
-\ttfamily
-\begin{tabular}{l|c|c}
+
+\begin{tabular}{l c  m{6cm}}
 \toprule
-\rmfamily Option name                      & \rmfamily Default  value &\rmfamily Description \\
+Option name                      &  Default  value & Description \\
 \midrule\midrule
 
-$\langle$PREFIX$\rangle$env\_help                 &         &             \\
-
-$\langle$PREFIX$\rangle$env\_numSubEnvironments   &         &             \\
-
-$\langle$PREFIX$\rangle$env\_subDisplayFileName   &         &             \\
-
-$\langle$PREFIX$\rangle$env\_subDisplayAllowAll   &         &             \\
-
-$\langle$PREFIX$\rangle$env\_subDisplayAllowedSet &         &             \\
-
-$\langle$PREFIX$\rangle$env\_displayVerbosity     &         &             \\
-
-$\langle$PREFIX$\rangle$env\_syncVerbosity        &         &             \\
-
-$\langle$PREFIX$\rangle$env\_seed                 &         &             \\
+\ttfamily $\langle$PREFIX$\rangle$env\_help                &         &             \\
+\midrule
+\ttfamily$\langle$PREFIX$\rangle$env\_numSubEnvironments   &   1     &  Number of subenvironments                \\ %UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV
+\midrule
+\ttfamily$\langle$PREFIX$\rangle$env\_subDisplayFileName   &  ``.''  & Output filename for subscreen writing     \\ %UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV
+\midrule
+\ttfamily$\langle$PREFIX$\rangle$env\_subDisplayAllowAll   &   0     & Allow all subEnvs to write to output file  \\ %UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV
+\midrule
+\ttfamily$\langle$PREFIX$\rangle$env\_subDisplayAllowedSet & ``''    & Subenvironments that will write to output file      \\ %UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV
+\midrule
+\ttfamily$\langle$PREFIX$\rangle$env\_displayVerbosity     &   0     & Set verbosity				           \\ %UQ_ENV_DISPLAY_VERBOSITY_ODV
+\midrule
+\ttfamily$\langle$PREFIX$\rangle$env\_syncVerbosity        &   0     & Set syncronized verbosity            \\ %UQ_ENV_SYNC_VERBOSITY_ODV
+\midrule
+\ttfamily$\langle$PREFIX$\rangle$env\_seed                 &   0     & Set seed           \\ %UQ_ENV_SEED_ODV
+%
+% TODO add the following options:
+% (m_option_platformName.c_str(),         po::value<std::string >()->default_value(UQ_ENV_PLATFORM_NAME_ODV),           "platform name")""
+% (m_option_identifyingString.c_str(),    po::value<std::string >()->default_value(UQ_ENV_IDENTIFYING_STRING_ODV),      "identifying string")""
+% (m_option_checkingLevel.c_str(),        po::value<unsigned int>()->default_value(UQ_ENV_CHECKING_LEVEL_ODV),          "set checking level")  0          
 \bottomrule
 \end{tabular}
 \end{center}
 \end{table}
 
-
+  
 
 %\clearpage
 \subsection{Vector}
