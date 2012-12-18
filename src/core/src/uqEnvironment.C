@@ -144,6 +144,13 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_alternativeOptionsValues   (),
   m_optionsObj                 (NULL)
 {
+  std::string fileName(passedOptionsInputFileName);
+
+  UQ_FATAL_TEST_MACRO((fileName == "") &&
+      (alternativeOptionsValues == NULL), m_worldRank,
+      "uqBaseEnvironmentClass::constructor()",
+      "Not allowed to pass no input file and NULL options class");
+
   if (passedOptionsInputFileName) m_optionsInputFileName     = passedOptionsInputFileName;
   if (alternativeOptionsValues  ) m_alternativeOptionsValues = *alternativeOptionsValues;
 }
