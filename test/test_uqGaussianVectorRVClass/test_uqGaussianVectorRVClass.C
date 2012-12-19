@@ -30,9 +30,9 @@ int main(int argc, char **argv) {
 #endif
   uqFullEnvironmentClass *env =
 #ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD, NULL, "", opts);
+    new uqFullEnvironmentClass(MPI_COMM_WORLD, "", "", opts);
 #else
-    new uqFullEnvironmentClass(0, NULL, "", opts);
+    new uqFullEnvironmentClass(0, "", "", opts);
 #endif
 
   uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> *param_space;
