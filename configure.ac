@@ -157,33 +157,22 @@ AX_SUMMARIZE_ENV
 # Generate makefiles
 
 AC_CONFIG_FILES([
-	Makefile
-	src/Makefile
-	src/contrib/ANN/Makefile
-	src/contrib/ANN/lib/Makefile
-	src/contrib/ANN/test/Makefile
-	src/core/inc/queso.h
-	examples/Makefile        
-	examples/infoTheoryProblem/Makefile
-	examples/infoTheoryProblem/src/Makefile
-	examples/statisticalInverseProblem/Makefile
-	examples/statisticalInverseProblem/src/Makefile	
-	examples/validationCycle/Makefile
-	examples/validationCycle/src/Makefile
-	examples/validationCycle2/Makefile
-	examples/validationCycle2/src/Makefile
-	examples/statisticalForwardProblem/Makefile
-	examples/statisticalForwardProblem/src/Makefile
-	test/Makefile
-	test/t01_valid_cycle/Makefile
-	test/t02_sip_sfp/Makefile
-	test/t03_sequence/Makefile
-	test/t04_bimodal/Makefile
-    test/gsl_tests/Makefile
-    test/test_uqGaussianVectorRVClass/Makefile
-	doxygen/Makefile
+  Makefile
+  src/Makefile
+  src/contrib/ANN/Makefile
+  src/contrib/ANN/lib/Makefile
+  src/contrib/ANN/test/Makefile
+  src/core/inc/queso.h
+  examples/Makefile        
+  test/Makefile
+  test/t01_valid_cycle/Makefile
+  test/t02_sip_sfp/Makefile
+  test/t03_sequence/Makefile
+  test/t04_bimodal/Makefile
+  test/gsl_tests/Makefile
+  test/test_uqGaussianVectorRVClass/Makefile
+  doxygen/Makefile
 ])
-
 
 AC_OUTPUT()
 
