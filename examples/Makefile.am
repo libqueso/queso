@@ -4,6 +4,10 @@ QUESO_CPPFLAGS  = -I$(top_srcdir)/src/core/inc
 QUESO_CPPFLAGS += -I$(top_srcdir)/src/misc/inc
 QUESO_CPPFLAGS += -I$(top_srcdir)/src/basic/inc
 QUESO_CPPFLAGS += -I$(top_srcdir)/src/stats/inc
+QUESO_CPPFLAGS += $(BOOST_CPPFLAGS)
+QUESO_CPPFLAGS += $(GSL_CFLAGS)
+QUESO_CPPFLAGS += $(GRVY_CFLAGS)
+QUESO_CPPFLAGS += $(ANN_CFLAGS)
 
 if TRILINOS_ENABLED
   QUESO_CPPFLAGS += -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
