@@ -75,7 +75,7 @@ struct uqExchangeInfoStruct
 template <class P_V>
 struct uqBalancedLinkedChainControlStruct
 {
-  P_V*         initialPosition;
+  P_V*         initialPosition; // KEY new: add logPrior and logLikelihood
   unsigned int numberOfPositions;
 };
 
@@ -89,7 +89,7 @@ struct uqBalancedLinkedChainsPerNodeStruct
 
 struct uqUnbalancedLinkedChainControlStruct
 {
-  unsigned int initialPositionIndexInPreviousChain;
+  unsigned int initialPositionIndexInPreviousChain; // KEY new: add logPrior and logLikelihood
   unsigned int numberOfPositions;
 };
 

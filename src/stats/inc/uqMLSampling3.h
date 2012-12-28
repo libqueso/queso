@@ -723,7 +723,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
     // KAUST: all nodes should call here
     uqMetropolisHastingsSGClass<P_V,P_M> mcSeqGenerator(inputOptions,
                                                         rv,
-                                                        auxInitialPosition,
+                                                        auxInitialPosition, // KEY new: pass logPrior and logLikelihood
                                                         &unifiedCovMatrix);
 
     // KAUST: all nodes should call here
@@ -955,7 +955,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
     // KAUST: all nodes should call here
     uqMetropolisHastingsSGClass<P_V,P_M> mcSeqGenerator(inputOptions,
                                                         rv,
-                                                        auxInitialPosition,
+                                                        auxInitialPosition, // KEY new: pass logPrior and logLikelihood
                                                         &unifiedCovMatrix);
 
     // KAUST: all nodes should call here

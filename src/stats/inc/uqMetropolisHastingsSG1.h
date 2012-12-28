@@ -253,7 +253,7 @@ template<class P_V,class P_M>
 uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   const uqMLSamplingLevelOptionsClass& mlOptions,
   const uqBaseVectorRVClass<P_V,P_M>&  sourceRv,
-  const P_V&                           initialPosition,
+  const P_V&                           initialPosition, // KEY
   const P_M*                           inputProposalCovMatrix)
   :
   m_env                       (sourceRv.env()),

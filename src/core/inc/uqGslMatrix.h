@@ -142,7 +142,8 @@ public:
   // TODO: improve this description
   void              cwSet                     (unsigned int rowId, unsigned int colId, const uqGslMatrixClass& mat);
   //@}
-  
+
+  void              cwExtract                 (unsigned int rowId, unsigned int colId, uqGslMatrixClass& mat) const;
   
   //! @name Mathematical methods.
   //@{ 
@@ -272,31 +273,69 @@ uqGslVectorClass& x) internally.*/
 
   
   //! This function fills \c this matrix diagonally with const block  matrices.
-  void              fillWithBlocksDiagonally  (const std::vector<const uqGslMatrixClass* >& matrices);
+  void              fillWithBlocksDiagonally  (unsigned int                                 rowId,
+                                               unsigned int                                 colId,
+                                               const std::vector<const uqGslMatrixClass* >& matrices,
+                                               bool                                         checkForExactNumRowsMatching,
+                                               bool                                         checkForExactNumColsMatching);
   
   //! This function fills \c this matrix diagonally with block matrices.
-  void              fillWithBlocksDiagonally  (const std::vector<      uqGslMatrixClass* >& matrices);
+  void              fillWithBlocksDiagonally  (unsigned int                                 rowId,
+                                               unsigned int                                 colId,
+                                               const std::vector<      uqGslMatrixClass* >& matrices,
+                                               bool                                         checkForExactNumRowsMatching,
+                                               bool                                         checkForExactNumColsMatching);
   
   //! This function fills \c this matrix horizontally with const block matrices.
-  void              fillWithBlocksHorizontally(const std::vector<const uqGslMatrixClass* >& matrices);
+  void              fillWithBlocksHorizontally(unsigned int                                 rowId,
+                                               unsigned int                                 colId,
+                                               const std::vector<const uqGslMatrixClass* >& matrices,
+                                               bool                                         checkForExactNumRowsMatching,
+                                               bool                                         checkForExactNumColsMatching);
   
   //! This function fills \c this matrix horizontally with const block 
-  void              fillWithBlocksHorizontally(const std::vector<      uqGslMatrixClass* >& matrices);
+  void              fillWithBlocksHorizontally(unsigned int                                 rowId,
+                                               unsigned int                                 colId,
+                                               const std::vector<      uqGslMatrixClass* >& matrices,
+                                               bool                                         checkForExactNumRowsMatching,
+                                               bool                                         checkForExactNumColsMatching);
   
   //! This function fills \c this matrix vertically with const block matrices.
-  void              fillWithBlocksVertically  (const std::vector<const uqGslMatrixClass* >& matrices);
+  void              fillWithBlocksVertically  (unsigned int                                 rowId,
+                                               unsigned int                                 colId,
+                                               const std::vector<const uqGslMatrixClass* >& matrices,
+                                               bool                                         checkForExactNumRowsMatching,
+                                               bool                                         checkForExactNumColsMatching);
   
   //! This function fills \c this matrix vertically with block matrices.
-  void              fillWithBlocksVertically  (const std::vector<      uqGslMatrixClass* >& matrices);
+  void              fillWithBlocksVertically  (unsigned int                                 rowId,
+                                               unsigned int                                 colId,
+                                               const std::vector<      uqGslMatrixClass* >& matrices,
+                                               bool                                         checkForExactNumRowsMatching,
+                                               bool                                         checkForExactNumColsMatching);
 	
   //! This function calculates the tensor product of matrices \c mat1 and \c mat2 and stores it in \c this matrix.
-  void              fillWithTensorProduct     (const uqGslMatrixClass& mat1, const uqGslMatrixClass& mat2);
+  void              fillWithTensorProduct     (unsigned int            rowId,
+                                               unsigned int            colId,
+                                               const uqGslMatrixClass& mat1,
+                                               const uqGslMatrixClass& mat2,
+                                               bool                    checkForExactNumRowsMatching,
+                                               bool                    checkForExactNumColsMatching);
 
   //! This function calculates the tensor product of matrix \c mat1 and  vector \c vec2 and stores it in \c this matrix.
-  void              fillWithTensorProduct     (const uqGslMatrixClass& mat1, const uqGslVectorClass& vec2);
+  void              fillWithTensorProduct     (unsigned int            rowId,
+                                               unsigned int            colId,
+                                               const uqGslMatrixClass& mat1,
+                                               const uqGslVectorClass& vec2,
+                                               bool                    checkForExactNumRowsMatching,
+                                               bool                    checkForExactNumColsMatching);
 
   //! This function stores the transpose of \c this matrix into \c this matrix.
-  void              fillWithTranspose         (const uqGslMatrixClass& mat);
+  void              fillWithTranspose         (unsigned int            rowId,
+                                               unsigned int            colId,
+                                               const uqGslMatrixClass& mat,
+                                               bool                    checkForExactNumRowsMatching,
+                                               bool                    checkForExactNumColsMatching);
   //@}	
  
   //! @name Miscellaneous methods.

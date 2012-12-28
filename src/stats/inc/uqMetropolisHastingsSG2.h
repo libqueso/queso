@@ -64,7 +64,7 @@ template <class P_V,class P_M>
 void
 uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   uqBaseVectorSequenceClass<P_V,P_M>& workingChain,
-  uqScalarSequenceClass<double>*      workingLogLikelihoodValues,
+  uqScalarSequenceClass<double>*      workingLogLikelihoodValues, // KEY: add LogPriorValues
   uqScalarSequenceClass<double>*      workingLogTargetValues)
 {
   if ((m_env.subDisplayFile()                   ) &&
@@ -576,7 +576,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
   double logPrior      = 0.;
   double logLikelihood = 0.;
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
-  double logTarget =        m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
+  double logTarget =        m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment // KEY
 #else
   double logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
 #endif
