@@ -659,7 +659,7 @@ uqComputeConditionalGaussianVectorRV(
   // Check transpose operation
   M mat_tt(sigmaMat12);
   mat_tt.cwSet(0.);
-  mat_tt.fillWithTranspose(0,0,sigmaMat21,true);
+  mat_tt.fillWithTranspose(0,0,sigmaMat21,true,true);
   double auxNorm = (mat_tt - sigmaMat12).normFrob();
   if (auxNorm >= 1.e-12) {
     if (env.subDisplayFile()) {
