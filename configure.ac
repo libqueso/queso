@@ -4,7 +4,7 @@
 AC_PREREQ(2.65)
 AC_INIT([queso], [0.45.3], [pecos_dev@ices.utexas.edu])
 AC_CONFIG_MACRO_DIR([m4])
-AM_CONFIG_HEADER(config_queso.h)
+AC_CONFIG_HEADERS(config_queso.h)
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE
 
