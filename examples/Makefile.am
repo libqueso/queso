@@ -28,6 +28,7 @@ exStatisticalForwardProblem_gsldir = $(prefix)/examples/statisticalForwardProble
 
 exStatisticalForwardProblem_gsl_DATA = $(top_srcdir)/examples/statisticalForwardProblem/tests/test_2012_11_13/sfp.inp
 exStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/statisticalForwardProblem/tests/test_2012_11_13/sfp_plot.m
+dist_exStatisticalForwardProblem_gsl_DATA = ${exStatisticalForwardProblem_gsl_DATA}
 
 exStatisticalForwardProblem_gsl_PROGRAMS = exStatisticalForwardProblem_gsl
 
@@ -47,6 +48,7 @@ exStatisticalInverseProblem_gsldir = $(prefix)/examples/statisticalInverseProble
 
 exStatisticalInverseProblem_gsl_DATA = $(top_srcdir)/examples/statisticalInverseProblem/tests/test_2012_11_15/sip.inp
 exStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/statisticalInverseProblem/tests/test_2012_11_15/sip_plot.m
+dist_exStatisticalInverseProblem_gsl_DATA = ${exStatisticalInverseProblem_gsl_DATA}
 
 exStatisticalInverseProblem_gsl_PROGRAMS = exStatisticalInverseProblem_gsl
 
@@ -71,6 +73,7 @@ exTgaValidationCycle_gsl_DATA += $(top_srcdir)/examples/validationCycle/tests/te
 exTgaValidationCycle_gsl_DATA += $(top_srcdir)/examples/validationCycle/tests/test_2012_11_15/tgaCycle.inp
 exTgaValidationCycle_gsl_DATA += $(top_srcdir)/examples/validationCycle/tests/test_2012_11_15/tgaCycle_2009_03_30.inp
 exTgaValidationCycle_gsl_DATA += $(top_srcdir)/examples/validationCycle/tests/test_2012_11_15/tga_cycle_plot.m
+dist_exTgaValidationCycle_gsl_DATA = $(exTgaValidationCycle_gsl_DATA)
 
 exTgaValidationCycle_gsl_PROGRAMS = exTgaValidationCycle_gsl
 
@@ -95,6 +98,7 @@ tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/i
 tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/inputData/scenario_5_K_min.dat
 tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/tgaCycle.inp
 tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/tga_cycle_plot.m
+dist_tga2_gsl_DATA = $(tga2_gsl_DATA)
 
 tga2_gsl_PROGRAMS = tga2_gsl
 
@@ -119,6 +123,7 @@ tga2_gsl_CPPFLAGS = -I$(top_srcdir)/examples/validationCycle2/src $(QUESO_CPPFLA
 exInfoTheory_gsldir = $(prefix)/examples/infoTheoryProblem
 
 exInfoTheory_gsl_DATA = $(top_srcdir)/examples/infoTheoryProblem/tests/test_2011_02_03/infTh.inp
+dist_exInfoTheory_gsl_DATA = ${exInfoTheory_gsl_DATA}
 
 exInfoTheory_gsl_PROGRAMS = exInfoTheory_gsl
 
