@@ -5,15 +5,15 @@ endif
 check_PROGRAMS = # Append below
 check_PROGRAMS += test_uqEnvironment
 
-INCLUDES     = -I$(top_srcdir)/src -I$(top_builddir)/src
 LIBS         = -L$(top_builddir)/src/ -lqueso 
 
-AM_CPPFLAGS  = -I. \
-	       -I$(top_srcdir)/src/core/inc \
-               -I$(top_srcdir)/src/misc/inc \
-               -I$(top_srcdir)/src/basic/inc \
-               -I$(top_srcdir)/src/stats/inc \
-	        $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(GRVY_CFLAGS) $(ANN_CFLAGS)
+AM_CPPFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src \
+              -I. \
+              -I$(top_srcdir)/src/core/inc \
+              -I$(top_srcdir)/src/misc/inc \
+              -I$(top_srcdir)/src/basic/inc \
+              -I$(top_srcdir)/src/stats/inc \
+              $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(GRVY_CFLAGS) $(ANN_CFLAGS)
 
 if TRILINOS_ENABLED
   AM_CPPFLAGS += -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
@@ -30,6 +30,7 @@ endif
 test_uqEnvironment_SOURCES = test_uqEnvironment.C
 
 TESTS = test_uqEnvironment.sh
+EXTRA_DIST = test_uqEnvironment.sh
 
 if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE
