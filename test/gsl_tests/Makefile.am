@@ -9,15 +9,15 @@ check_PROGRAMS += get_set_row_column \
                   power_method \
                   inverse_power_method
 
-INCLUDES     = -I$(top_srcdir)/src -I$(top_builddir)/src
+AM_CPPFLAGS  = -I$(top_srcdir)/src -I$(top_builddir)/src
 LIBS         = -L$(top_builddir)/src/ -lqueso 
 
-AM_CPPFLAGS  = -I. \
-	       -I$(top_srcdir)/src/core/inc \
-               -I$(top_srcdir)/src/misc/inc \
-               -I$(top_srcdir)/src/basic/inc \
-               -I$(top_srcdir)/src/stats/inc \
-	        $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(GRVY_CFLAGS) $(ANN_CFLAGS)
+AM_CPPFLAGS  += -I. \
+                -I$(top_srcdir)/src/core/inc \
+                -I$(top_srcdir)/src/misc/inc \
+                -I$(top_srcdir)/src/basic/inc \
+                -I$(top_srcdir)/src/stats/inc \
+	                $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(GRVY_CFLAGS) $(ANN_CFLAGS)
 
 if TRILINOS_ENABLED
   AM_CPPFLAGS += -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
