@@ -135,4 +135,8 @@ exInfoTheory_gsl_LDADD = $(top_srcdir)/src/libqueso.la
 
 exInfoTheory_gsl_CPPFLAGS = -I$(top_srcdir)/examples/infoTheoryProblem/src $(QUESO_CPPFLAGS)
 
+if CODE_COVERAGE_ENABLED
+  CLEANFILES = *.gcda *.gcno
+endif
+
 MAINTAINERCLEANFILES = Makefile.in

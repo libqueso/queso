@@ -31,6 +31,10 @@ TgaValidationCycle_gsl_SOURCES = TgaValidationCycle_gsl.C TgaValidationCycle_app
 				TgaValidationCycle_likelihood.h TgaValidationCycle_qoi.h \
 				tgaCycle.inp
 
+if CODE_COVERAGE_ENABLED
+  CLEANFILES = *.gcda *.gcno
+endif
+
 if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE *.C *.h

@@ -223,6 +223,10 @@ queso_version_SOURCES      = $(top_srcdir)/src/core/src/version.C
 queso_version_LDADD        = -L$(top_builddir)/src -lqueso $(HDF5_LIBS) 
 queso_version_DEPENDENCIES = libqueso.la
 
+if CODE_COVERAGE_ENABLED
+  CLEANFILES = *.gcda *.gcno
+endif
+
 #---------------------------------
 # Embedded license header support
 #---------------------------------

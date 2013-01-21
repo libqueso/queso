@@ -31,6 +31,10 @@ BimodalExample_gsl_SOURCES = example_main.C example_compute.C example_likelihood
 			example_compute.h example_likelihood.h \
 			example_1chain.inp
 
+if CODE_COVERAGE_ENABLED
+  CLEANFILES = *.gcda *.gcno
+endif
+
 if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE *.C *.h

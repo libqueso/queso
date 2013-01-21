@@ -32,6 +32,10 @@ test_uqEnvironment_SOURCES = test_uqEnvironment.C
 TESTS = test_uqEnvironment.sh
 EXTRA_DIST = test_uqEnvironment.sh
 
+if CODE_COVERAGE_ENABLED
+  CLEANFILES = *.gcda *.gcno
+endif
+
 if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE *.C
