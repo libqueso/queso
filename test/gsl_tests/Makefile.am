@@ -51,6 +51,10 @@ TESTS             = init.sh \
 
 EXTRA_DIST = init.sh finalize.sh input
 
+if CODE_COVERAGE_ENABLED
+  CLEANFILES = *.gcda *.gcno
+endif
+
 if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE *.C *.h
