@@ -28,7 +28,6 @@ exStatisticalForwardProblem_gsldir = $(prefix)/examples/statisticalForwardProble
 
 exStatisticalForwardProblem_gsl_DATA = $(top_srcdir)/examples/statisticalForwardProblem/tests/test_2012_11_13/sfp.inp
 exStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/statisticalForwardProblem/tests/test_2012_11_13/sfp_plot.m
-dist_exStatisticalForwardProblem_gsl_DATA = ${exStatisticalForwardProblem_gsl_DATA}
 
 exStatisticalForwardProblem_gsl_PROGRAMS = exStatisticalForwardProblem_gsl
 
@@ -41,6 +40,11 @@ exStatisticalForwardProblem_gsl_LDADD = $(top_srcdir)/src/libqueso.la
 
 exStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalForwardProblem/src $(QUESO_CPPFLAGS)
 
+# Make sure everything relevant gets added when doing 'make dist'
+dist_exStatisticalForwardProblem_gsl_DATA = ${exStatisticalForwardProblem_gsl_DATA} \
+																						${exStatisticalForwardProblem_gsl_SOURCES} \
+																						${exStatisticalForwardProblem_gsl_HEADERS}
+
 #############################
 # statisticalInverseProblem #
 #############################
@@ -48,7 +52,6 @@ exStatisticalInverseProblem_gsldir = $(prefix)/examples/statisticalInverseProble
 
 exStatisticalInverseProblem_gsl_DATA = $(top_srcdir)/examples/statisticalInverseProblem/tests/test_2012_11_15/sip.inp
 exStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/statisticalInverseProblem/tests/test_2012_11_15/sip_plot.m
-dist_exStatisticalInverseProblem_gsl_DATA = ${exStatisticalInverseProblem_gsl_DATA}
 
 exStatisticalInverseProblem_gsl_PROGRAMS = exStatisticalInverseProblem_gsl
 
@@ -60,6 +63,10 @@ exStatisticalInverseProblem_gsl_HEADERS += $(top_srcdir)/examples/statisticalInv
 exStatisticalInverseProblem_gsl_LDADD = $(top_srcdir)/src/libqueso.la
 
 exStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalInverseProblem/src $(QUESO_CPPFLAGS)
+
+dist_exStatisticalInverseProblem_gsl_DATA = ${exStatisticalInverseProblem_gsl_DATA} \
+																						${exStatisticalInverseProblem_gsl_HEADERS} \
+																						${exStatisticalInverseProblem_gsl_SOURCES}
 
 ###################
 # validationCycle #
@@ -73,7 +80,6 @@ exTgaValidationCycle_gsl_DATA += $(top_srcdir)/examples/validationCycle/tests/te
 exTgaValidationCycle_gsl_DATA += $(top_srcdir)/examples/validationCycle/tests/test_2012_11_15/tgaCycle.inp
 exTgaValidationCycle_gsl_DATA += $(top_srcdir)/examples/validationCycle/tests/test_2012_11_15/tgaCycle_2009_03_30.inp
 exTgaValidationCycle_gsl_DATA += $(top_srcdir)/examples/validationCycle/tests/test_2012_11_15/tga_cycle_plot.m
-dist_exTgaValidationCycle_gsl_DATA = $(exTgaValidationCycle_gsl_DATA)
 
 exTgaValidationCycle_gsl_PROGRAMS = exTgaValidationCycle_gsl
 
@@ -87,6 +93,10 @@ exTgaValidationCycle_gsl_LDADD = $(top_srcdir)/src/libqueso.la
 
 exTgaValidationCycle_gsl_CPPFLAGS = -I$(top_srcdir)/examples/validationCycle/src $(QUESO_CPPFLAGS)
 
+dist_exTgaValidationCycle_gsl_DATA = $(exTgaValidationCycle_gsl_DATA) \
+																		 ${exTgaValidationCycle_gsl_HEADERS} \
+																		 ${exTgaValidationCycle_gsl_SOURCES}
+
 ####################
 # validationCycle2 #
 ####################
@@ -98,7 +108,6 @@ tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/i
 tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/inputData/scenario_5_K_min.dat
 tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/tgaCycle.inp
 tga2_gsl_DATA += $(top_srcdir)/examples/validationCycle2/tests/test_2012_11_15/tga_cycle_plot.m
-dist_tga2_gsl_DATA = $(tga2_gsl_DATA)
 
 tga2_gsl_PROGRAMS = tga2_gsl
 
@@ -117,13 +126,16 @@ tga2_gsl_LDADD = $(top_srcdir)/src/libqueso.la
 
 tga2_gsl_CPPFLAGS = -I$(top_srcdir)/examples/validationCycle2/src $(QUESO_CPPFLAGS)
 
+dist_tga2_gsl_DATA = $(tga2_gsl_DATA) \
+										 ${tga2_gsl_HEADERS} \
+										 ${tga2_gsl_SOURCES}
+
 #####################
 # infoTheoryProblem #
 #####################
 exInfoTheory_gsldir = $(prefix)/examples/infoTheoryProblem
 
 exInfoTheory_gsl_DATA = $(top_srcdir)/examples/infoTheoryProblem/tests/test_2011_02_03/infTh.inp
-dist_exInfoTheory_gsl_DATA = ${exInfoTheory_gsl_DATA}
 
 exInfoTheory_gsl_PROGRAMS = exInfoTheory_gsl
 
@@ -134,6 +146,10 @@ exInfoTheory_gsl_HEADERS = $(top_srcdir)/examples/infoTheoryProblem/src/exInfoTh
 exInfoTheory_gsl_LDADD = $(top_srcdir)/src/libqueso.la
 
 exInfoTheory_gsl_CPPFLAGS = -I$(top_srcdir)/examples/infoTheoryProblem/src $(QUESO_CPPFLAGS)
+
+dist_exInfoTheory_gsl_DATA = ${exInfoTheory_gsl_DATA} \
+														 ${exInfoTheory_gsl_HEADERS} \
+														 ${exInfoTheory_gsl_SOURCES}
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
