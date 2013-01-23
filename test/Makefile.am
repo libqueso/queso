@@ -9,6 +9,7 @@ check_PROGRAMS += test_uqEnvironment
 check_PROGRAMS += test_uqEnvironmentCopy
 check_PROGRAMS += test_uqEnvironmentEquals
 check_PROGRAMS += test_uqEnvironmentNonFatal
+check_PROGRAMS += test_uqEnvironmentOptionsPrint
 
 LIBS         = -L$(top_builddir)/src/ -lqueso 
 
@@ -36,23 +37,28 @@ test_uqEnvironment_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironm
 test_uqEnvironmentCopy_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentCopy.C
 test_uqEnvironmentEquals_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentEquals.C
 test_uqEnvironmentNonFatal_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentNonFatal.C
+test_uqEnvironmentOptionsPrint_SOURCES = $(top_srcdir)/test/test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.C
+
 
 # Files to freedom stamp
 srcstamp = $(test_uqEnvironment_SOURCES) \
 					 $(test_uqEnvironmentCopy_SOURCES) \
 					 $(test_uqEnvironmentEquals_SOURCES) \
-					 $(test_uqEnvironmentNonFatal_SOURCES)
+					 $(test_uqEnvironmentNonFatal_SOURCES) \
+					 $(test_uqEnvironmentOptionsPrint_SOURCES)
 
 TESTS = $(top_builddir)/test/test_Environment/test_uqEnvironment.sh \
 				$(top_builddir)/test/test_Environment/test_uqEnvironmentCopy.sh \
 				$(top_builddir)/test/test_Environment/test_uqEnvironmentEquals.sh \
-				$(top_builddir)/test/test_uqEnvironmentNonFatal
+				$(top_builddir)/test/test_uqEnvironmentNonFatal \
+        $(top_builddir)/test/test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
              test_uqEnvironment.sh \
              test_uqEnvironmentCopy.sh \
-             test_uqEnvironmentEquals.sh
+             test_uqEnvironmentEquals.sh \
+						 test_uqEnvironmentOptionsPrint.sh
 
 CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt
 if CODE_COVERAGE_ENABLED
