@@ -38,17 +38,16 @@ test_uqEnvironmentNonFatal_SOURCES = $(top_srcdir)/test/test_uqEnvironment/test_
 TESTS = $(top_builddir)/test/test_uqEnvironment/test_uqEnvironment.sh \
 				$(top_builddir)/test/test_uqEnvironment/test_uqEnvironmentCopy.sh \
 				$(top_builddir)/test/test_uqEnvironment/test_uqEnvironmentEquals.sh \
-				$(top_builddir)/test/test_uqEnvironment/test_uqEnvironmentNonFatal \
-				$(top_builddir)/test/test_uqEnvironment/test_uqEnvironmentNonFatal.sh
+				$(top_builddir)/test/test_uqEnvironment/test_uqEnvironmentNonFatal
 
 EXTRA_DIST = test_uqEnvironment.sh \
              test_uqEnvironmentCopy.sh \
              test_uqEnvironmentEquals.sh \
-						 test_uqEnvironmentNonFatal \
-						 test_uqEnvironmentNonFatal.sh
+						 test_uqEnvironmentNonFatal
 
+CLEANFILES = $(top_srcdir)/test/test_uqEnvironment/debug_output_sub0.txt
 if CODE_COVERAGE_ENABLED
-  CLEANFILES = *.gcda *.gcno
+  CLEANFILES += *.gcda *.gcno
 endif
 
 if SVN_CHECKOUT
