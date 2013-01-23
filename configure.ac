@@ -172,6 +172,7 @@ AC_CONFIG_FILES([
   test/gsl_tests/Makefile
   test/test_uqGaussianVectorRVClass/Makefile
   test/test_uqEnvironment/Makefile
+  test/test_uqEnvironmentOptions/Makefile
   doxygen/Makefile
 ])
 
