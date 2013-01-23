@@ -39,14 +39,13 @@ TESTS = $(top_builddir)/test/test_uqEnvironment/test_uqEnvironment.sh \
 				$(top_builddir)/test/test_uqEnvironment/test_uqEnvironmentCopy.sh \
 				$(top_builddir)/test/test_uqEnvironment/test_uqEnvironmentEquals.sh \
 				$(top_builddir)/test/test_uqEnvironment/test_uqEnvironmentNonFatal \
-				$(top_builddir)/test/test_uqEnvironment/test_uqEnvironmentNonFatal.sh \
-
+				$(top_builddir)/test/test_uqEnvironment/test_uqEnvironmentNonFatal.sh
 
 EXTRA_DIST = test_uqEnvironment.sh \
              test_uqEnvironmentCopy.sh \
              test_uqEnvironmentEquals.sh \
 						 test_uqEnvironmentNonFatal \
-						 test_uqEnvironmentNonFatal.sh \
+						 test_uqEnvironmentNonFatal.sh
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
