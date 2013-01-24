@@ -10,6 +10,8 @@ check_PROGRAMS += test_uqEnvironmentCopy
 check_PROGRAMS += test_uqEnvironmentEquals
 check_PROGRAMS += test_uqEnvironmentNonFatal
 check_PROGRAMS += test_uqEnvironmentOptionsPrint
+check_PROGRAMS += test_uqGslVectorConstructorFatal
+check_PROGRAMS += test_uqGslVector
 
 LIBS         = -L$(top_builddir)/src/ -lqueso 
 
@@ -38,6 +40,8 @@ test_uqEnvironmentCopy_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvi
 test_uqEnvironmentEquals_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentEquals.C
 test_uqEnvironmentNonFatal_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentNonFatal.C
 test_uqEnvironmentOptionsPrint_SOURCES = $(top_srcdir)/test/test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.C
+test_uqGslVectorConstructorFatal_SOURCES = $(top_srcdir)/test/test_GslVector/test_uqGslVectorConstructorFatal.C
+test_uqGslVector_SOURCES = $(top_srcdir)/test/test_GslVector/test_uqGslVector.C
 
 
 # Files to freedom stamp
@@ -45,22 +49,28 @@ srcstamp = $(test_uqEnvironment_SOURCES) \
 					 $(test_uqEnvironmentCopy_SOURCES) \
 					 $(test_uqEnvironmentEquals_SOURCES) \
 					 $(test_uqEnvironmentNonFatal_SOURCES) \
-					 $(test_uqEnvironmentOptionsPrint_SOURCES)
+					 $(test_uqEnvironmentOptionsPrint_SOURCES) \
+					 $(test_uqGslVectorConstructorFatal_SOURCES) \
+					 $(test_uqGslVector_SOURCES)
 
 TESTS = $(top_builddir)/test/test_Environment/test_uqEnvironment.sh \
 				$(top_builddir)/test/test_Environment/test_uqEnvironmentCopy.sh \
 				$(top_builddir)/test/test_Environment/test_uqEnvironmentEquals.sh \
 				$(top_builddir)/test/test_uqEnvironmentNonFatal \
-        $(top_builddir)/test/test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh
+        $(top_builddir)/test/test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh \
+				$(top_builddir)/test/test_GslVector/test_uqGslVectorConstructorFatal.sh \
+				$(top_builddir)/test/test_uqGslVector
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
              test_uqEnvironment.sh \
              test_uqEnvironmentCopy.sh \
              test_uqEnvironmentEquals.sh \
-						 test_uqEnvironmentOptionsPrint.sh
+						 test_uqEnvironmentOptionsPrint.sh \
+						 test_uqGslVectorConstructorFatal.sh
 
-CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt
+CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt \
+						 $(top_srcdir)/test/test_GslVector/gslvector_out_sub0.m
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
 endif
