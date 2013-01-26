@@ -14,6 +14,7 @@ check_PROGRAMS += test_uqGslVectorConstructorFatal
 check_PROGRAMS += test_uqGslVector
 check_PROGRAMS += test_uqGaussianVectorRVClass
 check_PROGRAMS += test_uqGslMatrixConstructorFatal
+check_PROGRAMS += test_uqGslMatrix
 
 LIBS         = -L$(top_builddir)/src/ -lqueso 
 
@@ -46,6 +47,7 @@ test_uqGslVectorConstructorFatal_SOURCES = $(top_srcdir)/test/test_GslVector/tes
 test_uqGslVector_SOURCES = $(top_srcdir)/test/test_GslVector/test_uqGslVector.C
 test_uqGaussianVectorRVClass_SOURCES = $(top_srcdir)/test/test_GaussianVectorRVClass/test_uqGaussianVectorRVClass.C
 test_uqGslMatrixConstructorFatal_SOURCES = $(top_srcdir)/test/test_GslMatrix/test_uqGslMatrixConstructorFatal.C
+test_uqGslMatrix_SOURCES = $(top_srcdir)/test/test_GslMatrix/test_uqGslMatrix.C
 
 # Files to freedom stamp
 srcstamp = $(test_uqEnvironment_SOURCES) \
@@ -56,7 +58,8 @@ srcstamp = $(test_uqEnvironment_SOURCES) \
 					 $(test_uqGslVectorConstructorFatal_SOURCES) \
 					 $(test_uqGslVector_SOURCES) \
 					 $(test_uqGaussianVectorRVClass_SOURCES) \
-           $(test_uqGslMatrixConstructorFatal_SOURCES)
+           $(test_uqGslMatrixConstructorFatal_SOURCES) \
+					 $(test_uqGslMatrix_SOURCES)
 
 
 TESTS = $(top_builddir)/test/test_Environment/test_uqEnvironment.sh \
@@ -67,7 +70,8 @@ TESTS = $(top_builddir)/test/test_Environment/test_uqEnvironment.sh \
 				$(top_builddir)/test/test_GslVector/test_uqGslVectorConstructorFatal.sh \
 				$(top_builddir)/test/test_uqGslVector \
         $(top_builddir)/test/test_uqGaussianVectorRVClass \
-				$(top_builddir)/test/test_GslMatrix/test_uqGslMatrixConstructorFatal.sh
+				$(top_builddir)/test/test_GslMatrix/test_uqGslMatrixConstructorFatal.sh \
+				$(top_builddir)/test/test_uqGslMatrix
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
@@ -75,7 +79,6 @@ EXTRA_DIST = common/compare.pl \
              test_uqEnvironmentCopy.sh \
              test_uqEnvironmentEquals.sh \
 						 test_uqEnvironmentOptionsPrint.sh \
-						 test_uqGslVectorConstructorFatal.sh \
 						 test_uqGslVectorConstructorFatal.sh
 
 CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt \
