@@ -75,11 +75,13 @@ TESTS = $(top_builddir)/test/test_Environment/test_uqEnvironment.sh \
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
-             test_uqEnvironment.sh \
-             test_uqEnvironmentCopy.sh \
-             test_uqEnvironmentEquals.sh \
-						 test_uqEnvironmentOptionsPrint.sh \
-						 test_uqGslVectorConstructorFatal.sh
+             test_Environment/test_uqEnvironment.sh \
+             test_Environment/test_uqEnvironmentCopy.sh \
+             test_Environment/test_uqEnvironmentEquals.sh \
+						 test_GslVector/test_uqGslVectorConstructorFatal.sh \
+             test_GslMatrix/test_uqGslMatrixConstructorFatal.sh \
+						 test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh \
+						 test_uqEnvironmentOptions/test.inp
 
 CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt \
 						 $(top_srcdir)/test/gslvector_out_sub0.m
