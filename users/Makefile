@@ -38,7 +38,7 @@ $(texfinal): *.tex $(bibfiles) $(figures) $(clsfiles)
 clean: cleanlatex cleanfigs
 
 cleanlatex:
-	rm -f $(patsubst %.tex, %.aux, $(wildcard *.tex)) 
+	rm -f $(patsubst %.tex, %.tex.bak, %.aux, $(wildcard *.tex)) 
 	rm -f $(texroot).bbl $(texroot).blg $(texroot).log $(texroot).dvi $(texroot).nav $(texroot).out $(texroot).pdf $(texroot).snm $(texroot).toc $(texroot).vrb *.tex~ *.tex.backup
 	rm -f QUESO_users_manual.pdf McCheese.pdf McCheese.log McCheese.dvi McCheese.out McCheese.ps
 
