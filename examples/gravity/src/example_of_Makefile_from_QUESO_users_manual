@@ -1,0 +1,53 @@
+###################################################
+# Using installed QUESO 0.45.3 in 'violeta'
+###################################################
+
+QUESO_DIR = $(HOME)/LIBRARIES/QUESO_0.45.3
+BOOST_DIR = $(HOME)/LIBRARIES/boost
+GSL_DIR  =  $(HOME)/LIBRARIES/gsl
+GRVY_DIR =  $(HOME)/LIBRARIES/GRVY
+HDF5_DIR  = $(HOME)/LIBRARIES/hdf5
+
+INC_PATHS = \
+	-I. \
+	-I$(QUESO_DIR)/include \
+	-I$(BOOST_DIR)/include \
+	-I$(GSL_DIR)/include \
+	-I$(GRVY_DIR)/include \
+	-I$(HDF5_DIR)/include
+
+LIBS = \
+	-L$(QUESO_DIR)/lib \
+	-lqueso \
+	-L$(BOOST_DIR)/lib \
+	-lboost_program_options \
+	-L$(GSL_DIR)/lib \
+	-lgsl \
+	-L$(GRVY_DIR)/lib \
+	-lgrvy \
+	-L$(HDF5_DIR)/lib \
+	-lhdf5 
+
+CXX = mpic++
+CXXFLAGS += -g -Wall -c
+
+default: all
+
+.SUFFIXES: .o .C
+
+all:	example_gravity_gsl
+
+clean:
+	rm -f *~
+	rm -f *.o
+	rm -f gravity_gsl
+
+example_gravity_gsl: gravity_main.o gravity_likelihood.o gravity_compute.o gravity_qoi.o
+	$(CXX) gravity_main.o \
+	       gravity_likelihood.o \
+	       gravity_compute.o \
+	       gravity_qoi.o \
+	       -o gravity_gsl $(LIBS)
+
+%.o: %.C
+	$(CXX) $(INC_PATHS) $(CXXFLAGS) $<

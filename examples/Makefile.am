@@ -151,6 +151,34 @@ dist_exInfoTheory_gsl_DATA = ${exInfoTheory_gsl_DATA} \
 														 ${exInfoTheory_gsl_HEADERS} \
 														 ${exInfoTheory_gsl_SOURCES}
 
+
+####################
+# gravity #
+####################
+gravity_gsldir = $(prefix)/examples/gravity
+
+gravity_gsl_DATA = $(top_srcdir)/examples/gravity/tests/test_2013_01_22/gravity_inv_fwd.inp
+#gravity_gsl_DATA += $(top_srcdir)/examples/gravity/tests/test_2012_11_15/tga_cycle_plot.m
+
+gravity_gsl_PROGRAMS = gravity_gsl
+
+gravity_gsl_SOURCES = $(top_srcdir)/examples/gravity/src/gravity_main.C
+gravity_gsl_SOURCES += $(top_srcdir)/examples/gravity/src/gravity_compute.C
+gravity_gsl_SOURCES += $(top_srcdir)/examples/gravity/src/gravity_likelihood.C
+gravity_gsl_SOURCES += $(top_srcdir)/examples/gravity/src/gravity_qoi.C
+
+gravity_gsl_HEADERS = $(top_srcdir)/examples/gravity/src/gravity_compute.h
+gravity_gsl_HEADERS += $(top_srcdir)/examples/gravity/src/gravity_likelihood.h
+gravity_gsl_HEADERS += $(top_srcdir)/examples/gravity/src/gravity_qoi.h
+
+gravity_gsl_LDADD = $(top_srcdir)/src/libqueso.la
+
+gravity_gsl_CPPFLAGS = -I$(top_srcdir)/examples/gravity/src $(QUESO_CPPFLAGS)
+
+dist_gravity_gsl_DATA = $(gravity_gsl_DATA) \
+										 ${gravity_gsl_HEADERS} \
+										 ${gravity_gsl_SOURCES}
+										 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif
