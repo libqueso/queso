@@ -7,22 +7,25 @@
 %Section \ref{sc-intro-qoi} presents a first mathematical model of a system, as well as the applicability of Bayes' theorem to our prediction problem.
 %The chapter finishes with the presentation of a more detailed model of a system in Section \ref{sc-intro-detail}.
 
-% QUESO stands for Quantification of Uncertainty for Estimation, Simulation and Optimization, and
-% it is a library  of statistical algorithms and programming classes for {\it research} on uncertainty quantification (UQ) of mathematical models and their predictions. It has been developed to implement advanced algorithms for Bayesian
+
+
+QUESO is a parallel object-oriented statistical library dedicated to the research of statistically robust, scalable, load balanced, and fault-tolerant mathematical algorithms for the quantification of uncertainty (UQ) of mathematical models and their predictions. 
+% It has been developed to implement advanced algorithms for Bayesian
 % inference, including are many variants of MCMC and the multi-level algorithm.  It is able to handle uni- and multi-processor Linux
 % environments and to provide a wide range of diagnostics.
 
-The purpose of this chapter is to introduce relevant terminology, mathematical and statistical concepts, and statistical algorithms, together with an overall description of QUESO library.
 
-% It is a parallel object-oriented statistical library dedicated to the research of 
-% statistically robust, scalable, load balanced, and fault-tolerant mathematical algorithms for the
-% quantification of uncertainty in realistic computational models and predictions related to natural and engineering systems.
+The purpose of this chapter is to introduce relevant terminology, mathematical and statistical concepts, statistical algorithms, together with an overall description of how the user's application may be linked with QUESO library.
+
 
 \section{Preliminaries}
 
+% Inverse problems is the name designated to a large and interesting class of mathematically intractable problems which arise in a wide variety of scientific disciplines. According to Keller (1976) two problems are defined as inverse to each other if the formulation of each of them rests on complete or partial knowledge of the solution of the other. Thus inverse problems come paired with direct problems. The labeling of the two problems is fundamentally indifferent, however, the direct problem has typically been studied earlier and, possibly, in more details than the inverse problem.
 
-Inverse problems are defined as the inverse of direct or forward problems, as the term itself suggests.
-Inverse problems apply, in general, to situations were certain quantities of interest are different from the ones that are accessible to measurements \cite{Andersen2001}. 
+% 
+% Inverse problems are defined as the inverse of direct or forward problems, as the term itself suggests.
+% Inverse problems apply, in general, to situations where certain quantities of interest are different from the ones that are accessible to measurements.
+% % \cite{Andersen2001}. 
 
 % A typical feature of inverse problems is that they often fail to fulfill Hadamard's presumptions of well-posedness, i.e., a unique solution may not exist or may not depend continuously  on the given data.
 % By reformulating inverse problems for statistical inference,  regularization of ill-posed problems may be obtained through Bayesian approach ( 
@@ -40,9 +43,10 @@ It is often not straightforward to obtain explicit posterior point estimates of 
 
 QUESO is designed in an abstract way so that it can be used by any computational model, as long as a likelihood function (in the case of statistical inverse problems) and a quantity of interest (QoI) function (in the case of statistical forward problems) is provided by the user application.
 
+
 QUESO library provides tools for both sampling algorithms for statistical inverse problems, following Bayes' formula, and statistical forward problems. It contains Monte Carlo solvers (for autocorrelation, kernel density estimation ans accuracy assessment), MCMC (e.g. Metropolis Hastings \cite{Metr_1953,Hast_1970}) as well as the DRAM \cite{HaLaMiSa06} (for sampling from probability distributions); it also has the capacity to handle many chains or sequences in parallel, each chain or sequence itself demanding many computing nodes because of the computational model being statistically explored \cite{PrSc09}.
 
-\section{Key Statistical Concepts}
+\section{Key Statistical Concepts}\label{sec:statistical_concepts}
 
 A computational model is a combination of a
 mathematical model and a discretization that enables the approximate
@@ -240,7 +244,7 @@ an application user may simultaneously run:
 \item[(b)] multiple instances of a problem where the physical model requires multiple processors, or
 \item[(c)] independent sets of types (a) and (b).
 \end{description}
-%
+
 For example, suppose an user wants to use the MH algorithm to solve a statistical IP, and that 1,024 processors are available.
 If the physical model is simple enough to be handled efficiently by a single processor, then the user can run 1,024 chains simultaneously, as in case (a).
 If the model is more complex and requires, say, 16 processors, then the user can run 64 chains simultaneously, as in case (b), with 16 processors per chain.

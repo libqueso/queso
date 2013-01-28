@@ -4,6 +4,9 @@
 
 
 
+QUESO is is a parallel object-oriented statistical library dedicated to the research of   statistically robust, scalable, load balanced, and fault-tolerant mathematical algorithms for the  quantification of uncertainty in realistic computational models and predictions related to natural and engineering systems.
+
+
 
 Classes in QUESO can be divided in four main groups: core, templated basic, templated statistical and miscellaneous.
 The classed that handle environment (and options), vector and matrix are considered \textit{core} classes. Classes implementing vector sets and subsets, vector spaces,  scalar functions, vector functions, scalar sequences and vector sequences are \textit{templated basic} classes; they are necessary for the definition and description of other entities, such as RVs, Bayesian solutions of IPs, sampling algorithms and chains.  Vector realizer, vector RV, statistical IP (and options), MH solver (and options), statistical FP (and options), MC solver (and options) and sequence statistical options are part of \textit{templated statistical} classes. And finally, the \textit{miscellaneous} classes consist of C and FORTRAN interfaces.
@@ -25,6 +28,8 @@ The classed that handle environment (and options), vector and matrix are conside
 \section{Core Classes}
 
 
+QUESO core classes are the classes responsible for handling the environment (and options), vector
+and matrix operations. They are described in the following sections.
 
 % 
 % \begin{description}
@@ -121,7 +126,7 @@ A QUESO subenvironment eventually prints messages to its own output file. In ord
 If all requirements are satisfied, then QUESO will generate a file with name \linebreak 
 \verb+<m_subDisplayFileName>_sub<sub id>.txt+.   For instance, if \verb+m_subDisplayFileName+ is `\verb+pROblem_775_+' then a node of sub rank 0 in sub environment 17 will write a message to the file `\verb+pROblem_775_sub17.txt+'.
 
-Figure \ref{fig-env-class} depicts class diagram for the environment class; and Figure  \ref{fig-env-options-class} displays environment options class.%, pages \pageref{fig-env-class} and \pageref{fig-env-options-class}),
+Figure \ref{fig-env-class} depicts class diagram for the environment class; and Figure  \ref{fig-env-options-class} displays environment options class. %, pages \pageref{fig-env-class} and \pageref{fig-env-options-class}),
  Finally, the input file options for a QUESO environment, i.e., the options the user may set in his/her input file when using QUESO together with the application of interest, is presented in Table \ref{tab-env-options}.
 
 \begin{figure}[!hp]
@@ -151,19 +156,19 @@ Figure \ref{fig-env-class} depicts class diagram for the environment class; and 
 Option name                      &  Default  value & Description \\
 \midrule\midrule
 \ttfamily $\langle$PREFIX$\rangle$env\_help                &     & Produces help message for environment class            \\
-\midrule
+%\midrule
 \ttfamily$\langle$PREFIX$\rangle$env\_numSubEnvironments   &  1  &  Number of subenvironments                \\ %UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV
-\midrule
+% \midrule
 \ttfamily$\langle$PREFIX$\rangle$env\_subDisplayFileName   & \ttfamily"." & Output filename for sub-screen writing     \\ %UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV
-\midrule
+% \midrule
 \ttfamily$\langle$PREFIX$\rangle$env\_subDisplayAllowAll   &  0  & Allows all subenvironments to write to output file \\ %UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV
-\midrule
+% \midrule
 \ttfamily$\langle$PREFIX$\rangle$env\_subDisplayAllowedSet & \ttfamily""  & Subenvironments that will write to output file \\ %UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV
-\midrule
+% \midrule
 \ttfamily$\langle$PREFIX$\rangle$env\_displayVerbosity     &  0  & Sets verbosity				         \\ %UQ_ENV_DISPLAY_VERBOSITY_ODV
-\midrule
+% \midrule
 \ttfamily$\langle$PREFIX$\rangle$env\_syncVerbosity        &  0  & Sets syncronized verbosity             \\ %UQ_ENV_SYNC_VERBOSITY_ODV
-\midrule
+% \midrule
 \ttfamily$\langle$PREFIX$\rangle$env\_seed                 &  0  & Set seed                              \\ %UQ_ENV_SEED_ODV
 %
 % TODO add the following options:
@@ -394,11 +399,11 @@ Figure \ref{fig-sip-options-class} displays the  statistical inverse problem opt
 \rmfamily Option name                    & \rmfamily Default  Value & \rmfamily Description \\
 \midrule\midrule
 $\langle$PREFIX$\rangle$ip\_help                 &     &  \rmfamily Produces help message for statistical inverse problem   \\
-\midrule
+% \midrule
 $\langle$PREFIX$\rangle$ip\_computeSolution      &  1  &  \rmfamily Computes solution process \\% UQ_SIP_COMPUTE_SOLUTION_ODV
-\midrule
+% \midrule
 $\langle$PREFIX$\rangle$ip\_dataOutputFileName   & "." &  \rmfamily Name of data output file \\%UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV
-\midrule
+% \midrule
 $\langle$PREFIX$\rangle$ip\_dataOutputAllowedSet & ""  &  \rmfamily Subenvironments that will write to data output file  \\%UQ_SIP_DATA_OUTPUT_ALLOWED_SET_ODV
 \bottomrule
 \end{tabular}
@@ -411,7 +416,7 @@ $\langle$PREFIX$\rangle$ip\_dataOutputAllowedSet & ""  &  \rmfamily Subenvironme
 
 
 The templated class that represents a Metropolis-Hastings generator of samples in QUESO is \verb+uqMetropolisHastingsSGClass<P_V,P_M>+, where SG stands for 'Sequence Generator'. This class implements the DRAM algorithm of Haario, Laine, Mira and Saksman~\cite{HaLaMiSa06} together with an operation  %(\verb+generateSequence()+ 
-based on the core routine at the MCMC toolbox for MATLAB~\cite{Mcmctool}. In fact,, the reader may notice that the example available in the QUESO build tree directory \verb+examples/statisticalInverseProblem/tests/test_2009_02_03/+ is closely related to the `normal example' in the toolbox.
+based on the core routine at the MCMC toolbox for MATLAB~\cite{Mcmctool}. In fact,, the reader may notice that the example available in the QUESO build tree directory \verb+examples/statisticalInverseProblem+ is closely related to the `normal example' in the toolbox.
 
 
 The Metropolis-Hastings sequence generator class is depicted in Figure \ref{fig-metropolis-hastings-solver-class}; the Metropolis-Hastings sequence generator options class is depicted in Figure \ref{fig-metropolis-hastings-options-class}; whereas its options are presented in Table \ref{tab-metropolis-hastings-options}.
@@ -559,14 +564,14 @@ $\langle$PREFIX$\rangle$fp\_dataOutputAllowedSet &  ""  &\rmfamily Subenvironmen
 \subsection{Monte Carlo Solver (and Options)}
 
 The templated class that implements a Monte Carlo generator of samples within QUESO is \verb+uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>+, as illustrated in Figure \ref{fig-monte-carlo-solver-class}.
-This class has the requirement that the image set of the vector random variable  and the domain set of the QoI function belong to vector spaces of equal dimensions. If the requirements are satisfied, the classcconstructor reads input options that begin with the string `\verb+<PREFIX>_mc_+' (See Table~\ref{tab-monte-carlo-options}). Options reading is handled by class \verb+uqMonteCarloOptionsClass+, which is illustrated in Figure \ref{fig-monte-carlo-options-class}.
+This class has the requirement that the image set of the vector random variable  and the domain set of the QoI function belong to vector spaces of equal dimensions. If the requirements are satisfied, the class constructor reads input options that begin with the string `\verb+<PREFIX>_mc_+' (See Table~\ref{tab-monte-carlo-options}). Options reading is handled by class \verb+uqMonteCarloOptionsClass+, which is illustrated in Figure \ref{fig-monte-carlo-options-class}.
 
 
 \begin{figure}[htpb]
 \centering
 \includegraphics[scale=0.40,clip=true]{figs/uqMonteCarloSG}
 \vspace*{-8pt}
-\caption{{\color{red}{The Monte Carlo sequence generator class}}.}
+\caption{The Monte Carlo sequence generator class.}
 \label{fig-monte-carlo-solver-class}
 \end{figure}
 
@@ -574,14 +579,15 @@ This class has the requirement that the image set of the vector random variable 
 \centering
 \includegraphics[scale=0.40,clip=true]{figs/uqMonteCarloSGOptions}
 \vspace*{-8pt}
-\caption{{\color{red}{The Monte Carlo sequence generator options class}}.}
+\caption{The Monte Carlo sequence generator options class.}
 \label{fig-monte-carlo-options-class}
 \end{figure}
 
 \begin{table}[htpb]
 % from uqMonteCarloSGOptions.C and uqMonteCarloSGOptions.h
 \begin{center}
-\caption{Input file options for a QUESO statistical forward problem.\todo{Add better caption. Some variables are commented within the code; remove them from the .dia?.}}
+\caption{Input file options for a QUESO statistical forward problem solved via Monte Carlo algorithm.}
+\vspace{-8pt}
 \label{tab-monte-carlo-options}
 \ttfamily
 \begin{tabular}{l c  m{6cm}}
@@ -741,18 +747,46 @@ $\langle$PREFIX$\rangle$mc\_qseq\_dataOutputAllowedSet   &         &            
 %\clearpage
 \section{Miscellaneous Classes and Routines}
 
-%\clearpage
-\section{Interface Classes}
+% %\clearpage
+% \section{Interface Classes}
+% 
+% \todo{Define what `interface' means here. Is is interface to C and Fortran? }
+% /src/interface/basic...
+% 
+% \subsection{Using Other C++ Classes in the Library}
+% 
+% https://svn.ices.utexas.edu/repos/pecos/turbulence/IncompRansCal/calDataLevModUncert/README
 
 
+% \subsection{Input and Output Files}
 
-\subsection{Using Other C++ Classes in the Library}
+\section{Revisiting Input Options}
 
-https://svn.ices.utexas.edu/repos/pecos/turbulence/IncompRansCal/calDataLevModUncert/README
+Input options are read from the QUESO input file, whose name is required by the constructor of the QUESO environment class. Herein, suppose that no prefix is defined, i.e., nothing will precede the input variables names (\verb+PREFIX = ""+ in Tables \ref{tab-env-options} -- \ref{tab-monte-carlo-options}). An example of the use of prefixes may be found in the input file \texttt{tgaCycle.inp} under the subdirectory  \texttt{/examples/validationCycle/} of QUESO installation tree.
+%     The QUESO environment class is instantiated at the application level, right after \verb+'MPI_Init(&argc,&argv)'+. 
+%     The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
+
+The first part of a input file commonly handles the environment options. he variable assignment \verb+env_numSubEnvironments = 1+ indicates to QUESO that only one subenvironment should be used. The variable assignment \texttt{env\_subDisplayFileName} \texttt{=} \texttt{outputData/} \texttt{display} create both the subdirectory \verb+outputData/+ and a file named \verb+display_sub0.txt+ that contains all the options listed in the input file together with more specific information, such as the chain run time and the number of delayed rejections. The existence of file  \verb+display_sub0.txt+  allows, for instance, the user in verifying the actual parameters read by QUESO.
 
 
-\subsection{Input and Output Files}
+For an SIP, the user may set up variables related to the DRAM algorithm. Six important variables are:  
+\texttt{ip\_mh\_dr\_maxNumExtraStages} defines how many extra candidates will be generated; 
+\texttt{ip\_mh\_dr\_listOfScalesForExtraStages} defines the list $s$ of scaling factors that will multiply the covariance matrix.
+The variable \texttt{ip\_mh\_am\_initialNonAdaptInterval} defines the initial interval in which the proposal covariance matrix will not be changed;
+whereas \texttt{ip\_mh\_am\_adaptInterval} defines the size of the interval in which each adapted proposal covariance matrix will be used. 
+\texttt{ip\_mh\_am\_eta} is a factor used to scale the proposal covariance matrix, usually set to be $2.4^2/d$, where $d$ is the dimension of the problem~\cite{Laine08,HaLaMiSa06}. 
+Finally, \texttt{ip\_mh\_am\_epsilon} is the covariance regularization factor used in the DRAM algorithm. %Additionally, the variable \verb+ip_mh_rawChain_size+ defines the size of the raw chain used in each subenvironment. 
 
-Input options are read from the QUESO input file, whose name is required by the constructor of the QUESO environment class.
-    The QUESO environment class is instantiated at the application level, right after \verb+'MPI_Init(&argc,&argv)'+. 
-    The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
+For a SFP, the variable assignment \verb+fp_computeSolution = 1+ tells QUESO to compute the solution process; the assignment \verb+fp_computeCovariances = 1+,  instructs QUESO to compute parameter--QoI covariances, and analogously, \verb+fp_computeCorrelations = 1+ inform QUESO to compute  parameter--QoI correlations. The name of the data output file can be set with variable \verb+fp_dataOutputFileName arg+;  and \verb+fp_dataOutputAllowedSet+ defines which subenvironments will write to data output file.
+
+An example a complete input file used by QUESO to solve a SIP--SFP is presented in Section \ref{sec:application_input_file}; however every application example included in \Queso{} build and installation directories \verb+examples+ has an options input file and the user is invited to familiarize him/herself with them.
+% 
+% \subsection{Solver Options for Raw Chain}
+% 
+% \subsection{Solver Options for Filtered Chain}
+% 
+% \subsection{Solver Options for DRAM}
+% 
+% 
+% 
+% \subsection{Eventual Use of Prefixes}

@@ -1,4 +1,5 @@
-\documentclass[12pt,letterpaper,twoside,onecolumn,portrait,leqno]{book}
+%\documentclass[12pt,letterpaper,twoside,onecolumn,portrait,leqno]{book}  %leqno= Left numbering for equations
+\documentclass[12pt,letterpaper,twoside,onecolumn,portrait]{book} 
 \bibliographystyle{plain}
 \usepackage[Sonny]{fncychap} %Bjornstrup, Sonny
 \usepackage{amssymb,amsfonts,amsmath,amscd,amsthm}
@@ -10,11 +11,13 @@
 \usepackage{url}
 \usepackage{fancyvrb}
 \usepackage{subfigure}
-\usepackage{wrapfig}
+\usepackage{wrapfig} 
 \usepackage{booktabs}  %nice tables
 \usepackage{array} %set fixed length in table columns
+\usepackage{geometry,subfigure}
+\geometry{top=1.00in, bottom=1.00in, left=1.00in, right=1.00in}
 
-\usepackage{titlesec}
+\usepackage{titlesec} 
 \titleformat{\section}{\LARGE\sffamily}{\thesection}{1em}{}
 \titleformat{\subsection}{\Large\sffamily}{\thesubsection}{1em}{}
 \titleformat{\subsubsection}{\large\sffamily}{\thesubsubsection}{1em}{}
@@ -64,7 +67,7 @@
 \newcommand{\todo}[1]{ {\color{red} To do: #1} }
 
 \newcommand{\myverb}[1]{ \indent{ \begin{verbatim} #1 \end{verbatim} } }
-
+\newcommand{\QUESOversion}{0.45.3}
 
 \usepackage{color}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -94,7 +97,10 @@ showstringspaces=false,         % underline spaces within strings
 showtabs=false,                 % show tabs within strings adding particular underscores
 %frameround=fttt,                 % roundish frame - Kemelli
 %frame=trBL,          			% single % adds a frame around the code
-frame=shadowbox, rulesepcolor=\color{black},
+% frameshape={RYRYYY}{yn}{ny}{RYRYYY},
+frameshape={YYYYYY}{yn}{ny}{YYYYYY},
+% frameshape={RYRYYY}{ny}{yn}{RYRYYY},
+%frame=shadowbox, rulesepcolor=\color{black},
 tabsize=2,         				% sets default tabsize to 2 spaces
 captionpos=b,           		% sets the caption-position to bottom
 breaklines=true,       			% sets automatic line breaking
@@ -103,9 +109,10 @@ escapeinside={\%*}{*)},         % if you want to add a comment within your code
 morekeywords ={rm,ls},
 belowskip = 10pt, %\medskipamount%\smallskipamount,
 aboveskip =10pt,
-}
+}  
 
-
+\newcommand{\bv}[1]{{\mathbf{#1}}}
+\newcommand{\chainsizeresults}{20000}
 
 \begin{document}
 
@@ -141,10 +148,11 @@ aboveskip =10pt,
 %\include{users_7_gpl}
 
 %\include{users_8_fdl}
+   
+\end{appendix}    
+ 
+\addcontentsline{toc}{chapter}{References}
 
-\end{appendix}
-
-\addcontentsline{toc}{chapter}{Bibliography (Incomplete)}
 \bibliography{../../../uq/bibs/uq.bib}
 %\bibliography{uq.bib}
 \end{document}
