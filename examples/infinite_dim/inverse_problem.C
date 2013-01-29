@@ -1,3 +1,5 @@
+#include <uqLibMeshFunction.h>
+#include <uqLaplacianOperator.h>
 #include <uqEnvironment.h>
 #include <uqStatisticalInverseProblem.h>
 
@@ -18,14 +20,14 @@ int main(int argc, char **argv)
   // A gaussian prior is specified by a mean function and a covariance operator
 
   // Mean function
-  FUNCTION *mu = new FUNCTION(something here);
+  uqLibMeshFunction *mu = new uqLibMeshFunction();
   // Maybe the default constructor should default to the zero function?
 
-  // Inverse covariance operator: e.g., the inverse laplacian
-  OPERATOR *C = new OPERATOR("Laplacian");
+  // Inverse covariance operator: e.g., the inverse laplacian to the 3
+  uqNegativeLaplacianOperator *C = new uqNegativeLaplacianOperator(-3.0);
 
-  // Set up the Gaussian measure. s is the power that determines regularity > 0
-  uqGaussianRF *prior = new GAUSSIAN_MEASURE(mu, C, s);
+  // Set up the Gaussian measure.
+  uqGaussianRF *prior = new GAUSSIAN_MEASURE(mu, C);
 
   // Set up the likelihood. It takes a field
   Likelihood *likelihood = new Likelihood(*env, true_initial_condition,
@@ -38,7 +40,7 @@ int main(int argc, char **argv)
     uqStatisticalInverseProblemClass("", &opts, *prior, *likelihood);
 
   // MCMC seed
-  FUNCTION initialVals();  // Zero as the MCMC seed
+  uqLibMeshFunction initialVals();  // Zero as the MCMC seed
   ip->solveWithBayesMetropolisHastings (NULL, initialVals);
 
   delete env;
