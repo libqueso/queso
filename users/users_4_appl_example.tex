@@ -249,15 +249,15 @@ And two of them are specific for the SFP: \texttt{gravity\_qoi.h} and \texttt{gr
 
 Here we present the first 5 files, in Listings \ref{code:gravity_main}, \ref{code:gravity_compute_h}, \ref{code:gravity_compute_C}, \ref{code:gravity_like_h} and \ref{code:gravity_like_C}.
 
-\lstinputlisting[caption=File \texttt{gravity\_main.C.}, label=code:gravity_main, linerange={1-2,28-1000}]{../../../uq/appls/gravity/src_1p/gravity_main.C}
+\lstinputlisting[caption=File \texttt{gravity\_main.C.}, label=code:gravity_main, linerange={1-2,28-1000}]{../../trunk/examples/gravity/src/gravity_main.C}
  
-\lstinputlisting[caption=File \texttt{gravity\_compute.h.}, label=code:gravity_compute_h, linerange={1-2,30-1000}]{../../../uq/appls/gravity/src_1p/gravity_compute.h}
+\lstinputlisting[caption=File \texttt{gravity\_compute.h.}, label=code:gravity_compute_h, linerange={1-2,30-1000}]{../../trunk/examples/gravity/src/gravity_compute.h}
 
-\lstinputlisting[caption={File \texttt{gravity\_compute.C}. The first part of the code (lines 37--113) handles the statistical forward problem, whereas the second part of the code (lines 115--163) handles the statistical forward problem.}, label=code:gravity_compute_C, linerange={1-2,30-1000}]{../../../uq/appls/gravity/src_1p/gravity_compute.C}
+\lstinputlisting[caption={File \texttt{gravity\_compute.C}. The first part of the code (lines 37--113) handles the statistical forward problem, whereas the second part of the code (lines 115--163) handles the statistical forward problem.}, label=code:gravity_compute_C, linerange={1-2,30-1000}]{../../trunk/examples/gravity/src/gravity_compute.C}
 
-\lstinputlisting[caption=File \texttt{gravity\_likelihood.h}., label=code:gravity_like_h, linerange={1-2,30-1000}]{../../../uq/appls/gravity/src_1p/gravity_likelihood.h}
+\lstinputlisting[caption=File \texttt{gravity\_likelihood.h}., label=code:gravity_like_h, linerange={1-2,30-1000}]{../../trunk/examples/gravity/src/gravity_likelihood.h}
 
-\lstinputlisting[caption=File \texttt{gravity\_likelihood.C}., label=code:gravity_like_C, linerange={1-2,28-1000}]{../../../uq/appls/gravity/src_1p/gravity_likelihood.C}
+\lstinputlisting[caption=File \texttt{gravity\_likelihood.C}., label=code:gravity_like_C, linerange={1-2,28-1000}]{../../trunk/examples/gravity/src/gravity_likelihood.C}
 
 \section{Application Input File}\label{sec:application_input_file}
 
@@ -280,7 +280,7 @@ Note that the names of the variables have been designed to be informative:
 \item[ \texttt{qseq}:] refers to the quantity of interest sequence.
 \end{description}
 
-\lstinputlisting[caption=Some options for QUESO library used in application code (Listings \ref{code:gravity_main}-\ref{code:gravity_like_C})., label={code:gravity_inp_sip},]{../../../uq/appls/gravity/tests/test_2013_01_22/gravity_inv_fwd.inp}
+\lstinputlisting[caption=Some options for QUESO library used in application code (Listings \ref{code:gravity_main}-\ref{code:gravity_like_C})., label={code:gravity_inp_sip},]{../../trunk/examples/gravity/tests/test_2013_01_22/gravity_inv_fwd.inp}
 
 
 
@@ -303,12 +303,12 @@ Listing \ref{code:makefile} presents the Makefile used to compile the code and c
 Then, in order to run the application code, together with its input file \verb+gravity_inv_fwd.inp+ presented in Listing~\ref{code:gravity_inp_sip}., one just needs to type the command line:
 
 \begin{lstlisting}[caption={}, label={},language={bash}]
-cd examples/gravity/src_1p
+cd examples/gravity/src
 make
 gravity_gsl gravity_inv_fwd.inp
 \end{lstlisting}
 
-\lstinputlisting[caption=Makefile for the application code in Listings \ref{code:gravity_main}-\ref{code:gravity_like_C}., label=code:makefile,language=bash]{../../../uq/appls/gravity/src_1p/Makefile}
+\lstinputlisting[caption=Makefile for the application code in Listings \ref{code:gravity_main}-\ref{code:gravity_like_C}., label=code:makefile,language=bash]{../../trunk/examples/gravity/src/example_of_Makefile_from_QUESO_users_manual}
  
 The console output of the program is:
 \begin{lstlisting}[caption={Console output of program \texttt{gravity\_gsl}}, label={code:console_output},language={bash}]

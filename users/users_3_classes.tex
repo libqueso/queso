@@ -746,6 +746,12 @@ $\langle$PREFIX$\rangle$mc\_qseq\_dataOutputAllowedSet   &         &            
 
 %\clearpage
 \section{Miscellaneous Classes and Routines}
+ \todo{Some of the files and/or classes are no longer used because Queso is no enabled to calculate statistics, see /src/core/uqDefines.h}
+ 
+As the name suggests, QUESO miscellaneous classes and routines have a variety of routines, from C and Fontran interfaces to the calculation of numerical quadratures.
+For instance, the function \verb+uqMiscReadDoublesFromString+ is used for reading the options input files and assigning the values to the respective varibles, in \verb+uqMonteCarloSGOptionsClass::getMyOptionValues+ and in \verb+uqMetropolisHastingsSGOptionsClass::getMyOptionValues+. 
+
+\verb+uqBaseOneDGridClass+ generares grids required for calculating the CDF of RV; it is required by \verb+uqArrayOfOneDGridsClass+, which, in turn, is used in \verb+uqStatisticalForwardProblemClass+ and in \verb+uqStatisticalInverseProblemClass+.
 
 % %\clearpage
 % \section{Interface Classes}
