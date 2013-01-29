@@ -4,7 +4,11 @@
 AC_PREREQ(2.65)
 AC_INIT([queso], [0.45.3], [pecos_dev@ices.utexas.edu])
 AC_CONFIG_MACRO_DIR([m4])
-AC_CONFIG_HEADERS(config_queso.h)
+
+AC_CONFIG_HEADERS(config_queso.h.tmp)
+dnl Prefixes everything in the temporary file with QUESO_
+AX_PREFIX_CONFIG_H(config_queso.h,QUESO,config_queso.h.tmp)
+
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE
 

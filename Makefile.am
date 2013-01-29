@@ -55,6 +55,9 @@ MAINTAINERCLEANFILES =     \
 	configure              \
 	config.h	       \
 	config.h.in	       \
+        config_queso.h         \
+        config_queso.h.tmp.in  \
+        config_queso.h.tmp.in~ \
 	Makefile.in            \
 	src/Makefile.in       \
 	src/contrib/ANN/Makefile.in \
@@ -96,7 +99,7 @@ MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 # Additional files to be deleted by 'make distclean'
 
-DISTCLEANFILES = 
+DISTCLEANFILES = _configs.sed
 
 # --------------------------------------------------
 # Revision control support for external distribution

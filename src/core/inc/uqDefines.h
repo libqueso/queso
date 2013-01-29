@@ -33,19 +33,19 @@
 
 // Define available optional libraries (GLPK, HDF5, Trilinos)
 
-#ifdef HAVE_GLPK
+#ifdef QUESO_HAVE_GLPK
 #define QUESO_HAS_GLPK
 #endif
 
-#ifdef HAVE_HDF5
+#ifdef QUESO_HAVE_HDF5
 #define QUESO_HAS_HDF5
 #endif
 
-#ifdef HAVE_TRILINOS
+#ifdef QUESO_HAVE_TRILINOS
 #define QUESO_HAS_TRILINOS
 #endif
 
-#ifdef HAVE_ANN
+#ifdef QUESO_HAVE_ANN
 #define QUESO_HAS_ANN
 #endif
 
