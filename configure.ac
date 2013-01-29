@@ -10,6 +10,7 @@ dnl Prefixes everything in the temporary file with QUESO_
 AX_PREFIX_CONFIG_H(config_queso.h,QUESO,config_queso.h.tmp)
 
 AC_CONFIG_AUX_DIR([build-aux])
+AC_CANONICAL_TARGET()
 AM_INIT_AUTOMAKE
 
 # Release versioning
@@ -28,7 +29,7 @@ AC_SUBST(GENERIC_MAJOR_VERSION)
 AC_SUBST(GENERIC_MINOR_VERSION)
 AC_SUBST(GENERIC_MICRO_VERSION)
 
-AC_PROG_LIBTOOL
+LT_INIT
 
 # Set default CFLAGS & CXXFLAGS IF the user hasn't specified anything
 
@@ -101,6 +102,10 @@ AM_CONDITIONAL(TRILINOS_ENABLED,test x$HAVE_TRILINOS = x1)
 
 AC_CACHE_SAVE
 
+# Check for libmesh (optional)
+AX_PATH_LIBMESH_NEW(0.8.0,no)
+AC_CACHE_SAVE
+
 # Check for GSL (required)
 
 AC_LANG([C])
@@ -132,6 +137,9 @@ AX_ENABLE_ANN
 # Check for libGRVY (optional as of QUESO version 0.46.0)
 
 AX_PATH_GRVY_NEW([0.29],[no])
+
+# Check for slepc
+#AX_PATH_SLEPC_NEW([3.3],[no])
 
 AC_CACHE_SAVE
 
