@@ -22,6 +22,10 @@ if HDF5_ENABLED
   AM_CPPFLAGS += $(HDF5_CFLAGS) 
 endif
 
+if LIBMESH_ENABLED
+  AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)# $(LIBMESH_INCLUDE)
+endif
+
 if SVN_CHECKOUT
 BUILT_SOURCES = .license.stamp
 endif
@@ -56,6 +60,10 @@ if TRILINOS_ENABLED
   libqueso_la_LDFLAGS += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
 endif
 
+if LIBMESH_ENABLED
+  libqueso_la_LDFLAGS += $(LIBMESH_LIBS)
+endif
+
 #libqueso_la_LDFLAGS += -Wl,-rpath,$(TRILINOS_HOME)/lib -lepetra
 
 # Sources from core/src
@@ -76,7 +84,9 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/TeuchosMatrix.C \
 	$(top_srcdir)/src/core/src/MpiComm.C \
 	$(top_srcdir)/src/core/src/Map.C \
-	$(top_srcdir)/src/core/src/DistArray.C
+	$(top_srcdir)/src/core/src/DistArray.C \
+	$(top_srcdir)/src/core/src/uqFunctionBase.C \
+	$(top_srcdir)/src/core/src/uqLibMeshFunction.C
 
 # Sources from core/src with gsl conditional 
 
@@ -167,7 +177,9 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/DistArray.h \
 	$(top_srcdir)/src/core/inc/asserts.h \
 	$(top_srcdir)/src/core/inc/exceptions.h \
-	$(top_srcdir)/src/core/inc/Vector.h
+	$(top_srcdir)/src/core/inc/Vector.h \
+	$(top_srcdir)/src/core/inc/uqFunctionBase.h \
+	$(top_srcdir)/src/core/inc/uqLibMeshFunction.h
 
 # Headers to install from misc/inc
 
