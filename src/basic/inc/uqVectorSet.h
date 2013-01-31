@@ -129,6 +129,8 @@ template <class V, class M>
 void
 uqVectorSetClass<V,M>::print(std::ostream& os) const
 {
+  os << "In uqVectorSetClass<V,M>::print()"
+     << ": nothing to be printed" << std::endl;
   return;
 }
 

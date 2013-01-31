@@ -385,6 +385,7 @@ uqBaseVectorSequenceClass<V,M>::uqBaseVectorSequenceClass(
   m_subBoxPlain               (NULL),
   m_unifiedBoxPlain           (NULL)
 {
+  if (subSequenceSize) {}; // just to avoid compiler warning
 }
 
 template <class V, class M>

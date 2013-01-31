@@ -2419,6 +2419,9 @@ uqSequenceOfVectorsClass<V,M>::select(const std::vector<unsigned int>& idsOfUniq
                     m_env.worldRank(),
 		    "uqSequenceOfVectorsClass<V,M>::select()",
 		    "Code is not complete yet");
+
+  if (&idsOfUniquePositions) {}; // just to remove compiler warning
+
   return;
 }
 
@@ -2693,6 +2696,8 @@ uqSequenceOfVectorsClass<V,M>::subWriteContents(
                       "uqSequenceOfVectorsClass<V,M>::subWriteContents(3)",
                       "invalid routine input parameters");
 
+  if (fileType.c_str()) {}; // just to avoid compiler warning
+
   if (initialPos == 0) {
     ofs << m_name << "_sub" << m_env.subIdString() << " = zeros(" << this->subSequenceSize()
         << ","                                                    << this->vectorSizeLocal()
@@ -2864,7 +2869,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
               iRC = gettimeofday(&timevalBegin,NULL);
               if (iRC) {}; // just to remover compiler warning
 
-              double* dataOut[numParams];
+              //double* dataOut[numParams]; // avoid compiler warning
+	      std::vector<double*> dataOut((size_t) numParams,NULL);
               dataOut[0] = (double*) malloc(numParams*chainSize*sizeof(double));
               for (unsigned int i = 1; i < numParams; ++i) { // Yes, from '1'
                 dataOut[i] = dataOut[i-1] + chainSize; // Yes, just 'chainSize', not 'chainSize*sizeof(double)'
@@ -2909,7 +2915,10 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data space closed" << std::endl;
               H5Tclose(datatype);
               //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): h5 case, data type closed" << std::endl;
-              free(dataOut[0]);
+              //free(dataOut[0]); // related to the changes above for compiler warning
+              for (unsigned int tmpIndex = 0; tmpIndex < dataOut.size(); tmpIndex++) {
+                free (dataOut[tmpIndex]);
+              }
             }
             else {
               UQ_FATAL_TEST_MACRO(true,
@@ -3079,7 +3088,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
               unsigned int posInTmpString = 6;
 
               // Isolate 'n_positions' in a string
-              char nPositionsString[tmpString.size()-posInTmpString+1];
+              //char nPositionsString[tmpString.size()-posInTmpString+1]; // avoid compiler warning
+	      std::string nPositionsString((size_t) (tmpString.size()-posInTmpString+1),' ');
               unsigned int posInPositionsString = 0;
               do {
                 UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
@@ -3092,7 +3102,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
 
               // Isolate 'n_params' in a string
               posInTmpString++; // Avoid reading ',' char
-              char nParamsString[tmpString.size()-posInTmpString+1];
+              //char nParamsString[tmpString.size()-posInTmpString+1]; // avoid compiler warning
+	      std::string nParamsString((size_t) (tmpString.size()-posInTmpString+1),' ');
               unsigned int posInParamsString = 0;
               do {
                 UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
@@ -3104,8 +3115,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
               nParamsString[posInParamsString] = '\0';
 
               // Convert 'n_positions' and 'n_params' strings to numbers
-              unsigned int sizeOfChainInFile = (unsigned int) strtod(nPositionsString,NULL);
-              unsigned int numParamsInFile   = (unsigned int) strtod(nParamsString,   NULL);
+              unsigned int sizeOfChainInFile = (unsigned int) strtod(nPositionsString.c_str(),NULL);
+              unsigned int numParamsInFile   = (unsigned int) strtod(nParamsString.c_str(),   NULL);
               if (m_env.subDisplayFile()) {
                 *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedReadContents()"
                                         << ": worldRank "           << m_env.worldRank()
@@ -3209,7 +3220,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
               if (iRC) {}; // just to remover compiler warning
 
               unsigned int chainSizeIn = (unsigned int) dims_in[1];
-              double* dataIn[numParams];
+              //double* dataIn[numParams]; // avoid compiler warning
+	      std::vector<double*> dataIn((size_t) numParams,NULL);
               dataIn[0] = (double*) malloc(numParams*chainSizeIn*sizeof(double));
               for (unsigned int i = 1; i < numParams; ++i) { // Yes, from '1'
                 dataIn[i] = dataIn[i-1] + chainSizeIn; // Yes, just 'chainSizeIn', not 'chainSizeIn*sizeof(double)'
@@ -3251,7 +3263,10 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
               H5Sclose(dataspace);
               H5Tclose(datatype);
               H5Dclose(dataset);
-              free(dataIn[0]);
+              //free(dataIn[0]); // related to the changes above for compiler warning
+              for (unsigned int tmpIndex = 0; tmpIndex < dataIn.size(); tmpIndex++) {
+                free (dataIn[tmpIndex]);
+              }
             }
             else {
               UQ_FATAL_TEST_MACRO(true,

@@ -620,6 +620,8 @@ uqGaussianJointPdfClass<V,M>::lnValue(
                       "uqGaussianJointPdfClass<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
+  if (domainDirection) {}; // just to remove compiler warning
+
   double returnValue = 0.;
 
   double lnDeterminant = 0.;
@@ -755,6 +757,8 @@ uqUniformJointPdfClass<V,M>::actualValue(
   if (hessianMatrix) *hessianMatrix *= 0.;
   if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
 
+  if (domainDirection) {}; // just to remove compiler warning
+
   double volume = m_domainSet.volume();
   if (((boost::math::isnan)(volume)) ||
       (volume == -INFINITY         ) ||
@@ -779,6 +783,9 @@ uqUniformJointPdfClass<V,M>::lnValue(
   if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
   if (hessianMatrix) *hessianMatrix *= 0.;
   if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
+
+  if (domainVector[0]) {}; // just to remove compiler warning
+  if (domainDirection) {}; // just to remove compiler warning
 
   double volume = m_domainSet.volume();
   if (((boost::math::isnan)(volume)) ||
@@ -1518,6 +1525,8 @@ uqLogNormalJointPdfClass<V,M>::lnValue(
                       m_env.worldRank(),
                       "uqLogNormalJointPdfClass<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
+
+  if (domainDirection) {}; // just to remove compiler warning
 
   double returnValue = 0.;
 

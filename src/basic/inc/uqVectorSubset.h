@@ -92,12 +92,12 @@ uqVectorSubsetClass<V,M>::~uqVectorSubsetClass()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqVectorSubsetClass<V,M>::destructor()"
-                           << std::endl;
+                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Leaving uqVectorSubsetClass<V,M>::destructor()"
-                           << std::endl;
+                            << std::endl;
   }
 }
 
@@ -112,6 +112,8 @@ template <class V, class M>
 void
 uqVectorSubsetClass<V,M>::print(std::ostream& os) const
 {
+  os << "In uqVectorSubsetClass<V,M>::print()"
+     << ": nothing to be printed" << std::endl;
   return;
 }
 

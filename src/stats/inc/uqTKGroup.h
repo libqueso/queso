@@ -169,6 +169,8 @@ template<class V, class M>
 void
 uqBaseTKGroupClass<V,M>::print(std::ostream& os) const
 {
+  os << "In uqBaseTKGroupClass<V,M>::print()"
+     << ": nothing to be printed" << std::endl;
   return;
 }
 

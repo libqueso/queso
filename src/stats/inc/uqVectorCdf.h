@@ -109,6 +109,11 @@ uqBaseVectorCdfClass<V,M>::subWriteContents(
 {
   std::cerr << "WARNING: uqBaseVectorCdfClass<V,M>::subWriteContents() being used..."
             << std::endl;
+
+  if (&varNamePrefix)    {}; // just to remove compiler warning
+  if (&fileName)         {}; // just to remove compiler warning
+  if (&fileType)         {}; // just to remove compiler warning
+  if (&allowedSubEnvIds) {}; // just to remove compiler warning
   return;
 }
 

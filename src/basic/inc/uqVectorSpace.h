@@ -259,6 +259,7 @@ template <class V, class M>
 bool
 uqVectorSpaceClass<V,M>::contains(const V& vec) const
 {
+  if (vec[0]) {}; // just to remove compiler warning
   return true;
 }
 
@@ -426,6 +427,8 @@ template <class V, class M>
 void
 uqVectorSpaceClass<V,M>::print(std::ostream& os) const
 {
+  os << "In uqVectorSpaceClass<V,M>::print()"
+     << ": nothing to be printed" << std::endl;
   return;
 }
 #endif // __UQ_VECTOR_SPACE_H__
