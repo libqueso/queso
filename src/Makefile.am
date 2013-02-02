@@ -86,7 +86,11 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/Map.C \
 	$(top_srcdir)/src/core/src/DistArray.C \
 	$(top_srcdir)/src/core/src/uqFunctionBase.C \
-	$(top_srcdir)/src/core/src/uqLibMeshFunction.C
+	$(top_srcdir)/src/core/src/uqLibMeshFunction.C \
+	$(top_srcdir)/src/core/src/uqOperatorBase.C \
+	$(top_srcdir)/src/core/src/uqLibMeshOperatorBase.C \
+	$(top_srcdir)/src/core/src/uqLibMeshNegativeLaplacianOperator.C
+
 
 # Sources from core/src with gsl conditional 
 
@@ -180,6 +184,9 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/Vector.h \
 	$(top_srcdir)/src/core/inc/uqFunctionBase.h \
 	$(top_srcdir)/src/core/inc/uqLibMeshFunction.h
+	$(top_srcdir)/src/core/inc/uqOperatorBase.h \
+	$(top_srcdir)/src/core/inc/uqLibMeshOperatorBase.h \
+	$(top_srcdir)/src/core/inc/uqLibMeshNegativeLaplacianOperator.h
 
 # Headers to install from misc/inc
 

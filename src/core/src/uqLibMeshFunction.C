@@ -3,7 +3,6 @@
 //-----------------------------------------------------------------------el-
 
 #include <iostream>
-#include <uqFunctionBase.h>
 #include <uqLibMeshFunction.h>
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
