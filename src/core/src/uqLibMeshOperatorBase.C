@@ -13,6 +13,11 @@
 uqLibMeshOperatorBase::uqLibMeshOperatorBase()
   : uqOperatorBase()
 {
+}
+
+uqLibMeshOperatorBase::uqLibMeshOperatorBase(const std::string& filename)
+  : uqOperatorBase(filename)
+{
 #ifndef LIBMESH_HAVE_SLEPC
   if (libMesh::processor_id() == 0)
     std::cerr << "ERROR: This example requires libMesh to be\n"
@@ -36,6 +41,7 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase()
   unsigned int n_evals = 10;
 
   this->mesh = new libMesh::Mesh;
+  this->mesh->read(filename);
 
   // Print information about the mesh to the screen.
   this->mesh->print_info();
@@ -46,7 +52,7 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase()
   // Create a CondensedEigenSystem named "Eigensystem" and (for convenience)
   // use a reference to the system we create.
   libMesh::EigenSystem & eigen_system =
-    equation_systems->add_system<libMesh::EigenSystem> ("Eigensystem");
+    this->equation_systems->add_system<libMesh::EigenSystem> ("Eigensystem");
 
   // Declare the system variables.
   // Adds the variable "u" to "Eigensystem".   "u"
@@ -58,4 +64,6 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase()
 
 uqLibMeshOperatorBase::~uqLibMeshOperatorBase()
 {
+  delete this->mesh;
+  delete this->equation_systems;
 }

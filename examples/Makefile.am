@@ -24,6 +24,16 @@ if HDF5_ENABLED
   LIBS += $(HDF5_LIBS)
 endif
 
+##################################
+# inifinite dimensional examples #
+##################################
+operatordir = $(prefix)/examples/infinite_dim/operator
+operator_DATA = $(top_srcdir)/examples/infinite_dim/operator/mesh.e
+operator_PROGRAMS = operator
+operator_SOURCES = $(top_srcdir)/examples/infinite_dim/operator/operator.C
+operator_LDADD = $(top_srcdir)/src/libqueso.la
+operator_CPPFLAGS = $(QUESO_CPPFLAGS) $(LIBMESH_CPPFLAGS)
+
 #############################
 # simpleStatisticalInverseProblem #
 #############################

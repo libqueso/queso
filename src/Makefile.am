@@ -183,7 +183,7 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/exceptions.h \
 	$(top_srcdir)/src/core/inc/Vector.h \
 	$(top_srcdir)/src/core/inc/uqFunctionBase.h \
-	$(top_srcdir)/src/core/inc/uqLibMeshFunction.h
+	$(top_srcdir)/src/core/inc/uqLibMeshFunction.h \
 	$(top_srcdir)/src/core/inc/uqOperatorBase.h \
 	$(top_srcdir)/src/core/inc/uqLibMeshOperatorBase.h \
 	$(top_srcdir)/src/core/inc/uqLibMeshNegativeLaplacianOperator.h
