@@ -43,9 +43,6 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(const std::string& filename)
   this->mesh = new libMesh::Mesh;
   this->mesh->read(filename);
 
-  // Print information about the mesh to the screen.
-  this->mesh->print_info();
-  
   // Create an equation systems object.
   this->equation_systems = new libMesh::EquationSystems(*this->mesh);
 

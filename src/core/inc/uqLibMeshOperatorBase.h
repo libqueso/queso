@@ -37,7 +37,10 @@ public:
   //@}
 
   //! Must implement this for the solve to work
-  virtual void assemble()=0;
+  virtual void assemble() = 0;
+
+  //! Print libmesh related information
+  virtual void print_info() const = 0;
   
 protected:
   libMesh::Mesh *mesh;

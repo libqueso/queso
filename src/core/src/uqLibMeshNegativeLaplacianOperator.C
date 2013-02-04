@@ -4,6 +4,7 @@
 
 #include <uqLibMeshNegativeLaplacianOperator.h>
 #include <libmesh/libmesh_common.h>
+#include <libmesh/mesh.h>
 #include <libmesh/equation_systems.h>
 #include <libmesh/eigen_system.h>
 #include <libmesh/auto_ptr.h>
@@ -50,9 +51,6 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std
 
   // Initialize the data structures for the equation system.
   equation_systems->init();
-
-  // Prints information about the system to the screen.
-  equation_systems->print_info();
 
   // Pass the Dirichlet dof IDs to the CondensedEigenSystem
   // std::set<unsigned int> dirichlet_dof_ids;
@@ -296,4 +294,11 @@ void uqLibMeshNegativeLaplacianOperator::get_boundary_dofs(
 //     } // end of element loop
 // 
 // #endif // LIBMESH_HAVE_SLEPC
+}
+
+void uqLibMeshNegativeLaplacianOperator::print_info() const
+{
+  // Prints information about the system to the screen.
+  this->mesh->print_info();
+  this->equation_systems->print_info();
 }

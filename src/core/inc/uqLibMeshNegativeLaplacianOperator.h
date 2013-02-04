@@ -23,6 +23,9 @@ public:
 
   // from system::assembly
   virtual void assemble();
+
+  //! Print libmesh related information
+  virtual void print_info() const;
 };
 
 #endif // __QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H__
