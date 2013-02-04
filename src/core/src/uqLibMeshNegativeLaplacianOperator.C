@@ -15,132 +15,43 @@
 #include <libmesh/id_types.h>
 #include <libmesh/elem.h>
 
-// uqLibMeshNegativeLaplacianOperatorAssembly::uqLibMeshNegativeLaplacianOperatorAssembly()
-//   : libMesh::System::Assembly()
-// {
-//   return;
-// }
-
-// uqLibMeshNegativeLaplacianOperatorAssembly::~uqLibMeshNegativeLaplacianOperatorAssembly()
-
-// void uqLibMeshNegativeLaplacianOperatorAssembly::assemble()
-// {
-//   
-// }
-
 uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator()
   : uqLibMeshOperatorBase()
 {
-  // Refactor this out
-  unsigned int n_evals = 10;
-  // Give the system a pointer to the matrix assembly
-  // function defined below.
-  libMesh::EigenSystem & eigen_system = this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem");
-  eigen_system.attach_assemble_object(*this);
-
-  // Set the number of requested eigenpairs \p n_evals and the number
-  // of basis vectors used in the solution algorithm.
-  equation_systems->parameters.set<unsigned int>("eigenpairs")    = n_evals;
-  equation_systems->parameters.set<unsigned int>("basis vectors") = n_evals*3;
-
-  // Set the solver tolerance and the maximum number of iterations. 
-  equation_systems->parameters.set<libMesh::Real>("linear solver tolerance") = pow(libMesh::TOLERANCE, 5./3.);
-  equation_systems->parameters.set<unsigned int>
-    ("linear solver maximum iterations") = 1000;
-
-  // Set the type of the problem, here we deal with
-  // a generalized Hermitian problem.
-  eigen_system.set_eigenproblem_type(GHEP);
-
-  // Order the eigenvalues "smallest first"
-  eigen_system.eigen_solver->set_position_of_spectrum(SMALLEST_MAGNITUDE);
-
-  // Initialize the data structures for the equation system.
-  equation_systems->init();
-
-  // Prints information about the system to the screen.
-  equation_systems->print_info();
-
-  // Pass the Dirichlet dof IDs to the CondensedEigenSystem
-  // std::set<unsigned int> dirichlet_dof_ids;
-  // get_boundary_dofs(*equation_systems, "Eigensystem", dirichlet_dof_ids);
-  // eigen_system.initialize_condensed_dofs(dirichlet_dof_ids);
-
-  // Solve the system "Eigensystem".
-  eigen_system.solve();
-
-  // Get the number of converged eigen pairs.
-  unsigned int nconv = eigen_system.get_n_converged();
-
-  std::cout << "Number of converged eigenpairs: " << nconv
-            << "\n" << std::endl;
-
-  // if (plotting_index > n_evals)
-  //   {
-  //     std::cout << "WARNING: Solver did not converge for the requested eigenvector!" << std::endl;
-  //   }
-
-  // // write out all of the computed eigenvalues and plot the specified eigenvector
-  // std::ostringstream eigenvalue_output_name;
-  // eigenvalue_output_name << mesh_name << "_evals.txt";
-  // std::ofstream evals_file(eigenvalue_output_name.str().c_str());
-
-  // for(unsigned int i=0; i<nconv; i++)
-  // {
-  //   std::pair<Real,Real> eval = eigen_system.get_eigenpair(i);
-  //   
-  //   // The eigenvalues should be real!
-  //   libmesh_assert_less (eval.second, TOLERANCE);
-  //   evals_file << eval.first << std::endl;
-  //   
-  // }
-  // 
-  // evals_file.close();
 }
 
 uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std::string& filename)
   : uqLibMeshOperatorBase(filename)
 {
   // Refactor this out
-  std::cout << "got here 2" << std::endl;
   unsigned int n_evals = 10;
   // Give the system a pointer to the matrix assembly
   // function defined below.
-  std::cout << "got here 3" << std::endl;
   libMesh::EigenSystem & eigen_system =
     this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem");
-  std::cout << "got here 4" << std::endl;
   eigen_system.attach_assemble_object(*this);
 
   // Set the number of requested eigenpairs \p n_evals and the number
   // of basis vectors used in the solution algorithm.
-  std::cout << "got here 5" << std::endl;
   equation_systems->parameters.set<unsigned int>("eigenpairs")    = n_evals;
-  std::cout << "got here 6" << std::endl;
   equation_systems->parameters.set<unsigned int>("basis vectors") = n_evals*3;
 
   // Set the solver tolerance and the maximum number of iterations. 
-  std::cout << "got here 7" << std::endl;
   equation_systems->parameters.set<libMesh::Real>("linear solver tolerance") = pow(libMesh::TOLERANCE, 5./3.);
-  std::cout << "got here 8" << std::endl;
   equation_systems->parameters.set<unsigned int>
     ("linear solver maximum iterations") = 1000;
 
   // Set the type of the problem, here we deal with
   // a generalized Hermitian problem.
-  std::cout << "got here 9" << std::endl;
   eigen_system.set_eigenproblem_type(GHEP);
 
   // Order the eigenvalues "smallest first"
-  std::cout << "got here 10" << std::endl;
   eigen_system.eigen_solver->set_position_of_spectrum(SMALLEST_MAGNITUDE);
 
   // Initialize the data structures for the equation system.
-  std::cout << "got here 11" << std::endl;
   equation_systems->init();
 
   // Prints information about the system to the screen.
-  std::cout << "got here 12" << std::endl;
   equation_systems->print_info();
 
   // Pass the Dirichlet dof IDs to the CondensedEigenSystem
@@ -149,14 +60,11 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std
   // eigen_system.initialize_condensed_dofs(dirichlet_dof_ids);
 
   // Solve the system "Eigensystem".
-  std::cout << "got here 13" << std::endl;
   eigen_system.solve();
 
   // Get the number of converged eigen pairs.
-  std::cout << "got here 14" << std::endl;
   unsigned int nconv = eigen_system.get_n_converged();
 
-  std::cout << "got here 15" << std::endl;
   std::cout << "Number of converged eigenpairs: " << nconv
             << "\n" << std::endl;
 
@@ -191,16 +99,6 @@ uqLibMeshNegativeLaplacianOperator::~uqLibMeshNegativeLaplacianOperator()
 
 void uqLibMeshNegativeLaplacianOperator::assemble()
 {
-  this->assemble_matrices(*this->equation_systems, "Eigensystem");
-}
-
-void uqLibMeshNegativeLaplacianOperator::assemble_matrices(
-    libMesh::EquationSystems& es, const std::string& system_name)
-{
-  // It is a good idea to make sure we are assembling
-  // the proper system.
-  libmesh_assert_equal_to (system_name, "Eigensystem");
-
 #ifdef LIBMESH_HAVE_SLEPC
   // Get a constant reference to the mesh object.
   const libMesh::MeshBase& mesh = this->equation_systems->get_mesh();
@@ -209,7 +107,7 @@ void uqLibMeshNegativeLaplacianOperator::assemble_matrices(
   const unsigned int dim = mesh.mesh_dimension();
 
   // Get a reference to our system.
-  libMesh::EigenSystem & eigen_system = this->equation_systems->get_system<libMesh::EigenSystem>(system_name);
+  libMesh::EigenSystem & eigen_system = this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem");
 
   // Get a constant reference to the Finite Element type
   // for the first (and only) variable in the system.

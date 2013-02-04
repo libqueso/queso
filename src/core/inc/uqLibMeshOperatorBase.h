@@ -35,17 +35,13 @@ public:
   //! Destructor
   ~uqLibMeshOperatorBase();
   //@}
-  
-  // virtual void assemble_matrices(libMesh::EquationSystems &es,
-  //     const std::string& name) = 0;
 
-  // virtual void get_boundary_dofs(libMesh::EquationSystems& es,
-  //     const std::string& system_name,
-  //     std::set<unsigned int>& global_boundary_dofs_set) = 0;
+  //! Must implement this for the solve to work
+  virtual void assemble()=0;
+  
 protected:
   libMesh::Mesh *mesh;
   libMesh::EquationSystems *equation_systems;
-  // libMesh::EigenSystem *eigen_system;
 };
 
 #endif // __QUESO_LIBMESHOPERATOR_BASE__
