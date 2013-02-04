@@ -61,32 +61,13 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std
   eigen_system.solve();
 
   // Get the number of converged eigen pairs.
-  unsigned int nconv = eigen_system.get_n_converged();
+  this->nconv = eigen_system.get_n_converged();
 
-  std::cout << "Number of converged eigenpairs: " << nconv
+  std::cout << "Number of converged eigenpairs: " << this->nconv
             << "\n" << std::endl;
 
-  // if (plotting_index > n_evals)
-  //   {
-  //     std::cout << "WARNING: Solver did not converge for the requested eigenvector!" << std::endl;
-  //   }
-
-  // // write out all of the computed eigenvalues and plot the specified eigenvector
-  // std::ostringstream eigenvalue_output_name;
-  // eigenvalue_output_name << mesh_name << "_evals.txt";
-  // std::ofstream evals_file(eigenvalue_output_name.str().c_str());
-
-  // for(unsigned int i=0; i<nconv; i++)
-  // {
-  //   std::pair<Real,Real> eval = eigen_system.get_eigenpair(i);
-  //   
-  //   // The eigenvalues should be real!
-  //   libmesh_assert_less (eval.second, TOLERANCE);
-  //   evals_file << eval.first << std::endl;
-  //   
-  // }
-  // 
-  // evals_file.close();
+  // The eigenvalues should be real!
+  // libmesh_assert_less (eval.second, TOLERANCE);
 }
 
 uqLibMeshNegativeLaplacianOperator::~uqLibMeshNegativeLaplacianOperator()

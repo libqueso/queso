@@ -9,6 +9,7 @@
 #include <libmesh/mesh.h>
 #include <libmesh/equation_systems.h>
 #include <libmesh/eigen_system.h>
+#include <libmesh/exodusII_io.h>
 
 uqLibMeshOperatorBase::uqLibMeshOperatorBase()
   : uqOperatorBase()
@@ -63,4 +64,23 @@ uqLibMeshOperatorBase::~uqLibMeshOperatorBase()
 {
   delete this->mesh;
   delete this->equation_systems;
+}
+
+void uqLibMeshOperatorBase::save_converged_evals(const std::string &filename) const
+{
+  unsigned int i;
+  std::ofstream evals_file(filename.c_str());
+
+  for (i = 0; i < this->nconv; i++) {
+    std::pair<libMesh::Real, libMesh::Real> eval =
+      this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
+    evals_file << eval.first << std::endl;
+  }
+  evals_file.close();
+}
+
+void uqLibMeshOperatorBase::save_converged_evec(const std::string &filename, unsigned int i) const
+{
+  this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
+  libMesh::ExodusII_IO(*this->mesh).write_equation_systems(filename, *this->equation_systems);
 }

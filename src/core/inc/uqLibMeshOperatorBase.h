@@ -41,10 +41,19 @@ public:
 
   //! Print libmesh related information
   virtual void print_info() const = 0;
-  
+
+  //! Save the eigenvalues to file \c filename
+  virtual void save_converged_evals(const std::string &filename) const;
+
+  //! Save converged eigenfunction \c i to \c filename
+  virtual void save_converged_evec(const std::string &filename, unsigned int i) const;
+
 protected:
   libMesh::Mesh *mesh;
   libMesh::EquationSystems *equation_systems;
+
+  //! The number of converged eigenvalue/eigenvector pairs
+  unsigned int nconv;
 };
 
 #endif // __QUESO_LIBMESHOPERATOR_BASE__

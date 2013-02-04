@@ -15,6 +15,8 @@ int main(int argc, char **argv)
 
   uqLibMeshNegativeLaplacianOperator *C = new uqLibMeshNegativeLaplacianOperator("mesh.e");
   C->print_info();
+  C->save_converged_evals("evals.txt");
+  C->save_converged_evec("evec.e", 1);
 
   delete C;
   }
