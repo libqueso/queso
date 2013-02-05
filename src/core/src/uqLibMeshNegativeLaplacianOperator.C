@@ -15,6 +15,8 @@
 #include <libmesh/dof_map.h>
 #include <libmesh/id_types.h>
 #include <libmesh/elem.h>
+#include <libmesh/zero_function.h>
+#include <libmesh/dirichlet_boundaries.h>
 
 uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator()
   : uqLibMeshOperatorBase()
@@ -25,11 +27,17 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std
   : uqLibMeshOperatorBase(filename)
 {
   // Refactor this out
-  unsigned int n_evals = 10;
+  unsigned int n_evals = 5;
   // Give the system a pointer to the matrix assembly
   // function defined below.
   libMesh::EigenSystem & eigen_system =
     this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem");
+
+  // Declare the system variables.
+  // Adds the variable "u" to "Eigensystem".   "u"
+  // will be approximated using second-order approximation.
+  unsigned int u_var = eigen_system.add_variable("u", FIRST);
+
   eigen_system.attach_assemble_object(*this);
 
   // Set the number of requested eigenpairs \p n_evals and the number
@@ -44,10 +52,22 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std
 
   // Set the type of the problem, here we deal with
   // a generalized Hermitian problem.
-  eigen_system.set_eigenproblem_type(GHEP);
+  // eigen_system.set_eigenproblem_type(GHEP);
 
   // Order the eigenvalues "smallest first"
-  eigen_system.eigen_solver->set_position_of_spectrum(SMALLEST_MAGNITUDE);
+  // eigen_system.eigen_solver->set_position_of_spectrum(SMALLEST_MAGNITUDE);
+
+  // Set up the boundary
+  std::set<libMesh::boundary_id_type> boundary_ids;
+  boundary_ids.insert(0);
+  boundary_ids.insert(1);
+  boundary_ids.insert(2);
+  boundary_ids.insert(3);
+  std::vector<unsigned int> vars;
+  vars.push_back(u_var);
+  libMesh::ZeroFunction<> zf;
+  libMesh::DirichletBoundary dirichlet_bc(boundary_ids, vars, &zf);
+  eigen_system.get_dof_map().add_dirichlet_boundary(dirichlet_bc);
 
   // Initialize the data structures for the equation system.
   equation_systems->init();
@@ -67,7 +87,11 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std
             << "\n" << std::endl;
 
   // The eigenvalues should be real!
-  // libmesh_assert_less (eval.second, TOLERANCE);
+  // for (unsigned int i = 0; i < this->nconv; i++) {
+  //   std::pair<libMesh::Real, libMesh::Real> eval =
+  //     this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
+  //   libmesh_assert_less (eval.second, libMesh::TOLERANCE);
+  // }
 }
 
 uqLibMeshNegativeLaplacianOperator::~uqLibMeshNegativeLaplacianOperator()
@@ -94,14 +118,13 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
 
   // A reference to the two system matrices
   libMesh::SparseMatrix<libMesh::Number>&  matrix_A = *eigen_system.matrix_A;
-  libMesh::SparseMatrix<libMesh::Number>&  matrix_B = *eigen_system.matrix_B;
 
   // Build a Finite Element object of the specified type.  Since the
   // \p FEBase::build() member dynamically creates memory we will
   // store the object as an \p AutoPtr<FEBase>.  This can be thought
   // of as a pointer that will clean up after itself.
   libMesh::AutoPtr<libMesh::FEBase> fe (libMesh::FEBase::build(dim, fe_type));
-  
+
   // A  Gauss quadrature rule for numerical integration.
   // Use the default quadrature order.
   libMesh::QGauss qrule(dim, fe_type.default_quadrature_order());
@@ -114,9 +137,6 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
 
   // The element shape functions evaluated at the quadrature points.
   const std::vector<std::vector<libMesh::Real> >& phi = fe->get_phi();
-
-  // The element shape function gradients evaluated at the quadrature
-  // points.
   const std::vector<std::vector<libMesh::RealGradient> >& dphi = fe->get_dphi();
 
   // A reference to the \p DofMap object for this system.  The \p DofMap
@@ -124,15 +144,13 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
   // to degree of freedom numbers.
   const libMesh::DofMap& dof_map = eigen_system.get_dof_map();
 
-  // The element mass and stiffness matrices.
-  libMesh::DenseMatrix<libMesh::Number>   Me;
-  libMesh::DenseMatrix<libMesh::Number>   Ke;
+  // The element stiffness matrix.
+  libMesh::DenseMatrix<libMesh::Number> Ke;
 
   // This vector will hold the degree of freedom indices for
   // the element.  These define where in the global system
   // the element degrees of freedom get mapped.
   std::vector<libMesh::dof_id_type> dof_indices;
-
 
   // Now we will loop over all the elements in the mesh that
   // live on the local processor. We will compute the element
@@ -168,7 +186,6 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
       // element type is different (i.e. the last element was a
       // triangle, now we are on a quadrilateral).
       Ke.resize(dof_indices.size(), dof_indices.size());
-      Me.resize(dof_indices.size(), dof_indices.size());
 
       // Now loop over the quadrature points.  This handles
       // the numeric integration.
@@ -177,11 +194,10 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
       // a double loop to integrate the test funcions (i) against
       // the trial functions (j).
       for (unsigned int qp=0; qp < qrule.n_points(); qp++)
-        for (unsigned int i=0; i < phi.size(); i++)
-          for (unsigned int j=0; j < phi.size(); j++)
+        for (unsigned int i=0; i < dphi.size(); i++)
+          for (unsigned int j=0; j < dphi.size(); j++)
             {
-              Me(i,j) += JxW[qp] * phi[i][qp] * phi[j][qp];
-              Ke(i,j) += JxW[qp] * (dphi[i][qp] * dphi[j][qp]);
+              Ke(i, j) += JxW[qp] * dphi[i][qp] * dphi[j][qp];
             }
 
       // On an unrefined mesh, constrain_element_matrix does
@@ -199,7 +215,6 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
       // Finally, simply add the element contribution to the
       // overall matrices A and B.
       matrix_A.add_matrix (Ke, dof_indices);
-      matrix_B.add_matrix (Me, dof_indices);
 
     } // end of element loop
 

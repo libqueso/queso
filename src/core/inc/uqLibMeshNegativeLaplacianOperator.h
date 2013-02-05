@@ -26,6 +26,10 @@ public:
 
   //! Print libmesh related information
   virtual void print_info() const;
+
+// private:
+  // ! Common initialisation function called by all the constructors
+  // void init();
 };
 
 #endif // __QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H__

@@ -54,6 +54,10 @@ protected:
 
   //! The number of converged eigenvalue/eigenvector pairs
   unsigned int nconv;
+
+private:
+  //! Common initialisation function for all the constructors
+  void init();
 };
 
 #endif // __QUESO_LIBMESHOPERATOR_BASE__

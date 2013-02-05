@@ -1,3 +1,4 @@
+#include <sstream>
 #include <libmesh/libmesh.h>
 #include <uqLibMeshNegativeLaplacianOperator.h>
 #include <mpi.h>
@@ -16,7 +17,14 @@ int main(int argc, char **argv)
   uqLibMeshNegativeLaplacianOperator *C = new uqLibMeshNegativeLaplacianOperator("mesh.e");
   C->print_info();
   C->save_converged_evals("evals.txt");
-  C->save_converged_evec("evec.e", 1);
+
+
+  for (unsigned int i = 0; i < 5; i++) {
+    std::ostringstream base_name("evec");
+    std::ostringstream number;
+    number << i;
+    C->save_converged_evec("evec" + number.str() + ".e", i);
+  }
 
   delete C;
   }

@@ -7,6 +7,7 @@
 
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
+#include <libmesh/mesh_generation.h>
 #include <libmesh/equation_systems.h>
 #include <libmesh/eigen_system.h>
 #include <libmesh/exodusII_io.h>
@@ -39,10 +40,11 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(const std::string& filename)
 
   // Finally, read in the number of eigenpairs we want to compute!
   // Refactor this out
-  unsigned int n_evals = 10;
+  unsigned int n_evals = 2;
 
   this->mesh = new libMesh::Mesh;
-  this->mesh->read(filename);
+  // this->mesh->read(filename);
+  libMesh::MeshTools::Generation::build_square(*this->mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
 
   // Create an equation systems object.
   this->equation_systems = new libMesh::EquationSystems(*this->mesh);
@@ -51,11 +53,6 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(const std::string& filename)
   // use a reference to the system we create.
   libMesh::EigenSystem & eigen_system =
     this->equation_systems->add_system<libMesh::EigenSystem> ("Eigensystem");
-
-  // Declare the system variables.
-  // Adds the variable "u" to "Eigensystem".   "u"
-  // will be approximated using second-order approximation.
-  eigen_system.add_variable("u", SECOND);
 
 #endif // LIBMESH_HAVE_SLEPC
 }
