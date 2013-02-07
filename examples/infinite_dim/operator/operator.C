@@ -14,7 +14,7 @@ int main(int argc, char **argv)
   {
   LibMeshInit init(argc, argv);
 
-  uqLibMeshNegativeLaplacianOperator *C = new uqLibMeshNegativeLaplacianOperator("mesh.e");
+  uqLibMeshNegativeLaplacianOperator *C = new uqLibMeshNegativeLaplacianOperator();
   C->print_info();
   C->save_converged_evals("evals.txt");
 

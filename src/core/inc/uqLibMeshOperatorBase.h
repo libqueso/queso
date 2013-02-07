@@ -19,7 +19,7 @@
 namespace libMesh {
   class Mesh;
   class EquationSystems;
-  class EigenSystem;
+  class CondensedEigenSystem;
 }
 
 class uqLibMeshOperatorBase : public uqOperatorBase, public libMesh::System::Assembly {
@@ -54,10 +54,6 @@ protected:
 
   //! The number of converged eigenvalue/eigenvector pairs
   unsigned int nconv;
-
-private:
-  //! Common initialisation function for all the constructors
-  void init();
 };
 
 #endif // __QUESO_LIBMESHOPERATOR_BASE__

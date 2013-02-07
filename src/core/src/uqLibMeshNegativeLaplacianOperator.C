@@ -6,7 +6,7 @@
 #include <libmesh/libmesh_common.h>
 #include <libmesh/mesh.h>
 #include <libmesh/equation_systems.h>
-#include <libmesh/eigen_system.h>
+#include <libmesh/condensed_eigen_system.h>
 #include <libmesh/auto_ptr.h>
 #include <libmesh/fe_base.h>
 #include <libmesh/quadrature_gauss.h>
@@ -21,17 +21,12 @@
 uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator()
   : uqLibMeshOperatorBase()
 {
-}
-
-uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std::string& filename)
-  : uqLibMeshOperatorBase(filename)
-{
   // Refactor this out
   unsigned int n_evals = 5;
   // Give the system a pointer to the matrix assembly
   // function defined below.
-  libMesh::EigenSystem & eigen_system =
-    this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem");
+  libMesh::CondensedEigenSystem & eigen_system =
+    this->equation_systems->get_system<libMesh::CondensedEigenSystem>("Eigensystem");
 
   // Declare the system variables.
   // Adds the variable "u" to "Eigensystem".   "u"
@@ -52,10 +47,10 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std
 
   // Set the type of the problem, here we deal with
   // a generalized Hermitian problem.
-  // eigen_system.set_eigenproblem_type(GHEP);
+  eigen_system.set_eigenproblem_type(GHEP);
 
   // Order the eigenvalues "smallest first"
-  // eigen_system.eigen_solver->set_position_of_spectrum(SMALLEST_MAGNITUDE);
+  eigen_system.eigen_solver->set_position_of_spectrum(SMALLEST_MAGNITUDE);
 
   // Set up the boundary
   std::set<libMesh::boundary_id_type> boundary_ids;
@@ -69,8 +64,24 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std
   libMesh::DirichletBoundary dirichlet_bc(boundary_ids, vars, &zf);
   eigen_system.get_dof_map().add_dirichlet_boundary(dirichlet_bc);
 
+  eigen_system.set_eigenproblem_type(GHEP);
+  eigen_system.eigen_solver->set_eigensolver_type(LAPACK);
+
   // Initialize the data structures for the equation system.
   equation_systems->init();
+
+  std::set<unsigned int> global_dirichlet_dof_ids;
+  libMesh::DofConstraints::const_iterator it = eigen_system.get_dof_map().constraint_rows_begin();
+
+  int i = 0;
+  for ( ; it != eigen_system.get_dof_map().constraint_rows_end(); ++it) {
+    std::cerr << i << " " << it->first << std::endl;
+    global_dirichlet_dof_ids.insert(it->first);
+    i++;
+  }
+  std::cerr << "size of dirichlet dof set: " << global_dirichlet_dof_ids.size() << std::endl;
+
+  eigen_system.initialize_condensed_dofs(global_dirichlet_dof_ids);
 
   // Pass the Dirichlet dof IDs to the CondensedEigenSystem
   // std::set<unsigned int> dirichlet_dof_ids;
@@ -92,6 +103,11 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std
   //     this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
   //   libmesh_assert_less (eval.second, libMesh::TOLERANCE);
   // }
+}
+
+uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std::string& filename)
+  : uqLibMeshOperatorBase(filename)
+{
 }
 
 uqLibMeshNegativeLaplacianOperator::~uqLibMeshNegativeLaplacianOperator()
@@ -118,6 +134,7 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
 
   // A reference to the two system matrices
   libMesh::SparseMatrix<libMesh::Number>&  matrix_A = *eigen_system.matrix_A;
+  libMesh::SparseMatrix<libMesh::Number>&  matrix_B = *eigen_system.matrix_B;
 
   // Build a Finite Element object of the specified type.  Since the
   // \p FEBase::build() member dynamically creates memory we will
@@ -145,6 +162,7 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
   const libMesh::DofMap& dof_map = eigen_system.get_dof_map();
 
   // The element stiffness matrix.
+  libMesh::DenseMatrix<libMesh::Number> Me;
   libMesh::DenseMatrix<libMesh::Number> Ke;
 
   // This vector will hold the degree of freedom indices for
@@ -186,6 +204,7 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
       // element type is different (i.e. the last element was a
       // triangle, now we are on a quadrilateral).
       Ke.resize(dof_indices.size(), dof_indices.size());
+      Me.resize(dof_indices.size(), dof_indices.size());
 
       // Now loop over the quadrature points.  This handles
       // the numeric integration.
@@ -194,10 +213,11 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
       // a double loop to integrate the test funcions (i) against
       // the trial functions (j).
       for (unsigned int qp=0; qp < qrule.n_points(); qp++)
-        for (unsigned int i=0; i < dphi.size(); i++)
-          for (unsigned int j=0; j < dphi.size(); j++)
+        for (unsigned int i=0; i < phi.size(); i++)
+          for (unsigned int j=0; j < phi.size(); j++)
             {
-              Ke(i, j) += JxW[qp] * dphi[i][qp] * dphi[j][qp];
+              Me(i, j) += JxW[qp] * phi[i][qp] * phi[j][qp];
+              Ke(i, j) += JxW[qp] * (dphi[i][qp] * dphi[j][qp]);
             }
 
       // On an unrefined mesh, constrain_element_matrix does
@@ -215,6 +235,7 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
       // Finally, simply add the element contribution to the
       // overall matrices A and B.
       matrix_A.add_matrix (Ke, dof_indices);
+      matrix_B.add_matrix (Me, dof_indices);
 
     } // end of element loop
 
