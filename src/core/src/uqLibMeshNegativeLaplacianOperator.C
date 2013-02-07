@@ -33,6 +33,8 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator()
   // will be approximated using second-order approximation.
   unsigned int u_var = eigen_system.add_variable("u", FIRST);
 
+  // This works because *this is a subclass of System::Assembly
+  // and requires the class to implement an 'assemble'
   eigen_system.attach_assemble_object(*this);
 
   // Set the number of requested eigenpairs \p n_evals and the number
@@ -53,56 +55,40 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator()
   eigen_system.eigen_solver->set_position_of_spectrum(SMALLEST_MAGNITUDE);
 
   // Set up the boundary
+  // We'll just the whole boundary to be Dirichlet, because why not
   std::set<libMesh::boundary_id_type> boundary_ids;
   boundary_ids.insert(0);
   boundary_ids.insert(1);
   boundary_ids.insert(2);
   boundary_ids.insert(3);
+
+  // Assign which variables must satisfy the boundary constraints
   std::vector<unsigned int> vars;
   vars.push_back(u_var);
+
+  // Add the boundary object to the eigensystem
   libMesh::ZeroFunction<> zf;
   libMesh::DirichletBoundary dirichlet_bc(boundary_ids, vars, &zf);
   eigen_system.get_dof_map().add_dirichlet_boundary(dirichlet_bc);
 
-  eigen_system.set_eigenproblem_type(GHEP);
-  eigen_system.eigen_solver->set_eigensolver_type(LAPACK);
-
   // Initialize the data structures for the equation system.
   equation_systems->init();
 
+  // Here we obtain the ids of the Dirichlet dofs
   std::set<unsigned int> global_dirichlet_dof_ids;
   libMesh::DofConstraints::const_iterator it = eigen_system.get_dof_map().constraint_rows_begin();
 
-  int i = 0;
   for ( ; it != eigen_system.get_dof_map().constraint_rows_end(); ++it) {
-    std::cerr << i << " " << it->first << std::endl;
     global_dirichlet_dof_ids.insert(it->first);
-    i++;
   }
-  std::cerr << "size of dirichlet dof set: " << global_dirichlet_dof_ids.size() << std::endl;
 
   eigen_system.initialize_condensed_dofs(global_dirichlet_dof_ids);
-
-  // Pass the Dirichlet dof IDs to the CondensedEigenSystem
-  // std::set<unsigned int> dirichlet_dof_ids;
-  // get_boundary_dofs(*equation_systems, "Eigensystem", dirichlet_dof_ids);
-  // eigen_system.initialize_condensed_dofs(dirichlet_dof_ids);
 
   // Solve the system "Eigensystem".
   eigen_system.solve();
 
   // Get the number of converged eigen pairs.
   this->nconv = eigen_system.get_n_converged();
-
-  std::cout << "Number of converged eigenpairs: " << this->nconv
-            << "\n" << std::endl;
-
-  // The eigenvalues should be real!
-  // for (unsigned int i = 0; i < this->nconv; i++) {
-  //   std::pair<libMesh::Real, libMesh::Real> eval =
-  //     this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
-  //   libmesh_assert_less (eval.second, libMesh::TOLERANCE);
-  // }
 }
 
 uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std::string& filename)
@@ -112,8 +98,6 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std
 
 uqLibMeshNegativeLaplacianOperator::~uqLibMeshNegativeLaplacianOperator()
 {
-  // delete this->mesh;
-  // delete this->equations_systems;
 }
 
 void uqLibMeshNegativeLaplacianOperator::assemble()
@@ -240,77 +224,6 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
     } // end of element loop
 
 #endif // LIBMESH_HAVE_SLEPC
-}
-
-void uqLibMeshNegativeLaplacianOperator::get_boundary_dofs(
-    std::set<unsigned int>& global_boundary_dofs_set)
-{
-//   // This function gets the Dirichlet degrees of freedom
-// #ifdef LIBMESH_HAVE_SLEPC
-//   dirichlet_dof_ids.clear();
-// 
-//   // It is a good idea to make sure we are assembling
-//   // the proper system.
-//   // libmesh_assert_equal_to(system_name, "Eigensystem");
-// 
-//   // Get a constant reference to the mesh object.
-//   const MeshBase& mesh = this->equations_systems->get_mesh();
-// 
-//   // The dimension that we are running.
-//   const unsigned int dim = mesh.mesh_dimension();
-// 
-//   // Get a reference to our system.
-//   EigenSystem & eigen_system = this->equations_systems->get_system<EigenSystem>(system_name);
-// 
-//   // Get a constant reference to the Finite Element type
-//   // for the first (and only) variable in the system.
-//   FEType fe_type = eigen_system.get_dof_map().variable_type(0);
-//   
-//   const DofMap& dof_map = eigen_system.get_dof_map();
-// 
-//   // This vector will hold the degree of freedom indices for
-//   // the element.  These define where in the global system
-//   // the element degrees of freedom get mapped.
-//   std::vector<unsigned int> dof_indices;
-// 
-//   // Now we will loop over all the elements in the mesh that
-//   // live on the local processor. We will compute the element
-//   // matrix and right-hand-side contribution.  In case users
-//   // later modify this program to include refinement, we will
-//   // be safe and will only consider the active elements;
-//   // hence we use a variant of the \p active_elem_iterator.
-//   MeshBase::const_element_iterator       el     = mesh.active_local_elements_begin();
-//   const MeshBase::const_element_iterator end_el = mesh.active_local_elements_end();
-//  
-//   for ( ; el != end_el; ++el)
-//     {
-//       // Store a pointer to the element we are currently
-//       // working on.  This allows for nicer syntax later.
-//       const Elem* elem = *el;
-// 
-//       // Get the degree of freedom indices for the
-//       // current element.  These define where in the global
-//       // matrix and right-hand-side this element will
-//       // contribute to.
-//       dof_map.dof_indices(elem, dof_indices);
-// 
-//      {
-//         // All boundary dofs are Dirichlet dofs in this case
-//         for (unsigned int s = 0; s < elem->n_sides(); s++)
-//           if (elem->neighbor(s) == NULL)
-//             {
-//               std::vector<unsigned int> side_dofs;
-//               FEInterface::dofs_on_side(elem, dim, fe_type,
-//                                         s, side_dofs);
-// 
-//               for(unsigned int ii = 0; ii < side_dofs.size(); ii++)
-//                 dirichlet_dof_ids.insert(dof_indices[side_dofs[ii]]);
-//             }
-//       }
-// 
-//     } // end of element loop
-// 
-// #endif // LIBMESH_HAVE_SLEPC
 }
 
 void uqLibMeshNegativeLaplacianOperator::print_info() const

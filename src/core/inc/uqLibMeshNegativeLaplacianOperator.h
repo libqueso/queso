@@ -18,8 +18,6 @@ public:
   uqLibMeshNegativeLaplacianOperator();
   uqLibMeshNegativeLaplacianOperator(const std::string& filename);
   ~uqLibMeshNegativeLaplacianOperator();
-  virtual void get_boundary_dofs(
-      std::set<unsigned int>& global_boundary_dofs_set);
 
   // from system::assembly
   virtual void assemble();
@@ -27,9 +25,6 @@ public:
   //! Print libmesh related information
   virtual void print_info() const;
 
-// private:
-  // ! Common initialisation function called by all the constructors
-  // void init();
 };
 
 #endif // __QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H__

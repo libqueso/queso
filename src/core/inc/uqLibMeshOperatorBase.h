@@ -19,7 +19,6 @@
 namespace libMesh {
   class Mesh;
   class EquationSystems;
-  class CondensedEigenSystem;
 }
 
 class uqLibMeshOperatorBase : public uqOperatorBase, public libMesh::System::Assembly {
@@ -47,6 +46,9 @@ public:
 
   //! Save converged eigenfunction \c i to \c filename
   virtual void save_converged_evec(const std::string &filename, unsigned int i) const;
+
+  //! Return the number of converged eigenpairs
+  unsigned int get_num_converged() const;
 
 protected:
   libMesh::Mesh *mesh;

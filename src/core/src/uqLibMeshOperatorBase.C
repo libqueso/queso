@@ -41,8 +41,7 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase()
 
   // Create a CondensedEigenSystem named "Eigensystem" and (for convenience)
   // use a reference to the system we create.
-  libMesh::EigenSystem & eigen_system =
-    this->equation_systems->add_system<libMesh::CondensedEigenSystem> ("Eigensystem");
+  this->equation_systems->add_system<libMesh::CondensedEigenSystem>("Eigensystem");
 
 #endif // LIBMESH_HAVE_SLEPC
 }
@@ -68,10 +67,6 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(const std::string& filename)
   libmesh_example_assert(false, "--disable-complex");
 #endif
 
-  // Finally, read in the number of eigenpairs we want to compute!
-  // Refactor this out
-  unsigned int n_evals = 2;
-
   this->mesh = new libMesh::Mesh;
   this->mesh->read(filename);
 
@@ -80,8 +75,7 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(const std::string& filename)
 
   // Create a CondensedEigenSystem named "Eigensystem" and (for convenience)
   // use a reference to the system we create.
-  libMesh::EigenSystem & eigen_system =
-    this->equation_systems->add_system<libMesh::EigenSystem> ("Eigensystem");
+  this->equation_systems->add_system<libMesh::EigenSystem> ("Eigensystem");
 
 #endif // LIBMESH_HAVE_SLEPC
 }
@@ -100,13 +94,24 @@ void uqLibMeshOperatorBase::save_converged_evals(const std::string &filename) co
   for (i = 0; i < this->nconv; i++) {
     std::pair<libMesh::Real, libMesh::Real> eval =
       this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
-    evals_file << eval.first << std::endl;
+    evals_file << eval.first << " " << eval.second << std::endl;
   }
   evals_file.close();
 }
 
 void uqLibMeshOperatorBase::save_converged_evec(const std::string &filename, unsigned int i) const
 {
-  this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
-  libMesh::ExodusII_IO(*this->mesh).write_equation_systems(filename, *this->equation_systems);
+  if (i < this->nconv) {
+    this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
+    libMesh::ExodusII_IO(*this->mesh).write_equation_systems(filename, *this->equation_systems);
+  }
+  else {
+    std::cerr << "Warning: eigenpair" << i
+              << "did not converge. Not saving."
+              << std::endl;
+  }
+}
+
+unsigned int uqLibMeshOperatorBase::get_num_converged() const {
+  return this->nconv;
 }

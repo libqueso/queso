@@ -18,7 +18,6 @@ int main(int argc, char **argv)
   C->print_info();
   C->save_converged_evals("evals.txt");
 
-
   for (unsigned int i = 0; i < 5; i++) {
     std::ostringstream base_name("evec");
     std::ostringstream number;
