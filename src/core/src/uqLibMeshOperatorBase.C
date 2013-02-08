@@ -106,8 +106,8 @@ void uqLibMeshOperatorBase::save_converged_evec(const std::string &filename, uns
     libMesh::ExodusII_IO(*this->mesh).write_equation_systems(filename, *this->equation_systems);
   }
   else {
-    std::cerr << "Warning: eigenpair" << i
-              << "did not converge. Not saving."
+    std::cerr << "Warning: eigenpair " << i
+              << " did not converge. Not saving."
               << std::endl;
   }
 }
