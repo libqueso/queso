@@ -139,7 +139,11 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_inter0Rank                 (-1),
   m_inter0CommSize             (1),
   m_subDisplayFile             (NULL),
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  m_rngObject                  (NULL),
+#else
   m_rng                        (NULL),
+#endif
   m_exceptionalCircunstance    (false),
   m_alternativeOptionsValues   (),
   m_optionsObj                 (NULL)
@@ -193,7 +197,11 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
     delete m_allOptionsDesc;
   }
 
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  if (m_rng) delete m_rng;
+#else
   if (m_rng) gsl_rng_free(m_rng);
+#endif
 
   //if (m_subDisplayFile) {
   //  *m_subDisplayFile << "Leaving uqBaseEnvironmentClass::destructor()"
@@ -454,18 +462,38 @@ uqBaseEnvironmentClass::checkingLevel() const
   return m_optionsObj->m_ov.m_checkingLevel;
 }
 
+#ifdef QUESO_USES_NEW_RNG_CLASS
+const uqRngBaseClass*
+uqBaseEnvironmentClass::rng() const
+{
+  return m_rngObject;
+}
+#else
 const gsl_rng*
 uqBaseEnvironmentClass::rng() const
 {
   return m_rng;
 }
+#endif
 
 int
 uqBaseEnvironmentClass::seed() const
 {
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  return m_rngObj->seed();
+#else
   return m_optionsObj->m_ov.m_seed;
+#endif
 }
 
+#ifdef QUESO_USES_NEW_RNG_CLASS
+void
+uqBaseEnvironmentClass::resetSeed(int newSeedOption)
+{
+  m_rngObj->resetSeed(newSeedOption);
+  return;
+}
+#else
 void
 uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
 {
@@ -493,6 +521,7 @@ uqBaseEnvironmentClass::resetGslSeed(int newSeedOption)
 
   return;
 }
+#endif
 
 std::string
 uqBaseEnvironmentClass::platformName() const
@@ -1459,6 +1488,9 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   //////////////////////////////////////////////////
   // Deal with seed
   //////////////////////////////////////////////////
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  m_rng = new uqRngGslClass(m_optionsObj->m_ov.m_seed,m_worldRank);
+#else
   if (m_optionsObj->m_ov.m_seed >= 0) {
     gsl_rng_default_seed = (unsigned long int) m_optionsObj->m_ov.m_seed;
   }
@@ -1487,6 +1519,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                     //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
                       << std::endl;
   }
+#endif
 
   //////////////////////////////////////////////////
   // Leave commonConstructor()

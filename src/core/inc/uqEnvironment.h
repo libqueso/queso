@@ -38,13 +38,17 @@ class uqEnvironmentOptionsClass;
 #ifdef QUESO_HAS_HDF5
 #include <hdf5.h>
 #endif
-#include <gsl/gsl_rng.h>
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
 #include <iostream>
 #include <fstream>
 
+#ifdef QUESO_USES_NEW_RNG_CLASS
+#include <uqRngGsl.h>
+#else
+#include <gsl/gsl_rng.h>
 extern unsigned long int gsl_rng_default_seed;
+#endif
 
 struct uqFilePtrSetStruct {
   uqFilePtrSetStruct();
@@ -196,9 +200,14 @@ public:
           unsigned int            displayVerbosity              () const;
           unsigned int            syncVerbosity                 () const;
           unsigned int            checkingLevel                 () const;
+#ifdef QUESO_USES_NEW_RNG_CLASS
+          const uqRngBaseClass*   rngObject                     () const;
+          void                    resetSeed                     (int newSeedOption);
+#else
           const gsl_rng*          rng                           () const;
-          int                     seed                          () const;
           void                    resetGslSeed                  (int newSeedOption);
+#endif
+          int                     seed                          () const;
 	  std::string             platformName                  () const;
 	  std::string             identifyingString             () const;
           void                    resetIdentifyingString        (const std::string& newString) const; // Yes, const
@@ -257,7 +266,11 @@ protected:
   int                        m_inter0CommSize;
 
   mutable std::ofstream*     m_subDisplayFile;
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  uqRngGslClass*             m_rngObject;
+#else
   gsl_rng*                   m_rng;
+#endif
   struct timeval             m_timevalBegin;
   mutable bool               m_exceptionalCircunstance;
 
