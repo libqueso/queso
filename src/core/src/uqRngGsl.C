@@ -27,6 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <uqRngGsl.h>
+#include <gsl/gsl_randist.h>
+#include <mpi.h>
 
 uqRngGslClass::uqRngGslClass()
   :
@@ -61,15 +63,15 @@ uqRngGslClass::uqRngGslClass(int seed, int worldRank)
                       "uqRngGslClass::constructor()",
                       "null m_rng");
 
-  //gsl_rng_set(m_rng, gsl_rng_default_seed);
+//gsl_rng_set(m_rng, gsl_rng_default_seed);
 
-  if ((m_subDisplayFile)/* && (this->displayVerbosity() > 0)*/) {
-    *m_subDisplayFile << "In uqRngGslClass::constructor():"
-                      << "\n  m_seed = "                                              << m_seed
-                      << "\n  internal seed = "                                       << gsl_rng_default_seed
-                    //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
-                    //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
-                      << std::endl;
+  if (m_worldRank == 0) {
+    std::cout << "In uqRngGslClass::constructor():"
+              << "\n  m_seed = "                                              << m_seed
+              << "\n  internal seed = "                                       << gsl_rng_default_seed
+            //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
+            //<< "\n  first generated sample from std normal distribution = " << gsl_ran_gaussian(m_rng,1.)
+              << std::endl;
   }
 }
 
@@ -81,7 +83,7 @@ uqRngGslClass::~uqRngGslClass()
 void
 uqRngGslClass::resetSeed(int newSeed)
 {
-  uqRngBaseClass::resetSeed(int newSeed);
+  uqRngBaseClass::resetSeed(newSeed);
 
   gsl_rng_free(m_rng);
 
@@ -103,23 +105,29 @@ uqRngGslClass::resetSeed(int newSeed)
                       "uqRngGslClass::resetGslSeed()",
                       "null m_rng");
 
+  return;
+}
 
 double
 uqRngGslClass::uniformSample() const
 {
+  return gsl_rng_uniform(m_rng);
 }
 
 double
-uqRngGslClass::gaussainSample() const
+uqRngGslClass::gaussainSample(double stdDev) const
 {
+  return gsl_ran_gaussian(m_rng,stdDev);
 }
 
 double
-uqRngGslClass::betaSample() const
+uqRngGslClass::betaSample(double alpha, double beta) const
 {
+  return gsl_ran_beta(m_rng,alpha,beta);
 }
 
 double
-uqRngGslClass::gammaSample() const
+uqRngGslClass::gammaSample(double a, double b) const
 {
+  return gsl_ran_gamma(m_rng,a,b);
 }

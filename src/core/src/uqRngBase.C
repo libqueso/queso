@@ -27,6 +27,7 @@
 //--------------------------------------------------------------------------
 
 #include <uqRngBase.h>
+#include <mpi.h>
 
 uqRngBaseClass::uqRngBaseClass()
   :
@@ -41,7 +42,8 @@ uqRngBaseClass::uqRngBaseClass()
 
 uqRngBaseClass::uqRngBaseClass(int seed, int worldRank)
   :
-  m_seed(seed,worldRank)
+  m_seed     (seed),
+  m_worldRank(worldRank)
 {
 }
 

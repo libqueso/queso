@@ -58,6 +58,8 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/uqDefines.C \
 	$(top_srcdir)/src/core/src/uqEnvironment.C \
 	$(top_srcdir)/src/core/src/uqEnvironmentOptions.C \
+	$(top_srcdir)/src/core/src/uqRngBase.C \
+	$(top_srcdir)/src/core/src/uqRngGsl.C \
 	$(top_srcdir)/src/core/src/uqVector.C \
 	$(top_srcdir)/src/core/src/uqMatrix.C \
 	$(top_srcdir)/src/core/src/uqMpiComm.C \
@@ -127,6 +129,8 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/uqDefines.h \
 	$(top_srcdir)/src/core/inc/uqEnvironment.h \
 	$(top_srcdir)/src/core/inc/uqEnvironmentOptions.h \
+	$(top_srcdir)/src/core/inc/uqRngBase.h \
+	$(top_srcdir)/src/core/inc/uqRngGsl.h \
 	$(top_srcdir)/src/core/inc/uqGslMatrix.h \
 	$(top_srcdir)/src/core/inc/uqGslVector.h \
 	$(top_srcdir)/src/core/inc/uqMatrix.h \

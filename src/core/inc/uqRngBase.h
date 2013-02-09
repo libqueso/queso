@@ -41,10 +41,10 @@ public:
 
           int    seed          () const;
   virtual void   resetSeed     (int newSeed);
-  virtual double uniformSample () const = 0;
-  virtual double gaussainSample() const = 0;
-  virtual double betaSample    () const = 0;
-  virtual double gammaSample   () const = 0;
+  virtual double uniformSample ()                          const = 0;
+  virtual double gaussainSample(double stdDev)             const = 0;
+  virtual double betaSample    (double alpha, double beta) const = 0;
+  virtual double gammaSample   (double a, double b)        const = 0;
 
 protected:
   int m_seed;

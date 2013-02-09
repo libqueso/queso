@@ -3,6 +3,12 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
+Version 0.vv.s (dd mmm 2013)
+https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.vv.s
+
+  * added tests to 'make check'
+  * added rng (random number generator) class to accomodate either GSL or BOOST rng's
+
 Version 0.45.3 (05 November 2012)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.45.3
 

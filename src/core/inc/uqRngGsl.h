@@ -41,11 +41,11 @@ public:
   uqRngGslClass(int seed, int worldRank);
  ~uqRngGslClass();
 
-        void     resetSeed     (int newSeed) const;
-        double   uniformSample () const;
-        double   gaussainSample() const;
-        double   betaSample    () const;
-        double   gammaSample   () const;
+        void     resetSeed     (int newSeed);
+        double   uniformSample ()                          const;
+        double   gaussainSample(double stdDev)             const;
+        double   betaSample    (double alpha, double beta) const;
+        double   gammaSample   (double a, double b)        const;
 
   const gsl_rng* rng           () const;
 
