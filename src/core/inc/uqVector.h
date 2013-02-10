@@ -31,7 +31,10 @@
 
 #include <uqEnvironment.h>
 #include <uqMap.h>
+#ifdef QUESO_USES_NEW_RNG_CLASS
+#else
 #include <gsl/gsl_randist.h>
+#endif
 #include <iostream>
 #include <uqDefines.h>
 

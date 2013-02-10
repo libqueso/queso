@@ -31,7 +31,10 @@
 #include <uqEnvironmentOptions.h>
 #include <uqMiscellaneous.h>
 #include <sys/time.h>
+#ifdef QUESO_USES_NEW_RNG_CLASS
+#else
 #include <gsl/gsl_randist.h>
+#endif
 #include <grvy.h>
 
 //-----------------------------
