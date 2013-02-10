@@ -63,11 +63,11 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/uqRngBoost.C \
 	$(top_srcdir)/src/core/src/uqVector.C \
 	$(top_srcdir)/src/core/src/uqMatrix.C \
+	$(top_srcdir)/src/core/src/uqTeuchosVector.C \
+	$(top_srcdir)/src/core/src/uqTeuchosMatrix.C \
 	$(top_srcdir)/src/core/src/uqMpiComm.C \
 	$(top_srcdir)/src/core/src/uqMap.C
 
-#	$(top_srcdir)/src/core/src/uqTrilinosVector.C
-#	$(top_srcdir)/src/core/src/uqTrilinosMatrix.C
 
 # Sources from core/src with gsl conditional 
 
@@ -95,9 +95,9 @@ endif
 # Sources from basic/src
 
 libqueso_la_SOURCES += \
+	$(top_srcdir)/src/basic/src/uqTeuchosVectorSpace.C \
 	$(top_srcdir)/src/basic/src/uqSequenceStatisticalOptions.C
 
-#	$(top_srcdir)/src/basic/src/uqTrilinosVectorSpace.C
 
 # Sources from basic/src with gsl conditional
 
@@ -137,14 +137,13 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/uqRngBoost.h \
 	$(top_srcdir)/src/core/inc/uqGslMatrix.h \
 	$(top_srcdir)/src/core/inc/uqGslVector.h \
+	$(top_srcdir)/src/core/inc/uqTeuchosMatrix.h \
+	$(top_srcdir)/src/core/inc/uqTeuchosVector.h \
 	$(top_srcdir)/src/core/inc/uqMatrix.h \
 	$(top_srcdir)/src/core/inc/uqMpiComm.h \
 	$(top_srcdir)/src/core/inc/uqMap.h \
 	$(top_srcdir)/src/core/inc/uqDistArray.h \
 	$(top_srcdir)/src/core/inc/uqVector.h
-
-#	$(top_srcdir)/src/core/inc/uqTrilinosMatrix.h
-#	$(top_srcdir)/src/core/inc/uqTrilinosVector.h
 
 # Headers to install from misc/inc
 
@@ -219,12 +218,12 @@ nodist_libqueso_include_HEADERS    =       \
 
 # Headers to install from interface
 
- libqueso_include_HEADERS += \
- 	$(top_srcdir)/src/interface/queso_basic.h     \
- 	$(top_srcdir)/src/interface/basic_classes.h   \
- 	$(top_srcdir)/src/interface/basic_interface.h \
-       $(top_srcdir)/src/interface/basic_int.h
- 
+libqueso_include_HEADERS += \
+	$(top_srcdir)/src/interface/queso_basic.h     \
+	$(top_srcdir)/src/interface/basic_classes.h   \
+	$(top_srcdir)/src/interface/basic_interface.h \
+	$(top_srcdir)/src/interface/basic_int.h
+
 # Standalone binaries
 
 bin_PROGRAMS               = queso_version

@@ -22,21 +22,23 @@
 //
 //-----------------------------------------------------------------------el-
 // 
-// $Id: uqTeuchosMatrix.h 33400 2012-09-27 04:32:56Z prudenci $
+// $Id$
 //
 //--------------------------------------------------------------------------
 
 #ifndef __UQ_TEUCHOS_MATRIX_H__
 #define __UQ_TEUCHOS_MATRIX_H__
 
-#include <uqMatrix.h>
-#include <gsl/gsl_matrix.h>
-#include <gsl/gsl_permutation.h>
+#ifdef QUESO_HAS_TRILINOS
 #include <uqTeuchosVector.h>
 #include <Teuchos_SerialDenseVector.hpp>
 #include <Teuchos_SerialDenseMatrix.hpp>
 #include <Teuchos_LAPACK.hpp>
+#endif
 
+#include <uqMatrix.h>
+
+#ifdef QUESO_HAS_TRILINOS
 
 class uqTeuchosMatrixClass : public uqMatrixClass
 {
@@ -172,6 +174,8 @@ uqTeuchosMatrixClass matrixProduct   (const uqTeuchosVectorClass& v1,  const uqT
 uqTeuchosMatrixClass leftDiagScaling (const uqTeuchosVectorClass& vec, const uqTeuchosMatrixClass& mat);
 uqTeuchosMatrixClass rightDiagScaling(const uqTeuchosMatrixClass& mat, const uqTeuchosVectorClass& vec);
 std::ostream&        operator<<      (std::ostream& os,            const uqTeuchosMatrixClass& obj);
+
+#endif // ifdef QUESO_HAS_TRILINOS
 
 #endif // __UQ_TEUCHOS_MATRIX_H__
 
