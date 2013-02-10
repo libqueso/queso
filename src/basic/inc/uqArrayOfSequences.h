@@ -48,8 +48,8 @@ public:
         void         erasePositions       (unsigned int initialPos, unsigned int numPos);
         void         getPositionValues    (unsigned int posId,       V& vec) const;
         void         setPositionValues    (unsigned int posId, const V& vec);
-        void         setGaussian          (const gsl_rng* rng, const V& meanVec, const V& stdDevVec);
-        void         setUniform           (const gsl_rng* rng, const V& aVec,    const V& bVec     );
+        void         setGaussian          (const V& meanVec, const V& stdDevVec);
+        void         setUniform           (const V& aVec,    const V& bVec     );
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         void         uniformlySampledMdf  (const V&                       numEvaluationPointsVec,
                                            uqArrayOfOneDGridsClass <V,M>& mdfGrids,
@@ -295,11 +295,11 @@ uqArrayOfSequencesClass<V,M>::setPositionValues(unsigned int posId, const V& vec
 
 template <class V, class M>
 void
-uqArrayOfSequencesClass<V,M>::setGaussian(const gsl_rng* rng, const V& meanVec, const V& stdDevVec)
+uqArrayOfSequencesClass<V,M>::setGaussian(const V& meanVec, const V& stdDevVec)
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
-    seq.setGaussian(rng,meanVec[i],stdDevVec[i]);
+    seq.setGaussian(meanVec[i],stdDevVec[i]);
   }
 
   uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();
@@ -309,11 +309,11 @@ uqArrayOfSequencesClass<V,M>::setGaussian(const gsl_rng* rng, const V& meanVec, 
 
 template <class V, class M>
 void
-uqArrayOfSequencesClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, const V& bVec)
+uqArrayOfSequencesClass<V,M>::setUniform(const V& aVec, const V& bVec)
 {
   for (unsigned int i = 0; i < (unsigned int) m_scalarSequences.MyLength(); ++i) {
     uqScalarSequenceClass<double>& seq = *(m_scalarSequences(i,0));
-    seq.setUniform(rng,aVec[i],bVec[i]);
+    seq.setUniform(aVec[i],bVec[i]);
   }
 
   uqBaseVectorSequenceClass<V,M>::deleteStoredVectors();

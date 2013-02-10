@@ -74,7 +74,7 @@ int uqMyWorldfullRank();
 #define QUESO_CLASSES_INSTANTIATE_NEW_MAPS
 #undef  QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 #undef  QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
-#undef  QUESO_USES_NEW_RNG_CLASS
+#define QUESO_USES_NEW_RNG_CLASS
 
 const int UQ_UNAVAILABLE_RANK = -1;
 
@@ -115,6 +115,7 @@ public:
   unsigned int           m_syncVerbosity;
   unsigned int           m_checkingLevel;
 
+  std::string            m_rngType;
   //! Sets the seed of the random number generator.
   int                    m_seed;
   std::string            m_platformName;

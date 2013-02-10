@@ -30,11 +30,7 @@
 #define __UQ_MISCELLANEOUS_H__
 
 #include <uqEnvironment.h>
-#ifdef QUESO_USES_NEW_RNG_CLASS
 #include <uqRngBase.h>
-#else
-#include <gsl/gsl_rng.h>
-#endif
 #include <string>
 #include <vector>
 #include <math.h>
@@ -56,15 +52,9 @@ int          uqMiscReadCharsAndDoubleFromFile (std::ifstream&            ifs,
                                                std::string&              termString,
                                                double*                   termValue,
                                                bool&                     endOfLineAchieved);
-#ifdef QUESO_USES_NEW_RNG_CLASS
 double       uqMiscGammar                     (double                    a,
                                                double                    b,
                                                const uqRngBaseClass*     rngObject);
-#else
-double       uqMiscGammar                     (double                    a,
-                                               double                    b,
-                                               const gsl_rng*            rng);
-#endif
 double       uqMiscGetEllapsedSeconds         (struct timeval*           timeval0);
 double       uqMiscHammingWindow              (unsigned int              N,
                                                unsigned int              j);

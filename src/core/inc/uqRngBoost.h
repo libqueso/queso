@@ -26,60 +26,26 @@
 //
 //--------------------------------------------------------------------------
 
+#ifndef __UQ_RNG_BOOST_H__
+#define __UQ_RNG_BOOST_H__
+
 #include <uqRngBase.h>
-#include <mpi.h>
 
-uqRngBaseClass::uqRngBaseClass()
-  :
-  m_seed     (0),
-  m_worldRank(UQ_UNAVAILABLE_RANK)
+class uqRngBoostClass : public uqRngBaseClass
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_worldRank,
-                      "uqRngBaseClass::constructor(), default",
-                      "should not be used by user");
-}
+public:
+  uqRngBoostClass();
+  uqRngBoostClass(int seed, int worldRank);
+ ~uqRngBoostClass();
 
-uqRngBaseClass::uqRngBaseClass(int seed, int worldRank)
-  :
-  m_seed     (seed),
-  m_worldRank(worldRank)
-{
-  privateResetSeed();
-}
+        void     resetSeed     (int newSeed);
+        double   uniformSample ()                          const;
+        double   gaussianSample(double stdDev)             const;
+        double   betaSample    (double alpha, double beta) const;
+        double   gammaSample   (double a, double b)        const;
 
-uqRngBaseClass::~uqRngBaseClass()
-{
-}
+protected:
+  // Kemelli todo
+};
 
-int
-uqRngBaseClass::seed() const
-{
-  return m_seed;
-}
-
-void
-uqRngBaseClass::resetSeed(int newSeed)
-{
-  m_seed = newSeed;
-  privateResetSeed();
-  return;
-}
-
-void
-uqRngBaseClass::privateResetSeed()
-{
-  if (m_seed >= 0) {
-    // Do nothing
-  }
-  else if (m_seed < 0) {
-    m_seed = (-m_seed+m_worldRank);
-  }
-  //else {
-  //  struct timeval timevalNow;
-  //  /*iRC = */gettimeofday(&timevalNow, NULL);
-  //  m_seed = (int) timevalNow.tv_usec;
-  //}
-
-  return;
-}
+#endif // __UQ_RNG_BOOST_H__

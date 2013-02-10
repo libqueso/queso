@@ -302,11 +302,7 @@ uqGaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
 
   bool outOfSupport = true;
   do {
-#ifdef QUESO_USES_NEW_RNG_CLASS
     iidGaussianVector.cwSetGaussian(0.0, 1.0);
-#else
-    iidGaussianVector.cwSetGaussian(m_env.rng(), 0.0, 1.0);
-#endif
 
     if (m_lowerCholLawCovMatrix) {
       nextValues = (*m_unifiedLawExpVector) + (*m_lowerCholLawCovMatrix)*iidGaussianVector;
@@ -508,11 +504,7 @@ uqUniformVectorRealizerClass<V,M>::realization(V& nextValues) const
                       "uqUniformVectorRealizerClass<V,M>::realization()",
                       "only box images are supported right now");
   
-#ifdef QUESO_USES_NEW_RNG_CLASS
   nextValues.cwSetUniform(imageBox->minValues(),imageBox->maxValues());
-#else
-  nextValues.cwSetUniform(m_env.rng(),imageBox->minValues(),imageBox->maxValues());
-#endif
   return;
 }
 
@@ -573,11 +565,7 @@ template<class V, class M>
 void
 uqBetaVectorRealizerClass<V,M>::realization(V& nextValues) const
 {
-#ifdef QUESO_USES_NEW_RNG_CLASS
   nextValues.cwSetBeta(m_alpha,m_beta);
-#else
-  nextValues.cwSetBeta(m_env.rng(),m_alpha,m_beta);
-#endif
   return;
 }
 
@@ -638,11 +626,7 @@ template<class V, class M>
 void
 uqGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 {
-#ifdef QUESO_USES_NEW_RNG_CLASS
   nextValues.cwSetGamma(m_a,m_b);
-#else
-  nextValues.cwSetGamma(m_env.rng(),m_a,m_b);
-#endif
   return;
 }
 
@@ -703,11 +687,7 @@ template<class V, class M>
 void
 uqInverseGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 {
-#ifdef QUESO_USES_NEW_RNG_CLASS
   nextValues.cwSetInverseGamma(m_alpha,m_beta);
-#else
-  nextValues.cwSetInverseGamma(m_env.rng(),m_alpha,m_beta);
-#endif
   return;
 }
 
@@ -909,11 +889,7 @@ uqLogNormalVectorRealizerClass<V,M>::realization(V& nextValues) const
 
   bool outOfSupport = true;
   do {
-#ifdef QUESO_USES_NEW_RNG_CLASS
     iidGaussianVector.cwSetGaussian(0.0, 1.0);
-#else
-    iidGaussianVector.cwSetGaussian(m_env.rng(), 0.0, 1.0);
-#endif
 
     if (m_lowerCholLawCovMatrix) {
       nextValues = (*m_unifiedLawExpVector) + (*m_lowerCholLawCovMatrix)*iidGaussianVector;

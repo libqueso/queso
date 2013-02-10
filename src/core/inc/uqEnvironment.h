@@ -43,12 +43,7 @@ namespace po = boost::program_options;
 #include <iostream>
 #include <fstream>
 
-#ifdef QUESO_USES_NEW_RNG_CLASS
-#include <uqRngGsl.h>
-#else
-#include <gsl/gsl_rng.h>
-extern unsigned long int gsl_rng_default_seed;
-#endif
+#include <uqRngBase.h>
 
 struct uqFilePtrSetStruct {
   uqFilePtrSetStruct();
@@ -200,13 +195,8 @@ public:
           unsigned int            displayVerbosity              () const;
           unsigned int            syncVerbosity                 () const;
           unsigned int            checkingLevel                 () const;
-#ifdef QUESO_USES_NEW_RNG_CLASS
           const uqRngBaseClass*   rngObject                     () const;
           void                    resetSeed                     (int newSeedOption);
-#else
-          const gsl_rng*          rng                           () const;
-          void                    resetGslSeed                  (int newSeedOption);
-#endif
           int                     seed                          () const;
 	  std::string             platformName                  () const;
 	  std::string             identifyingString             () const;
@@ -266,11 +256,7 @@ protected:
   int                        m_inter0CommSize;
 
   mutable std::ofstream*     m_subDisplayFile;
-#ifdef QUESO_USES_NEW_RNG_CLASS
-  uqRngGslClass*             m_rngObject;
-#else
-  gsl_rng*                   m_rng;
-#endif
+  uqRngBaseClass*            m_rngObject;
   struct timeval             m_timevalBegin;
   mutable bool               m_exceptionalCircunstance;
 

@@ -30,6 +30,7 @@
 #define __EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H__
 
 #include <uqEnvironment.h>
+#include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 #include <cmath>
 

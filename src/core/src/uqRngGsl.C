@@ -73,14 +73,14 @@ uqRngGslClass::~uqRngGslClass()
 void
 uqRngGslClass::resetSeed(int newSeed)
 {
-  gsl_rng_free(m_rng);
   uqRngBaseClass::resetSeed(newSeed);
+  gsl_rng_free(m_rng);
 
   gsl_rng_default_seed = (unsigned long int) m_seed;
   m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
   UQ_FATAL_TEST_MACRO((m_rng == NULL),
                       m_worldRank,
-                      "uqRngGslClass::resetGslSeed()",
+                      "uqRngGslClass::resetSeed()",
                       "null m_rng");
 
   return;

@@ -36,10 +36,6 @@
 #include <uqDefines.h>
 #include <vector>
 #include <complex>
-#ifdef QUESO_USES_NEW_RNG_CLASS
-#else
-#include <gsl/gsl_randist.h>
-#endif
 #include <sys/time.h>
 
 #define SCALAR_SEQUENCE_INIT_MPI_MSG 1
@@ -85,13 +81,8 @@ public:
   const T&           unifiedSampleVariancePlain   (bool                            useOnlyInter0Comm) const;
         void         deleteStoredScalars          ();
 
-#ifdef QUESO_USES_NEW_RNG_CLASS
         void         setGaussian                  (const T& mean, const T& stdDev); /* This routine deletes all stored computed vectors */
         void         setUniform                   (const T& a,    const T& b     ); /* This routine deletes all stored computed vectors */
-#else
-        void         setGaussian                  (const gsl_rng* rng, const T& mean, const T& stdDev); /* This routine deletes all stored computed vectors */
-        void         setUniform                   (const gsl_rng* rng, const T& a,    const T& b     ); /* This routine deletes all stored computed vectors */
-#endif
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
         void         subUniformlySampledMdf       (unsigned int                    numIntervals,
                                                    T&                              minDomainValue,
@@ -1014,29 +1005,17 @@ uqScalarSequenceClass<T>::unifiedSampleVariancePlain(bool useOnlyInter0Comm) con
 
 template <class T>
 void
-#ifdef QUESO_USES_NEW_RNG_CLASS
 uqScalarSequenceClass<T>::setGaussian(const T& meanValue, const T& stdDev)
-#else
-uqScalarSequenceClass<T>::setGaussian(const gsl_rng* rng, const T& meanValue, const T& stdDev)
-#endif
 {
   unsigned int maxJ = this->subSequenceSize();
   if (meanValue == 0.) {
     for (unsigned int j = 0; j < maxJ; ++j) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
       m_seq[j] = m_env.rngObject()->gaussianSample(stdDev);
-#else
-      m_seq[j] = gsl_ran_gaussian(rng,stdDev);
-#endif
     }
   }
   else {
     for (unsigned int j = 0; j < maxJ; ++j) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
       m_seq[j] = meanValue + m_env.rngObject()->gaussianSample(stdDev);
-#else
-      m_seq[j] = meanValue + gsl_ran_gaussian(rng,stdDev);
-#endif
     }
   }
 
@@ -1047,50 +1026,30 @@ uqScalarSequenceClass<T>::setGaussian(const gsl_rng* rng, const T& meanValue, co
 
 template <class T>
 void
-#ifdef QUESO_USES_NEW_RNG_CLASS
 uqScalarSequenceClass<T>::setUniform(const T& a, const T& b)
-#else
-uqScalarSequenceClass<T>::setUniform(const gsl_rng* rng, const T& a, const T& b)
-#endif
 {
   unsigned int maxJ = this->subSequenceSize();
   if (a == 0.) {
     if (b == 1.) {
       for (unsigned int j = 0; j < maxJ; ++j) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
         m_seq[j] = m_env.rngObject()->uniformSample();
-#else
-        m_seq[j] = gsl_rng_uniform(rng);
-#endif
       }
     }
     else {
       for (unsigned int j = 0; j < maxJ; ++j) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
         m_seq[j] = b*m_env.rngObject()->uniformSample();
-#else
-        m_seq[j] = b*gsl_rng_uniform(rng);
-#endif
       }
     }
   }
   else {
     if ((b-a) == 1.) {
       for (unsigned int j = 0; j < maxJ; ++j) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
         m_seq[j] = a + m_env.rngObject()->uniformSample();
-#else
-        m_seq[j] = a + gsl_rng_uniform(rng);
-#endif
       }
     }
     else {
       for (unsigned int j = 0; j < maxJ; ++j) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
         m_seq[j] = a + (b-a)*m_env.rngObject()->uniformSample();
-#else
-        m_seq[j] = a + (b-a)*gsl_rng_uniform(rng);
-#endif
       }
     }
   }

@@ -445,63 +445,35 @@ uqGslVectorClass::cwSet(double value)
 }
 
 void
-#ifdef QUESO_USES_NEW_RNG_CLASS
 uqGslVectorClass::cwSetGaussian(double mean, double stdDev)
-#else
-uqGslVectorClass::cwSetGaussian(const gsl_rng* rng, double mean, double stdDev)
-#endif
 {
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
     (*this)[i] = mean + m_env.rngObject()->gaussianSample(stdDev);
-#else
-    (*this)[i] = mean + gsl_ran_gaussian(rng,stdDev);
-#endif
   }
 
   return;
 }
 
 void
-#ifdef QUESO_USES_NEW_RNG_CLASS
 uqGslVectorClass::cwSetGaussian(const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec)
-#else
-uqGslVectorClass::cwSetGaussian(const gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec)
-#endif
 {
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
     (*this)[i] = meanVec[i] + m_env.rngObject()->gaussianSample(stdDevVec[i]);
-#else
-    (*this)[i] = meanVec[i] + gsl_ran_gaussian(rng,stdDevVec[i]);
-#endif
   }
   return;
 }
 
 void
-#ifdef QUESO_USES_NEW_RNG_CLASS
 uqGslVectorClass::cwSetUniform(const uqGslVectorClass& aVec, const uqGslVectorClass& bVec)
-#else
-uqGslVectorClass::cwSetUniform(const gsl_rng* rng, const uqGslVectorClass& aVec, const uqGslVectorClass& bVec)
-#endif
 {
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
     (*this)[i] = aVec[i] + (bVec[i]-aVec[i])*m_env.rngObject()->uniformSample();
-#else
-    (*this)[i] = aVec[i] + (bVec[i]-aVec[i])*gsl_rng_uniform(rng);
-#endif
   }
   return;
 }
 
 void
-#ifdef QUESO_USES_NEW_RNG_CLASS
 uqGslVectorClass::cwSetBeta(const uqGslVectorClass& alpha, const uqGslVectorClass& beta)
-#else
-uqGslVectorClass::cwSetBeta(const gsl_rng* rng, const uqGslVectorClass& alpha, const uqGslVectorClass& beta)
-#endif
 {
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
                       m_env.worldRank(),
@@ -514,11 +486,7 @@ uqGslVectorClass::cwSetBeta(const gsl_rng* rng, const uqGslVectorClass& alpha, c
                       "incompatible beta size");
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
     (*this)[i] = m_env.rngObject()->betaSample(alpha[i],beta[i]);
-#else
-    (*this)[i] = gsl_ran_beta(rng,alpha[i],beta[i]);
-#endif
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In uqGslVectorClass::cwSetBeta()"
                               << ": fullRank "   << m_env.fullRank()
@@ -533,11 +501,7 @@ uqGslVectorClass::cwSetBeta(const gsl_rng* rng, const uqGslVectorClass& alpha, c
 }
 
 void
-#ifdef QUESO_USES_NEW_RNG_CLASS
 uqGslVectorClass::cwSetGamma(const uqGslVectorClass& a, const uqGslVectorClass& b)
-#else
-uqGslVectorClass::cwSetGamma(const gsl_rng* rng, const uqGslVectorClass& a, const uqGslVectorClass& b)
-#endif
 {
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != a.sizeLocal(),
                       m_env.worldRank(),
@@ -550,21 +514,13 @@ uqGslVectorClass::cwSetGamma(const gsl_rng* rng, const uqGslVectorClass& a, cons
                       "incompatible b size");
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
     (*this)[i] = m_env.rngObject()->gammaSample(a[i],b[i]);
-#else
-    (*this)[i] = gsl_ran_gamma(rng,a[i],b[i]);
-#endif
   }
   return;
 }
 
 void
-#ifdef QUESO_USES_NEW_RNG_CLASS
 uqGslVectorClass::cwSetInverseGamma(const uqGslVectorClass& alpha, const uqGslVectorClass& beta)
-#else
-uqGslVectorClass::cwSetInverseGamma(const gsl_rng* rng, const uqGslVectorClass& alpha, const uqGslVectorClass& beta)
-#endif
 {
   UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
                       m_env.worldRank(),
@@ -577,11 +533,7 @@ uqGslVectorClass::cwSetInverseGamma(const gsl_rng* rng, const uqGslVectorClass& 
                       "incompatible beta size");
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
     (*this)[i] = 1./m_env.rngObject()->gammaSample(alpha[i],1./beta[i]);
-#else
-    (*this)[i] = 1./gsl_ran_gamma(rng,alpha[i],1./beta[i]);
-#endif
   }
   return;
 }

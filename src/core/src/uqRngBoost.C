@@ -26,60 +26,69 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqRngBase.h>
+#include <uqRngBoost.h>
 #include <mpi.h>
 
-uqRngBaseClass::uqRngBaseClass()
+uqRngBoostClass::uqRngBoostClass()
   :
-  m_seed     (0),
-  m_worldRank(UQ_UNAVAILABLE_RANK)
+  uqRngBaseClass()
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_worldRank,
-                      "uqRngBaseClass::constructor(), default",
+                      "uqRngBoostClass::constructor(), default",
                       "should not be used by user");
 }
 
-uqRngBaseClass::uqRngBaseClass(int seed, int worldRank)
+uqRngBoostClass::uqRngBoostClass(int seed, int worldRank)
   :
-  m_seed     (seed),
-  m_worldRank(worldRank)
+  uqRngBaseClass(seed,worldRank)
 {
-  privateResetSeed();
+  // Kemelli todo
+  UQ_FATAL_TEST_MACRO(true,
+                      m_worldRank,
+                      "uqRngBoosClass::constructor()",
+                      "Kemelli todo: boost rng");
 }
 
-uqRngBaseClass::~uqRngBaseClass()
+uqRngBoostClass::~uqRngBoostClass()
 {
-}
-
-int
-uqRngBaseClass::seed() const
-{
-  return m_seed;
-}
-
-void
-uqRngBaseClass::resetSeed(int newSeed)
-{
-  m_seed = newSeed;
-  privateResetSeed();
-  return;
+  // Kemelli todo
 }
 
 void
-uqRngBaseClass::privateResetSeed()
+uqRngBoostClass::resetSeed(int newSeed)
 {
-  if (m_seed >= 0) {
-    // Do nothing
-  }
-  else if (m_seed < 0) {
-    m_seed = (-m_seed+m_worldRank);
-  }
-  //else {
-  //  struct timeval timevalNow;
-  //  /*iRC = */gettimeofday(&timevalNow, NULL);
-  //  m_seed = (int) timevalNow.tv_usec;
-  //}
+  uqRngBaseClass::resetSeed(newSeed);
+
+  // Kemelli todo
 
   return;
+}
+
+double
+uqRngBoostClass::uniformSample() const
+{
+  // Kemelli todo
+  return 0.;
+}
+
+double
+uqRngBoostClass::gaussianSample(double stdDev) const
+{
+  // Kemelli todo
+  return 0.;
+}
+
+double
+uqRngBoostClass::betaSample(double alpha, double beta) const
+{
+  // Kemelli todo
+  return 0.;
+}
+
+double
+uqRngBoostClass::gammaSample(double a, double b) const
+{
+  // Kemelli todo
+  return 0.;
 }

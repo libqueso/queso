@@ -42,6 +42,7 @@
 #define UQ_ENV_DISPLAY_VERBOSITY_ODV       0
 #define UQ_ENV_SYNC_VERBOSITY_ODV          0
 #define UQ_ENV_CHECKING_LEVEL_ODV          0
+#define UQ_ENV_RNG_TYPE_ODV                "gsl"
 #define UQ_ENV_SEED_ODV                    0
 #define UQ_ENV_IDENTIFYING_STRING_ODV      ""
 #define UQ_ENV_PLATFORM_NAME_ODV           ""
@@ -77,6 +78,7 @@ private:
   std::string              m_option_displayVerbosity;
   std::string              m_option_syncVerbosity;
   std::string              m_option_checkingLevel;
+  std::string              m_option_rngType;
   std::string              m_option_seed;
   std::string              m_option_platformName;
   std::string              m_option_identifyingString;

@@ -38,6 +38,7 @@ uqEnvOptionsValuesClass::uqEnvOptionsValuesClass()
   m_displayVerbosity    (UQ_ENV_DISPLAY_VERBOSITY_ODV),
   m_syncVerbosity       (UQ_ENV_SYNC_VERBOSITY_ODV),
   m_checkingLevel       (UQ_ENV_CHECKING_LEVEL_ODV),
+  m_rngType             (UQ_ENV_RNG_TYPE_ODV),
   m_seed                (UQ_ENV_SEED_ODV),
   m_platformName        (UQ_ENV_PLATFORM_NAME_ODV),
   m_identifyingString   (UQ_ENV_IDENTIFYING_STRING_ODV),
@@ -72,6 +73,7 @@ uqEnvOptionsValuesClass::copy(const uqEnvOptionsValuesClass& src)
   m_displayVerbosity     = src.m_displayVerbosity;
   m_syncVerbosity        = src.m_syncVerbosity;
   m_checkingLevel        = src.m_checkingLevel;
+  m_rngType              = src.m_rngType;
   m_seed                 = src.m_seed;
   m_platformName         = src.m_platformName;
   m_identifyingString    = src.m_identifyingString;
@@ -97,6 +99,7 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
   m_option_displayVerbosity    (m_prefix + "displayVerbosity"    ),
   m_option_syncVerbosity       (m_prefix + "syncVerbosity"       ),
   m_option_checkingLevel       (m_prefix + "checkingLevel"       ),
+  m_option_rngType             (m_prefix + "rngType"             ),
   m_option_seed                (m_prefix + "seed"                ),
   m_option_platformName        (m_prefix + "platformName"        ),
   m_option_identifyingString   (m_prefix + "identifyingString"   )
@@ -124,6 +127,7 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
   m_option_displayVerbosity    (m_prefix + "displayVerbosity"    ),
   m_option_syncVerbosity       (m_prefix + "syncVerbosity"       ),
   m_option_checkingLevel       (m_prefix + "checkingLevel"       ),
+  m_option_rngType             (m_prefix + "rngType"             ),
   m_option_seed                (m_prefix + "seed"                ),
   m_option_platformName        (m_prefix + "platformName"        ),
   m_option_identifyingString   (m_prefix + "identifyingString"   )
@@ -187,6 +191,7 @@ uqEnvironmentOptionsClass::defineMyOptions(po::options_description& optionsDesc)
     (m_option_displayVerbosity.c_str(),     po::value<unsigned int>()->default_value(UQ_ENV_DISPLAY_VERBOSITY_ODV),       "set verbosity"                            )
     (m_option_syncVerbosity.c_str(),        po::value<unsigned int>()->default_value(UQ_ENV_SYNC_VERBOSITY_ODV),          "set sync verbosity"                       )
     (m_option_checkingLevel.c_str(),        po::value<unsigned int>()->default_value(UQ_ENV_CHECKING_LEVEL_ODV),          "set checking level"                       )
+    (m_option_rngType.c_str(),              po::value<std::string >()->default_value(UQ_ENV_RNG_TYPE_ODV),                "set rngType"                              )
     (m_option_seed.c_str(),                 po::value<int         >()->default_value(UQ_ENV_SEED_ODV),                    "set seed"                                 )
     (m_option_platformName.c_str(),         po::value<std::string >()->default_value(UQ_ENV_PLATFORM_NAME_ODV),           "platform name"                            )
     (m_option_identifyingString.c_str(),    po::value<std::string >()->default_value(UQ_ENV_IDENTIFYING_STRING_ODV),      "identifying string"                       )
@@ -270,6 +275,10 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
     m_ov.m_checkingLevel = m_env.allOptionsMap()[m_option_checkingLevel].as<unsigned int>();
   }
 
+  if (m_env.allOptionsMap().count(m_option_rngType.c_str())) {
+    m_ov.m_rngType = m_env.allOptionsMap()[m_option_rngType].as<std::string>();
+  }
+
   if (m_env.allOptionsMap().count(m_option_seed.c_str())) {
     m_ov.m_seed = m_env.allOptionsMap()[m_option_seed].as<int>();
   }
@@ -283,7 +292,7 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
   }
 
   //if (m_env.allOptionsMap().count(m_option_numDebugParams.c_str())) {
-  //  m_seed = m_env.allOptionsMap()[m_option_numDebugParams].as<unsigned int>();
+  //  m_numDebugParams = m_env.allOptionsMap()[m_option_numDebugParams].as<unsigned int>();
   //}
 
 #ifdef QUESO_MEMORY_DEBUGGING
@@ -306,6 +315,7 @@ uqEnvironmentOptionsClass::print(std::ostream& os) const
   os << "\n" << m_option_displayVerbosity  << " = " << m_ov.m_displayVerbosity
      << "\n" << m_option_syncVerbosity     << " = " << m_ov.m_syncVerbosity
      << "\n" << m_option_checkingLevel     << " = " << m_ov.m_checkingLevel
+     << "\n" << m_option_rngType           << " = " << m_ov.m_rngType
      << "\n" << m_option_seed              << " = " << m_ov.m_seed
      << "\n" << m_option_platformName      << " = " << m_ov.m_platformName
      << "\n" << m_option_identifyingString << " = " << m_ov.m_identifyingString

@@ -31,10 +31,6 @@
 
 #include <uqEnvironment.h>
 #include <uqMap.h>
-#ifdef QUESO_USES_NEW_RNG_CLASS
-#else
-#include <gsl/gsl_randist.h>
-#endif
 #include <iostream>
 #include <uqDefines.h>
 
@@ -63,11 +59,7 @@ public:
   virtual unsigned int            sizeLocal           () const = 0;
   virtual unsigned int            sizeGlobal          () const = 0;
   virtual void                    cwSet               (double value) = 0;
-#ifdef QUESO_USES_NEW_RNG_CLASS
   virtual void                    cwSetGaussian       (double mean, double stdDev) = 0;
-#else
-  virtual void                    cwSetGaussian       (const gsl_rng* rng, double mean, double stdDev) = 0;
-#endif
   virtual void                    cwInvert            () = 0;
   virtual void                    sort                () = 0;
   virtual void                    print               (std::ostream& os) const = 0;

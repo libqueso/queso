@@ -28,10 +28,6 @@
 
 #include <uqDefines.h>
 #include <uqMiscellaneous.h>
-#ifdef QUESO_USES_NEW_RNG_CLASS
-#else
-#include <gsl/gsl_randist.h>
-#endif
 #include <sys/time.h>
 #include <iostream>
 #include <fstream>
@@ -254,25 +250,14 @@ uqMiscReadCharsAndDoubleFromFile(
 }
 
 double
-#ifdef QUESO_USES_NEW_RNG_CLASS
 uqMiscGammar(
   double                a,
   double                b,
   const uqRngBaseClass* rngObject)
-#else
-uqMiscGammar(
-  double         a,
-  double         b,
-  const gsl_rng* rng)
-#endif
 {
   double result = 0.;
   if (a < 1.) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
     result = uqMiscGammar(1.+a,b,rngObject)*std::pow( rngObject->uniformSample(),1./a );
-#else
-    result = uqMiscGammar(1.+a,b,rng)*std::pow( gsl_rng_uniform(rng),1./a );
-#endif
   }
   else {
     double d = a-1./3.;
@@ -281,20 +266,12 @@ uqMiscGammar(
     double w = 0.;
     while (1) {
       while (1) {
-#ifdef QUESO_USES_NEW_RNG_CLASS
         x = rngObject->gaussianSample(1.);
-#else
-        x = gsl_ran_gaussian(rng,1.);
-#endif
         w = 1.+c*x;
         if (w > 0.) break;
       }
       w = std::pow(w,3.);
-#ifdef QUESO_USES_NEW_RNG_CLASS
       double u = rngObject->uniformSample();
-#else
-      double u = gsl_rng_uniform(rng);
-#endif
       double compValue = 1.-0.0331*std::pow(x,4.);
       if (u < compValue) break;
       compValue = 0.5*std::pow(x,2.)+d*(1.-w+log(w));

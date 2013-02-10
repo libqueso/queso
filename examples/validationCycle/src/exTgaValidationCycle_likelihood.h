@@ -35,6 +35,7 @@
 
 #include <uqEnvironment.h>
 #include <uqDefines.h>
+#include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 #include <cmath>
 
