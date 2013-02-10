@@ -34,6 +34,7 @@
     \brief Vector class using GSL
 */
 
+#include <uqDefines.h>
 #include <uqVector.h>
 #include <gsl/gsl_vector.h>
 
@@ -135,22 +136,46 @@ public:
   void         cwSet            (double value);
   
   //! This function sets component-wise Gaussian random variates, with mean mean and standard deviation stdDev.
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  void         cwSetGaussian    (double mean, double stdDev);
+#else
   void         cwSetGaussian    (const gsl_rng* rng, double mean, double stdDev);
+#endif
   
   //! This function sets component-wise Gaussian random variates, with vectors for mean and standard deviation.
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  void         cwSetGaussian    (const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec);
+#else
   void         cwSetGaussian    (const gsl_rng* rng, const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec);
+#endif
   
   //! This function sets component-wise a number uniformly distributed in the range of elements of [aVec,bVec].
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  void         cwSetUniform     (const uqGslVectorClass& aVec, const uqGslVectorClass& bVec);
+#else
   void         cwSetUniform     (const gsl_rng* rng, const uqGslVectorClass& aVec,    const uqGslVectorClass& bVec     );
+#endif
   
   //! This function returns a random variate from the beta distribution, with vector parameters alpha and beta.
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  void         cwSetBeta        (const uqGslVectorClass& alpha, const uqGslVectorClass& beta);
+#else
   void         cwSetBeta        (const gsl_rng* rng, const uqGslVectorClass& alpha,   const uqGslVectorClass& beta     );
+#endif
   
   //! This function returns a random variate from the gamma distribution with vector parameters a and b. 
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  void         cwSetGamma       (const uqGslVectorClass& a, const uqGslVectorClass& b);
+#else
   void         cwSetGamma       (const gsl_rng* rng, const uqGslVectorClass& a,       const uqGslVectorClass& b        );
+#endif
   
   //! This function returns a random variate from the inverse gamma distribution with vector parameters alpha and beta. 
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  void         cwSetInverseGamma(const uqGslVectorClass& alpha, const uqGslVectorClass& beta);
+#else
   void         cwSetInverseGamma(const gsl_rng* rng, const uqGslVectorClass& alpha,   const uqGslVectorClass& beta     );
+#endif
   
   //! This function concatenates uqGslVectorClass v1 and uqGslVectorClass v2 into  \c this.
   void         cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVectorClass& v2);

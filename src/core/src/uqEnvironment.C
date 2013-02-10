@@ -198,7 +198,7 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   }
 
 #ifdef QUESO_USES_NEW_RNG_CLASS
-  if (m_rng) delete m_rng;
+  if (m_rngObject) delete m_rngObject;
 #else
   if (m_rng) gsl_rng_free(m_rng);
 #endif
@@ -464,7 +464,7 @@ uqBaseEnvironmentClass::checkingLevel() const
 
 #ifdef QUESO_USES_NEW_RNG_CLASS
 const uqRngBaseClass*
-uqBaseEnvironmentClass::rng() const
+uqBaseEnvironmentClass::rngObject() const
 {
   return m_rngObject;
 }
@@ -480,7 +480,7 @@ int
 uqBaseEnvironmentClass::seed() const
 {
 #ifdef QUESO_USES_NEW_RNG_CLASS
-  return m_rngObj->seed();
+  return m_rngObject->seed();
 #else
   return m_optionsObj->m_ov.m_seed;
 #endif
@@ -490,7 +490,7 @@ uqBaseEnvironmentClass::seed() const
 void
 uqBaseEnvironmentClass::resetSeed(int newSeedOption)
 {
-  m_rngObj->resetSeed(newSeedOption);
+  m_rngObject->resetSeed(newSeedOption);
   return;
 }
 #else
@@ -1489,7 +1489,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   // Deal with seed
   //////////////////////////////////////////////////
 #ifdef QUESO_USES_NEW_RNG_CLASS
-  m_rng = new uqRngGslClass(m_optionsObj->m_ov.m_seed,m_worldRank);
+  m_rngObject = new uqRngGslClass(m_optionsObj->m_ov.m_seed,m_worldRank);
 #else
   if (m_optionsObj->m_ov.m_seed >= 0) {
     gsl_rng_default_seed = (unsigned long int) m_optionsObj->m_ov.m_seed;

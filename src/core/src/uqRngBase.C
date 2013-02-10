@@ -45,6 +45,7 @@ uqRngBaseClass::uqRngBaseClass(int seed, int worldRank)
   m_seed     (seed),
   m_worldRank(worldRank)
 {
+  privateResetSeed();
 }
 
 uqRngBaseClass::~uqRngBaseClass()
@@ -61,5 +62,24 @@ void
 uqRngBaseClass::resetSeed(int newSeed)
 {
   m_seed = newSeed;
+  privateResetSeed();
+  return;
+}
+
+void
+uqRngBaseClass::privateResetSeed()
+{
+  if (m_seed >= 0) {
+    // Do nothing
+  }
+  else if (m_seed < 0) {
+    m_seed = (-m_seed+m_worldRank);
+  }
+  //else {
+  //  struct timeval timevalNow;
+  //  /*iRC = */gettimeofday(&timevalNow, NULL);
+  //  gsl_rng_default_seed = (unsigned long int) timevalNow.tv_usec;
+  //}
+
   return;
 }

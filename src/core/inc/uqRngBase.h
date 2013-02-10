@@ -42,13 +42,16 @@ public:
           int    seed          () const;
   virtual void   resetSeed     (int newSeed);
   virtual double uniformSample ()                          const = 0;
-  virtual double gaussainSample(double stdDev)             const = 0;
+  virtual double gaussianSample(double stdDev)             const = 0;
   virtual double betaSample    (double alpha, double beta) const = 0;
   virtual double gammaSample   (double a, double b)        const = 0;
 
 protected:
-  int m_seed;
-  int m_worldRank;
+          int m_seed;
+          int m_worldRank;
+
+private:
+          void privateResetSeed();
 };
 
 #endif // __UQ_RNG_BASE_H__

@@ -743,7 +743,11 @@ uqMetropolisHastingsSGClass<P_V,P_M>::acceptAlpha(double alpha)
 
   if      (alpha <= 0.                          ) result = false;
   else if (alpha >= 1.                          ) result = true;
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  else if (alpha >= m_env.rngObject()->uniformSample()) result = true;
+#else
   else if (alpha >= gsl_rng_uniform(m_env.rng())) result = true;
+#endif
   else                                            result = false;
 
   return result;

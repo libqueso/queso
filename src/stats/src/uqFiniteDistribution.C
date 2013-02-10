@@ -146,7 +146,11 @@ uqFiniteDistributionClass::sample() const
 {
   unsigned int result = 0;
 
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  double aux = m_env.rngObject()->uniformSample();
+#else
   double aux = gsl_rng_uniform(m_env.rng());
+#endif
   UQ_FATAL_TEST_MACRO((aux < 0) || (aux > 1.),
                       m_env.worldRank(),
                       "uqFiniteDistributionClass::sample()",

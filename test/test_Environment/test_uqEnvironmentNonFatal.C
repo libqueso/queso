@@ -73,6 +73,19 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+#ifdef QUESO_USES_NEW_RNG_CLASS
+  env->resetSeed(2);
+  if (env->seed() != 2) {
+    std::cerr << "Second seed test failed" << std::endl;
+    return 1;
+  }
+
+  env->resetSeed(-2);
+  if (env->seed() != (2 + env->worldRank())) {
+    std::cerr << "Third seed test failed" << std::endl;
+    return 1;
+  }
+#else
   env->resetGslSeed(2);
   if (gsl_rng_default_seed != 2) {
     std::cerr << "Second seed test failed" << std::endl;
@@ -84,7 +97,7 @@ int main(int argc, char **argv) {
     std::cerr << "Third seed test failed" << std::endl;
     return 1;
   }
-
+#endif
   if (env->platformName() != options.m_platformName) {
     std::cerr << "Platform name test failed" << std::endl;
     return 1;

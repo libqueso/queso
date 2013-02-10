@@ -85,8 +85,13 @@ public:
   virtual  void                     erasePositions              (unsigned int initialPos, unsigned int numPos) = 0;         /* This routine deletes all stored computed vectors */
   virtual  void                     getPositionValues           (unsigned int posId,       V& vec) const = 0;
   virtual  void                     setPositionValues           (unsigned int posId, const V& vec) = 0;                     /* This routine deletes all stored computed vectors */
+#ifdef QUESO_USES_NEW_RNG_CLASS
+           void                     setGaussian                 (const V& meanVec, const V& stdDevVec); /* This routine deletes all stored computed vectors */
+           void                     setUniform                  (const V& aVec,    const V& bVec     ); /* This routine deletes all stored computed vectors */
+#else
            void                     setGaussian                 (const gsl_rng* rng, const V& meanVec, const V& stdDevVec); /* This routine deletes all stored computed vectors */
            void                     setUniform                  (const gsl_rng* rng, const V& aVec,    const V& bVec     ); /* This routine deletes all stored computed vectors */
+#endif
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
   virtual  void                     subUniformlySampledMdf      (const V&                       numEvaluationPointsVec,
                                                                  uqArrayOfOneDGridsClass <V,M>& mdfGrids,
@@ -928,11 +933,19 @@ uqBaseVectorSequenceClass<V,M>::unifiedPositionsOfMaximum( // rr0
 
 template <class V, class M>
 void
+#ifdef QUESO_USES_NEW_RNG_CLASS
+uqBaseVectorSequenceClass<V,M>::setGaussian(const V& meanVec, const V& stdDevVec)
+#else
 uqBaseVectorSequenceClass<V,M>::setGaussian(const gsl_rng* rng, const V& meanVec, const V& stdDevVec)
+#endif
 {
   V gaussianVector(m_vectorSpace.zeroVector());
   for (unsigned int j = 0; j < this->subSequenceSize(); ++j) {
+#ifdef QUESO_USES_NEW_RNG_CLASS
+    gaussianVector.cwSetGaussian(meanVec,stdDevVec);
+#else
     gaussianVector.cwSetGaussian(m_env.rng(),meanVec,stdDevVec);
+#endif
     this->setPositionValues(j,gaussianVector);
   }
 
@@ -944,11 +957,19 @@ uqBaseVectorSequenceClass<V,M>::setGaussian(const gsl_rng* rng, const V& meanVec
 
 template <class V, class M>
 void
+#ifdef QUESO_USES_NEW_RNG_CLASS
+uqBaseVectorSequenceClass<V,M>::setUniform(const V& aVec, const V& bVec)
+#else
 uqBaseVectorSequenceClass<V,M>::setUniform(const gsl_rng* rng, const V& aVec, const V& bVec)
+#endif
 {
   V uniformVector(m_vectorSpace.zeroVector());
   for (unsigned int j = 0; j < this->subSequenceSize(); ++j) {
+#ifdef QUESO_USES_NEW_RNG_CLASS
+    uniformVector.cwSetUniform(aVec,bVec);
+#else
     uniformVector.cwSetUniform(m_env.rng(),aVec,bVec);
+#endif
     this->setPositionValues(j,uniformVector);
   }
 
