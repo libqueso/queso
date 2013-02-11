@@ -46,7 +46,7 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase()
   : uqOperatorBase()
 {
 #ifndef LIBMESH_HAVE_SLEPC
-  if (libMesh::processor_id() == 0)
+  if (processor_id() == 0)
     std::cerr << "ERROR: This example requires libMesh to be\n"
               << "compiled with SLEPc eigen solvers support!"
               << std::endl;
@@ -63,15 +63,15 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase()
   libmesh_example_assert(false, "--disable-complex");
 #endif
 
-  this->mesh = new libMesh::Mesh;
-  libMesh::MeshTools::Generation::build_square(*this->mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
+  this->mesh = new Mesh;
+  MeshTools::Generation::build_square(*this->mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
 
   // Create an equation systems object.
-  this->equation_systems = new libMesh::EquationSystems(*this->mesh);
+  this->equation_systems = new EquationSystems(*this->mesh);
 
   // Create a CondensedEigenSystem named "Eigensystem" and (for convenience)
   // use a reference to the system we create.
-  this->equation_systems->add_system<libMesh::CondensedEigenSystem>("Eigensystem");
+  this->equation_systems->add_system<CondensedEigenSystem>("Eigensystem");
 
 #endif // LIBMESH_HAVE_SLEPC
 }
@@ -80,7 +80,7 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(const std::string& filename)
   : uqOperatorBase(filename)
 {
 #ifndef LIBMESH_HAVE_SLEPC
-  if (libMesh::processor_id() == 0)
+  if (processor_id() == 0)
     std::cerr << "ERROR: This example requires libMesh to be\n"
               << "compiled with SLEPc eigen solvers support!"
               << std::endl;
@@ -97,15 +97,15 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(const std::string& filename)
   libmesh_example_assert(false, "--disable-complex");
 #endif
 
-  this->mesh = new libMesh::Mesh;
+  this->mesh = new Mesh;
   this->mesh->read(filename);
 
   // Create an equation systems object.
-  this->equation_systems = new libMesh::EquationSystems(*this->mesh);
+  this->equation_systems = new EquationSystems(*this->mesh);
 
   // Create a CondensedEigenSystem named "Eigensystem" and (for convenience)
   // use a reference to the system we create.
-  this->equation_systems->add_system<libMesh::EigenSystem> ("Eigensystem");
+  this->equation_systems->add_system<EigenSystem> ("Eigensystem");
 
 #endif // LIBMESH_HAVE_SLEPC
 }
@@ -122,8 +122,8 @@ void uqLibMeshOperatorBase::save_converged_evals(const std::string &filename) co
   std::ofstream evals_file(filename.c_str());
 
   for (i = 0; i < this->nconv; i++) {
-    std::pair<libMesh::Real, libMesh::Real> eval =
-      this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
+    std::pair<Real, Real> eval =
+      this->equation_systems->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
     evals_file << eval.first << " " << eval.second << std::endl;
   }
   evals_file.close();
@@ -132,8 +132,8 @@ void uqLibMeshOperatorBase::save_converged_evals(const std::string &filename) co
 void uqLibMeshOperatorBase::save_converged_evec(const std::string &filename, unsigned int i) const
 {
   if (i < this->nconv) {
-    this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
-    libMesh::ExodusII_IO(*this->mesh).write_equation_systems(filename, *this->equation_systems);
+    this->equation_systems->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
+    ExodusII_IO(*this->mesh).write_equation_systems(filename, *this->equation_systems);
   }
   else {
     std::cerr << "Warning: eigenpair " << i
@@ -149,8 +149,8 @@ unsigned int uqLibMeshOperatorBase::get_num_converged() const {
 double uqLibMeshOperatorBase::get_eigenvalue(unsigned int i) const
 {
   if (i < this->nconv) {
-    std::pair<libMesh::Real, libMesh::Real> eval =
-      this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
+    std::pair<Real, Real> eval =
+      this->equation_systems->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
     return eval.first;
   }
   else {
