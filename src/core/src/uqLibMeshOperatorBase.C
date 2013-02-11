@@ -27,14 +27,20 @@
 //--------------------------------------------------------------------------
 
 #include <iostream>
+#include <uqLibMeshFunction.h>
 #include <uqLibMeshOperatorBase.h>
 
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
 #include <libmesh/equation_systems.h>
+#include <libmesh/explicit_system.h>
 #include <libmesh/condensed_eigen_system.h>
+#include <libmesh/numeric_vector.h>
 #include <libmesh/exodusII_io.h>
+
+using namespace std;
+using namespace libMesh;
 
 uqLibMeshOperatorBase::uqLibMeshOperatorBase()
   : uqOperatorBase()
@@ -157,16 +163,22 @@ double uqLibMeshOperatorBase::get_inverted_eigenvalue(unsigned int i) const
   return 1.0 / this->get_eigenvalue(i);
 }
 
-auto_ptr<uqFunctionBase> inverse_kl_transform(std::vector<double>& xi) const
+std::auto_ptr<uqFunctionBase> uqLibMeshOperatorBase::inverse_kl_transform(std::vector<double>& xi) const
 {
   unsigned int i;
-  uqLibMeshFunction kl;
+  uqLibMeshFunction *kl = new uqLibMeshFunction;
 
-  for (i = 0; i < this->get_n_converged(); i++) {
-    std::pair<libMesh::Real, libMesh::Real> eval =
-      this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
-    kl.equation_systems->solution.add(xi[i] * std::sqrt(eval.first), this->equation_systems->solution);
+  EquationSystems *eq_sys = this->equation_systems;
+  EquationSystems *kl_eq_sys = kl->equation_systems;
+
+  pair<Real, Real> eval;
+  for (i = 0; i < this->get_num_converged(); i++) {
+    eval = eq_sys->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
+    kl_eq_sys->get_system<ExplicitSystem>("Function").solution->add(
+        xi[i] * sqrt(eval.first),
+        *eq_sys->get_system<EigenSystem>("Eigensystem").solution);
   }
 
-  return kl;
+  std::auto_ptr<uqFunctionBase> ap(kl);
+  return ap;
 }

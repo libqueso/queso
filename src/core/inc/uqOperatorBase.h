@@ -37,9 +37,9 @@
  */
 
 #include <string>
+#include <vector>
+#include <memory>
 #include <uqFunctionBase.h>
-
-class uqFunctionBase;
 
 class uqOperatorBase {
 public:
@@ -68,7 +68,7 @@ public:
   //! \sum_k \lambda_k \xi_k \phi_k(x)
   //! where the lambda are eigenvalues of \c this and the \phi(x) are
   //! eigenfunctions of \c this
-  virtual auto_ptr<uqFunctionBase> inverse_kl_transform(std::vector<double>& xi) const = 0;
+  virtual std::auto_ptr<uqFunctionBase> inverse_kl_transform(std::vector<double>& xi) const = 0;
 };
 
 #endif // __QUESO_OPERATOR_BASE__

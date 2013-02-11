@@ -64,27 +64,27 @@ uqLibMeshFunction::uqLibMeshFunction()
   libMesh::MeshTools::Generation::build_square(*mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
 
   // Create an equation systems object.
-  equations_systems = new libMesh::EquationSystems(*mesh);
+  this->equation_systems = new libMesh::EquationSystems(*mesh);
   
   // Declare the zero funtion equations system
-  equations_systems->add_system<libMesh::ExplicitSystem>("Zero function");
+  this->equation_systems->add_system<libMesh::ExplicitSystem>("Function");
 
   // Adds the variable "u".  "u" will be approximated using second-order
   // approximation.
-  equations_systems->get_system("Zero function").add_variable("u", FIRST);
+  this->equation_systems->get_system("Function").add_variable("u", FIRST);
 
   // Initialize the data structures for the equation system.
-  equations_systems->init();
+  this->equation_systems->init();
 }
 
 uqLibMeshFunction::~uqLibMeshFunction()
 {
-  delete mesh;
-  delete equations_systems;
+  delete this->mesh;
+  delete this->equation_systems;
 }
 
 void uqLibMeshFunction::print_info()
 {
   // Print information about the mesh to the screen.
-  mesh->print_info(std::cerr);
+  this->mesh->print_info(std::cerr);
 }

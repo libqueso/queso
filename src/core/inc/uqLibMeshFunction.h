@@ -60,7 +60,7 @@ public:
   //@}
 
   libMesh::Mesh *mesh;
-  libMesh::EquationSystems *equations_systems;
+  libMesh::EquationSystems *equation_systems;
 };
 
 #endif // __QUESO_LIBMESHFUNCTION__

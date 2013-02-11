@@ -37,6 +37,8 @@
 
 #include <string>
 #include <set>
+#include <vector>
+#include <memory>
 #include <uqFunctionBase.h>
 #include <uqOperatorBase.h>
 #include <libmesh/system.h>
@@ -88,7 +90,7 @@ public:
   //! \sum_k \lambda_k \xi_k \phi_k(x)
   //! where the lambda are eigenvalues of \c this and the \phi(x) are
   //! eigenfunctions of \c this
-  virtual auto_ptr<uqFunctionBase> inverse_kl_transform(std::vector<double>& xi) const;
+  virtual std::auto_ptr<uqFunctionBase> inverse_kl_transform(std::vector<double>& xi) const;
 protected:
   libMesh::Mesh *mesh;
   libMesh::EquationSystems *equation_systems;
