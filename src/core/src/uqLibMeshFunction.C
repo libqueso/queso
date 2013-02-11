@@ -59,9 +59,9 @@ uqLibMeshFunction::uqLibMeshFunction()
   
   // Use the MeshTools::Generation mesh generator to create a uniform 1D grid
   // on the line [0,1].  We instruct the mesh generator to build a mesh of 15
-  // QUAD9 elements.  Building QUAD9 elements instead of the default QUAD4s
+  // QUAD9 elements.  Building QUAD4 elements instead of the default QUAD4s
   // allow us to use higher-order approximation.
-  libMesh::MeshTools::Generation::build_square(*mesh, 15, 0.0, 1.0, QUAD9);
+  libMesh::MeshTools::Generation::build_square(*mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
 
   // Create an equation systems object.
   equations_systems = new libMesh::EquationSystems(*mesh);
@@ -71,7 +71,7 @@ uqLibMeshFunction::uqLibMeshFunction()
 
   // Adds the variable "u".  "u" will be approximated using second-order
   // approximation.
-  equations_systems->get_system("Zero function").add_variable("u", SECOND);
+  equations_systems->get_system("Zero function").add_variable("u", FIRST);
 
   // Initialize the data structures for the equation system.
   equations_systems->init();
