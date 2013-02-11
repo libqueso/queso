@@ -58,7 +58,7 @@ public:
   void print_info();
 
   //@}
-private:
+
   libMesh::Mesh *mesh;
   libMesh::EquationSystems *equations_systems;
 };

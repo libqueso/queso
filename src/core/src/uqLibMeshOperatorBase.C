@@ -139,3 +139,34 @@ void uqLibMeshOperatorBase::save_converged_evec(const std::string &filename, uns
 unsigned int uqLibMeshOperatorBase::get_num_converged() const {
   return this->nconv;
 }
+
+double uqLibMeshOperatorBase::get_eigenvalue(unsigned int i) const
+{
+  if (i < this->nconv) {
+    std::pair<libMesh::Real, libMesh::Real> eval =
+      this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
+    return eval.first;
+  }
+  else {
+    return -1;
+  }
+}
+
+double uqLibMeshOperatorBase::get_inverted_eigenvalue(unsigned int i) const
+{
+  return 1.0 / this->get_eigenvalue(i);
+}
+
+auto_ptr<uqFunctionBase> inverse_kl_transform(std::vector<double>& xi) const
+{
+  unsigned int i;
+  uqLibMeshFunction kl;
+
+  for (i = 0; i < this->get_n_converged(); i++) {
+    std::pair<libMesh::Real, libMesh::Real> eval =
+      this->equation_systems->get_system<libMesh::EigenSystem>("Eigensystem").get_eigenpair(i);
+    kl.equation_systems->solution.add(xi[i] * std::sqrt(eval.first), this->equation_systems->solution);
+  }
+
+  return kl;
+}

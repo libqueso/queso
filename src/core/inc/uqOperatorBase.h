@@ -31,10 +31,15 @@
 
 /*!
  * \file uqOperatorBase.h
- * \brief Abstract base class for operator objects
+ * \brief Abstract base class for operator objects. Operators are assumed to
+ *        be symmetric and positive-definite, so the eigenvalues are real and
+ *        positive.
  */
 
 #include <string>
+#include <uqFunctionBase.h>
+
+class uqFunctionBase;
 
 class uqOperatorBase {
 public:
@@ -49,6 +54,21 @@ public:
   //! Destructor
   ~uqOperatorBase();
   //@}
+
+  //! Return eigenvalue \c i. You can store them however you want, but
+  //! having some kind of order to them is useful for \c uqInfiniteDimensionalMeasure
+  virtual double get_eigenvalue(unsigned int i) const = 0;
+
+  //! Return the reciprocal of eigenvalue \c i.
+  virtual double get_inverted_eigenvalue(unsigned int i) const = 0;
+
+  //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform
+  //! using \c num_terms terms.
+  //! This transform goes from coefficient space to physical space:
+  //! \sum_k \lambda_k \xi_k \phi_k(x)
+  //! where the lambda are eigenvalues of \c this and the \phi(x) are
+  //! eigenfunctions of \c this
+  virtual auto_ptr<uqFunctionBase> inverse_kl_transform(std::vector<double>& xi) const = 0;
 };
 
 #endif // __QUESO_OPERATOR_BASE__

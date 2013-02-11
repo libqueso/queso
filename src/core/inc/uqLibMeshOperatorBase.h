@@ -37,6 +37,7 @@
 
 #include <string>
 #include <set>
+#include <uqFunctionBase.h>
 #include <uqOperatorBase.h>
 #include <libmesh/system.h>
 
@@ -74,6 +75,20 @@ public:
   //! Return the number of converged eigenpairs
   unsigned int get_num_converged() const;
 
+  //! Return eigenvalue \c i. You can store them however you want, but
+  //! having some kind of order to them is useful for \c uqInfiniteDimensionalMeasure
+  virtual double get_eigenvalue(unsigned int i) const;
+
+  //! Return the reciprocal of eigenvalue \c i.
+  virtual double get_inverted_eigenvalue(unsigned int i) const;
+
+  //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform
+  //! using \c num_terms terms.
+  //! This transform goes from coefficient space to physical space:
+  //! \sum_k \lambda_k \xi_k \phi_k(x)
+  //! where the lambda are eigenvalues of \c this and the \phi(x) are
+  //! eigenfunctions of \c this
+  virtual auto_ptr<uqFunctionBase> inverse_kl_transform(std::vector<double>& xi) const;
 protected:
   libMesh::Mesh *mesh;
   libMesh::EquationSystems *equation_systems;
