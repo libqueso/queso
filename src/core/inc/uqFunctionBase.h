@@ -29,6 +29,8 @@
 #ifndef __QUESO_FUNCTION_BASE__
 #define __QUESO_FUNCTION_BASE__
 
+#include <string>
+
 /*!
  * \file uqFunctionBase.h
  * \brief Abstract base class for function objects
@@ -45,8 +47,11 @@ public:
   //   read from a file
 
   //! Destructor
-  ~uqFunctionBase();
+  virtual ~uqFunctionBase();
   //@}
+
+  //! Save the current function to an Exodus file
+  virtual void save_function(const std::string & filename) const = 0;
 
 protected:
   // Number of degrees of freedom

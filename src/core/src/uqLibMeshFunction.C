@@ -33,6 +33,7 @@
 #include <libmesh/mesh_generation.h>
 #include <libmesh/equation_systems.h>
 #include <libmesh/explicit_system.h>
+#include <libmesh/exodusII_io.h>
 
 // Define the Finite Element object.
 #include <libmesh/fe.h>
@@ -52,22 +53,24 @@
 // indexing.
 #include <libmesh/dof_map.h>
 
+using namespace libMesh;
+
 uqLibMeshFunction::uqLibMeshFunction()
   : uqFunctionBase()
 {
-  mesh = new libMesh::Mesh;
+  this->mesh = new Mesh;
   
   // Use the MeshTools::Generation mesh generator to create a uniform 1D grid
   // on the line [0,1].  We instruct the mesh generator to build a mesh of 15
   // QUAD9 elements.  Building QUAD4 elements instead of the default QUAD4s
   // allow us to use higher-order approximation.
-  libMesh::MeshTools::Generation::build_square(*mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
+  MeshTools::Generation::build_square(*this->mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
 
   // Create an equation systems object.
-  this->equation_systems = new libMesh::EquationSystems(*mesh);
+  this->equation_systems = new EquationSystems(*this->mesh);
   
   // Declare the zero funtion equations system
-  this->equation_systems->add_system<libMesh::ExplicitSystem>("Function");
+  this->equation_systems->add_system<ExplicitSystem>("Function");
 
   // Adds the variable "u".  "u" will be approximated using second-order
   // approximation.
@@ -87,4 +90,10 @@ void uqLibMeshFunction::print_info()
 {
   // Print information about the mesh to the screen.
   this->mesh->print_info(std::cerr);
+}
+
+void uqLibMeshFunction::save_function(const std::string & filename) const
+{
+  ExodusII_IO(*this->mesh).write_equation_systems(
+      filename, *this->equation_systems);
 }

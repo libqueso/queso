@@ -29,6 +29,7 @@
 #ifndef __QUESO_LIBMESHFUNCTION__
 #define __QUESO_LIBMESHFUNCTION__
 
+#include <string>
 #include <uqFunctionBase.h>
 
 namespace libMesh {
@@ -58,6 +59,8 @@ public:
   void print_info();
 
   //@}
+
+  virtual void save_function(const std::string & filename) const;
 
   libMesh::Mesh *mesh;
   libMesh::EquationSystems *equation_systems;

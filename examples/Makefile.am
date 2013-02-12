@@ -34,6 +34,13 @@ operator_SOURCES = $(top_srcdir)/examples/infinite_dim/operator/operator.C
 operator_LDADD = $(top_srcdir)/src/libqueso.la
 operator_CPPFLAGS = $(QUESO_CPPFLAGS) $(LIBMESH_CPPFLAGS)
 
+gaussian_random_fielddir = $(prefix)/examples/infinite_dim/gaussian_random_field
+gaussian_random_field_PROGRAMS = gaussian_random_field
+gaussian_random_field_SOURCES = $(top_srcdir)/examples/infinite_dim/gaussian_random_field/gaussian_random_field.C
+gaussian_random_field_LDADD = $(top_srcdir)/src/libqueso.la
+gaussian_random_field_CPPFLAGS = $(QUESO_CPPFLAGS) $(LIBMESH_CPPFLAGS)
+
+
 #############################
 # simpleStatisticalInverseProblem #
 #############################

@@ -163,7 +163,8 @@ double uqLibMeshOperatorBase::get_inverted_eigenvalue(unsigned int i) const
   return 1.0 / this->get_eigenvalue(i);
 }
 
-std::auto_ptr<uqFunctionBase> uqLibMeshOperatorBase::inverse_kl_transform(std::vector<double>& xi) const
+std::auto_ptr<uqFunctionBase>
+uqLibMeshOperatorBase::inverse_kl_transform(std::vector<double>& xi) const
 {
   unsigned int i;
   uqLibMeshFunction *kl = new uqLibMeshFunction;
@@ -175,7 +176,7 @@ std::auto_ptr<uqFunctionBase> uqLibMeshOperatorBase::inverse_kl_transform(std::v
   for (i = 0; i < this->get_num_converged(); i++) {
     eval = eq_sys->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
     kl_eq_sys->get_system<ExplicitSystem>("Function").solution->add(
-        xi[i] * sqrt(eval.first),
+        xi[i] / sqrt(eval.first),
         *eq_sys->get_system<EigenSystem>("Eigensystem").solution);
   }
 
