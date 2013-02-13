@@ -1,6 +1,10 @@
 //-----------------------------------------------------------------------bl-
 //
 //-----------------------------------------------------------------------el-
+// 
+// $Id: $
+//
+//--------------------------------------------------------------------------
 
 #ifndef __QUESO_INFINITEDIMENSIONALMEASURE_BASE__
 #define __QUESO_INFINITEDIMENSIONALMEASURE_BASE__
@@ -20,7 +24,7 @@ public:
   uqInfiniteDimensionalMeasureBase();
 
   //! Destructor
-  ~uqInfiniteDimensionalMeasureBase();
+  virtual ~uqInfiniteDimensionalMeasureBase();
   //@}
 
   //! Draw from the measure, and store the result in the public member varaible. This

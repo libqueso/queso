@@ -55,45 +55,28 @@
 
 using namespace libMesh;
 
-uqLibMeshFunction::uqLibMeshFunction()
+uqLibMeshFunction::uqLibMeshFunction(MeshBase & m)
   : uqFunctionBase()
 {
-  this->mesh = new Mesh;
-  
-  // Use the MeshTools::Generation mesh generator to create a uniform 1D grid
-  // on the line [0,1].  We instruct the mesh generator to build a mesh of 15
-  // QUAD9 elements.  Building QUAD4 elements instead of the default QUAD4s
-  // allow us to use higher-order approximation.
-  MeshTools::Generation::build_square(*this->mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
-
-  // Create an equation systems object.
-  this->equation_systems = new EquationSystems(*this->mesh);
-  
-  // Declare the zero funtion equations system
+  this->equation_systems = new EquationSystems(m);
   this->equation_systems->add_system<ExplicitSystem>("Function");
-
-  // Adds the variable "u".  "u" will be approximated using second-order
-  // approximation.
   this->equation_systems->get_system("Function").add_variable("u", FIRST);
-
-  // Initialize the data structures for the equation system.
   this->equation_systems->init();
 }
 
 uqLibMeshFunction::~uqLibMeshFunction()
 {
-  delete this->mesh;
   delete this->equation_systems;
 }
 
-void uqLibMeshFunction::print_info()
+void uqLibMeshFunction::print_info() const
 {
   // Print information about the mesh to the screen.
-  this->mesh->print_info(std::cerr);
+  this->equation_systems->get_mesh().print_info(std::cerr);
 }
 
 void uqLibMeshFunction::save_function(const std::string & filename) const
 {
-  ExodusII_IO(*this->mesh).write_equation_systems(
+  ExodusII_IO(this->equation_systems->get_mesh()).write_equation_systems(
       filename, *this->equation_systems);
 }

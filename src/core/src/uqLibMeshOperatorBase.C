@@ -42,7 +42,7 @@
 using namespace std;
 using namespace libMesh;
 
-uqLibMeshOperatorBase::uqLibMeshOperatorBase()
+uqLibMeshOperatorBase::uqLibMeshOperatorBase(MeshBase & m)
   : uqOperatorBase()
 {
 #ifndef LIBMESH_HAVE_SLEPC
@@ -63,11 +63,11 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase()
   libmesh_example_assert(false, "--disable-complex");
 #endif
 
-  this->mesh = new Mesh;
-  MeshTools::Generation::build_square(*this->mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
+  // this->mesh = new Mesh;
+  // MeshTools::Generation::build_square(*this->mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
 
   // Create an equation systems object.
-  this->equation_systems = new EquationSystems(*this->mesh);
+  this->equation_systems = new EquationSystems(m);
 
   // Create a CondensedEigenSystem named "Eigensystem" and (for convenience)
   // use a reference to the system we create.
@@ -97,22 +97,21 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(const std::string& filename)
   libmesh_example_assert(false, "--disable-complex");
 #endif
 
-  this->mesh = new Mesh;
-  this->mesh->read(filename);
+  // this->mesh = new Mesh;
+  // this->mesh->read(filename);
 
   // Create an equation systems object.
-  this->equation_systems = new EquationSystems(*this->mesh);
+  // this->equation_systems = new EquationSystems(*this->mesh);
 
   // Create a CondensedEigenSystem named "Eigensystem" and (for convenience)
   // use a reference to the system we create.
-  this->equation_systems->add_system<EigenSystem> ("Eigensystem");
+  // this->equation_systems->add_system<EigenSystem> ("Eigensystem");
 
 #endif // LIBMESH_HAVE_SLEPC
 }
 
 uqLibMeshOperatorBase::~uqLibMeshOperatorBase()
 {
-  delete this->mesh;
   delete this->equation_systems;
 }
 
@@ -133,7 +132,7 @@ void uqLibMeshOperatorBase::save_converged_evec(const std::string &filename, uns
 {
   if (i < this->nconv) {
     this->equation_systems->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
-    ExodusII_IO(*this->mesh).write_equation_systems(filename, *this->equation_systems);
+    ExodusII_IO(this->equation_systems->get_mesh()).write_equation_systems(filename, *this->equation_systems);
   }
   else {
     std::cerr << "Warning: eigenpair " << i
@@ -167,7 +166,7 @@ std::auto_ptr<uqFunctionBase>
 uqLibMeshOperatorBase::inverse_kl_transform(std::vector<double>& xi) const
 {
   unsigned int i;
-  uqLibMeshFunction *kl = new uqLibMeshFunction;
+  uqLibMeshFunction *kl = new uqLibMeshFunction(this->equation_systems->get_mesh());
 
   EquationSystems *eq_sys = this->equation_systems;
   EquationSystems *kl_eq_sys = kl->equation_systems;

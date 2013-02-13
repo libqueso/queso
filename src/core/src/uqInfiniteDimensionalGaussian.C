@@ -1,12 +1,18 @@
 //-----------------------------------------------------------------------bl-
 //
 //-----------------------------------------------------------------------el-
+// 
+// $Id: $
+//
+//--------------------------------------------------------------------------
 
 #include <uqFunctionBase.h>
 #include <uqOperatorBase.h>
 
-uqInfiniteDimensionalGaussian::uqInfiniteDimensionalGaussian(uqFunctionBase &mean, uqOperatorBase &precision)
-  : uqInfiniteDimensionalMeasureBase()
+uqInfiniteDimensionalGaussian::uqInfiniteDimensionalGaussian(const uqFunctionBase & mean, const uqOperatorBase & precision)
+  : uqInfiniteDimensionalMeasureBase(),
+    mean(mean),
+    precision(precision)
 {
   return;
 }

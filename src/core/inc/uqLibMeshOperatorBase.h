@@ -52,8 +52,8 @@ class uqLibMeshOperatorBase : public uqOperatorBase, public libMesh::System::Ass
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor
-  uqLibMeshOperatorBase();
+  //! Constuct an operator on the mesh \c m
+  uqLibMeshOperatorBase(libMesh::MeshBase & m);
 
   //! Construct an operator on the meshed domain in \c filename
   uqLibMeshOperatorBase(const std::string& filename);
@@ -87,13 +87,13 @@ public:
   //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform
   //! using \c num_terms terms.
   //! This transform goes from coefficient space to physical space:
-  //! \sum_k \lambda_k \xi_k \phi_k(x)
+  //! \sum_k \xi_k \phi_k(x) / sqrt(\lambda_k)
   //! where the lambda are eigenvalues of \c this and the \phi(x) are
   //! eigenfunctions of \c this
   virtual std::auto_ptr<uqFunctionBase> inverse_kl_transform(std::vector<double>& xi) const;
+
 protected:
-  libMesh::Mesh *mesh;
-  libMesh::EquationSystems *equation_systems;
+  libMesh::EquationSystems * equation_systems;
 
   //! The number of converged eigenvalue/eigenvector pairs
   unsigned int nconv;

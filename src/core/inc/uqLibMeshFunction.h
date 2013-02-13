@@ -33,7 +33,7 @@
 #include <uqFunctionBase.h>
 
 namespace libMesh {
-  class Mesh;
+  class MeshBase;
   class EquationSystems;
 }
 
@@ -46,8 +46,8 @@ class uqLibMeshFunction : public uqFunctionBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor. Zero everywhere.
-  uqLibMeshFunction();
+  //! Construct a function with a user-provided libMesh Mesh object \c m
+  uqLibMeshFunction(libMesh::MeshBase & m);
 
   //! Create a function that is equal to \c value everywhere
   uqLibMeshFunction(double value);
@@ -56,14 +56,14 @@ public:
   ~uqLibMeshFunction();
 
   //! Will print mesh-related libMesh foo to the screen
-  void print_info();
+  void print_info() const;
 
   //@}
 
+  //! Save the current function to an Exodus file called \c filename
   virtual void save_function(const std::string & filename) const;
 
-  libMesh::Mesh *mesh;
-  libMesh::EquationSystems *equation_systems;
+  libMesh::EquationSystems * equation_systems;
 };
 
 #endif // __QUESO_LIBMESHFUNCTION__

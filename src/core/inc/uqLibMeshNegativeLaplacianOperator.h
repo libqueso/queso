@@ -33,13 +33,14 @@
 #include <uqLibMeshOperatorBase.h>
 
 namespace libMesh {
+  class MeshBase;
   class EquationSystems;
 }
 
 class uqLibMeshNegativeLaplacianOperator : public uqLibMeshOperatorBase {
 public:
   // TODO: Document these
-  uqLibMeshNegativeLaplacianOperator();
+  uqLibMeshNegativeLaplacianOperator(libMesh::MeshBase & m);
   uqLibMeshNegativeLaplacianOperator(const std::string& filename);
   ~uqLibMeshNegativeLaplacianOperator();
 

@@ -1,6 +1,10 @@
 //-----------------------------------------------------------------------bl-
 //
 //-----------------------------------------------------------------------el-
+// 
+// $Id: $
+//
+//--------------------------------------------------------------------------
 
 #include <uqInfiniteDimensionalMeasureBase.h>
 
@@ -11,5 +15,5 @@ uqInfiniteDimensionalMeasureBase::uqInfiniteDimensionalMeasureBase()
 
 uqInfiniteDimensionalMeasureBase::~uqInfiniteDimensionalMeasureBase()
 {
-  return;
+  delete currentDraw;
 }

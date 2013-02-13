@@ -1,5 +1,7 @@
 #include <sstream>
 #include <libmesh/libmesh.h>
+#include <libmesh/mesh.h>
+#include <libmesh/mesh_generation.h>
 #include <uqLibMeshNegativeLaplacianOperator.h>
 #include <mpi.h>
 
@@ -16,7 +18,9 @@ int main(int argc, char **argv)
   {
   LibMeshInit init(argc, argv);
 
-  uqLibMeshNegativeLaplacianOperator C;
+  Mesh mesh;
+  MeshTools::Generation::build_square(mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
+  uqLibMeshNegativeLaplacianOperator C(mesh);
 
   C.print_info();
   C.save_converged_evals("evals.txt");

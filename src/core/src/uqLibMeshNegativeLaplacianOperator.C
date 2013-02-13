@@ -42,8 +42,10 @@
 #include <libmesh/zero_function.h>
 #include <libmesh/dirichlet_boundaries.h>
 
-uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator()
-  : uqLibMeshOperatorBase()
+using namespace libMesh;
+
+uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(MeshBase & m)
+  : uqLibMeshOperatorBase(m)
 {
   // Refactor this out
   unsigned int n_evals = 5;
@@ -78,7 +80,7 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator()
   // Order the eigenvalues "smallest first"
   eigen_system.eigen_solver->set_position_of_spectrum(SMALLEST_MAGNITUDE);
 
-  // Set up the boundary
+  // Set up the boundary (only works if this->m is a square)
   // We'll just the whole boundary to be Dirichlet, because why not
   std::set<libMesh::boundary_id_type> boundary_ids;
   boundary_ids.insert(0);
@@ -253,6 +255,6 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
 void uqLibMeshNegativeLaplacianOperator::print_info() const
 {
   // Prints information about the system to the screen.
-  this->mesh->print_info();
+  this->equation_systems->get_mesh().print_info();
   this->equation_systems->print_info();
 }
