@@ -62,13 +62,17 @@ public:
   //! Return the reciprocal of eigenvalue \c i.
   virtual double get_inverted_eigenvalue(unsigned int i) const = 0;
 
-  //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform
-  //! using \c num_terms terms.
-  //! This transform goes from coefficient space to physical space:
-  //! \sum_k \lambda_k \xi_k \phi_k(x)
-  //! where the lambda are eigenvalues of \c this and the \phi(x) are
-  //! eigenfunctions of \c this
-  virtual std::auto_ptr<uqFunctionBase> inverse_kl_transform(std::vector<double>& xi) const = 0;
+  //! Return the number of converged eigenpairs
+  virtual unsigned int get_num_converged() const = 0;
+
+  //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform using \c num_terms terms.
+  /*!
+   *  This transform goes from coefficient space to physical space:
+   *  \sum_k \lambda_k \xi_k \phi_k(x)
+   *  where the lambda are eigenvalues of \c this and the \phi(x) are
+   *  eigenfunctions of \c this
+   */
+  virtual std::auto_ptr<uqFunctionBase> inverse_kl_transform(const std::vector<double>& xi) const = 0;
 };
 
 #endif // __QUESO_OPERATOR_BASE__

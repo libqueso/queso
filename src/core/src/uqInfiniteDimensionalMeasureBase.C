@@ -15,5 +15,4 @@ uqInfiniteDimensionalMeasureBase::uqInfiniteDimensionalMeasureBase()
 
 uqInfiniteDimensionalMeasureBase::~uqInfiniteDimensionalMeasureBase()
 {
-  delete currentDraw;
 }

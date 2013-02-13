@@ -75,7 +75,7 @@ public:
   virtual void save_converged_evec(const std::string &filename, unsigned int i) const;
 
   //! Return the number of converged eigenpairs
-  unsigned int get_num_converged() const;
+  virtual unsigned int get_num_converged() const;
 
   //! Return eigenvalue \c i. You can store them however you want, but
   //! having some kind of order to them is useful for \c uqInfiniteDimensionalMeasure
@@ -84,13 +84,14 @@ public:
   //! Return the reciprocal of eigenvalue \c i.
   virtual double get_inverted_eigenvalue(unsigned int i) const;
 
-  //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform
-  //! using \c num_terms terms.
-  //! This transform goes from coefficient space to physical space:
-  //! \sum_k \xi_k \phi_k(x) / sqrt(\lambda_k)
-  //! where the lambda are eigenvalues of \c this and the \phi(x) are
-  //! eigenfunctions of \c this
-  virtual std::auto_ptr<uqFunctionBase> inverse_kl_transform(std::vector<double>& xi) const;
+  //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform using \c num_terms terms.
+  /*!
+   *  This transform goes from coefficient space to physical space:
+   *  \sum_k \xi_k \phi_k(x) / sqrt(\lambda_k)
+   *  where the lambda are eigenvalues of \c this and the \phi(x) are
+   *  eigenfunctions of \c this
+   */
+  virtual std::auto_ptr<uqFunctionBase> inverse_kl_transform(const std::vector<double> & xi) const;
 
 protected:
   libMesh::EquationSystems * equation_systems;
