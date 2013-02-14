@@ -48,9 +48,6 @@ public:
   //! Default constructor
   uqOperatorBase();
 
-  //! Construct using the mesh from file \c filename
-  uqOperatorBase(const std::string& filename);
-
   //! Destructor
   ~uqOperatorBase();
   //@}

@@ -41,7 +41,6 @@ class uqLibMeshNegativeLaplacianOperator : public uqLibMeshOperatorBase {
 public:
   // TODO: Document these
   uqLibMeshNegativeLaplacianOperator(libMesh::MeshBase & m);
-  uqLibMeshNegativeLaplacianOperator(const std::string& filename);
   ~uqLibMeshNegativeLaplacianOperator();
 
   // from system::assembly

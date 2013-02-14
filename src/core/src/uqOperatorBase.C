@@ -36,7 +36,3 @@ uqOperatorBase::uqOperatorBase()
 uqOperatorBase::~uqOperatorBase()
 {
 }
-
-uqOperatorBase::uqOperatorBase(const std::string& filename)
-{
-}

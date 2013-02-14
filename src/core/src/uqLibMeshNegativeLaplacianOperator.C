@@ -117,11 +117,6 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(MeshBase 
   this->nconv = eigen_system.get_n_converged();
 }
 
-uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(const std::string& filename)
-  : uqLibMeshOperatorBase(filename)
-{
-}
-
 uqLibMeshNegativeLaplacianOperator::~uqLibMeshNegativeLaplacianOperator()
 {
 }

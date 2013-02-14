@@ -76,40 +76,6 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(MeshBase & m)
 #endif // LIBMESH_HAVE_SLEPC
 }
 
-uqLibMeshOperatorBase::uqLibMeshOperatorBase(const std::string& filename)
-  : uqOperatorBase(filename)
-{
-#ifndef LIBMESH_HAVE_SLEPC
-  if (processor_id() == 0)
-    std::cerr << "ERROR: This example requires libMesh to be\n"
-              << "compiled with SLEPc eigen solvers support!"
-              << std::endl;
-#else
-
-#ifdef LIBMESH_DEFAULT_SINGLE_PRECISION
-  // SLEPc currently gives us a nasty crash with Real==float
-  libmesh_example_assert(false, "--disable-singleprecision");
-#endif
-
-#ifdef LIBMESH_USE_COMPLEX_NUMBERS
-  // SLEPc currently gives us an "inner product not well defined" with
-  // Number==complex
-  libmesh_example_assert(false, "--disable-complex");
-#endif
-
-  // this->mesh = new Mesh;
-  // this->mesh->read(filename);
-
-  // Create an equation systems object.
-  // this->equation_systems = new EquationSystems(*this->mesh);
-
-  // Create a CondensedEigenSystem named "Eigensystem" and (for convenience)
-  // use a reference to the system we create.
-  // this->equation_systems->add_system<EigenSystem> ("Eigensystem");
-
-#endif // LIBMESH_HAVE_SLEPC
-}
-
 uqLibMeshOperatorBase::~uqLibMeshOperatorBase()
 {
   delete this->equation_systems;

@@ -55,9 +55,6 @@ public:
   //! Constuct an operator on the mesh \c m
   uqLibMeshOperatorBase(libMesh::MeshBase & m);
 
-  //! Construct an operator on the meshed domain in \c filename
-  uqLibMeshOperatorBase(const std::string& filename);
-
   //! Destructor
   ~uqLibMeshOperatorBase();
   //@}
