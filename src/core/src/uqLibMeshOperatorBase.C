@@ -63,9 +63,6 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(MeshBase & m)
   libmesh_example_assert(false, "--disable-complex");
 #endif
 
-  // this->mesh = new Mesh;
-  // MeshTools::Generation::build_square(*this->mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
-
   // Create an equation systems object.
   this->equation_systems = new EquationSystems(m);
 
@@ -81,24 +78,27 @@ uqLibMeshOperatorBase::~uqLibMeshOperatorBase()
   delete this->equation_systems;
 }
 
-void uqLibMeshOperatorBase::save_converged_evals(const std::string &filename) const
+void uqLibMeshOperatorBase::save_converged_evals(const string & filename) const
 {
   unsigned int i;
-  std::ofstream evals_file(filename.c_str());
+  ofstream evals_file(filename.c_str());
 
+  pair<Real, Real> eval;
   for (i = 0; i < this->nconv; i++) {
-    std::pair<Real, Real> eval =
-      this->equation_systems->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
-    evals_file << eval.first << " " << eval.second << std::endl;
+    eval = this->equation_systems
+               ->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
+    evals_file << eval.first << " " << eval.second << endl;
   }
   evals_file.close();
 }
 
-void uqLibMeshOperatorBase::save_converged_evec(const std::string &filename, unsigned int i) const
+void uqLibMeshOperatorBase::save_converged_evec(const string & filename,
+    unsigned int i) const
 {
   if (i < this->nconv) {
-    this->equation_systems->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
-    ExodusII_IO(this->equation_systems->get_mesh()).write_equation_systems(filename, *this->equation_systems);
+    EquationSystems * es = this->equation_systems;
+    es->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
+    ExodusII_IO(es->get_mesh()).write_equation_systems(filename, *es);
   }
   else {
     std::cerr << "Warning: eigenpair " << i
@@ -114,8 +114,9 @@ unsigned int uqLibMeshOperatorBase::get_num_converged() const {
 double uqLibMeshOperatorBase::get_eigenvalue(unsigned int i) const
 {
   if (i < this->nconv) {
-    std::pair<Real, Real> eval =
-      this->equation_systems->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
+    pair<Real, Real> eval;
+    EquationSystems * es = this->equation_systems;
+    eval = es->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
     return eval.first;
   }
   else {
@@ -129,20 +130,20 @@ double uqLibMeshOperatorBase::get_inverted_eigenvalue(unsigned int i) const
 }
 
 std::auto_ptr<uqFunctionBase>
-uqLibMeshOperatorBase::inverse_kl_transform(const std::vector<double> & xi) const
+uqLibMeshOperatorBase::inverse_kl_transform(const vector<double> & xi) const
 {
   unsigned int i;
-  uqLibMeshFunction *kl = new uqLibMeshFunction(this->equation_systems->get_mesh());
+  EquationSystems * es = this->equation_systems;
+  uqLibMeshFunction *kl = new uqLibMeshFunction(es->get_mesh());
 
-  EquationSystems *eq_sys = this->equation_systems;
   EquationSystems *kl_eq_sys = kl->equation_systems;
 
   pair<Real, Real> eval;
   for (i = 0; i < this->get_num_converged(); i++) {
-    eval = eq_sys->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
+    eval = es->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
     kl_eq_sys->get_system<ExplicitSystem>("Function").solution->add(
         xi[i] / sqrt(eval.first),
-        *eq_sys->get_system<EigenSystem>("Eigensystem").solution);
+        *es->get_system<EigenSystem>("Eigensystem").solution);
   }
 
   std::auto_ptr<uqFunctionBase> ap(kl);

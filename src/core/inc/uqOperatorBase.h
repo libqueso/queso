@@ -49,11 +49,14 @@ public:
   uqOperatorBase();
 
   //! Destructor
-  ~uqOperatorBase();
+  virtual ~uqOperatorBase();
   //@}
 
-  //! Return eigenvalue \c i. You can store them however you want, but
-  //! having some kind of order to them is useful for \c uqInfiniteDimensionalMeasure
+  //! Return eigenvalue \c i.
+  /*!
+   * You can store them however you want, but having some kind of order to them
+   * is useful for \c uqInfiniteDimensionalMeasure
+   */
   virtual double get_eigenvalue(unsigned int i) const = 0;
 
   //! Return the reciprocal of eigenvalue \c i.
@@ -62,14 +65,15 @@ public:
   //! Return the number of converged eigenpairs
   virtual unsigned int get_num_converged() const = 0;
 
-  //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform using \c num_terms terms.
+  //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform
   /*!
    *  This transform goes from coefficient space to physical space:
    *  \sum_k \lambda_k \xi_k \phi_k(x)
    *  where the lambda are eigenvalues of \c this and the \phi(x) are
    *  eigenfunctions of \c this
    */
-  virtual std::auto_ptr<uqFunctionBase> inverse_kl_transform(const std::vector<double>& xi) const = 0;
+  virtual std::auto_ptr<uqFunctionBase>
+  inverse_kl_transform(const std::vector<double>& xi) const = 0;
 };
 
 #endif // __QUESO_OPERATOR_BASE__

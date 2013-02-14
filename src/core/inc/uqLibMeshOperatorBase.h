@@ -29,12 +29,6 @@
 #ifndef __QUESO_LIBMESHOPERATOR_BASE__
 #define __QUESO_LIBMESHOPERATOR_BASE__
 
-/*!
- * \file uqLibMeshOperatorBase.h
- * \brief Abstract base class for operator objects using libmesh in the
- *        backend
- */
-
 #include <string>
 #include <set>
 #include <vector>
@@ -48,7 +42,13 @@ namespace libMesh {
   class EquationSystems;
 }
 
-class uqLibMeshOperatorBase : public uqOperatorBase, public libMesh::System::Assembly {
+/*!
+ * \file uqLibMeshOperatorBase.h
+ * \brief Abstract base class for operator objects using libmesh in the backend
+ */
+
+class uqLibMeshOperatorBase : public uqOperatorBase,
+                              public libMesh::System::Assembly {
 public:
   //! @name Constructor/Destructor methods
   //@{
@@ -60,6 +60,9 @@ public:
   //@}
 
   //! Must implement this for the solve to work
+  /*!
+   * This gets called by libMesh to do the assembly for the eigenvalue problem
+   */
   virtual void assemble() = 0;
 
   //! Print libmesh related information
@@ -69,26 +72,31 @@ public:
   virtual void save_converged_evals(const std::string &filename) const;
 
   //! Save converged eigenfunction \c i to \c filename
-  virtual void save_converged_evec(const std::string &filename, unsigned int i) const;
+  virtual void
+  save_converged_evec(const std::string &filename, unsigned int i) const;
 
   //! Return the number of converged eigenpairs
   virtual unsigned int get_num_converged() const;
 
-  //! Return eigenvalue \c i. You can store them however you want, but
-  //! having some kind of order to them is useful for \c uqInfiniteDimensionalMeasure
+  //! Return eigenvalue \c i.
+  /*!
+   * You can store them however you want, but having some kind of order to them
+   * is useful for \c uqInfiniteDimensionalMeasure
+   */
   virtual double get_eigenvalue(unsigned int i) const;
 
   //! Return the reciprocal of eigenvalue \c i.
   virtual double get_inverted_eigenvalue(unsigned int i) const;
 
-  //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform using \c num_terms terms.
+  //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform
   /*!
-   *  This transform goes from coefficient space to physical space:
-   *  \sum_k \xi_k \phi_k(x) / sqrt(\lambda_k)
-   *  where the lambda are eigenvalues of \c this and the \phi(x) are
-   *  eigenfunctions of \c this
+   * This transform goes from coefficient space to physical space:
+   * \sum_k \xi_k \phi_k(x) / sqrt(\lambda_k)
+   * where the lambda are eigenvalues of \c this and the \phi(x) are
+   * eigenfunctions of \c this
    */
-  virtual std::auto_ptr<uqFunctionBase> inverse_kl_transform(const std::vector<double> & xi) const;
+  virtual std::auto_ptr<uqFunctionBase>
+  inverse_kl_transform(const std::vector<double> & xi) const;
 
 protected:
   libMesh::EquationSystems * equation_systems;

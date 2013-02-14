@@ -37,18 +37,26 @@ namespace libMesh {
   class EquationSystems;
 }
 
+/*!
+ * \file uqLibMeshNegativeLaplacianOperator.h
+ * \brief Class describing negative Laplacian operator using libmesh backend
+ */
+
 class uqLibMeshNegativeLaplacianOperator : public uqLibMeshOperatorBase {
 public:
-  // TODO: Document these
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Construct the negative Laplacian operator on the libmesh mesh \c m
   uqLibMeshNegativeLaplacianOperator(libMesh::MeshBase & m);
+
+  //! Destructor
   ~uqLibMeshNegativeLaplacianOperator();
 
-  // from system::assembly
+  //! Method to assemble the mass and stiffness matrices
   virtual void assemble();
 
-  //! Print libmesh related information
+  //! Print libmesh related foo
   virtual void print_info() const;
-
 };
 
 #endif // __QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H__
