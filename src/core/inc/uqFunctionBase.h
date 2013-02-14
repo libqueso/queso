@@ -40,22 +40,18 @@ class uqFunctionBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor. Zero everywhere.
+  //! Default constructor.
   uqFunctionBase();
-
-  //   libmesh object
-  //   read from a file
 
   //! Destructor
   virtual ~uqFunctionBase();
   //@}
 
-  //! Save the current function to an Exodus file
+  //! Save the current function to a file \c filename
+  /*!
+   * Derived classes must implement this
+   */
   virtual void save_function(const std::string & filename) const = 0;
-
-protected:
-  // Number of degrees of freedom
-  unsigned int ndofs;
 };
 
 #endif // __QUESO_FUNCTION_BASE__

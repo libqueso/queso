@@ -39,23 +39,24 @@ namespace libMesh {
 
 /*!
  * \file uqLibMeshFunction.h
- * \brief Function objects using lib mesh for the backend
+ * \brief Function objects using libMesh for the backend
  */
 
 class uqLibMeshFunction : public uqFunctionBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Construct a function with a user-provided libMesh Mesh object \c m
-  uqLibMeshFunction(libMesh::MeshBase & m);
 
-  //! Create a function that is equal to \c value everywhere
-  uqLibMeshFunction(double value);
+  //! Construct a function with a user-provided libMesh Mesh object \c m
+  /*!
+   * It is expected the lifetime of \c m will outlive \c this
+   */
+  uqLibMeshFunction(libMesh::MeshBase & m);
 
   //! Destructor
   ~uqLibMeshFunction();
 
-  //! Will print mesh-related libMesh foo to the screen
+  //! Will print mesh-related libMesh foo to \c std::cerr
   void print_info() const;
 
   //@}
@@ -63,6 +64,7 @@ public:
   //! Save the current function to an Exodus file called \c filename
   virtual void save_function(const std::string & filename) const;
 
+protected:
   libMesh::EquationSystems * equation_systems;
 };
 

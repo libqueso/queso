@@ -30,8 +30,10 @@
 
 uqFunctionBase::uqFunctionBase()
 {
+  // Empty
 }
 
 uqFunctionBase::~uqFunctionBase()
 {
+  // Empty
 }
