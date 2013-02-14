@@ -64,7 +64,7 @@ public:
   //! Save the current function to an Exodus file called \c filename
   virtual void save_function(const std::string & filename) const;
 
-protected:
+  //! This is public for now, but it should be encapsulated. Don't touch it.
   libMesh::EquationSystems * equation_systems;
 };
 
