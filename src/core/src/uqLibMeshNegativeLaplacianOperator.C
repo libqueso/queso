@@ -26,6 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
+#include <uqFunctionOperatorBuilder.h>
 #include <uqLibMeshNegativeLaplacianOperator.h>
 #include <libmesh/libmesh_common.h>
 #include <libmesh/mesh.h>
@@ -46,12 +47,9 @@ using namespace std;
 using namespace libMesh;
 
 uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(
-    MeshBase & m)
-  : uqLibMeshOperatorBase(m)
+    const uqFunctionOperatorBuilder & builder, MeshBase & m)
+  : uqLibMeshOperatorBase(builder, m)
 {
-  // Refactor this out
-  unsigned int n_evals = 5;
-
   EquationSystems * es = this->equation_systems;
 
   // Give the system a pointer to the matrix assembly
@@ -70,8 +68,10 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(
 
   // Set the number of requested eigenpairs \p n_evals and the number
   // of basis vectors used in the solution algorithm.
-  es->parameters.set<unsigned int>("eigenpairs")    = n_evals;
-  es->parameters.set<unsigned int>("basis vectors") = n_evals * 3;
+  es->parameters.set<unsigned int>("eigenpairs") =
+    this->builder.num_req_eigenpairs;
+  es->parameters.set<unsigned int>("basis vectors") =
+    this->builder.num_req_eigenpairs * 3;
 
   // Set the solver tolerance and the maximum number of iterations. 
   es->parameters.set<Real>("linear solver tolerance") = pow(TOLERANCE, 5./3.);

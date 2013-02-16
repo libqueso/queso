@@ -42,6 +42,8 @@ namespace libMesh {
   class EquationSystems;
 }
 
+class uqFunctionOperatorBuilder;
+
 /*!
  * \file uqLibMeshOperatorBase.h
  * \brief Abstract base class for operator objects using libmesh in the backend
@@ -53,7 +55,8 @@ public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constuct an operator on the mesh \c m
-  uqLibMeshOperatorBase(libMesh::MeshBase & m);
+  uqLibMeshOperatorBase(const uqFunctionOperatorBuilder & builder,
+      libMesh::MeshBase & m);
 
   //! Destructor
   ~uqLibMeshOperatorBase();
@@ -88,20 +91,24 @@ public:
   //! Return the reciprocal of eigenvalue \c i.
   virtual double get_inverted_eigenvalue(unsigned int i) const;
 
-  //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform
+  //! Given coefficients \c xi, computes the Karhunen-Loeve transform
   /*!
-   * This transform goes from coefficient space to physical space:
-   * \sum_k \xi_k \phi_k(x) / sqrt(\lambda_k)
-   * where the lambda are eigenvalues of \c this and the \phi(x) are
-   * eigenfunctions of \c this
+   *  This transform goes from coefficient space to physical space using
+   *  \c this as the precision operator:
+   *  \sum_k \xi_k / pow(\lambda_k, \c alpha / 2.0) \phi_k(x)
+   *  where the lambda are eigenvalues of the precision operator, \c this, and
+   *  the \phi(x) are eigenfunctions of the precision operator, \c this
    */
   virtual std::auto_ptr<uqFunctionBase>
-  inverse_kl_transform(const std::vector<double> & xi) const;
+  inverse_kl_transform(const std::vector<double> & xi, double alpha) const;
 
 protected:
   libMesh::EquationSystems * equation_systems;
 
-  //! The number of converged eigenvalue/eigenvector pairs
+  //! The number of requested eigenpairs
+  unsigned int num_req_pairs;
+
+  //! The number of converged eigenpairs
   unsigned int nconv;
 };
 

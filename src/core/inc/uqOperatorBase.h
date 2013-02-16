@@ -41,12 +41,19 @@
 #include <memory>
 #include <uqFunctionBase.h>
 
+class uqFunctionOperatorBuilder;
+
 class uqOperatorBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor
-  uqOperatorBase();
+  //! Construct with a \c builder
+  /*!
+   * A \c builder object is just one that a FEM library backend can use to set
+   * up various options. Polynomial type, polynomial order, and the number of
+   * eigenpairs to request are good examples.
+   */
+  uqOperatorBase(const uqFunctionOperatorBuilder & builder);
 
   //! Destructor
   virtual ~uqOperatorBase();
@@ -65,15 +72,20 @@ public:
   //! Return the number of converged eigenpairs
   virtual unsigned int get_num_converged() const = 0;
 
-  //! Given coefficients \c xi, compute the inverse Karhunen-Loeve transform
+  //! Given coefficients \c xi, computes the Karhunen-Loeve transform
   /*!
-   *  This transform goes from coefficient space to physical space:
-   *  \sum_k \lambda_k \xi_k \phi_k(x)
-   *  where the lambda are eigenvalues of \c this and the \phi(x) are
-   *  eigenfunctions of \c this
+   *  This transform goes from coefficient space to physical space using
+   *  \c this as the precision operator:
+   *  \sum_k \xi_k / pow(\lambda_k, \c alpha / 2.0) \phi_k(x)
+   *  where the lambda are eigenvalues of the precision operator, \c this, and
+   *  the \phi(x) are eigenfunctions of the precision operator, \c this
    */
   virtual std::auto_ptr<uqFunctionBase>
-  inverse_kl_transform(const std::vector<double>& xi) const = 0;
+  inverse_kl_transform(const std::vector<double>& xi, double alpha) const = 0;
+
+protected:
+  //! A reference to the builder object
+  const uqFunctionOperatorBuilder & builder;
 };
 
 #endif // __QUESO_OPERATOR_BASE__

@@ -31,6 +31,8 @@
 
 #include <string>
 
+class uqFunctionOperatorBuilder;
+
 /*!
  * \file uqFunctionBase.h
  * \brief Abstract base class for function objects
@@ -40,8 +42,8 @@ class uqFunctionBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor.
-  uqFunctionBase();
+  //! Construct with a builder object
+  uqFunctionBase(const uqFunctionOperatorBuilder & builder);
 
   //! Destructor
   virtual ~uqFunctionBase();
@@ -52,6 +54,10 @@ public:
    * Derived classes must implement this
    */
   virtual void save_function(const std::string & filename) const = 0;
+
+protected:
+  //! Builder object
+  const uqFunctionOperatorBuilder & builder;
 };
 
 #endif // __QUESO_FUNCTION_BASE__

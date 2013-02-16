@@ -29,7 +29,8 @@
 #include <string>
 #include <uqOperatorBase.h>
 
-uqOperatorBase::uqOperatorBase()
+uqOperatorBase::uqOperatorBase(const uqFunctionOperatorBuilder & builder)
+  : builder(builder)
 {
 }
 

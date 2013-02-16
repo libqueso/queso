@@ -27,6 +27,7 @@
 //--------------------------------------------------------------------------
 
 #include <iostream>
+#include <uqFunctionOperatorBuilder.h>
 #include <uqLibMeshFunction.h>
 #include <uqLibMeshOperatorBase.h>
 
@@ -42,8 +43,9 @@
 using namespace std;
 using namespace libMesh;
 
-uqLibMeshOperatorBase::uqLibMeshOperatorBase(MeshBase & m)
-  : uqOperatorBase()
+uqLibMeshOperatorBase::uqLibMeshOperatorBase(
+    const uqFunctionOperatorBuilder & builder, MeshBase & m)
+  : uqOperatorBase(builder)
 {
 #ifndef LIBMESH_HAVE_SLEPC
   if (processor_id() == 0)
@@ -130,11 +132,12 @@ double uqLibMeshOperatorBase::get_inverted_eigenvalue(unsigned int i) const
 }
 
 std::auto_ptr<uqFunctionBase>
-uqLibMeshOperatorBase::inverse_kl_transform(const vector<double> & xi) const
+uqLibMeshOperatorBase::inverse_kl_transform(const vector<double> & xi,
+    double alpha) const
 {
   unsigned int i;
   EquationSystems * es = this->equation_systems;
-  uqLibMeshFunction *kl = new uqLibMeshFunction(es->get_mesh());
+  uqLibMeshFunction *kl = new uqLibMeshFunction(this->builder, es->get_mesh());
 
   EquationSystems *kl_eq_sys = kl->equation_systems;
 
@@ -142,10 +145,10 @@ uqLibMeshOperatorBase::inverse_kl_transform(const vector<double> & xi) const
   for (i = 0; i < this->get_num_converged(); i++) {
     eval = es->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
     kl_eq_sys->get_system<ExplicitSystem>("Function").solution->add(
-        xi[i] / sqrt(eval.first),
+        xi[i] / pow(eval.first, alpha / 2.0),
         *es->get_system<EigenSystem>("Eigensystem").solution);
   }
 
-  std::auto_ptr<uqFunctionBase> ap(kl);
+  auto_ptr<uqFunctionBase> ap(kl);
   return ap;
 }

@@ -37,6 +37,8 @@ namespace libMesh {
   class EquationSystems;
 }
 
+class uqFunctionOperatorBuilder;
+
 /*!
  * \file uqLibMeshNegativeLaplacianOperator.h
  * \brief Class describing negative Laplacian operator using libmesh backend
@@ -47,7 +49,8 @@ public:
   //! @name Constructor/Destructor methods
   //@{
   //! Construct the negative Laplacian operator on the libmesh mesh \c m
-  uqLibMeshNegativeLaplacianOperator(libMesh::MeshBase & m);
+  uqLibMeshNegativeLaplacianOperator(const uqFunctionOperatorBuilder & builder,
+      libMesh::MeshBase & m);
 
   //! Destructor
   ~uqLibMeshNegativeLaplacianOperator();

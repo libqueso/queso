@@ -26,47 +26,16 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __QUESO_LIBMESHFUNCTION__
-#define __QUESO_LIBMESHFUNCTION__
-
 #include <string>
-#include <uqFunctionBase.h>
+#include <uqFunctionOperatorBuilder.h>
 
-namespace libMesh {
-  class MeshBase;
-  class EquationSystems;
+uqFunctionOperatorBuilder::uqFunctionOperatorBuilder()
+  : family("LAGRANGE"),
+    order("FIRST"),
+    num_req_eigenpairs(0)
+{
 }
 
-/*!
- * \file uqLibMeshFunction.h
- * \brief Function objects using libMesh for the backend
- */
-
-class uqLibMeshFunction : public uqFunctionBase {
-public:
-  //! @name Constructor/Destructor methods
-  //@{
-
-  //! Construct a function with a user-provided mesh \c m and builder
-  /*!
-   * It is expected the lifetime of \c m will outlive \c this
-   */
-  uqLibMeshFunction(const uqFunctionOperatorBuilder & builder,
-      libMesh::MeshBase & m);
-
-  //! Destructor
-  ~uqLibMeshFunction();
-
-  //! Will print mesh-related libMesh foo to \c std::cerr
-  void print_info() const;
-
-  //@}
-
-  //! Save the current function to an Exodus file called \c filename
-  virtual void save_function(const std::string & filename) const;
-
-  //! This is public for now, but it should be encapsulated. Don't touch it.
-  libMesh::EquationSystems * equation_systems;
-};
-
-#endif // __QUESO_LIBMESHFUNCTION__
+uqFunctionOperatorBuilder::~uqFunctionOperatorBuilder()
+{
+}

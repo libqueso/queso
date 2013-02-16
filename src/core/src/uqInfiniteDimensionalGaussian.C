@@ -17,26 +17,16 @@
 uqInfiniteDimensionalGaussian::uqInfiniteDimensionalGaussian(
     const uqFullEnvironmentClass & env,
     const uqFunctionBase & mean,
-    const uqOperatorBase & precision)
+    const uqOperatorBase & precision,
+    double alpha,
+    double beta)
   : uqInfiniteDimensionalMeasureBase(),
     mean(mean),
     precision(precision),
-    env(env)
+    env(env),
+    alpha(alpha),
+    beta(beta)
 {
-  // this->_param_space = new uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass>(
-  //     env, "inf_measure_space", precision.get_num_converged(), NULL);
-  // this->_mins = new uqGslVectorClass(this->_param_space->zeroVector());
-  // this->_maxs = new uqGslVectorClass(this->_param_space->zeroVector());
-  // this->_mins->cwSet(-INFINITY);
-  // this->_maxs->cwSet(INFINITY);
-  // this->_param_domain = new uqBoxSubsetClass<uqGslVectorClass, uqGslMatrixClass>(
-  //     "inf_measure_domain", *this->_param_space, *this->_mins, *this->_maxs);
-  // this->_mean = new uqGslVectorClass(this->_param_space->zeroVector());
-  // this->_vars = new uqGslVectorClass(this->_param_space->zeroVector());
-  // this->_vars->cwSet(1.0);
-  // this->_coeffs_rv = new uqGaussianVectorRVClass<uqGslVectorClass, uqGslMatrixClass>(
-  //     "inf_measure", *this->_param_domain, *this->_mean, *this->_vars);
-  // this->_coeffs = new uqGslVectorClass(*this->_param_space->zeroVector());
 }
 
 uqInfiniteDimensionalGaussian::~uqInfiniteDimensionalGaussian()
@@ -50,9 +40,9 @@ std::auto_ptr<uqFunctionBase> uqInfiniteDimensionalGaussian::draw() const
   std::vector<double> coeffs(precision.get_num_converged(), 0.0);
 
   for (i = 0; i < precision.get_num_converged(); i++) {
-    // coeffs[i] = env.rngObject()->gaussianSample(1.0);
-    coeffs[i] = gsl_ran_gaussian(env.rng(), 1.0);
+    // Probably a better way to do this, using env.rngObject() perhaps?
+    coeffs[i] = gsl_ran_gaussian(env.rng(), this->beta);
   }
 
-  return precision.inverse_kl_transform(coeffs);
+  return precision.inverse_kl_transform(coeffs, this->alpha);
 }

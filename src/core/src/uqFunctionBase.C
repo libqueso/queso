@@ -26,11 +26,12 @@
 //
 //--------------------------------------------------------------------------
 
+#include <uqFunctionOperatorBuilder.h>
 #include <uqFunctionBase.h>
 
-uqFunctionBase::uqFunctionBase()
+uqFunctionBase::uqFunctionBase(const uqFunctionOperatorBuilder & builder)
+  : builder(builder)
 {
-  // Empty
 }
 
 uqFunctionBase::~uqFunctionBase()

@@ -30,17 +30,28 @@ class uqInfiniteDimensionalGaussian : public uqInfiniteDimensionalMeasureBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Construct a Gaussian with mean \c mean and precision operator \c precision.
-  //! It is expected that \c mean and \c precision will live longer than \c this.
+  //! Construct a Gaussian with mean \c mean, precision operator \c precision.
+  /*!
+   * The argument \c alpha refers to the power to which the \c precision
+   * will be taken. And \c beta is the multiplicative coefficient of
+   * \c preicision. The complete measure is therefore:
+   *
+   * N(\c mean, \c beta^2 * pow(\c precision, - \c alpha))
+   *
+   * It is expected that \c mean and \c precision will live longer than \c this
+   */
   uqInfiniteDimensionalGaussian(const uqFullEnvironmentClass & env,
-      const uqFunctionBase &mean, const uqOperatorBase &precision);
+      const uqFunctionBase &mean, const uqOperatorBase &precision,
+      double alpha, double beta);
 
   //! Destructor
   ~uqInfiniteDimensionalGaussian();
   //@}
 
-  //! Draw from the measure, and store the result in the public member variable. This
-  //! updates the public memeber variable current draw
+  //! Draw from the measure, and store the result in the public member variable
+  /*!
+   * This updates the public memeber variable current draw
+   */
   virtual std::auto_ptr<uqFunctionBase> draw() const;
 
 private:
@@ -52,14 +63,12 @@ private:
 
   // QUESO environment
   const uqFullEnvironmentClass & env;
-  uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> * _param_space;
-  uqGslVectorClass * _mins;
-  uqGslVectorClass * _maxs;
-  uqBoxSubsetClass<uqGslVectorClass, uqGslMatrixClass> * _param_domain;
-  uqGslVectorClass * _mean;
-  uqGslVectorClass * _vars;
-  uqGaussianVectorRVClass<uqGslVectorClass, uqGslMatrixClass> * _coeffs_rv;
-  uqGslVectorClass * _coeffs;
+
+  // Fractional power
+  double alpha;
+
+  // Multiplicative constant
+  double beta;
 };
 
 #endif // __QUESO_INFINITEDIMENSIONALGAUSSIAN__

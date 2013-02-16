@@ -26,47 +26,37 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __QUESO_LIBMESHFUNCTION__
-#define __QUESO_LIBMESHFUNCTION__
-
-#include <string>
-#include <uqFunctionBase.h>
-
-namespace libMesh {
-  class MeshBase;
-  class EquationSystems;
-}
+#ifndef __QUESO_FUNCTIONOPERATORBUILDER_BASE__
+#define __QUESO_FUNCTIONOPERATORBUILDER_BASE__
 
 /*!
- * \file uqLibMeshFunction.h
- * \brief Function objects using libMesh for the backend
+ * \file uqFunctionOperatorBuilder.h
+ * \brief Helper class for function and operator objects. This class is meant
+ *        to hold common FEM library backend options in a library-agnostic
+ *        fashion
  */
 
-class uqLibMeshFunction : public uqFunctionBase {
+#include <string>
+
+class uqFunctionOperatorBuilder {
 public:
   //! @name Constructor/Destructor methods
   //@{
-
-  //! Construct a function with a user-provided mesh \c m and builder
-  /*!
-   * It is expected the lifetime of \c m will outlive \c this
-   */
-  uqLibMeshFunction(const uqFunctionOperatorBuilder & builder,
-      libMesh::MeshBase & m);
+  //! Default constructor
+  uqFunctionOperatorBuilder();
 
   //! Destructor
-  ~uqLibMeshFunction();
-
-  //! Will print mesh-related libMesh foo to \c std::cerr
-  void print_info() const;
-
+  ~uqFunctionOperatorBuilder();
   //@}
 
-  //! Save the current function to an Exodus file called \c filename
-  virtual void save_function(const std::string & filename) const;
+  //! String to store the polynomial family to use. Default is "LAGRANGE".
+  std::string family;
 
-  //! This is public for now, but it should be encapsulated. Don't touch it.
-  libMesh::EquationSystems * equation_systems;
+  //! String to store the polynomial order to use. Default is "FIRST".
+  std::string order;
+
+  //! Number of eigenpairs to request when building an operator. Default is 0.
+  unsigned int num_req_eigenpairs;
 };
 
-#endif // __QUESO_LIBMESHFUNCTION__
+#endif // __QUESO_FUNCTIONOPERATORBUILDER_BASE__

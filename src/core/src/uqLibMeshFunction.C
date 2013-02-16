@@ -55,8 +55,9 @@
 
 using namespace libMesh;
 
-uqLibMeshFunction::uqLibMeshFunction(MeshBase & m)
-  : uqFunctionBase()
+uqLibMeshFunction::uqLibMeshFunction(
+    const uqFunctionOperatorBuilder & builder, MeshBase & m)
+  : uqFunctionBase(builder)
 {
   this->equation_systems = new EquationSystems(m);
   this->equation_systems->add_system<ExplicitSystem>("Function");
