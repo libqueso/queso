@@ -28,6 +28,7 @@
 
 #include <iostream>
 #include <uqLibMeshFunction.h>
+#include <uqFunctionOperatorBuilder.h>
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
@@ -52,6 +53,10 @@
 // Define the DofMap, which handles degree of freedom
 // indexing.
 #include <libmesh/dof_map.h>
+#include <libmesh/utility.h>
+#include <libmesh/string_to_enum.h>
+#include <libmesh/enum_order.h>
+#include <libmesh/enum_fe_family.h>
 
 using namespace libMesh;
 
@@ -61,7 +66,9 @@ uqLibMeshFunction::uqLibMeshFunction(
 {
   this->equation_systems = new EquationSystems(m);
   this->equation_systems->add_system<ExplicitSystem>("Function");
-  this->equation_systems->get_system("Function").add_variable("u", FIRST);
+  this->equation_systems->get_system("Function").add_variable("u",
+      Utility::string_to_enum<libMeshEnums::Order>(this->builder.order),
+      Utility::string_to_enum<libMeshEnums::FEFamily>(this->builder.family));
   this->equation_systems->init();
 }
 

@@ -37,6 +37,8 @@ namespace libMesh {
   class EquationSystems;
 }
 
+class uqFunctionOperatorBuilder;
+
 /*!
  * \file uqLibMeshFunction.h
  * \brief Function objects using libMesh for the backend

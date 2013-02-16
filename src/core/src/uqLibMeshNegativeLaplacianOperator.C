@@ -42,6 +42,10 @@
 #include <libmesh/elem.h>
 #include <libmesh/zero_function.h>
 #include <libmesh/dirichlet_boundaries.h>
+#include <libmesh/utility.h>
+#include <libmesh/string_to_enum.h>
+#include <libmesh/enum_order.h>
+#include <libmesh/enum_fe_family.h>
 
 using namespace std;
 using namespace libMesh;
@@ -60,7 +64,9 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(
   // Declare the system variables.
   // Adds the variable "u" to "Eigensystem".   "u"
   // will be approximated using second-order approximation.
-  unsigned int u_var = eigen_system.add_variable("u", FIRST);
+  unsigned int u_var = eigen_system.add_variable("u",
+      Utility::string_to_enum<libMeshEnums::Order>(this->builder.order),
+      Utility::string_to_enum<libMeshEnums::FEFamily>(this->builder.family));
 
   // This works because *this is a subclass of System::Assembly
   // and requires the class to implement an 'assemble'
