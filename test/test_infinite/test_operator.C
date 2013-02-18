@@ -1,0 +1,122 @@
+#include <memory>
+#include <vector>
+#include <cmath>
+#include <libmesh/libmesh.h>
+#include <libmesh/mesh.h>
+#include <libmesh/mesh_generation.h>
+#include <libmesh/equation_systems.h>
+#include <libmesh/condensed_eigen_system.h>
+#include <libmesh/fe.h>
+#include <libmesh/quadrature_gauss.h>
+#include <libmesh/numeric_vector.h>
+#include <libmesh/elem.h>
+#include <libmesh/dof_map.h>
+#include <uqEnvironment.h>
+#include <uqFunctionOperatorBuilder.h>
+#include <uqLibMeshFunction.h>
+#include <uqLibMeshNegativeLaplacianOperator.h>
+#include <uqInfiniteDimensionalGaussian.h>
+
+#ifdef QUESO_HAS_MPI
+#include <mpi.h>
+#endif
+
+#define TEST_TOL 1e-8
+#define INTEGRATE_TOL 1e-2
+
+using namespace libMesh;
+using namespace std;
+
+int main(int argc, char **argv)
+{
+  unsigned int i, j;
+  uqEnvOptionsValuesClass opts;
+  opts.m_seed = -1;
+
+#ifdef QUESO_HAS_MPI
+  MPI_Init(&argc, &argv);
+#endif
+
+#ifdef QUESO_HAS_MPI
+  uqFullEnvironmentClass env(MPI_COMM_WORLD, "", "", &opts);
+#else
+  uqFullEnvironmentClass env(0, "", "", &opts);
+#endif
+
+// Need an artificial block here because libmesh needs to
+// call PetscFinalize before we call MPI_Finalize
+{
+  LibMeshInit init(argc, argv);
+
+  Mesh mesh;
+  MeshTools::Generation::build_square(mesh,
+      20, 20, 0.0, 1.0, 0.0, 1.0, QUAD4);
+
+  uqFunctionOperatorBuilder builder;
+
+  builder.order = "FIRST";
+  builder.family = "LAGRANGE";
+  builder.num_req_eigenpairs = 10;
+
+  uqLibMeshNegativeLaplacianOperator precision(builder, mesh);
+
+  EquationSystems & es = precision.get_equation_systems();
+  CondensedEigenSystem & eig_sys = es.get_system<CondensedEigenSystem>(
+      "Eigensystem");
+
+  // Check all eigenfunctions have unit L2 norm
+  vector<double> norms(builder.num_req_eigenpairs, 0);
+  for (i = 0; i < builder.num_req_eigenpairs; i++) {
+    eig_sys.get_eigenpair(i);
+    norms[i] = eig_sys.calculate_norm(*eig_sys.solution);
+    if (abs(norms[i] - 1.0) > TEST_TOL) {
+      return 1;
+    }
+  }
+
+  const unsigned int dim = mesh.mesh_dimension();
+  const DofMap & dof_map = eig_sys.get_dof_map();
+  FEType fe_type = dof_map.variable_type(0);
+  AutoPtr<FEBase> fe(FEBase::build(dim, fe_type));
+  QGauss qrule(dim, FIFTH);
+  fe->attach_quadrature_rule(&qrule);
+  const vector<Real> & JxW = fe->get_JxW();
+  const std::vector<std::vector<Real> >& phi = fe->get_phi();
+
+  AutoPtr<NumericVector<Real> > u, v;
+  double ui = 0.0;
+  double vj = 0.0;
+  double ip = 0.0;
+
+  for (i = 0; i < builder.num_req_eigenpairs - 1; i++) {
+    eig_sys.get_eigenpair(i);
+    u = eig_sys.solution->clone();
+    for (j = i + 1; j < builder.num_req_eigenpairs; j++) {
+      MeshBase::const_element_iterator el = mesh.active_local_elements_begin();
+      MeshBase::const_element_iterator end_el = mesh.active_local_elements_end();
+      eig_sys.get_eigenpair(j);
+      v = eig_sys.solution->clone();
+      for ( ; el != end_el; ++el) {
+        const Elem * elem = *el;
+        fe->reinit(elem);
+        for (unsigned int qp = 0; qp < qrule.n_points(); qp++) {
+          for (unsigned int dof = 0; dof < phi.size(); dof++) {
+            ui += (*u)(dof) * phi[dof][qp];
+            vj += (*v)(dof) * phi[dof][qp];
+          }
+          ip += ui * vj * JxW[qp];
+          ui = 0.0;
+          vj = 0.0;
+        }
+      }
+      std::cerr << "INTEGRAL of " << i << " against " << j << " is: " << ip << std::endl;
+      if (abs(ip) > INTEGRATE_TOL) {
+        return 1;
+      }
+      ip = 0.0;
+    }
+  }
+}
+  MPI_Finalize();
+  return 0;
+}
