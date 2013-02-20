@@ -81,7 +81,7 @@ public:
    *  the \phi(x) are eigenfunctions of the precision operator, \c this
    */
   virtual std::auto_ptr<uqFunctionBase>
-  inverse_kl_transform(const std::vector<double>& xi, double alpha) const = 0;
+  inverse_kl_transform(std::vector<double>& xi, double alpha) const = 0;
 
 protected:
   //! A reference to the builder object

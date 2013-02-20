@@ -39,6 +39,8 @@
 #include <libmesh/condensed_eigen_system.h>
 #include <libmesh/numeric_vector.h>
 #include <libmesh/exodusII_io.h>
+#include <libmesh/parallel.h>
+#include <libmesh/parallel_implementation.h>
 
 using namespace std;
 using namespace libMesh;
@@ -89,9 +91,13 @@ void uqLibMeshOperatorBase::save_converged_evals(const string & filename) const
   for (i = 0; i < this->nconv; i++) {
     eval = this->equation_systems
                ->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
-    evals_file << eval.first << " " << eval.second << endl;
+    if (processor_id() == 0) {
+      evals_file << eval.first << " " << eval.second << endl;
+    }
   }
-  evals_file.close();
+  if (processor_id() == 0) {
+    evals_file.close();
+  }
 }
 
 void uqLibMeshOperatorBase::save_converged_evec(const string & filename,
@@ -131,13 +137,23 @@ double uqLibMeshOperatorBase::get_inverted_eigenvalue(unsigned int i) const
   return 1.0 / this->get_eigenvalue(i);
 }
 
+EquationSystems & uqLibMeshOperatorBase::get_equation_systems() const
+{
+  return *this->equation_systems;
+}
+
 std::auto_ptr<uqFunctionBase>
-uqLibMeshOperatorBase::inverse_kl_transform(const vector<double> & xi,
+uqLibMeshOperatorBase::inverse_kl_transform(vector<double> & xi,
     double alpha) const
 {
   unsigned int i;
   EquationSystems * es = this->equation_systems;
   uqLibMeshFunction *kl = new uqLibMeshFunction(this->builder, es->get_mesh());
+
+  // Make sure all procs in libmesh mpi communicator all have the same xi.  No,
+  // I can't set the seed in QUESO.  That would mess with the QUESO
+  // communicator.
+  CommWorld.broadcast(xi);
 
   EquationSystems *kl_eq_sys = kl->equation_systems;
 

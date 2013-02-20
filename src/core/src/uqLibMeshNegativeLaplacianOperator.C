@@ -88,6 +88,7 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(
   eigen_system.set_eigenproblem_type(GHEP);
 
   // Order the eigenvalues "smallest first"
+  // This hoses performance?
   eigen_system.eigen_solver->set_position_of_spectrum(SMALLEST_MAGNITUDE);
 
   // Set up the boundary (only works if this->m is a square)

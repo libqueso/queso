@@ -91,6 +91,9 @@ public:
   //! Return the reciprocal of eigenvalue \c i.
   virtual double get_inverted_eigenvalue(unsigned int i) const;
 
+  //! Return the internal libmesh equation systems object
+  virtual libMesh::EquationSystems & get_equation_systems() const;
+
   //! Given coefficients \c xi, computes the Karhunen-Loeve transform
   /*!
    *  This transform goes from coefficient space to physical space using
@@ -100,7 +103,7 @@ public:
    *  the \phi(x) are eigenfunctions of the precision operator, \c this
    */
   virtual std::auto_ptr<uqFunctionBase>
-  inverse_kl_transform(const std::vector<double> & xi, double alpha) const;
+  inverse_kl_transform(std::vector<double> & xi, double alpha) const;
 
 protected:
   libMesh::EquationSystems * equation_systems;
