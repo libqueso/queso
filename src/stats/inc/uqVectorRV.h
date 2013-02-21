@@ -39,7 +39,7 @@
 #include <gsl/gsl_sf_psi.h>
 
 //*****************************************************
-// Base class
+// Base class [RV-00]
 //*****************************************************
 template<class V, class M>
 class uqBaseVectorRVClass {
@@ -261,7 +261,7 @@ uqBaseVectorRVClass<V,M>::estimateENT_ANN() const
 #endif // QUESO_HAS_ANN
 
 //*****************************************************
-// Generic class
+// Generic class [RV-01]
 //*****************************************************
 template<class V, class M>
 class uqGenericVectorRVClass : public uqBaseVectorRVClass<V,M> {
@@ -401,7 +401,7 @@ uqGenericVectorRVClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
-// Gaussian class
+// Gaussian class [RV-03]
 //*****************************************************
 
 /*!
@@ -695,7 +695,7 @@ uqComputeConditionalGaussianVectorRV(
 }
 
 //*****************************************************
-// Uniform class
+// Uniform class [RV-04]
 //*****************************************************
 template<class V, class M>
 class uqUniformVectorRVClass : public uqBaseVectorRVClass<V,M> {
@@ -764,7 +764,7 @@ uqUniformVectorRVClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
-// Beta class
+// Beta class [RV-05]
 //*****************************************************
 template<class V, class M>
 class uqBetaVectorRVClass : public uqBaseVectorRVClass<V,M> {
@@ -841,7 +841,7 @@ uqBetaVectorRVClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
-// Gamma class
+// Gamma class [RV-06]
 //*****************************************************
 template<class V, class M>
 class uqGammaVectorRVClass : public uqBaseVectorRVClass<V,M> {
@@ -918,7 +918,7 @@ uqGammaVectorRVClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
-// InverseGamma class
+// InverseGamma class [RV-07]
 //*****************************************************
 template<class V, class M>
 class uqInverseGammaVectorRVClass : public uqBaseVectorRVClass<V,M> {
@@ -995,7 +995,7 @@ uqInverseGammaVectorRVClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
-// Wigner class
+// Wigner class [RV-09]
 //*****************************************************
 template<class V, class M>
 class uqWignerVectorRVClass : public uqBaseVectorRVClass<V,M> {
@@ -1077,7 +1077,7 @@ uqWignerVectorRVClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
-// LogNormal class
+// LogNormal class [RV-10]
 //*****************************************************
 template<class V, class M>
 class uqLogNormalVectorRVClass : public uqBaseVectorRVClass<V,M> {
@@ -1187,7 +1187,7 @@ uqLogNormalVectorRVClass<V,M>::print(std::ostream& os) const
 }
 
 //*****************************************************
-// Concatenated class
+// Concatenated class [RV-11]
 //*****************************************************
 template<class V, class M>
 class uqConcatenatedVectorRVClass : public uqBaseVectorRVClass<V,M> {

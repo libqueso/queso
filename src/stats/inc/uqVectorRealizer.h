@@ -38,7 +38,7 @@
 //*****************************************************
 
 //*****************************************************
-// Base class
+// Base class [R-00]
 //*****************************************************
 template<class V, class M>
 class uqBaseVectorRealizerClass {
@@ -104,7 +104,7 @@ uqBaseVectorRealizerClass<V,M>::unifiedImageSet() const
 }
 
 //*****************************************************
-// Generic class
+// Generic class [R-01]
 //*****************************************************
 template<class V, class M>
 class uqGenericVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
@@ -167,7 +167,7 @@ uqGenericVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
-// Gaussian class
+// Gaussian class [R-03]
 //*****************************************************
 template<class V, class M>
 class uqGaussianVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
@@ -375,7 +375,7 @@ uqGaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(
 }
 
 //*****************************************************
-// Sequential class
+// Sequential class [R-nn]
 //*****************************************************
 template<class V, class M>
 class uqSequentialVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
@@ -450,7 +450,7 @@ uqSequentialVectorRealizerClass<V,M>::unifiedSampleVarVector() const
 }
 
 //*****************************************************
-// Uniform class
+// Uniform class [R-04]
 //*****************************************************
 template<class V, class M>
 class uqUniformVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
@@ -509,7 +509,7 @@ uqUniformVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
-// Beta class
+// Beta class [R-05]
 //*****************************************************
 template<class V, class M>
 class uqBetaVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
@@ -570,7 +570,7 @@ uqBetaVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
-// Gamma class
+// Gamma class [R-06]
 //*****************************************************
 template<class V, class M>
 class uqGammaVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
@@ -631,7 +631,7 @@ uqGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
-// InverseGamma class
+// InverseGamma class [R-07]
 //*****************************************************
 template<class V, class M>
 class uqInverseGammaVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
@@ -692,7 +692,7 @@ uqInverseGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
-// Wigner class
+// Wigner class [R-09]
 //*****************************************************
 template<class V, class M>
 class uqWignerVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
@@ -763,7 +763,7 @@ uqWignerVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
-// LogNormal class
+// LogNormal class [R-10]
 //*****************************************************
 template<class V, class M>
 class uqLogNormalVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
@@ -915,7 +915,7 @@ uqLogNormalVectorRealizerClass<V,M>::realization(V& nextValues) const
 }
 
 //*****************************************************
-// Concatenated class
+// Concatenated class [R-11]
 //*****************************************************
 template<class V, class M>
 class uqConcatenatedVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {

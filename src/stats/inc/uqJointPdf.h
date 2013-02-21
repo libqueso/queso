@@ -39,7 +39,7 @@
 //*****************************************************
 
 //*****************************************************
-// Base class
+// Base class [PDF-00]
 //*****************************************************
 template<class V, class M>
 class uqBaseJointPdfClass : public uqBaseScalarFunctionClass<V,M> {
