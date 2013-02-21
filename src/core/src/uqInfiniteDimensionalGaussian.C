@@ -41,7 +41,7 @@ std::auto_ptr<uqFunctionBase> uqInfiniteDimensionalGaussian::draw() const
 
   for (i = 0; i < precision.get_num_converged(); i++) {
     // Probably a better way to do this, using env.rngObject() perhaps?
-    coeffs[i] = gsl_ran_gaussian(env.rng(), this->beta);
+    coeffs[i] = env.rngObject()->gaussianSample(this->beta);
   }
 
   return precision.inverse_kl_transform(coeffs, this->alpha);
