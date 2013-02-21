@@ -44,9 +44,9 @@ public:
                                      const uqVectorSetClass<V,M>& domainSet);
   virtual ~uqBaseScalarFunctionClass();
 
-          const uqVectorSetClass<V,M>& domainSet        ()                                                                                                   const;
-  virtual       double                 actualValue      (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
-  virtual       double                 lnValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
+          const uqVectorSetClass<V,M>& domainSet  ()                                                                                                   const;
+  virtual       double                 actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
+  virtual       double                 lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
 
 protected:
   const uqBaseEnvironmentClass& m_env;
