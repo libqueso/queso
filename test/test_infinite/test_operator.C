@@ -1,6 +1,10 @@
 #include <memory>
 #include <vector>
 #include <cmath>
+
+#include <uqEnvironment.h>
+
+#ifdef QUESO_HAVE_LIBMESH
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
@@ -11,11 +15,11 @@
 #include <libmesh/numeric_vector.h>
 #include <libmesh/elem.h>
 #include <libmesh/dof_map.h>
-#include <uqEnvironment.h>
 #include <uqFunctionOperatorBuilder.h>
 #include <uqLibMeshFunction.h>
 #include <uqLibMeshNegativeLaplacianOperator.h>
 #include <uqInfiniteDimensionalGaussian.h>
+#endif
 
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>
@@ -43,8 +47,14 @@ int main(int argc, char **argv)
   uqFullEnvironmentClass env(0, "", "", &opts);
 #endif
 
+#ifdef LIBMESH_DEFAULT_SINGLE_PRECISION
+  // SLEPc currently gives us a nasty crash with Real==float
+  libmesh_example_assert(false, "--disable-singleprecision");
+#endif
+
 // Need an artificial block here because libmesh needs to
 // call PetscFinalize before we call MPI_Finalize
+#ifdef LIBMESH_HAVE_SLEPC
 {
   LibMeshInit init(argc, argv);
 
@@ -117,6 +127,7 @@ int main(int argc, char **argv)
     }
   }
 }
+#endif  // LIBMESH_HAVE_SLEPC
   MPI_Finalize();
   return 0;
 }
