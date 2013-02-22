@@ -54,6 +54,12 @@ public:
    */
   virtual std::auto_ptr<uqFunctionBase> draw() const;
 
+  //! Return coefficient \c i of the KL expansion of the current draw
+  /*!
+   * You need to make a draw before you call this
+   */
+  virtual double get_kl_coefficient(unsigned int i) const;
+
 private:
   // Mean
   const uqFunctionBase & mean;
@@ -69,6 +75,10 @@ private:
 
   // Multiplicative constant
   double beta;
+
+  // The coefficients for the KL expansion
+  // (not multiplied by the evals)
+  std::vector<double> * coeffs;
 };
 
 #endif // __QUESO_INFINITEDIMENSIONALGAUSSIAN__

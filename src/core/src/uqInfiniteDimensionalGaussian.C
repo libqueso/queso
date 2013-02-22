@@ -7,12 +7,15 @@
 //--------------------------------------------------------------------------
 
 #include <memory>
+#include <vector>
 
 #include <uqInfiniteDimensionalMeasureBase.h>
 #include <uqInfiniteDimensionalGaussian.h>
 #include <uqEnvironment.h>
 #include <uqFunctionBase.h>
 #include <uqOperatorBase.h>
+
+using namespace std;
 
 uqInfiniteDimensionalGaussian::uqInfiniteDimensionalGaussian(
     const uqFullEnvironmentClass & env,
@@ -27,22 +30,28 @@ uqInfiniteDimensionalGaussian::uqInfiniteDimensionalGaussian(
     alpha(alpha),
     beta(beta)
 {
+  this->coeffs = new vector<double>(this->precision.get_num_converged(), 0.0);
 }
 
 uqInfiniteDimensionalGaussian::~uqInfiniteDimensionalGaussian()
 {
-  return;
+  delete this->coeffs;
 }
 
 std::auto_ptr<uqFunctionBase> uqInfiniteDimensionalGaussian::draw() const
 {
   unsigned int i;
-  std::vector<double> coeffs(precision.get_num_converged(), 0.0);
 
-  for (i = 0; i < precision.get_num_converged(); i++) {
-    // Probably a better way to do this, using env.rngObject() perhaps?
-    coeffs[i] = env.rngObject()->gaussianSample(this->beta);
+  for (i = 0; i < this->precision.get_num_converged(); i++) {
+    (*this->coeffs)[i] = env.rngObject()->gaussianSample(this->beta);
   }
 
-  return precision.inverse_kl_transform(coeffs, this->alpha);
+  return this->precision.inverse_kl_transform(*this->coeffs, this->alpha);
+}
+
+double uqInfiniteDimensionalGaussian::get_kl_coefficient(unsigned int i) const
+{
+  // This is code repetition, but I'm not quite sure this belongs
+  // in the operator class, because it's useful in the measure
+  return (*this->coeffs)[i] / pow(this->precision.get_eigenvalue(i), this->alpha / 2.0);
 }

@@ -25,6 +25,7 @@ check_PROGRAMS += test_GslVectorSpaceCtor
 check_PROGRAMS += test_GslVectorSpaceMisc
 check_PROGRAMS += test_IntersectionSubsetContains
 check_PROGRAMS += test_operator
+check_PROGRAMS += test_inf_gaussian
 
 LIBS         = -L$(top_builddir)/src/ -lqueso
 
@@ -74,6 +75,7 @@ test_GslVectorSpaceCtor_SOURCES = $(top_srcdir)/test/test_GslVectorSpace/test_Gs
 test_GslVectorSpaceMisc_SOURCES = $(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceMisc.C
 test_IntersectionSubsetContains_SOURCES = $(top_srcdir)/test/test_IntersectionSubset/test_IntersectionSubsetContains.C
 test_operator_SOURCES = $(top_srcdir)/test/test_infinite/test_operator.C
+test_inf_gaussian_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_gaussian.C
 
 # Files to freedom stamp
 srcstamp = $(test_uqEnvironment_SOURCES) \
@@ -86,7 +88,8 @@ srcstamp = $(test_uqEnvironment_SOURCES) \
 					 $(test_uqGaussianVectorRVClass_SOURCES) \
            $(test_uqGslMatrixConstructorFatal_SOURCES) \
 					 $(test_uqGslMatrix_SOURCES) \
-					 $(test_operator_SOURCES)
+					 $(test_operator_SOURCES) \
+					 $(test_inf_gaussian_SOURCES)
 
 
 TESTS = $(top_srcdir)/test/test_Environment/test_uqEnvironment.sh \
@@ -108,7 +111,8 @@ TESTS = $(top_srcdir)/test/test_Environment/test_uqEnvironment.sh \
 				$(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceCtor.sh \
 				$(top_builddir)/test/test_GslVectorSpaceMisc \
 				$(top_builddir)/test/test_IntersectionSubsetContains \
-				$(top_builddir)/test/test_operator
+				$(top_builddir)/test/test_operator \
+				$(top_builddir)/test/test_inf_gaussian
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
