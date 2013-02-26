@@ -37,6 +37,7 @@
 #include <vector>
 #include <uqVector.h>
 #include "boost/random.hpp"
+#include <boost/math/distributions.hpp>  //for beta distributions
 
 #ifdef QUESO_HAS_TRILINOS
 
@@ -46,8 +47,8 @@ public:
   uqTeuchosVectorClass();
   uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map);
   uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double value);
-  uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const uqMapClass& map); // MATLAB linspace
-  uqTeuchosVectorClass(const uqTeuchosVectorClass&         v, double d1, double d2);                        // MATLAB linspace
+  uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const uqMapClass& map);
+  uqTeuchosVectorClass(const uqTeuchosVectorClass&         v, double d1, double d2);                   
   uqTeuchosVectorClass(const uqTeuchosVectorClass&         y);
   
   ~uqTeuchosVectorClass();
@@ -69,7 +70,7 @@ public:
   
   unsigned int sizeLocal        () const;
   unsigned int sizeGlobal       () const;
-  double*      values           () ;//added by Kemelli on 12/05/12, precisa checar
+  double*      values           () ;
   double       norm2Sq          () const;
   double       norm2            () const;
   double       norm1            () const;
@@ -99,27 +100,26 @@ public:
   void         cwSetUniform2(const uqTeuchosVectorClass& lowerBoundVec, const uqTeuchosVectorClass& upperBoundVec);//dummy
    
   void         cwSetConcatenated(const uqTeuchosVectorClass& v1, const uqTeuchosVectorClass& v2);
-  /*Nope*/
-  /*
   void         cwSetBeta        (const uqTeuchosVectorClass& alpha,   const uqTeuchosVectorClass& beta     );
   void         cwSetInverseGamma(const uqTeuchosVectorClass& alpha,   const uqTeuchosVectorClass& beta     );
-  */
+  
   void         cwSetGaussian2   (double mean, double stdDev);
   void         cwSetGaussian2   (const uqTeuchosVectorClass& meanVec, const uqTeuchosVectorClass& stdDevVec);
   void         cwSetGamma       (const uqTeuchosVectorClass& a,       const uqTeuchosVectorClass& b        );
   void         sort             ();
   void         print            (std::ostream& os) const;
   void         subReadContents  (const std::string&            fileName,
-				 const std::string&            fileType,
-				 const std::set<unsigned int>& allowedSubEnvIds);
+								 const std::string&            fileType,
+								 const std::set<unsigned int>& allowedSubEnvIds);
   void         subWriteContents (const std::string&            varNamePrefix,
                                  const std::string&            fileName,
                                  const std::string&            fileType,
                                  const std::set<unsigned int>& allowedSubEnvIds) const;
 				 
-  double	GetRandomDoubleUsingNormalDistribution(int seed, double mean,double sigma);
-  void copy_to_std_vector(std::vector<double>& vec); // output
-  void copy_from_std_vector(const std::vector<double> vec); //(input, output)
+  double		GetRandomDoubleUsingNormalDistribution(int seed, double mean,double sigma);
+  double	 	GetRandomDoubleUsingUniformZeroOneDistribution(int seed);
+  void 			copy_to_std_vector(std::vector<double>& vec); // output
+  void 			copy_from_std_vector(const std::vector<double> vec); //(input, output)
 
 
 private:
@@ -128,10 +128,10 @@ private:
 
 };
 
-uqTeuchosVectorClass copy	  (int , 			    double []);
-uqTeuchosVectorClass operator/    (double a,            	    const uqTeuchosVectorClass& x  );
+uqTeuchosVectorClass copy		  (int , 						    double []);
+uqTeuchosVectorClass operator/    (double a,            		    const uqTeuchosVectorClass& x  );
 uqTeuchosVectorClass operator/    (const uqTeuchosVectorClass& x,   const uqTeuchosVectorClass& y  );
-uqTeuchosVectorClass operator*    (double a,		            const uqTeuchosVectorClass& x  );
+uqTeuchosVectorClass operator*    (double a,		    	        const uqTeuchosVectorClass& x  );
 uqTeuchosVectorClass operator*    (const uqTeuchosVectorClass& x,   const uqTeuchosVectorClass& y  );
 double               scalarProduct(const uqTeuchosVectorClass& x,   const uqTeuchosVectorClass& y  );
 uqTeuchosVectorClass operator+    (const uqTeuchosVectorClass& x,   const uqTeuchosVectorClass& y  );

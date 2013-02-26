@@ -297,6 +297,53 @@ void uqTeuchosVectorClass::cwSetGamma(const uqTeuchosVectorClass& aVec, const uq
   return;
 };
 
+
+// -------------------------------------------------
+//TODO : find a smart way to define seed
+// Using Gamma Distribution to calculate InverseGamma.
+// Note the divisions: 1.0/b and the 1.0/generator; they are crucial
+void uqTeuchosVectorClass::cwSetInverseGamma(const gsl_rng* rng_gsl, const uqTeuchosVectorClass& aVec, const uqTeuchosVectorClass& bVec)
+{
+  int seed =1;
+  static boost::mt19937 rng(seed);  //Random Number Generator
+   
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) 
+  {
+    // Choose Gamma Distribution with parabmer 1.0/b
+    boost::gamma_distribution<double> gamma_dist(aVec[i], 1.0/bVec[i]);   
+ 
+  // Create a Gamma Random Number generator by binding 
+  // with previously defined normal distribution object   
+  // sample from the distribution
+    boost::variate_generator<boost::mt19937&, boost::gamma_distribution<double> > generator(rng, gamma_dist);
+ 
+  // return 1.0 of the draw value
+    (*this)[i] = 1.0/generator();    
+  }
+  
+  return;
+};
+
+// -------------------------------------------------
+//TODO : find a smart way to define seed
+void uqTeuchosVectorClass::cwSetBeta(const gsl_rng* rng, const uqTeuchosVectorClass& alpha, const uqTeuchosVectorClass& beta)
+{
+  int seed =1;  
+
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) 
+  {
+   // draw a random number from (0,1)
+   double randFromUnif = GetRandomDoubleUsingUniformZeroOneDistribution(seed); 
+   // Choose Beta distribution with parameters alpha and beta
+   boost::math::beta_distribution<double> beta_dist(alpha[i], beta[i]); 
+   
+   double randFromDist = quantile(beta_dist, randFromUnif);
+   (*this)[i] = randFromDist;
+  }
+  
+  return;
+};
+
 // -------------------------------------------------
 void
 uqTeuchosVectorClass::copy_to_std_vector(std::vector<double>& vec)
@@ -1432,7 +1479,7 @@ uqTeuchosVectorClass::subWriteContents(
   return;
 }
 
-
+//------------------------------------------------------------------
 double 
 uqTeuchosVectorClass::GetRandomDoubleUsingNormalDistribution(int seed, double mean,double sigma)
 { 
@@ -1451,5 +1498,11 @@ uqTeuchosVectorClass::GetRandomDoubleUsingNormalDistribution(int seed, double me
   return generator();
   
 }
-
+//------------------------------------------------------------------
+double uqTeuchosVectorClass::GetRandomDoubleUsingUniformZeroOneDistribution(int seed)
+{
+  boost::mt19937 rng(seed);
+  static boost::uniform_01<boost::mt19937> zeroone(rng);
+  return zeroone();
+}
 #endif // ifdef QUESO_HAS_TRILINOS
