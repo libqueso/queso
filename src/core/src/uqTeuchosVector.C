@@ -234,7 +234,7 @@ uqTeuchosVectorClass::~uqTeuchosVectorClass()
 
 // -------------------------------------------------
 //TODO : find a smart way to define seed
-void uqTeuchosVectorClass::cwSetGaussian2(double mean, double stdDev)
+void uqTeuchosVectorClass::cwSetGaussian(double mean, double stdDev)
 {
   int seed =1;
   static boost::mt19937 rng(seed);  //Random Number Generator
@@ -256,7 +256,7 @@ void uqTeuchosVectorClass::cwSetGaussian2(double mean, double stdDev)
 
 // -------------------------------------------------
 //TODO : find a smart way to define seed
-void uqTeuchosVectorClass::cwSetGaussian2(const uqTeuchosVectorClass& meanVec, const uqTeuchosVectorClass& stdDevVec)
+void uqTeuchosVectorClass::cwSetGaussian(const uqTeuchosVectorClass& meanVec, const uqTeuchosVectorClass& stdDevVec)
 {
   int seed =1;
   static boost::mt19937 rng(seed);  //Random Number Generator
@@ -976,7 +976,7 @@ void uqTeuchosVectorClass::cwSqrt()
 * Also view: 
 * http://www.cs.cmu.edu/~dlr/dlr_libs/dlrlibs1.28/html/pseudoRandom_8cpp-source.html
 *------------------------------------------------------------------------*/
-void uqTeuchosVectorClass::cwSetGaussian(double mean, double stdDev)
+void uqTeuchosVectorClass::cwSetGaussian2(double mean, double stdDev)
 {
   unsigned int iseed_size = 4; // Lapack expects iseed_size = 4, always.
   int iseed[iseed_size];
@@ -1009,7 +1009,7 @@ void uqTeuchosVectorClass::cwSetGaussian(double mean, double stdDev)
 }
 
 //---------------------------------------------------- 
- void uqTeuchosVectorClass::cwSetGaussian(const uqTeuchosVectorClass& meanVec, const uqTeuchosVectorClass& stdDevVec)
+ void uqTeuchosVectorClass::cwSetGaussian2(const uqTeuchosVectorClass& meanVec, const uqTeuchosVectorClass& stdDevVec)
 {
   unsigned int iseed_size = 4; // Lapack expects iseed_size = 4, always.
   int iseed[iseed_size];
@@ -1083,7 +1083,7 @@ void uqTeuchosVectorClass::cwSetGaussian(double mean, double stdDev)
 //TODO : find better way to get the seed
  void uqTeuchosVectorClass::cwSetUniform(const uqTeuchosVectorClass& lowerBoundaVec, const uqTeuchosVectorClass& upperBoundVec)
 {
-  int seed = 1;
+   int seed = 1;
 
   for (unsigned int i=0; i < this->sizeLocal(); i++){
     double random= GetRandomDoubleUsingUniformZeroOneDistribution(seed);
