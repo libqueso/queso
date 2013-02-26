@@ -1078,39 +1078,19 @@ void uqTeuchosVectorClass::cwSetGaussian(double mean, double stdDev)
 
 
 //----------------------------------------------------
-// Original version
+//Boost version
+// implemented/checked 2/26/13
+//TODO : find better way to get the seed
  void uqTeuchosVectorClass::cwSetUniform(const uqTeuchosVectorClass& lowerBoundaVec, const uqTeuchosVectorClass& upperBoundVec)
 {
-  unsigned int iseed_size = 4; // Lapack expects iseed_size = 4, always.
-  int iseed[iseed_size];
-  Teuchos::SerialDenseVector<int,double> x(iseed_size);
-  
-  x.random();
-  x.scale(10);
-    
-  for(unsigned int i=0; i<iseed_size; i++)
-  {
-    iseed[i] = fabs(floor(x[i])); 
-  }
-   // iseed[3] must be odd.
-  if(iseed[3] % 2 == 0) {
-    iseed[3] -= 1;
-  }
+  int seed = 1;
 
-  Teuchos::LAPACK<int, double> lapack;
-  int idist=1;  	     // Tells lapack we want a uniform distribution
-  int dim=this->sizeLocal(); // Amount of values needed
-  double returnValue[dim];   // The number we'll return
-     
-  lapack.LARNV(idist,iseed,dim,returnValue); 	
-  
-  for (int i=0; i < dim; i++){
-         (*this)[i] = lowerBoundaVec[i] + (upperBoundVec[i]-lowerBoundaVec[i])*returnValue[i];
+  for (unsigned int i=0; i < this->sizeLocal(); i++){
+    double random= GetRandomDoubleUsingUniformZeroOneDistribution(seed);
+    (*this)[i] = lowerBoundaVec[i] + (upperBoundVec[i]-lowerBoundaVec[i])*random;
    }
-   
   return;
 }
-
 //----------------------------------------------------
 
 void
