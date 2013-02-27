@@ -686,6 +686,70 @@ uqTeuchosMatrixClass::setColumn(unsigned int column_num, const uqTeuchosVectorCl
   return;
 }
 
+
+// ---------------------------------------------------
+// tested 1/31/13
+void
+uqTeuchosMatrixClass::getRow(unsigned int row_num, uqTeuchosVectorClass& row) const
+{
+  // Sanity checks
+  UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::getRow",
+                      "Specified row number not within range");
+
+  UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numRowsLocal()),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::getRow",
+                      "row vector not same size as this matrix");
+
+  // Copy row from Teuchos matrix into our TeuchosVector object
+  for (unsigned int i=0; i< row.sizeLocal();i++)
+    row[i] = m_mat(row_num,i);
+  
+  return;
+}
+
+// ---------------------------------------------------
+// tested 1/31/13
+uqTeuchosVectorClass
+uqTeuchosMatrixClass::getRow(unsigned int row_num ) const
+{
+  // We rely on the void getRow's to do sanity checks
+  // So we don't do them here.
+
+  uqTeuchosVectorClass row(m_env, m_map);
+
+  this->getRow( row_num, row );
+  
+  return row;
+}
+
+
+
+// ---------------------------------------------------
+// tested 1/31/13
+void
+uqTeuchosMatrixClass::setRow (const unsigned int row_num, const uqTeuchosVectorClass& row)
+{
+  // Sanity checks
+  UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::getRow",
+                      "Specified row number not within range");
+
+  UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numRowsLocal()),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::getRow",
+                      "row vector not same size as this matrix");
+
+  // Copy our TeuchosVector object to our Teuchos Matrix
+  for (unsigned int i=0; i< row.sizeLocal();i++)
+     m_mat(row_num,i) = row[i] ;
+  
+  return;
+}
+
 // ---------------------------------------------------
 void
 uqTeuchosMatrixClass::mpiSum( const uqMpiCommClass& comm, uqTeuchosMatrixClass& M_global ) const
@@ -1456,6 +1520,67 @@ uqTeuchosMatrixClass::lnDeterminant() const
   }
 
   return m_lnDeterminant;
+}
+
+// ---------------------------------------------------
+unsigned int
+uqTeuchosMatrixClass::rank(double absoluteZeroThreshold, double relativeZeroThreshold) const
+{
+  int iRC = 0;
+  iRC = internalSvd();
+  if (iRC) {}; // just to remove compiler warning
+
+  uqTeuchosVectorClass relativeVec(*m_svdSvec);
+  if (relativeVec[0] > 0.) {
+    relativeVec = (1./relativeVec[0])*relativeVec;
+  }
+
+  unsigned int rankValue = 0;
+  for (unsigned int i = 0; i < relativeVec.sizeLocal(); ++i) {
+    if (( (*m_svdSvec)[i] >= absoluteZeroThreshold ) &&
+        ( relativeVec [i] >= relativeZeroThreshold )) {
+       rankValue += 1;
+    }
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
+    *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::rank()"
+                            << ": this->numRowsLocal() = "  << this->numRowsLocal()
+                            << ", this->numCols() = "       << this->numCols()
+                            << ", absoluteZeroThreshold = " << absoluteZeroThreshold
+                            << ", relativeZeroThreshold = " << relativeZeroThreshold
+                            << ", rankValue = "             << rankValue
+                            << ", m_svdSvec = "             << *m_svdSvec
+                            << ", relativeVec = "           << relativeVec
+                            << std::endl;
+  }
+
+  return rankValue;
+}
+
+// ----------------------------------------------
+// tested 1/31/13
+void
+uqTeuchosMatrixClass::fillWithTranspose(const uqTeuchosMatrixClass& mat)
+{
+  unsigned int nRows = mat.numRowsLocal();
+  unsigned int nCols = mat.numCols();
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != nCols,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithTranspose()",
+                      "inconsistent local number of rows");
+  UQ_FATAL_TEST_MACRO(this->numCols() != nRows,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithTranspose()",
+                      "inconsistent number of cols");
+
+  for (unsigned int row = 0; row < nRows; ++row) {
+    for (unsigned int col = 0; col < nCols; ++col) {
+      (*this)(col,row) = mat(row,col);
+    }
+  }
+
+  return;
 }
 
 //----------------------------------------------------------------------------

@@ -49,11 +49,11 @@ public:
                        unsigned int                  numCols);
   uqTeuchosMatrixClass(const uqBaseEnvironmentClass& env,
                        const uqMapClass&             map,
-     	               double                        diagValue); // MATLAB eye
-  uqTeuchosMatrixClass(const uqTeuchosVectorClass&       v,
-                   	   double                        diagValue); // MATLAB eye
-  uqTeuchosMatrixClass(const uqTeuchosVectorClass&       v);         // MATLAB diag
-  uqTeuchosMatrixClass(const uqTeuchosMatrixClass&       B);
+     	               double                        diagValue); 
+  uqTeuchosMatrixClass(const uqTeuchosVectorClass&   v,
+                   	   double                        diagValue); 
+  uqTeuchosMatrixClass(const uqTeuchosVectorClass&   v);         
+  uqTeuchosMatrixClass(const uqTeuchosMatrixClass&   B);
  ~uqTeuchosMatrixClass();
 
 
@@ -66,61 +66,65 @@ public:
       const double& operator()(unsigned int i, unsigned int j) const;
 
 
-        unsigned int      numRowsLocal              () const;
-        unsigned int      numRowsGlobal             () const;
-        unsigned int      numCols                   () const;
-	double*           values                    () ;//added by Kemelli on 12/04/12
-	int 	          stride                    () ;//added by Kemelli on 12/04/12
-	int               chol                      (); //still empty, Kemelli on 12/04/12
-        void              zeroLower                 (bool includeDiagonal = false);
-        void              zeroUpper                 (bool includeDiagonal = false);
-        void              print                     (std::ostream& os) const;
-	void              mpiSum                    (const uqMpiCommClass& comm, uqTeuchosMatrixClass& M_global) const;
-	int               svd                       (uqTeuchosMatrixClass& matU, uqTeuchosVectorClass& vecS, uqTeuchosMatrixClass& matVt) const;
+  unsigned int      numRowsLocal           () const;
+  unsigned int      numRowsGlobal          () const;
+  unsigned int      numCols                () const;
+  double*           values                 () ;//added by Kemelli on 12/04/12
+  int 	            stride                 () ;//added by Kemelli on 12/04/12
+  int               chol                   () ; 
+  void              zeroLower              (bool includeDiagonal = false);
+  void              zeroUpper              (bool includeDiagonal = false);
+  void              print                  (std::ostream& os) const;
+  void              mpiSum                 (const uqMpiCommClass& comm, uqTeuchosMatrixClass& M_global) const;
+  int               svd                    (uqTeuchosMatrixClass& matU, uqTeuchosVectorClass& vecS, uqTeuchosMatrixClass& matVt) const;
 
-	uqTeuchosMatrixClass  invertMultiply            (const uqTeuchosMatrixClass& B) const;
-        void                  invertMultiply            (const uqTeuchosMatrixClass& B, uqTeuchosMatrixClass& X) const;
-	uqTeuchosVectorClass  invertMultiply            (const uqTeuchosVectorClass& b) const;
-        void                  invertMultiply            (const uqTeuchosVectorClass& b, uqTeuchosVectorClass& x) const;
-	uqTeuchosVectorClass  invertMultiplyForceLU     (const uqTeuchosVectorClass& b) const;
-	void                  invertMultiplyForceLU     (const uqTeuchosVectorClass& b, uqTeuchosVectorClass& x) const;
-	
-        double            determinant             () const;
-	double            lnDeterminant             () const;
-void                  getColumn                 (const unsigned int column_num, uqTeuchosVectorClass& column) const;
-uqTeuchosVectorClass  getColumn                 (const unsigned int column_num) const;
-void                  setColumn                 (const unsigned int column_num, const uqTeuchosVectorClass& column);
-uqTeuchosMatrixClass  transpose                 () const;
-uqTeuchosVectorClass  multiply                  (const uqTeuchosVectorClass& x) const;
-void              subReadContents                   (const std::string&            fileName,
-                                                     const std::string&            fileType,
-                                                     const std::set<unsigned int>& allowedSubEnvIds);
-void              subWriteContents          (const std::string&            varNamePrefix,
-                                                     const std::string&            fileName,
-                                                     const std::string&            fileType,
-                                                     const std::set<unsigned int>& allowedSubEnvIds) const;
+  uqTeuchosMatrixClass  transpose                 () const;
+  uqTeuchosMatrixClass  inverse                   () const;
+  uqTeuchosVectorClass  multiply                  (const uqTeuchosVectorClass& x) const;
+  uqTeuchosMatrixClass  invertMultiply            (const uqTeuchosMatrixClass& B) const;
+  void                  invertMultiply            (const uqTeuchosMatrixClass& B, uqTeuchosMatrixClass& X) const;
+  uqTeuchosVectorClass  invertMultiply            (const uqTeuchosVectorClass& b) const;
+  void                  invertMultiply            (const uqTeuchosVectorClass& b, uqTeuchosVectorClass& x) const;
+  uqTeuchosVectorClass  invertMultiplyForceLU     (const uqTeuchosVectorClass& b) const;
+  void                  invertMultiplyForceLU     (const uqTeuchosVectorClass& b, uqTeuchosVectorClass& x) const;
+  double                determinant               () const;
+  double                lnDeterminant             () const;
+  void                  getColumn                 (const unsigned int column_num, uqTeuchosVectorClass& column) const;
+  uqTeuchosVectorClass  getColumn                 (const unsigned int column_num) const;
+  void                  setColumn                 (const unsigned int column_num, const uqTeuchosVectorClass& column);
+  void                  getRow                    (const unsigned int row_num, uqTeuchosVectorClass& row) const;
+  uqTeuchosVectorClass  getRow                    (const unsigned int row_num) const;
+  void                  setRow                    (const unsigned int row_num, const uqTeuchosVectorClass& row);
+  void                  subReadContents           (const std::string&            fileName,
+                                                   const std::string&            fileType,
+                                                   const std::set<unsigned int>& allowedSubEnvIds);
+  void                  subWriteContents          (const std::string&            varNamePrefix,
+                                                   const std::string&            fileName,
+                                                   const std::string&            fileType,
+                                                   const std::set<unsigned int>& allowedSubEnvIds) const;
 						     
-void              eigen                     (uqTeuchosVectorClass& eigenValues, uqTeuchosMatrixClass* eigenVectors) const;			
-void              largestEigen              (double& eigenValue, uqTeuchosVectorClass& eigenVector) const;
-void              smallestEigen             (double& eigenValue, uqTeuchosVectorClass& eigenVector) const;
+  void              eigen                     (uqTeuchosVectorClass& eigenValues, uqTeuchosMatrixClass* eigenVectors) const;			
+  void              largestEigen              (double& eigenValue, uqTeuchosVectorClass& eigenVector) const;
+  void              smallestEigen             (double& eigenValue, uqTeuchosVectorClass& eigenVector) const;
+  
+  double            normFrob                  () const;
+  double            normMax                   () const;
+  double            max                       () const;
+  unsigned int      rank                      (double absoluteZeroThreshold, double relativeZeroThreshold) const;
+  void              cwSet                     (double value);
+  void              cwSet                     (unsigned int rowId, unsigned int colId, const uqTeuchosMatrixClass& mat);
 
-
-#if 0
-        double            normFrob                  () const;
-        double            normMax                   () const;
-        double            max                       () const;
-        void              cwSet                     (double value);
-        void              cwSet                     (unsigned int rowId, unsigned int colId, const uqTeuchosMatrixClass& mat);
-
-        
-        int               svdSolve                  (const uqTeuchosVectorClass& rhsVec, uqTeuchosVectorClass& solVec) const;
-        int               svdSolve                  (const uqTeuchosMatrixClass& rhsMat, uqTeuchosMatrixClass& solMat) const;
   const uqTeuchosMatrixClass& svdMatU                   () const;
   const uqTeuchosMatrixClass& svdMatV                   () const;
-        void              filterSmallValues         (double thresholdValue);
-        void              filterLargeValues         (double thresholdValue);
-        
-        uqTeuchosMatrixClass  inverse                   () const;
+
+  void              filterSmallValues         (double thresholdValue);
+  void              filterLargeValues         (double thresholdValue);
+  void              fillWithTranspose         (const uqTeuchosMatrixClass& mat); 
+ 
+#if 0
+        int               svdSolve                  (const uqTeuchosVectorClass& rhsVec, uqTeuchosVectorClass& solVec) const;
+        int               svdSolve                  (const uqTeuchosMatrixClass& rhsMat, uqTeuchosMatrixClass& solMat) const;
+
         void              fillWithBlocksDiagonally  (const std::vector<const uqTeuchosMatrixClass* >& matrices);
         void              fillWithBlocksDiagonally  (const std::vector<      uqTeuchosMatrixClass* >& matrices);
         void              fillWithBlocksHorizontally(const std::vector<const uqTeuchosMatrixClass* >& matrices);
@@ -129,14 +133,7 @@ void              smallestEigen             (double& eigenValue, uqTeuchosVector
         void              fillWithBlocksVertically  (const std::vector<      uqTeuchosMatrixClass* >& matrices);
         void              fillWithTensorProduct     (const uqTeuchosMatrixClass& mat1, const uqTeuchosMatrixClass& mat2);
         void              fillWithTensorProduct     (const uqTeuchosMatrixClass& mat1, const uqTeuchosVectorClass& vec2);
-        void              fillWithTranspose         (const uqTeuchosMatrixClass& mat);
-        double            determinant               () const;
-        
-        unsigned int      rank                      (double absoluteZeroThreshold, double relativeZeroThreshold) const;
-        void              getRow                    (const unsigned int row_num, uqTeuchosVectorClass& row) const;
-        uqTeuchosVectorClass  getRow                    (const unsigned int row_num) const;
-        void              setRow                    (const unsigned int row_num, const uqTeuchosVectorClass& row);
-        void              mpiSum                    (const uqMpiCommClass& comm, uqTeuchosMatrixClass& M_global) const;
+
         void              matlabLinearInterpExtrap  (const uqTeuchosVectorClass& x1Vec, const uqTeuchosMatrixClass& y1Mat, const uqTeuchosVectorClass& x2Vec);
 
         Teuchos::SerialDenseMatrix<int,double>       data                      ();
