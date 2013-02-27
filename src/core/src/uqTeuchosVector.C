@@ -1486,3 +1486,4 @@ double uqTeuchosVectorClass::GetRandomDoubleUsingUniformZeroOneDistribution(int 
   return zeroone();
 }
 #endif // ifdef QUESO_HAS_TRILINOS
+

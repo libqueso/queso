@@ -438,6 +438,91 @@ uqTeuchosMatrixClass::stride()
 };
 
 // ---------------------------------------------------
+double
+uqTeuchosMatrixClass::normFrob() const
+{
+  return m_mat.normFrobenius ();
+}
+// ---------------------------------------------------
+double
+uqTeuchosMatrixClass::normMax() const
+{
+  double value = 0.;
+
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+  double aux = 0.;
+  for (unsigned int i = 0; i < nRows; i++) {
+    for (unsigned int j = 0; j < nCols; j++) {
+      aux = fabs((*this)(i,j));
+      if (aux > value) value = aux;
+    }
+  }
+  return value;
+}
+
+// ---------------------------------------------------
+double
+uqTeuchosMatrixClass::max() const
+{
+  double value = -INFINITY;
+
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+  double aux = 0.;
+  for (unsigned int i = 0; i < nRows; i++) {
+    for (unsigned int j = 0; j < nCols; j++) {
+      aux = (*this)(i,j);
+      if (aux > value) value = aux;
+    }
+  }
+
+  return value;
+}
+
+// ---------------------------------------------------
+void
+uqTeuchosMatrixClass::cwSet(double value)
+{
+  m_mat.putScalar(value);
+  
+  return;
+}
+
+// ---------------------------------------------------
+// tested on 1/31/13: copies matrix mat to this matrix, starting at row rowId and column colId
+void
+uqTeuchosMatrixClass::cwSet(unsigned int rowId,unsigned int colId,const uqTeuchosMatrixClass& mat)
+{
+  UQ_FATAL_TEST_MACRO(rowId >= this->numRowsLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::cwSet()",
+                      "invalid rowId");
+
+  UQ_FATAL_TEST_MACRO((rowId + mat.numRowsLocal()) > this->numRowsLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::cwSet()",
+                      "invalid vec.numRowsLocal()");
+
+  UQ_FATAL_TEST_MACRO(colId >= this->numCols(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::cwSet()",
+                      "invalid colId");
+
+  UQ_FATAL_TEST_MACRO((colId + mat.numCols()) > this->numCols(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::cwSet()",
+                      "invalid vec.numCols()");
+
+  for (unsigned int i = 0; i < mat.numRowsLocal(); ++i) {
+    for (unsigned int j = 0; j < mat.numCols(); ++j) {
+      (*this)(rowId+i,colId+j) = mat(i,j);
+    }
+  }
+
+  return;
+}
+// ---------------------------------------------------
 // Kemelli 12/05/12 - tested
 void         
 uqTeuchosMatrixClass::zeroLower(bool includeDiagonal)
