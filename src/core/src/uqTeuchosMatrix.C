@@ -963,6 +963,82 @@ uqTeuchosMatrixClass::internalSvd() const
 }
 
 
+//---------------------------------------------------------------
+//tested 2/1/13
+const uqTeuchosMatrixClass& uqTeuchosMatrixClass::svdMatU() const
+{
+  int iRC = 0;
+  iRC = internalSvd();
+  if (iRC) {}; // just to remove compiler warning
+ 
+  return *m_svdUmat;
+}
+
+//---------------------------------------------------------------
+//tested 2/1/13
+const uqTeuchosMatrixClass& uqTeuchosMatrixClass::svdMatV() const
+{
+  int iRC = 0;
+  iRC = internalSvd();
+  if (iRC) {}; // just to remove compiler warning
+
+  return *m_svdVmat;
+}
+
+
+//---------------------------------------------------------------
+// tested 1/31/13
+uqTeuchosMatrixClass
+uqTeuchosMatrixClass::inverse() const
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+
+  UQ_FATAL_TEST_MACRO((nRows != nCols),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::inverse()",
+                      "matrix is not square");
+
+  if (m_inverse == NULL) {
+    m_inverse = new uqTeuchosMatrixClass(m_env,m_map,nCols);
+    uqTeuchosVectorClass unitVector(m_env,m_map);
+    unitVector.cwSet(0.);
+    uqTeuchosVectorClass multVector(m_env,m_map);
+    for (unsigned int j = 0; j < nCols; ++j) {
+      if (j > 0) unitVector[j-1] = 0.;
+      unitVector[j] = 1.;
+      this->invertMultiply(unitVector, multVector);
+      for (unsigned int i = 0; i < nRows; ++i) {
+        (*m_inverse)(i,j) = multVector[i];
+      }
+    }
+  }
+  if (m_env.checkingLevel() >= 1) {
+    *m_env.subDisplayFile() << "CHECKING In uqTeuchosMatrixClass::inverse()"
+                            << ": M.lnDet = "      << this->lnDeterminant()
+                            << ", M^{-1}.lnDet = " << m_inverse->lnDeterminant()
+                            << std::endl;
+  }
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::inverse():"
+                            << "\n M = "        << *this
+                            << "\n M^{-1} = "   << *m_inverse
+                            << "\n M*M^{-1} = " << (*this)*(*m_inverse)
+                            << "\n M^{-1}*M = " << (*m_inverse)*(*this)
+                            << std::endl;
+  }
+
+//   cout << "Inverse ---------------------\n";
+//   for (int i=0; i<m_inverse->numRowsLocal(); i++) {
+//     for (int j=0; j<m_inverse->numCols(); j++)
+//       cout<< m_inverse->m_mat(i,j) << " ";
+//     cout << endl;
+//   }
+//   cout << endl;
+
+  return *m_inverse;
+}
+
 // ---------------------------------------------------
 //Kemelli checked 12/06/12
 uqTeuchosVectorClass
@@ -1994,6 +2070,53 @@ uqTeuchosMatrixClass::eigen(uqTeuchosVectorClass& eigenValues, uqTeuchosMatrixCl
 //   cout << endl;
 
   
+  return;
+}
+
+// ---------------------------------------------------
+// Suspicious logic - TODO see Redime ticket #2709 
+void
+uqTeuchosMatrixClass::filterSmallValues(double thresholdValue)
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+  
+  for (unsigned int i = 0; i < nRows; ++i) {
+    for (unsigned int j = 0; j < nCols; ++j) {
+      double aux = (*this)(i,j);
+      // If 'thresholdValue' is negative, no values will be filtered
+      if ((aux < 0. ) && (-thresholdValue < aux)) {
+        (*this)(i,j) = 0.;
+      }      
+      if ((aux > 0. ) && (thresholdValue > aux)) {
+        (*this)(i,j) = 0.;
+      }      
+    }
+  }
+
+  return;
+}
+
+// ---------------------------------------------------
+// Suspicious logic - TODO see Redime ticket #2709 
+void
+uqTeuchosMatrixClass::filterLargeValues(double thresholdValue)
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+  
+  for (unsigned int i = 0; i < nRows; ++i) {
+    for (unsigned int j = 0; j < nCols; ++j) {
+      double aux = (*this)(i,j);
+      // If 'thresholdValue' is negative, no values will be filtered
+      if ( (aux < 0. ) && (-thresholdValue > aux)) 
+          (*this)(i,j) = 0.;
+      
+      if ((aux > 0. ) && (thresholdValue < aux))
+        (*this)(i,j) = 0.;
+      
+    }
+  }
   return;
 }
 
