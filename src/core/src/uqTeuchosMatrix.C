@@ -1051,6 +1051,126 @@ const uqTeuchosMatrixClass& uqTeuchosMatrixClass::svdMatV() const
 
 
 //---------------------------------------------------------------
+// checked 2/27/13
+/* An orthogonal matrix M has a norm-preserving property, i.e. 
+ * for any vector v, ||Mv|| = ||v|| (1). Then: 
+ * min(||Ax − b||^2) = min(||Ax − b||) = min(||UDVT x − b||) =
+ * = (1) min(||DV x − U b||).
+ * Substituting y = VT x and b' = UT b gives us Dy = b' with D 
+ * a diagonal matrix. Or, y = inv(D)*UT*b and we only have to 
+ * solve the linear system: VT x = y.
+ */
+int
+uqTeuchosMatrixClass::svdSolve(const uqTeuchosVectorClass& rhsVec, uqTeuchosVectorClass& solVec) const
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+  unsigned int i;
+  
+  UQ_FATAL_TEST_MACRO((rhsVec.sizeLocal() != nRows),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::svdSolve()",
+                      "invalid rhsVec");
+
+  UQ_FATAL_TEST_MACRO((solVec.sizeLocal() != nCols),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::svdSolve()",
+                      "invalid solVec");
+
+  int iRC = internalSvd();
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::svdSolve():"
+                            << "\n this->numRowsLocal()      = " << this->numRowsLocal()
+                            << ", this->numCols()      = "       << this->numCols()
+                            << "\n m_svdUmat->numRowsLocal() = " << m_svdUmat->numRowsLocal()
+                            << ", m_svdUmat->numCols() = "       << m_svdUmat->numCols()
+                            << "\n m_svdVmat->numRowsLocal() = " << m_svdVmat->numRowsLocal()
+                            << ", m_svdVmat->numCols() = "       << m_svdVmat->numCols()
+                            << "\n m_svdSvec->sizeLocal()    = " << m_svdSvec->sizeLocal()
+                            << "\n rhsVec.sizeLocal()        = " << rhsVec.sizeLocal()
+                            << "\n solVec.sizeLocal()        = " << solVec.sizeLocal()
+                            << std::endl;
+  }
+
+ if (iRC == 0)
+ {
+   uqTeuchosMatrixClass  invD = uqTeuchosMatrixClass(solVec); 
+   uqTeuchosMatrixClass  auxMatrix = uqTeuchosMatrixClass(solVec); 
+    
+   for (i=0; i<nRows; i++){
+     invD(i,i) = 1./(m_svdSvec->values()[i]); 
+   }
+ 
+  // GESV: For a system Ax=b, on entry, b contains the right-hand side b; 
+  // on exit it contains the solution x.
+  // Thus, intead of doing y = inv(D)*UT*rhsVec = auxMatrix*rhsVec, with 
+  // auxMatrix = inv(D)*UT; and then assigning solVec=y (requirement for using GESV)
+  // lets do solVec= auxMatrix*rhsVec, and save one step in the calculation 
+ 
+    auxMatrix = invD * svdMatU().transpose();
+    solVec = auxMatrix*rhsVec;
+
+  // solve the linear system VT * solVec = y
+  // GESV changes the values of the matrix, so lets make a copy of it and use it.
+  
+    uqTeuchosMatrixClass* aux_m_svdVTmat  = new uqTeuchosMatrixClass(*m_svdVTmat);
+   
+    int ipiv[0], info;
+    Teuchos::LAPACK<int, double> lapack;
+    lapack.GESV(nCols, 1,  aux_m_svdVTmat->values(),  aux_m_svdVTmat->stride(), ipiv, &solVec[0], solVec.sizeLocal(), &info );  
+  
+  /* GESV output INFO: = 0:  successful exit
+   *          < 0:  if INFO = -i, the i-th argument had an illegal value
+   *          > 0:  if INFO = i, U(i,i) is exactly zero.  The factorization
+   *                has been completed, but the factor U is exactly
+   *                singular, so the solution could not be computed.
+   */
+   
+    iRC = info;
+    delete aux_m_svdVTmat;    
+  }
+  return iRC;
+ 
+}
+
+//---------------------------------------------------------------
+//checked 2/27/13
+int
+uqTeuchosMatrixClass::svdSolve(const uqTeuchosMatrixClass& rhsMat, uqTeuchosMatrixClass& solMat) const
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+
+  UQ_FATAL_TEST_MACRO((rhsMat.numRowsLocal() != nRows),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::svdSolve()",
+                      "invalid rhsMat");
+
+  UQ_FATAL_TEST_MACRO((solMat.numRowsLocal() != nCols),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::svdSolve()",
+                      "invalid solMat");
+
+  UQ_FATAL_TEST_MACRO((rhsMat.numCols() != solMat.numCols()),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::svdSolve()",
+                      "rhsMat and solMat are not compatible");
+
+  uqTeuchosVectorClass rhsVec(m_env,rhsMat.map());
+  uqTeuchosVectorClass solVec(m_env,solMat.map());
+  int iRC = 0;
+  for (unsigned int j = 0; j < rhsMat.numCols(); ++j) {
+    rhsVec = rhsMat.getColumn(j);
+    iRC = this->svdSolve(rhsVec, solVec);
+    if (iRC) break;
+    solMat.setColumn(j,solVec);
+  }
+
+  return iRC;
+}
+
+//---------------------------------------------------------------
 // tested 1/31/13
 uqTeuchosMatrixClass
 uqTeuchosMatrixClass::inverse() const

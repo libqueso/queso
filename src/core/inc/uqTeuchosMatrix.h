@@ -77,6 +77,10 @@ public:
   void              print                  (std::ostream& os) const;
   void              mpiSum                 (const uqMpiCommClass& comm, uqTeuchosMatrixClass& M_global) const;
   int               svd                    (uqTeuchosMatrixClass& matU, uqTeuchosVectorClass& vecS, uqTeuchosMatrixClass& matVt) const;
+  const uqTeuchosMatrixClass& svdMatU      () const;
+  const uqTeuchosMatrixClass& svdMatV      () const;
+  int               svdSolve               (const uqTeuchosVectorClass& rhsVec, uqTeuchosVectorClass& solVec) const;
+  int               svdSolve               (const uqTeuchosMatrixClass& rhsMat, uqTeuchosMatrixClass& solMat) const;
 
   uqTeuchosMatrixClass  transpose                 () const;
   uqTeuchosMatrixClass  inverse                   () const;
@@ -114,16 +118,11 @@ public:
   void              cwSet                     (double value);
   void              cwSet                     (unsigned int rowId, unsigned int colId, const uqTeuchosMatrixClass& mat);
 
-  const uqTeuchosMatrixClass& svdMatU                   () const;
-  const uqTeuchosMatrixClass& svdMatV                   () const;
-
   void              filterSmallValues         (double thresholdValue);
   void              filterLargeValues         (double thresholdValue);
   void              fillWithTranspose         (const uqTeuchosMatrixClass& mat); 
  
 #if 0
-        int               svdSolve                  (const uqTeuchosVectorClass& rhsVec, uqTeuchosVectorClass& solVec) const;
-        int               svdSolve                  (const uqTeuchosMatrixClass& rhsMat, uqTeuchosMatrixClass& solMat) const;
 
         void              fillWithBlocksDiagonally  (const std::vector<const uqTeuchosMatrixClass* >& matrices);
         void              fillWithBlocksDiagonally  (const std::vector<      uqTeuchosMatrixClass* >& matrices);
