@@ -115,6 +115,9 @@ public:
                                  const std::string&            fileName,
                                  const std::string&            fileType,
                                  const std::set<unsigned int>& allowedSubEnvIds) const;
+                                 
+  void         matlabLinearInterpExtrap(const uqTeuchosVectorClass& x1Vec, const uqTeuchosVectorClass& y1Vec, const uqTeuchosVectorClass& x2Vec);
+                                 
 				 
   double		GetRandomDoubleUsingNormalDistribution(int seed, double mean,double sigma);
   double	 	GetRandomDoubleUsingUniformZeroOneDistribution(int seed);

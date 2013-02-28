@@ -2625,6 +2625,45 @@ uqTeuchosMatrixClass::fillWithTensorProduct(const uqTeuchosMatrixClass& mat1, co
   return;
 }
 
+//--------------------------------------------------------
+// tested 2/28/13
+void
+uqTeuchosMatrixClass::matlabLinearInterpExtrap(
+  const uqTeuchosVectorClass& x1Vec,
+  const uqTeuchosMatrixClass& y1Mat,
+  const uqTeuchosVectorClass& x2Vec)
+{
+  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() <= 1,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::matlabLinearInterpExtrap()",
+                      "invalid 'x1' size");
+
+  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() != y1Mat.numRowsLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::matlabLinearInterpExtrap()",
+                      "invalid 'x1' and 'y1' sizes");
+
+  UQ_FATAL_TEST_MACRO(x2Vec.sizeLocal() != this->numRowsLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::matlabLinearInterpExtrap()",
+                      "invalid 'x2' and 'this' sizes");
+
+  UQ_FATAL_TEST_MACRO(y1Mat.numCols() != this->numCols(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::matlabLinearInterpExtrap()",
+                      "invalid 'y1' and 'this' sizes");
+
+  uqTeuchosVectorClass y1Vec(x1Vec);
+  uqTeuchosVectorClass y2Vec(x2Vec);
+  for (unsigned int colId = 0; colId < y1Mat.numCols(); ++colId) {
+    y1Mat.getColumn(colId,y1Vec);
+    y2Vec.matlabLinearInterpExtrap(x1Vec,y1Vec,x2Vec);
+    this->setColumn(colId,y2Vec);
+  }
+
+  return;
+}
+//------------------------------------------------------------------
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Operators outside class definition
 uqTeuchosMatrixClass operator*(double a, const uqTeuchosMatrixClass& mat)

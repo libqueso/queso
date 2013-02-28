@@ -130,9 +130,8 @@ public:
   void              fillWithTensorProduct     (const uqTeuchosMatrixClass& mat1, const uqTeuchosMatrixClass& mat2);
   void              fillWithTensorProduct     (const uqTeuchosMatrixClass& mat1, const uqTeuchosVectorClass& vec2); 
   
+  void              matlabLinearInterpExtrap  (const uqTeuchosVectorClass& x1Vec, const uqTeuchosMatrixClass& y1Mat, const uqTeuchosVectorClass& x2Vec);
 #if 0
-      void              matlabLinearInterpExtrap  (const uqTeuchosVectorClass& x1Vec, const uqTeuchosMatrixClass& y1Mat, const uqTeuchosVectorClass& x2Vec);
-
         Teuchos::SerialDenseMatrix<int,double>       data                      ();
 #endif
 private:

@@ -1459,6 +1459,89 @@ uqTeuchosVectorClass::subWriteContents(
   return;
 }
 
+
+//------------------------------------------------------------------
+// added/tested 2/28/13
+void
+uqTeuchosVectorClass::matlabLinearInterpExtrap(
+  const uqTeuchosVectorClass& x1Vec,
+  const uqTeuchosVectorClass& y1Vec,
+  const uqTeuchosVectorClass& x2Vec)
+{
+  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() <= 1,
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::matlabLinearInterpExtrap()",
+                      "invalid 'x1' size");
+
+  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() != y1Vec.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::matlabLinearInterpExtrap()",
+                      "invalid 'x1' and 'y1' sizes");
+
+  UQ_FATAL_TEST_MACRO(x2Vec.sizeLocal() != this->sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::matlabLinearInterpExtrap()",
+                      "invalid 'x2' and 'this' sizes");
+
+  for (unsigned int i = 1; i < x1Vec.sizeLocal(); ++i) { // Yes, '1'
+    UQ_FATAL_TEST_MACRO(x1Vec[i] <= x1Vec[i-1],
+                        m_env.worldRank(),
+                        "uqTeuchosVectorClass::matlabLinearInterpExtrap()",
+                        "invalid 'x1' values");
+  }
+
+  for (unsigned int id2 = 0; id2 < x2Vec.sizeLocal(); ++id2) {
+    double x2 = x2Vec[id2];
+    unsigned int id1 = 0;
+    bool found1 = false;
+    for (id1 = 0; id1 < x1Vec.sizeLocal(); ++id1) {
+      if (x2 <= x1Vec[id1]) {
+        found1 = true;
+        break;
+      }
+    }
+    bool makeLinearModel = false;
+    double xa = 0.;
+    double xb = 0.;
+    double ya = 0.;
+    double yb = 0.;
+    if (x2 == x1Vec[id1]) {
+      (*this)[id2] = y1Vec[id1];
+    }
+    else if (x2 < x1Vec[0]) {
+      // Extrapolation case
+      makeLinearModel = true;
+      xa = x1Vec[0];
+      xb = x1Vec[1];
+      ya = y1Vec[0];
+      yb = y1Vec[1];
+    }
+    else if (found1 == true) {
+      // Interpolation case
+      makeLinearModel = true;
+      xa = x1Vec[id1-1];
+      xb = x1Vec[id1];
+      ya = y1Vec[id1-1];
+      yb = y1Vec[id1];
+    }
+    else {
+      // Extrapolation case
+      makeLinearModel = true;
+      xa = x1Vec[x1Vec.sizeLocal()-2];
+      xb = x1Vec[x1Vec.sizeLocal()-1];
+      ya = y1Vec[x1Vec.sizeLocal()-2];
+      yb = y1Vec[x1Vec.sizeLocal()-1];
+    }
+
+    if (makeLinearModel) {
+      double rate = (yb-ya)/(xb-xa);
+      (*this)[id2] = ya + (x2-xa)*rate;
+    }
+  }
+  return;
+}
+
+//------------------------------------------------------------------
 //------------------------------------------------------------------
 double 
 uqTeuchosVectorClass::GetRandomDoubleUsingNormalDistribution(int seed, double mean,double sigma)
