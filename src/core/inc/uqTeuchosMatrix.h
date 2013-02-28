@@ -121,19 +121,17 @@ public:
   void              filterSmallValues         (double thresholdValue);
   void              filterLargeValues         (double thresholdValue);
   void              fillWithTranspose         (const uqTeuchosMatrixClass& mat); 
- 
+  void              fillWithBlocksDiagonally  (const std::vector<const uqTeuchosMatrixClass* >& matrices);
+  void              fillWithBlocksDiagonally  (const std::vector<      uqTeuchosMatrixClass* >& matrices);
+  void              fillWithBlocksHorizontally(const std::vector<const uqTeuchosMatrixClass* >& matrices);
+  void              fillWithBlocksHorizontally(const std::vector<      uqTeuchosMatrixClass* >& matrices);
+  void              fillWithBlocksVertically  (const std::vector<const uqTeuchosMatrixClass* >& matrices);
+  void              fillWithBlocksVertically  (const std::vector<      uqTeuchosMatrixClass* >& matrices);
+  void              fillWithTensorProduct     (const uqTeuchosMatrixClass& mat1, const uqTeuchosMatrixClass& mat2);
+  void              fillWithTensorProduct     (const uqTeuchosMatrixClass& mat1, const uqTeuchosVectorClass& vec2); 
+  
 #if 0
-
-        void              fillWithBlocksDiagonally  (const std::vector<const uqTeuchosMatrixClass* >& matrices);
-        void              fillWithBlocksDiagonally  (const std::vector<      uqTeuchosMatrixClass* >& matrices);
-        void              fillWithBlocksHorizontally(const std::vector<const uqTeuchosMatrixClass* >& matrices);
-        void              fillWithBlocksHorizontally(const std::vector<      uqTeuchosMatrixClass* >& matrices);
-        void              fillWithBlocksVertically  (const std::vector<const uqTeuchosMatrixClass* >& matrices);
-        void              fillWithBlocksVertically  (const std::vector<      uqTeuchosMatrixClass* >& matrices);
-        void              fillWithTensorProduct     (const uqTeuchosMatrixClass& mat1, const uqTeuchosMatrixClass& mat2);
-        void              fillWithTensorProduct     (const uqTeuchosMatrixClass& mat1, const uqTeuchosVectorClass& vec2);
-
-        void              matlabLinearInterpExtrap  (const uqTeuchosVectorClass& x1Vec, const uqTeuchosMatrixClass& y1Mat, const uqTeuchosVectorClass& x2Vec);
+      void              matlabLinearInterpExtrap  (const uqTeuchosVectorClass& x1Vec, const uqTeuchosMatrixClass& y1Mat, const uqTeuchosVectorClass& x2Vec);
 
         Teuchos::SerialDenseMatrix<int,double>       data                      ();
 #endif

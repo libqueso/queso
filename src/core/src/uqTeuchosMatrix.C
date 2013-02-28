@@ -2365,6 +2365,266 @@ uqTeuchosMatrixClass::filterLargeValues(double thresholdValue)
   return;
 }
 
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithBlocksDiagonally(const std::vector<const uqTeuchosMatrixClass* >& matrices)
+{
+  unsigned int sumNumRowsLocals = 0;
+  unsigned int sumNumCols       = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    sumNumRowsLocals += matrices[i]->numRowsLocal();
+    sumNumCols       += matrices[i]->numCols();
+  }
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRowsLocals,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksDiagonally(const)",
+                      "inconsistent local number of rows");
+  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksDiagonally(const)",
+                      "inconsistent number of cols");
+
+  unsigned int cumulativeRowId = 0;
+  unsigned int cumulativeColId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
+        (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
+      }
+    }
+    cumulativeRowId += nRows;
+    cumulativeColId += nCols;
+  }
+
+  return;
+}
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithBlocksDiagonally(const std::vector<uqTeuchosMatrixClass* >& matrices)
+{
+  unsigned int sumNumRowsLocals = 0;
+  unsigned int sumNumCols       = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    sumNumRowsLocals += matrices[i]->numRowsLocal();
+    sumNumCols       += matrices[i]->numCols();
+  }
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRowsLocals,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksDiagonally()",
+                      "inconsistent local number of rows");
+  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksDiagonally()",
+                      "inconsistent number of cols");
+
+  unsigned int cumulativeRowId = 0;
+  unsigned int cumulativeColId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
+        (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
+      }
+    } 
+    cumulativeRowId += nRows;
+    cumulativeColId += nCols;
+  }
+
+  return;
+}
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithBlocksHorizontally(const std::vector<const uqTeuchosMatrixClass* >& matrices)
+{
+  unsigned int sumNumCols = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    UQ_FATAL_TEST_MACRO(this->numRowsLocal() != matrices[i]->numRowsLocal(),
+                        m_env.worldRank(),
+                        "uqTeuchosMatrixClass::fillWithBlocksHorizontally(const)",
+                        "inconsistent local number of rows");
+    sumNumCols += matrices[i]->numCols();
+  }
+  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksHorizontally(const)",
+                      "inconsistent number of cols");
+
+  unsigned int cumulativeColId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
+        (*this)(rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
+      }
+    }
+    cumulativeColId += nCols;
+  }
+
+  return;
+}
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithBlocksHorizontally(const std::vector<uqTeuchosMatrixClass* >& matrices)
+{
+  unsigned int sumNumCols = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    UQ_FATAL_TEST_MACRO(this->numRowsLocal() != matrices[i]->numRowsLocal(),
+                        m_env.worldRank(),
+                        "uqTeuchosMatrixClass::fillWithBlocksHorizontally()",
+                        "inconsistent local number of rows");
+    sumNumCols += matrices[i]->numCols();
+  }
+  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksHorizontally()",
+                      "inconsistent number of cols");
+
+  unsigned int cumulativeColId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
+        (*this)(rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
+      }
+    }
+    cumulativeColId += nCols;
+  }
+
+  return;
+}
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithBlocksVertically(const std::vector<const uqTeuchosMatrixClass* >& matrices)
+{
+  unsigned int sumNumRows = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    UQ_FATAL_TEST_MACRO(this->numCols() != matrices[i]->numCols(),
+                        m_env.worldRank(),
+                        "uqTeuchosMatrixClass::fillWithBlocksVertically(const)",
+                        "inconsistent local number of cols");
+    sumNumRows += matrices[i]->numRowsLocal();
+  }
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRows,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksVertically(const)",
+                      "inconsistent number of rows");
+
+  unsigned int cumulativeRowId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
+        (*this)(cumulativeRowId + rowId, colId) = (*(matrices[i]))(rowId,colId);
+      }
+    }
+    cumulativeRowId += nRows;
+  }
+
+  return;
+}
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithBlocksVertically(const std::vector<uqTeuchosMatrixClass* >& matrices)
+{
+  unsigned int sumNumRows = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    UQ_FATAL_TEST_MACRO(this->numCols() != matrices[i]->numCols(),
+                        m_env.worldRank(),
+                        "uqTeuchosMatrixClass::fillWithBlocksVertically()",
+                        "inconsistent local number of cols");
+    sumNumRows += matrices[i]->numRowsLocal();
+  }
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRows,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksVertically()",
+                      "inconsistent number of rows");
+
+  unsigned int cumulativeRowId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
+        (*this)(cumulativeRowId + rowId, colId) = (*(matrices[i]))(rowId,colId);
+      }
+    }
+    cumulativeRowId += nRows;
+  }
+
+  return;
+}
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithTensorProduct(const uqTeuchosMatrixClass& mat1, const uqTeuchosMatrixClass& mat2)
+{
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != (mat1.numRowsLocal() * mat2.numRowsLocal()),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillTensorProduct(mat and mat)",
+                      "inconsistent local number of rows");
+  UQ_FATAL_TEST_MACRO(this->numCols() != (mat1.numCols() * mat2.numCols()),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillTensorProduct(mat and mat)",
+                      "inconsistent number of columns");
+
+  for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
+    for (unsigned int colId1 = 0; colId1 < mat1.numCols(); ++colId1) {
+      double multiplicativeFactor = mat1(rowId1,colId1);
+      unsigned int targetRowId = rowId1 * mat2.numRowsLocal();
+      unsigned int targetColId = colId1 * mat2.numCols();
+      for (unsigned int rowId2 = 0; rowId2 < mat2.numRowsLocal(); ++rowId2) {
+        for (unsigned int colId2 = 0; colId2 < mat2.numCols(); ++colId2) {
+          (*this)(targetRowId + rowId2, targetColId + colId2) = multiplicativeFactor * mat2(rowId2,colId2);
+        }
+      }
+    }
+  } 
+
+  return;
+}
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithTensorProduct(const uqTeuchosMatrixClass& mat1, const uqTeuchosVectorClass& vec2)
+{
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != (mat1.numRowsLocal() * vec2.sizeLocal()),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillTensorProduct(mat and vec)",
+                      "inconsistent local number of rows");
+  UQ_FATAL_TEST_MACRO(this->numCols() != (mat1.numCols() * 1),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillTensorProduct(mat and vec)",
+                      "inconsistent number of columns");
+
+  for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
+    for (unsigned int colId1 = 0; colId1 < mat1.numCols(); ++colId1) {
+      double multiplicativeFactor = mat1(rowId1,colId1);
+      unsigned int targetRowId = rowId1 * vec2.sizeLocal();
+      unsigned int targetColId = colId1 * 1;
+      for (unsigned int rowId2 = 0; rowId2 < vec2.sizeLocal(); ++rowId2) {
+        for (unsigned int colId2 = 0; colId2 < 1; ++colId2) {
+          (*this)(targetRowId + rowId2, targetColId + colId2) = multiplicativeFactor * vec2[rowId2];
+        }
+      }
+    }
+  } 
+
+
+  return;
+}
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Operators outside class definition
 uqTeuchosMatrixClass operator*(double a, const uqTeuchosMatrixClass& mat)
