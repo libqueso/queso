@@ -115,8 +115,14 @@ public:
                                  const std::string&            fileName,
                                  const std::string&            fileType,
                                  const std::set<unsigned int>& allowedSubEnvIds) const;
-                                 
+ 
+  void         mpiBcast         (int srcRank, const uqMpiCommClass& bcastComm);
+  void         mpiAllReduce     (uqRawType_MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqTeuchosVectorClass& resultVec) const;
+  void         mpiAllQuantile   (double probability, const uqMpiCommClass& opComm, uqTeuchosVectorClass& resultVec) const;
+ 
   void         matlabLinearInterpExtrap(const uqTeuchosVectorClass& x1Vec, const uqTeuchosVectorClass& y1Vec, const uqTeuchosVectorClass& x2Vec);
+  void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, uqTeuchosVectorClass& outputVec) const;
+
                                  
 				 
   double		GetRandomDoubleUsingNormalDistribution(int seed, double mean,double sigma);

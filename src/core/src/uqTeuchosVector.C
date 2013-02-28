@@ -735,27 +735,11 @@ uqTeuchosVectorClass::abs() const
 
 }
 
-//====================================================
-// // Copy from a array into a uqTeuchosVector
-// uqTeuchosVectorClass copy(int dim, double rhs[])
-// {
-//   //unsigned int size = dim;// rhs.size(); //pre-def from std::vector
-//   uqTeuchosVectorClass answer;
-//   answer.size(dim);
-//   
-//    for (int i=0;i<dim;i++){
-//     answer[i]=rhs[i];  
-//    }
-// 
-//   return answer;
-//   
-// }
-
-
+//--------------------------------------------------------
 void
 uqTeuchosVectorClass::copy(const uqTeuchosVectorClass& rhs)
 {
-  this->uqVectorClass::copy(rhs); // prudenci 2010-06-17 mox
+  this->uqVectorClass::copy(rhs); 
   
   unsigned int size1 = m_vec.length();
   unsigned int size2 = rhs.sizeLocal();
@@ -1458,6 +1442,138 @@ uqTeuchosVectorClass::subWriteContents(
 
   return;
 }
+//------------------------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosVectorClass::mpiBcast(int srcRank, const uqMpiCommClass& bcastComm)
+{
+  // Filter out those nodes that should not participate
+  if (bcastComm.MyPID() < 0) return;
+
+  // Check 'srcRank'
+  UQ_FATAL_TEST_MACRO((srcRank < 0) || (srcRank >= bcastComm.NumProc()),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::mpiBcast()",
+                      "invalud srcRank");
+
+  // Check number of participant nodes
+  double localNumNodes = 1.;
+  double totalNumNodes = 0.;
+  bcastComm.Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
+                      "uqTeuchosVectorClass::mpiBcast()",
+                      "failed MPI.Allreduce() for numNodes");
+  UQ_FATAL_TEST_MACRO(((int) totalNumNodes) != bcastComm.NumProc(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::mpiBcast()",
+                      "inconsistent numNodes");
+
+  // Check that all participant nodes have the same vector size
+  double localVectorSize  = this->sizeLocal();
+  double sumOfVectorSizes = 0.; 
+  bcastComm.Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
+                      "uqTeuchosVectorClass::mpiBcast()",
+                      "failed MPI.Allreduce() for vectorSize");
+
+  if ( ((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)) ) {
+    std::cerr << "rank "                 << bcastComm.MyPID()
+              << ": sumOfVectorSizes = " << sumOfVectorSizes
+              << ", totalNumNodes = "    << totalNumNodes
+              << ", localVectorSize = "  << localVectorSize
+              << std::endl;
+  }
+  bcastComm.Barrier();
+  UQ_FATAL_TEST_MACRO(((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::mpiBcast()",
+                      "inconsistent vectorSize");
+
+  // Ok, bcast data
+  std::vector<double> dataBuffer((unsigned int) localVectorSize, 0.);
+  if (bcastComm.MyPID() == srcRank) {
+    for (unsigned int i = 0; i < dataBuffer.size(); ++i) {
+      dataBuffer[i] = (*this)[i];
+    }
+  }
+
+  bcastComm.Bcast((void *) &dataBuffer[0], (int) localVectorSize, uqRawValue_MPI_DOUBLE, srcRank,
+                  "uqTeuchosVectorClass::mpiBcast()",
+                  "failed MPI.Bcast()");
+
+  if (bcastComm.MyPID() != srcRank) {
+    for (unsigned int i = 0; i < dataBuffer.size(); ++i) {
+      (*this)[i] = dataBuffer[i];
+    }
+  }
+
+  return;
+}
+//------------------------------------------------------------------
+// added 2/28/13
+
+void
+uqTeuchosVectorClass::mpiAllReduce(uqRawType_MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqTeuchosVectorClass& resultVec) const
+{
+  // Filter out those nodes that should not participate
+  if (opComm.MyPID() < 0) return;
+
+  unsigned int size = this->sizeLocal();
+  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::mpiAllReduce()",
+                      "different vector sizes");
+
+  for (unsigned int i = 0; i < size; ++i) {
+    double srcValue = (*this)[i];
+    double resultValue = 0.;
+    opComm.Allreduce((void *) &srcValue, (void *) &resultValue, (int) 1, uqRawValue_MPI_DOUBLE, mpiOperation,
+                     "uqTeuchosVectorClass::mpiAllReduce()",
+                     "failed MPI.Allreduce()");
+    resultVec[i] = resultValue;
+  }
+
+  return;
+}
+//------------------------------------------------------------------
+// added 2/28/13
+
+void
+uqTeuchosVectorClass::mpiAllQuantile(double probability, const uqMpiCommClass& opComm, uqTeuchosVectorClass& resultVec) const
+{
+  // Filter out those nodes that should not participate
+  if (opComm.MyPID() < 0) return;
+
+  UQ_FATAL_TEST_MACRO((probability < 0.) || (1. < probability),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::mpiAllQuantile()",
+                      "invalid input");
+
+  unsigned int size = this->sizeLocal();
+  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::mpiAllQuantile()",
+                      "different vector sizes");
+
+  for (unsigned int i = 0; i < size; ++i) {
+    double auxDouble = (int) (*this)[i];
+    std::vector<double> vecOfDoubles(opComm.NumProc(),0.);
+    opComm.Gather((void *) &auxDouble, 1, uqRawValue_MPI_DOUBLE, (void *) &vecOfDoubles[0], (int) 1, uqRawValue_MPI_DOUBLE, 0,
+                  "uqTeuchosVectorClass::mpiAllQuantile()",
+                  "failed MPI.Gather()");
+
+    std::sort(vecOfDoubles.begin(), vecOfDoubles.end());
+
+    double result = vecOfDoubles[(unsigned int)( probability*((double)(vecOfDoubles.size()-1)) )];
+
+    opComm.Bcast((void *) &result, (int) 1, uqRawValue_MPI_DOUBLE, 0,
+                 "uqTeuchosVectorClass::mpiAllQuantile()",
+                 "failed MPI.Bcast()");
+
+    resultVec[i] = result;
+  }
+
+  return;
+}
+
 
 
 //------------------------------------------------------------------
@@ -1540,6 +1656,40 @@ uqTeuchosVectorClass::matlabLinearInterpExtrap(
   }
   return;
 }
+
+//------------------------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosVectorClass::matlabDiff(
+  unsigned int      firstPositionToStoreDiff,
+  double            valueForRemainderPosition,
+  uqTeuchosVectorClass& outputVec) const
+{
+  unsigned int size = this->sizeLocal();
+
+  UQ_FATAL_TEST_MACRO(firstPositionToStoreDiff > 1,
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::matlabDiff()",
+                      "invalid firstPositionToStoreDiff");
+
+  UQ_FATAL_TEST_MACRO(size != outputVec.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::matlabDiff()",
+                      "invalid size of outputVecs");
+
+  for (unsigned int i = 0; i < (size-1); ++i) {
+    outputVec[firstPositionToStoreDiff+i] = (*this)[i+1]-(*this)[i];
+  }
+  if (firstPositionToStoreDiff == 0) {
+    outputVec[size-1] = valueForRemainderPosition;
+  }
+  else {
+    outputVec[0] = valueForRemainderPosition;
+  }
+
+  return;
+}
+
 
 //------------------------------------------------------------------
 //------------------------------------------------------------------

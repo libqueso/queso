@@ -131,9 +131,7 @@ public:
   void              fillWithTensorProduct     (const uqTeuchosMatrixClass& mat1, const uqTeuchosVectorClass& vec2); 
   
   void              matlabLinearInterpExtrap  (const uqTeuchosVectorClass& x1Vec, const uqTeuchosMatrixClass& y1Mat, const uqTeuchosVectorClass& x2Vec);
-#if 0
-        Teuchos::SerialDenseMatrix<int,double>       data                      ();
-#endif
+
 private:
         void              copy                      (const uqTeuchosMatrixClass& src);
         void              resetLU                   ();
@@ -142,8 +140,6 @@ private:
 
   Teuchos::SerialDenseMatrix<int,double> m_mat;
   mutable Teuchos::SerialDenseMatrix<int,double> m_LU; 
-  //mutable uqTeuchosMatrixClass*	m_LU; 
-  
   mutable uqTeuchosMatrixClass* m_inverse;
   mutable uqMapClass*       	m_svdColMap;
   mutable uqTeuchosMatrixClass* m_svdUmat;
