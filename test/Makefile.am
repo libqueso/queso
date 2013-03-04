@@ -74,7 +74,7 @@ TESTS = $(top_builddir)/test/test_Environment/test_uqEnvironment.sh \
         $(top_builddir)/test/test_uqGaussianVectorRVClass \
 				$(top_builddir)/test/test_GslMatrix/test_uqGslMatrixConstructorFatal.sh \
 				$(top_builddir)/test/test_uqGslMatrix \
-				$(top_builddir)/test/test_uqTeuchosVector \
+				$(top_builddir)/test/test_uqTeuchosVector
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
