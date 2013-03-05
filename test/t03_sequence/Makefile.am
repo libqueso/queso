@@ -11,14 +11,17 @@ AM_CPPFLAGS  = -I. \
 
 if TRILINOS_ENABLED
   AM_CPPFLAGS += -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
+  LIBS += -lteuchos -lepetra
 endif
 
 if GLPK_ENABLED	
   AM_CPPFLAGS += $(GLPK_CFLAGS)
+  LIBS += $(GLPK_LIBS)
 endif
 
 if HDF5_ENABLED	
   AM_CPPFLAGS += $(HDF5_CFLAGS) 
+  LIBS += $(HDF5_LIBS)
 endif
 
 LIBS  = -L$(top_builddir)/src/ -lqueso
@@ -38,7 +41,7 @@ endif
 
 if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE
-	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE *.C *.h
+	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(srcdir)/*.C $(srcdir)/*.h
 	echo 'updated source license headers' >$@
 endif
 

@@ -9,16 +9,21 @@ QUESO_CPPFLAGS += $(GSL_CFLAGS)
 QUESO_CPPFLAGS += $(GRVY_CFLAGS)
 QUESO_CPPFLAGS += $(ANN_CFLAGS)
 
+LIBS += $(GSL_LIBS)
+
 if TRILINOS_ENABLED
   QUESO_CPPFLAGS += -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
+  LIBS += -lteuchos -lepetra
 endif
 
 if GLPK_ENABLED	
   QUESO_CPPFLAGS += $(GLPK_CFLAGS)
+  LIBS += $(GLPK_LIBS)
 endif
 
 if HDF5_ENABLED	
   QUESO_CPPFLAGS += $(HDF5_CFLAGS) 
+  LIBS += $(HDF5_LIBS)
 endif
 
 ####################################
@@ -36,7 +41,7 @@ exStatisticalForwardProblem_gsl_SOURCES = $(top_srcdir)/examples/statisticalForw
 exStatisticalForwardProblem_gsl_HEADERS = $(top_srcdir)/examples/statisticalForwardProblem/src/exStatisticalForwardProblem_appl.h
 exStatisticalForwardProblem_gsl_HEADERS += $(top_srcdir)/examples/statisticalForwardProblem/src/exStatisticalForwardProblem_qoi.h
 
-exStatisticalForwardProblem_gsl_LDADD = $(top_srcdir)/src/libqueso.la
+exStatisticalForwardProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
 exStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalForwardProblem/src $(QUESO_CPPFLAGS)
 
@@ -60,7 +65,7 @@ exStatisticalInverseProblem_gsl_SOURCES = $(top_srcdir)/examples/statisticalInve
 exStatisticalInverseProblem_gsl_HEADERS = $(top_srcdir)/examples/statisticalInverseProblem/src/exStatisticalInverseProblem_appl.h
 exStatisticalInverseProblem_gsl_HEADERS += $(top_srcdir)/examples/statisticalInverseProblem/src/exStatisticalInverseProblem_likelihood.h
 
-exStatisticalInverseProblem_gsl_LDADD = $(top_srcdir)/src/libqueso.la
+exStatisticalInverseProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
 exStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalInverseProblem/src $(QUESO_CPPFLAGS)
 
@@ -89,7 +94,7 @@ exTgaValidationCycle_gsl_HEADERS = $(top_srcdir)/examples/validationCycle/src/ex
 exTgaValidationCycle_gsl_HEADERS += $(top_srcdir)/examples/validationCycle/src/exTgaValidationCycle_likelihood.h
 exTgaValidationCycle_gsl_HEADERS += $(top_srcdir)/examples/validationCycle/src/exTgaValidationCycle_qoi.h
 
-exTgaValidationCycle_gsl_LDADD = $(top_srcdir)/src/libqueso.la
+exTgaValidationCycle_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
 exTgaValidationCycle_gsl_CPPFLAGS = -I$(top_srcdir)/examples/validationCycle/src $(QUESO_CPPFLAGS)
 
@@ -122,7 +127,7 @@ tga2_gsl_HEADERS += $(top_srcdir)/examples/validationCycle2/src/tga2_likelihood.
 tga2_gsl_HEADERS += $(top_srcdir)/examples/validationCycle2/src/tga2_qoi.h
 tga2_gsl_HEADERS += $(top_srcdir)/examples/validationCycle2/src/tga2_func.h
 
-tga2_gsl_LDADD = $(top_srcdir)/src/libqueso.la
+tga2_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
 tga2_gsl_CPPFLAGS = -I$(top_srcdir)/examples/validationCycle2/src $(QUESO_CPPFLAGS)
 
@@ -143,7 +148,7 @@ exInfoTheory_gsl_SOURCES = $(top_srcdir)/examples/infoTheoryProblem/src/exInfoTh
 
 exInfoTheory_gsl_HEADERS = $(top_srcdir)/examples/infoTheoryProblem/src/exInfoTheory_appl.h
 
-exInfoTheory_gsl_LDADD = $(top_srcdir)/src/libqueso.la
+exInfoTheory_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
 exInfoTheory_gsl_CPPFLAGS = -I$(top_srcdir)/examples/infoTheoryProblem/src $(QUESO_CPPFLAGS)
 
@@ -171,7 +176,7 @@ gravity_gsl_HEADERS = $(top_srcdir)/examples/gravity/src/gravity_compute.h
 gravity_gsl_HEADERS += $(top_srcdir)/examples/gravity/src/gravity_likelihood.h
 gravity_gsl_HEADERS += $(top_srcdir)/examples/gravity/src/gravity_qoi.h
 
-gravity_gsl_LDADD = $(top_srcdir)/src/libqueso.la
+gravity_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
 gravity_gsl_CPPFLAGS = -I$(top_srcdir)/examples/gravity/src $(QUESO_CPPFLAGS)
 
