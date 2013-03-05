@@ -26,6 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
+#include <uqDefines.h>
+
 #ifdef QUESO_HAS_TRILINOS
 
 #include <uqTeuchosVector.h>
@@ -302,7 +304,7 @@ void uqTeuchosVectorClass::cwSetGamma(const uqTeuchosVectorClass& aVec, const uq
 //TODO : find a smart way to define seed
 // Using Gamma Distribution to calculate InverseGamma.
 // Note the divisions: 1.0/b and the 1.0/generator; they are crucial
-void uqTeuchosVectorClass::cwSetInverseGamma(const gsl_rng* rng_gsl, const uqTeuchosVectorClass& aVec, const uqTeuchosVectorClass& bVec)
+void uqTeuchosVectorClass::cwSetInverseGamma(const uqTeuchosVectorClass& aVec, const uqTeuchosVectorClass& bVec)
 {
   int seed =1;
   static boost::mt19937 rng(seed);  //Random Number Generator
@@ -326,7 +328,7 @@ void uqTeuchosVectorClass::cwSetInverseGamma(const gsl_rng* rng_gsl, const uqTeu
 
 // -------------------------------------------------
 //TODO : find a smart way to define seed
-void uqTeuchosVectorClass::cwSetBeta(const gsl_rng* rng, const uqTeuchosVectorClass& alpha, const uqTeuchosVectorClass& beta)
+void uqTeuchosVectorClass::cwSetBeta(const uqTeuchosVectorClass& alpha, const uqTeuchosVectorClass& beta)
 {
   int seed =1;  
 
