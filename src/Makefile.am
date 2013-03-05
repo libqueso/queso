@@ -5,7 +5,8 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
 	      -I$(top_srcdir)/src/misc/inc  \
 	      -I$(top_srcdir)/src/basic/inc \
 	      -I$(top_srcdir)/src/stats/inc \
-				-I$(top_srcdir)/src/interface \
+	      -I$(top_srcdir)/src/interface \
+	      -I$(top_builddir)/src/core/inc \
 	        $(BOOST_CPPFLAGS) \
 	        $(GSL_CFLAGS) \
 	        $(GRVY_CFLAGS) \
@@ -47,7 +48,7 @@ endif
 # variable later.
 
 if TRILINOS_ENABLED
-  libqueso_la_LDFLAGS += -lepetra
+  libqueso_la_LDFLAGS += -lteuchos -lepetra
 endif
 
 #libqueso_la_LDFLAGS += -Wl,-rpath,$(TRILINOS_HOME)/lib -lepetra
@@ -128,7 +129,7 @@ libqueso_la_SOURCES += \
 # Headers to install from core/inc
 
 libqueso_include_HEADERS = \
-	$(top_srcdir)/src/core/inc/queso.h \
+	$(top_builddir)/src/core/inc/queso.h \
 	$(top_srcdir)/src/core/inc/uqDefines.h \
 	$(top_srcdir)/src/core/inc/uqEnvironment.h \
 	$(top_srcdir)/src/core/inc/uqEnvironmentOptions.h \
@@ -213,8 +214,8 @@ libqueso_include_HEADERS += \
 # Headers to install, but not part of dist
 
 nodist_libqueso_include_HEADERS    =       \
-	$(top_srcdir)/config_queso.h       \
-	$(top_srcdir)/src/core/inc/queso.h
+	$(top_builddir)/config_queso.h       \
+	$(top_builddir)/src/core/inc/queso.h
 
 # Headers to install from interface
 
@@ -229,6 +230,10 @@ libqueso_include_HEADERS += \
 bin_PROGRAMS               = queso_version
 queso_version_SOURCES      = $(top_srcdir)/src/core/src/version.C
 queso_version_LDADD        = -L$(top_builddir)/src -lqueso $(HDF5_LIBS) 
+if TRILINOS_ENABLED
+  queso_version_LDADD     += -lteuchos -lepetra
+endif
+
 queso_version_DEPENDENCIES = libqueso.la
 
 if CODE_COVERAGE_ENABLED
