@@ -15,7 +15,7 @@ QUESO is a parallel object-oriented statistical library dedicated to the researc
 % environments and to provide a wide range of diagnostics.
 
 
-The purpose of this chapter is to introduce relevant terminology, mathematical and statistical concepts, statistical algorithms, together with an overall description of how the user's application may be linked with QUESO library.
+The purpose of this chapter is to introduce relevant terminology, mathematical and statistical concepts, statistical algorithms, together with an overall description of how the user's application may be linked with the QUESO library.
 
 
 \section{Preliminaries}
@@ -44,7 +44,7 @@ It is often not straightforward to obtain explicit posterior point estimates of 
 QUESO is designed in an abstract way so that it can be used by any computational model, as long as a likelihood function (in the case of statistical inverse problems) and a quantity of interest (QoI) function (in the case of statistical forward problems) is provided by the user application.
 
 
-QUESO provides tools for both sampling algorithms for statistical inverse problems, following Bayes' formula, and statistical forward problems. It contains Monte Carlo solvers (for autocorrelation, kernel density estimation ans accuracy assessment), MCMC (e.g. Metropolis Hastings \cite{Metr_1953,Hast_1970}) as well as the DRAM \cite{HaLaMiSa06} (for sampling from probability distributions); it also has the capacity to handle many chains or sequences in parallel, each chain or sequence itself demanding many computing nodes because of the computational model being statistically explored \cite{PrSc09}.
+QUESO provides tools for both sampling algorithms for statistical inverse problems, following Bayes' formula, and statistical forward problems. It contains Monte Carlo solvers (for autocorrelation, kernel density estimation and accuracy assessment), MCMC (e.g. Metropolis Hastings \cite{Metr_1953,Hast_1970}) as well as the DRAM \cite{HaLaMiSa06} (for sampling from probability distributions); it also has the capacity to handle many chains or sequences in parallel, each chain or sequence itself demanding many computing nodes because of the computational model being statistically explored \cite{PrSc09}.
 
 \section{Key Statistical Concepts}\label{sec:statistical_concepts}
 
@@ -245,7 +245,7 @@ an application user may simultaneously run:
 \item[(c)] independent sets of types (a) and (b).
 \end{description}
 
-For example, suppose an user wants to use the MH algorithm to solve a statistical IP, and that 1,024 processors are available.
+For example, suppose an user wants to use the Metropolis-Hastings (MH) algorithm to solve a statistical IP, and that 1,024 processors are available.
 If the physical model is simple enough to be handled efficiently by a single processor, then the user can run 1,024 chains simultaneously, as in case (a).
 If the model is more complex and requires, say, 16 processors, then the user can run 64 chains simultaneously, as in case (b), with 16 processors per chain.
 QUESO treats this situation by using only 1 of the 16 processors to handle the chain.
@@ -253,6 +253,6 @@ When a likelihood evaluation is required, all 16 processors call the likelihood 
 Once the likelihood returns its value, QUESO puts  15 processors into idle state until the routine is called again or the chain completes.
 Case (c) is useful, for instance, in the case of a computational procedure involving two models,
 where a group of processors can be split into two groups, each handling one model.
-Once the two model analysis end, the combined model can use the full set of processors.\footnote{The parallel capabilities of QUESO have been exercised on the Ranger system of the TACC \cite{tacc} with up to 1,024 processors \cite{ChOlPr10}.}
+Once the two-model analysis end, the combined model can use the full set of processors.\footnote{The parallel capabilities of QUESO have been exercised on the Ranger system of the TACC \cite{tacc} with up to 16k processors \cite{ChOlPr10}.}
 
 

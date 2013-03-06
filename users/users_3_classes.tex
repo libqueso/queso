@@ -9,7 +9,7 @@ QUESO is is a parallel object-oriented statistical library dedicated to the rese
 
 
 Classes in QUESO can be divided in four main groups: core, templated basic, templated statistical and miscellaneous.
-The classed that handle environment (and options), vector and matrix are considered \textit{core} classes. Classes implementing vector sets and subsets, vector spaces,  scalar functions, vector functions, scalar sequences and vector sequences are \textit{templated basic} classes; they are necessary for the definition and description of other entities, such as RVs, Bayesian solutions of IPs, sampling algorithms and chains.  Vector realizer, vector RV, statistical IP (and options), MH solver (and options), statistical FP (and options), MC solver (and options) and sequence statistical options are part of \textit{templated statistical} classes. And finally, the \textit{miscellaneous} classes consist of C and FORTRAN interfaces.
+The classed that handle environment (and options), vector and matrix classes are considered \textit{core} classes. Classes implementing vector sets and subsets, vector spaces,  scalar functions, vector functions, scalar sequences and vector sequences are \textit{templated basic} classes; they are necessary for the definition and description of other entities, such as RVs, Bayesian solutions of IPs, sampling algorithms and chains.  Vector realizer, vector RV, statistical IP (and options), MH solver (and options), statistical FP (and options), MC solver (and options) and sequence statistical options are part of \textit{templated statistical} classes. And finally, the \textit{miscellaneous} classes consist of C and FORTRAN interfaces.
 
 
 
@@ -60,7 +60,7 @@ and matrix operations. They are described in the following sections.
 \subsection{Environment Class (and Options)}\label{sec:environment_class}
 
 %
-The Environment class sets up the environment underlying the use of the QUESO library by an executable.
+The \texttt{Environment} class sets up the environment underlying the use of the QUESO library by an executable.
 This class is virtual. It is inherited by \verb+uqEmptyEnvironmentClass+ and \verb+uqFullEnvironmentClass+.
     The QUESO environment class is instantiated at the application level, right after \verb+MPI_Init(&argc,&argv)+. 
     The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
@@ -103,7 +103,7 @@ The QUESO environment class manages five types of communicators, referred to as:
 
 A {\it subenvironment} in QUESO is the smallest collection of processors necessary for the proper run of the model code.
 An {\it environment} in QUESO is the collection of all subenvironments, if there is more than one subenvironment. %In other words, one might refer to a QUESO ``full'' environment composed of $S$ QUESO ``sub'' environments.  Each sub environment is assigned a ``sub'' id varying from 0 (zero) to $S-1$.
-    Each sub environment is able to generate a statistical inverse problem and/or a statistical forward problem; that is, each sub environment is able to handle a ``sub'' Markov chain (a sequence) of vectors and/or a ``sub'' Monte Carlo sequence of output vectors.
+    Each subenvironment is able to generate a statistical inverse problem and/or a statistical forward problem; that is, each subenvironment is able to handle a ``sub'' Markov chain (a sequence) of vectors and/or a ``sub'' Monte Carlo sequence of output vectors.
     The ``sub'' sequences can be seen as forming a ``unified'' sequence in a distributed way.
     Indeed, the virtual class \verb+uqVectorSequenceClass+ provides ``sub'' and ``unified'' statistical operations. 
 
@@ -113,7 +113,7 @@ Any given computing node in a QUESO run has potentially five different ranks.
 Each subenvironment is assigned a subid varying from $0$ (zero) to $S-1$, and is able to handle a statistical IP and/or a statistical FP.
 That is, each subenvironment is able to handle a {\it sub} Markov chain (a sequence) of vectors and/or a {\it sub} MC sequence of output vectors.
 The {\it sub} sequences form an unified sequence in a distributed way.
-QUESO takes care of the unification of results for the application programming and for output files. So, any given node has potentially five different ranks. Of course, if the user is solving just one statistical problem with just one MPI node, then all ranks are equal to zero.
+QUESO takes care of the unification of results for the application programming and for output files.  Of course, if the user is solving just one statistical problem with just one MPI node, then all ranks are equal to zero.
 
 A QUESO subenvironment eventually prints messages to its own output file. In order for that to happen, the requirements are:
 \begin{enumerate}
@@ -207,7 +207,7 @@ A class diagram for \verb+uqVectorClass+  is presented in Figure \ref{fig-vector
 % Matrix class has two derived classes: \verb+uqGslMatrixClass+ and \verb+uqTrilinosMatrixClass+. \verb+uqGslMatrixClass+ is based on the GSL matrix structure; whereas \verb+uqTrilinosMatrixClass+ is based on Trilinos Epetra matrix structure.
 
 
-The Matrix class handles all the matrix operations carried out in QUESO.  Analogously to the vector class case described in toe previous section,
+The Matrix class handles all the matrix operations carried out in QUESO.  Analogously to the vector class case described in the previous section,
 matrix class currently has two derived classes: \verb+uqGslMatrixClass+ and \verb+uqTrilinosMatrixClass+. \verb+uqGslMatrixClass+ is based on the GSL matrix structure; whereas \verb+uqTrilinosMatrixClass+ is based on Trilinos Epetra matrix structure.
 
 A class diagram for \verb+uqMatrixClass+  is presented in Figure \ref{fig-matrix-class}; it displays some of its protected attributed together with  some member functions. Again, the diagram displays in some detail the class \verb+uqGslMatrixClass+, it shows without details the other inherited class, \verb+uqTrilinosMatrixClass+, and indicated the possible inclusion of a third class, \verb+uqPetscMatrixClass+.
@@ -264,7 +264,7 @@ since its domain is the intersection of the domain of the prior PDF with the dom
 \subsection{Scalar Function and Vector Function Classes}\label{sec:scalar-vector-function}
 
 Joint PDF, marginal PDF, and CDF are all examples of scalar functions present in statistical problems. 
-QUESO currently supports basic PDFs such as uniform, Gaussian and Bayesian. They are implemented in the classes \verb+uqUniformJointPdfClass+, \verb+uqGaussianJointPdfClass+, and \verb+uqBayesianJointPdfClass+, respectively. The posterior PDF may be represented within QUESO by \verb+uqGenericJointPdfClass+.
+QUESO currently supports basic PDFs such as uniform and Gaussian and also more complex PDFs, such as the ones coming from a Bayesian analysis. They are implemented in the classes \verb+uqUniformJointPdfClass+, \verb+uqGaussianJointPdfClass+, and \verb+uqBayesianJointPdfClass+, respectively. The posterior PDF may be represented within QUESO by \verb+uqGenericJointPdfClass+.
 See Diagram~\ref{fig-scalar-function-class} for the scalar function class.
 
 The handling of vector functions within QUESO is also quite straightforward. Indeed, the definition of a vector function $\mathbf{q}:\mathbf{B}\subset\mathbb{R}^n\rightarrow\mathbb{R}^m$ requires only the extra specification of the image vector space $\mathbb{R}^m$. The classes representing the vector function class \verb+uqGenericVectorFunctionClass+ and \verb+uqConstantVectorFunctionClass+ are derived  from \verb+uqBaseVectorFunctionClass+ and are presented in Diagram \ref{fig-vector-function-class} 
@@ -746,12 +746,11 @@ $\langle$PREFIX$\rangle$mc\_qseq\_dataOutputAllowedSet   &         &            
 
 %\clearpage
 \section{Miscellaneous Classes and Routines}
- \todo{Some of the files and/or classes are no longer used because Queso is no enabled to calculate statistics, see /src/core/uqDefines.h}
  
-As the name suggests, QUESO miscellaneous classes and routines have a variety of routines, from C and Fontran interfaces to the calculation of numerical quadratures.
-For instance, the function \verb+uqMiscReadDoublesFromString+ is used for reading the options input files and assigning the values to the respective varibles, in \verb+uqMonteCarloSGOptionsClass::getMyOptionValues+ and in \verb+uqMetropolisHastingsSGOptionsClass::getMyOptionValues+. 
+As the name suggests, QUESO miscellaneous classes and routines have a variety of routines.
+For instance, the function \verb+uqMiscReadDoublesFromString+ is used for reading the options input files and assigning the values to the respective variables, in \texttt{uqMonteCarloSGOptionsClass::} \texttt{getMyOptionValues} and in \verb+uqMetropolisHastingsSGOptionsClass::getMyOptionValues+. 
 
-\verb+uqBaseOneDGridClass+ generares grids required for calculating the CDF of RV; it is required by \verb+uqArrayOfOneDGridsClass+, which, in turn, is used in \verb+uqStatisticalForwardProblemClass+ and in \verb+uqStatisticalInverseProblemClass+.
+\verb+uqBaseOneDGridClass+ generates grids necessary for calculating the CDF of a RV; it is required by \verb+uqArrayOfOneDGridsClass+, which, in turn, is used in \verb+uqStatisticalForwardProblemClass+ and in \verb+uqStatisticalInverseProblemClass+.
 
 % %\clearpage
 % \section{Interface Classes}

@@ -25,7 +25,7 @@ $HOME/LIBRARIES/
 %
 so that you will not need root access rights. The directory above is referred to as the \Queso{} installation directory (tree).
 
-There are two main steps to prepare your LINUX computing system  for  the QUESO Library: obtain and install \Queso{} dependencies, and to define a number of environmental variables. These steps are discussed bellow.
+There are two main steps to prepare your LINUX computing system  for  the QUESO Library: obtain and install \Queso{} dependencies, and define a number of environmental variables. These steps are discussed bellow.
 
 
 \subsection{Obtain and Install \Queso{} Dependencies}
@@ -50,7 +50,7 @@ There are two main steps to prepare your LINUX computing system  for  the QUESO 
 \Queso{} also works with the following optional libraries:
 
 \begin{enumerate}%{itemize}
-\item \textbf{HDF5}: The Hierarchical Data Format 5 is a technology suite that makes possible the management of extremely large and complex data collections. E.g. e.g. HDF5  5-1.8.8~\cite{HDF5}.
+\item \textbf{HDF5}: The Hierarchical Data Format 5 is a technology suite that makes possible the management of extremely large and complex data collections. E.g. HDF5  5-1.8.8~\cite{HDF5}.
 
 \item \textbf{GLPK}: The GNU Linear Programming Kit package is is a set of routines written in ANSI C and organized in the form of a callable library for solving large-scale linear programming, mixed integer programming, and other related problems~\cite{GLPK}. 
 % 
@@ -213,7 +213,7 @@ By running \texttt{make check}, several printouts appear in the screen and you s
 \end{lstlisting}
 
 The last four tests printed in  the screen are tests under your QUESO build tree, i.e., they are located at the  directory \verb+$HOME/queso_download/queso-0.45.3/test+ (see Section \ref{sc-source-dir-structure} for the complete list of the directories under QUESO build tree).      %\texttt{test/t01\_valid\_cycle/}, \linebreak \texttt{test/t02\_sip\_sfp/}, \texttt{test/t03\_sequence/}, and  \texttt{test/t04\_bimodal/}. 
-These tests are used as part of the periodic QUESO regression tests, conduct to ensure that more recent program/code changes have not adversely affected existing features of the library.
+These tests are used as part of the periodic QUESO regression tests, conducted to ensure that more recent program/code changes have not adversely affected existing features of the library.
 
 
 
@@ -258,7 +258,7 @@ $ cd $HOME/queso_download/queso-0.45.3   #enter the build dir
 $ ./configure --prefix=$HOME/LIBRARIES/queso_0_45_3 \
   --with-boost=$HOME/LIBRARIES/boost_1_37_0 \
   --with-gsl-prefix=$HOME/LIBRARIES/gsl_1_12 \
-  --with-gvry=$HOME/LIBRARIES/grvy_0_31_0 
+  --with-grvy=$HOME/LIBRARIES/grvy_0_31_0 
 $ make 
 $ make check
 $ make install 
@@ -329,17 +329,17 @@ This section assumes that you have successfully executed steps described in Sect
 The codes listed in this section are quite self-explanatory and print messages during execution to make clearer which problem they are solving and how. 
 
 
-The two following subsections illustrate how to run the executables provided under the \verb+examples/statisticalInverseProblem/+ and \verb+examples/statisticalForwardProblem/+. For the remaining three examples, the steps should be analogous, except for \verb+infoTheoryProblem+, which requires QUESO to be compiled with ANN library \cite{ANN}.
+The two following subsections illustrate how to run the executables provided under the \verb+examples/statisticalInverseProblem/+ and \verb+examples/statisticalForwardProblem/+. For the remaining three examples, the steps should be analogous, except for \verb+infoTheoryProblem+, which requires QUESO to be compiled with the ANN library \cite{ANN}.
 
 
-Is worth noting presence of an argument passed to the executable in the examples. The argument is a input file to be provided to QUESO with options for the solution of the SIP and/or SFP; and it is always required. Each option in the input file is related to one (or more) of QUESO classes, and is presented throughout Chapter~\ref{ch-classes}. 
+It is worth noting presence of an argument passed to the executable in the examples. The argument is a input file to be provided to QUESO with options for the solution of the SIP and/or SFP; and it is always required. Each option in the input file is related to one (or more) of the QUESO classes, and is presented throughout Chapter~\ref{ch-classes}. 
 
-A complete example of an application that uses QUESO to solve a combination of a SIP and a SFP is in presented in Chapter \ref{ch-appl-example}. The chapter presents the mathematical models for both the SIP and SFP , the application code, the options input file and the Makefile to link the code  with QUESO library.
+A complete example of an application that uses QUESO to solve a combination of a SIP and a SFP is in presented in Chapter \ref{ch-appl-example}. The chapter presents the mathematical models for both the SIP and SFP, the application code, the options input file and the Makefile to link the code  with QUESO library.
 
 
 \subsubsection{A Simple Statistical Inverse Problem}\label{sec:executable_sip}
 
-This example it is located at `\verb+examples/statisticalInverseProblem+ and consists of a set  of three files to illustrate the use of QUESO library to solve a simple inverse problem with four parameters.
+This example is located at `\verb+examples/statisticalInverseProblem+ and consists of a set  of three files to illustrate the use of QUESO library to solve a simple inverse problem with four parameters.
 
 To run the executable provided, enter the following commands:
 \begin{lstlisting}[label={},caption={}]
@@ -366,7 +366,7 @@ To run the executable provided, enter the following commands:
 $ cd $HOME/queso_download/queso-0.45.3/
 $ cd examples/statisticalForwardProblem/tests/test_2009_02_11/
 $ rm outputData/*
-$ ../../src/exstatisticalForwardProblem_gsl sfp.inp  #this will take some seconds
+$ ../../src/exStatisticalForwardProblem_gsl sfp.inp  #this will take some seconds
 $ matlab
    $ sfp_plot       # inside matlab
    # press the left button of the mouse at a picture displayed by 'sfp_plot.m', in order to display the next picture
