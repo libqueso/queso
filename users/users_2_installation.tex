@@ -35,28 +35,31 @@ There are two main steps to prepare your LINUX computing system  for  the QUESO 
 \Queso{} dependencies are:
 \begin{enumerate}%{itemize}
 
-  \item \textbf{STL}: The Standard Template Library is a C++ library of container classes, algorithms, and iterators; it provides many of the basic algorithms and data structures of computer science~\cite{STL}. % The STL is a generic library, meaning that its components are heavily parameterized: almost every component in the STL is a template. You should make sure that you understand how templates work in C++ before you use the STL.
+  \item \textbf{STL}: The Standard Template Library is a C++ library of container classes, algorithms, and iterators; it provides many of the basic algorithms and data structures of computer science~\cite{STL}.
 
-  \item \textbf{GSL}: The GNU Scientific Library is a numerical library for C and C++ programmers. It provides a wide range of mathematical routines such as random number generators, special functions and least-squares fitting. E.g. GSL 1.12~\cite{Gsl}. %There are over 1000 functions in total with an extensive test suite.
+  \item \textbf{GSL}: The GNU Scientific Library is a numerical library for C and C++ programmers. It provides a wide range of mathematical routines such as random number generators, special functions and least-squares fitting~\cite{Gsl}. The lowest version of GSL required by QUESO is GSL 1.10.
 
-  \item \textbf{Boost}: Boost provides free peer-reviewed portable C++ source libraries, which can be used with the C++ Standard Library. E.g. Boost 1.37.0~\cite{Boost}.
+  \item \textbf{Boost}: Boost provides free peer-reviewed portable C++ source libraries, which can be used with the C++ Standard Library~\cite{Boost}. QUESO requires Boost 1.35.0 or newer.
 
-  \item \textbf{MPI}: The Message Passing Interface is a standard for parallel programming using the message passing model. E.g. Open MPI~\cite{Openmpi} or MPICH~\cite{Mpich}. \Queso{} requires MPI during the compilation step; however, you may run it in serial mode (e.g. in one single processor) if you wish. 
+  \item \textbf{MPI}: The Message Passing Interface is a standard for parallel programming using the message passing model. E.g. Open MPI~\cite{Openmpi} or MPICH~\cite{Mpich}. \Queso{} requires MPI during the compilation step; however, you may run it in serial mode (e.g. in one single processor) if you wish. \todo{Does Queso work with MPI versions older than MPI2?}
 
-  \item \textbf{GRVY}: The Groovy Toolkit (GRVY) is a library used to house various support functions often required for application development of high-performance, scientific applications. The library is written in C++, but provides an API for development in C and Fortran. E.g. GRVY 0.31.0 ~\cite{grvy}.
+  \item \textbf{GRVY}: The Groovy Toolkit (GRVY) is a library used to house various support functions often required for application development of high-performance, scientific applications. The library is written in C++, but provides an API for development in C and Fortran~\cite{grvy}. QUESO requires GRVY 0.29 or newer.
 
 \end{enumerate}%{itemize}
 
 \Queso{} also works with the following optional libraries:
 
 \begin{enumerate}%{itemize}
-\item \textbf{HDF5}: The Hierarchical Data Format 5 is a technology suite that makes possible the management of extremely large and complex data collections. E.g. HDF5  5-1.8.8~\cite{HDF5}.
+\item \textbf{HDF5}: The Hierarchical Data Format 5 is a technology suite that makes possible the management of extremely large and complex data collections~\cite{HDF5}. The lowest version required by QUESO is HDF5 1.8.0.
 
-\item \textbf{GLPK}: The GNU Linear Programming Kit package is is a set of routines written in ANSI C and organized in the form of a callable library for solving large-scale linear programming, mixed integer programming, and other related problems~\cite{GLPK}. 
+\item \textbf{GLPK}: The GNU Linear Programming Kit package is is a set of routines written in ANSI C and organized in the form of a callable library for solving large-scale linear programming, mixed integer programming, and other related problems~\cite{GLPK}. QUESO works with GLPK versions newer than or equal to  GLPK 4.35.
 % 
 % \item \textbf{PETSc}: The Portable, Extensible Toolkit for Scientific Computation (PETSc) is a suite of data structures and routines for the scalable (parallel) solution of scientific applications modeled by partial differential equations, including parallel linear and nonlinear solvers~\cite{Petsc}.
 % 
-% \item \textbf{Trilinos}: The Trilinos Project is an effort to develop and implement robust algorithms and enabling technologies using modern object-oriented software design, while still leveraging the value of established libraries. It emphasizes abstract interfaces for maximum flexibility of component interchanging, and provides a full-featured set of concrete classes that implement all abstract interfaces.  E.g. Trilinos 9.0.2~\cite{Trilinos}.
+% \item \textbf{Trilinos}: The Trilinos Project is an effort to develop and implement robust algorithms and enabling technologies using modern object-oriented software design, while still leveraging the value of established libraries. It emphasizes abstract interfaces for maximum flexibility of component interchanging, and provides a full-featured set of concrete classes that implement all abstract interfaces~\cite{Trilinos}. QUESO requires Trilinos release to be newer than or equal to  8.0.7.
+
+
+
 \end{enumerate}%{itemize}
 
              
