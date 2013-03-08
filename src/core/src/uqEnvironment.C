@@ -33,7 +33,9 @@
 #include <uqRngBoost.h>
 #include <uqMiscellaneous.h>
 #include <sys/time.h>
+#ifdef HAVE_GRVY
 #include <grvy.h>
+#endif
 
 //-----------------------------
 // Library versioning routines
@@ -579,17 +581,17 @@ uqBaseEnvironmentClass::openOutputFile(
                                 << ", trying to open output file with base name '" << baseFileName << "." << fileType
                                 << "'"
                                 << ", writeOver = " << writeOver
-                                << ": calling grvy_check_file_path()..." 
+                                << ": calling uqCheckFilePath()..." 
                                 << std::endl;
       }
-      int irtrn = grvy_check_file_path((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
+      int irtrn = uqCheckFilePath((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
       if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
         *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
                                 << ", subId = "     << this->subId()
                                 << ", trying to open output file with base name '" << baseFileName << "." << fileType
                                 << "'"
                                 << ", writeOver = " << writeOver
-                                << ": returned from grvy_check_file_path() with irtrn = " << irtrn
+                                << ": returned from uqCheckFilePath() with irtrn = " << irtrn
                                 << std::endl;
       }
       UQ_FATAL_TEST_MACRO(irtrn < 0,
@@ -787,7 +789,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
       // specifies a relative path for the desired output file). prudenci 2010/06/26
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
-      int irtrn = grvy_check_file_path((baseFileName+"."+fileType).c_str());
+      int irtrn = uqCheckFilePath((baseFileName+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
                           m_worldRank,
                           "uqBaseEnvironmentClass::openUnifiedOutputFile()",
@@ -956,7 +958,7 @@ uqBaseEnvironmentClass::openInputFile(
       // specifies a relative path for the desired output file). prudenci 2010/06/26
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
-      int irtrn = grvy_check_file_path((baseFileName+"."+fileType).c_str());
+      int irtrn = uqCheckFilePath((baseFileName+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
                           m_worldRank,
                           "uqBaseEnvironmentClass::openInputFile()",
@@ -1057,7 +1059,7 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
       // specifies a relative path for the desired output file). prudenci 2010/06/26
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
-      int irtrn = grvy_check_file_path((baseFileName+"."+fileType).c_str());
+      int irtrn = uqCheckFilePath((baseFileName+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
                           m_worldRank,
                           "uqBaseEnvironmentClass::openUnifiedInputFile()",
@@ -1368,7 +1370,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
     // Verify parent directory exists (for cases when a user
     // specifies a relative path for the desired output file).
     //////////////////////////////////////////////////////////////////
-    int irtrn = grvy_check_file_path((m_optionsObj->m_ov.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
+    int irtrn = uqCheckFilePath((m_optionsObj->m_ov.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
     UQ_FATAL_TEST_MACRO(irtrn < 0,
                         m_worldRank,
                         "uqEnvironment::constructor()",

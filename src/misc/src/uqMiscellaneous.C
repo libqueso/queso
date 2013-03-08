@@ -346,3 +346,137 @@ double uqMiscDoubleDebugMessage(
   return value;
 }
 
+///int uqCheckFilePath(const char *path) 
+///{
+///
+///  // verify parent directories in path exist (and create if not).
+///
+///#ifdef HAVE_GRVY
+///  return(grvy_check_file_path(path));
+///#else
+///
+///
+///  return 0;
+///#endif
+///}
+
+// ------------------------------------------
+// Following routines borrowed from libGRVY
+// ------------------------------------------
+
+int uqCheckFilePath(const char *pathname)
+  {
+
+    // verify parent directories in path exist (and create if not).
+
+#ifdef HAVE_GRVY
+    return(grvy_check_file_path(pathname));
+#else
+
+    const int MAX_DEPTH = 50;
+    
+    char *pathlocal;
+    char *parents;
+    char *dirstring;
+    char *token;
+    int depth = 0;
+
+    // Save a copy of pathname and look for the parent directories.
+
+    pathlocal = strdup(pathname);
+    dirstring = strdup(pathname);
+    parents   = dirname(pathlocal);
+
+    if(strcmp(parents,".") == 0)
+      {
+	free(pathlocal);
+	free(dirstring);
+	return 0;
+      }
+
+    // Deal with the possibility of an absolute path being provided
+
+    bool abs_path = false;
+
+    std::string leading_char("");
+    std::string path_to_check;
+
+    if(strncmp(parents,"/",1) == 0)
+      {
+	leading_char = "/";
+	abs_path     = true;
+      }
+
+    // Verify existence of top-level directory
+
+    if( (token = strtok(parents,"/")) != NULL )
+      {
+	path_to_check += leading_char + token;
+
+	if ( uqGRVY_CheckDir(path_to_check.c_str()) )
+	  {
+	    free(pathlocal);
+	    free(dirstring);
+	    return -1;
+	  }
+
+	// Now, search for any remaining parent directories.
+
+	if(abs_path)
+	  sprintf(dirstring,"/%s",token);
+	else
+	  sprintf(dirstring,"%s",token);
+
+	while ( (token = strtok(0,"/")) && (depth < MAX_DEPTH) )
+	  {
+	    dirstring = strcat(dirstring,"/");
+
+	    if(uqGRVY_CheckDir(strcat(dirstring,token)))
+	      {
+		free(pathlocal);
+		free(dirstring);
+		return -1;
+	      }
+	    depth++;
+	  };
+
+	if(depth >= MAX_DEPTH )
+	  {
+	    std::cerr << __func__ << ": error - Max directory depth exceeded, limit =  " << MAX_DEPTH << std::endl;
+	    free(pathlocal);
+	    free(dirstring);
+	    return -1;
+	  }
+      }
+
+    // Clean Up
+    free(pathlocal);
+    free(dirstring);
+
+    return 0;
+#endif
+  }
+
+
+int uqGRVY_CheckDir(const char *dirname)
+{
+  struct stat st;
+
+  if(stat(dirname,&st) != 0)
+    {
+      if( mkdir(dirname,0700) != 0 )
+	{
+	  std::cerr << __func__ << ": error - unable to create directory " << dirname << std::endl;
+	  return -1;
+	}
+    }
+  else if (!S_ISDIR(st.st_mode))
+    {
+      std::cerr << __func__ << ": error - entry exists, but is not a direvtory " << dirname << std::endl;
+      return -1;
+    }
+
+  return 0;
+}
+
+

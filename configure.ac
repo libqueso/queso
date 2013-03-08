@@ -129,7 +129,7 @@ AX_ENABLE_ANN
 
 # Check for libGRVY (required)
 
-AX_PATH_GRVY_NEW([0.29],[yes])
+AX_PATH_GRVY_NEW([0.29],[no])
 
 AC_CACHE_SAVE
 

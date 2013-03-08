@@ -28,7 +28,7 @@ echo C++ compiler.................. : $CXX
 echo C++ compiler flags............ : $CXXFLAGS
 echo ' '
 echo GSL_LIBS...................... : $GSL_LIBS
-echo GRVY DIR...................... : $GRVY_PREFIX
+###echo GRVY DIR...................... : $GRVY_PREFIX
 echo BOOST_DIR..................... : ${BOOST_DIR}
 ###echo Boost program options... ..... : $BOOST_PROGRAM_OPTIONS_LDFLAGS $BOOST_PROGRAM_OPTIONS_LIBS
 echo ' '
@@ -42,6 +42,12 @@ echo
 echo Optional Features:
 
 # Optional Features Enabled?
+
+if test "$HAVE_GRVY" = "0"; then
+  echo '   'Link with GRVY............. : no
+else
+  echo '   'Link with GRVY............. : yes
+fi
 
 if test "$HAVE_GLPK" = "0"; then
   echo '   'Link with GLPK............. : no
@@ -77,6 +83,10 @@ fi
 
 echo 
 echo Optional Feature Paths:
+
+if test "$HAVE_GRVY" = "1"; then
+   echo '   'GRVY DIR................... : $GRVY_PREFIX
+fi
 
 if test "$HAVE_HDF5" = "1"; then
    echo '   'HDF5 DIR................... : $HDF5_PREFIX

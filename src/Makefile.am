@@ -5,12 +5,16 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
 	      -I$(top_srcdir)/src/misc/inc  \
 	      -I$(top_srcdir)/src/basic/inc \
 	      -I$(top_srcdir)/src/stats/inc \
-	      -I$(top_srcdir)/src/interface \
 	      -I$(top_builddir)/src/core/inc \
 	        $(BOOST_CPPFLAGS) \
 	        $(GSL_CFLAGS) \
-	        $(GRVY_CFLAGS) \
 	        $(ANN_CFLAGS)
+
+###	      -I$(top_srcdir)/src/interface 
+
+if GRVY_ENABLED
+  AM_CPPFLAGS += $(GRVY_CFLAGS)
+endif
 
 if GLPK_ENABLED	
   AM_CPPFLAGS += $(GLPK_CFLAGS)
@@ -30,10 +34,13 @@ endif
 lib_LTLIBRARIES      = libqueso.la
 libqueso_includedir  = $(prefix)/include
 libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
-libqueso_la_LDFLAGS += $(GRVY_LIBS)
 libqueso_la_LDFLAGS += $(GSL_LIBS) 
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
 libqueso_la_LDFLAGS += $(ANN_LIBS)
+
+if GRVY_ENABLED	
+  libqueso_la_LDFLAGS += $(GRVY_LIBS)
+endif
 
 if GLPK_ENABLED	
   libqueso_la_LDFLAGS += $(GLPK_LIBS)
@@ -68,7 +75,6 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/uqTeuchosMatrix.C \
 	$(top_srcdir)/src/core/src/uqMpiComm.C \
 	$(top_srcdir)/src/core/src/uqMap.C
-
 
 # Sources from core/src with gsl conditional 
 
@@ -122,9 +128,9 @@ libqueso_la_SOURCES += \
 
 # Sources from interface 
 
-libqueso_la_SOURCES += \
-	$(top_srcdir)/src/interface/basic_classes.cpp \
-	$(top_srcdir)/src/interface/basic_interface.cpp
+###libqueso_la_SOURCES += \
+###	$(top_srcdir)/src/interface/basic_classes.cpp \
+###	$(top_srcdir)/src/interface/basic_interface.cpp
 
 # Headers to install from core/inc
 
@@ -219,11 +225,11 @@ nodist_libqueso_include_HEADERS    =       \
 
 # Headers to install from interface
 
-libqueso_include_HEADERS += \
-	$(top_srcdir)/src/interface/queso_basic.h     \
-	$(top_srcdir)/src/interface/basic_classes.h   \
-	$(top_srcdir)/src/interface/basic_interface.h \
-	$(top_srcdir)/src/interface/basic_int.h
+###libqueso_include_HEADERS += \
+###	$(top_srcdir)/src/interface/queso_basic.h     \
+###	$(top_srcdir)/src/interface/basic_classes.h   \
+###	$(top_srcdir)/src/interface/basic_interface.h \
+###	$(top_srcdir)/src/interface/basic_int.h
 
 # Standalone binaries
 

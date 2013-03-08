@@ -5,6 +5,7 @@ Simulation, and Optimization.
 
 Version 0.46 (In Progress)
 
+  * changed libGRVY linkage to be optional
   * added additional regression tests to 'make check'
   * added rng (random number generator) class to accomodate either GSL or BOOST rng's
 

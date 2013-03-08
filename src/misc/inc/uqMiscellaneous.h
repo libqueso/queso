@@ -68,6 +68,9 @@ int          uqMiscIntDebugMessage            (int                       value,
 double       uqMiscDoubleDebugMessage         (double                    value,
                                                const char*               message);
 
+int          uqCheckFilePath                  (const char*               path);
+int          uqGRVY_CheckDir                  (const char*               dirname);
+
 template <class T>
 bool
 uqMiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not' const

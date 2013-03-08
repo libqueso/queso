@@ -7,7 +7,8 @@ AM_CPPFLAGS  = -I. \
 	-I$(top_srcdir)/src/misc/inc \
 	-I$(top_srcdir)/src/basic/inc \
 	-I$(top_srcdir)/src/stats/inc \
-         $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(GRVY_CFLAGS) $(ANN_CFLAGS)
+         $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
+
 
 if TRILINOS_ENABLED
   AM_CPPFLAGS += -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
@@ -17,6 +18,10 @@ endif
 if GLPK_ENABLED	
   AM_CPPFLAGS += $(GLPK_CFLAGS)
   LIBS += $(GLPK_LIBS)
+endif
+
+if GRVY_ENABLED	
+  AM_CPPFLAGS += $(GRVY_CFLAGS)
 endif
 
 if HDF5_ENABLED	
