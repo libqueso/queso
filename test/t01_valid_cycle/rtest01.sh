@@ -46,6 +46,11 @@ rm -f $SOLDIR/*.txt
 rm -f $SOLDIR/*.m
 verify_file_exists $INFILE
 
+# Remove output directory as additoinal test to make sure QUESO
+# created necessary parent directory.
+
+rm -rf ./outputData
+
 # Run the model
 
 if [ $SAVELOG -eq 1 ];then
