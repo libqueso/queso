@@ -21,7 +21,7 @@ clean:
 	  fi; \
 	  if [ -f "$${dir}"/configure ]; then \
             echo "Running configure in $${dir}"; \
-	    (cd "$${dir}" && ./configure || touch bootstrap_failed); \
+	    (cd "$${dir}" && ./configure || touch configure_failed); \
 	  fi; \
 	  if [ -f "$${dir}"/Makefile ]; then \
 	    $(MAKE) -C "$${dir}" $@ || touch "$${dir}"/make_failed; \
