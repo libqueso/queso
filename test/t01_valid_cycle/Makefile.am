@@ -9,6 +9,7 @@ AM_CPPFLAGS  = -I. \
 	-I$(top_srcdir)/src/stats/inc \
          $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 
+LIBS   = -L$(top_builddir)/src/ -lqueso
 
 if TRILINOS_ENABLED
   AM_CPPFLAGS += -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
@@ -28,8 +29,6 @@ if HDF5_ENABLED
   AM_CPPFLAGS += $(HDF5_CFLAGS) 
   LIBS += $(HDF5_LIBS)
 endif
-
-LIBS   = -L$(top_builddir)/src/ -lqueso
 
 EXTRA_DIST     = inputData regression rtest01.sh
 TESTS          = rtest01.sh 
