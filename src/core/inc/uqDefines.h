@@ -110,6 +110,7 @@ public:
   unsigned int           m_numSubEnvironments;
   std::string            m_subDisplayFileName;
   bool                   m_subDisplayAllowAll;
+  bool                   m_subDisplayAllowInter0;
   std::set<unsigned int> m_subDisplayAllowedSet;
   unsigned int           m_displayVerbosity;
   unsigned int           m_syncVerbosity;

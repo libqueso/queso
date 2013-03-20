@@ -2796,7 +2796,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
                                         fileType, // "m or hdf"
                                         writeOver,
                                         unifiedFilePtrSet)) {
-          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) {
+          if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 10)) { // 2013-02-23
             *m_env.subDisplayFile() << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()"
                                     << ": worldRank "      << m_env.worldRank()
                                     << ", fullRank "       << m_env.fullRank()
@@ -2819,7 +2819,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
               *unifiedFilePtrSet.ofsVar << m_name << "_unified" << " = [";
             }
 
-            for (unsigned int j = 0; j < chainSize; ++j) {
+            for (unsigned int j = 0; j < chainSize; ++j) { // 2013-02-23
 	      //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): m_seq[" << j << "] = " << m_seq[j]
               //          << std::endl;
     	      //std::cout << "In uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(): &(m_seq[" << j << "].map()) = " << &(m_seq[j]->map())

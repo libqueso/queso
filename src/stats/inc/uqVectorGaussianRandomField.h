@@ -121,7 +121,7 @@ template <class P_V, class P_M, class Q_V, class Q_M>
 void
 uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vector<P_V*>& fieldPositions, Q_V& sampleValues)
 {
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
     *m_env.subDisplayFile() << "Entering uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                             << std::endl;
   }
@@ -180,7 +180,7 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
     instantiate = !allPositionsAreEqual;
   }
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
     *m_env.subDisplayFile() << "In uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                             << ": numberOfPositions = " << numberOfPositions
                             << ", instantiate = "       << instantiate
@@ -219,7 +219,7 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
     // Set m_savedRvLawCovMatrix
     Q_M tmpMat(m_imageSetPerIndex.vectorSpace().zeroVector());
     m_savedRvLawCovMatrix = new Q_M(m_savedRvImageSpace->zeroVector());
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                               << ": m_savedRvLawCovMatrix order = " << m_savedRvLawCovMatrix->numCols()
                               << ", numberOfPositions = "           << numberOfPositions
@@ -292,19 +292,19 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
   } // if (instantiate)
 
   // Generate sample function
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
     *m_env.subDisplayFile() << "In uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                             << ": about to realize sample values"
                             << std::endl;
   }
   m_savedRv->realizer().realization(sampleValues);
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
     *m_env.subDisplayFile() << "In uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                             << ": just realized sample values"
                             << std::endl;
   }
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
     *m_env.subDisplayFile() << "Leaving uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                             << std::endl;
   }

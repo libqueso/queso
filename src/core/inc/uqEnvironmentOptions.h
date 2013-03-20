@@ -34,20 +34,21 @@
 #define UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE "."
 #define UQ_ENV_FILENAME_FOR_NO_INPUT_FILE  "."
 
-#define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV    1
-#define UQ_ENV_SUB_SCREEN_WRITE_ODV        0
-#define UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV   UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE
-#define UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV   0
-#define UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV ""
-#define UQ_ENV_DISPLAY_VERBOSITY_ODV       0
-#define UQ_ENV_SYNC_VERBOSITY_ODV          0
-#define UQ_ENV_CHECKING_LEVEL_ODV          0
-#define UQ_ENV_RNG_TYPE_ODV                "gsl"
-#define UQ_ENV_SEED_ODV                    0
-#define UQ_ENV_IDENTIFYING_STRING_ODV      ""
-#define UQ_ENV_PLATFORM_NAME_ODV           ""
-#define UQ_ENV_NUM_DEBUG_PARAMS_ODV        0
-#define UQ_ENV_DEBUG_PARAM_ODV             0.
+#define UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV     1
+#define UQ_ENV_SUB_SCREEN_WRITE_ODV         0
+#define UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV    UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE
+#define UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV    0
+#define UQ_ENV_SUB_DISPLAY_ALLOW_INTER0_ODV 0
+#define UQ_ENV_SUB_DISPLAY_ALLOWED_SET_ODV  ""
+#define UQ_ENV_DISPLAY_VERBOSITY_ODV        0
+#define UQ_ENV_SYNC_VERBOSITY_ODV           0
+#define UQ_ENV_CHECKING_LEVEL_ODV           0
+#define UQ_ENV_RNG_TYPE_ODV                 "gsl"
+#define UQ_ENV_SEED_ODV                     0
+#define UQ_ENV_IDENTIFYING_STRING_ODV       ""
+#define UQ_ENV_PLATFORM_NAME_ODV            ""
+#define UQ_ENV_NUM_DEBUG_PARAMS_ODV         0
+#define UQ_ENV_DEBUG_PARAM_ODV              0.
 
 class uqEnvironmentOptionsClass
 {
@@ -74,6 +75,7 @@ private:
   std::string              m_option_numSubEnvironments;
   std::string              m_option_subDisplayFileName;
   std::string              m_option_subDisplayAllowAll;
+  std::string              m_option_subDisplayAllowInter0;
   std::string              m_option_subDisplayAllowedSet;
   std::string              m_option_displayVerbosity;
   std::string              m_option_syncVerbosity;

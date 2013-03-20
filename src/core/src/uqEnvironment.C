@@ -1355,6 +1355,16 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
     m_inter0CommSize = m_inter0Comm->NumProc();
   }
 
+  if (m_optionsObj->m_ov.m_subDisplayAllowAll) {
+    // This situation has been already taken care of above
+  }
+  else if (m_optionsObj->m_ov.m_subDisplayAllowInter0) {
+    if (m_inter0Rank >= 0) {
+      m_optionsObj->m_ov.m_subDisplayAllowedSet.insert((unsigned int) m_subId);
+    }
+  }
+
+
   //////////////////////////////////////////////////
   // Open "screen" file
   //////////////////////////////////////////////////

@@ -671,6 +671,8 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
                               << ", maxNumberOfPositions = " << maxNumberOfPositions
                               << std::endl;
     }
+
+    // 2013-02-23: print sizes, and expected final size
   }
   if ((m_debugExponent == 1.) && 
       (m_currStep      == 10)) {
@@ -787,8 +789,11 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
       if (currLogTargetValues) {
         currLogTargetValues->append    (tmpLogTargetValues,    1,tmpLogTargetValues.subSequenceSize()-1    ); // IMPORTANT: '1' in order to discard initial position
       }
+      // 2013-02-23: print size just appended
     }
   } // for 'chainId'
+
+  // 2013-02-23: print final size
 
   struct timeval timevalBarrier;
   iRC = gettimeofday(&timevalBarrier, NULL);
