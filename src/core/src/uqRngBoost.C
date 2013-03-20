@@ -42,25 +42,26 @@ uqRngBoostClass::uqRngBoostClass()
 uqRngBoostClass::uqRngBoostClass(int seed, int worldRank)
   :
   uqRngBaseClass(seed,worldRank)
+  //m_rng(seed)
 {
-  // Kemelli todo
-  UQ_FATAL_TEST_MACRO(true,
-                      m_worldRank,
-                      "uqRngBoosClass::constructor()",
-                      "Kemelli todo: boost rng");
+  resetSeed(seed);
+//TODO Find a suitable test for here; Kemelli todo
+//   UQ_FATAL_TEST_MACRO(true,
+//                       m_worldRank,
+//                       "uqRngBoosClass::constructor()",
+//                       "Kemelli todo: boost rng");
 }
 
 uqRngBoostClass::~uqRngBoostClass()
 {
-  // Kemelli todo
+  //this function does nothing
 }
 
+  
 void
 uqRngBoostClass::resetSeed(int newSeed)
 {
-  uqRngBaseClass::resetSeed(newSeed);
-
-  // Kemelli todo
+  m_rng.seed(newSeed);
 
   return;
 }
@@ -68,27 +69,32 @@ uqRngBoostClass::resetSeed(int newSeed)
 double
 uqRngBoostClass::uniformSample() const
 {
-  // Kemelli todo
-  return 0.;
+  static boost::uniform_01<boost::mt19937> zeroone(m_rng);
+  return zeroone();
 }
 
 double
 uqRngBoostClass::gaussianSample(double stdDev) const
 {
-  // Kemelli todo
-  return 0.;
+  double mean = 0.; //it will be added conveniently later
+  static boost::uniform_01<boost::mt19937> zeroone(m_rng);
+  boost::math::normal_distribution<double>  gaussian_dist(mean, stdDev);
+  return quantile(gaussian_dist, zeroone());  
 }
 
 double
 uqRngBoostClass::betaSample(double alpha, double beta) const
 {
-  // Kemelli todo
-  return 0.;
+  static boost::uniform_01<boost::mt19937> zeroone(m_rng); 
+  boost::math::beta_distribution<double> beta_dist(alpha, beta); 
+  return quantile(beta_dist, zeroone());
 }
 
 double
 uqRngBoostClass::gammaSample(double a, double b) const
 {
-  // Kemelli todo
-  return 0.;
+  static boost::uniform_01<boost::mt19937> zeroone(m_rng);
+  boost::math::gamma_distribution<double>  gamma_dist(a,b);
+  return quantile(gamma_dist, zeroone());
 }
+
