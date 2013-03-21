@@ -235,114 +235,98 @@ uqTeuchosVectorClass::~uqTeuchosVectorClass()
 
 
 // -------------------------------------------------
-//TODO : find a smart way to define seed
+//updated on 3/18, to use the uqRngBaseClass+Boost
 void uqTeuchosVectorClass::cwSetGaussian(double mean, double stdDev)
 {
-  int seed =1;
-  static boost::mt19937 rng(seed);  //Random Number Generator
-   
-  boost::normal_distribution<double> gaussian_dist(mean, stdDev); //Normal Distribution
- 
-  // Create a Gaussian Random Number generator by binding 
-  // with previously defined normal distribution object   
-  boost::variate_generator<boost::mt19937&, boost::normal_distribution<double> > generator(rng, gaussian_dist);
- 
-  for (unsigned int i = 0; i < this->sizeLocal(); ++i) 
-  {
-    // sample from the distribution
-    (*this)[i] = generator();    
+for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+    (*this)[i] = mean + m_env.rngObject()->gaussianSample(stdDev);
   }
-  
+
   return;
 };
 
 // -------------------------------------------------
-//TODO : find a smart way to define seed
+//updated on 3/18, to use the uqRngBaseClass+Boost
 void uqTeuchosVectorClass::cwSetGaussian(const uqTeuchosVectorClass& meanVec, const uqTeuchosVectorClass& stdDevVec)
 {
-  int seed =1;
-  static boost::mt19937 rng(seed);  //Random Number Generator
-     
-  for (unsigned int i = 0; i < this->sizeLocal(); ++i) 
-  {
-    boost::normal_distribution<double> gaussian_dist(meanVec[i], stdDevVec[i]); //Normal Distribution
- 
-  // Create a Gaussian Random Number generator by binding 
-  // with previously defined normal distribution object   
-  boost::variate_generator<boost::mt19937&, boost::normal_distribution<double> > generator(rng, gaussian_dist);
- 
-  // sample from the distribution
-    (*this)[i] = generator();    
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+    (*this)[i] = meanVec[i] + m_env.rngObject()->gaussianSample(stdDevVec[i]);
   }
   
   return;
 };
 // -------------------------------------------------
-//TODO : find a smart way to define seed
+//updated on 3/18, to use the uqRngBaseClass+Boost
 void uqTeuchosVectorClass::cwSetGamma(const uqTeuchosVectorClass& aVec, const uqTeuchosVectorClass& bVec)
 {
-  int seed =1;
-  static boost::mt19937 rng(seed);  //Random Number Generator
-   
-  for (unsigned int i = 0; i < this->sizeLocal(); ++i) 
-  {
-    boost::gamma_distribution<double> gamma_dist(aVec[i], bVec[i]);   // Choose Gamma Distribution 
- 
-  // Create a Gamma Random Number generator by binding 
-  // with previously defined normal distribution object   
-    boost::variate_generator<boost::mt19937&, boost::gamma_distribution<double> > generator(rng, gamma_dist);
- 
-  // sample from the distribution
-    (*this)[i] = generator();    
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != aVec.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::cwSetGamma()",
+                      "incompatible a size");
+
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != bVec.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::cwSetGamma()",
+                      "incompatible b size");
+
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+    (*this)[i] = m_env.rngObject()->gammaSample(aVec[i],bVec[i]);
   }
-  
   return;
-};
+}
 
 
 // -------------------------------------------------
-//TODO : find a smart way to define seed
+//updated on 3/18, to use the uqRngBaseClass+Boost
 // Using Gamma Distribution to calculate InverseGamma.
 // Note the divisions: 1.0/b and the 1.0/generator; they are crucial
-void uqTeuchosVectorClass::cwSetInverseGamma(const uqTeuchosVectorClass& aVec, const uqTeuchosVectorClass& bVec)
+void uqTeuchosVectorClass::cwSetInverseGamma(const uqTeuchosVectorClass& alpha, const uqTeuchosVectorClass& beta)
 {
-  int seed =1;
-  static boost::mt19937 rng(seed);  //Random Number Generator
-   
-  for (unsigned int i = 0; i < this->sizeLocal(); ++i) 
-  {
-    // Choose Gamma Distribution with parabmer 1.0/b
-    boost::gamma_distribution<double> gamma_dist(aVec[i], 1.0/bVec[i]);   
- 
-  // Create a Gamma Random Number generator by binding 
-  // with previously defined normal distribution object   
-  // sample from the distribution
-    boost::variate_generator<boost::mt19937&, boost::gamma_distribution<double> > generator(rng, gamma_dist);
- 
-  // return 1.0 of the draw value
-    (*this)[i] = 1.0/generator();    
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::cwSetInverseGamma()",
+                      "incompatible alpha size");
+
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::cwSetInverseGamma()",
+                      "incompatible beta size");
+
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+    (*this)[i] = 1./m_env.rngObject()->gammaSample(alpha[i],1./beta[i]);
   }
-  
   return;
-};
+}
 
 // -------------------------------------------------
-//TODO : find a smart way to define seed
+//updated on 3/18, to use the uqRngBaseClass+Boost
 void uqTeuchosVectorClass::cwSetBeta(const uqTeuchosVectorClass& alpha, const uqTeuchosVectorClass& beta)
 {
-  int seed =1;  
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::cwSetBeta()",
+                      "incompatible alpha size");
+
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::cwSetBeta()",
+                      "incompatible beta size");
 
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) 
   {
-   // draw a random number from (0,1)
-   double randFromUnif = GetRandomDoubleUsingUniformZeroOneDistribution(seed); 
-   // Choose Beta distribution with parameters alpha and beta
-   boost::math::beta_distribution<double> beta_dist(alpha[i], beta[i]); 
-   
-   double randFromDist = quantile(beta_dist, randFromUnif);
-   (*this)[i] = randFromDist;
+    (*this)[i] = m_env.rngObject()->betaSample(alpha[i],beta[i]);
+    
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) 
+    {
+      *m_env.subDisplayFile() << "In uqTeuchosVectorClass::cwSetBeta()"
+                              << ": fullRank "   << m_env.fullRank()
+                              << ", i = "        << i
+                              << ", alpha[i] = " << alpha[i]
+                              << ", beta[i] = "  << beta[i]
+                              << ", sample = "   << (*this)[i]
+                              << std::endl;
+  	}
   }
-  
   return;
 };
 
@@ -1064,17 +1048,13 @@ void uqTeuchosVectorClass::cwSetGaussian2(double mean, double stdDev)
 
 
 //----------------------------------------------------
-//Boost version
-// implemented/checked 2/26/13
-//TODO : find better way to get the seed
- void uqTeuchosVectorClass::cwSetUniform(const uqTeuchosVectorClass& lowerBoundaVec, const uqTeuchosVectorClass& upperBoundVec)
+//implemented/checked 2/26/13
+//updated on 3/18, to use the uqRngBaseClass+Boost
+ void uqTeuchosVectorClass::cwSetUniform(const uqTeuchosVectorClass& aVec, const uqTeuchosVectorClass& bVec)
 {
-   int seed = 1;
-
-  for (unsigned int i=0; i < this->sizeLocal(); i++){
-    double random= GetRandomDoubleUsingUniformZeroOneDistribution(seed);
-    (*this)[i] = lowerBoundaVec[i] + (upperBoundVec[i]-lowerBoundaVec[i])*random;
-   }
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+    (*this)[i] = aVec[i] + (bVec[i]-aVec[i])*m_env.rngObject()->uniformSample();
+  }
   return;
 }
 //----------------------------------------------------
