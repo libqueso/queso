@@ -8,7 +8,11 @@ clean:
 	@echo make clean
 	@for dir in $(dirlist); do \
 	  if [ -f "$${dir}"/Makefile ]; then \
-	    $(MAKE) -C "$${dir}" clean || touch "$${dir}"/clean_failed; \
+	    if [ -f "$${dir}"/bootstrap ]; then \
+	      $(MAKE) -C "$${dir}" maintainer-clean || touch "$${dir}"/maintainer_clean_failed; \
+            else \
+	      $(MAKE) -C "$${dir}" clean || touch "$${dir}"/clean_failed; \
+	    fi; \
 	  fi; \
 	done
 
