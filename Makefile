@@ -28,6 +28,6 @@ clean:
 	    (cd "$${dir}" && ./configure || touch configure_failed); \
 	  fi; \
 	  if [ -f "$${dir}"/Makefile ]; then \
-	    $(MAKE) -C "$${dir}" $@ || touch "$${dir}"/make_failed; \
+	    $(MAKE) -C "$${dir}" $@ || touch "$${dir}"/make_$@_failed; \
 	  fi; \
 	done
