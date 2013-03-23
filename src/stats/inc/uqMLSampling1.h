@@ -497,6 +497,37 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
   //std::cout << "In QUESO: end of level 0. Exiting on purpose" << std::endl;
   //exit(1);
 
+  double minLogLike = -INFINITY;
+  double maxLogLike =  INFINITY;
+  currLogLikelihoodValues.subMinMaxExtra(0,
+                                         currLogLikelihoodValues.subSequenceSize(),
+                                         minLogLike,
+                                         maxLogLike);
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                            << ": at end of level "  << m_currLevel+LEVEL_REF_ID
+                            << ", sub minLogLike = " << minLogLike
+                            << ", sub maxLogLike = " << maxLogLike
+                            << std::endl;
+  }
+
+  m_env.fullComm().Barrier();
+
+  minLogLike = -INFINITY;
+  maxLogLike =  INFINITY;
+  currLogLikelihoodValues.unifiedMinMaxExtra(m_vectorSpace.numOfProcsForStorage() == 1,
+                                             0,
+                                             currLogLikelihoodValues.subSequenceSize(),
+                                             minLogLike,
+                                             maxLogLike);
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+    *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                            << ": at end of level "      << m_currLevel+LEVEL_REF_ID
+                            << ", unified minLogLike = " << minLogLike
+                            << ", unified maxLogLike = " << maxLogLike
+                            << std::endl;
+  }
+
   //***********************************************************
   // Take care of next levels
   //***********************************************************
@@ -785,6 +816,37 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                      currLogLikelihoodValues,          // input/output
                                      currLogTargetValues,              // input/output
                                      unifiedNumberOfRejections);       // output
+    }
+
+    minLogLike = -INFINITY;
+    maxLogLike =  INFINITY;
+    currLogLikelihoodValues.subMinMaxExtra(0,
+                                           currLogLikelihoodValues.subSequenceSize(),
+                                           minLogLike,
+                                           maxLogLike);
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                              << ": at end of level "  << m_currLevel+LEVEL_REF_ID
+                              << ", sub minLogLike = " << minLogLike
+                              << ", sub maxLogLike = " << maxLogLike
+                              << std::endl;
+    }
+
+    m_env.fullComm().Barrier();
+
+    minLogLike = -INFINITY;
+    maxLogLike =  INFINITY;
+    currLogLikelihoodValues.unifiedMinMaxExtra(m_vectorSpace.numOfProcsForStorage() == 1,
+                                               0,
+                                               currLogLikelihoodValues.subSequenceSize(),
+                                               minLogLike,
+                                               maxLogLike);
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                              << ": at end of level "      << m_currLevel+LEVEL_REF_ID
+                              << ", unified minLogLike = " << minLogLike
+                              << ", unified maxLogLike = " << maxLogLike
+                              << std::endl;
     }
 
     //***********************************************************
