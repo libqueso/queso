@@ -80,7 +80,7 @@ A copy of the license is included in the section entitled ``GNU Free Documentati
 %------------------------------------------------------------------
 \addcontentsline{toc}{chapter}{Abstract}
 %\thispagestyle{empty}
-\centerline{\Large\bf Abstract}
+\centerline{\LARGE\sffamily Abstract}
 $~$\\
 
 QUESO stands for Quantification of Uncertainty for Estimation, Simulation and Optimization and consists of 
@@ -98,12 +98,11 @@ approach and its code is written on C++ and over MPI. It can run over
 uniprocessor or multiprocessor environments.
 
 QUESO contains two forms of documentation:
-a User's Manual available in pdf format
+a user's manual available in pdf format
 and
 a lower-level code documentation available in web based/html format.
 
-This is the User's Manual.
-It gives an overview of the QUESO capabilities,
+This is the user's manual: it gives an overview of the QUESO capabilities,
 provides procedures for software execution, and includes example studies.
 
 \clearpage
@@ -114,7 +113,7 @@ $~$\\
 %------------------------------------------------------------------
 \addcontentsline{toc}{chapter}{Disclaimer}
 %\thispagestyle{empty}
-\centerline{\Large\bf Disclaimer}
+\centerline{\LARGE\sffamily Disclaimer}
 $~$\\
     This document was prepared
     by The University of Texas at Austin.
@@ -129,6 +128,9 @@ $~$\\
     The views and opinions expressed herein do not necessarily state or reflect
     those of The University of Texas at Austin or any institute or department
     thereof.
+    \new{
+	QUESO library as well as this material are provided as is, with absolutely no warranty
+    expressed or implied.  Any use is at your own risk.}
 
 \clearpage
 %------------------------------------------------------------------
@@ -150,7 +152,8 @@ $~$\\
 %------------------------------------------------------------------
 \addcontentsline{toc}{chapter}{Preface}
 \thispagestyle{empty}
-\centerline{\Large\bf Preface}
+%\centerline{\Large\bf Preface}
+\chapter*{Preface}
 $~$\\
 The QUESO project started in 2008 as part
 of the efforts of the recently established Center for Predictive Engineering and Computational Sciences (PECOS)
@@ -167,7 +170,7 @@ The advancement of predictive science is essential for the application of Comput
 
 The QUESO library, since its first version, has been publicly released as open source
 under the GNU General Public License and is available for free download world-wide.
-See http://www.gnu.org/licenses/gpl.html for more information on the GPL software use agreement.
+See http://www.gnu.org/licenses/gpl.html for more information on the GPL software use agreement.\\
 
 % The QUESO development team currently consists of
 % Paul T. Bauman,
@@ -186,8 +189,8 @@ email: prudenci@ices.utexas.edu\\
 web: http://pecos.ices.utexas.edu\\
 $~$\\
 
-\centerline{\bf Referencing the QUESO Library}
-
+% \centerline{\bf Referencing the QUESO Library}
+\section*{Referencing the QUESO Library}
 When referencing the QUESO library in a publication, please cite the following:
 \begin{verbatim}
 @incollection{QUESO,
@@ -207,30 +210,30 @@ When referencing the QUESO library in a publication, please cite the following:
 }
 
 @Misc{queso-web-page,
-   Author = {Ernesto E. Prudencio and Paul T. Bauman and Sai Hung Cheung
-             and Todd A. Oliver and Karl W. Schulz and Rhys Ulerich},
+   Author = {{QUESO} Development Team},
    Title  = {{T}he {QUESO} {L}ibrary: {Q}uantification of {U}ncertainty
              for {E}stimation, {S}imulation and {O}ptimization},
-   Note   = {http://pecos.ices.utexas.edu},
-   Year   = {2008-2009}
+   Note   = {https://red.ices.utexas.edu/projects/software},
+   Year   = {2008-2013}
 }
 
 @TechReport{queso-user-ref,
    Author      = {Kemelli C. Estacio-Hiroms and Ernesto E. Prudencio},
-   Title       = {{T}he {QUESO} {L}ibrary, {U}ser's {M}anual, {ICES} {T}echnical
-                  {R}eport },
+   Title       = {{T}he {QUESO} {L}ibrary, {U}ser's {M}anual},
    Institution = {Center for Predictive Engineering and Computational Sciences
                   (PECOS), at the Institute for Computational and Engineering
                   Sciences (ICES), The University of Texas at Austin},
    Note        = {in preparation},
-   Year        = {2012}
+   Year        = {2013}
 }
 \end{verbatim}
-$~$\\
-$~$\\
+% $~$\\
+% $~$\\
+% 
+% 
+% \centerline{\bf \Queso{} Development Team}
+\section*{\Queso{} Development Team}
 
-
-\centerline{\bf \Queso{} Development Team}
 The QUESO development team currently consists of
 Paul T. Bauman,
 Sai Hung Cheung,
@@ -241,10 +244,11 @@ Ernesto E. Prudencio (lead developer),
 Karl W. Schulz, and
 Rhys Ulerich.
 
-$~$\\
-$~$\\
-
-\centerline{\bf Acknowledgments}
+% $~$\\
+% $~$\\
+% 
+% \centerline{\bf Acknowledgments}
+\section*{Acknowledgments}
 
 This work has been supported by the United States Department of Energy,
 under the National Nuclear Security Administration Predictive Science Academic Alliance Program (PSAAP) award number [DE-FC52-08NA28615], and
@@ -260,3 +264,16 @@ for interesting discussions and constructive feedback.
 %\clearpage
 %%------------------------------------------------------------------
 %$~$\\
+% 
+% $~$\\
+% 
+% \centerline{\bf Target Audience}
+\section*{Target Audience}
+
+\new{
+The target audience for this manual is researchers who are comfortable with UNIX concepts and the command line, have basic knowledge of a programming language, preferably C/C++, and have solid background in Bayesian methods.%, such as Monte Carlo Methods.
+}
+%  
+% The authors have assumed that readers of this manual possess some knowledge of Bayesian methods and are comfortable with UNIX concepts and the command line.
+% %%The authors take as their target audience individuals with solid background in statistics, including some familiarity with basic Bayesian methods.
+
