@@ -238,7 +238,7 @@ Monte Carlo works by using random numbers to sample, according to a PDF, the `so
 Then, it iteratively evaluates a deterministic model using such sets of random numbers as inputs.
 
 
-Monte Carlo is implemented in QUESO and it is the chosen algorithm to compute a sample of the output RV (the QoI) of the SFP for each given sample of the input RV.
+Monte Carlo is implemented in QUESO and it is the chosen algorithm to compute a sample of the output RV (the QoI) of the SFP for each given sample of the input RV. 
 
 \section{Application Code}\label{sec:application_code}
 
@@ -253,7 +253,7 @@ Here we present the first 5 files, in Listings \ref{code:gravity_main}, \ref{cod
  
 \lstinputlisting[caption=File \texttt{gravity\_compute.h.}, label=code:gravity_compute_h, linerange={1-2,30-1000}]{../../trunk/examples/gravity/src/gravity_compute.h}
 
-\lstinputlisting[caption={File \texttt{gravity\_compute.C}. The first part of the code (lines 37--113) handles the statistical forward problem, whereas the second part of the code (lines 115--163) handles the statistical forward problem.}, label=code:gravity_compute_C, linerange={1-2,30-1000}]{../../trunk/examples/gravity/src/gravity_compute.C}
+\lstinputlisting[caption={File \texttt{gravity\_compute.C}. The first part of the code (lines 37--113) handles the statistical forward problem, whereas the second part of the code (lines 115--163) handles the statistical forward problem.}, label=code:gravity_compute_C, linerange={1-2,30-1000},numbers=left]{../../trunk/examples/gravity/src/gravity_compute.C}
 
 \lstinputlisting[caption=File \texttt{gravity\_likelihood.h}., label=code:gravity_like_h, linerange={1-2,30-1000}]{../../trunk/examples/gravity/src/gravity_likelihood.h}
 
