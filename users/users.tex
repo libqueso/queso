@@ -13,6 +13,7 @@
 \usepackage{fancyvrb}
 \usepackage{subfigure}
 \usepackage{wrapfig} 
+\usepackage{framed}    % left bar at the left of the new text added 
 \usepackage{booktabs}  %nice tables
 \usepackage{array} %set fixed length in table columns
 \usepackage{geometry,subfigure}
@@ -115,9 +116,13 @@ aboveskip =10pt,
 
 \newcommand{\bv}[1]{{\mathbf{#1}}}
 \newcommand{\chainsizeresults}{20000}
-\newcommand{\new}[1]{{\marginpar{\color{red}\small\raggedright\textsf{\hspace{0pt} NEW}}} \textbf{#1}}
+%\newcommand{\new}[1]{{\marginpar{\color{red}\small\raggedright\textsf{\hspace{0pt} NEW}}} \textbf{#1}}
 
+%\newcommand{\new}[1]{{\marginpar{\color{red}\small\raggedright\textsf{\hspace{0pt} NEW}}} #1}
 \newcommand{\kemargin}[1]{\marginpar{\color{red}\tiny\raggedright\textsf{\hspace{0pt}#1}}}
+
+
+\newcommand{\new}[1]{\reversemarginpar{\color{red}\tiny\raggedright\textsf{\hspace{-30pt}\vspace{-30pt} NEW}} \begin{leftbar} #1 \end{leftbar}}
 
 \begin{document}
 
