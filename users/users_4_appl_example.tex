@@ -300,6 +300,9 @@ Moreover, for the gravity inverse problem, one may notice that QUESO will use th
 
 Makefiles are special format files that together with the make utility will help one to compile and automatically build and manage projects (programs).
 Listing \ref{code:makefile} presents the Makefile used to compile the code and create the executable \verb+gravity_gsl+.
+
+\lstinputlisting[caption=Makefile for the application code in Listings \ref{code:gravity_main}-\ref{code:gravity_like_C}., label=code:makefile,language=bash]{../../trunk/examples/gravity/src/example_of_Makefile_from_QUESO_users_manual}
+
 Then, in order to run the application code, together with its input file \verb+gravity_inv_fwd.inp+ presented in Listing~\ref{code:gravity_inp_sip}., one just needs to type the command line:
 
 \begin{lstlisting}[caption={}, label={},language={bash}]
@@ -308,7 +311,7 @@ make
 gravity_gsl gravity_inv_fwd.inp
 \end{lstlisting}
 
-\lstinputlisting[caption=Makefile for the application code in Listings \ref{code:gravity_main}-\ref{code:gravity_like_C}., label=code:makefile,language=bash]{../../trunk/examples/gravity/src/example_of_Makefile_from_QUESO_users_manual}
+
  
 The console output of the program is:
 \begin{lstlisting}[caption={Console output of program \texttt{gravity\_gsl}}, label={code:console_output},language={bash}]
@@ -360,6 +363,33 @@ Ending run at Wed Jan 23 08:59:42 2013
 Total run time = 2 seconds
 kemelli@violeta:~/uq/appls/gravity/tests/test_2013_01_22$ 
 \end{lstlisting}
+
+
+\subsection{Application Run with Several Processors}
+\new{
+Even though the application described in Section \ref{sec:application_code} is a serial code, it is possible to run it using more than one processor, i.e., in parallel mode. 
+Supposing the user's workstation has $N_p=8$ processors, then, the user my choose to have $N_s =$ 8, 4 or 2 subenvironments. This complies with the requirement that the total number of processors in the environment must be a multiple of the specified number of subenvironments.
+
+Thus, to build and run the application code with $N_p = 8$, and $N_s=8$ subenvironments, the must set the variable \texttt{env\_numSubEnvironments = 8} in the input file (Listing~\ref{code:gravity_inp_sip}) and enter the following command lines:
+
+}
+
+\begin{lstlisting}[caption={}, label={},language={bash}]
+cd examples/gravity/src
+make
+mpirun -np 8 ./gravity_gsl gravity_inv_fwd.inp
+\end{lstlisting}
+
+\new{
+The steps above will create a total number of 8 raw chains of size defined by the variable \texttt{ip\_mh\_rawChain\_size} which will be combined into a single chain of size 8*\texttt{ip\_mh\_rawChain\_size} in a file named according to the variable \texttt{ip\_mh\_rawChain\_dataOutputFileName}. 
+QUESO also provides the user with the option of writing each chain -- handled by its corresponding processor -- in a separate file, which is accomplished by setting the variable \texttt{ip\_mh\_rawChain\_dataOutputAllowedSet = 0 1 ... Ns-1}.\\
+
+\noindent
+{\bf Note:} Although the discussion in the previous paragraph refers to the raw chain of a SIP, the analogous is true for the filtered chains (SIP), and for the samples employed in the SFP (\texttt{ip\_mh\_filteredChain\_size},    \texttt{fp\_mc\_qseq\_size} and \texttt{fp\_mc\_qseq\_size}, respectively). 
+
+}
+
+
 
 \section{Application Results}\label{sec:application_results}
 
