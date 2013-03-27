@@ -2,13 +2,6 @@
 \thispagestyle{headings}
 \markboth{Chapter \ref{ch-introduction}: Introduction}{Chapter \ref{ch-introduction}: Introduction}
 
-%The purpose of this chapter is to introduce the main concepts and results necessary for
-%a more formal treatment of the prediction problem.
-%Section \ref{sc-intro-qoi} presents a first mathematical model of a system, as well as the applicability of Bayes' theorem to our prediction problem.
-%The chapter finishes with the presentation of a more detailed model of a system in Section \ref{sc-intro-detail}.
-
-
-
 QUESO is a parallel object-oriented statistical library dedicated to the research of statistically robust, scalable, load balanced, and fault-tolerant mathematical algorithms for the quantification of uncertainty (UQ) of mathematical models and their predictions. 
 % It has been developed to implement advanced algorithms for Bayesian
 % inference, including are many variants of MCMC and the multi-level algorithm.  It is able to handle uni- and multi-processor Linux
@@ -18,20 +11,9 @@ QUESO is a parallel object-oriented statistical library dedicated to the researc
 The purpose of this chapter is to introduce relevant terminology, mathematical and statistical concepts, statistical algorithms, together with an overall description of how the user's application may be linked with the QUESO library.
 
 
+
 \section{Preliminaries}
 
-% Inverse problems is the name designated to a large and interesting class of mathematically intractable problems which arise in a wide variety of scientific disciplines. According to Keller (1976) two problems are defined as inverse to each other if the formulation of each of them rests on complete or partial knowledge of the solution of the other. Thus inverse problems come paired with direct problems. The labeling of the two problems is fundamentally indifferent, however, the direct problem has typically been studied earlier and, possibly, in more details than the inverse problem.
-
-% 
-% Inverse problems are defined as the inverse of direct or forward problems, as the term itself suggests.
-% Inverse problems apply, in general, to situations where certain quantities of interest are different from the ones that are accessible to measurements.
-% % \cite{Andersen2001}. 
-
-% A typical feature of inverse problems is that they often fail to fulfill Hadamard's presumptions of well-posedness, i.e., a unique solution may not exist or may not depend continuously  on the given data.
-% By reformulating inverse problems for statistical inference,  regularization of ill-posed problems may be obtained through Bayesian approach ( 
-% by assuming that the a priori beliefs about the solution before having observed any data can be described by a prior distribution). 
-
-% Statistical inverse theory reformulates inverse problems as problems of statistical inference by means of Bayesian statistics. In Bayesian statistics all quantities are modeled as random variable. The randomness, which reflects the observer's uncertainty concerning their values, is coded in the probability distribution of the quantities. From the perspective of statistical inversion theory, the solution to an inverse problem is the probability distribution of the quantity of interest when all information available has been incorporated in the model. This distribution, called the posterior distribution, describes the degree of confidence about the quantity after the measurement has been performed.
 
 Statistical inverse theory reformulates inverse problems as problems of statistical inference by means of Bayesian statistics: all quantities are modeled as random variables, and probability distribution of the quantities encapsulates the uncertainty observed in their values. The solution to the inverse problem is then the probability distribution of the quantity of interest when all information available has been incorporated in the model. This (posterior) distribution describes the degree of confidence about the quantity after the measurement has been performed \cite{KaSo05}.
 
@@ -42,7 +24,6 @@ The likelihood function has an open form and its evaluation is highly computatio
 It is often not straightforward to obtain explicit posterior point estimates of the solution, since it usually involves the evaluation of a high-dimensional integral with respect to a possibly non-smooth posterior distribution. In such cases, an alternative integration technique is the Markov chain Monte Carlo method: posterior means may be estimated using the sample mean from a series of random draws from the posterior distribution.
 
 QUESO is designed in an abstract way so that it can be used by any computational model, as long as a likelihood function (in the case of statistical inverse problems) and a quantity of interest (QoI) function (in the case of statistical forward problems) is provided by the user application.
-
 
 QUESO provides tools for both sampling algorithms for statistical inverse problems, following Bayes' formula, and statistical forward problems. It contains Monte Carlo solvers (for autocorrelation, kernel density estimation and accuracy assessment), MCMC (e.g. Metropolis Hastings \cite{Metr_1953,Hast_1970}) as well as the DRAM \cite{HaLaMiSa06} (for sampling from probability distributions); it also has the capacity to handle many chains or sequences in parallel, each chain or sequence itself demanding many computing nodes because of the computational model being statistically explored \cite{PrSc09}.
 
