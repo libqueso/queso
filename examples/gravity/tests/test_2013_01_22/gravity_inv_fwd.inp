@@ -1,10 +1,10 @@
 ###############################################
 # UQ Environment
 ###############################################
-env_numSubEnvironments   = 1
+env_numSubEnvironments   = 1 #or 8, if 8 processors can be used in a parallel run;  see Section 5.5.1
 env_subDisplayFileName   = outputData/display_env
 env_subDisplayAllowAll   = 0
-env_subDisplayAllowedSet = 0 1
+env_subDisplayAllowedSet = 0 1 2 3 4 5 6 7
 env_displayVerbosity     = 2 
 env_seed                 = -1 
 
@@ -27,7 +27,7 @@ ip_mh_rawChain_generateExtra        = 0
 ip_mh_rawChain_displayPeriod        = 2000
 ip_mh_rawChain_measureRunTimes      = 1
 ip_mh_rawChain_dataOutputFileName   = outputData/sip_gravity_raw_chain
-ip_mh_rawChain_dataOutputAllowedSet = 0 1
+ip_mh_rawChain_dataOutputAllowedSet = 0 1 2 3 4 5 6 7
 
 ip_mh_displayCandidates             = 0
 ip_mh_putOutOfBoundsInChain         = 0 
@@ -43,7 +43,6 @@ ip_mh_filteredChain_discardedPortion     = 0.
 ip_mh_filteredChain_lag                  = 20
 ip_mh_filteredChain_dataOutputFileName   = outputData/sip_gravity_filtered_chain
 ip_mh_filteredChain_dataOutputAllowedSet = 0 1
-
 
 ###############################################
 # Statistical forward problem (fp)
@@ -66,7 +65,7 @@ fp_mc_pseq_dataOutputFileName   = outputData/sfp_gravity_p_seq
 fp_mc_pseq_dataOutputAllowedSet = 0 1
 
 fp_mc_qseq_dataInputFileName    = . 
-fp_mc_qseq_size                 = 16384
+fp_mc_qseq_size                 = 20000
 fp_mc_qseq_displayPeriod        = 20000
 fp_mc_qseq_measureRunTimes      = 1
 fp_mc_qseq_dataOutputFileName   = outputData/sfp_gravity_qoi_seq
