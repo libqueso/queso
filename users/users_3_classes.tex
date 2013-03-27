@@ -794,6 +794,17 @@ For a SFP, the variable assignment \verb+fp_computeSolution = 1+ tells QUESO to 
 An example a complete input file used by QUESO to solve a SIP--SFP is presented in Section \ref{sec:application_input_file}; however every application example included in \Queso{} build and installation directories \verb+examples+ has an options input file and the user is invited to familiarize him/herself with them.
 
 
+
+\section{Revisiting Priors}
+\new{
+QUESO offers a variety of prior distributions: uniform, Gaussian, Beta, Gamma, Inverse Gamma, and Log Normal. Also, QUESO presents the option of concatenating any of those priors, through the Concatenated prior. 
+
+Concatenated priors are employed in problems with multiple random parameters. They allow one random parameter to have a different prior distribution then other; i.e., one variable may have a uniform prior distribution whereas other may have a Gaussian prior distribution.
+
+It is important to notice that, in order to set a Gaussian prior, besides providing the mean, the user must also supply the \underline{variance}, not the  standard deviation. % in case of 1D problems, or covariance matrix in case of the higher-dimensional problems), not the standard deviation.
+}
+\todo{Add a section in the end of gravity example showing how to do concatenated priors?}
+
 \section{Running with Multiple Chains or Monte Carlo Sequences}
 
 \new{}\vspace{-30pt}
@@ -809,14 +820,14 @@ Also, the total number $N_p$ of processors in the full communicator, usually nam
 
 
 
+\section{Running with Models that Require Parallel Computing}
 
-\section{Using a Gaussian Prior}
-\new{
-QUESO offers a variety of priors: uniform, Gaussian, Beta, Gamma, Inverse Gamma, Wigner, Log Normal. Also, QUESO presents the option of concatenating any of those priors. Concatenated priors are commonly employed in multi-dimensional problems when one of the RV assumes a different behavior than other, i.e., one may have a uniform prior distribution whereas other may have a Gaussian.
+It is possible to run QUESO with models that require parallel computing as long as total number of processors $N_p$ is multiple of the number of subenvironments $N_s$. QUESO will internally create $N_s$ subcommunicators, each of size $N_p/N_s$, and make sure that the likelihood and QoI routines are called for all processors in these subcommunicators.
+Each subcommunicator is accessible through \texttt{env.subComm()}.
 
-In order to set a Gaussian prior, besides providing the mean, the user must also supply the \underline{variance}, not the  standard deviation. % in case of 1D problems, or covariance matrix in case of the higher-dimensional problems), not the standard deviation.
-}
-\todo{Add a section in the end of gravity example showing how to do concatenated priors?}
+The user, however, must keep in mind the possible occurrence of race condition, especially in the case where the application is a black box and files are being accessed constantly (data is being written and read).
+
+
 
 % 
 % \subsection{Solver Options for Raw Chain}
