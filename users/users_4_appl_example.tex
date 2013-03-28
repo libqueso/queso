@@ -283,7 +283,7 @@ Note that the names of the variables have been designed to be informative:
 \lstinputlisting[caption=Some options for QUESO library used in application code (Listings \ref{code:gravity_main}-\ref{code:gravity_like_C})., label={code:gravity_inp_sip},]{../../trunk/examples/gravity/tests/test_2013_01_22/gravity_inv_fwd.inp}
 
 
-
+ 
 
 Moreover, for the gravity inverse problem, one may notice that QUESO will use the Metropolis-Hastings algorithm to sample the posterior PDF
 (indicated by the prefix \texttt{mh\_}in the variable names) without adaptive steps
@@ -308,7 +308,7 @@ Then, in order to run the application code, together with its input file \verb+g
 \begin{lstlisting}[caption={}, label={},language={bash}]
 cd examples/gravity/src
 make
-gravity_gsl gravity_inv_fwd.inp
+./gravity_gsl gravity_inv_fwd.inp
 \end{lstlisting}
 
 
