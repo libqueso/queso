@@ -1,7 +1,6 @@
 /*-------------------------------------------------------------------
- *-------------------------------------------------------------------
  *
- * Copyright (C) 2008 The PECOS Development Team
+ * Copyright (C) 2012 The PECOS Development Team
  *
  * Please see http://pecos.ices.utexas.edu for more information.
  *
@@ -24,12 +23,12 @@
  *-------------------------------------------------------------------
  *
  * $Id$
- *
+ */
+ /*------------------------------------------------------------------
  * Brief description of this file: 
  * 
- * This file contains the code for the user defined likelihood data class
- * and the user defined likelihood routine.
- *-------------------------------------------------------------------
+ * This file contains the code for the user defined likelihood data 
+ * class and the user defined likelihood routine.
  *-----------------------------------------------------------------*/
 
 #include <gravity_likelihood.h>
@@ -53,7 +52,6 @@ likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(const uqBaseEnvironment
       0.030,0.050,0.010,0.040,0.010,0.09};
   
   std::size_t const n = sizeof(heights)/sizeof(*heights); 
-
   m_heights.assign(heights, heights + n);
   m_times.assign  (times,   times   + n);
   m_stdDevs.assign(stdDevs, stdDevs + n);
@@ -92,8 +90,7 @@ double likelihoodRoutine(
                       "paramValues vector does not have size 1");
   
   // Compute likelihood 
-  double g = paramValues[0];
-  
+  double g = paramValues[0];  
   const std::vector<double>& heights=((likelihoodRoutine_DataClass*) functionDataPtr)->m_heights;
   const std::vector<double>& times  =((likelihoodRoutine_DataClass*) functionDataPtr)->m_times;
   const std::vector<double>& stdDevs=((likelihoodRoutine_DataClass*) functionDataPtr)->m_stdDevs;
@@ -103,7 +100,6 @@ double likelihoodRoutine(
     double modelTime = sqrt(2.0 * heights[i]/g);
     double ratio = (modelTime - times[i])/stdDevs[i];
     misfitValue += ratio*ratio;
-  }
-  
+  }  
   return (-0.5*misfitValue);  
 }

@@ -1,7 +1,6 @@
 /*-------------------------------------------------------------------
- *-------------------------------------------------------------------
  *
- * Copyright (C) 2008 The PECOS Development Team
+ * Copyright (C) 2012 The PECOS Development Team
  *
  * Please see http://pecos.ices.utexas.edu for more information.
  *
@@ -24,7 +23,8 @@
  *-------------------------------------------------------------------
  *
  * $Id$
- *
+ */
+ /*------------------------------------------------------------------
  * Brief description of this file: 
  * 
  * This file is divided in two parts:
@@ -38,7 +38,6 @@
  *
  * The SFP definition requires a user defined qoi function. 
  * See files 'gravity_qoi.h' and 'gravity_qoi.C'.
- *-------------------------------------------------------------------
  *-----------------------------------------------------------------*/
 
 #include <gravity_compute.h>
@@ -49,7 +48,6 @@
 #include <uqStatisticalForwardProblem.h>
 #include <sys/time.h>
 #include <cmath>
-
 
 //================================================================
 // If PRIOR_IS_GAUSSIAN is defined, then:
@@ -129,6 +127,7 @@ void computeGravityAndTraveledDistance(const uqFullEnvironmentClass& env) {
   //------------------------------------------------------
   // SIP Step 4 of 6: Define the prior RV
   //------------------------------------------------------
+  
 #ifdef PRIOR_IS_GAUSSIAN
   uqGslVectorClass meanVector( paramSpace.zeroVector() ); 
   meanVector[0] = 9;

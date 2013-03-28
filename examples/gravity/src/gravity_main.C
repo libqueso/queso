@@ -1,7 +1,6 @@
 /*-------------------------------------------------------------------
- *-------------------------------------------------------------------
  *
- * Copyright (C) 2008 The PECOS Development Team
+ * Copyright (C) 2012 The PECOS Development Team
  *
  * Please see http://pecos.ices.utexas.edu for more information.
  *
@@ -24,7 +23,8 @@
  *-------------------------------------------------------------------
  *
  * $Id$
- *
+ */
+ /*------------------------------------------------------------------
  * Brief description of this file: 
  * 
  * This is an example of how to use QUESO classes and algorithms in
@@ -49,7 +49,6 @@
  * - 'gravity_likelihood.h'
  * - 'gravity_qoi.C' (necessary for the SFP)
  * - 'gravity_qoi.h'
- *-------------------------------------------------------------------
  *-----------------------------------------------------------------*/
 
 #include <gravity_compute.h>
