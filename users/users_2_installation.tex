@@ -317,7 +317,18 @@ changes have not adversely affected existing features of the library, as describ
 % It should be clear, though, that all executables might be implemented in either *.h or *.C files: it is a matter of how generic you want your application to be.
 
 
-\subsection{Running QUESO Examples} \label{sc-running-execs}
+\section{The Installed Directory Structure} \label{sc-installed-dir-structure}
+
+After having successfully executed steps described in \textsection{}\ref{sec:Pre_Queso} through \textsection{}\ref{sec:install_Queso_make}, the QUESO installed directory will contain four subdirectories:
+\begin{enumerate}
+ \item \verb+bin+: contains the executable \verb+queso_version+, which provides information about the installed library.
+ \item \verb+lib+: contains the static and dynamic versions of the library. The full path should be added to the users \verb+LD_LIBRARY_PATH+ environmental variable in order to use QUESO.
+ \item \verb+include+: contains the \verb+*.h+ files.
+\end{enumerate}
+
+
+
+\section{Running QUESO Examples} \label{sc-running-execs}
 
 This section assumes that you have successfully executed steps described in Sections \ref{sec:Pre_Queso} through \ref{sec:Queso_docs} above.
 The codes listed in this section are quite self-explanatory and print messages during execution to make clearer which problem they are solving and how. 
@@ -331,7 +342,7 @@ It is worth noting presence of an argument passed to the executable in the examp
 A complete example of an application that uses QUESO to solve a combination of a SIP and a SFP is in presented in Chapter \ref{ch-appl-example}. The chapter presents the mathematical models for both the SIP and SFP, the application code, the options input file and the Makefile to link the code  with QUESO library.
 
 
-\subsubsection{A Simple Statistical Inverse Problem}\label{sec:executable_sip}
+\subsection{A Simple Statistical Inverse Problem}\label{sec:executable_sip}
 
 This example is located at `\verb+examples/statisticalInverseProblem+ and consists of a set  of three files to illustrate the use of QUESO library to solve a simple inverse problem with four parameters.
 
@@ -351,7 +362,7 @@ $ ls -l outputData/*.png
 
 As a result, the user should have created a couple of PNG plots for both marginal posterior PDFs of all four parameters and samples of first two parameters on the plane.
 
-\subsubsection{A Simple Statistical Forward Problem}
+\subsection{A Simple Statistical Forward Problem}
 
 This example consists of a set of three files to illustrate the use of QUESO library to solve a simple forward problem and it is located at `\texttt{examples/statisticalForwardProblem/}'. %Some details about the files structure are presented in Section \ref{sec:Examples_sfp}.
 
@@ -371,16 +382,6 @@ $ ls -l outputData/*.png
 
 
 In this case, the user should have created a few PNG plots for the QoI kernel density estimation, cumulative distribution function and autocorrelation.
-
-
-\section{The Installed Directory Structure} \label{sc-installed-dir-structure}
-
-After having successfully executed steps described in \textsection{}\ref{sec:Pre_Queso} through \textsection{}\ref{sec:install_Queso_make}, the QUESO installed directory will contain four subdirectories:
-\begin{enumerate}
- \item \verb+bin+: contains the executable \verb+queso_version+, which provides information about the installed library.
- \item \verb+lib+: contains the static and dynamic versions of the library. The full path should be added to the users \verb+LD_LIBRARY_PATH+ environmental variable in order to use QUESO.
- \item \verb+include+: contains the \verb+*.h+ files.
-\end{enumerate}
 
 
 \section{Create your Application with the Installed QUESO} \label{sc-use-queso}

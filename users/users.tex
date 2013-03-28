@@ -119,10 +119,9 @@ aboveskip =10pt,
 %\newcommand{\new}[1]{{\marginpar{\color{red}\small\raggedright\textsf{\hspace{0pt} NEW}}} \textbf{#1}}
 
 %\newcommand{\new}[1]{{\marginpar{\color{red}\small\raggedright\textsf{\hspace{0pt} NEW}}} #1}
-\newcommand{\kemargin}[1]{\marginpar{\color{red}\tiny\raggedright\textsf{\hspace{0pt}#1}}}
 
 
-\newcommand{\new}[1]{\reversemarginpar{\color{red}\tiny\raggedright\textsf{\hspace{-30pt}\vspace{-30pt} NEW}} \begin{leftbar} #1 \end{leftbar}}
+\newcommand{\new}[1]{\reversemarginpar{\color{red}\tiny\raggedright\textsf{\hspace{-30pt}\vspace{-25pt} NEW}} \begin{leftbar} #1 \end{leftbar}}
 
 \begin{document}
 
@@ -136,18 +135,23 @@ aboveskip =10pt,
 \numberwithin{figure}{section}
 \numberwithin{table}{section}
 
-\include{users_0_cover}
-%\cite{BaOd05}
-
-\pagenumbering{arabic}
-
+ \include{users_0_cover}
+% 
+% \pagenumbering{arabic}
+% 
 % \include{users_1_introduction}
 % 
 % \include{users_2_installation}
 % 
 % \include{users_3_classes}
-% 
-% \include{users_4_appl_example}
+
+\include{users_4_appl_example}
+
+
+\addcontentsline{toc}{chapter}{References}
+
+\bibliography{../../../bibs/uq.bib}
+%\bibliography{uq.bib}
 
 
 \begin{appendix}
@@ -160,8 +164,5 @@ aboveskip =10pt,
    
 \end{appendix}    
  
-\addcontentsline{toc}{chapter}{References}
 
-\bibliography{../../../bibs/uq.bib}
-%\bibliography{uq.bib}
 \end{document}

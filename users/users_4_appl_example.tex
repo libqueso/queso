@@ -243,21 +243,22 @@ Monte Carlo is implemented in QUESO and it is the chosen algorithm to compute a 
 \section{Application Code}\label{sec:application_code}
 
 The source code for the SIP and the SFP is composed of 7 files.
-Three of them are common for both problems: \texttt{gravity\_main.C, gravity\_compute.h} and \texttt{gravity\_compute.C,}.
-Two of them are specific for the SIP: \texttt{gravity\_likelihood.h}, and \texttt{gravity\_likelihood.C}.
-And two of them are specific for the SFP: \texttt{gravity\_qoi.h} and \texttt{gravity\_qoi.C}.
+Three of them are common for both problems: \texttt{gravity\_main.C, gravity\_compute.h} and \texttt{gravity\_compute.C,}; they combine both problems and use the solution of the SIP (the posterior PDF for the gravity) as an input for the SFP and are presented, respectively, in Listings \ref{code:gravity_main}, \ref{code:gravity_compute_h} and \ref{code:gravity_compute_C}.
+Two of files specifically  handle the SIP: \texttt{gravity\_likelihood.h}, and \texttt{gravity\_likelihood.C}, and are displayed in Listings \ref{code:gravity_like_h} and \ref{code:gravity_like_C}. Finally, the files specific for the SFP are \texttt{gravity\_qoi.h} and \texttt{gravity\_qoi.C}, and they are presented in Listings \ref{code:gravity_qoi_h} and \ref{code:gravity_qoi_C}.
 
-Here we present the first 5 files, in Listings \ref{code:gravity_main}, \ref{code:gravity_compute_h}, \ref{code:gravity_compute_C}, \ref{code:gravity_like_h} and \ref{code:gravity_like_C}.
-
-\lstinputlisting[caption=File \texttt{gravity\_main.C.}, label=code:gravity_main, linerange={1-2,28-1000}]{../../trunk/examples/gravity/src/gravity_main.C}
+\lstinputlisting[caption=File \texttt{gravity\_main.C.}, label=code:gravity_main, linerange={27-1000}]{../../trunk/examples/gravity/src/gravity_main.C}
  
-\lstinputlisting[caption=File \texttt{gravity\_compute.h.}, label=code:gravity_compute_h, linerange={1-2,30-1000}]{../../trunk/examples/gravity/src/gravity_compute.h}
+\lstinputlisting[caption=File \texttt{gravity\_compute.h.}, label=code:gravity_compute_h, linerange={27-1000}]{../../trunk/examples/gravity/src/gravity_compute.h}
 
-\lstinputlisting[caption={File \texttt{gravity\_compute.C}. The first part of the code (lines 37--113) handles the statistical forward problem, whereas the second part of the code (lines 115--163) handles the statistical forward problem.}, label=code:gravity_compute_C, linerange={1-2,30-1000},numbers=left]{../../trunk/examples/gravity/src/gravity_compute.C}
+\lstinputlisting[caption={File \texttt{gravity\_compute.C}. The first part of the code (lines 37--113) handles the statistical forward problem, whereas the second part of the code (lines 115--163) handles the statistical forward problem.\\}, label=code:gravity_compute_C, linerange={27-1000},numbers=left]{../../trunk/examples/gravity/src/gravity_compute.C}
 
-\lstinputlisting[caption=File \texttt{gravity\_likelihood.h}., label=code:gravity_like_h, linerange={1-2,30-1000}]{../../trunk/examples/gravity/src/gravity_likelihood.h}
+\lstinputlisting[caption=File \texttt{gravity\_likelihood.h}., label=code:gravity_like_h, linerange={27-1000}]{../../trunk/examples/gravity/src/gravity_likelihood.h}
 
-\lstinputlisting[caption=File \texttt{gravity\_likelihood.C}., label=code:gravity_like_C, linerange={1-2,28-1000}]{../../trunk/examples/gravity/src/gravity_likelihood.C}
+\lstinputlisting[caption=File \texttt{gravity\_likelihood.C}., label=code:gravity_like_C, linerange={27-1000}]{../../trunk/examples/gravity/src/gravity_likelihood.C}
+
+\lstinputlisting[caption=File \texttt{gravity\_qoi.h}., label=code:gravity_qoi_h, linerange={27-1000}]{../../trunk/examples/gravity/src/gravity_qoi.h}
+
+\lstinputlisting[caption=File \texttt{gravity\_qoi.C}., label=code:gravity_qoi_C, linerange={27-96}]{../../trunk/examples/gravity/src/gravity_qoi.C}
 
 \section{Application Input File}\label{sec:application_input_file}
 
@@ -515,7 +516,7 @@ Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together wi
 % %This is accomplished in lines 75 -- 100 of code \ref{code:gravity_compute_bruteforce_C}: it replaces Steps 4-6 (lines 100-150)
 % %of the original application code provided in Algorithm \ref{code:gravity_compute_C}.
 % 
-% %\lstinputlisting[caption={Application code modified to `brute force' sampling from pre-defined interval.}, label={code:gravity_compute_bruteforce_C},  linerange={1-2,28-1000}]{../../brute_force/gravity_compute.C}
+% %\lstinputlisting[caption={Application code modified to `brute force' sampling from pre-defined interval.}, label={code:gravity_compute_bruteforce_C},  linerange={28-1000}]{../../brute_force/gravity_compute.C}
 %  
 % %Once more, Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) may be used for plotting the KDE of the parameter.
 % %The Matlab code below is responsible for the generation of Figure \ref{fig:sip_gravity_compare_brute_force_unnormal}.
