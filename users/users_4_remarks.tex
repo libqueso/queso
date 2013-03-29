@@ -55,10 +55,18 @@ Also, the total number $N_p$ of processors in the full communicator, usually nam
 
 \section{Running with Models that Require Parallel Computing}
 \new{
-It is possible to run QUESO with models that require parallel computing as long as total number of processors $N_p$ is multiple of the number of subenvironments $N_s$. QUESO will internally create $N_s$ subcommunicators, each of size $N_p/N_s$, and make sure that the likelihood and QoI routines are called for all processors in these subcommunicators.
-Each subcommunicator is accessible through \texttt{env.subComm()}.
+It is possible to run QUESO with models that require parallel computing as long as total number of processors $N_p$ is multiple of the number of subenvironments $N_s$. QUESO will internally create $N_s$ subcommunicators, each of size $N_p/N_s$, and make sure that the likelihood and QoI routines are called for all processors in these subcommunicators -- the
+likelihood/QoI routine will have available a communicator of size $N_p/N_s$. For instance, if $N_p = 2048$ and $N_s = 16$, then each likelihood/QoI will have available a communicator of size 128. s
+Each subcommunicator is accessible through \texttt{env.subComm()}. At the end of the simulation, there will be a total of $N_s$ chains.
+%  For instance:
+% 
+% const uqBaseEnvironmentClass& env = paramValues.env();
+% std::cout << env.subComm().NumProc();
+% std::cout << env.subRank();
+% ... env.subComm().Comm() ...
+% ... env.subComm().Barrier() ...
 
-The user, however, must keep in mind the possible occurrence of race condition, especially in the case where the application is a black box and files are being accessed constantly (data is being written and read).
+The user, however, must keep in mind the possible occurrence of race condition, especially in the case where the application is a black box and files are being accessed constantly (e.g. data is being written and read).
 }
 
 
