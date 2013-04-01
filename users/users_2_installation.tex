@@ -8,15 +8,10 @@
 This chapter covers the basic steps that a user will need follow when beginning to use QUESO: 
 how to obtain, configure, build, install, and test the library.  It also presents both QUESO source and installed directory structure, some simple examples and finally,  introduces the user on how to use QUESO together with his/her application.
 
-This manual is current at the time of
-printing; however, QUESO library  is under active development. For the most up-to-date, accurate and complete information,
-please visit the online \Queso{} Home Page\footnote{\Quesoweb}.
-
-
-
+This manual is current at the time of printing; however, QUESO library  is under active development.
+%For the most up-to-date, accurate and complete information, please visit the online \Queso{} Home Page\footnote{\Quesoweb}.
         
 \section{Pre-QUESO Installation Steps}\label{sec:Pre_Queso}
-
 
 Herein, suppose you want to install QUESO and its dependencies on the following directory:
 \begin{lstlisting}
@@ -100,12 +95,12 @@ $ setenv FC gfortran
 
 % \footnote{Under UNIX bash shell, {\tt.cshrc} shall be replaced by startup file such as {\tt.bashrc}, and the command {\tt setenv} with \texttt{export}.}
 
-
 \section{Obtaining a Copy of \Queso{}}
 
-The latest supported public release of \Queso{} is available in the form of a tarball (tar format compressed with gzip) from \Quesoweb{}.
+The \Queso{} library is available in the form of a tarball (tar format compressed with gzip), for research collaborators, upon request to Ernesto E. Prudencio (prudenci@ices.utexas.edu).
 
-Supposing you have downloaded the file `\verb+queso-0.45.3.tar.gz+' into \texttt{\$HOME/queso\_download/}, follow the commands to expand the tarball:
+Suppose you have copied the file `\verb+queso-0.45.3.tar.gz+' into \texttt{\$HOME/queso\_download/}.
+Then just follow these commands to expand the tarball:
 \begin{lstlisting}
 $ cd $HOME/queso_download/
 $ tar xvf queso-0.45.3.tar.gz
