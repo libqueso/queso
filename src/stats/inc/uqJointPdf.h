@@ -33,6 +33,7 @@
 #include <math.h>
 #include <uqScalarFunction.h>
 #include <boost/math/special_functions.hpp> // for Boost isnan. Note parantheses are important in function call.
+#include <gsl/gsl_randist.h>
 
 //*****************************************************
 // Classes to accomodate a probability density.
@@ -574,6 +575,7 @@ uqGaussianJointPdfClass<V,M>::uqGaussianJointPdfClass(
   m_diagonalCovMatrix(true),
   m_lawCovMatrix     (m_domainSet.vectorSpace().newDiagMatrix(lawVarVector))
 {
+
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering uqGaussianJointPdfClass<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
