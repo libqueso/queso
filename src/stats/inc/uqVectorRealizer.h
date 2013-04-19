@@ -194,7 +194,7 @@ public:
         void updateLowerCholLawCovMatrix(const M& matU,
                                          const V& vecSsqrt,
                                          const M& matVt);
-    
+
 private:
   V* m_unifiedLawExpVector;
   V* m_unifiedLawVarVector;
@@ -626,7 +626,18 @@ template<class V, class M>
 void
 uqGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 {
-  nextValues.cwSetGamma(m_a,m_b);
+  // nextValues.cwSetGamma(m_a,m_b);
+    
+  // begin kemelli 2013-April-18 : 
+  bool outOfSupport = true;
+  do {
+
+	nextValues.cwSetGamma(m_a,m_b);
+	outOfSupport = !(this->m_unifiedImageSet.contains(nextValues));
+  } while (outOfSupport); 
+
+  // end kemelli 2013-April-18 :
+  
   return;
 }
 
