@@ -803,6 +803,38 @@ uqBetaVectorRVClass<V,M>::uqBetaVectorRVClass(
                             << std::endl;
   }
 
+// begin kemelli 2013-April-22 : --------------------------
+
+  const uqBoxSubsetClass<V,M>* imageBox = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&imageSet);
+
+  double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
+  double biggerOfMaxValues = imageBox->maxValues().getMaxValue();	
+  double smallerOfMinValues = imageBox->minValues().getMinValue();
+  double biggerOfMinValues = imageBox->minValues().getMaxValue();	
+	
+ // Beta dist is defined only in [0,1]		
+ if( (smallerOfMinValues < 0) || ( biggerOfMaxValues > 1 ) ) 
+ {		
+   std::cerr << "In uqBetaVectorRVClass<V,M>::constructor()\n" 
+			 << "Beta distribution is defined only in [0, 1].\n"
+			 << "The data provided is: \n"
+			 << *imageBox 
+   			 << "Sampling will not cover all inteval.\n"   
+   			 << std::endl;
+
+ // if at least one of the min values > 1 then exit
+    UQ_FATAL_TEST_MACRO(biggerOfMinValues > 1,
+                      m_env.worldRank(),
+                      "In uqBetaVectorRVClass<V,M>::constructor()",
+                      "invalid input: Beta distribution is only defined in [0, 1], and max(m_minValues)>1. ");  
+ // if at least one of the max values < 0 then exit                      
+    UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0, //biggerOfMaxValues
+                      m_env.worldRank(),
+                      "In uqBetaVectorRVClass<V,M>::constructor()",
+                      "invalid input: Beta distribution is only defined in [0, 1], and min(m_maxValues)<0. ");                
+ }	
+  // end kemelli 2013-April-22 --------------------------
+  
   m_pdf        = new uqBetaJointPdfClass<V,M>(m_prefix.c_str(),
                                               m_imageSet,
                                               alpha,
@@ -882,7 +914,7 @@ uqGammaVectorRVClass<V,M>::uqGammaVectorRVClass(
   }
 
  
-// begin kemelli 2013-April-22 : 
+// begin kemelli 2013-April-22 -------------------------- 
 // better to check for the parameter values in the constructor, 
 // rather than in uqGammaVectorRealizerClass<V,M>::realization
 
@@ -890,7 +922,8 @@ uqGammaVectorRVClass<V,M>::uqGammaVectorRVClass(
   double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
   double smallerOfMinValues = imageBox->minValues().getMinValue();
 	
- // Gamma dist belongs to (0,inf)		
+	
+ // Gamma dist is defined only in (0,inf)		
  if( smallerOfMinValues < 0 ) 
  {		
    std::cerr << "In uqGammaVectorRVClass<V,M>::constructor()\n" 
@@ -903,11 +936,11 @@ uqGammaVectorRVClass<V,M>::uqGammaVectorRVClass(
 
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
                       m_env.worldRank(),
-                      "uqGammaVectorRealizerClass<V,M>::realization()",
+                      "uqGammaVectorRealizerClass<V,M>::constructor()",
                       "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0. ");      
               
  }	
-  // end kemelli 2013-April-22 
+  // end kemelli 2013-April-22 --------------------------
 
   m_pdf        = new uqGammaJointPdfClass<V,M>(m_prefix.c_str(),
                                                m_imageSet,
@@ -987,6 +1020,31 @@ uqInverseGammaVectorRVClass<V,M>::uqInverseGammaVectorRVClass(
                             << std::endl;
   }
 
+// begin kemelli 2013-April-22 -------------------------- 
+// InverseGamma dist is defined only in (0,inf)
+
+  const uqBoxSubsetClass<V,M>* imageBox = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&imageSet);
+  double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
+  double smallerOfMinValues = imageBox->minValues().getMinValue();
+ 		
+ if( smallerOfMinValues < 0 ) 
+ {		
+   std::cerr << "In uqInverseGammaVectorRVClass<V,M>::constructor()\n" 
+			 << "Inverse Gamma distribution is only defined in (0, infinity).\n"
+			 << "The data provided is: \n"
+			 << *imageBox 
+   			 << "Sampling will not cover all inteval.\n"   
+   			 << std::endl;
+
+
+    UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
+                      m_env.worldRank(),
+                      "uqInverseGammaVectorRealizerClass<V,M>::constructor()",
+                      "invalid input: Inverse Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0. ");      
+              
+ }	
+// end kemelli 2013-April-22 --------------------------
+  
   m_pdf        = new uqInverseGammaJointPdfClass<V,M>(m_prefix.c_str(),
                                                       m_imageSet,
                                                       alpha,
