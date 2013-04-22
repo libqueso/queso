@@ -72,7 +72,7 @@ protected:
           std::string                     m_prefix;
   const   uqVectorSetClass         <V,M>& m_imageSet;
           uqBaseJointPdfClass      <V,M>* m_pdf;
-	  uqBaseVectorRealizerClass<V,M>* m_realizer;
+	  	  uqBaseVectorRealizerClass<V,M>* m_realizer;
   const   uqBaseVectorCdfClass     <V,M>* m_subCdf;
   const   uqBaseVectorCdfClass     <V,M>* m_unifiedCdf;
   const   uqBaseVectorMdfClass     <V,M>* m_mdf;
@@ -865,6 +865,7 @@ private:
   using uqBaseVectorRVClass<V,M>::m_mdf;
 };
 
+// TODO: Check: the constructor receives imageSet, but uses m_imageSet to assign m_pdf and m_realizer. (Kemelli 2013/4/22)
 template<class V, class M>
 uqGammaVectorRVClass<V,M>::uqGammaVectorRVClass(
   const char*                  prefix,
@@ -880,6 +881,34 @@ uqGammaVectorRVClass<V,M>::uqGammaVectorRVClass(
                             << std::endl;
   }
 
+ 
+// begin kemelli 2013-April-22 : 
+// better to check for the parameter values in the constructor, 
+// rather than in uqGammaVectorRealizerClass<V,M>::realization
+
+  const uqBoxSubsetClass<V,M>* imageBox = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&imageSet);
+  double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
+  double smallerOfMinValues = imageBox->minValues().getMinValue();
+	
+ // Gamma dist belongs to (0,inf)		
+ if( smallerOfMinValues < 0 ) 
+ {		
+   std::cerr << "In uqGammaVectorRVClass<V,M>::constructor()\n" 
+			 << "Gamma distribution is only defined in (0, infinity).\n"
+			 << "The data provided is: \n"
+			 << *imageBox 
+   			 << "Sampling will not cover all inteval.\n"   
+   			 << std::endl;
+
+
+    UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
+                      m_env.worldRank(),
+                      "uqGammaVectorRealizerClass<V,M>::realization()",
+                      "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0. ");      
+              
+ }	
+  // end kemelli 2013-April-22 
+
   m_pdf        = new uqGammaJointPdfClass<V,M>(m_prefix.c_str(),
                                                m_imageSet,
                                                a,
@@ -888,6 +917,7 @@ uqGammaVectorRVClass<V,M>::uqGammaVectorRVClass(
                                                      m_imageSet,
                                                      a,
                                                      b);
+                                                      
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
