@@ -826,12 +826,12 @@ uqBetaVectorRVClass<V,M>::uqBetaVectorRVClass(
     UQ_FATAL_TEST_MACRO(biggerOfMinValues > 1,
                       m_env.worldRank(),
                       "In uqBetaVectorRVClass<V,M>::constructor()",
-                      "invalid input: Beta distribution is only defined in [0, 1], and max(m_minValues)>1. ");  
+                      "invalid input: Beta distribution is only defined in [0, 1], and max(m_minValues)>1");  
  // if at least one of the max values < 0 then exit                      
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0, //biggerOfMaxValues
                       m_env.worldRank(),
                       "In uqBetaVectorRVClass<V,M>::constructor()",
-                      "invalid input: Beta distribution is only defined in [0, 1], and min(m_maxValues)<0. ");                
+                      "invalid input: Beta distribution is only defined in [0, 1], and min(m_maxValues)<0");                
  }	
   // end kemelli 2013-April-22 --------------------------
   
@@ -937,7 +937,7 @@ uqGammaVectorRVClass<V,M>::uqGammaVectorRVClass(
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
                       m_env.worldRank(),
                       "uqGammaVectorRealizerClass<V,M>::constructor()",
-                      "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0. ");      
+                      "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0");      
               
  }	
   // end kemelli 2013-April-22 --------------------------
@@ -1040,7 +1040,7 @@ uqInverseGammaVectorRVClass<V,M>::uqInverseGammaVectorRVClass(
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
                       m_env.worldRank(),
                       "uqInverseGammaVectorRealizerClass<V,M>::constructor()",
-                      "invalid input: Inverse Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0. ");      
+                      "invalid input: Inverse Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0");      
               
  }	
 // end kemelli 2013-April-22 --------------------------
@@ -1204,6 +1204,32 @@ uqLogNormalVectorRVClass<V,M>::uqLogNormalVectorRVClass(
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
+
+
+// begin kemelli 2013-April-23 -------------------------- 
+// LogNormal dist is defined only in (0,inf)
+
+  const uqBoxSubsetClass<V,M>* imageBox = dynamic_cast<const uqBoxSubsetClass<V,M>* >(&imageSet);
+  double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
+  double smallerOfMinValues = imageBox->minValues().getMinValue();
+ 		
+ if( smallerOfMinValues < 0 ) 
+ {		
+   std::cerr << "In uqLogNormalVectorRVClass<V,M>::constructor()\n" 
+			 << "LogNormal distribution is only defined in (0, infinity).\n"
+			 << "The data provided is: \n"
+			 << *imageBox 
+   			 << "Sampling will not cover all inteval.\n"   
+   			 << std::endl;
+
+
+    UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
+                      m_env.worldRank(),
+                      "uqLogNormalVectorRealizerClass<V,M>::constructor()",
+                      "invalid input: LogNormal distribution is only defined in (0, infinity), and min(m_maxValues)<0");      
+              
+ }	
+// end kemelli 2013-April-23 --------------------------
 
   m_pdf = new uqLogNormalJointPdfClass<V,M>(m_prefix.c_str(),
                                             m_imageSet,
