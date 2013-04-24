@@ -17,7 +17,7 @@ check_PROGRAMS += test_uqGslMatrixConstructorFatal
 check_PROGRAMS += test_uqGslMatrix
 check_PROGRAMS += test_uqTeuchosVector
 
-LIBS         = -L$(top_builddir)/src/ -lqueso 
+LIBS         = -L$(top_builddir)/src/ -lqueso
 
 AM_CPPFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src \
               -I. \
@@ -33,6 +33,7 @@ endif
 
 if TRILINOS_ENABLED
   AM_CPPFLAGS += -I$(TRILINOS_INCLUDE) $(EPETRA_INCLUDES)
+  LIBS += -lteuchos -lepetra
 endif
 
 if GLPK_ENABLED	
