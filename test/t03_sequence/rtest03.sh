@@ -10,7 +10,6 @@
 #----------------------------------------------------------
 
 TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)
-TOPDIR="./"		                   # relative to regression dir
 SAVELOG=0		                   # Log model output?
 COMMONDIR="../common"
 
@@ -21,9 +20,6 @@ COMMONDIR="../common"
 RUNDIR=`pwd`
 
 . $COMMONDIR/verify.sh
-
-cd $TOPDIR
-verify_file_exists $EXE
 
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
@@ -40,10 +36,10 @@ TESTNAME='Test 3 (Sip + Sfp example)'
 
 # Setup desired input for the model
 
-cd $TEST_DIR
-
 rm -f $SOLDIR/*.txt
 rm -f $SOLDIR/*.m
+
+verify_file_exists $EXE
 verify_file_exists $INFILE
 
 # Remove output directory to nullify any previous results (and verify QUESO
@@ -72,8 +68,8 @@ for file in display_sub0.txt ; do
 
 #    pwd
 #    echo $SOLREFS/$file
-    grep "e-\|e+" $SOLREFS/$file | grep -v sec > $SOLDIR/nada0
-    grep "e-\|e+" $SOLDIR/$file | grep -v sec > $SOLDIR/nada1
+    grep "e-[0-9]\|e+[0-9]" $SOLREFS/$file | grep -v sec > $SOLDIR/nada0
+    grep "e-[0-9]\|e+[0-9]" $SOLDIR/$file | grep -v sec > $SOLDIR/nada1
     diff $SOLDIR/nada0 $SOLDIR/nada1
     let igot="$igot + $?"
 

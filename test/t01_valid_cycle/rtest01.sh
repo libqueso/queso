@@ -10,7 +10,6 @@
 #----------------------------------------------------------
 
 TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)
-TOPDIR="./"		                   # relative to regression dir
 SAVELOG=0		                   # Log model output?
 COMMONDIR="../common"
 
@@ -22,16 +21,12 @@ RUNDIR=`pwd`
 
 . $COMMONDIR/verify.sh
 
-cd $TOPDIR
-verify_file_exists $EXE
-
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 #
 # Regresion Test #1: Validation cycle with TGA example 
 
 VERIFY_DATE="07-30-2010"
-TEST_DIR="./"
 SOLDIR="outputData"
 EXE="./TgaValidationCycle_gsl"   # executable name
 SOLREFS="regression/$VERIFY_DATE"
@@ -40,10 +35,10 @@ TESTNAME='Test 1 (TGA Validation Cycle)'
 
 # Setup desired input for the model
 
-cd $TEST_DIR
-
 rm -f $SOLDIR/*.txt
 rm -f $SOLDIR/*.m
+
+verify_file_exists $EXE
 verify_file_exists $INFILE
 
 # Remove output directory to nullify any previous results (and verify QUESO
