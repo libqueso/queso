@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS  = -I m4 -I m4/common
-EXTRA_DIST       = $(DX_CONFIG) users.pdf CHANGES AUTHORS COPYING LICENSE dist_version
+EXTRA_DIST       = $(DX_CONFIG) QUESO_users_manual.pdf CHANGES AUTHORS COPYING LICENSE dist_version
 
 # Build in these directories:
 SUBDIRS          = src/contrib/ANN src examples test/gsl_tests test doxygen

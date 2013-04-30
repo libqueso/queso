@@ -146,7 +146,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
                             << "\n  componentsNamesVec         = " << componentsNamesVec
                             << std::endl;
   }
-
+ 
   if (m_zeroVector->sizeGlobal() != m_dimGlobal) {
     std::cerr << "In uqVectorSpaceClass<V,M>::constructor(1)"
               << ", with m_prefix = " << m_prefix
