@@ -36,12 +36,12 @@ Concatenated priors are employed in problems with multiple random parameters. Th
 
 It is important to notice that, in order to set a Gaussian prior, besides providing the mean, the user must also supply the \underline{variance}, not the  standard deviation. % in case of 1D problems, or covariance matrix in case of the higher-dimensional problems), not the standard deviation.
 }
-\todo{Add a section in the end of gravity example showing how to do concatenated priors?}
+%\todo{Add a section in the end of gravity example showing how to do concatenated priors?}
 
 \section{Running with Multiple Chains or Monte Carlo Sequences}
 
-\new{}\vspace{-30pt}
-\begin{leftbar}
+%\new{}\vspace{-30pt}
+%\begin{leftbar}
  
 As presented in the previous section, the variable \verb+env_numSubEnvironments+ determines how many subenvironments QUESO will work with. Thus, if \verb+env_numSubEnvironments=1+, then   only one subenvironment will be used, and QUESO will use only one set on Monte Carlo chains of size defined by ones of the variables \verb+ip_mh_rawChain_size+ or \verb+fp_mc_qseq_size+, depending either the user is solving a SIP or a SFP.
 
@@ -49,7 +49,7 @@ If the user wants to run QUESO with multiple chains or Monte Carlo sequences, th
 It is crucial that \verb+env_seed+ takes a \underline{negative} value, otherwise all chain samples are going to be the same.
 
 Also, the total number $N_p$ of processors in the full communicator, usually named \linebreak MPI\_COMM\_WORLD, needs to be a multiple of $N_s$.
-\end{leftbar}
+%\end{leftbar}
 
 
 

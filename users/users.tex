@@ -70,7 +70,7 @@
 \newcommand{\todo}[1]{ {\color{red} To do: #1} }
 
 \newcommand{\myverb}[1]{ \indent{ \begin{verbatim} #1 \end{verbatim} } }
-\newcommand{\QUESOversion}{0.45.3}
+\newcommand{\QUESOversion}{0.46.0}
 
 \usepackage{color}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -121,7 +121,8 @@ aboveskip =10pt,
 %\newcommand{\new}[1]{{\marginpar{\color{red}\small\raggedright\textsf{\hspace{0pt} NEW}}} #1}
 
 
-\newcommand{\new}[1]{\reversemarginpar{\color{red}\tiny\raggedright\textsf{\hspace{-30pt}\vspace{-25pt} NEW}} \begin{leftbar} #1 \end{leftbar}}
+% \newcommand{\new}[1]{\reversemarginpar{\color{red}\tiny\raggedright\textsf{\hspace{-30pt}\vspace{-25pt} NEW}} \begin{leftbar} #1 \end{leftbar}}
+\newcommand{\new}[1]{#1}
 
 \begin{document}
 

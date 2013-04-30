@@ -295,74 +295,96 @@ Moreover, for the gravity inverse problem, one may notice that QUESO will use th
 
 
 
-
+ 
 \section{Application Compilation and Run}\label{sec:application_compilation}
 
 
 Makefiles are special format files that together with the make utility will help one to compile and automatically build and manage projects (programs).
-Listing \ref{code:makefile} presents the Makefile used to compile the code and create the executable \verb+gravity_gsl+.
+Listing \ref{code:makefile} presents a Makefile, named \texttt{Makefile\_example\_violeta}, that may be used to compile the code and create the executable \verb+gravity_gsl+. Naturally, it must be adapted to the user's settings, i.e., it has to have the correct paths for the user's libraries that were actually used to compile and install QUESO (see Sections \ref{sec:Pre_Queso}--\ref{sec:install_Queso_make}).
 
-\lstinputlisting[caption=Makefile for the application code in Listings \ref{code:gravity_main}-\ref{code:gravity_like_C}., label=code:makefile,language=bash]{../../trunk/examples/gravity/src/example_of_Makefile_from_QUESO_users_manual}
+\lstinputlisting[caption={Makefile for the application code in Listings \ref{code:gravity_main}-\ref{code:gravity_like_C}},  label={code:makefile},language={bash}]{../../trunk/examples/gravity/src/Makefile_example_violeta}
 
-Then, in order to run the application code, together with its input file \verb+gravity_inv_fwd.inp+ presented in Listing~\ref{code:gravity_inp_sip}., one just needs to type the command line:
 
+
+Suppose the user either does not needto modify the Makefile presented in Listings \ref{code:makefile} or has already done so. Then, in order to compile, build and run the application code together  with its input file \verb+gravity_inv_fwd.inp+, presented in Listing~\ref{code:gravity_inp_sip}, the user simply needs to enter following commands, under QUESO build tree:
 \begin{lstlisting}[caption={}, label={},language={bash}]
-cd examples/gravity/src
-make
-./gravity_gsl gravity_inv_fwd.inp
+cd $HOME/queso_download/queso-0.46.0/examples/gravity/src
+make -f Makefile_example_violeta
+cd ../tests/test_2013_01_22
+../../src/gravity_gsl gravity_inv_fwd.inp
 \end{lstlisting}
 
 
+
+% Then, in order to run the application code with \underline{no} modifications, together with its input file \verb+gravity_inv_fwd.inp+ presented in Listing~\ref{code:gravity_inp_sip}., one just needs to type the command line:
+% \begin{lstlisting}[caption={}, label={},language={bash}]
+% cd $HOME/LIBRARIES/QUESO-0.46.0/examples/gravity
+% ./gravity_gsl gravity_inv_fwd.inp
+% \end{lstlisting}
+% 
+% However, if any modification has been placed by the user, he/she must re-compile and build the code, before running it. For that, use suggest the use of a Makefile similar to the one presented in Listing \ref{code:makefile}, adapted to the user's current libraries. Such Makefile is located at QUESO build tree. Thus:
+% \begin{lstlisting}[caption={}, label={},language={bash}]
+% cd $HOME/queso_download/queso-0.46.0/examples/gravity/src
+% make -f Makefile_example_violeta
+% cd ../tests/test_2013_01_22
+% ../../src/gravity_gsl gravity_inv_fwd.inp
+% \end{lstlisting}
+
+Alternatively, if the user is not interested in re-compiling and and building the code, he/she can simply run the executable created during QUESO installation, and, thus, located at QUESO installation tree: 
+\begin{lstlisting}[caption={}, label={},language={bash}]
+cd $HOME/LIBRARIES/QUESO-0.46.0/examples/gravity
+./gravity_gsl gravity_inv_fwd.inp
+\end{lstlisting}
  
-The console output of the program is:
+In either case, the console output of the program is:
 \begin{lstlisting}[caption={Console output of program \texttt{gravity\_gsl}}, label={code:console_output},language={bash}]
-kemelli@violeta:~/uq/appls/gravity/tests/test_2013_01_22$ ../../src_1p/gravity_gsl gravity_inv_fwd.inp 
---------------------------------------------------------------------
-QUESO Library: Version = 0.45.3 (4503)
+kemelli@violeta:~/LIBRARIES/QUESO-0.46.0/examples/gravity$ ./gravity_gsl gravity_inv_fwd.inp 
+---------------------------------------------------------------------
+QUESO Library: Version = 0.46.0 (4600)
 
-External Release
+Development Build
 
-Build Date   = 2012-11-05 07:10
+Build Date   = 2013-04-29 17:05
 Build Host   = violeta
 Build User   = kemelli
 Build Arch   = x86_64-unknown-linux-gnu
-Build Rev    = 34330:34332
+Build Rev    = 38998M
 
 C++ Config   = mpic++ -g -O2 -Wall
 
 Trilinos DIR = 
-GSL Libs     = -L/home/kemelli/LIBRARIES/gsl/lib -lgsl -lgslcblas -lm
-GRVY DIR     = /home/kemelli/LIBRARIES/GRVY
+GSL Libs     = -L/home/kemelli/LIBRARIES/gsl-1.15/lib -lgsl -lgslcblas -lm
+GRVY DIR     = 
 GLPK DIR     = 
-HDF5 DIR     = /home/kemelli/LIBRARIES/hdf5
---------------------------------------------------------------------
-Beginning run at Wed Jan 23 08:59:40 2013
+HDF5 DIR     = /home/kemelli/LIBRARIES/hdf5-1.8.10
+--------------------------------------------------------------------------------------------------------------
+Beginning run at Mon Apr 29 17:27:32 2013
 
 MPI node of worldRank 0 has fullRank 0, belongs to subEnvironment of id 0, and has subRank 0
 MPI node of worldRank 0 belongs to sub communicator with full ranks 0
 MPI node of worldRank 0 also belongs to inter0 communicator with full ranks 0, and has inter0Rank 0
 
 
-Beginning run of 'Gravity + Projectile motion' example at Wed Jan 23 08:59:40 2013
+Beginning run of 'Gravity + Projectile motion' example at Mon Apr 29 17:27:32 2013
 
  my fullRank = 0
  my subEnvironmentId = 0
  my subRank = 0
  my interRank = 0
 
-Beginning 'SIP -> Gravity estimation' at Wed Jan 23 08:59:40 2013
+Beginning 'SIP -> Gravity estimation' at Mon Apr 29 17:27:32 2013
 
 Solving the SIP with Metropolis Hastings
 
-Beginning 'SFP -> Projectile motion' at Wed Jan 23 08:59:42 2013
+Beginning 'SFP -> Projectile motion' at Mon Apr 29 17:27:33 2013
 
 Solving the SFP with Monte Carlo
 
-Ending run of 'Gravity + Projectile motion' example at Wed Jan 23 08:59:42 2013
+Ending run of 'Gravity + Projectile motion' example at Mon Apr 29 17:27:33 2013
 
-Ending run at Wed Jan 23 08:59:42 2013
-Total run time = 2 seconds
-kemelli@violeta:~/uq/appls/gravity/tests/test_2013_01_22$ 
+Ending run at Mon Apr 29 17:27:33 2013
+Total run time = 1 seconds
+kemelli@violeta:~/LIBRARIES/QUESO-0.46.0/examples/gravity$ 
 \end{lstlisting}
 
 
@@ -371,18 +393,17 @@ kemelli@violeta:~/uq/appls/gravity/tests/test_2013_01_22$
 Even though the application described in Section \ref{sec:application_code} is a serial code, it is possible to run it using more than one processor, i.e., in parallel mode. 
 Supposing the user's workstation has $N_p=8$ processors, then, the user my choose to have $N_s =$ 8, 4 or 2 subenvironments. This complies with the requirement that the total number of processors in the environment must be a multiple of the specified number of subenvironments.
 
-Thus, to build and run the application code with $N_p = 8$, and $N_s=8$ subenvironments, the must set the variable \texttt{env\_numSubEnvironments = 8} in the input file (Listing~\ref{code:gravity_inp_sip}) and enter the following command lines:
+Thus, to build and run the application code with $N_p = 8$, and $N_s=8$ subenvironments, the must set the variable \texttt{env\_numSubEnvironments = 8} in the input file (Listing~\ref{code:gravity_inp_sip}) and enter the following command lines: 
 
 }
 
 \begin{lstlisting}[caption={}, label={},language={bash}]
-cd examples/gravity/src
-make
+cd $HOME/LIBRARIES/QUESO-0.46.0/examples/gravity/
 mpirun -np 8 ./gravity_gsl gravity_inv_fwd.inp
 \end{lstlisting}
 
 \new{
-The steps above will create a total number of 8 raw chains of size defined by the variable \texttt{ip\_mh\_rawChain\_size} which will be combined into a single chain of size 8*\texttt{ip\_mh\_rawChain\_size} in a file named according to the variable \texttt{ip\_mh\_rawChain\_dataOutputFileName}. 
+The steps above will create a total number of 8 raw chains, of size defined by the variable \texttt{ip\_mh\_rawChain\_size}. QUESO internally combines these 8 chains into a single chain of size $8\; \times\,$\texttt{ip\_mh\_rawChain\_size} and saves it in a file named according to the variable \texttt{ip\_mh\_rawChain\_dataOutputFileName}. 
 QUESO also provides the user with the option of writing each chain -- handled by its corresponding processor -- in a separate file, which is accomplished by setting the variable \texttt{ip\_mh\_rawChain\_dataOutputAllowedSet = 0 1 ... Ns-1}.\\
 
 \noindent
@@ -455,7 +476,7 @@ In order to plot histograms of the parameter using either the raw chain or the f
 \begin{lstlisting}[label=matlab:hist,caption={Matlab code for the histogram plot.}]
 % inside Matlab
 >> sip_gravity_raw_chain
->> nbins=20;
+>> nbins=100;
 >> hist(ip_mh_rawChain_unified,nbins)
 >> title('Parameter Histogram (raw chain)','fontsize',20);
 >> xlabel('Gravity (m/s^2)','fontsize',20);
@@ -647,7 +668,7 @@ In order to plot a histogram of the QoI, you may use the pre-defined Matlab func
 %
 \begin{lstlisting}[label=matlab:hist_qoi,caption={Matlab code for the QoI histogram plot.}]
 >> sfp_gravity_qoi_seq.m
->> nbins=20;
+>> nbins=100;
 >> hist(fp_mc_QoiSeq_unified);
 >> title('QoI Histogram','fontsize',20);
 >> xlabel('Distance traveled (m)','fontsize',20);
