@@ -19,11 +19,11 @@ clf;
 
 % Histogram plots ---------------------------------------------------------
 fprintf(1,' Plotting histogram  <press any key>\n');
-nbins=20;
-hist(fp_mc_QoiSeq_unified);
+nbins=100;
+hist(fp_mc_QoiSeq_unified,nbins);
 h = findobj(gca,'Type','patch');
-set(h,'FaceColor','m');%
-title('QoI Histogram','fontname', 'Times', 'fontsize',20);
+set(h,'FaceColor','m','EdgeColor','k');%
+title('QoI Histogram (nbins=100)','fontname', 'Times', 'fontsize',20);
 xlabel('Distance traveled (m)','fontname', 'Times', 'fontsize',20);
 ylabel('Frequency','fontname', 'Times', 'fontsize',20);
 grid on;

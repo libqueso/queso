@@ -163,7 +163,10 @@ dist_exInfoTheory_gsl_DATA = ${exInfoTheory_gsl_DATA} \
 gravity_gsldir = $(prefix)/examples/gravity
 
 gravity_gsl_DATA = $(top_srcdir)/examples/gravity/tests/test_2013_01_22/gravity_inv_fwd.inp
-#gravity_gsl_DATA += $(top_srcdir)/examples/gravity/tests/test_2012_11_15/tga_cycle_plot.m
+gravity_gsl_DATA += $(top_srcdir)/examples/gravity/tests/test_2013_01_22/gravity_plots_ip.m
+gravity_gsl_DATA += $(top_srcdir)/examples/gravity/tests/test_2013_01_22/gravity_plots_fp.m
+gravity_gsl_DATA += $(top_srcdir)/examples/gravity/tests/test_2013_01_22/autocorr_local.m
+gravity_gsl_DATA += $(top_srcdir)/examples/gravity/src/Makefile_example_violeta
 
 gravity_gsl_PROGRAMS = gravity_gsl
 

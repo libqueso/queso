@@ -65,7 +65,7 @@ fp_mc_pseq_dataOutputFileName   = outputData/sfp_gravity_p_seq
 fp_mc_pseq_dataOutputAllowedSet = 0 1
 
 fp_mc_qseq_dataInputFileName    = . 
-fp_mc_qseq_size                 = 20000
+fp_mc_qseq_size                 = 16384
 fp_mc_qseq_displayPeriod        = 20000
 fp_mc_qseq_measureRunTimes      = 1
 fp_mc_qseq_dataOutputFileName   = outputData/sfp_gravity_qoi_seq

@@ -32,9 +32,11 @@ clf;
 % Histogram plots ---------------------------------------------------------
 % RAW
 fprintf(1,' Plotting histogram - raw  <press any key>\n');
-nbins=20;
-hist(ip_mh_rawChain_unified,nbins)
-title('Parameter Histogram (raw chain)','fontname', 'Times', 'fontsize',20);
+nbins=100;
+hist(ip_mh_rawChain_unified,nbins);
+h = findobj(gca,'Type','patch');
+set(h,'FaceColor','b','EdgeColor','w');%
+title('Parameter Histogram (raw chain, nbins=100)','fontname', 'Times', 'fontsize',20);
 xlabel('Gravity (m/s^2)','fontname', 'Times', 'fontsize',20);
 ylabel('Frequency','fontname', 'Times', 'fontsize',20);
 grid on;
@@ -47,8 +49,8 @@ clf;
 fprintf(1,' Plotting histogram - filtered  <press any key>\n');
 hist(ip_mh_filtChain_unified,nbins);
 h = findobj(gca,'Type','patch');
-set(h,'FaceColor','r');%
-title('Parameter Histogram (filtered chain)','fontname', 'Times', 'fontsize',20);
+set(h,'FaceColor','r','EdgeColor','w');%
+title('Parameter Histogram (filtered chain, nbins=100)','fontname', 'Times', 'fontsize',20);
 xlabel('Gravity (m/s^2)','fontname', 'Times', 'fontsize',20);
 ylabel('Frequency','fontname', 'Times', 'fontsize',20);
 grid on;
