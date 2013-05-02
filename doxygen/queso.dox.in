@@ -567,6 +567,7 @@ WARN_LOGFILE           =
 
 INPUT  = @abs_top_srcdir@/doxygen/queso.page \
       	 @abs_top_srcdir@/doxygen/txt_common \
+      	 @abs_top_builddir@/doxygen/txt_common \
       	 src/core \
       	 src/misc \
       	 src/basic \
