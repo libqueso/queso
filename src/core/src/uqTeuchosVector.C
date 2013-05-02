@@ -39,11 +39,10 @@ using std:: endl;
 uqTeuchosVectorClass::uqTeuchosVectorClass()  :
   uqVectorClass()
 {
-  //UQ_FATAL_TEST_MACRO(true,
-  //                    m_env.worldRank(),
-  //                    "uqTeuchosVectorClass::constructor(), default",
-  //                    "should not be used by user");
-  cout << "Constructor 1" << endl;
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::constructor(), default",
+                      "should not be used by user");  
 };
 
 
@@ -54,7 +53,6 @@ uqTeuchosVectorClass::uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, co
   uqVectorClass(env,map)
 {
   m_vec.size(map.NumGlobalElements());
-  //std::cout << "Entering uqTeuchosVectorClass::constructor(1)" << std::endl;
 
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
@@ -555,6 +553,7 @@ unsigned int uqTeuchosVectorClass::sizeGlobal() const
 }
 
 //-------------------------------------------------
+// TODO: needs to be checked. It may not be used at all. Kemelli 4/30/13.
 double*
 uqTeuchosVectorClass::values()
 {
@@ -1013,7 +1012,7 @@ void uqTeuchosVectorClass::cwSetGaussian2(double mean, double stdDev)
 
 
 //----------------------------------------------------
- void uqTeuchosVectorClass::cwSetUniform2(const uqTeuchosVectorClass& lowerBoundaVec, const uqTeuchosVectorClass& upperBoundVec)
+/* void uqTeuchosVectorClass::cwSetUniform2(const uqTeuchosVectorClass& lowerBoundaVec, const uqTeuchosVectorClass& upperBoundVec)
 {
   unsigned int iseed_size = 4; // Lapack expects iseed_size = 4, always.
   int iseed[iseed_size];
@@ -1044,7 +1043,7 @@ void uqTeuchosVectorClass::cwSetGaussian2(double mean, double stdDev)
    
   return;
 }
-
+*/
 
 
 //----------------------------------------------------

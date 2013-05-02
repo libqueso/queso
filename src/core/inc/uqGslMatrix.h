@@ -39,7 +39,9 @@
 #include <uqGslVector.h>
 
 /*! \class uqGslMatrixClass
-    \brief This class creates and provides basic support for matrices of templated 
+    \brief Class for matrices operations using GSL library.
+    
+    This class creates and provides basic support for matrices of templated 
     type as a specialization of uqMatrixClass using GSL matrices, which are defined 
     by an encapsulated gsl_matrix structure.
 */
@@ -47,7 +49,7 @@
 class uqGslMatrixClass : public uqMatrixClass
 {
 public:
- //! @name Constructor/Destructor methods.
+ //! @name Constructor/Destructor methods
   //@{ 
 
   //! Default Constructor
@@ -81,7 +83,7 @@ public:
   //@}
 
 
-  //! @name Set methods.
+  //! @name Set methods
   //@{ 
   //! 	Copies values from matrix \c rhs to \c this. 
   uqGslMatrixClass& operator= (const uqGslMatrixClass& rhs);
@@ -100,7 +102,7 @@ public:
   //@}
   
   
-  //! @name Accessor methods.
+  //! @name Accessor methods
   //@{
   //! Element access method (non-const).
   double& operator()(unsigned int i, unsigned int j);
@@ -111,7 +113,7 @@ public:
  
   //@}
 
-  //! @name Attribute methods.
+  //! @name Attribute methods
   //@{ 
   //! Returns the local row dimension of \c this matrix.
   unsigned int      numRowsLocal              () const;
@@ -121,9 +123,30 @@ public:
         
   //! Returns the column dimension of \c this matrix.
   unsigned int      numCols                   () const;
+  
+  //! Returns the maximum element value of the matrix.
+  double            max                       () const;
+  
+  //! This function returns the number of singular values of \c this matrix (rank). 
+  /*! The rank function provides an estimate of the number of linearly independent rows or columns of a full matrix. */
+  unsigned int      rank                      (double absoluteZeroThreshold, double relativeZeroThreshold) const;
+  
+     //! This function calculated the transpose of \c this matrix  (square).
+  uqGslMatrixClass  transpose                 () const;
+	
+  //! This function calculated the inverse of \c this matrix (square).
+  uqGslMatrixClass  inverse                   () const;
+  
+    
+  //! Calculates the determinant of \c this matrix.
+  double            determinant               () const;
+	
+  //! Calculates the ln(determinant) of \c this matrix.
+  double            lnDeterminant             () const;
+  
   //@}
   
-  //! @name Norm methods.
+  //! @name Norm methods
   //@{ 
   //! Returns the Frobenius norm of \c this matrix.
   double            normFrob                  () const;
@@ -133,38 +156,19 @@ public:
   //@}
        
   
-  //! @name Set methods.
+  
+  
+  
+  //! @name Mathematical methods
   //@{ 
-  //! Component-wise set all values to \c this with value.
-  void              cwSet                     (double value);
-        
-  //! Set the components of \c which positions are greater than (rowId,colId) with the value of mat(rowId,colId).
-  // TODO: improve this description
-  void              cwSet                     (unsigned int rowId, unsigned int colId, const uqGslMatrixClass& mat);
-  //@}
 
-  void              cwExtract                 (unsigned int rowId, unsigned int colId, uqGslMatrixClass& mat) const;
-  
-  //! @name Mathematical methods.
-  //@{ 
-  //! Returns the maximum element value of the matrix.
-  double            max                       () const;
-  
   //! Computes Cholesky factorization of a real symmetric positive definite matrix \c this. 
   /*! In case \this fails to be symmetric and positive definite, an error will be returned. */
   int               chol                      ();
 	
-//! Computes the singular values (and optionally, vectors) of a real matrix \this. 
-/*! This function factorizes \this M-by-N matrix into the singular value decomposition \c this = U S V^T for M >= N. On output the \this matrix
- is replaced by U. */ 	
+//! Checks for the dimension of \c this matrix, \c matU, \c VecS and \c matVt, and calls the protected routine \c internalSvd to compute the singular values of \c this. 
   int               svd                       (uqGslMatrixClass& matU, uqGslVectorClass& vecS, uqGslMatrixClass& matVt) const;
         
-  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with uqGslMatrixClass::svd (x=solVec, b=rhsVec). 
-  int               svdSolve                  (const uqGslVectorClass& rhsVec, uqGslVectorClass& solVec) const;
-        
-  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with uqGslMatrixClass::svd (x=solMat, b=rhsMat).
-  int               svdSolve                  (const uqGslMatrixClass& rhsMat, uqGslMatrixClass& solMat) const;        
-  
   //! This function calls private member uqGslMatrixClass::internalSvd() to set a M-by-N orthogonal matrix U of the singular value decomposition (svd) of a general rectangular M-by-N matrix A. 
   /*! A general rectangular M-by-N matrix A has a singular value decomposition (svd) into the product of an M-by-N orthogonal matrix U, an N-by-N diagonal matrix of singular values S and the transpose of an N-by-N orthogonal square matrix V,  A = U S V^T.  */
   const uqGslMatrixClass& svdMatU                   () const;
@@ -172,47 +176,15 @@ public:
   //! This function calls private member  uqGslMatrixClass::internalSvd() to set a N-by-N orthogonal square matrix V of the singular value decomposition (svd) of a general rectangular M-by-N matrix A. 
   /*! A general rectangular M-by-N matrix A has a singular value decomposition (svd) into the product of an M-by-N orthogonal matrix U, an N-by-N diagonal matrix of singular values S and the transpose of an N-by-N orthogonal square matrix V,  A = U S V^T.  */
   const uqGslMatrixClass& svdMatV                   () const;
-   //@} 
   
-  //! @name Set methods.
-  //@{  
-   //! This function sets all the entries bellow the main diagonal of \c this matrix to zero.
-  /*! If \c includeDiagonal = false, then only the entries bellow the main diagonal are set to zero; 
-  if \c includeDiagonal = true, then the elements of the matrix diagonal are also set to zero.*/
-  void              zeroLower                 (bool includeDiagonal = false);
-	
-  //! This function sets all the entries above the main diagonal of \c this matrix to zero.
-  /*! If \c includeDiagonal = false, then only the entries above the main diagonal are set to zero; 
-  if \c includeDiagonal = true, then the elements of the matrix diagonal are also set to zero.*/
-  void              zeroUpper                 (bool includeDiagonal = false);
+  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with uqGslMatrixClass::svd (x=solVec, b=rhsVec). 
+  int               svdSolve                  (const uqGslVectorClass& rhsVec, uqGslVectorClass& solVec) const;
+        
+  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with uqGslMatrixClass::svd (x=solMat, b=rhsMat).
+  int               svdSolve                  (const uqGslMatrixClass& rhsMat, uqGslMatrixClass& solMat) const;        
   
-  //! This function sets to zero (filters) all entries of \c this matrix which are smaller than \c thresholdValue.
-  /*! If \c thresholdValue < 0 then no values will be filtered.*/
-  void              filterSmallValues         (double thresholdValue);
-  //! This function sets to zero (filters) all entries of \c this matrix which are greater than \c thresholdValue.
-  /*! If \c thresholdValue < 0 then no values will be filtered.*/	
-  void              filterLargeValues         (double thresholdValue);
-  
-  //@}	
-	
-  //! @name Mathematical methods.
-  //@{
-   //! This function calculated the transpose of \c this matrix  (square).
-  uqGslMatrixClass  transpose                 () const;
-	
-  //! This function calculated the inverse of \c this matrix (square).
-  uqGslMatrixClass  inverse                   () const;
-  
-  //! Calculates the determinant of \c this matrix.
-  double            determinant               () const;
-	
-  //! Calculates the ln(determinant) of \c this matrix.
-  double            lnDeterminant             () const;
 
-  //! This function returns the number of singular values of \c this matrix (rank). 
-  /*! The rank function provides an estimate of the number of linearly independent rows or columns of a full matrix. */
-  unsigned int      rank                      (double absoluteZeroThreshold, double relativeZeroThreshold) const;
-  
+
   //! This function multiplies \c this matrix by vector \c x and returns the resulting vector.
   uqGslVectorClass  multiply                  (const uqGslVectorClass& x) const;
 
@@ -242,8 +214,8 @@ uqGslVectorClass& x) internally.*/
   //! This function calculates the inverse of \c this matrix, multiplies it with vector \c b and stores the result in vector \c x.
   /*! It recalculates the LU decomposition of \c this matrix.*/	
   void              invertMultiplyForceLU     (const uqGslVectorClass& b, uqGslVectorClass& x) const;
-	
-  //! This function gets the column_num-th column of \c this matrix and stores it into vector \c column.
+  
+    //! This function gets the column_num-th column of \c this matrix and stores it into vector \c column.
   void              getColumn                 (const unsigned int column_num, uqGslVectorClass& column) const;
   
   //! This function gets the column_num-th column of \c this matrix.
@@ -270,7 +242,44 @@ uqGslVectorClass& x) internally.*/
   //! This function finds smallest eigenvalue, namely \c eigenValue, of \c this matrix and its corresponding eigenvector, namely \c eigenVector.
   void              smallestEigen             (double& eigenValue, uqGslVectorClass& eigenVector) const;
 
-
+ 
+  //@} 
+  
+  //! @name Get/Set methods
+  //@{  
+  
+  //! Component-wise set all values to \c this with value.
+  void              cwSet                     (double value);
+        
+  //! Set the components of \c which positions are greater than (rowId,colId) with the value of mat(rowId,colId).
+  void              cwSet                     (unsigned int rowId, unsigned int colId, const uqGslMatrixClass& mat);
+  
+  void              cwExtract                 (unsigned int rowId, unsigned int colId, uqGslMatrixClass& mat) const;
+  
+   //! This function sets all the entries bellow the main diagonal of \c this matrix to zero.
+  /*! If \c includeDiagonal = false, then only the entries bellow the main diagonal are set to zero; 
+  if \c includeDiagonal = true, then the elements of the matrix diagonal are also set to zero.*/
+  void              zeroLower                 (bool includeDiagonal = false);
+	
+  //! This function sets all the entries above the main diagonal of \c this matrix to zero.
+  /*! If \c includeDiagonal = false, then only the entries above the main diagonal are set to zero; 
+  if \c includeDiagonal = true, then the elements of the matrix diagonal are also set to zero.*/
+  void              zeroUpper                 (bool includeDiagonal = false);
+  
+  //! This function sets to zero (filters) all entries of \c this matrix which are smaller than \c thresholdValue.
+  /*! If \c thresholdValue < 0 then no values will be filtered.*/
+  void              filterSmallValues         (double thresholdValue);
+  
+  //! This function sets to zero (filters) all entries of \c this matrix which are greater than \c thresholdValue.
+  /*! If \c thresholdValue < 0 then no values will be filtered.*/	
+  void              filterLargeValues         (double thresholdValue);
+  
+  //! This function stores the transpose of \c this matrix into \c this matrix.
+  void              fillWithTranspose         (unsigned int            rowId,
+                                               unsigned int            colId,
+                                               const uqGslMatrixClass& mat,
+                                               bool                    checkForExactNumRowsMatching,
+                                               bool                    checkForExactNumColsMatching);
   
   //! This function fills \c this matrix diagonally with const block  matrices.
   void              fillWithBlocksDiagonally  (unsigned int                                 rowId,
@@ -329,16 +338,10 @@ uqGslVectorClass& x) internally.*/
                                                const uqGslVectorClass& vec2,
                                                bool                    checkForExactNumRowsMatching,
                                                bool                    checkForExactNumColsMatching);
-
-  //! This function stores the transpose of \c this matrix into \c this matrix.
-  void              fillWithTranspose         (unsigned int            rowId,
-                                               unsigned int            colId,
-                                               const uqGslMatrixClass& mat,
-                                               bool                    checkForExactNumRowsMatching,
-                                               bool                    checkForExactNumColsMatching);
   //@}	
+
  
-  //! @name Miscellaneous methods.
+  //! @name Miscellaneous methods
   //@{
   //! Returns \c this matrix.  
   gsl_matrix*       data                      ();
@@ -350,7 +353,7 @@ uqGslVectorClass& x) internally.*/
 	
         
 	
-  //! @name I/O methods.
+  //! @name I/O methods
   //@{
     
   //! Print method. Defines the behavior of the ostream << operator inherited from the Object class.   

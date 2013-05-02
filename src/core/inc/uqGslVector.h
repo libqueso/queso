@@ -156,7 +156,7 @@ public:
   //! This function concatenates uqGslVectorClass v1 and uqGslVectorClass v2 into  \c this.
   void         cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVectorClass& v2);
   
-  //TODO
+  //! This function concatenates vectors \c v1 and \c v2 into \c this vector.
   void         cwSetConcatenated(const std::vector<const uqGslVectorClass* >& vecs);
   
   //! This function sets the vector vec into \c this starting at position initialPos.  
@@ -178,7 +178,7 @@ public:
   void         print            (std::ostream& os) const;
   //@}
 
-  //! This function sorts the elements of the vector \c this into ascending numerical order. 
+  //! This function sorts the elements of the vector \c this in ascending numerical order. 
   void         sort             ();
     
   void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, uqGslVectorClass& outputVec) const;

@@ -60,7 +60,6 @@ uqTeuchosMatrixClass::uqTeuchosMatrixClass( // can be a rectangular matrix
   unsigned int                  nCols)
   :
   uqMatrixClass  (env,map),
-  //m_LU           (NULL),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -69,17 +68,14 @@ uqTeuchosMatrixClass::uqTeuchosMatrixClass( // can be a rectangular matrix
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  v_pivoting       (NULL),  //Kemelli changed 12/07/12: used to be  m_permutation  (NULL),
+  v_pivoting     (NULL), 
   m_signum       (0),
   m_isSingular   (false)
 {
   m_mat.shape(map.NumGlobalElements(),nCols);
-  m_LU.shape(0,0); //Kemelli, added 12/07/12 -> trying to make resetLU to work
-//  UQ_FATAL_TEST_MACRO((m_mat == NULL),
-//                      m_env.worldRank(),
-//                      "uqTeuchosMatrixClass::constructor()",
-//                      "null matrix generated");
+  m_LU.shape(0,0);   
 }
+
 // ---------------------------------------------------
 // shaped constructor (square) ----------------------- 
 uqTeuchosMatrixClass::uqTeuchosMatrixClass( // square matrix
@@ -88,8 +84,6 @@ uqTeuchosMatrixClass::uqTeuchosMatrixClass( // square matrix
   double                        diagValue)
   :
   uqMatrixClass  (env,map),
- // m_mat.shape    (map.NumGlobalElements(),map.NumGlobalElements()),
-//  m_LU           (NULL),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -98,16 +92,12 @@ uqTeuchosMatrixClass::uqTeuchosMatrixClass( // square matrix
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  v_pivoting       (NULL),  //Kemelli changed 12/07/12: used to be  m_permutation  (NULL),
+  v_pivoting     (NULL),  
   m_signum       (0),
   m_isSingular   (false)
 {
   m_mat.shape    (map.NumGlobalElements(),map.NumGlobalElements());
-  m_LU.shape(0,0); //Kemelli, added 12/07/12 -> trying to make resetLU to work
-//  UQ_FATAL_TEST_MACRO((m_mat == NULL),
-//                      m_env.worldRank(),
-//                      "uqTeuchosMatrixClass::constructor(), eye",
-//                      "null matrix generated");
+  m_LU.shape(0,0); 
 
   for (unsigned int i = 0; i < (unsigned int) m_mat.numRows(); ++i) {
     m_mat(i,i) = diagValue;
@@ -121,7 +111,6 @@ uqTeuchosMatrixClass::uqTeuchosMatrixClass( // square matrix
   double                  diagValue)
   :
   uqMatrixClass  (v.env(),v.map()),
-//  m_LU           (NULL),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -130,19 +119,14 @@ uqTeuchosMatrixClass::uqTeuchosMatrixClass( // square matrix
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  v_pivoting       (NULL),  //Kemelli changed 12/07/12: used to be  m_permutation  (NULL),
+  v_pivoting     (NULL), 
   m_signum       (0),
   m_isSingular   (false)
 {
  m_mat.shape    (v.sizeLocal(),v.sizeLocal());
- m_LU.shape(0,0); //Kemelli, added 12/07/12 -> trying to make resetLU to work
+ m_LU.shape(0,0); 
  
-//  UQ_FATAL_TEST_MACRO((m_mat == NULL),
-//                      m_env.worldRank(),
-//                      "uqTeuchosMatrixClass::constructor(), eye",
-//                      "null matrix generated");
-
-  for (unsigned int i = 0; i < (unsigned int) m_mat.numRows(); ++i) {
+ for (unsigned int i = 0; i < (unsigned int) m_mat.numRows(); ++i) {
     m_mat(i,i) = diagValue;
   }
 }
@@ -153,7 +137,6 @@ uqTeuchosMatrixClass::uqTeuchosMatrixClass( // square matrix
 uqTeuchosMatrixClass::uqTeuchosMatrixClass(const uqTeuchosVectorClass& v) // square matrix
   :
   uqMatrixClass  (v.env(),v.map()),
-//  m_LU           (NULL),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -162,18 +145,13 @@ uqTeuchosMatrixClass::uqTeuchosMatrixClass(const uqTeuchosVectorClass& v) // squ
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  v_pivoting       (NULL),  //Kemelli changed 12/07/12: used to be  m_permutation  (NULL),
+  v_pivoting     (NULL),
   m_signum       (0),
   m_isSingular   (false)
 {
   m_mat.shape    (v.sizeLocal(),v.sizeLocal());
-  m_LU.shape(0,0); //Kemelli, added 12/07/12 -> trying to make resetLU to work
-
-//  UQ_FATAL_TEST_MACRO((m_mat == NULL),
-//                      m_env.worldRank(),
-//                      "uqTeuchosMatrixClass::constructor(), from vector",
-//                      "null matrix generated");
-
+  m_LU.shape(0,0); 
+  
   unsigned int dim =  v.sizeLocal();
 
   for (unsigned int i = 0; i < dim; ++i) {
@@ -186,7 +164,6 @@ uqTeuchosMatrixClass::uqTeuchosMatrixClass(const uqTeuchosVectorClass& v) // squ
 uqTeuchosMatrixClass::uqTeuchosMatrixClass(const uqTeuchosMatrixClass& B) // can be a rectangular matrix
   :
   uqMatrixClass  (B.env(),B.map()),
-//  m_LU           (NULL),
   m_inverse      (NULL),
   m_svdColMap    (NULL),
   m_svdUmat      (NULL),
@@ -195,20 +172,15 @@ uqTeuchosMatrixClass::uqTeuchosMatrixClass(const uqTeuchosMatrixClass& B) // can
   m_svdVTmat     (NULL),
   m_determinant  (-INFINITY),
   m_lnDeterminant(-INFINITY),
-  v_pivoting       (NULL),  //Kemelli changed 12/07/12: used to be  m_permutation  (NULL),
+  v_pivoting     (NULL), 
   m_signum       (0),
   m_isSingular   (false)
 {
   m_mat.shape    (B.numRowsLocal(),B.numCols());
-  m_LU.shape(0,0); //Kemelli, added 12/07/12 -> trying to make resetLU to work
- 
+  m_LU.shape(0,0); 
+   
   this->uqMatrixClass::copy(B);
   this->copy(B);
-
-//   UQ_FATAL_TEST_MACRO((m_mat == NULL),
-//                       m_env.worldRank(),
-//                       "uqTeuchosMatrixClass::constructor(), copy",
-//                       "null vector generated");
 }
 
 // ---------------------------------------------------
@@ -218,37 +190,14 @@ uqTeuchosMatrixClass::~uqTeuchosMatrixClass()
   this->resetLU();
 }
 
+
 // ---------------------------------------------------
-// copy ----------------------------------------------
-// Kemelli 12/05/12 - tested
-void
-uqTeuchosMatrixClass::copy(const uqTeuchosMatrixClass& src) //dummy
-{
-  this->resetLU();
-  unsigned int i,j, nrows=src.numRowsLocal(), ncols=src.numCols();
-  
-  for(i=0; i< nrows ; i++)
-    for (j = 0; j < ncols; j++)
-      m_mat(i,j) = src(i,j);
-    
-//   int iRC;
-//   iRC = gsl_matrix_memcpy(this->m_mat, src.m_mat);
-//   UQ_FATAL_RC_MACRO(iRC,
-//                     m_env.worldRank(),
-//                     "uqTeuchosMatrixClass::copy()",
-//                     "failed");
+// Set methodos --------------------------------------
 
-  return;
-}
-
-// operators ---------------------------------------
-
-// ainda nao
 uqTeuchosMatrixClass& uqTeuchosMatrixClass::operator=(const uqTeuchosMatrixClass& obj)
 {
   this->resetLU();
   this->copy(obj);
-  //m_mat = obj;
   return *this;
 }
 
@@ -306,6 +255,8 @@ uqTeuchosMatrixClass::operator-=(const uqTeuchosMatrixClass& rhs)
 }
 
 // ---------------------------------------------------
+// Accessor methods ----------------------------------
+
 // Kemelli 12/05/12 - tested
 double& uqTeuchosMatrixClass::operator()(unsigned int i, unsigned int j)
 {
@@ -344,8 +295,9 @@ const double& uqTeuchosMatrixClass::operator()(unsigned int i, unsigned int j) c
   return m_mat(i,j);
 }
 
-
 // ---------------------------------------------------
+// Attribute methods ---------------------------------
+
 // Kemelli 12/05/12 - tested 
 unsigned int
 uqTeuchosMatrixClass::numRowsLocal() const
@@ -369,8 +321,288 @@ uqTeuchosMatrixClass::numCols() const
   return (unsigned int) m_mat.numCols();
 };
 
+// ---------------------------------------------------
+// Kemelli 12/05/12 - tested
+double*
+uqTeuchosMatrixClass::values()
+{
+  return  m_mat.values();
+};
 
 // ---------------------------------------------------
+// Kemelli 12/05/12 - tested
+int
+uqTeuchosMatrixClass::stride()
+{
+  return  m_mat.stride();
+};
+
+
+
+// ---------------------------------------------------
+double
+uqTeuchosMatrixClass::max() const
+{
+  double value = -INFINITY;
+
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+  double aux = 0.;
+  for (unsigned int i = 0; i < nRows; i++) {
+    for (unsigned int j = 0; j < nCols; j++) {
+      aux = (*this)(i,j);
+      if (aux > value) value = aux;
+    }
+  }
+
+  return value;
+}
+
+
+// ---------------------------------------------------
+unsigned int
+uqTeuchosMatrixClass::rank(double absoluteZeroThreshold, double relativeZeroThreshold) const
+{
+  int iRC = 0;
+  iRC = internalSvd();
+  if (iRC) {}; // just to remove compiler warning
+
+  uqTeuchosVectorClass relativeVec(*m_svdSvec);
+  if (relativeVec[0] > 0.) {
+    relativeVec = (1./relativeVec[0])*relativeVec;
+  }
+
+  unsigned int rankValue = 0;
+  for (unsigned int i = 0; i < relativeVec.sizeLocal(); ++i) {
+    if (( (*m_svdSvec)[i] >= absoluteZeroThreshold ) &&
+        ( relativeVec [i] >= relativeZeroThreshold )) {
+       rankValue += 1;
+    }
+  }
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
+    *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::rank()"
+                            << ": this->numRowsLocal() = "  << this->numRowsLocal()
+                            << ", this->numCols() = "       << this->numCols()
+                            << ", absoluteZeroThreshold = " << absoluteZeroThreshold
+                            << ", relativeZeroThreshold = " << relativeZeroThreshold
+                            << ", rankValue = "             << rankValue
+                            << ", m_svdSvec = "             << *m_svdSvec
+                            << ", relativeVec = "           << relativeVec
+                            << std::endl;
+  }
+
+  return rankValue;
+}
+
+// ---------------------------------------------------
+// checked 1/07/13
+uqTeuchosMatrixClass
+uqTeuchosMatrixClass::transpose() const
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+
+  UQ_FATAL_TEST_MACRO((nRows != nCols),
+                       m_env.worldRank(),
+                       "uqTeuchosMatrixClass::transpose()",
+                       "routine works only for square matrices");
+
+  uqTeuchosMatrixClass mat(m_env,m_map,nCols);
+  for (unsigned int row = 0; row < nRows; ++row) {
+    for (unsigned int col = 0; col < nCols; ++col) {
+      mat(row,col) = (*this)(col,row);
+    }
+  }
+
+  return mat;
+}
+
+// ---------------------------------------------------
+// tested 1/31/13
+uqTeuchosMatrixClass
+uqTeuchosMatrixClass::inverse() const
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+
+  UQ_FATAL_TEST_MACRO((nRows != nCols),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::inverse()",
+                      "matrix is not square");
+
+  if (m_inverse == NULL) {
+    m_inverse = new uqTeuchosMatrixClass(m_env,m_map,nCols);
+    uqTeuchosVectorClass unitVector(m_env,m_map);
+    unitVector.cwSet(0.);
+    uqTeuchosVectorClass multVector(m_env,m_map);
+    for (unsigned int j = 0; j < nCols; ++j) {
+      if (j > 0) unitVector[j-1] = 0.;
+      unitVector[j] = 1.;
+      this->invertMultiply(unitVector, multVector);
+      for (unsigned int i = 0; i < nRows; ++i) {
+        (*m_inverse)(i,j) = multVector[i];
+      }
+    }
+  }
+  if (m_env.checkingLevel() >= 1) {
+    *m_env.subDisplayFile() << "CHECKING In uqTeuchosMatrixClass::inverse()"
+                            << ": M.lnDet = "      << this->lnDeterminant()
+                            << ", M^{-1}.lnDet = " << m_inverse->lnDeterminant()
+                            << std::endl;
+  }
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
+    *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::inverse():"
+                            << "\n M = "        << *this
+                            << "\n M^{-1} = "   << *m_inverse
+                            << "\n M*M^{-1} = " << (*this)*(*m_inverse)
+                            << "\n M^{-1}*M = " << (*m_inverse)*(*this)
+                            << std::endl;
+  }
+
+/* cout << "Inverse ---------------------\n";
+   for (int i=0; i<m_inverse->numRowsLocal(); i++) {
+     for (int j=0; j<m_inverse->numCols(); j++)
+       cout<< m_inverse->m_mat(i,j) << " ";
+     cout << endl;
+   }
+   cout << endl;
+*/
+  return *m_inverse;
+}
+
+// ----------------------------------------------
+//checked 12/10/12
+double
+uqTeuchosMatrixClass::determinant() const
+{
+  if (m_determinant == -INFINITY) 
+  {    
+    if(m_LU.numRows() ==0 && m_LU.numCols() ==0)  //dummy
+    {
+      uqTeuchosVectorClass tmpB(m_env,m_map);
+      uqTeuchosVectorClass tmpX(m_env,m_map);
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+        *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
+                                << ": before 'this->invertMultiply()'"
+                                << std::endl;
+      }
+      this->invertMultiply(tmpB,tmpX);
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+        *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
+                                << ": after 'this->invertMultiply()'"
+                                << std::endl;
+      }
+    }
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
+                              << ": before 'gsl_linalg_LU_det()'"
+                              << std::endl;
+    }
+    
+    double det=1.0;
+    for (int i=0;i<m_LU.numCols();i++)
+      det*=m_LU(i,i);
+  
+    m_determinant = det;
+        
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
+                              << ": after 'gsl_linalg_LU_det()'"
+                              << std::endl;
+    }
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
+                              << ": before 'gsl_linalg_LU_lndet()'"
+                              << std::endl;
+    }
+  }
+
+  return m_determinant;
+}
+
+// ----------------------------------------------
+//checked 12/10/12
+double
+uqTeuchosMatrixClass::lnDeterminant() const
+{
+  if (m_lnDeterminant == -INFINITY) 
+  {
+    if(m_LU.numRows() ==0 && m_LU.numCols() ==0)  //dummy
+    {
+      uqTeuchosVectorClass tmpB(m_env,m_map);
+      uqTeuchosVectorClass tmpX(m_env,m_map);
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+        *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
+                                << ": before 'this->invertMultiply()'"
+                                << std::endl;
+      }
+      this->invertMultiply(tmpB,tmpX);
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+        *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
+                                << ": after 'this->invertMultiply()'"
+                                << std::endl;
+      }
+    }
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
+                              << ": before 'gsl_linalg_LU_det()'"
+                              << std::endl;
+    }
+    
+    double det=1.0;
+    
+    for (int i=0;i<m_LU.numCols();i++)
+      det*=m_LU(i,i);
+  
+    m_lnDeterminant = log(det);
+    m_determinant   = det;
+    
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
+                              << ": after 'gsl_linalg_LU_det()'"
+                              << std::endl;
+    }
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
+                              << ": before 'gsl_linalg_LU_lndet()'"
+                              << std::endl;
+    }
+  }
+
+  return m_lnDeterminant;
+}
+
+// ---------------------------------------------------
+// Norm methods --------------------------------------
+
+double
+uqTeuchosMatrixClass::normFrob() const
+{
+  return m_mat.normFrobenius ();
+}
+
+// ---------------------------------------------------
+double
+uqTeuchosMatrixClass::normMax() const
+{
+  double value = 0.;
+
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+  double aux = 0.;
+  for (unsigned int i = 0; i < nRows; i++) {
+    for (unsigned int j = 0; j < nCols; j++) {
+      aux = fabs((*this)(i,j));
+      if (aux > value) value = aux;
+    }
+  }
+  return value;
+}
+
+// Mathematical methods ------------------------------
+// ---------------------------------------------------
+
 // Kemelli: added and tested 12/10/12
 int uqTeuchosMatrixClass::chol()
 {
@@ -397,8 +629,7 @@ int uqTeuchosMatrixClass::chol()
 
   for (int i=0;i<m_mat.numRows();i++){
     for (int j=i+1;j<m_mat.numCols();j++)
-       m_mat(i,j) = m_mat(j,i) ;   
-    
+       m_mat(i,j) = m_mat(j,i) ;      
   }
   
   if (info != 0) {
@@ -416,511 +647,11 @@ int uqTeuchosMatrixClass::chol()
               "uqTeuchosMatrixClass::chol()",
               "matrix is not positive definite",
               UQ_MATRIX_IS_NOT_POS_DEFINITE_RC);
-    
      
   return return_success;  
 };
 
 // ---------------------------------------------------
-// Kemelli 12/05/12 - tested
-double*
-uqTeuchosMatrixClass::values()
-{
-  return  m_mat.values();
-};
-
-// ---------------------------------------------------
-// Kemelli 12/05/12 - tested
-int
-uqTeuchosMatrixClass::stride()
-{
-  return  m_mat.stride();
-};
-
-// ---------------------------------------------------
-double
-uqTeuchosMatrixClass::normFrob() const
-{
-  return m_mat.normFrobenius ();
-}
-// ---------------------------------------------------
-double
-uqTeuchosMatrixClass::normMax() const
-{
-  double value = 0.;
-
-  unsigned int nRows = this->numRowsLocal();
-  unsigned int nCols = this->numCols();
-  double aux = 0.;
-  for (unsigned int i = 0; i < nRows; i++) {
-    for (unsigned int j = 0; j < nCols; j++) {
-      aux = fabs((*this)(i,j));
-      if (aux > value) value = aux;
-    }
-  }
-  return value;
-}
-
-// ---------------------------------------------------
-double
-uqTeuchosMatrixClass::max() const
-{
-  double value = -INFINITY;
-
-  unsigned int nRows = this->numRowsLocal();
-  unsigned int nCols = this->numCols();
-  double aux = 0.;
-  for (unsigned int i = 0; i < nRows; i++) {
-    for (unsigned int j = 0; j < nCols; j++) {
-      aux = (*this)(i,j);
-      if (aux > value) value = aux;
-    }
-  }
-
-  return value;
-}
-
-// ---------------------------------------------------
-void
-uqTeuchosMatrixClass::cwSet(double value)
-{
-  m_mat.putScalar(value);
-  
-  return;
-}
-
-// ---------------------------------------------------
-// tested on 1/31/13: copies matrix mat to this matrix, starting at row rowId and column colId
-void
-uqTeuchosMatrixClass::cwSet(unsigned int rowId,unsigned int colId,const uqTeuchosMatrixClass& mat)
-{
-  UQ_FATAL_TEST_MACRO(rowId >= this->numRowsLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::cwSet()",
-                      "invalid rowId");
-
-  UQ_FATAL_TEST_MACRO((rowId + mat.numRowsLocal()) > this->numRowsLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::cwSet()",
-                      "invalid vec.numRowsLocal()");
-
-  UQ_FATAL_TEST_MACRO(colId >= this->numCols(),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::cwSet()",
-                      "invalid colId");
-
-  UQ_FATAL_TEST_MACRO((colId + mat.numCols()) > this->numCols(),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::cwSet()",
-                      "invalid vec.numCols()");
-
-  for (unsigned int i = 0; i < mat.numRowsLocal(); ++i) {
-    for (unsigned int j = 0; j < mat.numCols(); ++j) {
-      (*this)(rowId+i,colId+j) = mat(i,j);
-    }
-  }
-
-  return;
-}
-// ---------------------------------------------------
-// Kemelli 12/05/12 - tested
-void         
-uqTeuchosMatrixClass::zeroLower(bool includeDiagonal)
-{
-  unsigned int nRows = this->numRowsLocal();
-  unsigned int nCols = this->numCols();
-
-  UQ_FATAL_TEST_MACRO((nRows != nCols),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::zeroLower()",
-                      "routine works only for square matrices");
-
-  this->resetLU();
-
-  if (includeDiagonal) {
-    for (unsigned int i = 0; i < nRows; i++) {
-      for (unsigned int j = 0; j <= i; j++) {
-        (*this)(i,j) = 0.;
-      }
-    }
-  }
-  else {
-    for (unsigned int i = 0; i < nRows; i++) {
-      for (unsigned int j = 0; j < i; j++) {
-        (*this)(i,j) = 0.;
-      }
-    }
-  }
-
-  return;
-}
-// ---------------------------------------------------
-// Kemelli 12/05/12 - tested
-void 
-uqTeuchosMatrixClass::zeroUpper(bool includeDiagonal)
-{
-  unsigned int nRows = this->numRowsLocal();
-  unsigned int nCols = this->numCols();
-
-  UQ_FATAL_TEST_MACRO((nRows != nCols),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::zeroUpper()",
-                      "routine works only for square matrices");
-
-  this->resetLU();
-
-  if (includeDiagonal) {
-    for (unsigned int i = 0; i < nRows; i++) {
-      for (unsigned int j = i; j < nCols; j++) {
-        (*this)(i,j) = 0.;
-      }
-    }
-  }
-  else {
-    for (unsigned int i = 0; i < nRows; i++) {
-      for (unsigned int j = (i+1); j < nCols; j++) {
-        (*this)(i,j) = 0.;
-      }
-    }
-  }
-
-  return;
-}
-
-// ---------------------------------------------------
-// Kemelli 12/05/12 - tested
-void
-uqTeuchosMatrixClass::print(std::ostream& os) const
-{
-  unsigned int nRows = this->numRowsLocal();
-  unsigned int nCols = this->numCols();
-
-  if (m_printHorizontally) {
-    for (unsigned int i = 0; i < nRows; ++i) {
-      for (unsigned int j = 0; j < nCols; ++j) {
-        os << (*this)(i,j)
-           << " ";
-      }
-      if (i != (nRows-1)) os << "; ";
-    }
-    //os << std::endl;
-  }
-  else {
-    for (unsigned int i = 0; i < nRows; ++i) {
-      for (unsigned int j = 0; j < nCols; ++j) {
-        os << (*this)(i,j)
-           << " ";
-      }
-      os << std::endl;
-    }
-  }
-
-  return;
-}
-
-// ---------------------------------------------------
-//Kemelli tested 07/12/12
-void
-uqTeuchosMatrixClass::getColumn(unsigned int column_num, uqTeuchosVectorClass& column) const
-{
-  // Sanity checks
-  UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::getColumn",
-                      "Specified row number not within range");
-
-  UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::getColumn",
-                      "column vector not same size as this matrix");
-
-  // Temporary working pointer
-  const double* temp_ptr ;
-  
-  // get the column_num- of matrix m_mat
-  temp_ptr = m_mat[column_num];
-  
-  // Copy column from Teuchos matrix into our TeuchosVector object
-  for (unsigned int i=0; i< column.sizeLocal();i++)
-    column[i] = temp_ptr[i];
-  
-  return;
-}
-
-
-uqTeuchosVectorClass
-uqTeuchosMatrixClass::getColumn(unsigned int column_num ) const
-{
-  // We rely on the void getColumn's to do sanity checks
-  // So we don't do them here.
-
-  uqTeuchosVectorClass column(m_env, m_map);
-
-  this->getColumn( column_num, column );
-  
-  return column;
-}
-
-
-// ---------------------------------------------------
-//Kemelli tested 07/12/12
-void
-uqTeuchosMatrixClass::setColumn(unsigned int column_num, const uqTeuchosVectorClass& column)
-{
-  this->resetLU();
-  // Sanity checks
-  UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::setColumn",
-                      "Specified column number not within range");
-
-  UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::setColumn",
-                      "column vector not same size as this matrix");
-
-  
-  for (unsigned int i =0; i < column.sizeLocal(); i++)
-    m_mat(i,column_num) = column[i];
-  
-  return;
-}
-
-
-// ---------------------------------------------------
-// tested 1/31/13
-void
-uqTeuchosMatrixClass::getRow(unsigned int row_num, uqTeuchosVectorClass& row) const
-{
-  // Sanity checks
-  UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::getRow",
-                      "Specified row number not within range");
-
-  UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numRowsLocal()),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::getRow",
-                      "row vector not same size as this matrix");
-
-  // Copy row from Teuchos matrix into our TeuchosVector object
-  for (unsigned int i=0; i< row.sizeLocal();i++)
-    row[i] = m_mat(row_num,i);
-  
-  return;
-}
-
-// ---------------------------------------------------
-// tested 1/31/13
-uqTeuchosVectorClass
-uqTeuchosMatrixClass::getRow(unsigned int row_num ) const
-{
-  // We rely on the void getRow's to do sanity checks
-  // So we don't do them here.
-
-  uqTeuchosVectorClass row(m_env, m_map);
-
-  this->getRow( row_num, row );
-  
-  return row;
-}
-
-
-
-// ---------------------------------------------------
-// tested 1/31/13
-void
-uqTeuchosMatrixClass::setRow (const unsigned int row_num, const uqTeuchosVectorClass& row)
-{
-  // Sanity checks
-  UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::getRow",
-                      "Specified row number not within range");
-
-  UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numRowsLocal()),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::getRow",
-                      "row vector not same size as this matrix");
-
-  // Copy our TeuchosVector object to our Teuchos Matrix
-  for (unsigned int i=0; i< row.sizeLocal();i++)
-     m_mat(row_num,i) = row[i] ;
-  
-  return;
-}
-
-// ---------------------------------------------------
-void
-uqTeuchosMatrixClass::mpiSum( const uqMpiCommClass& comm, uqTeuchosMatrixClass& M_global ) const
-{
-  // Sanity Checks
-  UQ_FATAL_RC_MACRO(((this->numRowsLocal() != M_global.numRowsLocal()) ||
-                     (this->numCols()      != M_global.numCols()     )),
-		    env().fullRank(),
-		    "uqTeuchosMatrixClass::mpiSum()",
-		    "local and global matrices incompatible");
-
-  /* TODO: Probably a better way to handle this unpacking/packing of data */
-  int size = M_global.numRowsLocal()*M_global.numCols();
-  std::vector<double> local( size, 0.0 );
-  std::vector<double> global( size, 0.0 );
-
-  int k;
-  for( unsigned int i = 0; i < this->numRowsLocal(); i++ )
-    {
-      for( unsigned int j = 0; j < this->numCols(); j++ )
-	{
-	  k = i + j*M_global.numCols();
-	  
-	  local[k] = (*this)(i,j);
-	}
-    }
-
-  comm.Allreduce((void*) &local[0], (void*) &global[0], size, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
-                 "uqTeuchosMatrixClass::mpiSum()",
-                 "failed MPI.Allreduce()");
-
-  for( unsigned int i = 0; i < this->numRowsLocal(); i++ )
-    {
-      for( unsigned int j = 0; j < this->numCols(); j++ )
-	{
-	  k = i + j*M_global.numCols();
-	  
-	  M_global(i,j) = global[k];
-	}
-    }
-
-  return;
-}
-
-//====================================================
-// Private members
-//====================================================
-
-// ---------------------------------------------------
-// TODO: testar        
-void
-uqTeuchosMatrixClass::resetLU()
-{
-  if (m_LU.numCols() >0 || m_LU.numRows() > 0) {
-    m_LU.reshape(0,0); //Kemelli, 12/06/12, dummy    
-  }
-  if (m_inverse) {
-    delete m_inverse;
-    m_inverse = NULL;
-  }
-  if (m_svdColMap) {
-    delete m_svdColMap;
-    m_svdColMap = NULL;
-  }
-  if (m_svdUmat) {
-    delete m_svdUmat;
-    m_svdUmat = NULL;
-  }
-  if (m_svdSvec) {
-    delete m_svdSvec;
-    m_svdSvec = NULL;
-  }
-  if (m_svdVmat) {
-    delete m_svdVmat;
-    m_svdVmat = NULL;
-  }
-  if (m_svdVTmat) {
-    delete m_svdVTmat;
-    m_svdVTmat = NULL;
-  }
-  m_determinant   = -INFINITY;
-  m_lnDeterminant = -INFINITY;
-  if (m_permutation) {
-    //gsl_permutation_free(m_permutation);
-    m_permutation = NULL;
-  }
-  if (v_pivoting) {  //Kemelli added 12/09/12
-    free(v_pivoting);
-    v_pivoting = NULL;
-    
-  }
-  m_signum = 0;
-  m_isSingular = false;
-
-  return;
-}
-
-
-// ---------------------------------------------------
-// implemented/checked 1/8/13
-//multiply this matrix by vector x and store in vector y, which is returned
-// eg: uqTeuchosVectorClass v1(paramSpace.zeroVector() ); 
-//     v1=covMatrix.multiply(meanVector);
-uqTeuchosVectorClass
-uqTeuchosMatrixClass::multiply(const uqTeuchosVectorClass& x) const
-{
-  UQ_FATAL_TEST_MACRO((this->numCols() != x.sizeLocal()),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::multiply(), return vector",
-                      "matrix and vector have incompatible sizes");
-
-  uqTeuchosVectorClass y(m_env,m_map);
-  this->multiply(x,y);
-
-  return y;
-}
-
-// ---------------------------------------------------
-//multiply this matrix by vector x and store in vector y
-// checked 12/10/12
-void
-uqTeuchosMatrixClass::multiply(const uqTeuchosVectorClass& x, uqTeuchosVectorClass& y) const
-{
-  UQ_FATAL_TEST_MACRO((this->numCols() != x.sizeLocal()),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::multiply(), vector return void",
-                      "matrix and x have incompatible sizes");
-
-  UQ_FATAL_TEST_MACRO((this->numRowsLocal() != y.sizeLocal()),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::multiply(), vector return void",
-                      "matrix and y have incompatible sizes");
-
-  unsigned int sizeX = this->numCols();
-  unsigned int sizeY = this->numRowsLocal();
-  for (unsigned int i = 0; i < sizeY; ++i) {
-    double value = 0.;
-    for (unsigned int j = 0; j < sizeX; ++j) {
-      value += (*this)(i,j)*x[j];
-    }
-    y[i] = value;
-  }
-
-  return;
-}
-
-// ---------------------------------------------------
-// checked 1/07/13
-uqTeuchosMatrixClass
-uqTeuchosMatrixClass::transpose() const
-{
-  unsigned int nRows = this->numRowsLocal();
-  unsigned int nCols = this->numCols();
-
-//   UQ_FATAL_TEST_MACRO((nRows != nCols),
-//                       m_env.worldRank(),
-//                       "uqTeuchosMatrixClass::transpose()",
-//                       "routine works only for square matrices");
-
-  uqTeuchosMatrixClass mat(m_env,m_map,nCols);
-  for (unsigned int row = 0; row < nRows; ++row) {
-    for (unsigned int col = 0; col < nCols; ++col) {
-      mat(row,col) = (*this)(col,row);
-    }
-  }
-
-  return mat;
-}
-
-
-// ==================================================
 int
 uqTeuchosMatrixClass::svd(uqTeuchosMatrixClass& matU, uqTeuchosVectorClass& vecS, uqTeuchosMatrixClass& matVt) const
 {
@@ -952,89 +683,12 @@ uqTeuchosMatrixClass::svd(uqTeuchosMatrixClass& matU, uqTeuchosVectorClass& vecS
 }
 
 //---------------------------------------------------------------
-// Implemented(finally) and checked 1/10/13
-int
-uqTeuchosMatrixClass::internalSvd() const
-{
-  if (m_svdColMap == NULL) {
-    int nRows = (int) this->numRowsLocal();
-    int nCols = (int) this->numCols();
-    UQ_FATAL_TEST_MACRO(nRows < nCols,
-                        m_env.worldRank(),
-                        "uqTeuchosMatrixClass::internalSvd()",
-                        "GSL only supports cases where nRows >= nCols");
-
-    m_svdColMap = new uqMapClass(this->numCols(),0,this->map().Comm()); // see 'uqVectorSpaceClass<.,.>::newMap()'
-//in src/basic/src/uqTeuchosVectorSpace.C //old commet already existent in uqGslMatrixClass
-    m_svdUmat   = new uqTeuchosMatrixClass(*this); // Yes, 'this'
-    m_svdSvec   = new uqTeuchosVectorClass(m_env,*m_svdColMap);
-    m_svdVmat   = new uqTeuchosMatrixClass(*m_svdSvec);
-    m_svdVTmat  = new uqTeuchosMatrixClass(*m_svdSvec);
-    
-    int minRowsCols, maxRowsCols;
-    
-    if (nRows>=nCols) { minRowsCols = nCols; maxRowsCols = nRows; } else { minRowsCols = nRows; maxRowsCols = nCols; }
-
-    char jobu, jobvt;
-    int  lwork, info;
-    double  *work, *rwork;
-  
-    jobu = 'S';
-    jobvt = 'S';
-  
-    lwork = 15*maxRowsCols; // Set up the work array, larger than needed.
-    work = new double[lwork];
-
-    int aux1= 5*minRowsCols+7, aux2= 2*maxRowsCols+2*minRowsCols+1;
-    int aux_dim;
-  
-    if (aux1>=aux2) { aux_dim = minRowsCols*aux1; } else {aux_dim = minRowsCols*aux2; }
-  
-    rwork = new double[aux_dim];
-  
-    Teuchos::LAPACK<int, double> lapack;
-    
-    lapack.GESVD(jobu,jobvt,m_mat.numRows(),m_mat.numCols(),m_mat.values(),m_mat.stride(),
-	        m_svdSvec->values(),m_svdUmat->values(),m_svdUmat->stride(),m_svdVTmat->values(),
-		m_svdVTmat->stride(),&work[0],lwork,&rwork[0],&info);
-   
-//  //---------------------------
-//  unsigned int i,j;
-//  cout << "U ---------------------\n";
-//  for (i=0; i<m_svdUmat->numRowsLocal(); i++) {
-//    for (j=0; j<m_svdUmat->numCols(); j++)
-//      cout<< m_svdUmat->m_mat(i,j) << " ";
-//    cout << endl;
-//   }
-//   cout << endl;
-//   
-//  
-//  cout << "S ---------------------\n";
-//  for (i=0; i<m_svdSvec->sizeLocal(); i++)  
-//    cout <<  m_svdSvec->values()[i] << "\t";
-//  cout << endl << endl;
-//  
-//  cout << "VT---------------------\n";
-//   for (i=0; i<m_svdVTmat->numRowsLocal(); i++){ 
-//     for (j=0; j<m_svdVTmat->numCols(); j++) 
-//       cout<< m_svdVTmat->m_mat(i,j) << " ";
-//     cout << endl;
-//   }
-//   cout << endl;
-
-  }
-  return 0;
-}
-
-
-//---------------------------------------------------------------
 //tested 2/1/13
 const uqTeuchosMatrixClass& uqTeuchosMatrixClass::svdMatU() const
 {
   int iRC = 0;
   iRC = internalSvd();
   if (iRC) {}; // just to remove compiler warning
- 
   return *m_svdUmat;
 }
 
@@ -1045,10 +699,8 @@ const uqTeuchosMatrixClass& uqTeuchosMatrixClass::svdMatV() const
   int iRC = 0;
   iRC = internalSvd();
   if (iRC) {}; // just to remove compiler warning
-
   return *m_svdVmat;
 }
-
 
 //---------------------------------------------------------------
 // checked 2/27/13
@@ -1124,17 +776,15 @@ uqTeuchosMatrixClass::svdSolve(const uqTeuchosVectorClass& rhsVec, uqTeuchosVect
    *          < 0:  if INFO = -i, the i-th argument had an illegal value
    *          > 0:  if INFO = i, U(i,i) is exactly zero.  The factorization
    *                has been completed, but the factor U is exactly
-   *                singular, so the solution could not be computed.
-   */
+   *                singular, so the solution could not be computed.   */
    
     iRC = info;
     delete aux_m_svdVTmat;    
   }
-  return iRC;
- 
+  return iRC; 
 }
 
-//---------------------------------------------------------------
+// ---------------------------------------------------
 //checked 2/27/13
 int
 uqTeuchosMatrixClass::svdSolve(const uqTeuchosMatrixClass& rhsMat, uqTeuchosMatrixClass& solMat) const
@@ -1170,57 +820,23 @@ uqTeuchosMatrixClass::svdSolve(const uqTeuchosMatrixClass& rhsMat, uqTeuchosMatr
   return iRC;
 }
 
-//---------------------------------------------------------------
-// tested 1/31/13
-uqTeuchosMatrixClass
-uqTeuchosMatrixClass::inverse() const
+// ---------------------------------------------------
+// implemented/checked 1/8/13
+// multiply this matrix by vector x and store in vector y, which is returned
+// eg: uqTeuchosVectorClass v1(paramSpace.zeroVector() ); 
+//     v1=covMatrix.multiply(meanVector);
+uqTeuchosVectorClass
+uqTeuchosMatrixClass::multiply(const uqTeuchosVectorClass& x) const
 {
-  unsigned int nRows = this->numRowsLocal();
-  unsigned int nCols = this->numCols();
-
-  UQ_FATAL_TEST_MACRO((nRows != nCols),
+  UQ_FATAL_TEST_MACRO((this->numCols() != x.sizeLocal()),
                       m_env.worldRank(),
-                      "uqTeuchosMatrixClass::inverse()",
-                      "matrix is not square");
+                      "uqTeuchosMatrixClass::multiply(), return vector",
+                      "matrix and vector have incompatible sizes");
 
-  if (m_inverse == NULL) {
-    m_inverse = new uqTeuchosMatrixClass(m_env,m_map,nCols);
-    uqTeuchosVectorClass unitVector(m_env,m_map);
-    unitVector.cwSet(0.);
-    uqTeuchosVectorClass multVector(m_env,m_map);
-    for (unsigned int j = 0; j < nCols; ++j) {
-      if (j > 0) unitVector[j-1] = 0.;
-      unitVector[j] = 1.;
-      this->invertMultiply(unitVector, multVector);
-      for (unsigned int i = 0; i < nRows; ++i) {
-        (*m_inverse)(i,j) = multVector[i];
-      }
-    }
-  }
-  if (m_env.checkingLevel() >= 1) {
-    *m_env.subDisplayFile() << "CHECKING In uqTeuchosMatrixClass::inverse()"
-                            << ": M.lnDet = "      << this->lnDeterminant()
-                            << ", M^{-1}.lnDet = " << m_inverse->lnDeterminant()
-                            << std::endl;
-  }
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::inverse():"
-                            << "\n M = "        << *this
-                            << "\n M^{-1} = "   << *m_inverse
-                            << "\n M*M^{-1} = " << (*this)*(*m_inverse)
-                            << "\n M^{-1}*M = " << (*m_inverse)*(*this)
-                            << std::endl;
-  }
+  uqTeuchosVectorClass y(m_env,m_map);
+  this->multiply(x,y);
 
-//   cout << "Inverse ---------------------\n";
-//   for (int i=0; i<m_inverse->numRowsLocal(); i++) {
-//     for (int j=0; j<m_inverse->numCols(); j++)
-//       cout<< m_inverse->m_mat(i,j) << " ";
-//     cout << endl;
-//   }
-//   cout << endl;
-
-  return *m_inverse;
+  return y;
 }
 
 // ---------------------------------------------------
@@ -1238,6 +854,7 @@ uqTeuchosMatrixClass::invertMultiply(const uqTeuchosVectorClass& b) const
 
   return x;
 }
+
 // ---------------------------------------------------
 //Kemelli checked 12/06/12
 void
@@ -1253,9 +870,8 @@ uqTeuchosMatrixClass::invertMultiply(const uqTeuchosVectorClass& b, uqTeuchosVec
                       "uqTeuchosMatrixClass::invertMultiply(), return void",
                       "solution and rhs have incompatible sizes");
  
-  if (m_LU.numCols() == 0 && m_LU.numRows() == 0)    //dummy, for GSL class it was: 
-  {						      //   if (m_LU == NULL) {
-    
+  if (m_LU.numCols() == 0 && m_LU.numRows() == 0)  
+  {						        
   UQ_FATAL_TEST_MACRO((v_pivoting != NULL),
                          m_env.worldRank(),
                          "uqTeuchosMatrixClass::invertMultiply()",
@@ -1265,12 +881,6 @@ uqTeuchosMatrixClass::invertMultiply(const uqTeuchosVectorClass& b, uqTeuchosVec
   m_LU = m_mat;
   v_pivoting =(int *) malloc(sizeof(int)*m_LU.numCols() );
   
-  //TODO: check if m_permutation remains needed. I don't think it is
-  //      It was needed by gsl_linalg_LU_decomp, but it isn't by lapack.
-  // Kemelli commented on 12/07/12
-  //double diagValue = 1.;
-  //m_permutation = new uqTeuchosMatrixClass(m_env, m_map, diagValue); //Identity matrix; 
-       
   UQ_FATAL_TEST_MACRO((m_LU.numCols() == 0 && m_LU.numRows() == 0),
                       m_env.worldRank(),
                       "uqTeuchosMatrixClass::invertMultiply()",
@@ -1324,10 +934,8 @@ uqTeuchosMatrixClass::invertMultiply(const uqTeuchosVectorClass& b, uqTeuchosVec
 		cout << endl;
 	      }      
       std::cout << std::endl;
-    }   
-    
+    }       
   }
-
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
     *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::invertMultiply()"
                             << ": before 'lapack.GETRS()'"
@@ -1337,9 +945,9 @@ uqTeuchosMatrixClass::invertMultiply(const uqTeuchosVectorClass& b, uqTeuchosVec
   // Solve the linear system.
   Teuchos::LAPACK<int, double> lapack;
   int NRHS = 1; // NRHS: number of right hand sides, i.e., the number 
-		// of columns of the matrix B. In this case, vector b.
+				// of columns of the matrix B. In this case, vector b.
   char TRANS = 'N';  // 'N':  A * x= B  (No transpose). Specifies the 
-		     // form of the system of equations.
+				     // form of the system of equations.
   int info02;
   
   //GETRS expects the matrix to be already factored in LU and uses the 
@@ -1354,27 +962,23 @@ uqTeuchosMatrixClass::invertMultiply(const uqTeuchosVectorClass& b, uqTeuchosVec
                 << ": INFO = " << info02
                 << ",\nINFO < 0:  if INFO = -i, the i-th argument had an illegal value.\n"
                 << std::endl;
-    } 
-   
+  } 
   UQ_FATAL_RC_MACRO(info02,
 		    m_env.worldRank(),
 		    "uqTeuchosMatrixClass::invertMultiplyForceLU()",
 		    "GETRS() failed"); 
-  
-   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+ if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
     *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::invertMultiply()"
 			    << ", after lapack.GETRS() - solve LU system."
                             << std::endl;
-  }
-   
-  if (m_inDebugMode) {
+ }
+ if (m_inDebugMode) {
     uqTeuchosVectorClass tmpVec(b - (*this)*x);
     std::cout << "In uqTeuchosMatrixClass::invertMultiply()"
               << ": ||b - Ax||_2 = "         << tmpVec.norm2()
               << ": ||b - Ax||_2/||b||_2 = " << tmpVec.norm2()/b.norm2()
               << std::endl;
-  }
-
+ }
  return;
 }
 
@@ -1393,14 +997,13 @@ void
 uqTeuchosMatrixClass::invertMultiply(const uqTeuchosMatrixClass& B, uqTeuchosMatrixClass& X) const
 {
   // Sanity Checks
-  UQ_FATAL_RC_MACRO(((B.numRowsLocal() != X.numRowsLocal()) ||
-		     (B.numCols()      != X.numCols()     )),
-                    m_env.worldRank(),
+  UQ_FATAL_RC_MACRO(((B.numRowsLocal() != X.numRowsLocal()) || (B.numCols() != X.numCols())),
+             m_env.worldRank(),
 		    "uqTeuchosMatrixClass::invertMultiply()",
 		    "Matrices B and X are incompatible");
   
   UQ_FATAL_RC_MACRO((this->numRowsLocal() != X.numRowsLocal()),
-                    m_env.worldRank(),
+             m_env.worldRank(),
 		    "uqTeuchosMatrixClass::invertMultiply()",
 		    "This and X matrices are incompatible");
 
@@ -1408,21 +1011,16 @@ uqTeuchosMatrixClass::invertMultiply(const uqTeuchosMatrixClass& B, uqTeuchosMat
   uqTeuchosVectorClass b(m_env, m_map);
   uqTeuchosVectorClass x(m_env, m_map);
   
-  for( unsigned int j = 0; j < B.numCols(); ++j )
-  {
+  for( unsigned int j = 0; j < B.numCols(); ++j ) {
     b = B.getColumn(j);
-    
     //invertMultiply will only do the LU factorization once and store it. 
     x = this->invertMultiply(b);
-  
     X.setColumn(j,x);
   }
-
   return;
 }
 
 //-----------------------------------------------
-
 uqTeuchosVectorClass
 uqTeuchosMatrixClass::invertMultiplyForceLU(const uqTeuchosVectorClass& b) const
 {
@@ -1436,7 +1034,6 @@ uqTeuchosMatrixClass::invertMultiplyForceLU(const uqTeuchosVectorClass& b) const
 
   return x;
 }
-
 
 // ---------------------------------------------------
 // implemented and checked on 1/9/13
@@ -1453,9 +1050,7 @@ uqTeuchosMatrixClass::invertMultiplyForceLU(const uqTeuchosVectorClass& b, uqTeu
                       "uqTeuchosMatrixClass::invertMultiply(), return void",
                       "solution and rhs have incompatible sizes");
  
-  if (m_LU.numCols() == 0 && m_LU.numRows() == 0)    //dummy, for GSL class it was: 
-  {						      //   if (m_LU == NULL) {
-    
+  if (m_LU.numCols() == 0 && m_LU.numRows() == 0) {						      
     UQ_FATAL_TEST_MACRO((v_pivoting != NULL),
                          m_env.worldRank(),
                          "uqTeuchosMatrixClass::invertMultiply()",
@@ -1506,9 +1101,9 @@ uqTeuchosMatrixClass::invertMultiplyForceLU(const uqTeuchosVectorClass& b, uqTeu
   
   // Solve the linear system.
   int NRHS = 1; // NRHS: number of right hand sides, i.e., the number 
-		// of columns of the matrix B. In this case, vector b.
+				// of columns of the matrix B. In this case, vector b.
   char TRANS = 'N';  // 'N':  A * x= B  (No transpose). Specifies the 
-		     // form of the system of equations.
+				     // form of the system of equations.
   int info02;
   
   //GETRS expects the matrix to be already factored in LU and uses the 
@@ -1529,154 +1124,473 @@ uqTeuchosMatrixClass::invertMultiplyForceLU(const uqTeuchosVectorClass& b, uqTeu
 		    m_env.worldRank(),
 		    "uqTeuchosMatrixClass::invertMultiplyForceLU()",
 		    "GETRS() failed"); 
-    
+   
  return;
 }
+// ---------------------------------------------------
+// Implemented and checked on 1/7/2013
 
-// ----------------------------------------------
-//checked 12/10/12
-double
-uqTeuchosMatrixClass::determinant() const
+/*  DSYEV computes all eigenvalues and, optionally, eigenvectors of a real symmetric matrix A.
+*
+*  Arguments
+*  JOBZ    = 'N':  Compute eigenvalues only;
+*          = 'V':  Compute eigenvalues and eigenvectors.
+*  UPLO    = 'U':  Upper triangle of A is stored;
+*          = 'L':  Lower triangle of A is stored.
+*  N       The order of the matrix A.  N >= 0.
+*  A       (input/output) DOUBLE PRECISION array, dimension (LDA, N).On entry, the symmetric 
+*  matrix A.  If UPLO = 'U', the leading N-by-N upper triangular part of A contains the
+*  upper triangular part of the matrix A.  If UPLO = 'L', the leading N-by-N lower triangular 
+*  part of A contains the lower triangular part of the matrix A. On exit, if JOBZ = 'V', then
+*  if INFO = 0, A contains the orthonormal eigenvectors of the matrix A. If JOBZ = 'N', then 
+*  on exit the lower triangle (if UPLO='L') or the upper triangle (if UPLO='U') of A, 
+*  including the  diagonal, is destroyed.
+*  LDA     (input) INTEGER - the leading dimension of the array A.  LDA >= max(1,N).
+*  W       (output) DOUBLE PRECISION array, dimension (N)
+*          If INFO = 0, the eigenvalues in ascending order.
+*  WORK    (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LWORK))
+*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
+*  LWORK   (input) INTEGER - the length of the array WORK.  LWORK >= max(1,3*N-1).
+*  INFO    (output) INTEGER
+*          = 0:  successful exit
+*          < 0:  if INFO = -i, the i-th argument had an illegal value
+*          > 0:  if INFO = i, the algorithm failed to converge; i off-diagonal elements of 
+*                an intermediate tridiagonal form did not converge to zero.*/
+void
+uqTeuchosMatrixClass::eigen(uqTeuchosVectorClass& eigenValues, uqTeuchosMatrixClass* eigenVectors) const
 {
-  if (m_determinant == -INFINITY) 
-  {    
-    if(m_LU.numRows() ==0 && m_LU.numCols() ==0)  //dummy
-    {
-      uqTeuchosVectorClass tmpB(m_env,m_map);
-      uqTeuchosVectorClass tmpX(m_env,m_map);
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-        *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                                << ": before 'this->invertMultiply()'"
-                                << std::endl;
-      }
-      this->invertMultiply(tmpB,tmpX);
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-        *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                                << ": after 'this->invertMultiply()'"
-                                << std::endl;
-      }
-    }
-    
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                              << ": before 'gsl_linalg_LU_det()'"
-                              << std::endl;
-    }
-    
-    double det=1.0;
-    for (int i=0;i<m_LU.numCols();i++)
-      det*=m_LU(i,i);
+  unsigned int n = eigenValues.sizeLocal();
+
+  UQ_FATAL_TEST_MACRO((n == 0),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::eigen()",
+                      "invalid input vector size");
+
+  if (eigenVectors) {
+    UQ_FATAL_TEST_MACRO((eigenValues.sizeLocal() != eigenVectors->numRowsLocal()),
+                        env().fullRank(),
+                        "uqTeuchosVectorClass::eigen()",
+                        "different input vector sizes");
+  }
   
-    m_determinant = det;
+  // At the end of execution, Lapack funcion destroys the input matrix
+  // So, lets not use m_mat, but instead, a copy of it
+  Teuchos::SerialDenseMatrix<int,double> copy_m_mat;
+  copy_m_mat = m_mat;
+
+  Teuchos::LAPACK<int, double> lapack;
+  int lwork = 3*n -1; 
+  int info;
+  char UPLO = 'L'; 
+  double *W, *WORK;
+
+  W = new double[n];
+  WORK = new double[lwork];
+      
+  if (eigenVectors == NULL) {
+    char JOBZ = 'N';//eigenvalues only        
+     
+    lapack.SYEV(JOBZ, UPLO, copy_m_mat.numRows(), copy_m_mat.values(), copy_m_mat.stride(), &W[0], &WORK[0], lwork, &info);
+  
+    for (unsigned int i=0; i< n; i++) 
+      eigenValues[i] = W[i];
+  
+    UQ_FATAL_TEST_MACRO((info != 0),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::eigen()",
+                      "invalid input vector size");
+  }
+  else {
+  	char JOBZ = 'V';//eigenvalues and eigenvectors          
     
-    
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                              << ": after 'gsl_linalg_LU_det()'"
-                              << std::endl;
-    }
-    
-    
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                              << ": before 'gsl_linalg_LU_lndet()'"
-                              << std::endl;
-    }
+    lapack.SYEV(JOBZ, UPLO, copy_m_mat.numRows(), copy_m_mat.values(), copy_m_mat.stride(), &W[0], &WORK[0], lwork, &info);
+  
+  	for (unsigned int i=0; i< n; i++)
+    	eigenValues[i] = W[i];
+  
+  	eigenVectors->m_mat = copy_m_mat;
+  } 
+
+  if (info != 0) {
+    std::cerr << "In uqTeuchosMtrixClass::eigen()"
+              << ": INFO = " << info
+              << ",\n INFO < 0:  if INFO = -i, the i-th argument had an illegal value."
+              << "\n INFO > 0:  if INFO = i, the algorithm failed to converge; i off-diagonal "
+		      << " elements of an intermediate tridiagonal form did not converge to zero."
+              << std::endl;     
   }
 
-  return m_determinant;
+  return;
 }
+// ---------------------------------------------------
+void
+uqTeuchosMatrixClass::largestEigen(double& eigenValue, uqTeuchosVectorClass& eigenVector) const
+{ 
+  unsigned int n = eigenVector.sizeLocal();
 
-// ----------------------------------------------
-//checked 12/10/12
-double
-uqTeuchosMatrixClass::lnDeterminant() const
-{
-  if (m_lnDeterminant == -INFINITY) 
-  {
-    if(m_LU.numRows() ==0 && m_LU.numCols() ==0)  //dummy
-    {
-      uqTeuchosVectorClass tmpB(m_env,m_map);
-      uqTeuchosVectorClass tmpX(m_env,m_map);
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-        *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                                << ": before 'this->invertMultiply()'"
-                                << std::endl;
-      }
-      this->invertMultiply(tmpB,tmpX);
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-        *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                                << ": after 'this->invertMultiply()'"
-                                << std::endl;
-      }
-    }
-    
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                              << ": before 'gsl_linalg_LU_det()'"
-                              << std::endl;
-    }
-    
-    double det=1.0;
-    
-    for (int i=0;i<m_LU.numCols();i++)
-      det*=m_LU(i,i);
+  UQ_FATAL_TEST_MACRO((n == 0),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::largestEigen()",
+                      "invalid input vector size");
+  Teuchos::LAPACK<int, double> lapack;
   
-    m_lnDeterminant = log(det);
-    m_determinant   = det;
-    
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                              << ": after 'gsl_linalg_LU_det()'"
-                              << std::endl;
-    }
-    
-    
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                              << ": before 'gsl_linalg_LU_lndet()'"
-                              << std::endl;
-    }
-  }
+  //SYEV destroys the input matrix, so lets operate in a copy  
+  Teuchos::SerialDenseMatrix<int,double> copy_m_mat;
+  copy_m_mat = m_mat;
 
-  return m_lnDeterminant;
+  int lwork = 3*n -1; 
+  int info;
+  char UPLO = 'L'; 
+  char JOBZ = 'V'; //eigenvalues and eigenvectors          
+  double *W, *WORK;
+  
+  W = new double[n];
+  WORK = new double[lwork];
+      
+  lapack.SYEV(JOBZ, UPLO, copy_m_mat.numRows(), copy_m_mat.values(), copy_m_mat.stride(), &W[0], &WORK[0], lwork, &info);
+   
+  if (info != 0) {
+    std::cerr << "In uqTeuchosMtrixClass::largestEigen()"
+              << ": INFO = " << info
+              << ",\n INFO < 0:  if INFO = -i, the i-th argument had an illegal value."
+              << "\n INFO > 0:  if INFO = i, the algorithm failed to converge; i off-diagonal "
+		      << " elements of an intermediate tridiagonal form did not converge to zero."
+              << std::endl;    
+  }
+  // If INFO = 0, W contains the eigenvalues in ascending order. 
+  // Thus the largest eigenvalue is in W[n-1].
+  eigenValue = W[n-1];
+  
+  // Eigenvector associated to the largest eigenvalue.
+  // Stored in the n-th column of matrix copy_m_mat.
+  for (int i=0; i< copy_m_mat.numRows(); i++)
+    eigenVector[i] = copy_m_mat(i,n-1);
+   
+  return;
 }
 
 // ---------------------------------------------------
-unsigned int
-uqTeuchosMatrixClass::rank(double absoluteZeroThreshold, double relativeZeroThreshold) const
-{
-  int iRC = 0;
-  iRC = internalSvd();
-  if (iRC) {}; // just to remove compiler warning
+void
+uqTeuchosMatrixClass::smallestEigen(double& eigenValue, uqTeuchosVectorClass& eigenVector) const
+{ 
+  unsigned int n = eigenVector.sizeLocal();
 
-  uqTeuchosVectorClass relativeVec(*m_svdSvec);
-  if (relativeVec[0] > 0.) {
-    relativeVec = (1./relativeVec[0])*relativeVec;
+  UQ_FATAL_TEST_MACRO((n == 0),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::smallestEigen()",
+                      "invalid input vector size");
+  Teuchos::LAPACK<int, double> lapack;
+  
+  //SYEV destroys the input matrix, so lets operate in a copy  
+  Teuchos::SerialDenseMatrix<int,double> copy_m_mat;
+  copy_m_mat = m_mat;
+
+  int lwork = 3*n -1; 
+  int info;
+  char UPLO = 'L'; 
+  char JOBZ = 'V';//eigenvalues and eigenvectors          
+  double *W, *WORK;
+  
+  W = new double[n];
+  WORK = new double[lwork];
+     
+  lapack.SYEV(JOBZ, UPLO, copy_m_mat.numRows(), copy_m_mat.values(), copy_m_mat.stride(), &W[0], &WORK[0], lwork, &info);
+  
+  if (info != 0) {
+    std::cerr << "In uqTeuchosMtrixClass::smallestEigen()"
+              << ": INFO = " << info
+              << ",\n INFO < 0:  if INFO = -i, the i-th argument had an illegal value."
+              << "\n INFO > 0:  if INFO = i, the algorithm failed to converge; i off-diagonal "
+		      << " elements of an intermediate tridiagonal form did not converge to zero."
+              << std::endl;    
   }
+  
+  // If INFO = 0, W contains the eigenvalues in ascending order. 
+  // Thus the smallest eigenvalue is in W[0].
+  eigenValue = W[0];
+  
+  // Eigenvector associated to the smallest eigenvalue.
+  // Stored in the n-th column of matrix copy_m_mat.
+  for (int i=0; i< copy_m_mat.numRows(); i++)
+    eigenVector[i] = copy_m_mat(i,0);
+   
+  return;
+}
 
-  unsigned int rankValue = 0;
-  for (unsigned int i = 0; i < relativeVec.sizeLocal(); ++i) {
-    if (( (*m_svdSvec)[i] >= absoluteZeroThreshold ) &&
-        ( relativeVec [i] >= relativeZeroThreshold )) {
-       rankValue += 1;
+// Get/Set methodos ----------------------------------
+// ---------------------------------------------------
+
+// ---------------------------------------------------
+void
+uqTeuchosMatrixClass::cwSet(double value)
+{
+  m_mat.putScalar(value);
+  return;
+}
+
+// ---------------------------------------------------
+// tested on 1/31/13: copies matrix mat to this matrix, starting at row rowId and column colId
+void
+uqTeuchosMatrixClass::cwSet(unsigned int rowId,unsigned int colId,const uqTeuchosMatrixClass& mat)
+{
+  UQ_FATAL_TEST_MACRO(rowId >= this->numRowsLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::cwSet()",
+                      "invalid rowId");
+
+  UQ_FATAL_TEST_MACRO((rowId + mat.numRowsLocal()) > this->numRowsLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::cwSet()",
+                      "invalid vec.numRowsLocal()");
+
+  UQ_FATAL_TEST_MACRO(colId >= this->numCols(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::cwSet()",
+                      "invalid colId");
+
+  UQ_FATAL_TEST_MACRO((colId + mat.numCols()) > this->numCols(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::cwSet()",
+                      "invalid vec.numCols()");
+
+  for (unsigned int i = 0; i < mat.numRowsLocal(); ++i) {
+    for (unsigned int j = 0; j < mat.numCols(); ++j) {
+      (*this)(rowId+i,colId+j) = mat(i,j);
     }
   }
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::rank()"
-                            << ": this->numRowsLocal() = "  << this->numRowsLocal()
-                            << ", this->numCols() = "       << this->numCols()
-                            << ", absoluteZeroThreshold = " << absoluteZeroThreshold
-                            << ", relativeZeroThreshold = " << relativeZeroThreshold
-                            << ", rankValue = "             << rankValue
-                            << ", m_svdSvec = "             << *m_svdSvec
-                            << ", relativeVec = "           << relativeVec
-                            << std::endl;
+  return;
+}
+
+// ---------------------------------------------------
+//Kemelli tested 07/12/12
+void
+uqTeuchosMatrixClass::getColumn(unsigned int column_num, uqTeuchosVectorClass& column) const
+{
+  // Sanity checks
+  UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::getColumn",
+                      "Specified row number not within range");
+
+  UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::getColumn",
+                      "column vector not same size as this matrix");
+
+  // Temporary working pointer
+  const double* temp_ptr ;
+  
+  // get the column_num- of matrix m_mat
+  temp_ptr = m_mat[column_num];
+  
+  // Copy column from Teuchos matrix into our TeuchosVector object
+  for (unsigned int i=0; i< column.sizeLocal();i++)
+    column[i] = temp_ptr[i];
+  
+  return;
+}
+
+// ---------------------------------------------------
+uqTeuchosVectorClass
+uqTeuchosMatrixClass::getColumn(unsigned int column_num ) const
+{
+  // We rely on the void getColumn's to do sanity checks
+  // So we don't do them here.
+  uqTeuchosVectorClass column(m_env, m_map);
+  this->getColumn( column_num, column );
+  return column;
+}
+
+
+// ---------------------------------------------------
+//Kemelli tested 07/12/12
+void
+uqTeuchosMatrixClass::setColumn(unsigned int column_num, const uqTeuchosVectorClass& column)
+{
+  this->resetLU();
+  // Sanity checks
+  UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::setColumn",
+                      "Specified column number not within range");
+
+  UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::setColumn",
+                      "column vector not same size as this matrix");
+  
+  for (unsigned int i =0; i < column.sizeLocal(); i++)
+    m_mat(i,column_num) = column[i];
+  
+  return;
+}
+
+// ---------------------------------------------------
+// tested 1/31/13
+void
+uqTeuchosMatrixClass::getRow(unsigned int row_num, uqTeuchosVectorClass& row) const
+{
+  // Sanity checks
+  UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::getRow",
+                      "Specified row number not within range");
+
+  UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numRowsLocal()),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::getRow",
+                      "row vector not same size as this matrix");
+
+  // Copy row from Teuchos matrix into our TeuchosVector object
+  for (unsigned int i=0; i< row.sizeLocal();i++)
+    row[i] = m_mat(row_num,i);
+  
+  return;
+}
+
+// ---------------------------------------------------
+// tested 1/31/13
+uqTeuchosVectorClass
+uqTeuchosMatrixClass::getRow(unsigned int row_num ) const
+{
+  // We rely on the void getRow's to do sanity checks
+  // So we don't do them here.
+  uqTeuchosVectorClass row(m_env, m_map);
+  this->getRow( row_num, row );
+  return row;
+}
+
+// ---------------------------------------------------
+// tested 1/31/13
+void
+uqTeuchosMatrixClass::setRow (const unsigned int row_num, const uqTeuchosVectorClass& row)
+{
+  // Sanity checks
+  UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::getRow",
+                      "Specified row number not within range");
+
+  UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numRowsLocal()),
+                      env().fullRank(),
+                      "uqTeuchosMatrixClass::getRow",
+                      "row vector not same size as this matrix");
+
+  // Copy our TeuchosVector object to our Teuchos Matrix
+  for (unsigned int i=0; i< row.sizeLocal();i++)
+     m_mat(row_num,i) = row[i] ;
+  
+  return;
+}
+
+// ---------------------------------------------------
+// Kemelli 12/05/12 - tested
+void         
+uqTeuchosMatrixClass::zeroLower(bool includeDiagonal)
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+
+  UQ_FATAL_TEST_MACRO((nRows != nCols),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::zeroLower()",
+                      "routine works only for square matrices");
+  this->resetLU();
+
+  if (includeDiagonal) {
+    for (unsigned int i = 0; i < nRows; i++) {
+      for (unsigned int j = 0; j <= i; j++) {
+        (*this)(i,j) = 0.;
+      }
+    }
+  }
+  else {
+    for (unsigned int i = 0; i < nRows; i++) {
+      for (unsigned int j = 0; j < i; j++) {
+        (*this)(i,j) = 0.;
+      }
+    }
   }
 
-  return rankValue;
+  return;
 }
+
+// ---------------------------------------------------
+// Kemelli 12/05/12 - tested
+void 
+uqTeuchosMatrixClass::zeroUpper(bool includeDiagonal)
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+
+  UQ_FATAL_TEST_MACRO((nRows != nCols),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::zeroUpper()",
+                      "routine works only for square matrices");
+  this->resetLU();
+
+  if (includeDiagonal) {
+    for (unsigned int i = 0; i < nRows; i++) {
+      for (unsigned int j = i; j < nCols; j++) {
+        (*this)(i,j) = 0.;
+      }
+    }
+  }
+  else {
+    for (unsigned int i = 0; i < nRows; i++) {
+      for (unsigned int j = (i+1); j < nCols; j++) {
+        (*this)(i,j) = 0.;
+      }
+    }
+  }
+
+  return;
+}
+
+// ---------------------------------------------------
+void
+uqTeuchosMatrixClass::filterSmallValues(double thresholdValue)
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+  
+  for (unsigned int i = 0; i < nRows; ++i) {
+    for (unsigned int j = 0; j < nCols; ++j) {
+      double aux = (*this)(i,j);
+      // If 'thresholdValue' is negative, no values will be filtered
+      if ((aux < 0. ) && (-thresholdValue < aux)) {
+        (*this)(i,j) = 0.;
+      }      
+      if ((aux > 0. ) && (thresholdValue > aux)) {
+        (*this)(i,j) = 0.;
+      }      
+    }
+  }
+  return;
+}
+
+// ---------------------------------------------------
+void
+uqTeuchosMatrixClass::filterLargeValues(double thresholdValue)
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+  
+  for (unsigned int i = 0; i < nRows; ++i) {
+    for (unsigned int j = 0; j < nCols; ++j) {
+      double aux = (*this)(i,j);
+      // If 'thresholdValue' is negative, no values will be filtered
+      if ( (aux < 0. ) && (-thresholdValue > aux)) 
+          (*this)(i,j) = 0.;
+      
+      if ((aux > 0. ) && (thresholdValue < aux))
+        (*this)(i,j) = 0.;
+    }
+  }
+  return;
+}
+
 
 // ----------------------------------------------
 // tested 1/31/13
@@ -1703,7 +1617,379 @@ uqTeuchosMatrixClass::fillWithTranspose(const uqTeuchosMatrixClass& mat)
   return;
 }
 
-//----------------------------------------------------------------------------
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithBlocksDiagonally(const std::vector<const uqTeuchosMatrixClass* >& matrices)
+{
+  unsigned int sumNumRowsLocals = 0;
+  unsigned int sumNumCols       = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    sumNumRowsLocals += matrices[i]->numRowsLocal();
+    sumNumCols       += matrices[i]->numCols();
+  }
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRowsLocals,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksDiagonally(const)",
+                      "inconsistent local number of rows");
+  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksDiagonally(const)",
+                      "inconsistent number of cols");
+
+  unsigned int cumulativeRowId = 0;
+  unsigned int cumulativeColId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
+        (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
+      }
+    }
+    cumulativeRowId += nRows;
+    cumulativeColId += nCols;
+  }
+
+  return;
+}
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithBlocksDiagonally(const std::vector<uqTeuchosMatrixClass* >& matrices)
+{
+  unsigned int sumNumRowsLocals = 0;
+  unsigned int sumNumCols       = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    sumNumRowsLocals += matrices[i]->numRowsLocal();
+    sumNumCols       += matrices[i]->numCols();
+  }
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRowsLocals,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksDiagonally()",
+                      "inconsistent local number of rows");
+  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksDiagonally()",
+                      "inconsistent number of cols");
+
+  unsigned int cumulativeRowId = 0;
+  unsigned int cumulativeColId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
+        (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
+      }
+    } 
+    cumulativeRowId += nRows;
+    cumulativeColId += nCols;
+  }
+
+  return;
+}
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithBlocksHorizontally(const std::vector<const uqTeuchosMatrixClass* >& matrices)
+{
+  unsigned int sumNumCols = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    UQ_FATAL_TEST_MACRO(this->numRowsLocal() != matrices[i]->numRowsLocal(),
+                        m_env.worldRank(),
+                        "uqTeuchosMatrixClass::fillWithBlocksHorizontally(const)",
+                        "inconsistent local number of rows");
+    sumNumCols += matrices[i]->numCols();
+  }
+  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksHorizontally(const)",
+                      "inconsistent number of cols");
+
+  unsigned int cumulativeColId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
+        (*this)(rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
+      }
+    }
+    cumulativeColId += nCols;
+  }
+
+  return;
+}
+
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithBlocksHorizontally(const std::vector<uqTeuchosMatrixClass* >& matrices)
+{
+  unsigned int sumNumCols = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    UQ_FATAL_TEST_MACRO(this->numRowsLocal() != matrices[i]->numRowsLocal(),
+                        m_env.worldRank(),
+                        "uqTeuchosMatrixClass::fillWithBlocksHorizontally()",
+                        "inconsistent local number of rows");
+    sumNumCols += matrices[i]->numCols();
+  }
+  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksHorizontally()",
+                      "inconsistent number of cols");
+
+  unsigned int cumulativeColId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
+        (*this)(rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
+      }
+    }
+    cumulativeColId += nCols;
+  }
+
+  return;
+}
+
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithBlocksVertically(const std::vector<const uqTeuchosMatrixClass* >& matrices)
+{
+  unsigned int sumNumRows = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    UQ_FATAL_TEST_MACRO(this->numCols() != matrices[i]->numCols(),
+                        m_env.worldRank(),
+                        "uqTeuchosMatrixClass::fillWithBlocksVertically(const)",
+                        "inconsistent local number of cols");
+    sumNumRows += matrices[i]->numRowsLocal();
+  }
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRows,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksVertically(const)",
+                      "inconsistent number of rows");
+
+  unsigned int cumulativeRowId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
+        (*this)(cumulativeRowId + rowId, colId) = (*(matrices[i]))(rowId,colId);
+      }
+    }
+    cumulativeRowId += nRows;
+  }
+  return;
+}
+
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithBlocksVertically(const std::vector<uqTeuchosMatrixClass* >& matrices)
+{
+  unsigned int sumNumRows = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    UQ_FATAL_TEST_MACRO(this->numCols() != matrices[i]->numCols(),
+                        m_env.worldRank(),
+                        "uqTeuchosMatrixClass::fillWithBlocksVertically()",
+                        "inconsistent local number of cols");
+    sumNumRows += matrices[i]->numRowsLocal();
+  }
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRows,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillWithBlocksVertically()",
+                      "inconsistent number of rows");
+
+  unsigned int cumulativeRowId = 0;
+  for (unsigned int i = 0; i < matrices.size(); ++i) {
+    unsigned int nRows = matrices[i]->numRowsLocal();
+    unsigned int nCols = matrices[i]->numCols();
+    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
+      for (unsigned int colId = 0; colId < nCols; ++colId) {
+        (*this)(cumulativeRowId + rowId, colId) = (*(matrices[i]))(rowId,colId);
+      }
+    }
+    cumulativeRowId += nRows;
+  }
+  return;
+}
+
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithTensorProduct(const uqTeuchosMatrixClass& mat1, const uqTeuchosMatrixClass& mat2)
+{
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != (mat1.numRowsLocal() * mat2.numRowsLocal()),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillTensorProduct(mat and mat)",
+                      "inconsistent local number of rows");
+  UQ_FATAL_TEST_MACRO(this->numCols() != (mat1.numCols() * mat2.numCols()),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillTensorProduct(mat and mat)",
+                      "inconsistent number of columns");
+
+  for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
+    for (unsigned int colId1 = 0; colId1 < mat1.numCols(); ++colId1) {
+      double multiplicativeFactor = mat1(rowId1,colId1);
+      unsigned int targetRowId = rowId1 * mat2.numRowsLocal();
+      unsigned int targetColId = colId1 * mat2.numCols();
+      for (unsigned int rowId2 = 0; rowId2 < mat2.numRowsLocal(); ++rowId2) {
+        for (unsigned int colId2 = 0; colId2 < mat2.numCols(); ++colId2) {
+          (*this)(targetRowId + rowId2, targetColId + colId2) = multiplicativeFactor * mat2(rowId2,colId2);
+        }
+      }
+    }
+  } 
+  return;
+}
+
+// ---------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosMatrixClass::fillWithTensorProduct(const uqTeuchosMatrixClass& mat1, const uqTeuchosVectorClass& vec2)
+{
+  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != (mat1.numRowsLocal() * vec2.sizeLocal()),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillTensorProduct(mat and vec)",
+                      "inconsistent local number of rows");
+  UQ_FATAL_TEST_MACRO(this->numCols() != (mat1.numCols() * 1),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::fillTensorProduct(mat and vec)",
+                      "inconsistent number of columns");
+
+  for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
+    for (unsigned int colId1 = 0; colId1 < mat1.numCols(); ++colId1) {
+      double multiplicativeFactor = mat1(rowId1,colId1);
+      unsigned int targetRowId = rowId1 * vec2.sizeLocal();
+      unsigned int targetColId = colId1 * 1;
+      for (unsigned int rowId2 = 0; rowId2 < vec2.sizeLocal(); ++rowId2) {
+        for (unsigned int colId2 = 0; colId2 < 1; ++colId2) {
+          (*this)(targetRowId + rowId2, targetColId + colId2) = multiplicativeFactor * vec2[rowId2];
+        }
+      }
+    }
+  } 
+  return;
+}
+
+
+// Miscellaneous methodos ----------------------------
+// ---------------------------------------------------
+
+void
+uqTeuchosMatrixClass::mpiSum( const uqMpiCommClass& comm, uqTeuchosMatrixClass& M_global ) const
+{
+  // Sanity Checks
+  UQ_FATAL_RC_MACRO(((this->numRowsLocal() != M_global.numRowsLocal()) ||
+                     (this->numCols()      != M_global.numCols()     )),
+		    env().fullRank(),
+		    "uqTeuchosMatrixClass::mpiSum()",
+		    "local and global matrices incompatible");
+
+  /* TODO: Probably a better way to handle this unpacking/packing of data */
+  int size = M_global.numRowsLocal()*M_global.numCols();
+  std::vector<double> local( size, 0.0 );
+  std::vector<double> global( size, 0.0 );
+
+  int k;
+  for( unsigned int i = 0; i < this->numRowsLocal(); i++ ) {
+      for( unsigned int j = 0; j < this->numCols(); j++ ) {
+	  k = i + j*M_global.numCols();
+	  local[k] = (*this)(i,j);
+	  }
+  }
+
+  comm.Allreduce((void*) &local[0], (void*) &global[0], size, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
+                 "uqTeuchosMatrixClass::mpiSum()",
+                 "failed MPI.Allreduce()");
+
+  for( unsigned int i = 0; i < this->numRowsLocal(); i++ ) {
+      for( unsigned int j = 0; j < this->numCols(); j++ ) {
+	  k = i + j*M_global.numCols();	  
+	  M_global(i,j) = global[k];
+	  }
+  }
+
+  return;
+}
+
+//--------------------------------------------------------
+// tested 2/28/13
+void
+uqTeuchosMatrixClass::matlabLinearInterpExtrap(
+  const uqTeuchosVectorClass& x1Vec,
+  const uqTeuchosMatrixClass& y1Mat,
+  const uqTeuchosVectorClass& x2Vec)
+{
+  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() <= 1,
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::matlabLinearInterpExtrap()",
+                      "invalid 'x1' size");
+
+  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() != y1Mat.numRowsLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::matlabLinearInterpExtrap()",
+                      "invalid 'x1' and 'y1' sizes");
+
+  UQ_FATAL_TEST_MACRO(x2Vec.sizeLocal() != this->numRowsLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::matlabLinearInterpExtrap()",
+                      "invalid 'x2' and 'this' sizes");
+
+  UQ_FATAL_TEST_MACRO(y1Mat.numCols() != this->numCols(),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::matlabLinearInterpExtrap()",
+                      "invalid 'y1' and 'this' sizes");
+
+  uqTeuchosVectorClass y1Vec(x1Vec);
+  uqTeuchosVectorClass y2Vec(x2Vec);
+  for (unsigned int colId = 0; colId < y1Mat.numCols(); ++colId) {
+    y1Mat.getColumn(colId,y1Vec);
+    y2Vec.matlabLinearInterpExtrap(x1Vec,y1Vec,x2Vec);
+    this->setColumn(colId,y2Vec);
+  }
+
+  return;
+}
+
+// I/O methodos --------------------------------------
+// ---------------------------------------------------
+// Kemelli 12/05/12 - tested
+void
+uqTeuchosMatrixClass::print(std::ostream& os) const
+{
+  unsigned int nRows = this->numRowsLocal();
+  unsigned int nCols = this->numCols();
+
+  if (m_printHorizontally) {
+    for (unsigned int i = 0; i < nRows; ++i) {
+      for (unsigned int j = 0; j < nCols; ++j) {
+        os << (*this)(i,j)
+           << " ";
+      }
+      if (i != (nRows-1)) os << "; ";
+    }
+    //os << std::endl;
+  }
+  else {
+    for (unsigned int i = 0; i < nRows; ++i) {
+      for (unsigned int j = 0; j < nCols; ++j) {
+        os << (*this)(i,j)
+           << " ";
+      }
+      os << std::endl;
+    }
+  }
+
+  return;
+}
+// ---------------------------------------------------
+
 void
 uqTeuchosMatrixClass::subReadContents(
   const std::string&            fileName,
@@ -1740,11 +2026,10 @@ uqTeuchosMatrixClass::subReadContents(
 
     // Read 'variable name' string
     *filePtrSet.ifsVar >> tmpString;
-    //std::cout << "Just read '" << tmpString << "'" << std::endl;
 
     // Read '=' sign
     *filePtrSet.ifsVar >> tmpString;
-    //std::cout << "Just read '" << tmpString << "'" << std::endl;
+
     UQ_FATAL_TEST_MACRO(tmpString != "=",
                         m_env.worldRank(),
                         "uqTeuchosMatrixClass::subReadContents()",
@@ -1752,7 +2037,7 @@ uqTeuchosMatrixClass::subReadContents(
 
     // Read 'zeros(n_rows,n_cols)' string
     *filePtrSet.ifsVar >> tmpString;
-    //std::cout << "Just read '" << tmpString << "'" << std::endl;
+
     unsigned int posInTmpString = 6;
 
     // Isolate 'n_rows' in a string
@@ -1862,8 +2147,7 @@ uqTeuchosMatrixClass::subReadContents(
   return;
 }
 
-//--------------------------------------------------------------
-
+// ---------------------------------------------------
 void
 uqTeuchosMatrixClass::subWriteContents(
   const std::string&            varNamePrefix,
@@ -1910,762 +2194,154 @@ uqTeuchosMatrixClass::subWriteContents(
   return;
 }
 
+//====================================================
+// Private members
+//====================================================
+
+// ---------------------------------------------------
+// Kemelli 12/05/12 - tested
 void
-uqTeuchosMatrixClass::largestEigen(double& eigenValue, uqTeuchosVectorClass& eigenVector) const
+uqTeuchosMatrixClass::copy(const uqTeuchosMatrixClass& src) //dummy
 {
- 
-  unsigned int n = eigenVector.sizeLocal();
-
-  UQ_FATAL_TEST_MACRO((n == 0),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::largestEigen()",
-                      "invalid input vector size");
-  Teuchos::LAPACK<int, double> lapack;
+  this->resetLU();
+  unsigned int i,j, nrows=src.numRowsLocal(), ncols=src.numCols();
   
-  //SYEV destroys the input matrix, so lets operate in a copy  
-  Teuchos::SerialDenseMatrix<int,double> copy_m_mat;
-  copy_m_mat = m_mat;
-
-  int lwork = 3*n -1; 
-  
-  double *W, *WORK;
-  
-  W = new double[n];
-  WORK = new double[lwork];
-  
-  int info;
-  char UPLO = 'L'; 
-  char JOBZ = 'V';//eigenvalues and eigenvectors          
-     
-  lapack.SYEV(JOBZ, UPLO, copy_m_mat.numRows(), copy_m_mat.values(), copy_m_mat.stride(), &W[0], &WORK[0], lwork, &info);
-  
-  
-  if (info != 0) {
-    std::cerr << "In uqTeuchosMtrixClass::largestEigen()"
-              << ": INFO = " << info
-              << ",\n INFO < 0:  if INFO = -i, the i-th argument had an illegal value."
-              << "\n INFO > 0:  if INFO = i, the algorithm failed to converge; i off-diagonal "
-	      << " elements of an intermediate tridiagonal form did not converge to zero."
-              << std::endl;    
-  }
-  
-  // If INFO = 0, W contains the eigenvalues in ascending order. 
-  // Thus the largest eigenvalue is in W[n-1].
-  eigenValue = W[n-1];
-  
-  // Eigenvector associated to the largest eigenvalue.
-  // Stored in the n-th column of matrix copy_m_mat.
-  for (int i=0; i< copy_m_mat.numRows(); i++)
-    eigenVector[i] = copy_m_mat(i,n-1);
-   
-  return;
-}
-
-//-------------------------------------------
-
-void
-uqTeuchosMatrixClass::smallestEigen(double& eigenValue, uqTeuchosVectorClass& eigenVector) const
-{
- 
-  unsigned int n = eigenVector.sizeLocal();
-
-  UQ_FATAL_TEST_MACRO((n == 0),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::smallestEigen()",
-                      "invalid input vector size");
-  Teuchos::LAPACK<int, double> lapack;
-  
-  //SYEV destroys the input matrix, so lets operate in a copy  
-  Teuchos::SerialDenseMatrix<int,double> copy_m_mat;
-  copy_m_mat = m_mat;
-
-  int lwork = 3*n -1; 
-  
-  double *W, *WORK;
-  
-  W = new double[n];
-  WORK = new double[lwork];
-  
-  int info;
-  char UPLO = 'L'; 
-  char JOBZ = 'V';//eigenvalues and eigenvectors          
-     
-  lapack.SYEV(JOBZ, UPLO, copy_m_mat.numRows(), copy_m_mat.values(), copy_m_mat.stride(), &W[0], &WORK[0], lwork, &info);
-  
-  
-  if (info != 0) {
-    std::cerr << "In uqTeuchosMtrixClass::smallestEigen()"
-              << ": INFO = " << info
-              << ",\n INFO < 0:  if INFO = -i, the i-th argument had an illegal value."
-              << "\n INFO > 0:  if INFO = i, the algorithm failed to converge; i off-diagonal "
-	      << " elements of an intermediate tridiagonal form did not converge to zero."
-              << std::endl;    
-  }
-  
-  // If INFO = 0, W contains the eigenvalues in ascending order. 
-  // Thus the smallest eigenvalue is in W[0].
-  eigenValue = W[0];
-  
-  // Eigenvector associated to the smallest eigenvalue.
-  // Stored in the n-th column of matrix copy_m_mat.
-  for (int i=0; i< copy_m_mat.numRows(); i++)
-    eigenVector[i] = copy_m_mat(i,0);
-   
-  return;
-}
-//-----------------------------------------------------------------------
-# if 0
-void
-uqTeuchosMatrixClass::largestEigen(double& eigenValue, uqTeuchosVectorClass& eigenVector) const
-{
-
-  // Sanity Checks
-  unsigned int n = eigenVector.sizeLocal();
-
-  unsigned int nRows = this->numRowsLocal();
-    unsigned int nCols = this->numCols();
-  for (unsigned int i = 0; i < nRows; ++i) {
-      for (unsigned int j = 0; j < nCols; ++j) 
-        cout << (*this)(i,j) << "\t";
-      cout << endl;
-  }
-  cout << endl;
-  
-  UQ_FATAL_TEST_MACRO((n == 0),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::largestEigen()",
-                      "invalid input vector size");
-
-  /* The following notation is used:
-     z = vector used in iteration that ends up being the eigenvector corresponding to the
-         largest eigenvalue
-     w = vector used in iteration that we extract the largest eigenvalue from.  */
-
-  // Some parameters associated with the algorithm
-  // TODO: Do we want to add the ability to have these set by the user?
-  const unsigned int max_num_iterations = 10;//10000;
-  const double tolerance = 1.0e-13;
-
-  // Create temporary working vectors.
-  // TODO: We shouldn't have to use these - we ought to be able to work directly
-  // TODO: with eigenValue and eigenVector. Optimize this once we have regression
-  // TODO: tests.
-  uqTeuchosVectorClass z(m_env, m_map, 1.0 ); // Needs to be initialized to 1.0
-  uqTeuchosVectorClass w(m_env, m_map);
-
-  // Some variables we use inside the loop.
-  int index;
-  double residual;
-  double lambda;
-
-  //unsigned int k = 0;
-  for( unsigned int k = 0; k < max_num_iterations; ++k )
-    {
-      w = (*this) * z;
-
-//       cout << "w\tz\n";
-//       for (unsigned int j = 0; j < nCols; ++j) 
-//         cout << w[j]<< " " << z[j] << endl;
-//       
-//       cout << endl;
-      
-      // For this algorithm, it's crucial to get the maximum in
-      // absolute value, but then to normalize by the actual value
-      // and *not* the absolute value.
-      index = (w.abs()).getMaxValueIndex();
-
-      lambda = w[index];
-
-      z = (1.0/lambda) * w;
-
-      // Here we use the norm of the residual as our convergence check:
-      // norm( A*x - \lambda*x )
-      residual = ( (*this)*z - lambda*z ).norm2();
-      
- /*     cout <<"k= "<< k <<" z[k]= " << z[k] << " w[k]= " << w[k] << " index= " << index 
-	    << " lambda= " << lambda << " residual= " <<residual << endl << endl;
-    */  
-      if( residual < tolerance )
-	{
-	  eigenValue = lambda;
-
-	  // TODO: Do we want to normalize this so eigenVector.norm2() = 1?
-	  eigenVector = z;
-	  return;
-	}
-	
-    }
-
-  // If we reach this point, then we didn't converge. Print error message
-  // to this effect.
-  // TODO: We know we failed at this point - need a way to not need a test
-  // TODO: Just specify the error.
-  UQ_FATAL_TEST_MACRO((residual >= tolerance),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::largestEigen()",
-                      "Maximum num iterations exceeded");
-
-  
-  return;
-}
-
-
-void
-uqTeuchosMatrixClass::smallestEigen(double& eigenValue, uqTeuchosVectorClass& eigenVector) const
-{
-  // Sanity Checks
-  unsigned int n = eigenVector.sizeLocal();
-
-  UQ_FATAL_TEST_MACRO((n == 0),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::smallestEigen()",
-                      "invalid input vector size");
-
-  /* The following notation is used:
-     z = vector used in iteration that ends up being the eigenvector corresponding to the
-         largest eigenvalue
-     w = vector used in iteration that we extract the largest eigenvalue from.  */
-
-  // Some parameters associated with the algorithm
-  // TODO: Do we want to add the ability to have these set by the user?
-  const unsigned int max_num_iterations = 1000;
-  const double tolerance = 1.0e-13;
-
-  // Create temporary working vectors.
-  // TODO: We shouldn't have to use these - we ought to be able to work directly
-  // TODO: with eigenValue and eigenVector. Optimize this once we have regression
-  // TODO: tests.
-  uqTeuchosVectorClass z(m_env, m_map, 1.0 ); // Needs to be initialized to 1.0
-  uqTeuchosVectorClass w(m_env, m_map);
-
-  // Some variables we use inside the loop.
-  int index;
-  double residual;
-  double one_over_lambda;
-  double lambda;
-
-  for( unsigned int k = 0; k < max_num_iterations; ++k )
-    {
-      w = (*this).invertMultiplyForceLU( z );
-
-      // For this algorithm, it's crucial to get the maximum in
-      // absolute value, but then to normalize by the actual value
-      // and *not* the absolute value.
-      index = (w.abs()).getMaxValueIndex();
-
-      // Remember: Inverse power method solves for max 1/lambda ==> lambda smallest
-      one_over_lambda = w[index];
-
-      lambda = 1.0/one_over_lambda;
-      
-      z = lambda * w;
-
-      // Here we use the norm of the residual as our convergence check:
-      // norm( A*x - \lambda*x )
-      residual = ( (*this)*z - lambda*z ).norm2();
-      
-      if( residual < tolerance )
-	{
-	  eigenValue = lambda;
-
-	  // TODO: Do we want to normalize this so eigenVector.norm2() = 1?
-	  eigenVector = z;
-	  return;
-	}
-	
-    }
-
-  // If we reach this point, then we didn't converge. Print error message
-  // to this effect.
-  // TODO: We know we failed at this point - need a way to not need a test
-  // TODO: Just specify the error.
-  UQ_FATAL_TEST_MACRO((residual >= tolerance),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::smallestEigen()",
-                      "Maximum num iterations exceeded");
-
-  return;
-}
-#endif
-
-//------------------------------------------------------------------------
-// Implemented and checked on 1/7/2013
-
-/*  DSYEV computes all eigenvalues and, optionally, eigenvectors of a
-*  real symmetric matrix A.
-*
-*  Arguments
-*  JOBZ    = 'N':  Compute eigenvalues only;
-*          = 'V':  Compute eigenvalues and eigenvectors.
-*
-*  UPLO    = 'U':  Upper triangle of A is stored;
-*          = 'L':  Lower triangle of A is stored.
-
-*  N       The order of the matrix A.  N >= 0.
-*
-*  A       (input/output) DOUBLE PRECISION array, dimension (LDA, N)
-*          On entry, the symmetric matrix A.  If UPLO = 'U', the
-*          leading N-by-N upper triangular part of A contains the
-*          upper triangular part of the matrix A.  If UPLO = 'L',
-*          the leading N-by-N lower triangular part of A contains
-*          the lower triangular part of the matrix A.
-*          On exit, if JOBZ = 'V', then if INFO = 0, A contains the
-*          orthonormal eigenvectors of the matrix A.
-*          If JOBZ = 'N', then on exit the lower triangle (if UPLO='L')
-*          or the upper triangle (if UPLO='U') of A, including the
-*          diagonal, is destroyed.
-*
-*  LDA     (input) INTEGER - the leading dimension of the array A.  LDA >= max(1,N).
-*
-*  W       (output) DOUBLE PRECISION array, dimension (N)
-*          If INFO = 0, the eigenvalues in ascending order.
-*
-*  WORK    (workspace/output) DOUBLE PRECISION array, dimension (MAX(1,LWORK))
-*          On exit, if INFO = 0, WORK(1) returns the optimal LWORK.
-*
-*  LWORK   (input) INTEGER - the length of the array WORK.  LWORK >= max(1,3*N-1).
-*
-*  INFO    (output) INTEGER
-*          = 0:  successful exit
-*          < 0:  if INFO = -i, the i-th argument had an illegal value
-*          > 0:  if INFO = i, the algorithm failed to converge; i
-*                off-diagonal elements of an intermediate tridiagonal
-*                form did not converge to zero.*/
-void
-uqTeuchosMatrixClass::eigen(uqTeuchosVectorClass& eigenValues, uqTeuchosMatrixClass* eigenVectors) const
-{
-  unsigned int n = eigenValues.sizeLocal();
-
-  UQ_FATAL_TEST_MACRO((n == 0),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::eigen()",
-                      "invalid input vector size");
-
-  if (eigenVectors) {
-    UQ_FATAL_TEST_MACRO((eigenValues.sizeLocal() != eigenVectors->numRowsLocal()),
-                        env().fullRank(),
-                        "uqTeuchosVectorClass::eigen()",
-                        "different input vector sizes");
-  }
-  
-  // At the end of execution, Lapack funcion destroys the input matrix
-  // So, lets not use m_mat, but instead, a copy of it
-  Teuchos::SerialDenseMatrix<int,double> copy_m_mat;
-  copy_m_mat = m_mat;
-//   
-  Teuchos::LAPACK<int, double> lapack;
-  int lwork = 3*n -1; 
-  
-  double *W, *WORK;
-  
-  W = new double[n];
-  WORK = new double[lwork];
-  
-  int info;
-  char UPLO = 'L'; 
-      
-  if (eigenVectors == NULL) {
+  for(i=0; i< nrows ; i++)
+    for (j = 0; j < ncols; j++)
+      m_mat(i,j) = src(i,j);
     
-    char JOBZ = 'N';//eigenvalues only        
-     
-    lapack.SYEV(JOBZ, UPLO, copy_m_mat.numRows(), copy_m_mat.values(), copy_m_mat.stride(), &W[0], &WORK[0], lwork, &info);
-  
-    for (unsigned int i=0; i< n; i++) 
-      eigenValues[i] = W[i];
-  
-    UQ_FATAL_TEST_MACRO((info != 0),
-                      env().fullRank(),
-                      "uqTeuchosMatrixClass::eigen()",
-                      "invalid input vector size");
+  return;
+}
+
+// ---------------------------------------------------
+void
+uqTeuchosMatrixClass::resetLU()
+{
+  if (m_LU.numCols() >0 || m_LU.numRows() > 0) {
+    m_LU.reshape(0,0); //Kemelli, 12/06/12, dummy    
   }
-  else {
-     
-  char JOBZ = 'V';//eigenvalues and eigenvectors          
-     
-  lapack.SYEV(JOBZ, UPLO, copy_m_mat.numRows(), copy_m_mat.values(), copy_m_mat.stride(), &W[0], &WORK[0], lwork, &info);
-  
-  for (unsigned int i=0; i< n; i++)
-    eigenValues[i] = W[i];
-  
-  eigenVectors->m_mat = copy_m_mat;
- 
-//   for (unsigned int i=0; i< n; i++){
-//     for (unsigned int j=0; j< n; j++)
-//       cout << eigenVectors->m_mat(i,j) << "\t";
-//     cout<< endl;
-//   }
-//   cout<< endl;
-  
+  if (m_inverse) {
+    delete m_inverse;
+    m_inverse = NULL;
+  }
+  if (m_svdColMap) {
+    delete m_svdColMap;
+    m_svdColMap = NULL;
+  }
+  if (m_svdUmat) {
+    delete m_svdUmat;
+    m_svdUmat = NULL;
+  }
+  if (m_svdSvec) {
+    delete m_svdSvec;
+    m_svdSvec = NULL;
+  }
+  if (m_svdVmat) {
+    delete m_svdVmat;
+    m_svdVmat = NULL;
+  }
+  if (m_svdVTmat) {
+    delete m_svdVTmat;
+    m_svdVTmat = NULL;
+  }
+  m_determinant   = -INFINITY;
+  m_lnDeterminant = -INFINITY;
+
+  if (v_pivoting) {  //Kemelli added 12/09/12
+    free(v_pivoting);
+    v_pivoting = NULL;
     
-  } 
+  }
+  m_signum = 0;
+  m_isSingular = false;
 
-  if (info != 0) {
-    std::cerr << "In uqTeuchosMtrixClass::eigen()"
-              << ": INFO = " << info
-              << ",\n INFO < 0:  if INFO = -i, the i-th argument had an illegal value."
-              << "\n INFO > 0:  if INFO = i, the algorithm failed to converge; i off-diagonal "
-	      << " elements of an intermediate tridiagonal form did not converge to zero."
-              << std::endl;
-     
+  return;
+}
+
+// ---------------------------------------------------
+// multiply this matrix by vector x and store in vector y
+// checked 12/10/12
+void
+uqTeuchosMatrixClass::multiply(const uqTeuchosVectorClass& x, uqTeuchosVectorClass& y) const
+{
+  UQ_FATAL_TEST_MACRO((this->numCols() != x.sizeLocal()),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::multiply(), vector return void",
+                      "matrix and x have incompatible sizes");
+
+  UQ_FATAL_TEST_MACRO((this->numRowsLocal() != y.sizeLocal()),
+                      m_env.worldRank(),
+                      "uqTeuchosMatrixClass::multiply(), vector return void",
+                      "matrix and y have incompatible sizes");
+
+  unsigned int sizeX = this->numCols();
+  unsigned int sizeY = this->numRowsLocal();
+  for (unsigned int i = 0; i < sizeY; ++i) {
+    double value = 0.;
+    for (unsigned int j = 0; j < sizeX; ++j) {
+      value += (*this)(i,j)*x[j];
+    }
+    y[i] = value;
   }
 
-//   cout << "\n eigenValues[i] - inside function\n";
-//   for (unsigned int i=0; i< n; i++) 
-//       cout <<  eigenValues[i] << endl;
-//   cout << endl;
+  return;
+}
 
+// ---------------------------------------------------
+// Implemented(finally) and checked 1/10/13
+int
+uqTeuchosMatrixClass::internalSvd() const
+{
+  if (m_svdColMap == NULL) {
+    int nRows = (int) this->numRowsLocal();
+    int nCols = (int) this->numCols();
+    UQ_FATAL_TEST_MACRO(nRows < nCols,
+                        m_env.worldRank(),
+                        "uqTeuchosMatrixClass::internalSvd()",
+                        "LAPACK/Teuchos only supports cases where nRows >= nCols");
+
+    m_svdColMap = new uqMapClass(this->numCols(),0,this->map().Comm()); // see 'uqVectorSpaceClass<.,.>::newMap()'
+//in src/basic/src/uqTeuchosVectorSpace.C //old commet already existent in uqGslMatrixClass
+    m_svdUmat   = new uqTeuchosMatrixClass(*this); // Yes, 'this'
+    m_svdSvec   = new uqTeuchosVectorClass(m_env,*m_svdColMap);
+    m_svdVmat   = new uqTeuchosMatrixClass(*m_svdSvec);
+    m_svdVTmat  = new uqTeuchosMatrixClass(*m_svdSvec);
+    
+    int minRowsCols, maxRowsCols;
+    
+    if (nRows>=nCols) { minRowsCols = nCols; maxRowsCols = nRows; } else { minRowsCols = nRows; maxRowsCols = nCols; }
+
+    char jobu, jobvt;
+    int  lwork, info;
+    double  *work, *rwork;
   
-  return;
-}
-
-// ---------------------------------------------------
-// Suspicious logic - TODO see Redime ticket #2709 
-void
-uqTeuchosMatrixClass::filterSmallValues(double thresholdValue)
-{
-  unsigned int nRows = this->numRowsLocal();
-  unsigned int nCols = this->numCols();
+    jobu = 'S';
+    jobvt = 'S';
   
-  for (unsigned int i = 0; i < nRows; ++i) {
-    for (unsigned int j = 0; j < nCols; ++j) {
-      double aux = (*this)(i,j);
-      // If 'thresholdValue' is negative, no values will be filtered
-      if ((aux < 0. ) && (-thresholdValue < aux)) {
-        (*this)(i,j) = 0.;
-      }      
-      if ((aux > 0. ) && (thresholdValue > aux)) {
-        (*this)(i,j) = 0.;
-      }      
-    }
-  }
+    lwork = 15*maxRowsCols; // Set up the work array, larger than needed.
+    work = new double[lwork];
 
-  return;
-}
-
-// ---------------------------------------------------
-// Suspicious logic - TODO see Redime ticket #2709 
-void
-uqTeuchosMatrixClass::filterLargeValues(double thresholdValue)
-{
-  unsigned int nRows = this->numRowsLocal();
-  unsigned int nCols = this->numCols();
+    int aux1= 5*minRowsCols+7, aux2= 2*maxRowsCols+2*minRowsCols+1;
+    int aux_dim;
   
-  for (unsigned int i = 0; i < nRows; ++i) {
-    for (unsigned int j = 0; j < nCols; ++j) {
-      double aux = (*this)(i,j);
-      // If 'thresholdValue' is negative, no values will be filtered
-      if ( (aux < 0. ) && (-thresholdValue > aux)) 
-          (*this)(i,j) = 0.;
-      
-      if ((aux > 0. ) && (thresholdValue < aux))
-        (*this)(i,j) = 0.;
-      
-    }
+    if (aux1>=aux2) { aux_dim = minRowsCols*aux1; } else {aux_dim = minRowsCols*aux2; }
+  
+    rwork = new double[aux_dim];
+  
+    Teuchos::LAPACK<int, double> lapack;
+    
+    lapack.GESVD(jobu,jobvt,m_mat.numRows(),m_mat.numCols(),m_mat.values(),m_mat.stride(),
+	        m_svdSvec->values(),m_svdUmat->values(),m_svdUmat->stride(),m_svdVTmat->values(),
+		m_svdVTmat->stride(),&work[0],lwork,&rwork[0],&info);
   }
-  return;
+  return 0;
 }
 
-// ---------------------------------------------------
-// added 2/28/13
-void
-uqTeuchosMatrixClass::fillWithBlocksDiagonally(const std::vector<const uqTeuchosMatrixClass* >& matrices)
-{
-  unsigned int sumNumRowsLocals = 0;
-  unsigned int sumNumCols       = 0;
-  for (unsigned int i = 0; i < matrices.size(); ++i) {
-    sumNumRowsLocals += matrices[i]->numRowsLocal();
-    sumNumCols       += matrices[i]->numCols();
-  }
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRowsLocals,
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::fillWithBlocksDiagonally(const)",
-                      "inconsistent local number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::fillWithBlocksDiagonally(const)",
-                      "inconsistent number of cols");
 
-  unsigned int cumulativeRowId = 0;
-  unsigned int cumulativeColId = 0;
-  for (unsigned int i = 0; i < matrices.size(); ++i) {
-    unsigned int nRows = matrices[i]->numRowsLocal();
-    unsigned int nCols = matrices[i]->numCols();
-    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
-      for (unsigned int colId = 0; colId < nCols; ++colId) {
-        (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
-      }
-    }
-    cumulativeRowId += nRows;
-    cumulativeColId += nCols;
-  }
-
-  return;
-}
-// ---------------------------------------------------
-// added 2/28/13
-void
-uqTeuchosMatrixClass::fillWithBlocksDiagonally(const std::vector<uqTeuchosMatrixClass* >& matrices)
-{
-  unsigned int sumNumRowsLocals = 0;
-  unsigned int sumNumCols       = 0;
-  for (unsigned int i = 0; i < matrices.size(); ++i) {
-    sumNumRowsLocals += matrices[i]->numRowsLocal();
-    sumNumCols       += matrices[i]->numCols();
-  }
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRowsLocals,
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::fillWithBlocksDiagonally()",
-                      "inconsistent local number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::fillWithBlocksDiagonally()",
-                      "inconsistent number of cols");
-
-  unsigned int cumulativeRowId = 0;
-  unsigned int cumulativeColId = 0;
-  for (unsigned int i = 0; i < matrices.size(); ++i) {
-    unsigned int nRows = matrices[i]->numRowsLocal();
-    unsigned int nCols = matrices[i]->numCols();
-    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
-      for (unsigned int colId = 0; colId < nCols; ++colId) {
-        (*this)(cumulativeRowId + rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
-      }
-    } 
-    cumulativeRowId += nRows;
-    cumulativeColId += nCols;
-  }
-
-  return;
-}
-// ---------------------------------------------------
-// added 2/28/13
-void
-uqTeuchosMatrixClass::fillWithBlocksHorizontally(const std::vector<const uqTeuchosMatrixClass* >& matrices)
-{
-  unsigned int sumNumCols = 0;
-  for (unsigned int i = 0; i < matrices.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(this->numRowsLocal() != matrices[i]->numRowsLocal(),
-                        m_env.worldRank(),
-                        "uqTeuchosMatrixClass::fillWithBlocksHorizontally(const)",
-                        "inconsistent local number of rows");
-    sumNumCols += matrices[i]->numCols();
-  }
-  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::fillWithBlocksHorizontally(const)",
-                      "inconsistent number of cols");
-
-  unsigned int cumulativeColId = 0;
-  for (unsigned int i = 0; i < matrices.size(); ++i) {
-    unsigned int nRows = matrices[i]->numRowsLocal();
-    unsigned int nCols = matrices[i]->numCols();
-    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
-      for (unsigned int colId = 0; colId < nCols; ++colId) {
-        (*this)(rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
-      }
-    }
-    cumulativeColId += nCols;
-  }
-
-  return;
-}
-// ---------------------------------------------------
-// added 2/28/13
-void
-uqTeuchosMatrixClass::fillWithBlocksHorizontally(const std::vector<uqTeuchosMatrixClass* >& matrices)
-{
-  unsigned int sumNumCols = 0;
-  for (unsigned int i = 0; i < matrices.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(this->numRowsLocal() != matrices[i]->numRowsLocal(),
-                        m_env.worldRank(),
-                        "uqTeuchosMatrixClass::fillWithBlocksHorizontally()",
-                        "inconsistent local number of rows");
-    sumNumCols += matrices[i]->numCols();
-  }
-  UQ_FATAL_TEST_MACRO(this->numCols() != sumNumCols,
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::fillWithBlocksHorizontally()",
-                      "inconsistent number of cols");
-
-  unsigned int cumulativeColId = 0;
-  for (unsigned int i = 0; i < matrices.size(); ++i) {
-    unsigned int nRows = matrices[i]->numRowsLocal();
-    unsigned int nCols = matrices[i]->numCols();
-    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
-      for (unsigned int colId = 0; colId < nCols; ++colId) {
-        (*this)(rowId, cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
-      }
-    }
-    cumulativeColId += nCols;
-  }
-
-  return;
-}
-// ---------------------------------------------------
-// added 2/28/13
-void
-uqTeuchosMatrixClass::fillWithBlocksVertically(const std::vector<const uqTeuchosMatrixClass* >& matrices)
-{
-  unsigned int sumNumRows = 0;
-  for (unsigned int i = 0; i < matrices.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(this->numCols() != matrices[i]->numCols(),
-                        m_env.worldRank(),
-                        "uqTeuchosMatrixClass::fillWithBlocksVertically(const)",
-                        "inconsistent local number of cols");
-    sumNumRows += matrices[i]->numRowsLocal();
-  }
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRows,
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::fillWithBlocksVertically(const)",
-                      "inconsistent number of rows");
-
-  unsigned int cumulativeRowId = 0;
-  for (unsigned int i = 0; i < matrices.size(); ++i) {
-    unsigned int nRows = matrices[i]->numRowsLocal();
-    unsigned int nCols = matrices[i]->numCols();
-    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
-      for (unsigned int colId = 0; colId < nCols; ++colId) {
-        (*this)(cumulativeRowId + rowId, colId) = (*(matrices[i]))(rowId,colId);
-      }
-    }
-    cumulativeRowId += nRows;
-  }
-
-  return;
-}
-// ---------------------------------------------------
-// added 2/28/13
-void
-uqTeuchosMatrixClass::fillWithBlocksVertically(const std::vector<uqTeuchosMatrixClass* >& matrices)
-{
-  unsigned int sumNumRows = 0;
-  for (unsigned int i = 0; i < matrices.size(); ++i) {
-    UQ_FATAL_TEST_MACRO(this->numCols() != matrices[i]->numCols(),
-                        m_env.worldRank(),
-                        "uqTeuchosMatrixClass::fillWithBlocksVertically()",
-                        "inconsistent local number of cols");
-    sumNumRows += matrices[i]->numRowsLocal();
-  }
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != sumNumRows,
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::fillWithBlocksVertically()",
-                      "inconsistent number of rows");
-
-  unsigned int cumulativeRowId = 0;
-  for (unsigned int i = 0; i < matrices.size(); ++i) {
-    unsigned int nRows = matrices[i]->numRowsLocal();
-    unsigned int nCols = matrices[i]->numCols();
-    for (unsigned int rowId = 0; rowId < nRows; ++rowId) {
-      for (unsigned int colId = 0; colId < nCols; ++colId) {
-        (*this)(cumulativeRowId + rowId, colId) = (*(matrices[i]))(rowId,colId);
-      }
-    }
-    cumulativeRowId += nRows;
-  }
-
-  return;
-}
-// ---------------------------------------------------
-// added 2/28/13
-void
-uqTeuchosMatrixClass::fillWithTensorProduct(const uqTeuchosMatrixClass& mat1, const uqTeuchosMatrixClass& mat2)
-{
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != (mat1.numRowsLocal() * mat2.numRowsLocal()),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::fillTensorProduct(mat and mat)",
-                      "inconsistent local number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() != (mat1.numCols() * mat2.numCols()),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::fillTensorProduct(mat and mat)",
-                      "inconsistent number of columns");
-
-  for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
-    for (unsigned int colId1 = 0; colId1 < mat1.numCols(); ++colId1) {
-      double multiplicativeFactor = mat1(rowId1,colId1);
-      unsigned int targetRowId = rowId1 * mat2.numRowsLocal();
-      unsigned int targetColId = colId1 * mat2.numCols();
-      for (unsigned int rowId2 = 0; rowId2 < mat2.numRowsLocal(); ++rowId2) {
-        for (unsigned int colId2 = 0; colId2 < mat2.numCols(); ++colId2) {
-          (*this)(targetRowId + rowId2, targetColId + colId2) = multiplicativeFactor * mat2(rowId2,colId2);
-        }
-      }
-    }
-  } 
-
-  return;
-}
-// ---------------------------------------------------
-// added 2/28/13
-void
-uqTeuchosMatrixClass::fillWithTensorProduct(const uqTeuchosMatrixClass& mat1, const uqTeuchosVectorClass& vec2)
-{
-  UQ_FATAL_TEST_MACRO(this->numRowsLocal() != (mat1.numRowsLocal() * vec2.sizeLocal()),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::fillTensorProduct(mat and vec)",
-                      "inconsistent local number of rows");
-  UQ_FATAL_TEST_MACRO(this->numCols() != (mat1.numCols() * 1),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::fillTensorProduct(mat and vec)",
-                      "inconsistent number of columns");
-
-  for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
-    for (unsigned int colId1 = 0; colId1 < mat1.numCols(); ++colId1) {
-      double multiplicativeFactor = mat1(rowId1,colId1);
-      unsigned int targetRowId = rowId1 * vec2.sizeLocal();
-      unsigned int targetColId = colId1 * 1;
-      for (unsigned int rowId2 = 0; rowId2 < vec2.sizeLocal(); ++rowId2) {
-        for (unsigned int colId2 = 0; colId2 < 1; ++colId2) {
-          (*this)(targetRowId + rowId2, targetColId + colId2) = multiplicativeFactor * vec2[rowId2];
-        }
-      }
-    }
-  } 
-
-
-  return;
-}
-
-//--------------------------------------------------------
-// tested 2/28/13
-void
-uqTeuchosMatrixClass::matlabLinearInterpExtrap(
-  const uqTeuchosVectorClass& x1Vec,
-  const uqTeuchosMatrixClass& y1Mat,
-  const uqTeuchosVectorClass& x2Vec)
-{
-  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() <= 1,
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::matlabLinearInterpExtrap()",
-                      "invalid 'x1' size");
-
-  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() != y1Mat.numRowsLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::matlabLinearInterpExtrap()",
-                      "invalid 'x1' and 'y1' sizes");
-
-  UQ_FATAL_TEST_MACRO(x2Vec.sizeLocal() != this->numRowsLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::matlabLinearInterpExtrap()",
-                      "invalid 'x2' and 'this' sizes");
-
-  UQ_FATAL_TEST_MACRO(y1Mat.numCols() != this->numCols(),
-                      m_env.worldRank(),
-                      "uqTeuchosMatrixClass::matlabLinearInterpExtrap()",
-                      "invalid 'y1' and 'this' sizes");
-
-  uqTeuchosVectorClass y1Vec(x1Vec);
-  uqTeuchosVectorClass y2Vec(x2Vec);
-  for (unsigned int colId = 0; colId < y1Mat.numCols(); ++colId) {
-    y1Mat.getColumn(colId,y1Vec);
-    y2Vec.matlabLinearInterpExtrap(x1Vec,y1Vec,x2Vec);
-    this->setColumn(colId,y2Vec);
-  }
-
-  return;
-}
-//------------------------------------------------------------------
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Operators outside class definition
+//++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 uqTeuchosMatrixClass operator*(double a, const uqTeuchosMatrixClass& mat)
 {
   uqTeuchosMatrixClass answer(mat);
@@ -2673,11 +2349,13 @@ uqTeuchosMatrixClass operator*(double a, const uqTeuchosMatrixClass& mat)
   return answer;
 }
 
+// ---------------------------------------------------
 uqTeuchosVectorClass operator*(const uqTeuchosMatrixClass& mat, const uqTeuchosVectorClass& vec)
 {
   return mat.multiply(vec);
 }
 
+// ---------------------------------------------------
 uqTeuchosMatrixClass operator*(const uqTeuchosMatrixClass& m1, const uqTeuchosMatrixClass& m2)
 {
   unsigned int m1Rows = m1.numRowsLocal();
@@ -2691,10 +2369,8 @@ uqTeuchosMatrixClass operator*(const uqTeuchosMatrixClass& m1, const uqTeuchosMa
                       "different sizes m1Cols and m2Rows");
 
   uqTeuchosMatrixClass mat(m1.env(),m1.map(),m2Cols);
-
-  //std::cout << "In uqTeuchosMatrixClass(mat * mat): m1Cols = " << m1Cols << std::endl;
-
   unsigned int commonSize = m1Cols;
+
   for (unsigned int row1 = 0; row1 < m1Rows; ++row1) {
     for (unsigned int col2 = 0; col2 < m2Cols; ++col2) {
       double result = 0.;
@@ -2703,12 +2379,12 @@ uqTeuchosMatrixClass operator*(const uqTeuchosMatrixClass& m1, const uqTeuchosMa
       }
       mat(row1,col2) = result;
     }
-    //std::cout << "In uqTeuchosMatrixClass(mat * mat): ended row " << row1 << std::endl;
   }
 
   return mat;
 }
 
+// ---------------------------------------------------
 uqTeuchosMatrixClass operator+(const uqTeuchosMatrixClass& m1, const uqTeuchosMatrixClass& m2)
 {
   uqTeuchosMatrixClass answer(m1);
@@ -2716,6 +2392,7 @@ uqTeuchosMatrixClass operator+(const uqTeuchosMatrixClass& m1, const uqTeuchosMa
   return answer;
 }
 
+// ---------------------------------------------------
 uqTeuchosMatrixClass operator-(const uqTeuchosMatrixClass& m1, const uqTeuchosMatrixClass& m2)
 {
   uqTeuchosMatrixClass answer(m1);
@@ -2723,6 +2400,7 @@ uqTeuchosMatrixClass operator-(const uqTeuchosMatrixClass& m1, const uqTeuchosMa
   return answer;
 }
 
+// ---------------------------------------------------
 uqTeuchosMatrixClass matrixProduct(const uqTeuchosVectorClass& v1, const uqTeuchosVectorClass& v2)
 {
   unsigned int nRows = v1.sizeLocal();
@@ -2739,6 +2417,7 @@ uqTeuchosMatrixClass matrixProduct(const uqTeuchosVectorClass& v1, const uqTeuch
   return answer;
 }
 
+// ---------------------------------------------------
 uqTeuchosMatrixClass leftDiagScaling(const uqTeuchosVectorClass& vec, const uqTeuchosMatrixClass& mat)
 {
   unsigned int vSize = vec.sizeLocal();
@@ -2766,6 +2445,7 @@ uqTeuchosMatrixClass leftDiagScaling(const uqTeuchosVectorClass& vec, const uqTe
   return answer;
 }
 
+// ---------------------------------------------------
 uqTeuchosMatrixClass rightDiagScaling(const uqTeuchosMatrixClass& mat, const uqTeuchosVectorClass& vec)
 {
   unsigned int vSize = vec.sizeLocal();
@@ -2793,6 +2473,7 @@ uqTeuchosMatrixClass rightDiagScaling(const uqTeuchosMatrixClass& mat, const uqT
   return answer;
 }
 
+// ---------------------------------------------------
 std::ostream&
 operator<<(std::ostream& os, const uqTeuchosMatrixClass& obj)
 {
