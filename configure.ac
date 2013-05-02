@@ -175,6 +175,8 @@ AC_CONFIG_FILES([
   test/t04_bimodal/Makefile
   test/gsl_tests/Makefile
   doxygen/Makefile
+  doxygen/queso.dox
+  doxygen/txt_common/about.page
 ])
 
 AC_OUTPUT()

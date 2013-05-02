@@ -3,10 +3,10 @@
 # dependencies here.
 #-----------------------------------
 
-PECOS_extra_dependencies = doxygen/queso.page \
-			   doxygen/txt_common/about.page \
-			   doxygen/txt_common/gpl.page \
-			   doxygen/txt_common/acknowledgment.page
+PECOS_extra_dependencies = $(top_srcdir)/doxygen/queso.page \
+			   $(top_builddir)/doxygen/txt_common/about.page \
+			   $(top_srcdir)/doxygen/txt_common/gpl.page \
+			   $(top_srcdir)/doxygen/txt_common/acknowledgment.page
 
 ## --------------------------------- ##
 ## Format-independent Doxygen rules. ##
@@ -151,7 +151,8 @@ docs: doxygen-doc
 
 @DX_DOCDIR@/@PACKAGE@.tag: $(DX_CONFIG) $(pkginclude_HEADERS) $(PECOS_extra_dependencies)
 	  rm -rf @DX_DOCDIR@
-	  $(DX_ENV) $(DX_DOXYGEN) $(srcdir)/$(DX_CONFIG)
+	  mkdir -p @DX_DOCDIR@
+	  $(DX_ENV) $(DX_DOXYGEN) $(DX_CONFIG)
 
 DX_CLEANFILES = \
     @DX_DOCDIR@/@PACKAGE@.tag \

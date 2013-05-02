@@ -373,7 +373,7 @@ INTERNAL_DOCS          = NO
 # in case and if your file system supports case sensitive file names. Windows 
 # and Mac users are advised to set this option to NO.
 
-CASE_SENSE_NAMES       = YES
+CASE_SENSE_NAMES       = NO
 
 # If the HIDE_SCOPE_NAMES tag is set to NO (the default) then Doxygen 
 # will show members with their full class and namespace scopes in the 
@@ -565,8 +565,8 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT  = doxygen/queso.page \
-      	 doxygen/txt_common \
+INPUT  = @abs_top_srcdir@/doxygen/queso.page \
+      	 @abs_top_srcdir@/doxygen/txt_common \
       	 src/core \
       	 src/misc \
       	 src/basic \
@@ -657,7 +657,7 @@ EXAMPLE_RECURSIVE      = NO
 # directories that contain image that are included in the documentation (see 
 # the \image command).
 
-IMAGE_PATH             = doxygen/images/ doxygen/fig_common
+IMAGE_PATH             = @abs_top_srcdir@/doxygen/images/ @abs_top_srcdir@/doxygen/fig_common
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should 
 # invoke to filter for each input file. Doxygen will invoke the filter program 
@@ -798,7 +798,7 @@ HTML_HEADER            =
 # each generated HTML page. If it is left blank doxygen will generate a 
 # standard footer.
 
-HTML_FOOTER            = doxygen/txt_common/footer.html
+HTML_FOOTER            = @abs_top_srcdir@/doxygen/txt_common/footer.html
 
 # The HTML_STYLESHEET tag can be used to specify a user-defined cascading 
 # style sheet that is used by each HTML page. It can be used to 
@@ -1253,7 +1253,7 @@ SEARCH_INCLUDES        = YES
 # contain include files that are not input files but should be processed by 
 # the preprocessor.
 
-INCLUDE_PATH           = doxygen/txt_common/
+INCLUDE_PATH           = @abs_top_srcdir@/doxygen/txt_common/
 
 # You can use the INCLUDE_FILE_PATTERNS tag to specify one or more wildcard 
 # patterns (like *.h and *.hpp) to filter out the header-files in the 
