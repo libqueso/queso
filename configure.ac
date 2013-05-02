@@ -176,7 +176,7 @@ AC_CONFIG_FILES([
   test/gsl_tests/Makefile
   doxygen/Makefile
   doxygen/queso.dox
-  doxygen/txt_common/about.page
+  doxygen/txt_common/about_vpath.page
 ])
 
 AC_OUTPUT()

@@ -566,8 +566,10 @@ WARN_LOGFILE           =
 # with spaces.
 
 INPUT  = @abs_top_srcdir@/doxygen/queso.page \
-      	 @abs_top_srcdir@/doxygen/txt_common \
-      	 @abs_top_builddir@/doxygen/txt_common \
+      	 @abs_top_builddir@/doxygen/txt_common/about_vpath.page \
+         @abs_top_srcdir@/doxygen/txt_common/acknowledgment.page \
+         @abs_top_srcdir@/doxygen/txt_common/lgpl.page \
+         @abs_top_srcdir@/doxygen/txt_common/noop.page \
       	 src/core \
       	 src/misc \
       	 src/basic \
