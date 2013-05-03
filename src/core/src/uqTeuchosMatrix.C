@@ -705,12 +705,11 @@ const uqTeuchosMatrixClass& uqTeuchosMatrixClass::svdMatV() const
 //---------------------------------------------------------------
 // checked 2/27/13
 /* An orthogonal matrix M has a norm-preserving property, i.e. 
- * for any vector v, ||Mv|| = ||v|| (1). Then: 
- * min(||Ax − b||^2) = min(||Ax − b||) = min(||UDVT x − b||) =
- * = (1) min(||DV x − U b||).
- * Substituting y = VT x and b' = UT b gives us Dy = b' with D 
- * a diagonal matrix. Or, y = inv(D)*UT*b and we only have to 
- * solve the linear system: VT x = y.
+ * for any vector v, \f[||Mv|| = ||v|| \f] (1). Then: 
+ * \f[ min(||Ax − b||^2) = min(||Ax − b||) = min(||UDVT x − b||) = (1) min(||DV x − U b||) \f].
+ * Substituting \f[ y = VT x \f] and \f[ b' = UT b \f] gives us \f[ Dy = b' \f] 
+ * with D a diagonal matrix. Or,  \f[ y = inv(D)*UT*b \f] and we only have to 
+ * solve the linear system: \f[ VT x = y \f].
  */
 int
 uqTeuchosMatrixClass::svdSolve(const uqTeuchosVectorClass& rhsVec, uqTeuchosVectorClass& solVec) const

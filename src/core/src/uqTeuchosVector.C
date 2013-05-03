@@ -35,7 +35,8 @@
 using std:: cout;
 using std:: endl;
 
-// standard constructor ----------------------------- 
+// ---------------------------------------------------
+// default constructor ------------------------------- 
 uqTeuchosVectorClass::uqTeuchosVectorClass()  :
   uqVectorClass()
 {
@@ -47,7 +48,6 @@ uqTeuchosVectorClass::uqTeuchosVectorClass()  :
 
 
 // constructor with dimension ----------------------- 
-
 uqTeuchosVectorClass::uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map)
   :
   uqVectorClass(env,map)
@@ -79,20 +79,16 @@ uqTeuchosVectorClass::uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, co
   //          << "\n  map.NumGlobalElements() = " << map.NumGlobalElements()
   //          << "\n  map.NumMyElements()     = " << map.NumMyElements()
   //          << std::endl;
-
-  //std::cout << "Leaving uqTeuchosVectorClass::constructor(1)" << std::endl;
 }
 
+// ---------------------------------------------------
 uqTeuchosVectorClass::uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double value)
   :
   uqVectorClass(env,map)
- 
 {
   m_vec.size(map.NumGlobalElements());
   m_vec = value;
     
-  //std::cout << "Entering uqTeuchosVectorClass::constructor(2)" << std::endl;
-
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
                       "uqTeuchosVectorClass::constructor(2)",
@@ -112,18 +108,14 @@ uqTeuchosVectorClass::uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, co
                       m_env.worldRank(),
                       "uqTeuchosVectorClass::constructor(2)",
                       "incompatible own vec size");
-
-  //std::cout << "Leaving uqTeuchosVectorClass::constructor(2)" << std::endl;
 }
 
-
+// ---------------------------------------------------
 uqTeuchosVectorClass::uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const uqMapClass& map)
   :
   uqVectorClass(env,map)
   {
   m_vec.size(map.NumGlobalElements());
-
-  //std::cout << "Entering uqTeuchosVectorClass::constructor(3)" << std::endl;
 
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
@@ -149,19 +141,15 @@ uqTeuchosVectorClass::uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, do
                       m_env.worldRank(),
                       "uqTeuchosVectorClass::constructor(3)",
                       "incompatible own vec size");
-
-  //std::cout << "Leaving uqTeuchosVectorClass::constructor(3)" << std::endl;
 }
 
-
+// ---------------------------------------------------
 uqTeuchosVectorClass::uqTeuchosVectorClass(const uqTeuchosVectorClass& v, double d1, double d2)
   :
   uqVectorClass(v.env(),v.map())
 {
   m_vec.size(v.sizeLocal());
   
-  //std::cout << "Entering uqTeuchosVectorClass::constructor(4)" << std::endl;
-
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
                       "uqTeuchosVectorClass::constructor(4), linspace",
@@ -186,20 +174,15 @@ uqTeuchosVectorClass::uqTeuchosVectorClass(const uqTeuchosVectorClass& v, double
                       m_env.worldRank(),
                       "uqTeuchosVectorClass::constructor(4)",
                       "incompatible own vec size");
-
-  //std::cout << "Leaving uqTeuchosVectorClass::constructor(4)" << std::endl;
 }
 
-
-
+// ---------------------------------------------------
 uqTeuchosVectorClass::uqTeuchosVectorClass(const uqTeuchosVectorClass& v)  // mox
   :
   uqVectorClass(v.env(),v.map())
  {
    m_vec.size(v.sizeLocal());
-  //std::cout << "Entering uqTeuchosVectorClass::constructor(5)" << std::endl;
-
-  // prudenci 2010-06-17 mox
+   
   UQ_FATAL_TEST_MACRO((m_vec == NULL),
                       m_env.worldRank(),
                       "uqTeuchosVectorClass::constructor(5), copy",
@@ -214,15 +197,12 @@ uqTeuchosVectorClass::uqTeuchosVectorClass(const uqTeuchosVectorClass& v)  // mo
                       m_env.worldRank(),
                       "uqTeuchosVectorClass::constructor(5)",
                       "incompatible global vec size");
-
   this->copy(v);
 
   UQ_FATAL_TEST_MACRO(m_vec.length() != m_map.NumMyElements(),
                       m_env.worldRank(),
                       "uqTeuchosVectorClass::constructor(5)",
                       "incompatible own vec size");
-
-  //std::cout << "Leaving uqTeuchosVectorClass::constructor(5)" << std::endl;
 }
 
 
@@ -231,177 +211,14 @@ uqTeuchosVectorClass::~uqTeuchosVectorClass()
 {
 };
 
-
-// -------------------------------------------------
-//updated on 3/18, to use the uqRngBaseClass+Boost
-void uqTeuchosVectorClass::cwSetGaussian(double mean, double stdDev)
-{
-for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
-    (*this)[i] = mean + m_env.rngObject()->gaussianSample(stdDev);
-  }
-
-  return;
-};
-
-// -------------------------------------------------
-//updated on 3/18, to use the uqRngBaseClass+Boost
-void uqTeuchosVectorClass::cwSetGaussian(const uqTeuchosVectorClass& meanVec, const uqTeuchosVectorClass& stdDevVec)
-{
-  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
-    (*this)[i] = meanVec[i] + m_env.rngObject()->gaussianSample(stdDevVec[i]);
-  }
-  
-  return;
-};
-// -------------------------------------------------
-//updated on 3/18, to use the uqRngBaseClass+Boost
-void uqTeuchosVectorClass::cwSetGamma(const uqTeuchosVectorClass& aVec, const uqTeuchosVectorClass& bVec)
-{
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != aVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::cwSetGamma()",
-                      "incompatible a size");
-
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != bVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::cwSetGamma()",
-                      "incompatible b size");
-
-  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
-    (*this)[i] = m_env.rngObject()->gammaSample(aVec[i],bVec[i]);
-  }
-  return;
-}
-
-
-// -------------------------------------------------
-//updated on 3/18, to use the uqRngBaseClass+Boost
-// Using Gamma Distribution to calculate InverseGamma.
-// Note the divisions: 1.0/b and the 1.0/generator; they are crucial
-void uqTeuchosVectorClass::cwSetInverseGamma(const uqTeuchosVectorClass& alpha, const uqTeuchosVectorClass& beta)
-{
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::cwSetInverseGamma()",
-                      "incompatible alpha size");
-
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::cwSetInverseGamma()",
-                      "incompatible beta size");
-
-  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
-    (*this)[i] = 1./m_env.rngObject()->gammaSample(alpha[i],1./beta[i]);
-  }
-  return;
-}
-
-// -------------------------------------------------
-//updated on 3/18, to use the uqRngBaseClass+Boost
-void uqTeuchosVectorClass::cwSetBeta(const uqTeuchosVectorClass& alpha, const uqTeuchosVectorClass& beta)
-{
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::cwSetBeta()",
-                      "incompatible alpha size");
-
-  UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::cwSetBeta()",
-                      "incompatible beta size");
-
-  for (unsigned int i = 0; i < this->sizeLocal(); ++i) 
-  {
-    (*this)[i] = m_env.rngObject()->betaSample(alpha[i],beta[i]);
-    
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) 
-    {
-      *m_env.subDisplayFile() << "In uqTeuchosVectorClass::cwSetBeta()"
-                              << ": fullRank "   << m_env.fullRank()
-                              << ", i = "        << i
-                              << ", alpha[i] = " << alpha[i]
-                              << ", beta[i] = "  << beta[i]
-                              << ", sample = "   << (*this)[i]
-                              << std::endl;
-  	}
-  }
-  return;
-};
-
-// -------------------------------------------------
-void
-uqTeuchosVectorClass::copy_to_std_vector(std::vector<double>& vec)
-{
-  unsigned int size = this->sizeLocal();
-  vec.resize(size);
-  
-   for (unsigned int i = 0; i < size; ++i) 
-  {
-    vec[i] = m_vec[i];
-  }
-  
-  return;
-}
-
-// -------------------------------------------------
-// TODO: improve the message and instructions inside if.
-void
-uqTeuchosVectorClass::copy_from_std_vector(const std::vector<double> vec)
-{
-  
-  unsigned int size = vec.size(), size2= this->sizeLocal();
-  if (size != size2)
-  {
-    cout << endl << "Vectors have different size!" << endl;
-  }
-  
-   for (unsigned int i = 0; i < size; ++i) 
-  {
-   m_vec[i] = vec[i];
-  }
-  
-  return;
-}
-
-// -------------------------------------------------
-void uqTeuchosVectorClass::sort()
-{
-  std::vector<double> vec;
-  
-  (*this).copy_to_std_vector(vec);  
-  
-  // using default comparison (operator <):
-  std::sort (vec.begin(), vec.end()); 
-  
-  (*this).copy_from_std_vector(vec); 
-};
-/*====================================================*/
-
-// operators ---------------------------------------
-// element access ----------------------------------
-double& uqTeuchosVectorClass::operator[](unsigned int i)
-{
-  return m_vec[i];
-}
-
-
-const double& uqTeuchosVectorClass::operator[](unsigned int i) const
-{
-  return m_vec[i];
-}
-
-
-
+// Set methods ------------------------------------
 //-------------------------------------------------
 // assigns values a to all entrances in the vector
 uqTeuchosVectorClass& uqTeuchosVectorClass::operator=(double a)
 {
   m_vec.putScalar(a);
-  
   return *this;
 }
-
-
 
 //-------------------------------------------------
 uqTeuchosVectorClass& uqTeuchosVectorClass::operator=(const uqTeuchosVectorClass& rhs)
@@ -413,7 +230,7 @@ uqTeuchosVectorClass& uqTeuchosVectorClass::operator=(const uqTeuchosVectorClass
                       m_env.worldRank(),
                       "uqTeuchosVectorClass::operator=()",
                       "the vectors do NOT have the same size.\n");
-                      
+               
   if (size1==size2){
     for (unsigned int i=0;i<size1;i++){
     m_vec[i]=rhs[i];  
@@ -423,13 +240,10 @@ uqTeuchosVectorClass& uqTeuchosVectorClass::operator=(const uqTeuchosVectorClass
   return *this;
 }
 
-
-
 //-------------------------------------------------
 uqTeuchosVectorClass& uqTeuchosVectorClass::operator*=(double a)
 {
   m_vec.scale(a); 	//Scale this vector by a; *this = a*this. 
-                    
   return *this;
 }
 
@@ -437,29 +251,24 @@ uqTeuchosVectorClass& uqTeuchosVectorClass::operator*=(double a)
 uqTeuchosVectorClass& uqTeuchosVectorClass::operator/=(double a)
 {
   (*this) *= (1.0/a);
-
   return *this;
 }
 
 //-------------------------------------------------
 uqTeuchosVectorClass& uqTeuchosVectorClass::operator*=(const uqTeuchosVectorClass& rhs)
 {
-  
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
   UQ_FATAL_TEST_MACRO((size1 != size2),
                       m_env.worldRank(),
                       "uqTeuchosVectorClass::operator*=()",
                       "the vectors do NOT have the same size.\n");
-                      
   if (size1==size2){
     for (unsigned int i = 0; i < size1; ++i) {
       (*this)[i] *= rhs[i];
     }
  }
- 
-  
-  return *this;
+ return *this;
 }
 
 //-------------------------------------------------
@@ -468,18 +277,15 @@ uqTeuchosVectorClass& uqTeuchosVectorClass::operator/=(const uqTeuchosVectorClas
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
   
-    UQ_FATAL_TEST_MACRO((size1 != size2),
+  UQ_FATAL_TEST_MACRO((size1 != size2),
                       m_env.worldRank(),
                       "uqTeuchosVectorClass::operator/=()",
                       "the vectors do NOT have the same size.\n");
-                      
   if (size1==size2){
     for (unsigned int i = 0; i < size1; ++i) {
       (*this)[i] /= rhs[i];
     }
   }
- 
-  
   return *this;
 }
 
@@ -488,49 +294,55 @@ uqTeuchosVectorClass& uqTeuchosVectorClass::operator+=(const uqTeuchosVectorClas
 {
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
+
+  UQ_FATAL_TEST_MACRO((size1 != size2),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::operator+=()",
+                      "the vectors do NOT have the same size.\n");
   
   if (size1==size2){
     for (unsigned int i = 0; i < size1; ++i) {
       (*this)[i] += rhs[i];
     }
   }
-  else{
-    std::cout << "ERROR in uqTeuchosVectorClass:: operator+=()  ---> the vectors do NOT have the same size.\n";
-  }
-  
   return *this;
 }
-
-
 
 //-------------------------------------------------
 uqTeuchosVectorClass& uqTeuchosVectorClass::operator-=(const uqTeuchosVectorClass& rhs)
 {
   unsigned int size1 = this->sizeLocal();
   unsigned int size2 = rhs.sizeLocal();
+
+  UQ_FATAL_TEST_MACRO((size1 != size2),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::operator-=()",
+                      "the vectors do NOT have the same size.\n");
   
   if (size1==size2){
     for (unsigned int i = 0; i < size1; ++i) {
       (*this)[i] -= rhs[i];
     }
   }
-  else{
-    std::cout << "ERROR in uqTeuchosVectorClass:: operator-=()  ---> the vectors do NOT have the same size.\n";
-  }
   
   return *this;
 }
 
 
+// Accessor methods --------------------------------
 //-------------------------------------------------
-std::ostream&
-operator<<(std::ostream& os, const uqTeuchosVectorClass& obj)
+double& uqTeuchosVectorClass::operator[](unsigned int i)
 {
-  obj.print(os);
-
-  return os;
+  return m_vec[i];
 }
 
+//-------------------------------------------------
+const double& uqTeuchosVectorClass::operator[](unsigned int i) const
+{
+  return m_vec[i];
+}
+
+// Attribute methods ------------------------------
 //-------------------------------------------------
 unsigned int uqTeuchosVectorClass::sizeLocal() const
 {
@@ -559,60 +371,6 @@ uqTeuchosVectorClass::values()
 {
   return  m_vec.values();
 };
-
-
-//-------------------------------------------------
-// Norms ------------------------------------------
-double uqTeuchosVectorClass::norm2Sq() const
-{  
- return (m_vec).dot(m_vec );  
-}
-
-double uqTeuchosVectorClass::norm2() const
-{
-  return std::sqrt(this->norm2Sq());
-}
-
-
-double uqTeuchosVectorClass::norm1() const
-{
-  double result = 0.;
-
-  unsigned int size = this->sizeLocal();
-  for (unsigned int i = 0; i < size; ++i) {
-    result += fabs((*this)[i]);
-  }
-
-  return result;
-}
-
-
-double uqTeuchosVectorClass::normInf() const
-{
-  double result = 0.;
-
-  unsigned int size = this->sizeLocal();
-  double aux = 0.;
-  for (unsigned int i = 0; i < size; ++i) {
-    aux = fabs((*this)[i]);
-    if (aux > result) result = aux;
-  }
-
-  return result;
-}
-// ---------------------------------------------
-
-double uqTeuchosVectorClass::sumOfComponents() const
-{
-  double result = 0.;
-  unsigned int size = this->sizeLocal();
-  for (unsigned int i = 0; i < size; ++i) {
-    result += (*this)[i];
-  }
-
-  return result;
-}
-
 
 // Getting Max and Min values -------------------
 // Max ------------------------------------------
@@ -702,390 +460,49 @@ void uqTeuchosVectorClass::getMinValueAndIndex( double& min_value, int& min_valu
   return;
 }
 
-// absolute values -------------------------------
-// tested 1/8/13
-uqTeuchosVectorClass
-uqTeuchosVectorClass::abs() const
-{
-  uqTeuchosVectorClass abs_of_this_vec( *this );
-
-  unsigned int size = abs_of_this_vec.sizeLocal();
-
-  for( unsigned int i = 0; i < size; ++i )
-    {
-      abs_of_this_vec[i] = std::fabs( (*this)[i] );
-    }
-
-  return abs_of_this_vec;
-
+// Norm methods ------------------------------------
+// -------------------------------------------------
+double uqTeuchosVectorClass::norm2Sq() const
+{  
+ return (m_vec).dot(m_vec );  
 }
 
-//--------------------------------------------------------
-void
-uqTeuchosVectorClass::copy(const uqTeuchosVectorClass& rhs)
+//-------------------------------------------------
+double uqTeuchosVectorClass::norm2() const
 {
-  this->uqVectorClass::copy(rhs); 
-  
-  unsigned int size1 = m_vec.length();
-  unsigned int size2 = rhs.sizeLocal();
- 
-  if (size1==size2){
-    for (unsigned int i=0;i<size1;i++){
-    m_vec[i]=rhs[i];  
-    }
-  }
-  return;
+  return std::sqrt(this->norm2Sq());
 }
 
-//====================================================
-uqTeuchosVectorClass operator/(double a, const uqTeuchosVectorClass& x)
+//-------------------------------------------------
+double uqTeuchosVectorClass::norm1() const
 {
-  uqTeuchosVectorClass answer(x); //copy x to answer
-  
-  answer.cwInvert();
-  answer *= a;
-
-  return answer;
-}
-
-uqTeuchosVectorClass operator/(const uqTeuchosVectorClass& x, const uqTeuchosVectorClass& y)
-{
-  uqTeuchosVectorClass answer(x);
-  answer /= y;
-
-  return answer;
-}
-
-uqTeuchosVectorClass operator*(double a, const uqTeuchosVectorClass& x)
-{
-  uqTeuchosVectorClass answer(x);
-  answer *= a;
-
-  return answer;
-}
-
-uqTeuchosVectorClass operator*(const uqTeuchosVectorClass& x, const uqTeuchosVectorClass& y)
-{
-  uqTeuchosVectorClass answer(x);
-  answer *= y;
-
-  return answer;
-}
-
-double scalarProduct(const uqTeuchosVectorClass& x, const uqTeuchosVectorClass& y)
-{
-  unsigned int size1 = x.sizeLocal();
-  
-//   UQ_FATAL_TEST_MACRO((size1 != size2),
-//                       x.env().worldRank(),
-//                       "scalarProduct()",
-//                       "different sizes of x and y");
-
-  
   double result = 0.;
-  for (unsigned int i = 0; i < size1; ++i) {
-    result += x[i]*y[i];
-  }
 
-   return result;
-}
-
-uqTeuchosVectorClass operator+(const uqTeuchosVectorClass& x, const uqTeuchosVectorClass& y)
-{
-  uqTeuchosVectorClass answer(x);
-  answer += y;
-
-  return answer;
-}
-
-uqTeuchosVectorClass operator-(const uqTeuchosVectorClass& x, const uqTeuchosVectorClass& y)
-{
-  uqTeuchosVectorClass answer(x);
-  answer -= y;
-
-  return answer;
-}
-
-bool
-operator== (const uqTeuchosVectorClass& lhs, const uqTeuchosVectorClass& rhs)
-{
-  bool answer = true;
-
-  unsigned int size1 = lhs.sizeLocal();
-//  unsigned int size2 = rhs.sizeLocal();
-//   UQ_FATAL_TEST_MACRO((size1 != size2),
-//                       lhs.env().worldRank(),
-//                       "operator==()",
-//                       "different sizes of lhs and rhs");
-
-  for (unsigned int i = 0; i < size1; ++i) {
-    if (lhs[i] != rhs[i]) {
-      answer = false;
-      break;
-    }
-  }
-
-  return answer;
-}
-
-
-
-//----------------------------------------------------
-//----------------------------------------------------
-void uqTeuchosVectorClass::cwSet(double value)
-{
-  (*this)=value;
-  
-  return;
-}
-
-//----------------------------------------------------
-void uqTeuchosVectorClass::cwSet(unsigned int initialPos, const uqTeuchosVectorClass& vec)
-{
-//   UQ_FATAL_TEST_MACRO(initialPos >= this->sizeLocal(),
-//                       m_env.worldRank(),
-//                       "uqTeuchosVectorClass::cwSet()",
-//                       "invalid initialPos");
-// 
-//   UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
-//                       m_env.worldRank(),
-//                       "uqTeuchosVectorClass::cwSet()",
-//                       "invalid vec.sizeLocal()");
-  
-  if (initialPos >= this->sizeLocal()){
-    cout<< "ERROR in uqTeuchosVectorClass:: cwSet()  ---> invalid initialPos.\n";
-    return;
-  }
-
-  if ((initialPos +vec.sizeLocal()) > this->sizeLocal()){
-    cout<< "ERROR in uqTeuchosVectorClass:: cwSet()  ---> invalid invalid vec.sizeLocal().\n";
-    return;
-  }
-  
-  for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
-    (*this)[initialPos+i] = vec[i];
-  }
-
-  return;
-}
-
-
-//----------------------------------------------------
-/* extract elements from vector (*this) starting at position initialPos and save in vec */
-void uqTeuchosVectorClass::cwExtract(unsigned int initialPos, uqTeuchosVectorClass& vec) const
-{
-//   UQ_FATAL_TEST_MACRO(initialPos >= this->sizeLocal(),
-//                       m_env.worldRank(),
-//                       "uqTeuchosVectorClass::cwExtract()",
-//                       "invalid initialPos");
-// 
-//   UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
-//                       m_env.worldRank(),
-//                       "uqTeuchosVectorClass::cwExtract()",
-//                       "invalid vec.sizeLocal()");
-
- if (initialPos >= this->sizeLocal()){
-    cout<< "ERROR in uqTeuchosVectorClass:: cwExtract()  ---> invalid initialPos.\n";
-    return;
-  }
-
-  if ((initialPos +vec.sizeLocal()) > this->sizeLocal()){
-    cout<< "ERROR in uqTeuchosVectorClass:: cwExtract()  ---> invalid invalid vec.sizeLocal().\n";
-    return;
-  }
-  
-  for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
-    vec[i] = (*this)[initialPos+i];
-  }
-
-  return;
-}
-
-
-void uqTeuchosVectorClass::cwInvert()
-{
   unsigned int size = this->sizeLocal();
   for (unsigned int i = 0; i < size; ++i) {
-    (*this)[i] = 1./(*this)[i];
+    result += fabs((*this)[i]);
   }
 
-  return;
+  return result;
 }
 
-void uqTeuchosVectorClass::cwSqrt()
+//-------------------------------------------------
+double uqTeuchosVectorClass::normInf() const
 {
+  double result = 0.;
+
   unsigned int size = this->sizeLocal();
+  double aux = 0.;
   for (unsigned int i = 0; i < size; ++i) {
-    (*this)[i] = sqrt((*this)[i]);
+    aux = fabs((*this)[i]);
+    if (aux > result) result = aux;
   }
 
-  return;
+  return result;
 }
 
-
-/*----------------------------------------------------------------
-*  DLARNV returns a vector of n random real numbers from a uniform or
-*  normal distribution.
-*
-*  Arguments
-*  =========
-*  IDIST   (input) INTEGER
-*          Specifies the distribution of the random numbers:
-*          = 1:  uniform (0,1)
-*          = 2:  uniform (-1,1)
-*          = 3:  normal (0,1)
-*  ISEED   (input/output) INTEGER array, dimension (4)
-*          On entry, the seed of the random number generator; the array
-*          elements must be between 0 and 4095, and ISEED(4) must be odd.
-*          On exit, the seed is updated.
-*  N       (input) INTEGER
-*          The number of random numbers to be generated.
-*  X       (output) DOUBLE PRECISION array, dimension (N)
-*          The generated random numbers.
-* Also view: 
-* http://www.cs.cmu.edu/~dlr/dlr_libs/dlrlibs1.28/html/pseudoRandom_8cpp-source.html
-*------------------------------------------------------------------------*/
-void uqTeuchosVectorClass::cwSetGaussian2(double mean, double stdDev)
-{
-  unsigned int iseed_size = 4; // Lapack expects iseed_size = 4, always.
-  int iseed[iseed_size];
-  Teuchos::SerialDenseVector<int,double> x(iseed_size);
-  
-  x.random();
-  x.scale(10);
-    
-  for(unsigned int i=0; i<iseed_size; i++)
-  {
-    iseed[i] = fabs(floor(x[i])); 
-  }
-   // iseed[3] must be odd.
-  if(iseed[3] % 2 == 0) {
-    iseed[3] -= 1;
-  }
-
-  Teuchos::LAPACK<int, double> lapack;
-  int idist=3;  	     // Tells lapack we want a normal distribution
-  int dim=this->sizeLocal(); // Amount of values needed
-  double returnValue[dim];   // The number we'll return
-     
-  lapack.LARNV(idist,iseed,dim,returnValue); 	
-  
-  for (int i=0; i < dim; i++){
-         (*this)[i] = mean + (returnValue[i] * stdDev);
-   }
-   
-  return;
-}
-
-//---------------------------------------------------- 
- void uqTeuchosVectorClass::cwSetGaussian2(const uqTeuchosVectorClass& meanVec, const uqTeuchosVectorClass& stdDevVec)
-{
-  unsigned int iseed_size = 4; // Lapack expects iseed_size = 4, always.
-  int iseed[iseed_size];
-  Teuchos::SerialDenseVector<int,double> x(iseed_size);
-  
-  x.random();
-  x.scale(10);
-    
-  for(unsigned int i=0; i<iseed_size; i++)
-  {
-    iseed[i] = fabs(floor(x[i])); 
-  }
-   // iseed[3] must be odd.
-  if(iseed[3] % 2 == 0) {
-    iseed[3] -= 1;
-  }
-
-  Teuchos::LAPACK<int, double> lapack;
-  int idist=3;  	     // Tells lapack we want a normal distribution
-  int dim=this->sizeLocal(); // Amount of values needed
-  double returnValue[dim];   // The number we'll return
-     
-  lapack.LARNV(idist,iseed,dim,returnValue); 	
-  
-  for (int i=0; i < dim; i++){
-         (*this)[i] = meanVec[i] + (returnValue[i] * stdDevVec[i]);
-   }
-   
-  return;
-}
-
-
-//----------------------------------------------------
-/* void uqTeuchosVectorClass::cwSetUniform2(const uqTeuchosVectorClass& lowerBoundaVec, const uqTeuchosVectorClass& upperBoundVec)
-{
-  unsigned int iseed_size = 4; // Lapack expects iseed_size = 4, always.
-  int iseed[iseed_size];
-  Teuchos::SerialDenseVector<int,double> x(iseed_size);
-  
-  x.random();
-  x.scale(10);
-    
-  for(unsigned int i=0; i<iseed_size; i++)
-  {
-    iseed[i] = fabs(floor(x[i])); 
-  }
-   // iseed[3] must be odd.
-  if(iseed[3] % 2 == 0) {
-    iseed[3] -= 1;
-  }
-
-  Teuchos::LAPACK<int, double> lapack;
-  int idist=1;  	     // Tells lapack we want a uniform distribution
-  int dim=this->sizeLocal(); // Amount of values needed
-  double returnValue[dim];   // The number we'll return
-     
-  lapack.LARNV(idist,iseed,dim,returnValue); 	
-  
-  for (int i=0; i < dim; i++){
-         (*this)[i] = lowerBoundaVec[i] + (upperBoundVec[i]-lowerBoundaVec[i])*returnValue[i];
-   }
-   
-  return;
-}
-*/
-
-
-//----------------------------------------------------
-//implemented/checked 2/26/13
-//updated on 3/18, to use the uqRngBaseClass+Boost
- void uqTeuchosVectorClass::cwSetUniform(const uqTeuchosVectorClass& aVec, const uqTeuchosVectorClass& bVec)
-{
-  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
-    (*this)[i] = aVec[i] + (bVec[i]-aVec[i])*m_env.rngObject()->uniformSample();
-  }
-  return;
-}
-//----------------------------------------------------
-
-void
-uqTeuchosVectorClass::cwSetConcatenated(const uqTeuchosVectorClass& v1, const uqTeuchosVectorClass& v2)
-{
-//   UQ_FATAL_TEST_MACRO(this->sizeLocal() != v1.sizeLocal() + v2.sizeLocal(),
-//                       m_env.worldRank(),
-//                       "uqTeuchosVectorClass::cwSetConcatenated(1)",
-//                       "incompatible vector sizes");
-
-  if ( this->sizeLocal() != v1.sizeLocal() + v2.sizeLocal() ) {
-    std::cout << "ERROR in uqTeuchosVectorClass:: cwSetConcatenated  ---> the vectors' sizes are not compatible.\n";
-    cout<< "      in uqTeuchosVectorClass:: cwSetConcatenated  ---> resizing resulting vector... new size = " << v1.sizeLocal()+v1.sizeLocal() <<endl;
-    
-    m_vec.resize(v1.sizeLocal()+v1.sizeLocal());
-  }
-   
-  for (unsigned int i = 0; i < v1.sizeLocal(); ++i) {
-    (*this)[i] = v1[i];
-  }
-
-  for (unsigned int i = 0; i < v2.sizeLocal(); ++i) {
-    (*this)[v1.sizeLocal()+i] = v2[i];
-  }
-
-  return;
-}
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+// Comparison methods -----------------------------
+//-------------------------------------------------
 bool
 uqTeuchosVectorClass::atLeastOneComponentSmallerThan(const uqTeuchosVectorClass& rhs) const
 {
@@ -1105,6 +522,7 @@ uqTeuchosVectorClass::atLeastOneComponentSmallerThan(const uqTeuchosVectorClass&
   return result;
 }
 
+//-------------------------------------------------
 bool
 uqTeuchosVectorClass::atLeastOneComponentBiggerThan(const uqTeuchosVectorClass& rhs) const
 {
@@ -1124,6 +542,7 @@ uqTeuchosVectorClass::atLeastOneComponentBiggerThan(const uqTeuchosVectorClass& 
   return result;
 }
 
+//-------------------------------------------------
 bool
 uqTeuchosVectorClass::atLeastOneComponentSmallerOrEqualThan(const uqTeuchosVectorClass& rhs) const
 {
@@ -1143,6 +562,7 @@ uqTeuchosVectorClass::atLeastOneComponentSmallerOrEqualThan(const uqTeuchosVecto
   return result;
 }
 
+//-------------------------------------------------
 bool
 uqTeuchosVectorClass::atLeastOneComponentBiggerOrEqualThan(const uqTeuchosVectorClass& rhs) const
 {
@@ -1162,22 +582,544 @@ uqTeuchosVectorClass::atLeastOneComponentBiggerOrEqualThan(const uqTeuchosVector
   return result;
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++
 
+// Get/Set methods -----------------------------------
+//----------------------------------------------------
+void uqTeuchosVectorClass::cwSet(double value)
+{
+  (*this)=value;
+  
+  return;
+}
+
+//----------------------------------------------------
+void uqTeuchosVectorClass::cwSet(unsigned int initialPos, const uqTeuchosVectorClass& vec)
+{
+   UQ_FATAL_TEST_MACRO(initialPos >= this->sizeLocal(),
+                       m_env.worldRank(),
+                       "uqTeuchosVectorClass::cwSet()",
+                       "invalid initialPos");
+ 
+   UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
+                       m_env.worldRank(),
+                       "uqTeuchosVectorClass::cwSet()",
+                       "invalid vec.sizeLocal()");
+  
+  for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
+    (*this)[initialPos+i] = vec[i];
+  }
+
+  return;
+}
+
+
+//----------------------------------------------------
+/* extracts elements from vector (*this) starting at position initialPos and save in vec */
+void uqTeuchosVectorClass::cwExtract(unsigned int initialPos, uqTeuchosVectorClass& vec) const
+{
+   UQ_FATAL_TEST_MACRO(initialPos >= this->sizeLocal(),
+                       m_env.worldRank(),
+                       "uqTeuchosVectorClass::cwExtract()",
+                       "invalid initialPos");
+ 
+   UQ_FATAL_TEST_MACRO((initialPos +vec.sizeLocal()) > this->sizeLocal(),
+                       m_env.worldRank(),
+                       "uqTeuchosVectorClass::cwExtract()",
+                       "invalid vec.sizeLocal()");
+ 
+  for (unsigned int i = 0; i < vec.sizeLocal(); ++i) {
+    vec[i] = (*this)[initialPos+i];
+  }
+
+  return;
+}
+
+//----------------------------------------------------
+void uqTeuchosVectorClass::cwInvert()
+{
+  unsigned int size = this->sizeLocal();
+  for (unsigned int i = 0; i < size; ++i) {
+    (*this)[i] = 1./(*this)[i];
+  }
+
+  return;
+}
+
+//----------------------------------------------------
+void uqTeuchosVectorClass::cwSqrt()
+{
+  unsigned int size = this->sizeLocal();
+  for (unsigned int i = 0; i < size; ++i) {
+    (*this)[i] = sqrt((*this)[i]);
+  }
+
+  return;
+}
+
+//----------------------------------------------------
+void
+uqTeuchosVectorClass::cwSetConcatenated(const uqTeuchosVectorClass& v1, const uqTeuchosVectorClass& v2)
+{
+   UQ_FATAL_TEST_MACRO(this->sizeLocal() != v1.sizeLocal() + v2.sizeLocal(),
+                       m_env.worldRank(),
+                       "uqTeuchosVectorClass::cwSetConcatenated(1)",
+                       "incompatible vector sizes");
+
+//  if ( this->sizeLocal() != v1.sizeLocal() + v2.sizeLocal() ) {
+//    std::cout << "ERROR in uqTeuchosVectorClass:: cwSetConcatenated  ---> the vectors' sizes are not compatible.\n";
+//    cout << "      in uqTeuchosVectorClass:: cwSetConcatenated  ---> resizing resulting vector... new size = " 
+//         << v1.sizeLocal()+v1.sizeLocal() <<endl;
+//    
+//    m_vec.resize(v1.sizeLocal()+v1.sizeLocal());
+//  }
+   
+  for (unsigned int i = 0; i < v1.sizeLocal(); ++i) {
+    (*this)[i] = v1[i];
+  }
+
+  for (unsigned int i = 0; i < v2.sizeLocal(); ++i) {
+    (*this)[v1.sizeLocal()+i] = v2[i];
+  }
+
+  return;
+}
+
+// -------------------------------------------------
+//updated on 3/18, to use the uqRngBaseClass+Boost
+void uqTeuchosVectorClass::cwSetGaussian(double mean, double stdDev)
+{
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+	(*this)[i] = mean + m_env.rngObject()->gaussianSample(stdDev);
+  }
+  return;
+};
+
+// -------------------------------------------------
+//updated on 3/18, to use the uqRngBaseClass+Boost
+void uqTeuchosVectorClass::cwSetGaussian(const uqTeuchosVectorClass& meanVec, const uqTeuchosVectorClass& stdDevVec)
+{
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+    (*this)[i] = meanVec[i] + m_env.rngObject()->gaussianSample(stdDevVec[i]);
+  }  
+  return;
+};
+
+
+//----------------------------------------------------
+//implemented/checked 2/26/13
+//updated on 3/18, to use the uqRngBaseClass+Boost
+ void uqTeuchosVectorClass::cwSetUniform(const uqTeuchosVectorClass& aVec, const uqTeuchosVectorClass& bVec)
+{
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+    (*this)[i] = aVec[i] + (bVec[i]-aVec[i])*m_env.rngObject()->uniformSample();
+  }
+  return;
+}
+
+
+// -------------------------------------------------
+//updated on 3/18, to use the uqRngBaseClass+Boost
+void uqTeuchosVectorClass::cwSetBeta(const uqTeuchosVectorClass& alpha, const uqTeuchosVectorClass& beta)
+{
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::cwSetBeta()",
+                      "incompatible alpha size");
+
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::cwSetBeta()",
+                      "incompatible beta size");
+
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) 
+  {
+    (*this)[i] = m_env.rngObject()->betaSample(alpha[i],beta[i]);
+    
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) 
+    {
+      *m_env.subDisplayFile() << "In uqTeuchosVectorClass::cwSetBeta()"
+                              << ": fullRank "   << m_env.fullRank()
+                              << ", i = "        << i
+                              << ", alpha[i] = " << alpha[i]
+                              << ", beta[i] = "  << beta[i]
+                              << ", sample = "   << (*this)[i]
+                              << std::endl;
+  	}
+  }
+  return;
+};
+
+// -------------------------------------------------
+//updated on 3/18, to use the uqRngBaseClass+Boost
+void uqTeuchosVectorClass::cwSetGamma(const uqTeuchosVectorClass& aVec, const uqTeuchosVectorClass& bVec)
+{
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != aVec.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::cwSetGamma()",
+                      "incompatible a size");
+
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != bVec.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::cwSetGamma()",
+                      "incompatible b size");
+
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+    (*this)[i] = m_env.rngObject()->gammaSample(aVec[i],bVec[i]);
+  }
+  return;
+}
+
+// -------------------------------------------------
+//updated on 3/18, to use the uqRngBaseClass+Boost
+// Using Gamma Distribution to calculate InverseGamma.
+// Note the divisions: 1.0/b and the 1.0/generator; they are crucial
+void uqTeuchosVectorClass::cwSetInverseGamma(const uqTeuchosVectorClass& alpha, const uqTeuchosVectorClass& beta)
+{
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != alpha.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::cwSetInverseGamma()",
+                      "incompatible alpha size");
+
+  UQ_FATAL_TEST_MACRO(this->sizeLocal() != beta.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::cwSetInverseGamma()",
+                      "incompatible beta size");
+
+  for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
+    (*this)[i] = 1./m_env.rngObject()->gammaSample(alpha[i],1./beta[i]);
+  }
+  return;
+}
+
+
+// Miscellaneous methods -------------------------
+// absolute values -------------------------------
+// tested 1/8/13
+uqTeuchosVectorClass
+uqTeuchosVectorClass::abs() const
+{
+  uqTeuchosVectorClass abs_of_this_vec( *this );
+
+  unsigned int size = abs_of_this_vec.sizeLocal();
+
+  for( unsigned int i = 0; i < size; ++i )
+    {
+      abs_of_this_vec[i] = std::fabs( (*this)[i] );
+    }
+
+  return abs_of_this_vec;
+
+}
+
+// -------------------------------------------------
+void
+uqTeuchosVectorClass::copy_to_std_vector(std::vector<double>& vec)
+{
+  unsigned int size = this->sizeLocal();
+  vec.resize(size);
+  
+  for (unsigned int i = 0; i < size; ++i) 
+  	vec[i] = m_vec[i];
+    
+  return;
+}
+
+// -------------------------------------------------
+void
+uqTeuchosVectorClass::copy_from_std_vector(const std::vector<double> vec)
+{
+  unsigned int size1 = vec.size(), size2= this->sizeLocal();
+ 
+  UQ_FATAL_TEST_MACRO((size1 != size2),
+                       m_env.worldRank(),
+                       "In uqTeuchosVectorClass::copy_from_std_vector()",
+					   "vectors have different sizes");
+ 
+  for (unsigned int i = 0; i < size1; ++i) 
+      m_vec[i] = vec[i];
+  
+  return;
+}
+
+// -------------------------------------------------
+void uqTeuchosVectorClass::sort()
+{
+  std::vector<double> vec;
+  
+  (*this).copy_to_std_vector(vec);  
+  
+  // using default comparison (operator <):
+  std::sort (vec.begin(), vec.end()); 
+  
+  (*this).copy_from_std_vector(vec); 
+};
+
+// -------------------------------------------------
+double uqTeuchosVectorClass::sumOfComponents() const
+{
+  double result = 0.;
+  unsigned int size = this->sizeLocal();
+  for (unsigned int i = 0; i < size; ++i) {
+    result += (*this)[i];
+  }
+
+  return result;
+}
+
+// -------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosVectorClass::mpiBcast(int srcRank, const uqMpiCommClass& bcastComm)
+{
+  // Filter out those nodes that should not participate
+  if (bcastComm.MyPID() < 0) return;
+
+  // Check 'srcRank'
+  UQ_FATAL_TEST_MACRO((srcRank < 0) || (srcRank >= bcastComm.NumProc()),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::mpiBcast()",
+                      "invalud srcRank");
+
+  // Check number of participant nodes
+  double localNumNodes = 1.;
+  double totalNumNodes = 0.;
+  bcastComm.Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
+                      "uqTeuchosVectorClass::mpiBcast()",
+                      "failed MPI.Allreduce() for numNodes");
+  UQ_FATAL_TEST_MACRO(((int) totalNumNodes) != bcastComm.NumProc(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::mpiBcast()",
+                      "inconsistent numNodes");
+
+  // Check that all participant nodes have the same vector size
+  double localVectorSize  = this->sizeLocal();
+  double sumOfVectorSizes = 0.; 
+  bcastComm.Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
+                      "uqTeuchosVectorClass::mpiBcast()",
+                      "failed MPI.Allreduce() for vectorSize");
+
+  if ( ((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)) ) {
+    std::cerr << "rank "                 << bcastComm.MyPID()
+              << ": sumOfVectorSizes = " << sumOfVectorSizes
+              << ", totalNumNodes = "    << totalNumNodes
+              << ", localVectorSize = "  << localVectorSize
+              << std::endl;
+  }
+  bcastComm.Barrier();
+  UQ_FATAL_TEST_MACRO(((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::mpiBcast()",
+                      "inconsistent vectorSize");
+
+  // Ok, bcast data
+  std::vector<double> dataBuffer((unsigned int) localVectorSize, 0.);
+  if (bcastComm.MyPID() == srcRank) {
+    for (unsigned int i = 0; i < dataBuffer.size(); ++i) {
+      dataBuffer[i] = (*this)[i];
+    }
+  }
+
+  bcastComm.Bcast((void *) &dataBuffer[0], (int) localVectorSize, uqRawValue_MPI_DOUBLE, srcRank,
+                  "uqTeuchosVectorClass::mpiBcast()",
+                  "failed MPI.Bcast()");
+
+  if (bcastComm.MyPID() != srcRank) {
+    for (unsigned int i = 0; i < dataBuffer.size(); ++i) {
+      (*this)[i] = dataBuffer[i];
+    }
+  }
+
+  return;
+}
+
+// -------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosVectorClass::mpiAllReduce(uqRawType_MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqTeuchosVectorClass& resultVec) const
+{
+  // Filter out those nodes that should not participate
+  if (opComm.MyPID() < 0) return;
+
+  unsigned int size = this->sizeLocal();
+  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::mpiAllReduce()",
+                      "different vector sizes");
+
+  for (unsigned int i = 0; i < size; ++i) {
+    double srcValue = (*this)[i];
+    double resultValue = 0.;
+    opComm.Allreduce((void *) &srcValue, (void *) &resultValue, (int) 1, uqRawValue_MPI_DOUBLE, mpiOperation,
+                     "uqTeuchosVectorClass::mpiAllReduce()",
+                     "failed MPI.Allreduce()");
+    resultVec[i] = resultValue;
+  }
+
+  return;
+}
+
+// -------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosVectorClass::mpiAllQuantile(double probability, const uqMpiCommClass& opComm, uqTeuchosVectorClass& resultVec) const
+{
+  // Filter out those nodes that should not participate
+  if (opComm.MyPID() < 0) return;
+
+  UQ_FATAL_TEST_MACRO((probability < 0.) || (1. < probability),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::mpiAllQuantile()",
+                      "invalid input");
+
+  unsigned int size = this->sizeLocal();
+  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::mpiAllQuantile()",
+                      "different vector sizes");
+
+  for (unsigned int i = 0; i < size; ++i) {
+    double auxDouble = (int) (*this)[i];
+    std::vector<double> vecOfDoubles(opComm.NumProc(),0.);
+    opComm.Gather((void *) &auxDouble, 1, uqRawValue_MPI_DOUBLE, (void *) &vecOfDoubles[0], (int) 1, uqRawValue_MPI_DOUBLE, 0,
+                  "uqTeuchosVectorClass::mpiAllQuantile()",
+                  "failed MPI.Gather()");
+
+    std::sort(vecOfDoubles.begin(), vecOfDoubles.end());
+
+    double result = vecOfDoubles[(unsigned int)( probability*((double)(vecOfDoubles.size()-1)) )];
+
+    opComm.Bcast((void *) &result, (int) 1, uqRawValue_MPI_DOUBLE, 0,
+                 "uqTeuchosVectorClass::mpiAllQuantile()",
+                 "failed MPI.Bcast()");
+
+    resultVec[i] = result;
+  }
+
+  return;
+}
+
+// -------------------------------------------------
+// added/tested 2/28/13
+void
+uqTeuchosVectorClass::matlabLinearInterpExtrap(
+  const uqTeuchosVectorClass& x1Vec,
+  const uqTeuchosVectorClass& y1Vec,
+  const uqTeuchosVectorClass& x2Vec)
+{
+  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() <= 1,
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::matlabLinearInterpExtrap()",
+                      "invalid 'x1' size");
+
+  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() != y1Vec.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::matlabLinearInterpExtrap()",
+                      "invalid 'x1' and 'y1' sizes");
+
+  UQ_FATAL_TEST_MACRO(x2Vec.sizeLocal() != this->sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::matlabLinearInterpExtrap()",
+                      "invalid 'x2' and 'this' sizes");
+
+  for (unsigned int i = 1; i < x1Vec.sizeLocal(); ++i) { // Yes, '1'
+    UQ_FATAL_TEST_MACRO(x1Vec[i] <= x1Vec[i-1],
+                        m_env.worldRank(),
+                        "uqTeuchosVectorClass::matlabLinearInterpExtrap()",
+                        "invalid 'x1' values");
+  }
+
+  for (unsigned int id2 = 0; id2 < x2Vec.sizeLocal(); ++id2) {
+    double x2 = x2Vec[id2];
+    unsigned int id1 = 0;
+    bool found1 = false;
+    for (id1 = 0; id1 < x1Vec.sizeLocal(); ++id1) {
+      if (x2 <= x1Vec[id1]) {
+        found1 = true;
+        break;
+      }
+    }
+    bool makeLinearModel = false;
+    double xa = 0.;
+    double xb = 0.;
+    double ya = 0.;
+    double yb = 0.;
+    if (x2 == x1Vec[id1]) {
+      (*this)[id2] = y1Vec[id1];
+    }
+    else if (x2 < x1Vec[0]) {
+      // Extrapolation case
+      makeLinearModel = true;
+      xa = x1Vec[0];
+      xb = x1Vec[1];
+      ya = y1Vec[0];
+      yb = y1Vec[1];
+    }
+    else if (found1 == true) {
+      // Interpolation case
+      makeLinearModel = true;
+      xa = x1Vec[id1-1];
+      xb = x1Vec[id1];
+      ya = y1Vec[id1-1];
+      yb = y1Vec[id1];
+    }
+    else {
+      // Extrapolation case
+      makeLinearModel = true;
+      xa = x1Vec[x1Vec.sizeLocal()-2];
+      xb = x1Vec[x1Vec.sizeLocal()-1];
+      ya = y1Vec[x1Vec.sizeLocal()-2];
+      yb = y1Vec[x1Vec.sizeLocal()-1];
+    }
+
+    if (makeLinearModel) {
+      double rate = (yb-ya)/(xb-xa);
+      (*this)[id2] = ya + (x2-xa)*rate;
+    }
+  }
+  return;
+}
+
+// -------------------------------------------------
+// added 2/28/13
+void
+uqTeuchosVectorClass::matlabDiff(
+  unsigned int      firstPositionToStoreDiff,
+  double            valueForRemainderPosition,
+  uqTeuchosVectorClass& outputVec) const
+{
+  unsigned int size = this->sizeLocal();
+
+  UQ_FATAL_TEST_MACRO(firstPositionToStoreDiff > 1,
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::matlabDiff()",
+                      "invalid firstPositionToStoreDiff");
+
+  UQ_FATAL_TEST_MACRO(size != outputVec.sizeLocal(),
+                      m_env.worldRank(),
+                      "uqTeuchosVectorClass::matlabDiff()",
+                      "invalid size of outputVecs");
+
+  for (unsigned int i = 0; i < (size-1); ++i) {
+    outputVec[firstPositionToStoreDiff+i] = (*this)[i+1]-(*this)[i];
+  }
+  if (firstPositionToStoreDiff == 0) {
+    outputVec[size-1] = valueForRemainderPosition;
+  }
+  else {
+    outputVec[0] = valueForRemainderPosition;
+  }
+
+  return;
+}
+
+// I/O methods -------------------------------------
+// -------------------------------------------------
 void
 uqTeuchosVectorClass::print(std::ostream& os) const
 {
-  //std::cout << "In uqTeuchosVectorClass::print(): before sizelocal()"
-  //          << std::endl;
   unsigned int size = this->sizeLocal();
-  //std::cout << "In uqTeuchosVectorClass::print(): after sizelocal()"
-  //          << std::endl;
 
-  //std::cout << "In uqTeuchosVectorClass::print(): before os.flags()"
-  //          << std::endl;
   std::ostream::fmtflags curr_fmt = os.flags();
-  //std::cout << "In uqTeuchosVectorClass::print(): after os.flags()"
-  //          << std::endl;
 
   if (m_printScientific) {
     unsigned int savedPrecision = os.precision();
@@ -1200,8 +1142,6 @@ uqTeuchosVectorClass::print(std::ostream& os) const
   }
   else {
     if (m_printHorizontally) {
-      //std::cout << "In uqTeuchosVectorClass::print(): where expected"
-      //          << std::endl;
       for (unsigned int i = 0; i < size; ++i) {
         os << std::dec << (*this)[i]
            << " ";
@@ -1215,16 +1155,11 @@ uqTeuchosVectorClass::print(std::ostream& os) const
     }
   }
 
-  //std::cout << "In uqTeuchosVectorClass::print(): before os.flags(curr_fmt)"
-  //          << std::endl;
   os.flags(curr_fmt);
-  //std::cout << "In uqTeuchosVectorClass::print(): after os.flags(curr_fmt)"
-  //          << std::endl;
-
   return;
 }
-//------------------------------------------------------------
 
+// -------------------------------------------------
 void
 uqTeuchosVectorClass::subReadContents(
   const std::string&            fileName,
@@ -1376,8 +1311,7 @@ uqTeuchosVectorClass::subReadContents(
   return;
 }
 
-//------------------------------------------------------------------
-
+// -------------------------------------------------
 void
 uqTeuchosVectorClass::subWriteContents(
   const std::string&            varNamePrefix,
@@ -1423,281 +1357,132 @@ uqTeuchosVectorClass::subWriteContents(
 
   return;
 }
-//------------------------------------------------------------------
-// added 2/28/13
-void
-uqTeuchosVectorClass::mpiBcast(int srcRank, const uqMpiCommClass& bcastComm)
-{
-  // Filter out those nodes that should not participate
-  if (bcastComm.MyPID() < 0) return;
 
-  // Check 'srcRank'
-  UQ_FATAL_TEST_MACRO((srcRank < 0) || (srcRank >= bcastComm.NumProc()),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::mpiBcast()",
-                      "invalud srcRank");
 
-  // Check number of participant nodes
-  double localNumNodes = 1.;
-  double totalNumNodes = 0.;
-  bcastComm.Allreduce((void *) &localNumNodes, (void *) &totalNumNodes, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
-                      "uqTeuchosVectorClass::mpiBcast()",
-                      "failed MPI.Allreduce() for numNodes");
-  UQ_FATAL_TEST_MACRO(((int) totalNumNodes) != bcastComm.NumProc(),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::mpiBcast()",
-                      "inconsistent numNodes");
-
-  // Check that all participant nodes have the same vector size
-  double localVectorSize  = this->sizeLocal();
-  double sumOfVectorSizes = 0.; 
-  bcastComm.Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
-                      "uqTeuchosVectorClass::mpiBcast()",
-                      "failed MPI.Allreduce() for vectorSize");
-
-  if ( ((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)) ) {
-    std::cerr << "rank "                 << bcastComm.MyPID()
-              << ": sumOfVectorSizes = " << sumOfVectorSizes
-              << ", totalNumNodes = "    << totalNumNodes
-              << ", localVectorSize = "  << localVectorSize
-              << std::endl;
-  }
-  bcastComm.Barrier();
-  UQ_FATAL_TEST_MACRO(((unsigned int) sumOfVectorSizes) != ((unsigned int)(totalNumNodes*localVectorSize)),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::mpiBcast()",
-                      "inconsistent vectorSize");
-
-  // Ok, bcast data
-  std::vector<double> dataBuffer((unsigned int) localVectorSize, 0.);
-  if (bcastComm.MyPID() == srcRank) {
-    for (unsigned int i = 0; i < dataBuffer.size(); ++i) {
-      dataBuffer[i] = (*this)[i];
-    }
-  }
-
-  bcastComm.Bcast((void *) &dataBuffer[0], (int) localVectorSize, uqRawValue_MPI_DOUBLE, srcRank,
-                  "uqTeuchosVectorClass::mpiBcast()",
-                  "failed MPI.Bcast()");
-
-  if (bcastComm.MyPID() != srcRank) {
-    for (unsigned int i = 0; i < dataBuffer.size(); ++i) {
-      (*this)[i] = dataBuffer[i];
-    }
-  }
-
-  return;
-}
-//------------------------------------------------------------------
-// added 2/28/13
+// -------------------------------------------------
+// Private metfods ---------------------------------
+// -------------------------------------------------
 
 void
-uqTeuchosVectorClass::mpiAllReduce(uqRawType_MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqTeuchosVectorClass& resultVec) const
+uqTeuchosVectorClass::copy(const uqTeuchosVectorClass& rhs)
 {
-  // Filter out those nodes that should not participate
-  if (opComm.MyPID() < 0) return;
-
-  unsigned int size = this->sizeLocal();
-  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::mpiAllReduce()",
-                      "different vector sizes");
-
-  for (unsigned int i = 0; i < size; ++i) {
-    double srcValue = (*this)[i];
-    double resultValue = 0.;
-    opComm.Allreduce((void *) &srcValue, (void *) &resultValue, (int) 1, uqRawValue_MPI_DOUBLE, mpiOperation,
-                     "uqTeuchosVectorClass::mpiAllReduce()",
-                     "failed MPI.Allreduce()");
-    resultVec[i] = resultValue;
-  }
-
-  return;
-}
-//------------------------------------------------------------------
-// added 2/28/13
-
-void
-uqTeuchosVectorClass::mpiAllQuantile(double probability, const uqMpiCommClass& opComm, uqTeuchosVectorClass& resultVec) const
-{
-  // Filter out those nodes that should not participate
-  if (opComm.MyPID() < 0) return;
-
-  UQ_FATAL_TEST_MACRO((probability < 0.) || (1. < probability),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::mpiAllQuantile()",
-                      "invalid input");
-
-  unsigned int size = this->sizeLocal();
-  UQ_FATAL_TEST_MACRO(size != resultVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::mpiAllQuantile()",
-                      "different vector sizes");
-
-  for (unsigned int i = 0; i < size; ++i) {
-    double auxDouble = (int) (*this)[i];
-    std::vector<double> vecOfDoubles(opComm.NumProc(),0.);
-    opComm.Gather((void *) &auxDouble, 1, uqRawValue_MPI_DOUBLE, (void *) &vecOfDoubles[0], (int) 1, uqRawValue_MPI_DOUBLE, 0,
-                  "uqTeuchosVectorClass::mpiAllQuantile()",
-                  "failed MPI.Gather()");
-
-    std::sort(vecOfDoubles.begin(), vecOfDoubles.end());
-
-    double result = vecOfDoubles[(unsigned int)( probability*((double)(vecOfDoubles.size()-1)) )];
-
-    opComm.Bcast((void *) &result, (int) 1, uqRawValue_MPI_DOUBLE, 0,
-                 "uqTeuchosVectorClass::mpiAllQuantile()",
-                 "failed MPI.Bcast()");
-
-    resultVec[i] = result;
-  }
-
-  return;
-}
-
-
-
-//------------------------------------------------------------------
-// added/tested 2/28/13
-void
-uqTeuchosVectorClass::matlabLinearInterpExtrap(
-  const uqTeuchosVectorClass& x1Vec,
-  const uqTeuchosVectorClass& y1Vec,
-  const uqTeuchosVectorClass& x2Vec)
-{
-  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() <= 1,
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::matlabLinearInterpExtrap()",
-                      "invalid 'x1' size");
-
-  UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() != y1Vec.sizeLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::matlabLinearInterpExtrap()",
-                      "invalid 'x1' and 'y1' sizes");
-
-  UQ_FATAL_TEST_MACRO(x2Vec.sizeLocal() != this->sizeLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::matlabLinearInterpExtrap()",
-                      "invalid 'x2' and 'this' sizes");
-
-  for (unsigned int i = 1; i < x1Vec.sizeLocal(); ++i) { // Yes, '1'
-    UQ_FATAL_TEST_MACRO(x1Vec[i] <= x1Vec[i-1],
-                        m_env.worldRank(),
-                        "uqTeuchosVectorClass::matlabLinearInterpExtrap()",
-                        "invalid 'x1' values");
-  }
-
-  for (unsigned int id2 = 0; id2 < x2Vec.sizeLocal(); ++id2) {
-    double x2 = x2Vec[id2];
-    unsigned int id1 = 0;
-    bool found1 = false;
-    for (id1 = 0; id1 < x1Vec.sizeLocal(); ++id1) {
-      if (x2 <= x1Vec[id1]) {
-        found1 = true;
-        break;
-      }
-    }
-    bool makeLinearModel = false;
-    double xa = 0.;
-    double xb = 0.;
-    double ya = 0.;
-    double yb = 0.;
-    if (x2 == x1Vec[id1]) {
-      (*this)[id2] = y1Vec[id1];
-    }
-    else if (x2 < x1Vec[0]) {
-      // Extrapolation case
-      makeLinearModel = true;
-      xa = x1Vec[0];
-      xb = x1Vec[1];
-      ya = y1Vec[0];
-      yb = y1Vec[1];
-    }
-    else if (found1 == true) {
-      // Interpolation case
-      makeLinearModel = true;
-      xa = x1Vec[id1-1];
-      xb = x1Vec[id1];
-      ya = y1Vec[id1-1];
-      yb = y1Vec[id1];
-    }
-    else {
-      // Extrapolation case
-      makeLinearModel = true;
-      xa = x1Vec[x1Vec.sizeLocal()-2];
-      xb = x1Vec[x1Vec.sizeLocal()-1];
-      ya = y1Vec[x1Vec.sizeLocal()-2];
-      yb = y1Vec[x1Vec.sizeLocal()-1];
-    }
-
-    if (makeLinearModel) {
-      double rate = (yb-ya)/(xb-xa);
-      (*this)[id2] = ya + (x2-xa)*rate;
-    }
-  }
-  return;
-}
-
-//------------------------------------------------------------------
-// added 2/28/13
-void
-uqTeuchosVectorClass::matlabDiff(
-  unsigned int      firstPositionToStoreDiff,
-  double            valueForRemainderPosition,
-  uqTeuchosVectorClass& outputVec) const
-{
-  unsigned int size = this->sizeLocal();
-
-  UQ_FATAL_TEST_MACRO(firstPositionToStoreDiff > 1,
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::matlabDiff()",
-                      "invalid firstPositionToStoreDiff");
-
-  UQ_FATAL_TEST_MACRO(size != outputVec.sizeLocal(),
-                      m_env.worldRank(),
-                      "uqTeuchosVectorClass::matlabDiff()",
-                      "invalid size of outputVecs");
-
-  for (unsigned int i = 0; i < (size-1); ++i) {
-    outputVec[firstPositionToStoreDiff+i] = (*this)[i+1]-(*this)[i];
-  }
-  if (firstPositionToStoreDiff == 0) {
-    outputVec[size-1] = valueForRemainderPosition;
-  }
-  else {
-    outputVec[0] = valueForRemainderPosition;
-  }
-
-  return;
-}
-
-
-//------------------------------------------------------------------
-//------------------------------------------------------------------
-double 
-uqTeuchosVectorClass::GetRandomDoubleUsingNormalDistribution(int seed, double mean,double sigma)
-{ 
-  /* Choose RNG: mt19937 is the second fastest (93%) and 
-   * generates good uniform distribution in up to 623 dimensions  */
-  static boost::mt19937 rng(seed); 
-   
-  /* Choose Normal Distribution */
-  boost::normal_distribution<double> gaussian_dist(mean, sigma);
- 
-  /* Create a Gaussian Random Number generator by binding 
-   * with previously defined normal distribution object   */
-  boost::variate_generator<boost::mt19937&, boost::normal_distribution<double> > generator(rng, gaussian_dist);
- 
-  // sample from the distribution
-  return generator();
+  this->uqVectorClass::copy(rhs); 
   
+  unsigned int size1 = m_vec.length();
+  unsigned int size2 = rhs.sizeLocal();
+ 
+  if (size1==size2){
+    for (unsigned int i=0;i<size1;i++){
+    m_vec[i]=rhs[i];  
+    }
+  }
+  return;
 }
-//------------------------------------------------------------------
-double uqTeuchosVectorClass::GetRandomDoubleUsingUniformZeroOneDistribution(int seed)
+
+
+// -------------------------------------------------
+// Operators outside class definition --------------
+// -------------------------------------------------
+
+// -------------------------------------------------
+uqTeuchosVectorClass operator/(double a, const uqTeuchosVectorClass& x)
 {
-  boost::mt19937 rng(seed);
-  static boost::uniform_01<boost::mt19937> zeroone(rng);
-  return zeroone();
+  uqTeuchosVectorClass answer(x); //copy x to answer
+  answer.cwInvert();
+  answer *= a;
+  return answer;
 }
+
+// -------------------------------------------------
+uqTeuchosVectorClass operator/(const uqTeuchosVectorClass& x, const uqTeuchosVectorClass& y)
+{
+  uqTeuchosVectorClass answer(x);
+  answer /= y;
+  return answer;
+}
+
+// -------------------------------------------------
+uqTeuchosVectorClass operator*(double a, const uqTeuchosVectorClass& x)
+{
+  uqTeuchosVectorClass answer(x);
+  answer *= a;
+  return answer;
+}
+
+// -------------------------------------------------
+uqTeuchosVectorClass operator*(const uqTeuchosVectorClass& x, const uqTeuchosVectorClass& y)
+{
+  uqTeuchosVectorClass answer(x);
+  answer *= y;
+  return answer;
+}
+
+// -------------------------------------------------
+double scalarProduct(const uqTeuchosVectorClass& x, const uqTeuchosVectorClass& y)
+{
+  unsigned int size1 = x.sizeLocal();
+  unsigned int size2 = y.sizeLocal();
+
+  UQ_FATAL_TEST_MACRO((size1 != size2),
+                       x.env().worldRank(),
+                       "scalarProduct()",
+                       "different sizes of x and y");
+  double result = 0.;
+  for (unsigned int i = 0; i < size1; ++i) {
+    result += x[i]*y[i];
+  }
+
+  return result;
+}
+
+// -------------------------------------------------
+uqTeuchosVectorClass operator+(const uqTeuchosVectorClass& x, const uqTeuchosVectorClass& y)
+{
+  uqTeuchosVectorClass answer(x);
+  answer += y;
+  return answer;
+}
+
+// -------------------------------------------------
+uqTeuchosVectorClass operator-(const uqTeuchosVectorClass& x, const uqTeuchosVectorClass& y)
+{
+  uqTeuchosVectorClass answer(x);
+  answer -= y;
+  return answer;
+}
+
+// -------------------------------------------------
+bool
+operator== (const uqTeuchosVectorClass& lhs, const uqTeuchosVectorClass& rhs)
+{
+  bool answer = true;
+  unsigned int size1 = lhs.sizeLocal();
+  unsigned int size2 = rhs.sizeLocal();
+
+  UQ_FATAL_TEST_MACRO((size1 != size2),
+                       lhs.env().worldRank(),
+                       "operator==()",
+                       "different sizes of lhs and rhs");
+
+  for (unsigned int i = 0; i < size1; ++i) {
+    if (lhs[i] != rhs[i]) {
+      answer = false;
+      break;
+    }
+  }
+
+  return answer;
+}
+
+// -------------------------------------------------
+std::ostream&
+operator<<(std::ostream& os, const uqTeuchosVectorClass& obj)
+{
+  obj.print(os);
+
+  return os;
+}
+
+// -------------------------------------------------
 #endif // ifdef QUESO_HAS_TRILINOS
 

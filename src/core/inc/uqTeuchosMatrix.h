@@ -41,11 +41,11 @@
 #ifdef QUESO_HAS_TRILINOS
 
 /*! \file uqTeuchosMatrix.h
-    \brief Vector class using Trilinos Teuchos
+    \brief Matrix class using Trilinos Teuchos
 */
 
 /*! \class uqTeuchosMatrixClass
-    \brief Class for matrices operations using Teuchos (Trilinos).
+    \brief Class for matrix operations using Teuchos (Trilinos).
     
     This class creates and provides basic support for matrices of templated 
     type as a specialization of uqMatrixClass using Teuchos matrices (from Trilinos), which are defined 
@@ -177,10 +177,10 @@ public:
   const uqTeuchosMatrixClass& svdMatV      () const;
   
   //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with uqTeuchosMatrixClass::svd (x=solVec, b=rhsVec). 
- /*! An orthogonal matrix A has a norm-preserving property, i.e. for any vector v, ||Av|| = ||v||. Then: 
- min(||Ax − b||^2) = min(||Ax − b||) = min(||UDVT x − b||) = min(||DV x − U b||).
- Substituting y = VT x and b' = UT b gives us Dy = b' with D being a diagonal matrix. 
- Or, y = inv(D)*UT*b and we only have to solve the linear system: VT x = y. */
+ /*! An orthogonal matrix A has a norm-preserving property, i.e. for any vector v,\f[ ||Av|| = ||v|| \f]
+  * Then:  \f[ min( ||Ax - b||^2) = min(||Ax - b||) = min(||U D V^T x - b||) = min(||D V x - U b||)\f]
+  * Substituting \f[ y = V^T x \f] and \f[ b' = U^T b \f] gives us \f[ Dy = b'\f] with D being a diagonal matrix. 
+  * Or, \f[  y = inv(D) U^T b \f] and we only have to solve the linear system: \f[ V^T x = y\f] */
   int               svdSolve               (const uqTeuchosVectorClass& rhsVec, uqTeuchosVectorClass& solVec) const;
   
   //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with uqTeuchosMatrixClass::svd (x=solMat, b=rhsMat).
