@@ -32,6 +32,24 @@
 #include <uqDefines.h>
 #include <iostream>
 
+
+
+
+/*! \file uqRngBase.h
+    \brief Random Number Generation class.
+*/
+
+/*! \class uqRngBaseClass
+    \brief Class for random number generation (base class). 
+    
+    This class is  a “virtual” class of generic random number generator, in order 
+    to accomodate either GSL or BOOST rng. 
+*/
+
+
+adding 
+
+
 class uqRngBaseClass
 {
 public:
