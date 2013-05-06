@@ -43,29 +43,58 @@
     \brief Class for random number generation (base class). 
     
     This class is  a “virtual” class of generic random number generator, in order 
-    to accomodate either GSL or BOOST rng. 
+    to accomodate either GSL or Boost rng. 
 */
 
 
 class uqRngBaseClass
 {
 public:
-           uqRngBaseClass();
-           uqRngBaseClass(int seed, int worldRank);
+  
+    //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default Constructor: it should not be used.
+  uqRngBaseClass();
+  
+  //! Constructor with seed.
+  uqRngBaseClass(int seed, int worldRank);
+	   
+  //! Virtual destructor.
   virtual ~uqRngBaseClass();
-
+  //@}
+  
+  
+    //! @name Sampling methods
+  //@{ 
+  //! Sets the seed.
           int    seed          () const;
+	  
+  //! Resets the seed with value \c newSeed.
   virtual void   resetSeed     (int newSeed);
+  
+  //! Samples a value from a uniform distribution.
   virtual double uniformSample ()                          const = 0;
+  
+  //! Samples a value from a Gaussian distribution with standard deviation given by \c stdDev.
   virtual double gaussianSample(double stdDev)             const = 0;
+  
+  //! Samples a value from a Beta distribution.
   virtual double betaSample    (double alpha, double beta) const = 0;
+  
+  //! Samples a value from a Gamma distribution.
   virtual double gammaSample   (double a, double b)        const = 0;
 
+  //@}
 protected:
+  //! Seed.
           int m_seed;
+	  
+  //! Rank of processor.
           int m_worldRank;
 
 private:
+  
+  //! Reset seed.
           void privateResetSeed();
 };
 

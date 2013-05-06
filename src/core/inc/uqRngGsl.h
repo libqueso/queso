@@ -32,25 +32,85 @@
 #include <uqRngBase.h>
 #include <gsl/gsl_rng.h>
 
+
+/*! \file uqRngGsl.h
+    \brief GSL Random Number Generation class.
+*/
+
+/*! \class uqRngGslClass
+    \brief Class for random number generation using GSL library. 
+    
+    This class is  class of random number generator, using GSL library. The GSL library 
+    provides a large collection of random number generators which can be accessed through 
+    a uniform interface. 
+*/
+
+
 extern unsigned long int gsl_rng_default_seed;
 
 class uqRngGslClass : public uqRngBaseClass
 {
 public:
+  
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default Constructor: it should not be used.
   uqRngGslClass();
+  
+  //! Constructor with seed.
+  /* Uses GSL with the generator of type: gsl_rng_ranlxd2. This is the second, of a total of three
+   luxury random numbers, all an extension of a second-generation version of the ranlux algorithm of 
+   Lüscher. The period of the generator is about 10^171. The algorithm has mathematically proven 
+   properties and can provide truly decorrelated numbers at a known level of randomness. The higher 
+   luxury levels provide increased decorrelation between samples as an additional safety margin.*/
   uqRngGslClass(int seed, int worldRank);
+  
+  //! Destructor
  ~uqRngGslClass();
+ //@}
 
-        void     resetSeed     (int newSeed);
-        double   uniformSample ()                          const;
-        double   gaussianSample(double stdDev)             const;
-        double   betaSample    (double alpha, double beta) const;
-        double   gammaSample   (double a, double b)        const;
+   //! @name Sampling methods
+  //@{ 
+  //! Resets the seed with value \c newSeed. 
+  void     resetSeed     (int newSeed);
+  
+  //! Samples a value from a uniform distribution. Support: [0,1] or [a,b].
+  /*! This function samples from continuous uniform distribution on the range [0,1). It is
+   * possible to scale this distribution so the support is defined by the two parameters, 
+   * a and b, which are its minimum and maximum values. Suport: -infinity < a < x< b< infinity.
+   * Uses gsl_rng_uniform(m_rng).*/
+  double   uniformSample ()                          const;
+  
+  //! Samples a value from a Gaussian distribution with standard deviation given by \c stdDev.  
+  //! Support:  (-infinity, infinity).
+  /*! The parameter mu (mean or expectation of the distribution) in this Gaussin sample is 
+   * set to zero, and thus, needs to be provided in an aternative way (e.g., in the form of 
+   * a sum. The parameter stdDev is its standard deviation; its variance is therefore stdDev^2. 
+   * A random variable with a Gaussian distribution is said to be normally distributed and is 
+   * called a normal deviate. Uses gsl_ran_gaussian(). Support: (-infinity, infinity). */
+  double   gaussianSample(double stdDev)             const;
+  
+    //! Samples a value from a Beta distribution. Support: [0,1]
+  /*! The Beta Distribution is a continuous probability distribution; it has two free 
+   * parameters, which are labeled alpha and beta. The beta distribution is used as a 
+   * prior distribution for binomial proportions in Bayesian analysis  (Evans et al. 
+   * 2000, p. 34). Uses gsl_ran_beta(). Support (domain): [0,1].*/
+  double   betaSample    (double alpha, double beta) const;
+  
+  //! Samples a value from a Gamma distribution. Support: [0,infinity).
+  /*! The Gamma Distribution is a continuous probability distribution; it has two 
+   * free parameters, which may be labeled: a shape parameter a and an inverse 
+   * scale parameter b, called a rate parameter. Uses gsl_ran_gamma(). Support 
+   * (domain): [0,infinity).*/
+  double   gammaSample   (double a, double b)        const;
 
+  //! GSL random number generator.
   const gsl_rng* rng           () const;
 
 protected:
-        gsl_rng* m_rng;
+  //! GSL random number generator. 
+  /*! It is chosen, in the constructor, to be of type gsl_rng_ranlxd2. */
+  gsl_rng* m_rng;
 };
 
 #endif // __UQ_RNG_GSL_H__

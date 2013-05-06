@@ -33,21 +33,84 @@
 #include <boost/random.hpp>
 #include <boost/math/distributions.hpp> 
 
+
+/*! \file uqRngBoost.h
+    \brief Boost Random Number Generation class.
+*/
+
+/*! \class uqRngBoostClass
+    \brief Class for random number generation using Boost library. 
+    
+    This class is  class of random number generator, using Boost library. The Boost Random Number 
+    Generator Library provides a framework for random number generators with well-defined properties 
+    so that the generators can be used in the demanding numerics and security domain.
+*/
+
+
+
 class uqRngBoostClass : public uqRngBaseClass
 {
 public:
-  
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default Constructor: it should not be used.
   uqRngBoostClass();
+  
+  //! Constructor with seed.
   uqRngBoostClass(int seed, int worldRank);
+  
+  //! Destructor
  ~uqRngBoostClass();
-
+  //@}
+ 
+  //! @name Sampling methods
+  //@{ 
+  //! Resets the seed with value \c newSeed. 
   void     resetSeed     (int newSeed);
+  
+  
+  //! Samples a value from a uniform distribution. Support: [0,1] or [a,b].
+  /*! This function samples from continuous uniform distribution on the range [0,1). It is
+   * possible to scale this distribution so the support is defined by the two parameters, 
+   * a and b, which are its minimum and maximum values. Suport: -infinity < a < x< b< infinity.
+   * Uses boost::uniform_01<boost::mt19937> zeroone(m_rng).*/
   double   uniformSample ()                          const;
+  
+  
+  //! Samples a value from a Gaussian distribution with standard deviation given by \c stdDev.  
+  //! Support:  (-infinity, infinity).
+  /*! The parameter mu (mean or expectation of the distribution) in this Gaussin sample isn't 
+   * present, and thus, needs to be provided. e.g., in the form of a sum. The parameter stdDev is 
+   * its standard deviation; its variance is therefore stdDev^2. A random variable with a Gaussian 
+   * distribution is said to be normally distributed and is called a normal deviate. Uses
+   * boost::math::normal_distribution<double>  gaussian_dist(mean, stdDev) Support (domain): 
+   * (-infinity, infinity). */
   double   gaussianSample(double stdDev)             const;
+    
+  //! Samples a value from a Beta distribution. Support: [0,1]
+  /*! The Beta Distribution is a continuous probability distribution; it has two free 
+   * parameters, which are labeled alpha and beta. The beta distribution is used as a 
+   * prior distribution for binomial proportions in Bayesian analysis  (Evans et al. 
+   * 2000, p. 34). Uses boost::math::beta_distribution<double> beta_dist(alpha, beta).
+   * Support (domain): [0,1].*/
   double   betaSample    (double alpha, double beta) const;
-  double   gammaSample   (double a, double b)        const;
+  
+  //! Samples a value from a Gamma distribution. Support: [0,infinity).
+   /*! The Gamma Distribution is a continuous probability distribution; it has two free 
+   * parameters, which may be labeled: a shape parameter a and an inverse scale parameter
+   * b, called a rate parameter. The parameterization with a and b is more common in 
+   * Bayesian statistics, where the gamma distribution is used as a conjugate prior distribution 
+   * for various types of inverse scale (aka rate) parameters. Uses  
+   * boost::math::gamma_distribution<double>  gamma_dist(a,b). Support (domain): [0,infinity).*/
+  double   gammaSample   (double alpha, double beta)        const;
 	
 private:  
+  //! Random number generator from class boost::mt19937. 
+  /*! mt19937 are models for a pseudo-random number generator. Here it is cannot be static, 
+   *  as it has not been initialized yet. mt19937 has length cicle of 2^(19937)-1, requires 
+   * approximately 625*sizeof(uint32_t) of memory, has relatively high speed (93% of the 
+   * fastest available in Boost library), and provides good uniform distribution in up to 
+   * 623 dimensions. */
   boost::mt19937 m_rng; // it cannot be static, as it is not initialized yet
 };
 
