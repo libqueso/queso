@@ -47,9 +47,6 @@
 */
 
 
-adding 
-
-
 class uqRngBaseClass
 {
 public:
