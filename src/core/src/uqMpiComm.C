@@ -29,6 +29,7 @@
 #include <uqMpiComm.h>
 #include <uqEnvironment.h>
 
+// Default constructor ------------------------------
 uqMpiCommClass::uqMpiCommClass()
   :
   m_env( *(new uqEmptyEnvironmentClass()) )
@@ -38,7 +39,7 @@ uqMpiCommClass::uqMpiCommClass()
                       "uqMpiCommClass::constructor()",
                       "should not be called");
 }
-
+// QUESO uqMpiComm MPI Constructor ------------------
 uqMpiCommClass::uqMpiCommClass(const uqBaseEnvironmentClass& env, uqRawType_MPI_Comm inputRawComm)
   :
   m_env          (env),
@@ -75,6 +76,7 @@ uqMpiCommClass::uqMpiCommClass(const uqBaseEnvironmentClass& env, uqRawType_MPI_
 #endif
 }
 
+// Copy constructor ---------------------------------
 uqMpiCommClass::uqMpiCommClass(const uqMpiCommClass& src)
   :
   m_env          (src.m_env)
@@ -86,13 +88,7 @@ uqMpiCommClass::uqMpiCommClass(const uqMpiCommClass& src)
   this->copy(src);
 }
 
-uqMpiCommClass&
-uqMpiCommClass::operator=(const uqMpiCommClass& rhs)
-{
-  this->copy(rhs);
-  return *this;
-}
-
+// Destructor ---------------------------------------
 uqMpiCommClass::~uqMpiCommClass()
 {
 #ifdef QUESO_HAS_TRILINOS
@@ -101,21 +97,16 @@ uqMpiCommClass::~uqMpiCommClass()
 #endif
 }
 
-void
-uqMpiCommClass::copy(const uqMpiCommClass& src)
+// --------------------------------------------------
+// Set methodos -------------------------------------
+uqMpiCommClass&
+uqMpiCommClass::operator=(const uqMpiCommClass& rhs)
 {
-#ifdef QUESO_HAS_TRILINOS
-  delete m_epetraMpiComm;
-  m_epetraMpiComm = new Epetra_MpiComm(*src.m_epetraMpiComm);
-#endif
-  m_rawComm   = src.m_rawComm;
-  m_worldRank = src.m_worldRank;
-  m_myPid     = src.m_myPid;
-  m_numProc   = src.m_numProc;
-
-  return;
+  this->copy(rhs);
+  return *this;
 }
 
+// Attribute access methods -------------------------
 uqRawType_MPI_Comm
 uqMpiCommClass::Comm() const
 {
@@ -124,15 +115,7 @@ uqMpiCommClass::Comm() const
 #endif
   return m_rawComm;
 }
-
-#ifdef QUESO_HAS_TRILINOS
-const Epetra_MpiComm&
-uqMpiCommClass::epetraMpiComm() const
-{
-  return *m_epetraMpiComm;
-}
-#endif
-
+// --------------------------------------------------
 int
 uqMpiCommClass::MyPID() const
 {
@@ -141,7 +124,7 @@ uqMpiCommClass::MyPID() const
 #endif
   return m_myPid;
 }
-
+// --------------------------------------------------
 int
 uqMpiCommClass::NumProc() const
 {
@@ -150,6 +133,7 @@ uqMpiCommClass::NumProc() const
 #endif
   return m_numProc;
 }
+// Methods overridden from Comm ---------------------
 
 void
 uqMpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, uqRawType_MPI_Datatype datatype, uqRawType_MPI_Op op, const char* whereMsg, const char* whatMsg) const
@@ -168,7 +152,7 @@ uqMpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, uqRawType_MPI
 
   return;
 }
-
+//--------------------------------------------------
 void
 uqMpiCommClass::Barrier() const // const char* whereMsg, const char* whatMsg) const
 {
@@ -186,7 +170,7 @@ uqMpiCommClass::Barrier() const // const char* whereMsg, const char* whatMsg) co
 #endif
   return;
 }
-
+//--------------------------------------------------
 void
 uqMpiCommClass::Bcast(void* buffer, int count, uqRawType_MPI_Datatype datatype, int root, const char* whereMsg, const char* whatMsg) const
 {
@@ -201,7 +185,7 @@ uqMpiCommClass::Bcast(void* buffer, int count, uqRawType_MPI_Datatype datatype, 
 #endif
   return;
 }
-
+//--------------------------------------------------
 void
 uqMpiCommClass::Gather(
   void* sendbuf, int sendcnt, uqRawType_MPI_Datatype sendtype, 
@@ -238,7 +222,7 @@ uqMpiCommClass::Gather(
 #endif
   return;
 }
- 
+//-------------------------------------------------- 
 void
 uqMpiCommClass::Gatherv(
   void* sendbuf, int sendcnt, uqRawType_MPI_Datatype sendtype, 
@@ -275,7 +259,7 @@ uqMpiCommClass::Gatherv(
 #endif
   return;
 }
-
+//--------------------------------------------------
 void
 uqMpiCommClass::Recv(
   void* buf, int count, uqRawType_MPI_Datatype datatype, int source, int tag, uqRawType_MPI_Status* status,
@@ -298,7 +282,7 @@ uqMpiCommClass::Recv(
 #endif
   return;
 }
- 
+//--------------------------------------------------
 void
 uqMpiCommClass::Send(
   void* buf, int count, uqRawType_MPI_Datatype datatype, int dest, int tag,
@@ -321,7 +305,7 @@ uqMpiCommClass::Send(
 #endif
   return;
 }
-
+// Misc methods ------------------------------------
 void
 uqMpiCommClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs) const
 {
@@ -347,7 +331,31 @@ uqMpiCommClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, un
 
   return;
 }
+// -------------------------------------------------
+#ifdef QUESO_HAS_TRILINOS
+const Epetra_MpiComm&
+uqMpiCommClass::epetraMpiComm() const
+{
+  return *m_epetraMpiComm;
+}
+#endif
 
+// Private methods----------------------------------
+void
+uqMpiCommClass::copy(const uqMpiCommClass& src)
+{
+#ifdef QUESO_HAS_TRILINOS
+  delete m_epetraMpiComm;
+  m_epetraMpiComm = new Epetra_MpiComm(*src.m_epetraMpiComm);
+#endif
+  m_rawComm   = src.m_rawComm;
+  m_worldRank = src.m_worldRank;
+  m_myPid     = src.m_myPid;
+  m_numProc   = src.m_numProc;
+
+  return;
+}
+// -------------------------------------------------
 #ifdef QUESO_HAS_MPI
 #else
 size_t 

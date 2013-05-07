@@ -39,7 +39,7 @@
 #include <uqGslVector.h>
 
 /*! \class uqGslMatrixClass
-    \brief Class for matrices operations using GSL library.
+    \brief Class for matrix operations using GSL library.
     
     This class creates and provides basic support for matrices of templated 
     type as a specialization of uqMatrixClass using GSL matrices, which are defined 

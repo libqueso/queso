@@ -39,7 +39,10 @@
 #include <gsl/gsl_vector.h>
 
 /*! \class uqGslVectorClass
-    \brief This class creates and provides basic support for vectors of templated 
+
+    \brief Class for vector operations using GSL library.
+    
+    This class creates and provides basic support for vectors of templated 
     type as a specialization of uqVectorClass using GSL vectors, which are defined 
     by an encapsulated gsl_vector structure.
 */
