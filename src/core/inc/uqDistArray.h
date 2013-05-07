@@ -36,26 +36,81 @@
 #endif
 #include <ostream>
 
+
+/*! \file uqDistArray.h
+    \brief A class to store row-oriented multivectors of type T.
+*/
+
+/*! \class uqDistArrayClass
+    \brief A class for partitioning vectors and matrices.
+    
+    Class DistArray allows the construction and usage of multivectors. 
+    These vectors contain element of type T, and the storage is row-oriented 
+    (instead of and not column-oriented; thus his class should be used as a container 
+    for data, on which no BLAS-like operations are performed). 
+      
+    DistArray objects are indentified by an uqMap and a RowSize. The map specifies 
+    the distribution of the elements across the processors and therefore the number 
+    of local elements, while the RowSize gives the total number of data assigned to
+    each node. RowSize is constant for all elements.
+*/
+
 template<typename T>
 class uqDistArrayClass
 {
 public:
+  
+    //! @name Constructor/Destructor methods
+  //@{
+
+  //! Default constructor. Do not call this directly.
   uqDistArrayClass();
+  
+  //! Constructor for a given inputMap and inputRowSize. 
   uqDistArrayClass(const uqMapClass& inputMap, 
                    const int         inputRowSize);
+  
+  //! Copy constructor
   uqDistArrayClass(const uqDistArrayClass<T>& src);
+  
+  //! Destructor
  ~uqDistArrayClass();
-
+ //@}
+ 
+  //! @name Set methods
+  //@{
+  //! Assignment operator.
   uqDistArrayClass<T>& operator= (const uqDistArrayClass<T>& rhs);
-
+  //@}
+    
+  //! @name Query methods
+  //@{
+    
+  //! Returns a reference to the colId column component of the localElementId local element. 
         T&   operator    ()(int localElementId, int colId);
+	
+  //! Returns a reference to the colId column component of the localElementId local element.(const)
   const T&   operator    ()(int localElementId, int colId) const;
-        int  GlobalLength() const;
-        int  MyLength    () const;
-        int  RowSize     () const;
-        void print       (std::ostream& os) const;
+ 
+  //! Returns the global length of the array. 
+  int  GlobalLength() const;
+  
+  //! Returns the length of the locally owned array. 
+  int  MyLength    () const;
+  
+  //! Returns the row size, that is, the amount of data associated with each element. 
+  int  RowSize     () const;
+	
+  //@}
+	
+  //! @name I/O methods
+  //@{	
+  void print       (std::ostream& os) const;
+  //@}
 
 private:
+//! Copies the array.
+
         void copy        (const uqDistArrayClass<T>& src);
 
   uqMapClass                   m_uqMap;
@@ -67,6 +122,11 @@ private:
 #endif
 };
 
+
+// --------------------------------------------------
+// Constructor/Destructor methods -------------------
+
+// Default constructor ------------------------------
 template<typename T>
 uqDistArrayClass<T>::uqDistArrayClass()
   :
@@ -77,7 +137,7 @@ uqDistArrayClass<T>::uqDistArrayClass()
                       "uqDistArrayClass<T>::constructor()",
                       "should not be called");
 }
-
+// Constructor for a given inputMap and inputRowSize. 
 template<typename T>
 uqDistArrayClass<T>::uqDistArrayClass(
   const uqMapClass& inputMap, 
@@ -100,7 +160,7 @@ uqDistArrayClass<T>::uqDistArrayClass(
 #endif
   //std::cout << "Leaving uqDistArrayClass<T>::constructor(1)" << std::endl;
 }
-
+// Copy constructor ---------------------------------
 template<typename T>
 uqDistArrayClass<T>::uqDistArrayClass(const uqDistArrayClass<T>& src)
   :
@@ -119,21 +179,7 @@ uqDistArrayClass<T>::uqDistArrayClass(const uqDistArrayClass<T>& src)
   //std::cout << "Leaving uqDistArrayClass<T>::constructor(2)" << std::endl;
 }
 
-template<typename T>
-uqDistArrayClass<T>&
-uqDistArrayClass<T>::operator=(const uqDistArrayClass<T>& rhs)
-{
-#ifdef QUESO_HAS_TRILINOS
-#else
-  for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
-    m_elements[i].clear();
-  }
-  m_elements.clear();
-#endif
-  this->copy(rhs);
-  return *this;
-}
-
+// Destructor ---------------------------------------
 template<typename T>
 uqDistArrayClass<T>::~uqDistArrayClass()
 {
@@ -150,31 +196,25 @@ uqDistArrayClass<T>::~uqDistArrayClass()
   //std::cout << "Leaving uqDistArrayClass<T>::destructor()" << std::endl;
 }
 
+// ---------------------------------------------------
+// Set methods----------------------------------------
 template<typename T>
-void
-uqDistArrayClass<T>::copy(const uqDistArrayClass<T>& src)
+uqDistArrayClass<T>&
+uqDistArrayClass<T>::operator=(const uqDistArrayClass<T>& rhs)
 {
-  //std::cout << "Entering uqDistArrayClass<T>::copy()" << std::endl;
 #ifdef QUESO_HAS_TRILINOS
-  delete m_epetraDistArray;
-#endif
-
-  m_uqMap   = src.m_uqMap;
-#ifdef QUESO_HAS_TRILINOS
-  m_epetraDistArray = new EpetraExt::DistArray<T>(*src.m_epetraDistArray);
 #else
-  m_rowSize = src.m_rowSize;
-  m_elements.resize(m_uqMap.NumGlobalElements());
   for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
-    m_elements[i].resize(m_rowSize);
-    m_elements[i] = src.m_elements[i];
+    m_elements[i].clear();
   }
+  m_elements.clear();
 #endif
-  //std::cout << "Leaving uqDistArrayClass<T>::copy()" << std::endl;
-
-  return;
+  this->copy(rhs);
+  return *this;
 }
 
+// ---------------------------------------------------
+// Query methods -------------------------------------
 template<typename T>
 T&
 uqDistArrayClass<T>::operator()(int localElementId, int colId)
@@ -185,7 +225,7 @@ uqDistArrayClass<T>::operator()(int localElementId, int colId)
   return m_elements[localElementId][colId];
 #endif
 }
-
+// ---------------------------------------------------
 template<typename T>
 const T&
 uqDistArrayClass<T>::operator()(int localElementId, int colId) const
@@ -196,7 +236,7 @@ uqDistArrayClass<T>::operator()(int localElementId, int colId) const
   return m_elements[localElementId][colId];
 #endif
 }
-
+// ---------------------------------------------------
 template<typename T>
 int
 uqDistArrayClass<T>::GlobalLength() const
@@ -207,7 +247,7 @@ uqDistArrayClass<T>::GlobalLength() const
   return m_uqMap.NumGlobalElements();
 #endif
 }
-
+// ---------------------------------------------------
 template<typename T>
 int
 uqDistArrayClass<T>::MyLength() const
@@ -218,7 +258,7 @@ uqDistArrayClass<T>::MyLength() const
   return m_uqMap.NumMyElements();
 #endif
 }
-
+// ---------------------------------------------------
 template<typename T>
 int
 uqDistArrayClass<T>::RowSize() const
@@ -229,7 +269,8 @@ uqDistArrayClass<T>::RowSize() const
   return m_rowSize;
 #endif
 }
-
+// ---------------------------------------------------
+// I/O methods----------------------------------------
 template<typename T>
 void
 uqDistArrayClass<T>::print(std::ostream& os) const
@@ -244,7 +285,7 @@ uqDistArrayClass<T>::print(std::ostream& os) const
 
   return;
 }
-
+// ---------------------------------------------------
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const uqDistArrayClass<T>& obj)
 {
