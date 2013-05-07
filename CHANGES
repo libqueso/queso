@@ -8,6 +8,8 @@ Version 0.46 (In Progress)
   * changed libGRVY linkage to be optional
   * added additional regression tests to 'make check'
   * added rng (random number generator) class to accomodate either GSL or BOOST rng's
+  * updated QUESO user's manual, to include better description of the classes, installation procedure and examples.
+  * included doxygen documentation in most of core classes.
 
 Version 0.45.3 (05 November 2012)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.45.3
