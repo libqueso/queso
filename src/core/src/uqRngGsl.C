@@ -30,6 +30,8 @@
 #include <gsl/gsl_randist.h>
 #include <mpi.h>
 
+
+// Default constructor ------------------------------
 uqRngGslClass::uqRngGslClass()
   :
   uqRngBaseClass()
@@ -40,6 +42,7 @@ uqRngGslClass::uqRngGslClass()
                       "should not be used by user");
 }
 
+//! Constructor with seed ---------------------------
 uqRngGslClass::uqRngGslClass(int seed, int worldRank)
   :
   uqRngBaseClass(seed,worldRank),
@@ -65,11 +68,13 @@ uqRngGslClass::uqRngGslClass(int seed, int worldRank)
 #endif
 }
 
+// Destructor ---------------------------------------
 uqRngGslClass::~uqRngGslClass()
 {
   if (m_rng) gsl_rng_free(m_rng);
 }
 
+// Sampling methods ---------------------------------
 void
 uqRngGslClass::resetSeed(int newSeed)
 {
@@ -82,28 +87,31 @@ uqRngGslClass::resetSeed(int newSeed)
                       m_worldRank,
                       "uqRngGslClass::resetSeed()",
                       "null m_rng");
-
   return;
 }
 
+// --------------------------------------------------
 double
 uqRngGslClass::uniformSample() const
 {
   return gsl_rng_uniform(m_rng);
 }
 
+// --------------------------------------------------
 double
 uqRngGslClass::gaussianSample(double stdDev) const
 {
   return gsl_ran_gaussian(m_rng,stdDev);
 }
 
+// --------------------------------------------------
 double
 uqRngGslClass::betaSample(double alpha, double beta) const
 {
   return gsl_ran_beta(m_rng,alpha,beta);
 }
 
+// --------------------------------------------------
 double
 uqRngGslClass::gammaSample(double a, double b) const
 {

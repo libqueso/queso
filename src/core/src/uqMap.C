@@ -27,8 +27,12 @@
 //--------------------------------------------------------------------------
 
 #include <uqMap.h>
-
 #include <uqMpiComm.h>
+
+// --------------------------------------------------
+// Constructor/Destructor methods -------------------
+
+// Default constructor ------------------------------
 uqMapClass::uqMapClass()
   :
   m_uqMpiComm() // *(new uqMpiCommClass()) )
@@ -39,6 +43,7 @@ uqMapClass::uqMapClass()
                       "should not be called");
 }
 
+// Usable constructor ------------------------------
 uqMapClass::uqMapClass(
   int                   numGlobalElements,
   int                   indexBase,
@@ -55,6 +60,7 @@ uqMapClass::uqMapClass(
 {
 }
 
+// Copy constructor ---------------------------------
 uqMapClass::uqMapClass(const uqMapClass& src)
   :
   m_uqMpiComm(src.m_uqMpiComm)
@@ -66,13 +72,7 @@ uqMapClass::uqMapClass(const uqMapClass& src)
   this->copy(src);
 }
 
-uqMapClass&
-uqMapClass::operator=(const uqMapClass& rhs)
-{
-  this->copy(rhs);
-  return *this;
-}
-
+// Destructor ---------------------------------------
 uqMapClass::~uqMapClass()
 {
 #ifdef QUESO_HAS_TRILINOS
@@ -83,6 +83,78 @@ uqMapClass::~uqMapClass()
 #endif
 }
 
+// --------------------------------------------------
+// Set methodos -------------------------------------
+uqMapClass&
+uqMapClass::operator=(const uqMapClass& rhs)
+{
+  this->copy(rhs);
+  return *this;
+}
+
+// --------------------------------------------------
+// Size, dimension and local ID accessor methods ----
+int
+uqMapClass::NumGlobalElements() const
+{
+#ifdef QUESO_HAS_TRILINOS
+  return m_epetraMap->NumGlobalElements();
+#else
+  return m_numGlobalElements;
+#endif
+}
+
+// --------------------------------------------------
+int
+uqMapClass::IndexBase() const
+{
+#ifdef QUESO_HAS_TRILINOS
+  return m_epetraMap->IndexBase();
+#else
+  return m_indexBase;
+#endif
+}
+
+// --------------------------------------------------
+int
+uqMapClass::NumMyElements() const
+{
+#ifdef QUESO_HAS_TRILINOS
+  return m_epetraMap->NumMyElements();
+#else
+  return m_numMyElements;
+#endif
+}
+
+// --------------------------------------------------
+int
+uqMapClass::MinMyGID() const
+{
+#ifdef QUESO_HAS_TRILINOS
+  return m_epetraMap->MinMyGID();
+#else
+  return 0;
+#endif
+}
+
+
+// --------------------------------------------------
+// Misc methods -------------------------------------
+const uqMpiCommClass&
+uqMapClass::Comm() const
+{
+  return m_uqMpiComm;
+}
+
+#ifdef QUESO_HAS_TRILINOS
+const Epetra_Map&
+uqMapClass::epetraMap() const
+{
+  return *m_epetraMap;
+}
+#endif
+
+// --------------------------------------------------
 void
 uqMapClass::copy(const uqMapClass& src)
 {
@@ -99,56 +171,3 @@ uqMapClass::copy(const uqMapClass& src)
   return;
 }
 
-const uqMpiCommClass&
-uqMapClass::Comm() const
-{
-  return m_uqMpiComm;
-}
-
-#ifdef QUESO_HAS_TRILINOS
-const Epetra_Map&
-uqMapClass::epetraMap() const
-{
-  return *m_epetraMap;
-}
-#endif
-
-int
-uqMapClass::NumGlobalElements() const
-{
-#ifdef QUESO_HAS_TRILINOS
-  return m_epetraMap->NumGlobalElements();
-#else
-  return m_numGlobalElements;
-#endif
-}
-
-int
-uqMapClass::IndexBase() const
-{
-#ifdef QUESO_HAS_TRILINOS
-  return m_epetraMap->IndexBase();
-#else
-  return m_indexBase;
-#endif
-}
-
-int
-uqMapClass::NumMyElements() const
-{
-#ifdef QUESO_HAS_TRILINOS
-  return m_epetraMap->NumMyElements();
-#else
-  return m_numMyElements;
-#endif
-}
-
-int
-uqMapClass::MinMyGID() const
-{
-#ifdef QUESO_HAS_TRILINOS
-  return m_epetraMap->MinMyGID();
-#else
-  return 0;
-#endif
-}

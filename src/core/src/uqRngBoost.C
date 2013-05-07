@@ -29,6 +29,8 @@
 #include <uqRngBoost.h>
 #include <mpi.h>
 
+
+// Default constructor ------------------------------
 uqRngBoostClass::uqRngBoostClass()
   :
   uqRngBaseClass()
@@ -39,6 +41,7 @@ uqRngBoostClass::uqRngBoostClass()
                       "should not be used by user");
 }
 
+//! Constructor with seed ---------------------------
 uqRngBoostClass::uqRngBoostClass(int seed, int worldRank)
   :
   uqRngBaseClass(seed,worldRank)
@@ -52,12 +55,13 @@ uqRngBoostClass::uqRngBoostClass(int seed, int worldRank)
 //                       "Kemelli todo: boost rng");
 }
 
+// Destructor ---------------------------------------
 uqRngBoostClass::~uqRngBoostClass()
 {
   //this function does nothing
 }
 
-  
+// Sampling methods ---------------------------------  
 void
 uqRngBoostClass::resetSeed(int newSeed)
 {
@@ -66,6 +70,7 @@ uqRngBoostClass::resetSeed(int newSeed)
   return;
 }
 
+// --------------------------------------------------
 double
 uqRngBoostClass::uniformSample() const
 {
@@ -73,6 +78,7 @@ uqRngBoostClass::uniformSample() const
   return zeroone();
 }
 
+// --------------------------------------------------
 double
 uqRngBoostClass::gaussianSample(double stdDev) const
 {
@@ -82,6 +88,7 @@ uqRngBoostClass::gaussianSample(double stdDev) const
   return quantile(gaussian_dist, zeroone());  
 }
 
+// --------------------------------------------------
 double
 uqRngBoostClass::betaSample(double alpha, double beta) const
 {
@@ -90,6 +97,7 @@ uqRngBoostClass::betaSample(double alpha, double beta) const
   return quantile(beta_dist, zeroone());
 }
 
+// --------------------------------------------------
 double
 uqRngBoostClass::gammaSample(double a, double b) const
 {

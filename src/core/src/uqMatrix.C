@@ -29,6 +29,7 @@
 #include <uqMatrix.h>
 #include <uqDefines.h>
 
+// Default constructor ------------------------------
 uqMatrixClass::uqMatrixClass()
   :
   m_env(*(new uqEmptyEnvironmentClass())                                               ),
@@ -40,6 +41,7 @@ uqMatrixClass::uqMatrixClass()
                       "should not be used by user");
 }
 
+// Shaped constructor --------------------------------
 uqMatrixClass::uqMatrixClass(const uqBaseEnvironmentClass& env, const uqMapClass& map)
   :
   m_env              (env),
@@ -49,6 +51,7 @@ uqMatrixClass::uqMatrixClass(const uqBaseEnvironmentClass& env, const uqMapClass
 {
 }
 
+// Copy constructor -----------------------------------
 uqMatrixClass::uqMatrixClass(const uqMatrixClass& rhs)
   :
   m_env(rhs.m_env),
@@ -60,21 +63,12 @@ uqMatrixClass::uqMatrixClass(const uqMatrixClass& rhs)
                       "code should not execute through here");
 }
 
+// Destructor ---------------------------------------
 uqMatrixClass::~uqMatrixClass()
 {
 }
 
-void
-uqMatrixClass::copy(const uqMatrixClass& src)
-{
-  //m_env = src.env;
-  //m_map = src.map;
-  m_printHorizontally = src.m_printHorizontally;
-  m_inDebugMode       = src.m_inDebugMode;
-
-  return;
-}
-
+// Set methods --------------------------------------
 uqMatrixClass&
 uqMatrixClass::operator= (const uqMatrixClass& rhs)
 {
@@ -85,6 +79,7 @@ uqMatrixClass::operator= (const uqMatrixClass& rhs)
   return *this;
 }
 
+// --------------------------------------------------
 uqMatrixClass&
 uqMatrixClass::operator*=(double a)
 {
@@ -96,6 +91,7 @@ uqMatrixClass::operator*=(double a)
   return *this;
 }
 
+// --------------------------------------------------
 uqMatrixClass&
 uqMatrixClass::operator+=(const uqMatrixClass& rhs)
 {
@@ -106,6 +102,7 @@ uqMatrixClass::operator+=(const uqMatrixClass& rhs)
   return *this;
 }
 
+// --------------------------------------------------
 uqMatrixClass&
 uqMatrixClass::operator-=(const uqMatrixClass& rhs)
 {
@@ -116,12 +113,14 @@ uqMatrixClass::operator-=(const uqMatrixClass& rhs)
   return *this;
 }
 
+// Environment and Map methods ----------------------
 const uqBaseEnvironmentClass&
 uqMatrixClass::env() const
 {
   return m_env;
 }
 
+// --------------------------------------------------
 const uqMapClass&
 uqMatrixClass::map() const
 {
@@ -129,12 +128,14 @@ uqMatrixClass::map() const
   //return (const uqMapClass&) (m_mat->Map());
 }
 
+// --------------------------------------------------
 unsigned int
 uqMatrixClass::numOfProcsForStorage() const
 {
   return m_map.Comm().NumProc();
 }
 
+// I/O and Miscellaneous methods --------------------
 void
 uqMatrixClass::setPrintHorizontally(bool value) const
 {
@@ -142,12 +143,14 @@ uqMatrixClass::setPrintHorizontally(bool value) const
   return;
 }
 
+// --------------------------------------------------
 bool
 uqMatrixClass::getPrintHorizontally() const
 {
   return m_printHorizontally;
 }
 
+// --------------------------------------------------
 void
 uqMatrixClass::setInDebugMode(bool value) const
 {
@@ -155,8 +158,22 @@ uqMatrixClass::setInDebugMode(bool value) const
   return;
 }
 
+// --------------------------------------------------
 bool
 uqMatrixClass::getInDebugMode() const
 {
   return m_inDebugMode;
 }
+
+// --------------------------------------------------
+void
+uqMatrixClass::copy(const uqMatrixClass& src)
+{
+  //m_env = src.env;
+  //m_map = src.map;
+  m_printHorizontally = src.m_printHorizontally;
+  m_inDebugMode       = src.m_inDebugMode;
+
+  return;
+}
+

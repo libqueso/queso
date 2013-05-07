@@ -29,6 +29,8 @@
 #include <uqVector.h>
 #include <uqDefines.h>
 
+// Default constructor ------------------------------
+
 uqVectorClass::uqVectorClass()
   :
   m_env(*(new uqEmptyEnvironmentClass())                                               ),
@@ -40,6 +42,7 @@ uqVectorClass::uqVectorClass()
                       "should not be used by user");
 }
 
+// Shaped constructor --------------------------------
 uqVectorClass::uqVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map)
   :
   m_env              (env),
@@ -56,6 +59,7 @@ uqVectorClass::uqVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass
   //std::cout << "Leaving uqVectorClass::constructor(env,map)" << std::endl;
 }
 
+// Copy constructor -----------------------------------
 uqVectorClass::uqVectorClass(const uqVectorClass& rhs)
   :
   m_env(rhs.m_env),
@@ -67,21 +71,12 @@ uqVectorClass::uqVectorClass(const uqVectorClass& rhs)
                       "code should not execute through here");
 }
 
+// Destructor ---------------------------------------
 uqVectorClass::~uqVectorClass()
 {
 }
 
-void
-uqVectorClass::copy(const uqVectorClass& src)
-{
-  //m_env               = src.env;
-  //m_map               = src.map; // prudenci 2010-06-17
-  m_printHorizontally = src.m_printHorizontally;
-  m_printScientific   = src.m_printScientific;
-
-  return;
-}
-
+// Set methods --------------------------------------
 uqVectorClass&
 uqVectorClass::operator=(const uqVectorClass& rhs)
 {
@@ -92,6 +87,7 @@ uqVectorClass::operator=(const uqVectorClass& rhs)
   return *this;
 }
 
+// --------------------------------------------------
 uqVectorClass&
 uqVectorClass::operator*=(double a)
 {
@@ -103,6 +99,7 @@ uqVectorClass::operator*=(double a)
   return *this;
 }
 
+// --------------------------------------------------
 uqVectorClass&
 uqVectorClass::operator/=(double a)
 {
@@ -114,6 +111,7 @@ uqVectorClass::operator/=(double a)
   return *this;
 }
 
+// --------------------------------------------------
 uqVectorClass&
 uqVectorClass::operator+=(const uqVectorClass& rhs)
 {
@@ -124,6 +122,7 @@ uqVectorClass::operator+=(const uqVectorClass& rhs)
   return *this;
 }
 
+// --------------------------------------------------
 uqVectorClass&
 uqVectorClass::operator-=(const uqVectorClass& rhs)
 {
@@ -134,46 +133,62 @@ uqVectorClass::operator-=(const uqVectorClass& rhs)
   return *this;
 }
 
+// Environment and Map methods ----------------------
 const uqBaseEnvironmentClass&
 uqVectorClass::env() const
 {
   return m_env;
 }
 
+// --------------------------------------------------
 const uqMapClass&
 uqVectorClass::map() const
 {
   return m_map;
 }
 
+// --------------------------------------------------
 unsigned int
 uqVectorClass::numOfProcsForStorage() const
 {
   return m_map.Comm().NumProc();
 }
 
+// I/O and Miscellaneous methods --------------------
 void
 uqVectorClass::setPrintHorizontally(bool value) const
 {
   m_printHorizontally = value;
   return;
 }
-
+// --------------------------------------------------
 bool
 uqVectorClass::getPrintHorizontally() const
 {
   return m_printHorizontally;
 }
-
+// --------------------------------------------------
 void
 uqVectorClass::setPrintScientific(bool value) const
 {
   m_printScientific = value;
   return;
 }
-
+// --------------------------------------------------
 bool
 uqVectorClass::getPrintScientific() const
 {
   return m_printScientific;
 }
+// --------------------------------------------------
+void
+uqVectorClass::copy(const uqVectorClass& src)
+{
+  //m_env               = src.env;
+  //m_map               = src.map; // prudenci 2010-06-17
+  m_printHorizontally = src.m_printHorizontally;
+  m_printScientific   = src.m_printScientific;
+
+  return;
+}
+

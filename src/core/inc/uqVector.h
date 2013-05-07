@@ -152,7 +152,7 @@ protected:
   const uqMapClass&             m_map;
 #endif
   
-    //! Flag for either or not print this matrix horizontally.
+  //! Flag for either or not print this matrix horizontally.
   mutable bool                  m_printHorizontally;
   
   //! Flag for either or not print this matrix in scientific notation.
