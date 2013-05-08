@@ -31,7 +31,7 @@
 
 #include <config_queso.h>
 
-// Define available optional libraries (GLPK, HDF5, Trilinos)
+//! Defines available optional libraries (GLPK, HDF5, Trilinos)
 
 #ifdef QUESO_HAVE_GLPK
 #define QUESO_HAS_GLPK
@@ -64,6 +64,7 @@ Incompatible combination of defines in QUESO 'uqDefines.h': QUESO_HAS_TRILINOS i
 #include <set>
 #include <vector>
 
+//! Returns the rank of the calling process in the communicator.
 int uqMyWorldfullRank();
 
 #define ML_CODE_HAS_NEW_RESTART_CAPABILITY
@@ -94,40 +95,92 @@ const int UQ_MATRIX_SVD_FAILED_RC          = -11;
 #define UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT "m"
 #define UQ_FILE_EXTENSION_FOR_HDF_FORMAT    "h5"
 
+
+/*! \file uqDefines.h
+    \brief Definitions and a class to provide default optiond to  pass to a QUESO environment.
+*/
+
 /*! \class uqEnvOptionsValuesClass
- *  \brief This class provides a suite options one can pass to a QUESO
- *         environment.
+ *  \brief This class provides a suite options one can pass to a QUESO environment.
+ * 
+ *  QUESO expects the user to provide an input file with environment options for the library variabled.
+ *  If no input file, a collection of default values is assigned to some of the variables. The class
+ *  uqEnvOptionsValuesClass is responsible for this task.
  */
 
 class uqEnvOptionsValuesClass
 {
 public:
+    //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor
   uqEnvOptionsValuesClass            ();
+  
+  //! Copy constructor
   uqEnvOptionsValuesClass            (const uqEnvOptionsValuesClass& src);
+ 
+  //! Destructor
+  ~uqEnvOptionsValuesClass            ();
+  //@}
+  
+   //! @name Set methods
+  //@{    
+  //! Operator for copying the options of an environment.
   uqEnvOptionsValuesClass& operator= (const uqEnvOptionsValuesClass& rhs);
- ~uqEnvOptionsValuesClass            ();
+ //@}
 
+  //! @name Attributes
+ //! Number of subenvironments.
   unsigned int           m_numSubEnvironments;
+  
+  //! Output filename for sub-screen writing.
   std::string            m_subDisplayFileName;
+  
+  //! Allows (or not) all subenvironments to write to output file.
   bool                   m_subDisplayAllowAll;
+  
+  //! Allows (or not) all inter0 nodes to write to output file
   bool                   m_subDisplayAllowInter0;
+  
+  //! Subenvironments that will write to output.
   std::set<unsigned int> m_subDisplayAllowedSet;
+  
+  //! Verbosity.
   unsigned int           m_displayVerbosity;
+  
+  //! Syncronized verbosity.
   unsigned int           m_syncVerbosity;
+  
+  //! Checking level
   unsigned int           m_checkingLevel;
 
+  //! Type of the random number generator.
   std::string            m_rngType;
-  //! Sets the seed of the random number generator.
+  
+  //! Seed of the random number generator.
+  /*! If env_seed = -z, with z>=1, then each processor sets the seed to value MPI_RANK + z.
+   It is crucial that \verb+env_seed+ takes a \underline{negative} value, otherwise all chain samples are going to be the same.*/
   int                    m_seed;
+  
+  //! Platform name.
   std::string            m_platformName;
+  
+  //! Identifying string.
   std::string            m_identifyingString;
+  
+  //! Number of debug parameters.
   unsigned int           m_numDebugParams;
+  
+  //! Debug parameters
   std::vector<double>    m_debugParams;
-
+  //@}
+  
 private:
+  //! Makes an exact copy of an existing uqEnvOptionsValues instance.
   void copy(const uqEnvOptionsValuesClass& src);
 };
 
+//! Macros
 #define UQ_RC_MACRO(macroIRc,givenRank,where,what,retValue) \
   if (macroIRc) {                                           \
     int macroRank = givenRank;                              \
