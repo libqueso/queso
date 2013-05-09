@@ -29,6 +29,11 @@
 #include <uqEnvironmentOptions.h>
 #include <uqMiscellaneous.h>
 
+// --------------------------------------------------
+// uqEnvOptionsValuesClass --------------------------
+// --------------------------------------------------
+
+// Default constructor ------------------------------
 uqEnvOptionsValuesClass::uqEnvOptionsValuesClass()
   :
   m_numSubEnvironments   (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
@@ -48,22 +53,25 @@ uqEnvOptionsValuesClass::uqEnvOptionsValuesClass()
 {
 }
 
-uqEnvOptionsValuesClass::~uqEnvOptionsValuesClass()
-{
-}
-
+// Copy constructor ---------------------------------
 uqEnvOptionsValuesClass::uqEnvOptionsValuesClass(const uqEnvOptionsValuesClass& src)
 {
   this->copy(src);
 }
 
+// Destructor ---------------------------------------
+uqEnvOptionsValuesClass::~uqEnvOptionsValuesClass()
+{
+}
+
+// Set methods---------------------------------------
 uqEnvOptionsValuesClass&
 uqEnvOptionsValuesClass::operator=(const uqEnvOptionsValuesClass& rhs)
 {
   this->copy(rhs);
   return *this;
 }
-
+// Private methods-----------------------------------
 void
 uqEnvOptionsValuesClass::copy(const uqEnvOptionsValuesClass& src)
 {
@@ -85,6 +93,11 @@ uqEnvOptionsValuesClass::copy(const uqEnvOptionsValuesClass& src)
   return;
 }
 
+// --------------------------------------------------
+// uqEnvironmentOptionsClass ------------------------
+// --------------------------------------------------
+
+// Default constructor ------------------------------
 uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
   const uqBaseEnvironmentClass& env,
   const char*                   prefix)
@@ -112,7 +125,7 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
                       "uqEnvironmentOptionsClass::constructor(1)",
                       "this constructor is incompatible with the abscense of an options input file");
 }
-
+// Constructor with alternative values --------------
 uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
   const uqBaseEnvironmentClass&  env,
   const char*                    prefix,
@@ -149,12 +162,13 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
                             << std::endl;
   }
 }
-
+// Destructor ---------------------------------------
 uqEnvironmentOptionsClass::~uqEnvironmentOptionsClass()
 {
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
+// I/O methods---------------------------------------
 void
 uqEnvironmentOptionsClass::scanOptionsValues()
 {
@@ -179,7 +193,31 @@ uqEnvironmentOptionsClass::scanOptionsValues()
 
   return;
 }
+// --------------------------------------------------
+void
+uqEnvironmentOptionsClass::print(std::ostream& os) const
+{
+  os <<         m_option_numSubEnvironments    << " = " << m_ov.m_numSubEnvironments
+     << "\n" << m_option_subDisplayFileName    << " = " << m_ov.m_subDisplayFileName
+     << "\n" << m_option_subDisplayAllowAll    << " = " << m_ov.m_subDisplayAllowAll
+   //<< "\n" << m_option_subDisplayAllowInter0 << " = " << m_ov.m_subDisplayAllowInter0
+     << "\n" << m_option_subDisplayAllowedSet  << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_ov.m_subDisplayAllowedSet.begin(); setIt != m_ov.m_subDisplayAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+  os << "\n" << m_option_displayVerbosity  << " = " << m_ov.m_displayVerbosity
+     << "\n" << m_option_syncVerbosity     << " = " << m_ov.m_syncVerbosity
+     << "\n" << m_option_checkingLevel     << " = " << m_ov.m_checkingLevel
+     << "\n" << m_option_rngType           << " = " << m_ov.m_rngType
+     << "\n" << m_option_seed              << " = " << m_ov.m_seed
+     << "\n" << m_option_platformName      << " = " << m_ov.m_platformName
+     << "\n" << m_option_identifyingString << " = " << m_ov.m_identifyingString
+   //<< "\n" << m_option_numDebugParams    << " = " << m_ov.m_numDebugParams
+     << std::endl;
+  return;
+}
 
+// Private methods ----------------------------------
 void
 uqEnvironmentOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
@@ -208,7 +246,7 @@ uqEnvironmentOptionsClass::defineMyOptions(po::options_description& optionsDesc)
 
   return;
 }
-
+// --------------------------------------------------
 void
 uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
@@ -314,29 +352,7 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
   return;
 }
 
-void
-uqEnvironmentOptionsClass::print(std::ostream& os) const
-{
-  os <<         m_option_numSubEnvironments    << " = " << m_ov.m_numSubEnvironments
-     << "\n" << m_option_subDisplayFileName    << " = " << m_ov.m_subDisplayFileName
-     << "\n" << m_option_subDisplayAllowAll    << " = " << m_ov.m_subDisplayAllowAll
-   //<< "\n" << m_option_subDisplayAllowInter0 << " = " << m_ov.m_subDisplayAllowInter0
-     << "\n" << m_option_subDisplayAllowedSet  << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_ov.m_subDisplayAllowedSet.begin(); setIt != m_ov.m_subDisplayAllowedSet.end(); ++setIt) {
-    os << *setIt << " ";
-  }
-  os << "\n" << m_option_displayVerbosity  << " = " << m_ov.m_displayVerbosity
-     << "\n" << m_option_syncVerbosity     << " = " << m_ov.m_syncVerbosity
-     << "\n" << m_option_checkingLevel     << " = " << m_ov.m_checkingLevel
-     << "\n" << m_option_rngType           << " = " << m_ov.m_rngType
-     << "\n" << m_option_seed              << " = " << m_ov.m_seed
-     << "\n" << m_option_platformName      << " = " << m_ov.m_platformName
-     << "\n" << m_option_identifyingString << " = " << m_ov.m_identifyingString
-   //<< "\n" << m_option_numDebugParams    << " = " << m_ov.m_numDebugParams
-     << std::endl;
-  return;
-}
-
+// Operator outside class definition ----------------
 std::ostream& operator<<(std::ostream& os, const uqEnvironmentOptionsClass& obj)
 {
   obj.print(os);

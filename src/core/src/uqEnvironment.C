@@ -121,6 +121,7 @@ uqFilePtrSetStruct::~uqFilePtrSetStruct()
 //*****************************************************
 // Base class
 //*****************************************************
+// Default constructor --------------------------------
 uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   const char*                    passedOptionsInputFileName,
   const uqEnvOptionsValuesClass* alternativeOptionsValues)
@@ -150,7 +151,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   if (passedOptionsInputFileName) m_optionsInputFileName     = passedOptionsInputFileName;
   if (alternativeOptionsValues  ) m_alternativeOptionsValues = *alternativeOptionsValues;
 }
-
+// Copy constructor -------------------------------------
 uqBaseEnvironmentClass::uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
@@ -158,7 +159,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj
                       "uqBaseEnvironmentClass::constructor(), copy",
                       "code should not execute through here");
 }
-
+// Destructor -------------------------------------------
 uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
 {
   //if (m_subDisplayFile) {
@@ -166,28 +167,25 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   //                          << std::endl;
   //}
 
-
   struct timeval timevalNow;
   /*int iRC = 0;*/
   /*iRC = */gettimeofday(&timevalNow, NULL);
 
   if( this->displayVerbosity() > 0 )
     {
-
-      if (m_subDisplayFile) {
+     if (m_subDisplayFile) {
 	*m_subDisplayFile << "Ending run at "    << ctime(&timevalNow.tv_sec)
 			  << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
 			  << " seconds"
 			  << std::endl;
       }
 
-      if (m_fullRank == 0) {
+    if (m_fullRank == 0) {
 	std::cout << "Ending run at "    << ctime(&timevalNow.tv_sec)
 		  << "Total run time = " << timevalNow.tv_sec - m_timevalBegin.tv_sec
 		  << " seconds"
 		  << std::endl;
       }
-
     }
 
   if (m_optionsObj) delete m_optionsObj;
@@ -209,7 +207,7 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   if (m_subComm       ) delete m_subComm;
   if (m_fullComm      ) delete m_fullComm;
 }
-
+// Set methods ------------------------------------------
 uqBaseEnvironmentClass&
 uqBaseEnvironmentClass::operator= (const uqBaseEnvironmentClass& rhs)
 {
@@ -219,25 +217,25 @@ uqBaseEnvironmentClass::operator= (const uqBaseEnvironmentClass& rhs)
                       "code should not execute through here");
   return *this;
 }
-
+// Environment, Communicator and Options Input File methods 
 bool
 uqBaseEnvironmentClass::fullEnvIsReady() const
 {
   return m_fullEnvIsReady;
 }
-
+//-------------------------------------------------------
 int
 uqBaseEnvironmentClass::worldRank() const
 {
   return m_worldRank;
 }
-
+//-------------------------------------------------------
 int
 uqBaseEnvironmentClass::fullRank() const
 {
   return m_fullRank;
 }
-
+//-------------------------------------------------------
 const uqMpiCommClass&
 uqBaseEnvironmentClass::fullComm() const
 {
@@ -247,19 +245,19 @@ uqBaseEnvironmentClass::fullComm() const
                       "m_fullComm variable is NULL");
   return *m_fullComm;
 }
-
+//-------------------------------------------------------
 uqRawType_MPI_Group
 uqBaseEnvironmentClass::subGroup() const
 {
   return m_subGroup;
 }
-
+//-------------------------------------------------------
 int
 uqBaseEnvironmentClass::subRank() const
 {
   return m_subRank;
 }
-
+//-------------------------------------------------------
 const uqMpiCommClass&
 uqBaseEnvironmentClass::subComm() const
 {
@@ -269,7 +267,7 @@ uqBaseEnvironmentClass::subComm() const
                       "m_subComm variable is NULL");
   return *m_subComm;
 }
-
+//-------------------------------------------------------
 const uqMpiCommClass&
 uqBaseEnvironmentClass::selfComm() const
 {
@@ -279,13 +277,13 @@ uqBaseEnvironmentClass::selfComm() const
                       "m_selfComm variable is NULL");
   return *m_selfComm;
 }
-
+//-------------------------------------------------------
 int
 uqBaseEnvironmentClass::inter0Rank() const
 {
   return m_inter0Rank;
 }
-
+//-------------------------------------------------------
 const uqMpiCommClass&
 uqBaseEnvironmentClass::inter0Comm() const
 {
@@ -295,13 +293,13 @@ uqBaseEnvironmentClass::inter0Comm() const
                       "m_inter0Comm variable is NULL");
   return *m_inter0Comm;
 }
-
+//-------------------------------------------------------
 std::ofstream*
 uqBaseEnvironmentClass::subDisplayFile() const
 {
   return m_subDisplayFile;
 }
-
+//-------------------------------------------------------
 std::string
 uqBaseEnvironmentClass::subDisplayFileName() const
 {
@@ -309,7 +307,7 @@ uqBaseEnvironmentClass::subDisplayFileName() const
 
   return m_optionsObj->m_ov.m_subDisplayFileName;
 }
-
+//-------------------------------------------------------
 unsigned int
 uqBaseEnvironmentClass::numSubEnvironments() const
 {
@@ -319,19 +317,56 @@ uqBaseEnvironmentClass::numSubEnvironments() const
                       "m_optionsObj variable is NULL");
   return m_optionsObj->m_ov.m_numSubEnvironments;
 }
-
+//-------------------------------------------------------
 unsigned int
 uqBaseEnvironmentClass::subId() const
 {
   return m_subId;
 }
-
+//-------------------------------------------------------
 const std::string&
 uqBaseEnvironmentClass::subIdString() const
 {
   return m_subIdString;
 }
+//-------------------------------------------------------
+std::string
+uqBaseEnvironmentClass::optionsInputFileName() const
+{
+  if (m_optionsInputFileAccessState) {
+    return m_optionsInputFileName;
+  }
+  else {
+    return "";
+  }
+}
+//-------------------------------------------------------
+void
+uqBaseEnvironmentClass::setOptionsInputFileAccessState(bool newState) const
+{
+  m_optionsInputFileAccessState = newState;
 
+  return;
+}
+//-------------------------------------------------------
+#ifdef UQ_USES_COMMAND_LINE_OPTIONS
+const po::options_description&
+uqBaseEnvironmentClass::allOptionsDesc() const
+{
+  return *m_allOptionsDesc;
+}
+#endif
+//-------------------------------------------------------
+po::variables_map&
+uqBaseEnvironmentClass::allOptionsMap() const
+{
+  UQ_FATAL_TEST_MACRO(m_allOptionsMap == NULL,
+                      m_worldRank,
+                      "uqBaseEnvironmentClass::allOptionsMap()",
+                      "m_allOptionsMap variable is NULL");
+  return *m_allOptionsMap;
+}
+//-------------------------------------------------------
 void
 uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description& optionsDesc) const
 {
@@ -389,44 +424,7 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
 
   return;
 }
-
-std::string
-uqBaseEnvironmentClass::optionsInputFileName() const
-{
-  if (m_optionsInputFileAccessState) {
-    return m_optionsInputFileName;
-  }
-  else {
-    return "";
-  }
-}
-
-void
-uqBaseEnvironmentClass::setOptionsInputFileAccessState(bool newState) const
-{
-  m_optionsInputFileAccessState = newState;
-
-  return;
-}
-
-#ifdef UQ_USES_COMMAND_LINE_OPTIONS
-const po::options_description&
-uqBaseEnvironmentClass::allOptionsDesc() const
-{
-  return *m_allOptionsDesc;
-}
-#endif
-
-po::variables_map&
-uqBaseEnvironmentClass::allOptionsMap() const
-{
-  UQ_FATAL_TEST_MACRO(m_allOptionsMap == NULL,
-                      m_worldRank,
-                      "uqBaseEnvironmentClass::allOptionsMap()",
-                      "m_allOptionsMap variable is NULL");
-  return *m_allOptionsMap;
-}
-
+//-----------------------------------------------------
 unsigned int
 uqBaseEnvironmentClass::displayVerbosity() const
 {
@@ -436,7 +434,7 @@ uqBaseEnvironmentClass::displayVerbosity() const
                       "m_optionsObj variable is NULL");
   return m_optionsObj->m_ov.m_displayVerbosity;
 }
-
+//-------------------------------------------------------
 unsigned int
 uqBaseEnvironmentClass::syncVerbosity() const
 {
@@ -446,7 +444,7 @@ uqBaseEnvironmentClass::syncVerbosity() const
                       "m_optionsObj variable is NULL");
   return m_optionsObj->m_ov.m_syncVerbosity;
 }
-
+//-------------------------------------------------------
 unsigned int
 uqBaseEnvironmentClass::checkingLevel() const
 {
@@ -456,51 +454,51 @@ uqBaseEnvironmentClass::checkingLevel() const
                       "m_optionsObj variable is NULL");
   return m_optionsObj->m_ov.m_checkingLevel;
 }
-
+//-------------------------------------------------------
 const uqRngBaseClass*
 uqBaseEnvironmentClass::rngObject() const
 {
   return m_rngObject;
 }
-
+//-------------------------------------------------------
 int
 uqBaseEnvironmentClass::seed() const
 {
   return m_rngObject->seed();
 }
-
+//-------------------------------------------------------
 void
 uqBaseEnvironmentClass::resetSeed(int newSeedOption)
 {
   m_rngObject->resetSeed(newSeedOption);
   return;
 }
-
+//-------------------------------------------------------
 std::string
 uqBaseEnvironmentClass::platformName() const
 {
   return m_optionsObj->m_ov.m_platformName;
 }
-
+//-------------------------------------------------------
 std::string
 uqBaseEnvironmentClass::identifyingString() const
 {
   return m_optionsObj->m_ov.m_identifyingString;
 }
-
+//-------------------------------------------------------
 void
 uqBaseEnvironmentClass::resetIdentifyingString(const std::string& newString) const // Yes, const
 {
   m_optionsObj->m_ov.m_identifyingString = newString;
   return;
 }
-
+//-------------------------------------------------------
 struct timeval
 uqBaseEnvironmentClass::timevalBegin() const
 {
   return m_timevalBegin;
 }
-
+//-------------------------------------------------------
 bool
 uqBaseEnvironmentClass::openOutputFile(
   const std::string&            baseFileName,
@@ -717,7 +715,7 @@ uqBaseEnvironmentClass::openOutputFile(
 
   return returnValue;
 }
-
+//-------------------------------------------------------
 bool
 uqBaseEnvironmentClass::openUnifiedOutputFile(
   const std::string&        baseFileName,
@@ -897,7 +895,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
 
   return returnValue;
 }
-
+//-------------------------------------------------------
 bool
 uqBaseEnvironmentClass::openInputFile(
   const std::string&            baseFileName,
@@ -1000,7 +998,7 @@ uqBaseEnvironmentClass::openInputFile(
 
   return returnValue;
 }
-
+//-------------------------------------------------------
 bool
 uqBaseEnvironmentClass::openUnifiedInputFile(
   const std::string&        baseFileName,
@@ -1101,7 +1099,7 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
 
   return returnValue;
 }
-
+//-------------------------------------------------------
 void
 uqBaseEnvironmentClass::closeFile(
   uqFilePtrSetStruct& filePtrSet,
@@ -1155,14 +1153,14 @@ uqBaseEnvironmentClass::closeFile(
 
   return;
 }
-
+//-------------------------------------------------------
 void
 uqBaseEnvironmentClass::setExceptionalCircunstance(bool value) const
 {
   m_exceptionalCircunstance = value;
   return;
 }
-
+//-------------------------------------------------------
 bool
 uqBaseEnvironmentClass::exceptionalCircunstance() const
 {
@@ -1178,11 +1176,11 @@ uqEmptyEnvironmentClass::uqEmptyEnvironmentClass()
   uqBaseEnvironmentClass("",NULL)
 {
 }
-
+//-------------------------------------------------------
 uqEmptyEnvironmentClass::~uqEmptyEnvironmentClass()
 {
 }
-
+//-------------------------------------------------------
 void
 uqEmptyEnvironmentClass::print(std::ostream& os) const
 {
@@ -1480,11 +1478,19 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
 
   return;
 }
-
+//-------------------------------------------------------
 uqFullEnvironmentClass::~uqFullEnvironmentClass()
 {
 }
+//-------------------------------------------------------
+void
+uqFullEnvironmentClass::print(std::ostream& os) const
+{
+  os.flush(); // just to avoid icpc warnings
+  return;
+}
 
+//-------------------------------------------------------
 void
 uqFullEnvironmentClass::readOptionsInputFile()
 {
@@ -1513,11 +1519,3 @@ uqFullEnvironmentClass::readOptionsInputFile()
 
   return;
 }
-
-void
-uqFullEnvironmentClass::print(std::ostream& os) const
-{
-  os.flush(); // just to avoid icpc warnings
-  return;
-}
-

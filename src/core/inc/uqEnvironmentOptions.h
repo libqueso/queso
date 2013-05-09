@@ -103,9 +103,10 @@ private:
   //! Options prefix.
   std::string              m_prefix;
   
-  //! Environment options description
-  /*! Uses Boost::options_description. A set of option descriptions. This provides convenient 
-   * interface for adding new option method, and facilities to search for options by name.*/
+  //! Environment options description.
+  /*! Uses boost::program_options::options_description. A set of option descriptions. 
+   * This provides convenient interface for adding new option method, and facilities 
+   * to search for options by name.*/
   po::options_description* m_optionsDesc;
 
   std::string              m_option_help;
