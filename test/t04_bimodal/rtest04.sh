@@ -11,7 +11,7 @@
 
 TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)
 SAVELOG=0		                   # Log model output?
-COMMONDIR="../common"
+COMMONDIR="$srcdir/../common"
 
 #----------------
 # Initialization
@@ -33,8 +33,8 @@ RUNDIR=`pwd`
 VERIFY_DATE="07-09-2012"
 SOLDIR="outputData"
 EXE="./BimodalExample_gsl"   # executable name
-SOLREFS="regression/$VERIFY_DATE"
-INFILE="example_1chain.inp"
+SOLREFS="$srcdir/regression/$VERIFY_DATE"
+INFILE="$srcdir/example_1chain.inp"
 TESTNAME='Test 4 (bimodal example)'
 
 # Setup desired input for the model

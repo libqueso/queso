@@ -11,7 +11,7 @@
 
 TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)
 SAVELOG=0		                   # Log model output?
-COMMONDIR="../common"
+COMMONDIR="$srcdir/../common"
 
 #----------------
 # Initialization
@@ -29,8 +29,8 @@ RUNDIR=`pwd`
 VERIFY_DATE="07-30-2010"
 SOLDIR="outputData"
 EXE="./TgaValidationCycle_gsl"   # executable name
-SOLREFS="regression/$VERIFY_DATE"
-INFILE="tgaCycle.inp"
+SOLREFS="$srcdir/regression/$VERIFY_DATE"
+INFILE="$srcdir/tgaCycle.inp"
 TESTNAME='Test 1 (TGA Validation Cycle)'
 
 # Setup desired input for the model

@@ -11,7 +11,7 @@
 
 TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)
 SAVELOG=0		                   # Log model output?
-COMMONDIR="../common"
+COMMONDIR="$srcdir/../common"
 
 #----------------
 # Initialization
@@ -30,8 +30,8 @@ VERIFY_DATE="10-11-2009"
 TEST_DIR="./"
 SOLDIR="outputData"
 EXE="./SequenceExample_gsl"
-SOLREFS="regression/$VERIFY_DATE"
-INFILE="example.inp"
+SOLREFS="$srcdir/regression/$VERIFY_DATE"
+INFILE="$srcdir/example.inp"
 TESTNAME='Test 3 (Sip + Sfp example)'
 
 # Setup desired input for the model

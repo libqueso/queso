@@ -37,6 +37,8 @@
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 
+#include <cstdlib>
+
 //Just declaration: actual code is below
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
@@ -64,6 +66,9 @@ uqAppl(const uqBaseEnvironmentClass& env)
     std::cout << "Beginning run of 'uqTgaExample' example\n"
               << std::endl;
   }
+
+  const std::string inputDataDir = std::string(std::getenv("srcdir"))
+    + "/inputData";
 
   int iRC;
   struct timeval timevalRef;
@@ -119,9 +124,9 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   // Inverse problem: instantiate the likelihood function object (data + routine)
   likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env,
-                                                                 "inputData/scenario_5_K_min.dat",
-                                                                 "inputData/scenario_25_K_min.dat",
-                                                                 "inputData/scenario_50_K_min.dat");
+                                                                 (inputDataDir+"/scenario_5_K_min.dat").c_str(),
+                                                                 (inputDataDir+"/scenario_25_K_min.dat").c_str(),
+                                                                 (inputDataDir+"/scenario_50_K_min.dat").c_str());
 
   uqGenericScalarFunctionClass<P_V,P_M> calLikelihoodFunctionObj("cal_like_",
                                                                  paramDomain,
@@ -190,7 +195,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   // Inverse problem: instantiate the likelihood function object (data + routine)
   likelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(env,
-                                                                 "inputData/scenario_100_K_min.dat",
+                                                                 (inputDataDir+"/scenario_100_K_min.dat").c_str(),
                                                                  NULL,
                                                                  NULL);
 
