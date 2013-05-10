@@ -570,19 +570,19 @@ INPUT  = @abs_top_srcdir@/doxygen/queso.page \
          @abs_top_srcdir@/doxygen/txt_common/acknowledgment.page \
          @abs_top_srcdir@/doxygen/txt_common/lgpl.page \
          @abs_top_srcdir@/doxygen/txt_common/noop.page \
-      	 src/core \
-      	 src/misc \
-      	 src/basic \
-      	 src/stats \
-      	 src/interface \
-      	 examples/statisticalInverseProblem1/src \
-      	 examples/statisticalInverseProblem1/tests/test_2009_02_03/ \
-      	 examples/statisticalForwardProblem/src \
-      	 examples/statisticalForwardProblem/tests/test_2009_02_11/ \
-      	 examples/validationCycle/src \
-      	 examples/validationCycle/tests/test_2009_02_03 \
-	 examples/basic_interface \
-      	 test/t02_sip_sfp/sip_sfp
+      	 @abs_top_srcdir@/src/core \
+      	 @abs_top_srcdir@/src/misc \
+      	 @abs_top_srcdir@/src/basic \
+      	 @abs_top_srcdir@/src/stats \
+      	 @abs_top_srcdir@/src/interface \
+      	 @abs_top_srcdir@/examples/statisticalInverseProblem1/src \
+      	 @abs_top_srcdir@/examples/statisticalInverseProblem1/tests/test_2009_02_03/ \
+      	 @abs_top_srcdir@/examples/statisticalForwardProblem/src \
+      	 @abs_top_srcdir@/examples/statisticalForwardProblem/tests/test_2009_02_11/ \
+      	 @abs_top_srcdir@/examples/validationCycle/src \
+      	 @abs_top_srcdir@/examples/validationCycle/tests/test_2009_02_03 \
+	 @abs_top_srcdir@/examples/basic_interface \
+      	 @abs_top_srcdir@/test/t02_sip_sfp/sip_sfp
 
 
 # This tag can be used to specify the character encoding of the source files 
