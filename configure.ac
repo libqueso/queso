@@ -174,6 +174,7 @@ AC_CONFIG_FILES([
   test/t03_sequence/Makefile
   test/t04_bimodal/Makefile
   test/gsl_tests/Makefile
+  test/gsl_tests/input
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page
