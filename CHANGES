@@ -8,6 +8,8 @@ Version 0.46 (In Progress)
   * changed libGRVY linkage to be optional
   * added additional regression tests to 'make check'
   * added rng (random number generator) class to accomodate either GSL or BOOST rng's
+  * added basic PDFs (beta and gamma) class to accomodate either GSL or BOOST PDFs
+  * beginning to add some GP based emulation capabilities
   * updated QUESO user's manual, to include better description of the classes, installation procedure and examples.
   * included doxygen documentation in most of core classes.
 
