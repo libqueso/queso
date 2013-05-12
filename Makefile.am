@@ -75,6 +75,9 @@ MAINTAINERCLEANFILES =     \
 	src/stats/Makefile.in \
 	src/stats/src/Makefile.in \
 	src/stats/inc/Makefile.in \
+	src/gp/Makefile.in \
+	src/gp/src/Makefile.in \
+	src/gp/inc/Makefile.in \
 	examples/Makefile.in \
 	examples/markovChain1/Makefile.in \
 	examples/markovChain1/src/Makefile.in \

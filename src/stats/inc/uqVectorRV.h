@@ -36,7 +36,7 @@
 #include <uqVectorMdf.h>
 #include <uqSequenceOfVectors.h>
 #include <uqInfoTheory.h>
-#include <gsl/gsl_sf_psi.h>
+#include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
 
 //*****************************************************
 // Base class [RV-00]
@@ -250,7 +250,7 @@ uqBaseVectorRVClass<V,M>::estimateENT_ANN() const
       sum_log_dist += log( 2.0*dists[ i ] );
     }
   }
-  ENT_est = - gsl_sf_psi_int( k ) + gsl_sf_psi_int( N ) + (double)dim / (double)N * sum_log_dist;
+  ENT_est = - gsl_sf_psi_int( k ) + gsl_sf_psi_int( N ) + (double)dim / (double)N * sum_log_dist; // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
 
   // deallocate memory
   delete [] dists;

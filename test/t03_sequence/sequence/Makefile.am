@@ -7,6 +7,7 @@ AM_CPPFLAGS  = -I. \
 	-I$(top_srcdir)/src/misc/inc \
 	-I$(top_srcdir)/src/basic/inc \
 	-I$(top_srcdir)/src/stats/inc \
+	-I$(top_srcdir)/src/gp/inc \
 	-I$(TRILINOS_INCLUDE) \
           $(EPETRA_INCLUDES) $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(GRVY_CFLAGS) $(GLPK_CFLAGS) $(HDF5_CFLAGS)
 

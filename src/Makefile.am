@@ -5,6 +5,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
 	      -I$(top_srcdir)/src/misc/inc  \
 	      -I$(top_srcdir)/src/basic/inc \
 	      -I$(top_srcdir)/src/stats/inc \
+	      -I$(top_srcdir)/src/gp/inc \
 	      -I$(top_builddir)/src/core/inc \
 	        $(BOOST_CPPFLAGS) \
 	        $(GSL_CFLAGS) \
@@ -69,6 +70,9 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/uqRngBase.C \
 	$(top_srcdir)/src/core/src/uqRngGsl.C \
 	$(top_srcdir)/src/core/src/uqRngBoost.C \
+	$(top_srcdir)/src/core/src/uqBasicPdfsBase.C \
+	$(top_srcdir)/src/core/src/uqBasicPdfsGsl.C \
+	$(top_srcdir)/src/core/src/uqBasicPdfsBoost.C \
 	$(top_srcdir)/src/core/src/uqVector.C \
 	$(top_srcdir)/src/core/src/uqMatrix.C \
 	$(top_srcdir)/src/core/src/uqTeuchosVector.C \
@@ -126,6 +130,13 @@ libqueso_la_SOURCES += \
 	$(top_srcdir)/src/stats/src/uqStatisticalForwardProblemOptions.C \
 	$(top_srcdir)/src/stats/src/uqInfoTheory.C
 
+# Sources from gp/src
+
+libqueso_la_SOURCES += \
+	$(top_srcdir)/src/gp/src/uqExperimentModelOptions.C \
+	$(top_srcdir)/src/gp/src/uqGpmsaComputerModelOptions.C \
+	$(top_srcdir)/src/gp/src/uqSimulationModelOptions.C
+
 # Sources from interface 
 
 ###libqueso_la_SOURCES += \
@@ -142,6 +153,9 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/uqRngBase.h \
 	$(top_srcdir)/src/core/inc/uqRngGsl.h \
 	$(top_srcdir)/src/core/inc/uqRngBoost.h \
+	$(top_srcdir)/src/core/inc/uqBasicPdfsBase.h \
+	$(top_srcdir)/src/core/inc/uqBasicPdfsGsl.h \
+	$(top_srcdir)/src/core/inc/uqBasicPdfsBoost.h \
 	$(top_srcdir)/src/core/inc/uqGslMatrix.h \
 	$(top_srcdir)/src/core/inc/uqGslVector.h \
 	$(top_srcdir)/src/core/inc/uqTeuchosMatrix.h \
@@ -216,6 +230,30 @@ libqueso_include_HEADERS += \
 	$(top_srcdir)/src/stats/inc/uqMatrixCovarianceFunction.h \
 	$(top_srcdir)/src/stats/inc/uqScalarGaussianRandomField.h \
 	$(top_srcdir)/src/stats/inc/uqVectorGaussianRandomField.h
+
+# Headers to install from gp/inc 
+
+libqueso_include_HEADERS += \
+	$(top_srcdir)/src/gp/inc/uqExperimentModel.h \
+	$(top_srcdir)/src/gp/inc/uqExperimentModelOptions.h \
+	$(top_srcdir)/src/gp/inc/uqExperimentStorage.h \
+	$(top_srcdir)/src/gp/inc/uqGcmExperimentInfo.h \
+	$(top_srcdir)/src/gp/inc/uqGcmJointInfo.h \
+	$(top_srcdir)/src/gp/inc/uqGcmJointTildeInfo.h \
+	$(top_srcdir)/src/gp/inc/uqGcmSimulationInfo.h \
+	$(top_srcdir)/src/gp/inc/uqGcmSimulationTildeInfo.h \
+	$(top_srcdir)/src/gp/inc/uqGcmTotalInfo.h \
+	$(top_srcdir)/src/gp/inc/uqGcmZInfo.h \
+	$(top_srcdir)/src/gp/inc/uqGcmZTildeInfo.h \
+	$(top_srcdir)/src/gp/inc/uqGpmsaComputerModel.h \
+	$(top_srcdir)/src/gp/inc/uqGpmsaComputerModel2.h \
+	$(top_srcdir)/src/gp/inc/uqGpmsaComputerModel3.h \
+	$(top_srcdir)/src/gp/inc/uqGpmsaComputerModel4.h \
+	$(top_srcdir)/src/gp/inc/uqGpmsaComputerModel5.h \
+	$(top_srcdir)/src/gp/inc/uqGpmsaComputerModelOptions.h \
+	$(top_srcdir)/src/gp/inc/uqSimulationModel.h \
+	$(top_srcdir)/src/gp/inc/uqSimulationModelOptions.h \
+	$(top_srcdir)/src/gp/inc/uqSimulationStorage.h
 
 # Headers to install, but not part of dist
 

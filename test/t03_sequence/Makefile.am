@@ -7,6 +7,7 @@ AM_CPPFLAGS  = -I. \
 	-I$(top_srcdir)/src/misc/inc \
 	-I$(top_srcdir)/src/basic/inc \
 	-I$(top_srcdir)/src/stats/inc \
+	-I$(top_srcdir)/src/gp/inc \
          $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 
 LIBS  = -L$(top_builddir)/src/ -lqueso

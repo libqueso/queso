@@ -10,6 +10,7 @@ AM_CPPFLAGS = -I. \
 	      -I$(top_srcdir)/src/misc/inc  \
 	      -I$(top_srcdir)/src/basic/inc \
 	      -I$(top_srcdir)/src/stats/inc \
+	      -I$(top_srcdir)/src/gp/inc    \
 	        $(BOOST_CPPFLAGS)   \
 	        $(GSL_CFLAGS)       \
 	        $(GRVY_CFLAGS)      \

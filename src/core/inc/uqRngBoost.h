@@ -102,7 +102,7 @@ public:
    * Bayesian statistics, where the gamma distribution is used as a conjugate prior distribution 
    * for various types of inverse scale (aka rate) parameters. Uses  
    * boost::math::gamma_distribution<double>  gamma_dist(a,b). Support (domain): [0,infinity).*/
-  double   gammaSample   (double alpha, double beta)        const;
+  double   gammaSample   (double a, double b)        const;
 	
 private:  
   //! Random number generator from class boost::mt19937. 

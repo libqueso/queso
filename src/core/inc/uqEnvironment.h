@@ -44,6 +44,7 @@ namespace po = boost::program_options;
 #include <fstream>
 
 #include <uqRngBase.h>
+#include <uqBasicPdfsBase.h>
 
 struct uqFilePtrSetStruct {
   uqFilePtrSetStruct();
@@ -256,32 +257,35 @@ public:
   //! This method scans the input file provided by the user to QUESO.
   /*! It checks if no input file is passed and updates the private attribute m_allOptionsDesc, which
    * keeps all the options.*/
-  void    scanInputFileForMyOptions     (const po::options_description& optionsDesc) const;
+  void    scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
   
   //! Access function to private attribute m_displayVerbosity. It manages how much information will be
   //! release during the use of the QUESO library.
-  unsigned int    displayVerbosity      () const;
+  unsigned int    displayVerbosity () const;
   
   //! Access function to private attribute m_syncVerbosity.
-  unsigned int    syncVerbosity () const;
+  unsigned int    syncVerbosity    () const;
   
   //! Access function to private attribute m_checkingLevel.
-  unsigned int    checkingLevel () const;
+  unsigned int    checkingLevel    () const;
   
   //! Access to the RNG object.
-  const uqRngBaseClass*   rngObject     () const;
+  const uqRngBaseClass* rngObject  () const;
   
   //! Reset RNG seed.
-  void    resetSeed     (int newSeedOption);
+  void                  resetSeed  (int newSeedOption);
   
   //! Access to the RNG seed.
-  int     seed  () const;
+  int                   seed       () const;
+
+  //! Access to Basic Pdfs.
+  const uqBasicPdfsBaseClass* basicPdfs() const;
   
   //! Access to the platform name.
-  std::string     platformName  () const;
+  std::string platformName      () const;
   
    //! Access function to private attribute m_identifyingString: identifying string.
-  std::string     identifyingString     () const;
+  std::string identifyingString () const;
   
   //! Reset private attribute m_identifyingString wit the value \c newString.
   void    resetIdentifyingString(const std::string& newString) const; // Yes, const
@@ -328,37 +332,38 @@ public:
 
   //@}
 protected:
-  bool       		m_fullEnvIsReady;
-  int 	     		m_worldRank;
+  bool       		     m_fullEnvIsReady;
+  int 	     		     m_worldRank;
 
-  uqMpiCommClass*    	m_fullComm;
-  int 			m_fullRank;
-  int 			m_fullCommSize;
-  uqRawType_MPI_Group 	m_fullGroup;
+  uqMpiCommClass*    	     m_fullComm;
+  int                        m_fullRank;
+  int                        m_fullCommSize;
+  uqRawType_MPI_Group        m_fullGroup;
 
-  std::string		m_optionsInputFileName;
-  mutable bool       	m_optionsInputFileAccessState; // Yes, 'mutable'
+  std::string		     m_optionsInputFileName;
+  mutable bool       	     m_optionsInputFileAccessState; // Yes, 'mutable'
   po::options_description*   m_allOptionsDesc;
-  po::variables_map* 	m_allOptionsMap;
+  po::variables_map* 	     m_allOptionsMap;
 
-  unsigned int          m_subId;
-  std::string 		m_subIdString;
-  uqRawType_MPI_Group 	m_subGroup;
-  uqMpiCommClass*       m_subComm;
-  int			m_subRank;
-  int			m_subCommSize;
+  unsigned int               m_subId;
+  std::string 		     m_subIdString;
+  uqRawType_MPI_Group        m_subGroup;
+  uqMpiCommClass*            m_subComm;
+  int			     m_subRank;
+  int			     m_subCommSize;
 
-  uqMpiCommClass*    	m_selfComm;
+  uqMpiCommClass*            m_selfComm;
 
-  uqRawType_MPI_Group	m_inter0Group;
-  uqMpiCommClass*    	m_inter0Comm;
-  int			m_inter0Rank;
-  int			m_inter0CommSize;
+  uqRawType_MPI_Group        m_inter0Group;
+  uqMpiCommClass*            m_inter0Comm;
+  int	                     m_inter0Rank;
+  int                        m_inter0CommSize;
 
   mutable std::ofstream*     m_subDisplayFile;
-  uqRngBaseClass*    	m_rngObject;
-  struct timeval     	m_timevalBegin;
-  mutable bool       	m_exceptionalCircunstance;
+  uqRngBaseClass*    	     m_rngObject;
+  uqBasicPdfsBaseClass*      m_basicPdfs;
+  struct timeval             m_timevalBegin;
+  mutable bool       	     m_exceptionalCircunstance;
 
   uqEnvOptionsValuesClass    m_alternativeOptionsValues;
   uqEnvironmentOptionsClass* m_optionsObj;

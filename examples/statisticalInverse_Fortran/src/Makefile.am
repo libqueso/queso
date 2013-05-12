@@ -1,9 +1,10 @@
 ## Process this file with automake to produce Makefile.in
 
-AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
-	      -I$(top_srcdir)/src/misc/inc \
+AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc  \
+	      -I$(top_srcdir)/src/misc/inc  \
 	      -I$(top_srcdir)/src/basic/inc \
 	      -I$(top_srcdir)/src/stats/inc \
+	      -I$(top_srcdir)/src/gp/inc    \
 	      -I$(TRILINOS_INCLUDE) \
 	        $(EPETRA_INCLUDES) \
 	        $(BOOST_CPPFLAGS) \

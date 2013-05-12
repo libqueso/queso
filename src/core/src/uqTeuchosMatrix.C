@@ -108,7 +108,7 @@ uqTeuchosMatrixClass::uqTeuchosMatrixClass( // square matrix
 // Kemelli tested on 12/05/12
 uqTeuchosMatrixClass::uqTeuchosMatrixClass( // square matrix
   const uqTeuchosVectorClass& v,
-  double                  diagValue)
+  double                      diagValue)
   :
   uqMatrixClass  (v.env(),v.map()),
   m_inverse      (NULL),
@@ -496,24 +496,23 @@ uqTeuchosMatrixClass::determinant() const
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                              << ": before 'gsl_linalg_LU_det()'"
+                              << ": before computing det"
                               << std::endl;
     }
     
-    double det=1.0;
-    for (int i=0;i<m_LU.numCols();i++)
-      det*=m_LU(i,i);
+    double det   = 1.0;
+    double lnDet = 0.0;
+    for (int i=0;i<m_LU.numCols();i++) {
+      det   *= m_LU(i,i);
+      lnDet += std::log(m_LU(i,i));
+    }
   
-    m_determinant = det;
+    m_determinant   = det;
+    m_lnDeterminant = lnDet;
         
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                              << ": after 'gsl_linalg_LU_det()'"
-                              << std::endl;
-    }
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                              << ": before 'gsl_linalg_LU_lndet()'"
+                              << ": after computing det"
                               << std::endl;
     }
   }
@@ -546,26 +545,23 @@ uqTeuchosMatrixClass::lnDeterminant() const
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                              << ": before 'gsl_linalg_LU_det()'"
+                              << ": before computing lnDet"
                               << std::endl;
     }
     
-    double det=1.0;
-    
-    for (int i=0;i<m_LU.numCols();i++)
-      det*=m_LU(i,i);
-  
-    m_lnDeterminant = log(det);
+    double det   = 1.0;
+    double lnDet = 0.0;
+    for (int i=0;i<m_LU.numCols();i++) {
+      det   *= m_LU(i,i);
+      lnDet += std::log(m_LU(i,i));
+    }
+
     m_determinant   = det;
+    m_lnDeterminant = lnDet;
     
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                              << ": after 'gsl_linalg_LU_det()'"
-                              << std::endl;
-    }
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In uqTeuchosMatrixClass::lnDeterminant()"
-                              << ": before 'gsl_linalg_LU_lndet()'"
+                              << ": after computing lnDet"
                               << std::endl;
     }
   }
@@ -883,7 +879,7 @@ uqTeuchosMatrixClass::invertMultiply(const uqTeuchosVectorClass& b, uqTeuchosVec
   UQ_FATAL_TEST_MACRO((m_LU.numCols() == 0 && m_LU.numRows() == 0),
                       m_env.worldRank(),
                       "uqTeuchosMatrixClass::invertMultiply()",
-                      "gsl_matrix_calloc() failed");
+                      "malloc() failed");
 
   UQ_FATAL_TEST_MACRO((v_pivoting == NULL),
                       m_env.worldRank(),
@@ -2300,7 +2296,7 @@ uqTeuchosMatrixClass::internalSvd() const
                         "LAPACK/Teuchos only supports cases where nRows >= nCols");
 
     m_svdColMap = new uqMapClass(this->numCols(),0,this->map().Comm()); // see 'uqVectorSpaceClass<.,.>::newMap()'
-//in src/basic/src/uqTeuchosVectorSpace.C //old commet already existent in uqGslMatrixClass
+  //in src/basic/src/uqTeuchosVectorSpace.C //old comment already existent in uqGslMatrixClass
     m_svdUmat   = new uqTeuchosMatrixClass(*this); // Yes, 'this'
     m_svdSvec   = new uqTeuchosVectorClass(m_env,*m_svdColMap);
     m_svdVmat   = new uqTeuchosMatrixClass(*m_svdSvec);

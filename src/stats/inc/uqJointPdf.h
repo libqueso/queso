@@ -33,7 +33,7 @@
 #include <math.h>
 #include <uqScalarFunction.h>
 #include <boost/math/special_functions.hpp> // for Boost isnan. Note parantheses are important in function call.
-#include <gsl/gsl_randist.h>
+//#include <gsl/gsl_randist.h>
 
 //*****************************************************
 // Classes to accomodate a probability density.
@@ -1043,7 +1043,8 @@ uqBetaJointPdfClass<V,M>::lnValue(
   double result = 0.;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
     if (m_normalizationStyle == 0) {
-      aux = log(gsl_ran_beta_pdf(domainVector[i],m_alpha[i],m_beta[i]));
+      //aux = log(gsl_ran_beta_pdf(domainVector[i],m_alpha[i],m_beta[i]));
+      aux = log(m_env.basicPdfs()->betaPdfActualValue(domainVector[i],m_alpha[i],m_beta[i]));
     }
     else {
       aux = (m_alpha[i]-1.)*log(domainVector[i]) + (m_beta[i]-1.)*log(1.-domainVector[i]);
@@ -1181,7 +1182,8 @@ uqGammaJointPdfClass<V,M>::lnValue(
   double result = 0.;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i) {
     if (m_normalizationStyle == 0) {
-      aux = log(gsl_ran_gamma_pdf(domainVector[i],m_a[i],m_b[i]));
+      //aux = log(gsl_ran_gamma_pdf(domainVector[i],m_a[i],m_b[i]));
+      aux = log(m_env.basicPdfs()->gammaPdfActualValue(domainVector[i],m_a[i],m_b[i]));
     }
     else {
       aux = (m_a[i]-1.)*log(domainVector[i]) - domainVector[i]/m_b[i];

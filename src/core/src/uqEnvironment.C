@@ -31,6 +31,8 @@
 #include <uqEnvironmentOptions.h>
 #include <uqRngGsl.h>
 #include <uqRngBoost.h>
+#include <uqBasicPdfsGsl.h>
+#include <uqBasicPdfsBoost.h>
 #include <uqMiscellaneous.h>
 #include <sys/time.h>
 #ifdef HAVE_GRVY
@@ -144,6 +146,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_inter0CommSize             (1),
   m_subDisplayFile             (NULL),
   m_rngObject                  (NULL),
+  m_basicPdfs                  (NULL),
   m_exceptionalCircunstance    (false),
   m_alternativeOptionsValues   (),
   m_optionsObj                 (NULL)
@@ -194,6 +197,7 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
     delete m_allOptionsDesc;
   }
 
+  if (m_basicPdfs) delete m_basicPdfs;
   if (m_rngObject) delete m_rngObject;
 
   //if (m_subDisplayFile) {
@@ -472,6 +476,12 @@ uqBaseEnvironmentClass::resetSeed(int newSeedOption)
 {
   m_rngObject->resetSeed(newSeedOption);
   return;
+}
+//-------------------------------------------------------
+const uqBasicPdfsBaseClass*
+uqBaseEnvironmentClass::basicPdfs() const
+{
+  return m_basicPdfs;
 }
 //-------------------------------------------------------
 std::string
@@ -1451,9 +1461,11 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   //////////////////////////////////////////////////
   if (m_optionsObj->m_ov.m_rngType == "gsl") {
     m_rngObject = new uqRngGslClass(m_optionsObj->m_ov.m_seed,m_worldRank);
+    m_basicPdfs = new uqBasicPdfsGslClass(m_worldRank);
   }
   else if (m_optionsObj->m_ov.m_rngType == "boost") {
     m_rngObject = new uqRngBoostClass(m_optionsObj->m_ov.m_seed,m_worldRank);
+    m_basicPdfs = new uqBasicPdfsBoostClass(m_worldRank);
   }
   else {
     std::cerr << "In uqEnvironment::constructor()"
