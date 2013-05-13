@@ -39,9 +39,9 @@
  * \class uqVectorSpaceClass
  * \brief A class representing a vector space.
  *
- * Template classes \c V and \c M are to represent a vector class and a
- * matrix class respectively.
- */
+ * Template classes \c V and \c M are to represent a vector class and a matrix class 
+ * respectively. Currently (as of version 0.46.0) QUESO has matrix and vector classes 
+ * implemented using either GSL or Trilinos-Teuchos libraries. */
 
 template <class V, class M>
 class uqVectorSpaceClass : public uqVectorSetClass<V,M>
@@ -53,61 +53,124 @@ public:
   //! Default constructor
   uqVectorSpaceClass();
 
-  //! Construct a vector space with QUESO environment \c env and of dimension \c dimGlobalValue
+  //! Shaped constructor.
+  /*! Construct a vector space with QUESO environment \c env and of dimension \c dimGlobalValue.*/
   uqVectorSpaceClass(const uqBaseEnvironmentClass&   env,
                      const char*                     prefix,
                      unsigned int                    dimGlobalValue,
                      const std::vector<std::string>* componentsNamesVec);
+  
+  //! Copy constructor.
   uqVectorSpaceClass(const uqVectorSpaceClass<V,M>&  aux);
 
   //! Destructor
   ~uqVectorSpaceClass();
   //@}
 
-  const uqBaseEnvironmentClass&        env                     () const;
-  const uqMapClass&                    map                     () const;
-        unsigned int                   numOfProcsForStorage    () const;
-        unsigned int                   dimLocal                () const;
-        unsigned int                   dimGlobal               () const;
-        unsigned int                   globalIdOfFirstComponent() const;
+  
+  //! @name Attribute methods
+  //@{
+  //! Environment.
+  const uqBaseEnvironmentClass&  env                     () const;
+  
+  //! Map.
+  const uqMapClass&              map                     () const;
+  
+  //! Returns total number of processes.
+  unsigned int                   numOfProcsForStorage    () const;
+  
+  
+  unsigned int                   dimLocal                () const;
+  unsigned int                   dimGlobal               () const;
+  unsigned int                   globalIdOfFirstComponent() const;
+  //@}
 
+  //! @name Mathematical methods
+  //@{
   //! Returns a vector filled with zeros
-  const V&                             zeroVector              () const;
-        V*                             newVector               () const; // See template specialization
-        V*                             newVector               (double value) const; // See template specialization
-        V*                             newVector               (const V& v) const;
-        M*                             newMatrix               () const; // See template specialization
-        M*                             newDiagMatrix           (const V& v) const;
-        M*                             newDiagMatrix           (double diagValue) const; // See template specialization
-        M*                             newProposalMatrix       (const V* varVec,
-                                                                const V* auxVec) const;
+  const V&                       zeroVector              () const;
+  
+  //! Creates an empty vector of size given by uqMapClass& map. See template specialization.
+  V*                             newVector               () const; // See template specialization
+        
+  //! Creates a vector of size given by uqMapClass& map and all values give by \c value. See template specialization
+  V*                             newVector               (double value) const; // See template specialization
+        
+  //! Creates vector as a copy of another.
+  V*                             newVector               (const V& v) const;
+	
+  //! Creates an empty matrix of size given by uqMapClass& map. See template specialization.	
+  M*                             newMatrix               () const; // See template specialization
+  
+  //! Creates a diagonal matrix with the elements and size of vector \c v.
+  M*                             newDiagMatrix           (const V& v) const;
+  
+  //! Creates a diagonal matrix with the elements \c diagValue and size given by uqMapClass& map. See template specialization.	
+  M*                             newDiagMatrix           (double diagValue) const; // See template specialization
+  
+  //! Creates a diagonal matrix conditionally to values from vector \c varVec, guaranteeing that its values are neither 0, NAN nor INFINITY.
+  /*! If varVec[i] is either 0, NAN or INFINITY, then this method tries to assign the value (*auxVec)[i])^2
+   * to matrix(i,i). Case (*auxVec)[i])^2 is either NAN or INFINITY, then matrix(i,i)=1.*/
+  M*                             newProposalMatrix       (const V* varVec, const V* auxVec) const;
 
-  const uqVectorSpaceClass<V,M>&       vectorSpace             () const; // It is virtual in the base class 'uqVectorSetClass'
-        bool                           contains                (const V& vec) const;
+  //! Accessor method to \c this. Vector space to which \c this vector set belongs to.
+  /*! It is virtual in the base class 'uqVectorSetClass'*/
+  const uqVectorSpaceClass<V,M>&       vectorSpace             () const; // 
+  
+  //! Whether \this vector contains vector \c vec.
+  bool                           contains                (const V& vec) const;
 
+  //! Access to private attribute m_componentsNamesArray, which is an instance of uqDistArrayClass.
   const uqDistArrayClass<std::string>* componentsNamesArray    () const;
+  
+  //! Access to private attribute m_componentsNamesVec.
   const std::vector<std::string>*      componentsNamesVec      () const;
+  
+  //! Returns the local component names.
   const std::string&                   localComponentName      (unsigned int localComponentId) const;
-        void                           printComponentsNames    (std::ostream& os, bool printHorizontally) const;
-        void                           print                   (std::ostream& os) const;
-
+  //@}
+  
+  //! @name I/O methods
+  //@{
+  //! Prints the local component names.
+  void                           printComponentsNames    (std::ostream& os, bool printHorizontally) const;
+  
+  //! Prints only a message.
+  void                           print                   (std::ostream& os) const;
+  //@}
 protected:
-        uqMapClass*                    newMap                  (); // See template specialization
+  //! Creates a new map. See template specialization.
+  uqMapClass*                    newMap                  (); // See template specialization
 
-        using uqVectorSetClass<V,M>::m_env;
-        using uqVectorSetClass<V,M>::m_prefix;
-        using uqVectorSetClass<V,M>::m_volume;
+  using uqVectorSetClass<V,M>::m_env;
+  using uqVectorSetClass<V,M>::m_prefix;
+  using uqVectorSetClass<V,M>::m_volume;
 
-        unsigned int                   m_dimGlobal;
-  const uqMapClass*                    m_map;
-        unsigned int                   m_dimLocal;
-        uqDistArrayClass<std::string>* m_componentsNamesArray;
-        uqDistArrayClass<std::string>* m_componentsNamesVec;
-        std::string                    m_emptyComponentName;
+  //! Global dimension.
+  unsigned int                   m_dimGlobal;
+  
+  //! Map.
+  const uqMapClass*              m_map;
+  
+  //! Local dimension (number of elements owned by the calling processor.).
+  unsigned int                   m_dimLocal;
+  
+  //! Array of strings of the type uqDistArrayClass to store the names of the components
+  uqDistArrayClass<std::string>* m_componentsNamesArray;
+  
+  //! Vector of strings of the type uqDistArrayClass to store the names of the components
+  uqDistArrayClass<std::string>* m_componentsNamesVec;
+  
+  //! Empty string for the components names.
+  std::string                    m_emptyComponentName;
 
-        V*                             m_zeroVector;
+  //! A vector of all elements equal to zero. 
+  V*                             m_zeroVector;
 };
 
+//--------------------------------------------------------
+// Constructor/Destructor methods ------------------------
+// Default constructor -----------------------------------
 template <class V, class M>
 uqVectorSpaceClass<V,M>::uqVectorSpaceClass()
   :
@@ -118,7 +181,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass()
                       "uqVectorSpaceClass<V,M>::constructor(), default",
                       "should not be used by user");
 }
-
+// Shaped constructor -----------------------------------
 template <class V, class M>
 uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
   const uqBaseEnvironmentClass&   env,
@@ -199,7 +262,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(
                             << std::endl;
   }
 }
-
+// Copy constructor --------------------------------------
 template <class V, class M>
 uqVectorSpaceClass<V,M>::uqVectorSpaceClass(const uqVectorSpaceClass<V,M>& aux)
   :
@@ -228,7 +291,7 @@ uqVectorSpaceClass<V,M>::uqVectorSpaceClass(const uqVectorSpaceClass<V,M>& aux)
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------------
 template <class V, class M>
 uqVectorSpaceClass<V,M>::~uqVectorSpaceClass()
 {
@@ -248,28 +311,15 @@ uqVectorSpaceClass<V,M>::~uqVectorSpaceClass()
   }
 }
 
-template <class V, class M>
-const uqVectorSpaceClass<V,M>&
-uqVectorSpaceClass<V,M>::vectorSpace() const
-{
-  return *this;
-}
-
-template <class V, class M>
-bool
-uqVectorSpaceClass<V,M>::contains(const V& vec) const
-{
-  if (vec[0]) {}; // just to remove compiler warning
-  return true;
-}
-
+// -------------------------------------------------------
+// Attribute methods--------------------------------------
 template <class V, class M>
 const uqBaseEnvironmentClass&
 uqVectorSpaceClass<V,M>::env() const
 {
   return m_env;
 }
-
+// -------------------------------------------------------
 template <class V, class M>
 const uqMapClass&
 uqVectorSpaceClass<V,M>::map() const
@@ -280,13 +330,35 @@ uqVectorSpaceClass<V,M>::map() const
                       "m_map is still NULL");
   return *m_map;
 }
-
+// -------------------------------------------------------
 template <class V, class M>
 unsigned int
 uqVectorSpaceClass<V,M>::numOfProcsForStorage() const
 {
   return m_map->Comm().NumProc();
 }
+// -------------------------------------------------------
+template <class V, class M>
+unsigned int
+uqVectorSpaceClass<V,M>::dimLocal() const
+{
+  return m_dimLocal;
+}
+// -------------------------------------------------------
+template <class V, class M>
+unsigned int
+uqVectorSpaceClass<V,M>::dimGlobal() const
+{
+  return m_dimGlobal;
+}
+// -------------------------------------------------------
+template <class V, class M>
+unsigned int
+uqVectorSpaceClass<V,M>::globalIdOfFirstComponent() const
+{
+  return m_map->MinMyGID();
+}
+
 
 template<class V, class M>
 const V&
@@ -298,28 +370,7 @@ uqVectorSpaceClass<V,M>::zeroVector() const
                       "m_zeroVector is still NULL");
   return *m_zeroVector;
 }
-
-template <class V, class M>
-unsigned int
-uqVectorSpaceClass<V,M>::dimGlobal() const
-{
-  return m_dimGlobal;
-}
-
-template <class V, class M>
-unsigned int
-uqVectorSpaceClass<V,M>::globalIdOfFirstComponent() const
-{
-  return m_map->MinMyGID();
-}
-
-template <class V, class M>
-unsigned int
-uqVectorSpaceClass<V,M>::dimLocal() const
-{
-  return m_dimLocal;
-}
-
+// -------------------------------------------------------
 template <class V, class M>
 V*
 uqVectorSpaceClass<V,M>::newVector(const V& v) const
@@ -339,7 +390,7 @@ uqVectorSpaceClass<V,M>::newDiagMatrix(const V& v) const
 
   return new M(v);
 }
-
+// -------------------------------------------------------
 template <class V, class M>
 M*
 uqVectorSpaceClass<V,M>::newProposalMatrix(
@@ -380,14 +431,29 @@ uqVectorSpaceClass<V,M>::newProposalMatrix(
 
   return newDiagMatrix(tmpVec);
 }
-
+// -------------------------------------------------------
+template <class V, class M>
+const uqVectorSpaceClass<V,M>&
+uqVectorSpaceClass<V,M>::vectorSpace() const
+{
+  return *this;
+}
+// -------------------------------------------------------
+template <class V, class M>
+bool
+uqVectorSpaceClass<V,M>::contains(const V& vec) const
+{
+  if (vec[0]) {}; // just to remove compiler warning
+  return true;
+}
+// -------------------------------------------------------
 template <class V, class M>
 const uqDistArrayClass<std::string>* 
 uqVectorSpaceClass<V,M>::componentsNamesArray() const
 {
   return m_componentsNamesArray;
 }
-
+// -------------------------------------------------------
 template <class V, class M>
 const std::string&
 uqVectorSpaceClass<V,M>::localComponentName(unsigned int localComponentId) const
@@ -402,7 +468,7 @@ uqVectorSpaceClass<V,M>::localComponentName(unsigned int localComponentId) const
 //return (*(const_cast<uqDistArrayClass<std::string>*>(m_componentsNamesArray)))(localComponentId,0);
   return (*m_componentsNamesArray)(localComponentId,0);
 }
-
+// -------------------------------------------------------
 template<class V, class M>
 void
 uqVectorSpaceClass<V,M>::printComponentsNames(std::ostream& os, bool printHorizontally) const
@@ -422,7 +488,7 @@ uqVectorSpaceClass<V,M>::printComponentsNames(std::ostream& os, bool printHorizo
 
   return;
 }
-
+// -------------------------------------------------------
 template <class V, class M>
 void
 uqVectorSpaceClass<V,M>::print(std::ostream& os) const
@@ -432,4 +498,3 @@ uqVectorSpaceClass<V,M>::print(std::ostream& os) const
   return;
 }
 #endif // __UQ_VECTOR_SPACE_H__
-

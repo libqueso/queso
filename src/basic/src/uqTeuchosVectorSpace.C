@@ -26,10 +26,6 @@
 //
 //--------------------------------------------------------------------------
 
-/*For the uqGslVectorSpace.C, it is linked into que inside src/Makefile.am:  
- * libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/uqGslVectorSpace.C
- * For now, I will add it in the makefile
-*/
 #include <uqVectorSpace.h>
 
 #ifdef QUESO_HAS_TRILINOS

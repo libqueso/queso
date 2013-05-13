@@ -287,10 +287,10 @@ public:
    //! Access function to private attribute m_identifyingString: identifying string.
   std::string identifyingString () const;
   
-  //! Reset private attribute m_identifyingString wit the value \c newString.
+  //! Reset private attribute m_identifyingString with the value \c newString.
   void    resetIdentifyingString(const std::string& newString) const; // Yes, const
   
-  //! //TODO Not implemented? Whether or not there is an option input file.
+  //! //TODO Not implemented? it is called in examples/validationCycle/tests_old/results_5_25/uqTgaEx4.h.
   bool    isThereInputFile      () const;
   
   //! Used to save the time when the combo `QUESO+user's application' started to run.
@@ -377,7 +377,7 @@ protected:
  */
 class uqEmptyEnvironmentClass : public uqBaseEnvironmentClass {
 public:
-      //! @name Constructor/Destructor methods
+  //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor. Does nothing.
   /*! It initialized uqBaseEnvironmentClass with no input file and a NULL pointer for the alternativeOptionsValues.*/ 
