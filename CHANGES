@@ -3,15 +3,15 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
-Version 0.46 (In Progress)
+Version 0.46 (13 May 2013)
 
   * changed libGRVY linkage to be optional
   * added additional regression tests to 'make check'
-  * added rng (random number generator) class to accomodate either GSL or BOOST rng's
-  * added basic PDFs (beta and gamma) class to accomodate either GSL or BOOST PDFs
+  * added rng (random number generator) class to accommodate either GSL or BOOST rng's
+  * added basic PDFs (beta and gamma) class to accommodate either GSL or BOOST PDFs
   * beginning to add some GP based emulation capabilities
-  * updated QUESO user's manual, to include better description of the classes, installation procedure and examples.
-  * included doxygen documentation in most of core classes.
+  * updated QUESO user's manual, to include better description of the classes, installation procedure and examples
+  * included Doxygen documentation in most of core classes
 
 Version 0.45.3 (05 November 2012)
 https://svn.ices.utexas.edu/repos/pecos/uq/queso/releases/0.45.3
