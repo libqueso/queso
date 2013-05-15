@@ -31,15 +31,41 @@
 
 #include <uqEnvironment.h>
 
+/*! \file uqScalarFunctionSynchronizer.h
+ * \brief Class for synchronizing the calls of scalar functions
+ * 
+ * \class uqScalarFunctionSynchronizerClass
+ * \brief A templated class for synchronizing the calls of scalar functions (uqBaseScalarFunctionClass and derived classes).
+ *
+ * This class creates a synchronization point among processes which call scalar functions. 
+ * This means that all processes must reach a point in their code before they can all begin 
+ * executing again. */
+
 template <class V, class M>
 class uqScalarFunctionSynchronizerClass
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
   uqScalarFunctionSynchronizerClass(const uqBaseScalarFunctionClass<V,M>& inputFunction,
                                     const V&                              auxVec);
+  
+  //! Destructor.
  ~uqScalarFunctionSynchronizerClass();
-
+  //@}
+ 
+  //! @name Mathematical methods
+  //@{  
+  //! Access to the domain set of the scalar function which will be synchronized.
   const uqVectorSetClass<V,M>& domainSet() const;
+  //@}
+  
+  //! @name Sync method
+  //@{  
+  //! Calls the scalar function which will be synchronized.
+  /*! This procedure  forms a barrier, and no processes in the communicator can pass the 
+   * barrier until all of them call the function. */
   double callFunction(const V* vecValues,
                       const V* vecDirection,
                             V* gradVector,
@@ -47,13 +73,14 @@ public:
                             V* hessianEffect,
                             double* extraOutput1,
                             double* extraOutput2) const;
+  //@}			    
 private:
   const uqBaseEnvironmentClass&         m_env;
   const uqBaseScalarFunctionClass<V,M>& m_scalarFunction;
   const uqBayesianJointPdfClass<V,M>*   m_bayesianJointPdfPtr;
   const V&                              m_auxVec;
 };
-
+// Default constructor -----------------------------
 template <class V, class M>
 uqScalarFunctionSynchronizerClass<V,M>::uqScalarFunctionSynchronizerClass(
   const uqBaseScalarFunctionClass<V,M>& inputFunction,
@@ -65,19 +92,19 @@ uqScalarFunctionSynchronizerClass<V,M>::uqScalarFunctionSynchronizerClass(
   m_auxVec             (auxVec)
 {
 }
-
+// Destructor ---------------------------------------
 template <class V, class M>
 uqScalarFunctionSynchronizerClass<V,M>::~uqScalarFunctionSynchronizerClass()
 {
 }
-
+// Math methods -------------------------------------
 template<class V,class M>
 const uqVectorSetClass<V,M>&
 uqScalarFunctionSynchronizerClass<V,M>::domainSet() const
 {
   return m_scalarFunction.domainSet();
 }
-
+// Sync methods -------------------------------------
 template <class V,class M>
 double
 uqScalarFunctionSynchronizerClass<V,M>::callFunction(

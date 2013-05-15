@@ -179,6 +179,8 @@ public:
   ~uqBoxSubsetClass();
   //@}
 
+  //! @name Mathematical methods.
+  //@{  
   //! Checks whether this box subset contains vector \c vec. 
   /*! It checks if both statements are true: 1) all components in \c vec are larger than 
    * m_minValues, and 2) all all components in \c vec are smaller than m_maxValues. */
@@ -189,6 +191,7 @@ public:
   
   //! Vector of the maximum values of the box subset. 
   const V&   maxValues()                 const;
+  //@}
   
   //! Prints the volume, the minimum and the maximum values of \c this.
   void print    (std::ostream& os) const;

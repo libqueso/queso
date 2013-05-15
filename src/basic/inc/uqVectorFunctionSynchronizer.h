@@ -29,29 +29,55 @@
 #ifndef __UQ_VECTOR_FUNCTION_SYNCHRONIZER_H__
 #define __UQ_VECTOR_FUNCTION_SYNCHRONIZER_H__
 
+/*! \file uqVectorFunctionSynchronizer.h
+ * \brief Class for synchronizing the calls of vector-valued functions
+ * 
+ * \class uqVectorFunctionSynchronizerClass
+ * \brief A templated class for synchronizing the calls of vector-valued functions (uqBaseVectorFunctionClass and derived classes).
+ *
+ * This class creates a synchronization point among processes which call vector-valued 
+ * functions. This means that all processes must reach a point in their code before they 
+ * can all begin executing again. */
+
 template <class P_V, class P_M, class Q_V, class Q_M>
 class uqVectorFunctionSynchronizerClass
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
   uqVectorFunctionSynchronizerClass(const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& inputFunction,
                                     const P_V&                                        auxPVec,
                                     const Q_V&                                        auxQVec);
+  //! Destructor
  ~uqVectorFunctionSynchronizerClass();
-
+  //@}
+ 
+  //! @name Mathematical methods
+  //@{  
+  //! Access to the domain set of the vector-valued function which will be synchronized.
   const uqVectorSetClass<P_V,P_M>& domainSet() const;
+  //@}
+  
+  //! @name Sync method
+  //@{  
+  //! Calls the vector-valued function which will be synchronized.
+  /*! This procedure  forms a barrier, and no processes in the communicator can pass the 
+   * barrier until all of them call the function. */
   void callFunction(const P_V*                    vecValues,
                     const P_V*                    vecDirection,
                           Q_V*                    imageVector,
                           uqDistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
                           uqDistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
                           uqDistArrayClass<P_V*>* hessianEffects) const;
+  //@}
 private:
   const uqBaseEnvironmentClass&                     m_env;
   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_vectorFunction;
   const P_V&                                        m_auxPVec;
   const Q_V&                                        m_auxQVec;
 };
-
+// Default constructor -----------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
 uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::uqVectorFunctionSynchronizerClass(
   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& inputFunction,
@@ -64,19 +90,19 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::uqVectorFunctionSynchronizer
   m_auxQVec       (auxQVec)
 {
 }
-
+// Destructor ---------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
 uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::~uqVectorFunctionSynchronizerClass()
 {
 }
-
+// Math methods -------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
 const uqVectorSetClass<P_V,P_M>&
 uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::domainSet() const
 {
   return m_vectorFunction.domainSet();
 }
-
+// Sync methods -------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
 void
 uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
