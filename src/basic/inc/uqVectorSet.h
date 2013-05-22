@@ -88,7 +88,7 @@ public:
   
   //! @name I/O methods.
   //@{
-    //! Prints nothing.
+  //! Prints nothing.
   virtual       void                     print      (std::ostream& os) const; 
   //@}
   

@@ -46,11 +46,26 @@ namespace po = boost::program_options;
 #include <uqRngBase.h>
 #include <uqBasicPdfsBase.h>
 
-struct uqFilePtrSetStruct {
-  uqFilePtrSetStruct();
- ~uqFilePtrSetStruct();
 
+/*! \struct uqFilePtrSetStruct
+ *  \brief Struct for handling data input and output from files.
+ *
+ *  This struct deals with data input and output from files. It encapsulates the input/output stream class std:: fstream.
+ */
+ 
+//! 
+struct uqFilePtrSetStruct {
+
+  //! Struct constructor
+  uqFilePtrSetStruct();
+  
+  //! Destructor 
+  ~uqFilePtrSetStruct();
+
+  //! Provides a stream interface to write data to files.
   std::ofstream* ofsVar;
+  
+  //! Provides a stream interface to read data from files.
   std::ifstream* ifsVar;
 #ifdef QUESO_HAS_HDF5
   hid_t  h5Var;
@@ -73,15 +88,11 @@ namespace QUESO {
 // Base class
 //*****************************************************
 /*! \file uqEnvironment.h
-    \brief Class to set up a QUESO environment.
-*/
-
-
-/*!  \class uqBaseEnvironmentClass
+ *  \brief Class to set up a QUESO environment.
+ *  \class uqBaseEnvironmentClass
  *  \brief This (virtual) class sets up the environment underlying the use of the QUESO library by an executable.
  */
   
-
 /*! This class sets up the environment underlying the use of the QUESO library by an executable. It:
 <list type=number>
 <item> assigns rank numbers, other than the world rank, to nodes participating in a parallel job,

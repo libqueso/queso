@@ -56,7 +56,7 @@
 */
 
 /*! \class uqEnvironmentOptionsClass
- *  \brief This class provides reads options one can pass to a QUESO environment through an input file.
+ *  \brief This class reads options one can pass to a QUESO environment through an input file.
  * 
  *  QUESO expects the user to provide an input file with environment options for the library variabled. 
  *  This class reads the input options for QUESO environment variables. */
