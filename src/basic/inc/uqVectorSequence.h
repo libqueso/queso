@@ -65,7 +65,7 @@ public:
   virtual ~uqBaseVectorSequenceClass();
   //@}
   
-  //! @name Mathematical methods
+  //! @name Sequence methods
   //@{ 
   //! Size of the sub-sequence of vectors. See template specialization.
   virtual  unsigned int    subSequenceSize             () const = 0;
@@ -138,9 +138,10 @@ public:
   void                     deleteStoredVectors         ();
 
   //! Appends the vector \c src to \c this vector.
+  /*! This routine deletes all stored computed vectors */
   void                     append                      (const uqBaseVectorSequenceClass<V,M>& src,
 							unsigned int                    initialPos,
-							unsigned int                    numPos); /* This routine deletes all stored computed vectors */
+							unsigned int                    numPos); 
   //! Finds the positions where the maximum element occurs in the sub-sequence.
   double                   subPositionsOfMaximum       (const uqScalarSequenceClass<double>& subCorrespondingScalarValues,
 							uqBaseVectorSequenceClass<V,M>&      subPositionsOfMaximum);
@@ -195,12 +196,12 @@ public:
   virtual  void           unifiedMedianExtra          (unsigned int                             initialPos,
 						       unsigned int                             localNumPos,
 						       V&                                       unifiedMedianVec) const = 0;
-  //! Finds the sample variance of the sub-sequence,  considering \c numPos positions starting at position \c initialPos and of mean \c meanVec. See template specialization.
+  //! Finds the sample variance of the sub-sequence, considering \c numPos positions starting at position \c initialPos and of mean \c meanVec. See template specialization.
   virtual  void           subSampleVarianceExtra      (unsigned int                             initialPos,
 						       unsigned int                             numPos,
 						       const V&                                 meanVec,
 						       V&                                       samVec) const = 0;
-  //! Finds the sample variance of the unified sequence,  considering \c numPos positions starting at position \c initialPos and of mean \c meanVec. See template specialization.
+  //! Finds the sample variance of the unified sequence, considering \c numPos positions starting at position \c initialPos and of mean \c meanVec. See template specialization.
   virtual  void           unifiedSampleVarianceExtra  (unsigned int                             initialPos,
 						       unsigned int                             numPos,
 						       const V&                                 unifiedMeanVec,
@@ -243,17 +244,17 @@ public:
 						       V&                                       autoCorrsSumVec) const = 0;
 
 						       
-  //! Finds the minimun and the maximum values of the sub-sequence, considering \c numPos positions starting at position \c initialPos. 
+  //! Finds the minimun and the maximum values of the sub-sequence, considering \c numPos positions starting at position \c initialPos. See template specialization. 
   virtual  void           subMinMaxExtra              (unsigned int                             initialPos,
 						       unsigned int                             numPos,
 						       V&                                       minVec,
 						       V&                                       maxVec) const = 0;
-  //! Finds the minimun and the maximum values of the unified sequence, considering \c numPos positions starting at position \c initialPos. 
+  //! Finds the minimun and the maximum values of the unified sequence, considering \c numPos positions starting at position \c initialPos. See template specialization. 
   virtual  void           unifiedMinMaxExtra          (unsigned int                             initialPos,
 						       unsigned int                             numPos,
 						       V&                                       unifiedMinVec,
 						       V&                                       unifiedMaxVec) const = 0;
-  //! Calculates the histogram of the sub-sequence.
+  //! Calculates the histogram of the sub-sequence. See template specialization.
   /*! The IQR is a robust estimate of the spread of the data, since changes in the upper and
   * lower 25% of the data do not affect it. If there are outliers in the data, then the IQR 
   * is more representative than the standard deviation as an estimate of the spread of the 
@@ -264,21 +265,21 @@ public:
 						       const V&                                 maxVec,
 						       std::vector<V*>&                         centersForAllBins,
 						       std::vector<V*>&                         quanttsForAllBins) const = 0;
-  //! Calculates the histogram of the unified sequence.
+  //! Calculates the histogram of the unified sequence. See template specialization.
   virtual  void           unifiedHistogram            (unsigned int                             initialPos,
 						       const V&                                 unifiedMinVec,
 						       const V&                                 unifiedMaxVec,
 						       std::vector<V*>&                         unifiedCentersForAllBins,
 						       std::vector<V*>&                         unifiedQuanttsForAllBins) const = 0;
 
- //! Returns the interquartile range of the values in the sub-sequence. 
+ //! Returns the interquartile range of the values in the sub-sequence. See template specialization.
   virtual  void           subInterQuantileRange       (unsigned int                             initialPos,
 						       V&                                       iqrVec) const = 0;
- //! Returns the interquartile range of the values in the unified sequence. 
+ //! Returns the interquartile range of the values in the unified sequence. See template specialization.
   virtual  void           unifiedInterQuantileRange   (unsigned int                             initialPos,
 						       V&                                       unifiedIqrVec) const = 0;
 
- //! Selects the scales (bandwidth, \c scaleVec) for the kernel density estimation, considering only the sub-sequence.
+ //! Selects the scales (bandwidth, \c scaleVec) for the kernel density estimation, considering only the sub-sequence. See template specialization.
  /*! The bandwidth of the kernel is a free parameter which exhibits a strong influence on the 
   * resulting estimate. Silverman (1986) suggests the following normal-based estimates:
   *   S1 = 1.06 × (standard deviation) × n^{-1/5}
@@ -291,12 +292,12 @@ public:
 						       const V&                                 iqrVec,
 						       unsigned int                             kdeDimension,
 						       V&                                       scaleVec) const = 0;
-  //! Selects the scales (bandwidth) for the kernel density estimation, considering the unified sequence.
+  //! Selects the scales (bandwidth) for the kernel density estimation, considering the unified sequence. See template specialization.
   virtual  void           unifiedScalesForKde         (unsigned int                             initialPos,
 						       const V&                                 unifiedIqrVec,
 						       unsigned int                             kdeDimension,
 						       V&                                       unifiedScaleVec) const = 0;
-  //! Gaussian kernel for the KDE estimate of the sub-sequence.
+a  //! Gaussian kernel for the KDE estimate of the sub-sequence. See template specialization.
   /*! Computes a probability density estimate of the sample in \c this sub-sequence, starting
    * at position \c initialPos. \c densityVecs is the vector of density values evaluated at 
    * the points in \c evaluationParamVecs. The estimate is based on Gaussian (normal) kernel 
@@ -305,7 +306,7 @@ public:
 						       const V&                                 scaleVec,
 						       const std::vector<V*>&                   evaluationParamVecs,
 						       std::vector<V*>&                         densityVecs) const = 0;
-  //! Gaussian kernel for the KDE estimate of the unified sequence.
+  //! Gaussian kernel for the KDE estimate of the unified sequence. See template specialization.
   virtual  void           unifiedGaussian1dKde        (unsigned int                             initialPos,
 						       const V&                                 unifiedScaleVec,
 						       const std::vector<V*>&                   unifiedEvaluationParamVecs,
@@ -551,23 +552,7 @@ uqBaseVectorSequenceClass<V,M>::~uqBaseVectorSequenceClass()
   if (m_fftObj != NULL) delete m_fftObj;
 }
 
-template <class V, class M>
-void
-uqBaseVectorSequenceClass<V,M>::copy(const uqBaseVectorSequenceClass<V,M>& src)
-{
-  // FIX ME: should check environments as well ???
-
-  UQ_FATAL_TEST_MACRO(m_vectorSpace.dimLocal() != src.m_vectorSpace.dimLocal(),
-                      m_env.worldRank(),
-                      "uqSequenceOfVectorsClass<V,M>::copy()",
-                      "incompatible vector space dimensions");
-
-  m_name = src.m_name;
-  this->deleteStoredVectors();
-
-  return;
-}
-// Math methodos --------------------------------------------------
+// Sequence methods----------------------------------
 template <class V, class M>
 unsigned int
 uqBaseVectorSequenceClass<V,M>::unifiedSequenceSize() const
@@ -1095,7 +1080,6 @@ uqBaseVectorSequenceClass<V,M>::setGaussian(const V& meanVec, const V& stdDevVec
 
   return;
 }
-
 // --------------------------------------------------
 template <class V, class M>
 void
@@ -1111,6 +1095,68 @@ uqBaseVectorSequenceClass<V,M>::setUniform(const V& aVec, const V& bVec)
 
   return;
 }
+// --------------------------------------------------
+template<class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::computeFilterParams(
+  std::ofstream* passedOfs,
+  unsigned int&  initialPos,
+  unsigned int&  spacing)
+{
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\n"
+                            << "\n-----------------------------------------------------"
+                            << "\n Computing filter parameters for chain '" << m_name << "' ..."
+                            << "\n-----------------------------------------------------"
+                            << "\n"
+                            << std::endl;
+  }
+
+  bool okSituation = ((passedOfs == NULL                            ) ||
+                      ((passedOfs != NULL) && (m_env.subRank() >= 0)));
+  UQ_FATAL_TEST_MACRO(!okSituation,
+                      m_env.worldRank(),
+                      "uqBaseVectorSequenceClass<V,M>::computeFilterParams()",
+                      "unexpected combination of file pointer and subRank");
+
+  //initialPos = 0;
+  spacing    = 1;
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
+                            << "\n Finished computing filter parameters for chain '" << m_name << "'"
+                            << ": initialPos = " << initialPos
+                            << ", spacing = "    << spacing
+                            << "\n-----------------------------------------------------"
+                            << "\n"
+                            << std::endl;
+  }
+
+  return;
+}
+
+// Protected methods---------------------------------
+template <class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::copy(const uqBaseVectorSequenceClass<V,M>& src)
+{
+  // FIX ME: should check environments as well ???
+
+  UQ_FATAL_TEST_MACRO(m_vectorSpace.dimLocal() != src.m_vectorSpace.dimLocal(),
+                      m_env.worldRank(),
+                      "uqSequenceOfVectorsClass<V,M>::copy()",
+                      "incompatible vector space dimensions");
+
+  m_name = src.m_name;
+  this->deleteStoredVectors();
+
+  return;
+}
+
+// --------------------------------------------------
+// Methods conditionally available ------------------
+// --------------------------------------------------
+// --------------------------------------------------
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 template<class V, class M>
@@ -1282,7 +1328,7 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
       (statisticalOptions.cdfStaccCompute()) ||
       (statisticalOptions.kdeCompute     ())) {
 #else
-    if (statisticalOptions.kdeCompute()) {
+    if (statisticalOptions.kdeCompute()) //kemelli deleted single '{' on 5/28/13 - compare to queso-0.45.2
 #endif
     this->computeHistCdfstaccKde(statisticalOptions,
                                  passedOfs);
@@ -1315,9 +1361,7 @@ uqBaseVectorSequenceClass<V,M>::computeStatistics(
 
   return;
 }
-#endif // #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+//----------------------------------------------
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeMeanVars(
@@ -1516,618 +1560,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanVars(
 
   return;
 }
-#endif // #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-#ifdef UQ_CODE_HAS_MONITORS
-template<class V, class M>
-void
-uqBaseVectorSequenceClass<V,M>::computeMeanEvolution(
-  const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  std::ofstream*                           passedOfs)
-{
-  int iRC = UQ_OK_RC;
-  struct timeval timevalTmp;
-  iRC = gettimeofday(&timevalTmp, NULL);
-  double tmpRunTime = 0.;
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\nComputing mean evolution"
-                            << std::endl;
-  }
-
-  unsigned int monitorPeriod = statisticalOptions.meanMonitorPeriod();
-  unsigned int iMin = 0;
-  unsigned int iMax = (unsigned int) ( ((double) this->subSequenceSize())/((double) monitorPeriod) );
-
-  if (monitorPeriod == 1) {
-    iMin = 1;
-  }
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "  Sub sequence size = "                << this->subSequenceSize()
-                            << "\n  Monitor period = "                 << monitorPeriod
-                            << "\n  Number of monitoring positions = " << iMax
-                            << std::endl;
-  }
-
-  this->subMeanMonitorAlloc(iMax);
-  if (m_env.numSubEnvironments() > 1) {
-    this->subMeanInter0MonitorAlloc(iMax);
-    this->unifiedMeanMonitorAlloc(iMax);
-  }
-
-  for (unsigned int i = iMin; i < iMax; ++i) {
-    unsigned int currentMonitoredFinalPosition = (i+1)*monitorPeriod - 1; // Yes, '-1'
-    V subMeanVec   (m_vectorSpace.zeroVector());
-    V subMeanCltStd(m_vectorSpace.zeroVector());
-    this->subMeanMonitorRun(currentMonitoredFinalPosition,
-                            subMeanVec,
-                            subMeanCltStd);
-    this->subMeanMonitorStore(i,
-                              currentMonitoredFinalPosition,
-                              subMeanVec,
-                              subMeanCltStd);
-
-    if (m_env.numSubEnvironments() > 1) {
-      V subMeanInter0Mean       (m_vectorSpace.zeroVector());
-      V subMeanInter0Clt95      (m_vectorSpace.zeroVector());
-      V subMeanInter0Empirical90(m_vectorSpace.zeroVector());
-      V subMeanInter0Min        (m_vectorSpace.zeroVector());
-      V subMeanInter0Max        (m_vectorSpace.zeroVector());
-      this->subMeanInter0MonitorRun(currentMonitoredFinalPosition,
-                                    subMeanInter0Mean,
-                                    subMeanInter0Clt95,
-                                    subMeanInter0Empirical90,
-                                    subMeanInter0Min,
-                                    subMeanInter0Max);
-      this->subMeanInter0MonitorStore(i,
-                                      currentMonitoredFinalPosition,
-                                      subMeanInter0Mean,
-                                      subMeanInter0Clt95,
-                                      subMeanInter0Empirical90,
-                                      subMeanInter0Min,
-                                      subMeanInter0Max);
-
-      V unifiedMeanVec   (m_vectorSpace.zeroVector());
-      V unifiedMeanCltStd(m_vectorSpace.zeroVector());
-      this->unifiedMeanMonitorRun(currentMonitoredFinalPosition,
-                                  unifiedMeanVec,
-                                  unifiedMeanCltStd);
-      this->unifiedMeanMonitorStore(i,
-                                    currentMonitoredFinalPosition,
-                                    unifiedMeanVec,
-                                    unifiedMeanCltStd);
-    }
-  }
-
-  if (passedOfs) {
-    this->subMeanMonitorWrite(*passedOfs);
-    if (m_env.numSubEnvironments() > 1) {
-      this->subMeanInter0MonitorWrite(*passedOfs);
-      this->unifiedMeanMonitorWrite(*passedOfs); // Yes, call 'unified' even though not all nodes might have 'passedOfs != NULL' ????????????? ernesto
-    }
-  }
-
-  this->subMeanMonitorFree();
-  if (m_env.numSubEnvironments() > 1) {
-    this->subMeanInter0MonitorFree();
-    this->unifiedMeanMonitorFree();
-  }
-
-  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Mean evolution took " << tmpRunTime
-                            << " seconds"
-                            << std::endl;
-  }
-
-  return;
-}
-#endif
-
-#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
-template<class V, class M>
-void
-uqBaseVectorSequenceClass<V,M>::computeBMM(
-  const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  std::ofstream*                        passedOfs)
-{
-  int iRC = UQ_OK_RC;
-  struct timeval timevalTmp;
-  iRC = gettimeofday(&timevalTmp, NULL);
-  double tmpRunTime = 0.;
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\nComputing variance of sample mean through BMM"
-                            << std::endl;
-  }
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeBMM(): lengths for batchs in BMM =";
-    for (unsigned int i = 0; i < statisticalOptions.bmmLengths().size(); ++i) {
-      *m_env.subDisplayFile() << " " << statisticalOptions.bmmLengths()[i];
-    }
-    *m_env.subDisplayFile() << std::endl;
-  }
-
-  uq2dArrayOfStuff<V> _2dArrayOfBMM(initialPosForStatistics.size(),statisticalOptions.bmmLengths().size());
-  for (unsigned int i = 0; i < _2dArrayOfBMM.numRows(); ++i) {
-    for (unsigned int j = 0; j < _2dArrayOfBMM.numCols(); ++j) {
-      _2dArrayOfBMM.setLocation(i,j,new V(m_vectorSpace.zeroVector()) /*.*/);
-    }
-  }
-  V bmmVec(m_vectorSpace.zeroVector());
-  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-    unsigned int initialPos = initialPosForStatistics[initialPosId];
-    for (unsigned int batchLengthId = 0; batchLengthId < statisticalOptions.bmmLengths().size(); batchLengthId++) {
-      unsigned int batchLength = statisticalOptions.bmmLengths()[batchLengthId];
-      this->bmm(initialPos,
-                batchLength,
-                bmmVec);
-      _2dArrayOfBMM(initialPosId,batchLengthId) = bmmVec;
-    }
-  }
-
-  if (m_env.subDisplayFile()) {
-    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      *m_env.subDisplayFile() << "\nEstimated variance of sample mean, through batch means method, for subchain beggining at position " << initialPosForStatistics[initialPosId]
-                              << " (each column corresponds to a batch length)"
-                              << std::endl;
-
-      char line[512];
-      sprintf(line,"%s",
-              "Parameter");
-      *m_env.subDisplayFile() << line;
-      for (unsigned int batchLengthId = 0; batchLengthId < statisticalOptions.bmmLengths().size(); batchLengthId++) {
-        sprintf(line,"%10s%3d",
-                " ",
-                statisticalOptions.bmmLengths()[batchLengthId]);
-        *m_env.subDisplayFile() << line;
-      }
-
-      for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
-        sprintf(line,"\n%9.9s",
-                m_vectorSpace.localComponentName(i).c_str() /*.*/);
-        *m_env.subDisplayFile() << line;
-        for (unsigned int batchLengthId = 0; batchLengthId < statisticalOptions.bmmLengths().size(); batchLengthId++) {
-          sprintf(line,"%2s%11.4e",
-                  " ",
-                  _2dArrayOfBMM(initialPosId,batchLengthId)[i]);
-          *m_env.subDisplayFile() << line;
-        }
-      }
-      *m_env.subDisplayFile() << std::endl;
-    }
-  }
-
-  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Chain BMM took " << tmpRunTime
-                            << " seconds"
-                            << std::endl;
-  }
-
-  return;
-}
-
-template<class V, class M>
-void
-uqBaseVectorSequenceClass<V,M>::computeFFT(
-  const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  std::ofstream*                        passedOfs)
-{
-  int iRC = UQ_OK_RC;
-  struct timeval timevalTmp;
-  iRC = gettimeofday(&timevalTmp, NULL);
-  double tmpRunTime = 0.;
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\nComputing FFT of chain on parameter of id = " << statisticalOptions.fftParamId()
-                            << std::endl;
-  }
-
-  std::vector<std::complex<double> > forwardResult(0,std::complex<double>(0.,0.));
-  std::vector<std::complex<double> > inverseResult(0,std::complex<double>(0.,0.));
-  uqFftClass<std::complex<double> > fftObj(m_env);
-  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-    unsigned int initialPosition = initialPosForStatistics[initialPosId];
-    this->fftForward(initialPosition,
-                     statisticalOptions.fftSize(),
-                     statisticalOptions.fftParamId(),
-                     forwardResult);
-
-    if (statisticalOptions.fftWrite() && passedOfs) {
-      std::ofstream& ofsvar = *passedOfs;
-      ofsvar << m_name << "_fftInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << " = zeros(" << 1
-             << ","                                                                                                              << forwardResult.size()
-             << ");"
-             << std::endl;
-      for (unsigned int j = 0; j < forwardResult.size(); ++j) {
-        ofsvar << m_name << "_fftInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << "(" << 1
-               << ","                                                                                               << j+1
-               << ") = "                                                                                            << forwardResult[j].real()
-               << " + i*"                                                                                           << forwardResult[j].imag()
-               << ";"
-               << std::endl;
-      }
-    } // if write
-
-    if (statisticalOptions.fftTestInversion()) {
-      fftObj.inverse(forwardResult,
-                     statisticalOptions.fftSize(),
-                     inverseResult);
-      if (statisticalOptions.fftWrite() && passedOfs) {
-        std::ofstream& ofsvar = *passedOfs;
-        ofsvar << m_name << "_iftInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << " = zeros(" << 1
-               << ","                                                                                                              << inverseResult.size()
-               << ");"
-               << std::endl;
-        for (unsigned int j = 0; j < inverseResult.size(); ++j) {
-          ofsvar << m_name << "_iftInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << "(" << 1
-                 << ","                                                                                               << j+1
-                 << ") = "                                                                                            << inverseResult[j].real()
-                 << " + i*"                                                                                           << inverseResult[j].imag()
-                 << ";"
-                 << std::endl;
-        }
-      } // if write
-    }
-  } // for initialPosId
-
-  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Chain FFT took " << tmpRunTime
-                            << " seconds"
-                            << std::endl;
-  }
-
-  return;
-}
-
-template<class V, class M>
-void
-uqBaseVectorSequenceClass<V,M>::computePSD(
-  const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  std::ofstream*                        passedOfs)
-{
-  int iRC = UQ_OK_RC;
-  struct timeval timevalTmp;
-  iRC = gettimeofday(&timevalTmp, NULL);
-  double tmpRunTime = 0.;
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\nComputing PSD of chain on parameter of id = " << statisticalOptions.psdParamId()
-                            << std::endl;
-  }
-
-  std::vector<double> psdResult(0,0.);
-  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-    unsigned int initialPosition = initialPosForStatistics[initialPosId];
-    this->psd(initialPosition,
-              statisticalOptions.psdNumBlocks(),
-              statisticalOptions.psdHopSizeRatio(),
-              statisticalOptions.psdParamId(),
-              psdResult);
-
-    if (statisticalOptions.psdWrite() && passedOfs) {
-      std::ofstream& ofsvar = *passedOfs;
-      ofsvar << m_name << "_psdInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << " = zeros(" << 1
-             << ","                                                                                                              << psdResult.size()
-             << ");"
-             << std::endl;
-      for (unsigned int j = 0; j < psdResult.size(); ++j) {
-        ofsvar << m_name << "_psdInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << "(" << 1
-               << ","                                                                                                      << j+1
-               << ") = "                                                                                                   << psdResult[j]
-               << ";"
-               << std::endl;
-      }
-    } // if write
-  }
-
-  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Chain PSD took " << tmpRunTime
-                            << " seconds"
-                            << std::endl;
-  }
-
-  return;
-}
-
-template<class V, class M>
-void
-uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
-  const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  std::ofstream*                        passedOfs)
-{
-  int iRC = UQ_OK_RC;
-  struct timeval timevalTmp;
-  iRC = gettimeofday(&timevalTmp, NULL);
-  double tmpRunTime = 0.;
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\nComputing PSD at frequency zero for all parameters"
-                            << std::endl;
-  }
-
-  uq2dArrayOfStuff<V> _2dArrayOfPSDAtZero(initialPosForStatistics.size(),statisticalOptions.psdAtZeroNumBlocks().size());
-  for (unsigned int i = 0; i < _2dArrayOfPSDAtZero.numRows(); ++i) {
-    for (unsigned int j = 0; j < _2dArrayOfPSDAtZero.numCols(); ++j) {
-      _2dArrayOfPSDAtZero.setLocation(i,j,new V(m_vectorSpace.zeroVector()) /*.*/);
-    }
-  }
-  V psdVec(m_vectorSpace.zeroVector());
-  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-    unsigned int initialPosition = initialPosForStatistics[initialPosId];
-    for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
-      unsigned int numBlocks = statisticalOptions.psdAtZeroNumBlocks()[numBlocksId];
-      this->psdAtZero(initialPosition,
-                      numBlocks,
-                      statisticalOptions.psdAtZeroHopSizeRatio(),
-                      psdVec);
-      _2dArrayOfPSDAtZero(initialPosId,numBlocksId) = psdVec;
-    }
-  }
-
-  // Display PSD at frequency zero
-  if ((statisticalOptions.psdAtZeroDisplay()) && (m_env.subDisplayFile())) {
-    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      unsigned int initialPos = initialPosForStatistics[initialPosId];
-      *m_env.subDisplayFile() << "\nComputed PSD at frequency zero for subchain beggining at position " << initialPos
-                              << ", so effective data size = " << this->subSequenceSize() - initialPos
-                              << " (each column corresponds to a number of blocks)"
-                              << std::endl;
-
-      char line[512];
-      sprintf(line,"%s",
-              "Parameter");
-      *m_env.subDisplayFile() << line;
-      for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
-        sprintf(line,"%10s%3d",
-                " ",
-                statisticalOptions.psdAtZeroNumBlocks()[numBlocksId]);
-        *m_env.subDisplayFile() << line;
-      }
-
-      for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
-        sprintf(line,"\n%9.9s",
-                m_vectorSpace.localComponentName(i).c_str() /*.*/);
-        *m_env.subDisplayFile() << line;
-        for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
-          sprintf(line,"%2s%11.4e",
-                  " ",
-                  _2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]);
-          *m_env.subDisplayFile() << line;
-        }
-      }
-      *m_env.subDisplayFile() << std::endl;
-    }
-  }
-
-  // Display estimated variance of sample mean through PSD
-  if (/*(statisticalOptions.psdAtZeroDisplay()) &&*/ (m_env.subDisplayFile())) {
-    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      unsigned int initialPos = initialPosForStatistics[initialPosId];
-      *m_env.subDisplayFile() << "\nEstimated variance of sample mean, through psd, for subchain beggining at position " << initialPos
-                              << ", so effective data size = " << this->subSequenceSize() - initialPos
-                              << " (each column corresponds to a number of blocks)"
-                              << std::endl;
-
-      char line[512];
-      sprintf(line,"%s",
-              "Parameter");
-      *m_env.subDisplayFile() << line;
-      for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
-        sprintf(line,"%10s%3d",
-                " ",
-                statisticalOptions.psdAtZeroNumBlocks()[numBlocksId]);
-        *m_env.subDisplayFile() << line;
-      }
-
-      for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
-        sprintf(line,"\n%9.9s",
-                m_vectorSpace.localComponentName(i).c_str() /*.*/);
-        *m_env.subDisplayFile() << line;
-        for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
-          sprintf(line,"%2s%11.4e",
-                  " ",
-                  2.*M_PI*_2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]/(double) (this->subSequenceSize() - initialPos));
-          *m_env.subDisplayFile() << line;
-        }
-      }
-      *m_env.subDisplayFile() << std::endl;
-    }
-  }
-
-  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Chain PSD at frequency zero took " << tmpRunTime 
-                            << " seconds"
-                            << std::endl;
-  }
-
-  // Write PSD at frequency zero
-  if (statisticalOptions.psdAtZeroWrite() && passedOfs) {
-    std::ofstream& ofsvar = *passedOfs;
-    ofsvar << m_name << "_psdAtZeroNumBlocks_sub" << m_env.subIdString() << " = zeros(" << 1
-           << ","                                                                       << statisticalOptions.psdAtZeroNumBlocks().size()
-           << ");"
-           << std::endl;
-    for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
-      ofsvar << m_name << "_psdAtZeroNumBlocks_sub" << m_env.subIdString() << "(" << 1
-             << ","                                                               << numBlocksId+1
-             << ") = "                                                            << statisticalOptions.psdAtZeroNumBlocks()[numBlocksId]
-             << ";"
-             << std::endl;
-    }
-
-    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      ofsvar << m_name << "_psdAtZeroInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << " = zeros(" << this->vectorSizeLocal() /*.*/
-             << ","                                                                                                                    << statisticalOptions.psdAtZeroNumBlocks().size()
-             << ");"
-             << std::endl;
-      for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
-        for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
-          ofsvar << m_name << "_psdAtZeroInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << "(" << i+1
-                 << ","                                                                                                            << numBlocksId+1
-                 << ") = "                                                                                                         << _2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]
-                 << ";"
-                 << std::endl;
-        }
-      }
-    }
-  } 
-
-  return;
-}
-
-template<class V, class M>
-void
-uqBaseVectorSequenceClass<V,M>::computeGeweke(
-  const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  std::ofstream*                        passedOfs)
-{
-  int iRC = UQ_OK_RC;
-  struct timeval timevalTmp;
-  iRC = gettimeofday(&timevalTmp, NULL);
-  double tmpRunTime = 0.;
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\nComputing Geweke coefficients"
-                            << std::endl;
-  }
-
-  std::vector<V*> vectorOfGeweke(initialPosForStatistics.size(),NULL);
-  V gewVec(m_vectorSpace.zeroVector());
-  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-    unsigned int initialPosition = initialPosForStatistics[initialPosId];
-    this->geweke(initialPosition,
-                 statisticalOptions.gewekeNaRatio(),
-                 statisticalOptions.gewekeNbRatio(),
-                 gewVec);
-    vectorOfGeweke[initialPosId] = new V(gewVec);
-  }
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\nComputed Geweke coefficients with 10% and 50% percentages"
-                            << " (each column corresponds to a different initial position on the full chain)"
-                            << std::endl;
-
-    char line[512];
-    sprintf(line,"%s",
-            "Parameter");
-    *m_env.subDisplayFile() << line;
-    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      sprintf(line,"%10s%3d",
-              " ",
-              initialPosForStatistics[initialPosId]);
-      *m_env.subDisplayFile() << line;
-    }
-
-    for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
-      sprintf(line,"\n%9.9s",
-              m_vectorSpace.localComponentName(i).c_str() /*.*/);
-      *m_env.subDisplayFile() << line;
-      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-        sprintf(line,"%2s%11.4e",
-                " ",
-                (*(vectorOfGeweke[initialPosId]))[i]);
-        *m_env.subDisplayFile() << line;
-      }
-    }
-    *m_env.subDisplayFile() << std::endl;
-  }
-
-  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Chain Geweke took " << tmpRunTime
-                            << " seconds"
-                            << std::endl;
-  }
-
-  return;
-}
-
-template<class V, class M>
-void
-uqBaseVectorSequenceClass<V,M>::computeMeanStacc(
-  const uqSequenceStatisticalOptionsClass& statisticalOptions,
-  const std::vector<unsigned int>&      initialPosForStatistics,
-  std::ofstream*                        passedOfs)
-{
-  int iRC = UQ_OK_RC;
-  struct timeval timevalTmp;
-  iRC = gettimeofday(&timevalTmp, NULL);
-  double tmpRunTime = 0.;
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\nComputing mean statistical accuracy"
-                            << std::endl;
-  }
-
-  std::vector<V*> vectorOfMeanStacc(initialPosForStatistics.size(),NULL);
-  V meanStaccVec(m_vectorSpace.zeroVector());
-  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-    unsigned int initialPosition = initialPosForStatistics[initialPosId];
-    this->meanStacc(initialPosition,
-                    meanStaccVec);
-    vectorOfMeanStacc[initialPosId] = new V(meanStaccVec);
-  }
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\nComputed mean statistical accuracy"
-                            << " (each column corresponds to a different initial position on the full chain)"
-                            << std::endl;
-
-    char line[512];
-    sprintf(line,"%s",
-            "Parameter");
-    *m_env.subDisplayFile() << line;
-    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      sprintf(line,"%10s%3d",
-              " ",
-              initialPosForStatistics[initialPosId]);
-      *m_env.subDisplayFile() << line;
-    }
-
-    for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
-      sprintf(line,"\n%9.9s",
-              m_vectorSpace.localComponentName(i).c_str() /*.*/);
-      *m_env.subDisplayFile() << line;
-      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-        sprintf(line,"%2s%11.4e",
-                " ",
-                (*(vectorOfMeanStacc[initialPosId]))[i]);
-        *m_env.subDisplayFile() << line;
-      }
-    }
-    *m_env.subDisplayFile() << std::endl;
-  }
-
-  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Chain mean statistical accuracy took " << tmpRunTime
-                            << " seconds"
-                            << std::endl;
-  }
-
-  return;
-}
-#endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
-
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+//--------------------------------------------------------
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaDef(
@@ -2249,7 +1682,7 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaDef(
 
   return;
 }
-
+// --------------------------------------------------
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
@@ -2421,47 +1854,7 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
 
   return;
 }
-#endif // #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-template<class V, class M>
-void
-uqBaseVectorSequenceClass<V,M>::computeFilterParams(
-  std::ofstream* passedOfs,
-  unsigned int&  initialPos,
-  unsigned int&  spacing)
-{
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\n"
-                            << "\n-----------------------------------------------------"
-                            << "\n Computing filter parameters for chain '" << m_name << "' ..."
-                            << "\n-----------------------------------------------------"
-                            << "\n"
-                            << std::endl;
-  }
-
-  bool okSituation = ((passedOfs == NULL                            ) ||
-                      ((passedOfs != NULL) && (m_env.subRank() >= 0)));
-  UQ_FATAL_TEST_MACRO(!okSituation,
-                      m_env.worldRank(),
-                      "uqBaseVectorSequenceClass<V,M>::computeFilterParams()",
-                      "unexpected combination of file pointer and subRank");
-
-  //initialPos = 0;
-  spacing    = 1;
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
-                            << "\n Finished computing filter parameters for chain '" << m_name << "'"
-                            << ": initialPos = " << initialPos
-                            << ", spacing = "    << spacing
-                            << "\n-----------------------------------------------------"
-                            << "\n"
-                            << std::endl;
-  }
-
-  return;
-}
-
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+// --------------------------------------------------
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
@@ -3049,7 +2442,7 @@ uqBaseVectorSequenceClass<V,M>::computeHistCdfstaccKde( // Use the whole chain
 
   return;
 }
-
+// --------------------------------------------------
 template<class V, class M>
 void
 uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
@@ -3118,6 +2511,629 @@ uqBaseVectorSequenceClass<V,M>::computeCovCorrMatrices( // Use the whole chain
 }
 #endif // #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
+// --------------------------------------------------
+// --------------------------------------------------
+// --------------------------------------------------
+
+#ifdef UQ_CODE_HAS_MONITORS
+template<class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::computeMeanEvolution(
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
+  std::ofstream*                           passedOfs)
+{
+  int iRC = UQ_OK_RC;
+  struct timeval timevalTmp;
+  iRC = gettimeofday(&timevalTmp, NULL);
+  double tmpRunTime = 0.;
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
+                            << "\nComputing mean evolution"
+                            << std::endl;
+  }
+
+  unsigned int monitorPeriod = statisticalOptions.meanMonitorPeriod();
+  unsigned int iMin = 0;
+  unsigned int iMax = (unsigned int) ( ((double) this->subSequenceSize())/((double) monitorPeriod) );
+
+  if (monitorPeriod == 1) {
+    iMin = 1;
+  }
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "  Sub sequence size = "                << this->subSequenceSize()
+                            << "\n  Monitor period = "                 << monitorPeriod
+                            << "\n  Number of monitoring positions = " << iMax
+                            << std::endl;
+  }
+
+  this->subMeanMonitorAlloc(iMax);
+  if (m_env.numSubEnvironments() > 1) {
+    this->subMeanInter0MonitorAlloc(iMax);
+    this->unifiedMeanMonitorAlloc(iMax);
+  }
+
+  for (unsigned int i = iMin; i < iMax; ++i) {
+    unsigned int currentMonitoredFinalPosition = (i+1)*monitorPeriod - 1; // Yes, '-1'
+    V subMeanVec   (m_vectorSpace.zeroVector());
+    V subMeanCltStd(m_vectorSpace.zeroVector());
+    this->subMeanMonitorRun(currentMonitoredFinalPosition,
+                            subMeanVec,
+                            subMeanCltStd);
+    this->subMeanMonitorStore(i,
+                              currentMonitoredFinalPosition,
+                              subMeanVec,
+                              subMeanCltStd);
+
+    if (m_env.numSubEnvironments() > 1) {
+      V subMeanInter0Mean       (m_vectorSpace.zeroVector());
+      V subMeanInter0Clt95      (m_vectorSpace.zeroVector());
+      V subMeanInter0Empirical90(m_vectorSpace.zeroVector());
+      V subMeanInter0Min        (m_vectorSpace.zeroVector());
+      V subMeanInter0Max        (m_vectorSpace.zeroVector());
+      this->subMeanInter0MonitorRun(currentMonitoredFinalPosition,
+                                    subMeanInter0Mean,
+                                    subMeanInter0Clt95,
+                                    subMeanInter0Empirical90,
+                                    subMeanInter0Min,
+                                    subMeanInter0Max);
+      this->subMeanInter0MonitorStore(i,
+                                      currentMonitoredFinalPosition,
+                                      subMeanInter0Mean,
+                                      subMeanInter0Clt95,
+                                      subMeanInter0Empirical90,
+                                      subMeanInter0Min,
+                                      subMeanInter0Max);
+
+      V unifiedMeanVec   (m_vectorSpace.zeroVector());
+      V unifiedMeanCltStd(m_vectorSpace.zeroVector());
+      this->unifiedMeanMonitorRun(currentMonitoredFinalPosition,
+                                  unifiedMeanVec,
+                                  unifiedMeanCltStd);
+      this->unifiedMeanMonitorStore(i,
+                                    currentMonitoredFinalPosition,
+                                    unifiedMeanVec,
+                                    unifiedMeanCltStd);
+    }
+  }
+
+  if (passedOfs) {
+    this->subMeanMonitorWrite(*passedOfs);
+    if (m_env.numSubEnvironments() > 1) {
+      this->subMeanInter0MonitorWrite(*passedOfs);
+      this->unifiedMeanMonitorWrite(*passedOfs); // Yes, call 'unified' even though not all nodes might have 'passedOfs != NULL' ????????????? ernesto
+    }
+  }
+
+  this->subMeanMonitorFree();
+  if (m_env.numSubEnvironments() > 1) {
+    this->subMeanInter0MonitorFree();
+    this->unifiedMeanMonitorFree();
+  }
+
+  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Mean evolution took " << tmpRunTime
+                            << " seconds"
+                            << std::endl;
+  }
+
+  return;
+}
+#endif //#ifdef UQ_CODE_HAS_MONITORS
+
+// --------------------------------------------------
+// --------------------------------------------------
+// --------------------------------------------------
+
+
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+template<class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::computeBMM(
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
+  int iRC = UQ_OK_RC;
+  struct timeval timevalTmp;
+  iRC = gettimeofday(&timevalTmp, NULL);
+  double tmpRunTime = 0.;
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
+                            << "\nComputing variance of sample mean through BMM"
+                            << std::endl;
+  }
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "In uqBaseVectorSequenceClass<V,M>::computeBMM(): lengths for batchs in BMM =";
+    for (unsigned int i = 0; i < statisticalOptions.bmmLengths().size(); ++i) {
+      *m_env.subDisplayFile() << " " << statisticalOptions.bmmLengths()[i];
+    }
+    *m_env.subDisplayFile() << std::endl;
+  }
+
+  uq2dArrayOfStuff<V> _2dArrayOfBMM(initialPosForStatistics.size(),statisticalOptions.bmmLengths().size());
+  for (unsigned int i = 0; i < _2dArrayOfBMM.numRows(); ++i) {
+    for (unsigned int j = 0; j < _2dArrayOfBMM.numCols(); ++j) {
+      _2dArrayOfBMM.setLocation(i,j,new V(m_vectorSpace.zeroVector()) /*.*/);
+    }
+  }
+  V bmmVec(m_vectorSpace.zeroVector());
+  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+    unsigned int initialPos = initialPosForStatistics[initialPosId];
+    for (unsigned int batchLengthId = 0; batchLengthId < statisticalOptions.bmmLengths().size(); batchLengthId++) {
+      unsigned int batchLength = statisticalOptions.bmmLengths()[batchLengthId];
+      this->bmm(initialPos,
+                batchLength,
+                bmmVec);
+      _2dArrayOfBMM(initialPosId,batchLengthId) = bmmVec;
+    }
+  }
+
+  if (m_env.subDisplayFile()) {
+    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+      *m_env.subDisplayFile() << "\nEstimated variance of sample mean, through batch means method, for subchain beggining at position " << initialPosForStatistics[initialPosId]
+                              << " (each column corresponds to a batch length)"
+                              << std::endl;
+
+      char line[512];
+      sprintf(line,"%s",
+              "Parameter");
+      *m_env.subDisplayFile() << line;
+      for (unsigned int batchLengthId = 0; batchLengthId < statisticalOptions.bmmLengths().size(); batchLengthId++) {
+        sprintf(line,"%10s%3d",
+                " ",
+                statisticalOptions.bmmLengths()[batchLengthId]);
+        *m_env.subDisplayFile() << line;
+      }
+
+      for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
+        sprintf(line,"\n%9.9s",
+                m_vectorSpace.localComponentName(i).c_str() /*.*/);
+        *m_env.subDisplayFile() << line;
+        for (unsigned int batchLengthId = 0; batchLengthId < statisticalOptions.bmmLengths().size(); batchLengthId++) {
+          sprintf(line,"%2s%11.4e",
+                  " ",
+                  _2dArrayOfBMM(initialPosId,batchLengthId)[i]);
+          *m_env.subDisplayFile() << line;
+        }
+      }
+      *m_env.subDisplayFile() << std::endl;
+    }
+  }
+
+  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Chain BMM took " << tmpRunTime
+                            << " seconds"
+                            << std::endl;
+  }
+
+  return;
+}
+// --------------------------------------------------
+template<class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::computeFFT(
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
+  int iRC = UQ_OK_RC;
+  struct timeval timevalTmp;
+  iRC = gettimeofday(&timevalTmp, NULL);
+  double tmpRunTime = 0.;
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
+                            << "\nComputing FFT of chain on parameter of id = " << statisticalOptions.fftParamId()
+                            << std::endl;
+  }
+
+  std::vector<std::complex<double> > forwardResult(0,std::complex<double>(0.,0.));
+  std::vector<std::complex<double> > inverseResult(0,std::complex<double>(0.,0.));
+  uqFftClass<std::complex<double> > fftObj(m_env);
+  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+    unsigned int initialPosition = initialPosForStatistics[initialPosId];
+    this->fftForward(initialPosition,
+                     statisticalOptions.fftSize(),
+                     statisticalOptions.fftParamId(),
+                     forwardResult);
+
+    if (statisticalOptions.fftWrite() && passedOfs) {
+      std::ofstream& ofsvar = *passedOfs;
+      ofsvar << m_name << "_fftInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << " = zeros(" << 1
+             << ","                                                                                                              << forwardResult.size()
+             << ");"
+             << std::endl;
+      for (unsigned int j = 0; j < forwardResult.size(); ++j) {
+        ofsvar << m_name << "_fftInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << "(" << 1
+               << ","                                                                                               << j+1
+               << ") = "                                                                                            << forwardResult[j].real()
+               << " + i*"                                                                                           << forwardResult[j].imag()
+               << ";"
+               << std::endl;
+      }
+    } // if write
+
+    if (statisticalOptions.fftTestInversion()) {
+      fftObj.inverse(forwardResult,
+                     statisticalOptions.fftSize(),
+                     inverseResult);
+      if (statisticalOptions.fftWrite() && passedOfs) {
+        std::ofstream& ofsvar = *passedOfs;
+        ofsvar << m_name << "_iftInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << " = zeros(" << 1
+               << ","                                                                                                              << inverseResult.size()
+               << ");"
+               << std::endl;
+        for (unsigned int j = 0; j < inverseResult.size(); ++j) {
+          ofsvar << m_name << "_iftInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << "(" << 1
+                 << ","                                                                                               << j+1
+                 << ") = "                                                                                            << inverseResult[j].real()
+                 << " + i*"                                                                                           << inverseResult[j].imag()
+                 << ";"
+                 << std::endl;
+        }
+      } // if write
+    }
+  } // for initialPosId
+
+  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Chain FFT took " << tmpRunTime
+                            << " seconds"
+                            << std::endl;
+  }
+
+  return;
+}
+// --------------------------------------------------
+template<class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::computePSD(
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
+  int iRC = UQ_OK_RC;
+  struct timeval timevalTmp;
+  iRC = gettimeofday(&timevalTmp, NULL);
+  double tmpRunTime = 0.;
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
+                            << "\nComputing PSD of chain on parameter of id = " << statisticalOptions.psdParamId()
+                            << std::endl;
+  }
+
+  std::vector<double> psdResult(0,0.);
+  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+    unsigned int initialPosition = initialPosForStatistics[initialPosId];
+    this->psd(initialPosition,
+              statisticalOptions.psdNumBlocks(),
+              statisticalOptions.psdHopSizeRatio(),
+              statisticalOptions.psdParamId(),
+              psdResult);
+
+    if (statisticalOptions.psdWrite() && passedOfs) {
+      std::ofstream& ofsvar = *passedOfs;
+      ofsvar << m_name << "_psdInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << " = zeros(" << 1
+             << ","                                                                                                              << psdResult.size()
+             << ");"
+             << std::endl;
+      for (unsigned int j = 0; j < psdResult.size(); ++j) {
+        ofsvar << m_name << "_psdInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << "(" << 1
+               << ","                                                                                                      << j+1
+               << ") = "                                                                                                   << psdResult[j]
+               << ";"
+               << std::endl;
+      }
+    } // if write
+  }
+
+  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Chain PSD took " << tmpRunTime
+                            << " seconds"
+                            << std::endl;
+  }
+
+  return;
+}
+// --------------------------------------------------
+template<class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
+  int iRC = UQ_OK_RC;
+  struct timeval timevalTmp;
+  iRC = gettimeofday(&timevalTmp, NULL);
+  double tmpRunTime = 0.;
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
+                            << "\nComputing PSD at frequency zero for all parameters"
+                            << std::endl;
+  }
+
+  uq2dArrayOfStuff<V> _2dArrayOfPSDAtZero(initialPosForStatistics.size(),statisticalOptions.psdAtZeroNumBlocks().size());
+  for (unsigned int i = 0; i < _2dArrayOfPSDAtZero.numRows(); ++i) {
+    for (unsigned int j = 0; j < _2dArrayOfPSDAtZero.numCols(); ++j) {
+      _2dArrayOfPSDAtZero.setLocation(i,j,new V(m_vectorSpace.zeroVector()) /*.*/);
+    }
+  }
+  V psdVec(m_vectorSpace.zeroVector());
+  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+    unsigned int initialPosition = initialPosForStatistics[initialPosId];
+    for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
+      unsigned int numBlocks = statisticalOptions.psdAtZeroNumBlocks()[numBlocksId];
+      this->psdAtZero(initialPosition,
+                      numBlocks,
+                      statisticalOptions.psdAtZeroHopSizeRatio(),
+                      psdVec);
+      _2dArrayOfPSDAtZero(initialPosId,numBlocksId) = psdVec;
+    }
+  }
+
+  // Display PSD at frequency zero
+  if ((statisticalOptions.psdAtZeroDisplay()) && (m_env.subDisplayFile())) {
+    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+      unsigned int initialPos = initialPosForStatistics[initialPosId];
+      *m_env.subDisplayFile() << "\nComputed PSD at frequency zero for subchain beggining at position " << initialPos
+                              << ", so effective data size = " << this->subSequenceSize() - initialPos
+                              << " (each column corresponds to a number of blocks)"
+                              << std::endl;
+
+      char line[512];
+      sprintf(line,"%s",
+              "Parameter");
+      *m_env.subDisplayFile() << line;
+      for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
+        sprintf(line,"%10s%3d",
+                " ",
+                statisticalOptions.psdAtZeroNumBlocks()[numBlocksId]);
+        *m_env.subDisplayFile() << line;
+      }
+
+      for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
+        sprintf(line,"\n%9.9s",
+                m_vectorSpace.localComponentName(i).c_str() /*.*/);
+        *m_env.subDisplayFile() << line;
+        for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
+          sprintf(line,"%2s%11.4e",
+                  " ",
+                  _2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]);
+          *m_env.subDisplayFile() << line;
+        }
+      }
+      *m_env.subDisplayFile() << std::endl;
+    }
+  }
+
+  // Display estimated variance of sample mean through PSD
+  if (/*(statisticalOptions.psdAtZeroDisplay()) &&*/ (m_env.subDisplayFile())) {
+    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+      unsigned int initialPos = initialPosForStatistics[initialPosId];
+      *m_env.subDisplayFile() << "\nEstimated variance of sample mean, through psd, for subchain beggining at position " << initialPos
+                              << ", so effective data size = " << this->subSequenceSize() - initialPos
+                              << " (each column corresponds to a number of blocks)"
+                              << std::endl;
+
+      char line[512];
+      sprintf(line,"%s",
+              "Parameter");
+      *m_env.subDisplayFile() << line;
+      for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
+        sprintf(line,"%10s%3d",
+                " ",
+                statisticalOptions.psdAtZeroNumBlocks()[numBlocksId]);
+        *m_env.subDisplayFile() << line;
+      }
+
+      for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
+        sprintf(line,"\n%9.9s",
+                m_vectorSpace.localComponentName(i).c_str() /*.*/);
+        *m_env.subDisplayFile() << line;
+        for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
+          sprintf(line,"%2s%11.4e",
+                  " ",
+                  2.*M_PI*_2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]/(double) (this->subSequenceSize() - initialPos));
+          *m_env.subDisplayFile() << line;
+        }
+      }
+      *m_env.subDisplayFile() << std::endl;
+    }
+  }
+
+  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Chain PSD at frequency zero took " << tmpRunTime 
+                            << " seconds"
+                            << std::endl;
+  }
+
+  // Write PSD at frequency zero
+  if (statisticalOptions.psdAtZeroWrite() && passedOfs) {
+    std::ofstream& ofsvar = *passedOfs;
+    ofsvar << m_name << "_psdAtZeroNumBlocks_sub" << m_env.subIdString() << " = zeros(" << 1
+           << ","                                                                       << statisticalOptions.psdAtZeroNumBlocks().size()
+           << ");"
+           << std::endl;
+    for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
+      ofsvar << m_name << "_psdAtZeroNumBlocks_sub" << m_env.subIdString() << "(" << 1
+             << ","                                                               << numBlocksId+1
+             << ") = "                                                            << statisticalOptions.psdAtZeroNumBlocks()[numBlocksId]
+             << ";"
+             << std::endl;
+    }
+
+    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+      ofsvar << m_name << "_psdAtZeroInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << " = zeros(" << this->vectorSizeLocal() /*.*/
+             << ","                                                                                                                    << statisticalOptions.psdAtZeroNumBlocks().size()
+             << ");"
+             << std::endl;
+      for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
+        for (unsigned int numBlocksId = 0; numBlocksId < statisticalOptions.psdAtZeroNumBlocks().size(); numBlocksId++) {
+          ofsvar << m_name << "_psdAtZeroInitPos" << initialPosForStatistics[initialPosId] << "_sub" << m_env.subIdString() << "(" << i+1
+                 << ","                                                                                                            << numBlocksId+1
+                 << ") = "                                                                                                         << _2dArrayOfPSDAtZero(initialPosId,numBlocksId)[i]
+                 << ";"
+                 << std::endl;
+        }
+      }
+    }
+  } 
+
+  return;
+}
+// --------------------------------------------------
+template<class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::computeGeweke(
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
+  int iRC = UQ_OK_RC;
+  struct timeval timevalTmp;
+  iRC = gettimeofday(&timevalTmp, NULL);
+  double tmpRunTime = 0.;
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
+                            << "\nComputing Geweke coefficients"
+                            << std::endl;
+  }
+
+  std::vector<V*> vectorOfGeweke(initialPosForStatistics.size(),NULL);
+  V gewVec(m_vectorSpace.zeroVector());
+  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+    unsigned int initialPosition = initialPosForStatistics[initialPosId];
+    this->geweke(initialPosition,
+                 statisticalOptions.gewekeNaRatio(),
+                 statisticalOptions.gewekeNbRatio(),
+                 gewVec);
+    vectorOfGeweke[initialPosId] = new V(gewVec);
+  }
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\nComputed Geweke coefficients with 10% and 50% percentages"
+                            << " (each column corresponds to a different initial position on the full chain)"
+                            << std::endl;
+
+    char line[512];
+    sprintf(line,"%s",
+            "Parameter");
+    *m_env.subDisplayFile() << line;
+    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+      sprintf(line,"%10s%3d",
+              " ",
+              initialPosForStatistics[initialPosId]);
+      *m_env.subDisplayFile() << line;
+    }
+
+    for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
+      sprintf(line,"\n%9.9s",
+              m_vectorSpace.localComponentName(i).c_str() /*.*/);
+      *m_env.subDisplayFile() << line;
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        sprintf(line,"%2s%11.4e",
+                " ",
+                (*(vectorOfGeweke[initialPosId]))[i]);
+        *m_env.subDisplayFile() << line;
+      }
+    }
+    *m_env.subDisplayFile() << std::endl;
+  }
+
+  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Chain Geweke took " << tmpRunTime
+                            << " seconds"
+                            << std::endl;
+  }
+
+  return;
+}
+// --------------------------------------------------
+template<class V, class M>
+void
+uqBaseVectorSequenceClass<V,M>::computeMeanStacc(
+  const uqSequenceStatisticalOptionsClass& statisticalOptions,
+  const std::vector<unsigned int>&      initialPosForStatistics,
+  std::ofstream*                        passedOfs)
+{
+  int iRC = UQ_OK_RC;
+  struct timeval timevalTmp;
+  iRC = gettimeofday(&timevalTmp, NULL);
+  double tmpRunTime = 0.;
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\n-----------------------------------------------------"
+                            << "\nComputing mean statistical accuracy"
+                            << std::endl;
+  }
+
+  std::vector<V*> vectorOfMeanStacc(initialPosForStatistics.size(),NULL);
+  V meanStaccVec(m_vectorSpace.zeroVector());
+  for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+    unsigned int initialPosition = initialPosForStatistics[initialPosId];
+    this->meanStacc(initialPosition,
+                    meanStaccVec);
+    vectorOfMeanStacc[initialPosId] = new V(meanStaccVec);
+  }
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "\nComputed mean statistical accuracy"
+                            << " (each column corresponds to a different initial position on the full chain)"
+                            << std::endl;
+
+    char line[512];
+    sprintf(line,"%s",
+            "Parameter");
+    *m_env.subDisplayFile() << line;
+    for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+      sprintf(line,"%10s%3d",
+              " ",
+              initialPosForStatistics[initialPosId]);
+      *m_env.subDisplayFile() << line;
+    }
+
+    for (unsigned int i = 0; i < this->vectorSizeLocal() /*.*/; ++i) {
+      sprintf(line,"\n%9.9s",
+              m_vectorSpace.localComponentName(i).c_str() /*.*/);
+      *m_env.subDisplayFile() << line;
+      for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
+        sprintf(line,"%2s%11.4e",
+                " ",
+                (*(vectorOfMeanStacc[initialPosId]))[i]);
+        *m_env.subDisplayFile() << line;
+      }
+    }
+    *m_env.subDisplayFile() << std::endl;
+  }
+
+  tmpRunTime += uqMiscGetEllapsedSeconds(&timevalTmp);
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Chain mean statistical accuracy took " << tmpRunTime
+                            << " seconds"
+                            << std::endl;
+  }
+
+  return;
+}
+#endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+
+// --------------------------------------------------
+// Aditional methods --------------------------------
+// (outside class declaration) ----------------------
+//---------------------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
 void
 uqComputeCovCorrMatricesBetweenVectorSequences(
@@ -3256,4 +3272,5 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
 
   return;
 }
+
 #endif // __UQ_VECTOR_SEQUENCE_H__
