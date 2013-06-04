@@ -32,7 +32,7 @@
 #include <string>
 #include <set>
 #include <vector>
-#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <uqFunctionBase.h>
 #include <uqOperatorBase.h>
 #include <libmesh/system.h>
@@ -102,7 +102,7 @@ public:
    *  where the lambda are eigenvalues of the precision operator, \c this, and
    *  the \phi(x) are eigenfunctions of the precision operator, \c this
    */
-  virtual std::auto_ptr<uqFunctionBase>
+  virtual boost::shared_ptr<uqFunctionBase>
   inverse_kl_transform(std::vector<double> & xi, double alpha) const;
 
 protected:

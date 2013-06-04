@@ -49,6 +49,17 @@ public:
   virtual ~uqFunctionBase();
   //@}
 
+  //! Execute \c this += \c scale * \c rhs
+  virtual void add(double scale, const uqFunctionBase & rhs) = 0;
+
+  //! Execute \c this *= \c scale
+  virtual void scale(double scale) = 0;
+
+  //! Set \c this to zero everywhere
+  virtual void zero() = 0;
+
+  //! 
+
   //! Save the current function to a file \c filename
   /*!
    * Derived classes must implement this

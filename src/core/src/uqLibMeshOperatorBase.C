@@ -142,7 +142,7 @@ EquationSystems & uqLibMeshOperatorBase::get_equation_systems() const
   return *this->equation_systems;
 }
 
-std::auto_ptr<uqFunctionBase>
+boost::shared_ptr<uqFunctionBase>
 uqLibMeshOperatorBase::inverse_kl_transform(vector<double> & xi,
     double alpha) const
 {
@@ -165,6 +165,6 @@ uqLibMeshOperatorBase::inverse_kl_transform(vector<double> & xi,
         *es->get_system<EigenSystem>("Eigensystem").solution);
   }
 
-  auto_ptr<uqFunctionBase> ap(kl);
+  boost::shared_ptr<uqFunctionBase> ap(kl);
   return ap;
 }

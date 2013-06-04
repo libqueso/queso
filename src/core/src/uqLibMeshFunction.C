@@ -88,3 +88,23 @@ void uqLibMeshFunction::save_function(const std::string & filename) const
   ExodusII_IO(this->equation_systems->get_mesh()).write_equation_systems(
       filename, *this->equation_systems);
 }
+
+void uqLibMeshFunction::add(double scale, const uqFunctionBase & rhs) {
+  // We know we're dealing with a derived class type, so cast
+  const uqLibMeshFunction & rhs_derived = static_cast<
+    const uqLibMeshFunction &>(rhs);
+
+  this->equation_systems->get_system<ExplicitSystem>("Function").solution->add(
+      scale, *(rhs_derived.equation_systems->get_system<ExplicitSystem>(
+          "Function").solution));
+}
+
+void uqLibMeshFunction::scale(double scale) {
+  this->equation_systems->get_system<ExplicitSystem>(
+      "Function").solution->scale(scale);
+}
+
+void uqLibMeshFunction::zero() {
+  this->equation_systems->get_system<ExplicitSystem>(
+      "Function").solution->zero();
+}

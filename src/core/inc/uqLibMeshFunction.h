@@ -58,14 +58,19 @@ public:
 
   //! Destructor
   ~uqLibMeshFunction();
+  //@}
 
   //! Will print mesh-related libMesh foo to \c std::cerr
   void print_info() const;
 
-  //@}
-
   //! Save the current function to an Exodus file called \c filename
   virtual void save_function(const std::string & filename) const;
+
+  virtual void add(double scale, const uqFunctionBase & rhs);
+
+  virtual void scale(double scale);
+
+  virtual void zero();
 
   //! This is public for now, but it should be encapsulated. Don't touch it.
   libMesh::EquationSystems * equation_systems;
