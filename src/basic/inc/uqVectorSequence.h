@@ -297,7 +297,7 @@ public:
 						       const V&                                 unifiedIqrVec,
 						       unsigned int                             kdeDimension,
 						       V&                                       unifiedScaleVec) const = 0;
-a  //! Gaussian kernel for the KDE estimate of the sub-sequence. See template specialization.
+  //! Gaussian kernel for the KDE estimate of the sub-sequence. See template specialization.
   /*! Computes a probability density estimate of the sample in \c this sub-sequence, starting
    * at position \c initialPos. \c densityVecs is the vector of density values evaluated at 
    * the points in \c evaluationParamVecs. The estimate is based on Gaussian (normal) kernel 
