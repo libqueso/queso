@@ -30,6 +30,7 @@
 #define __UQ_SEQUENCE_STATISTICAL_OPTIONS_H__
 
 #include <uqDefines.h>
+
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
 #include <uqEnvironment.h>
@@ -79,15 +80,78 @@
 #define UQ_SEQUENCE_COV_MATRIX_COMPUTE_ODV           0
 #define UQ_SEQUENCE_CORR_MATRIX_COMPUTE_ODV          0
 
+
+/*!\file uqSequenceStatisticalOptions.h
+ * \brief A templated class that stores default statistical options
+ * 
+ * \class uqSsOptionsValuesClass
+ * \brief A templated class that stores default statistical options for a sequence of vectors, e.g.
+ *    a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence. 
+ */
+
+
 class uqSsOptionsValuesClass
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor. 
+  /*! It assigns to the variables the pre-defined options for a sequence of data (scalars; vectors).*/
   uqSsOptionsValuesClass            ();
+  
+  //! Copy  constructor. 
+  /*! It assigns to \c this' variables, the same values of the variable of \c src.*/  
   uqSsOptionsValuesClass            (const uqSsOptionsValuesClass& src);
+ 
+  //! Destructor.
+  ~uqSsOptionsValuesClass            ();
+  //@}
+  
+  //! @name Set methods
+  //@{ 
+  //! Assignment operator; it copies \c rhs to \c this.  
   uqSsOptionsValuesClass& operator= (const uqSsOptionsValuesClass& rhs);
- ~uqSsOptionsValuesClass            ();
+  //@}
 
+  //! @name Public attributes
+  //@{ 
+  
+  //! Stores the initial  discarded portion of the chain.
   std::vector<double>       m_initialDiscardedPortions;
+  
+  //! Whether or not compute autocorrelation via definition.
+  bool                      m_autoCorrComputeViaDef;
+  
+   //! Whether or not compute autocorrelation via FFT.
+  bool                      m_autoCorrComputeViaFft;
+  
+  //! Second lag of the autocorrelation.
+  unsigned int              m_autoCorrSecondLag;
+  
+  //! Lag spacing of the autocorrelation.
+  unsigned int              m_autoCorrLagSpacing;
+  
+  //! Number of lags of the autocorrelation.
+  unsigned int              m_autoCorrNumLags;
+  
+  //! Whether or not display autocorrelation.
+  bool                      m_autoCorrDisplay;
+  
+  //! Whether or not write autocorrelation to file.
+  bool                      m_autoCorrWrite;
+
+  //! Whether or not compute kernel density estimate (kde).
+  bool                      m_kdeCompute;
+  
+  //! Number of positions to evaluate kde.
+  unsigned int              m_kdeNumEvalPositions;
+
+  //! Whether or not compute covariance matrix.
+  bool                      m_covMatrixCompute;
+  
+  //! Whether or not compute correlation matrix.
+  bool                      m_corrMatrixCompute;
+  
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   unsigned int              m_meanMonitorPeriod;
 
@@ -128,38 +192,95 @@ public:
   bool                      m_cdfStaccCompute;
   unsigned int              m_cdfStaccNumEvalPositions;
 #endif
-  bool                      m_autoCorrComputeViaDef;
-  bool                      m_autoCorrComputeViaFft;
-  unsigned int              m_autoCorrSecondLag;
-  unsigned int              m_autoCorrLagSpacing;
-  unsigned int              m_autoCorrNumLags;
-  bool                      m_autoCorrDisplay;
-  bool                      m_autoCorrWrite;
-
-  bool                      m_kdeCompute;
-  unsigned int              m_kdeNumEvalPositions;
-
-  bool                      m_covMatrixCompute;
-  bool                      m_corrMatrixCompute;
-
+  //@} 
+  // end public attributes
 private:
+  //! Copies the option values from \c src to \c this.
   void copy(const uqSsOptionsValuesClass& src);
 };
 
-/*! A templated class that stores statistical options for a sequence of vectors, e.g.
-    a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence.
+//------------------------------------------------------------------------------------------------
+
+/*!\class uqSequenceStatisticalOptionsClass
+ * \brief  A templated class that stores statistical options (optionally read from an input file)
+ *
+ *  A templated class that stores statistical options for a sequence of vectors, e.g.
+ *    a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence. 
  */
+
+
 class uqSequenceStatisticalOptionsClass
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Constructor: reads options from the input file.
+  /*! It assigns to the variables the identifying strings (prefixes) for a sequence of data 
+   * (scalars; vectors) which had been read from an input file.*/
   uqSequenceStatisticalOptionsClass(const uqBaseEnvironmentClass& env,
                                     const std::string&            prefix);
+  
+  //! Constructor: with alternative option values.
+  /*! In this contructor, the input options are given by \c alternativeOptionsValues, thus, they
+   * are not read from an input file.*/
   uqSequenceStatisticalOptionsClass(const uqBaseEnvironmentClass& env,
                                     const std::string&            prefix,
                                     const uqSsOptionsValuesClass& alternativeOptionsValues);
- ~uqSequenceStatisticalOptionsClass();
+  //! Destructor
+  ~uqSequenceStatisticalOptionsClass();
+  //@}
 
+  //! @name Statistical methods
+  //@{
+   
+  //! Finds the initially discarded portion of the chain. Access to private attribute m_initialDiscardedPortions
   const std::vector<double>&       initialDiscardedPortions() const;
+  
+  //! Compute autocorrelation via definition.    Access to private attribute m_autoCorrComputeViaDef
+  bool                       autoCorrComputeViaDef() const;
+  
+  //! Compute autocorrelation via FFT. Access to private attribute m_autoCorrComputeViaFft
+  bool                       autoCorrComputeViaFft() const;
+  
+  //! Returns the second lag of the autocorrelation. Access to private attribute m_autoCorrSecondLag
+  unsigned int               autoCorrSecondLag    () const;
+  
+  //! Returns the spacing of the autocorrelation. Access to private attribute m_autoCorrLagSpacing
+  unsigned int               autoCorrLagSpacing   () const;
+  
+  //! Returns the number of lags of the autocorrelation. Access to private attribute m_autoCorrNumLags
+  unsigned int               autoCorrNumLags      () const;
+  
+  //! Displays autocorrelation. Access to private attribute m_autoCorrDisplay
+  bool                       autoCorrDisplay      () const;
+  
+  //! Writes autocorrelation. Access to private attribute m_autoCorrWrite
+  bool                       autoCorrWrite        () const;
+  
+  //! Computes KDE. Access to private attribute m_kdeCompute
+  bool                       kdeCompute         () const;
+  
+  //! Returns number of evaluation positions for KDE. Access to private attribute m_kdeNumEvalPositions
+  unsigned int               kdeNumEvalPositions() const;
+  
+  //! Finds the covariance matrix. Access to private attribute m_covMatrixCompute
+  bool                       covMatrixCompute () const;
+  
+  //! Finds the correlation matrix. Access to private attribute m_corrMatrixCompute
+  bool                       corrMatrixCompute() const;
+  //@}
+  
+  //! @name I/O method
+  //@{ 
+  //! Prints the initial discarded portion of the chain; and, optionally, other attributes of the chain. 
+  void                       print(std::ostream& os) const;
+  //@}
+  
+  //! @name Public attribute
+  //@{ 
+  uqSsOptionsValuesClass     m_ov;
+  //@}
+  
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 
         unsigned int               meanMonitorPeriod() const;
@@ -201,26 +322,12 @@ public:
         bool                       cdfStaccCompute         () const;
         unsigned int               cdfStaccNumEvalPositions() const;
 #endif
-        bool                       autoCorrComputeViaDef() const;
-        bool                       autoCorrComputeViaFft() const;
-        unsigned int               autoCorrSecondLag    () const;
-        unsigned int               autoCorrLagSpacing   () const;
-        unsigned int               autoCorrNumLags      () const;
-        bool                       autoCorrDisplay      () const;
-        bool                       autoCorrWrite        () const;
-
-        bool                       kdeCompute         () const;
-        unsigned int               kdeNumEvalPositions() const;
-
-        bool                       covMatrixCompute () const;
-        bool                       corrMatrixCompute() const;
-
-        void                       print(std::ostream& os) const;
-
-  uqSsOptionsValuesClass        m_ov;
-
+       
 private:
+  //! Defines the options for the chain
   void   defineMyOptions  (po::options_description& optionsDesc) const;
+  
+  //! Reads the chain options
   void   getMyOptionValues(po::options_description& optionsDesc);
 
   std::string                   m_prefix;
@@ -229,6 +336,19 @@ private:
 
   std::string                   m_option_help;
   std::string                   m_option_initialDiscardedPortions;
+  
+  std::string                   m_option_autoCorr_computeViaDef;
+  std::string                   m_option_autoCorr_computeViaFft;
+  std::string                   m_option_autoCorr_secondLag;
+  std::string                   m_option_autoCorr_lagSpacing;
+  std::string                   m_option_autoCorr_numLags;
+  std::string                   m_option_autoCorr_display;
+  std::string                   m_option_autoCorr_write;
+  std::string                   m_option_kde_compute;
+  std::string                   m_option_kde_numEvalPositions;
+  std::string                   m_option_covMatrix_compute;
+  std::string                   m_option_corrMatrix_compute;
+  
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   std::string                   m_option_mean_monitorPeriod;
   std::string                   m_option_bmm_run;
@@ -260,18 +380,8 @@ private:
   std::string                   m_option_hist_numInternalBins;
   std::string                   m_option_cdfStacc_compute;
   std::string                   m_option_cdfStacc_numEvalPositions;
-#endif
-  std::string                   m_option_autoCorr_computeViaDef;
-  std::string                   m_option_autoCorr_computeViaFft;
-  std::string                   m_option_autoCorr_secondLag;
-  std::string                   m_option_autoCorr_lagSpacing;
-  std::string                   m_option_autoCorr_numLags;
-  std::string                   m_option_autoCorr_display;
-  std::string                   m_option_autoCorr_write;
-  std::string                   m_option_kde_compute;
-  std::string                   m_option_kde_numEvalPositions;
-  std::string                   m_option_covMatrix_compute;
-  std::string                   m_option_corrMatrix_compute;
+#endif  
+  
 };
 
 std::ostream& operator<<(std::ostream& os, const uqSequenceStatisticalOptionsClass& obj);

@@ -32,6 +32,14 @@
 #include <uqVectorSpace.h>
 #include <uqVectorSubset.h>
 
+
+/*!\file uqInstantiateIntersection.h
+ * \brief A templated method to calculate intersection of two domains (vector spaces).
+ */
+
+//! This method calculates the intersection of \c domain1 and \c domain2.
+/*! It is used, for instance, to calculate the domain of the Posterior PDF, which is 
+ * the intersection of the domain of the Prior PDF and of the likelihood function.*/
 template<class V, class M>
 uqVectorSetClass<V,M>*
 uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSetClass<V,M>& domain2)
