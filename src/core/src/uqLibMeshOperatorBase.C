@@ -79,7 +79,7 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(
 
 uqLibMeshOperatorBase::~uqLibMeshOperatorBase()
 {
-  delete this->equation_systems;
+  // delete this->equation_systems;
 }
 
 void uqLibMeshOperatorBase::save_converged_evals(const string & filename) const

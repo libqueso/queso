@@ -74,7 +74,7 @@ uqLibMeshFunction::uqLibMeshFunction(
 
 uqLibMeshFunction::~uqLibMeshFunction()
 {
-  delete this->equation_systems;
+  // delete this->equation_systems;
 }
 
 void uqLibMeshFunction::print_info() const
