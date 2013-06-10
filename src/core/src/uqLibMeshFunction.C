@@ -99,6 +99,19 @@ void uqLibMeshFunction::add(double scale, const uqFunctionBase & rhs) {
           "Function").solution));
 }
 
+void uqLibMeshFunction::pointwise_mult(const uqFunctionBase & f1,
+    const uqFunctionBase & f2)
+{
+  const uqLibMeshFunction & f1_derived = static_cast<
+    const uqLibMeshFunction &>(f1);
+  const uqLibMeshFunction & f2_derived = static_cast<
+    const uqLibMeshFunction &>(f2);
+
+  this->equation_systems->get_system<ExplicitSystem>("Function").solution->pointwise_mult(
+      *(f1_derived.equation_systems->get_system<ExplicitSystem>("Function").solution),
+      *(f2_derived.equation_systems->get_system<ExplicitSystem>("Function").solution));
+}
+
 void uqLibMeshFunction::scale(double scale) {
   this->equation_systems->get_system<ExplicitSystem>(
       "Function").solution->scale(scale);
@@ -107,4 +120,15 @@ void uqLibMeshFunction::scale(double scale) {
 void uqLibMeshFunction::zero() {
   this->equation_systems->get_system<ExplicitSystem>(
       "Function").solution->zero();
+}
+
+boost::shared_ptr<uqFunctionBase> uqLibMeshFunction::zero_clone() const
+{
+  uqLibMeshFunction * clone = new uqLibMeshFunction(this->builder,
+      this->equation_systems->get_mesh());
+  clone->equation_systems->get_system<ExplicitSystem>(
+      "Function").solution->zero();
+
+  boost::shared_ptr<uqFunctionBase> ptr(clone);
+  return ptr;
 }

@@ -30,6 +30,7 @@
 #define __QUESO_LIBMESHFUNCTION__
 
 #include <string>
+#include <boost/shared_ptr.hpp>
 #include <uqFunctionBase.h>
 
 namespace libMesh {
@@ -68,9 +69,14 @@ public:
 
   virtual void add(double scale, const uqFunctionBase & rhs);
 
+  virtual void pointwise_mult(const uqFunctionBase & f1,
+      const uqFunctionBase & f2);
+
   virtual void scale(double scale);
 
   virtual void zero();
+
+  virtual boost::shared_ptr<uqFunctionBase> zero_clone() const;
 
   //! This is public for now, but it should be encapsulated. Don't touch it.
   libMesh::EquationSystems * equation_systems;
