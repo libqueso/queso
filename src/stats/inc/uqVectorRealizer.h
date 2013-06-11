@@ -40,26 +40,52 @@
 //*****************************************************
 // Base class [R-00]
 //*****************************************************
+/*! \file uqVectorRealizerClass.h
+ * \brief A templated class for sampling from vector RVs (holding probability density distributions).
+ * 
+ * \class uqBaseVectorRealizerClass
+ * \brief A templated (base) class for handling sampling from vector RVs.
+ *
+ * A realizer is an object that, simply put, contains a realization() operation 
+ * that returns a sample of a vector RV. This is the base class. QUESO also support
+ * uniform, Gaussian, Beta, Gamma, Inverse Gamma and LogNormal realizers, as described
+ * and implemented in the derived classes. */
+
 template<class V, class M>
 class uqBaseVectorRealizerClass {
 public:
-           uqBaseVectorRealizerClass(const char*                  prefix,
-                                     const uqVectorSetClass<V,M>& unifiedImageSet,
-                                     unsigned int                 subPeriod);
+  
+      //! @name Constructor/Destructor methods
+  //@{
+  //! Default constructor
+  /*! Constructs a new object, given a prefix and the image set of the vector realizer.*/
+  uqBaseVectorRealizerClass(const char*                  prefix,
+			    const uqVectorSetClass<V,M>& unifiedImageSet,
+			    unsigned int                 subPeriod);
 
+  //! Virtual destructor
   virtual ~uqBaseVectorRealizerClass();
-
+  //@}
+  
+  //! @name Realization-related methods
+  //@{
+  //! Image set where the relizations lie.  Access to protected attribute m_unifiedImageSet.
   const   uqVectorSetClass<V,M>& unifiedImageSet()              const;
-          unsigned int           subPeriod      ()              const;
+  
+  //! Sub-period of the realization. Access to protected attribute m_subPeriod.
+  unsigned int           subPeriod      ()              const;
+  
+  //! Performs a realization (sample) from a probability density function. See template specialization.
   virtual void                   realization    (V& nextValues) const = 0;
-
+  //@}
+  
 protected:
   const uqBaseEnvironmentClass& m_env;
         std::string             m_prefix;
   const uqVectorSetClass<V,M>&  m_unifiedImageSet;
         unsigned int            m_subPeriod;
 };
-
+// Default constructor -----------------------------
 template<class V, class M>
 uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
   const char*                  prefix,
@@ -83,19 +109,19 @@ uqBaseVectorRealizerClass<V,M>::uqBaseVectorRealizerClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V, class M>
 uqBaseVectorRealizerClass<V,M>::~uqBaseVectorRealizerClass()
 {
 }
-
+// Realization-related methods----------------------
 template<class V, class M>
 unsigned int
 uqBaseVectorRealizerClass<V,M>::subPeriod() const
 {
   return m_subPeriod;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 const uqVectorSetClass<V,M>&
 uqBaseVectorRealizerClass<V,M>::unifiedImageSet() const
@@ -106,17 +132,39 @@ uqBaseVectorRealizerClass<V,M>::unifiedImageSet() const
 //*****************************************************
 // Generic class [R-01]
 //*****************************************************
+/*! 
+ * \class uqGenericVectorRealizerClass
+ * \brief A class for handling sampling from generic probability density distributions.
+ *
+ * A realizer is an object that, simply put, contains a realization() operation 
+ * that returns a sample of a vector RV, or, particularly, a generic probability 
+ * density distribution. This is the class that handles generic sampling, used, 
+ * for example, to sample, posterior PDFs (the solution of a Bayesian problem).*/
+
 template<class V, class M>
 class uqGenericVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
+
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Default constructor
+  /*! Constructs a new object, given a prefix and the image set of the vector realizer, 
+   * the sub period for the realizations and a pointer to a  generic routine. */ 
   uqGenericVectorRealizerClass(const char*                  prefix,
                                const uqVectorSetClass<V,M>& unifiedImageSet,
                                unsigned int                 subPeriod,
                                double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
                                const void* routineDataPtr);
- ~uqGenericVectorRealizerClass();
-
+ //! Destructor
+  ~uqGenericVectorRealizerClass();
+  //@}
+  
+  //! @name Realization-related methods
+  //! Draws a realization.
+  /*! This function draws a realization of \c this considering the generic routine \c m_routinePtr
+   * and saves it in \c nextValues.*/
   void realization(V& nextValues) const;
+  //@}
 
 private:
   double (*m_routinePtr)(const void* routineDataPtr, V& nextParamValues);
@@ -127,7 +175,7 @@ private:
   using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
   using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
 };
-
+// Default constructor -----------------------------
 template<class V, class M>
 uqGenericVectorRealizerClass<V,M>::uqGenericVectorRealizerClass(
   const char*                  prefix,
@@ -152,12 +200,12 @@ uqGenericVectorRealizerClass<V,M>::uqGenericVectorRealizerClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V, class M>
 uqGenericVectorRealizerClass<V,M>::~uqGenericVectorRealizerClass()
 {
 }
-
+// Realization-related methods----------------------
 template<class V, class M>
 void
 uqGenericVectorRealizerClass<V,M>::realization(V& nextValues) const
@@ -169,32 +217,73 @@ uqGenericVectorRealizerClass<V,M>::realization(V& nextValues) const
 //*****************************************************
 // Gaussian class [R-03]
 //*****************************************************
+/*! 
+ * \class uqGaussianVectorRealizerClass
+ * \brief A class for handling sampling from Gaussian probability density distributions.
+ *
+ * This class handles sampling from a Gaussian probability density distribution.*/
+
 template<class V, class M>
 class uqGaussianVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
+  
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object, given a prefix and the image set of the vector realizer, a
+   * vector of mean values, \c lawExpVector, and a lower triangular matrix resulting from 
+   * Cholesky decomposition of the covariance matrix, \c lowerCholLawCovMatrix.  */ 
   uqGaussianVectorRealizerClass(const char*                  prefix,
                                 const uqVectorSetClass<V,M>& unifiedImageSet,
                                 const V&                     lawExpVector, // vector of mean values
                                 const M&                     lowerCholLawCovMatrix); // lower triangular matrix resulting from Cholesky decomposition of the covariance matrix
 
+  //! Constructor
+  /*! Constructs a new object, given a prefix and the image set of the vector realizer, a
+   * vector of mean values, \c lawExpVector, and a set of two matrices and one vector 
+   * resulting from the Single Value Decomposition of the covariance matrix, \c matU, 
+   * \c vecSsqrt and \c matVt.  */ 
   uqGaussianVectorRealizerClass(const char*                  prefix,
                                 const uqVectorSetClass<V,M>& unifiedImageSet,
                                 const V&                     lawExpVector, // vector of mean values
                                 const M&                     matU,
                                 const V&                     vecSsqrt,
                                 const M&                     matVt);
-
+  //! Destructor
   ~uqGaussianVectorRealizerClass();
+  //@}
 
+  //! @name Realization-related methods
+  //@{
+  //! Access to the vector of mean values and private attribute:  m_unifiedLawExpVector. 
   const V&   unifiedLawExpVector        ()              const;
+  
+  //! Access to the vector of variance values and private attribute:  m_unifiedLawVarVector. 
   const V&   unifiedLawVarVector        ()              const;
-        void realization                (V& nextValues) const;
-        void updateLawExpVector         (const V& newLawExpVector);
-        void updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix);
-        void updateLowerCholLawCovMatrix(const M& matU,
-                                         const V& vecSsqrt,
-                                         const M& matVt);
-
+     
+  //! Draws a realization.
+  /*! This function draws a realization of a Gaussian distribution of mean \c m_unifiedLawExpVector 
+   * and variance \c m_unifiedLawVarVector and saves it in \c nextValues.*/
+  void realization                (V& nextValues) const;
+  
+  //! Updates the mean with the new value \c newLawExpVector.  
+  void updateLawExpVector         (const V& newLawExpVector);
+  
+  //! Updates the lower triangular matrix from Cholesky decomposition of the covariance matrix to the new value \c newLowerCholLawCovMatrix.
+  /*! The lower triangular matrix results resulting from a Cholesky decomposition of the 
+   * covariance matrix. This routine deletes old expected values: m_lowerCholLawCovMatrix;
+   *   m_matU, m_vecSsqrt, m_matVt.*/
+  void updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix);
+  
+  //! Updates the SVD matrices from SVD decomposition of the covariance matrix to the new values: \c matU, \c vecSsqrt, and \c matVt.
+  /*! The lower triangular matrix results resulting from a Cholesky decomposition of the 
+   * covariance matrix. This routine deletes old expected values: m_lowerCholLawCovMatrix;
+   *   m_matU, m_vecSsqrt, m_matVt. */
+    void updateLowerCholLawCovMatrix(const M& matU,
+				   const V& vecSsqrt,
+				   const M& matVt);
+  //@}
+  
 private:
   V* m_unifiedLawExpVector;
   V* m_unifiedLawVarVector;
@@ -208,7 +297,7 @@ private:
   using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
   using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
 };
-
+// Constructor -------------------------------------
 template<class V, class M>
 uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* prefix,
 								  const uqVectorSetClass<V,M>& unifiedImageSet,
@@ -237,7 +326,7 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
                             << std::endl;
   }
 }
-								  
+// Constructor -------------------------------------
 template<class V, class M>
 uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* prefix,
 								  const uqVectorSetClass<V,M>& unifiedImageSet,
@@ -268,7 +357,7 @@ uqGaussianVectorRealizerClass<V,M>::uqGaussianVectorRealizerClass(const char* pr
                             << std::endl;
   }
 }
-								  
+// Destructor --------------------------------------
 template<class V, class M>
 uqGaussianVectorRealizerClass<V,M>::~uqGaussianVectorRealizerClass()
 {
@@ -279,21 +368,21 @@ uqGaussianVectorRealizerClass<V,M>::~uqGaussianVectorRealizerClass()
   delete m_unifiedLawVarVector;
   delete m_unifiedLawExpVector;
 }
-
+// Realization-related methods----------------------
 template <class V, class M>
 const V&
 uqGaussianVectorRealizerClass<V,M>::unifiedLawExpVector() const
 {
   return *m_unifiedLawExpVector;
 }
-
+//--------------------------------------------------
 template <class V, class M>
 const V&
 uqGaussianVectorRealizerClass<V,M>::unifiedLawVarVector() const
 {
   return *m_unifiedLawVarVector;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 void
 uqGaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
@@ -322,24 +411,24 @@ uqGaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
 
   return;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 void
 uqGaussianVectorRealizerClass<V,M>::updateLawExpVector(const V& newLawExpVector)
 {
-  // delete old expected values (alloced at construction or last call to this function)
+  // delete old expected values (allocated at construction or last call to this function)
   delete m_unifiedLawExpVector;
 
   m_unifiedLawExpVector = new V(newLawExpVector);
  
   return;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 void
 uqGaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix)
 {
-  // delete old expected values (alloced at construction or last call to this function)
+  // delete old expected values (allocated at construction or last call to this function)
   delete m_lowerCholLawCovMatrix;
   delete m_matU;
   delete m_vecSsqrt;
@@ -352,7 +441,7 @@ uqGaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(const M& newLowe
 
   return;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 void
 uqGaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(
@@ -360,7 +449,7 @@ uqGaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(
   const V& vecSsqrt,
   const M& matVt)
 {
-  // delete old expected values (alloced at construction or last call to this function)
+  // delete old expected values (allocated at construction or last call to this function)
   delete m_lowerCholLawCovMatrix;
   delete m_matU;
   delete m_vecSsqrt;
@@ -377,16 +466,36 @@ uqGaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(
 //*****************************************************
 // Sequential class [R-nn]
 //*****************************************************
+/*! 
+ * \class uqSequentialVectorRealizerClass
+ * \brief A class for handling sequential draws (sampling) from probability density distributions.
+ *
+ * This class handles sequential sampling (it returns the next value of the chain) from a 
+ * probability density distribution.*/
+
 template<class V, class M>
 class uqSequentialVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
+  
+  //!@name Constructor/Destructor methods
+  //! Default constructor.
   uqSequentialVectorRealizerClass(const char*                           prefix,
                                   const uqBaseVectorSequenceClass<V,M>& chain);
- ~uqSequentialVectorRealizerClass();
-
+  
+  //! Destructor.
+  ~uqSequentialVectorRealizerClass();
+  //@}
+ 
+  //!@name Sampling-related methdos
+  //! Returns the unified mean vector; access to private attribute m_unifiedSampleExpVector.
   const V&   unifiedSampleExpVector()              const;
+  
+  //! Returns the unified variance vector; access to private attribute m_unifiedSampleVarVector.
   const V&   unifiedSampleVarVector()              const;
-        void realization           (V& nextValues) const;
+  
+  //! Draws the next value from this chain (\c m_chain) and saves it in \c nextValues
+  void realization           (V& nextValues) const;
+  //@}
 
 private:
   const   uqBaseVectorSequenceClass<V,M>& m_chain;
@@ -399,7 +508,7 @@ private:
   using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
   using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
 };
-
+// Constructor -------------------------------------
 template<class V, class M>
 uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
   const char*                           prefix,
@@ -417,14 +526,14 @@ uqSequentialVectorRealizerClass<V,M>::uqSequentialVectorRealizerClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V, class M>
 uqSequentialVectorRealizerClass<V,M>::~uqSequentialVectorRealizerClass()
 {
   delete m_unifiedSampleVarVector;
   delete m_unifiedSampleExpVector;
 }
-
+// Realization-related methods----------------------
 template<class V, class M>
 void
 uqSequentialVectorRealizerClass<V,M>::realization(V& nextParamValues) const
@@ -434,14 +543,14 @@ uqSequentialVectorRealizerClass<V,M>::realization(V& nextParamValues) const
 
   return;
 }
-
+//--------------------------------------------------
 template <class V, class M>
 const V&
 uqSequentialVectorRealizerClass<V,M>::unifiedSampleExpVector() const
 {
   return *m_unifiedSampleExpVector;
 }
-
+//--------------------------------------------------
 template <class V, class M>
 const V&
 uqSequentialVectorRealizerClass<V,M>::unifiedSampleVarVector() const
@@ -452,22 +561,42 @@ uqSequentialVectorRealizerClass<V,M>::unifiedSampleVarVector() const
 //*****************************************************
 // Uniform class [R-04]
 //*****************************************************
+/*! 
+ * \class uqUniformVectorRealizerClass
+ * \brief A class for handling sampling from a Uniform probability density distribution.
+ *
+ * This class handles sampling from a uniform probability density distribution.*/
+
 template<class V, class M>
 class uqUniformVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
+  
+    //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object, given a prefix and the image set of the vector realizer.  */
   uqUniformVectorRealizerClass(const char*                  prefix,
                                const uqVectorSetClass<V,M>& unifiedImageSet);
- ~uqUniformVectorRealizerClass();
-
+  //! Destructor
+  ~uqUniformVectorRealizerClass();
+  //@}
+  
+  //! @name Realization-related methods
+  //@{
+  //! Draws a realization.
+  /*! This function draws a realization of a uniform distribution and saves it in \c nextValues. It 
+   * internally finds the minimum and the maximum values of the distribution.
+   */  
   void realization(V& nextValues) const;
-
+  //@}
+  
 private:
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
   using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
   using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
 };
-
+// Constructor -------------------------------------
 template<class V, class M>
 uqUniformVectorRealizerClass<V,M>::uqUniformVectorRealizerClass(
   const char*                  prefix,
@@ -487,12 +616,12 @@ uqUniformVectorRealizerClass<V,M>::uqUniformVectorRealizerClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V, class M>
 uqUniformVectorRealizerClass<V,M>::~uqUniformVectorRealizerClass()
 {
 }
-
+// Realization-related methods----------------------
 template<class V, class M>
 void
 uqUniformVectorRealizerClass<V,M>::realization(V& nextValues) const
@@ -511,17 +640,40 @@ uqUniformVectorRealizerClass<V,M>::realization(V& nextValues) const
 //*****************************************************
 // Beta class [R-05]
 //*****************************************************
+/*! 
+ * \class uqBetaVectorRealizerClass
+ * \brief A class for handling sampling from a Beta probability density distribution.
+ *
+ * This class handles sampling from a Beta probability density distribution, of 
+ * parameters \c alpha and \c beta.*/
+
 template<class V, class M>
 class uqBetaVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
+  
+   //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object, given a prefix, the image set of the vector realizer, and the
+   * Beta distribution parameters \c alpha and \c beta, which are assigned to private attributes
+   * m_alpha and m_beta.  */
   uqBetaVectorRealizerClass(const char*                  prefix,
                             const uqVectorSetClass<V,M>& unifiedImageSet,
                             const V&                     alpha,
                             const V&                     beta);
- ~uqBetaVectorRealizerClass();
+ 
+  //! Destructor
+  ~uqBetaVectorRealizerClass();
+  //@}
 
+    //! @name Realization-related methods
+  //@{
+  //! Draws a realization.
+  /*! This function draws a realization of a Beta distribution and saves it in \c nextValues. 
+   * It internally checks whether the image set, where the realization should be drawn, belongs 
+   * to the interval (0, 1] - which is the range where Beta distribution is defined over. */ 
   void realization(V& nextValues) const;
-
+  //@}
 private:
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
@@ -531,7 +683,7 @@ private:
   V m_alpha;
   V m_beta;
 };
-
+// Constructor -------------------------------------
 template<class V, class M>
 uqBetaVectorRealizerClass<V,M>::uqBetaVectorRealizerClass(
   const char*                  prefix,
@@ -555,12 +707,12 @@ uqBetaVectorRealizerClass<V,M>::uqBetaVectorRealizerClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V, class M>
 uqBetaVectorRealizerClass<V,M>::~uqBetaVectorRealizerClass()
 {
 }
-
+// Realization-related methods----------------------
 template<class V, class M>
 void
 uqBetaVectorRealizerClass<V,M>::realization(V& nextValues) const
@@ -572,15 +724,37 @@ uqBetaVectorRealizerClass<V,M>::realization(V& nextValues) const
 //*****************************************************
 // Gamma class [R-06]
 //*****************************************************
+/*! 
+ * \class uqGammaVectorRealizerClass
+ * \brief A class for handling sampling from a Gamma probability density distribution.
+ *
+ * This class handles sampling from a Gamma probability density distribution, of 
+ * parameters \c a and \c b.*/
 template<class V, class M>
 class uqGammaVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
+  
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object, given a prefix, the image set of the vector realizer, and the
+   * Gamma distribution parameters \c a and \c b, which are assigned to private attributes
+   * m_alpha and m_beta.  */
   uqGammaVectorRealizerClass(const char*                  prefix,
                              const uqVectorSetClass<V,M>& unifiedImageSet,
                              const V&                     a,
                              const V&                     b);
+  
+  //! Destructor
  ~uqGammaVectorRealizerClass();
-
+  //@}
+ 
+   //! @name Realization-related methods
+  //@{
+  //! Draws a realization.
+  /*! This function draws a realization of a Gamma distribution and saves it in \c nextValues. 
+   * It internally checks whether the image set, where the realization should be drawn, belongs 
+   * to the interval (0, infinity) - which is the range where Gamma distribution is defined over. */ 
   void realization(V& nextValues) const;
 
 private:
@@ -592,7 +766,7 @@ private:
   V m_a;
   V m_b;
 };
-
+// Constructor -------------------------------------
 template<class V, class M>
 uqGammaVectorRealizerClass<V,M>::uqGammaVectorRealizerClass(
   const char*                  prefix,
@@ -616,12 +790,12 @@ uqGammaVectorRealizerClass<V,M>::uqGammaVectorRealizerClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V, class M>
 uqGammaVectorRealizerClass<V,M>::~uqGammaVectorRealizerClass()
 {
 }
-
+// Realization-related methods----------------------
 template<class V, class M>
 void
 uqGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
@@ -676,16 +850,38 @@ uqGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 //*****************************************************
 // InverseGamma class [R-07]
 //*****************************************************
+/*! 
+ * \class uqInverseGammaVectorRealizerClass
+ * \brief A class for handling sampling from an Inverse Gamma probability density distribution.
+ *
+ * This class handles sampling from an Inverse Gamma probability density distribution, of 
+ * parameters \c alpha and \c beta.*/
+
 template<class V, class M>
 class uqInverseGammaVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object, given a prefix, the image set of the vector realizer, and the
+   * Beta distribution parameters \c a and \c b, which are assigned to private attributes
+   * m_alpha and m_beta.  */
   uqInverseGammaVectorRealizerClass(const char*                  prefix,
                                     const uqVectorSetClass<V,M>& unifiedImageSet,
                                     const V&                     alpha,
                                     const V&                     beta);
- ~uqInverseGammaVectorRealizerClass();
+  //! Destructor
+  ~uqInverseGammaVectorRealizerClass();
+  //@}
 
+     //! @name Realization-related methods
+  //@{
+  //! Draws a realization.
+  /*! This function draws a realization of an Inverse Gamma distribution and saves it in \c nextValues. 
+   * It internally checks whether the image set, where the realization should be drawn, belongs 
+   * to the interval (0, infinity) - which is the range where Gamma distribution is defined over. */ 
   void realization(V& nextValues) const;
+  //@}
 
 private:
   using uqBaseVectorRealizerClass<V,M>::m_env;
@@ -696,7 +892,7 @@ private:
   V m_alpha;
   V m_beta;
 };
-
+// Constructor -------------------------------------
 template<class V, class M>
 uqInverseGammaVectorRealizerClass<V,M>::uqInverseGammaVectorRealizerClass(
   const char*                  prefix,
@@ -720,12 +916,12 @@ uqInverseGammaVectorRealizerClass<V,M>::uqInverseGammaVectorRealizerClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V, class M>
 uqInverseGammaVectorRealizerClass<V,M>::~uqInverseGammaVectorRealizerClass()
 {
 }
-
+// Realization-related methods----------------------
 template<class V, class M>
 void
 uqInverseGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
@@ -737,17 +933,40 @@ uqInverseGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 //*****************************************************
 // Wigner class [R-09]
 //*****************************************************
+/*!
+ * \class uqWignerVectorRealizerClass
+ * \brief A class for handling sampling from a Wigner probability density distribution.
+ *
+ * This class \b will handle sampling from an Wigner probability density distribution, with a
+ * given center position and a radius.
+ * 
+ * \todo: The metodo uqWignerVectorRealizerClass:realization() is not yet available, 
+ * thus this class does  nothing. */
+
 template<class V, class M>
 class uqWignerVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object, given a prefix, the image set of the vector realizer, the
+   * center position \c centerPos, and a radius \c radius.*/  
   uqWignerVectorRealizerClass(const char*                  prefix,
                               const uqVectorSetClass<V,M>& unifiedImageSet,
                               const V&                     centerPos,
                               double                       radius);
+  
+  //! Destructor
  ~uqWignerVectorRealizerClass();
-
+ //@}
+  
+  //! @name Realization-related methods
+  //@{
+  //! TODO: Draws a realization.
+  /*! \todo: implement and explain me!*/
   void realization(V& nextValues) const;
-
+  //@}
+ 
 private:
   using uqBaseVectorRealizerClass<V,M>::m_env;
   using uqBaseVectorRealizerClass<V,M>::m_prefix;
@@ -756,7 +975,7 @@ private:
   V*     m_centerPos;
   double m_radius;
 };
-
+// Constructor -------------------------------------
 template<class V, class M>
 uqWignerVectorRealizerClass<V,M>::uqWignerVectorRealizerClass(
   const char*                  prefix,
@@ -785,13 +1004,14 @@ uqWignerVectorRealizerClass<V,M>::uqWignerVectorRealizerClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V, class M>
 uqWignerVectorRealizerClass<V,M>::~uqWignerVectorRealizerClass()
 {
   delete m_centerPos;
 }
-
+// -------------------------------------------------
+// TODO: implement me, please!!!!
 template<class V, class M>
 void
 uqWignerVectorRealizerClass<V,M>::realization(V& nextValues) const
@@ -808,26 +1028,53 @@ uqWignerVectorRealizerClass<V,M>::realization(V& nextValues) const
 //*****************************************************
 // LogNormal class [R-10]
 //*****************************************************
+/*! 
+ * \class uqLogNormalVectorRealizerClass
+ * \brief A class for handling sampling from a Log-Normal probability density distribution.
+ *
+ * This class handles sampling from a Log-Normal probability density distribution, of 
+ * mean and variance given.*/
+
 template<class V, class M>
 class uqLogNormalVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
+    //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object of the class, given a prefix and the image set, a  vector of 
+   * mean values, \c lawExpVector, and a lower triangular matrix resulting from Cholesky 
+   * decomposition of the covariance matrix, \c lowerCholLawCovMatrix.  */ 
   uqLogNormalVectorRealizerClass(const char*                  prefix,
                                  const uqVectorSetClass<V,M>& unifiedImageSet,
                                  const V&                     lawExpVector, // vector of mean values
                                  const M&                     lowerCholLawCovMatrix); // lower triangular matrix resulting from Cholesky decomposition of the covariance matrix
 
+  //! Constructor
+  /*! Constructs a new object of the class, given a prefix and the image set, a vector of
+   * mean values, \c lawExpVector, and a set of two matrices and one vector resulting from the 
+   * Single Value Decomposition of the covariance matrix, \c matU, \c vecSsqrt and \c matVt.*/ 
   uqLogNormalVectorRealizerClass(const char*                  prefix,
                                  const uqVectorSetClass<V,M>& unifiedImageSet,
                                  const V&                     lawExpVector, // vector of mean values
                                  const M&                     matU,
                                  const V&                     vecSsqrt,
                                  const M&                     matVt);
-
+  //! Destructor
   ~uqLogNormalVectorRealizerClass();
-
+  //@}
+  
+  //! @name Realization-related methods
+  //@{
+  //! Access to the vector of mean values and private attribute:  m_unifiedLawExpVector. 
   const V&   unifiedLawExpVector ()              const;
+  
+  //! Access to the vector of variance values and private attribute:  m_unifiedLawVarVector. 
   const V&   unifiedLawVarVector ()              const;
-        void realization         (V& nextValues) const;
+  
+  //! Draws a realization.
+  /*! This function draws a realization of a LogNormal distribution and saves it in \c nextValues.*/
+  void realization         (V& nextValues) const;
+  //@}
     
 private:
   V* m_unifiedLawExpVector;
@@ -842,7 +1089,7 @@ private:
   using uqBaseVectorRealizerClass<V,M>::m_unifiedImageSet;
   using uqBaseVectorRealizerClass<V,M>::m_subPeriod;
 };
-
+// Constructor -------------------------------------
 template<class V, class M>
 uqLogNormalVectorRealizerClass<V,M>::uqLogNormalVectorRealizerClass(const char* prefix,
                                                                     const uqVectorSetClass<V,M>& unifiedImageSet,
@@ -869,7 +1116,7 @@ uqLogNormalVectorRealizerClass<V,M>::uqLogNormalVectorRealizerClass(const char* 
                             << std::endl;
   }
 }
-								  
+// Constructor -------------------------------------								  
 template<class V, class M>
 uqLogNormalVectorRealizerClass<V,M>::uqLogNormalVectorRealizerClass(const char* prefix,
                                                                     const uqVectorSetClass<V,M>& unifiedImageSet,
@@ -898,7 +1145,7 @@ uqLogNormalVectorRealizerClass<V,M>::uqLogNormalVectorRealizerClass(const char* 
                             << std::endl;
   }
 }
-								  
+// Destructor --------------------------------------								  
 template<class V, class M>
 uqLogNormalVectorRealizerClass<V,M>::~uqLogNormalVectorRealizerClass()
 {
@@ -909,21 +1156,21 @@ uqLogNormalVectorRealizerClass<V,M>::~uqLogNormalVectorRealizerClass()
   delete m_unifiedLawVarVector;
   delete m_unifiedLawExpVector;
 }
-
+// Realization-related methods----------------------
 template <class V, class M>
 const V&
 uqLogNormalVectorRealizerClass<V,M>::unifiedLawExpVector() const
 {
   return *m_unifiedLawExpVector;
 }
-
+//--------------------------------------------------
 template <class V, class M>
 const V&
 uqLogNormalVectorRealizerClass<V,M>::unifiedLawVarVector() const
 {
   return *m_unifiedLawVarVector;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 void
 uqLogNormalVectorRealizerClass<V,M>::realization(V& nextValues) const
@@ -960,20 +1207,42 @@ uqLogNormalVectorRealizerClass<V,M>::realization(V& nextValues) const
 //*****************************************************
 // Concatenated class [R-11]
 //*****************************************************
+/*!
+ * \class uqConcatenatedVectorRealizerClass
+ * \brief A class for handling sampling from concatenated probability density distributions.
+ * 
+ * This class allows the user draw samples from concatenated probability density distributions (two 
+ * or more distincts probability distributions has(ve) been concatened into one single vector RV). 
+ * This class used, for instance, to draw realization of concatenate priors from two or more RVs, 
+ * where one of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. */
+
 template<class V, class M>
 class uqConcatenatedVectorRealizerClass : public uqBaseVectorRealizerClass<V,M> {
 public:
+  
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Concatenates two RVs: \c rv1 and \c rv2 into one vector RV, given a prefix and the image set of the vector RV.*/
   uqConcatenatedVectorRealizerClass(const char*                           prefix,
                                     const uqBaseVectorRealizerClass<V,M>& realizer1,
                                     const uqBaseVectorRealizerClass<V,M>& realizer2,
                                     const uqVectorSetClass<V,M>&          unifiedImageSet);
+  //! Constructor
+  /*! Concatenates a sequence of RVs, given by: <c> std::vector<const uqBaseVectorRVClass<V,M>* >& rvs </c>
+   * into one singke vector RV, given a prefix and the image set of the resulting vector RV.*/
   uqConcatenatedVectorRealizerClass(const char*                                                prefix,
                                     const std::vector<const uqBaseVectorRealizerClass<V,M>* >& realizers,
                                     unsigned int                                               minPeriod,
                                     const uqVectorSetClass<V,M>&                               unifiedImageSet);
- ~uqConcatenatedVectorRealizerClass();
-
+  //! Destructor
+  ~uqConcatenatedVectorRealizerClass();
+  //@}
+  
+  //! @name Realization-related methods
+  //@{
   void realization(V& nextValues) const;
+  //@}
 
 private:
   using uqBaseVectorRealizerClass<V,M>::m_env;
@@ -983,7 +1252,7 @@ private:
 
   std::vector<const uqBaseVectorRealizerClass<V,M>* > m_realizers;
 };
-
+// Constructor -------------------------------------
 template<class V, class M>
 uqConcatenatedVectorRealizerClass<V,M>::uqConcatenatedVectorRealizerClass(
   const char*                           prefix,
@@ -1009,7 +1278,7 @@ uqConcatenatedVectorRealizerClass<V,M>::uqConcatenatedVectorRealizerClass(
                             << std::endl;
   }
 }
-
+// Constructor -------------------------------------
 template<class V, class M>
 uqConcatenatedVectorRealizerClass<V,M>::uqConcatenatedVectorRealizerClass(
   const char*                                                prefix,
@@ -1024,12 +1293,12 @@ uqConcatenatedVectorRealizerClass<V,M>::uqConcatenatedVectorRealizerClass(
     m_realizers[i] = realizers[i];
   }
 }
-
+// Destructor --------------------------------------
 template<class V, class M>
 uqConcatenatedVectorRealizerClass<V,M>::~uqConcatenatedVectorRealizerClass()
 {
 }
-
+// Realization-related methods----------------------
 template<class V, class M>
 void
 uqConcatenatedVectorRealizerClass<V,M>::realization(V& nextValues) const
