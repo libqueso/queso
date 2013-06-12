@@ -123,7 +123,7 @@ public:
                                            unsigned int                         numPos,
                                            V&                                   medianVec) const;
         
-  //! Finds the median value of the unifed sequence, considering \c numPos positions starting at position \c initialPos. 
+  //! Finds the median value of the unfed sequence, considering \c numPos positions starting at position \c initialPos. 
   /*! Output: \param medianVec is the vector of the calculated medians of the unified sequence of vectors. */
   void         unifiedMedianExtra         (unsigned int                         initialPos,
                                            unsigned int                         numPos,
@@ -188,7 +188,7 @@ public:
                                            unsigned int                         lag,
                                            V&                                   covVec) const;
   
-  //! Calculates the autocorretation via definition.
+  //! Calculates the autocorrelation via definition.
   /*! Autocorrelation is the cross-correlation of a variable with itself; it describes the 
    * correlation between values of the process at different times, as a function of the two
    * times. It is calculated over a sequence of vectors with initial position \c initialPos, 
@@ -198,23 +198,23 @@ public:
                                            unsigned int                         numPos,
                                            unsigned int                         lag,
                                            V&                                   corrVec) const;
-  //! Calculates the autocorretation via  Fast Fourier transforms (FFT). 
+  //! Calculates the autocorrelation via  Fast Fourier transforms (FFT). 
   void         autoCorrViaFft             (unsigned int                         initialPos,
                                            unsigned int                         numPos,
                                            const std::vector<unsigned int>&     lags,
                                            std::vector<V*>&                     corrVecs) const;
   
-  //! Calculates the autocorretation via  Fast Fourier transforms (FFT). 
+  //! Calculates the autocorrelation via  Fast Fourier transforms (FFT). 
   void         autoCorrViaFft             (unsigned int                         initialPos,
                                            unsigned int                         numPos,
                                            unsigned int                         numSum,
                                            V&                                   autoCorrsSumVec) const;
-  //! Finds the minimun and the maximum values of the sub-sequence, considering \c numPos positions starting at position \c initialPos. 
+  //! Finds the minimum and the maximum values of the sub-sequence, considering \c numPos positions starting at position \c initialPos. 
   void         subMinMaxExtra             (unsigned int                         initialPos,
                                            unsigned int                         numPos,
                                            V&                                   minVec,
                                            V&                                   maxVec) const;
-  //! Finds the minimun and the maximum values of the unified sequence, considering \c numPos positions starting at position \c initialPos.
+  //! Finds the minimum and the maximum values of the unified sequence, considering \c numPos positions starting at position \c initialPos.
   void         unifiedMinMaxExtra         (unsigned int                         initialPos,
                                            unsigned int                         numPos,
                                            V&                                   unifiedMinVec,
@@ -281,7 +281,7 @@ public:
                                            const std::vector<V*>&               unifiedEvalParamVecs,
                                            std::vector<V*>&                     unifiedDensityVecs) const;
   //! Writes the sub-sequence to a file. 
-  /*! Given the allowed sub enviroments (\c allowedSubEnvIds) that are allowed to write to file,
+  /*! Given the allowed sub environments (\c allowedSubEnvIds) that are allowed to write to file,
    * together with the file name and type (\c fileName, \c fileType), it writes the entire sub-
    * sequence to the file. The sum of the initial position of the sequence (\c initialPos) with 
    * the number of positions that will be written (\c numPos) must equal the size of the sequence.
@@ -304,7 +304,7 @@ public:
                                            unsigned int                         numPos,
                                            std::ofstream&                       ofs,
                                            const std::string&                   fileType) const;
-  //! Writes the unifed sequence to a file. 
+  //! Writes the unfed sequence to a file. 
   //! Writes the unified sequence in Matlab/Octave format or, if enabled, in HDF5 format.
   void         unifiedWriteContents       (const std::string&                   fileName,
                                            const std::string&                   fileType) const;
@@ -327,7 +327,7 @@ public:
 
   //! Extracts a sequence of scalars.
   /*! The sequence of scalars has size \c numPos, and it will be extracted starting at position
-   * (\c initialPos, \c paramId ) of \c this squecence of vectors, given spacing \c spacing.*/
+   * (\c initialPos, \c paramId ) of \c this sequences of vectors, given spacing \c spacing.*/
   void         extractScalarSeq           (unsigned int                         initialPos,
                                            unsigned int                         spacing,
                                            unsigned int                         numPos,
@@ -2127,7 +2127,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedWriteContents(
               UQ_FATAL_TEST_MACRO(true,
                                   m_env.worldRank(),
                                   "uqSequenceOfVectorsClass<V,M>::unifiedWriteContents()",
-                                  "hdf file type not supported for multiple subenvironments yet");
+                                  "hdf file type not supported for multiple sub-environments yet");
             }
           }
 #endif
@@ -2475,7 +2475,7 @@ uqSequenceOfVectorsClass<V,M>::unifiedReadContents(
               UQ_FATAL_TEST_MACRO(true,
                                   m_env.worldRank(),
                                   "uqSequenceOfVectorsClass<V,M>::unifiedReadContents()",
-                                  "hdf file type not supported for multiple subenvironments yet");
+                                  "hdf file type not supported for multiple sub-environments yet");
             }
           }
 #endif

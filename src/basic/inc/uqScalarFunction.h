@@ -56,7 +56,7 @@ public:
   //! @name Constructor/Destructor methods.
   //@{ 
   //! Default constructor.
-  /*! Instatiates an object of the class, i.e. a scalar function, given a prefix and its domain.*/
+  /*! Instantiates an object of the class, i.e. a scalar function, given a prefix and its domain.*/
   uqBaseScalarFunctionClass(const char*                  prefix,
 			    const uqVectorSetClass<V,M>& domainSet);
   //! Destructor	
@@ -122,7 +122,7 @@ public:
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor. 
-  /*! Instatiates an object of \c this class given its prefix, domain set and a pointer to a routine. 
+  /*! Instantiates an object of \c this class given its prefix, domain set and a pointer to a routine. 
    This routine plays the role of a scalar math function, and it is useful, for instance, to calculate 
    the likelihood (and its image set).*/
   uqGenericScalarFunctionClass(const char*                  prefix,
@@ -247,7 +247,7 @@ public:
     //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  /*! Instatiates an object of the class, i.e. a scalar function, given a prefix, its domain and constant-valued image.*/
+  /*! Instantiates an object of the class, i.e. a scalar function, given a prefix, its domain and constant-valued image.*/
   uqConstantScalarFunctionClass(const char*                  prefix,
                                 const uqVectorSetClass<V,M>& domainSet,
                                 double                       constantValue);

@@ -131,7 +131,7 @@ public:
   const    uqBoxSubsetClass<V,M>&   unifiedBoxPlain    () const;
   
   //! Deletes all the stored vectors.
-  /*! It deletes all stored vectors and assings NULL value to the pointers: m_subMinPlain, 
+  /*! It deletes all stored vectors and assigns NULL value to the pointers: m_subMinPlain, 
    * m_unifiedMinPlain, m_subMaxPlain, m_unifiedMaxPlain, m_subMeanPlain, m_unifiedMeanPlain, 
    * m_subMedianPlain, m_unifiedMedianPlain, m_subBoxPlain, m_unifiedBoxPlain, 
    * m_subSampleVariancePlain, m_unifiedSampleVariancePlain. */
@@ -171,11 +171,11 @@ public:
   /*! This routine deletes all stored computed vectors */
   virtual  void            setPositionValues           (unsigned int posId, const V& vec) = 0;
   
-  //! Sets the values of the sequence as a Gaussian distribuition of mean given by \c meanVec and standard deviation by \c stdDevVec.
+  //! Sets the values of the sequence as a Gaussian distribution of mean given by \c meanVec and standard deviation by \c stdDevVec.
   /*! This routine deletes all stored computed vectors */
   void                     setGaussian                 (const V& meanVec, const V& stdDevVec);
   
-  //! Sets the values of the sequence as a uniformn distribuition between the values given by vectors \c aVec and \c bVec.
+  //! Sets the values of the sequence as a uniform distribution between the values given by vectors \c aVec and \c bVec.
   /*! This routine deletes all stored computed vectors */
   void                     setUniform                  (const V& aVec,    const V& bVec     ); 
 
@@ -227,29 +227,29 @@ public:
 						       const V&                                 meanVec,
 						       unsigned int                             lag,
 						       V&                                       covVec) const = 0;
-  //! Calculates autocorretation via definition. See template specialization.
+  //! Calculates autocorrelation via definition. See template specialization.
   virtual  void           autoCorrViaDef              (unsigned int                             initialPos,
 						       unsigned int                             numPos,
 						       unsigned int                             lag,
 						       V&                                       corrVec) const = 0;
-  //! Calculates autocorretation via Fast Fourier transforms (FFT). See template specialization.
+  //! Calculates autocorrelation via Fast Fourier transforms (FFT). See template specialization.
   virtual  void           autoCorrViaFft              (unsigned int                             initialPos,
 						       unsigned int                             numPos,
 						       const std::vector<unsigned int>&         lags,
 						       std::vector<V*>&                         corrVecs) const = 0;
-  //! Calculates autocorretation via Fast Fourier transforms (FFT). See template specialization.
+  //! Calculates autocorrelation via Fast Fourier transforms (FFT). See template specialization.
   virtual  void           autoCorrViaFft              (unsigned int                             initialPos,
 						       unsigned int                             numPos,
 						       unsigned int                             numSum,
 						       V&                                       autoCorrsSumVec) const = 0;
 
 						       
-  //! Finds the minimun and the maximum values of the sub-sequence, considering \c numPos positions starting at position \c initialPos. See template specialization. 
+  //! Finds the minimum and the maximum values of the sub-sequence, considering \c numPos positions starting at position \c initialPos. See template specialization. 
   virtual  void           subMinMaxExtra              (unsigned int                             initialPos,
 						       unsigned int                             numPos,
 						       V&                                       minVec,
 						       V&                                       maxVec) const = 0;
-  //! Finds the minimun and the maximum values of the unified sequence, considering \c numPos positions starting at position \c initialPos. See template specialization. 
+  //! Finds the minimum and the maximum values of the unified sequence, considering \c numPos positions starting at position \c initialPos. See template specialization. 
   virtual  void           unifiedMinMaxExtra          (unsigned int                             initialPos,
 						       unsigned int                             numPos,
 						       V&                                       unifiedMinVec,
@@ -1612,7 +1612,7 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaDef(
 
   if ((statisticalOptions.autoCorrDisplay()) && (m_env.subDisplayFile())) {
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      *m_env.subDisplayFile() << "\nComputed autocorrelation coefficients (via def), for subchain beggining at position " << initialPosForStatistics[initialPosId]
+      *m_env.subDisplayFile() << "\nComputed autocorrelation coefficients (via def), for subchain beginning at position " << initialPosForStatistics[initialPosId]
                               << " (each column corresponds to a different lag)"
                               << std::endl;
       char line[512];
@@ -1766,7 +1766,7 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
                                    subChainSampleVariance);
 
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "\nEstimated variance of sample mean, through autocorrelation (via fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
+        *m_env.subDisplayFile() << "\nEstimated variance of sample mean, through autocorrelation (via fft), for subchain beginning at position " << initialPosForStatistics[initialPosId]
                                 << std::endl;
       }
       estimatedVarianceOfSampleMean.cwSet(-1.); // Yes, '-1' because the autocorrelation at lag 0, which values '+1', is already counted in the sum
@@ -1782,7 +1782,7 @@ uqBaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
       estimatedVarianceOfSampleMean.setPrintHorizontally(savedVectorPrintState);
 
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "\nComputed autocorrelation coefficients (via fft), for subchain beggining at position " << initialPosForStatistics[initialPosId]
+        *m_env.subDisplayFile() << "\nComputed autocorrelation coefficients (via fft), for subchain beginning at position " << initialPosForStatistics[initialPosId]
                                 << " (each column corresponds to a different lag)"
                                 << std::endl;
 
@@ -2602,7 +2602,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanEvolution(
     this->subMeanMonitorWrite(*passedOfs);
     if (m_env.numSubEnvironments() > 1) {
       this->subMeanInter0MonitorWrite(*passedOfs);
-      this->unifiedMeanMonitorWrite(*passedOfs); // Yes, call 'unified' even though not all nodes might have 'passedOfs != NULL' ????????????? ernesto
+      this->unifiedMeanMonitorWrite(*passedOfs); // Yes, call 'unified' even though not all nodes might have 'passedOfs != NULL' ????????????? Ernesto
     }
   }
 
@@ -2675,7 +2675,7 @@ uqBaseVectorSequenceClass<V,M>::computeBMM(
 
   if (m_env.subDisplayFile()) {
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
-      *m_env.subDisplayFile() << "\nEstimated variance of sample mean, through batch means method, for subchain beggining at position " << initialPosForStatistics[initialPosId]
+      *m_env.subDisplayFile() << "\nEstimated variance of sample mean, through batch means method, for subchain beginning at position " << initialPosForStatistics[initialPosId]
                               << " (each column corresponds to a batch length)"
                               << std::endl;
 
@@ -2885,7 +2885,7 @@ uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
   if ((statisticalOptions.psdAtZeroDisplay()) && (m_env.subDisplayFile())) {
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       unsigned int initialPos = initialPosForStatistics[initialPosId];
-      *m_env.subDisplayFile() << "\nComputed PSD at frequency zero for subchain beggining at position " << initialPos
+      *m_env.subDisplayFile() << "\nComputed PSD at frequency zero for subchain beginning at position " << initialPos
                               << ", so effective data size = " << this->subSequenceSize() - initialPos
                               << " (each column corresponds to a number of blocks)"
                               << std::endl;
@@ -2920,7 +2920,7 @@ uqBaseVectorSequenceClass<V,M>::computePSDAtZero(
   if (/*(statisticalOptions.psdAtZeroDisplay()) &&*/ (m_env.subDisplayFile())) {
     for (unsigned int initialPosId = 0; initialPosId < initialPosForStatistics.size(); initialPosId++) {
       unsigned int initialPos = initialPosForStatistics[initialPosId];
-      *m_env.subDisplayFile() << "\nEstimated variance of sample mean, through psd, for subchain beggining at position " << initialPos
+      *m_env.subDisplayFile() << "\nEstimated variance of sample mean, through psd, for subchain beginning at position " << initialPos
                               << ", so effective data size = " << this->subSequenceSize() - initialPos
                               << " (each column corresponds to a number of blocks)"
                               << std::endl;
@@ -3131,7 +3131,7 @@ uqBaseVectorSequenceClass<V,M>::computeMeanStacc(
 #endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 
 // --------------------------------------------------
-// Aditional methods --------------------------------
+// Additional methods --------------------------------
 // (outside class declaration) ----------------------
 //---------------------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>

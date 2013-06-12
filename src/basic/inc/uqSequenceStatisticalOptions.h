@@ -221,7 +221,7 @@ public:
                                     const std::string&            prefix);
   
   //! Constructor: with alternative option values.
-  /*! In this contructor, the input options are given by \c alternativeOptionsValues, thus, they
+  /*! In this constructor, the input options are given by \c alternativeOptionsValues, thus, they
    * are not read from an input file.*/
   uqSequenceStatisticalOptionsClass(const uqBaseEnvironmentClass& env,
                                     const std::string&            prefix,

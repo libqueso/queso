@@ -57,7 +57,7 @@ public:
   //! @name Constructor/Destructor methods.
   //@{ 
   //! Default Constructor
-  /*! Instatiates an object of the class, i.e. a vector function, given a prefix, its domain and image.*/
+  /*! Instantiates an object of the class, i.e. a vector function, given a prefix, its domain and image.*/
   uqBaseVectorFunctionClass(const char*                      prefix,
 			    const uqVectorSetClass<P_V,P_M>& domainSet,
 			    const uqVectorSetClass<Q_V,Q_M>& imageSet);
@@ -145,7 +145,7 @@ public:
   //@{
 
   //! Default constructor. 
-  /*! Instatiates an object of \c this class given its prefix, domain and a pointer to a routine. 
+  /*! Instantiates an object of \c this class given its prefix, domain and a pointer to a routine. 
    This routine plays the role of a vector-valued function, and it is useful, for instance, to 
    calculate the likelihood (and its image set).*/
   uqGenericVectorFunctionClass(const char*                      prefix,
@@ -258,7 +258,7 @@ public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default Constructor
-  /*! Instatiates an object of the class, i.e. a vector function, given a prefix, its domain and constant image.*/
+  /*! Instantiates an object of the class, i.e. a vector function, given a prefix, its domain and constant image.*/
   uqConstantVectorFunctionClass(const char*                      prefix,
                                 const uqVectorSetClass<P_V,P_M>& domainSet,
                                 const uqVectorSetClass<Q_V,Q_M>& imageSet,

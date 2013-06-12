@@ -65,9 +65,9 @@ public:
   virtual ~uqVectorSetClass();
   //@}
   
-  //! @name Enviroment methods
+  //! @name Environment methods
   //@{
-  //! Enviroment.  Access to private attribute m_env.
+  //! Environment.  Access to private attribute m_env.
   const uqBaseEnvironmentClass&  env        ()                 const;
   
   //! Access to private attribute m_prefix.
@@ -147,7 +147,7 @@ uqVectorSetClass<V,M>::~uqVectorSetClass()
   }
 }
 
-// Enviroments methods------------------------------------
+// Environment methods------------------------------------
 // -------------------------------------------------------
 template <class V, class M>
 const uqBaseEnvironmentClass&

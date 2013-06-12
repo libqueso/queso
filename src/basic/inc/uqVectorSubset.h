@@ -39,7 +39,7 @@
  * \class uqVectorSubsetClass
  * \brief A templated class for handling subsets.
  *
- * This class speficies a subset. The most common example of a subset is a subset of a vector space,
+ * This class specifies a subset. The most common example of a subset is a subset of a vector space,
  * present, for instance, in the definition of a scalar function: \f$ \pi: B \subset R^n \rightarrow R \f$.
  * \f$ B \f$ is a subset of the set \f$ R^n \f$, which is also a vector space. */
 
@@ -168,7 +168,7 @@ public:
 
   //! Shaped, default constructor. 
   /*! Construct a subspace of \c vectorSpace, with min and max values given by the vectors \c minValues 
-   * and \c maxValues, respectively. It checks for possible inconscistences between the values stored in
+   * and \c maxValues, respectively. It checks for possible inconsistencies between the values stored in
    * \c minValues and \c maxValues, and calculates the volume of the box subset, assigning it to m_volume. */
   uqBoxSubsetClass(const char*                    prefix,
                    const uqVectorSpaceClass<V,M>& vectorSpace,
@@ -405,7 +405,7 @@ public:
                              const uqVectorSetClass<V,M>&   set1,
                              const uqVectorSetClass<V,M>&   set2);
   
-  //! Constructor - colllection of sets
+  //! Constructor - collection of sets
   /*! It concatenates a collection of n subsets (using the std::vector to represent such collection)
    * into a new set, m_set, of volume given by sets[0].volume()*sets[1].volume()*...*sets[n-1].volume(). */
   uqConcatenationSubsetClass(const char*                                       prefix,

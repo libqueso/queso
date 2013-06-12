@@ -79,11 +79,11 @@ public:
   /*! This routine deletes all stored computed vectors */
   void         setPositionValues    (unsigned int posId, const V& vec);
   
-  //! Sets the values of the sequence as a Gaussian distribuition of mean given by \c meanVec and standard deviation by \c stdDevVec.
+  //! Sets the values of the sequence as a Gaussian distribution of mean given by \c meanVec and standard deviation by \c stdDevVec.
   /*! This routine deletes all stored computed vectors */
   void         setGaussian          (const V& meanVec, const V& stdDevVec);
   
-  //! Sets the values of the sequence as a uniformn distribuition between the values given by vectors \c aVec and \c bVec.
+  //! Sets the values of the sequence as a uniform distribution between the values given by vectors \c aVec and \c bVec.
   /*! This routine deletes all stored computed vectors */
   void         setUniform           (const V& aVec,    const V& bVec     );
   
@@ -123,25 +123,25 @@ public:
                                      unsigned int             lag,
                                      V&                       covVec) const;
 
-  //! Calculates autocorretation via definition. 
+  //! Calculates autocorrelation via definition. 
   void         autoCorrViaDef       (unsigned int             initialPos,
                                      unsigned int             numPos,
                                      unsigned int             lag,
                                      V&                       corrVec) const;
-  //! Calculates autocorretation via Fast Fourier transforms (FFT). 
+  //! Calculates autocorrelation via Fast Fourier transforms (FFT). 
   //! TODO: Implement me!
   void         autoCorrViaFft       (unsigned int                     initialPos,
                                      unsigned int                     numPos,
                                      const std::vector<unsigned int>& lags,
                                      std::vector<V*>&                 corrVecs) const;
 
-  //! Calculates autocorretation via Fast Fourier transforms (FFT). 
+  //! Calculates autocorrelation via Fast Fourier transforms (FFT). 
   //! TODO: Implement me!
   void         autoCorrViaFft       (unsigned int             initialPos,
                                      unsigned int             numPos,
                                      unsigned int             numSum,
                                      V&                       autoCorrsSumVec) const;
-   //! Given an initial position \c initialPos, finds the minimun and the maximum values of the sequence.
+   //! Given an initial position \c initialPos, finds the minimum and the maximum values of the sequence.
   void         minMax               (unsigned int             initialPos,
                                      V&                       minVec,
                                      V&                       maxVec) const;
@@ -304,7 +304,7 @@ uqArrayOfSequencesClass<V,M>::~uqArrayOfSequencesClass()
     if (m_scalarSequences(i,0)) delete m_scalarSequences(i,0);
   }
 }
-// Math methodos ------------------------------------
+// Math methods ------------------------------------
 template <class V, class M>
 unsigned int
 uqArrayOfSequencesClass<V,M>::subSequenceSize() const
