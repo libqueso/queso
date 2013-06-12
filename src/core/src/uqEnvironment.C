@@ -147,7 +147,7 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   m_subDisplayFile             (NULL),
   m_rngObject                  (NULL),
   m_basicPdfs                  (NULL),
-  m_exceptionalCircunstance    (false),
+  m_exceptionalCircumstance    (false),
   m_alternativeOptionsValues   (),
   m_optionsObj                 (NULL)
 {
@@ -1165,16 +1165,16 @@ uqBaseEnvironmentClass::closeFile(
 }
 //-------------------------------------------------------
 void
-uqBaseEnvironmentClass::setExceptionalCircunstance(bool value) const
+uqBaseEnvironmentClass::setExceptionalCircumstance(bool value) const
 {
-  m_exceptionalCircunstance = value;
+  m_exceptionalCircumstance = value;
   return;
 }
 //-------------------------------------------------------
 bool
-uqBaseEnvironmentClass::exceptionalCircunstance() const
+uqBaseEnvironmentClass::exceptionalCircumstance() const
 {
-  return m_exceptionalCircunstance;
+  return m_exceptionalCircumstance;
 }
 
 

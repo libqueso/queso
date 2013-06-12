@@ -40,7 +40,7 @@ void compute(const uqFullEnvironmentClass& env) {
     paramSpace(env, "param_", 5, NULL);
   uqGslVectorClass v1(paramSpace.zeroVector());
   uqGslVectorClass v2(paramSpace.zeroVector());
-  w.quadPtsWeigths<uqGslVectorClass,uqGslMatrixClass>(200,false,v1,v2);
+  w.quadPtsWeights<uqGslVectorClass,uqGslMatrixClass>(200,false,v1,v2);
   std::cout << "v1 = " << v1 << std::endl;
   std::cout << "v2 = " << v2 << std::endl;
 #else

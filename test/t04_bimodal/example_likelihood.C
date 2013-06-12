@@ -95,7 +95,7 @@ double likelihoodRoutine(
 
   double returnValue = resultValue;
 
-  if (paramValues.env().exceptionalCircunstance()) {
+  if (paramValues.env().exceptionalCircumstance()) {
     if ((paramValues.env().subDisplayFile()      ) &&
         (paramValues.env().displayVerbosity() > 0)) { // detailed output debug
       *paramValues.env().subDisplayFile() << "Leaving likelihood function"
