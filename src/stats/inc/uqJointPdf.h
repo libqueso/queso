@@ -32,32 +32,69 @@
 #include <uqEnvironment.h>
 #include <math.h>
 #include <uqScalarFunction.h>
-#include <boost/math/special_functions.hpp> // for Boost isnan. Note parantheses are important in function call.
+#include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
 //#include <gsl/gsl_randist.h>
 
 //*****************************************************
-// Classes to accomodate a probability density.
+// Classes to accommodate a probability density.
 //*****************************************************
 
 //*****************************************************
 // Base class [PDF-00]
 //*****************************************************
+/*! \file uqJointPdf.h
+ * \brief Set of classes for handling vector functions.
+ * 
+ * \class uqBaseJointPdfClass
+ * \brief A templated (base) class for handling Joint PDFs.
+ *
+ * This class allows the mathematical definition of a Joint PDF, which is a scalar 
+ * function such as * \f$ \pi: B \subset R^n \rightarrow R \f$; ie a function of one 
+ * or more variables that has always one-dimensional range. QUESO currently supports 
+ * basic PDFs such as uniform and Gaussian and also more complex PDFs, such as the 
+ * ones coming from a Bayesian analysis. They are implemented in the derived classes 
+ * uqUniformJointPdfClass, uqGaussianJointPdfClass, and uqBayesianJointPdfClass, 
+ * respectively. The posterior PDF may be represented within QUESO by uqGenericJointPdfClass. */
+
 template<class V, class M>
 class uqBaseJointPdfClass : public uqBaseScalarFunctionClass<V,M> {
 public:
-           uqBaseJointPdfClass(const char*                  prefix,
-                               const uqVectorSetClass<V,M>& domainSet);
+  //! @name Constructor/Destructor methods.
+  //@{ 
+  //! Default constructor.
+  /*! Instantiates an object of the class, i.e. a scalar function, given a prefix and its domain.*/
+  uqBaseJointPdfClass(const char*                  prefix,
+		      const uqVectorSetClass<V,M>& domainSet);
+  //! Destructor
   virtual ~uqBaseJointPdfClass();
+  //@}
 
+      //! @name Mathematical methods.
+  //@{  
+  //! Actual value of the PDF (scalar function).
   virtual double actualValue                    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
+  
+  //! Logarithm of the value of the function.
   virtual double lnValue                        (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
+  
+  //! Sets a value to be used in the normalization style (stored in the protected attribute m_normalizationStyle.) 
   virtual void   setNormalizationStyle          (unsigned int value) const;
-          void   setLogOfNormalizationFactor    (double value) const;
-  virtual double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const = 0;
-//const uqBaseScalarPdfClass<double>& component(unsigned int componentId) const;
-
+  
+  //! Sets a logarithmic value to be used in the normalization factor (stored in the protected attribute m_normalizationStyle.) 
+  void   setLogOfNormalizationFactor    (double value) const;
+  
+  //! Computes the logarithm of the normalization factor. See template specialization.
+  virtual double computeLogOfNormalizationFactor(unsigned int numSamples, bool m_logOfNormalizationFactor) const = 0;
+  
+  //const uqBaseScalarPdfClass<double>& component(unsigned int componentId) const;
+  //@}
 protected:
-          double commonComputeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
+  //! Common method (to the derived classes) to compute the logarithm of the normalization factor.
+  /*! The normalization factor is calculated by finding the max and min values of the domain set 
+   * and then drawing \c numSamples samples from a uniform distribution varying from \c min to 
+   * \c max. Such samples are averaged and the logarithmic value is assigned to protected attribute 
+   * m_logOfNormalizationFactor if the parameter \c m_logOfNormalizationFactor is true. */
+  double commonComputeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
 
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
@@ -65,10 +102,11 @@ protected:
 
   mutable unsigned int m_normalizationStyle;
   mutable double       m_logOfNormalizationFactor;
+  
 //std::vector<uqBaseScalarPdfClass<double>*> m_components; // FIXME: will need to be a parallel vector in case of a very large number of components
 //uqBaseScalarPdfClass<double>               m_dummyComponent;
 };
-
+// Default constructor -----------------------------
 template<class V, class M>
 uqBaseJointPdfClass<V,M>::uqBaseJointPdfClass(
   const char*                  prefix,
@@ -90,12 +128,12 @@ uqBaseJointPdfClass<V,M>::uqBaseJointPdfClass(
                             << std::endl;
   }
 }
-
+// Destructor ---------------------------------------
 template<class V, class M>
 uqBaseJointPdfClass<V,M>::~uqBaseJointPdfClass()
 {
 }
-
+// Math methods -------------------------------------
 template<class V,class M>
 void
 uqBaseJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
@@ -103,7 +141,7 @@ uqBaseJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
   m_normalizationStyle = value;
   return;
 }
-
+//---------------------------------------------------
 template<class V,class M>
 void
 uqBaseJointPdfClass<V,M>::setLogOfNormalizationFactor(double value) const
@@ -111,7 +149,7 @@ uqBaseJointPdfClass<V,M>::setLogOfNormalizationFactor(double value) const
   m_logOfNormalizationFactor = value;
   return;
 }
-
+//---------------------------------------------------
 template<class V,class M>
 double
 uqBaseJointPdfClass<V,M>::commonComputeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
@@ -162,17 +200,35 @@ uqBaseJointPdfClass<V,M>::component(unsigned int componentId) const
 //*****************************************************
 // Generic probability density class [PDF-01]
 //*****************************************************
+/*!
+ * \class uqGenericJointPdfClass
+ * \brief A class for handling generic joint PDF.
+ *
+ * This class allows the mathematical definition of a generic Joint PDF, such as the posterior PDF.*/
+
 template<class V, class M>
 class uqGenericJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
+  
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Default constructor. 
+  /*! Instantiates an object of this class given a prefix and a scalar function.
+  /*! The domain of the scalar function is assigned to the protected attribute m_domainSet, 
+   * and the scalar function is also itself copied to the protected attribute m_scalarFunction.*/
   uqGenericJointPdfClass(const char*                           prefix,
                          const uqBaseScalarFunctionClass<V,M>& scalarFunction);
+  //! Destructor
  ~uqGenericJointPdfClass();
+ //@}
 
+   //! @name Math methods
+  //@{
+  // See base class (uqBaseJointPdfClass) for description.
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
-
+  //@}
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
@@ -181,7 +237,7 @@ protected:
 
   const uqBaseScalarFunctionClass<V,M>& m_scalarFunction;
 };
-
+// Default constructor -----------------------------
 template<class V, class M>
 uqGenericJointPdfClass<V,M>::uqGenericJointPdfClass(
   const char*                           prefix,
@@ -191,12 +247,12 @@ uqGenericJointPdfClass<V,M>::uqGenericJointPdfClass(
   m_scalarFunction(scalarFunction)
 {
 }
-
+// Destructor ---------------------------------------
 template<class V, class M>
 uqGenericJointPdfClass<V,M>::~uqGenericJointPdfClass()
 {
 }
-
+// Math methods -------------------------------------
 template<class V, class M>
 double
 uqGenericJointPdfClass<V,M>::actualValue(
@@ -208,7 +264,7 @@ uqGenericJointPdfClass<V,M>::actualValue(
 {
   return ((exp(m_logOfNormalizationFactor))*m_scalarFunction.actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect)); // [PDF-01]
 }
-
+// --------------------------------------------------
 template<class V, class M>
 double
 uqGenericJointPdfClass<V,M>::lnValue(
@@ -220,7 +276,7 @@ uqGenericJointPdfClass<V,M>::lnValue(
 {
   return (m_logOfNormalizationFactor + m_scalarFunction.lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect)); // [PDF-01]
 }
-
+// --------------------------------------------------
 template<class V, class M>
 double
 uqGenericJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
@@ -244,22 +300,60 @@ uqGenericJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSam
 //*****************************************************
 // Bayesian probability density class [PDF-02]
 //*****************************************************
+/*!
+ * \class uqBayesianJointPdfClass
+ * \brief A class for handling Bayesian joint PDF.
+ *
+ * This class allows the mathematical definition of a Bayesian Joint PDF.*/
+
 template<class V, class M>
 class uqBayesianJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
+    //! @name Constructor/Destructor methods
+  //@{
+  //! Default constructor. 
+  /*! Instatiates an object of this class given a prefix and a scalar function.
+  /*! The domain of the scalar function is assigned to the protected attribute m_domainSet, 
+   * and the scalar fuction is also itself copied to the protected attribute m_scalarFunction.*/
   uqBayesianJointPdfClass(const char*                           prefix,
                           const uqBaseJointPdfClass      <V,M>& priorDensity,
                           const uqBaseScalarFunctionClass<V,M>& likelihoodFunction,
-                                double                          likelihoodExponent,
+                          double                                likelihoodExponent,
                           const uqVectorSetClass         <V,M>& intersectionDomain); 
- ~uqBayesianJointPdfClass();
+  //! Destructor
+  ~uqBayesianJointPdfClass();
 
+  
+  //! @name Math methods
+  //@{
+  //! Actual value of the PDF (scalar function).
+  /*! If the exponent of the likelihood function (likelihoodExponent) is zero, i.e. the likelihood is 
+   * constant and unitary, then the actual value is the value of the prior PDF; otherwise, the actual 
+   * value is scaled (multiplied) by a power of the value of the likelihood function.*/
   double actualValue              (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Computes the logarithm of the value of the function.
+  /*! Analogously to the method actualValue(), if the exponent of the likelihood function 
+   * (likelihoodExponent) is zero then the Logarithm of the value of the function is the logarithm of
+   * the value of the prior PDF; otherwise, the value is scaled (added) by a power of tue value of the
+   * likelihood function.*/
   double lnValue                  (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! TODO: Computes the logarithm of the normalization factor.
+  /*! \todo: implement me!*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
-  double lastComputedLogPrior     () const;
-  double lastComputedLogLikelihood() const;
+  
+  
+  //! Sets a value to be used in the normalization style of the prior density PDF (ie, protected attribute m_priorDensity).
   void   setNormalizationStyle    (unsigned int value) const;
+  
+  //! Retuns the logarithm of the last computed Prior value. Access to protected attribute m_lastComputedLogPrior.
+  double lastComputedLogPrior     () const;
+  
+  //! Retuns the logarithm of the last computed likelihood value.  Access to protected attribute m_lastComputedLogLikelihood.
+  double lastComputedLogLikelihood() const;
+  
+  //@}
 
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
@@ -269,7 +363,7 @@ protected:
 
   const uqBaseJointPdfClass      <V,M>& m_priorDensity;
   const uqBaseScalarFunctionClass<V,M>& m_likelihoodFunction;
-        double                          m_likelihoodExponent;
+  double                                m_likelihoodExponent;
   mutable double                        m_lastComputedLogPrior;
   mutable double                        m_lastComputedLogLikelihood;
 
@@ -277,7 +371,7 @@ protected:
   mutable V  m_tmpVector2;
   mutable M* m_tmpMatrix;
 };
-
+// Default constructor -----------------------------
 template<class V,class M>
 uqBayesianJointPdfClass<V,M>::uqBayesianJointPdfClass(
   const char*                           prefix,
@@ -297,13 +391,13 @@ uqBayesianJointPdfClass<V,M>::uqBayesianJointPdfClass(
   m_tmpMatrix                (m_domainSet.vectorSpace().newMatrix())
 {
 }
-
+// Destructor ---------------------------------------
 template<class V,class M>
 uqBayesianJointPdfClass<V,M>::~uqBayesianJointPdfClass()
 {
   delete m_tmpMatrix;
 }
-
+// Math methods -------------------------------------
 template<class V,class M>
 void
 uqBayesianJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
@@ -311,21 +405,21 @@ uqBayesianJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
   m_priorDensity.setNormalizationStyle(value);
   return;
 }
-
+// --------------------------------------------------
 template<class V,class M>
 double
 uqBayesianJointPdfClass<V,M>::lastComputedLogPrior() const
 {
   return m_lastComputedLogPrior;
 }
-
+// --------------------------------------------------
 template<class V,class M>
 double
 uqBayesianJointPdfClass<V,M>::lastComputedLogLikelihood() const
 {
   return m_lastComputedLogLikelihood;
 }
-
+// --------------------------------------------------
 template<class V, class M>
 double
 uqBayesianJointPdfClass<V,M>::actualValue(
@@ -390,7 +484,7 @@ uqBayesianJointPdfClass<V,M>::actualValue(
 
   return returnValue;
 }
-
+// --------------------------------------------------
 template<class V, class M>
 double
 uqBayesianJointPdfClass<V,M>::lnValue(
@@ -500,7 +594,7 @@ uqBayesianJointPdfClass<V,M>::lnValue(
 
   return returnValue;
 }
-
+// --------------------------------------------------
 template<class V, class M>
 double
 uqBayesianJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
@@ -527,29 +621,71 @@ uqBayesianJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSa
 //*****************************************************
 // Gaussian probability density class [PDF-03]
 //*****************************************************
+/*! 
+ * \class uqGaussianVectorRealizerClass
+ * \brief A class for handling Gaussian probability density distributions.
+ *
+ * This class allows the mathematical definition of a Gaussian Joint PDF.*/
+
 template<class V, class M>
 class uqGaussianJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
+    //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor 
+  /*! Constructs a new object, given a prefix and the domain of the PDF, a vector of mean
+   * values, \c lawExpVector, and a vector of covariance values \c lawVarVector (an 
+   * alternative representation for a diagonal covariance matrix).  */ 
   uqGaussianJointPdfClass(const char*                  prefix,
                           const uqVectorSetClass<V,M>& domainSet,
                           const V&                     lawExpVector,
                           const V&                     lawVarVector);
+  //! Constructor
+  /*! Constructs a new object, given a prefix and the image set of the vector realizer, a
+   * vector of mean values, \c lawExpVector, and a covariance matrix, \c lawCovMatrix. */ 
   uqGaussianJointPdfClass(const char*                  prefix,
                           const uqVectorSetClass<V,M>& domainSet,
                           const V&                     lawExpVector,
                           const M&                     lawCovMatrix);
+  //! Destructor
  ~uqGaussianJointPdfClass();
-
-  double   actualValue       (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+ //@}
+  
+  //! @name Math methods
+  //@{
+    
+  //! Actual value of the Gaussian PDF:
+  /*! This method calls lnValue() and applies the exponential to it.*/
+ double   actualValue       (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Logarithm of the value of the Gaussian PDF (scalar function).
+ /*! The ln(value) comes from a summation of the Gaussian density:
+  * \f[ lnValue =- \sum_i \frac{1}{\sqrt{|covMatrix|} \sqrt{2 \pi}} exp(-\frac{(domainVector_i - lawExpVector_i)* covMatrix^{-1}* (domainVector_i - lawExpVector_i) }{2},  \f]
+  * where the \f$ covMatrix \f$ may recovered via \c this->lawVarVector(), in case of diagonal
+  * matrices or via \c this->m_lawCovMatrix, otherwise.*/
   double   lnValue           (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Computes the logarithm of the normalization factor.
+  /*! This routine calls uqBaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
   double   computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
+    
+  //! Updates the mean with the new value \c newLawExpVector.  
+  /*! This method deletes old expected values (allocated at construction or last call to this method).*/
   void     updateLawExpVector(const V& newLawExpVector);
+  
+  //! Updates the lower triangular matrix from Cholesky decomposition of the covariance matrix to the new value \c newLowerCholLawCovMatrix.
+  /*! This method deletes old expected values (allocated at construction or last call to this method).*/
   void     updateLawCovMatrix(const M& newLawCovMatrix);
+  
+  //! Retuns the covariance matrix; access to protected attribute m_lawCovMatrix.  
   const M& lawCovMatrix      () const;
 
+  //! Access to the vector of mean values and private attribute:  m_lawExpVector. 
   const V& lawExpVector() const;
+  
+  //! Access to the vector of variance values and private attribute:  m_lawVarVector. 
   const V& lawVarVector() const;
-
+  //@}
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
@@ -561,7 +697,7 @@ protected:
   bool     m_diagonalCovMatrix;
   const M* m_lawCovMatrix;
 };
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqGaussianJointPdfClass<V,M>::uqGaussianJointPdfClass(
   const char*                  prefix,
@@ -596,7 +732,7 @@ uqGaussianJointPdfClass<V,M>::uqGaussianJointPdfClass(
                             << std::endl;
   }
 }
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqGaussianJointPdfClass<V,M>::uqGaussianJointPdfClass(
   const char*                  prefix,
@@ -630,7 +766,7 @@ uqGaussianJointPdfClass<V,M>::uqGaussianJointPdfClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V,class M>
 uqGaussianJointPdfClass<V,M>::~uqGaussianJointPdfClass()
 {
@@ -638,21 +774,21 @@ uqGaussianJointPdfClass<V,M>::~uqGaussianJointPdfClass()
   delete m_lawVarVector;
   delete m_lawExpVector;
 }
-
+// Math methods-------------------------------------
 template <class V, class M>
 const V&
 uqGaussianJointPdfClass<V,M>::lawExpVector() const
 {
   return *m_lawExpVector;
 }
-
+//--------------------------------------------------
 template <class V, class M>
 const V&
 uqGaussianJointPdfClass<V,M>::lawVarVector() const
 {
   return *m_lawVarVector;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqGaussianJointPdfClass<V,M>::actualValue(
@@ -701,7 +837,7 @@ uqGaussianJointPdfClass<V,M>::actualValue(
 
   return returnValue;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqGaussianJointPdfClass<V,M>::lnValue(
@@ -770,7 +906,7 @@ uqGaussianJointPdfClass<V,M>::lnValue(
 
   return returnValue;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqGaussianJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
@@ -790,7 +926,7 @@ uqGaussianJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSa
 
   return value;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 void
 uqGaussianJointPdfClass<V,M>::updateLawExpVector(const V& newLawExpVector)
@@ -821,17 +957,41 @@ uqGaussianJointPdfClass<V,M>::lawCovMatrix() const
 //*****************************************************
 // Uniform probability density class [PDF-04]
 //*****************************************************
+/*!
+ * \class uqUniformJointPdfClass
+ * \brief A class for handling uniform joint PDF.
+ *
+ * This class allows the mathematical definition of a Uniform Joint PDF.*/
+
 template<class V, class M>
 class uqUniformJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object of the class, given a prefix and the domain set of the uniform PDF.  */
   uqUniformJointPdfClass(const char*                  prefix,
                          const uqVectorSetClass<V,M>& domainSet);
+  //! Destructor
  ~uqUniformJointPdfClass();
+ //@}
 
+   //! @name Math methods
+  //@{
+  //! Actual value of the uniform PDF.
+  /*! If the domain of the PDF is well defined (neither negative nor infinite), then the actual
+   * value is given by 1.0/(the volume of the domain), otherwise the actual value is 1.*/
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Logarithm of the value of the uniform PDF.
+  /*! Analogous to the actualValue routine, except that the logarithm of the calculated value is
+   * returned. */
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Computes the logarithm of the normalization factor.
+  /*! This routine calls uqBaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
-
+  //@}
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
@@ -839,7 +999,7 @@ protected:
   using uqBaseJointPdfClass<V,M>::m_normalizationStyle;
   using uqBaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
 };
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqUniformJointPdfClass<V,M>::uqUniformJointPdfClass(
   const char*                  prefix,
@@ -860,12 +1020,12 @@ uqUniformJointPdfClass<V,M>::uqUniformJointPdfClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V,class M>
 uqUniformJointPdfClass<V,M>::~uqUniformJointPdfClass()
 {
 }
-
+// Math methods-------------------------------------
 template<class V, class M>
 double
 uqUniformJointPdfClass<V,M>::actualValue(
@@ -897,7 +1057,7 @@ uqUniformJointPdfClass<V,M>::actualValue(
 
   return 1./volume; // No need to multiply by exp(m_logOfNormalizationFactor) [PDF-04]
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqUniformJointPdfClass<V,M>::lnValue(
@@ -925,7 +1085,7 @@ uqUniformJointPdfClass<V,M>::lnValue(
 
   return log(volume); // No need to add m_logOfNormalizationFactor [PDF-04]
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqUniformJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
@@ -949,19 +1109,45 @@ uqUniformJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSam
 //*****************************************************
 // Beta probability density class [PDF-05]
 //*****************************************************
+/*!
+ * \class uqBetaJointPdfClass
+ * \brief A class for handling Beta joint PDF.
+ *
+ * This class allows the mathematical definition of a Beta Joint PDF.*/
+
 template<class V, class M>
 class uqBetaJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
+    //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object of the class, given a prefix, the domain set, and the parameters
+   * \c alpha and \c beta of the Beta PDF.  */
   uqBetaJointPdfClass(const char*                  prefix,
                       const uqVectorSetClass<V,M>& domainSet,
                       const V&                     alpha,
                       const V&                     beta);
+  //! Destructor
  ~uqBetaJointPdfClass();
+ //@}
 
+    //! @name Math methods
+  //@{
+  //! Actual value of the Beta PDF.
+  /*! This routine calls method lnValue() and returns the exponent of the returning value of such method.*/
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Logarithm of the value of the Beta PDF.
+  /*! If the normalization style (m_normalizationStyle) is zero, then this routine calls a enviroment method
+   * which handles basic PDFs, e.g. basicPdfs()->betaPdfActualValue() and adds the log of the normalization 
+   * factor (m_logOfNormalizationFactor) to it; otherwise the method uses the formula: \f$ lnValue = 
+   * \sum[ (alpha_i-1)*log(domainVector_i) + (beta_i-1)*log(1-domainVector_i)] + m_logOfNormalizationFactor \f$. */
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Computes the logarithm of the normalization factor.
+  /*! This routine calls uqBaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
-
+  //@}
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
@@ -972,7 +1158,7 @@ protected:
   V m_alpha;
   V m_beta;
 };
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqBetaJointPdfClass<V,M>::uqBetaJointPdfClass(
   const char*                  prefix,
@@ -996,12 +1182,12 @@ uqBetaJointPdfClass<V,M>::uqBetaJointPdfClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V,class M>
 uqBetaJointPdfClass<V,M>::~uqBetaJointPdfClass()
 {
 }
-
+// Math methods-------------------------------------
 template<class V, class M>
 double
 uqBetaJointPdfClass<V,M>::actualValue(
@@ -1024,7 +1210,7 @@ uqBetaJointPdfClass<V,M>::actualValue(
   // No need to multiply by exp(m_logOfNormalizationFactor) because 'lnValue()' is called [PDF-05]
   return exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqBetaJointPdfClass<V,M>::lnValue(
@@ -1064,7 +1250,7 @@ uqBetaJointPdfClass<V,M>::lnValue(
 
   return result;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqBetaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
@@ -1088,19 +1274,46 @@ uqBetaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSample
 //*****************************************************
 // Gamma probability density class [PDF-06]
 //*****************************************************
+/*!
+ * \class uqGammaJointPdfClass
+ * \brief A class for handling Gamma joint PDF.
+ *
+ * This class allows the mathematical definition of a Gamma Joint PDF.*/
+
 template<class V, class M>
 class uqGammaJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object of the class, given a prefix, the domain set, and the parameters
+   * \c a and \c b of the Gamma PDF.  */
   uqGammaJointPdfClass(const char*                  prefix,
                        const uqVectorSetClass<V,M>& domainSet,
                        const V&                     a,
                        const V&                     b);
+  //! Destructor
  ~uqGammaJointPdfClass();
+ //@}
 
+  //! @name Math methods
+  //@{
+  //! Actual value of the Gamma PDF.
+  /*! This routine calls method lnValue() and returns the exponent of the returning value of such method.*/
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Logarithm of the value of the Gamma PDF.
+  /*! If the normalization style (m_normalizationStyle) is zero, then this routine calls a enviroment method
+   * which handles basic PDFs, e.g. basicPdfs()->gammaPdfActualValue() and adds the log of the normalization 
+   * factor (m_logOfNormalizationFactor) to it; otherwise the method uses the formula: \f$ lnValue = 
+   * \sum[ (a_i-1)*log(domainVector_i) -domainVector_i/b_i + m_logOfNormalizationFactor \f$, where a and b
+   * are the parameters of the Gamma PDF. */
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Computes the logarithm of the normalization factor.
+  /*! This routine calls uqBaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
-
+ //@}
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
@@ -1111,7 +1324,7 @@ protected:
   V m_a;
   V m_b;
 };
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqGammaJointPdfClass<V,M>::uqGammaJointPdfClass(
   const char*                  prefix,
@@ -1135,12 +1348,12 @@ uqGammaJointPdfClass<V,M>::uqGammaJointPdfClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V,class M>
 uqGammaJointPdfClass<V,M>::~uqGammaJointPdfClass()
 {
 }
-
+// Math methods-------------------------------------
 template<class V, class M>
 double
 uqGammaJointPdfClass<V,M>::actualValue(
@@ -1163,7 +1376,7 @@ uqGammaJointPdfClass<V,M>::actualValue(
   // No need to multiply by exp(m_logOfNormalizationFactor) because 'lnValue()' is called [PDF-06]
   return exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqGammaJointPdfClass<V,M>::lnValue(
@@ -1203,7 +1416,7 @@ uqGammaJointPdfClass<V,M>::lnValue(
 
   return result;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqGammaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
@@ -1227,18 +1440,42 @@ uqGammaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSampl
 //*****************************************************
 // InverseGamma probability density class [PDF-07]
 //*****************************************************
+/*!
+ * \class uqInverseGammaJointPdfClass
+ * \brief A class for handling Inverse Gamma joint PDF.
+ *
+ * This class allows the mathematical definition of an Inverse Gamma Joint PDF.*/
+
 template<class V, class M>
 class uqInverseGammaJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
+    //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object of the class, given a prefix, the domain set, and the parameters
+   * \c alpha and \c beta of the Inverse Gamma PDF.  */
   uqInverseGammaJointPdfClass(const char*                  prefix,
                               const uqVectorSetClass<V,M>& domainSet,
                               const V&                     alpha,
                               const V&                     beta);
+  //! Destructor
  ~uqInverseGammaJointPdfClass();
+ //@}
 
+   //! @name Math methods
+  //@{
+  //! Actual value of the Gamma PDF.
+  /*! This routine calls method lnValue() and returns the exponent of the returning value of such method.*/
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! TODO: Logarithm of the value of the Gamma PDF.
+  /*! \todo: implement me!*/
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Computes the logarithm of the normalization factor.
+  /*! This routine calls uqBaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
+  //@}
 
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
@@ -1250,7 +1487,7 @@ protected:
   V m_alpha;
   V m_beta;
 };
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqInverseGammaJointPdfClass<V,M>::uqInverseGammaJointPdfClass(
   const char*                  prefix,
@@ -1274,12 +1511,12 @@ uqInverseGammaJointPdfClass<V,M>::uqInverseGammaJointPdfClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V,class M>
 uqInverseGammaJointPdfClass<V,M>::~uqInverseGammaJointPdfClass()
 {
 }
-
+// Math methods-------------------------------------
 template<class V, class M>
 double
 uqInverseGammaJointPdfClass<V,M>::actualValue(
@@ -1302,7 +1539,7 @@ uqInverseGammaJointPdfClass<V,M>::actualValue(
   // No need to multiply by exp(m_logOfNormalizationFactor) because 'lnValue()' is called [PDF-07]
   return exp(this->lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqInverseGammaJointPdfClass<V,M>::lnValue(
@@ -1329,7 +1566,7 @@ uqInverseGammaJointPdfClass<V,M>::lnValue(
 
   return result;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqInverseGammaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
@@ -1353,19 +1590,49 @@ uqInverseGammaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int n
 //*****************************************************
 // Powered probability density class [PDF-08]
 //*****************************************************
+/*!
+ * \class uqPoweredJointPdfClass
+ * \brief A class for handling a powered joint PDF.
+ *
+ * This class allows the mathematical definition of a Powered Joint PDF.*/
+
 template<class V, class M>
 class uqPoweredJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
+    //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object of the class, given a prefix, the domain set and the exponent of 
+   * the powered PDF.  */
   uqPoweredJointPdfClass(const char*                     prefix,
                          const uqBaseJointPdfClass<V,M>& srcDensity,
                                double                    exponent);
+  //! Destructor
  ~uqPoweredJointPdfClass();
+ //@}
 
+  //! @name Math methods
+  //@{
+  //! Actual value of the powered PDF.
+  /*! Finds the actual value using uqBaseJointPdfClass::actualValue() and apply it to the power of 
+   * \c this PDF, which given by \c exponent, and multiplies it by the normalization factor, which is 
+   * given by exp(m_logOfNormalizationFactor).*/
   double actualValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Logarithm of the value of the powered PDF.
+    /*! Finds the logarithm of actual value using uqBaseJointPdfClass::lnValue() and multiplies by the power of 
+   * \c this PDF, which given by \c exponent, and then adds the normalization factor, which is 
+   * given by m_logOfNormalizationFactor.*/
   double lnValue              (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Sets a value to be used in the normalization style of the powered PDF (ie, protected attribute m_srcDensity).
   void   setNormalizationStyle(unsigned int value) const;
+  
+  //! TODO: Computes the logarithm of the normalization factor.
+  /*! \todo: implement me!*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
-
+  //@}
+  
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
@@ -1373,9 +1640,9 @@ protected:
   using uqBaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
 
   const uqBaseJointPdfClass<V,M>& m_srcDensity;
-        double                    m_exponent;
+  double                          m_exponent;
 };
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqPoweredJointPdfClass<V,M>::uqPoweredJointPdfClass(
   const char*                     prefix,
@@ -1404,12 +1671,12 @@ uqPoweredJointPdfClass<V,M>::uqPoweredJointPdfClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V,class M>
 uqPoweredJointPdfClass<V,M>::~uqPoweredJointPdfClass()
 {
 }
-
+// Math methods-------------------------------------
 template<class V,class M>
 void
 uqPoweredJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
@@ -1417,7 +1684,7 @@ uqPoweredJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
   m_srcDensity.setNormalizationStyle(value);
   return;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqPoweredJointPdfClass<V,M>::actualValue(
@@ -1457,7 +1724,7 @@ uqPoweredJointPdfClass<V,M>::actualValue(
 
   return returnValue;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqPoweredJointPdfClass<V,M>::lnValue(
@@ -1492,7 +1759,7 @@ uqPoweredJointPdfClass<V,M>::lnValue(
 
   return returnValue;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqPoweredJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
@@ -1519,19 +1786,42 @@ uqPoweredJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSam
 //*****************************************************
 // Wigner probability density class [PDF-09]
 //*****************************************************
+/*!
+ * \class uqWignerJointPdfClass
+ * \brief A class for handling Wigner joint PDF.
+ *
+ * This class allows the mathematical definition of a Wigner Joint PDF.*/
+
 template<class V, class M>
 class uqWignerJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Constructs a new object of the class, given a prefix, the domain set of the PDF, the
+   * center position \c centerPos, and a radius \c radius.*/  
   uqWignerJointPdfClass(const char*                  prefix,
                         const uqVectorSetClass<V,M>& domainSet,
                         const V&                     centerPos,
                         double                       radius);
+  //! Destructor
  ~uqWignerJointPdfClass();
-
+  //@}
+ 
+    //! @name Math methods
+  //@{
+  //! Actual value of the PDF (scalar function).
+  /*! It depends on the distance of the center position to the domain and on the radius.*/
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Computes the logarithm of the value of the function.
+  /*! This method calls actualValue() and applies the logarithm to its result.*/
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+ 
+  //! Computes the logarithm of the normalization factor.
+  /*! This routine calls uqBaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
-
+  //@}
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
@@ -1540,7 +1830,7 @@ protected:
   V*     m_centerPos;
   double m_radius;
 };
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqWignerJointPdfClass<V,M>::uqWignerJointPdfClass(
   const char*                  prefix,
@@ -1570,13 +1860,13 @@ uqWignerJointPdfClass<V,M>::uqWignerJointPdfClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V,class M>
 uqWignerJointPdfClass<V,M>::~uqWignerJointPdfClass()
 {
   delete m_centerPos;
 }
-
+// Math methods-------------------------------------
 template<class V, class M>
 double
 uqWignerJointPdfClass<V,M>::actualValue(
@@ -1604,7 +1894,7 @@ uqWignerJointPdfClass<V,M>::actualValue(
 
   return returnValue;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqWignerJointPdfClass<V,M>::lnValue(
@@ -1621,7 +1911,7 @@ uqWignerJointPdfClass<V,M>::lnValue(
   // No need to add m_logOfNormalizationFactor because 'actualValue()' is called [PDF-09]
   return log(this->actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqWignerJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
@@ -1645,22 +1935,52 @@ uqWignerJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamp
 //*****************************************************
 // LogNormal probability density class [PDF-10]
 //*****************************************************
+/*! 
+ * \class uqLogNormalVectorRealizerClass
+ * \brief A class for handling Log-Normal probability density distributions.
+ *
+ * This class allows the mathematical definition of a Log-Normal Joint PDF.*/
+
 template<class V, class M>
 class uqLogNormalJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
+  
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor 
+  /*! Constructs a new object of the class, given a prefix and the domain of the PDF, 
+   * a vector of mean values, \c lawExpVector, and a vector of covariance values 
+   * \c lawVarVector (an alternative representation for a diagonal covariance matrix).*/ 
   uqLogNormalJointPdfClass(const char*                  prefix,
                            const uqVectorSetClass<V,M>& domainSet,
                            const V&                     lawExpVector,
                            const V&                     lawVarVector);
+  //! Destructor
  ~uqLogNormalJointPdfClass();
+ //@}
 
+   //! @name Math methods
+  //@{    
+  //! Actual value of the Log-Normal PDF (scalar function).
+  /*! This method calls lnValue() and applies the exponential to its result.*/
   double   actualValue (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Logarithm of the value of the Log-Normal PDF (scalar function).
+   /*! The logarithm of the value of the Log-Normal density of diagonal covariace matrix (sigma^2) comes from the summation:
+  * \f[ lnValue =- \sum_i \frac{1}{domainVector_i * \sqrt{2 \pi * lawVarVector_i}} exp(-\frac{(\ln( domainVector_i) - lawExpVector_i)^2}{2 lawVarVector_i}) \f] as long as 
+  * \f$ domainVector_i > 0 \f$ for all \f$ i \f$.*/
   double   lnValue     (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Computes the logarithm of the normalization factor.
+  /*! This routine calls uqBaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
   double   computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
 
+  //! Access to the vector of mean values and private attribute:  m_lawExpVector. 
   const V& lawExpVector() const;
+  
+  //! Access to the vector of variance values and private attribute:  m_lawVarVector. 
   const V& lawVarVector() const;
-
+//@}
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
@@ -1671,7 +1991,7 @@ protected:
   V*   m_lawVarVector;
   bool m_diagonalCovMatrix;
 };
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqLogNormalJointPdfClass<V,M>::uqLogNormalJointPdfClass(
   const char*                  prefix,
@@ -1704,28 +2024,28 @@ uqLogNormalJointPdfClass<V,M>::uqLogNormalJointPdfClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 template<class V,class M>
 uqLogNormalJointPdfClass<V,M>::~uqLogNormalJointPdfClass()
 {
   delete m_lawVarVector;
   delete m_lawExpVector;
 }
-
+// Math methods-------------------------------------
 template <class V, class M>
 const V&
 uqLogNormalJointPdfClass<V,M>::lawExpVector() const
 {
   return *m_lawExpVector;
 }
-
+//--------------------------------------------------
 template <class V, class M>
 const V&
 uqLogNormalJointPdfClass<V,M>::lawVarVector() const
 {
   return *m_lawVarVector;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqLogNormalJointPdfClass<V,M>::actualValue(
@@ -1779,7 +2099,7 @@ uqLogNormalJointPdfClass<V,M>::actualValue(
 
   return returnValue;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqLogNormalJointPdfClass<V,M>::lnValue(
@@ -1846,7 +2166,7 @@ uqLogNormalJointPdfClass<V,M>::lnValue(
 
   return returnValue;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqLogNormalJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
@@ -1870,23 +2190,58 @@ uqLogNormalJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numS
 //*****************************************************
 // Concatenated probability density class [PDF-11]
 //*****************************************************
+/*! 
+ * \class uqConcatenatedVectorRealizerClass
+ * \brief A class for handling concatenated probability density distributions.
+ *
+ * This class allows the user to defines concatenated probability density distributions, 
+ * i.e, two or more distincts PDFs can be concatened into one single PDF. 
+ * This class used, for instance, to concatenate priors from two or more RVs, where one 
+ * of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. */
+
 template<class V, class M>
 class uqConcatenatedJointPdfClass : public uqBaseJointPdfClass<V,M> {
 public:
+    //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor
+  /*! Concatenates two PDFs: \c density1 and \c density2 into one vector PDF, given a prefix 
+   * and the concatenated domain of such PDFs.*/
   uqConcatenatedJointPdfClass(const char*                     prefix,
                               const uqBaseJointPdfClass<V,M>& density1,
                               const uqBaseJointPdfClass<V,M>& density2,
                               const uqVectorSetClass   <V,M>& concatenatedDomain); 
+  
+  //! Constructor
+  /*! Concatenates a sequence of PDFs, given by: <c> std::vector<const uqBaseJointPdfClass<V,M>* >& densities </c>
+   * into one single PDF, given a prefix and the concatenated domain of such PDFs.*/
   uqConcatenatedJointPdfClass(const char*                                          prefix,
                               const std::vector<const uqBaseJointPdfClass<V,M>* >& densities,
                               const uqVectorSetClass<V,M>&                         concatenatedDomain); 
- ~uqConcatenatedJointPdfClass();
+  
+  //! Destructor
+  ~uqConcatenatedJointPdfClass();
+  //@}
 
+  //! @name Math methods
+  //@{ 
+  //! Calculates the actual values of each density.
+  /*! The final actual value is the multiplication of all values calculated.*/
   double actualValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Calculates the logarithm of the values of each density.
+  /*! The final logarithm value is the addition of all values calculated.*/
   double lnValue              (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
+  
+  //! Sets the normalization style of all densities to \c value.
   void   setNormalizationStyle(unsigned int value) const;
+  
+  //! Computes the logarithm of the normalization factor.
+  /*! This method calls the computeLogOfNormalizationFactor() for each one of the densities that have 
+   * been concatenated.*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
-
+  //@}
+  
 protected:
   using uqBaseScalarFunctionClass<V,M>::m_env;
   using uqBaseScalarFunctionClass<V,M>::m_prefix;
@@ -1895,7 +2250,7 @@ protected:
 
   std::vector<const uqBaseJointPdfClass<V,M>* > m_densities;
 };
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqConcatenatedJointPdfClass<V,M>::uqConcatenatedJointPdfClass(
   const char*                     prefix,
@@ -1918,7 +2273,7 @@ uqConcatenatedJointPdfClass<V,M>::uqConcatenatedJointPdfClass(
                       "uqConcatenatedJointPdfClass<V,M>::constructor(1)",
                       "incompatible dimensions");
 }
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqConcatenatedJointPdfClass<V,M>::uqConcatenatedJointPdfClass(
   const char*                                          prefix,
@@ -1941,12 +2296,12 @@ uqConcatenatedJointPdfClass<V,M>::uqConcatenatedJointPdfClass(
                       "uqConcatenatedJointPdfClass<V,M>::constructor(2)",
                       "incompatible dimensions");
 }
-
+// Destructor --------------------------------------
 template<class V,class M>
 uqConcatenatedJointPdfClass<V,M>::~uqConcatenatedJointPdfClass()
 {
 }
-
+// Math methods-------------------------------------
 template<class V,class M>
 void
 uqConcatenatedJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
@@ -1956,7 +2311,7 @@ uqConcatenatedJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) cons
   }
   return;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqConcatenatedJointPdfClass<V,M>::actualValue(
@@ -2012,7 +2367,7 @@ uqConcatenatedJointPdfClass<V,M>::actualValue(
 
   return returnValue;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqConcatenatedJointPdfClass<V,M>::lnValue(
@@ -2063,7 +2418,7 @@ uqConcatenatedJointPdfClass<V,M>::lnValue(
 
   return returnValue;
 }
-
+//--------------------------------------------------
 template<class V, class M>
 double
 uqConcatenatedJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const

@@ -55,7 +55,7 @@ template<class V, class M>
 class uqBaseVectorRealizerClass {
 public:
   
-      //! @name Constructor/Destructor methods
+  //! @name Constructor/Destructor methods
   //@{
   //! Default constructor
   /*! Constructs a new object, given a prefix and the image set of the vector realizer.*/
@@ -1230,7 +1230,7 @@ public:
                                     const uqVectorSetClass<V,M>&          unifiedImageSet);
   //! Constructor
   /*! Concatenates a sequence of RVs, given by: <c> std::vector<const uqBaseVectorRVClass<V,M>* >& rvs </c>
-   * into one singke vector RV, given a prefix and the image set of the resulting vector RV.*/
+   * into one single vector RV, given a prefix and the image set of the resulting vector RV.*/
   uqConcatenatedVectorRealizerClass(const char*                                                prefix,
                                     const std::vector<const uqBaseVectorRealizerClass<V,M>* >& realizers,
                                     unsigned int                                               minPeriod,
