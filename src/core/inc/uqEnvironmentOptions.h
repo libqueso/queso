@@ -58,7 +58,7 @@
 /*! \class uqEnvironmentOptionsClass
  *  \brief This class reads options one can pass to a QUESO environment through an input file.
  * 
- *  QUESO expects the user to provide an input file with environment options for the library variabled. 
+ *  QUESO expects the user to provide an input file with environment options for the library variables. 
  *  This class reads the input options for QUESO environment variables. */
  
 class uqEnvironmentOptionsClass
@@ -77,21 +77,21 @@ public:
  ~uqEnvironmentOptionsClass();
  //@}
 
- //! @name I/O methodos
+ //! @name I/O methods
  //@{
  //! Scans option values from input file.
   void scanOptionsValues();
   
-  //! Print values os the options chosen.
+  //! Print values of the options chosen.
   void print            (std::ostream& os) const;
   //@}
   
   
-  //! Instance of uqEnvOptionsValuesClass, a class with default values for QUESO enviroment.
+  //! Instance of uqEnvOptionsValuesClass, a class with default values for QUESO environment.
   uqEnvOptionsValuesClass  m_ov;
 
 private:
-  //! Define my enviroment options as the default options
+  //! Define my environment options as the default options
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   
   //! Gets the option values of the environment.
@@ -111,25 +111,25 @@ private:
 
   std::string              m_option_help;
 
-  //! My number of subenvironments.
+  //! My number of sub-environments.
   std::string              m_option_numSubEnvironments;
   
   //! My output filename for sub-screen writing.
   std::string              m_option_subDisplayFileName;
   
-  //! Allows (or not) all subenvironments to write to output file.
+  //! Allows (or not) all sub-environments to write to output file.
   std::string              m_option_subDisplayAllowAll;
   
   //! Allows (or not) all inter0 nodes to write to output file
   std::string              m_option_subDisplayAllowInter0;
   
-  //! Subenvironments that will write to output.
+  //! Sub-environments that will write to output.
   std::string              m_option_subDisplayAllowedSet;
   
   //! Verbosity.
   std::string              m_option_displayVerbosity;
   
-  //! Syncronized verbosity.
+  //! Synchronized verbosity.
   std::string              m_option_syncVerbosity;
   
   //! Checking level

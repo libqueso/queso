@@ -75,33 +75,33 @@ public:
   //! 	Copies values from vector rhs to \c this. 
   uqGslVectorClass& operator= (const uqGslVectorClass& rhs);
   
-  //! Stores in \c this the cordinate-wise multiplication of \c this and a.
+  //! Stores in \c this the coordinate-wise multiplication of \c this and a.
   uqGslVectorClass& operator*=(double a);
   
-  //! Stores in \c this the cordinate-wise division of \c this by a.
+  //! Stores in \c this the coordinate-wise division of \c this by a.
   uqGslVectorClass& operator/=(double a);
   
-  //! Stores in \c this the cordinate-wise multipication of \c this with rhs.
+  //! Stores in \c this the coordinate-wise multiplication of \c this with rhs.
   uqGslVectorClass& operator*=(const uqGslVectorClass& rhs);
   
-  //! Stores in \c this the cordinate-wise division of \c this by rhs.
+  //! Stores in \c this the coordinate-wise division of \c this by rhs.
   uqGslVectorClass& operator/=(const uqGslVectorClass& rhs);
   
-   //! Stores in \c this the cordinate-wise addition of \c this and rhs.
+   //! Stores in \c this the coordinate-wise addition of \c this and rhs.
   uqGslVectorClass& operator+=(const uqGslVectorClass& rhs);
   
-  //! Stores in \c this the cordinate-wise subtraction of \c this by rhs.
+  //! Stores in \c this the coordinate-wise subtraction of \c this by rhs.
   uqGslVectorClass& operator-=(const uqGslVectorClass& rhs);
   //@}
   
   //! @name Accessor methods.
   //@{
   //! Element access method (non-const).
-  /*! Returns the ith element if x[i] is specified, the expression x(i) will return the same element.*/  
+  /*! Returns the i-th element if x[i] is specified, the expression x(i) will return the same element.*/  
             double& operator[](unsigned int i);
 	    
   //! Element access method (const).
-  /*! Returns the ith element if x[i] is specified, the expression x(i) will return the same element.*/ 
+  /*! Returns the i-th element if x[i] is specified, the expression x(i) will return the same element.*/ 
 	    
       const double& operator[](unsigned int i) const;
   //@}
@@ -171,7 +171,7 @@ public:
   //! This function inverts component-wise the element values of \c this.  
   void         cwInvert         ();
   
-  //! This function returns compoments-wise the square-root of \c this.  
+  //! This function returns component-wise the square-root of \c this.  
   void         cwSqrt           ();
   //@}
 
@@ -247,7 +247,7 @@ private:
   gsl_vector* m_vec;
 };
 
-// Coments in this part of file don't appear in the doxygen docs.
+// Comments in this part of file don't appear in the doxygen docs.
 
 uqGslVectorClass operator/    (      double a,              const uqGslVectorClass& x  );
 uqGslVectorClass operator/    (const uqGslVectorClass& x,   const uqGslVectorClass& y  );

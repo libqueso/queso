@@ -43,7 +43,7 @@
     \brief Class for random number generation (base class). 
     
     This class is  a “virtual” class of generic random number generator, in order 
-    to accomodate either GSL or Boost rng. 
+    to accommodate either GSL or Boost RNG. 
 */
 
 

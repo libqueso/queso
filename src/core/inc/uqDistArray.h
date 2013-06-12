@@ -38,18 +38,18 @@
 
 
 /*! \file uqDistArray.h
-    \brief A class to store row-oriented multivectors of type T.
+    \brief A class to store row-oriented multi-vectors of type T.
 */
 
 /*! \class uqDistArrayClass
     \brief A class for partitioning vectors and matrices.
     
-    Class DistArray allows the construction and usage of multivectors. 
+    Class DistArray allows the construction and usage of multi-vectors. 
     These vectors contain element of type T, and the storage is row-oriented 
     (instead of and not column-oriented; thus his class should be used as a container 
     for data, on which no BLAS-like operations are performed). 
       
-    DistArray objects are indentified by an uqMap and a RowSize. The map specifies 
+    DistArray objects are identified by an uqMap and a RowSize. The map specifies 
     the distribution of the elements across the processors and therefore the number 
     of local elements, while the RowSize gives the total number of data assigned to
     each node. RowSize is constant for all elements.

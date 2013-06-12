@@ -74,7 +74,7 @@ struct uqFilePtrSetStruct {
 
 //------------------------------------------------------------------------
 // Library versioning routines: we include them in a QUESO namespace
-// here so that mutiple classes can use them as required (and so we
+// here so that multiple classes can use them as required (and so we
 // can have a standalone versioning binary which does not require a full
 // QUESO MPI environment.
 //------------------------------------------------------------------------
@@ -241,10 +241,10 @@ public:
   //! Access function to the number of sub-environments.
   unsigned int    numSubEnvironments    () const;
   
-  //! Access function to the number of each sub-enviroment Id: m_subId.
+  //! Access function to the number of each sub-environment Id: m_subId.
   unsigned int    subId () const;
   
-  //! Access to the attribute m_subIdString; which stores the string for the sub-enviroment, and it will be used, for instance,    to create the output files for each sub-enviroment.
+  //! Access to the attribute m_subIdString; which stores the string for the sub-environment, and it will be used, for instance,    to create the output files for each sub-environment.
   const std::string&      subIdString   () const;
   
   //TODO Not implemented?
@@ -289,7 +289,7 @@ public:
   //! Access to the RNG seed.
   int                   seed       () const;
 
-  //! Access to Basic Pdfs.
+  //! Access to Basic PDFs.
   const uqBasicPdfsBaseClass* basicPdfs() const;
   
   //! Access to the platform name.
@@ -332,10 +332,10 @@ public:
   //! Closes the file.				 
   void    closeFile     (uqFilePtrSetStruct& filePtrSet, const std::string& fileType) const; 
   
-  //! Set an exceptional circunstance.
+  //! Set an exceptional circumstance.
   void    setExceptionalCircunstance    (bool value) const;
   
-    //! Decides whether there is an exceptional circunstance.
+    //! Decides whether there is an exceptional circumstance.
   bool    exceptionalCircunstance       () const;
   
 
@@ -415,7 +415,7 @@ public:
     //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  /*! It initializes the full communicator, reads the options, deals with multiple subenvironments, 
+  /*! It initializes the full communicator, reads the options, deals with multiple sub-environments, 
    * e.g. dealing with sub/self/inter0-communicators, handles path for output files. */
   uqFullEnvironmentClass(uqRawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, const uqEnvOptionsValuesClass* alternativeOptionsValues);
  

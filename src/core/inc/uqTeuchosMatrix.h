@@ -186,7 +186,7 @@ public:
   //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with uqTeuchosMatrixClass::svd (x=solMat, b=rhsMat).
   /*! Note that solMat is a matrix. Thus, to solve the system of equations '\this * solMath = rhsMat', this method calls 
    * svdSolve(const uqTeuchosVectorClass& rhsVec, uqTeuchosVectorClass& solVec)
-   * passing one column of solMat with its repective column of rhsMat, .*/
+   * passing one column of solMat with its respective column of rhsMat, .*/
   int               svdSolve               (const uqTeuchosMatrixClass& rhsMat, uqTeuchosMatrixClass& solMat) const;
 
   
@@ -354,7 +354,7 @@ private:
   //! Teuchos matrix, also referred to as \c this matrix.
   Teuchos::SerialDenseMatrix<int,double> m_mat;
   
-  //! TECHOS matrix for the LU decomposition of m_mat.	  
+  //! Teuchos matrix for the LU decomposition of m_mat.	  
   mutable Teuchos::SerialDenseMatrix<int,double> m_LU; 
   
   //! Stores the inverse of \c this matrix.

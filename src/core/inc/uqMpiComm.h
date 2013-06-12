@@ -209,7 +209,7 @@ public:
 			       
 //! @name Miscellaneous Methods
   //@{			       
-  //! Sincronizes all the processes and print debug message.
+  //! Synchronizes all the processes and print debug message.
   void               syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs) const;
 
 #ifdef QUESO_HAS_TRILINOS

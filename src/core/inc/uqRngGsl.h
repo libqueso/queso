@@ -77,14 +77,14 @@ public:
   //! Samples a value from a uniform distribution. Support: [0,1] or [a,b].
   /*! This function samples from continuous uniform distribution on the range [0,1). It is
    * possible to scale this distribution so the support is defined by the two parameters, 
-   * a and b, which are its minimum and maximum values. Suport: -infinity < a < x< b< infinity.
+   * a and b, which are its minimum and maximum values. Support: -infinity < a < x< b< infinity.
    * Uses gsl_rng_uniform(m_rng).*/
   double   uniformSample ()                          const;
   
   //! Samples a value from a Gaussian distribution with standard deviation given by \c stdDev.  
   //! Support:  (-infinity, infinity).
-  /*! The parameter mu (mean or expectation of the distribution) in this Gaussin sample is 
-   * set to zero, and thus, needs to be provided in an aternative way (e.g., in the form of 
+  /*! The parameter mu (mean or expectation of the distribution) in this Gaussian sample is 
+   * set to zero, and thus, needs to be provided in an alternative way (e.g., in the form of 
    * a sum. The parameter stdDev is its standard deviation; its variance is therefore stdDev^2. 
    * A random variable with a Gaussian distribution is said to be normally distributed and is 
    * called a normal deviate. Uses gsl_ran_gaussian(). Support: (-infinity, infinity). */

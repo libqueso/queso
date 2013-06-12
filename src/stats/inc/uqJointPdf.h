@@ -312,7 +312,7 @@ public:
     //! @name Constructor/Destructor methods
   //@{
   //! Default constructor. 
-  /*! Instatiates an object of this class given a prefix and a scalar function.
+  /*! Instantiates an object of this class given a prefix and a scalar function.
   /*! The domain of the scalar function is assigned to the protected attribute m_domainSet, 
    * and the scalar fuction is also itself copied to the protected attribute m_scalarFunction.*/
   uqBayesianJointPdfClass(const char*                           prefix,

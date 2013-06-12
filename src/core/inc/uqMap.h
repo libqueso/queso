@@ -114,7 +114,7 @@ private:
   //! Epetra_Map
   Epetra_Map*    m_epetraMap;
 #else
-  //! Ttotal number of elements across all processors.
+  //! Total number of elements across all processors.
   int            m_numGlobalElements;
   
   //!  Base integer value for indexed array references. 

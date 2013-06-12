@@ -97,13 +97,13 @@ const int UQ_MATRIX_SVD_FAILED_RC          = -11;
 
 
 /*! \file uqDefines.h
-    \brief Definitions and a class to provide default optiond to  pass to a QUESO environment.
+    \brief Definitions and a class to provide default options to  pass to a QUESO environment.
 */
 
 /*! \class uqEnvOptionsValuesClass
  *  \brief This class provides a suite options one can pass to a QUESO environment.
  * 
- *  QUESO expects the user to provide an input file with environment options for the library variabled.
+ *  QUESO expects the user to provide an input file with environment options for the library variables.
  *  If no input file, a collection of default values is assigned to some of the variables. The class
  *  uqEnvOptionsValuesClass is responsible for this task.
  */
@@ -130,25 +130,25 @@ public:
  //@}
 
   //! @name Attributes
- //! Number of subenvironments.
+ //! Number of sub-environments.
   unsigned int           m_numSubEnvironments;
   
   //! Output filename for sub-screen writing.
   std::string            m_subDisplayFileName;
   
-  //! Allows (or not) all subenvironments to write to output file.
+  //! Allows (or not) all sub-environments to write to output file.
   bool                   m_subDisplayAllowAll;
   
   //! Allows (or not) all inter0 nodes to write to output file
   bool                   m_subDisplayAllowInter0;
   
-  //! Subenvironments that will write to output.
+  //! Sub-environments that will write to output.
   std::set<unsigned int> m_subDisplayAllowedSet;
   
   //! Verbosity.
   unsigned int           m_displayVerbosity;
   
-  //! Syncronized verbosity.
+  //! Synchronized verbosity.
   unsigned int           m_syncVerbosity;
   
   //! Checking level
