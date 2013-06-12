@@ -71,10 +71,10 @@ public:
  //! Shaped constructor: creates an vector of values \c value and of size given by uqMapClass& map.
   uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double value);
   
- //! Shaped constructor: creates an vector of size given by uqMapClass& map and of values given by an average envolving \c d1, \c d2 and the vector size.
+ //! Shaped constructor: creates an vector of size given by uqMapClass& map and of values given by an average involving \c d1, \c d2 and the vector size.
   uqTeuchosVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const uqMapClass& map);
  
-  //! Shaped constructor: creates an vector of size given by vector \c v and of values given by an average envolving \c d1, \c d2 and \c \this vector size.
+  //! Shaped constructor: creates an vector of size given by vector \c v and of values given by an average involving \c d1, \c d2 and \c \this vector size.
   uqTeuchosVectorClass(const uqTeuchosVectorClass&         v, double d1, double d2);                   
   
   //! Copy constructor.
@@ -93,22 +93,22 @@ public:
   //! Copies values from one vector to another. 
   uqTeuchosVectorClass& operator= (const uqTeuchosVectorClass& rhs);
   
-  //! Stores in \c this vector the cordinate-wise multiplication of \c this and a.
+  //! Stores in \c this vector the coordinate-wise multiplication of \c this and a.
   uqTeuchosVectorClass& operator*=(double a);
   
-  //! Stores in \c this vector the cordinate-wise division of \c this by a.
+  //! Stores in \c this vector the coordinate-wise division of \c this by a.
   uqTeuchosVectorClass& operator/=(double a);
   
-  //! Stores in \c this vector the cordinate-wise multipication of \c this with rhs.
+  //! Stores in \c this vector the coordinate-wise multiplication of \c this with rhs.
   uqTeuchosVectorClass& operator*=(const uqTeuchosVectorClass& rhs);
   
-  //! Stores in \c this vector the cordinate-wise division of \c this by rhs.
+  //! Stores in \c this vector the coordinate-wise division of \c this by rhs.
   uqTeuchosVectorClass& operator/=(const uqTeuchosVectorClass& rhs);
   
-   //! Stores in \c this vector the cordinate-wise addition of \c this and rhs.
+   //! Stores in \c this vector the coordinate-wise addition of \c this and rhs.
   uqTeuchosVectorClass& operator+=(const uqTeuchosVectorClass& rhs);
   
-   //! Stores in \c this vector the cordinate-wise subtraction of \c this and \c rhs.
+   //! Stores in \c this vector the coordinate-wise subtraction of \c this and \c rhs.
   uqTeuchosVectorClass& operator-=(const uqTeuchosVectorClass& rhs);
   //@}
 
@@ -186,19 +186,19 @@ public:
   
     //! @name Set methods.
   //@{ 
-  //! Component-wise set all values to \c this with value.
+  //! Component-wise sets all values to \c this with value.
   void	       cwSet(double value);
   
-  //! Component-wise set all values of \c this with vector \c vec, starting at position \c initialPos.
+  //! Component-wise sets all values of \c this with vector \c vec, starting at position \c initialPos.
   void         cwSet(unsigned int initialPos, const uqTeuchosVectorClass& vec);
   
-  //! Component-wise extract all values of \c this with vector \c vec, starting at position \c initialPos.
+  //! Component-wise extracts all values of \c this with vector \c vec, starting at position \c initialPos.
   void         cwExtract(unsigned int initialPos, uqTeuchosVectorClass& vec) const; 
   
   //! This function inverts component-wise the element values of \c this.  
   void         cwInvert();
   
-  //! Compoments-wise set the square-root of \c this.  
+  //! Component-wise sets the square-root of \c this.  
   void         cwSqrt();
   
   //! This function concatenates vectors \c v1 and \c v2 into \c this vector.

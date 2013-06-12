@@ -135,7 +135,7 @@ public:
   
   //! @name Set methods.
   //@{ 
-  //! Component-wise set all values to \c this with value.
+  //! Component-wise sets all values to \c this with value.
   void         cwSet            (double value);
   
   //! This function sets component-wise Gaussian random variates, with mean mean and standard deviation stdDev.
