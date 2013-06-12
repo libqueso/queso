@@ -66,11 +66,10 @@ public:
     //! @name Mathematical methods.
   //@{  
   //! Access to the protected attribute \c m_domainSet: domain set of the scalar function.
-  const uqVectorSetClass<V,M>& domainSet  ()  
+  const uqVectorSetClass<V,M>& domainSet  ()  const;
   
   
   //! Actual value of the scalar function.
-  const;
   virtual       double                 actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
   
   //! Logarithm of the value of the scalar function.
