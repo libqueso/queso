@@ -333,10 +333,10 @@ public:
   void    closeFile     (uqFilePtrSetStruct& filePtrSet, const std::string& fileType) const; 
   
   //! Set an exceptional circumstance.
-  void    setExceptionalCircunstance    (bool value) const;
+  void    setExceptionalCircumstance    (bool value) const;
   
     //! Decides whether there is an exceptional circumstance.
-  bool    exceptionalCircunstance       () const;
+  bool    exceptionalCircumstance       () const;
   
 
   virtual void    print (std::ostream& os) const = 0;
@@ -374,7 +374,7 @@ protected:
   uqRngBaseClass*    	     m_rngObject;
   uqBasicPdfsBaseClass*      m_basicPdfs;
   struct timeval             m_timevalBegin;
-  mutable bool       	     m_exceptionalCircunstance;
+  mutable bool       	     m_exceptionalCircumstance;
 
   uqEnvOptionsValuesClass    m_alternativeOptionsValues;
   uqEnvironmentOptionsClass* m_optionsObj;

@@ -676,7 +676,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
   }
   if ((m_debugExponent == 1.) && 
       (m_currStep      == 10)) {
-    //m_env.setExceptionalCircunstance(true);
+    //m_env.setExceptionalCircumstance(true);
   }
   unsigned int cumulativeNumPositions = 0;
   for (unsigned int chainId = 0; chainId < chainIdMax; ++chainId) {
@@ -738,7 +738,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
     cumulativeRejections += mcRawInfo.numRejections;
 
     if (m_env.inter0Rank() >= 0) {
-      if (m_env.exceptionalCircunstance()) {
+      if (m_env.exceptionalCircumstance()) {
         if ((m_env.subDisplayFile()       ) &&
             (m_env.displayVerbosity() >= 0)) { // detailed output debug
           P_V tmpVec(m_vectorSpace.zeroVector());
@@ -754,7 +754,7 @@ uqMLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALAN
       } // exceptional
 
       cumulativeNumPositions += tmpChainSize;
-      if (cumulativeNumPositions > 100) m_env.setExceptionalCircunstance(false);
+      if (cumulativeNumPositions > 100) m_env.setExceptionalCircumstance(false);
         
       if ((m_env.subDisplayFile()       ) &&
           (m_env.displayVerbosity() >= 3)) {
@@ -911,7 +911,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
   }
   if ((m_debugExponent == 1.) && 
       (m_currStep      == 10)) {
-    //m_env.setExceptionalCircunstance(true);
+    //m_env.setExceptionalCircumstance(true);
   }
   unsigned int cumulativeNumPositions = 0;
   for (unsigned int chainId = 0; chainId < chainIdMax; ++chainId) {
@@ -973,7 +973,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
     cumulativeRejections += mcRawInfo.numRejections;
 
     if (m_env.inter0Rank() >= 0) {
-      if (m_env.exceptionalCircunstance()) {
+      if (m_env.exceptionalCircumstance()) {
         if ((m_env.subDisplayFile()       ) &&
             (m_env.displayVerbosity() >= 0)) { // detailed output debug
           P_V tmpVec(m_vectorSpace.zeroVector());
@@ -989,7 +989,7 @@ uqMLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
       } // exceptional
     
       cumulativeNumPositions += tmpChainSize;
-      if (cumulativeNumPositions > 100) m_env.setExceptionalCircunstance(false);
+      if (cumulativeNumPositions > 100) m_env.setExceptionalCircumstance(false);
         
       if ((m_env.subDisplayFile()       ) &&
           (m_env.displayVerbosity() >= 3)) {
