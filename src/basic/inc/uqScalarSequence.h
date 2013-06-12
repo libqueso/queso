@@ -182,12 +182,12 @@ public:
                                              uqUniformOneDGridClass<T>*&     gridValues,
                                              std::vector<T>&                 cdfValues) const;
   //! Finds the Weighted Cumulative Distribution Function (CDF) of the sub-sequence of scalars.
-  void         subWeigthCdf                 (unsigned int                    numIntervals,
+  void         subWeightCdf                 (unsigned int                    numIntervals,
                                              std::vector<T>&                 gridValues,
                                              std::vector<T>&                 cdfValues) const;
   
   //! Finds the Weighted Cumulative Distribution Function (CDF) of the sub-sequence of scalars.  
-  void         subWeigthCdf                 (unsigned int                    numIntervals,
+  void         subWeightCdf                 (unsigned int                    numIntervals,
                                              uqUniformOneDGridClass<T>*&     gridValues,
                                              std::vector<T>&                 cdfValues) const;
   
@@ -324,7 +324,7 @@ public:
    * (\c minHorizontalValue) values if the data and the initial position (\c initialPos) 
    * from where the data will be considered. Output: grid values that will act as the center 
    * of each bin (\c gridValues) and the number of data occurrences in each bin (\c bins).*/
-  void         subWeigthHistogram           (unsigned int                    initialPos,
+  void         subWeightHistogram           (unsigned int                    initialPos,
                                              const T&                        minHorizontalValue,
                                              const T&                        maxHorizontalValue,
                                              uqUniformOneDGridClass<T>*&     gridValues,
@@ -332,7 +332,7 @@ public:
   //! Calculates the weighted histogram of the sub-sequence.
   /*! In this method, \c gridValues is a std::vector<T>, but internally, it will be copied to an 
    * structure of the type uqUniformOneDGridClass<T>. */
-  void         subWeigthHistogram           (unsigned int                    initialPos,
+  void         subWeightHistogram           (unsigned int                    initialPos,
                                              const T&                        minHorizontalValue,
                                              const T&                        maxHorizontalValue,
                                              std::vector<T>&                 gridValues,
@@ -1274,7 +1274,7 @@ uqScalarSequenceClass<T>::subBasicCdf(
 // --------------------------------------------------
 template <class T>
 void
-uqScalarSequenceClass<T>::subWeigthCdf(
+uqScalarSequenceClass<T>::subWeightCdf(
   unsigned int    numEvaluationPoints,
   std::vector<T>& gridValues,
   std::vector<T>& cdfValues) const
@@ -1302,7 +1302,7 @@ uqScalarSequenceClass<T>::subWeigthCdf(
     }
   }
 
-  subWeigthHistogram(0, // initialPos,
+  subWeightHistogram(0, // initialPos,
                      tmpMinValue,
                      tmpMaxValue,
                      gridValues,
@@ -1326,7 +1326,7 @@ uqScalarSequenceClass<T>::subWeigthCdf(
 // --------------------------------------------------
 template <class T>
 void
-uqScalarSequenceClass<T>::subWeigthCdf(
+uqScalarSequenceClass<T>::subWeightCdf(
   unsigned int                numEvaluationPoints,
   uqUniformOneDGridClass<T>*& gridValues,
   std::vector<T>&             cdfValues) const
@@ -1339,7 +1339,7 @@ uqScalarSequenceClass<T>::subWeigthCdf(
                  this->subSequenceSize(),
                  tmpMinValue,
                  tmpMaxValue);
-  subWeigthHistogram(0, // initialPos,
+  subWeightHistogram(0, // initialPos,
                      tmpMinValue,
                      tmpMaxValue,
                      gridValues,
@@ -2394,7 +2394,7 @@ uqScalarSequenceClass<T>::subBasicHistogram(
 // --------------------------------------------------
 template <class T>
 void
-uqScalarSequenceClass<T>::subWeigthHistogram(
+uqScalarSequenceClass<T>::subWeightHistogram(
   unsigned int                initialPos,
   const T&                    minHorizontalValue,
   const T&                    maxHorizontalValue,
@@ -2403,7 +2403,7 @@ uqScalarSequenceClass<T>::subWeigthHistogram(
 {
   UQ_FATAL_TEST_MACRO(bins.size() < 3,
                       m_env.worldRank(),
-                      "uqScalarSequenceClass<T>::subWeigthHistogram()",
+                      "uqScalarSequenceClass<T>::subWeightHistogram()",
                       "number of 'bins' is too small: should be at least 3");
 
   for (unsigned int j = 0; j < bins.size(); ++j) {
@@ -2439,7 +2439,7 @@ uqScalarSequenceClass<T>::subWeigthHistogram(
 // --------------------------------------------------
 template <class T>
 void
-uqScalarSequenceClass<T>::subWeigthHistogram(
+uqScalarSequenceClass<T>::subWeightHistogram(
   unsigned int               initialPos,
   const T&                   minHorizontalValue,
   const T&                   maxHorizontalValue,
@@ -2448,7 +2448,7 @@ uqScalarSequenceClass<T>::subWeigthHistogram(
 {
   UQ_FATAL_TEST_MACRO(bins.size() < 3,
                       m_env.worldRank(),
-                      "uqScalarSequenceClass<T>::subWeigthHistogram()",
+                      "uqScalarSequenceClass<T>::subWeightHistogram()",
                       "number of 'bins' is too small: should be at least 3");
 
   for (unsigned int j = 0; j < bins.size(); ++j) {
@@ -2484,7 +2484,7 @@ uqScalarSequenceClass<T>::subWeigthHistogram(
     }
   }
 
-  //std::cout << "In uqScalarSequenceClass<T>::subWeigthHistogram():" << std::endl;
+  //std::cout << "In uqScalarSequenceClass<T>::subWeightHistogram():" << std::endl;
   //for (unsigned int j = 0; j < bins.size(); ++j) {
   //  std::cout << "bins[" << j << "] = " << bins[j] << std::endl;
   //}
