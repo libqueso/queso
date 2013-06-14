@@ -36,8 +36,19 @@
 #include <math.h>
 
 //*****************************************************
-// Classes to accomodate a cumulative distribution function
+// Classes to accommodate a cumulative distribution function
 //*****************************************************
+/*! \file uqVectorCdf.h
+ * \brief Classes to accommodate a cumulative distribution function of a vector RV.
+ * 
+ * \class uqBaseVectorCdfClass
+ * \brief A templated (base) class for handling CDFs of vector functions.
+ * 
+ * In many applications is necessary to consider the properties of two or more RVs 
+ * simultaneously (represented within QUESO as Random Vectors, via uqBaseVectorRVClass 
+ * and derived classes). When dealing simultaneously with more than one RV, ie, a vector
+ * RV, the joint cumulative distribution function must also be defined. This class handles
+ * the CDFs of vector RV, which are referred to as  multivariate/vector/joint CDFs.*/
 
 //*****************************************************
 // Base class
@@ -45,26 +56,50 @@
 template<class V, class M>
 class uqBaseVectorCdfClass {
 public:
-           uqBaseVectorCdfClass(const char*                  prefix,
-                                const uqVectorSetClass<V,M>& pdfSupport);
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
+  /*! Instantiates an object of the class  given a prefix and the support (image set) of the PDF that is 
+   * related to this CDF (recall that the CDF of a continuous RV is the integral of the PDF of that RV).*/
+  uqBaseVectorCdfClass(const char*                  prefix,
+		       const uqVectorSetClass<V,M>& pdfSupport);
+  
+  //! Virtual destructor.
   virtual ~uqBaseVectorCdfClass();
+  //@}
 
-          const uqVectorSetClass<V,M>&        pdfSupport      ()                                const;
+  //! @name Mathematical methods
+  //@{
+  //! Returns the image set (support) of the PDF; access to protected attribute \c m_pdfSupport.
+  const uqVectorSetClass<V,M>&        pdfSupport      ()                                const;
+  
+  //! Finds the value of the vector CDF at each element of \c paramValue, and saves it in \c cdfVec. See template specialization.  
   virtual void                                values          (const V& paramValues, V& cdfVec) const = 0;
+  
+  //!
   virtual const uqBaseScalarCdfClass<double>& cdf             (unsigned int rowId)              const = 0;
+  //@}
+  
+  //! @name I/O methods
+  //@{ 
+  //! Prints the vector CDF. See template specialization. 
   virtual void                                print           (std::ostream& os)                const = 0;
+  
+  
+  //! Writes the CDF of an allowed sub-environment to a file. 
+  /*! This function does nothing and should \n not be called by the user.*/
   virtual void                                subWriteContents(const std::string&            varNamePrefix,
                                                                const std::string&            fileName,
                                                                const std::string&            fileType,
                                                                const std::set<unsigned int>& allowedSubEnvIds) const;
-
+  //@}
 protected:
 
   const   uqBaseEnvironmentClass& m_env;
           std::string             m_prefix;
   const   uqVectorSetClass<V,M>&  m_pdfSupport;
 };
-
+// Default constructor -----------------------------
 template<class V, class M>
 uqBaseVectorCdfClass<V,M>::uqBaseVectorCdfClass(
   const char*                  prefix,
@@ -86,19 +121,19 @@ uqBaseVectorCdfClass<V,M>::uqBaseVectorCdfClass(
                            << std::endl;
   }
 }
-
+// Destructor ---------------------------------------
 template<class V, class M>
 uqBaseVectorCdfClass<V,M>::~uqBaseVectorCdfClass()
 {
 }
-
+// Math methods--------------------------------------
 template<class V, class M>
 const uqVectorSetClass<V,M>&
 uqBaseVectorCdfClass<V,M>::pdfSupport() const
 {
   return m_pdfSupport;
 }
-
+// I/O methods---------------------------------------
 template<class V, class M>
 void
 uqBaseVectorCdfClass<V,M>::subWriteContents(
@@ -116,7 +151,10 @@ uqBaseVectorCdfClass<V,M>::subWriteContents(
   if (&allowedSubEnvIds) {}; // just to remove compiler warning
   return;
 }
-
+// --------------------------------------------------
+// Operator defined outside class limits-------------
+// --------------------------------------------------
+//! Operator to be used with print().
 template <class V, class M>
   std::ostream& operator<< (std::ostream& os, const uqBaseVectorCdfClass<V,M>& obj)
 {
@@ -125,20 +163,43 @@ template <class V, class M>
 }
 
 //*****************************************************
-// Generic cumulative distibution function class
+// Generic cumulative distribution function class
 //*****************************************************
+/*! 
+ * \class uqGenericVectorCdfClass
+ * \brief A class for handling generic vector CDFs.
+ *
+ * This class \b will implement a generic vector cumulative distribution function (CDF).*/
+ 
 template<class V, class M>
 class uqGenericVectorCdfClass : public uqBaseVectorCdfClass<V,M> {
 public:
+    //! @name Constructor/Destructor methods
+  //@{ 
+  //! Constructor.
+  /*! Instantiates an object of the class given a prefix, the support of the related-PDF, and 
+   * a routine that calculates data (like a math function). */
   uqGenericVectorCdfClass(const char*                  prefix,
                           const uqVectorSetClass<V,M>& pdfSupport,
                           double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& cdfVec),
                           const void*                  routineDataPtr);
- ~uqGenericVectorCdfClass();
+  //! Destructor
+  ~uqGenericVectorCdfClass();
+  //@}
 
+    //! @name Mathematical method
+  //@{
+  //! TODO: Returns the values of the vector CDF at each element of \c paramValues, by calling \c m_routinePtr. 
   void values(const V& paramValues, V& cdfVec) const;
+  //@}
+  
+  //! @name I/O method
+  //@{ 
+  //! TODO: Prints the vector CDF. 
+  /*! \todo: implement me!*/
   void print (std::ostream& os) const;
-
+  //@}
+  
 protected:
   double (*m_routinePtr)(const V& paramValues, const void* routineDataPtr, V& cdfVec);
   const void* m_routineDataPtr;
@@ -147,7 +208,7 @@ protected:
   using uqBaseVectorCdfClass<V,M>::m_prefix;
   using uqBaseVectorCdfClass<V,M>::m_pdfSupport;
 };
-
+// Constructor ----------------------------------------
 template<class V, class M>
 uqGenericVectorCdfClass<V,M>::uqGenericVectorCdfClass(
   const char*                    prefix,
@@ -160,12 +221,12 @@ uqGenericVectorCdfClass<V,M>::uqGenericVectorCdfClass(
   m_routineDataPtr(routineDataPtr)
 {
 }
-
+// Destructor ---------------------------------------
 template<class V, class M>
 uqGenericVectorCdfClass<V,M>::~uqGenericVectorCdfClass()
 {
 }
-
+// Math method --------------------------------------
 template<class V, class M>
 void
 uqGenericVectorCdfClass<V,M>::values(
@@ -175,7 +236,7 @@ uqGenericVectorCdfClass<V,M>::values(
   m_routinePtr(paramValues, m_routineDataPtr, cdfVec);
   return;
 }
-
+// I/O methods---------------------------------------
 template <class V, class M>
 void
 uqGenericVectorCdfClass<V,M>::print(std::ostream& os) const
@@ -186,21 +247,52 @@ uqGenericVectorCdfClass<V,M>::print(std::ostream& os) const
 //*****************************************************
 // Gaussian cumulative distribution function class
 //*****************************************************
+/*! 
+ * \class uqGaussianVectorCdfClass
+ * \brief TODO: A class for handling Gaussian CDFs.
+ *
+ * This class \b will implement a Gaussian vector cumulative distribution function (CDF). 
+ * \todo: Implement me! */
+
 template<class V, class M>
 class uqGaussianVectorCdfClass : public uqBaseVectorCdfClass<V,M> {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! TODO: Constructor.
+  /*! \todo: implement me! This method calls commonConstructor() which is not yet implemented.
+   *  Instantiates an object of the class given a prefix, the support of the related-PDF, and 
+   * the domain mean and expected values. 
+   */
   uqGaussianVectorCdfClass(const char*                  prefix,
                            const uqVectorSetClass<V,M>& pdfSupport,
                            const V&                     domainExpectedValues,
                            const V&                     domainVarianceValues);
+  //! TODO: Constructor.
+  /*! \todo: implement me! This method calls commonConstructor() which is not yet implemented.
+   * Instantiates an object of the class given a prefix, the support of the related-PDF, and 
+   * the domain mean values and covariance matrix.*/
   uqGaussianVectorCdfClass(const char*                  prefix,
                            const uqVectorSetClass<V,M>& pdfSupport,
                            const V&                     domainExpectedValues,
                            const M&                     covMatrix);
- ~uqGaussianVectorCdfClass();
+  // Destructor
+  ~uqGaussianVectorCdfClass();
+  //@}
 
+  //! @name Mathematical method
+  //@{
+  //! TODO: Returns the values of the vector CDF at each element of \c paramValues. 
+  /*! \todo: implement me!*/
   void values(const V& paramValues, V& cdfVec) const;
+  //@}
+  
+  //! @name I/O method
+  //@{ 
+  //! TODO: Prints the vector CDF. 
+  /*! \todo: implement me!*/
   void print (std::ostream& os) const;
+  //@}
 
 protected:
   const M*                         m_covMatrix;
@@ -209,9 +301,10 @@ protected:
   using uqBaseVectorCdfClass<V,M>::m_prefix;
   using uqBaseVectorCdfClass<V,M>::m_pdfSupport;
 
+  //! A common constructor to be used both class constructors.
   void commonConstructor();
 };
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
   const char*                    prefix,
@@ -236,7 +329,7 @@ uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
                            << std::endl;
   }
 }
-
+// Constructor -------------------------------------
 template<class V,class M>
 uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
   const char*                    prefix,
@@ -261,24 +354,13 @@ uqGaussianVectorCdfClass<V,M>::uqGaussianVectorCdfClass(
                            << std::endl;
   }
 }
-
-template<class V,class M>
-void
-uqGaussianVectorCdfClass<V,M>::commonConstructor()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "uqGaussianVectorCdfClass<V,M>::commonConstructor()",
-                      "incomplete code");
-  return;
-}
-
+// Destructor -------------------------------------
 template<class V,class M>
 uqGaussianVectorCdfClass<V,M>::~uqGaussianVectorCdfClass()
 {
   delete m_covMatrix;
 }
-
+// Math method -------------------------------------
 template<class V, class M>
 void
 uqGaussianVectorCdfClass<V,M>::values(
@@ -291,7 +373,7 @@ uqGaussianVectorCdfClass<V,M>::values(
                       "incomplete code");
   return;
 }
-
+// I/O method --------------------------------------
 template <class V, class M>
 void
 uqGaussianVectorCdfClass<V,M>::print(std::ostream& os) const
@@ -299,25 +381,64 @@ uqGaussianVectorCdfClass<V,M>::print(std::ostream& os) const
   return;
 }
 
+// Protected member function------------------------
+template<class V,class M>
+void
+uqGaussianVectorCdfClass<V,M>::commonConstructor()
+{
+  UQ_FATAL_TEST_MACRO(true,
+                      m_env.worldRank(),
+                      "uqGaussianVectorCdfClass<V,M>::commonConstructor()",
+                      "incomplete code");
+  return;
+}
+
 //*****************************************************
 // Sampled cumulative distribution function class
 //*****************************************************
+/*! 
+ * \class uqSampledVectorCdfClass
+ * \brief A class for handling sampled vector CDFs.
+ *
+ * This class implements a sampled vector cumulative distribution function (CDF), given 
+ * the grid points where it will be sampled and it returns its values.*/
+
 template<class V, class M>
 class uqSampledVectorCdfClass : public uqBaseVectorCdfClass<V,M> {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
+  /*! Instantiates an object of the class given a prefix and the grid points 
+   * where it will be sampled/evaluated.*/
   uqSampledVectorCdfClass(const char*                          prefix,
                           const uqArrayOfOneDGridsClass <V,M>& oneDGrids,
                           const uqArrayOfOneDTablesClass<V,M>& cdfValues);
- ~uqSampledVectorCdfClass();
-
-        void                          values(const V& paramValues, V& cdfVec) const;
+  //! Destructor
+  ~uqSampledVectorCdfClass();
+  //@}
+  
+  //! @name Mathematical methods
+  //@{
+  //! TODO: Returns the values of the vector CDF at each element of \c paramValues. 
+  /*! \todo: implement me!*/
+  void                          values(const V& paramValues, V& cdfVec) const;
+  
+  //! Returns a scalar CDF stored at row \c rowId of the vector CDF.
   const uqBaseScalarCdfClass<double>& cdf   (unsigned int rowId)              const;
-        void                          print (std::ostream& os)                const;
-        void                          subWriteContents(const std::string&            varNamePrefix,
-                                                       const std::string&            fileName,
-                                                       const std::string&            fileType,
-                                                       const std::set<unsigned int>& allowedSubEnvIds) const;
-
+  //@}
+  
+    //! @name I/O methods
+  //@{ 
+  //! Prints the vector CDF (values of the grid points and of the CDF at such grid points). 
+  void                          print (std::ostream& os)                const;
+  
+  //!Writes the CDF of an allowed sub-environment to a file. 
+  void                          subWriteContents(const std::string&            varNamePrefix,
+						 const std::string&            fileName,
+						 const std::string&            fileType,
+						 const std::set<unsigned int>& allowedSubEnvIds) const;
+  //@}						 
 protected:
   using uqBaseVectorCdfClass<V,M>::m_env;
   using uqBaseVectorCdfClass<V,M>::m_prefix;
@@ -325,7 +446,7 @@ protected:
 
   uqDistArrayClass<uqSampledScalarCdfClass<double>*> m_cdfs;
 };
-
+// Default constructor -----------------------------
 template<class V,class M>
 uqSampledVectorCdfClass<V,M>::uqSampledVectorCdfClass(
   const char*                          prefix,
@@ -356,7 +477,7 @@ uqSampledVectorCdfClass<V,M>::uqSampledVectorCdfClass(
                            << std::endl;
   }
 }
-
+// Destructor ---------------------------------------
 template<class V,class M>
 uqSampledVectorCdfClass<V,M>::~uqSampledVectorCdfClass()
 {
@@ -364,7 +485,7 @@ uqSampledVectorCdfClass<V,M>::~uqSampledVectorCdfClass()
     if (m_cdfs(i,0)) delete m_cdfs(i,0);
   }
 }
-
+// Math methods--------------------------------------
 template<class V, class M>
 void
 uqSampledVectorCdfClass<V,M>::values(
@@ -377,7 +498,7 @@ uqSampledVectorCdfClass<V,M>::values(
                       "incomplete code");
   return;
 }
-
+// --------------------------------------------------
 template<class V, class M>
 const uqBaseScalarCdfClass<double>&
 uqSampledVectorCdfClass<V,M>::cdf(unsigned int rowId) const
@@ -391,8 +512,7 @@ uqSampledVectorCdfClass<V,M>::cdf(unsigned int rowId) const
   return *(tmp->m_cdfs(rowId,0));
   
 }
-
-
+// I/O methods---------------------------------------
 template <class V, class M>
 void
 uqSampledVectorCdfClass<V,M>::print(std::ostream& os) const
@@ -405,7 +525,7 @@ uqSampledVectorCdfClass<V,M>::print(std::ostream& os) const
 
   return;
 }
-
+//---------------------------------------------------
 template<class V, class M>
 void
 uqSampledVectorCdfClass<V,M>::subWriteContents(
@@ -428,7 +548,11 @@ uqSampledVectorCdfClass<V,M>::subWriteContents(
 
   return;
 }
-
+//---------------------------------------------------
+// Method outside either class definition------------
+//---------------------------------------------------
+//! It calculated the maximum horizontal distances between two vector CDFs.
+// 
 template <class V, class M>
 void
 horizontalDistances(const uqBaseVectorCdfClass<V,M>& cdf1,

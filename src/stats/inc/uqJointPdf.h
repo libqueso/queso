@@ -43,10 +43,10 @@
 // Base class [PDF-00]
 //*****************************************************
 /*! \file uqJointPdf.h
- * \brief Set of classes for handling vector functions.
+ * \brief Classes to accommodate a probability density.
  * 
  * \class uqBaseJointPdfClass
- * \brief A templated (base) class for handling Joint PDFs.
+ * \brief A templated (base) class for handling joint PDFs.
  *
  * This class allows the mathematical definition of a Joint PDF, which is a scalar 
  * function such as * \f$ \pi: B \subset R^n \rightarrow R \f$; ie a function of one 
@@ -59,7 +59,7 @@
 template<class V, class M>
 class uqBaseJointPdfClass : public uqBaseScalarFunctionClass<V,M> {
 public:
-  //! @name Constructor/Destructor methods.
+  //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class, i.e. a scalar function, given a prefix and its domain.*/
@@ -69,7 +69,7 @@ public:
   virtual ~uqBaseJointPdfClass();
   //@}
 
-      //! @name Mathematical methods.
+      //! @name Mathematical methods
   //@{  
   //! Actual value of the PDF (scalar function).
   virtual double actualValue                    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
@@ -202,7 +202,7 @@ uqBaseJointPdfClass<V,M>::component(unsigned int componentId) const
 //*****************************************************
 /*!
  * \class uqGenericJointPdfClass
- * \brief A class for handling generic joint PDF.
+ * \brief A class for handling generic joint PDFs.
  *
  * This class allows the mathematical definition of a generic Joint PDF, such as the posterior PDF.*/
 
@@ -214,7 +214,7 @@ public:
   //@{
   //! Default constructor. 
   /*! Instantiates an object of this class given a prefix and a scalar function.
-  /*! The domain of the scalar function is assigned to the protected attribute m_domainSet, 
+   * The domain of the scalar function is assigned to the protected attribute m_domainSet, 
    * and the scalar function is also itself copied to the protected attribute m_scalarFunction.*/
   uqGenericJointPdfClass(const char*                           prefix,
                          const uqBaseScalarFunctionClass<V,M>& scalarFunction);
@@ -302,7 +302,7 @@ uqGenericJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSam
 //*****************************************************
 /*!
  * \class uqBayesianJointPdfClass
- * \brief A class for handling Bayesian joint PDF.
+ * \brief A class for handling Bayesian joint PDFs.
  *
  * This class allows the mathematical definition of a Bayesian Joint PDF.*/
 
@@ -313,8 +313,8 @@ public:
   //@{
   //! Default constructor. 
   /*! Instantiates an object of this class given a prefix and a scalar function.
-  /*! The domain of the scalar function is assigned to the protected attribute m_domainSet, 
-   * and the scalar fuction is also itself copied to the protected attribute m_scalarFunction.*/
+   * The domain of the scalar function is assigned to the protected attribute m_domainSet, 
+   * and the scalar fiction is also itself copied to the protected attribute m_scalarFunction.*/
   uqBayesianJointPdfClass(const char*                           prefix,
                           const uqBaseJointPdfClass      <V,M>& priorDensity,
                           const uqBaseScalarFunctionClass<V,M>& likelihoodFunction,
@@ -335,7 +335,7 @@ public:
   //! Computes the logarithm of the value of the function.
   /*! Analogously to the method actualValue(), if the exponent of the likelihood function 
    * (likelihoodExponent) is zero then the Logarithm of the value of the function is the logarithm of
-   * the value of the prior PDF; otherwise, the value is scaled (added) by a power of tue value of the
+   * the value of the prior PDF; otherwise, the value is scaled (added) by a power of the value of the
    * likelihood function.*/
   double lnValue                  (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   
@@ -347,10 +347,10 @@ public:
   //! Sets a value to be used in the normalization style of the prior density PDF (ie, protected attribute m_priorDensity).
   void   setNormalizationStyle    (unsigned int value) const;
   
-  //! Retuns the logarithm of the last computed Prior value. Access to protected attribute m_lastComputedLogPrior.
+  //! Returns the logarithm of the last computed Prior value. Access to protected attribute m_lastComputedLogPrior.
   double lastComputedLogPrior     () const;
   
-  //! Retuns the logarithm of the last computed likelihood value.  Access to protected attribute m_lastComputedLogLikelihood.
+  //! Returns the logarithm of the last computed likelihood value.  Access to protected attribute m_lastComputedLogLikelihood.
   double lastComputedLogLikelihood() const;
   
   //@}
@@ -622,8 +622,8 @@ uqBayesianJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSa
 // Gaussian probability density class [PDF-03]
 //*****************************************************
 /*! 
- * \class uqGaussianVectorRealizerClass
- * \brief A class for handling Gaussian probability density distributions.
+ * \class uqGaussianJointPdfClass
+ * \brief A class for handling Gaussian joint PDFs.
  *
  * This class allows the mathematical definition of a Gaussian Joint PDF.*/
 
@@ -677,7 +677,7 @@ public:
   /*! This method deletes old expected values (allocated at construction or last call to this method).*/
   void     updateLawCovMatrix(const M& newLawCovMatrix);
   
-  //! Retuns the covariance matrix; access to protected attribute m_lawCovMatrix.  
+  //! Returns the covariance matrix; access to protected attribute m_lawCovMatrix.  
   const M& lawCovMatrix      () const;
 
   //! Access to the vector of mean values and private attribute:  m_lawExpVector. 
@@ -931,7 +931,7 @@ template<class V, class M>
 void
 uqGaussianJointPdfClass<V,M>::updateLawExpVector(const V& newLawExpVector)
 {
-  // delete old expected values (alloced at construction or last call to this function)
+  // delete old expected values (allocated at construction or last call to this function)
   delete m_lawExpVector;
   m_lawExpVector = new V(newLawExpVector);
   return;
@@ -941,7 +941,7 @@ template<class V, class M>
 void
 uqGaussianJointPdfClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
 {
-  // delete old expected values (alloced at construction or last call to this function)
+  // delete old expected values (allocated at construction or last call to this function)
   delete m_lawCovMatrix;
   m_lawCovMatrix = new M(newLawCovMatrix);
   return;
@@ -959,7 +959,7 @@ uqGaussianJointPdfClass<V,M>::lawCovMatrix() const
 //*****************************************************
 /*!
  * \class uqUniformJointPdfClass
- * \brief A class for handling uniform joint PDF.
+ * \brief A class for handling uniform joint PDFs.
  *
  * This class allows the mathematical definition of a Uniform Joint PDF.*/
 
@@ -1111,7 +1111,7 @@ uqUniformJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSam
 //*****************************************************
 /*!
  * \class uqBetaJointPdfClass
- * \brief A class for handling Beta joint PDF.
+ * \brief A class for handling Beta joint PDFs.
  *
  * This class allows the mathematical definition of a Beta Joint PDF.*/
 
@@ -1138,7 +1138,7 @@ public:
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   
   //! Logarithm of the value of the Beta PDF.
-  /*! If the normalization style (m_normalizationStyle) is zero, then this routine calls a enviroment method
+  /*! If the normalization style (m_normalizationStyle) is zero, then this routine calls a environment method
    * which handles basic PDFs, e.g. basicPdfs()->betaPdfActualValue() and adds the log of the normalization 
    * factor (m_logOfNormalizationFactor) to it; otherwise the method uses the formula: \f$ lnValue = 
    * \sum[ (alpha_i-1)*log(domainVector_i) + (beta_i-1)*log(1-domainVector_i)] + m_logOfNormalizationFactor \f$. */
@@ -1276,7 +1276,7 @@ uqBetaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSample
 //*****************************************************
 /*!
  * \class uqGammaJointPdfClass
- * \brief A class for handling Gamma joint PDF.
+ * \brief A class for handling Gamma joint PDFs.
  *
  * This class allows the mathematical definition of a Gamma Joint PDF.*/
 
@@ -1303,7 +1303,7 @@ public:
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   
   //! Logarithm of the value of the Gamma PDF.
-  /*! If the normalization style (m_normalizationStyle) is zero, then this routine calls a enviroment method
+  /*! If the normalization style (m_normalizationStyle) is zero, then this routine calls a environment method
    * which handles basic PDFs, e.g. basicPdfs()->gammaPdfActualValue() and adds the log of the normalization 
    * factor (m_logOfNormalizationFactor) to it; otherwise the method uses the formula: \f$ lnValue = 
    * \sum[ (a_i-1)*log(domainVector_i) -domainVector_i/b_i + m_logOfNormalizationFactor \f$, where a and b
@@ -1442,7 +1442,7 @@ uqGammaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSampl
 //*****************************************************
 /*!
  * \class uqInverseGammaJointPdfClass
- * \brief A class for handling Inverse Gamma joint PDF.
+ * \brief A class for handling Inverse Gamma joint PDFs.
  *
  * This class allows the mathematical definition of an Inverse Gamma Joint PDF.*/
 
@@ -1592,7 +1592,7 @@ uqInverseGammaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int n
 //*****************************************************
 /*!
  * \class uqPoweredJointPdfClass
- * \brief A class for handling a powered joint PDF.
+ * \brief A class for handling a powered joint PDFs.
  *
  * This class allows the mathematical definition of a Powered Joint PDF.*/
 
@@ -1788,7 +1788,7 @@ uqPoweredJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSam
 //*****************************************************
 /*!
  * \class uqWignerJointPdfClass
- * \brief A class for handling Wigner joint PDF.
+ * \brief A class for handling Wigner joint PDFs.
  *
  * This class allows the mathematical definition of a Wigner Joint PDF.*/
 
@@ -1937,7 +1937,7 @@ uqWignerJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamp
 //*****************************************************
 /*! 
  * \class uqLogNormalVectorRealizerClass
- * \brief A class for handling Log-Normal probability density distributions.
+ * \brief A class for handling Log-Normal joint PDFs.
  *
  * This class allows the mathematical definition of a Log-Normal Joint PDF.*/
 
@@ -1966,7 +1966,7 @@ public:
   double   actualValue (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   
   //! Logarithm of the value of the Log-Normal PDF (scalar function).
-   /*! The logarithm of the value of the Log-Normal density of diagonal covariace matrix (sigma^2) comes from the summation:
+   /*! The logarithm of the value of the Log-Normal density of diagonal covariance matrix (sigma^2) comes from the summation:
   * \f[ lnValue =- \sum_i \frac{1}{domainVector_i * \sqrt{2 \pi * lawVarVector_i}} exp(-\frac{(\ln( domainVector_i) - lawExpVector_i)^2}{2 lawVarVector_i}) \f] as long as 
   * \f$ domainVector_i > 0 \f$ for all \f$ i \f$.*/
   double   lnValue     (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
@@ -2191,11 +2191,11 @@ uqLogNormalJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numS
 // Concatenated probability density class [PDF-11]
 //*****************************************************
 /*! 
- * \class uqConcatenatedVectorRealizerClass
- * \brief A class for handling concatenated probability density distributions.
+ * \class uqConcatenatedJointPdfClass
+ * \brief A class for handling concatenated PDFs.
  *
  * This class allows the user to defines concatenated probability density distributions, 
- * i.e, two or more distincts PDFs can be concatened into one single PDF. 
+ * i.e, two or more distinct PDFs can be concatenated into one single PDF. 
  * This class used, for instance, to concatenate priors from two or more RVs, where one 
  * of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. */
 
