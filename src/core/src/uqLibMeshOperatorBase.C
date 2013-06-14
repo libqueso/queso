@@ -47,7 +47,8 @@ using namespace libMesh;
 
 uqLibMeshOperatorBase::uqLibMeshOperatorBase(
     const uqFunctionOperatorBuilder & builder, MeshBase & m)
-  : uqOperatorBase(builder)
+  : uqOperatorBase(builder),
+    equation_systems(new EquationSystems(m))
 {
 #ifndef LIBMESH_HAVE_SLEPC
   if (processor_id() == 0)
@@ -67,9 +68,6 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(
   libmesh_example_assert(false, "--disable-complex");
 #endif
 
-  // Create an equation systems object.
-  this->equation_systems = new EquationSystems(m);
-
   // Create a CondensedEigenSystem named "Eigensystem" and (for convenience)
   // use a reference to the system we create.
   this->equation_systems->add_system<CondensedEigenSystem>("Eigensystem");
@@ -79,7 +77,6 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(
 
 uqLibMeshOperatorBase::~uqLibMeshOperatorBase()
 {
-  // delete this->equation_systems;
 }
 
 void uqLibMeshOperatorBase::save_converged_evals(const string & filename) const
@@ -104,7 +101,7 @@ void uqLibMeshOperatorBase::save_converged_evec(const string & filename,
     unsigned int i) const
 {
   if (i < this->nconv) {
-    EquationSystems * es = this->equation_systems;
+    boost::shared_ptr<EquationSystems> es(this->equation_systems);
     es->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
     ExodusII_IO(es->get_mesh()).write_equation_systems(filename, *es);
   }
@@ -123,7 +120,7 @@ double uqLibMeshOperatorBase::get_eigenvalue(unsigned int i) const
 {
   if (i < this->nconv) {
     pair<Real, Real> eval;
-    EquationSystems * es = this->equation_systems;
+    boost::shared_ptr<EquationSystems> es(this->equation_systems);
     eval = es->get_system<EigenSystem>("Eigensystem").get_eigenpair(i);
     return eval.first;
   }
@@ -147,7 +144,7 @@ uqLibMeshOperatorBase::inverse_kl_transform(vector<double> & xi,
     double alpha) const
 {
   unsigned int i;
-  EquationSystems * es = this->equation_systems;
+  boost::shared_ptr<EquationSystems> es(this->equation_systems);
   uqLibMeshFunction *kl = new uqLibMeshFunction(this->builder, es->get_mesh());
 
   // Make sure all procs in libmesh mpi communicator all have the same xi.  No,
@@ -155,7 +152,7 @@ uqLibMeshOperatorBase::inverse_kl_transform(vector<double> & xi,
   // communicator.
   CommWorld.broadcast(xi);
 
-  EquationSystems *kl_eq_sys = kl->equation_systems;
+  boost::shared_ptr<EquationSystems> kl_eq_sys(kl->equation_systems);
 
   pair<Real, Real> eval;
   for (i = 0; i < this->get_num_converged(); i++) {

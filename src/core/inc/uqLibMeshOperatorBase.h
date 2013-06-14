@@ -106,7 +106,7 @@ public:
   inverse_kl_transform(std::vector<double> & xi, double alpha) const;
 
 protected:
-  libMesh::EquationSystems * equation_systems;
+  boost::shared_ptr<libMesh::EquationSystems> equation_systems;
 
   //! The number of requested eigenpairs
   unsigned int num_req_pairs;

@@ -26,6 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
+#include <boost/shared_ptr.hpp>
+
 #include <uqFunctionOperatorBuilder.h>
 #include <uqLibMeshNegativeLaplacianOperator.h>
 #include <libmesh/libmesh_common.h>
@@ -54,7 +56,7 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(
     const uqFunctionOperatorBuilder & builder, MeshBase & m)
   : uqLibMeshOperatorBase(builder, m)
 {
-  EquationSystems * es = this->equation_systems;
+  boost::shared_ptr<EquationSystems> es(this->equation_systems);
 
   // Give the system a pointer to the matrix assembly
   // function defined below.
@@ -137,7 +139,7 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
 {
 #ifdef LIBMESH_HAVE_SLEPC
 
-  EquationSystems * es = this->equation_systems;
+  boost::shared_ptr<EquationSystems> es(this->equation_systems);
 
   // Get a constant reference to the mesh object.
   const MeshBase& mesh = es->get_mesh();

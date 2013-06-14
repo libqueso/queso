@@ -79,7 +79,7 @@ public:
   virtual boost::shared_ptr<uqFunctionBase> zero_clone() const;
 
   //! This is public for now, but it should be encapsulated. Don't touch it.
-  libMesh::EquationSystems * equation_systems;
+  boost::shared_ptr<libMesh::EquationSystems> equation_systems;
 };
 
 #endif // __QUESO_LIBMESHFUNCTION__

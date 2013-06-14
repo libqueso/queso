@@ -62,9 +62,9 @@ using namespace libMesh;
 
 uqLibMeshFunction::uqLibMeshFunction(
     const uqFunctionOperatorBuilder & builder, MeshBase & m)
-  : uqFunctionBase(builder)
+  : uqFunctionBase(builder),
+    equation_systems(new EquationSystems(m))
 {
-  this->equation_systems = new EquationSystems(m);
   this->equation_systems->add_system<ExplicitSystem>("Function");
   this->equation_systems->get_system("Function").add_variable("u",
       Utility::string_to_enum<libMeshEnums::Order>(this->builder.order),
@@ -74,7 +74,6 @@ uqLibMeshFunction::uqLibMeshFunction(
 
 uqLibMeshFunction::~uqLibMeshFunction()
 {
-  // delete this->equation_systems;
 }
 
 void uqLibMeshFunction::print_info() const
@@ -91,7 +90,7 @@ void uqLibMeshFunction::save_function(const std::string & filename) const
 
 void uqLibMeshFunction::add(double scale, const uqFunctionBase & rhs) {
   // We know we're dealing with a derived class type, so cast
-  const uqLibMeshFunction & rhs_derived = static_cast<
+  const uqLibMeshFunction & rhs_derived = dynamic_cast<
     const uqLibMeshFunction &>(rhs);
 
   this->equation_systems->get_system<ExplicitSystem>("Function").solution->add(

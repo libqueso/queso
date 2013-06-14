@@ -29,6 +29,8 @@
 #include <memory>
 #include <vector>
 
+#include <boost/shared_ptr.hpp>
+
 #include <uqInfiniteDimensionalMeasureBase.h>
 #include <uqInfiniteDimensionalGaussian.h>
 #include <uqEnvironment.h>
@@ -66,7 +68,8 @@ boost::shared_ptr<uqFunctionBase> uqInfiniteDimensionalGaussian::draw() const
     (*this->coeffs)[i] = env.rngObject()->gaussianSample(this->beta);
   }
 
-  return this->precision.inverse_kl_transform(*this->coeffs, this->alpha);
+  boost::shared_ptr<uqFunctionBase> f(this->precision.inverse_kl_transform(*this->coeffs, this->alpha));
+  return f;
 }
 
 double uqInfiniteDimensionalGaussian::get_kl_coefficient(unsigned int i) const

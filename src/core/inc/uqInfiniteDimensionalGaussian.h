@@ -29,6 +29,8 @@
 #ifndef __QUESO_INFINITEDIMENSIONALGAUSSIAN__
 #define __QUESO_INFINITEDIMENSIONALGAUSSIAN__
 
+#include <boost/shared_ptr.hpp>
+
 #include <uqGslVector.h>
 #include <uqGslMatrix.h>
 #include <uqVectorSpace.h>
