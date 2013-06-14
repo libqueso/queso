@@ -35,6 +35,7 @@
 #include <libmesh/equation_systems.h>
 #include <libmesh/explicit_system.h>
 #include <libmesh/exodusII_io.h>
+#include <libmesh/vtk_io.h>
 
 // Define the Finite Element object.
 #include <libmesh/fe.h>
@@ -84,7 +85,7 @@ void uqLibMeshFunction::print_info() const
 
 void uqLibMeshFunction::save_function(const std::string & filename) const
 {
-  ExodusII_IO(this->equation_systems->get_mesh()).write_equation_systems(
+  VTKIO(this->equation_systems->get_mesh()).write_equation_systems(
       filename, *this->equation_systems);
 }
 
