@@ -127,7 +127,7 @@ AX_PATH_HDF5_NEW([1.8.0],[no])
 # Check for ANN feature
 AX_ENABLE_ANN
 
-# Check for libGRVY (required)
+# Check for libGRVY (optional as of QUESO version 0.46.0)
 
 AX_PATH_GRVY_NEW([0.29],[no])
 
