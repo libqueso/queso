@@ -85,18 +85,20 @@ ACX_MPI([CXX="$MPICXX"], [AC_MSG_ERROR([Could not find MPI.])])
 #-------------------------
 
 # Check for Trilinos (optional)
+#Kemelli: The lowest version used to be 8.0.7, now is 11.0.2, to accomodate the changes in -lteuchos*.
 
 HAVE_TRILINOS=0
 
-AX_TRILINOS_BASE(8.0.7,[HAVE_TRILINOS=1],[HAVE_TRILINOS=0])
+AX_TRILINOS_BASE(11.0.2,[HAVE_TRILINOS=1],[HAVE_TRILINOS=0])
+
 if test "$HAVE_TRILINOS" = "1" ;then
-   AX_TRILINOS_EPETRA([HAVE_TRILINOS=1],[HAVE_TRILINOS=0])
+   #AX_TRILINOS_EPETRA([HAVE_TRILINOS=1],[HAVE_TRILINOS=0])
+   AX_TRILINOS_EPETRA([HAVE_TRILINOS=1],AC_MSG_ERROR([Could not find Epetra - which is required if Trilinos is enabled.]))
 fi
 
 AC_SUBST(HAVE_TRILINOS)
 AM_CONDITIONAL(TRILINOS_ENABLED,test x$HAVE_TRILINOS = x1)
 
-##AX_TRILINOS_EPETRA(AC_DEFINE(HAVE_LIBEPETRA,1,[Define if Epetra is available]),AC_MSG_ERROR([Could not find Epetra.]))
 AC_CACHE_SAVE
 
 # Check for GSL (required)
