@@ -34,7 +34,7 @@
 #include <math.h>
 
 //*****************************************************
-// Classes to accomodate a probability density routine.
+// Classes to accommodate a probability density routine.
 //*****************************************************
 
 //*****************************************************
@@ -69,7 +69,7 @@ public:
   
   //! @name Realization-related methods
   //@{
-  //! Image set where the relizations lie.  Access to protected attribute m_unifiedImageSet.
+  //! Image set where the realizations lie.  Access to protected attribute m_unifiedImageSet.
   const   uqVectorSetClass<V,M>& unifiedImageSet()              const;
   
   //! Sub-period of the realization. Access to protected attribute m_subPeriod.
@@ -486,7 +486,7 @@ public:
   ~uqSequentialVectorRealizerClass();
   //@}
  
-  //!@name Sampling-related methdos
+  //!@name Sampling-related methods
   //! Returns the unified mean vector; access to private attribute m_unifiedSampleExpVector.
   const V&   unifiedSampleExpVector()              const;
   
@@ -815,7 +815,7 @@ uqGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 			 << "Gamma distribution is only defined in (0, infinity).\n"
 			 << "The data provided is: \n"
 			 << *imageBox 
-   			 << "Sampling will not cover all inteval.\n"   
+   			 << "Sampling will not cover all interval.\n"   
    			 << std::endl;
 
 
@@ -940,7 +940,7 @@ uqInverseGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
  * This class \b will handle sampling from an Wigner probability density distribution, with a
  * given center position and a radius.
  * 
- * \todo: The metodo uqWignerVectorRealizerClass:realization() is not yet available, 
+ * \todo: The method uqWignerVectorRealizerClass:realization() is not yet available, 
  * thus this class does  nothing. */
 
 template<class V, class M>
@@ -1212,7 +1212,7 @@ uqLogNormalVectorRealizerClass<V,M>::realization(V& nextValues) const
  * \brief A class for handling sampling from concatenated probability density distributions.
  * 
  * This class allows the user draw samples from concatenated probability density distributions (two 
- * or more distincts probability distributions has(ve) been concatened into one single vector RV). 
+ * or more distinct probability distributions has(ve) been concatenated into one single vector RV). 
  * This class used, for instance, to draw realization of concatenate priors from two or more RVs, 
  * where one of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. */
 

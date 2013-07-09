@@ -35,86 +35,117 @@
 #include <uqVectorRV.h>
 #include <uqSequenceOfVectors.h>
 
-/*! This templated class represents a statistical forward problem.
-    It is templated on the types 'P_V' and 'Q_V' of vectors and types 'P_M' and 'Q_M' of matrices,
-    where 'P_' stands for 'parameter' and 'Q_' stands for 'quantities of interest'.
-   
-    Conceptually, a statistical forward problem has two input entities and one output entity.
+
+/*! \file uqStatisticalForwardProblem.h
+    \brief Class to solve a Statistical Forward Problem
 */
-/*! -------------------------------------------------------------
-*/
-/*! The input entities of a statistical forward problem are:
+
+/*! \class uqStatisticalForwardProblemClass
+ *  \brief This templated class represents a Statistical Forward Problem.
+ * 
+ * This templated class represents a statistical forward problem. It is templated on the types
+ * 'P_V' and 'Q_V' of vectors and types 'P_M' and 'Q_M' of matrices, where 'P_' stands for 
+ * 'parameter' and 'Q_' stands for 'quantities of interest'. Conceptually, a statistical forward 
+ * problem has two input entities and one output entity.\n
+ *
+ * The input entities of a statistical forward problem are:
 <list type=number>
-<item> the input (parameter) rv, an instance of class 'uqBaseVectorRVClass<P_V,P_M>', and
-<item> the qoi function, an instance of class 'uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>'.
+<item> the input (parameter) RV, an instance of class 'uqBaseVectorRVClass<P_V,P_M>', and
+<item> the QoI function, an instance of class 'uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>'.
 </list>
-    Let 'q(.)' denote the mathematical qoi function and 'x' denote a vector of parameters.
-    The qoi function object stores the routine that computes q(x) and whatever data necessary by such routine.
-    See file 'libs/basic/inc/uqVectorFunction.h' for more details.
-*/
-/*! -------------------------------------------------------------
-*/
-/*! The output entity of a statistical forward problem is:
+  * Let \f$ q() \f$  denote the mathematical QoI function and  \f$ x \f$  denote a vector of 
+  * parameters. The QoI function object stores the routine that computes  \f$ q(x) \f$  and 
+  * whatever data necessary by such routine. See file 'libs/basic/inc/uqVectorFunction.h' 
+  * for more details.\n
+  *
+  * The output entity of a statistical forward problem is:
 <list type=number>
-<item> the qoi rv, another instance of class 'uqBaseVectorRVClass<P_V,P_M>'.
+<item> the QoI RV, another instance of class 'uqBaseVectorRVClass<P_V,P_M>'.
 </list>   
-    The qoi rv stores the solution according to the Bayesian approach.
-    A similar situation occurs e.g. in the case of a system Ax=b of linear equations,
-    where 'A' and 'x' are inputs, and 'b' stores the solution of the forward problem.
-*/
-/*! -------------------------------------------------------------
-*/
-/*! The solution of a statistical forward problem is computed by calling one of the following operations:
-<list type=number>
-<item> 'solveWithMonteCarlo(...)'.
-</list> 
-    More operations, with different methods, will be available in the future.
-*/
-/*! The solution process might demand extra objects to be passed through the chosen solution operation interface.
-    This distinction is important: this class separates 'what the problem is' from 'how the problem is solved'.
-*/
-/*! -------------------------------------------------------------
-*/
-/*! Upon return from a solution operation, the qoi rv is available through
-    the operation 'qoiRv()'. Such qoi rv is able to provide:
+  * The QoI RV stores the solution according to the Bayesian approach. The solution of a SPF 
+  * is computed by calling 'solveWithMonteCarlo()'. More operations, with different methods, 
+  * will be available in the future.\n
+  *
+  * The solution process might demand extra objects to be passed through the chosen solution 
+  * operation interface. This distinction is important: this class separates 'what the problem 
+  * is' from 'how the problem is solved'. Upon return from a solution operation, the QoI RV is 
+  * available through the operation 'qoiRv()'. Such QoI RV is able to provide:
 <list type=number>
 <item> a vector realizer through the operation 'qoiRv().realizer()', which returns an
        instance of the class 'uqBaseVectorRealizerClass<Q_V,Q_M>'.
-</list>
-*/
-/*! -------------------------------------------------------------
-*/
-/*! If the options request data to be written in the output file (MATLAB .m format only, for now),
-    the user can run 'grep zeros \<OUTPUT FILE NAME\>' after the solution procedure ends
-    in order to check which MATLAB variables are defined and set.
-    The names of the varibles are self explanatory.
-*/
+</list>*/
+
 template <class P_V,class P_M,class Q_V,class Q_M>
 class uqStatisticalForwardProblemClass
 {
 public:
-
+ //! @name Constructor/Destructor methods
+ //@{
+ //! Constructor.
+ /*! Requirements: 1) the image set of the vector random variable 'paramRv' and the domain set of 
+  * the QoI function 'qoiFunction' should belong to vector spaces of equal dimensions and 2) the 
+  * image set of the QoI function 'qoiFunction' and the image set of the vector random variable 
+  * 'qoiRv' should belong to vector spaces of equal dimensions. If the requirements are satisfied, 
+  * the constructor then reads input options that begin with the string '\<prefix\>fp_'. Options 
+  * reading is handled by class 'uqStatisticalForwardProblemOptionsClass'. If no options input file 
+  * is provided, the construction assigns \c alternativeOptionsValues to the options of the SFP.*/
   uqStatisticalForwardProblemClass(const char*                                       prefix,
                                    const uqSfpOptionsValuesClass*                    alternativeOptionsValues, // dakota
                                    const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
                                    const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
                                    uqGenericVectorRVClass         <Q_V,Q_M>&         qoiRv);
- ~uqStatisticalForwardProblemClass();
+ 
+  //! Destructor
+  ~uqStatisticalForwardProblemClass();
+  //@}
 
-        bool                             computeSolutionFlag() const;
-        void                             solveWithMonteCarlo(const uqMcOptionsValuesClass* alternativeOptionsValues); // dakota
+  //! @name Statistical methods
+  //@{
+  //! Whether or not compute the solution.  
+  bool                                   computeSolutionFlag() const;
+  
+  //! Solves the problem through Monte Carlo algorithm.
+  /*! Requirements: none at this moment. If the requirements are satisfied, this operation checks
+   * the member flag 'm_computeSolution' (one of the options read from the input file during 
+   * construction). If the flag is 'false', the operation returns immediately, computing nothing.
+   * If the flag is 'true', the operation sets the member variable 'm_qoiRv' accordingly. 
+   * The operation:
+<list type=number>
+<item> instantiates 'uqSequenceOfVectorsClass<P_V,P_M>' (the input sequence of vectors),
+<item> instantiates 'uqSequenceOfVectorsClass<Q_V,Q_M>' (the output sequence of vectors),
+<item> instantiates 'uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>' (the Monte Carlo algorithm),
+<item> populates the output sequence with the Monte Carlo algorithm,
+<item> sets the realizer of 'm_qoiRv' with the contents of the output sequence, and
+</list>*/
+//<item> computes the cdfs of the components of 'm_qoiRv' as instances of 'uqSampledVectorCdfClass<Q_V,Q_M>'
+  void                                   solveWithMonteCarlo(const uqMcOptionsValuesClass* alternativeOptionsValues); // dakota
+  
+  //! Returns the QoI RV; access to private attribute m_qoiRv.
   const uqGenericVectorRVClass<Q_V,Q_M>& qoiRv              () const;
-#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
-  //<item> cdfs of qoi components through the operation 'qoiRv().unifiedCdf()',
-  //     which returns an instance of the class 'uqBaseVectorCdfClass<Q_V,Q_M>', and
-  const uqBaseVectorCdfClass  <Q_V,Q_M>& qoiRv_unifiedCdf   () const;
-#endif
-        void                             print              (std::ostream& os) const;
 
+  //! Returns the parameter chain; access to private attribute m_paramChain.
   const uqBaseVectorSequenceClass<Q_V,Q_M>& getParamChain   () const;
+  
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+  
+  //<item> cdfs of QoI components through the operation 'qoiRv().unifiedCdf()',
+  //     which returns an instance of the class 'uqBaseVectorCdfClass<Q_V,Q_M>'
+  const uqBaseVectorCdfClass  <Q_V,Q_M>& qoiRv_unifiedCdf   () const;
+  
+#endif
+  //@}
+  
+  //! @name I/O methods
+  //@{
+  //! TODO: Prints the sequence.
+  /*! \todo: implement me!*/
+  void print(std::ostream& os) const;
+  //@}
 
 private:
-        void                             commonConstructor  ();
+  //! TODO: Common constructor.
+  /*! \todo: implement me!*/
+  void  commonConstructor();
 
   const uqBaseEnvironmentClass&                     m_env;
 
@@ -128,6 +159,11 @@ private:
 
         uqBaseVectorRealizerClass<Q_V,Q_M>*         m_solutionRealizer;
  
+        uqBaseJointPdfClass      <Q_V,Q_M>*         m_solutionPdf;
+
+        uqSfpOptionsValuesClass                     m_alternativeOptionsValues;
+        uqStatisticalForwardProblemOptionsClass*    m_optionsObj;
+
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         uqArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subMdfGrids;
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_subMdfValues;
@@ -142,41 +178,19 @@ private:
         uqArrayOfOneDTablesClass <Q_V,Q_M>*         m_unifiedCdfValues;
         uqBaseVectorCdfClass     <Q_V,Q_M>*         m_unifiedSolutionCdf;
 #endif
-        uqBaseJointPdfClass      <Q_V,Q_M>*         m_solutionPdf;
-
-        uqSfpOptionsValuesClass                     m_alternativeOptionsValues;
-        uqStatisticalForwardProblemOptionsClass*    m_optionsObj;
 };
-
+//! Prints the object \c obj, overloading an operator.
 template<class P_V,class P_M,class Q_V,class Q_M>
 std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& obj);
 
-/*! Constructor. */
-/*! Requirements:
-<list type=number>
-<item> the image set of the vector random variable 'paramRv' and
-       the domain set of the qoi function 'qoiFunction'
-       should belong to vector spaces of equal dimensions.
-<item> the image set of the qoi function 'qoiFunction' and
-       the image set of the vector random variable 'qoiRv'
-       should belong to vector spaces of equal dimensions.
-</list>
-*/
-/*! If the requirements are satisfied, the constructor then reads input options that begin with the string '\<prefix\>fp_'.
-    For instance, if 'prefix' is 'pROblem_775_', then the constructor will read all options that begin with 'pROblem_775_fp_'.
-    Options reading is handled by class 'uqStatisticalForwardProblemOptionsClass'.
-*/
-/*! Input options are read from the QUESO input file, whose name is required by the constructor of the QUESO environment class.
-    The QUESO environment class is instantiated at the application level, right after 'MPI_Init(&argc,&argv)'. 
-    The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
-*/
+// Default constructor -----------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemClass(
   /*! The prefix                 */ const char*                                       prefix,
   /*! Options (if no input file) */ const uqSfpOptionsValuesClass*                    alternativeOptionsValues, // dakota
-  /*! The input rv               */ const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
-  /*! The qoi function           */ const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
-  /*! The qoi rv                 */       uqGenericVectorRVClass   <Q_V,Q_M>&         qoiRv)
+  /*! The input RV               */ const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
+  /*! The QoI function           */ const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
+  /*! The QoI RV                 */       uqGenericVectorRVClass   <Q_V,Q_M>&         qoiRv)
   :
   m_env                     (paramRv.env()),
   m_paramRv                 (paramRv),
@@ -237,7 +251,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::uqStatisticalForwardProblemCl
   }
 }
 
-/*! Destructor: */
+// Destructor --------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~uqStatisticalForwardProblemClass()
 {
@@ -275,33 +289,14 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~uqStatisticalForwardProblemC
   if (m_optionsObj        ) delete m_optionsObj;
 }
 
+// Statistical methods -----------------------------
 template <class P_V,class P_M, class Q_V, class Q_M>
 bool
   uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::computeSolutionFlag() const
 {
   return m_optionsObj->m_ov.m_computeSolution;
 }
-
-/*! Operation to solve the problem through Monte Carlo algorithm. */
-/*! Requirements:
-<list type=number>
-<item> none at this moment
-</list>
-*/
-/*! If the requirements are satisfied, this operation checks the member flag 'm_computeSolution' (one of the options read from the input file during construction).
-*/
-/*! If the flag is 'false', the operation returns immediately, computing nothing.
- */
-/*! If the flag is 'true', the operation sets the member variable 'm_qoiRv' accordingly. The operation:
-<list type=number>
-<item> instantiates 'uqSequenceOfVectorsClass<P_V,P_M>' (the input sequence of vectors),
-<item> instantiates 'uqSequenceOfVectorsClass<Q_V,Q_M>' (the output sequence of vectors),
-<item> instantiates 'uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>' (the Monte Carlo algorithm),
-<item> populates the output sequence with the Monte Carlo algorithm,
-<item> sets the realizer of 'm_qoiRv' with the contents of the output sequence, and
-</list>
-*/
-//<item> computes the cdfs of the components of 'm_qoiRv' as instances of 'uqSampledVectorCdfClass<Q_V,Q_M>'
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
@@ -526,13 +521,14 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
 
   return;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 const uqGenericVectorRVClass<Q_V,Q_M>& 
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv() const
 {
   return m_qoiRv;
 }
+//--------------------------------------------------
 
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template <class P_V,class P_M,class Q_V,class Q_M>
@@ -554,22 +550,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf() const
   return m_qoiRv.unifiedCdf(); //*m_unifiedSolutionCdf;
 }
 #endif
-
-template <class P_V,class P_M,class Q_V,class Q_M>
-void
-uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
-{
-  return;
-}
-
-template<class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& obj)
-{
-  obj.print(os);
-
-  return os;
-}
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
   const uqBaseVectorSequenceClass<Q_V,Q_M>&
   uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::getParamChain() const
@@ -584,6 +565,23 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 
   return *m_paramChain;
  
+}
+// I/O methods--------------------------------------
+template <class P_V,class P_M,class Q_V,class Q_M>
+void
+uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
+{
+  return;
+}
+//--------------------------------------------------
+// Operator declared outside class definition ------
+//--------------------------------------------------
+template<class P_V,class P_M,class Q_V,class Q_M>
+std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& obj)
+{
+  obj.print(os);
+
+  return os;
 }
 
 #endif // __UQ_SFP_H__

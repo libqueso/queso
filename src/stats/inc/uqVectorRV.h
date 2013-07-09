@@ -325,7 +325,7 @@ public:
                          const uqVectorSetClass         <V,M>& imageSet);
   
   //! Constructor
-  /*! Constructs a new instance, given all the attibutes that characterize the vector RV: prefix, image set, pdf, etc.*/
+  /*! Constructs a new instance, given all the attributes that characterize the vector RV: prefix, image set, pdf, etc.*/
   uqGenericVectorRVClass(const char*                           prefix,
                          const uqVectorSetClass         <V,M>& imageSet,
                          const uqBaseJointPdfClass      <V,M>& pdf,
@@ -898,7 +898,7 @@ uqUniformVectorRVClass<V,M>::print(std::ostream& os) const
 //*****************************************************
 /*!
  * \class uqBetaVectorRVClass
- * \brief A class representing a vector RV construced via Beta distribution.
+ * \brief A class representing a vector RV constructed via Beta distribution.
  * 
  * This class allows the user to compute the value of a Beta PDF and to generate realizations
  * (samples) from it.\n
@@ -981,7 +981,7 @@ uqBetaVectorRVClass<V,M>::uqBetaVectorRVClass(
 			 << "Beta distribution is defined only in [0, 1].\n"
 			 << "The data provided is: \n"
 			 << *imageBox 
-   			 << "Sampling will not cover all inteval.\n"   
+   			 << "Sampling will not cover all interval.\n"   
    			 << std::endl;
 
  // if at least one of the min values > 1 then exit
@@ -1039,7 +1039,7 @@ uqBetaVectorRVClass<V,M>::print(std::ostream& os) const
 //*****************************************************
 /*!
  * \class uqGammaVectorRVClass
- * \brief A class representing a vector RV construced via Gamma distribution.
+ * \brief A class representing a vector RV constructed via Gamma distribution.
  * 
  * This class allows the user to compute the value of a Gamma PDF and to generate realizations
  * (samples) from it.\n
@@ -1120,7 +1120,7 @@ uqGammaVectorRVClass<V,M>::uqGammaVectorRVClass(
 			 << "Gamma distribution is only defined in (0, infinity).\n"
 			 << "The data provided is: \n"
 			 << *imageBox 
-   			 << "Sampling will not cover all inteval.\n"   
+   			 << "Sampling will not cover all interval.\n"   
    			 << std::endl;
 
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
@@ -1173,7 +1173,7 @@ uqGammaVectorRVClass<V,M>::print(std::ostream& os) const
 //*****************************************************
 /*!
  * \class uqInverseGammaVectorRVClass
- * \brief A class representing a vector RV construced via Inverse Gamma distribution.
+ * \brief A class representing a vector RV constructed via Inverse Gamma distribution.
  * 
  * This class allows the user to compute the value of a Inverse Gamma PDF and to generate realizations
  * (samples) from it.\n
@@ -1247,7 +1247,7 @@ uqInverseGammaVectorRVClass<V,M>::uqInverseGammaVectorRVClass(
 			 << "Inverse Gamma distribution is only defined in (0, infinity).\n"
 			 << "The data provided is: \n"
 			 << *imageBox 
-   			 << "Sampling will not cover all inteval.\n"   
+   			 << "Sampling will not cover all interval.\n"   
    			 << std::endl;
 
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
@@ -1299,7 +1299,7 @@ uqInverseGammaVectorRVClass<V,M>::print(std::ostream& os) const
 //*****************************************************
 /*!
  * \class uqWignerVectorRVClass
- * \brief A class representing a vector RV construced via Wigner distribution.
+ * \brief A class representing a vector RV constructed via Wigner distribution.
  * 
  * This class allows the user to compute the value of a Wigner PDF and to generate realizations
  * (samples) from it.\n
@@ -1476,7 +1476,7 @@ uqLogNormalVectorRVClass<V,M>::uqLogNormalVectorRVClass(
 			 << "LogNormal distribution is only defined in (0, infinity).\n"
 			 << "The data provided is: \n"
 			 << *imageBox 
-   			 << "Sampling will not cover all inteval.\n"   
+   			 << "Sampling will not cover all interval.\n"   
    			 << std::endl;
 
 
@@ -1583,7 +1583,7 @@ public:
   
   //! Constructor
   /*! Concatenates a sequence of RVs, given by: <c> std::vector<const uqBaseVectorRVClass<V,M>* >& rvs </c>
-   * into one singke vector RV, given a prefix and the image set of the resulting vector RV.*/
+   * into one single vector RV, given a prefix and the image set of the resulting vector RV.*/
   uqConcatenatedVectorRVClass(const char*                                          prefix,
                               const std::vector<const uqBaseVectorRVClass<V,M>* >& rvs,
                               const uqVectorSetClass<V,M>&                         imageSet);

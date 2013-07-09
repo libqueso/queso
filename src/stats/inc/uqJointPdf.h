@@ -1936,7 +1936,7 @@ uqWignerJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamp
 // LogNormal probability density class [PDF-10]
 //*****************************************************
 /*! 
- * \class uqLogNormalVectorRealizerClass
+ * \class uqLogNormalJointPdfClass
  * \brief A class for handling Log-Normal joint PDFs.
  *
  * This class allows the mathematical definition of a Log-Normal Joint PDF.*/

@@ -31,26 +31,48 @@
 
 #include <uqValidationCycle.h>
 
+/*! \file uqModelValidation.h
+ * \brief A templated class for model validation of the example validationPyramid.
+ *
+ * \class uqModelValidationClass
+ * \brief A templated class for model validation of the example validationPyramid. 
+ * 
+ * Its derived class exPhysics1ValidationClass enables comparison between the calibration
+ * and validate stages. */
+
 template <class P_V,class P_M,class Q_V,class Q_M>
 class uqModelValidationClass
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor.
   uqModelValidationClass(const uqBaseEnvironmentClass& env,
                          const char*                   prefix);
+  
+  //! Virtual destructor.
   virtual ~uqModelValidationClass();
-
+  //@}
+  
+  //! @name Misc methods
+  //@{
+  //! Runs calibration, validation and comparison stages. See template specialization.
   virtual void run() = 0;
 
+  //! Access to the environment variable (m_env).
   const uqBaseEnvironmentClass&                  env  () const;
+  
+  //! Access to the cycle (m_cycle).
   const uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle() const;
-
+  //@}
+  
 protected:
   const uqBaseEnvironmentClass& m_env;
         std::string             m_prefix;
 
   uqValidationCycleClass<P_V,P_M,Q_V,Q_M>* m_cycle;
 };
-
+// Constructor -------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqModelValidationClass<P_V,P_M,Q_V,Q_M>::uqModelValidationClass(
   const uqBaseEnvironmentClass& env,
@@ -74,7 +96,7 @@ uqModelValidationClass<P_V,P_M,Q_V,Q_M>::uqModelValidationClass(
 
   return;
 }
-
+// Destructor---------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqModelValidationClass<P_V,P_M,Q_V,Q_M>::~uqModelValidationClass()
 {
@@ -92,14 +114,14 @@ uqModelValidationClass<P_V,P_M,Q_V,Q_M>::~uqModelValidationClass()
                            << std::endl;
   }
 }
-
+// Misc methods-------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 const uqBaseEnvironmentClass&
 uqModelValidationClass<P_V,P_M,Q_V,Q_M>::env() const
 {
   return m_env;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 const uqValidationCycleClass<P_V,P_M,Q_V,Q_M>&
 uqModelValidationClass<P_V,P_M,Q_V,Q_M>::cycle() const

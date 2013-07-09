@@ -55,18 +55,43 @@
 #define UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #define UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV           0
 
+/*! \file uqMonteCarloSGOptions.h
+    \brief Classes to allow options to be passed to a Monte Carlo sequence generator.
+*/
+
+/*! \class uqMcOptionsValuesClass
+ *  \brief This class provides options for the  Monte Carlo sequence generator if no input file is available.
+ * 
+ *  Monte Carlo sequence generator expects options for its methods. This class provides default
+ * values for such options if no input file is available. */
+
 class uqMcOptionsValuesClass
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   uqMcOptionsValuesClass            (const uqSsOptionsValuesClass* alternativePSsOptionsValues,
                                      const uqSsOptionsValuesClass* alternativeQSsOptionsValues);
 #else
+  //! Default constructor.
+  /*! Assigns the default suite of options to the Monte Carlo sequence generator.*/
   uqMcOptionsValuesClass            ();
 #endif
+  //! Copy constructor.
+  /*! It assigns the same options values from  \c src to \c this.*/
   uqMcOptionsValuesClass            (const uqMcOptionsValuesClass& src);
+  
+  //! Destructor
+  ~uqMcOptionsValuesClass            ();
+  //@}
+  
+  //! @name Set methods
+  //@{ 
+  //! Assignment operator; it copies \c rhs to \c this. 
   uqMcOptionsValuesClass& operator= (const uqMcOptionsValuesClass& rhs);
- ~uqMcOptionsValuesClass            ();
+  //@}
 
   std::string                        m_dataOutputFileName;
   std::set<unsigned int>             m_dataOutputAllowedSet;
@@ -93,6 +118,7 @@ public:
 #endif
 
 private:
+  //! Copies the option values from \c src to \c this.
   void copy(const uqMcOptionsValuesClass& src);
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -102,16 +128,45 @@ private:
 #endif
 };
 
+// --------------------------------------------------
+// --------------------------------------------------
+// --------------------------------------------------
+
+/*! \class uqMonteCarloSGOptionsClass
+ *  \brief This class reads the options for the  Monte Carlo sequence generator from  an input file.
+ * 
+ * Monte Carlo sequence generator expects options for its methods. This class reads the 
+ * options for the Monte Carlo sequence generator from an input file provided by the user. 
+ * The class expects the prefix '\<prefix\>_mc_'. For instance, if 'prefix' is 'foo_775_fp_', 
+ * then the constructor will read all options that begin with 'foo_775_fp_mc_'. */
+
 class uqMonteCarloSGOptionsClass
 {
 public:
+  
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Constructor: reads options from the input file.
   uqMonteCarloSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+  
+  //! Constructor: with alternative option values.
+  /*! In this constructor, the input options are given by \c alternativeOptionsValues, thus, they
+   * are not read from an input file.*/
   uqMonteCarloSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqMcOptionsValuesClass& alternativeOptionsValues);
- ~uqMonteCarloSGOptionsClass();
-
+ 
+  //! Destructor
+  ~uqMonteCarloSGOptionsClass();
+  //@}
+  
+  //! @name I/O methods
+  //@{
+  //! It scans the option values from the options input file.
   void scanOptionsValues();
+  
+  //!  It prints the option values.
   void print            (std::ostream& os) const;
-
+  //@}
+  
   uqMcOptionsValuesClass             m_ov;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   uqSequenceStatisticalOptionsClass* m_pseqStatisticalOptionsObj;
@@ -120,7 +175,10 @@ public:
   std::string                        m_prefix;
 
 private:
+  //! Defines the options for the Monte Carlo sequence generator as the default options.
   void   defineMyOptions  (po::options_description& optionsDesc) const;
+  
+  //! Gets the sequence options.
   void   getMyOptionValues(po::options_description& optionsDesc);
 
   const uqBaseEnvironmentClass& m_env;
@@ -152,5 +210,6 @@ private:
 #endif
 };
 
+//! Prints the object \c obj, overloading an operator.
 std::ostream& operator<<(std::ostream& os, const uqMonteCarloSGOptionsClass& obj);
 #endif // __UQ_MOC_SG_OPTIONS_H__

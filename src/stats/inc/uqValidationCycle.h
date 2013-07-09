@@ -32,25 +32,54 @@
 #include <uqStatisticalInverseProblem.h>
 #include <uqStatisticalForwardProblem.h>
 
+/*! \file uqValidationCycle.h
+ * \brief A templated class for validation cycle of the examples validationCycle and validationCycle2. 
+ *
+ * \class uqValidationCycleClass
+ * \brief A templated class for validation cycle of the examples validationCycle and validationCycle2. 
+ * 
+ * It has two stages: calibration and validation. First, in the calibration stage, the inverse problem 
+ * solution (posterior RV) is the input parameter vector RV for the forward problem. Then, in the 
+ * Validation stage, the posterior vector RV from calibration stage (solution of the forward problem of 
+ * the calibration stage) is the prior vector RV for an inverse problem. Then, the solution of this
+ * inverse problem is once more the input parameter vector RV for the (validation) forward problem.\n
+ * 
+ * The examples validationCycle and validationCycle2 use the present class to solve the same TGA problem, 
+ * and they only differ in implementation styles. */
+
 template <class P_V,class P_M,class Q_V,class Q_M>
 class uqValidationCycleClass
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor.
   uqValidationCycleClass(const uqBaseEnvironmentClass&      env,
                          const char*                        prefix,
                          const uqVectorSpaceClass<P_V,P_M>& paramSpace,
                          const uqVectorSpaceClass<P_V,P_M>& qoiSpace);
- ~uqValidationCycleClass();
-
+ 
+  //! Destructor.
+  ~uqValidationCycleClass();
+  //@}
+  
+  //! @name Misc methods
+  //@{
+  //! Access to the environment variable (m_env).
   const uqBaseEnvironmentClass& env() const;
-
+  //@}
+  
+  //! @name Statistical methods
+  //@{
+  //! Instantiate an inverse problem for the calibration stage.
   void instantiateCalIP(uqSipOptionsValuesClass*                  optionsValues,
                         const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
                         const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj);
   //double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity);
-
+  
+  //! Instantiate a forward problem for the calibration stage.  
   void instantiateCalFP(uqSfpOptionsValuesClass* optionsValues,
                         void (*qoiRoutinePtr)(const P_V&                    domainVector,
                                               const P_V*                    domainDirection,
@@ -61,18 +90,30 @@ public:
                                                     uqDistArrayClass<P_V*>* hessianEffects),
                         const void* qoiRoutineDataPtr);
 
+  //! Inverse problem of the calibration stage (const) . 
+  /*! It is an instance of class uqStatisticalInverseProblemClass<>.*/
   const uqStatisticalInverseProblemClass<P_V,P_M>& calIP() const;
-        uqStatisticalInverseProblemClass<P_V,P_M>& calIP();
+  
+  //! Inverse problem of the calibration stage (non-const) . 
+  /*! It is an instance of class uqStatisticalInverseProblemClass<>.*/
+  uqStatisticalInverseProblemClass<P_V,P_M>& calIP();
 
+  //! Forward problem of the calibration stage (const) . 
+  /*! It is an instance of class uqStatisticalForwardProblemClass<>.*/
   const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& calFP() const;
-        uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& calFP();
+  
+  //! Forward problem of the calibration stage (non-const) . 
+  /*! It is an instance of class uqStatisticalForwardProblemClass<>.*/
+  uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& calFP();
 
+  //! Instantiate an inverse problem for the validation stage.
   void instantiateValIP(uqSipOptionsValuesClass*                  optionsValues,
                         const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunctionObj);
   //double (*likelihoodRoutinePtr)(const P_V& paramValues, const void* routineDataPtr),
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity);
 
+  //! Instantiate a forward problem for the validation stage.
   void instantiateValFP(uqSfpOptionsValuesClass* optionsValues,
                         void (*qoiRoutinePtr)(const P_V&                    domainVector,
                                               const P_V*                    domainDirection,
@@ -83,12 +124,22 @@ public:
                                                     uqDistArrayClass<P_V*>* hessianEffects),
                         const void* qoiRoutineDataPtr);
 
+  //! Inverse problem of the validation stage (const) . 
+  /*! It is an instance of class uqStatisticalInverseProblemClass<>.*/
   const uqStatisticalInverseProblemClass<P_V,P_M>& valIP() const;
-        uqStatisticalInverseProblemClass<P_V,P_M>& valIP();
+  
+  //! Inverse problem of the validation stage (non-const) . 
+  /*! It is an instance of class uqStatisticalInverseProblemClass<>.*/
+  uqStatisticalInverseProblemClass<P_V,P_M>& valIP();
 
+   //! Forward problem of the validation stage (const) . 
+  /*! It is an instance of class uqStatisticalForwardProblemClass<>.*/
   const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& valFP() const;
-        uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& valFP();
-
+  
+    //! Forward problem of the validation stage (non-const) . 
+  /*! It is an instance of class uqStatisticalForwardProblemClass<>.*/
+  uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& valFP();
+  //@}
 private:
   const uqBaseEnvironmentClass&                            m_env;
         std::string                                        m_prefix;
@@ -113,6 +164,7 @@ private:
         uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>* m_valFP;
 };
 
+// Constructor -------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
   const uqBaseEnvironmentClass&      env,
@@ -151,7 +203,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::uqValidationCycleClass(
 
   return;
 }
-
+// Destructor---------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::~uqValidationCycleClass()
 {
@@ -178,14 +230,14 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::~uqValidationCycleClass()
                            << std::endl;
   }
 }
-
+// Misc methods-------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 const uqBaseEnvironmentClass&
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::env() const
 {
   return m_env;
 }
-
+// Statistical methods------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalIP(
@@ -215,21 +267,21 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalIP(
 
   return;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 const uqStatisticalInverseProblemClass<P_V,P_M>&
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calIP() const
 {
   return *m_calIP;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqStatisticalInverseProblemClass<P_V,P_M>&
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calIP()
 {
   return *m_calIP;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalFP(
@@ -265,21 +317,21 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalFP(
 
   return;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>&
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calFP() const
 {
   return *m_calFP;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>&
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::calFP()
 {
   return *m_calFP;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValIP(
@@ -307,21 +359,21 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValIP(
 
   return;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 const uqStatisticalInverseProblemClass<P_V,P_M>&
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::valIP() const
 {
   return *m_valIP;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqStatisticalInverseProblemClass<P_V,P_M>&
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::valIP()
 {
   return *m_valIP;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValFP(
@@ -357,14 +409,14 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValFP(
 
   return;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 const uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>&
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::valFP() const
 {
   return *m_valFP;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>&
 uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::valFP()

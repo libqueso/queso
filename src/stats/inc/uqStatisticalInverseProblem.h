@@ -37,93 +37,118 @@
 #include <uqScalarFunction.h>
 //#include <grvy.h>
 
-/*! This templated class represents a statistical inverse problem.
-    It is templated on the type 'P_V' of vector and type 'P_M' of matrix,
-    where 'P_' stands for 'parameter'.
-    Some templated classes might also use 'Q_V' and 'Q_M' when referring to a vector type and a matrix type,
-    where 'Q_' stands for 'quantities of interest'.
-    See e.g. the class 'uqStatisticalForwardProblemClass'.
+/*! \file uqStatisticalInverseProblem.h
+    \brief Class to solve a Statistical Inverse Problem
+*/
 
-    Conceptually, a statistical inverse problem has two input entities and one output entity.
-*/
-/*! -------------------------------------------------------------
-*/
-/*! The input entities of a statistical inverse problem are:
+/*! \class uqStatisticalInverseProblemClass
+ *  \brief This templated class represents a Statistical Inverse Problem.
+ * 
+ * This class is templated on the type 'P_V' of vector and type 'P_M' of matrix, where 
+ * 'P_' stands for 'parameter'. Some templated classes might also use 'Q_V' and 'Q_M' 
+ * when referring to a vector type and a matrix type, where 'Q_' stands for 'quantities 
+ * of interest'. Conceptually, a statistical inverse problem has two input entities and 
+ * one output entity.\n
+ *
+ * The input entities of a statistical inverse problem are:
 <list type=number>
-<item> the prior rv, an instance of class 'uqBaseVectorRVClass<P_V,P_M>', and
+<item> the prior RV, an instance of class 'uqBaseVectorRVClass<P_V,P_M>', and
 <item> the likelihood function, an instance of class 'uqBaseScalarFunctionClass<P_V,P_M>'.
 </list>
-    Let '\pi(.)' denote the mathematical likelihood function and 'x' denote a vector of parameters.
-    The likelihood function object stores the routine that computes \pi(x) and whatever data necessary by such routine.
-    The routine in the likelihood function object can compute either the actual value \pi(x) or the value ln[\pi(x)].
-    The constructor of the 'scalar function' asks for the user to specify which value the routine is actually computing,
-    so that the 'scalar function' class can properly implement both class operations 'actualValue()' and 'minus2LnValue()'.
-    See files 'libs/basic/inc/uqScalarFunction.h' and 'libs/stats/inc/uqJointPdf.h' for more details.
-*/
-/*! -------------------------------------------------------------
-*/
-/*! The output entity of a statistical inverse problem is:
-<list type=number>
-<item> the posterior rv, another instance of class 'uqBaseVectorRVClass<P_V,P_M>'.
-</list>   
-    The posterior rv stores the solution according to the Bayesian approach.
-    A similar situation occurs e.g. in the case of a system Ax=b of linear equations,
-    where 'A' and 'b' are inputs, and 'x' stores the solution of the inverse problem.
-*/
-/*! -------------------------------------------------------------
-*/
-/*! The solution of a statistical inverse problem is computed by calling one of the following operations:
-<list type=number>
-<item> 'solveWithBayesMetropolisHastings(...)'.
-<item> 'solveWithBayesMLSampling()'.
-</list> 
-    More operations, with different methods, will be available in the future.
-*/
-/*! The solution process might demand extra objects to be passed through the chosen solution operation interface.
-    This distinction is important: this class separates 'what the problem is' from 'how the problem is solved'.
-*/
-/*! -------------------------------------------------------------
-*/
-/*! Upon return from a solution operation, the posterior rv is available through
-    the operation 'postRv()'. Such posterior rv is able to provide:
+ * Let \f$ \pi()\f$ denote the mathematical likelihood function and \f$ x \f$ denote a 
+ * vector of parameters. The likelihood function object stores the routine that computes 
+ * \f$ \pi(x) \f$ and whatever data necessary by such routine. The routine in the 
+ * likelihood function object can compute either the actual value \f$ \pi(x) \f$ or the
+ * value \f$ \ln[\pi(x)] \f$. See files 
+ * 'basic/inc/uqScalarFunction.h' and 'stats/inc/uqJointPdf.h' for more details.\n
+ *
+ * The output entity of a statistical inverse problem is the posterior RV, another instance 
+ * of class 'uqBaseVectorRVClass<P_V,P_M>', which stores the solution according to the Bayesian 
+ * approach. Upon return from a solution operation, the posterior RV is available through the 
+ * operation 'postRv()'. Such posterior RV is able to provide:
 <list type=number>
 <item> a joint pdf (up to a multiplicative constant) through the operation 'postRv().pdf()',
        which returns an instance of the class 'uqBaseJointPdfClass<P_V,P_M>', and
 <item> a vector realizer through the operation 'postRv().realizer()', which returns an
        instance of the class 'uqBaseVectorRealizerClass<P_V,P_M>'.
-</list>
-*/
-/*! -------------------------------------------------------------
-*/
-/*! If the options request data to be written in the output file (MATLAB .m format only, for now),
-    the user can run 'grep zeros \<OUTPUT FILE NAME\>' after the solution procedure ends
-    in order to check which MATLAB variables are defined and set.
-    The names of the varibles are self explanatory.
-*/
+</list>*/
+
+/* OLD STUFF: The constructor of the 'scalar function' asks for the user to specify which 
+ * value the routine is actually computing, so that the 'scalar function' class can properly 
+ * implements both class operations 'actualValue()' and 'minus2LnValue()'*/
+
 template <class P_V,class P_M>
 class uqStatisticalInverseProblemClass
 {
 public:
+ //! @name Constructor/Destructor methods
+ //@{
+ //! Constructor. 
+ /*! Requirements: 1) the image set of the vector random variable 'priorRv', 2) the domain set of 
+ * the likelihood function 'likelihoodFunction' and 3) the image set of the vector random variable 
+ * 'postRv' should belong to vector spaces of equal dimensions. If the requirements are satisfied, 
+ * the constructor then reads input options that begin with the string '\<prefix\>ip_'. If no 
+ * options input file is provided, the construction assigns \c alternativeOptionsValues to the 
+ * options of the SIP.*/
   uqStatisticalInverseProblemClass(const char*                               prefix,
                                    const uqSipOptionsValuesClass*            alternativeOptionsValues, // dakota
                                    const uqBaseVectorRVClass      <P_V,P_M>& priorRv,            
                                    const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction, 
                                          uqGenericVectorRVClass   <P_V,P_M>& postRv);
- ~uqStatisticalInverseProblemClass();
+  
+  //! Destructor
+  ~uqStatisticalInverseProblemClass();
+  //@}
 
-        bool                             computeSolutionFlag             () const;
-        void                             solveWithBayesMetropolisHastings(const uqMhOptionsValuesClass* alternativeOptionsValues, // dakota
-                                                                          const P_V&                    initialValues,
-                                                                          const P_M*                    initialProposalCovMatrix);
-        void                             solveWithBayesMLSampling        ();
-  const uqBaseVectorRVClass   <P_V,P_M>& priorRv                         () const;
-  const uqGenericVectorRVClass<P_V,P_M>& postRv                          () const;
-	double                           logEvidence                     () const;
-	double                           meanLogLikelihood               () const;
-	double                           eig                             () const;
+  //! @name Statistical methods
+  //@{
+  //! Whether or not compute the solution.  
+  bool                             computeSolutionFlag             () const;
+   
+  //! Solves the problem through Bayes formula and a Metropolis-Hastings algorithm. 
+  /*! Requirements: 1) 'initialValues' should have the same number of components as member variable
+   * 'm_priorRv' and 2) if 'initialProposalCovMatrix' is not NULL, it should be square and its size 
+   * should be equal to the size of 'initialValues'. If the requirements are satisfied, this methods
+   * checks the member flag 'm_computeSolution' (one of the options read from the input file during 
+   * construction). If the flag is 'false', the operation returns immediately, computing nothing; 
+   * otherwise, the operation sets the member variable 'm_postRv' accordingly. The operation:
+<list type=number>
+<item> sets the pdf of 'm_postRv' equal to an instance of 'uqBayesianJointPdfClass<P_V,P_M>',
+<item> instantiates 'uqSequenceOfVectorsClass<P_V,P_M>' (the chain),
+<item> instantiates 'uqMetropolisHastingsSGClass<P_V,P_M>' (the Metropolis-Hastings algorithm),
+<item> populates the chain with the Metropolis-Hastings algorithm, and
+<item> sets the realizer of 'm_postRv' with the contents of the chain.
+</list> */
+  void solveWithBayesMetropolisHastings(const uqMhOptionsValuesClass* alternativeOptionsValues, // dakota
+					const P_V&                    initialValues,
+					const P_M*                    initialProposalCovMatrix);
+  
+  //! Solves with Bayes Multi-Level (ML) sampling.
+  void                             solveWithBayesMLSampling        ();
+  
+  //! Returns the Prior RV; access to private attribute m_priorRv.
+  const uqBaseVectorRVClass   <P_V,P_M>& priorRv                   () const;
+  
+  //! Returns the Posterior RV; access to private attribute m_postrRv.
+  /*! The Posterior RV contains the solution of the Bayes problem.*/
+  const uqGenericVectorRVClass<P_V,P_M>& postRv                    () const;
+  
+  //! Returns the logarithm value of the evidence. Related to ML.
+  double                           logEvidence                     () const;
 
-        void                             print                           (std::ostream& os) const;
-
+   //! Returns the mean of the logarithm value of the likelihood. Related to ML.
+  double                           meanLogLikelihood               () const;
+  
+  //\TODO Related to ML.
+  double                           eig                             () const;
+  //@}   
+	
+  //! @name I/O methods
+  //@{
+  //! TODO: Prints the sequence.
+  /*! \todo: implement me!*/
+  void print(std::ostream& os) const;
+  //@}
 private:
   const uqBaseEnvironmentClass&                 m_env;
 
@@ -142,42 +167,27 @@ private:
         uqBaseVectorSequenceClass  <P_V,P_M>*   m_chain;
         uqScalarSequenceClass      <double>*    m_logLikelihoodValues;
         uqScalarSequenceClass      <double>*    m_logTargetValues;
+        
+        uqSipOptionsValuesClass                  m_alternativeOptionsValues;
+        uqStatisticalInverseProblemOptionsClass* m_optionsObj;
+
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         uqArrayOfOneDGridsClass    <P_V,P_M>*   m_subMdfGrids;
         uqArrayOfOneDTablesClass   <P_V,P_M>*   m_subMdfValues;
 #endif
-
-        uqSipOptionsValuesClass                  m_alternativeOptionsValues;
-        uqStatisticalInverseProblemOptionsClass* m_optionsObj;
 };
-
+//! Prints the object \c obj, overloading an operator.
 template<class P_V,class P_M>
 std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemClass<P_V,P_M>& obj);
 
-/*! Constructor. */
-/*! Requirements:
-<list type=number>
-<item> the image set of the vector random variable 'priorRv',
-       the domain set of the likelihood function 'likelihoodFunction' and
-       the image set of the vector random variable 'postRv'
-       should belong to vector spaces of equal dimensions.
-</list>
-*/
-/*! If the requirements are satisfied, the constructor then reads input options that begin with the string '\<prefix\>ip_'.
-    For instance, if 'prefix' is 'pROblem_775_', then the constructor will read all options that begin with 'pROblem_775_ip_'.
-    Options reading is handled by class 'uqStatisticalInverseProblemOptionsClass'.
-*/
-/*! Input options are read from the QUESO input file, whose name is required by the constructor of the QUESO environment class.
-    The QUESO environment class is instantiated at the application level, right after 'MPI_Init(&argc,&argv)'. 
-    The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
-*/
+// Default constructor -----------------------------
 template <class P_V,class P_M>
 uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   /*! The prefix                 */ const char*                               prefix,
   /*! Options (if no input file) */ const uqSipOptionsValuesClass*            alternativeOptionsValues, // dakota
-  /*! The prior rv               */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
+  /*! The prior RV               */ const uqBaseVectorRVClass      <P_V,P_M>& priorRv,
   /*! The likelihood function    */ const uqBaseScalarFunctionClass<P_V,P_M>& likelihoodFunction,
-  /*! The posterior rv           */       uqGenericVectorRVClass   <P_V,P_M>& postRv)
+  /*! The posterior RV           */       uqGenericVectorRVClass   <P_V,P_M>& postRv)
   :
   m_env                     (priorRv.env()),
   m_priorRv                 (priorRv),
@@ -238,7 +248,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::uqStatisticalInverseProblemClass(
   return;
 }
 
-/*! Destructor. */
+// Destructor --------------------------------------
 template <class P_V,class P_M>
 uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
 {
@@ -263,27 +273,7 @@ uqStatisticalInverseProblemClass<P_V,P_M>::~uqStatisticalInverseProblemClass()
   if (m_solutionDomain  ) delete m_solutionDomain;
   if (m_optionsObj      ) delete m_optionsObj;
 }
-
-/*! Operation to solve the problem through Bayes formula and a Metropolis-Hastings algorithm. */
-/*! Requirements:
-<list type=number>
-<item> 'initialValues' should have the same number of components as member variable 'm_priorRv'
-<item> if 'initialProposalCovMatrix' is not NULL, it should be square and its size should be equal to the size of 'initialValues'
-</list>
-*/
-/*! If the requirements are satisfied, this operation checks the member flag 'm_computeSolution' (one of the options read from the input file during construction).
-*/
-/*! If the flag is 'false', the operation returns immediately, computing nothing.
- */
-/*! If the flag is 'true', the operation sets the member variable 'm_postRv' accordingly. The operation:
-<list type=number>
-<item> sets the pdf of 'm_postRv' equal to an instance of 'uqBayesianJointPdfClass<P_V,P_M>',
-<item> instantiates 'uqSequenceOfVectorsClass<P_V,P_M>' (the chain),
-<item> instantiates 'uqMetropolisHastingsSGClass<P_V,P_M>' (tha Metropolis-Hastings algorithm),
-<item> populates the chain with the Metropolis-Hastings algorithm, and
-<item> sets the realizer of 'm_postRv' with the contents of the chain.
-</list>
-*/
+// Statistical methods -----------------------------
 template <class P_V,class P_M>
 void
 uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
@@ -425,10 +415,10 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(
 
   m_env.fullComm().syncPrintDebugMsg("Leaving uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings()",1,3000000);
   m_env.fullComm().Barrier();
-  // grvy_timer_end("BayesMetropolisHastings"); TODO: revist timers
+  // grvy_timer_end("BayesMetropolisHastings"); TODO: revisit timers
   return;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M>
 void
 uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
@@ -499,21 +489,21 @@ uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMLSampling()
 
   return;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M>
 const uqBaseVectorRVClass<P_V,P_M>& 
 uqStatisticalInverseProblemClass<P_V,P_M>::priorRv() const
 {
   return m_priorRv;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M>
 const uqGenericVectorRVClass<P_V,P_M>& 
 uqStatisticalInverseProblemClass<P_V,P_M>::postRv() const
 {
   return m_postRv;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M>
 double uqStatisticalInverseProblemClass<P_V,P_M>::logEvidence() const
 {
@@ -523,7 +513,7 @@ double uqStatisticalInverseProblemClass<P_V,P_M>::logEvidence() const
                       "m_mlSampler is NULL");
   return m_mlSampler->logEvidence();
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M>
 double uqStatisticalInverseProblemClass<P_V,P_M>::meanLogLikelihood() const
 {
@@ -533,7 +523,7 @@ double uqStatisticalInverseProblemClass<P_V,P_M>::meanLogLikelihood() const
                       "m_mlSampler is NULL");
   return m_mlSampler->meanLogLikelihood();
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M>
 double uqStatisticalInverseProblemClass<P_V,P_M>::eig() const
 {
@@ -543,14 +533,16 @@ double uqStatisticalInverseProblemClass<P_V,P_M>::eig() const
                       "m_mlSampler is NULL");
   return m_mlSampler->eig();
 }
-
+// I/O methods--------------------------------------
 template <class P_V,class P_M>
 void
 uqStatisticalInverseProblemClass<P_V,P_M>::print(std::ostream& os) const
 {
   return;
 }
-
+//--------------------------------------------------
+// Operator declared outside class definition-------
+//--------------------------------------------------
 template<class P_V,class P_M>
 std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemClass<P_V,P_M>& obj)
 {

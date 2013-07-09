@@ -29,6 +29,11 @@
 #include <uqMonteCarloSGOptions.h>
 #include <uqMiscellaneous.h>
 
+// -------------------------------------------------
+// uqMcOptionsValuesClass --------------------------
+// -------------------------------------------------
+
+// Default constructor -----------------------------
 uqMcOptionsValuesClass::uqMcOptionsValuesClass(
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   const uqSsOptionsValuesClass* alternativePSsOptionsValues,
@@ -66,23 +71,23 @@ uqMcOptionsValuesClass::uqMcOptionsValuesClass(
   if (alternativeQSsOptionsValues) m_alternativeQSsOptionsValues = *alternativeQSsOptionsValues;
 #endif
 }
-
-uqMcOptionsValuesClass::~uqMcOptionsValuesClass()
-{
-}
-
+// Copy constructor --------------------------------
 uqMcOptionsValuesClass::uqMcOptionsValuesClass(const uqMcOptionsValuesClass& src)
 {
   this->copy(src);
 }
-
+// Destructor ---------------------------------------
+uqMcOptionsValuesClass::~uqMcOptionsValuesClass()
+{
+}
+// Set methods --------------------------------------
 uqMcOptionsValuesClass&
 uqMcOptionsValuesClass::operator=(const uqMcOptionsValuesClass& rhs)
 {
   this->copy(rhs);
   return *this;
 }
-
+// Private methods-----------------------------------
 void
 uqMcOptionsValuesClass::copy(const uqMcOptionsValuesClass& src)
 {
@@ -116,6 +121,11 @@ uqMcOptionsValuesClass::copy(const uqMcOptionsValuesClass& src)
   return;
 }
 
+// --------------------------------------------------
+//uqMonteCarloSGOptionsClass ------------------------
+// --------------------------------------------------
+
+// Default constructor -----------------------------
 uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   const uqBaseEnvironmentClass& env, 
   const char*                   prefix)
@@ -157,9 +167,9 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
                       "uqMonteCarloSGOptionsClass::constructor(1)",
-                      "this constructor is incompatible with the abscense of an options input file");
+                      "this constructor is incompatible with the absence of an options input file");
 }
-
+// Constructor 2 -----------------------------------
 uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   const uqBaseEnvironmentClass& env, 
   const char*                   prefix,
@@ -218,7 +228,7 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
     new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "qseq_",m_ov.m_alternativeQSsOptionsValues);
 #endif
 }
-
+// Destructor --------------------------------------
 uqMonteCarloSGOptionsClass::~uqMonteCarloSGOptionsClass()
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -227,7 +237,7 @@ uqMonteCarloSGOptionsClass::~uqMonteCarloSGOptionsClass()
 #endif
   if (m_optionsDesc              ) delete m_optionsDesc;
 } 
-
+// I/O methods -------------------------------------
 void
 uqMonteCarloSGOptionsClass::scanOptionsValues()
 {
@@ -257,7 +267,7 @@ uqMonteCarloSGOptionsClass::scanOptionsValues()
 #endif
   return;
 }
-
+// Private methods ---------------------------------
 void
 uqMonteCarloSGOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {

@@ -92,19 +92,47 @@
 #define UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                    0
 #define UQ_MH_SG_BROOKS_GELMAN_LAG                                    100
 
+/*! \file uqMetropolisHastingsSGOptions.h
+    \brief Classes to allow options to be passed to a Metropolis-Hastings algorithm.
+*/
+
+/*! \class uqMhOptionsValuesClass
+ *  \brief This class provides options for the Metropolis-Hastings generator of samples if no input file is available.
+ * 
+ *  Metropolis-Hastings generator of samples expects some options for its methods to be fully defined. 
+ * This class provides default values for such options if no input file is available. */
+
 class uqMhOptionsValuesClass
 {
 public:
+  
+  //! @name Constructor/Destructor methods
+  //@{
+    
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   uqMhOptionsValuesClass            (const uqSsOptionsValuesClass* alternativeRawSsOptionsValues,
                                      const uqSsOptionsValuesClass* alternativeFilteredSsOptionsValues);
 #else
+  
+  //! Default constructor.
+  /*! Assigns the default suite of options to the Metropolis-Hastings generator of samples.*/
   uqMhOptionsValuesClass            ();
 #endif
+  
+  //! Copy constructor.
+  /*! It assigns the same options values from  \c src to \c this.*/
   uqMhOptionsValuesClass            (const uqMhOptionsValuesClass& src);
-  uqMhOptionsValuesClass& operator= (const uqMhOptionsValuesClass& rhs);
- ~uqMhOptionsValuesClass            ();
 
+  //! Destructor
+  ~uqMhOptionsValuesClass            ();
+  //@}
+   
+  //! @name Set methods
+  //@{ 
+  //! Assignment operator; it copies \c rhs to \c this. 
+  uqMhOptionsValuesClass& operator= (const uqMhOptionsValuesClass& rhs);
+  //@}
+  
   std::string                        m_dataOutputFileName;
   bool                               m_dataOutputAllowAll;
   std::set<unsigned int>             m_dataOutputAllowedSet;
@@ -162,6 +190,7 @@ public:
   unsigned int                       m_BrooksGelmanLag;
 
 private:
+  //! Copies the option values from \c src to \c this.
   void copy(const uqMhOptionsValuesClass& src);
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -171,17 +200,48 @@ private:
 #endif
 };
 
+// --------------------------------------------------
+// --------------------------------------------------
+// --------------------------------------------------
+
+/*! \class uqMetropolisHastingsSGOptionsClass
+ *  \brief This class reads the options for the  Metropolis-Hastings generator of samples from  an input file.
+ * 
+ * This class implements a Metropolis-Hastings generator of samples. 'SG' stands for 'Sequence Generator'.
+ * Metropolis-Hastings generator of samples expects some options to be fully defined. This class reads 
+ * the options for the Metropolis-Hastings generator of samples from an input file provided by the 
+ * user. The class expects the prefix '\<prefix\>_mh_'. For instance, if 'prefix' is 'foo_775_fp_', 
+ * then the constructor will read all options that begin with 'foo_775_fp_mh_'. Options reading is 
+ * handled by class 'uqMetropolisHastingsOptionsClass'. */
+
 class uqMetropolisHastingsSGOptionsClass
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Constructor: reads options from the input file.
   uqMetropolisHastingsSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+  
+  //! Constructor: with alternative option values.
+  /*! In this constructor, the input options are given by \c alternativeOptionsValues.*/
   uqMetropolisHastingsSGOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqMhOptionsValuesClass& alternativeOptionsValues);
+  
+  //! Copy constructor
   uqMetropolisHastingsSGOptionsClass(const uqMLSamplingLevelOptionsClass& mlOptions);
- ~uqMetropolisHastingsSGOptionsClass();
-
+  
+  //! Destructor
+  ~uqMetropolisHastingsSGOptionsClass();
+  //@}
+  
+  //! @name I/O methods
+  //@{
+  //! It scans the option values from the options input file.
   void scanOptionsValues();
+  
+  //!  It prints the option values.
   void print            (std::ostream& os) const;
-
+  //@}
+  
   uqMhOptionsValuesClass             m_ov;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptionsObj;
@@ -192,7 +252,10 @@ public:
   std::string                        m_prefix;
 
 private:
+  //! Defines the options for the Metropolis-Hastings generator of samples as the default options.
   void   defineMyOptions  (po::options_description& optionsDesc) const;
+  
+  //! Gets the sequence options defined to the  Metropolis-Hastings algorithm.
   void   getMyOptionValues(po::options_description& optionsDesc);
 
   const uqBaseEnvironmentClass& m_env;

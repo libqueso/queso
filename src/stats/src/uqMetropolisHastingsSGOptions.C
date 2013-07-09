@@ -29,6 +29,11 @@
 #include <uqMetropolisHastingsSGOptions.h>
 #include <uqMiscellaneous.h>
 
+// -------------------------------------------------
+// uqMhOptionsValuesClass --------------------------
+// -------------------------------------------------
+
+// Default constructor -----------------------------
 uqMhOptionsValuesClass::uqMhOptionsValuesClass(
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   const uqSsOptionsValuesClass* alternativeRawSsOptionsValues,
@@ -98,23 +103,23 @@ uqMhOptionsValuesClass::uqMhOptionsValuesClass(
   if (alternativeFilteredSsOptionsValues) m_alternativeFilteredSsOptionsValues = *alternativeFilteredSsOptionsValues;
 #endif
 }
-
-uqMhOptionsValuesClass::~uqMhOptionsValuesClass()
-{
-}
-
+// Copy constructor----------------------------------
 uqMhOptionsValuesClass::uqMhOptionsValuesClass(const uqMhOptionsValuesClass& src)
 {
   this->copy(src);
 }
-
+// Destructor ---------------------------------------
+uqMhOptionsValuesClass::~uqMhOptionsValuesClass()
+{
+}
+// Set methods --------------------------------------
 uqMhOptionsValuesClass&
 uqMhOptionsValuesClass::operator=(const uqMhOptionsValuesClass& rhs)
 {
   this->copy(rhs);
   return *this;
 }
-
+// Private methods-----------------------------------
 void
 uqMhOptionsValuesClass::copy(const uqMhOptionsValuesClass& src)
 {
@@ -181,6 +186,11 @@ uqMhOptionsValuesClass::copy(const uqMhOptionsValuesClass& src)
   return;
 }
 
+//---------------------------------------------------
+// uqMetropolisHastingsSGOptionsClass ---------------
+//---------------------------------------------------
+
+// Default constructor -----------------------------
 uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   const uqBaseEnvironmentClass& env,
   const char*                   prefix)
@@ -253,9 +263,9 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
                       "uqMetropolisHastingsSGOptionsClass::constructor(1)",
-                      "this constructor is incompatible with the abscense of an options input file");
+                      "this constructor is incompatible with the absence of an options input file");
 }
-
+// Constructor 2------------------------------------
 uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   const uqBaseEnvironmentClass& env,
   const char*                   prefix,
@@ -349,7 +359,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   }
 #endif
 }
-
+// Copy constructor---------------------------------
 uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
   const uqMLSamplingLevelOptionsClass& mlOptions)
   :
@@ -490,7 +500,7 @@ uqMetropolisHastingsSGOptionsClass::uqMetropolisHastingsSGOptionsClass(
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 uqMetropolisHastingsSGOptionsClass::~uqMetropolisHastingsSGOptionsClass()
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -500,6 +510,7 @@ uqMetropolisHastingsSGOptionsClass::~uqMetropolisHastingsSGOptionsClass()
   if (m_optionsDesc                      ) delete m_optionsDesc;
 } 
 
+// I/O methods -------------------------------------
 void
 uqMetropolisHastingsSGOptionsClass::scanOptionsValues()
 {
@@ -534,7 +545,84 @@ uqMetropolisHastingsSGOptionsClass::scanOptionsValues()
 
   return;
 }
+// -------------------------------------------------
+void
+uqMetropolisHastingsSGOptionsClass::print(std::ostream& os) const
+{
+  os <<         m_option_dataOutputFileName                         << " = " << m_ov.m_dataOutputFileName
+     << "\n" << m_option_dataOutputAllowAll                         << " = " << m_ov.m_dataOutputAllowAll
+     << "\n" << m_option_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_ov.m_dataOutputAllowedSet.begin(); setIt != m_ov.m_dataOutputAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+  os << "\n" << m_option_totallyMute                                << " = " << m_ov.m_totallyMute
+     << "\n" << m_option_initialPosition_dataInputFileName          << " = " << m_ov.m_initialPositionDataInputFileName
+     << "\n" << m_option_initialPosition_dataInputFileType          << " = " << m_ov.m_initialPositionDataInputFileType
+     << "\n" << m_option_initialProposalCovMatrix_dataInputFileName << " = " << m_ov.m_initialProposalCovMatrixDataInputFileName
+     << "\n" << m_option_initialProposalCovMatrix_dataInputFileType << " = " << m_ov.m_initialProposalCovMatrixDataInputFileType
+     << "\n" << m_option_rawChain_dataInputFileName                 << " = " << m_ov.m_rawChainDataInputFileName
+     << "\n" << m_option_rawChain_dataInputFileType                 << " = " << m_ov.m_rawChainDataInputFileType
+     << "\n" << m_option_rawChain_size                              << " = " << m_ov.m_rawChainSize
+     << "\n" << m_option_rawChain_generateExtra                     << " = " << m_ov.m_rawChainGenerateExtra
+     << "\n" << m_option_rawChain_displayPeriod                     << " = " << m_ov.m_rawChainDisplayPeriod
+     << "\n" << m_option_rawChain_measureRunTimes                   << " = " << m_ov.m_rawChainMeasureRunTimes
+     << "\n" << m_option_rawChain_dataOutputPeriod                  << " = " << m_ov.m_rawChainDataOutputPeriod
+     << "\n" << m_option_rawChain_dataOutputFileName                << " = " << m_ov.m_rawChainDataOutputFileName
+     << "\n" << m_option_rawChain_dataOutputFileType                << " = " << m_ov.m_rawChainDataOutputFileType
+     << "\n" << m_option_rawChain_dataOutputAllowAll                << " = " << m_ov.m_rawChainDataOutputAllowAll
+     << "\n" << m_option_rawChain_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_ov.m_rawChainDataOutputAllowedSet.begin(); setIt != m_ov.m_rawChainDataOutputAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+  os
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+     << "\n" << m_option_rawChain_computeStats                      << " = " << m_ov.m_rawChainComputeStats
+#endif
+     << "\n" << m_option_filteredChain_generate                     << " = " << m_ov.m_filteredChainGenerate
+     << "\n" << m_option_filteredChain_discardedPortion             << " = " << m_ov.m_filteredChainDiscardedPortion
+     << "\n" << m_option_filteredChain_lag                          << " = " << m_ov.m_filteredChainLag
+     << "\n" << m_option_filteredChain_dataOutputFileName           << " = " << m_ov.m_filteredChainDataOutputFileName
+     << "\n" << m_option_filteredChain_dataOutputFileType           << " = " << m_ov.m_filteredChainDataOutputFileType
+     << "\n" << m_option_filteredChain_dataOutputAllowAll           << " = " << m_ov.m_filteredChainDataOutputAllowAll
+     << "\n" << m_option_filteredChain_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_ov.m_filteredChainDataOutputAllowedSet.begin(); setIt != m_ov.m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+  os
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+     << "\n" << m_option_filteredChain_computeStats                 << " = " << m_ov.m_filteredChainComputeStats
+#endif
+     << "\n" << m_option_displayCandidates                          << " = " << m_ov.m_displayCandidates
+     << "\n" << m_option_putOutOfBoundsInChain                      << " = " << m_ov.m_putOutOfBoundsInChain
+     << "\n" << m_option_tk_useLocalHessian                         << " = " << m_ov.m_tkUseLocalHessian
+     << "\n" << m_option_tk_useNewtonComponent                      << " = " << m_ov.m_tkUseNewtonComponent
+     << "\n" << m_option_dr_maxNumExtraStages                       << " = " << m_ov.m_drMaxNumExtraStages
+     << "\n" << m_option_dr_listOfScalesForExtraStages << " = ";
+  for (unsigned int i = 0; i < m_ov.m_drScalesForExtraStages.size(); ++i) {
+    os << m_ov.m_drScalesForExtraStages[i] << " ";
+  }
+  os << "\n" << m_option_dr_duringAmNonAdaptiveInt                  << " = " << m_ov.m_drDuringAmNonAdaptiveInt
+     << "\n" << m_option_am_keepInitialMatrix                       << " = " << m_ov.m_amKeepInitialMatrix
+     << "\n" << m_option_am_initialNonAdaptInterval                 << " = " << m_ov.m_amInitialNonAdaptInterval
+     << "\n" << m_option_am_adaptInterval                           << " = " << m_ov.m_amAdaptInterval
+     << "\n" << m_option_am_adaptedMatrices_dataOutputPeriod        << " = " << m_ov.m_amAdaptedMatricesDataOutputPeriod
+     << "\n" << m_option_am_adaptedMatrices_dataOutputFileName      << " = " << m_ov.m_amAdaptedMatricesDataOutputFileName
+     << "\n" << m_option_am_adaptedMatrices_dataOutputFileType      << " = " << m_ov.m_amAdaptedMatricesDataOutputFileType
+     << "\n" << m_option_am_adaptedMatrices_dataOutputAllowAll      << " = " << m_ov.m_amAdaptedMatricesDataOutputAllowAll
+     << "\n" << m_option_am_adaptedMatrices_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_ov.m_amAdaptedMatricesDataOutputAllowedSet.begin(); setIt != m_ov.m_amAdaptedMatricesDataOutputAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+  os << "\n" << m_option_am_eta                                     << " = " << m_ov.m_amEta
+     << "\n" << m_option_am_epsilon                                 << " = " << m_ov.m_amEpsilon
+     << "\n" << m_option_enableBrooksGelmanConvMonitor              << " = " << m_ov.m_enableBrooksGelmanConvMonitor
+     << "\n" << m_option_BrooksGelmanLag                            << " = " << m_ov.m_BrooksGelmanLag
+     << std::endl;
 
+  return;
+}
+
+// Private methods----------------------------------
 void
 uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
@@ -582,7 +670,7 @@ uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& opt
     (m_option_am_keepInitialMatrix.c_str(),                       po::value<bool        >()->default_value(UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                          ), "'am' keep initial (given) matrix"                           )
     (m_option_am_initialNonAdaptInterval.c_str(),                 po::value<unsigned int>()->default_value(UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                           ), "'am' initial non adaptation interval"                       )
     (m_option_am_adaptInterval.c_str(),                           po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                               ), "'am' adaptation interval"                                   )
-    (m_option_am_adaptedMatrices_dataOutputPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV          ), "period for outputing 'am' adapted matrices"                 )
+    (m_option_am_adaptedMatrices_dataOutputPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV          ), "period for outputting 'am' adapted matrices"                 )
     (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV       ), "name of output file for 'am' adapted matrices"              )
     (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV       ), "type of output file for 'am' adapted matrices"              )
     (m_option_am_adaptedMatrices_dataOutputAllowAll.c_str(),      po::value<bool        >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV       ), "type of output file for 'am' adapted matrices"              )
@@ -595,7 +683,7 @@ uqMetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& opt
 
   return;
 }
-
+// -------------------------------------------------
 void
 uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
@@ -884,81 +972,9 @@ uqMetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& o
   return;
 }
 
-void
-uqMetropolisHastingsSGOptionsClass::print(std::ostream& os) const
-{
-  os <<         m_option_dataOutputFileName                         << " = " << m_ov.m_dataOutputFileName
-     << "\n" << m_option_dataOutputAllowAll                         << " = " << m_ov.m_dataOutputAllowAll
-     << "\n" << m_option_dataOutputAllowedSet << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_ov.m_dataOutputAllowedSet.begin(); setIt != m_ov.m_dataOutputAllowedSet.end(); ++setIt) {
-    os << *setIt << " ";
-  }
-  os << "\n" << m_option_totallyMute                                << " = " << m_ov.m_totallyMute
-     << "\n" << m_option_initialPosition_dataInputFileName          << " = " << m_ov.m_initialPositionDataInputFileName
-     << "\n" << m_option_initialPosition_dataInputFileType          << " = " << m_ov.m_initialPositionDataInputFileType
-     << "\n" << m_option_initialProposalCovMatrix_dataInputFileName << " = " << m_ov.m_initialProposalCovMatrixDataInputFileName
-     << "\n" << m_option_initialProposalCovMatrix_dataInputFileType << " = " << m_ov.m_initialProposalCovMatrixDataInputFileType
-     << "\n" << m_option_rawChain_dataInputFileName                 << " = " << m_ov.m_rawChainDataInputFileName
-     << "\n" << m_option_rawChain_dataInputFileType                 << " = " << m_ov.m_rawChainDataInputFileType
-     << "\n" << m_option_rawChain_size                              << " = " << m_ov.m_rawChainSize
-     << "\n" << m_option_rawChain_generateExtra                     << " = " << m_ov.m_rawChainGenerateExtra
-     << "\n" << m_option_rawChain_displayPeriod                     << " = " << m_ov.m_rawChainDisplayPeriod
-     << "\n" << m_option_rawChain_measureRunTimes                   << " = " << m_ov.m_rawChainMeasureRunTimes
-     << "\n" << m_option_rawChain_dataOutputPeriod                  << " = " << m_ov.m_rawChainDataOutputPeriod
-     << "\n" << m_option_rawChain_dataOutputFileName                << " = " << m_ov.m_rawChainDataOutputFileName
-     << "\n" << m_option_rawChain_dataOutputFileType                << " = " << m_ov.m_rawChainDataOutputFileType
-     << "\n" << m_option_rawChain_dataOutputAllowAll                << " = " << m_ov.m_rawChainDataOutputAllowAll
-     << "\n" << m_option_rawChain_dataOutputAllowedSet << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_ov.m_rawChainDataOutputAllowedSet.begin(); setIt != m_ov.m_rawChainDataOutputAllowedSet.end(); ++setIt) {
-    os << *setIt << " ";
-  }
-  os
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-     << "\n" << m_option_rawChain_computeStats                      << " = " << m_ov.m_rawChainComputeStats
-#endif
-     << "\n" << m_option_filteredChain_generate                     << " = " << m_ov.m_filteredChainGenerate
-     << "\n" << m_option_filteredChain_discardedPortion             << " = " << m_ov.m_filteredChainDiscardedPortion
-     << "\n" << m_option_filteredChain_lag                          << " = " << m_ov.m_filteredChainLag
-     << "\n" << m_option_filteredChain_dataOutputFileName           << " = " << m_ov.m_filteredChainDataOutputFileName
-     << "\n" << m_option_filteredChain_dataOutputFileType           << " = " << m_ov.m_filteredChainDataOutputFileType
-     << "\n" << m_option_filteredChain_dataOutputAllowAll           << " = " << m_ov.m_filteredChainDataOutputAllowAll
-     << "\n" << m_option_filteredChain_dataOutputAllowedSet << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_ov.m_filteredChainDataOutputAllowedSet.begin(); setIt != m_ov.m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
-    os << *setIt << " ";
-  }
-  os
-#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-     << "\n" << m_option_filteredChain_computeStats                 << " = " << m_ov.m_filteredChainComputeStats
-#endif
-     << "\n" << m_option_displayCandidates                          << " = " << m_ov.m_displayCandidates
-     << "\n" << m_option_putOutOfBoundsInChain                      << " = " << m_ov.m_putOutOfBoundsInChain
-     << "\n" << m_option_tk_useLocalHessian                         << " = " << m_ov.m_tkUseLocalHessian
-     << "\n" << m_option_tk_useNewtonComponent                      << " = " << m_ov.m_tkUseNewtonComponent
-     << "\n" << m_option_dr_maxNumExtraStages                       << " = " << m_ov.m_drMaxNumExtraStages
-     << "\n" << m_option_dr_listOfScalesForExtraStages << " = ";
-  for (unsigned int i = 0; i < m_ov.m_drScalesForExtraStages.size(); ++i) {
-    os << m_ov.m_drScalesForExtraStages[i] << " ";
-  }
-  os << "\n" << m_option_dr_duringAmNonAdaptiveInt                  << " = " << m_ov.m_drDuringAmNonAdaptiveInt
-     << "\n" << m_option_am_keepInitialMatrix                       << " = " << m_ov.m_amKeepInitialMatrix
-     << "\n" << m_option_am_initialNonAdaptInterval                 << " = " << m_ov.m_amInitialNonAdaptInterval
-     << "\n" << m_option_am_adaptInterval                           << " = " << m_ov.m_amAdaptInterval
-     << "\n" << m_option_am_adaptedMatrices_dataOutputPeriod        << " = " << m_ov.m_amAdaptedMatricesDataOutputPeriod
-     << "\n" << m_option_am_adaptedMatrices_dataOutputFileName      << " = " << m_ov.m_amAdaptedMatricesDataOutputFileName
-     << "\n" << m_option_am_adaptedMatrices_dataOutputFileType      << " = " << m_ov.m_amAdaptedMatricesDataOutputFileType
-     << "\n" << m_option_am_adaptedMatrices_dataOutputAllowAll      << " = " << m_ov.m_amAdaptedMatricesDataOutputAllowAll
-     << "\n" << m_option_am_adaptedMatrices_dataOutputAllowedSet << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_ov.m_amAdaptedMatricesDataOutputAllowedSet.begin(); setIt != m_ov.m_amAdaptedMatricesDataOutputAllowedSet.end(); ++setIt) {
-    os << *setIt << " ";
-  }
-  os << "\n" << m_option_am_eta                                     << " = " << m_ov.m_amEta
-     << "\n" << m_option_am_epsilon                                 << " = " << m_ov.m_amEpsilon
-     << "\n" << m_option_enableBrooksGelmanConvMonitor              << " = " << m_ov.m_enableBrooksGelmanConvMonitor
-     << "\n" << m_option_BrooksGelmanLag                            << " = " << m_ov.m_BrooksGelmanLag
-     << std::endl;
-
-  return;
-}
+// --------------------------------------------------
+// Operator declared outside class definition ------
+// --------------------------------------------------
 
 std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGOptionsClass& obj)
 {

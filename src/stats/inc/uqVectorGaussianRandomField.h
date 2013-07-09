@@ -32,43 +32,102 @@
 #include <uqMatrixCovarianceFunction.h>
 #include <uqVectorFunction.h>
 #include <uqVectorRV.h>
+/*! 
+ * \file uqVectorGaussianRandomField.h
+ * \brief A class for handling Gaussian random fields (GRF).
+ * 
+ * \class uqVectorGaussianRandomFieldClass
+ * \brief A class for handling vector Gaussian random fields (GRF).
+ *
+ * This class implements a vector Gaussian random field (GRF); i.e. a random field involving 
+ * vector Gaussian probability density functions (PDFs) of the variables. */
 
 template <class P_V, class P_M, class Q_V, class Q_M>
 class uqVectorGaussianRandomFieldClass
 {
  public:
+   //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor.
+  /*! Constructs a new object, given a prefix, an index set, and both a mean and a 
+   * covariance function. This method deletes the previous saved positions. */ 
   uqVectorGaussianRandomFieldClass(const char*                                                 prefix,
                                    const uqVectorSetClass<P_V,P_M>&                            indexSet,
                                    const uqVectorSetClass<Q_V,Q_M>&                            imageSetPerIndex,
                                    const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&           meanFunction, 
                                    const uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>& covarianceFunction);
+  
+  //! TODO: Copy constructor.
+  /*! \todo: implement me!*/
   uqVectorGaussianRandomFieldClass(const uqVectorGaussianRandomFieldClass&                     obj);
- ~uqVectorGaussianRandomFieldClass();
-
+ 
+  //! Destructor.
+  ~uqVectorGaussianRandomFieldClass();
+  //@}
+ 
+  //! @name Set methods
+  //@{
+  //! TODO: Assignment operator; it copies \c rhs to \c this.
+  /*! \todo: implement me!*/
   uqVectorGaussianRandomFieldClass& operator=(const uqVectorGaussianRandomFieldClass& rhs);
+  //@}
 
-  const uqVectorSetClass<P_V,P_M>&                            indexSet          () const;
-  const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&           meanFunction      () const;
+  //! @name Math methods
+  //@{
+  //! Index set; access to protected attribute m_indexSet.
+  const uqVectorSetClass<P_V,P_M>&                   indexSet          () const;
+  
+  //! Mean function; access to protected attribute m_meanFunction.
+  const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&  meanFunction      () const;
+  
+  //! Covariance function; access to protected attribute m_covarianceFunction.
   const uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>& covarianceFunction() const;
-        void                                                  sampleFunction    (const std::vector<P_V*>& fieldPositions, Q_V& sampleValues);
-
+  
+  //! Function that samples from a Gaussian PDF.
+  /*! Given the field positions, this method performs a number of tests, calculates the mean vector,
+   * the covariance matrix and then it samples from a Gaussian random vector as 
+   * many positions as required.*/
+  void                                              sampleFunction(const std::vector<P_V*>& fieldPositions, Q_V& sampleValues);
+  //@}
 protected:
-        void                                                  copy              (const uqVectorGaussianRandomFieldClass& src);
+  //! Copy method.
+  void                                              copy          (const uqVectorGaussianRandomFieldClass& src);
 
-  const uqBaseEnvironmentClass&                               m_env;
-        std::string                                           m_prefix;
-  const uqVectorSetClass<P_V,P_M>&                            m_indexSet;
-  const uqVectorSetClass<Q_V,Q_M>&                            m_imageSetPerIndex;
-  const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&           m_meanFunction;
+  //! Environment.
+  const uqBaseEnvironmentClass&                     m_env;
+  
+  //! Prefix.
+  std::string                                       m_prefix;
+ 
+  //! Index set.	
+  const uqVectorSetClass<P_V,P_M>&                  m_indexSet;
+    
+  //! Image set of the RV, per index.
+  const uqVectorSetClass<Q_V,Q_M>&                  m_imageSetPerIndex;
+  
+  //! Mean function.
+  const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_meanFunction;
+  
+  //! Covariance function.
   const uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>& m_covarianceFunction;
 
-  std::vector<P_V*>                                           m_savedPositions;
-  uqVectorSpaceClass<Q_V,Q_M>*                                m_savedRvImageSpace;
-  Q_V*                                                        m_savedRvLawExpVector;
-  Q_M*                                                        m_savedRvLawCovMatrix;
-  uqGaussianVectorRVClass<Q_V,Q_M>*                           m_savedRv;
+  //! Saved positions.
+  std::vector<P_V*>                                 m_savedPositions;
+  
+  //! Image set of the RV.
+  uqVectorSpaceClass<Q_V,Q_M>*                      m_savedRvImageSpace;
+  
+  //! Vector of the mean value of the RV.
+  Q_V*                                              m_savedRvLawExpVector;
+  
+  //! Covariance matrix of the RV.
+  Q_M*                                              m_savedRvLawCovMatrix;
+  
+  //! My RV.
+  uqGaussianVectorRVClass<Q_V,Q_M>*                 m_savedRv;
 };
 
+// Default constructor -----------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
 uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::uqVectorGaussianRandomFieldClass(
   const char*                                                 prefix,
@@ -90,33 +149,33 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::uqVectorGaussianRandomFieldCl
 {
   m_savedPositions.clear();
 }
-
+// Destructor ---------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
 uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::~uqVectorGaussianRandomFieldClass()
 {
 }
-
+// Math methods -------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
 const uqVectorSetClass<P_V,P_M>&
 uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::indexSet() const
 {
   return m_indexSet;
 }
-
+// --------------------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
 const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&
 uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::meanFunction() const
 {
   return m_meanFunction;
 }
-
+// --------------------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
 const uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>&
 uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::covarianceFunction() const
 {
   return m_covarianceFunction;
 }
-
+// --------------------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
 void
 uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vector<P_V*>& fieldPositions, Q_V& sampleValues)

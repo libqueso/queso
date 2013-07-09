@@ -31,17 +31,44 @@
 
 #include <uqEnvironment.h>
 
+/*! \file uqFiniteDistribution.h
+ * \brief A templated class for a finite distribution.
+ *
+ * \class uqFiniteDistributionClass
+ * \brief A templated class for a finite distribution.
+ * 
+ * Unordered, discrete distribution, whose weights must be nonnegative, and are treated as unnormalized 
+ * probabilities.\n
+ * 
+ * TODO: Describe me better!*/
+
 class uqFiniteDistributionClass {
 public:
+  //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor.
   uqFiniteDistributionClass(const uqBaseEnvironmentClass& env,
                             const char*                   prefix,
                             const std::vector<double>&    inpWeights);
+  //! Virtual destructor
   virtual ~uqFiniteDistributionClass();
-
+  //@}
+  
+  //! @name Misc methods
+  //@{
+  //! Environment; access to protected attribute m_env.  
   const uqBaseEnvironmentClass& env    () const;
+  //@}
+  
+  //! @name Statistical methods
+  //@{
+  //! Weights.
   const std::vector<double>&    weights() const;
-        unsigned int            sample () const;
-
+  
+  //! Samples.
+  unsigned int            sample () const;
+ //@}
+  
 protected:
   const uqBaseEnvironmentClass& m_env;
         std::string             m_prefix;

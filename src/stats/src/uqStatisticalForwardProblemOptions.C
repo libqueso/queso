@@ -28,7 +28,11 @@
 
 #include <uqStatisticalForwardProblemOptions.h>
 #include <uqMiscellaneous.h>
+// --------------------------------------------------
+// uqSfpOptionsValuesClass---------------------------
+// --------------------------------------------------
 
+// Default constructor -----------------------------
 uqSfpOptionsValuesClass::uqSfpOptionsValuesClass()
   :
   m_computeSolution     (UQ_SFP_COMPUTE_SOLUTION_ODV     ),
@@ -41,23 +45,23 @@ uqSfpOptionsValuesClass::uqSfpOptionsValuesClass()
 #endif
 {
 }
-
-uqSfpOptionsValuesClass::~uqSfpOptionsValuesClass()
-{
-}
-
+// Copy constructor----------------------------------
 uqSfpOptionsValuesClass::uqSfpOptionsValuesClass(const uqSfpOptionsValuesClass& src)
 {
   this->copy(src);
 }
-
+// Destructor ---------------------------------------
+uqSfpOptionsValuesClass::~uqSfpOptionsValuesClass()
+{
+}
+// Set methods --------------------------------------
 uqSfpOptionsValuesClass&
 uqSfpOptionsValuesClass::operator=(const uqSfpOptionsValuesClass& rhs)
 {
   this->copy(rhs);
   return *this;
 }
-
+// Private methods-----------------------------------
 void
 uqSfpOptionsValuesClass::copy(const uqSfpOptionsValuesClass& src)
 {
@@ -75,6 +79,12 @@ uqSfpOptionsValuesClass::copy(const uqSfpOptionsValuesClass& src)
   return;
 }
 
+
+// --------------------------------------------------
+// uqStatisticalForwardProblemOptionsClass-----------
+// --------------------------------------------------
+
+// Default constructor -----------------------------
 uqStatisticalForwardProblemOptionsClass::uqStatisticalForwardProblemOptionsClass(
   const uqBaseEnvironmentClass& env,
   const char*                   prefix)
@@ -96,7 +106,7 @@ uqStatisticalForwardProblemOptionsClass::uqStatisticalForwardProblemOptionsClass
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
                       "uqStatisticalForwardProblemOptionsClass::constructor(1)",
-                      "this constructor is incompatible with the abscense of an options input file");
+                      "this constructor is incompatible with the absence of an options input file");
 }
 
 uqStatisticalForwardProblemOptionsClass::uqStatisticalForwardProblemOptionsClass(
@@ -131,12 +141,13 @@ uqStatisticalForwardProblemOptionsClass::uqStatisticalForwardProblemOptionsClass
                             << std::endl;
   }
 }
-
+// Destructor --------------------------------------
 uqStatisticalForwardProblemOptionsClass::~uqStatisticalForwardProblemOptionsClass()
 {
   if (m_optionsDesc) delete m_optionsDesc;
 } 
 
+// I/O methods -------------------------------------
 void
 uqStatisticalForwardProblemOptionsClass::scanOptionsValues()
 {
@@ -159,7 +170,27 @@ uqStatisticalForwardProblemOptionsClass::scanOptionsValues()
 
   return;
 }
+//--------------------------------------------------
+void
+uqStatisticalForwardProblemOptionsClass::print(std::ostream& os) const
+{
+  os <<         m_option_computeSolution      << " = " << m_ov.m_computeSolution
+     << "\n" << m_option_computeCovariances   << " = " << m_ov.m_computeCovariances
+     << "\n" << m_option_computeCorrelations  << " = " << m_ov.m_computeCorrelations
+     << "\n" << m_option_dataOutputFileName   << " = " << m_ov.m_dataOutputFileName;
+  os << "\n" << m_option_dataOutputAllowedSet << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_ov.m_dataOutputAllowedSet.begin(); setIt != m_ov.m_dataOutputAllowedSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+#ifdef UQ_SFP_READS_SOLVER_OPTION
+       << "\n" << m_option_solver << " = " << m_ov.m_solverString
+#endif
+  os << std::endl;
 
+  return;
+}
+
+// Private methods ---------------------------------
 void
 uqStatisticalForwardProblemOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
@@ -177,7 +208,7 @@ uqStatisticalForwardProblemOptionsClass::defineMyOptions(po::options_description
 
   return;
 }
-
+//--------------------------------------------------
 void
 uqStatisticalForwardProblemOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
@@ -226,24 +257,9 @@ uqStatisticalForwardProblemOptionsClass::getMyOptionValues(po::options_descripti
   return;
 }
 
-void
-uqStatisticalForwardProblemOptionsClass::print(std::ostream& os) const
-{
-  os <<         m_option_computeSolution      << " = " << m_ov.m_computeSolution
-     << "\n" << m_option_computeCovariances   << " = " << m_ov.m_computeCovariances
-     << "\n" << m_option_computeCorrelations  << " = " << m_ov.m_computeCorrelations
-     << "\n" << m_option_dataOutputFileName   << " = " << m_ov.m_dataOutputFileName;
-  os << "\n" << m_option_dataOutputAllowedSet << " = ";
-  for (std::set<unsigned int>::iterator setIt = m_ov.m_dataOutputAllowedSet.begin(); setIt != m_ov.m_dataOutputAllowedSet.end(); ++setIt) {
-    os << *setIt << " ";
-  }
-#ifdef UQ_SFP_READS_SOLVER_OPTION
-       << "\n" << m_option_solver << " = " << m_ov.m_solverString
-#endif
-  os << std::endl;
-
-  return;
-}
+// --------------------------------------------------
+// Operator declared outside class definition ------
+// --------------------------------------------------
 
 std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemOptionsClass& obj)
 {

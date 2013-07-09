@@ -28,6 +28,7 @@
 
 #include <uqFiniteDistribution.h>
 
+// Default constructor -----------------------------
 uqFiniteDistributionClass::uqFiniteDistributionClass(
   const uqBaseEnvironmentClass& env,
   const char*                   prefix,
@@ -122,25 +123,25 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
                             << std::endl;
   }
 }
-
+// Destructor ---------------------------------------
 uqFiniteDistributionClass::~uqFiniteDistributionClass()
 {
   m_map.empty();
   m_weights.clear();
 }
-
+// Misc methods--------------------------------------
 const uqBaseEnvironmentClass&
 uqFiniteDistributionClass::env() const
 {
   return m_env;
 }
-
+// Stats methods-------------------------------------
 const std::vector<double>&
 uqFiniteDistributionClass::weights() const
 {
   return m_weights;
 }
-
+//---------------------------------------------------
 unsigned int
 uqFiniteDistributionClass::sample() const
 {

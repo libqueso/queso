@@ -29,37 +29,13 @@
 #ifndef __UQ_MH_SG2_H__
 #define __UQ_MH_SG2_H__
 
-/*! Operation to generate the chain */
-/*! Requirements:
-<list type=number>
-<item> the vector space 'm_vectorSpace' should have dimension equal to the size of a vector in 'workingChain'
-</list>
-*/
-/*! If the requirements are satisfied, this operation sets the size and the contents of 'workingChain' using the algorithm options set in the constructor.
-    If not NULL, 'workingLogLikelihoodValues' and 'workingLogTargetValues' are set accordingly.
-*/
-/*! If options request data to be written in the output file (MATLAB .m format only, for now), the user can check which MATLAB variables are defined and set by
-    running 'grep zeros <OUTPUT FILE NAME>' after the solution procedure ends. THe names of the varibles are self explanatory.
-*/
-/*  This operation currently implements the DRAM algorithm (Heikki Haario, Marko Laine, Antonietta Mira and
-    Eero Saksman, "DRAM: Efficient Adaptive MCMC", Statistics and Computing (2006), 16:339-354).
-    It also provides support for Stochastic Newton algorithm through the TK (transition kernel) class.
-    Stochastic Newton is not totally implemented yet though, since it is being researched by James Martin and Omar Ghattas at ICES.
-*/
-/*! -------------------------------------------------------------
-*/
-/*! Acknowledgments: this operation 'generateSequence()' begun on July of 2008 as a translation
-v    of the core routine at the MCMC toolbox for MATLAB, available at www.helsinki.fi/~mjlaine/mcmc/.
-    Indeed, the example available in examples/statisticalInverseProblem1/tests/test_2009_02_03/ is
-    related to the 'normal example' in the toolbox.
-    Over time, though:
-<list type=number>
-<item> the whole set of QUESO classes took shape, focusing not only on Markov Chains, but on statistical forward problems and model validation as well;
-<item> the interfaces to this Metropolis-Hastings class changed;
-<item> QUESO had parallel capabilities;
-<item> we added the TK class, as mentioned above, in order to have both DRAM with Stochastic Newton capabilities.
-</list>
-*/
+// Statistical methods -----------------------------
+/* This operation currently implements the DRAM algorithm (Heikki Haario, Marko
+ * Laine, Antonietta Mira and Eero Saksman, "DRAM: Efficient Adaptive MCMC", 
+ * Statistics and Computing (2006), 16:339-354). It also provides support for 
+ * Stochastic Newton algorithm through the TK (transition kernel) class. Stochastic
+ * Newton is not totally implemented yet though, since it is being researched by
+ * James Martin and Omar Ghattas at ICES at the University of Texas at Austin.*/    
 template <class P_V,class P_M>
 void
 uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
@@ -138,7 +114,6 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
                             << "', subId = "                                   << m_env.subId()
                             << std::endl;
   }
-
 
   //****************************************************************************************
   // Eventually:
@@ -499,6 +474,15 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(
   return;
 }
 
+// -------------------------------------------------
+template<class P_V,class P_M>
+void
+uqMetropolisHastingsSGClass<P_V,P_M>::getRawChainInfo(uqMHRawChainInfoStruct& info) const
+{
+  info = m_rawChainInfo;
+  return;
+}
+//--------------------------------------------------
 template <class P_V,class P_M>
 void
 uqMetropolisHastingsSGClass<P_V,P_M>::readFullChain(
@@ -510,7 +494,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::readFullChain(
   workingChain.unifiedReadContents(inputFileName,inputFileType,chainSize);
   return;
 }
-
+// Private methods ---------------------------------
 template <class P_V,class P_M>
 void
 uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
@@ -693,7 +677,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
                                                 NULL);
     if (aux) {}; // just to remove compiler warning
     for (unsigned int positionId = 1; positionId < workingChain.subSequenceSize(); ++positionId) {
-      // Multiply by position valules by 'positionId' in order to avoid a constant sequence,
+      // Multiply by position values by 'positionId' in order to avoid a constant sequence,
       // which would cause zero variance and eventually OVERFLOW flags raised
       workingChain.setPositionValues(positionId,((double) positionId) * currentPositionData.vecValues());
       m_rawChainInfo.numRejections++;
@@ -1415,7 +1399,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(
 
   return;
 }
-
+//--------------------------------------------------
 template <class P_V,class P_M>
 void
 uqMetropolisHastingsSGClass<P_V,P_M>::updateAdaptedCovMatrix(

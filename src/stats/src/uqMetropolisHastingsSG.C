@@ -28,27 +28,28 @@
 
 #include <uqMetropolisHastingsSG1.h>
 
+// Default constructor -----------------------------
 uqMHRawChainInfoStruct::uqMHRawChainInfoStruct()
 {
   reset();
 }
-
-uqMHRawChainInfoStruct::~uqMHRawChainInfoStruct()
-{
-}
-
+// Copy constructor----------------------------------
 uqMHRawChainInfoStruct::uqMHRawChainInfoStruct(const uqMHRawChainInfoStruct& rhs)
 {
   this->copy(rhs);
 }
-
+// Destructor ---------------------------------------
+uqMHRawChainInfoStruct::~uqMHRawChainInfoStruct()
+{
+}
+// Set methods---------------------------------------
 uqMHRawChainInfoStruct&
 uqMHRawChainInfoStruct::operator=(const uqMHRawChainInfoStruct& rhs)
 {
   this->copy(rhs);
   return *this;
 }
-
+//---------------------------------------------------
 uqMHRawChainInfoStruct&
 uqMHRawChainInfoStruct::operator+=(const uqMHRawChainInfoStruct& rhs)
 {
@@ -68,7 +69,7 @@ uqMHRawChainInfoStruct::operator+=(const uqMHRawChainInfoStruct& rhs)
 
   return *this;
 }
-
+// Misc methods--------------------------------------------------
 void
 uqMHRawChainInfoStruct::reset()
 {
@@ -86,7 +87,7 @@ uqMHRawChainInfoStruct::reset()
   numOutOfTargetSupportInDR = 0;
   numRejections             = 0;
 }
-
+//---------------------------------------------------
 void
 uqMHRawChainInfoStruct::copy(const uqMHRawChainInfoStruct& rhs)
 {
@@ -106,7 +107,7 @@ uqMHRawChainInfoStruct::copy(const uqMHRawChainInfoStruct& rhs)
 
   return;
 }
-
+//---------------------------------------------------
 void
 uqMHRawChainInfoStruct::mpiSum(const uqMpiCommClass& comm, uqMHRawChainInfoStruct& sumInfo) const
 {

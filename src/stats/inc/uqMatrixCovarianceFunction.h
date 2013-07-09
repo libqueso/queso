@@ -33,24 +33,56 @@
 #include <uqEnvironment.h>
 #include <cmath>
 
+/*! \file uqMatrixCovarianceFunction.h
+ * \brief Classes to accommodate covariance matrix of random vector functions.
+ * 
+ * \class uqBaseMatrixCovarianceFunctionClass
+ * \brief A templated (base) class to accommodate covariance matrix of (random) vector functions.
+ *
+ * This class allows the mathematical definition of a multivariate covariance function, i.e.
+ * a covariance matrix of random vector functions. 
+ * Sometimes the covariance matrix of a multivariate random variable is not known but has 
+ * to be estimated. Estimation of covariance matrices then deals with the question of how 
+ * to approximate the actual covariance matrix on the basis of a sample from the multivariate 
+ * distribution. */
+ 
+ /* The covariance for two random variates \f$ X \f$ and \f$ Y \f$, 
+ * each with sample size \f$ N \f$, is defined by the expectation value:
+ * \f$ cov (X,Y) = <(X-\mu_X)(Y-\mu_Y)> = < X Y > - \mu_X \mu_Y \f$ 
+ * where \f$ \mu_X \f$ and \f$ \mu_Y \f$ are the respective means, which can be written out 
+ * explicitly as \f[ cov (X,Y) = \sum_{i=1}^{N} \frac{(x_i - \bar{x})(y_i - \bar{y})}{N}\f] */
+
 template<class P_V, class P_M, class Q_V, class Q_M>
 class uqBaseMatrixCovarianceFunctionClass {
 public:
-           uqBaseMatrixCovarianceFunctionClass(const char*                      prefix,
-                                               const uqVectorSetClass<P_V,P_M>& basicDomainSet,
-                                               const uqVectorSetClass<Q_V,Q_M>& imageSet);
+    //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
+  /*! Instantiates an object of the class  given a prefix, the domain set and the image set.*/
+  uqBaseMatrixCovarianceFunctionClass(const char*                      prefix,
+				      const uqVectorSetClass<P_V,P_M>& basicDomainSet,
+				      const uqVectorSetClass<Q_V,Q_M>& imageSet);
+  
+  //! Virtual destructor
   virtual ~uqBaseMatrixCovarianceFunctionClass();
-
-          const uqVectorSetClass<P_V,P_M>& basicDomainSet()                                                                     const;
-  virtual       void                       covMatrix     (const P_V& domainVector1, const P_V& domainVector2, Q_M& imageMatrix) const = 0;
-
+  //@}
+  
+  //! @name Math methods
+  //@{
+  //! Domain set; access to private attribute m_basicDomainSet.
+  const uqVectorSetClass<P_V,P_M>& basicDomainSet()             const;
+  
+  //! Calculates the covariance matrix. See template specialization.
+  virtual void                     covMatrix     (const P_V& domainVector1, const P_V& domainVector2, Q_M& imageMatrix) const = 0;
+  //@}
+  
 protected:
   const uqBaseEnvironmentClass&    m_env;
         std::string                m_prefix;
   const uqVectorSetClass<P_V,P_M>& m_basicDomainSet;
   const uqVectorSetClass<Q_V,Q_M>& m_imageSet;
 };
-
+// Default constructor -----------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
 uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::uqBaseMatrixCovarianceFunctionClass(
   const char*                      prefix,
@@ -74,7 +106,7 @@ uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::uqBaseMatrixCovarianceFunc
                             << std::endl;
   }
 }
-
+// Destructor ---------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
 uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::~uqBaseMatrixCovarianceFunctionClass()
 {
@@ -90,7 +122,7 @@ uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::~uqBaseMatrixCovarianceFun
                             << std::endl;
   }
 }
-
+// Math methods -------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
 const uqVectorSetClass<P_V,P_M>&
 uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::basicDomainSet() const
@@ -101,18 +133,37 @@ uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::basicDomainSet() const
 //*****************************************************
 // Exponential class
 //*****************************************************
+/*!
+ * \class uqExponentialMatrixCovarianceFunctionClass
+ * \brief A class for exponential covariance matrices.
+ *  
+ * This class implements squared exponential covariance matrices of the form:
+ * \f[ cov = a \exp{(-d^2/\sigma^2)}\f], where \f$ d=d(x,y) \f$ is the distance between two vectors, 
+ * \f$ \sigma^2 \f$ is the variance matrix and \f$ a \f$ is the length scale ().*/
+ 
 template<class P_V, class P_M, class Q_V, class Q_M>
 class uqExponentialMatrixCovarianceFunctionClass : public uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M> {
 public:
-           uqExponentialMatrixCovarianceFunctionClass(const char*                      prefix,
-                                                      const uqVectorSetClass<P_V,P_M>& basicDomainSet,
-                                                      const uqVectorSetClass<Q_V,Q_M>& imageSet,
-                                                      const Q_M&                       sigmas,
-                                                      const Q_M&                       as);
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
+  /*! Instantiates an object of the class given a prefix, the domain and image sets, the variances scale factors.*/
+  uqExponentialMatrixCovarianceFunctionClass(const char*                      prefix,
+					     const uqVectorSetClass<P_V,P_M>& basicDomainSet,
+					     const uqVectorSetClass<Q_V,Q_M>& imageSet,
+					     const Q_M&                       sigmas,
+					     const Q_M&                       as);
+  
+  //! Virtual destructor
   virtual ~uqExponentialMatrixCovarianceFunctionClass();
-
-           void covMatrix(const P_V& domainVector1, const P_V& domainVector2, Q_M& imageMatrix) const;
-
+  //@}
+  
+  //!@ \name Math methods
+  //@{
+  //! Calculates the covariance matrix, given two parameter domains.
+  void covMatrix(const P_V& domainVector1, const P_V& domainVector2, Q_M& imageMatrix) const;
+  //@}
+  
 protected:
   using uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
   using uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
@@ -122,7 +173,7 @@ protected:
   Q_M* m_sigmas;
   Q_M* m_as;
 };
-
+// Default constructor -----------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
 uqExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::uqExponentialMatrixCovarianceFunctionClass(
   const char*                      prefix,
@@ -172,7 +223,7 @@ uqExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::uqExponentialMatrix
                             << std::endl;
   }
 }
-
+// Destructor ---------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
 uqExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::~uqExponentialMatrixCovarianceFunctionClass()
 {
@@ -191,7 +242,7 @@ uqExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::~uqExponentialMatri
                             << std::endl;
   }
 }
-
+// Math methods -------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
 void
 uqExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& domainVector1, const P_V& domainVector2, Q_M& imageMatrix) const
@@ -233,17 +284,33 @@ uqExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V
 //*****************************************************
 // Generic class
 //*****************************************************
+/*! 
+ * \class uqGenericMatrixCovarianceFunctionClass
+ * \brief A class for generic covariance matrices.
+ *  
+ * This class implements a generic covariance matrices by calling a routine (via pointer).*/
+
 template<class P_V, class P_M, class Q_V, class Q_M>
 class uqGenericMatrixCovarianceFunctionClass : public uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M> {
 public:
-           uqGenericMatrixCovarianceFunctionClass(const char*                      prefix,
-                                                  const uqVectorSetClass<P_V,P_M>& basicDomainSet,
-                                                  const uqVectorSetClass<Q_V,Q_M>& imageSet,
-                                                  void (*covRoutinePtr)(const P_V& positionVector1, const P_V& positionVector2, const void* routineDataPtr, Q_M& imageMatrix),
-                                                  const void*                      routinesDataPtr);
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
+  /*! Instantiates an object of the class given a prefix, the domain set, the pointer to the routine. */
+  uqGenericMatrixCovarianceFunctionClass(const char*                      prefix,
+					 const uqVectorSetClass<P_V,P_M>& basicDomainSet,
+					 const uqVectorSetClass<Q_V,Q_M>& imageSet,
+					 void (*covRoutinePtr)(const P_V& positionVector1, const P_V& positionVector2, const void* routineDataPtr, Q_M& imageMatrix),
+					 const void*                      routinesDataPtr);
+  //! Virtual destructor
   virtual ~uqGenericMatrixCovarianceFunctionClass();
-
-           void covMatrix(const P_V& positionVector1, const P_V& positionVector2, Q_M& imageMatrix) const;
+  //@}
+  
+  //! @name Math methods
+  //@{
+  //! Calculates the value of the generic covariance matrix.
+  /*! This function accesses the routine that calculates the covariance function. */
+  void covMatrix(const P_V& positionVector1, const P_V& positionVector2, Q_M& imageMatrix) const;
 
 protected:
   using uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
@@ -254,6 +321,7 @@ protected:
   void (*m_covRoutinePtr)(const P_V& positionVector1, const P_V& positionVector2, const void* routineDataPtr, Q_M& imageMatrix);
   const void* m_routineDataPtr;
 };
+// Default constructor -----------------------------
 
 template<class P_V, class P_M, class Q_V, class Q_M>
 uqGenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::uqGenericMatrixCovarianceFunctionClass(
@@ -279,7 +347,7 @@ uqGenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::uqGenericMatrixCovarian
                             << std::endl;
   }
 }
-
+// Destructor ---------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
 uqGenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::~uqGenericMatrixCovarianceFunctionClass()
 {
@@ -295,7 +363,7 @@ uqGenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::~uqGenericMatrixCovaria
                             << std::endl;
   }
 }
-
+// Math methods -------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
 void
 uqGenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& positionVector1, const P_V& positionVector2, Q_M& imageMatrix) const

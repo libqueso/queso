@@ -31,33 +31,80 @@
 
 #include <uqEnvironment.h>
 
+/*! \file uqMarkovChainPositionData.h
+ * \brief A templated class that represents a Markov Chain.
+ *
+ * \class uqMarkovChainPositionDataClass
+ * \brief A templated class that represents a Markov Chain.
+ *
+ * This class implements a Markov Chain. It contains important information about a position such as 
+ * whether or not it is out of the target support and its logarithmic values of the likelihood and 
+ * of the target, besides the position location. A Markov chain is collection of random variables 
+ * {X_t}, where the index t runs through 0, 1, ..., having the property that, given the present, 
+ * the future is conditionally independent of the past. For instance, a Markov chain is passed to 
+ * the Metropolis-Hastings algorithm and on it is calculated the acceptance ration 
+ * uqMetropolisHastingsSGClass::alpha(). */
+
 template <class V>
 class uqMarkovChainPositionDataClass
 {
 public:
+    //! @name Constructor/Destructor methods
+  //@{
+  //! Constructor 1.
+  /*! It allocates a new Markov chain, given the environment. All the other private attributes are either
+   * NULL, false or zero.*/
   uqMarkovChainPositionDataClass(const uqBaseEnvironmentClass& env);
+  
+  //! Constructor 2.
+ /*! It allocates a new Markov chain, and the vector \c vecValues, given the environment, the likelihood and 
+  * target values and sets whether or not it is out of target support.*/
   uqMarkovChainPositionDataClass(const uqBaseEnvironmentClass& env,
                                  const V& vecValues,
                                  bool     outOfTargetSupport,
                                  double   logLikelihood,
                                  double   logTarget);
+  //! Constructor 3: copy.
+  /*! The new Markov chain is a copy of \c rhs.*/
   uqMarkovChainPositionDataClass(const uqMarkovChainPositionDataClass<V>& rhs);
- ~uqMarkovChainPositionDataClass();
+  
+  //! Destructor
+  ~uqMarkovChainPositionDataClass();
+  //@}
 
+  //! @name Set methods
+  //@{
+  //! Assignment operator.
   uqMarkovChainPositionDataClass<V>& operator= (const uqMarkovChainPositionDataClass<V>& rhs);
-
+  //@}
+  
+  //! @name Statistical/Mathematical methods
+  //@{
+  //! Values of the chain (vector); access to private attribute m_vecValues.
   const V& vecValues         () const;
+  
+  //! Whether or not a position is out of target support; access to private attribute m_outOfTargetSupport.
   bool     outOfTargetSupport() const;
+  
+  //! Logarithm of the value of the likelihood; access to private attribute m_logLikelihood.
   double   logLikelihood     () const;
+  
+  //! Logarithm of the value of the target; access to private attribute m_logTarget.
   double   logTarget         () const;
 
+ //! Sets the values of the chain.
   void     set               (const V& vecValues,
                               bool     outOfTargetSupport,
                               double   logLikelihood,
                               double   logTarget);
-
+  //@}
+  //! @name I/O methods
+  //@{
+  //! TODO: Prints the Markov chain.
+  /*! \todo: implement me!*/
   void     print             (std::ostream& os) const;
-
+  //@}
+  
 private:
   const uqBaseEnvironmentClass& m_env;
   V*     m_vecValues;
@@ -66,6 +113,7 @@ private:
   double m_logTarget;
 };
 
+// Constructor 1 -----------------------------------
 template <class V>
 uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(const uqBaseEnvironmentClass& env)
   :
@@ -76,7 +124,7 @@ uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(const uqBaseEn
   m_logTarget         (0.)
 {
 }
-
+// Constructor 2 -----------------------------------
 template <class V>
 uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(
   const uqBaseEnvironmentClass& env,
@@ -92,7 +140,7 @@ uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(
   m_logTarget         (logTarget)
 {
 }
-
+// Copy constructor---------------------------------
 template <class V>
 uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(const uqMarkovChainPositionDataClass<V>& rhs)
   :
@@ -103,13 +151,13 @@ uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(const uqMarkov
   m_logTarget         (rhs.m_logTarget         )
 {
 }
-
+// Destructor---------------------------------------
 template <class V>
 uqMarkovChainPositionDataClass<V>::~uqMarkovChainPositionDataClass()
 {
   if (m_vecValues) delete m_vecValues;
 }
-
+// Set methods--------------------------------------
 template <class V>
 uqMarkovChainPositionDataClass<V>&
 uqMarkovChainPositionDataClass<V>::operator=(const uqMarkovChainPositionDataClass<V>& rhs)
@@ -123,6 +171,7 @@ uqMarkovChainPositionDataClass<V>::operator=(const uqMarkovChainPositionDataClas
   return *this;
 }
 
+// Statistical methods-------------------------------
 template <class V>
 const V&
 uqMarkovChainPositionDataClass<V>::vecValues() const
@@ -134,6 +183,7 @@ uqMarkovChainPositionDataClass<V>::vecValues() const
   return *m_vecValues;
 }
 
+//--------------------------------------------------
 template <class V>
 bool
 uqMarkovChainPositionDataClass<V>::outOfTargetSupport() const
@@ -141,6 +191,7 @@ uqMarkovChainPositionDataClass<V>::outOfTargetSupport() const
   return m_outOfTargetSupport;
 }
 
+//--------------------------------------------------
 template <class V>
 double
 uqMarkovChainPositionDataClass<V>::logLikelihood() const
@@ -148,13 +199,14 @@ uqMarkovChainPositionDataClass<V>::logLikelihood() const
   return m_logLikelihood;
 }
 
+//--------------------------------------------------
 template <class V>
 double
 uqMarkovChainPositionDataClass<V>::logTarget() const
 {
   return m_logTarget;
 }
-
+//--------------------------------------------------
 template <class V>
 void
 uqMarkovChainPositionDataClass<V>::set(
@@ -171,7 +223,9 @@ uqMarkovChainPositionDataClass<V>::set(
 
   return;
 }
-
+//--------------------------------------------------
+// Operator declared outside class definition-------
+//--------------------------------------------------
 template <class V>
 std::ostream& operator<<(std::ostream& os, const uqMarkovChainPositionDataClass<V>& obj)
 {
