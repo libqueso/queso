@@ -63,6 +63,9 @@ public:
   //! Set \c this to zero everywhere
   virtual void zero() = 0;
 
+  //! Return the L2-norm of \c this
+  virtual double L2_norm() const = 0;
+
   //! Return a boost shared pointer to a uqLibMeshFunction
   virtual boost::shared_ptr<uqFunctionBase> zero_clone() const = 0;
 

@@ -34,6 +34,7 @@
 #include <libmesh/mesh_generation.h>
 #include <libmesh/equation_systems.h>
 #include <libmesh/explicit_system.h>
+#include <libmesh/system_norm.h>
 #include <libmesh/exodusII_io.h>
 #include <libmesh/vtk_io.h>
 
@@ -120,6 +121,14 @@ void uqLibMeshFunction::scale(double scale) {
 void uqLibMeshFunction::zero() {
   this->equation_systems->get_system<ExplicitSystem>(
       "Function").solution->zero();
+}
+
+double uqLibMeshFunction::L2_norm() const {
+  ExplicitSystem & system =
+    this->equation_systems->get_system<ExplicitSystem>("Function");
+
+  double norm = system.calculate_norm(*system.solution, SystemNorm(L2));
+  return norm;
 }
 
 boost::shared_ptr<uqFunctionBase> uqLibMeshFunction::zero_clone() const

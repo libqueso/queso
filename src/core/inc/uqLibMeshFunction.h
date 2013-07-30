@@ -76,6 +76,8 @@ public:
 
   virtual void zero();
 
+  virtual double L2_norm() const;
+
   virtual boost::shared_ptr<uqFunctionBase> zero_clone() const;
 
   //! This is public for now, but it should be encapsulated. Don't touch it.
