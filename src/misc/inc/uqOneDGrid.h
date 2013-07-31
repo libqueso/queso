@@ -33,8 +33,13 @@
 #include <math.h>
 
 //*****************************************************
-// Classes to accomodate a one dimensional grid
+// Classes to accommodate a one dimensional grid
 //*****************************************************
+/*!\file uqOneDGrid.h
+ * \brief Classes to accommodate a one dimensional grid.
+ * 
+ * \class uqBaseOneDGridClass
+ * \brief Base class for accommodating one-dimensional grids.*/
 
 //*****************************************************
 // Base class
@@ -42,14 +47,32 @@
 template<class T>
 class uqBaseOneDGridClass {
 public:
-           uqBaseOneDGridClass(const uqBaseEnvironmentClass& env,
-                               const char* prefix);
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
+  uqBaseOneDGridClass(const uqBaseEnvironmentClass& env,
+		      const char* prefix);
+  //! Virtual destructor.
   virtual ~uqBaseOneDGridClass();
-
-  virtual unsigned int size          ()                     const = 0;
+  //@}
+  //! @name Accessor methods
+  //@{
+  //! Returns the position of the i-th point in the grid. See template specialization.
   virtual T            operator[]    (unsigned int i)       const = 0;
+  //@}
+  //! @name Mathematical methods
+  //@{
+  //! Grid size; the amount of points which defines the grid. See template specialization. 
+  virtual unsigned int size          ()                     const = 0;
+  
+  //! Finds the ID of an interval. See template specialization.
   virtual unsigned int findIntervalId(const T& paramValue)  const = 0; 
-          void         print         (std::ostream& ofsvar) const;
+  //@}
+  //! @name I/O methods
+  //@{
+  //! Prints the values of the grid points.  
+  void         print         (std::ostream& ofsvar) const;
+  //@}
 
 protected:
   const uqBaseEnvironmentClass& m_env;
@@ -111,19 +134,40 @@ std::ostream& operator<< (std::ostream& os, const uqBaseOneDGridClass<T>& obj)
 //*****************************************************
 // Uniform grid class
 //*****************************************************
+/*!\class uqUniformOneDGridClass
+ * \brief Class for accommodating uniform one-dimensional grids.*/
+ 
 template<class T>
 class uqUniformOneDGridClass : public uqBaseOneDGridClass<T> {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
+  /*! Constructs a uniform 1D grid between \c minPosition and \c maxPosition, with \c size points.*/
   uqUniformOneDGridClass(const uqBaseEnvironmentClass& env,
                          const char*               prefix,
                                unsigned int        size,
                                T                   minPosition,
                                T                   maxPosition);
- ~uqUniformOneDGridClass();
-
+ //! Destructor
+  ~uqUniformOneDGridClass();
+  //@}
+  
+  //! @name Accessor methods
+  //@{
+  //! Returns the position of the i-th point in the grid.  
+  T    operator[]    (unsigned int i)      const;
+  //@}
+  
+  //! @name Mathematical methods
+  //@{
+  //! Grid size; the amount of points that defines the grid.    
   unsigned int size          ()                    const;
-  T            operator[]    (unsigned int i)      const;
+  
+  //! Finds the ID of an interval. See template specialization.
+  /*! This function finds to which interval the parameter value belongs to.*/
   unsigned int findIntervalId(const T& paramValue) const; 
+  //@}
 
 protected:
   using uqBaseOneDGridClass<T>::m_env;
@@ -134,6 +178,7 @@ protected:
   T            m_maxPosition;
 };
 
+// Constructor-------------------------------------------
 template<class T>
 uqUniformOneDGridClass<T>::uqUniformOneDGridClass(
   const uqBaseEnvironmentClass& env,
@@ -159,19 +204,19 @@ uqUniformOneDGridClass<T>::uqUniformOneDGridClass(
                            << std::endl;
   }
 }
-
+// Destructor--------------------------------------------
 template<class T>
 uqUniformOneDGridClass<T>::~uqUniformOneDGridClass()
 {
 }
-
+// Math methods------------------------------------------
 template<class T>
 unsigned int
 uqUniformOneDGridClass<T>::size() const
 {
   return m_size;
 }
-
+//-------------------------------------------------------
 template<class T>
 T
 uqUniformOneDGridClass<T>::operator[](unsigned int i) const
@@ -185,7 +230,7 @@ uqUniformOneDGridClass<T>::operator[](unsigned int i) const
   T position = (1.-ratio)*m_minPosition + ratio*m_maxPosition;
   return position;
 }
-
+//-------------------------------------------------------
 template<class T>
 unsigned int
 uqUniformOneDGridClass<T>::findIntervalId(const T& paramValue) const
@@ -208,17 +253,40 @@ uqUniformOneDGridClass<T>::findIntervalId(const T& paramValue) const
 //*****************************************************
 // Std grid class
 //*****************************************************
+/*!\class uqStdOneDGridClass
+ * \brief Class for accommodating standard one-dimensional grids.
+ * 
+ * This class implements a standard one-dimensional grid, which is required, for instance,
+ * in the evaluation of the cumulative distribution function (CDF) of a random variable. 
+ */
+
 template<class T>
 class uqStdOneDGridClass : public uqBaseOneDGridClass<T> {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
   uqStdOneDGridClass(const uqBaseEnvironmentClass& env,
                      const char*                   prefix,
                      const std::vector<T>&         points);
- ~uqStdOneDGridClass();
-
-  unsigned int size          ()                    const;
+ //! Destructor.
+  ~uqStdOneDGridClass();
+  //@}
+  
+  //! @name Accessor methods
+  //@{
+  //! Returns the position of the i-th point in the grid.
   T            operator[]    (unsigned int i)      const;
+  //@}
+  
+  //! @name Mathematical methods
+  //@{
+  //! Grid size; the amount of points which defines the grid.
+  unsigned int size          ()                    const;
+  
+  //! Finds the ID of an interval. See template specialization.
   unsigned int findIntervalId(const T& paramValue) const; 
+  //@}
 
 protected:
   using uqBaseOneDGridClass<T>::m_env;

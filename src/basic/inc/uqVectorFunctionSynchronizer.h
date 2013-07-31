@@ -33,7 +33,7 @@
  * \brief Class for synchronizing the calls of vector-valued functions
  * 
  * \class uqVectorFunctionSynchronizerClass
- * \brief A templated class for synchronizing the calls of vector-valued functions (uqBaseVectorFunctionClass and derived classes).
+ * \brief A templated class for synchronizing the calls of vector-valued functions.
  *
  * This class creates a synchronization point among processes which call vector-valued 
  * functions. This means that all processes must reach a point in their code before they 

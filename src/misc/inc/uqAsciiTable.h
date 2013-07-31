@@ -34,23 +34,50 @@
 #include <uqMap.h>
 #include <uqMiscellaneous.h>
 
+/*!\file uqOneDGrid.h
+ * \brief Class to read ASCII values from a table.
+ * 
+ * \class uqAsciiTableClass
+ * \brief Class for reading ASCII values from a table in a file.*/
+
 template <class V, class M>
 class uqAsciiTableClass
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
+  /*! This constructor reads the data from file \c fileName, checking whether the data in each
+   * column of the file is or not a string, and whether the data in each row is or not valid.*/
   uqAsciiTableClass(const uqBaseEnvironmentClass& env,
                           unsigned int            numRows,
                           unsigned int            numExtraCols,
                     const std::vector<bool>*      extraColIsString,
                     const std::string&            fileName);
- ~uqAsciiTableClass();
-
+  //! Destructor.
+  ~uqAsciiTableClass();
+  //@}
+  
+  //! @name Property methods
+  //@{
+  //! Returns the number of rows in the table.
   unsigned int                         numRows     ()                 const;
+  
+  //! Returns the number of columns in the table.
   unsigned int                         numCols     ()                 const;
+  
+  //! Returns the string stored in column \c j.
   const uqDistArrayClass<std::string>& stringColumn(unsigned int j)   const;
+  
+  //! Returns the value (double) stored in column \c j.
   const V&                             doubleColumn(unsigned int j)   const;
+  //@}
+  
+  //! @name I/O methods
+  //@{
+  //! Prints the table.  
   void                                 print       (std::ostream& os) const;
-
+  //@}
 private:
   uqMapClass* newMap(); // See template specialization
 
@@ -66,7 +93,7 @@ private:
 
   void readColumnsFromFile();
 };
-
+// Default constructor -------------------------------------------------
 template <class V, class M>
 uqAsciiTableClass<V,M>::uqAsciiTableClass(
   const uqBaseEnvironmentClass& env,
@@ -110,7 +137,7 @@ uqAsciiTableClass<V,M>::uqAsciiTableClass(
                             << std::endl;
   }
 }
-
+// Destructor ----------------------------------------------------------
 template <class V, class M>
 uqAsciiTableClass<V,M>::~uqAsciiTableClass()
 {
@@ -121,7 +148,7 @@ uqAsciiTableClass<V,M>::~uqAsciiTableClass()
     if (m_stringColumns[j]) delete m_stringColumns[j];
   }
 }
-
+// Private method ------------------------------------------------------
 template <class V, class M>
 void
 uqAsciiTableClass<V,M>::readColumnsFromFile()
@@ -165,7 +192,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
                       "the first number of lines read is nonconsistent");
   if (m_numRows != numValidLines) {
     char errorExplanation[512];
-    sprintf(errorExplanation,"number of valid lines (%u) in ascii table file does not match number of rows (%u)",numValidLines,m_numRows);
+    sprintf(errorExplanation,"number of valid lines (%u) in ASCII table file does not match number of rows (%u)",numValidLines,m_numRows);
     UQ_FATAL_TEST_MACRO(true,
                         m_env.worldRank(),
                         "uqAsciiTableClass<V,M>::readColumnsFromFile()",
@@ -173,7 +200,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
   }
 
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Ascii table file '"    << m_fileName
+    *m_env.subDisplayFile() << "ASCII table file '"    << m_fileName
                             << "' has "                << numLines
                             << " lines and specifies " << numValidLines
                             << " valid lines."
@@ -205,7 +232,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
   unsigned int validLineId = 0;
   std::string tmpString;
   while ((lineId < numLines) && (ifs.eof() == false)) {
-    //*m_env.subDisplayFile() << "Beginning read of line (in ascii table file) of id = " << lineId << std::endl;
+    //*m_env.subDisplayFile() << "Beginning read of line (in ASCII table file) of id = " << lineId << std::endl;
     bool endOfLineAchieved = false;
 
     iRC = uqMiscReadCharsAndDoubleFromFile(ifs, tmpString, NULL, endOfLineAchieved);
@@ -226,7 +253,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
     // Check 'validLineId' before setting one more valid line
     if (validLineId >= numValidLines) {
       char errorExplanation[512];
-      sprintf(errorExplanation,"validLineId (%u) got too large during reading of ascii table file",validLineId);
+      sprintf(errorExplanation,"validLineId (%u) got too large during reading of ASCII table file",validLineId);
       UQ_FATAL_TEST_MACRO(true,
                           m_env.worldRank(),
                           "uqAsciiTableClass<V,M>::readColumnsFromFile()",
@@ -299,21 +326,21 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
 
   return;
 }
-
+// Property methods-----------------------------------------------------
 template <class V, class M>
 unsigned int
 uqAsciiTableClass<V,M>::numRows() const
 {
   return m_numRows;
 }
-
+//----------------------------------------------------------------------
 template <class V, class M>
 unsigned int
 uqAsciiTableClass<V,M>::numCols() const
 {
   return m_numCols;
 }
-
+//----------------------------------------------------------------------
 template <class V, class M>
 const uqDistArrayClass<std::string>&
 uqAsciiTableClass<V,M>::stringColumn(unsigned int j) const
@@ -330,7 +357,7 @@ uqAsciiTableClass<V,M>::stringColumn(unsigned int j) const
 
   return *m_stringColumns[j];
 }
-
+//----------------------------------------------------------------------
 template <class V, class M>
 const V&
 uqAsciiTableClass<V,M>::doubleColumn(unsigned int j) const
@@ -347,7 +374,7 @@ uqAsciiTableClass<V,M>::doubleColumn(unsigned int j) const
 
   return *m_doubleColumns[j];
 }
-
+// I/O methods----------------------------------------------------------
 template <class V, class M>
 void
 uqAsciiTableClass<V,M>::print(std::ostream& os) const
@@ -382,7 +409,7 @@ uqAsciiTableClass<V,M>::print(std::ostream& os) const
 
   return;
 }
-
+//----------------------------------------------------------------------
 template<class V, class M>
 std::ostream& operator<<(std::ostream& os, const uqAsciiTableClass<V,M>& obj)
 {

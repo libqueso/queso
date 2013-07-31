@@ -31,24 +31,54 @@
 
 #include <uqEnvironment.h>
 
+/*!\file uqArrayOfOneDTables
+ * \brief Class to accommodate arrays of one-dimensional tables.
+ * 
+ * \class uqArrayOfOneDTablesClass
+ * \brief Class to accommodate arrays of one-dimensional tables.
+ *  
+ * Arrays of one-dimensional tables are necessary in the calculation (storage), for 
+ * instance, of CDFs and MDF of vector functions (refer to uqBaseVectorCdfClass, 
+ * uqBaseVectorMdfClass, and derived classes) given the (array of) grid points 
+ * (uqArrayOfOneDGridsClass).
+ */
+
 template <class V, class M>
 class uqArrayOfOneDTablesClass
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
   uqArrayOfOneDTablesClass(const char* prefix, const uqVectorSpaceClass<V,M>& rowSpace);
- ~uqArrayOfOneDTablesClass();
 
+  //! Destructor.
+  ~uqArrayOfOneDTablesClass();
+  //@}
+  
+  //! @name Math methods
+  //@{
+  //! Sets the one-dimensional table.
+  /*! This methods assigns the array \c values to  position \c rowId of the one-dimensional table.*/
   void                       setOneDTable(unsigned int rowId, const std::vector<double>& values);
-  const std::vector<double>& oneDTable   (unsigned int rowId) const;
-  void                       print       (std::ostream& os)   const;
 
+  //! Returns the array located at position \c rowId of the one-dimensional table.
+  const std::vector<double>& oneDTable   (unsigned int rowId) const;
+  //@}
+  
+  //! @name I/O method
+  //@{
+  //! Prints the values in this array of tables.   
+  /*! It prints the arrays (inner for-loop) in each position of the table (outer for-loop).*/
+  void                       print       (std::ostream& os)   const;
+  //@}
 private:
   const uqBaseEnvironmentClass&          m_env;
         std::string                      m_prefix;
   const uqVectorSpaceClass<V,M>&         m_rowSpace;
   uqDistArrayClass<std::vector<double>*> m_oneDTables;
 };
-
+// Default constructor -------------------------------------------------
 template <class V, class M>
 uqArrayOfOneDTablesClass<V,M>::uqArrayOfOneDTablesClass(
   const char* prefix, 
@@ -63,7 +93,7 @@ uqArrayOfOneDTablesClass<V,M>::uqArrayOfOneDTablesClass(
     m_oneDTables(i,0) = NULL;
   }
 }
-
+// Destructor ----------------------------------------------------------
 template <class V, class M>
 uqArrayOfOneDTablesClass<V,M>::~uqArrayOfOneDTablesClass()
 {
@@ -71,7 +101,7 @@ uqArrayOfOneDTablesClass<V,M>::~uqArrayOfOneDTablesClass()
     if (m_oneDTables(i,0)) delete m_oneDTables(i,0);
   }
 }
-
+// Math methods --------------------------------------------------------
 template <class V, class M>
 void
 uqArrayOfOneDTablesClass<V,M>::setOneDTable(unsigned int rowId, const std::vector<double>& values)
@@ -92,7 +122,7 @@ uqArrayOfOneDTablesClass<V,M>::setOneDTable(unsigned int rowId, const std::vecto
 
   return;
 }
-
+//----------------------------------------------------------------------
 template <class V, class M>
 const std::vector<double>&
 uqArrayOfOneDTablesClass<V,M>::oneDTable(unsigned int rowId) const
@@ -111,7 +141,7 @@ uqArrayOfOneDTablesClass<V,M>::oneDTable(unsigned int rowId) const
 
   return *(tmp->m_oneDTables(rowId,0));
 }
-
+// I/O methods----------------------------------------------------------
 template <class V, class M>
 void
 uqArrayOfOneDTablesClass<V,M>::print(std::ostream& os) const
@@ -133,7 +163,7 @@ uqArrayOfOneDTablesClass<V,M>::print(std::ostream& os) const
 
   return;
 }
-
+//----------------------------------------------------------------------
 template <class V, class M>
 std::ostream& operator<< (std::ostream& os, const uqArrayOfOneDTablesClass<V,M>& obj)
 {

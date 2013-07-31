@@ -29,26 +29,60 @@
 #ifndef __UQ_2D_ARRAY_OF_STUFF_H__
 #define __UQ_2D_ARRAY_OF_STUFF_H__
 
+/*! \file uq2dArrayOfStuff.h
+ * \brief A templated class for handling arrays of data
+ * 
+ * \class uq2dArrayOfStuff
+ * \brief Class for handling arrays of generic data.
+ *
+ * This class handles array of generic data (doubles, ints, strings, structs, etc.).*/
+
 template <class T>
 class uq2dArrayOfStuff
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
   uq2dArrayOfStuff(unsigned int numRows, unsigned int numCols);
+  
+  //! Destructor.
  ~uq2dArrayOfStuff();
+  //@}
 
-        unsigned int numRows    ()                                 const;
-        unsigned int numCols    ()                                 const;
-        void         setLocation(unsigned int i, unsigned int j, T* info);
-        T&           operator   ()(unsigned int i, unsigned int j);
-  const T&           operator   ()(unsigned int i, unsigned int j) const;
+  //! @name Attribute methods
+  //@{ 
+  //! Number of rows in the array.
+  unsigned int numRows    ()                                 const;
+  
+  //! Number of columns in the array.
+  unsigned int numCols    ()                                 const;
+  
+  //! Sets the data in a specific location.
+  /*! This method sets the generic (templated) data \c info, in the position <c>(i,j)</c>
+   * of the array. */
+  void         setLocation(unsigned int i, unsigned int j, T* info);
+  //@}
 
+  //! @name Accessor methods
+  //@{ 
+  //! Returns data stored in a specific location (non-const).
+  /*! This non-const method returns the generic (templated) data that is stored the 
+   * position  <c>(i,j)</c> of the array. */
+  T&           operator   ()(unsigned int i, unsigned int j);
+  
+  //! Returns data stored in a specific location (const).
+  /*! This const method returns the generic (templated) data that is stored the 
+   * position  <c>(i,j)</c> of the array. */
+  const T&     operator   ()(unsigned int i, unsigned int j) const;
+  //@}
 private:
   unsigned int m_numRows;
   unsigned int m_numCols;
 
   std::vector<std::vector<T*>* > m_data;
 };
-
+// Default constructor -------------------------------------------------
 template <class T>
 uq2dArrayOfStuff<T>::uq2dArrayOfStuff(
   unsigned int numRows,
@@ -62,7 +96,7 @@ uq2dArrayOfStuff<T>::uq2dArrayOfStuff(
     m_data[i] = new std::vector<T*>(m_numCols,NULL);
   }
 }
-
+// Destructor ----------------------------------------------------------
 template <class T>
 uq2dArrayOfStuff<T>::~uq2dArrayOfStuff()
 {
@@ -73,21 +107,21 @@ uq2dArrayOfStuff<T>::~uq2dArrayOfStuff()
     delete m_data[i];
   }
 }
-
+// Property methods-----------------------------------------------------
 template <class T>
 unsigned int
 uq2dArrayOfStuff<T>::numRows() const
 {
   return m_numRows;
 }
-
+//----------------------------------------------------------------------
 template <class T>
 unsigned int
 uq2dArrayOfStuff<T>::numCols() const
 {
   return m_numCols;
 }
-
+//----------------------------------------------------------------------
 template <class T>
 void
 uq2dArrayOfStuff<T>::setLocation(unsigned int i, unsigned int j, T* info)
@@ -99,7 +133,7 @@ uq2dArrayOfStuff<T>::setLocation(unsigned int i, unsigned int j, T* info)
   (*(m_data[i]))[j] = info;
   return;
 }
-
+// Accessor methods-----------------------------------------------------
 template <class T>
 T&
 uq2dArrayOfStuff<T>::operator()(unsigned int i, unsigned int j)
@@ -110,7 +144,7 @@ uq2dArrayOfStuff<T>::operator()(unsigned int i, unsigned int j)
                       "invalid situation");
   return *(*(m_data[i]))[j];
 }
-
+//----------------------------------------------------------------------
 template <class T>
 const T&
 uq2dArrayOfStuff<T>::operator()(unsigned int i, unsigned int j) const

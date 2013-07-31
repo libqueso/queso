@@ -574,15 +574,16 @@ INPUT  = @abs_top_srcdir@/doxygen/queso.page \
       	 @abs_top_srcdir@/src/misc \
       	 @abs_top_srcdir@/src/basic \
       	 @abs_top_srcdir@/src/stats \
-      	 @abs_top_srcdir@/src/interface \
-      	 @abs_top_srcdir@/examples/statisticalInverseProblem1/src \
-      	 @abs_top_srcdir@/examples/statisticalInverseProblem1/tests/test_2009_02_03/ \
-      	 @abs_top_srcdir@/examples/statisticalForwardProblem/src \
-      	 @abs_top_srcdir@/examples/statisticalForwardProblem/tests/test_2009_02_11/ \
-      	 @abs_top_srcdir@/examples/validationCycle/src \
-      	 @abs_top_srcdir@/examples/validationCycle/tests/test_2009_02_03 \
-	 @abs_top_srcdir@/examples/basic_interface \
-      	 @abs_top_srcdir@/test/t02_sip_sfp/sip_sfp
+      	 @abs_top_srcdir@/src/interface
+      	 
+#      	 @abs_top_srcdir@/examples/statisticalInverseProblem1/src \
+#      	 @abs_top_srcdir@/examples/statisticalInverseProblem1/tests/test_2009_02_03/ \
+#      	 @abs_top_srcdir@/examples/statisticalForwardProblem/src \
+#      	 @abs_top_srcdir@/examples/statisticalForwardProblem/tests/test_2009_02_11/ \
+#      	 @abs_top_srcdir@/examples/validationCycle/src \
+#      	 @abs_top_srcdir@/examples/validationCycle/tests/test_2009_02_03 \
+#	 @abs_top_srcdir@/examples/basic_interface \
+#      	 @abs_top_srcdir@/test/t02_sip_sfp/sip_sfp
 
 
 # This tag can be used to specify the character encoding of the source files 
@@ -612,7 +613,7 @@ RECURSIVE              = YES
 # excluded from the INPUT source files. This way you can easily exclude a 
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
-EXCLUDE                = @abs_top_srcdir@/src/stats/inc/uqModelValidation.h \
+EXCLUDE                = \
 @abs_top_srcdir@/src/stats/inc/uqMLSamplingLevelOptions.h \
 @abs_top_srcdir@/src/stats/inc/uqMLSamplingOptions.h \
 @abs_top_srcdir@/src/stats/inc/uqMLSampling1.h \

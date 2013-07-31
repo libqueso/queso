@@ -30,6 +30,7 @@
 #include <gsl/gsl_fft_real.h>
 #include <gsl/gsl_fft_complex.h>
 
+// Math methods------------------------------------------
 template <>
 void
 uqFftClass<double>::forward(
@@ -97,7 +98,7 @@ uqFftClass<double>::forward(
 
   return;
 }
-
+//-------------------------------------------------------
 template <>
 void
 uqFftClass<double>::inverse(

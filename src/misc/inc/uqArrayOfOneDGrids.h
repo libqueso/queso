@@ -31,25 +31,67 @@
 
 #include <uqOneDGrid.h>
 
+/*!\file uqArrayOfOneDGrids.h
+ * \brief Class to accommodate arrays of one-dimensional grid.
+ * 
+ * \class uqArrayOfOneDGridsClass
+ * \brief Class to accommodate arrays of one-dimensional grid.
+ * 
+ * Arrays of one-dimensional grids are necessary in the calculation, for instance, of CDFs
+ * and MDF of vector functions (refer to uqBaseVectorCdfClass, uqBaseVectorMdfClass, and 
+ * derived classes).
+ */
 template <class V, class M>
 class uqArrayOfOneDGridsClass
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Default constructor.
   uqArrayOfOneDGridsClass(const char* prefix, const uqVectorSpaceClass<V,M>& rowSpace);
- ~uqArrayOfOneDGridsClass();
-
+  
+  //! Destructor.
+  ~uqArrayOfOneDGridsClass();
+  //@}
+  
+  //! @name Property methods
+  //@{
+  //! Returns the (vector) space to which the row belongs to.
   const uqVectorSpaceClass<V,M>&     rowSpace       () const;
-  const V&                           sizes          () const;
-  const V&                           minPositions   () const;
-  const V&                           maxPositions   () const;
-//      void                         setGrid        (unsigned int                 rowId,
-//                                                   uqBaseOneDGridClass<double>& oneDGrid);
-        void                         setUniformGrids(const V& sizesVec,
-                                                     const V& minPositionsVec,
-                                                     const V& maxPositionsVec);
-  const uqBaseOneDGridClass<double>& grid           (unsigned int rowId) const;
-        void                         print          (std::ostream& os) const;
+  
+  //! Returns an array with the sizes of the grids.
+  const V&  sizes          () const;
+  
+  //! Returns an array with the minimum position of each grid.
+  const V&  minPositions   () const;
+  
+  //! Returns an array with the maximum position of each grid.
+  const V&  maxPositions   () const;
+  //@}
+  
+  //! @name Math methods
+  //@{
+//  void      setGrid        (unsigned int                 rowId,
+//			    uqBaseOneDGridClass<double>& oneDGrid);
+  
+  //! Sets an array of uniform grids.
+  void      setUniformGrids(const V& sizesVec,
+			    const V& minPositionsVec,
+			    const V& maxPositionsVec);
+  //@}
 
+  //! @name Accessor methods
+  //@{
+  //! Returns the grid stored in the <c>rowId</c>-th position of the array of grids. 
+  const uqBaseOneDGridClass<double>& grid           (unsigned int rowId) const;
+  //@}
+  
+  //! @name I/O methods
+  //@{
+  //! Prints the values of the array of grids (points). 
+  void      print          (std::ostream& os) const;
+  //@}
+  
 private:
   const uqBaseEnvironmentClass&                  m_env;
         std::string                              m_prefix;
@@ -61,7 +103,7 @@ private:
   V* m_maxPositions;
 
 };
-
+// Default constructor -------------------------------------------------
 template <class V, class M>
 uqArrayOfOneDGridsClass<V,M>::uqArrayOfOneDGridsClass(
   const char*                    prefix,
@@ -79,7 +121,7 @@ uqArrayOfOneDGridsClass<V,M>::uqArrayOfOneDGridsClass(
     m_oneDGrids(i,0) = NULL;
   }
 }
-
+// Destructor ----------------------------------------------------------
 template <class V, class M>
 uqArrayOfOneDGridsClass<V,M>::~uqArrayOfOneDGridsClass()
 {
@@ -91,14 +133,14 @@ uqArrayOfOneDGridsClass<V,M>::~uqArrayOfOneDGridsClass()
     if (m_oneDGrids(i,0)) delete m_oneDGrids(i,0);
   }
 }
-
+// Property methods-----------------------------------------------------
 template <class V, class M>
 const uqVectorSpaceClass<V,M>&
 uqArrayOfOneDGridsClass<V,M>::rowSpace() const
 {
   return m_rowSpace;
 }
-
+//----------------------------------------------------------------------
 template <class V, class M>
 const V&
 uqArrayOfOneDGridsClass<V,M>::sizes() const
@@ -110,7 +152,7 @@ uqArrayOfOneDGridsClass<V,M>::sizes() const
 
   return *m_sizes;
 }
-
+//----------------------------------------------------------------------
 template <class V, class M>
 const V&
 uqArrayOfOneDGridsClass<V,M>::minPositions() const
@@ -122,7 +164,7 @@ uqArrayOfOneDGridsClass<V,M>::minPositions() const
 
   return *m_minPositions;
 }
-
+//----------------------------------------------------------------------
 template <class V, class M>
 const V&
 uqArrayOfOneDGridsClass<V,M>::maxPositions() const
@@ -134,7 +176,7 @@ uqArrayOfOneDGridsClass<V,M>::maxPositions() const
 
   return *m_maxPositions;
 }
-
+//----------------------------------------------------------------------
 template <class V, class M>
 void
 uqArrayOfOneDGridsClass<V,M>::setUniformGrids(
@@ -163,7 +205,7 @@ uqArrayOfOneDGridsClass<V,M>::setUniformGrids(
 
   return;
 }
-
+//----------------------------------------------------------------------
 template <class V, class M>
 const uqBaseOneDGridClass<double>&
 uqArrayOfOneDGridsClass<V,M>::grid(unsigned int rowId) const
@@ -176,7 +218,7 @@ uqArrayOfOneDGridsClass<V,M>::grid(unsigned int rowId) const
   uqArrayOfOneDGridsClass<V,M>* tmp = const_cast<uqArrayOfOneDGridsClass<V,M>*>(this);
   return *(tmp->m_oneDGrids(rowId,0));
 }
-
+// I/O methods----------------------------------------------------------
 template <class V, class M>
 void
 uqArrayOfOneDGridsClass<V,M>::print(std::ostream& os) const
@@ -189,7 +231,7 @@ uqArrayOfOneDGridsClass<V,M>::print(std::ostream& os) const
 
   return;
 }
-
+//----------------------------------------------------------------------
 template <class V, class M>
 std::ostream& operator<< (std::ostream& os, const uqArrayOfOneDGridsClass<V,M>& obj)
 {

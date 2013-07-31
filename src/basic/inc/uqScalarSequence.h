@@ -275,7 +275,7 @@ public:
                                              unsigned int                    maxLag,
                                              std::vector<T>&                 autoCorrs) const;
   
-  //! Calculates the autocorrelation via  Fast Fourier transforms (FFT). 
+  //! Calculates the sum of autocorrelation via  Fast Fourier transforms (FFT). 
   void         autoCorrViaFft               (unsigned int                    initialPos,
                                              unsigned int                    numPos,
                                              unsigned int                    numSum,

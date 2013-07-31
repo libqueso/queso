@@ -52,13 +52,13 @@ class uqMatrixClass
 public:
   //! @name Constructor/Destructor methods
   //@{ 
-  //! Default Constructor
+  //! Default constructor.
   uqMatrixClass();
 	   
-  //! Shaped Constructor
+  //! Shaped constructor.
   uqMatrixClass(const uqBaseEnvironmentClass& env, const uqMapClass& map);
 	   
-  //! Copy Constructor
+  //! Copy constructor.
   uqMatrixClass(const uqMatrixClass& rhs);
 	   
   //! Virtual Destructor
@@ -98,8 +98,7 @@ public:
   //! Returns the number of columns local of the matrix. 	  
   virtual unsigned int            numCols             () const = 0;
   //@}
-  
-  
+    
   //! @name Mathematical  methods
   //@{ 
   //! Performs Cholesky factorization of the matrix.

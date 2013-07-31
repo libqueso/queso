@@ -56,7 +56,7 @@ public:
   ~uqArrayOfSequencesClass();
   //@}
 
-      //! @name Sequence methods
+  //! @name Sequence methods
   //@{ 
   //! Size of the sub-sequence of arrays.
   unsigned int subSequenceSize      () const;
@@ -168,8 +168,11 @@ public:
   /*! TODO: implement me! */
   void         gaussianKDE          (const V&                 evaluationParamVec,
                                      V&                       densityVec) const;
-  //! Gaussian kernel for the KDE estimate of the sequence.
-  /*! TODO: implement me! */
+  //! TODO: Gaussian kernel for the KDE of the sequence.
+  /*! \todo: implement me! 
+   * The density estimator will be:
+   * \f[ \hat{f}(x) = \frac{1}{nh} \sum_{j=1}^n K\Big(\frac{x-x_j}{h}\Big),\f]
+   * where \f$ K \f$ is a Gaussian kernel.  */
   void         gaussianKDE          (unsigned int             initialPos,
                                      const V&                 scales,
                                      const std::vector<V*>&   evaluationParamVecs,
