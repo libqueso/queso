@@ -156,9 +156,9 @@ void uqInfiniteDimensionalMCMCSampler::_update_moments()
   // uqLibMeshFunction & temp = static_cast<uqLibMeshFunction &>(*temp_ptr); 
 
   temp_ptr->pointwise_mult(*(this->_delta), *(this->current_physical_state));
-  this->_M2->add(1.0, temp);
+  this->_M2->add(1.0, *temp_ptr);
   temp_ptr->pointwise_mult(*(this->_delta), *(this->current_physical_mean));
-  this->_M2->add(-1.0, temp);
+  this->_M2->add(-1.0, *temp_ptr);
 
   if (this->iteration() > 1) {
     this->current_physical_var->zero();
@@ -274,10 +274,10 @@ void uqInfiniteDimensionalMCMCSampler::_write_state()
   var_name += ".vtk";
   this->current_physical_var->save_function(var_name);
 
-  std::string qoi_name("qoi_");
-  qoi_name += curr_iter.str();
-  qoi_name += ".vtk";
-  this->llhd.get_qoi().save_function(qoi_name);
+  // std::string qoi_name("qoi_");
+  // qoi_name += curr_iter.str();
+  // qoi_name += ".vtk";
+  // this->llhd.get_qoi().save_function(qoi_name);
 }
 
 boost::shared_ptr<uqInfiniteDimensionalMCMCSampler> uqInfiniteDimensionalMCMCSampler::clone_and_reset() const

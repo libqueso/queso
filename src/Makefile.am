@@ -49,7 +49,8 @@ if GLPK_ENABLED
 endif
 
 if HDF5_ENABLED	
-  libqueso_la_LDFLAGS += $(HDF5_LIBS)
+#	libqueso_la_LDFLAGS += $(HDF5_LIBS) $(HDF5_CXXLIBS) $(HDF5_LIB)/libhdf5_cpp.la
+libqueso_la_LIBADD = $(HDF5_LIB)/libhdf.la $(HDF5_CXXLIBS) $(HDF5_LIB)/libhdf5_cpp.la
 endif
 
 # TODO: cleanup way epetra is handled; it looks like it is being put
@@ -92,6 +93,8 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/uqLibMeshNegativeLaplacianOperator.C \
 	$(top_srcdir)/src/core/src/uqInfiniteDimensionalGaussian.C \
 	$(top_srcdir)/src/core/src/uqInfiniteDimensionalMeasureBase.C \
+	$(top_srcdir)/src/core/src/uqInfiniteDimensionalMCMCSampler.C \
+	$(top_srcdir)/src/core/src/uqInfiniteDimensionalLikelihoodBase.C \
 	$(top_srcdir)/src/core/src/uqFunctionOperatorBuilder.C
 
 
@@ -192,6 +195,8 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/uqLibMeshNegativeLaplacianOperator.h \
 	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalMeasureBase.h \
 	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalGaussian.h \
+	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalMCMCSampler.h \
+	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalLikelihoodBase.h \
 	$(top_srcdir)/src/core/inc/uqFunctionOperatorBuilder.h
 
 # Headers to install from misc/inc
@@ -297,7 +302,8 @@ nodist_libqueso_include_HEADERS    =       \
 
 bin_PROGRAMS               = queso_version
 queso_version_SOURCES      = $(top_srcdir)/src/core/src/version.C
-queso_version_LDADD        = -L$(top_builddir)/src -lqueso $(HDF5_LIBS) 
+#queso_version_LDADD        = -L$(top_builddir)/src -lqueso $(HDF5_LIBS) $(HDF5_LIB)/libhdf5_cpp.la 
+queso_version_LDADD = libqueso.la
 if TRILINOS_ENABLED
   queso_version_LDADD     += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
 endif
