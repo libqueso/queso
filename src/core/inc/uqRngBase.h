@@ -40,7 +40,7 @@
 */
 
 /*! \class uqRngBaseClass
-    \brief Class for random number generation (base class). 
+    \brief Class for random number generation (base class for either GSL or Boost RNG). 
     
     This class is  a “virtual” class of generic random number generator, in order 
     to accommodate either GSL or Boost RNG. 

@@ -573,9 +573,9 @@ INPUT  = @abs_top_srcdir@/doxygen/queso.page \
       	 @abs_top_srcdir@/src/core \
       	 @abs_top_srcdir@/src/misc \
       	 @abs_top_srcdir@/src/basic \
-      	 @abs_top_srcdir@/src/stats \
-      	 @abs_top_srcdir@/src/interface
-      	 
+      	 @abs_top_srcdir@/src/stats
+
+#      	 @abs_top_srcdir@/src/interface #C/Fortran interface that hasn't been touched since at least Revision 14611.
 #      	 @abs_top_srcdir@/examples/statisticalInverseProblem1/src \
 #      	 @abs_top_srcdir@/examples/statisticalInverseProblem1/tests/test_2009_02_03/ \
 #      	 @abs_top_srcdir@/examples/statisticalForwardProblem/src \

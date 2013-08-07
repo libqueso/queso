@@ -69,7 +69,7 @@ public:
   virtual ~uqBaseJointPdfClass();
   //@}
 
-      //! @name Mathematical methods
+  //! @name Mathematical methods
   //@{  
   //! Actual value of the PDF (scalar function).
   virtual double actualValue                    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;

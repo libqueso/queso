@@ -110,6 +110,7 @@ private:
 
   //! This communicator can be queried for processor rank and size information. 
   uqMpiCommClass m_uqMpiComm;
+  
 #ifdef QUESO_HAS_TRILINOS
   //! Epetra_Map
   Epetra_Map*    m_epetraMap;
