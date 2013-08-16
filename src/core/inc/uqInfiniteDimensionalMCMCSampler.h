@@ -42,8 +42,10 @@
 // HDF5 includes
 #include <H5Cpp.h>
 
+class uqBaseEnvironmentClass;
 class uqInfiniteDimensionalMeasureBase;
 class uqInfiniteDimensionalLikelihoodBase;
+class uqInfiniteDimensionalMCMCSamplerOptions;
 
 class uqInfiniteDimensionalMCMCSampler
 {
@@ -52,9 +54,10 @@ public:
    * Constructor
    */
   uqInfiniteDimensionalMCMCSampler(
+      const uqBaseEnvironmentClass & env,
       const uqInfiniteDimensionalMeasureBase & prior,
       uqInfiniteDimensionalLikelihoodBase & llhd,
-      const std::string & outfile_name="out.h5");
+      uqInfiniteDimensionalMCMCSamplerOptions * ov);
 
   /*!
    * Destructor
@@ -65,16 +68,6 @@ public:
    * Do one iteration of the Markov chain
    */
   void step();
-
-  /*!
-   * Set beta
-   */
-  void set_proposal_step(double beta);
-
-  /*!
-   * Get beta
-   */
-  double proposal_step() const;
 
   /*! 
    * Get the current value of the llhd
@@ -91,36 +84,6 @@ public:
    */
   double avg_acc_prob();
 
-   /*!
-    * Set total number of iterations.  Default is 100.
-    */
-   void set_num_iters(unsigned int num_iters);
-
-   /*!
-    * Get total number of iterations.  Default is 100.
-    */
-   unsigned int num_iters() const;
-
-  /*!
-   * Set save frequency.  Default is 1.
-   */
-  void set_save_freq(unsigned int save_freq);
-
-  /*!
-   * Get save frequency.  Default is 1.
-   */
-  unsigned int save_freq() const;
-
-  /*!
-   * Set the file name of the chain output file.  Default is \c "out.h5".  Format is HDF5.
-   */
-  void set_file_name(const std::string & file_name);
-
-  /*! 
-   * Return the file name of the saved output file.  Default is \c "out.h5".
-   */
-  const std::string & file_name() const;
-
   /*!
    * Returns the current iteration number
    */
@@ -132,20 +95,8 @@ public:
   boost::shared_ptr<uqInfiniteDimensionalMCMCSampler> clone_and_reset() const;
 
 private:
-  // Name of the output file
-  std::string _file_name;
-
   // Current iteration
   unsigned int _iteration;
-
-  // The frequency at which to save the state of the chain
-  unsigned int _save_freq;
-
-  // The total number of iterations to do
-  unsigned int _num_iters;
-
-  // The proposal step size
-  double rwmh_step;
 
   // The current value of the negative log-likelihood functional
   double _llhd_val;
@@ -162,6 +113,12 @@ private:
   // The negative log-likelihood functional.  Operates on functions.
   // Should be const?
   uqInfiniteDimensionalLikelihoodBase & llhd;
+
+  // Aggregate options object
+  uqInfiniteDimensionalMCMCSamplerOptions * m_ov;
+
+  // The QUESO environment
+  const uqBaseEnvironmentClass & m_env;
 
   // Pointer to the current physical state
   boost::shared_ptr<uqFunctionBase> current_physical_state;

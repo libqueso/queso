@@ -1,0 +1,144 @@
+//--------------------------------------------------------------------------
+// 
+// QUESO - a library to support the Quantification of Uncertainty
+// for Estimation, Simulation and Optimization
+//
+// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the Version 2.1 GNU Lesser General
+// Public License as published by the Free Software Foundation.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc. 51 Franklin Street, Fifth Floor, 
+// Boston, MA  02110-1301  USA
+//
+//-----------------------------------------------------------------------el-
+// 
+// $Id: $
+//
+//--------------------------------------------------------------------------
+
+#include <uqInfiniteDimensionalMCMCSamplerOptions.h>
+
+// ODV = option default value
+#define UQ_INF_DATA_OUTPUT_FILE_NAME_ODV "out.h5"
+#define UQ_INF_NUM_ITERS_ODV 1000
+#define UQ_INF_SAVE_FREQ_ODV 1
+#define UQ_INF_RWMH_STEP_ODV 1e-2
+
+uqInfiniteDimensionalMCMCSamplerOptions::uqInfiniteDimensionalMCMCSamplerOptions(
+    const uqBaseEnvironmentClass & env,
+    const char * prefix)
+  : m_prefix((std::string)(prefix) + "infmcmc_"),
+    m_env(env),
+    m_optionsDesc(new po::options_description("Infinite Dimensional MCMC Sampler options")),
+    m_option_help(m_prefix + "help"),
+    m_option_dataOutputFileName(m_prefix + "dataOutputFilename"),
+    m_option_num_iters(m_prefix + "num_iters"),
+    m_option_save_freq(m_prefix + "save_freq"),
+    m_option_rwmh_step(m_prefix + "rwmh_step")
+{
+  UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
+      m_env.worldRank(),
+      "uqInfiniteDimensionalMCMCSamplerOptions::constructor(1)",
+      "this constructor is incompatible with the abscense of an options input file");
+}
+
+uqInfiniteDimensionalMCMCSamplerOptions::~uqInfiniteDimensionalMCMCSamplerOptions()
+{
+  if (m_optionsDesc) {
+    delete m_optionsDesc;
+  }
+} 
+
+void uqInfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()
+{
+  UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
+                      m_env.worldRank(),
+                      "uqInfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()",
+                      "m_optionsDesc variable is NULL");
+
+  this->defineMyOptions(*m_optionsDesc);
+  m_env.scanInputFileForMyOptions(*m_optionsDesc);
+  this->getMyOptionValues(*m_optionsDesc);
+
+  if (m_env.subDisplayFile() != NULL) {
+    *m_env.subDisplayFile() << "In uqInfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()"
+                            << ": after reading values of options with prefix '" << m_prefix
+                            << "', state of  object is:"
+                            << "\n" << *this
+                            << std::endl;
+  }
+  return;
+}
+
+void uqInfiniteDimensionalMCMCSamplerOptions::defineMyOptions(
+    po::options_description & optionsDesc) const
+{
+  optionsDesc.add_options()
+    (m_option_help.c_str(), "produce help message for infinite dimensional sampler")
+    (m_option_dataOutputFileName.c_str(), po::value<std::string>()->default_value(UQ_INF_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file (HDF5)")
+    (m_option_num_iters.c_str(), po::value<int>()->default_value(UQ_INF_NUM_ITERS_ODV), "number of mcmc iterations to do")
+    (m_option_save_freq.c_str(), po::value<int>()->default_value(UQ_INF_SAVE_FREQ_ODV), "the frequency at which to save the chain state")
+    (m_option_rwmh_step.c_str(), po::value<double>()->default_value(UQ_INF_RWMH_STEP_ODV), "the step-size in the random-walk Metropolis proposal");
+  return;
+}
+
+void uqInfiniteDimensionalMCMCSamplerOptions::getMyOptionValues(
+    po::options_description & optionsDesc)
+{
+  if (m_env.allOptionsMap().count(m_option_help)) {
+    if (m_env.subDisplayFile()) {
+      *m_env.subDisplayFile() << optionsDesc
+                              << std::endl;
+    }
+  }
+
+  if (m_env.allOptionsMap().count(m_option_dataOutputFileName)) {
+    this->m_dataOutputFileName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputFileName]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_num_iters)) {
+    this->m_num_iters = ((const po::variable_value&) m_env.allOptionsMap()[m_option_num_iters]).as<int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_save_freq)) {
+    this->m_save_freq = ((const po::variable_value&) m_env.allOptionsMap()[m_option_save_freq]).as<int>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_rwmh_step)) {
+    this->m_rwmh_step = ((const po::variable_value&) m_env.allOptionsMap()[m_option_rwmh_step]).as<double>();
+  }
+
+  return;
+}
+
+void uqInfiniteDimensionalMCMCSamplerOptions::print(std::ostream & os) const
+{
+  os << "\n" << this->m_option_dataOutputFileName << " = " << this->m_dataOutputFileName;
+  os << "\n" << this->m_option_num_iters << " = " << this->m_num_iters;
+  os << "\n" << this->m_option_save_freq << " = " << this->m_save_freq;
+  os << "\n" << this->m_option_rwmh_step << " = " << this->m_rwmh_step;
+  os << std::endl;
+  return;
+}
+
+std::ostream & operator<<(std::ostream & os,
+    const uqInfiniteDimensionalMCMCSamplerOptions & obj)
+{
+  obj.print(os);
+  return os;
+}
+
+const uqBaseEnvironmentClass &
+uqInfiniteDimensionalMCMCSamplerOptions::env() const
+{
+  return this->m_env;
+}

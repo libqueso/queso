@@ -36,18 +36,20 @@
 #include <uqInfiniteDimensionalLikelihoodBase.h>
 // #include <forward_solver/forward_solver.h>
 #include <uqInfiniteDimensionalMCMCSampler.h>
+#include <uqInfiniteDimensionalMCMCSamplerOptions.h>
 
 // libmesh includes
 // #include <libmesh/equation_systems.h>
 // #include <libmesh/linear_implicit_system.h>
 
 uqInfiniteDimensionalMCMCSampler::uqInfiniteDimensionalMCMCSampler(
+    const uqBaseEnvironmentClass & env,
     const uqInfiniteDimensionalMeasureBase & prior,
     uqInfiniteDimensionalLikelihoodBase & llhd,
-    const std::string & outfile_name)
-  : _file_name(outfile_name),
-    prior(prior),
+    uqInfiniteDimensionalMCMCSamplerOptions * ov)
+  : prior(prior),
     llhd(llhd),
+    m_env(env),
     current_physical_state(prior.draw()),
     proposed_physical_state(prior.draw()),
     current_physical_mean(prior.draw()),
@@ -55,10 +57,30 @@ uqInfiniteDimensionalMCMCSampler::uqInfiniteDimensionalMCMCSampler(
     _delta(prior.draw()),
     _M2(prior.draw())
 {
+  if (ov != NULL) {
+    this->m_ov = ov;
+  }
+
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "Entering uqInfiniteDimensionalMCMCSampler class" << std::endl;
+#endif
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering uqInfiniteDimensionalMCMCSampler::constructor()"
+                            << ": prefix = " << this->m_ov->m_prefix
+                            << ", m_env.optionsInputFileName() = " << this->m_env.optionsInputFileName()
+                            << std::endl;
+  }
+
+  if (m_env.optionsInputFileName() != "") {
+    this->m_ov->scanOptionsValues();
+  }
+
+#ifdef QUESO_MEMORY_DEBUGGING
+  std::cout << "In uqInfiniteDimensionalMCMCSamplerOptions,"
+            << " finished scanning options" << std::endl;
+#endif
+
   this->_iteration = 0;
-  this->_num_iters = 100;
-  this->_save_freq = 1;
-  this->rwmh_step = 0.0;
   this->_acc_prob = 0.0;
   this->_avg_acc_prob = 0.0;
   r = gsl_rng_alloc(gsl_rng_taus2);
@@ -99,14 +121,14 @@ uqInfiniteDimensionalMCMCSampler::~uqInfiniteDimensionalMCMCSampler()
 
 void uqInfiniteDimensionalMCMCSampler::_propose()
 {
-  const double rwmh_step_sq = (this->rwmh_step * this->rwmh_step);
+  const double rwmh_step_sq = (this->m_ov->m_rwmh_step * this->m_ov->m_rwmh_step);
   const double coeff = std::sqrt(1.0 - rwmh_step_sq);
 
   boost::shared_ptr<uqFunctionBase> p(prior.draw());
 
   this->proposed_physical_state->zero();
   this->proposed_physical_state->add(coeff, *(this->current_physical_state));
-  this->proposed_physical_state->add(this->rwmh_step, *p);
+  this->proposed_physical_state->add(this->m_ov->m_rwmh_step, *p);
 }
 
 void uqInfiniteDimensionalMCMCSampler::_metropolis_hastings()
@@ -176,7 +198,7 @@ void uqInfiniteDimensionalMCMCSampler::step()
   this->_metropolis_hastings();
   this->_update_moments();
   
-  if (this->iteration() % this->save_freq() == 0) {
+  if (this->_iteration % this->m_ov->m_save_freq == 0) {
     this->_write_state();
   }
 }
@@ -185,7 +207,7 @@ void uqInfiniteDimensionalMCMCSampler::_create_scalar_dataset(const std::string 
 {
   hsize_t      dims[1]  = {1};  // dataset dimensions at creation
   hsize_t      maxdims[1];
-  maxdims[0] = this->num_iters() / this->save_freq();
+  maxdims[0] = this->m_ov->m_num_iters / this->m_ov->m_save_freq;
   const int rank = 1;
   H5::DataSpace mspace1(rank, dims, maxdims);
 
@@ -195,10 +217,10 @@ void uqInfiniteDimensionalMCMCSampler::_create_scalar_dataset(const std::string 
   cparms.setChunk( rank, chunk_dims );
 
   double fill_val = 0.0;
-  cparms.setFillValue( H5::PredType::NATIVE_DOUBLE, &fill_val);
+  cparms.setFillValue(H5::PredType::NATIVE_DOUBLE, &fill_val);
 
   const H5std_string DATASET_NAME(name);
-  H5::DataSet dataset2 = this->_outfile->createDataSet( DATASET_NAME, H5::PredType::NATIVE_DOUBLE, mspace1, cparms);
+  H5::DataSet dataset2 = this->_outfile->createDataSet(DATASET_NAME, H5::PredType::NATIVE_DOUBLE, mspace1, cparms);
 }
 
 void uqInfiniteDimensionalMCMCSampler::_append_scalar_dataset(const std::string & name, double data)
@@ -208,17 +230,17 @@ void uqInfiniteDimensionalMCMCSampler::_append_scalar_dataset(const std::string 
 
   hsize_t      dims[1]  = {1};  // dataset dimensions at creation
   hsize_t      maxdims[1];
-  maxdims[0] = this->num_iters() / this->save_freq();
+  maxdims[0] = this->m_ov->m_num_iters / this->m_ov->m_save_freq;
   const int rank = 1;
   H5::DataSpace mspace1(rank, dims, maxdims);
 
   hsize_t      size[1];
-  size[0]   = this->iteration() / this->save_freq();
+  size[0]   = this->_iteration / this->m_ov->m_save_freq;
   dataset.extend(size);
 
   H5::DataSpace fspace1 = dataset.getSpace();
   hsize_t     offset[1];
-  offset[0] = (this->iteration() / this->save_freq()) - 1;
+  offset[0] = (this->_iteration / this->m_ov->m_save_freq) - 1;
   hsize_t      dims1[1] = {1};            /* data1 dimensions */
   fspace1.selectHyperslab(H5S_SELECT_SET, dims1, offset);
 
@@ -229,7 +251,7 @@ void uqInfiniteDimensionalMCMCSampler::_write_state()
 {
   if (!this->_outfile_open) {
     // std::cout << "opening new file" << std::endl;
-    const H5std_string file_name(this->file_name().c_str());
+    const H5std_string file_name(this->m_ov->m_dataOutputFileName.c_str());
     this->_outfile.reset(new H5::H5File(file_name, H5F_ACC_TRUNC));
     // std::cout << "opened new file" << std::endl;
     this->_outfile_open = true;
@@ -283,10 +305,7 @@ void uqInfiniteDimensionalMCMCSampler::_write_state()
 boost::shared_ptr<uqInfiniteDimensionalMCMCSampler> uqInfiniteDimensionalMCMCSampler::clone_and_reset() const
 {
   // Set up a clone
-  boost::shared_ptr<uqInfiniteDimensionalMCMCSampler> clone(new uqInfiniteDimensionalMCMCSampler(this->prior, this->llhd, this->_file_name));
-  clone->set_proposal_step(this->proposal_step());
-  clone->set_num_iters(this->num_iters());
-  clone->set_save_freq(this->save_freq());
+  boost::shared_ptr<uqInfiniteDimensionalMCMCSampler> clone(new uqInfiniteDimensionalMCMCSampler(this->m_env, this->prior, this->llhd, this->m_ov));
 
   // Copy the state.
   clone->current_physical_state = this->current_physical_state;
@@ -306,46 +325,6 @@ double uqInfiniteDimensionalMCMCSampler::acc_prob()
 double uqInfiniteDimensionalMCMCSampler::avg_acc_prob()
 {
   return this->_avg_acc_prob;
-}
-
-void uqInfiniteDimensionalMCMCSampler::set_proposal_step(double beta)
-{
-  this->rwmh_step = beta;
-}
-
-double uqInfiniteDimensionalMCMCSampler::proposal_step() const
-{
-  return this->rwmh_step;
-}
-
-void uqInfiniteDimensionalMCMCSampler::set_num_iters(unsigned int num_iters)
-{
-  this->_num_iters = num_iters;
-}
-
-unsigned int uqInfiniteDimensionalMCMCSampler::num_iters() const
-{
-  return this->_num_iters;
-}
-
-void uqInfiniteDimensionalMCMCSampler::set_save_freq(unsigned int save_freq)
-{
-  this->_save_freq = save_freq;
-}
-
-unsigned int uqInfiniteDimensionalMCMCSampler::save_freq() const
-{
-  return this->_save_freq;
-}
-
-void uqInfiniteDimensionalMCMCSampler::set_file_name(const std::string & file_name)
-{
-  this->_file_name = file_name;
-}
-
-const std::string & uqInfiniteDimensionalMCMCSampler::file_name() const
-{
-  return this->_file_name;
 }
 
 double uqInfiniteDimensionalMCMCSampler::llhd_val() const
