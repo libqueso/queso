@@ -39,6 +39,7 @@ libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
 libqueso_la_LDFLAGS += $(GSL_LIBS) 
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
 libqueso_la_LDFLAGS += $(ANN_LIBS)
+libqueso_la_LDFLAGS += $(HDF5_LIBS) $(HDF5_CXXLIBS)
 
 if GRVY_ENABLED	
   libqueso_la_LDFLAGS += $(GRVY_LIBS)
@@ -46,11 +47,6 @@ endif
 
 if GLPK_ENABLED	
   libqueso_la_LDFLAGS += $(GLPK_LIBS)
-endif
-
-if HDF5_ENABLED	
-#	libqueso_la_LDFLAGS += $(HDF5_LIBS) $(HDF5_CXXLIBS) $(HDF5_LIB)/libhdf5_cpp.la
-libqueso_la_LIBADD = $(HDF5_LIB)/libhdf.la $(HDF5_CXXLIBS) $(HDF5_LIB)/libhdf5_cpp.la
 endif
 
 # TODO: cleanup way epetra is handled; it looks like it is being put
@@ -94,6 +90,7 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/uqInfiniteDimensionalGaussian.C \
 	$(top_srcdir)/src/core/src/uqInfiniteDimensionalMeasureBase.C \
 	$(top_srcdir)/src/core/src/uqInfiniteDimensionalMCMCSampler.C \
+	$(top_srcdir)/src/core/src/uqInfiniteDimensionalMCMCSamplerOptions.C \
 	$(top_srcdir)/src/core/src/uqInfiniteDimensionalLikelihoodBase.C \
 	$(top_srcdir)/src/core/src/uqFunctionOperatorBuilder.C
 
@@ -196,6 +193,7 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalMeasureBase.h \
 	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalGaussian.h \
 	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalMCMCSampler.h \
+	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalMCMCSamplerOptions.h \
 	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalLikelihoodBase.h \
 	$(top_srcdir)/src/core/inc/uqFunctionOperatorBuilder.h
 
