@@ -472,7 +472,7 @@ int uqGRVY_CheckDir(const char *dirname)
     }
   else if (!S_ISDIR(st.st_mode))
     {
-      std::cerr << __func__ << ": error - entry exists, but is not a direvtory " << dirname << std::endl;
+      std::cerr << __func__ << ": error - entry exists, but is not a directory " << dirname << std::endl;
       return -1;
     }
 

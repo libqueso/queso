@@ -583,7 +583,7 @@ uqSampled1D1DFunctionClass::deriv(double domainValue) const
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
                       "uqSampled1d1DFunctionClass::deriv()",
-                      "this funciton makes no sense for this class");
+                      "this function makes no sense for this class");
   return 0.;
 }
 
