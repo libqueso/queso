@@ -49,7 +49,7 @@ sip_ip_mh_am_eta                                     = 2.88 # (2.4^2)/d, d is th
 sip_ip_mh_am_epsilon                                 = 1.e-5
 
 sip_ip_mh_rawChain_dataInputFileName                 = . # outputData/rawChain_input
-sip_ip_mh_rawChain_size                              = 132000 # 1000
+sip_ip_mh_rawChain_size                              = 132 # 132000 # IMPORTANT
 sip_ip_mh_rawChain_generateExtra                     = 0
 sip_ip_mh_rawChain_displayPeriod                     = 1000
 sip_ip_mh_rawChain_measureRunTimes                   = 1
@@ -58,7 +58,7 @@ sip_ip_mh_rawChain_dataOutputFileName                = outputData/rawChain_mh
 sip_ip_mh_rawChain_dataOutputAllowAll                = 0
 sip_ip_mh_rawChain_dataOutputAllowedSet              = 0 1
 
-sip_ip_mh_filteredChain_generate                     = 1
+sip_ip_mh_filteredChain_generate                     = 0 # 1 IMPORTANT
 sip_ip_mh_filteredChain_discardedPortion             = 0.1
 sip_ip_mh_filteredChain_lag                          = 10
 sip_ip_mh_filteredChain_dataOutputFileName           = outputData/filtChain_mh

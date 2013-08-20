@@ -100,24 +100,25 @@ void solveSips(const uqFullEnvironmentClass& env)
   uqGslMatrixClass zMat         (env,paramSpace.map(),n);
   uqGslMatrixClass zMatTranspose(env,dataSpace.map (),p);
 
-  uqGslVectorClass yMeanVec(dataSpace.zeroVector());
+  //uqGslVectorClass yMeanVec(dataSpace.zeroVector());
+  uqGslVectorClass ySamples(dataSpace.zeroVector());
   for (unsigned int i = 0; i < n; ++i) {
     zRv.realizer().realization(zSample);
     zMat.setColumn(i,zSample);
     epsRv.realizer().realization(epsSample);
-    yMeanVec[i] = scalarProduct(zSample,xGiven) + epsSample[0];
+    ySamples[i]  = scalarProduct(zSample,xGiven) + epsSample[0];
+    //yMeanVec[i] = 0.;
   }
   zMatTranspose.fillWithTranspose(0,0,zMat,true,true);
 
-  uqGslMatrixClass yCovMat(dataSpace.zeroVector());
-  double tmp = sigmaEps*sigmaEps;
-  for (unsigned int i = 0; i < n; ++i) {
-    yCovMat(i,i) = tmp;
-  }
+  //uqGslMatrixClass yCovMat(dataSpace.zeroVector());
+  //double tmp = sigmaEps*sigmaEps;
+  //for (unsigned int i = 0; i < n; ++i) {
+  //  yCovMat(i,i) = tmp;
+  //}
 
-  uqGslVectorClass ySamples(dataSpace.zeroVector());
-  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> yRv("y_", dataSpace, yMeanVec, yCovMat);
-  yRv.realizer().realization(ySamples);
+  //uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> yRv("y_", dataSpace, yMeanVec, yCovMat);
+  //yRv.realizer().realization(ySamples);
 
   struct likelihoodDataStructForX0 likelihoodDataForX0;
   likelihoodDataForX0.zMat     = &zMat;
@@ -172,8 +173,8 @@ void solveSips(const uqFullEnvironmentClass& env)
                           << "\n  n                = " << n
                           << "\n  sigmaEps         = " << sigmaEps
                           << "\n  zMat             = " << zMat
-                          << "\n  yMeanVec         = " << yMeanVec
-                          << "\n  yCovMat          = " << yCovMat
+      //<< "\n  yMeanVec         = " << yMeanVec
+      //<< "\n  yCovMat          = " << yCovMat
                           << "\n  ySamples         = " << ySamples
                           << std::endl;
   }
@@ -238,7 +239,7 @@ void solveSips(const uqFullEnvironmentClass& env)
   uqGslMatrixClass sigmatMatInverse(paramSpace.zeroVector());
   sigmatMatInverse = sigma0InvPlusSigmaInvMatInverse + tmpZZtScaled;
   uqGslMatrixClass sigmatMat(paramSpace.zeroVector());
-  sigmaMat = sigmaMatInverse.inverse();
+  sigmatMat = sigmatMatInverse.inverse();
   uqGslVectorClass tmpVec(paramSpace.zeroVector());
   tmpVec = zMat * ySamples;
   tmpVec /= (sigmaEps * sigmaEps);
@@ -360,6 +361,7 @@ double likelihoodRoutineForX0(
   // Compute likelihood
   //******************************************************************************
   for (unsigned int i = 0; i < n; ++i) {
+    // todo_now
     double diff = 0.;//(ySamples[i] - scalarProduct(aVec,paramValues))/sigmaEps;
     totalLnLikelihood -= 0.5 * diff * diff;
     if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
@@ -474,6 +476,7 @@ double likelihoodRoutineForX(
   // Compute likelihood
   //******************************************************************************
   for (unsigned int i = 0; i < n; ++i) {
+    // todo
     double diff = 0.;//(ySamples[i] - scalarProduct(aVec,paramValues))/sigmaEps;
     totalLnLikelihood -= 0.5 * diff * diff;
     if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
@@ -536,7 +539,7 @@ double routinePriorPdfForX(const uqGslVectorClass& domainVector,
                       "routinePriorPdfForX()",
                       "domainVector has wrong size");
 
-  double value = 0.;
+  double value = 1.; // todo
 
   if (domainDirection &&
       routineDataPtr  &&
