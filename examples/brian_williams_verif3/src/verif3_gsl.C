@@ -389,35 +389,42 @@ double likelihoodRoutineForX0(
   uqGslVectorClass xMonteCarlo(paramSpace.zeroVector());
   uqGslVectorClass zCol(paramSpace.zeroVector());
   unsigned int numMonteCarloSamples = 256;
-  double mcSum = 0.;
+  std::vector<double> mcLnValues(numMonteCarloSamples,0.);
   for (unsigned int mcId = 0; mcId < numMonteCarloSamples; ++mcId) {
     xRv->realizer().realization(xMonteCarlo);
-    double tmpSum = 0.;
     for (unsigned int i = 0; i < n; ++i) {
       zMat.getColumn(i,zCol);
       double diff = (ySamples[i] - scalarProduct(zCol,xMonteCarlo))/sigmaEps;
-      tmpSum += std::exp(-0.5 * diff * diff);
+      mcLnValues[mcId] -= 0.5 * diff * diff;
       if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
         *env.subDisplayFile() << "In likelihoodRoutineForX0()"
                               << ": likelihoodCounterForX0 = " << likelihoodCounterForX0
                               << ", params = "                 << paramValues
                               << ", mcId = "                   << mcId
                               << ", i = "                      << i
-                              << ", tmpSum = "                 << tmpSum
+                              << ", mcLnValues[mcId] = "       << mcLnValues[mcId]
                               << std::endl;
       }
     }
-    mcSum += tmpSum;
     if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
       *env.subDisplayFile() << "In likelihoodRoutineForX0()"
                             << ": likelihoodCounterForX0 = " << likelihoodCounterForX0
                             << ", params = "                 << paramValues
                             << ", mcId = "                   << mcId
-                            << ", mcSum = "                  << mcSum
+                            << ", mcLnValues[mcId] = "       << mcLnValues[mcId]
                             << std::endl;
     }
   }
-  totalLnLikelihood = std::log(mcSum) - std::log((double) numMonteCarloSamples);
+  double maxLnValue = mcLnValues[0];
+  for (unsigned int mcId = 0; mcId < numMonteCarloSamples; ++mcId) {
+    if (maxLnValue < mcLnValues[mcId]) maxLnValue = mcLnValues[mcId];
+  }
+  double auxSum = 0.;
+  for (unsigned int mcId = 0; mcId < numMonteCarloSamples; ++mcId) {
+    auxSum += std::exp(mcLnValues[mcId]-maxLnValue);
+  }
+
+  totalLnLikelihood = std::log(auxSum) + maxLnValue - std::log((double) numMonteCarloSamples);
 
   //******************************************************************************
   // Prepare to return
@@ -609,28 +616,41 @@ double routinePriorPdfForX(const uqGslVectorClass& domainVector,
         uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass>* xRv          = dataForPriorRoutineForX->xRv;
   uqGslVectorClass x0MonteCarlo(priorRvForX0->imageSet().vectorSpace().zeroVector());
   unsigned int numMonteCarloSamples = 256;
-  double mcSum = 0.;
+  std::vector<double> mcLnValues(numMonteCarloSamples,0.);
   for (unsigned int mcId = 0; mcId < numMonteCarloSamples; ++mcId) {
     priorRvForX0->realizer().realization(x0MonteCarlo);
     xRv->updateLawExpVector(x0MonteCarlo);
-    double pdfValueForX  = xRv->pdf().actualValue(domainVector,NULL,NULL,NULL,NULL);
-    double pdfValueForX0 = priorRvForX0->pdf().actualValue(x0MonteCarlo,NULL,NULL,NULL,NULL);
-    mcSum += (pdfValueForX * pdfValueForX0);
+    double pdfLnValueForX  = xRv->pdf().lnValue(domainVector,NULL,NULL,NULL,NULL);
+    double pdfLnValueForX0 = priorRvForX0->pdf().lnValue(x0MonteCarlo,NULL,NULL,NULL,NULL);
+    mcLnValues[mcId] = pdfLnValueForX + pdfLnValueForX0;
     if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
       *env.subDisplayFile() << "In routinePriorPdfForX()"
                             << ": priorCounterForX = " << priorCounterForX
                             << ", domainVector = "     << domainVector
                             << ", mcId = "             << mcId
-                            << ", mcSum = "            << mcSum
+                            << ", x0MonteCarlo = "     << x0MonteCarlo
+                            << ", pdfLnValueForX = "   << pdfLnValueForX
+                            << ", pdfLnValueForX0 = "  << pdfLnValueForX0
                             << std::endl;
     }
   }
-  value = std::log(mcSum) - std::log((double) numMonteCarloSamples);
+  double maxLnValue = mcLnValues[0];
+  for (unsigned int mcId = 0; mcId < numMonteCarloSamples; ++mcId) {
+    if (maxLnValue < mcLnValues[mcId]) maxLnValue = mcLnValues[mcId];
+  }
+  double auxSum = 0.;
+  for (unsigned int mcId = 0; mcId < numMonteCarloSamples; ++mcId) {
+    auxSum += std::exp(mcLnValues[mcId]-maxLnValue);
+  }
+
+  value = std::log(auxSum) + maxLnValue - std::log((double) numMonteCarloSamples);
 
   double totalTime = uqMiscGetEllapsedSeconds(&timevalBegin);
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 3)) {
     *env.subDisplayFile() << "Leaving routinePriorPdfForX()"
                           << ": domainVector = " << domainVector
+                          << ", auxSum = "       << auxSum
+                          << ", maxLnValue = "   << maxLnValue
                           << ", value = "        << value
                           << " after "           << totalTime
                           << " seconds"
