@@ -55,7 +55,7 @@ public:
   //@{
   //! Constructor.
  /*! Requirements: 1) the image set of the vector random variable 'paramRv' and 2) the domain set of the
- * qoi function 'qoiFunction' should belong to vector spaces of equal dimensions. If the requirements 
+ * QoI function 'qoiFunction' should belong to vector spaces of equal dimensions. If the requirements 
  * are satisfied, the constructor then reads input options that begin with the string '\<prefix\>_mc_'.
  * For instance, if 'prefix' is 'pROblem_775_fp_', then the constructor will read all options that begin
  * with 'pROblem_775_fp_mc_'. Options reading is handled by class 'uqMonteCarloOptionsClass'.*/
@@ -97,7 +97,7 @@ private:
 
   
   //!  This method \b actually generates the QoI sequence.
-  /*! Requirements: 1) the vector space containing the domain set of the qoi function 'm_qoiFunction' 
+  /*! Requirements: 1) the vector space containing the domain set of the QoI function 'm_qoiFunction' 
    * should have dimension equal to the size of a vector in 'workingPSeq' and 2) the vector space 
    * containing the image set of the qoi function 'm_qoiFunction' should have dimension equal to the 
    * size of a vector in 'workingQSeq'. If the requirements are satisfied, this operation sets the 
@@ -109,7 +109,7 @@ private:
                                     unsigned int                        seqSize);
   //! Reads the sequence.
   void actualReadSequence    (const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
-                              const std::string&                        dataInputFileName,
+                              const std::string&             QoI        dataInputFileName,
                               const std::string&                        dataInputFileType,
                                     uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
                                     uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
@@ -137,8 +137,8 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::uqMonteCarloSGClass(
   /*! Prefix                     */ const char*                                       prefix,
   /*! Options (if no input file) */ const uqMcOptionsValuesClass*                     alternativeOptionsValues, // dakota
-  /*! The parameter rv           */ const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
-  /*! The qoi function           */ const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction)
+  /*! The parameter RV           */ const uqBaseVectorRVClass      <P_V,P_M>&         paramRv,
+  /*! The QoI function           */ const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction)
   :
   m_env                     (paramRv.env()),
   m_paramRv                 (paramRv),
@@ -231,7 +231,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   workingQSeq.setName(m_optionsObj->m_prefix+"QoiSeq");
 
   //****************************************************
-  // Generate sequence of qoi values
+  // Generate sequence of QoI values
   //****************************************************
   unsigned int subActualSizeBeforeGeneration = std::min(m_optionsObj->m_ov.m_qseqSize,paramRv.realizer().subPeriod());
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -351,7 +351,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 #endif
   //****************************************************
   // Eventually:
-  // --> write qoi sequence
+  // --> write QoI sequence
   // --> compute statistics on it
   //****************************************************
   if (m_env.subDisplayFile()) {
@@ -426,7 +426,7 @@ uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
       *m_env.subDisplayFile() << "In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                               << ", prefix = "                         << m_optionsObj->m_prefix
                               << ": closed generic data output file '" << m_optionsObj->m_ov.m_dataOutputFileName
-                              << "' for qoi sequence "                 << workingQSeq.name()
+                              << "' for QoI sequence "                 << workingQSeq.name()
                               << std::endl;
     }
   }

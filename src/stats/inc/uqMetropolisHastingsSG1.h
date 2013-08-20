@@ -281,7 +281,7 @@ template<class P_V,class P_M>
 uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
   /*! Prefix                     */ const char*                         prefix,
   /*! Options (if no input file) */ const uqMhOptionsValuesClass*       alternativeOptionsValues, // dakota
-  /*! The source rv              */ const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
+  /*! The source RV              */ const uqBaseVectorRVClass<P_V,P_M>& sourceRv,
   /*! Initial chain position     */ const P_V&                          initialPosition,
   /*! Proposal cov. matrix       */ const P_M*                          inputProposalCovMatrix)
   :
@@ -623,7 +623,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::alpha(
             (m_env.displayVerbosity() >= 3            ) &&
             (m_optionsObj->m_ov.m_totallyMute == false)) {
           *m_env.subDisplayFile() << "In uqMetropolisHastingsSGClass<P_V,P_M>::alpha(x,y)"
-                                 << ": unsymmetric proposal case"
+                                 << ": asymmetric proposal case"
                                  << ", xStageId = "        << xStageId
                                  << ", yStageId = "        << yStageId
                                  << ", x = "               << x.vecValues()

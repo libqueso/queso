@@ -117,7 +117,7 @@ public:
 <item> populates the output sequence with the Monte Carlo algorithm,
 <item> sets the realizer of 'm_qoiRv' with the contents of the output sequence, and
 </list>*/
-//<item> computes the cdfs of the components of 'm_qoiRv' as instances of 'uqSampledVectorCdfClass<Q_V,Q_M>'
+//<item> computes the CDFs of the components of 'm_qoiRv' as instances of 'uqSampledVectorCdfClass<Q_V,Q_M>'
   void                                   solveWithMonteCarlo(const uqMcOptionsValuesClass* alternativeOptionsValues); // dakota
   
   //! Returns the QoI RV; access to private attribute m_qoiRv.
@@ -128,7 +128,7 @@ public:
   
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   
-  //<item> cdfs of QoI components through the operation 'qoiRv().unifiedCdf()',
+  //<item> CDFs of QoI components through the operation 'qoiRv().unifiedCdf()',
   //     which returns an instance of the class 'uqBaseVectorCdfClass<Q_V,Q_M>'
   const uqBaseVectorCdfClass  <Q_V,Q_M>& qoiRv_unifiedCdf   () const;
   
@@ -495,7 +495,7 @@ uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
         UQ_FATAL_TEST_MACRO(true,
                             m_env.worldRank(),
                             "uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()",
-                            "unifed cdf writing, parallel vectors not supported yet");
+                            "unified cdf writing, parallel vectors not supported yet");
       }
     }
 #endif

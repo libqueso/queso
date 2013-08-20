@@ -248,14 +248,14 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalIP(
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity)
 {
-  // Calibration stage: Prior vector rv
+  // Calibration stage: Prior vector RV
   m_calPriorRv = &priorRv;
 
   // Calibration stage: Likelihood function object (e.g., ln[likelihood])
   m_calLikelihoodFunctionObj = &likelihoodFunctionObj;
 
-  // Calibration stage: Posterior vector rv
-  m_calPostRv = new uqGenericVectorRVClass<P_V,P_M> ("cal_post_", // Extra prefix before the default "rv_" prefix
+  // Calibration stage: Posterior vector RV
+  m_calPostRv = new uqGenericVectorRVClass<P_V,P_M> ("cal_post_", // Extra prefix before the default "RV_" prefix
                                                      m_paramSpace);
 
   // Calibration stage: Inverse problem
@@ -295,17 +295,17 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateCalFP(
                               uqDistArrayClass<P_V*>* hessianEffects),
   const void* qoiRoutineDataPtr)
 {
-  // Calibration stage: Input param vector rv for forward = output posterior vector rv of inverse
+  // Calibration stage: Input parameter vector RV for forward = output posterior vector RV of inverse
 
-  // Calibration stage: Qoi function object
+  // Calibration stage: QoI function object
   m_calQoiFunctionObj = new uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> ("cal_qoi_", // Extra prefix before the default "func_" prefix
                                                                            m_paramSpace,
                                                                            m_qoiSpace,
                                                                            qoiRoutinePtr,
                                                                            qoiRoutineDataPtr);
 
-  // Calibration stage: Qoi vector rv
-  m_calQoiRv = new uqGenericVectorRVClass<Q_V,Q_M> ("cal_qoi_", // Extra prefix before the default "rv_" prefix
+  // Calibration stage: QoI vector RV
+  m_calQoiRv = new uqGenericVectorRVClass<Q_V,Q_M> ("cal_qoi_", // Extra prefix before the default "RV_" prefix
                                                     m_qoiSpace);
 
   // Calibration stage: Forward problem
@@ -341,13 +341,13 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValIP(
   //const void* likelihoodRoutineDataPtr,
   //bool routineComputesMinus2LogOfDensity)
 {
-  // Validation stage: Prior vector rv = posterior vector rv from calibration stage
+  // Validation stage: Prior vector RV = posterior vector RV from calibration stage
 
   // Validation stage: Likelihood function object (e.g., ln[likelihood])
   m_valLikelihoodFunctionObj = &likelihoodFunctionObj;
 
-  // Validation stage: Posterior vector rv
-  m_valPostRv = new uqGenericVectorRVClass<P_V,P_M> ("val_post_", // Extra prefix before the default "rv_" prefix
+  // Validation stage: Posterior vector RV
+  m_valPostRv = new uqGenericVectorRVClass<P_V,P_M> ("val_post_", // Extra prefix before the default "RV_" prefix
                                                      m_paramSpace);
 
   // Validation stage: Inverse problem
@@ -387,17 +387,17 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::instantiateValFP(
                               uqDistArrayClass<P_V*>* hessianEffects),
   const void* qoiRoutineDataPtr)
 {
-  // Validation stage: Input param vector rv for forward = output posterior vector rv of inverse
+  // Validation stage: Input parameter vector RV for forward = output posterior vector RV of inverse
 
-  // Validation stage: Qoi function object
+  // Validation stage: QoI function object
   m_valQoiFunctionObj = new uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> ("val_qoi_", // Extra prefix before the default "func_" prefix
                                                                            m_paramSpace,
                                                                            m_qoiSpace,
                                                                            qoiRoutinePtr,
                                                                            qoiRoutineDataPtr);
 
-  // Validation stage: Qoi vector rv
-  m_valQoiRv = new uqGenericVectorRVClass<Q_V,Q_M> ("val_qoi_", // Extra prefix before the default "rv_" prefix
+  // Validation stage: QoI vector RV
+  m_valQoiRv = new uqGenericVectorRVClass<Q_V,Q_M> ("val_qoi_", // Extra prefix before the default "RV_" prefix
                                                     m_qoiSpace);
 
   // Validation stage: Forward problem

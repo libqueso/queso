@@ -850,7 +850,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
         *m_env.subDisplayFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                                << ", position = "        << position
                                << ", stageId = "         << stageId
-                               << ", about to instantiate a Gaussian rv"
+                               << ", about to instantiate a Gaussian RV"
                                << ": tmpHessian = "      << *tmpHessian
                                << ", preComputingPos = " << *m_preComputingPositions[stageId]
                                << ", tmpCovMat = "       << *tmpCovMat

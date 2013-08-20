@@ -78,7 +78,7 @@ public:
   //! Posterior Density Function of the vector RV; access to private attribute m_pdf.
   const   uqBaseJointPdfClass      <V,M>& pdf       () const;
   
-  //! Finds a realization (sample) of the pdf of this vector RV; access to private attribute m_realizer.
+  //! Finds a realization (sample) of the PDF of this vector RV; access to private attribute m_realizer.
   const   uqBaseVectorRealizerClass<V,M>& realizer  () const;
   
   //! Finds the Cumulative Distribution Function of this vector RV, considering only the sub-sequence of data; access to private attribute m_subCdf.
