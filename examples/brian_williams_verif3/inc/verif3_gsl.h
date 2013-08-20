@@ -30,14 +30,14 @@ struct likelihoodDataStructForX0 {
   uqGslMatrixClass* zMat;     // p x n
   double            sigmaEps;
   uqGslVectorClass* ySamples; // n x 1
-  uqGslMatrixClass* sigmaMat; // p x p
+  uqGslMatrixClass* sigmaMatInverse; // p x p
 };
 
 struct likelihoodDataStructForX {
   uqGslMatrixClass* zMat;     // p x n
   double            sigmaEps;
   uqGslVectorClass* ySamples; // n x 1
-  uqGslMatrixClass* sigmaMat; // p x p
+  uqGslMatrixClass* sigmaMatInverse; // p x p
 };
 
 #endif // __VERIF3_GSL_H__

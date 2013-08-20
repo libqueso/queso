@@ -3,6 +3,7 @@
 
 static unsigned int likelihoodCounterForX0 = 0;
 static unsigned int likelihoodCounterForX  = 0;
+static unsigned int priorCounterForX       = 0;
 
 int main(int argc, char* argv[])
 {
@@ -121,10 +122,10 @@ void solveSips(const uqFullEnvironmentClass& env)
   //yRv.realizer().realization(ySamples);
 
   struct likelihoodDataStructForX0 likelihoodDataForX0;
-  likelihoodDataForX0.zMat     = &zMat;
-  likelihoodDataForX0.sigmaEps = sigmaEps;
-  likelihoodDataForX0.ySamples = &ySamples;
-  likelihoodDataForX0.sigmaMat = &sigmaMat;
+  likelihoodDataForX0.zMat            = &zMat;
+  likelihoodDataForX0.sigmaEps        = sigmaEps;
+  likelihoodDataForX0.ySamples        = &ySamples;
+  likelihoodDataForX0.sigmaMatInverse = &sigmaMatInverse;
 
   uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
     likelihoodFunctionObjForX0("like_",
@@ -133,11 +134,11 @@ void solveSips(const uqFullEnvironmentClass& env)
                                (void *) &likelihoodDataForX0,
                                true); // routine computes [ln(function)]
 
-  struct likelihoodDataStructForX likelihoodDataForX; // todo
-  likelihoodDataForX.zMat     = &zMat;
-  likelihoodDataForX.sigmaEps = sigmaEps;
-  likelihoodDataForX.ySamples = &ySamples;
-  likelihoodDataForX.sigmaMat = &sigmaMat;
+  struct likelihoodDataStructForX likelihoodDataForX;
+  likelihoodDataForX.zMat            = &zMat;
+  likelihoodDataForX.sigmaEps        = sigmaEps;
+  likelihoodDataForX.ySamples        = &ySamples;
+  likelihoodDataForX.sigmaMatInverse = &sigmaMatInverse;
 
   uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
     likelihoodFunctionObjForX("like_",
@@ -258,7 +259,7 @@ void solveSips(const uqFullEnvironmentClass& env)
   uqGenericVectorRVClass <uqGslVectorClass,uqGslMatrixClass> postRvForX0 ("post_", paramSpace);
   uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass> sipForX0("sip_", NULL, priorRvForX0, likelihoodFunctionObjForX0, postRvForX0);
 
-  uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass> genericScalarFunction("",*paramDomain,routinePriorPdfForX,&priorRvForX0,false);
+  uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass> genericScalarFunction("",*paramDomain,routinePriorPdfForX,&priorRvForX0,true);
   uqGenericJointPdfClass      <uqGslVectorClass,uqGslMatrixClass> priorPdfForX         ("",genericScalarFunction);
 //uqGenericVectorRealizerClass<uqGslVectorClass,uqGslMatrixClass> priorRealizerForX    ("",*paramDomain,1000,routinePriorRealizerForX,NULL);
   uqGenericVectorRVClass      <uqGslVectorClass,uqGslMatrixClass> priorRvForX          ("prior_", *paramDomain);
@@ -339,6 +340,7 @@ double likelihoodRoutineForX0(
   double sigmaEps = likelihoodDataForX0->sigmaEps;
   uqGslVectorClass ySamples(*(likelihoodDataForX0->ySamples));
   unsigned int n = ySamples.sizeLocal();
+  uqGslMatrixClass sigmaMatInverse(*(likelihoodDataForX0->sigmaMatInverse));
 
   UQ_FATAL_TEST_MACRO(paramValues.sizeLocal() != p,
                       env.fullRank(),
@@ -360,18 +362,29 @@ double likelihoodRoutineForX0(
   //******************************************************************************
   // Compute likelihood
   //******************************************************************************
-  for (unsigned int i = 0; i < n; ++i) {
-    // todo_now
-    double diff = 0.;//(ySamples[i] - scalarProduct(aVec,paramValues))/sigmaEps;
-    totalLnLikelihood -= 0.5 * diff * diff;
-    if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
-      *env.subDisplayFile() << "In likelihoodRoutineForX0()"
-                            << ": likelihoodCounterForX0 = " << likelihoodCounterForX0
-                            << ", params = "                 << paramValues
-                            << ", diff = "                   << diff
-                            << std::endl;
+  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> paramSpace(env, "param_", p, NULL);
+  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> xRv("x_", paramSpace, paramValues, sigmaMatInverse);
+  uqGslVectorClass xMonteCarlo(paramSpace.zeroVector());
+  uqGslVectorClass zCol(paramSpace.zeroVector());
+  unsigned int numMonteCarloSamples = 256;
+  for (unsigned int mcId = 0; mcId < numMonteCarloSamples; ++mcId) {
+    xRv.realizer().realization(xMonteCarlo);
+    for (unsigned int i = 0; i < n; ++i) {
+      zMat.getColumn(i,zCol);
+      double diff = (ySamples[i] - scalarProduct(zCol,xMonteCarlo))/sigmaEps;
+      totalLnLikelihood -= 0.5 * diff * diff;
+      if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
+        *env.subDisplayFile() << "In likelihoodRoutineForX0()"
+                              << ": likelihoodCounterForX0 = " << likelihoodCounterForX0
+                              << ", params = "                 << paramValues
+                              << ", mcId = "                   << mcId
+                              << ", i = "                      << i
+                              << ", diff = "                   << diff
+                              << std::endl;
+      }
     }
   }
+  totalLnLikelihood /= ((double) numMonteCarloSamples);
 
   //******************************************************************************
   // Prepare to return
@@ -454,6 +467,7 @@ double likelihoodRoutineForX(
   double sigmaEps = likelihoodDataForX->sigmaEps;
   uqGslVectorClass ySamples(*(likelihoodDataForX->ySamples));
   unsigned int n = ySamples.sizeLocal();
+  uqGslMatrixClass sigmaMatInverse(*(likelihoodDataForX->sigmaMatInverse));
 
   UQ_FATAL_TEST_MACRO(paramValues.sizeLocal() != p,
                       env.fullRank(),
@@ -475,14 +489,17 @@ double likelihoodRoutineForX(
   //******************************************************************************
   // Compute likelihood
   //******************************************************************************
+  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> paramSpace(env, "param_", p, NULL);
+  uqGslVectorClass zCol(paramSpace.zeroVector());
   for (unsigned int i = 0; i < n; ++i) {
-    // todo
-    double diff = 0.;//(ySamples[i] - scalarProduct(aVec,paramValues))/sigmaEps;
+    zMat.getColumn(i,zCol);
+    double diff = (ySamples[i] - scalarProduct(zCol,paramValues))/sigmaEps;
     totalLnLikelihood -= 0.5 * diff * diff;
     if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
       *env.subDisplayFile() << "In likelihoodRoutineForX()"
                             << ": likelihoodCounterForX = " << likelihoodCounterForX
                             << ", params = "                << paramValues
+                            << ", i = "                     << i
                             << ", diff = "                  << diff
                             << std::endl;
     }
@@ -527,6 +544,11 @@ double routinePriorPdfForX(const uqGslVectorClass& domainVector,
                            uqGslMatrixClass*       hessianMatrix,
                            uqGslVectorClass*       hessianEffect)
 {
+  struct timeval timevalBegin;
+  gettimeofday(&timevalBegin, NULL);
+
+  priorCounterForX++;
+
   const uqBaseEnvironmentClass& env = domainVector.env();
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 3)) {
     *env.subDisplayFile() << "Entering routinePriorPdfForX()..."
@@ -534,12 +556,12 @@ double routinePriorPdfForX(const uqGslVectorClass& domainVector,
                           << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO((domainVector.sizeLocal() != 9),
+  UQ_FATAL_TEST_MACRO((domainVector.sizeLocal() != 2),
                       env.fullRank(),
                       "routinePriorPdfForX()",
                       "domainVector has wrong size");
 
-  double value = 1.; // todo
+  double value = 0.;
 
   if (domainDirection &&
       routineDataPtr  &&
@@ -550,13 +572,29 @@ double routinePriorPdfForX(const uqGslVectorClass& domainVector,
   }
 
   const uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass>* priorRvForX0 = (uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> *) routineDataPtr;
+  uqGslVectorClass x0MonteCarlo(priorRvForX0->imageSet().vectorSpace().zeroVector());
+  unsigned int numMonteCarloSamples = 256;
+  for (unsigned int mcId = 0; mcId < numMonteCarloSamples; ++mcId) {
+    priorRvForX0->realizer().realization(x0MonteCarlo);
+    value += 0.; // todo
+    if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
+      *env.subDisplayFile() << "In routinePriorPdfForX()"
+                            << ": priorCounterForX = " << priorCounterForX
+                            << ", domainVector = "     << domainVector
+                            << ", mcId = "             << mcId
+                            << ", value = "            << value
+                            << std::endl;
+    }
+  }
+  value /= ((double) numMonteCarloSamples);
 
-  // todo
-
+  double totalTime = uqMiscGetEllapsedSeconds(&timevalBegin);
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 3)) {
     *env.subDisplayFile() << "Leaving routinePriorPdfForX()"
                           << ": domainVector = " << domainVector
                           << ", value = "        << value
+                          << " after "           << totalTime
+                          << " seconds"
                           << std::endl;
   }
 

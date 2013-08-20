@@ -1,0 +1,97 @@
+TACC: Setting memory limits for job 949080 to unlimited KB
+TACC: Dumping job script:
+--------------------------------------------------------------------------------
+#!/bin/bash  	 
+#$ -V
+#$ -cwd
+#$ -N p
+#$ -e p.e.$JOB_ID
+#$ -o p.o.$JOB_ID
+#$ -pe 12way 12
+#$ -q development
+#$ -l h_rt=00:30:00
+#$ -M prudenci@ices.utexas.edu
+#$ -m be
+set -x
+ibrun ../../src/tower_gsl test1_prudenci_lonestar.inp 1
+--------------------------------------------------------------------------------
+TACC: Done.
+TACC: Starting up job 949080
+TACC: Setting up parallel environment for MVAPICH ssh-based mpirun.
+TACC: Setup complete. Running job script.
+TACC: starting parallel tasks...
+--------------------------------------------------------------------------------------------------------------
+QUESO Library: Version = 0.45.3 (4503)
+
+Development Build
+
+Build Date   = 2012-12-29 01:56
+Build Host   = login1.ls4.tacc.utexas.edu
+Build User   = prudenci
+Build Arch   = x86_64-unknown-linux-gnu
+Build Rev    = 35521
+
+C++ Config   = mpicxx -DMPICH_IGNORE_CXX_SEEK -O3 -Wall -wd383 -wd981 -wd1572
+
+Trilinos DIR = no
+GSL Libs     = -L/opt/apps/intel11_1/gsl/1.15/lib -lgsl -lgslcblas -lm
+GRVY DIR     = /opt/apps/intel11_1/grvy/0.32.0
+GLPK DIR     = no
+HDF5 DIR     = /opt/apps/intel11_1/hdf5/1.8.5
+--------------------------------------------------------------------------------------------------------------
+Beginning run at Sat Dec 29 02:08:04 2012
+
+MPI node of worldRank 0 has fullRank 0, belongs to subEnvironment of id 0, and has subRank 0
+MPI node of worldRank 0 belongs to sub communicator with full ranks 0
+MPI node of worldRank 0 also belongs to inter0 communicator with full ranks 0 1 2 3 4 5 6 7 8 9 10 11, and has inter0Rank 0
+
+MPI node of worldRank 1 has fullRank 1, belongs to subEnvironment of id 1, and has subRank 0
+MPI node of worldRank 1 belongs to sub communicator with full ranks 1
+MPI node of worldRank 1 also belongs to inter0 communicator with full ranks 0 1 2 3 4 5 6 7 8 9 10 11, and has inter0Rank 1
+
+MPI node of worldRank 2 has fullRank 2, belongs to subEnvironment of id 2, and has subRank 0
+MPI node of worldRank 2 belongs to sub communicator with full ranks 2
+MPI node of worldRank 2 also belongs to inter0 communicator with full ranks 0 1 2 3 4 5 6 7 8 9 10 11, and has inter0Rank 2
+
+MPI node of worldRank 3 has fullRank 3, belongs to subEnvironment of id 3, and has subRank 0
+MPI node of worldRank 3 belongs to sub communicator with full ranks 3
+MPI node of worldRank 3 also belongs to inter0 communicator with full ranks 0 1 2 3 4 5 6 7 8 9 10 11, and has inter0Rank 3
+
+MPI node of worldRank 4 has fullRank 4, belongs to subEnvironment of id 4, and has subRank 0
+MPI node of worldRank 4 belongs to sub communicator with full ranks 4
+MPI node of worldRank 4 also belongs to inter0 communicator with full ranks 0 1 2 3 4 5 6 7 8 9 10 11, and has inter0Rank 4
+
+MPI node of worldRank 5 has fullRank 5, belongs to subEnvironment of id 5, and has subRank 0
+MPI node of worldRank 5 belongs to sub communicator with full ranks 5
+MPI node of worldRank 5 also belongs to inter0 communicator with full ranks 0 1 2 3 4 5 6 7 8 9 10 11, and has inter0Rank 5
+
+MPI node of worldRank 6 has fullRank 6, belongs to subEnvironment of id 6, and has subRank 0
+MPI node of worldRank 6 belongs to sub communicator with full ranks 6
+MPI node of worldRank 6 also belongs to inter0 communicator with full ranks 0 1 2 3 4 5 6 7 8 9 10 11, and has inter0Rank 6
+
+MPI node of worldRank 7 has fullRank 7, belongs to subEnvironment of id 7, and has subRank 0
+MPI node of worldRank 7 belongs to sub communicator with full ranks 7
+MPI node of worldRank 7 also belongs to inter0 communicator with full ranks 0 1 2 3 4 5 6 7 8 9 10 11, and has inter0Rank 7
+
+MPI node of worldRank 8 has fullRank 8, belongs to subEnvironment of id 8, and has subRank 0
+MPI node of worldRank 8 belongs to sub communicator with full ranks 8
+MPI node of worldRank 8 also belongs to inter0 communicator with full ranks 0 1 2 3 4 5 6 7 8 9 10 11, and has inter0Rank 8
+
+MPI node of worldRank 9 has fullRank 9, belongs to subEnvironment of id 9, and has subRank 0
+MPI node of worldRank 9 belongs to sub communicator with full ranks 9
+MPI node of worldRank 9 also belongs to inter0 communicator with full ranks 0 1 2 3 4 5 6 7 8 9 10 11, and has inter0Rank 9
+
+MPI node of worldRank 10 has fullRank 10, belongs to subEnvironment of id 10, and has subRank 0
+MPI node of worldRank 10 belongs to sub communicator with full ranks 10
+MPI node of worldRank 10 also belongs to inter0 communicator with full ranks 0 1 2 3 4 5 6 7 8 9 10 11, and has inter0Rank 10
+
+MPI node of worldRank 11 has fullRank 11, belongs to subEnvironment of id 11, and has subRank 0
+MPI node of worldRank 11 belongs to sub communicator with full ranks 11
+MPI node of worldRank 11 also belongs to inter0 communicator with full ranks 0 1 2 3 4 5 6 7 8 9 10 11, and has inter0Rank 11
+
+Ending run at Sat Dec 29 02:08:47 2012
+Total run time = 43 seconds
+TACC: Shutting down parallel environment.
+TACC: Shutdown complete. Exiting.
+TACC: Cleaning up after job: 949080
+TACC: Done.

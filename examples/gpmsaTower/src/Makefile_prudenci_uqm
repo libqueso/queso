@@ -1,0 +1,56 @@
+HOME_DIR = /h2/prudenci
+QUESO_DIR = $(HOME_DIR)/Installations/queso_0_46/
+#BOOST_DIR = /opt/local/
+#GSL_DIR = /opt/local/
+#GRVY_DIR = $(HOME_DIR)/Installations/grvy_0_26_0/
+#HDF5_DIR = $(HOME_DIR)/Installations/hdf5_1_8_5/
+UQBT = gsl
+
+INC_PATHS = \
+	-I. \
+	-I../inc \
+	-I$(QUESO_DIR)/include \
+	-I$(MPI_DIR)/include \
+	-I$(BOOST_DIR)/include \
+	-I$(GSL_DIR)/include \
+	-I$(GRVY_DIR)/include \
+	-I$(HDF5_DIR)/include
+
+LIBS = \
+	-L$(QUESO_DIR)/lib \
+	-lqueso \
+	-L$(MPI_DIR)/lib \
+	-L$(BOOST_DIR)/lib \
+	-lboost_program_options \
+	-L$(GSL_DIR)/lib \
+	-lgsl \
+	-L$(GRVY_DIR)/lib \
+	-lgrvy \
+	-L$(HDF5_DIR)/lib \
+	-lhdf5 \
+	-L$(MKLROOT)/lib/em64t \
+	-lmkl_intel_lp64 -lmkl_sequential -lmkl_core
+
+#	-L/opt/local/lib \
+#	-llapack -lblas
+
+CXX = mpicxx
+CXXFLAGS += -O2 -Wall -c
+
+default: all
+
+.SUFFIXES: .o .C
+
+all:	codeTower
+
+clean:
+	rm -f ../inc/*~
+	rm -f *~
+	rm -f *.o
+	rm -f tower_$(UQBT)
+
+codeTower: tower_$(UQBT).o 
+	$(CXX) tower_$(UQBT).o -o tower_$(UQBT) $(LIBS)
+
+%.o: %.C
+	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<

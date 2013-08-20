@@ -1,0 +1,173 @@
+##########################################################################
+# Environment options
+##########################################################################
+#env_help                 = anything
+env_numSubEnvironments   = 1
+env_subDisplayFileName   = outputData_m1/display
+env_subDisplayAllowAll   = 0
+env_subDisplayAllowedSet = 0
+env_displayVerbosity     = 2
+env_syncVerbosity        = 0
+env_checkingLevel        = 0
+env_seed                 = -1
+env_platformName         = mac
+env_identifyingString    = towerExampleToMatchGPMSA
+
+###############################################
+# Simulation Model
+# priors.lamUz.params=repmat([5 5],pu,1)
+# priors.rhoU.params=repmat([1 0.1],pu*(p+q),1)
+# priors.lamWOs.params=[5 0.005]
+# priors.lamWs.params=repmat([3 0.003],pu,1)
+###############################################
+sm_dataOutputFileName        = . # outputData_m1/smOutput
+sm_dataOutputAllowAll        = 1
+#sm_dataOutputAllowedSet     = 0 1 2 3 # IMPORTANT
+sm_p_eta                     = 2
+sm_zeroRelativeSingularValue = 0.
+sm_cdfThresholdForPEta       = 0.
+sm_a_w                       = 5.0   # lamUz
+sm_b_w                       = 5.0   #
+sm_a_rho_w                   = 1.0   # rhoU
+sm_b_rho_w                   = 0.1   #
+sm_a_eta                     = 5.0   # lamWOs
+sm_b_eta                     = 0.005 #
+sm_a_s                       = 3.0   # lamWs
+sm_b_s                       = 0.003 #
+
+###############################################
+# Experiment Model
+# priors.lamVz.params=repmat([1 0.0010],lamVzGnum,1)
+# priors.rhoV.params=repmat([1 0.1],p*lamVzGnum)
+# priors.lamOs.params=[1 0.001]
+###############################################
+em_Gvalues = 13
+em_a_v     = 1.0   # lamVz
+em_b_v     = 0.001 #
+em_a_rho_v = 1.0   # rhoV
+em_b_rho_v = 0.1   #
+em_a_y     = 1.0   # lamOs
+em_b_y     = 0.001 #
+
+###############################################
+# Gpmsa Computer Model (gcm)
+###############################################
+#gcm_help                                = anything
+gcm_checkAgainstPreviousSample          = 0
+gcm_dataOutputFileName                  = . # outputData_m1/gcmOutput
+gcm_dataOutputAllowAll                  = 0
+#gcm_dataOutputAllowedSet                = 0 1 2 3 # IMPORTANT
+gcm_priorSeqNumSamples                  = 24000
+gcm_priorSeqDataOutputFileName          = outputData_m1/priorSeq
+gcm_priorSeqDataOutputFileType          = m
+gcm_priorSeqDataOutputAllowAll          = 0
+gcm_priorSeqDataOutputAllowedSet        = 0
+gcm_nuggetValueForBtWyB                 = 1.e-4
+gcm_nuggetValueForBtWyBInv              = 1.e-6
+gcm_formCMatrix                         = 0
+gcm_useTildeLogicForRankDefficientC     = 0
+gcm_predLag                             = 15
+gcm_predVUsBySamplingRVs                = 0
+gcm_predVUsBySummingRVs                 = 0 # 1
+gcm_predVUsAtKeyPoints                  = 0
+gcm_predWsBySamplingRVs                 = 0
+gcm_predWsBySummingRVs                  = 1
+gcm_predWsAtKeyPoints                   = 0
+
+###############################################
+# 'gcm_': information for Metropolis Hastings algorithm
+###############################################
+gcm_mh_help                                       = anything
+gcm_mh_dataOutputFileName                         = . # outputData_m1/gcm_mh_Output
+gcm_mh_dataOutputAllowAll                         = 0
+gcm_mh_dataOutputAllowedSet                       = 0 1
+
+gcm_mh_initialPosition_dataInputFileName          = . # inputData/initPos
+gcm_mh_initialPosition_dataInputFileType          = m
+gcm_mh_initialProposalCovMatrix_dataInputFileName = . # inputData/mhCovMatrix_paramChoice_12b
+gcm_mh_initialProposalCovMatrix_dataInputFileType = m
+
+gcm_mh_displayCandidates                          = 0
+gcm_mh_putOutOfBoundsInChain                      = 0 # IMPORTANT
+gcm_mh_tk_useLocalHessian                         = 0
+gcm_mh_tk_useNewtonComponent                      = 1
+gcm_mh_dr_maxNumExtraStages                       = 1 ## 0
+gcm_mh_dr_listOfScalesForExtraStages              = 5.
+gcm_mh_am_initialNonAdaptInterval                 = 100 ## 0
+gcm_mh_am_adaptInterval                           = 100
+gcm_mh_am_adaptedMatrices_dataOutputPeriod        = 0
+gcm_mh_am_adaptedMatrices_dataOutputFileName      = . # outputData_m1/adaptedMatrix
+gcm_mh_am_adaptedMatrices_dataOutputFileType      = m
+gcm_mh_am_eta                                     = 0.45 # (2.4^2)/d, d is the dimension of the problem
+gcm_mh_am_epsilon                                 = 1.e-5
+
+gcm_mh_rawChain_dataInputFileName                 = . # outputData_m1/rawChain_input
+gcm_mh_rawChain_size                              = 132000 # 1000
+gcm_mh_rawChain_generateExtra                     = 0
+gcm_mh_rawChain_displayPeriod                     = 10
+gcm_mh_rawChain_measureRunTimes                   = 1
+gcm_mh_rawChain_dataOutputPeriod                  = 10
+gcm_mh_rawChain_dataOutputFileName                = outputData_m1/rawChain_mh
+gcm_mh_rawChain_dataOutputAllowAll                = 0
+gcm_mh_rawChain_dataOutputAllowedSet              = 0 1
+
+gcm_mh_filteredChain_generate                     = 1
+gcm_mh_filteredChain_discardedPortion             = 0.1
+gcm_mh_filteredChain_lag                          = 12
+gcm_mh_filteredChain_dataOutputFileName           = outputData_m1/filtChain_mh
+gcm_mh_filteredChain_dataOutputAllowAll           = 0
+gcm_mh_filteredChain_dataOutputAllowedSet         = 0
+
+###############################################
+# 'gcm_': information for Multilevel algorithm
+###############################################
+#gcm_ml_help                 = anything
+gcm_ml_dataOutputFileName   = outputData_m1/gcm_ml_Output
+gcm_ml_dataOutputAllowAll   = 0
+gcm_ml_dataOutputAllowedSet = 0 1 2 3
+
+###############################################
+# All levels, unless otherwise specified
+###############################################
+gcm_ml_default_rawChain_size                     = 30000 ### IMPORTANT
+gcm_ml_default_rawChain_dataOutputFileName       = outputData_m1/rawChain_ml
+gcm_ml_default_rawChain_dataOutputAllowAll       = 0
+gcm_ml_default_rawChain_dataOutputAllowedSet     = 0 1 2 3
+gcm_ml_default_minEffectiveSizeRatio             = 0.30 ### IMPORTANT
+gcm_ml_default_maxEffectiveSizeRatio             = 0.40 ### IMPORTANT
+gcm_ml_default_minRejectionRate                  = 0.3 ### IMPORTANT
+gcm_ml_default_maxRejectionRate                  = 0.5 ### IMPORTANT
+gcm_ml_default_ratioIndexSamplesToRawChainSize   = 0.1
+gcm_ml_default_ratioIndexSamplesToAssessmentSize = 0.1
+gcm_ml_default_dr_maxNumExtraStages              = 0
+gcm_ml_default_dr_listOfScalesForExtraStages     = 1. #
+gcm_ml_default_dr_duringAmNonAdaptiveInt         = 0
+gcm_ml_default_am_initialNonAdaptInterval        = 0
+gcm_ml_default_am_adaptInterval                  = 1
+gcm_ml_default_am_eta                            = 1.92
+gcm_ml_default_am_epsilon                        = 1.e-5
+ 
+###############################################
+# Last level (level 4 for 'example_gsl' executable)
+###############################################
+gcm_ml_last_dataOutputFileName                  = outputData_m1/gcm_ml_last_Output
+gcm_ml_last_dataOutputAllowAll                  = 0
+gcm_ml_last_dataOutputAllowedSet                = 0 1 2 3
+
+gcm_ml_last_rawChain_size                       = 132000 ### IMPORTANT
+gcm_ml_last_rawChain_dataOutputFileName         = outputData_m1/rawChain_ml
+gcm_ml_last_rawChain_dataOutputAllowAll         = 0
+gcm_ml_last_rawChain_dataOutputAllowedSet       = 0 1 2 3
+gcm_ml_last_minEffectiveSizeRatio               = 0.30 ### IMPORTANT
+gcm_ml_last_maxEffectiveSizeRatio               = 0.40 ### IMPORTANT
+gcm_ml_last_minRejectionRate                    = 0.3 ### IMPORTANT
+gcm_ml_last_maxRejectionRate                    = 0.5 ### IMPORTANT
+gcm_ml_last_ratioIndexSamplesToRawChainSize     = 0.1
+gcm_ml_last_ratioIndexSamplesToAssessmentSize   = 0.1
+gcm_ml_last_dr_maxNumExtraStages                = 0
+gcm_ml_last_dr_listOfScalesForExtraStages       = 1. #
+gcm_ml_last_dr_duringAmNonAdaptiveInt           = 0
+gcm_ml_last_am_initialNonAdaptInterval          = 0
+gcm_ml_last_am_adaptInterval                    = 1
+gcm_ml_last_am_eta                              = 0. #
+gcm_ml_last_am_epsilon                          = 1.e-5

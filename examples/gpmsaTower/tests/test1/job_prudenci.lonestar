@@ -1,0 +1,13 @@
+#!/bin/bash  	 
+#$ -V
+#$ -cwd
+#$ -N p
+#$ -e p.e.$JOB_ID
+#$ -o p.o.$JOB_ID
+#$ -pe 12way 12
+#$ -q development
+#$ -l h_rt=00:30:00
+#$ -M prudenci@ices.utexas.edu
+#$ -m be
+set -x
+ibrun ../../src/tower_gsl test1_prudenci_lonestar.inp 1

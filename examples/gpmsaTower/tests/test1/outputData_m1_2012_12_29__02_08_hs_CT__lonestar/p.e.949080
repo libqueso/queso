@@ -1,0 +1,10 @@
++ ibrun ../../src/tower_gsl test1_prudenci_lonestar.inp 1
+In uqGslMatrixClass::chol(): iRC = 1, gsl error message = input domain error
+UQ RC ERROR, rank 11, in uqGslMatrixClass::chol(): matrix is not positive definite, iRc = 1
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): first chol failed
+In uqGslMatrixClass::chol(): iRC = 1, gsl error message = input domain error
+UQ RC ERROR, rank 8, in uqGslMatrixClass::chol(): matrix is not positive definite, iRc = 1
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): first chol failed
+In uqGslMatrixClass::chol(): iRC = 1, gsl error message = input domain error
+UQ RC ERROR, rank 0, in uqGslMatrixClass::chol(): matrix is not positive definite, iRc = 1
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): first chol failed

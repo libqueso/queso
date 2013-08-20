@@ -1,0 +1,4 @@
+make -f Makefile_prudenci_mac clean
+make -f Makefile_prudenci_mac
+cd ../tests/test1
+../../src/tower_gsl test1_prudenci_mac.inp 1 (0 if there is no experimental data)
