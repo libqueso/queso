@@ -227,7 +227,12 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
     m_xSeq_original.getPositionValues(i,tmpXVec);
     tmpXVec -= m_xSeq_original_mins;
     for (unsigned int j = 0; j < m_paper_p_x; ++j) {
-      tmpXVec[j] /= m_xSeq_original_ranges[j];
+      if (m_xSeq_original_ranges[j] == 0.) { // CSRI, 2013-Aug-06, with Laura
+        tmpXVec[j] = 0.5;
+      }
+      else {
+        tmpXVec[j] /= m_xSeq_original_ranges[j];
+      }
     }
     m_xSeq_standard.setPositionValues(i,tmpXVec);
   }
@@ -290,7 +295,12 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
     m_tSeq_original.getPositionValues(i,tmpTVec);
     tmpTVec -= m_tSeq_mins;
     for (unsigned int j = 0; j < m_paper_p_t; ++j) {
-      tmpTVec[j] /= m_tSeq_ranges[j];
+      if (m_tSeq_ranges[j] == 0.) { // CSRI, 2013-Aug-06, with Laura
+        tmpTVec[j] = 0.5;
+      }
+      else {
+        tmpTVec[j] /= m_tSeq_ranges[j];
+      }
     }
     m_tSeq_standard.setPositionValues(i,tmpTVec);
   }

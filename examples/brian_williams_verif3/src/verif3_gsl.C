@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
   //***********************************************************************
   // Run program
   //***********************************************************************
-  solveSip(*env);
+  solveSipForX0(*env);
 
   //***********************************************************************
   // Finalize QUESO environment
@@ -37,10 +37,10 @@ int main(int argc, char* argv[])
   return 0;
 }
 
-void solveSip(const uqFullEnvironmentClass& env)
+void solveSipForX0(const uqFullEnvironmentClass& env)
 {
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
-    *env.subDisplayFile() << "Entering solveSip()..."
+    *env.subDisplayFile() << "Entering solveSipForX0()..."
                           << std::endl;
   }
 
@@ -49,12 +49,15 @@ void solveSip(const uqFullEnvironmentClass& env)
   ////////////////////////////////////////////////////////
   unsigned int p = 2;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> paramSpace(env, "param_", p, NULL);
-  uqGslVectorClass aVec(paramSpace.zeroVector());
-  aVec[0] = 2.;
-  aVec[1] = 5.;
   uqGslVectorClass xGiven(paramSpace.zeroVector());
   xGiven[0] = -1.;
   xGiven[1] =  7.;
+
+  uqGslMatrixClass sigmaMat(paramSpace.zeroVector());
+  sigmaMat(0,0) = 36.;
+  sigmaMat(0,1) = 0.;
+  sigmaMat(1,0) = 0.;
+  sigmaMat(1,1) = 4.;
 
   ////////////////////////////////////////////////////////
   // Step 2 of 5: Instantiate the parameter domain
@@ -71,18 +74,37 @@ void solveSip(const uqFullEnvironmentClass& env)
   ////////////////////////////////////////////////////////
   // Step 3 of 5: Instantiate the likelihood function object
   ////////////////////////////////////////////////////////
+  uqGslVectorClass zMeanVec(paramSpace.zeroVector());
+  uqGslMatrixClass zCovMat (paramSpace.zeroVector());
+  zCovMat(0,0) = 25.;
+  zCovMat(0,1) = 0.;
+  zCovMat(1,0) = 0.;
+  zCovMat(1,1) = 16.;
+  uqGslVectorClass zSample (paramSpace.zeroVector());
+  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> zRv("z_", paramSpace, zMeanVec, zCovMat);
+
+  double sigmaEps = 2.1;
+  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> oneDSpace(env, "oneD_", 1, NULL);
+  uqGslVectorClass epsMeanVec(paramSpace.zeroVector());
+  uqGslMatrixClass epsCovMat (paramSpace.zeroVector());
+  epsCovMat(0,0) = sigmaEps*sigmaEps;
+  uqGslVectorClass epsSample (paramSpace.zeroVector());
+  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> epsRv("eps_", paramSpace, epsMeanVec, epsCovMat);
+ 
   unsigned int n = 5;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> dataSpace(env, "data_", n, NULL);
   
+  uqGslMatrixClass zMat(env,paramSpace.map(),n);
+
   uqGslVectorClass yMeanVec(dataSpace.zeroVector());
-  double tmp = scalarProduct(aVec,xGiven);
   for (unsigned int i = 0; i < n; ++i) {
-    yMeanVec[i] = tmp;
+    zRv.realizer().realization(zSample);
+    epsRv.realizer().realization(epsSample);
+    yMeanVec[i] = scalarProduct(zSample,xGiven) + epsSample[0];
   }
 
-  double sigmaEps = 2.1;
   uqGslMatrixClass yCovMat(dataSpace.zeroVector());
-  tmp = sigmaEps*sigmaEps;
+  double tmp = sigmaEps*sigmaEps;
   for (unsigned int i = 0; i < n; ++i) {
     yCovMat(i,i) = tmp;
   }
@@ -91,59 +113,54 @@ void solveSip(const uqFullEnvironmentClass& env)
   uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> yRv("y_", dataSpace, yMeanVec, yCovMat);
   yRv.realizer().realization(ySamples);
 
-  double ySampleMean = 0.;
-  for (unsigned int i = 0; i < n; ++i) {
-    ySampleMean += ySamples[i];
-  }
-  ySampleMean /= ((double) n);
-
-  struct likelihoodDataStruct likelihoodData;
-  likelihoodData.aVec     = &aVec;
-  likelihoodData.sigmaEps = sigmaEps;
-  likelihoodData.ySamples = &ySamples;
+  struct likelihoodDataStructForX0 likelihoodDataForX0;
+  likelihoodDataForX0.zMat     = &zMat;
+  likelihoodDataForX0.sigmaEps = sigmaEps;
+  likelihoodDataForX0.ySamples = &ySamples;
+  likelihoodDataForX0.sigmaMat = &sigmaMat;
 
   uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
     likelihoodFunctionObj("like_",
                           *paramDomain,
-                          likelihoodRoutine,
-                          (void *) &likelihoodData,
+                          likelihoodRoutineForX0,
+                          (void *) &likelihoodDataForX0,
                           true); // routine computes [ln(function)]
 
   ////////////////////////////////////////////////////////
   // Step 4 of 5: Instantiate the inverse problem
   ////////////////////////////////////////////////////////
-  uqGslVectorClass xPriorMeanVec(paramSpace.zeroVector());
-  xPriorMeanVec[0] = 0.;
-  xPriorMeanVec[1] = 0.;
+  uqGslVectorClass mu0Vec(paramSpace.zeroVector());
+  mu0Vec[0] = -1.;
+  mu0Vec[1] =  7.;
   uqGslMatrixClass sigma0Mat(paramSpace.zeroVector());
-  sigma0Mat(0,0) = 1.e-3;
+  sigma0Mat(0,0) = 1.;
   sigma0Mat(0,1) = 0.;
   sigma0Mat(1,0) = 0.;
-  sigma0Mat(1,1) = 1.e-3;
+  sigma0Mat(1,1) = 4;
   uqGslMatrixClass sigma0MatInverse(paramSpace.zeroVector());
   sigma0MatInverse = sigma0Mat.inverse();
-  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> priorRv("prior_", *paramDomain, xPriorMeanVec, sigma0MatInverse);
+  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> priorRv("prior_", *paramDomain, mu0Vec, sigma0MatInverse);
 
   uqGenericVectorRVClass <uqGslVectorClass,uqGslMatrixClass> postRv ("post_", paramSpace);
 
   uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass> sip("sip_", NULL, priorRv, likelihoodFunctionObj, postRv);
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
-    *env.subDisplayFile() << "In solveSip():"
+    *env.subDisplayFile() << "In solveSipForX0():"
                           << "\n  p                = " << p
                           << "\n  xGiven           = " << xGiven
                           << "\n  sigma0Mat        = " << sigma0Mat
                           << "\n  sigma0MatInverse = " << sigma0MatInverse
-                          << "\n  aVec             = " << aVec
+                          << "\n  zMat             = " << zMat
                           << "\n  n                = " << n
                           << "\n  sigmaEps         = " << sigmaEps
                           << "\n  yMeanVec         = " << yMeanVec
                           << "\n  yCovMat          = " << yCovMat
                           << "\n  ySamples         = " << ySamples
-                          << "\n  ySampleMean      = " << ySampleMean
                           << std::endl;
   }
 
+#if 0
   uqGslMatrixClass sigmaMatInverse(paramSpace.zeroVector());
   sigmaMatInverse = matrixProduct(aVec,aVec);
   sigmaMatInverse *= (((double) n)/sigmaEps/sigmaEps);
@@ -153,16 +170,16 @@ void solveSip(const uqFullEnvironmentClass& env)
 
   uqGslVectorClass muVec(paramSpace.zeroVector());
   muVec = sigmaMat * aVec;
-  muVec *= (((double) n) * ySampleMean)/sigmaEps/sigmaEps;
+  muVec *= 1.; //(((double) n) * ySampleMean)/sigmaEps/sigmaEps;
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
-    *env.subDisplayFile() << "In solveSip():"
+    *env.subDisplayFile() << "In solveSipForX0():"
                           << "\n  muVec            = " << muVec
                           << "\n  sigmaMat         = " << sigmaMat
                           << "\n  sigmaMatInverse  = " << sigmaMatInverse
                           << std::endl;
   }
-
+#endif
   ////////////////////////////////////////////////////////
   // Step 5 of 5: Solve the inverse problem
   ////////////////////////////////////////////////////////
@@ -179,14 +196,14 @@ void solveSip(const uqFullEnvironmentClass& env)
   sip.solveWithBayesMetropolisHastings(NULL,initialValues,&proposalCovMat);
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
-    *env.subDisplayFile() << "Leaving solveSip()"
+    *env.subDisplayFile() << "Leaving solveSipForX0()"
                           << std::endl;
   }
 
   return;
 }
 
-double likelihoodRoutine(
+double likelihoodRoutineForX0(
   const uqGslVectorClass& paramValues,
   const uqGslVectorClass* paramDirection,
   const void*             functionDataPtr,
@@ -200,7 +217,7 @@ double likelihoodRoutine(
   likelihoodCounter++;
   const uqBaseEnvironmentClass& env = paramValues.env();
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 3)) {
-    *env.subDisplayFile() << "Entering likelihoodRoutine()..."
+    *env.subDisplayFile() << "Entering likelihoodRoutineForX0()..."
                           << ": likelihoodCounter = "       << likelihoodCounter
                           << ", params = "                  << paramValues
                           << ", env.subComm().NumProc() = " << env.subComm().NumProc()
@@ -210,7 +227,7 @@ double likelihoodRoutine(
 
   if (env.subRank() == 0) {
 #if 0
-    std::cout << "Entering likelihoodRoutine()"
+    std::cout << "Entering likelihoodRoutineForX0()"
               << ", likelihoodCounter = " << likelihoodCounter
               << std::endl;
 #endif
@@ -229,24 +246,24 @@ double likelihoodRoutine(
     // Just to eliminate INTEL compiler warnings
   }
 
-  struct likelihoodDataStruct* likelihoodData = (likelihoodDataStruct *) functionDataPtr; 
-  uqGslVectorClass aVec(*(likelihoodData->aVec));
-  unsigned int p = aVec.sizeLocal();
-  double sigmaEps = likelihoodData->sigmaEps;
-  uqGslVectorClass ySamples(*(likelihoodData->ySamples));
+  struct likelihoodDataStructForX0* likelihoodDataForX0 = (likelihoodDataStructForX0 *) functionDataPtr; 
+  uqGslMatrixClass zMat(*(likelihoodDataForX0->zMat));
+  unsigned int p = zMat.numRowsLocal();
+  double sigmaEps = likelihoodDataForX0->sigmaEps;
+  uqGslVectorClass ySamples(*(likelihoodDataForX0->ySamples));
   unsigned int n = ySamples.sizeLocal();
 
   UQ_FATAL_TEST_MACRO(paramValues.sizeLocal() != p,
                       env.fullRank(),
-                      "likelihoodRoutine()",
+                      "likelihoodRoutineForX0()",
                       "invalid parameter vector size");
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
-    *env.subDisplayFile() << "In likelihoodRoutine()"
+    *env.subDisplayFile() << "In likelihoodRoutineForX0()"
                           << ": likelihoodCounter = " << likelihoodCounter
                           << ", params = "            << paramValues
                           << ", p = "                 << p
-                          << ", aVec = "              << aVec
+                          << ", zMat = "              << zMat
                           << ", sigmaEps = "          << sigmaEps
                           << ", n = "                 << n
                           << ", ySamples = "          << ySamples
@@ -257,10 +274,10 @@ double likelihoodRoutine(
   // Compute likelihood
   //******************************************************************************
   for (unsigned int i = 0; i < n; ++i) {
-    double diff = (ySamples[i] - scalarProduct(aVec,paramValues))/sigmaEps;
+    double diff = 0.;//(ySamples[i] - scalarProduct(aVec,paramValues))/sigmaEps;
     totalLnLikelihood -= 0.5 * diff * diff;
     if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
-      *env.subDisplayFile() << "In likelihoodRoutine()"
+      *env.subDisplayFile() << "In likelihoodRoutineForX0()"
                             << ": likelihoodCounter = " << likelihoodCounter
                             << ", params = "            << paramValues
                             << ", diff = "              << diff
@@ -273,7 +290,7 @@ double likelihoodRoutine(
   //******************************************************************************
   double totalTime = uqMiscGetEllapsedSeconds(&timevalBegin);
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 3)) {
-    *env.subDisplayFile() << "Leaving likelihoodRoutine()"
+    *env.subDisplayFile() << "Leaving likelihoodRoutineForX0()"
                           << ": likelihoodCounter = " << likelihoodCounter
                           << ", params = "            << paramValues
                           << ", totalLnLikelihood = " << totalLnLikelihood
@@ -284,7 +301,7 @@ double likelihoodRoutine(
 
   if (env.subRank() == 0) {
 #if 0
-    std::cout << "Leaving likelihoodRoutine()"
+    std::cout << "Leaving likelihoodRoutineForX0()"
               << ": likelihoodCounter = " << likelihoodCounter
               << ", params = "            << paramValues
               << ", totalLnLikelihood = " << totalLnLikelihood

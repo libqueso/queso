@@ -181,7 +181,7 @@ uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGpmsaComputerModel
   // --> \Sigma_u,w is (n.p_eta) x (m.p_eta) 
   //********************************************************************************
   m_s = new uqGcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,
-                                                              m_allOutputsAreScalar,
+                                                              m_allOutputsAreScalar, // csri (new uqGcmSimulationInfoClass)
                                                               simulationStorage,
                                                               simulationModel);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
@@ -206,7 +206,7 @@ uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGpmsaComputerModel
     }
 
     m_e = new uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>(*m_optionsObj,
-                                                                m_allOutputsAreScalar,
+                                                                m_allOutputsAreScalar, // csri (new uqGcmExperimentInfoClass)
                                                                 *experimentStorage,
                                                                 *experimentModel,
                                                                 *thetaPriorRv);
@@ -217,7 +217,7 @@ uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGpmsaComputerModel
     }
 
     m_j = new uqGcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,
-                                                                   m_allOutputsAreScalar,
+                                                                   m_allOutputsAreScalar, // csri
                                                                    *m_s,
                                                                    *m_e);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
@@ -227,7 +227,7 @@ uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGpmsaComputerModel
     }
 
     if (m_allOutputsAreScalar) {
-      m_z = new uqGcmZInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(m_allOutputsAreScalar,
+      m_z = new uqGcmZInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(m_allOutputsAreScalar, // csri ????
                                                                  *m_s,
                                                                  *m_e);
     }
@@ -598,6 +598,94 @@ uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcm
   double totalTime = uqMiscGetEllapsedSeconds(&timevalBegin);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Leaving uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc()..."
+                            << ": m_optionsObj->m_prefix.c_str() = " << m_optionsObj->m_prefix.c_str()
+                            << ", m_env.subComm().NumProc() = "      << m_env.subComm().NumProc()
+                            << ", my subRank = "                     << m_env.subRank()
+                            << ", after "                            << totalTime
+                            << " seconds"
+                            << std::endl;
+  }
+
+  return;
+}
+
+template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
+void
+uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()
+{
+  struct timeval timevalBegin;
+  gettimeofday(&timevalBegin, NULL);
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "Entering uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()..."
+                            << ": m_optionsObj->m_prefix.c_str() = " << m_optionsObj->m_prefix.c_str()
+                            << ", m_env.subComm().NumProc() = "      << m_env.subComm().NumProc()
+                            << ", my subRank = "                     << m_env.subRank()
+                            << std::endl;
+  }
+
+  m_env.fullComm().Barrier();
+  m_env.fullComm().syncPrintDebugMsg("Entering uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()",1,3000000);
+
+  // ppp
+  m_t->m_solutionDomain = uqInstantiateIntersection(m_t->m_totalPriorRv.pdf().domainSet(),m_likelihoodFunction->domainSet());
+
+  //std::cout << "uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //          << ": passing at point 003"
+  //          << std::endl;
+
+  m_t->m_solutionPdf = new uqBayesianJointPdfClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+                                                            m_t->m_totalPriorRv.pdf(),
+                                                            *m_likelihoodFunction,
+                                                            1.,
+                                                            *(m_t->m_solutionDomain));
+
+  //std::cout << "uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //          << ": passing at point 004"
+  //          << std::endl;
+
+  m_t->m_totalPostRv.setPdf(*(m_t->m_solutionPdf));
+
+  //std::cout << "uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //          << ": passing at point 005"
+  //          << std::endl;
+
+  // Compute output realizer: Metropolis-Hastings approach
+  m_t->m_chain = new uqSequenceOfVectorsClass<P_V,P_M>(m_t->m_totalPostRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
+
+  //std::cout << "uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //          << ": passing at point 006"
+  //          << std::endl;
+
+  m_t->m_mlSampler = new uqMLSamplingClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+                                                    m_t->m_totalPriorRv,
+                                                    *m_likelihoodFunction);
+
+  //std::cout << "uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //          << ": passing at point 007"
+  //          << std::endl;
+
+  m_t->m_mlSampler->generateSequence(*(m_t->m_chain),NULL,NULL);
+
+  // todo_rr
+  // m_totalPostMean
+  // m_totalPostMedian
+  // m_totalPostMode
+  // m_totalPostMaxLnValue
+  // m_totalMLE
+  // m_totalLikeMaxLnValue
+
+  m_t->m_solutionRealizer = new uqSequentialVectorRealizerClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+                                                                         *(m_t->m_chain));
+
+  m_t->m_totalPostRv.setRealizer(*(m_t->m_solutionRealizer));
+
+  m_env.fullComm().syncPrintDebugMsg("Leaving uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()",1,3000000);
+  m_env.fullComm().Barrier();
+
+  double totalTime = uqMiscGetEllapsedSeconds(&timevalBegin);
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "Leaving uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()..."
                             << ": m_optionsObj->m_prefix.c_str() = " << m_optionsObj->m_prefix.c_str()
                             << ", m_env.subComm().NumProc() = "      << m_env.subComm().NumProc()
                             << ", my subRank = "                     << m_env.subRank()

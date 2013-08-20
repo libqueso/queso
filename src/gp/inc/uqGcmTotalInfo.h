@@ -33,6 +33,7 @@
 #include <uqGcmExperimentInfo.h>
 #include <uqGcmJointInfo.h>
 #include <uqMetropolisHastingsSG1.h>
+#include <uqMLSampling1.h>
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 class uqGcmTotalInfoClass
@@ -72,6 +73,7 @@ public:
         uqBaseVectorRealizerClass  <P_V,P_M>*             m_solutionRealizer;
 
         uqMetropolisHastingsSGClass<P_V,P_M>*             m_mhSeqGenerator;
+        uqMLSamplingClass          <P_V,P_M>*             m_mlSampler;
         uqBaseVectorSequenceClass  <P_V,P_M>*             m_chain;
 
 private:
@@ -103,6 +105,7 @@ uqGcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmTotalInfoClass(
   m_solutionPdf         (NULL),
   m_solutionRealizer    (NULL),
   m_mhSeqGenerator      (NULL),
+  m_mlSampler           (NULL),
   m_chain               (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
@@ -144,6 +147,7 @@ uqGcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmTotalInfoClass(
   m_solutionPdf         (NULL),
   m_solutionRealizer    (NULL),
   m_mhSeqGenerator      (NULL),
+  m_mlSampler           (NULL),
   m_chain               (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
@@ -166,6 +170,7 @@ uqGcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~uqGcmTotalInfoClass()
     m_chain->clear();
     delete m_chain;
   }
+  if (m_mlSampler       ) delete m_mlSampler;
   if (m_mhSeqGenerator  ) delete m_mhSeqGenerator;
   if (m_solutionRealizer) delete m_solutionRealizer;
   if (m_solutionPdf     ) delete m_solutionPdf;
@@ -221,7 +226,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
 void
 uqGcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()
 {
-  m_totalPriorRv.pdf().setNormalizationStyle(1);
+  m_totalPriorRv.pdf().setNormalizationStyle(0); // CSRI - 2013-Aug-06 - with Laura
   for (unsigned int i = 0; i < m_numConstituents; ++i) {
     m_totalDomainVolume *= m_constitutiveDomains[i]->volume();
   }

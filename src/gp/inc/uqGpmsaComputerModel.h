@@ -70,6 +70,7 @@ public:
         void                             calibrateWithLanlMcmc                    (const uqMhOptionsValuesClass* alternativeOptionsValues, // dakota
                                                                                    const P_V&                    totalInitialValues,
                                                                                    const P_M*                    totalInitialProposalCovMatrix);
+        void                             calibrateWithBayesMLSampling             ();
 
         // This routine calls formSigma_z_hat()
         // This routine might call formSigma_z_tilde_hat() in the future

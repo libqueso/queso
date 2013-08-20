@@ -29,6 +29,7 @@
 #include <uqBasicPdfsGsl.h>
 #include <gsl/gsl_randist.h>
 #include <mpi.h>
+#include <math.h>
 
 // Default constructor ------------------------------
 uqBasicPdfsGslClass::uqBasicPdfsGslClass()
@@ -57,7 +58,17 @@ uqBasicPdfsGslClass::~uqBasicPdfsGslClass()
 double
 uqBasicPdfsGslClass::betaPdfActualValue(double x, double alpha, double beta) const
 {
-  return gsl_ran_beta_pdf(x,alpha,beta);
+  double result = gsl_ran_beta_pdf(x,alpha,beta);
+  if (isinf(result)) { // CSRI - 2013-aug-06, with Laura
+    std::cerr << "In uqBasicPdfsGslClass::betaPdfActualValue(): hitting inf"
+              << ", x = "     << x
+              << ", alpha = " << alpha
+              << ", beta = "  << beta
+              << std::endl;
+    //result = gsl_ran_beta_pdf(x,alpha,beta);
+    result = 0.;
+  }
+  return result; 
 }
 
 // --------------------------------------------------
