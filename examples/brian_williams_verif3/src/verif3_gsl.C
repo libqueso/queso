@@ -289,19 +289,19 @@ void solveSips(const uqFullEnvironmentClass& env)
   proposalCovMat(1,1) = 10.;
 
   if (env.subRank() == 0) {
-    std::cout << "Beginning to solve sipForX0" << std::enl;
+    std::cout << "Beginning to solve sipForX0" << std::endl;
   }
   sipForX0.solveWithBayesMetropolisHastings(NULL,initialValues,&proposalCovMat);
   if (env.subRank() == 0) {
-    std::cout << "Finished solving sipForX0" << std::enl;
+    std::cout << "Finished solving sipForX0" << std::endl;
   }
 
   if (env.subRank() == 0) {
-    std::cout << "Beginning to solve sipForX" << std::enl;
+    std::cout << "Beginning to solve sipForX" << std::endl;
   }
   sipForX.solveWithBayesMetropolisHastings(NULL,initialValues,&proposalCovMat);
   if (env.subRank() == 0) {
-    std::cout << "Finished solving sipForX" << std::enl;
+    std::cout << "Finished solving sipForX" << std::endl;
   }
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
