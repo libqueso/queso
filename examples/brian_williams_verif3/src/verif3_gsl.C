@@ -1,7 +1,8 @@
 #include <verif3_gsl.h>
 #include <uqStatisticalInverseProblem.h>
 
-static unsigned int likelihoodCounter = 0;
+static unsigned int likelihoodCounterForX0 = 0;
+static unsigned int likelihoodCounterForX  = 0;
 
 int main(int argc, char* argv[])
 {
@@ -22,7 +23,7 @@ int main(int argc, char* argv[])
   //***********************************************************************
   // Run program
   //***********************************************************************
-  solveSipForX0(*env);
+  solveSips(*env);
 
   //***********************************************************************
   // Finalize QUESO environment
@@ -37,10 +38,10 @@ int main(int argc, char* argv[])
   return 0;
 }
 
-void solveSipForX0(const uqFullEnvironmentClass& env)
+void solveSips(const uqFullEnvironmentClass& env)
 {
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
-    *env.subDisplayFile() << "Entering solveSipForX0()..."
+    *env.subDisplayFile() << "Entering solveSips()..."
                           << std::endl;
   }
 
@@ -58,6 +59,8 @@ void solveSipForX0(const uqFullEnvironmentClass& env)
   sigmaMat(0,1) = 0.;
   sigmaMat(1,0) = 0.;
   sigmaMat(1,1) = 4.;
+  uqGslMatrixClass sigmaMatInverse(paramSpace.zeroVector());
+  sigmaMatInverse = sigmaMat.inverse();
 
   ////////////////////////////////////////////////////////
   // Step 2 of 5: Instantiate the parameter domain
@@ -72,7 +75,7 @@ void solveSipForX0(const uqFullEnvironmentClass& env)
   uqVectorSetClass<uqGslVectorClass,uqGslMatrixClass>* paramDomain = &paramSpace;
 
   ////////////////////////////////////////////////////////
-  // Step 3 of 5: Instantiate the likelihood function object
+  // Step 3 of 5: Instantiate the likelihood function objects
   ////////////////////////////////////////////////////////
   uqGslVectorClass zMeanVec(paramSpace.zeroVector());
   uqGslMatrixClass zCovMat (paramSpace.zeroVector());
@@ -94,14 +97,17 @@ void solveSipForX0(const uqFullEnvironmentClass& env)
   unsigned int n = 5;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> dataSpace(env, "data_", n, NULL);
   
-  uqGslMatrixClass zMat(env,paramSpace.map(),n);
+  uqGslMatrixClass zMat         (env,paramSpace.map(),n);
+  uqGslMatrixClass zMatTranspose(env,dataSpace.map (),p);
 
   uqGslVectorClass yMeanVec(dataSpace.zeroVector());
   for (unsigned int i = 0; i < n; ++i) {
     zRv.realizer().realization(zSample);
+    zMat.setColumn(i,zSample);
     epsRv.realizer().realization(epsSample);
     yMeanVec[i] = scalarProduct(zSample,xGiven) + epsSample[0];
   }
+  zMatTranspose.fillWithTranspose(0,0,zMat,true,true);
 
   uqGslMatrixClass yCovMat(dataSpace.zeroVector());
   double tmp = sigmaEps*sigmaEps;
@@ -120,14 +126,27 @@ void solveSipForX0(const uqFullEnvironmentClass& env)
   likelihoodDataForX0.sigmaMat = &sigmaMat;
 
   uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
-    likelihoodFunctionObj("like_",
-                          *paramDomain,
-                          likelihoodRoutineForX0,
-                          (void *) &likelihoodDataForX0,
-                          true); // routine computes [ln(function)]
+    likelihoodFunctionObjForX0("like_",
+                               *paramDomain,
+                               likelihoodRoutineForX0,
+                               (void *) &likelihoodDataForX0,
+                               true); // routine computes [ln(function)]
+
+  struct likelihoodDataStructForX likelihoodDataForX; // todo
+  likelihoodDataForX.zMat     = &zMat;
+  likelihoodDataForX.sigmaEps = sigmaEps;
+  likelihoodDataForX.ySamples = &ySamples;
+  likelihoodDataForX.sigmaMat = &sigmaMat;
+
+  uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
+    likelihoodFunctionObjForX("like_",
+                               *paramDomain,
+                               likelihoodRoutineForX,
+                               (void *) &likelihoodDataForX,
+                               true); // routine computes [ln(function)]
 
   ////////////////////////////////////////////////////////
-  // Step 4 of 5: Instantiate the inverse problem
+  // Step 4 of 5: Instantiate the inverse problems
   ////////////////////////////////////////////////////////
   uqGslVectorClass mu0Vec(paramSpace.zeroVector());
   mu0Vec[0] = -1.;
@@ -139,49 +158,116 @@ void solveSipForX0(const uqFullEnvironmentClass& env)
   sigma0Mat(1,1) = 4;
   uqGslMatrixClass sigma0MatInverse(paramSpace.zeroVector());
   sigma0MatInverse = sigma0Mat.inverse();
-  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> priorRv("prior_", *paramDomain, mu0Vec, sigma0MatInverse);
-
-  uqGenericVectorRVClass <uqGslVectorClass,uqGslMatrixClass> postRv ("post_", paramSpace);
-
-  uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass> sip("sip_", NULL, priorRv, likelihoodFunctionObj, postRv);
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
-    *env.subDisplayFile() << "In solveSipForX0():"
+    *env.subDisplayFile() << "In solveSips():"
                           << "\n  p                = " << p
                           << "\n  xGiven           = " << xGiven
+                          << "\n  mu0Vec           = " << mu0Vec
                           << "\n  sigma0Mat        = " << sigma0Mat
                           << "\n  sigma0MatInverse = " << sigma0MatInverse
-                          << "\n  zMat             = " << zMat
+                          << "\n  sigmaMat         = " << sigmaMat
+                          << "\n  zMeanVec         = " << zMeanVec
+                          << "\n  zCovMat          = " << zCovMat
                           << "\n  n                = " << n
                           << "\n  sigmaEps         = " << sigmaEps
+                          << "\n  zMat             = " << zMat
                           << "\n  yMeanVec         = " << yMeanVec
                           << "\n  yCovMat          = " << yCovMat
                           << "\n  ySamples         = " << ySamples
                           << std::endl;
   }
 
-#if 0
-  uqGslMatrixClass sigmaMatInverse(paramSpace.zeroVector());
-  sigmaMatInverse = matrixProduct(aVec,aVec);
-  sigmaMatInverse *= (((double) n)/sigmaEps/sigmaEps);
-  sigmaMatInverse += sigma0Mat;
-  uqGslMatrixClass sigmaMat(paramSpace.zeroVector());
-  sigmaMat = sigmaMatInverse.inverse();
+  uqGslMatrixClass tmpZZt(paramSpace.zeroVector());
+  tmpZZt = zMat * zMatTranspose;
+  uqGslMatrixClass tmpZZtScaled(paramSpace.zeroVector());
+  tmpZZtScaled = tmpZZt;
+  tmpZZtScaled /= (sigmaEps * sigmaEps);
+  uqGslMatrixClass tmpZZtInverse(paramSpace.zeroVector());
+  tmpZZtInverse = tmpZZt.inverse();
+  uqGslMatrixClass tmpZZtInverseScaled(paramSpace.zeroVector());
+  tmpZZtInverseScaled = tmpZZtInverse;
+  tmpZZtInverseScaled *= sigmaEps * sigmaEps;
 
-  uqGslVectorClass muVec(paramSpace.zeroVector());
-  muVec = sigmaMat * aVec;
-  muVec *= 1.; //(((double) n) * ySampleMean)/sigmaEps/sigmaEps;
+  uqGslMatrixClass tmpMat1(paramSpace.zeroVector());
+  tmpMat1 = tmpZZtInverseScaled;
+  tmpMat1 += sigmaMatInverse;
+  uqGslMatrixClass commonMat(paramSpace.zeroVector());
+  commonMat = tmpMat1.inverse();
+  uqGslMatrixClass sigmaPiMatInverse(paramSpace.zeroVector());
+  sigmaPiMatInverse = sigma0Mat + commonMat;
+  uqGslMatrixClass sigmaPiMat(paramSpace.zeroVector());
+  sigmaPiMat = sigmaPiMatInverse.inverse();
+
+  uqGslVectorClass xHatVec(paramSpace.zeroVector());
+  xHatVec = tmpZZtInverse * (zMat * ySamples);
+  uqGslVectorClass muPiVec(paramSpace.zeroVector());
+  muPiVec = sigmaPiMat * ((commonMat * xHatVec) + (sigma0Mat * mu0Vec));
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
-    *env.subDisplayFile() << "In solveSipForX0():"
-                          << "\n  muVec            = " << muVec
-                          << "\n  sigmaMat         = " << sigmaMat
-                          << "\n  sigmaMatInverse  = " << sigmaMatInverse
+    *env.subDisplayFile() << "In solveSips():"
+                          << "\n  xHatVec           = " << xHatVec
+                          << "\n  muPiVec           = " << muPiVec
+                          << "\n  sigmaPiMat        = " << sigmaPiMat
+                          << "\n  sigmaPiMatInverse = " << sigmaPiMatInverse
                           << std::endl;
   }
-#endif
+
+  uqGslMatrixClass sigma0PlusSigmaMat(paramSpace.zeroVector());
+  sigma0PlusSigmaMat = sigma0Mat + sigmaMat;
+  uqGslMatrixClass sigma0PlusSigmaMatInverse(paramSpace.zeroVector());
+  sigma0PlusSigmaMatInverse = sigma0PlusSigmaMat.inverse();
+
+  uqGslVectorClass x0LimitVec(paramSpace.zeroVector());
+  x0LimitVec = sigma0PlusSigmaMatInverse * ((sigmaMat * xGiven) + (sigma0Mat * mu0Vec));
+  uqGslMatrixClass x0LimitMat(paramSpace.zeroVector());
+  x0LimitMat = sigma0PlusSigmaMatInverse;
+
+  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
+    *env.subDisplayFile() << "In solveSips():"
+                          << "\n  x0LimitVec = " << x0LimitVec
+                          << "\n  x0LimitMat = " << x0LimitMat
+                          << std::endl;
+  }
+
+  uqGslMatrixClass sigma0InvPlusSigmaInvMat(paramSpace.zeroVector());
+  sigma0InvPlusSigmaInvMat = sigma0MatInverse + sigmaMatInverse;
+  uqGslMatrixClass sigma0InvPlusSigmaInvMatInverse(paramSpace.zeroVector());
+  sigma0InvPlusSigmaInvMatInverse = sigma0InvPlusSigmaInvMat.inverse();
+
+  uqGslMatrixClass sigmatMatInverse(paramSpace.zeroVector());
+  sigmatMatInverse = sigma0InvPlusSigmaInvMatInverse + tmpZZtScaled;
+  uqGslMatrixClass sigmatMat(paramSpace.zeroVector());
+  sigmaMat = sigmaMatInverse.inverse();
+  uqGslVectorClass tmpVec(paramSpace.zeroVector());
+  tmpVec = zMat * ySamples;
+  tmpVec /= (sigmaEps * sigmaEps);
+  uqGslVectorClass mutVec(paramSpace.zeroVector());
+  mutVec = sigmaMat * (tmpVec + (sigma0InvPlusSigmaInvMatInverse * xGiven));
+
+  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
+    *env.subDisplayFile() << "In solveSips():"
+                          << "\n  mutVec           = " << mutVec
+                          << "\n  sigmatMat        = " << sigmatMat
+                          << "\n  sigmatMatInverse = " << sigmatMatInverse
+                          << std::endl;
+  }
+
+  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> priorRvForX0("prior_", *paramDomain, mu0Vec, sigma0MatInverse);
+  uqGenericVectorRVClass <uqGslVectorClass,uqGslMatrixClass> postRvForX0 ("post_", paramSpace);
+  uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass> sipForX0("sip_", NULL, priorRvForX0, likelihoodFunctionObjForX0, postRvForX0);
+
+  uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass> genericScalarFunction("",*paramDomain,routinePriorPdfForX,&priorRvForX0,false);
+  uqGenericJointPdfClass      <uqGslVectorClass,uqGslMatrixClass> priorPdfForX         ("",genericScalarFunction);
+//uqGenericVectorRealizerClass<uqGslVectorClass,uqGslMatrixClass> priorRealizerForX    ("",*paramDomain,1000,routinePriorRealizerForX,NULL);
+  uqGenericVectorRVClass      <uqGslVectorClass,uqGslMatrixClass> priorRvForX          ("prior_", *paramDomain);
+  priorRvForX.setPdf     (priorPdfForX);
+//priorRvForX.setRealizer(priorRealizerForX);
+  uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass> postRvForX ("post_", paramSpace);
+  uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass> sipForX("sip_", NULL, priorRvForX, likelihoodFunctionObjForX, postRvForX);
+
   ////////////////////////////////////////////////////////
-  // Step 5 of 5: Solve the inverse problem
+  // Step 5 of 5: Solve the inverse problems
   ////////////////////////////////////////////////////////
   uqGslVectorClass initialValues(paramSpace.zeroVector());
   initialValues[0] = 25.;
@@ -193,10 +279,10 @@ void solveSipForX0(const uqFullEnvironmentClass& env)
   proposalCovMat(1,0) = 0.;
   proposalCovMat(1,1) = 10.;
 
-  sip.solveWithBayesMetropolisHastings(NULL,initialValues,&proposalCovMat);
+  sipForX0.solveWithBayesMetropolisHastings(NULL,initialValues,&proposalCovMat);
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
-    *env.subDisplayFile() << "Leaving solveSipForX0()"
+    *env.subDisplayFile() << "Leaving solveSips()"
                           << std::endl;
   }
 
@@ -214,11 +300,11 @@ double likelihoodRoutineForX0(
   struct timeval timevalBegin;
   gettimeofday(&timevalBegin, NULL);
 
-  likelihoodCounter++;
+  likelihoodCounterForX0++;
   const uqBaseEnvironmentClass& env = paramValues.env();
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 3)) {
     *env.subDisplayFile() << "Entering likelihoodRoutineForX0()..."
-                          << ": likelihoodCounter = "       << likelihoodCounter
+                          << ": likelihoodCounterForX0 = "  << likelihoodCounterForX0
                           << ", params = "                  << paramValues
                           << ", env.subComm().NumProc() = " << env.subComm().NumProc()
                           << ", my subRank = "              << env.subRank()
@@ -228,7 +314,7 @@ double likelihoodRoutineForX0(
   if (env.subRank() == 0) {
 #if 0
     std::cout << "Entering likelihoodRoutineForX0()"
-              << ", likelihoodCounter = " << likelihoodCounter
+              << ", likelihoodCounterForX0 = " << likelihoodCounterForX0
               << std::endl;
 #endif
   }
@@ -260,13 +346,13 @@ double likelihoodRoutineForX0(
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
     *env.subDisplayFile() << "In likelihoodRoutineForX0()"
-                          << ": likelihoodCounter = " << likelihoodCounter
-                          << ", params = "            << paramValues
-                          << ", p = "                 << p
-                          << ", zMat = "              << zMat
-                          << ", sigmaEps = "          << sigmaEps
-                          << ", n = "                 << n
-                          << ", ySamples = "          << ySamples
+                          << ": likelihoodCounterForX0 = " << likelihoodCounterForX0
+                          << ", params = "                 << paramValues
+                          << ", p = "                      << p
+                          << ", zMat = "                   << zMat
+                          << ", sigmaEps = "               << sigmaEps
+                          << ", n = "                      << n
+                          << ", ySamples = "               << ySamples
                           << std::endl;
   }
 
@@ -278,9 +364,9 @@ double likelihoodRoutineForX0(
     totalLnLikelihood -= 0.5 * diff * diff;
     if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
       *env.subDisplayFile() << "In likelihoodRoutineForX0()"
-                            << ": likelihoodCounter = " << likelihoodCounter
-                            << ", params = "            << paramValues
-                            << ", diff = "              << diff
+                            << ": likelihoodCounterForX0 = " << likelihoodCounterForX0
+                            << ", params = "                 << paramValues
+                            << ", diff = "                   << diff
                             << std::endl;
     }
   }
@@ -291,10 +377,10 @@ double likelihoodRoutineForX0(
   double totalTime = uqMiscGetEllapsedSeconds(&timevalBegin);
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 3)) {
     *env.subDisplayFile() << "Leaving likelihoodRoutineForX0()"
-                          << ": likelihoodCounter = " << likelihoodCounter
-                          << ", params = "            << paramValues
-                          << ", totalLnLikelihood = " << totalLnLikelihood
-                          << " after "                << totalTime
+                          << ": likelihoodCounterForX0 = " << likelihoodCounterForX0
+                          << ", params = "                 << paramValues
+                          << ", totalLnLikelihood = "      << totalLnLikelihood
+                          << " after "                     << totalTime
                           << " seconds"
                           << std::endl;
   }
@@ -302,10 +388,10 @@ double likelihoodRoutineForX0(
   if (env.subRank() == 0) {
 #if 0
     std::cout << "Leaving likelihoodRoutineForX0()"
-              << ": likelihoodCounter = " << likelihoodCounter
-              << ", params = "            << paramValues
-              << ", totalLnLikelihood = " << totalLnLikelihood
-              << " after "                << totalTime
+              << ": likelihoodCounterForX0 = " << likelihoodCounterForX0
+              << ", params = "                 << paramValues
+              << ", totalLnLikelihood = "      << totalLnLikelihood
+              << " after "                     << totalTime
               << " seconds"
               << std::endl;
 #endif
@@ -315,4 +401,161 @@ double likelihoodRoutineForX0(
   //exit(1);
 
   return totalLnLikelihood;
+}
+
+double likelihoodRoutineForX(
+  const uqGslVectorClass& paramValues,
+  const uqGslVectorClass* paramDirection,
+  const void*             functionDataPtr,
+  uqGslVectorClass*       gradVector,
+  uqGslMatrixClass*       hessianMatrix,
+  uqGslVectorClass*       hessianEffect)
+{
+  struct timeval timevalBegin;
+  gettimeofday(&timevalBegin, NULL);
+
+  likelihoodCounterForX++;
+  const uqBaseEnvironmentClass& env = paramValues.env();
+  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 3)) {
+    *env.subDisplayFile() << "Entering likelihoodRoutineForX()..."
+                          << ": likelihoodCounterForX = "   << likelihoodCounterForX
+                          << ", params = "                  << paramValues
+                          << ", env.subComm().NumProc() = " << env.subComm().NumProc()
+                          << ", my subRank = "              << env.subRank()
+                          << std::endl;
+  }
+
+  if (env.subRank() == 0) {
+#if 0
+    std::cout << "Entering likelihoodRoutineForX()"
+              << ", likelihoodCounterForX = " << likelihoodCounterForX
+              << std::endl;
+#endif
+  }
+
+  //////////////////////////////////////////////////
+  // Begin actual likelihood routine
+  //////////////////////////////////////////////////
+  double totalLnLikelihood = 0.;
+
+  if (paramDirection  &&
+      functionDataPtr &&
+      gradVector      &&
+      hessianMatrix   &&
+      hessianEffect) {
+    // Just to eliminate INTEL compiler warnings
+  }
+
+  struct likelihoodDataStructForX* likelihoodDataForX = (likelihoodDataStructForX *) functionDataPtr; 
+  uqGslMatrixClass zMat(*(likelihoodDataForX->zMat));
+  unsigned int p = zMat.numRowsLocal();
+  double sigmaEps = likelihoodDataForX->sigmaEps;
+  uqGslVectorClass ySamples(*(likelihoodDataForX->ySamples));
+  unsigned int n = ySamples.sizeLocal();
+
+  UQ_FATAL_TEST_MACRO(paramValues.sizeLocal() != p,
+                      env.fullRank(),
+                      "likelihoodRoutineForX()",
+                      "invalid parameter vector size");
+
+  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
+    *env.subDisplayFile() << "In likelihoodRoutineForX()"
+                          << ": likelihoodCounterForX = " << likelihoodCounterForX
+                          << ", params = "                << paramValues
+                          << ", p = "                     << p
+                          << ", zMat = "                  << zMat
+                          << ", sigmaEps = "              << sigmaEps
+                          << ", n = "                     << n
+                          << ", ySamples = "              << ySamples
+                          << std::endl;
+  }
+
+  //******************************************************************************
+  // Compute likelihood
+  //******************************************************************************
+  for (unsigned int i = 0; i < n; ++i) {
+    double diff = 0.;//(ySamples[i] - scalarProduct(aVec,paramValues))/sigmaEps;
+    totalLnLikelihood -= 0.5 * diff * diff;
+    if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
+      *env.subDisplayFile() << "In likelihoodRoutineForX()"
+                            << ": likelihoodCounterForX = " << likelihoodCounterForX
+                            << ", params = "                << paramValues
+                            << ", diff = "                  << diff
+                            << std::endl;
+    }
+  }
+
+  //******************************************************************************
+  // Prepare to return
+  //******************************************************************************
+  double totalTime = uqMiscGetEllapsedSeconds(&timevalBegin);
+  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 3)) {
+    *env.subDisplayFile() << "Leaving likelihoodRoutineForX()"
+                          << ": likelihoodCounterForX = " << likelihoodCounterForX
+                          << ", params = "                << paramValues
+                          << ", totalLnLikelihood = "     << totalLnLikelihood
+                          << " after "                    << totalTime
+                          << " seconds"
+                          << std::endl;
+  }
+
+  if (env.subRank() == 0) {
+#if 0
+    std::cout << "Leaving likelihoodRoutineForX()"
+              << ": likelihoodCounterForX = " << likelihoodCounterForX
+              << ", params = "                << paramValues
+              << ", totalLnLikelihood = "     << totalLnLikelihood
+              << " after "                    << totalTime
+              << " seconds"
+              << std::endl;
+#endif
+  }
+
+  env.subComm().Barrier();
+  //exit(1);
+
+  return totalLnLikelihood;
+}
+
+double routinePriorPdfForX(const uqGslVectorClass& domainVector,
+                           const uqGslVectorClass* domainDirection,
+                           const void*             routineDataPtr,
+                           uqGslVectorClass*       gradVector,
+                           uqGslMatrixClass*       hessianMatrix,
+                           uqGslVectorClass*       hessianEffect)
+{
+  const uqBaseEnvironmentClass& env = domainVector.env();
+  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 3)) {
+    *env.subDisplayFile() << "Entering routinePriorPdfForX()..."
+                          << ": domainVector = " << domainVector
+                          << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO((domainVector.sizeLocal() != 9),
+                      env.fullRank(),
+                      "routinePriorPdfForX()",
+                      "domainVector has wrong size");
+
+  double value = 0.;
+
+  if (domainDirection &&
+      routineDataPtr  &&
+      gradVector      &&
+      hessianMatrix   &&
+      hessianEffect) {
+    // Just to eliminate INTEL compiler warnings
+  }
+
+  const uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass>* priorRvForX0 = (uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> *) routineDataPtr;
+
+  // todo
+
+  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 3)) {
+    *env.subDisplayFile() << "Leaving routinePriorPdfForX()"
+                          << ": domainVector = " << domainVector
+                          << ", value = "        << value
+                          << std::endl;
+  }
+
+  return value;
 }
