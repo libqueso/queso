@@ -50,37 +50,6 @@ ip_mh_filteredChain_discardedPortion     = 0.
 ip_mh_filteredChain_lag                  = 16
 ip_mh_filteredChain_dataOutputFileName   = outputData/ip_filt_chain
 ip_mh_filteredChain_dataOutputAllowedSet = 0 1
-ip_mh_filteredChain_computeStats         = 1
-
-#ip_mh_rawChain_stats_help                      = anything
-ip_mh_rawChain_stats_initialDiscardedPortions  = 0.
-ip_mh_rawChain_stats_autoCorr_computeViaFft    = 1
-ip_mh_rawChain_stats_autoCorr_secondLag        = 2
-ip_mh_rawChain_stats_autoCorr_lagSpacing       = 2
-ip_mh_rawChain_stats_autoCorr_numLags          = 10
-ip_mh_rawChain_stats_autoCorr_display          = 1
-ip_mh_rawChain_stats_autoCorr_write            = 1
-ip_mh_rawChain_stats_hist_compute              = 1
-ip_mh_rawChain_stats_hist_numInternalBins      = 250
-ip_mh_rawChain_stats_kde_compute               = 1
-ip_mh_rawChain_stats_kde_numEvalPositions      = 250
-ip_mh_rawChain_stats_covMatrix_compute         = 1
-ip_mh_rawChain_stats_corrMatrix_compute        = 1
-
-#ip_mh_filteredChain_stats_help                      = anything
-ip_mh_filteredChain_stats_initialDiscardedPortions  = 0.
-ip_mh_filteredChain_stats_autoCorr_computeViaFft    = 1
-ip_mh_filteredChain_stats_autoCorr_secondLag        = 2
-ip_mh_filteredChain_stats_autoCorr_lagSpacing       = 2
-ip_mh_filteredChain_stats_autoCorr_numLags          = 10
-ip_mh_filteredChain_stats_autoCorr_display          = 1
-ip_mh_filteredChain_stats_autoCorr_write            = 1
-ip_mh_filteredChain_stats_hist_compute              = 1
-ip_mh_filteredChain_stats_hist_numInternalBins      = 250
-ip_mh_filteredChain_stats_kde_compute               = 1
-ip_mh_filteredChain_stats_kde_numEvalPositions      = 250
-ip_mh_filteredChain_stats_covMatrix_compute         = 1
-ip_mh_filteredChain_stats_corrMatrix_compute        = 1
 
 ###############################################
 # Statistical forward problem (fp)
@@ -101,35 +70,10 @@ fp_mc_dataOutputAllowedSet = 0 1
 
 fp_mc_pseq_dataOutputFileName   = outputData/fp_p_seq
 fp_mc_pseq_dataOutputAllowedSet = 0 1
-fp_mc_pseq_computeStats         = 1
-
-#fp_mc_pseq_stats_help                      = anything
-fp_mc_pseq_stats_initialDiscardedPortions  = 0.
-fp_mc_pseq_stats_hist_compute              = 1
-fp_mc_pseq_stats_hist_numInternalBins      = 250
-fp_mc_pseq_stats_kde_compute               = 1
-fp_mc_pseq_stats_kde_numEvalPositions      = 250
-fp_mc_pseq_stats_covMatrix_compute         = 1
-fp_mc_pseq_stats_corrMatrix_compute        = 1
 
 fp_mc_qseq_size                 = 1048576
 fp_mc_qseq_displayPeriod        = 20000
 fp_mc_qseq_measureRunTimes      = 1
 fp_mc_qseq_dataOutputFileName   = outputData/fp_q_seq
 fp_mc_qseq_dataOutputAllowedSet = 0 1
-fp_mc_qseq_computeStats         = 1
 
-#fp_mc_qseq_stats_help                      = anything
-fp_mc_qseq_stats_initialDiscardedPortions  = 0.
-fp_mc_qseq_stats_autoCorr_computeViaFft    = 1
-fp_mc_qseq_stats_autoCorr_secondLag        = 2
-fp_mc_qseq_stats_autoCorr_lagSpacing       = 1
-fp_mc_qseq_stats_autoCorr_numLags          = 15
-fp_mc_qseq_stats_autoCorr_display          = 1
-fp_mc_qseq_stats_autoCorr_write            = 1
-fp_mc_qseq_stats_hist_compute              = 1
-fp_mc_qseq_stats_hist_numInternalBins      = 250
-fp_mc_qseq_stats_kde_compute               = 1
-fp_mc_qseq_stats_kde_numEvalPositions      = 250
-fp_mc_qseq_stats_covMatrix_compute         = 1
-fp_mc_qseq_stats_corrMatrix_compute        = 1
