@@ -671,6 +671,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
   const uqMLSamplingLevelOptionsClass* currOptions,             // input
   const uqScalarSequenceClass<double>& prevLogLikelihoodValues, // input
   double                               prevExponent,            // input
+  double                               failedExponent,          // input // gpmsa
   double&                              currExponent,            // output
   uqScalarSequenceClass<double>&       weightSequence)          // output
 {
@@ -683,6 +684,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
         *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
                                 << ", step "  << m_currStep
+                                << ", failedExponent = " << failedExponent // gpmsa
                                 << ": beginning step 3 of 11"
                                 << std::endl;
       }
@@ -705,19 +707,25 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
                                   << ", level " << m_currLevel+LEVEL_REF_ID
                                   << ", step "  << m_currStep
+                                  << ", failedExponent = " << failedExponent // gpmsa
                                   << ": entering loop for computing next exponent"
                                   << ", with nowAttempt = " << nowAttempt
                                   << std::endl;
         }
 
-        if (nowAttempt > 0) {
-          if (nowEffectiveSizeRatio > meanEffectiveSizeRatio) {
-            exponents[0] = nowExponent;
+        if (failedExponent > 0.) { // gpmsa
+          nowExponent = .5*(prevExponent+failedExponent);
+        }
+        else {
+          if (nowAttempt > 0) {
+            if (nowEffectiveSizeRatio > meanEffectiveSizeRatio) {
+              exponents[0] = nowExponent;
+            }
+            else {
+              exponents[1] = nowExponent;
+            }
+            nowExponent = .5*(exponents[0] + exponents[1]);
           }
-          else {
-            exponents[1] = nowExponent;
-          }
-          nowExponent = .5*(exponents[0] + exponents[1]);
         }
         double auxExponent = nowExponent;
         if (prevExponent != 0.) {
@@ -836,14 +844,19 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
         //                    "uqMLSamplingClass<P_V,P_M>::generateSequence()",
         //                    "effective sample size ratio cannot be < 1");
 
-        //bool aux1 = (nowEffectiveSizeRatio == meanEffectiveSizeRatio);
-        bool aux2 = (nowExponent == 1.                             )
-                    &&
-                    (nowEffectiveSizeRatio > meanEffectiveSizeRatio);
-        bool aux3 = (nowEffectiveSizeRatio >= currOptions->m_minEffectiveSizeRatio)
-                    &&
-                    (nowEffectiveSizeRatio <= currOptions->m_maxEffectiveSizeRatio);
-        testResult = aux2 || aux3;
+        if (failedExponent > 0.) { // gpmsa
+          testResult = true;
+        }
+        else {
+          //bool aux1 = (nowEffectiveSizeRatio == meanEffectiveSizeRatio);
+          bool aux2 = (nowExponent == 1.                             )
+                      &&
+                      (nowEffectiveSizeRatio > meanEffectiveSizeRatio);
+          bool aux3 = (nowEffectiveSizeRatio >= currOptions->m_minEffectiveSizeRatio)
+                      &&
+                      (nowEffectiveSizeRatio <= currOptions->m_maxEffectiveSizeRatio);
+          testResult = aux2 || aux3;
+        }
 
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
@@ -851,6 +864,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
                                   << ", step "                    << m_currStep
                                   << ": nowAttempt = "            << nowAttempt
                                   << ", prevExponent = "          << prevExponent
+                                  << ", failedExponent = "        << failedExponent // gpmsa
                                   << ", exponents[0] = "          << exponents[0]
                                   << ", nowExponent = "           << nowExponent
                                   << ", exponents[1] = "          << exponents[1]
@@ -859,8 +873,8 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
                                   << ", minEffectiveSizeRatio = " << currOptions->m_minEffectiveSizeRatio
                                   << ", nowEffectiveSizeRatio = " << nowEffectiveSizeRatio
                                   << ", maxEffectiveSizeRatio = " << currOptions->m_maxEffectiveSizeRatio
-                                  << ", aux2 = "                  << aux2
-                                  << ", aux3 = "                  << aux3
+	    //<< ", aux2 = "                  << aux2
+	    //<< ", aux3 = "                  << aux3
                                   << ", testResult = "            << testResult
                                   << std::endl;
         }
@@ -897,7 +911,12 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
         }
       } while (testResult == false);
       currExponent = nowExponent;
-      m_logEvidenceFactors.push_back(nowUnifiedEvidenceLnFactor); // restart
+      if (failedExponent > 0.) { // gpmsa
+        m_logEvidenceFactors[m_logEvidenceFactors.size()-1] = nowUnifiedEvidenceLnFactor;
+      }
+      else {
+        m_logEvidenceFactors.push_back(nowUnifiedEvidenceLnFactor); // restart
+      }
 
       unsigned int quantity1 = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -906,6 +925,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
                                 << ", step "                                   << m_currStep
                                 << ": weightSequence.subSequenceSize() = "     << weightSequence.subSequenceSize()
                                 << ", weightSequence.unifiedSequenceSize() = " << quantity1
+                                << ", failedExponent = "                       << failedExponent // gpmsa
                                 << ", currExponent = "                         << currExponent
                                 << ", effective ratio = "                      << nowEffectiveSizeRatio
                                 << ", log(evidence factor) = "                 << m_logEvidenceFactors[m_logEvidenceFactors.size()-1]
@@ -932,6 +952,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
           *m_env.subDisplayFile() << "WARNING, In uqMLSampling<P_V,P_M>::generateSequence()"
                                   << ", level "        << m_currLevel+LEVEL_REF_ID
                                   << ", step "         << m_currStep
+                                  << ", failedExponent = " << failedExponent // gpmsa
                                   << ": nowAttempt = " << nowAttempt
                                   << ", uqMiscCheck for 'logEvidenceFactor' detected a problem"
                                   << std::endl;
@@ -943,6 +964,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
     *m_env.subDisplayFile() << "Leaving uqMLSampling<P_V,P_M>::generateSequence_Step()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
+                            << ", failedExponent = " << failedExponent // gpmsa
                             << ", after " << stepRunTime << " seconds"
                             << std::endl;
   }

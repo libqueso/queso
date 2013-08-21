@@ -51,6 +51,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_minRejectionRate                         (UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV),
   m_maxRejectionRate                         (UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV),
   m_covRejectionRate                         (UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV),
+  m_minAcceptableEta                         (UQ_ML_SAMPLING_L_MIN_ACCEPTABLE_ETA_ODV), // gpmsa
   m_totallyMute                              (UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV),
   m_initialPositionDataInputFileName         (UQ_ML_SAMPLING_L_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV),
   m_initialPositionDataInputFileType         (UQ_ML_SAMPLING_L_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV),
@@ -124,6 +125,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
   m_option_minRejectionRate                          (m_prefix + "minRejectionRate"                          ),
   m_option_maxRejectionRate                          (m_prefix + "maxRejectionRate"                          ),
   m_option_covRejectionRate                          (m_prefix + "covRejectionRate"                          ),
+  m_option_minAcceptableEta                          (m_prefix + "minAcceptableEta"                          ), // gpmsa
   m_option_totallyMute                               (m_prefix + "totallyMute"                               ),
   m_option_initialPosition_dataInputFileName         (m_prefix + "initialPosition_dataInputFileName"         ),
   m_option_initialPosition_dataInputFileType         (m_prefix + "initialPosition_dataInputFileType"         ),
@@ -193,6 +195,7 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   m_minRejectionRate                          = srcOptions.m_minRejectionRate;
   m_maxRejectionRate                          = srcOptions.m_maxRejectionRate;
   m_covRejectionRate                          = srcOptions.m_covRejectionRate;
+  m_minAcceptableEta                          = srcOptions.m_minAcceptableEta; // gpmsa
   m_totallyMute                               = srcOptions.m_totallyMute;
   m_initialPositionDataInputFileName          = srcOptions.m_initialPositionDataInputFileName;
   m_initialPositionDataInputFileType          = srcOptions.m_initialPositionDataInputFileType;
@@ -319,6 +322,7 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
     (m_option_minRejectionRate.c_str(),                           po::value<double      >()->default_value(m_minRejectionRate                         ), "minimum allowed attempted rejection rate at current level"       )
     (m_option_maxRejectionRate.c_str(),                           po::value<double      >()->default_value(m_maxRejectionRate                         ), "maximum allowed attempted rejection rate at current level"       )
     (m_option_covRejectionRate.c_str(),                           po::value<double      >()->default_value(m_covRejectionRate                         ), "c.o.v. for judging attempted rejection rate at current level"    )
+    (m_option_minAcceptableEta.c_str(),                           po::value<double      >()->default_value(m_minAcceptableEta                         ), "min acceptable eta"                                              )
     (m_option_totallyMute.c_str(),                                po::value<bool        >()->default_value(m_totallyMute                              ), "totally mute (no printout message)"                              )
     (m_option_initialPosition_dataInputFileName.c_str(),          po::value<std::string >()->default_value(m_initialPositionDataInputFileName         ), "name of input file for initial position"                         )
     (m_option_initialPosition_dataInputFileType.c_str(),          po::value<std::string >()->default_value(m_initialPositionDataInputFileType         ), "type of input file for initial position"                         )
@@ -518,6 +522,10 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
               << " to "                     << .5
               << std::endl;
     m_covRejectionRate = .5;
+  }
+
+  if (m_env.allOptionsMap().count(m_option_minAcceptableEta.c_str())) { // gpmsa
+    m_minAcceptableEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minAcceptableEta.c_str()]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_totallyMute.c_str())) {
@@ -818,6 +826,7 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
      << "\n" << m_option_minRejectionRate                           << " = " << m_minRejectionRate
      << "\n" << m_option_maxRejectionRate                           << " = " << m_maxRejectionRate
      << "\n" << m_option_covRejectionRate                           << " = " << m_covRejectionRate
+     << "\n" << m_option_minAcceptableEta                           << " = " << m_minAcceptableEta // gpmsa
      << "\n" << m_option_totallyMute                                << " = " << m_totallyMute
      << "\n" << m_option_initialPosition_dataInputFileName          << " = " << m_initialPositionDataInputFileName
      << "\n" << m_option_initialPosition_dataInputFileType          << " = " << m_initialPositionDataInputFileType

@@ -109,7 +109,7 @@ private:
                                     unsigned int                        seqSize);
   //! Reads the sequence.
   void actualReadSequence    (const uqBaseVectorRVClass      <P_V,P_M>& paramRv,
-                              const std::string&             QoI        dataInputFileName,
+                              const std::string&                        dataInputFileName,
                               const std::string&                        dataInputFileType,
                                     uqBaseVectorSequenceClass<P_V,P_M>& workingPSeq,
                                     uqBaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,

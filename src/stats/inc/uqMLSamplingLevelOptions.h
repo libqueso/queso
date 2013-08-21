@@ -52,6 +52,7 @@
 #define UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV                               0.50
 #define UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV                               0.75
 #define UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV                               0.25
+#define UQ_ML_SAMPLING_L_MIN_ACCEPTABLE_ETA_ODV                               0.
 #define UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV                                     1
 #define UQ_ML_SAMPLING_L_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV            UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV            UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
@@ -130,6 +131,7 @@ public:
   double                             m_minRejectionRate;
   double                             m_maxRejectionRate;
   double                             m_covRejectionRate;
+  double                             m_minAcceptableEta; // gpmsa
   bool                               m_totallyMute;
   std::string                        m_initialPositionDataInputFileName;
   std::string                        m_initialPositionDataInputFileType;
@@ -213,6 +215,7 @@ private:
   std::string                   m_option_minRejectionRate;
   std::string                   m_option_maxRejectionRate;
   std::string                   m_option_covRejectionRate;
+  std::string                   m_option_minAcceptableEta; // gpmsa
   std::string                   m_option_totallyMute;
   std::string                   m_option_initialPosition_dataInputFileName;
   std::string                   m_option_initialPosition_dataInputFileType;

@@ -1,1 +1,5 @@
-../../src/tower_gsl test1_prudenci_mac.inp 1
+../../src/tower_gsl test1_prudenci_mac.inp 1 1
+../../src/tower_gsl_only_queso test1_prudenci_mac.inp 1 1
+grep -n = rawChain_ml.m
+head -n 2472158 rawChain_ml.m | tail -n 132002 > nada
+

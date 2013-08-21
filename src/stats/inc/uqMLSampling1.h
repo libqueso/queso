@@ -159,6 +159,7 @@ private:
   void   generateSequence_Step03_inter0(const uqMLSamplingLevelOptionsClass*            currOptions,                        // input
                                         const uqScalarSequenceClass<double>&            prevLogLikelihoodValues,            // input
                                         double                                          prevExponent,                       // input
+                                        double                                          failedExponent,                     // input // gpmsa
                                         double&                                         currExponent,                       // output
                                         uqScalarSequenceClass<double>&                  weightSequence);                    // output
 
@@ -556,12 +557,38 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     double       cumulativeRawChainRunTime    = 0.;
     unsigned int cumulativeRawChainRejections = 0;
 
+    bool   tryExponentEta = true; // gpmsa
+    double failedExponent = 0.;   // gpmsa
+    double failedEta      = 0.;   // gpmsa
+
+    uqMLSamplingLevelOptionsClass*            currOptions           = NULL;  // step 1
+    uqSequenceOfVectorsClass<P_V,P_M>*        prevChain             = NULL;  // step 2
+    unsigned int                              indexOfFirstWeight    = 0;     // step 2
+    unsigned int                              indexOfLastWeight     = 0;     // step 2
+    P_M*                                      unifiedCovMatrix      = NULL;  // step 4
+    bool                                      useBalancedChains     = false; // step 6
+    uqBalancedLinkedChainsPerNodeStruct<P_V>* balancedLinkControl   = NULL;  // step 7
+    uqUnbalancedLinkedChainsPerNodeStruct*    unbalancedLinkControl = NULL;  // step 7
+    uqBayesianJointPdfClass<P_V,P_M>*         currPdf               = NULL;  // step 8
+    uqGenericVectorRVClass<P_V,P_M>*          currRv                = NULL;  // step 8
+
+    unsigned int exponentEtaTriedAmount = 0;
+    while (tryExponentEta) { // gpmsa
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqIMLSampling<P_V,P_M>::generateSequence()"
+                                << ", level " << m_currLevel+LEVEL_REF_ID
+                                << ", beginning 'do-while(tryExponentEta)"
+                                << ": failedExponent = " << failedExponent
+                                << ", failedEta = "      << failedEta
+                                << std::endl;
+      }
+
     //***********************************************************
     // Step 1 of 11: read options
     //***********************************************************
     m_currStep = 1;
     sprintf(levelPrefix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
-    uqMLSamplingLevelOptionsClass* currOptions = new uqMLSamplingLevelOptionsClass(m_env,(m_options.m_prefix + levelPrefix).c_str());
+    currOptions = new uqMLSamplingLevelOptionsClass(m_env,(m_options.m_prefix + levelPrefix).c_str());
     currOptions->scanOptionsValues(&defaultLevelOptions);
 
     if (m_env.inter0Rank() >= 0) {
@@ -573,16 +600,17 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     // Step 2 of 11: save [chain and corresponding target pdf values] from previous level
     //***********************************************************
     m_currStep = 2;
-    double       prevExponent       = currExponent;
-    double       prevEta            = currEta;
-    uqSequenceOfVectorsClass<P_V,P_M> prevChain(m_vectorSpace,
-                                                0,
-                                                m_options.m_prefix+"prev_chain");
+    double       prevExponent                   = currExponent;
+    double       prevEta                        = currEta;
+    unsigned int prevUnifiedRequestedNumSamples = currUnifiedRequestedNumSamples;
+    prevChain = new uqSequenceOfVectorsClass<P_V,P_M>(m_vectorSpace,
+                                                      0,
+                                                      m_options.m_prefix+"prev_chain");
     uqScalarSequenceClass<double> prevLogLikelihoodValues(m_env,0,"");
     uqScalarSequenceClass<double> prevLogTargetValues    (m_env,0,"");
 
-    unsigned int indexOfFirstWeight = 0;
-    unsigned int indexOfLastWeight  = 0;
+    indexOfFirstWeight = 0;
+    indexOfLastWeight  = 0;
 
     //std::cout << "m_env.inter0Rank() = " << m_env.inter0Rank() << std::endl;
     if (m_env.inter0Rank() >= 0) {
@@ -590,7 +618,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
                                      currChain,               // input/output // restate
                                      currLogLikelihoodValues, // input/output // restate
                                      currLogTargetValues,     // input/output // restate
-                                     prevChain,               // output
+                                     *prevChain,              // output
                                      prevLogLikelihoodValues, // output
                                      prevLogTargetValues,     // output
                                      indexOfFirstWeight,      // output
@@ -607,6 +635,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
       generateSequence_Step03_inter0(currOptions,             // input
                                      prevLogLikelihoodValues, // input
                                      prevExponent,            // input
+                                     failedExponent,          // input // gpmsa
                                      currExponent,            // output
                                      weightSequence);         // output
     }
@@ -654,7 +683,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     P_V oneVec(m_vectorSpace.zeroVector());
     oneVec.cwSet(1.);
 
-    P_M* unifiedCovMatrix = NULL;
+    unifiedCovMatrix = NULL;
     if (m_env.inter0Rank() >= 0) {
       unifiedCovMatrix = m_vectorSpace.newMatrix();
     }
@@ -663,7 +692,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     }
 
     if (m_env.inter0Rank() >= 0) {
-      generateSequence_Step04_inter0(prevChain,          // input
+      generateSequence_Step04_inter0(*prevChain,         // input
                                      weightSequence,     // input
                                      *unifiedCovMatrix); // output
     }
@@ -685,7 +714,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     // Step 6 of 11: decide on using balanced chains or not
     //***********************************************************
     m_currStep = 6;
-    bool useBalancedChains = false;
+    useBalancedChains = false;
     std::vector<uqExchangeInfoStruct> exchangeStdVec(0);
     // All processors should call this routine in order to have the same decision value
     generateSequence_Step06_all(currOptions,                     // input
@@ -700,18 +729,18 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     //               nodes generate the closest possible to the same number of positions
     //***********************************************************
     m_currStep = 7;
-    uqBalancedLinkedChainsPerNodeStruct<P_V> balancedLinkControl;
-    uqUnbalancedLinkedChainsPerNodeStruct    unbalancedLinkControl;
+    balancedLinkControl   = new uqBalancedLinkedChainsPerNodeStruct<P_V>();
+    unbalancedLinkControl = new uqUnbalancedLinkedChainsPerNodeStruct   ();
     if (m_env.inter0Rank() >= 0) {
       generateSequence_Step07_inter0(useBalancedChains,               // input
                                      indexOfFirstWeight,              // input
                                      indexOfLastWeight,               // input
                                      unifiedIndexCountersAtProc0Only, // input
-                                     unbalancedLinkControl,           // (possible) output
+                                     *unbalancedLinkControl,          // (possible) output
                                      currOptions,                     // input
-                                     prevChain,                       // input
+                                     *prevChain,                      // input
                                      exchangeStdVec,                  // (possible) input/output
-                                     balancedLinkControl);            // (possible) output
+                                     *balancedLinkControl);           // (possible) output
     }
 
     // aqui: prevChain might not be needed anymore. Delete it to save memory
@@ -720,33 +749,86 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     // Step 8 of 11: create vector RV for current level
     //***********************************************************
     m_currStep = 8;
-    uqBayesianJointPdfClass<P_V,P_M> currPdf(m_options.m_prefix.c_str(),
-                                             m_priorRv.pdf(),
-                                             m_likelihoodFunction,
-                                             currExponent,
-                                             *m_targetDomain);
+    currPdf = new uqBayesianJointPdfClass<P_V,P_M> (m_options.m_prefix.c_str(),
+                                                    m_priorRv.pdf(),
+                                                    m_likelihoodFunction,
+                                                    currExponent,
+                                                    *m_targetDomain);
 
-    uqGenericVectorRVClass<P_V,P_M> currRv(m_options.m_prefix.c_str(),
-                                           *m_targetDomain);
+    currRv = new uqGenericVectorRVClass<P_V,P_M> (m_options.m_prefix.c_str(),
+                                                  *m_targetDomain);
 
     // All nodes should set 'currRv'
-    generateSequence_Step08_all(currPdf,
-                                currRv);
+    generateSequence_Step08_all(*currPdf,
+                                *currRv);
 
     //***********************************************************
     // Step 9 of 11: scale unified covariance matrix until min <= rejection rate <= max
     //***********************************************************
     m_currStep = 9;
-    generateSequence_Step09_all(prevChain,                         // input
+    generateSequence_Step09_all(*prevChain,                        // input
                                 indexOfFirstWeight,                // input
                                 indexOfLastWeight,                 // input
                                 unifiedWeightStdVectorAtProc0Only, // input
                                 weightSequence,                    // input
                                 prevEta,                           // input
-                                currRv,                            // input
+                                *currRv,                           // input
                                 currOptions,                       // input (changed temporarily internally)
                                 *unifiedCovMatrix,                 // input/output
                                 currEta);                          // output
+
+    tryExponentEta = false; // gpmsa
+    if ((currOptions->m_minAcceptableEta > 0.     ) && // gpmsa
+        (currEta < currOptions->m_minAcceptableEta)) {
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
+        *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                                << ", level " << m_currLevel+LEVEL_REF_ID
+                                << ", preparing to retry ExponentEta"
+                                << ": currExponent = " << currExponent
+                                << ", currEta = "      << currEta
+                                << std::endl;
+      }
+      exponentEtaTriedAmount++;
+      tryExponentEta = true;
+      failedExponent = currExponent;
+      failedEta      = currEta;
+
+      // "Return" to previous level
+      delete currRv;                 // Step 8
+      currRv = NULL;                 // Step 8
+      delete currPdf;                // Step 8
+      currPdf = NULL;                // Step 8
+
+      delete balancedLinkControl;    // Step 7
+      balancedLinkControl   = NULL;  // Step 7
+      delete unbalancedLinkControl;  // Step 7
+      unbalancedLinkControl = NULL;  // Step 7
+
+      delete unifiedCovMatrix;       // Step 4
+      unifiedCovMatrix = NULL;       // Step 4
+
+      currExponent                   = prevExponent;
+      currEta                        = 1.; // prevEta;
+      currUnifiedRequestedNumSamples = prevUnifiedRequestedNumSamples;
+
+      currChain.clear();             // Step 2
+      currChain = (*prevChain);      // Step 2
+      delete prevChain;              // Step 2
+      prevChain = NULL;              // Step 2
+
+      currLogLikelihoodValues        = prevLogLikelihoodValues;
+      currLogTargetValues            = prevLogTargetValues;
+    }
+    } // while (tryExponentEta) // gpmsa
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) { // gpmsa
+      *m_env.subDisplayFile() << "In uqMLSampling<P_V,P_M>::generateSequence()"
+                              << ", level " << m_currLevel+LEVEL_REF_ID
+                              << ", exited 'do-while(tryExponentEta)"
+                              << ", failedExponent = " << failedExponent
+                              << ", failedEta = "      << failedEta
+                              << std::endl;
+    }
 
     //***********************************************************
     // Step 10 of 11: sample vector RV of current level
@@ -755,12 +837,12 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     // All nodes should call here
     generateSequence_Step10_all(*currOptions,                 // input (changed temporarily internally)
                                 *unifiedCovMatrix,            // input
-                                currRv,                       // input
+                                *currRv,                      // input
                                 useBalancedChains,            // input
-                                unbalancedLinkControl,        // input // Round Rock
+                                *unbalancedLinkControl,       // input // Round Rock
                                 indexOfFirstWeight,           // input // Round Rock
-                                prevChain,                    // input // Round Rock
-                                balancedLinkControl,          // input // Round Rock
+                                *prevChain,                   // input // Round Rock
+                                *balancedLinkControl,         // input // Round Rock
                                 currChain,                    // output
                                 cumulativeRawChainRunTime,    // output
                                 cumulativeRawChainRejections, // output
@@ -792,15 +874,15 @@ uqMLSamplingClass<P_V,P_M>::generateSequence(
     {
       delete unifiedCovMatrix;
 
-      for (unsigned int i = 0; i < balancedLinkControl.balLinkedChains.size(); ++i) {
-        UQ_FATAL_TEST_MACRO(balancedLinkControl.balLinkedChains[i].initialPosition == NULL,
+      for (unsigned int i = 0; i < balancedLinkControl->balLinkedChains.size(); ++i) {
+        UQ_FATAL_TEST_MACRO(balancedLinkControl->balLinkedChains[i].initialPosition == NULL,
                             m_env.worldRank(),
                             "uqMLSamplingClass<P_V,P_M>::generateSequence()",
                             "Initial position pointer in step 9 should not be NULL");
-        delete balancedLinkControl.balLinkedChains[i].initialPosition;
-        balancedLinkControl.balLinkedChains[i].initialPosition = NULL;
+        delete balancedLinkControl->balLinkedChains[i].initialPosition;
+        balancedLinkControl->balLinkedChains[i].initialPosition = NULL;
       }
-      balancedLinkControl.balLinkedChains.clear();
+      balancedLinkControl->balLinkedChains.clear();
     }
 
     //***********************************************************

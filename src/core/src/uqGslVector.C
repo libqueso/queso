@@ -485,17 +485,52 @@ uqGslVectorClass::cwSetBeta(const uqGslVectorClass& alpha, const uqGslVectorClas
                       "uqGslVectorClass::cwSetBeta()",
                       "incompatible beta size");
 
+  double tmpSample = 0.;
   for (unsigned int i = 0; i < this->sizeLocal(); ++i) {
-    (*this)[i] = m_env.rngObject()->betaSample(alpha[i],beta[i]);
+    tmpSample = m_env.rngObject()->betaSample(alpha[i],beta[i]);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In uqGslVectorClass::cwSetBeta()"
                               << ": fullRank "   << m_env.fullRank()
                               << ", i = "        << i
                               << ", alpha[i] = " << alpha[i]
                               << ", beta[i] = "  << beta[i]
-                              << ", sample = "   << (*this)[i]
+                              << ", sample = "   << tmpSample
                               << std::endl;
     }
+    if ((alpha[i] == 1. ) &&
+        (beta [i] == 0.1)) {
+      if (tmpSample == 1.) {
+        if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+          *m_env.subDisplayFile() << "Hitting 'sampe = 1' in uqGslVectorClass::cwSetBeta()"
+                                  << ": fullRank "   << m_env.fullRank()
+                                  << ", i = "        << i
+                                  << ", alpha[i] = " << alpha[i]
+                                  << ", beta[i] = "  << beta[i]
+                                  << ", sample = "   << tmpSample
+                                  << std::endl;
+        }
+#if 1
+        std::cerr << "Hitting 'sample = 1' in uqGslVectorClass::cwSetBeta()"
+                  << ": fullRank "   << m_env.fullRank()
+                  << ", i = "        << i
+                  << ", alpha[i] = " << alpha[i]
+                  << ", beta[i] = "  << beta[i]
+                  << ", sample = "   << tmpSample
+                  << std::endl;
+        do {
+          tmpSample = m_env.rngObject()->betaSample(alpha[i],beta[i]);
+        } while (tmpSample == 1.);
+        std::cerr << "Code was able to get 'sample != 1' in uqGslVectorClass::cwSetBeta()"
+                  << ": fullRank "   << m_env.fullRank()
+                  << ", i = "        << i
+                  << ", alpha[i] = " << alpha[i]
+                  << ", beta[i] = "  << beta[i]
+                  << ", sample = "   << tmpSample
+                  << std::endl;
+      }
+#endif
+    }
+    (*this)[i] = tmpSample;
   }
   return;
 }
