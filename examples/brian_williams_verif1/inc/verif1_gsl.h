@@ -14,7 +14,8 @@ double likelihoodRoutine(const uqGslVectorClass& paramValues,
 
 struct likelihoodDataStruct {
   uqGslVectorClass* aVec;    // p x 1
-  double            sigmaEps;
+  uqGslVectorClass* bVec;    // p x 1
+  double            sigmaTotal;
   uqGslVectorClass* ySamples; // n x 1
 };
 

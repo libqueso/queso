@@ -47,14 +47,12 @@ void solveSip(const uqFullEnvironmentClass& env)
   ////////////////////////////////////////////////////////
   // Step 1 of 5: Instantiate the parameter space
   ////////////////////////////////////////////////////////
-  unsigned int p = 2;
+  unsigned int p = 1;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> paramSpace(env, "param_", p, NULL);
   uqGslVectorClass aVec(paramSpace.zeroVector());
-  aVec[0] = 2.;
-  aVec[1] = 5.;
-  uqGslVectorClass xGiven(paramSpace.zeroVector());
-  xGiven[0] = -1.;
-  xGiven[1] =  7.;
+  aVec[0] = 126831.7;
+  uqGslVectorClass bVec(paramSpace.zeroVector());
+  bVec[0] = 112136.1;
 
   ////////////////////////////////////////////////////////
   // Step 2 of 5: Instantiate the parameter domain
@@ -71,36 +69,24 @@ void solveSip(const uqFullEnvironmentClass& env)
   ////////////////////////////////////////////////////////
   // Step 3 of 5: Instantiate the likelihood function object
   ////////////////////////////////////////////////////////
-  unsigned int n = 5;
+  unsigned int n = 400;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> dataSpace(env, "data_", n, NULL);
-  
-  uqGslVectorClass yMeanVec(dataSpace.zeroVector());
-  double tmp = scalarProduct(aVec,xGiven);
-  for (unsigned int i = 0; i < n; ++i) {
-    yMeanVec[i] = tmp;
-  }
 
-  double sigmaEps = 2.1;
-  uqGslMatrixClass yCovMat(dataSpace.zeroVector());
-  tmp = sigmaEps*sigmaEps;
-  for (unsigned int i = 0; i < n; ++i) {
-    yCovMat(i,i) = tmp;
-  }
+  double sigmaTotal = 4229.55;  
+
+  std::set<unsigned int> tmpSet;
+  tmpSet.insert(env.subId());
 
   uqGslVectorClass ySamples(dataSpace.zeroVector());
-  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> yRv("y_", dataSpace, yMeanVec, yCovMat);
-  yRv.realizer().realization(ySamples);
-
-  double ySampleMean = 0.;
-  for (unsigned int i = 0; i < n; ++i) {
-    ySampleMean += ySamples[i];
-  }
-  ySampleMean /= ((double) n);
+  ySamples.subReadContents("input/dataPoints",
+                           "m",
+                            tmpSet);
 
   struct likelihoodDataStruct likelihoodData;
-  likelihoodData.aVec     = &aVec;
-  likelihoodData.sigmaEps = sigmaEps;
-  likelihoodData.ySamples = &ySamples;
+  likelihoodData.aVec       = &aVec;
+  likelihoodData.bVec       = &bVec;
+  likelihoodData.sigmaTotal = sigmaTotal;
+  likelihoodData.ySamples   = &ySamples;
 
   uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
     likelihoodFunctionObj("like_",
@@ -112,54 +98,20 @@ void solveSip(const uqFullEnvironmentClass& env)
   ////////////////////////////////////////////////////////
   // Step 4 of 5: Instantiate the inverse problem
   ////////////////////////////////////////////////////////
-  uqGslVectorClass xPriorMeanVec(paramSpace.zeroVector());
-  xPriorMeanVec[0] = 0.;
-  xPriorMeanVec[1] = 0.;
-  uqGslMatrixClass sigma0Mat(paramSpace.zeroVector());
-  sigma0Mat(0,0) = 1.e-3;
-  sigma0Mat(0,1) = 0.;
-  sigma0Mat(1,0) = 0.;
-  sigma0Mat(1,1) = 1.e-3;
-  uqGslMatrixClass sigma0MatInverse(paramSpace.zeroVector());
-  sigma0MatInverse = sigma0Mat.inverse();
-  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> priorRv("prior_", *paramDomain, xPriorMeanVec, sigma0MatInverse);
+  uqUniformVectorRVClass<uqGslVectorClass,uqGslMatrixClass> priorRv("prior_", *paramDomain);
 
-  uqGenericVectorRVClass <uqGslVectorClass,uqGslMatrixClass> postRv ("post_", paramSpace);
+  uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass> postRv ("post_", paramSpace);
 
   uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass> sip("sip_", NULL, priorRv, likelihoodFunctionObj, postRv);
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
     *env.subDisplayFile() << "In solveSip():"
-                          << "\n  p                = " << p
-                          << "\n  xGiven           = " << xGiven
-                          << "\n  sigma0Mat        = " << sigma0Mat
-                          << "\n  sigma0MatInverse = " << sigma0MatInverse
-                          << "\n  aVec             = " << aVec
-                          << "\n  n                = " << n
-                          << "\n  sigmaEps         = " << sigmaEps
-                          << "\n  yMeanVec         = " << yMeanVec
-                          << "\n  yCovMat          = " << yCovMat
-                          << "\n  ySamples         = " << ySamples
-                          << "\n  ySampleMean      = " << ySampleMean
-                          << std::endl;
-  }
-
-  uqGslMatrixClass sigmaMatInverse(paramSpace.zeroVector());
-  sigmaMatInverse = matrixProduct(aVec,aVec);
-  sigmaMatInverse *= (((double) n)/sigmaEps/sigmaEps);
-  sigmaMatInverse += sigma0Mat;
-  uqGslMatrixClass sigmaMat(paramSpace.zeroVector());
-  sigmaMat = sigmaMatInverse.inverse();
-
-  uqGslVectorClass muVec(paramSpace.zeroVector());
-  muVec = sigmaMat * aVec;
-  muVec *= (((double) n) * ySampleMean)/sigmaEps/sigmaEps;
-
-  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
-    *env.subDisplayFile() << "In solveSip():"
-                          << "\n  muVec            = " << muVec
-                          << "\n  sigmaMat         = " << sigmaMat
-                          << "\n  sigmaMatInverse  = " << sigmaMatInverse
+                          << "\n  p          = " << p
+                          << "\n  aVec       = " << aVec
+                          << "\n  bVec       = " << bVec
+                          << "\n  n          = " << n
+                          << "\n  sigmaTotal = " << sigmaTotal
+                          << "\n  ySamples   = " << ySamples
                           << std::endl;
   }
 
@@ -167,14 +119,10 @@ void solveSip(const uqFullEnvironmentClass& env)
   // Step 5 of 5: Solve the inverse problem
   ////////////////////////////////////////////////////////
   uqGslVectorClass initialValues(paramSpace.zeroVector());
-  initialValues[0] = 25.;
-  initialValues[1] = 25.;
+  initialValues[0] = 50.;
 
   uqGslMatrixClass proposalCovMat(paramSpace.zeroVector());
-  proposalCovMat(0,0) = 10.;
-  proposalCovMat(0,1) = 0.;
-  proposalCovMat(1,0) = 0.;
-  proposalCovMat(1,1) = 10.;
+  proposalCovMat(0,0) = 10000.;
 
   sip.solveWithBayesMetropolisHastings(NULL,initialValues,&proposalCovMat);
 
@@ -231,8 +179,9 @@ double likelihoodRoutine(
 
   struct likelihoodDataStruct* likelihoodData = (likelihoodDataStruct *) functionDataPtr; 
   uqGslVectorClass aVec(*(likelihoodData->aVec));
+  uqGslVectorClass bVec(*(likelihoodData->bVec));
   unsigned int p = aVec.sizeLocal();
-  double sigmaEps = likelihoodData->sigmaEps;
+  double sigmaTotal = likelihoodData->sigmaTotal;
   uqGslVectorClass ySamples(*(likelihoodData->ySamples));
   unsigned int n = ySamples.sizeLocal();
 
@@ -247,7 +196,7 @@ double likelihoodRoutine(
                           << ", params = "            << paramValues
                           << ", p = "                 << p
                           << ", aVec = "              << aVec
-                          << ", sigmaEps = "          << sigmaEps
+                          << ", sigmaTotal = "        << sigmaTotal
                           << ", n = "                 << n
                           << ", ySamples = "          << ySamples
                           << std::endl;
@@ -257,7 +206,7 @@ double likelihoodRoutine(
   // Compute likelihood
   //******************************************************************************
   for (unsigned int i = 0; i < n; ++i) {
-    double diff = (ySamples[i] - scalarProduct(aVec,paramValues))/sigmaEps;
+    double diff = (ySamples[i] - (aVec[0] + bVec[0]*paramValues[0]))/sigmaTotal;
     totalLnLikelihood -= 0.5 * diff * diff;
     if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
       *env.subDisplayFile() << "In likelihoodRoutine()"

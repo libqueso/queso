@@ -45,11 +45,11 @@ sip_ip_mh_am_adaptInterval                           = 100
 sip_ip_mh_am_adaptedMatrices_dataOutputPeriod        = 0
 sip_ip_mh_am_adaptedMatrices_dataOutputFileName      = . # outputData/adaptedMatrix
 sip_ip_mh_am_adaptedMatrices_dataOutputFileType      = m
-sip_ip_mh_am_eta                                     = 2.88 # (2.4^2)/d, d is the dimension of the problem
+sip_ip_mh_am_eta                                     = 5.76 # (2.4^2)/d, d is the dimension of the problem
 sip_ip_mh_am_epsilon                                 = 1.e-5
 
 sip_ip_mh_rawChain_dataInputFileName                 = . # outputData/rawChain_input
-sip_ip_mh_rawChain_size                              = 132000 # 1000
+sip_ip_mh_rawChain_size                              = 150000
 sip_ip_mh_rawChain_generateExtra                     = 0
 sip_ip_mh_rawChain_displayPeriod                     = 1000
 sip_ip_mh_rawChain_measureRunTimes                   = 1
@@ -59,7 +59,7 @@ sip_ip_mh_rawChain_dataOutputAllowAll                = 0
 sip_ip_mh_rawChain_dataOutputAllowedSet              = 0 1
 
 sip_ip_mh_filteredChain_generate                     = 1
-sip_ip_mh_filteredChain_discardedPortion             = 0.1
+sip_ip_mh_filteredChain_discardedPortion             = 0.333
 sip_ip_mh_filteredChain_lag                          = 10
 sip_ip_mh_filteredChain_dataOutputFileName           = outputData/filtChain_mh
 sip_ip_mh_filteredChain_dataOutputAllowAll           = 0
