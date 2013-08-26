@@ -11,7 +11,7 @@ env_syncVerbosity        = 0
 env_checkingLevel        = 0
 env_seed                 = -1
 env_platformName         = mac
-env_identifyingString    = verif2_test1v
+env_identifyingString    = verif1_test1
 
 ###############################################
 # Statistical inverse problem (ip)

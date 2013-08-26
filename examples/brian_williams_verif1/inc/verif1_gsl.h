@@ -1,5 +1,5 @@
-#ifndef __VERIF2_GSL_H__
-#define __VERIF2_GSL_H__
+#ifndef __VERIF1_GSL_H__
+#define __VERIF1_GSL_H__
 
 #include <uqGslMatrix.h>
 
@@ -18,4 +18,4 @@ struct likelihoodDataStruct {
   uqGslVectorClass* ySamples; // n x 1
 };
 
-#endif // __VERIF2_GSL_H__
+#endif // __VERIF1_GSL_H__

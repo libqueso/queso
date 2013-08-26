@@ -36,15 +36,15 @@ default: all
 
 .SUFFIXES: .o .C
 
-all:	codeVerif2
+all:	codeVerif1
 
 clean:
 	rm -f *~
 	rm -f *.o
-	rm -f verif2_$(UQBT)
+	rm -f verif1_$(UQBT)
 
-codeVerif2: verif2_$(UQBT).o 
-	$(CXX) verif2_$(UQBT).o -o verif2_$(UQBT) $(LIBS)
+codeVerif1: verif1_$(UQBT).o 
+	$(CXX) verif1_$(UQBT).o -o verif1_$(UQBT) $(LIBS)
 
 %.o: %.C
 	$(CXX) $(DEFINES) $(INC_PATHS) $(CXXFLAGS) $<

@@ -1,4 +1,4 @@
-#include <verif2_gsl.h>
+#include <verif1_gsl.h>
 #include <uqStatisticalInverseProblem.h>
 
 static unsigned int likelihoodCounter = 0;
