@@ -27,8 +27,33 @@ if HDF5_ENABLED
   LIBS += $(HDF5_LIBS)
 endif
 
+#############################
+# simpleStatisticalInverseProblem #
+#############################
+exSimpleStatisticalInverseProblem_gsldir = $(prefix)/examples/simpleStatisticalInverseProblem
+
+exSimpleStatisticalInverseProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/example.inp
+
+exSimpleStatisticalInverseProblem_gsl_PROGRAMS = exSimpleStatisticalInverseProblem_gsl
+
+exSimpleStatisticalInverseProblem_gsl_SOURCES = $(top_srcdir)/examples/simpleStatisticalInverseProblem/src/example_main.C
+exSimpleStatisticalInverseProblem_gsl_SOURCES += $(top_srcdir)/examples/simpleStatisticalInverseProblem/src/example_likelihood.C
+exSimpleStatisticalInverseProblem_gsl_SOURCES += $(top_srcdir)/examples/simpleStatisticalInverseProblem/src/example_compute.C
+
+exSimpleStatisticalInverseProblem_gsl_HEADERS = $(top_srcdir)/examples/simpleStatisticalInverseProblem/src/example_likelihood.h
+exSimpleStatisticalInverseProblem_gsl_HEADERS += $(top_srcdir)/examples/simpleStatisticalInverseProblem/src/example_compute.h
+
+exSimpleStatisticalInverseProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
+
+exSimpleStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalInverseProblem/src $(QUESO_CPPFLAGS)
+
+# Make sure everything relevant gets added when doing 'make dist'
+dist_exSimpleStatisticalInverseProblem_gsl_DATA = ${exSimpleStatisticalInverseProblem_gsl_DATA} \
+																						${exSimpleStatisticalInverseProblem_gsl_HEADERS} \
+																						${exSimpleStatisticalInverseProblem_gsl_SOURCES}
+																						
 ####################################
-# statisticalForwardProblemExample #
+# statisticalForwardProblemExample # 
 ####################################
 exStatisticalForwardProblem_gsldir = $(prefix)/examples/statisticalForwardProblem
 
@@ -46,10 +71,11 @@ exStatisticalForwardProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
 exStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalForwardProblem/src $(QUESO_CPPFLAGS)
 
-# Make sure everything relevant gets added when doing 'make dist'
-dist_exStatisticalForwardProblem_gsl_DATA = ${exStatisticalForwardProblem_gsl_DATA} \
-																						${exStatisticalForwardProblem_gsl_SOURCES} \
-																						${exStatisticalForwardProblem_gsl_HEADERS}
+# Kemelli, 8/26/13: removing this example from the distro
+#dist_exStatisticalForwardProblem_gsl_DATA = ${exStatisticalForwardProblem_gsl_DATA}
+#																		
+#${exStatisticalForwardProblem_gsl_SOURCES} \
+#																						#${exStatisticalForwardProblem_gsl_HEADERS}
 
 #############################
 # statisticalInverseProblem #
@@ -70,9 +96,10 @@ exStatisticalInverseProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
 exStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalInverseProblem/src $(QUESO_CPPFLAGS)
 
-dist_exStatisticalInverseProblem_gsl_DATA = ${exStatisticalInverseProblem_gsl_DATA} \
-																						${exStatisticalInverseProblem_gsl_HEADERS} \
-																						${exStatisticalInverseProblem_gsl_SOURCES}
+# Kemelli, 8/26/13: removing this example from the distro
+#dist_exStatisticalInverseProblem_gsl_DATA = ${exStatisticalInverseProblem_gsl_DATA} \
+#																						#${exStatisticalInverseProblem_gsl_HEADERS} \
+#																						#${exStatisticalInverseProblem_gsl_SOURCES}
 
 ###################
 # validationCycle #
