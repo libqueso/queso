@@ -90,6 +90,7 @@ MAINTAINERCLEANFILES =     \
 	examples/pyramid/src/physics_2/Makefile.in \
 	examples/tga/Makefile.in \
 	examples/tga/src/Makefile.in \
+	examples/simpleStatisticalInverseProblem/src/Makefile.in \
 	doxygen/Makefile.in
 
 MOSTLYCLEANFILES = $(DX_CLEANFILES)
