@@ -1,0 +1,66 @@
+##########################################################################
+# Environment options
+##########################################################################
+#env_help                 = anything
+env_numSubEnvironments   = 1
+env_subDisplayFileName   = outputData/display
+env_subDisplayAllowAll   = 0
+env_subDisplayAllowedSet = 0
+env_displayVerbosity     = 2
+env_syncVerbosity        = 0
+env_checkingLevel        = 0
+env_seed                 = -1
+env_platformName         = mac
+env_identifyingString    = verif5_tests
+
+###############################################
+# Statistical inverse problem (ip)
+###############################################
+#sip_ip_help                 = anything
+sip_ip_computeSolution      = 1
+sip_ip_dataOutputFileName   = outputData/sipOutput
+sip_ip_dataOutputAllowedSet = 0 1 2 3
+
+###############################################
+# 'sip_ip_mh_': information for Metropolis Hastings algorithm
+###############################################
+sip_ip_mh_help                                       = anything
+sip_ip_mh_dataOutputFileName                         = . # outputData/sip_mh_Output
+sip_ip_mh_dataOutputAllowAll                         = 0
+sip_ip_mh_dataOutputAllowedSet                       = 0 1
+
+sip_ip_mh_initialPosition_dataInputFileName          = . # inputData/initPos
+sip_ip_mh_initialPosition_dataInputFileType          = m
+sip_ip_mh_initialProposalCovMatrix_dataInputFileName = . # inputData/mhCovMatrix_paramChoice_12b
+sip_ip_mh_initialProposalCovMatrix_dataInputFileType = m
+
+sip_ip_mh_displayCandidates                          = 0
+sip_ip_mh_putOutOfBoundsInChain                      = 0 # IMPORTANT
+sip_ip_mh_tk_useLocalHessian                         = 0
+sip_ip_mh_tk_useNewtonComponent                      = 1
+sip_ip_mh_dr_maxNumExtraStages                       = 3
+sip_ip_mh_dr_listOfScalesForExtraStages              = 5. 10. 33.
+sip_ip_mh_am_initialNonAdaptInterval                 = 1000
+sip_ip_mh_am_adaptInterval                           = 1000
+sip_ip_mh_am_adaptedMatrices_dataOutputPeriod        = 10000
+sip_ip_mh_am_adaptedMatrices_dataOutputFileName      = outputData/adaptedMatrix
+sip_ip_mh_am_adaptedMatrices_dataOutputFileType      = m
+sip_ip_mh_am_eta                                     = 5.76 # (2.4^2)/d, d is the dimension of the problem
+sip_ip_mh_am_epsilon                                 = 1.e-5
+
+sip_ip_mh_rawChain_dataInputFileName                 = . # outputData/rawChain_input
+sip_ip_mh_rawChain_size                              = 150000
+sip_ip_mh_rawChain_generateExtra                     = 0
+sip_ip_mh_rawChain_displayPeriod                     = 1000
+sip_ip_mh_rawChain_measureRunTimes                   = 1
+sip_ip_mh_rawChain_dataOutputPeriod                  = 1000
+sip_ip_mh_rawChain_dataOutputFileName                = outputData/rawChain_mh
+sip_ip_mh_rawChain_dataOutputAllowAll                = 0
+sip_ip_mh_rawChain_dataOutputAllowedSet              = 0 1
+
+sip_ip_mh_filteredChain_generate                     = 1
+sip_ip_mh_filteredChain_discardedPortion             = 0.333
+sip_ip_mh_filteredChain_lag                          = 10
+sip_ip_mh_filteredChain_dataOutputFileName           = outputData/filtChain_mh
+sip_ip_mh_filteredChain_dataOutputAllowAll           = 0
+sip_ip_mh_filteredChain_dataOutputAllowedSet         = 0
