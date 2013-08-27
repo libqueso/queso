@@ -53,8 +53,6 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
   ////////////////////////////////////////////////////////
   unsigned int p = 1;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> paramSpace(env, "param_", p, NULL);
-  uqGslVectorClass aVec(paramSpace.zeroVector());
-  aVec[0] = 126831.7;
   uqGslVectorClass bVec(paramSpace.zeroVector());
   bVec[0] = 112136.1;
 
@@ -73,68 +71,85 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
   ////////////////////////////////////////////////////////
   // Step 3 of 5: Instantiate the likelihood function object
   ////////////////////////////////////////////////////////
-  unsigned int n = 400;
-  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> dataSpace(env, "data_", n, NULL);
+  unsigned int nAll = 400;
+  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> dataSpaceAll(env, "data_", nAll, NULL);
 
   double sigmaTotal = 4229.55;  
 
   std::set<unsigned int> tmpSet;
   tmpSet.insert(env.subId());
 
-  uqGslVectorClass ySamples(dataSpace.zeroVector());
-  ySamples.subReadContents("input/dataPoints",
-                           "m",
-                            tmpSet);
+  uqGslVectorClass ySamplesAll(dataSpaceAll.zeroVector());
+  ySamplesAll.subReadContents("input/dataPoints",
+                              "m",
+                              tmpSet);
 
-  struct likelihoodDataStruct likelihoodData;
-  likelihoodData.aVec       = &aVec;
-  likelihoodData.bVec       = &bVec;
-  likelihoodData.sigmaTotal = sigmaTotal;
-  likelihoodData.ySamples   = &ySamples;
+  unsigned int numCases = 5;
+  std::vector<unsigned int> ns(numCases,0);
+  ns[0] = 1;
+  ns[1] = 10;
+  ns[2] = 100;
+  ns[3] = 500;
+  ns[4] = 1000;
 
-  uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
-    likelihoodFunctionObj("like_",
-                          *paramDomain,
-                          likelihoodRoutine,
-                          (void *) &likelihoodData,
-                          true); // routine computes [ln(function)]
+  for (unsigned int caseId = 0; caseId < numCases; ++caseId) {
+    uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> dataSpace(env, "data_", ns[caseId], NULL);
+    uqGslVectorClass ySamples(dataSpace.zeroVector());
+    for (unsigned int i = 0; i < ns[caseId]; ++i) {
+      ySamples[i] = ySamplesAll[i];
+    }
 
-  ////////////////////////////////////////////////////////
-  // Step 4 of 5: Instantiate the inverse problem
-  ////////////////////////////////////////////////////////
-  uqUniformVectorRVClass<uqGslVectorClass,uqGslMatrixClass> priorRv("prior_", *paramDomain);
+    struct likelihoodDataStruct likelihoodData;
+    likelihoodData.bVec       = &bVec;
+    likelihoodData.sigmaTotal = sigmaTotal;
+    likelihoodData.ySamples   = &ySamples;
 
-  uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass> postRv ("post_", paramSpace);
+    uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
+      likelihoodFunctionObj("like_",
+                            *paramDomain,
+                            likelihoodRoutine,
+                            (void *) &likelihoodData,
+                            true); // routine computes [ln(function)]
 
-  uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass> sip("sip_", NULL, priorRv, likelihoodFunctionObj, postRv);
+    ////////////////////////////////////////////////////////
+    // Step 4 of 5: Instantiate the inverse problem
+    ////////////////////////////////////////////////////////
+    uqUniformVectorRVClass<uqGslVectorClass,uqGslMatrixClass> priorRv("prior_", *paramDomain);
 
-  if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
-    *env.subDisplayFile() << "In solveSip():"
-                          << "\n  p          = " << p
-                          << "\n  aVec       = " << aVec
-                          << "\n  bVec       = " << bVec
-                          << "\n  n          = " << n
-                          << "\n  sigmaTotal = " << sigmaTotal
-                          << "\n  ySamples   = " << ySamples
-                          << "\n  useML      = " << useML
-                          << std::endl;
-  }
+    uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass> postRv ("post_", paramSpace);
 
-  ////////////////////////////////////////////////////////
-  // Step 5 of 5: Solve the inverse problem
-  ////////////////////////////////////////////////////////
-  uqGslVectorClass initialValues(paramSpace.zeroVector());
-  initialValues[0] = 0.;
+    char prefixStr[16+1];
+    sprintf(prefixStr,"sip%d_",caseId);
+    uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass> sip(prefixStr, NULL, priorRv, likelihoodFunctionObj, postRv);
+    if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
+      *env.subDisplayFile() << "In solveSip():"
+                            << "\n  caseId     = " << caseId
+                            << "\n  prefixStr  = " << prefixStr
+                            << "\n  p          = " << p
+                            << "\n  bVec       = " << bVec
+                            << "\n  ns[caseId] = " << ns[caseId]
+                            << "\n  sigmaTotal = " << sigmaTotal
+                            << "\n  ySamples   = " << ySamples
+                            << "\n  useML      = " << useML
+                            << std::endl;
+    }
 
-  uqGslMatrixClass proposalCovMat(paramSpace.zeroVector());
-  proposalCovMat(0,0) = 1.;
+    ////////////////////////////////////////////////////////
+    // Step 5 of 5: Solve the inverse problem
+    ////////////////////////////////////////////////////////
+    uqGslVectorClass initialValues(paramSpace.zeroVector());
+    initialValues[0] = 0.;
 
-  if (useML) {
-    sip.solveWithBayesMLSampling();
-  }
-  else {
-    sip.solveWithBayesMetropolisHastings(NULL,initialValues,&proposalCovMat);
-  }
+    uqGslMatrixClass proposalCovMat(paramSpace.zeroVector());
+    proposalCovMat(0,0) = 1.;
+
+    if (useML) {
+      sip.solveWithBayesMLSampling();
+    }
+    else {
+      sip.solveWithBayesMetropolisHastings(NULL,initialValues,&proposalCovMat);
+    }
+  } // for caseId
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
     *env.subDisplayFile() << "Leaving solveSip()"
@@ -188,9 +203,8 @@ double likelihoodRoutine(
   }
 
   struct likelihoodDataStruct* likelihoodData = (likelihoodDataStruct *) functionDataPtr; 
-  uqGslVectorClass aVec(*(likelihoodData->aVec));
   uqGslVectorClass bVec(*(likelihoodData->bVec));
-  unsigned int p = aVec.sizeLocal();
+  unsigned int p = bVec.sizeLocal();
   double sigmaTotal = likelihoodData->sigmaTotal;
   uqGslVectorClass ySamples(*(likelihoodData->ySamples));
   unsigned int n = ySamples.sizeLocal();
@@ -205,7 +219,6 @@ double likelihoodRoutine(
                           << ": likelihoodCounter = " << likelihoodCounter
                           << ", params = "            << paramValues
                           << ", p = "                 << p
-                          << ", aVec = "              << aVec
                           << ", bVec = "              << bVec
                           << ", sigmaTotal = "        << sigmaTotal
                           << ", n = "                 << n
@@ -217,7 +230,7 @@ double likelihoodRoutine(
   // Compute likelihood
   //******************************************************************************
   for (unsigned int i = 0; i < n; ++i) {
-    double diff = (ySamples[i] - (aVec[0] + bVec[0]*paramValues[0]))/sigmaTotal;
+    double diff = (ySamples[i] - (bVec[0]*paramValues[0]))/sigmaTotal;
     totalLnLikelihood -= 0.5 * diff * diff;
     if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
       *env.subDisplayFile() << "In likelihoodRoutine()"
