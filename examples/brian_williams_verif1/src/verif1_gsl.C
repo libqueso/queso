@@ -16,13 +16,17 @@ int main(int argc, char* argv[])
   UQ_FATAL_TEST_MACRO((argc < 2),
                       UQ_UNAVAILABLE_RANK,
                       "main()",
-                      "run as <executable> 'inputFileName'");
+                      "run as <executable> 'inputFileName' <'0 or 1'(useML; default 0)>");
   uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+  bool useML = false;
+  if (argc >= 3) {
+    useML = true;
+  }
 
   //***********************************************************************
   // Run program
   //***********************************************************************
-  solveSip(*env);
+  solveSip(*env,useML);
 
   //***********************************************************************
   // Finalize QUESO environment
@@ -37,7 +41,7 @@ int main(int argc, char* argv[])
   return 0;
 }
 
-void solveSip(const uqFullEnvironmentClass& env)
+void solveSip(const uqFullEnvironmentClass& env, bool useML)
 {
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
     *env.subDisplayFile() << "Entering solveSip()..."
@@ -112,6 +116,7 @@ void solveSip(const uqFullEnvironmentClass& env)
                           << "\n  n          = " << n
                           << "\n  sigmaTotal = " << sigmaTotal
                           << "\n  ySamples   = " << ySamples
+                          << "\n  useML      = " << useML
                           << std::endl;
   }
 
@@ -119,12 +124,17 @@ void solveSip(const uqFullEnvironmentClass& env)
   // Step 5 of 5: Solve the inverse problem
   ////////////////////////////////////////////////////////
   uqGslVectorClass initialValues(paramSpace.zeroVector());
-  initialValues[0] = 50.;
+  initialValues[0] = 0.;
 
   uqGslMatrixClass proposalCovMat(paramSpace.zeroVector());
-  proposalCovMat(0,0) = 10000.;
+  proposalCovMat(0,0) = 1.;
 
-  sip.solveWithBayesMetropolisHastings(NULL,initialValues,&proposalCovMat);
+  if (useML) {
+    sip.solveWithBayesMLSampling();
+  }
+  else {
+    sip.solveWithBayesMetropolisHastings(NULL,initialValues,&proposalCovMat);
+  }
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
     *env.subDisplayFile() << "Leaving solveSip()"
@@ -196,6 +206,7 @@ double likelihoodRoutine(
                           << ", params = "            << paramValues
                           << ", p = "                 << p
                           << ", aVec = "              << aVec
+                          << ", bVec = "              << bVec
                           << ", sigmaTotal = "        << sigmaTotal
                           << ", n = "                 << n
                           << ", ySamples = "          << ySamples

@@ -3,7 +3,7 @@
 
 #include <uqGslMatrix.h>
 
-void   solveSip         (const uqFullEnvironmentClass& env);
+void   solveSip         (const uqFullEnvironmentClass& env, bool useML);
 
 double likelihoodRoutine(const uqGslVectorClass& paramValues,
                          const uqGslVectorClass* paramDirection,
