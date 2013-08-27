@@ -65,9 +65,11 @@
 % \renewcommand{\chaptername}{\vspace*{-1.45in}{\Huge\bf Chapter}}
 % \renewcommand{\appendixname}{\vspace*{-1.45in}{\Huge\bf Appendix}}
 % \renewcommand{\bibname}{\vspace*{-1.0in}{\Huge\bf Bibliography}}
-%\newcommand{\Quesoweb}{\url{https://red.ices.utexas.edu/projects/software}}
+
+\newcommand{\Quesoweb}{\url{https://github.com/libqueso}}
 \newcommand{\Queso}{QUESO}
 \newcommand{\todo}[1]{ {\color{red} To do: #1} }
+\newcommand{\bv}[1]{\ensuremath{\mbox{\boldmath$ #1 $}}}
 
 \newcommand{\myverb}[1]{ \indent{ \begin{verbatim} #1 \end{verbatim} } }
 \newcommand{\QUESOversion}{0.46.0}
@@ -114,7 +116,6 @@ belowskip = 10pt, %\medskipamount%\smallskipamount,
 aboveskip =10pt,
 }  
 
-\newcommand{\bv}[1]{{\mathbf{#1}}}
 \newcommand{\chainsizeresults}{20000}
 %\newcommand{\new}[1]{{\marginpar{\color{red}\small\raggedright\textsf{\hspace{0pt} NEW}}} \textbf{#1}}
 
@@ -142,13 +143,14 @@ aboveskip =10pt,
 
 \include{users_1_introduction}
 
-\include{users_2_installation}
+ \include{users_2_installation}
 
 \include{users_3_classes} 
 
 \include{users_4_remarks} 
 
 \include{users_5_appl_example}
+
 
 
 \addcontentsline{toc}{chapter}{References}
