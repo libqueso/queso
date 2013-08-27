@@ -54,7 +54,7 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
   unsigned int p = 1;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> paramSpace(env, "param_", p, NULL);
   uqGslVectorClass bVec(paramSpace.zeroVector());
-  bVec[0] = 112136.1;
+  bVec[0] = 0.045213;
 
   ////////////////////////////////////////////////////////
   // Step 2 of 5: Instantiate the parameter domain
@@ -71,10 +71,10 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
   ////////////////////////////////////////////////////////
   // Step 3 of 5: Instantiate the likelihood function object
   ////////////////////////////////////////////////////////
-  unsigned int nAll = 400;
+  unsigned int nAll = 100000;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> dataSpaceAll(env, "data_", nAll, NULL);
 
-  double sigmaTotal = 4229.55;  
+  double sigmaTotal = bVec[0]/2.; 
 
   std::set<unsigned int> tmpSet;
   tmpSet.insert(env.subId());
@@ -119,7 +119,7 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
     uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass> postRv ("post_", paramSpace);
 
     char prefixStr[16+1];
-    sprintf(prefixStr,"sip%d_",caseId);
+    sprintf(prefixStr,"sip%d_",caseId+1);
     uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass> sip(prefixStr, NULL, priorRv, likelihoodFunctionObj, postRv);
     if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
       *env.subDisplayFile() << "In solveSip():"
