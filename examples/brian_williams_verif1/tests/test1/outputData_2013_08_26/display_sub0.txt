@@ -1,0 +1,563 @@
+--------------------------------------------------------------------------------------------------------------
+QUESO Library: Version = 0.46.0 (4600)
+
+Development Build
+
+Build Date   = 2013-08-20 23:01
+Build Host   = unknown7cd1c3ef54a9
+Build User   = prudenci
+Build Arch   = x86_64-apple-darwin12.4.0
+Build Rev    = 40892:40893M
+
+C++ Config   = mpic++ -g -O2 -Wall
+
+Trilinos DIR = no
+GSL Libs     = -L/Users/prudenci/Installations/i_gsl_1_15/lib -lgsl -lgslcblas
+GRVY DIR     = /Users/prudenci/Installations/i_grvy_0_32_0
+GLPK DIR     = no
+HDF5 DIR     = /Users/prudenci/Installations/i_hdf5_1_8_9
+--------------------------------------------------------------------------------------------------------------
+Beginning run at Mon Aug 26 20:41:21 2013
+
+Entering solveSip()...
+In uqGslVectorClass::subReadContents(): fullRank 0, sizeOfVecInFile = 400, numParamsInFile = 1, this->sizeLocal() = 400
+In uqGslVectorClass::subReadContents(): beginning to read input actual data
+In uqGslVectorClass::subReadContents(): beginning to read lines with numbers only, lineId = 1, idOfMyFirstLine = 1, idOfMyLastLine = 400
+Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor(): prefix = sip_, alternativeOptionsValues = 0, m_env.optionsInputFileName() = test1_prudenci_mac.inp
+In uqStatisticalInverseProblemOptionsClass::scanOptionsValues(): after reading values of options with prefix 'sip_ip_', state of  object is:
+
+sip_ip_computeSolution = 1
+sip_ip_dataOutputFileName = outputData/sipOutput
+sip_ip_dataOutputAllowedSet = 0 1 2 3 
+
+Leaving uqStatisticalInverseProblemClass<P_V,P_M>::constructor(): prefix = sip_ip_
+In solveSip():
+  p          = 1
+  aVec       = 126832 
+  bVec       = 112136 
+  n          = 400
+  sigmaTotal = 4229.55
+  ySamples   = 120710 126017 130524 130468 129256 133638 124532 121547 129968 128675 127363 124904 126495 134346 126886 129809 126157 130025 124039 124545 131818 124251 126691 129263 128368 124960 127031 122500 127041 125246 128452 117560 132834 125789 124810 130172 123361 130785 130331 125072 122388 123376 124322 132600 123956 125578 126439 131529 123693 125739 122999 123414 131642 124839 127880 126220 132240 127628 125089 128528 126096 127054 128834 125758 119464 131178 123816 126485 127055 121857 118541 125210 121836 125357 130728 129426 130103 129723 125996 127420 130903 127243 130044 127273 125933 128376 124665 131346 120396 128741 124593 124635 122006 127965 135213 124275 128669 132911 121925 136098 124049 127166 132875 126258 126021 131151 132262 125712 127836 129330 122496 123232 137247 129546 125600 117157 122748 129392 124684 122447 130481 123720 132673 127449 128674 131507 116394 130154 121896 131935 134139 134030 126040 131253 122001 126471 126110 127614 131512 128582 128843 127232 128215 126992 129190 124625 121607 120901 122276 120416 133390 123738 117380 123719 123871 130616 123944 124050 125900 127959 124483 127154 123319 124699 120688 126899 125994 118478 128224 126148 125168 124501 124973 125294 128729 122959 126573 131188 129875 125448 128746 119292 129518 125085 130777 129026 125741 124999 126862 133956 126352 131139 125742 125062 131971 122193 126864 130094 126333 126197 130014 131119 116456 126139 121682 124310 124517 123802 126117 132281 127017 121103 127286 123227 121206 121908 127368 128439 125971 121159 121766 122460 135367 126128 130492 132865 122818 134053 136994 122252 128116 133536 134394 120989 122039 117683 123427 127151 131171 133695 130040 126941 123726 119674 128427 117486 128006 126289 127347 129193 124467 123557 121930 131733 121241 126042 123094 123056 128043 127272 130816 124750 133638 125545 123216 119941 138526 129995 127243 128648 125127 125616 125218 118946 129552 122444 121747 122964 128325 123272 129428 122020 123836 129208 119965 128192 124977 122934 129594 115325 123332 131398 120825 127292 125495 131264 131341 132371 131166 128896 123716 126965 134075 115308 122178 132848 129521 130175 126918 131912 124629 129759 131622 124015 130402 142677 133904 127364 132675 120304 120724 129464 134430 127539 129531 126280 125528 130231 132712 131818 124072 128389 118403 123446 132093 121135 122201 116465 123894 120884 126026 122161 128883 131473 131816 128840 130969 128457 126293 123538 130923 123912 125151 127809 123079 128417 125397 131619 128156 132785 124825 126135 125073 125920 125981 126013 127062 127717 133444 121006 127196 124336 125573 130959 136825 128208 131184 127816 126862 126023 127811 130735 127953 127545 122330 139316 131355 127084 130869 126937 129571 119816 128775 131481 129377 125745 136967 124933 125762 124066 
+  useML      = 0
+In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(): computing solution, as requested by user
+Bayesian Metropolis-Hastings options:
+  --sip_ip_mh_help                      produce help msg for Bayesian 
+                                        Metropolis-Hastings
+  --sip_ip_mh_dataOutputFileName arg (=.)
+                                        name of generic output file
+  --sip_ip_mh_dataOutputAllowAll arg (=0)
+                                        allow all subEnvs write to a generic 
+                                        output file
+  --sip_ip_mh_dataOutputAllowedSet arg  subEnvs that will write to generic 
+                                        output file
+  --sip_ip_mh_totallyMute arg (=0)      totally mute (no printout msg)
+  --sip_ip_mh_initialPosition_dataInputFileName arg (=.)
+                                        name of input file for raw chain 
+  --sip_ip_mh_initialPosition_dataInputFileType arg (=m)
+                                        type of input file for raw chain 
+  --sip_ip_mh_initialProposalCovMatrix_dataInputFileName arg (=.)
+                                        name of input file for raw chain 
+  --sip_ip_mh_initialProposalCovMatrix_dataInputFileType arg (=m)
+                                        type of input file for raw chain 
+  --sip_ip_mh_rawChain_dataInputFileName arg (=.)
+                                        name of input file for raw chain 
+  --sip_ip_mh_rawChain_dataInputFileType arg (=m)
+                                        type of input file for raw chain 
+  --sip_ip_mh_rawChain_size arg (=100)  size of raw chain
+  --sip_ip_mh_rawChain_generateExtra arg (=0)
+                                        generate extra information about raw 
+                                        chain
+  --sip_ip_mh_rawChain_displayPeriod arg (=500)
+                                        period of msg display during raw chain 
+                                        generation
+  --sip_ip_mh_rawChain_measureRunTimes arg (=1)
+                                        measure run times
+  --sip_ip_mh_rawChain_dataOutputPeriod arg (=0)
+                                        period of msg display during raw chain 
+                                        generation
+  --sip_ip_mh_rawChain_dataOutputFileName arg (=.)
+                                        name of output file for raw chain 
+  --sip_ip_mh_rawChain_dataOutputFileType arg (=m)
+                                        type of output file for raw chain 
+  --sip_ip_mh_rawChain_dataOutputAllowAll arg (=0)
+                                        allow all subEnvs to write raw chain to
+                                        an output file
+  --sip_ip_mh_rawChain_dataOutputAllowedSet arg
+                                        subEnvs that will write raw chain to 
+                                        output file
+  --sip_ip_mh_filteredChain_generate arg (=0)
+                                        generate filtered chain
+  --sip_ip_mh_filteredChain_discardedPortion arg (=0)
+                                        initial discarded portion for chain 
+                                        filtering
+  --sip_ip_mh_filteredChain_lag arg (=1)
+                                        spacing for chain filtering
+  --sip_ip_mh_filteredChain_dataOutputFileName arg (=.)
+                                        name of output file for filtered chain
+  --sip_ip_mh_filteredChain_dataOutputFileType arg (=m)
+                                        type of output file for filtered chain
+  --sip_ip_mh_filteredChain_dataOutputAllowAll arg (=0)
+                                        allow all subEnvs to write filt chain 
+                                        to an output file
+  --sip_ip_mh_filteredChain_dataOutputAllowedSet arg
+                                        subEnvs that will write filt chain to 
+                                        output file
+  --sip_ip_mh_displayCandidates arg (=0)
+                                        display candidates in the core MH 
+                                        algorithm
+  --sip_ip_mh_putOutOfBoundsInChain arg (=1)
+                                        put 'out of bound' candidates in chain 
+                                        as well
+  --sip_ip_mh_tk_useLocalHessian arg (=0)
+                                        'proposal' use local Hessian
+  --sip_ip_mh_tk_useNewtonComponent arg (=1)
+                                        'proposal' use Newton component
+  --sip_ip_mh_dr_maxNumExtraStages arg (=0)
+                                        'dr' maximum number of extra stages
+  --sip_ip_mh_dr_listOfScalesForExtraStages arg
+                                        'dr' scales for prop cov matrices from 
+                                        2nd stage on
+  --sip_ip_mh_dr_duringAmNonAdaptiveInt arg (=1)
+                                        'dr' used during 'am' non adaptive 
+                                        interval
+  --sip_ip_mh_am_keepInitialMatrix arg (=0)
+                                        'am' keep initial (given) matrix
+  --sip_ip_mh_am_initialNonAdaptInterval arg (=0)
+                                        'am' initial non adaptation interval
+  --sip_ip_mh_am_adaptInterval arg (=0) 'am' adaptation interval
+  --sip_ip_mh_am_adaptedMatrices_dataOutputPeriod arg (=0)
+                                        period for outputting 'am' adapted 
+                                        matrices
+  --sip_ip_mh_am_adaptedMatrices_dataOutputFileName arg (=.)
+                                        name of output file for 'am' adapted 
+                                        matrices
+  --sip_ip_mh_am_adaptedMatrices_dataOutputFileType arg (=m)
+                                        type of output file for 'am' adapted 
+                                        matrices
+  --sip_ip_mh_am_adaptedMatrices_dataOutputAllowAll arg (=0)
+                                        type of output file for 'am' adapted 
+                                        matrices
+  --sip_ip_mh_am_adaptedMatrices_dataOutputAllowedSet arg
+                                        type of output file for 'am' adapted 
+                                        matrices
+  --sip_ip_mh_am_eta arg (=1)           'am' eta
+  --sip_ip_mh_am_epsilon arg (=1.0000000000000001e-05)
+                                        'am' epsilon
+  --sip_ip_mh_enableBrooksGelmanConvMonitor arg (=0)
+                                        assess convergence using Brooks-Gelman 
+                                        metric
+  --sip_ip_mh_BrooksGelmanLag arg (=100)
+                                        number of chain positions before 
+                                        starting to compute metric
+
+In uqMetropolisHastingsSGOptionsClass::scanOptionsValues(): after reading values of options with prefix 'sip_ip_mh_', state of object is:
+sip_ip_mh_dataOutputFileName = .
+sip_ip_mh_dataOutputAllowAll = 0
+sip_ip_mh_dataOutputAllowedSet = 0 1 
+sip_ip_mh_totallyMute = 0
+sip_ip_mh_initialPosition_dataInputFileName = .
+sip_ip_mh_initialPosition_dataInputFileType = m
+sip_ip_mh_initialProposalCovMatrix_dataInputFileName = .
+sip_ip_mh_initialProposalCovMatrix_dataInputFileType = m
+sip_ip_mh_rawChain_dataInputFileName = .
+sip_ip_mh_rawChain_dataInputFileType = m
+sip_ip_mh_rawChain_size = 150000
+sip_ip_mh_rawChain_generateExtra = 0
+sip_ip_mh_rawChain_displayPeriod = 1000
+sip_ip_mh_rawChain_measureRunTimes = 1
+sip_ip_mh_rawChain_dataOutputPeriod = 1000
+sip_ip_mh_rawChain_dataOutputFileName = outputData/rawChain_mh
+sip_ip_mh_rawChain_dataOutputFileType = m
+sip_ip_mh_rawChain_dataOutputAllowAll = 0
+sip_ip_mh_rawChain_dataOutputAllowedSet = 0 1 
+sip_ip_mh_filteredChain_generate = 1
+sip_ip_mh_filteredChain_discardedPortion = 0.333
+sip_ip_mh_filteredChain_lag = 10
+sip_ip_mh_filteredChain_dataOutputFileName = outputData/filtChain_mh
+sip_ip_mh_filteredChain_dataOutputFileType = m
+sip_ip_mh_filteredChain_dataOutputAllowAll = 0
+sip_ip_mh_filteredChain_dataOutputAllowedSet = 0 
+sip_ip_mh_displayCandidates = 0
+sip_ip_mh_putOutOfBoundsInChain = 0
+sip_ip_mh_tk_useLocalHessian = 0
+sip_ip_mh_tk_useNewtonComponent = 1
+sip_ip_mh_dr_maxNumExtraStages = 3
+sip_ip_mh_dr_listOfScalesForExtraStages = 5 10 33 
+sip_ip_mh_dr_duringAmNonAdaptiveInt = 1
+sip_ip_mh_am_keepInitialMatrix = 0
+sip_ip_mh_am_initialNonAdaptInterval = 1000
+sip_ip_mh_am_adaptInterval = 1000
+sip_ip_mh_am_adaptedMatrices_dataOutputPeriod = 10000
+sip_ip_mh_am_adaptedMatrices_dataOutputFileName = outputData/adaptedMatrix
+sip_ip_mh_am_adaptedMatrices_dataOutputFileType = m
+sip_ip_mh_am_adaptedMatrices_dataOutputAllowAll = 0
+sip_ip_mh_am_adaptedMatrices_dataOutputAllowedSet = 
+sip_ip_mh_am_eta = 5.76
+sip_ip_mh_am_epsilon = 1e-05
+sip_ip_mh_enableBrooksGelmanConvMonitor = 0
+sip_ip_mh_BrooksGelmanLag = 100
+
+Entering uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1): prefix = sip_ip_, alternativeOptionsValues = 0, m_env.optionsInputFileName() = test1_prudenci_mac.inp, m_initialProposalCovMatrix = 1 
+Entering uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
+In uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor(): just instantiated a 'ScaledCovMatrix' TK class
+Leaving uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
+Leaving uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)
+Starting the generation of Markov chain sip_ip_mh_rawChain, with 150000 positions...
+
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): contents of initial position are:0 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): targetPdf.domaintSet() info is:In uqVectorSpaceClass<V,M>::print(): nothing to be printed
+
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 999: just wrote (per period request) 1000 chain positions , 0 <= pos <= 999
+Finished generating 1000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 5.66042e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 1999: just wrote (per period request) 1000 chain positions , 1000 <= pos <= 1999
+Finished generating 2000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 2999: just wrote (per period request) 1000 chain positions , 2000 <= pos <= 2999
+Finished generating 3000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 3999: just wrote (per period request) 1000 chain positions , 3000 <= pos <= 3999
+Finished generating 4000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 4999: just wrote (per period request) 1000 chain positions , 4000 <= pos <= 4999
+Finished generating 5000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 5999: just wrote (per period request) 1000 chain positions , 5000 <= pos <= 5999
+Finished generating 6000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 6999: just wrote (per period request) 1000 chain positions , 6000 <= pos <= 6999
+Finished generating 7000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 7999: just wrote (per period request) 1000 chain positions , 7000 <= pos <= 7999
+Finished generating 8000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 8999: just wrote (per period request) 1000 chain positions , 8000 <= pos <= 8999
+Finished generating 9000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 9999: just wrote (per period request) 1000 chain positions , 9000 <= pos <= 9999
+Finished generating 10000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 10999: just wrote (per period request) 1000 chain positions , 10000 <= pos <= 10999
+Finished generating 11000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.84014e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 11999: just wrote (per period request) 1000 chain positions , 11000 <= pos <= 11999
+Finished generating 12000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 12999: just wrote (per period request) 1000 chain positions , 12000 <= pos <= 12999
+Finished generating 13000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 13999: just wrote (per period request) 1000 chain positions , 13000 <= pos <= 13999
+Finished generating 14000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 14999: just wrote (per period request) 1000 chain positions , 14000 <= pos <= 14999
+Finished generating 15000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 15999: just wrote (per period request) 1000 chain positions , 15000 <= pos <= 15999
+Finished generating 16000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 16999: just wrote (per period request) 1000 chain positions , 16000 <= pos <= 16999
+Finished generating 17000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 17999: just wrote (per period request) 1000 chain positions , 17000 <= pos <= 17999
+Finished generating 18000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 18999: just wrote (per period request) 1000 chain positions , 18000 <= pos <= 18999
+Finished generating 19000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 19999: just wrote (per period request) 1000 chain positions , 19000 <= pos <= 19999
+Finished generating 20000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 20999: just wrote (per period request) 1000 chain positions , 20000 <= pos <= 20999
+Finished generating 21000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.74875e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 21999: just wrote (per period request) 1000 chain positions , 21000 <= pos <= 21999
+Finished generating 22000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 22999: just wrote (per period request) 1000 chain positions , 22000 <= pos <= 22999
+Finished generating 23000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 23999: just wrote (per period request) 1000 chain positions , 23000 <= pos <= 23999
+Finished generating 24000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 24999: just wrote (per period request) 1000 chain positions , 24000 <= pos <= 24999
+Finished generating 25000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 25999: just wrote (per period request) 1000 chain positions , 25000 <= pos <= 25999
+Finished generating 26000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 26999: just wrote (per period request) 1000 chain positions , 26000 <= pos <= 26999
+Finished generating 27000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 27999: just wrote (per period request) 1000 chain positions , 27000 <= pos <= 27999
+Finished generating 28000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 28999: just wrote (per period request) 1000 chain positions , 28000 <= pos <= 28999
+Finished generating 29000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 29999: just wrote (per period request) 1000 chain positions , 29000 <= pos <= 29999
+Finished generating 30000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 30999: just wrote (per period request) 1000 chain positions , 30000 <= pos <= 30999
+Finished generating 31000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.675e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 31999: just wrote (per period request) 1000 chain positions , 31000 <= pos <= 31999
+Finished generating 32000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 32999: just wrote (per period request) 1000 chain positions , 32000 <= pos <= 32999
+Finished generating 33000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 33999: just wrote (per period request) 1000 chain positions , 33000 <= pos <= 33999
+Finished generating 34000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 34999: just wrote (per period request) 1000 chain positions , 34000 <= pos <= 34999
+Finished generating 35000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 35999: just wrote (per period request) 1000 chain positions , 35000 <= pos <= 35999
+Finished generating 36000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 36999: just wrote (per period request) 1000 chain positions , 36000 <= pos <= 36999
+Finished generating 37000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 37999: just wrote (per period request) 1000 chain positions , 37000 <= pos <= 37999
+Finished generating 38000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 38999: just wrote (per period request) 1000 chain positions , 38000 <= pos <= 38999
+Finished generating 39000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 39999: just wrote (per period request) 1000 chain positions , 39000 <= pos <= 39999
+Finished generating 40000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 40999: just wrote (per period request) 1000 chain positions , 40000 <= pos <= 40999
+Finished generating 41000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.66999e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 41999: just wrote (per period request) 1000 chain positions , 41000 <= pos <= 41999
+Finished generating 42000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 42999: just wrote (per period request) 1000 chain positions , 42000 <= pos <= 42999
+Finished generating 43000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 43999: just wrote (per period request) 1000 chain positions , 43000 <= pos <= 43999
+Finished generating 44000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 44999: just wrote (per period request) 1000 chain positions , 44000 <= pos <= 44999
+Finished generating 45000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 45999: just wrote (per period request) 1000 chain positions , 45000 <= pos <= 45999
+Finished generating 46000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 46999: just wrote (per period request) 1000 chain positions , 46000 <= pos <= 46999
+Finished generating 47000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 47999: just wrote (per period request) 1000 chain positions , 47000 <= pos <= 47999
+Finished generating 48000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 48999: just wrote (per period request) 1000 chain positions , 48000 <= pos <= 48999
+Finished generating 49000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 49999: just wrote (per period request) 1000 chain positions , 49000 <= pos <= 49999
+Finished generating 50000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 50999: just wrote (per period request) 1000 chain positions , 50000 <= pos <= 50999
+Finished generating 51000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.67597e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 51999: just wrote (per period request) 1000 chain positions , 51000 <= pos <= 51999
+Finished generating 52000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 52999: just wrote (per period request) 1000 chain positions , 52000 <= pos <= 52999
+Finished generating 53000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 53999: just wrote (per period request) 1000 chain positions , 53000 <= pos <= 53999
+Finished generating 54000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 54999: just wrote (per period request) 1000 chain positions , 54000 <= pos <= 54999
+Finished generating 55000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 55999: just wrote (per period request) 1000 chain positions , 55000 <= pos <= 55999
+Finished generating 56000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 56999: just wrote (per period request) 1000 chain positions , 56000 <= pos <= 56999
+Finished generating 57000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 57999: just wrote (per period request) 1000 chain positions , 57000 <= pos <= 57999
+Finished generating 58000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 58999: just wrote (per period request) 1000 chain positions , 58000 <= pos <= 58999
+Finished generating 59000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 59999: just wrote (per period request) 1000 chain positions , 59000 <= pos <= 59999
+Finished generating 60000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 60999: just wrote (per period request) 1000 chain positions , 60000 <= pos <= 60999
+Finished generating 61000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.64121e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 61999: just wrote (per period request) 1000 chain positions , 61000 <= pos <= 61999
+Finished generating 62000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 62999: just wrote (per period request) 1000 chain positions , 62000 <= pos <= 62999
+Finished generating 63000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 63999: just wrote (per period request) 1000 chain positions , 63000 <= pos <= 63999
+Finished generating 64000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 64999: just wrote (per period request) 1000 chain positions , 64000 <= pos <= 64999
+Finished generating 65000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 65999: just wrote (per period request) 1000 chain positions , 65000 <= pos <= 65999
+Finished generating 66000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 66999: just wrote (per period request) 1000 chain positions , 66000 <= pos <= 66999
+Finished generating 67000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 67999: just wrote (per period request) 1000 chain positions , 67000 <= pos <= 67999
+Finished generating 68000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 68999: just wrote (per period request) 1000 chain positions , 68000 <= pos <= 68999
+Finished generating 69000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 69999: just wrote (per period request) 1000 chain positions , 69000 <= pos <= 69999
+Finished generating 70000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 70999: just wrote (per period request) 1000 chain positions , 70000 <= pos <= 70999
+Finished generating 71000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.61789e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 71999: just wrote (per period request) 1000 chain positions , 71000 <= pos <= 71999
+Finished generating 72000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 72999: just wrote (per period request) 1000 chain positions , 72000 <= pos <= 72999
+Finished generating 73000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 73999: just wrote (per period request) 1000 chain positions , 73000 <= pos <= 73999
+Finished generating 74000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 74999: just wrote (per period request) 1000 chain positions , 74000 <= pos <= 74999
+Finished generating 75000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 75999: just wrote (per period request) 1000 chain positions , 75000 <= pos <= 75999
+Finished generating 76000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 76999: just wrote (per period request) 1000 chain positions , 76000 <= pos <= 76999
+Finished generating 77000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 77999: just wrote (per period request) 1000 chain positions , 77000 <= pos <= 77999
+Finished generating 78000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 78999: just wrote (per period request) 1000 chain positions , 78000 <= pos <= 78999
+Finished generating 79000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 79999: just wrote (per period request) 1000 chain positions , 79000 <= pos <= 79999
+Finished generating 80000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 80999: just wrote (per period request) 1000 chain positions , 80000 <= pos <= 80999
+Finished generating 81000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.60887e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 81999: just wrote (per period request) 1000 chain positions , 81000 <= pos <= 81999
+Finished generating 82000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 82999: just wrote (per period request) 1000 chain positions , 82000 <= pos <= 82999
+Finished generating 83000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 83999: just wrote (per period request) 1000 chain positions , 83000 <= pos <= 83999
+Finished generating 84000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 84999: just wrote (per period request) 1000 chain positions , 84000 <= pos <= 84999
+Finished generating 85000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 85999: just wrote (per period request) 1000 chain positions , 85000 <= pos <= 85999
+Finished generating 86000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 86999: just wrote (per period request) 1000 chain positions , 86000 <= pos <= 86999
+Finished generating 87000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 87999: just wrote (per period request) 1000 chain positions , 87000 <= pos <= 87999
+Finished generating 88000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 88999: just wrote (per period request) 1000 chain positions , 88000 <= pos <= 88999
+Finished generating 89000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 89999: just wrote (per period request) 1000 chain positions , 89000 <= pos <= 89999
+Finished generating 90000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 90999: just wrote (per period request) 1000 chain positions , 90000 <= pos <= 90999
+Finished generating 91000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.62069e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 91999: just wrote (per period request) 1000 chain positions , 91000 <= pos <= 91999
+Finished generating 92000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 92999: just wrote (per period request) 1000 chain positions , 92000 <= pos <= 92999
+Finished generating 93000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 93999: just wrote (per period request) 1000 chain positions , 93000 <= pos <= 93999
+Finished generating 94000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 94999: just wrote (per period request) 1000 chain positions , 94000 <= pos <= 94999
+Finished generating 95000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 95999: just wrote (per period request) 1000 chain positions , 95000 <= pos <= 95999
+Finished generating 96000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 96999: just wrote (per period request) 1000 chain positions , 96000 <= pos <= 96999
+Finished generating 97000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 97999: just wrote (per period request) 1000 chain positions , 97000 <= pos <= 97999
+Finished generating 98000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 98999: just wrote (per period request) 1000 chain positions , 98000 <= pos <= 98999
+Finished generating 99000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 99999: just wrote (per period request) 1000 chain positions , 99000 <= pos <= 99999
+Finished generating 100000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 100999: just wrote (per period request) 1000 chain positions , 100000 <= pos <= 100999
+Finished generating 101000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.62004e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 101999: just wrote (per period request) 1000 chain positions , 101000 <= pos <= 101999
+Finished generating 102000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 102999: just wrote (per period request) 1000 chain positions , 102000 <= pos <= 102999
+Finished generating 103000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 103999: just wrote (per period request) 1000 chain positions , 103000 <= pos <= 103999
+Finished generating 104000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 104999: just wrote (per period request) 1000 chain positions , 104000 <= pos <= 104999
+Finished generating 105000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 105999: just wrote (per period request) 1000 chain positions , 105000 <= pos <= 105999
+Finished generating 106000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 106999: just wrote (per period request) 1000 chain positions , 106000 <= pos <= 106999
+Finished generating 107000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 107999: just wrote (per period request) 1000 chain positions , 107000 <= pos <= 107999
+Finished generating 108000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 108999: just wrote (per period request) 1000 chain positions , 108000 <= pos <= 108999
+Finished generating 109000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 109999: just wrote (per period request) 1000 chain positions , 109000 <= pos <= 109999
+Finished generating 110000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 110999: just wrote (per period request) 1000 chain positions , 110000 <= pos <= 110999
+Finished generating 111000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.61004e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 111999: just wrote (per period request) 1000 chain positions , 111000 <= pos <= 111999
+Finished generating 112000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 112999: just wrote (per period request) 1000 chain positions , 112000 <= pos <= 112999
+Finished generating 113000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 113999: just wrote (per period request) 1000 chain positions , 113000 <= pos <= 113999
+Finished generating 114000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 114999: just wrote (per period request) 1000 chain positions , 114000 <= pos <= 114999
+Finished generating 115000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 115999: just wrote (per period request) 1000 chain positions , 115000 <= pos <= 115999
+Finished generating 116000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 116999: just wrote (per period request) 1000 chain positions , 116000 <= pos <= 116999
+Finished generating 117000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 117999: just wrote (per period request) 1000 chain positions , 117000 <= pos <= 117999
+Finished generating 118000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 118999: just wrote (per period request) 1000 chain positions , 118000 <= pos <= 118999
+Finished generating 119000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 119999: just wrote (per period request) 1000 chain positions , 119000 <= pos <= 119999
+Finished generating 120000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 120999: just wrote (per period request) 1000 chain positions , 120000 <= pos <= 120999
+Finished generating 121000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.60556e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 121999: just wrote (per period request) 1000 chain positions , 121000 <= pos <= 121999
+Finished generating 122000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 122999: just wrote (per period request) 1000 chain positions , 122000 <= pos <= 122999
+Finished generating 123000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 123999: just wrote (per period request) 1000 chain positions , 123000 <= pos <= 123999
+Finished generating 124000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 124999: just wrote (per period request) 1000 chain positions , 124000 <= pos <= 124999
+Finished generating 125000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 125999: just wrote (per period request) 1000 chain positions , 125000 <= pos <= 125999
+Finished generating 126000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 126999: just wrote (per period request) 1000 chain positions , 126000 <= pos <= 126999
+Finished generating 127000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 127999: just wrote (per period request) 1000 chain positions , 127000 <= pos <= 127999
+Finished generating 128000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 128999: just wrote (per period request) 1000 chain positions , 128000 <= pos <= 128999
+Finished generating 129000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 129999: just wrote (per period request) 1000 chain positions , 129000 <= pos <= 129999
+Finished generating 130000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 130999: just wrote (per period request) 1000 chain positions , 130000 <= pos <= 130999
+Finished generating 131000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.5959e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 131999: just wrote (per period request) 1000 chain positions , 131000 <= pos <= 131999
+Finished generating 132000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 132999: just wrote (per period request) 1000 chain positions , 132000 <= pos <= 132999
+Finished generating 133000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 133999: just wrote (per period request) 1000 chain positions , 133000 <= pos <= 133999
+Finished generating 134000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 134999: just wrote (per period request) 1000 chain positions , 134000 <= pos <= 134999
+Finished generating 135000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 135999: just wrote (per period request) 1000 chain positions , 135000 <= pos <= 135999
+Finished generating 136000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 136999: just wrote (per period request) 1000 chain positions , 136000 <= pos <= 136999
+Finished generating 137000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 137999: just wrote (per period request) 1000 chain positions , 137000 <= pos <= 137999
+Finished generating 138000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 138999: just wrote (per period request) 1000 chain positions , 138000 <= pos <= 138999
+Finished generating 139000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 139999: just wrote (per period request) 1000 chain positions , 139000 <= pos <= 139999
+Finished generating 140000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 140999: just wrote (per period request) 1000 chain positions , 140000 <= pos <= 140999
+Finished generating 141000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): just wrote last adapted proposal cov matrix contents = 3.60336e-06 
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 141999: just wrote (per period request) 1000 chain positions , 141000 <= pos <= 141999
+Finished generating 142000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 142999: just wrote (per period request) 1000 chain positions , 142000 <= pos <= 142999
+Finished generating 143000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 143999: just wrote (per period request) 1000 chain positions , 143000 <= pos <= 143999
+Finished generating 144000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 144999: just wrote (per period request) 1000 chain positions , 144000 <= pos <= 144999
+Finished generating 145000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 145999: just wrote (per period request) 1000 chain positions , 145000 <= pos <= 145999
+Finished generating 146000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 146999: just wrote (per period request) 1000 chain positions , 146000 <= pos <= 146999
+Finished generating 147000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 147999: just wrote (per period request) 1000 chain positions , 147000 <= pos <= 147999
+Finished generating 148000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 148999: just wrote (per period request) 1000 chain positions , 148000 <= pos <= 148999
+Finished generating 149000 positions
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(), for chain position of id = 149999: just wrote (per period request) 1000 chain positions , 149000 <= pos <= 149999
+Finished generating 150000 positions
+Finished the generation of Markov chain sip_ip_mh_rawChain, with sub 150000 positions
+Some information about this chain:
+  Chain run time       = 7.78244 seconds
+
+ Breaking of the chain run time:
+
+  Candidate run time   = 0.676529 seconds (8.69302%)
+  Num target calls  = 266441
+  Target d. run time   = 2.65789 seconds (34.1523%)
+  Avg target run time   = 9.97551e-06 seconds
+  Mh alpha run time    = 0.011289 seconds (0.145057%)
+  Dr alpha run time    = 2.75685 seconds (35.424%)
+----------------------   --------------
+  Sum                  = 6.10255 seconds (78.4144%)
+
+ Other run times:
+  DR run time          = 4.37679 seconds (56.2394%)
+  AM run time          = 0.447552 seconds (5.75079%)
+  Number of DRs = 116441(num_DRs/chain_size = 0.776273)
+  Out of target support in DR = 0
+  Rejection percentage = 9.632 %
+  Out of target support percentage = 0 %
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = sip_ip_mh_, chain name = sip_ip_mh_rawChain: about to try to open generic output file '..m', subId = 0, subenv is allowed to write (1/true or 0/false) = 1...
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = sip_ip_mh_, raw chain name = sip_ip_mh_rawChain: returned from opening generic output file '..m', subId = 0
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = sip_ip_mh_, raw chain name = sip_ip_mh_rawChain: about to try to write raw sub chain output file 'outputData/rawChain_mh.m', subId = 0, subenv is allowed to write  1/true or 0/false) = 1...
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = sip_ip_mh_, raw chain name = sip_ip_mh_rawChain: returned from writing raw sub chain output file 'outputData/rawChain_mh.m', subId = 0
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = sip_ip_mh_, raw chain name = sip_ip_mh_rawChain: about to try to write raw unified chain output file 'outputData/rawChain_mh.m', subId = 0...
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = sip_ip_mh_, raw chain name = sip_ip_mh_rawChain: returned from writing raw unified chain output file 'outputData/rawChain_mh.m', subId = 0
+Entering uqSequenceOfVectorsClass<V,M>::filter(): initialPos = 49950, spacing = 10, subSequenceSize = 150000
+Leaving uqSequenceOfVectorsClass<V,M>::filter(): initialPos = 49950, spacing = 10, subSequenceSize = 10005
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = sip_ip_mh_: checking necessity of opening output files for filtered chain sip_ip_mh_filtChain...
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = sip_ip_mh_: closed sub output file 'outputData/filtChain_mh' for filtered chain sip_ip_mh_filtChain
+In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = sip_ip_mh_: closed unified output file 'outputData/filtChain_mh' for filtered chain sip_ip_mh_filtChain
+
+In uqSequentialVectorRealizerClass<V,M>::constructor(): m_chain.subSequenceSize() = 10005
+
+Leaving solveSip()
+Ending run at Mon Aug 26 20:41:29 2013
+Total run time = 8 seconds
