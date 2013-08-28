@@ -51,6 +51,31 @@ exSimpleStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simple
 dist_exSimpleStatisticalInverseProblem_gsl_DATA = ${exSimpleStatisticalInverseProblem_gsl_DATA} \
 																						${exSimpleStatisticalInverseProblem_gsl_HEADERS} \
 																						${exSimpleStatisticalInverseProblem_gsl_SOURCES}
+		
+#############################
+# simpleStatisticalForwardProblem #
+#############################
+exSimpleStatisticalForwardProblem_gsldir = $(prefix)/examples/simpleStatisticalForwardProblem
+
+exSimpleStatisticalForwardProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalForwardProblem/tests/test_2013_08_27/simple_sfp_example.inp
+exSimpleStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/Makefile_sfp_example_margarida
+
+exSimpleStatisticalForwardProblem_gsl_PROGRAMS = exSimpleStatisticalForwardProblem_gsl
+
+exSimpleStatisticalForwardProblem_gsl_SOURCES = $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_main.C
+exSimpleStatisticalForwardProblem_gsl_SOURCES += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.C
+exSimpleStatisticalForwardProblem_gsl_SOURCES += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.C
+
+exSimpleStatisticalForwardProblem_gsl_HEADERS = $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.h
+exSimpleStatisticalForwardProblem_gsl_HEADERS += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.h
+
+exSimpleStatisticalForwardProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
+
+exSimpleStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalForwardProblem/src $(QUESO_CPPFLAGS)
+
+dist_exSimpleStatisticalForwardProblem_gsl_DATA = ${exSimpleStatisticalForwardProblem_gsl_DATA} \
+																						${exSimpleStatisticalForwardProblem_gsl_HEADERS} \
+																						${exSimpleStatisticalForwardProblem_gsl_SOURCES}
 																						
 ####################################
 # statisticalForwardProblemExample # 

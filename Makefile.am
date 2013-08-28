@@ -91,6 +91,7 @@ MAINTAINERCLEANFILES =     \
 	examples/tga/Makefile.in \
 	examples/tga/src/Makefile.in \
 	examples/simpleStatisticalInverseProblem/src/Makefile.in \
+	examples/simpleStatisticalForwardProblem/src/Makefile.in \
 	doxygen/Makefile.in
 
 MOSTLYCLEANFILES = $(DX_CLEANFILES)
