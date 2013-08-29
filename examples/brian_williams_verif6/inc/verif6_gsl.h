@@ -13,10 +13,10 @@ double likelihoodRoutine(const uqGslVectorClass& paramValues,
                          uqGslVectorClass*       hessianEffect);
 
 struct likelihoodDataStruct {
-  uqGslVectorClass* aVec;    // p x 1
-  uqGslVectorClass* bVec;    // p x 1
-  double            sigmaTotal;
-  uqGslVectorClass* ySamples; // n x 1
+  std::vector<double>* as;
+  uqGslVectorClass*    bVec;     // p x 1
+  std::vector<double>* sigmas;
+  uqGslMatrixClass*    ySamples; // n x 2
 };
 
 #endif // __VERIF6_GSL_H__

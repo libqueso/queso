@@ -51,12 +51,15 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
   ////////////////////////////////////////////////////////
   // Step 1 of 5: Instantiate the parameter space
   ////////////////////////////////////////////////////////
-  unsigned int p = 1;
+  unsigned int p = 2;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> paramSpace(env, "param_", p, NULL);
-  uqGslVectorClass aVec(paramSpace.zeroVector());
-  aVec[0] = 126831.7;
+  std::vector<double> as(3,0.);
+  as[0] = 121370.92;
+  as[1] =  17333.65;
+  as[2] =  -9378.29;
   uqGslVectorClass bVec(paramSpace.zeroVector());
-  bVec[0] = 112136.1;
+  bVec[0] = 50.45;
+  bVec[1] = -2.99;
 
   ////////////////////////////////////////////////////////
   // Step 2 of 5: Instantiate the parameter domain
@@ -73,24 +76,28 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
   ////////////////////////////////////////////////////////
   // Step 3 of 5: Instantiate the likelihood function object
   ////////////////////////////////////////////////////////
-  unsigned int n = 400;
+  unsigned int n = 60;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> dataSpace(env, "data_", n, NULL);
 
-  double sigmaTotal = 4229.55;  
+  std::vector<double> sigmas(4,0.);
+  sigmas[0] = 4.148751;
+  sigmas[1] = 4.170606;
+  sigmas[2] = 4.190899;
+  sigmas[3] = 4.209629;
 
   std::set<unsigned int> tmpSet;
   tmpSet.insert(env.subId());
 
-  uqGslVectorClass ySamples(dataSpace.zeroVector());
+  uqGslMatrixClass ySamples(env,dataSpace.map(),(unsigned int) 2);
   ySamples.subReadContents("input/dataPoints",
                            "m",
                             tmpSet);
 
   struct likelihoodDataStruct likelihoodData;
-  likelihoodData.aVec       = &aVec;
-  likelihoodData.bVec       = &bVec;
-  likelihoodData.sigmaTotal = sigmaTotal;
-  likelihoodData.ySamples   = &ySamples;
+  likelihoodData.as       = &as;
+  likelihoodData.bVec     = &bVec;
+  likelihoodData.sigmas   = &sigmas;
+  likelihoodData.ySamples = &ySamples;
 
   uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
     likelihoodFunctionObj("like_",
@@ -110,13 +117,18 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
 
   if ((env.subDisplayFile()) && (env.displayVerbosity() >= 2)) {
     *env.subDisplayFile() << "In solveSip():"
-                          << "\n  p          = " << p
-                          << "\n  aVec       = " << aVec
-                          << "\n  bVec       = " << bVec
-                          << "\n  n          = " << n
-                          << "\n  sigmaTotal = " << sigmaTotal
-                          << "\n  ySamples   = " << ySamples
-                          << "\n  useML      = " << useML
+                          << "\n  p         = " << p
+                          << "\n  as[0]     = " << as[0]
+                          << "\n  as[1]     = " << as[1]
+                          << "\n  as[2]     = " << as[2]
+                          << "\n  bVec      = " << bVec
+                          << "\n  n         = " << n
+                          << "\n  sigmas[0] = " << sigmas[0]
+                          << "\n  sigmas[1] = " << sigmas[1]
+                          << "\n  sigmas[2] = " << sigmas[2]
+                          << "\n  sigmas[3] = " << sigmas[3]
+                          << "\n  ySamples  = " << ySamples
+                          << "\n  useML     = " << useML
                           << std::endl;
   }
 
@@ -188,12 +200,12 @@ double likelihoodRoutine(
   }
 
   struct likelihoodDataStruct* likelihoodData = (likelihoodDataStruct *) functionDataPtr; 
-  uqGslVectorClass aVec(*(likelihoodData->aVec));
+  std::vector<double>& as = *(likelihoodData->as);
   uqGslVectorClass bVec(*(likelihoodData->bVec));
-  unsigned int p = aVec.sizeLocal();
-  double sigmaTotal = likelihoodData->sigmaTotal;
-  uqGslVectorClass ySamples(*(likelihoodData->ySamples));
-  unsigned int n = ySamples.sizeLocal();
+  unsigned int p = bVec.sizeLocal();
+  std::vector<double>& sigmas = *(likelihoodData->sigmas);
+  uqGslMatrixClass ySamples(*(likelihoodData->ySamples));
+  unsigned int n = ySamples.numRowsLocal();
 
   UQ_FATAL_TEST_MACRO(paramValues.sizeLocal() != p,
                       env.fullRank(),
@@ -204,12 +216,17 @@ double likelihoodRoutine(
     *env.subDisplayFile() << "In likelihoodRoutine()"
                           << ": likelihoodCounter = " << likelihoodCounter
                           << ", params = "            << paramValues
-                          << ", p = "                 << p
-                          << ", aVec = "              << aVec
-                          << ", bVec = "              << bVec
-                          << ", sigmaTotal = "        << sigmaTotal
-                          << ", n = "                 << n
-                          << ", ySamples = "          << ySamples
+                          << "\n  p         = " << p
+                          << "\n  as[0]     = " << as[0]
+                          << "\n  as[1]     = " << as[1]
+                          << "\n  as[2]     = " << as[2]
+                          << "\n  bVec      = " << bVec
+                          << "\n  n         = " << n
+                          << "\n  sigmas[0] = " << sigmas[0]
+                          << "\n  sigmas[1] = " << sigmas[1]
+                          << "\n  sigmas[2] = " << sigmas[2]
+                          << "\n  sigmas[3] = " << sigmas[3]
+                          << "\n ySamples   = " << ySamples
                           << std::endl;
   }
 
@@ -217,7 +234,7 @@ double likelihoodRoutine(
   // Compute likelihood
   //******************************************************************************
   for (unsigned int i = 0; i < n; ++i) {
-    double diff = (ySamples[i] - (aVec[0] + bVec[0]*paramValues[0]))/sigmaTotal;
+    double diff = 0.;//(ySamples[i] - (aVec[0] + bVec[0]*paramValues[0]))/sigmaTotal;
     totalLnLikelihood -= 0.5 * diff * diff;
     if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
       *env.subDisplayFile() << "In likelihoodRoutine()"
