@@ -98,11 +98,11 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
   dataMat.getColumn(1,yVec);
 
   struct likelihoodDataStruct likelihoodData;
-  likelihoodData.as       = &as;
-  likelihoodData.bVec     = &bVec;
-  likelihoodData.sigmas   = &sigmas;
-  likelihoodData.tVec     = &tVec;
-  likelihoodData.yVec     = &yVec;
+  likelihoodData.as     = &as;
+  likelihoodData.bVec   = &bVec;
+  likelihoodData.sigmas = &sigmas;
+  likelihoodData.tVec   = &tVec;
+  likelihoodData.yVec   = &yVec;
 
   uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
     likelihoodFunctionObj("like_",
@@ -114,9 +114,13 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
   ////////////////////////////////////////////////////////
   // Step 4 of 5: Instantiate the inverse problem
   ////////////////////////////////////////////////////////
-  uqUniformVectorRVClass<uqGslVectorClass,uqGslMatrixClass> priorRv("prior_", *paramDomain);
+  uqGslVectorClass priorMeanVec(paramSpace.zeroVector());
+  uqGslMatrixClass priorCovMat (paramSpace.zeroVector());
+  priorCovMat(0,0) = 1./900.;
+  priorCovMat(1,1) = 1./900.;
+  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> priorRv("prior_", *paramDomain, priorMeanVec, priorCovMat);
 
-  uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass> postRv ("post_", paramSpace);
+  uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass> postRv("post_", paramSpace);
 
   uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass> sip("sip_", NULL, priorRv, likelihoodFunctionObj, postRv);
 
@@ -143,9 +147,11 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
   ////////////////////////////////////////////////////////
   uqGslVectorClass initialValues(paramSpace.zeroVector());
   initialValues[0] = 0.;
+  initialValues[1] = 0.;
 
   uqGslMatrixClass proposalCovMat(paramSpace.zeroVector());
   proposalCovMat(0,0) = 1.;
+  proposalCovMat(1,1) = 1.;
 
   if (useML) {
     sip.solveWithBayesMLSampling();
