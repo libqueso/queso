@@ -88,16 +88,21 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
   std::set<unsigned int> tmpSet;
   tmpSet.insert(env.subId());
 
-  uqGslMatrixClass ySamples(env,dataSpace.map(),(unsigned int) 2);
-  ySamples.subReadContents("input/dataPoints",
-                           "m",
-                            tmpSet);
+  uqGslMatrixClass dataMat(env,dataSpace.map(),(unsigned int) 2);
+  uqGslVectorClass tVec(dataSpace.zeroVector());
+  uqGslVectorClass yVec(dataSpace.zeroVector());
+  dataMat.subReadContents("input/dataPoints",
+                          "m",
+                          tmpSet);
+  dataMat.getColumn(0,tVec);
+  dataMat.getColumn(1,yVec);
 
   struct likelihoodDataStruct likelihoodData;
   likelihoodData.as       = &as;
   likelihoodData.bVec     = &bVec;
   likelihoodData.sigmas   = &sigmas;
-  likelihoodData.ySamples = &ySamples;
+  likelihoodData.tVec     = &tVec;
+  likelihoodData.yVec     = &yVec;
 
   uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
     likelihoodFunctionObj("like_",
@@ -127,7 +132,8 @@ void solveSip(const uqFullEnvironmentClass& env, bool useML)
                           << "\n  sigmas[1] = " << sigmas[1]
                           << "\n  sigmas[2] = " << sigmas[2]
                           << "\n  sigmas[3] = " << sigmas[3]
-                          << "\n  ySamples  = " << ySamples
+                          << "\n  tVec      = " << tVec
+                          << "\n  yVec      = " << yVec
                           << "\n  useML     = " << useML
                           << std::endl;
   }
@@ -204,8 +210,9 @@ double likelihoodRoutine(
   uqGslVectorClass bVec(*(likelihoodData->bVec));
   unsigned int p = bVec.sizeLocal();
   std::vector<double>& sigmas = *(likelihoodData->sigmas);
-  uqGslMatrixClass ySamples(*(likelihoodData->ySamples));
-  unsigned int n = ySamples.numRowsLocal();
+  uqGslVectorClass tVec(*(likelihoodData->tVec));
+  uqGslVectorClass yVec(*(likelihoodData->yVec));
+  unsigned int n = yVec.sizeLocal();
 
   UQ_FATAL_TEST_MACRO(paramValues.sizeLocal() != p,
                       env.fullRank(),
@@ -226,7 +233,8 @@ double likelihoodRoutine(
                           << "\n  sigmas[1] = " << sigmas[1]
                           << "\n  sigmas[2] = " << sigmas[2]
                           << "\n  sigmas[3] = " << sigmas[3]
-                          << "\n ySamples   = " << ySamples
+                          << "\n  tVec      = " << tVec
+                          << "\n  yVec      = " << yVec
                           << std::endl;
   }
 
@@ -234,7 +242,8 @@ double likelihoodRoutine(
   // Compute likelihood
   //******************************************************************************
   for (unsigned int i = 0; i < n; ++i) {
-    double diff = 0.;//(ySamples[i] - (aVec[0] + bVec[0]*paramValues[0]))/sigmaTotal;
+    double t = tVec[i];
+    double diff = (yVec[i] - as[0] - as[1]*t - as[2]*t*t - scalarProduct(bVec,paramValues))/sigmas[i%4];
     totalLnLikelihood -= 0.5 * diff * diff;
     if ((env.subDisplayFile()) && (env.displayVerbosity() >= 4)) {
       *env.subDisplayFile() << "In likelihoodRoutine()"

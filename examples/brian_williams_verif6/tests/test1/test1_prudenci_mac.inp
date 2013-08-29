@@ -45,7 +45,7 @@ sip_ip_mh_am_adaptInterval                           = 1000
 sip_ip_mh_am_adaptedMatrices_dataOutputPeriod        = 10000
 sip_ip_mh_am_adaptedMatrices_dataOutputFileName      = outputData/adaptedMatrix
 sip_ip_mh_am_adaptedMatrices_dataOutputFileType      = m
-sip_ip_mh_am_eta                                     = 5.76 # (2.4^2)/d, d is the dimension of the problem
+sip_ip_mh_am_eta                                     = 2.88 # (2.4^2)/d, d is the dimension of the problem
 sip_ip_mh_am_epsilon                                 = 1.e-5
 
 sip_ip_mh_rawChain_dataInputFileName                 = . # outputData/rawChain_input

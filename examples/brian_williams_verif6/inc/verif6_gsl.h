@@ -14,9 +14,10 @@ double likelihoodRoutine(const uqGslVectorClass& paramValues,
 
 struct likelihoodDataStruct {
   std::vector<double>* as;
-  uqGslVectorClass*    bVec;     // p x 1
+  uqGslVectorClass*    bVec;   // p x 1
   std::vector<double>* sigmas;
-  uqGslMatrixClass*    ySamples; // n x 2
+  uqGslVectorClass*    tVec;   // n x 1
+  uqGslVectorClass*    yVec;   // n x 1
 };
 
 #endif // __VERIF6_GSL_H__
