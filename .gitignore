@@ -24,6 +24,7 @@ configure
 
 doxygen/txt_common/about_vpath.page
 doxygen/queso.dox
+docs
 
 examples/exInfoTheory_gsl
 examples/exSimpleStatisticalInverseProblem_gsl
