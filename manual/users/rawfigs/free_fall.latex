@@ -1,0 +1,31 @@
+\setlength{\unitlength}{4144sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(1754,1477)(249,-803)
+{\color[rgb]{0,0,1}\thinlines
+\put(1171,-61){\circle*{90}}
+}%
+{\color[rgb]{0,0,0}\multiput(1171,569)(0.00000,-106.36364){6}{\line( 0,-1){ 53.182}}
+\put(1171,-16){\vector( 0,-1){0}}
+}%
+\thicklines
+{\color[rgb]{0,0,0}\put(271,-781){\line( 1, 0){1710}}
+}%
+\thinlines
+{\color[rgb]{0,0,0}\put(271,569){\line( 1, 0){1215}}
+}%
+{\color[rgb]{0,0,0}\put(721,569){\vector( 0, 1){  0}}
+\put(721,569){\vector( 0,-1){1350}}
+}%
+\put(465,-264){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$h_0$}%
+}}}}
+\put(1711,524){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$v_0=0$}%
+}}}}
+\put(1711,-61){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$h(t)=-\frac{1}{2} g\,t^2+h_0$}%
+}}}}
+\end{picture}%

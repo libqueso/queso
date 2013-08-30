@@ -1,0 +1,56 @@
+\documentclass[12pt,letterpaper,twoside,onecolumn,portrait,leqno]{book}
+\bibliographystyle{plain}
+\usepackage{amssymb,amsfonts,amsmath,amscd,amsthm}
+%\usepackage[draft]{graphicx}
+\usepackage{graphicx}
+\usepackage[dvips]{epsfig}
+\usepackage{rotating}
+\usepackage{color}
+
+\setlength{\textwidth}{6.6in}
+\setlength{\topmargin}{-0.25in}
+\setlength{\textheight}{8.60in}
+\setlength{\oddsidemargin}{0.2in}
+\setlength{\evensidemargin}{-0.3in}
+
+\begin{document}
+
+\setlength{\unitlength}{1.0in}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{2ex}
+\thispagestyle{empty}
+\pagenumbering{roman}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+\centerline{\bf Users of QUESO on a Mac (McCheese)}
+
+$~$\\
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{User} & Ok? & O.S.     & gcc      & mpicc   & boost  & gsl    & hpct      & queso  \\
+\hline
+\hline
+Paul Bauman                & Yes & X 10.5.8 & 4.4.1    & 1.3.3   & 1.42.0 & 0.26.0 & trunk     & 0.42.0 \\
+                           &     &          & self     & openmpi &        &        &           &        \\
+                           &     &          & compiled &         &        &        &           &        \\
+\hline
+Kenji Miki                 & No  & X 10.6.2 & 4.3.4    & 4.3.4   & 1.42.0 & 1.13   & 0.26.0    & 0.42.0 \\
+\hline
+Todd Oliver                & Yes & X 10.5.8 & 4.3.4    & 4.3.4   & 1.40.0 & 1.13   & trunk     & 0.42.0 \\
+\hline
+Ernesto Prudencio          & Yes & X 10.5.8 & 4.3.4    & 4.0.1   & 1.42.0 & 1.13   & 0.27      & 0.42.0 \\
+\hline
+Karl Schulz                & ?   &          &          &         &        &        &           &        \\
+\hline
+Rochan Upadhyay            & No  & X 10.6.2 & 4.3.4    & 4.3.4   & 1.42.0 & 1.13   & 0.26.0    & 0.42.0 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\end{document}

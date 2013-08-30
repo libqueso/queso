@@ -1,0 +1,79 @@
+%=======================================================================================
+\chapter{Important Remarks}
+
+\new{
+At this point, the user may feel comfortable and ready to start his/her validation and calibration exercises using QUESO. There are, however, a few quite important remarks that will make the linkage of the QUESO Library with the user application code possible. They are addressed in the following sections.
+}
+
+\section{Revisiting Input Options}\label{sec:revisiting_input}
+
+Input options are read from the QUESO input file, whose name is required by the constructor of the QUESO environment class. Herein, suppose that no prefix is defined, i.e., nothing will precede the input variables names (\verb+PREFIX = ""+ in Tables \ref{tab-env-options} -- \ref{tab-monte-carlo-options}). An example of the use of prefixes may be found in the input file \texttt{tgaCycle.inp} under the subdirectory  \texttt{/examples/validationCycle/} of QUESO installation tree.
+%     The QUESO environment class is instantiated at the application level, right after \verb+'MPI_Init(&argc,&argv)'+. 
+%     The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
+
+The first part of a input file commonly handles the environment options. he variable assignment \verb+env_numSubEnvironments = 1+ indicates to QUESO that only one subenvironment should be used. The variable assignment \texttt{env\_subDisplayFileName} \texttt{=} \texttt{outputData/} \texttt{display} create both the subdirectory \verb+outputData/+ and a file named \verb+display_sub0.txt+ that contains all the options listed in the input file together with more specific information, such as the chain run time and the number of delayed rejections. The existence of file  \verb+display_sub0.txt+  allows, for instance, the user in verifying the actual parameters read by QUESO.
+
+
+For an SIP, the user may set up variables related to the DRAM algorithm. Six important variables are:  
+\texttt{ip\_mh\_dr\_maxNumExtraStages} defines how many extra candidates will be generated; 
+\texttt{ip\_mh\_dr\_listOfScalesForExtraStages} defines the list $s$ of scaling factors that will multiply the covariance matrix.
+The variable \texttt{ip\_mh\_am\_initialNonAdaptInterval} defines the initial interval in which the proposal covariance matrix will not be changed;
+whereas \texttt{ip\_mh\_am\_adaptInterval} defines the size of the interval in which each adapted proposal covariance matrix will be used. 
+\texttt{ip\_mh\_am\_eta} is a factor used to scale the proposal covariance matrix, usually set to be $2.4^2/d$, where $d$ is the dimension of the problem~\cite{Laine08,HaLaMiSa06}. 
+Finally, \texttt{ip\_mh\_am\_epsilon} is the covariance regularization factor used in the DRAM algorithm. %Additionally, the variable \verb+ip_mh_rawChain_size+ defines the size of the raw chain used in each subenvironment. 
+
+For a SFP, the variable assignment \verb+fp_computeSolution = 1+ tells QUESO to compute the solution process; the assignment \verb+fp_computeCovariances = 1+,  instructs QUESO to compute parameter--QoI covariances, and analogously, \verb+fp_computeCorrelations = 1+ inform QUESO to compute  parameter--QoI correlations. The name of the data output file can be set with variable \verb+fp_dataOutputFileName arg+;  and \verb+fp_dataOutputAllowedSet+ defines which subenvironments will write to data output file.
+
+An example a complete input file used by QUESO to solve a SIP--SFP is presented in Section \ref{sec:application_input_file}; however every application example included in \Queso{} build and installation directories \verb+examples+ has an options input file and the user is invited to familiarize him/herself with them.
+
+
+
+\section{Revisiting Priors}
+\new{
+QUESO offers a variety of prior distributions: uniform, Gaussian, Beta, Gamma, Inverse Gamma, and Log Normal. Also, QUESO presents the option of concatenating any of those priors, through the Concatenated prior. 
+
+Concatenated priors are employed in problems with multiple random parameters. They allow one random parameter to have a different prior distribution then other; i.e., one variable may have a uniform prior distribution whereas other may have a Gaussian prior distribution.
+
+It is important to notice that, in order to set a Gaussian prior, besides providing the mean, the user must also supply the \underline{variance}, not the  standard deviation. % in case of 1D problems, or covariance matrix in case of the higher-dimensional problems), not the standard deviation.
+}
+%\todo{Add a section in the end of gravity example showing how to do concatenated priors?}
+
+\section{Running with Multiple Chains or Monte Carlo Sequences}
+
+%\new{}\vspace{-30pt}
+%\begin{leftbar}
+ 
+As presented in the previous section, the variable \verb+env_numSubEnvironments+ determines how many subenvironments QUESO will work with. Thus, if \verb+env_numSubEnvironments=1+, then   only one subenvironment will be used, and QUESO will use only one set on Monte Carlo chains of size defined by ones of the variables \verb+ip_mh_rawChain_size+ or \verb+fp_mc_qseq_size+, depending either the user is solving a SIP or a SFP.
+
+If the user wants to run QUESO with multiple chains or Monte Carlo sequences, then two variables have to be set in QUESO input file: \verb+env_numSubEnvironments = +$N_s$, with $N_s>1$ is the number of chains and/or Monte Carlo sequences of samples; and \verb+env_seed = +$-z$, with $z\geqslant 1$, so that each processor sets the seed to value MPI\_RANK+$z$.
+It is crucial that \verb+env_seed+ takes a \underline{negative} value, otherwise all chain samples are going to be the same.
+
+Also, the total number $N_p$ of processors in the full communicator, usually named \linebreak MPI\_COMM\_WORLD, needs to be a multiple of $N_s$.
+%\end{leftbar}
+
+
+
+\section{Running with Models that Require Parallel Computing}
+\new{
+It is possible to run QUESO with models that require parallel computing as long as total number of processors $N_p$ is multiple of the number of subenvironments $N_s$. QUESO will internally create $N_s$ subcommunicators, each of size $N_p/N_s$, and make sure that the likelihood and QoI routines are called for all processors in these subcommunicators -- the
+likelihood/QoI routine will have available a communicator of size $N_p/N_s$. For instance, if $N_p = 2048$ and $N_s = 16$, then each likelihood/QoI will have available a communicator of size 128. s
+Each subcommunicator is accessible through \texttt{env.subComm()}. At the end of the simulation, there will be a total of $N_s$ chains.
+%  For instance:
+% 
+% const uqBaseEnvironmentClass& env = paramValues.env();
+% std::cout << env.subComm().NumProc();
+% std::cout << env.subRank();
+% ... env.subComm().Comm() ...
+% ... env.subComm().Barrier() ...
+
+The user, however, must keep in mind the possible occurrence of race condition, especially in the case where the application is a black box and files are being accessed constantly (e.g. data is being written and read).
+}
+
+
+\section{A Requirement for the DRAM  Algorithm}
+\new{
+Besides setting up the variables related to the DRAM algorithm in the input file, as described in Section \ref{sec:revisiting_input} above, the user must also provide an initialized \underline{covariance matrix} before calling the DRAM solver, \texttt{solveWithBayesMetropolisHastings(...)}, in his/her application code. 
+
+It is worth to note that this is rather a DRAM requirement~\cite{Laine08}, not a QUESO limitation. An example of the instantiation and initialization of a proposal covariance matrix and its subsequent use is presented in lines 145-147 of Listings \ref{code:gravity_compute_C}, Section \ref{sec:application_code}.
+
+}
