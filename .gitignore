@@ -5,6 +5,7 @@
 
 Makefile.in
 Makefile
+!manual/Makefile
 libtool
 sl6-config
 stamp-h1
