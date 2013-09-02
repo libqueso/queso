@@ -41,7 +41,7 @@ See `LICENSE` file distributed with `QUESO` for more information.
 Contributing
 ------------
 
-Contributions are very welcome.  If you wish to conribute, please take a few
+Contributions are very welcome.  If you wish to contribute, please take a few
 moments to review the [branching
 model](http://nvie.com/posts/a-successful-git-branching-model/) `QUESO`
 utilises.
