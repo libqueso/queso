@@ -15,6 +15,8 @@ easiness of extension. Its software design follows an object-oriented
 approach and its code is written on C++ and over MPI. It can run over
 uniprocessor or multiprocessor environments.
 
+The project homepage is [here](http://pecos.ices.utexas.edu).
+
 Installation
 ------------
 
@@ -39,4 +41,7 @@ See `LICENSE` file distributed with `QUESO` for more information.
 Contributing
 ------------
 
-The project homepage is http://pecos.ices.utexas.edu .
+Contributions are very welcome.  If you wish to conribute, please take a few
+moments to review the [branching
+model](http://nvie.com/posts/a-successful-git-branching-model/) `QUESO`
+utilises.
