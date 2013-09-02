@@ -2,6 +2,8 @@
 *.o
 .deps
 .libs
+*.gcda
+*.gcno
 
 Makefile.in
 Makefile
