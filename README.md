@@ -16,7 +16,7 @@ approach and its code is written on C++ and over MPI. It can run over
 uniprocessor or multiprocessor environments.
 
 Installation
-============
+------------
 
 If you do not have a `configure` script in the top level directory,
 run `bootstrap` to generate a configure script using autotools.
@@ -32,11 +32,11 @@ Then type `make install` to install it in the directory previously
 specified by the `--prefix` option of the `configure` script.
 
 License
-=======
+-------
 
 See `LICENSE` file distributed with `QUESO` for more information.
 
-More information about the QUESO Library
-========================================
+Contributing
+------------
 
 The project homepage is http://pecos.ices.utexas.edu .
