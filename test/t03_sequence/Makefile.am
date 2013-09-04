@@ -31,7 +31,7 @@ if HDF5_ENABLED
   LIBS += $(HDF5_LIBS)
 endif
 
-EXTRA_DIST     = regression rtest03.sh
+EXTRA_DIST     = rtest03.sh
 check_PROGRAMS = SequenceExample_gsl
 
 ### Leaving disabled for now, need to check with Ernesto
