@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS  = -I m4 -I m4/common
-EXTRA_DIST       = $(DX_CONFIG) QUESO_users_manual.pdf CHANGES AUTHORS COPYING LICENSE dist_version
+EXTRA_DIST       = $(DX_CONFIG) QUESO_users_manual.pdf CHANGES AUTHORS COPYING LICENSE
 
 # Build in these directories:
 SUBDIRS          = src/contrib/ANN src examples test/gsl_tests test doxygen
@@ -104,19 +104,39 @@ MOSTLYCLEANFILES = $(DX_CLEANFILES)
 
 # Additional files to be deleted by 'make distclean'
 
-DISTCLEANFILES = _configs.sed
-
-# --------------------------------------------------
-# Revision control support for external distribution
-# --------------------------------------------------
-
-if SVN_CHECKOUT
-dist_version: FORCE
-	@SVN_REVISION@ > $(top_srcdir)/dist_version
-
-FORCE:
-endif
-
+DISTCLEANFILES = _configs.sed \
+	test/t01_valid_cycle/outputData/file_cal_fp_qoi2.m \
+	test/t01_valid_cycle/outputData/file_cal_fp_qoi2_sub0.m \
+	test/t01_valid_cycle/outputData/file_val_ip_raw2_sub0.m \
+	test/t01_valid_cycle/outputData/file_cal_ip_raw2_sub0.m \
+	test/t01_valid_cycle/outputData/file_cal_ip_raw2.m \
+	test/t01_valid_cycle/outputData/file_val_fp_qoi2_sub0.m \
+	test/t01_valid_cycle/outputData/screen_sub0.txt \
+	test/t01_valid_cycle/outputData/file_val_fp_qoi2.m \
+	test/t01_valid_cycle/outputData/file_val_ip_raw2.m \
+	test/t01_valid_cycle/outputData/tgaValOutput_sub0.m \
+	test/t01_valid_cycle/outputData/tgaCalOutput_sub0.m \
+	test/t04_bimodal/outputData/display_sub0.txt \
+	test/t04_bimodal/outputData/sipOutput_ml_sub0.m \
+	test/t04_bimodal/outputData/filtChain_ml.m \
+	test/t04_bimodal/outputData/rawChain_ml.m \
+	test/gsl_tests/outputData/display_sub0.txt \
+	test/gslvector_out_sub0.m \
+	test/t02_sip_sfp/outputData/sfpOutput_sub0.m \
+	test/t02_sip_sfp/outputData/ip_raw_chain_sub0.m \
+	test/t02_sip_sfp/outputData/fp_p_seq.m \
+	test/t02_sip_sfp/outputData/display_sub0.txt \
+	test/t02_sip_sfp/outputData/nada1 \
+	test/t02_sip_sfp/outputData/sipOutput_sub0.m \
+	test/t02_sip_sfp/outputData/nada0 \
+	test/t02_sip_sfp/outputData/ip_raw_chain.m \
+	test/t02_sip_sfp/outputData/fp_q_seq.m \
+	test/t02_sip_sfp/outputData/ip_filt_chain_sub0.m \
+	test/t02_sip_sfp/outputData/fp_q_seq_sub0.m \
+	test/t02_sip_sfp/outputData/ip_filt_chain.m \
+	test/t02_sip_sfp/outputData/fp_p_seq_sub0.m \
+	aminclude.am \
+	config_queso.h
 
 # Required for AX_AM_MACROS
 #@INC_AMINCLUDE@
