@@ -303,10 +303,12 @@ private:
 
 template<class P_V,class P_M>
 std::ostream& operator<<(std::ostream& os, const uqMLSamplingClass<P_V,P_M>& obj);
+}  // End namespace QUESO
 
-#include <uqMLSampling3.h>
-#include <uqMLSampling2.h>
+#include <uqMLSampling3.h>  // We should do something about this
+#include <uqMLSampling2.h>  // We should do something about this
 
+namespace QUESO {
 template<class P_V,class P_M>
 uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
   const char*                               prefix,

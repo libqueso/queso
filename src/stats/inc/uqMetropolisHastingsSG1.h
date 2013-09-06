@@ -275,9 +275,11 @@ private:
 //! Prints the object \c obj, overloading an operator.
 template<class P_V,class P_M>
 std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGClass<P_V,P_M>& obj);
+}  // End namespace QUESO
 
-#include <uqMetropolisHastingsSG2.h>
+#include <uqMetropolisHastingsSG2.h>  // We should probably do something about this
 
+namespace QUESO {
 // Default constructor -----------------------------
 template<class P_V,class P_M>
 uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
