@@ -59,7 +59,7 @@ template<class P_V, class P_M>
 struct
 likelihoodRoutine_DataClass
 {
-  likelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
+  likelihoodRoutine_DataClass(const QUESO::uqBaseEnvironmentClass& env,
                               const char* inpName1,
                               const char* inpName2,
                               const char* inpName3);
@@ -80,12 +80,12 @@ likelihoodRoutine_DataClass
   std::vector<double> m_Te3; // temperatures
   std::vector<double> m_Me3; // relative masses
 
-  const uqBaseEnvironmentClass* m_env;
+  const QUESO::uqBaseEnvironmentClass* m_env;
 };
 
 template<class P_V, class P_M>
 likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
-  const uqBaseEnvironmentClass& env,
+  const QUESO::uqBaseEnvironmentClass& env,
   const char* inpName1,
   const char* inpName2,
   const char* inpName3)
@@ -227,7 +227,7 @@ likelihoodRoutine(
 {
   double resultValue = 0.;
 
-  const uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_env);
+  const QUESO::uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_env);
 
   env.subComm().Barrier();
   //env.syncPrintDebugMsg("Entering likelihoodRoutine()",1,env.fullComm());

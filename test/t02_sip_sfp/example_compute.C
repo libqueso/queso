@@ -33,30 +33,30 @@
 #include <uqStatisticalInverseProblem.h>
 #include <uqStatisticalForwardProblem.h>
 
-void compute(const uqFullEnvironmentClass& env) {
+void compute(const QUESO::uqFullEnvironmentClass& env) {
   // Step 1 of 9: Instantiate the parameter space
-  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqVectorSpaceClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     paramSpace(env, "param_", 2, NULL);
 
   // Step 2 of 9: Instantiate the parameter domain
-  uqGslVectorClass paramMins(paramSpace.zeroVector());
+  QUESO::uqGslVectorClass paramMins(paramSpace.zeroVector());
   paramMins.cwSet(-INFINITY);
-  uqGslVectorClass paramMaxs(paramSpace.zeroVector());
+  QUESO::uqGslVectorClass paramMaxs(paramSpace.zeroVector());
   paramMaxs.cwSet( INFINITY);
-  uqBoxSubsetClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqBoxSubsetClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     paramDomain("param_",paramSpace,paramMins,paramMaxs);
 
   // Step 3 of 9: Instantiate the likelihood function object
-  uqGslVectorClass meanVector(paramSpace.zeroVector());
+  QUESO::uqGslVectorClass meanVector(paramSpace.zeroVector());
   meanVector[0] = -1;
   meanVector[1] =  2;
-  uqGslMatrixClass covMatrix(paramSpace.zeroVector());
+  QUESO::uqGslMatrixClass covMatrix(paramSpace.zeroVector());
   covMatrix(0,0) = 4.; covMatrix(0,1) = 0.;
   covMatrix(1,0) = 0.; covMatrix(1,1) = 1.;
   likelihoodRoutine_DataType likelihoodRoutine_Data;
   likelihoodRoutine_Data.meanVector = &meanVector;
   likelihoodRoutine_Data.covMatrix  = &covMatrix;
-  uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqGenericScalarFunctionClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     likelihoodFunctionObj("like_",
                           paramDomain,
                           likelihoodRoutine,
@@ -64,32 +64,32 @@ void compute(const uqFullEnvironmentClass& env) {
                           true); // routine computes [ln(function)]
 
   // Step 4 of 9: Instantiate the inverse problem
-  uqUniformVectorRVClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqUniformVectorRVClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     priorRv("prior_", paramDomain);
-  uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqGenericVectorRVClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     postRv("post_", paramSpace);
-  uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqStatisticalInverseProblemClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     ip("", NULL, priorRv, likelihoodFunctionObj, postRv);
 
   // Step 5 of 9: Solve the inverse problem
-  uqGslVectorClass paramInitials(paramSpace.zeroVector());
+  QUESO::uqGslVectorClass paramInitials(paramSpace.zeroVector());
   paramInitials[0] = 0.1;
   paramInitials[1] = -1.4;
-  uqGslMatrixClass proposalCovMatrix(paramSpace.zeroVector());
+  QUESO::uqGslMatrixClass proposalCovMatrix(paramSpace.zeroVector());
   proposalCovMatrix(0,0) = 8.; proposalCovMatrix(0,1) = 4.;
   proposalCovMatrix(1,0) = 4.; proposalCovMatrix(1,1) = 16.;
   ip.solveWithBayesMetropolisHastings(NULL,paramInitials, &proposalCovMatrix);
 
   // Step 6 of 9: Instantiate the qoi space
-  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqVectorSpaceClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     qoiSpace(env, "qoi_", 1, NULL);
 
   // Step 7 of 9: Instantiate the qoi function object
   qoiRoutine_DataType qoiRoutine_Data;
   qoiRoutine_Data.coef1 = 1.;
   qoiRoutine_Data.coef2 = 1.;
-  uqGenericVectorFunctionClass<uqGslVectorClass,uqGslMatrixClass,
-                               uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqGenericVectorFunctionClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass,
+                               QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     qoiFunctionObj("qoi_",
                    paramDomain,
                    qoiSpace,
@@ -97,10 +97,10 @@ void compute(const uqFullEnvironmentClass& env) {
                    (void *) &qoiRoutine_Data);
 
   // Step 8 of 9: Instantiate the forward problem
-  uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqGenericVectorRVClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     qoiRv("qoi_", qoiSpace);
-  uqStatisticalForwardProblemClass<uqGslVectorClass,uqGslMatrixClass,
-                                   uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqStatisticalForwardProblemClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass,
+                                   QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     fp("", NULL, postRv, qoiFunctionObj, qoiRv);
 
   // Step 9 of 9: Solve the forward problem
