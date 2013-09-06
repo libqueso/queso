@@ -35,11 +35,13 @@
 #include <Epetra_MpiComm.h>
 #endif
 
-namespace QUESO {
 
 #ifdef QUESO_HAS_MPI
 
 #include <mpi.h>
+
+namespace QUESO {
+
 typedef MPI_Comm     uqRawType_MPI_Comm ;
 typedef MPI_Group    uqRawType_MPI_Group ;
 typedef MPI_Datatype uqRawType_MPI_Datatype ;
@@ -56,7 +58,11 @@ typedef MPI_Status   uqRawType_MPI_Status ;
 #define uqRawValue_MPI_MAX        MPI_MAX
 #define uqRawValue_MPI_SUM        MPI_SUM
 
+}  // End namespace QUESO
+
 #else // QUESO_HAS_MPI
+
+namespace QUESO {
 
 typedef int uqRawType_MPI_Comm ;
 typedef int uqRawType_MPI_Group ;
@@ -74,9 +80,11 @@ typedef int uqRawType_MPI_Status ;
 #define uqRawValue_MPI_MAX        1
 #define uqRawValue_MPI_SUM        2
 
+}  // End namespace QUESO
+
 #endif // QUESO_HAS_MPI
 
-
+namespace QUESO {
 
 /*! \file uqMpiComm.h
     \brief MPI Communicator Class.
