@@ -31,6 +31,8 @@
 
 #include <uqOneDGrid.h>
 
+namespace QUESO {
+
 /*!\file uqArrayOfOneDGrids.h
  * \brief Class to accommodate arrays of one-dimensional grid.
  * 
@@ -238,4 +240,7 @@ std::ostream& operator<< (std::ostream& os, const uqArrayOfOneDGridsClass<V,M>& 
   obj.print(os);
   return os;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_ARRAY_OF_ONE_D_GRIDS_H__

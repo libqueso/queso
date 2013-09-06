@@ -35,6 +35,8 @@
 #include <vector>
 #include <math.h>
 
+namespace QUESO {
+
 void         uqMiscReadDoublesFromString      (const std::string&        inputString,
                                                std::vector<double>&      outputDoubles);
 void         uqMiscReadWordsFromString        (const std::string&        inputString,
@@ -213,4 +215,7 @@ uqMiscCheckTheParallelEnvironment(const V1& vec1, const V2& vec2)
 
   return;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_MISCELLANEOUS_H__

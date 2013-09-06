@@ -28,9 +28,13 @@
 
 #include <uqAsciiTable.h>
 
+namespace QUESO {
+
 template <>
 uqMapClass*
 uqAsciiTableClass<class uqGslVectorClass, class uqGslMatrixClass>::newMap()
 {
   return new uqMapClass(m_numRows,0,m_env.selfComm());
 }
+
+}  // End namespace QUESO

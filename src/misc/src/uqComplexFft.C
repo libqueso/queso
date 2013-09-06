@@ -29,6 +29,8 @@
 #include <uqFft.h>
 #include <gsl/gsl_fft_complex.h>
 
+namespace QUESO {
+
 template <>
 void
 uqFftClass<std::complex<double> >::forward(
@@ -131,3 +133,5 @@ uqFftClass<std::complex<double> >::inverse(
 
   return;
 }
+
+}  // End namespace QUESO
