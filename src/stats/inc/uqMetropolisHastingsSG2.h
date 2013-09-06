@@ -29,6 +29,8 @@
 #ifndef __UQ_MH_SG2_H__
 #define __UQ_MH_SG2_H__
 
+namespace QUESO {
+
 // Statistical methods -----------------------------
 /* This operation currently implements the DRAM algorithm (Heikki Haario, Marko
  * Laine, Antonietta Mira and Eero Saksman, "DRAM: Efficient Adaptive MCMC", 
@@ -1458,4 +1460,7 @@ uqMetropolisHastingsSGClass<P_V,P_M>::updateAdaptedCovMatrix(
 
   return;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_MH_SG2_H__

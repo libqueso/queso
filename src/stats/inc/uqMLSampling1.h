@@ -50,6 +50,8 @@
 
 //---------------------------------------------------------
 
+namespace QUESO {
+
 // aqui 1
 #ifdef QUESO_HAS_GLPK
 struct BIP_routine_struct {
@@ -1124,5 +1126,7 @@ double uqMLSamplingClass<P_V,P_M>::eig() const
 {
   return m_eig;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_MULTI_LEVEL_SAMPLING1_H__

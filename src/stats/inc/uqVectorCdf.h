@@ -35,6 +35,8 @@
 #include <uqEnvironment.h>
 #include <math.h>
 
+namespace QUESO {
+
 //*****************************************************
 // Classes to accommodate a cumulative distribution function
 //*****************************************************
@@ -568,4 +570,7 @@ horizontalDistances(const uqBaseVectorCdfClass<V,M>& cdf1,
 
   return;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__

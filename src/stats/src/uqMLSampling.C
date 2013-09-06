@@ -28,6 +28,8 @@
 
 #include <uqMLSampling1.h>
 
+namespace QUESO {
+
 #ifdef QUESO_HAS_GLPK
 void BIP_routine(glp_tree *tree, void *info)
 {
@@ -83,4 +85,7 @@ void BIP_routine(glp_tree *tree, void *info)
 
   return;
 }
+
+}  // End namespace QUESO
+
 #endif // QUESO_HAS_GLPK

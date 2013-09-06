@@ -31,6 +31,8 @@
 
 #include <uqEnvironment.h>
 
+namespace QUESO {
+
 /*! \file uqMarkovChainPositionData.h
  * \brief A templated class that represents a Markov Chain.
  *
@@ -233,5 +235,7 @@ std::ostream& operator<<(std::ostream& os, const uqMarkovChainPositionDataClass<
 
   return os;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_CHAIN_POSITION_DATA_H__

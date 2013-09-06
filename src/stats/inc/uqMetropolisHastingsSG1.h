@@ -41,6 +41,8 @@
 #include <fstream>
 #include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
 
+namespace QUESO {
+
 //--------------------------------------------------
 // uqMHRawChainInfoStruct --------------------------
 //--------------------------------------------------
@@ -944,4 +946,7 @@ std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGClass<P_V
 
   return os;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_MH_SG1_H__

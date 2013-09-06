@@ -33,6 +33,8 @@
 #include <uqEnvironment.h>
 #include <math.h>
 
+namespace QUESO {
+
 //*****************************************************
 // Classes to accommodate a probability density routine.
 //*****************************************************
@@ -1324,4 +1326,7 @@ uqConcatenatedVectorRealizerClass<V,M>::realization(V& nextValues) const
 
   return;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_REALIZER_H__

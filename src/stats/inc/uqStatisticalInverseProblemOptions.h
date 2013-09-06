@@ -44,6 +44,8 @@
 #define UQ_SIP_SOLVER_ODV                  "bayes_mc" // Bayesian formula + Metropolis-Hastings
 #endif
 
+namespace QUESO {
+
 /*! \file uqStatisticalInverseProblemOptions.h
     \brief Classes to allow options to be passed to a Statistical Inverse Problem.
 */
@@ -155,4 +157,7 @@ private:
 
 //! Prints the object \c obj, overloading an operator.
 std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemOptionsClass& obj);
+
+}  // End namespace QUESO
+
 #endif // __UQ_SIP_OPTIONS_H__

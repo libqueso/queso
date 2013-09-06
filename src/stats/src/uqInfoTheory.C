@@ -30,6 +30,8 @@
 
 #ifdef QUESO_HAS_ANN
 
+namespace QUESO {
+
 //*****************************************************
 // Function: distANN_XY
 //*****************************************************
@@ -201,5 +203,7 @@ double computeMI_ANN( ANNpointArray dataXY,
   return MI_est;
 
 }
+
+}  // End namespace QUESO
 
 #endif // QUESO_HAS_ANN
