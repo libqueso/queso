@@ -82,10 +82,8 @@ struct uqFilePtrSetStruct {
 // QUESO MPI environment.
 //------------------------------------------------------------------------
 
-namespace QUESO {
   void QUESO_version_print       (std::ostream &os);
   int  QUESO_get_numeric_version ();
-}
 
 //*****************************************************
 // Base class
