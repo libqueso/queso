@@ -41,6 +41,8 @@
 
 #ifdef QUESO_HAS_TRILINOS
 
+namespace QUESO {
+
 /*! \file uqTeuchosVector.h
     \brief Vector class using Trilinos Teuchos
 */
@@ -302,8 +304,8 @@ uqTeuchosVectorClass operator-    (const uqTeuchosVectorClass& x,   const uqTeuc
 bool                 operator==   (const uqTeuchosVectorClass& lhs, const uqTeuchosVectorClass& rhs);
 std::ostream&        operator<<   (std::ostream& os,                const uqTeuchosVectorClass& obj);
 
+}  // End namespace QUESO
+
 #endif // ifdef QUESO_HAS_TRILINOS
 
 #endif //__UQ_TEUCHOS_VECTOR_H__
-
-

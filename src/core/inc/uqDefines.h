@@ -64,6 +64,8 @@ Incompatible combination of defines in QUESO 'uqDefines.h': QUESO_HAS_TRILINOS i
 #include <set>
 #include <vector>
 
+namespace QUESO {
+
 //! Returns the rank of the calling process in the communicator.
 int uqMyWorldfullRank();
 
@@ -259,5 +261,7 @@ private:
     exit(1);                                           \
   }
 #endif
+
+}  // End namespace QUESO
 
 #endif // __UQ_DEFINES_H__

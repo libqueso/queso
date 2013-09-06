@@ -29,6 +29,8 @@
 #include <uqRngBase.h>
 #include <mpi.h>
 
+namespace QUESO {
+
 uqRngBaseClass::uqRngBaseClass()
   :
   m_seed     (0),
@@ -83,3 +85,5 @@ uqRngBaseClass::privateResetSeed()
 
   return;
 }
+
+}  // End namespace QUESO

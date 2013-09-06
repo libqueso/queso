@@ -30,6 +30,7 @@
 #include <gsl/gsl_randist.h>
 #include <mpi.h>
 
+namespace QUESO {
 
 // Default constructor ------------------------------
 uqRngGslClass::uqRngGslClass()
@@ -117,3 +118,5 @@ uqRngGslClass::gammaSample(double a, double b) const
 {
   return gsl_ran_gamma(m_rng,a,b);
 }
+
+}  // End namespace QUESO

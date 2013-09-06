@@ -29,6 +29,8 @@
 #include <uqBasicPdfsBase.h>
 #include <mpi.h>
 
+namespace QUESO {
+
 uqBasicPdfsBaseClass::uqBasicPdfsBaseClass()
   :
   m_worldRank(UQ_UNAVAILABLE_RANK)
@@ -48,3 +50,5 @@ uqBasicPdfsBaseClass::uqBasicPdfsBaseClass(int worldRank)
 uqBasicPdfsBaseClass::~uqBasicPdfsBaseClass()
 {
 }
+
+}  // End namespace QUESO

@@ -107,8 +107,6 @@ namespace QUESO {
     return(major_version*10000 + minor_version*100 + micro_version);
   }
 
-}
-
 uqFilePtrSetStruct::uqFilePtrSetStruct()
   :
   ofsVar(NULL),
@@ -1531,3 +1529,5 @@ uqFullEnvironmentClass::readOptionsInputFile()
 
   return;
 }
+
+}  // End namespace QUESO

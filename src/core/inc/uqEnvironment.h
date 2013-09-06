@@ -30,7 +30,9 @@
 #define __UQ_ENVIRONMENT_H__
 
 #include <uqDefines.h>
-class uqEnvironmentOptionsClass;
+namespace QUESO {
+  class uqEnvironmentOptionsClass;
+}  // End namespace QUESO
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
@@ -46,6 +48,7 @@ namespace po = boost::program_options;
 #include <uqRngBase.h>
 #include <uqBasicPdfsBase.h>
 
+namespace QUESO {
 
 /*! \struct uqFilePtrSetStruct
  *  \brief Struct for handling data input and output from files.
@@ -435,5 +438,7 @@ void	readOptionsInputFile();
 };
 
 std::ostream& operator<<(std::ostream& os, const uqBaseEnvironmentClass& obj);
+
+}  // End namespace QUESO
 
 #endif // __UQ_ENVIRONMENT_H__

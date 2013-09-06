@@ -29,6 +29,8 @@
 #include <uqMpiComm.h>
 #include <uqEnvironment.h>
 
+namespace QUESO {
+
 // Default constructor ------------------------------
 uqMpiCommClass::uqMpiCommClass()
   :
@@ -394,3 +396,5 @@ uqMpiCommClass::sizeOfDataType(uqRawType_MPI_Datatype datatype, const char* wher
   return dataTypeSize;
 }
 #endif
+
+}  // End namespace QUESO

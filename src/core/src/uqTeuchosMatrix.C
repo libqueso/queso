@@ -37,6 +37,8 @@
 
 #ifdef QUESO_HAS_TRILINOS
 
+namespace QUESO {
+
 using std:: cout;
 using std:: endl;
 // ---------------------------------------------------
@@ -2476,5 +2478,7 @@ operator<<(std::ostream& os, const uqTeuchosMatrixClass& obj)
 
   return os;
 }
+
+}  // End namespace QUESO
 
 #endif // ifdef QUESO_HAS_TRILINOS
