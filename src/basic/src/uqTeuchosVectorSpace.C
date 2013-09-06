@@ -32,6 +32,8 @@
 
 #include <uqTeuchosMatrix.h>
 
+namespace QUESO {
+
 template <>
 uqMapClass*
 uqVectorSpaceClass<uqTeuchosVectorClass, uqTeuchosMatrixClass>::newMap()
@@ -66,5 +68,7 @@ uqVectorSpaceClass<uqTeuchosVectorClass,uqTeuchosMatrixClass>::newDiagMatrix(dou
 {
   return new uqTeuchosMatrixClass(m_env,*m_map,diagValue);
 }
+
+}  // End namespace QUESO
 
 #endif // ifdef QUESO_HAS_TRILINOS

@@ -32,6 +32,7 @@
 #include <uqVectorSpace.h>
 #include <uqVectorSubset.h>
 
+namespace QUESO {
 
 /*!\file uqInstantiateIntersection.h
  * \brief A templated method to calculate intersection of two domains (vector spaces).
@@ -184,5 +185,8 @@ uqInstantiateIntersection(const uqVectorSetClass<V,M>& domain1, const uqVectorSe
 
   return result;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_INSTANTIATE_INTERSECTION_H__
 

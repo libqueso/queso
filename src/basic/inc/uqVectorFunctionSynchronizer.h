@@ -29,6 +29,8 @@
 #ifndef __UQ_VECTOR_FUNCTION_SYNCHRONIZER_H__
 #define __UQ_VECTOR_FUNCTION_SYNCHRONIZER_H__
 
+namespace QUESO {
+
 /*! \file uqVectorFunctionSynchronizer.h
  * \brief Class for synchronizing the calls of vector-valued functions
  * 
@@ -275,5 +277,7 @@ uqVectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
 
   return;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_VECTOR_FUNCTION_SYNCHRONIZER_H__

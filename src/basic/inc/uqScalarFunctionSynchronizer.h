@@ -31,6 +31,8 @@
 
 #include <uqEnvironment.h>
 
+namespace QUESO {
+
 /*! \file uqScalarFunctionSynchronizer.h
  * \brief Class for synchronizing the calls of scalar functions
  * 
@@ -314,5 +316,7 @@ uqScalarFunctionSynchronizerClass<V,M>::callFunction(
 
   return result;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_SCALAR_FUNCTION_SYNCHRONIZER_H__

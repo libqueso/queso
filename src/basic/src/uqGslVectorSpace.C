@@ -29,6 +29,8 @@
 #include <uqVectorSpace.h>
 #include <uqGslMatrix.h>
 
+namespace QUESO {
+
 template <>
 uqMapClass*
 uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass>::newMap()
@@ -63,3 +65,5 @@ uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>::newDiagMatrix(double diag
 {
   return new uqGslMatrixClass(m_env,*m_map,diagValue);
 }
+
+}  // End namespace QUESO
