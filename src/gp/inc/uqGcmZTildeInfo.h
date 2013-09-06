@@ -32,6 +32,8 @@
 #include <uqGcmSimulationInfo.h>
 #include <uqGcmExperimentInfo.h>
 
+namespace QUESO {
+
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 class uqGcmZTildeInfoClass
 {
@@ -270,5 +272,7 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor(const u
 
   return;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_GCM_Z_TILDE_INFO_H__

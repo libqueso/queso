@@ -33,6 +33,8 @@
 #include <uqSimulationModel.h>
 #include <uqVectorRV.h>
 
+namespace QUESO {
+
 template <class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 class uqGcmSimulationInfoClass
 {
@@ -508,5 +510,7 @@ uqGcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::~uqGcmSimulationInfoClass()
   delete m_Kt_K_inv; // to be deleted on destructor
   delete m_Kt_K;     // to be deleted on destructor
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_GCM_SIMULATION_INFO_H__

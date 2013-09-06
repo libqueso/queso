@@ -47,6 +47,8 @@
 #include <uqMiscellaneous.h>
 #include <sys/time.h>
 
+namespace QUESO {
+
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 class uqGpmsaComputerModelClass
 {
@@ -282,6 +284,8 @@ std::ostream& operator<<(std::ostream& os, const uqGpmsaComputerModelClass<S_V,S
 
   return os;
 }
+
+}  // End namespace QUESO
 
 #include <uqGpmsaComputerModel2.h>
 #include <uqGpmsaComputerModel3.h>
