@@ -48,6 +48,8 @@
 
 extern unsigned long int gsl_rng_default_seed;
 
+namespace QUESO {
+
 class uqRngGslClass : public uqRngBaseClass
 {
 public:
@@ -112,5 +114,7 @@ protected:
   /*! It is chosen, in the constructor, to be of type gsl_rng_ranlxd2. */
   gsl_rng* m_rng;
 };
+
+}  // End namespace QUESO
 
 #endif // __UQ_RNG_GSL_H__

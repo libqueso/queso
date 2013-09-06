@@ -35,6 +35,8 @@
 #include <Epetra_MpiComm.h>
 #endif
 
+namespace QUESO {
+
 #ifdef QUESO_HAS_MPI
 
 #include <mpi.h>
@@ -247,5 +249,7 @@ private:
   // Total number of processes
   int                           m_numProc;
 };
+
+}  // End namespace QUESO
 
 #endif // __UQ_MPI_COMM_H__
