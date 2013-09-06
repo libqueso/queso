@@ -34,6 +34,8 @@
 #include <uqMap.h>
 #include <uqMiscellaneous.h>
 
+namespace QUESO {
+
 /*!\file uqOneDGrid.h
  * \brief Class to read ASCII values from a table.
  * 
@@ -417,5 +419,7 @@ std::ostream& operator<<(std::ostream& os, const uqAsciiTableClass<V,M>& obj)
 
   return os;
 }
-#endif // __UQ_ASCII_TABLE_H__
 
+}  // End namespace QUESO
+
+#endif // __UQ_ASCII_TABLE_H__
