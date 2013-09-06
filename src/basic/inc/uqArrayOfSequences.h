@@ -31,6 +31,8 @@
 
 #include <uqVectorSequence.h>
 
+namespace QUESO {
+
 /*! \file uqArrayOfSequences.h
  * \brief A templated class for handling samples of scalar sequences
  * 
@@ -1212,5 +1214,7 @@ uqArrayOfSequencesClass<V,M>::geweke(
   return;
 }
 #endif // #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+
+}  // End namespace QUESO
 
 #endif // __UQ_ARRAY_OF_SEQUENCES_H__

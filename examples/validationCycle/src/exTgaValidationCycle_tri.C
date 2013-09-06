@@ -39,15 +39,15 @@ int main(int argc, char* argv[])
   // Initialize environment
   //************************************************
   MPI_Init(&argc,&argv);
-  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(argc,argv,MPI_COMM_WORLD,"");
+  QUESO::uqFullEnvironmentClass* env = new QUESO::uqFullEnvironmentClass(argc,argv,MPI_COMM_WORLD,"");
 
   //************************************************
   // Run application
   //************************************************
-  uqAppl<uqTrilinosVectorClass, // type for parameter vectors
-         uqTrilinosMatrixClass, // type for parameter matrices
-         uqTrilinosVectorClass, // type for qoi vectors
-         uqTrilinosMatrixClass  // type for qoi matrices
+  uqAppl<QUESO::uqTrilinosVectorClass, // type for parameter vectors
+         QUESO::uqTrilinosMatrixClass, // type for parameter matrices
+         QUESO::uqTrilinosVectorClass, // type for qoi vectors
+         QUESO::uqTrilinosMatrixClass  // type for qoi matrices
         >(*env);
 
   //************************************************

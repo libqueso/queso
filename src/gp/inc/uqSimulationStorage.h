@@ -31,6 +31,8 @@
 
 #include <uqEnvironment.h>
 
+namespace QUESO {
+
 template <class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 class uqSimulationStorageClass
 {
@@ -313,5 +315,7 @@ std::ostream& operator<<(std::ostream& os, const uqSimulationStorageClass<S_V,S_
 
   return os;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_SIMULATION_STORAGE_H__

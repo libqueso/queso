@@ -33,7 +33,7 @@
 #include <uqVector.h>
 #include <iostream>
 
-
+namespace QUESO {
 
 /*! \file uqMatrix.h
     \brief Matrix class.
@@ -158,5 +158,7 @@ protected:
   //! Flag for either or not QUESO is in debug mode.
   mutable bool                    m_inDebugMode;
 };
+
+}  // End namespace QUESO
 
 #endif // __UQ_MATRIX_H__

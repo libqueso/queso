@@ -32,6 +32,8 @@
 #include <uqSequenceStatisticalOptions.h>
 #include <uqMiscellaneous.h>
 
+namespace QUESO {
+
 uqSsOptionsValuesClass::uqSsOptionsValuesClass()
   :
   m_initialDiscardedPortions(0                                           ),//,0.),
@@ -911,5 +913,7 @@ operator<<(std::ostream& os, const uqSequenceStatisticalOptionsClass& obj)
 
   return os;
 }
+
+}  // End namespace QUESO
 
 #endif // ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS

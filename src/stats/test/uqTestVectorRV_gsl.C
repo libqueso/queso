@@ -6,6 +6,8 @@
 #include <uqVectorRV.h>
 #include <uqGslMatrix.h>
 
+using namespace QUESO;
+
 BOOST_AUTO_TEST_CASE( test_uqGaussianVectorRVClass )
 {
   // Initialize

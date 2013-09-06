@@ -31,6 +31,8 @@
 #include <gsl/gsl_sort_vector.h>
 #include <cmath>
 
+namespace QUESO {
+
 uqGslVectorClass::uqGslVectorClass()
   :
   uqVectorClass()
@@ -1414,3 +1416,4 @@ operator== (const uqGslVectorClass& lhs, const uqGslVectorClass& rhs)
   return answer;
 }
 
+}  // End namespace QUESO

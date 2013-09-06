@@ -33,6 +33,8 @@
 #include <uqDistArray.h>
 #include <uqVectorSet.h>
 
+namespace QUESO {
+
 //*****************************************************
 // Base class
 //*****************************************************
@@ -326,5 +328,7 @@ uqConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
 
   return;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_VECTOR_FUNCTION_H__

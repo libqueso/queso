@@ -33,6 +33,8 @@
 #include <uqEnvironment.h>
 #include <cmath>
 
+namespace QUESO {
+
 /*! \file uqMatrixCovarianceFunction.h
  * \brief Classes to accommodate covariance matrix of random vector functions.
  * 
@@ -399,5 +401,7 @@ uqGenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& po
 
   return;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_MATRIX_COVARIANCE_FUNCTION_H__ 

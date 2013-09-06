@@ -34,6 +34,8 @@
 #include <uqVectorFunctionSynchronizer.h>
 #include <uqMonteCarloSGOptions.h>
 
+namespace QUESO {
+
 /*! 
  * \file uqMonteCarloSG.h
  * \brief A templated class that implements a Monte Carlo generator of samples.
@@ -610,4 +612,7 @@ std::ostream& operator<<(std::ostream& os, const uqMonteCarloSGClass<P_V,P_M,Q_V
 
   return os;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_MOC_SG_H__

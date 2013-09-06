@@ -32,9 +32,9 @@
 #include <uqStatisticalInverseProblem.h>
 #include <uq1D1DFunction.h>
 
-void compute(const uqFullEnvironmentClass& env) {
+void compute(const QUESO::uqFullEnvironmentClass& env) {
 #if 0
-  uqConstant1D1DFunctionClass w(-1.,1.,1.);
+  QUESO::uqConstant1D1DFunctionClass w(-1.,1.,1.);
 
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>
     paramSpace(env, "param_", 5, NULL);
@@ -47,30 +47,30 @@ void compute(const uqFullEnvironmentClass& env) {
   ////////////////////////////////////////////////////////
   // Step 1 of 5: Instantiate the parameter space
   ////////////////////////////////////////////////////////
-  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqVectorSpaceClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     paramSpace(env, "param_", 1, NULL);
 
   ////////////////////////////////////////////////////////
   // Step 2 of 5: Instantiate the parameter domain
   ////////////////////////////////////////////////////////
-  uqGslVectorClass paramMins(paramSpace.zeroVector());
+  QUESO::uqGslVectorClass paramMins(paramSpace.zeroVector());
   paramMins.cwSet(-250.);
-  uqGslVectorClass paramMaxs(paramSpace.zeroVector());
+  QUESO::uqGslVectorClass paramMaxs(paramSpace.zeroVector());
   paramMaxs.cwSet( 250.);
-  uqBoxSubsetClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqBoxSubsetClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     paramDomain("param_",paramSpace,paramMins,paramMaxs);
 
   ////////////////////////////////////////////////////////
   // Step 3 of 5: Instantiate the likelihood function object
   ////////////////////////////////////////////////////////
-  uqGslVectorClass meanVector(paramSpace.zeroVector());
+  QUESO::uqGslVectorClass meanVector(paramSpace.zeroVector());
   meanVector[0] = 10.;
-  uqGslMatrixClass* covMatrix = paramSpace.newMatrix();
+  QUESO::uqGslMatrixClass* covMatrix = paramSpace.newMatrix();
   (*covMatrix)(0,0) = 1.;
   likelihoodRoutine_DataType likelihoodRoutine_Data;
   likelihoodRoutine_Data.meanVector = &meanVector;
   likelihoodRoutine_Data.covMatrix  = covMatrix;
-  uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqGenericScalarFunctionClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     likelihoodFunctionObj("like_",
                           paramDomain,
                           likelihoodRoutine,
@@ -80,11 +80,11 @@ void compute(const uqFullEnvironmentClass& env) {
   ////////////////////////////////////////////////////////
   // Step 4 of 5: Instantiate the inverse problem
   ////////////////////////////////////////////////////////
-  uqUniformVectorRVClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqUniformVectorRVClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     priorRv("prior_", paramDomain);
-  uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqGenericVectorRVClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     postRv("post_", paramSpace);
-  uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqStatisticalInverseProblemClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     ip("", NULL, priorRv, likelihoodFunctionObj, postRv);
 
   ////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ void compute(const uqFullEnvironmentClass& env) {
                           << std::endl;
   }
 
-  uqGslVectorClass auxVec(paramSpace.zeroVector());
+  QUESO::uqGslVectorClass auxVec(paramSpace.zeroVector());
   unsigned int numPosSmallerThan40 = 0;
   for (unsigned int i = 0; i < numPosTotal; ++i) {
     postRv.realizer().realization(auxVec);
@@ -122,9 +122,9 @@ void compute(const uqFullEnvironmentClass& env) {
                           << std::endl;
   }
 
-  uqScalarSequenceClass<double> seq1  (env,numPosSmallerThan40,"");
-  uqScalarSequenceClass<double> seq2  (env,numPosTotal - numPosSmallerThan40,"");
-  uqScalarSequenceClass<double> seqAll(env,numPosTotal,"");
+  QUESO::uqScalarSequenceClass<double> seq1  (env,numPosSmallerThan40,"");
+  QUESO::uqScalarSequenceClass<double> seq2  (env,numPosTotal - numPosSmallerThan40,"");
+  QUESO::uqScalarSequenceClass<double> seqAll(env,numPosTotal,"");
   unsigned int i1 = 0;
   unsigned int i2 = 0;
   for (unsigned int i = 0; i < numPosTotal; ++i) {

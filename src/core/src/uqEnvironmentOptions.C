@@ -29,6 +29,8 @@
 #include <uqEnvironmentOptions.h>
 #include <uqMiscellaneous.h>
 
+namespace QUESO {
+
 // --------------------------------------------------
 // uqEnvOptionsValuesClass --------------------------
 // --------------------------------------------------
@@ -359,3 +361,5 @@ std::ostream& operator<<(std::ostream& os, const uqEnvironmentOptionsClass& obj)
 
   return os;
 }
+
+}  // End namespace QUESO

@@ -31,6 +31,8 @@
 
 #include <uqVectorSpace.h>
 
+namespace QUESO {
+
 template <class S_V,class S_M,class D_V,class D_M>
 class uqExperimentStorageClass
 {
@@ -339,5 +341,7 @@ std::ostream& operator<<(std::ostream& os, const uqExperimentStorageClass<S_V,S_
 
   return os;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_EXPERIMENT_STORAGE_H__

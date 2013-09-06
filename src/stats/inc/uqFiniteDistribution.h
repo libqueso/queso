@@ -31,6 +31,8 @@
 
 #include <uqEnvironment.h>
 
+namespace QUESO {
+
 /*! \file uqFiniteDistribution.h
  * \brief A templated class for a finite distribution.
  *
@@ -76,4 +78,7 @@ protected:
 
 	std::map<double,unsigned int> m_map;
 };
+
+}  // End namespace QUESO
+
 #endif // __UQ_FINITE_DISTRIBUTION_H__

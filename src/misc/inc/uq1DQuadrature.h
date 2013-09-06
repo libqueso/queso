@@ -35,6 +35,8 @@
 #include <math.h>
 #include <fstream>
 
+namespace QUESO {
+
 /*!\file uqBase1DQuadrature.h
  * \brief One-dimensional quadrature rules (numerical integration) class. */
 
@@ -341,5 +343,7 @@ protected:
   using uqBase1DQuadratureClass::m_positions;
   using uqBase1DQuadratureClass::m_weights;
 };
-#endif // __UQ_1D_1D_QUADRATURE_H__
 
+}  // End namespace QUESO
+
+#endif // __UQ_1D_1D_QUADRATURE_H__

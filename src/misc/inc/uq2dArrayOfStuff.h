@@ -29,6 +29,8 @@
 #ifndef __UQ_2D_ARRAY_OF_STUFF_H__
 #define __UQ_2D_ARRAY_OF_STUFF_H__
 
+namespace QUESO {
+
 /*! \file uq2dArrayOfStuff.h
  * \brief A templated class for handling arrays of data
  * 
@@ -155,5 +157,7 @@ uq2dArrayOfStuff<T>::operator()(unsigned int i, unsigned int j) const
                       "invalid situation");
   return *(*(m_data[i]))[j];
 }
-#endif // __UQ_2D_ARRAY_OF_STUFF_H__
 
+}  // End namespace QUESO
+
+#endif // __UQ_2D_ARRAY_OF_STUFF_H__

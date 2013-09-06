@@ -29,6 +29,8 @@
 #ifndef __UQ_MULTI_LEVEL_SAMPLING3_H__
 #define __UQ_MULTI_LEVEL_SAMPLING3_H__
 
+namespace QUESO {
+
 template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::sampleIndexes_proc0(
@@ -1967,4 +1969,7 @@ uqMLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALAN
 
   return;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_MULTI_LEVEL_SAMPLING3_H__

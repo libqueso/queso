@@ -29,6 +29,8 @@
 #include <uq1D1DFunction.h>
 #include <uq1DQuadrature.h>
 
+namespace QUESO {
+
 //*****************************************************
 // Base 1D->1D class
 //*****************************************************
@@ -974,3 +976,4 @@ uqLagrangeBasis1D1DFunctionClass::deriv(double domainValue) const
   return value;
 }
 
+}  // End namespace QUESO

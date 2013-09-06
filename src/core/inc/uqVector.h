@@ -33,6 +33,9 @@
 #include <uqMap.h>
 #include <iostream>
 #include <uqDefines.h>
+
+namespace QUESO {
+
 /*! \file uqVector.h
     \brief Vector class.
 */
@@ -158,5 +161,7 @@ protected:
   //! Flag for either or not print this matrix in scientific notation.
   mutable bool                  m_printScientific;
 };
+
+}  // End namespace QUESO
 
 #endif // __UQ_VECTOR_H__

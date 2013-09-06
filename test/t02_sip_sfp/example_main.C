@@ -36,14 +36,14 @@ int main(int argc, char* argv[])
 #endif
 
   UQ_FATAL_TEST_MACRO(argc != 2,
-                      UQ_UNAVAILABLE_RANK,
+                      QUESO::UQ_UNAVAILABLE_RANK,
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
-  uqFullEnvironmentClass* env =
+  QUESO::uqFullEnvironmentClass* env =
 #ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+    new QUESO::uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
 #else
-    new uqFullEnvironmentClass(0,argv[1],"",NULL);
+    new QUESO::uqFullEnvironmentClass(0,argv[1],"",NULL);
 #endif
 
   // Compute

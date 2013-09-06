@@ -29,6 +29,8 @@
 #include <uqExperimentModelOptions.h>
 #include <uqMiscellaneous.h>
 
+namespace QUESO {
+
 uqEmOptionsValuesClass::uqEmOptionsValuesClass()
   :
   m_Gvalues(0),
@@ -251,3 +253,5 @@ std::ostream& operator<<(std::ostream& os, const uqExperimentModelOptionsClass& 
 
   return os;
 }
+
+}  // End namespace QUESO

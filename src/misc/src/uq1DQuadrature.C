@@ -28,6 +28,8 @@
 
 #include <uq1DQuadrature.h>
 
+namespace QUESO {
+
 //*****************************************************
 // Base 1D quadrature class
 //*****************************************************
@@ -754,3 +756,4 @@ uqWignerChebyshev2nd1DQuadratureClass::dumbRoutine() const
   return;
 }
 
+}  // End namespace QUESO

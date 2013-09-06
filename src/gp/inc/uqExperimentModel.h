@@ -34,6 +34,8 @@
 #include <uqSequenceOfVectors.h>
 #include <uqEnvironment.h>
 
+namespace QUESO {
+
 template <class S_V,class S_M,class D_V,class D_M>
 class uqExperimentModelClass
 {
@@ -252,5 +254,7 @@ std::ostream& operator<<(std::ostream& os, const uqExperimentModelClass<S_V,S_M,
 
   return os;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_EXPERIMENT_MODEL_H__

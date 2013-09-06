@@ -50,6 +50,7 @@
 #define UQ_ENV_NUM_DEBUG_PARAMS_ODV         0
 #define UQ_ENV_DEBUG_PARAM_ODV              0.
 
+namespace QUESO {
 
 /*! \file uqEnvironmentOptions.h
     \brief Class to allow options to be passed to a QUESO environment.
@@ -152,5 +153,7 @@ private:
 
 //! Print values of the options chosen.
 std::ostream& operator<<(std::ostream& os, const uqEnvironmentOptionsClass& obj);
+
+}  // End namespace QUESO
 
 #endif // __UQ_ENVIRONMENT_CLASS_H__

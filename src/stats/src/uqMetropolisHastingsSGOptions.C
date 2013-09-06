@@ -33,6 +33,8 @@
 // uqMhOptionsValuesClass --------------------------
 // -------------------------------------------------
 
+namespace QUESO {
+
 // Default constructor -----------------------------
 uqMhOptionsValuesClass::uqMhOptionsValuesClass(
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -982,3 +984,5 @@ std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGOptionsCl
 
   return os;
 }
+
+}  // End namespace QUESO

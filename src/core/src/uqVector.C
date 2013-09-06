@@ -29,6 +29,8 @@
 #include <uqVector.h>
 #include <uqDefines.h>
 
+namespace QUESO {
+
 // Default constructor ------------------------------
 
 uqVectorClass::uqVectorClass()
@@ -192,3 +194,4 @@ uqVectorClass::copy(const uqVectorClass& src)
   return;
 }
 
+}  // End namespace QUESO

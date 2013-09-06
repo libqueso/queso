@@ -64,6 +64,8 @@ Incompatible combination of defines in QUESO 'uqDefines.h': QUESO_HAS_TRILINOS i
 #include <set>
 #include <vector>
 
+namespace QUESO {
+
 //! Returns the rank of the calling process in the communicator.
 int uqMyWorldfullRank();
 
@@ -185,7 +187,7 @@ private:
   if (macroIRc) {                                           \
     int macroRank = givenRank;                              \
     if (macroRank < 0) {                                    \
-      macroRank = uqMyWorldfullRank();                      \
+      macroRank = QUESO::uqMyWorldfullRank();                      \
     }                                                       \
     std::cerr << "UQ RC ERROR"                              \
               << ", rank "  << macroRank                    \
@@ -200,7 +202,7 @@ private:
   if (test) {                                             \
     int macroRank = givenRank;                            \
     if (macroRank < 0) {                                  \
-      macroRank = uqMyWorldfullRank();                    \
+      macroRank = QUESO::uqMyWorldfullRank();                    \
     }                                                     \
     std::cerr << "UQ TEST ERROR"                          \
               << ", rank " << macroRank                   \
@@ -214,7 +216,7 @@ private:
   if (macroIRc) {                                        \
     int macroRank = givenRank;                           \
     if (macroRank < 0) {                                 \
-      macroRank = uqMyWorldfullRank();                   \
+      macroRank = QUESO::uqMyWorldfullRank();                   \
     }                                                    \
     std::cerr << "UQ RC FATAL ERROR"                     \
               << ", rank "  << macroRank                 \
@@ -231,7 +233,7 @@ private:
   if (test) {                                          \
     int macroRank = givenRank;                         \
     if (macroRank < 0) {                               \
-      macroRank = uqMyWorldfullRank();                 \
+      macroRank = QUESO::uqMyWorldfullRank();                 \
     }                                                  \
     std::cerr << "UQ TEST FATAL ERROR"                 \
               << ", rank "  << macroRank               \
@@ -248,7 +250,7 @@ private:
   if (test) {                                          \
     int macroRank = givenRank;                         \
     if (macroRank < 0) {                               \
-      macroRank = uqMyWorldfullRank();                 \
+      macroRank = QUESO::uqMyWorldfullRank();                 \
     }                                                  \
     std::cerr << "UQ TEST FATAL ERROR"                 \
               << ", rank "  << macroRank               \
@@ -259,5 +261,7 @@ private:
     exit(1);                                           \
   }
 #endif
+
+}  // End namespace QUESO
 
 #endif // __UQ_DEFINES_H__

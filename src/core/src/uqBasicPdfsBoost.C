@@ -29,6 +29,8 @@
 #include <uqBasicPdfsBoost.h>
 #include <mpi.h>
 
+namespace QUESO {
+
 // Default constructor ------------------------------
 uqBasicPdfsBoostClass::uqBasicPdfsBoostClass()
   :
@@ -75,3 +77,4 @@ uqBasicPdfsBoostClass::gammaPdfActualValue(double x, double a, double b) const
   return 0.;
 }
 
+}  // End namespace QUESO

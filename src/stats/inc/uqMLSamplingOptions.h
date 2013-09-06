@@ -56,6 +56,8 @@
 #define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOW_ALL_ODV               0
 #define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV             ""
 
+namespace QUESO {
+
 class uqMLSamplingOptionsClass
 {
 public:
@@ -107,4 +109,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const uqMLSamplingOptionsClass& obj);
+
+}  // End namespace QUESO
+
 #endif // __UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H__

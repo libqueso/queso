@@ -33,6 +33,8 @@
 // uqSipOptionsValuesClass--------------------------
 // -------------------------------------------------
 
+namespace QUESO {
+
 // Default constructor -----------------------------
 uqSipOptionsValuesClass::uqSipOptionsValuesClass()
   :
@@ -251,3 +253,5 @@ std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemOpti
 
   return os;
 }
+
+}  // End namespace QUESO

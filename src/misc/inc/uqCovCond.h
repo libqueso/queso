@@ -31,6 +31,8 @@
 
 #include <iostream>
 
+namespace QUESO {
+
 template <class V, class M>
 void
 uqCovCond(
@@ -75,4 +77,7 @@ uqCovCond(
   //std::cout << "Leaving uqCovCond()"
   //          << std::endl;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_COV_COND_H__

@@ -40,6 +40,8 @@
 
 #ifdef QUESO_HAS_TRILINOS
 
+namespace QUESO {
+
 /*! \file uqTeuchosMatrix.h
     \brief Matrix class using Trilinos Teuchos
 */
@@ -403,7 +405,8 @@ uqTeuchosMatrixClass leftDiagScaling (const uqTeuchosVectorClass& vec, const uqT
 uqTeuchosMatrixClass rightDiagScaling(const uqTeuchosMatrixClass& mat, const uqTeuchosVectorClass& vec);
 std::ostream&        operator<<      (std::ostream& os,            const uqTeuchosMatrixClass& obj);
 
+}  // End namespace QUESO
+
 #endif // ifdef QUESO_HAS_TRILINOS
 
 #endif // __UQ_TEUCHOS_MATRIX_H__
-

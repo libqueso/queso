@@ -29,6 +29,8 @@
 #include <uqSimulationModelOptions.h>
 #include <uqMiscellaneous.h>
 
+namespace QUESO {
+
 uqSmOptionsValuesClass::uqSmOptionsValuesClass()
   :
   m_dataOutputFileName       (UQ_SIMULATION_MODEL_DATA_OUTPUT_FILE_NAME_ODV       ),
@@ -322,3 +324,5 @@ std::ostream& operator<<(std::ostream& os, const uqSimulationModelOptionsClass& 
 
   return os;
 }
+
+}  // End namespace QUESO

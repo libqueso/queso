@@ -34,6 +34,8 @@
 #include <uqEnvironment.h>
 #include <uqDefines.h>
 
+namespace QUESO {
+
 //*****************************************************
 // Base class
 //*****************************************************
@@ -300,4 +302,7 @@ uqConstantScalarFunctionClass<V,M>::lnValue(const V& domainVector, const V* doma
 {
   return 0.;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_SCALAR_FUNCTION_H__

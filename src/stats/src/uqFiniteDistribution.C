@@ -28,6 +28,8 @@
 
 #include <uqFiniteDistribution.h>
 
+namespace QUESO {
+
 // Default constructor -----------------------------
 uqFiniteDistributionClass::uqFiniteDistributionClass(
   const uqBaseEnvironmentClass& env,
@@ -184,3 +186,5 @@ uqFiniteDistributionClass::sample() const
 
   return result;
 }
+
+}  // End namespace QUESO

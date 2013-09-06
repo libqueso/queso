@@ -52,9 +52,9 @@ void qoiRoutine(const P_V&                    paramValues,
                 const P_V*                    paramDirection,
                 const void*                   functionDataPtr,
                       Q_V&                    qoiValues,
-                      uqDistArrayClass<P_V*>* gradVectors,
-                      uqDistArrayClass<P_M*>* hessianMatrices,
-                      uqDistArrayClass<P_V*>* hessianEffects)
+                      QUESO::uqDistArrayClass<P_V*>* gradVectors,
+                      QUESO::uqDistArrayClass<P_M*>* hessianMatrices,
+                      QUESO::uqDistArrayClass<P_V*>* hessianEffects)
 {
   double A             = paramValues[0];
   double E             = paramValues[1];

@@ -32,6 +32,8 @@
 #include <uqDefines.h>
 #include <iostream>
 
+namespace QUESO {
+
 /*! \file uqBasicPdfsBaseClass.h
     \brief Class for Basic PDFs.
 */
@@ -69,5 +71,7 @@ public:
 protected:
   int m_worldRank;
 };
+
+}  // End namespace QUESO
 
 #endif // __UQ_BASIC_PDFS_BASE_H__

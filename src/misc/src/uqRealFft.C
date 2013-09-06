@@ -30,6 +30,8 @@
 #include <gsl/gsl_fft_real.h>
 #include <gsl/gsl_fft_complex.h>
 
+namespace QUESO {
+
 // Math methods------------------------------------------
 template <>
 void
@@ -181,3 +183,5 @@ uqFftClass<T>::freeTables()
   return;
 }
 #endif
+
+}  // End namespace QUESO

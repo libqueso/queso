@@ -29,6 +29,8 @@
 #include <uqGpmsaComputerModelOptions.h>
 #include <uqMiscellaneous.h>
 
+namespace QUESO {
+
 uqGcmOptionsValuesClass::uqGcmOptionsValuesClass()
   :
   m_checkAgainstPreviousSample     (UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ),
@@ -400,3 +402,5 @@ std::ostream& operator<<(std::ostream& os, const uqGpmsaComputerModelOptionsClas
 
   return os;
 }
+
+}  // End namespace QUESO

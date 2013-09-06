@@ -100,6 +100,8 @@
 #define UQ_ML_SAMPLING_L_AM_ETA_ODV                                           1.
 #define UQ_ML_SAMPLING_L_AM_EPSILON_ODV                                       1.e-5
 
+namespace QUESO {
+
 class uqMLSamplingLevelOptionsClass
 {
 public:
@@ -267,4 +269,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const uqMLSamplingLevelOptionsClass& obj);
+
+}  // End namespace QUESO
+
 #endif // __UQ_MULTI_LEVEL_SAMPLING_LEVEL_OPTIONS_H__

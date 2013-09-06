@@ -32,6 +32,8 @@
 
 #include <uqTeuchosVector.h>
 
+namespace QUESO {
+
 using std:: cout;
 using std:: endl;
 
@@ -1484,5 +1486,7 @@ operator<<(std::ostream& os, const uqTeuchosVectorClass& obj)
 }
 
 // -------------------------------------------------
-#endif // ifdef QUESO_HAS_TRILINOS
 
+}  // End namespace QUESO
+
+#endif // ifdef QUESO_HAS_TRILINOS

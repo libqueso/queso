@@ -41,6 +41,8 @@
 #define UQ_INFTH_ANN_EPS           0.0
 #define UQ_INFTH_ANN_KNN           6
 
+namespace QUESO {
+
 void distANN_XY( const ANNpointArray dataX, const ANNpointArray dataY, 
 		 double* distsXY, 
 		 unsigned int dimX, unsigned int dimY, 
@@ -303,7 +305,7 @@ double estimateCE_ANN( RV_1<P_V,P_M>& xRV,
   return CE_est;
 }
 
-
+}  // End namespace QUESO
 
 #endif // QUESO_HAS_ANN
 

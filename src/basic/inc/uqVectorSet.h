@@ -32,6 +32,8 @@
 #include <uqEnvironment.h>
 #include <uqDefines.h>
 
+namespace QUESO {
+
 /*! \file uqVectorSetClass.h
  * \brief A templated class for handling sets.
  * 
@@ -188,5 +190,6 @@ operator<<(std::ostream& os, const uqVectorSetClass<V,M>& obj)
   return os;
 }
 
-#endif // __UQ_VECTOR_SET_H__
+}  // End namespace QUESO
 
+#endif // __UQ_VECTOR_SET_H__

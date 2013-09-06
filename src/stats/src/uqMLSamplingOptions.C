@@ -29,6 +29,8 @@
 #include <uqMLSamplingOptions.h>
 #include <uqMiscellaneous.h>
 
+namespace QUESO {
+
 uqMLSamplingOptionsClass::uqMLSamplingOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix)
   :
   m_prefix                               ((std::string)(prefix) + "ml_"                        ),
@@ -208,3 +210,5 @@ std::ostream& operator<<(std::ostream& os, const uqMLSamplingOptionsClass& obj)
 
   return os;
 }
+
+}  // End namespace QUESO

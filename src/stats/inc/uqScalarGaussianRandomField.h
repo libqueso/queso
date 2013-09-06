@@ -33,6 +33,8 @@
 #include <uqScalarFunction.h>
 #include <uqVectorRV.h>
 
+namespace QUESO {
+
 /*! 
  * \file uqScalarGaussianRandomField.h
  * \brief A class for handling Gaussian random fields (GRF).
@@ -311,5 +313,7 @@ uqScalarGaussianRandomFieldClass<V,M>::sampleFunction(const std::vector<V*>& fie
 
   return;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_SCALAR_GAUSSIAN_RANDOM_FIELD_H__ 

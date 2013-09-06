@@ -38,6 +38,8 @@
 #include <gsl/gsl_permutation.h>
 #include <uqGslVector.h>
 
+namespace QUESO {
+
 /*! \class uqGslMatrixClass
     \brief Class for matrix operations using GSL library.
     
@@ -456,5 +458,7 @@ uqGslMatrixClass leftDiagScaling (const uqGslVectorClass& vec, const uqGslMatrix
 // Column \c j of the returned matrix is equal to column \c j of \c mat multiplied by element \c j of \c v.
 uqGslMatrixClass rightDiagScaling(const uqGslMatrixClass& mat, const uqGslVectorClass& vec);
 std::ostream&    operator<<      (std::ostream& os,            const uqGslMatrixClass& obj);
+
+}  // End namespace QUESO
 
 #endif // __UQ_GSL_MATRIX_H__

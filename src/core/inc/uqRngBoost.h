@@ -46,7 +46,7 @@
     so that the generators can be used in the demanding numerics and security domain.
 */
 
-
+namespace QUESO {
 
 class uqRngBoostClass : public uqRngBaseClass
 {
@@ -114,5 +114,6 @@ private:
   boost::mt19937 m_rng; // it cannot be static, as it is not initialized yet
 };
 
-#endif // __UQ_RNG_BOOST_H__
+}  // End namespace QUESO
 
+#endif // __UQ_RNG_BOOST_H__

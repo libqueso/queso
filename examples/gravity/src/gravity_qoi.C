@@ -38,15 +38,15 @@
 //------------------------------------------------------
 void
 qoiRoutine(
-  const uqGslVectorClass&                    paramValues,
-  const uqGslVectorClass*                    paramDirection,
+  const QUESO::uqGslVectorClass&                    paramValues,
+  const QUESO::uqGslVectorClass*                    paramDirection,
   const void*                                functionDataPtr,
-        uqGslVectorClass&                    qoiValues,
-        uqDistArrayClass<uqGslVectorClass*>* gradVectors,
-        uqDistArrayClass<uqGslMatrixClass*>* hessianMatrices,
-        uqDistArrayClass<uqGslVectorClass*>* hessianEffects)
+        QUESO::uqGslVectorClass&                    qoiValues,
+        QUESO::uqDistArrayClass<QUESO::uqGslVectorClass*>* gradVectors,
+        QUESO::uqDistArrayClass<QUESO::uqGslMatrixClass*>* hessianMatrices,
+        QUESO::uqDistArrayClass<QUESO::uqGslVectorClass*>* hessianEffects)
 {
-  const uqBaseEnvironmentClass& env = paramValues.env();
+  const QUESO::uqBaseEnvironmentClass& env = paramValues.env();
 
   if (paramDirection && 
       gradVectors    &&

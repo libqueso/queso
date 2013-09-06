@@ -38,6 +38,8 @@
 #include <uqInfoTheory.h>
 #include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
 
+namespace QUESO {
+
 //*****************************************************
 // Base class [RV-00]
 //*****************************************************
@@ -1793,4 +1795,7 @@ uqComputeCovCorrMatricesBetweenVectorRvs(
 
   return;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_VECTOR_RV_H__

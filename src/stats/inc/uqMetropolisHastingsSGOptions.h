@@ -92,6 +92,8 @@
 #define UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                    0
 #define UQ_MH_SG_BROOKS_GELMAN_LAG                                    100
 
+namespace QUESO {
+
 /*! \file uqMetropolisHastingsSGOptions.h
     \brief Classes to allow options to be passed to a Metropolis-Hastings algorithm.
 */
@@ -319,4 +321,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGOptionsClass& obj);
+
+}  // End namespace QUESO
+
 #endif // __UQ_MH_SG_OPTIONS_H__

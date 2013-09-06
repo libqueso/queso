@@ -31,6 +31,8 @@
 
 #include <uqEnvironment.h>
 
+namespace QUESO {
+
 /*!\file uqArrayOfOneDTables
  * \brief Class to accommodate arrays of one-dimensional tables.
  * 
@@ -170,5 +172,7 @@ std::ostream& operator<< (std::ostream& os, const uqArrayOfOneDTablesClass<V,M>&
   obj.print(os);
   return os;
 }
-#endif // __UQ_ARRAY_OF_ONE_D_TABLES_H__
 
+}  // End namespace QUESO
+
+#endif // __UQ_ARRAY_OF_ONE_D_TABLES_H__

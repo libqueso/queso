@@ -38,6 +38,8 @@
 #include <uqVector.h>
 #include <gsl/gsl_vector.h>
 
+namespace QUESO {
+
 /*! \class uqGslVectorClass
 
     \brief Class for vector operations using GSL library.
@@ -258,5 +260,7 @@ uqGslVectorClass operator+    (const uqGslVectorClass& x,   const uqGslVectorCla
 uqGslVectorClass operator-    (const uqGslVectorClass& x,   const uqGslVectorClass& y  );
 bool             operator==   (const uqGslVectorClass& lhs, const uqGslVectorClass& rhs);
 std::ostream&    operator<<   (std::ostream& os,            const uqGslVectorClass& obj);
+
+}  // End namespace QUESO
 
 #endif // __UQ_GSL_VECTOR_H__

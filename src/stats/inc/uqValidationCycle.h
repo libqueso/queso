@@ -32,6 +32,8 @@
 #include <uqStatisticalInverseProblem.h>
 #include <uqStatisticalForwardProblem.h>
 
+namespace QUESO {
+
 /*! \file uqValidationCycle.h
  * \brief A templated class for validation cycle of the examples validationCycle and validationCycle2. 
  *
@@ -423,5 +425,7 @@ uqValidationCycleClass<P_V,P_M,Q_V,Q_M>::valFP()
 {
   return *m_valFP;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_VALIDATION_CYCLE_H__

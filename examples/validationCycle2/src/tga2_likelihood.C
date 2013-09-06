@@ -36,7 +36,7 @@
 #include <gsl/gsl_odeiv.h>
 
 likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(
-  const uqBaseEnvironmentClass& env,
+  const QUESO::uqBaseEnvironmentClass& env,
   const char* inpName1,
   const char* inpName2,
   const char* inpName3)
@@ -173,16 +173,16 @@ likelihoodRoutine_DataClass::~likelihoodRoutine_DataClass()
 //********************************************************
 double
 likelihoodRoutine(
-  const uqGslVectorClass& paramValues,
-  const uqGslVectorClass* paramDirection,
+  const QUESO::uqGslVectorClass& paramValues,
+  const QUESO::uqGslVectorClass* paramDirection,
   const void*             functionDataPtr,
-  uqGslVectorClass*       gradVector,
-  uqGslMatrixClass*       hessianMatrix,
-  uqGslVectorClass*       hessianEffect)
+  QUESO::uqGslVectorClass*       gradVector,
+  QUESO::uqGslMatrixClass*       hessianMatrix,
+  QUESO::uqGslVectorClass*       hessianEffect)
 {
   double resultValue = 0.;
 
-  const uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass*) functionDataPtr)->m_env);
+  const QUESO::uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass*) functionDataPtr)->m_env);
 
   if (paramDirection  &&
       functionDataPtr && 

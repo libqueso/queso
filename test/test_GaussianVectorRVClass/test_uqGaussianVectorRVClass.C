@@ -22,21 +22,21 @@ int main(int argc, char **argv) {
   fread(&seed, sizeof(int), 1, fpRand);
   fclose(fpRand);
 
-  uqEnvOptionsValuesClass *opts = new uqEnvOptionsValuesClass();
+  QUESO::uqEnvOptionsValuesClass *opts = new QUESO::uqEnvOptionsValuesClass();
   opts->m_seed = seed;
 
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
 #endif
-  uqFullEnvironmentClass *env =
+  QUESO::uqFullEnvironmentClass *env =
 #ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD, "", "", opts);
+    new QUESO::uqFullEnvironmentClass(MPI_COMM_WORLD, "", "", opts);
 #else
-    new uqFullEnvironmentClass(0, "", "", opts);
+    new QUESO::uqFullEnvironmentClass(0, "", "", opts);
 #endif
 
-  uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> *param_space;
-  param_space = new uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass>(
+  QUESO::uqVectorSpaceClass<QUESO::uqGslVectorClass, QUESO::uqGslMatrixClass> *param_space;
+  param_space = new QUESO::uqVectorSpaceClass<QUESO::uqGslVectorClass, QUESO::uqGslMatrixClass>(
       *env, "param_", 4, NULL);
 
   mean = new double[4];
@@ -44,25 +44,25 @@ int main(int argc, char **argv) {
   sumsq = new double[4];
   delta = new double[4];
 
-  uqGslVectorClass mins(param_space->zeroVector());
-  uqGslVectorClass maxs(param_space->zeroVector());
+  QUESO::uqGslVectorClass mins(param_space->zeroVector());
+  QUESO::uqGslVectorClass maxs(param_space->zeroVector());
   mins.cwSet(-INFINITY);
   maxs.cwSet(INFINITY);
-  uqBoxSubsetClass<uqGslVectorClass, uqGslMatrixClass> *param_domain;
-  param_domain = new uqBoxSubsetClass<uqGslVectorClass, uqGslMatrixClass>(
+  QUESO::uqBoxSubsetClass<QUESO::uqGslVectorClass, QUESO::uqGslMatrixClass> *param_domain;
+  param_domain = new QUESO::uqBoxSubsetClass<QUESO::uqGslVectorClass, QUESO::uqGslMatrixClass>(
       "param_", *param_space, mins, maxs);
 
   // Mean zero
-  uqGslVectorClass prior_mean_vals(param_space->zeroVector());
+  QUESO::uqGslVectorClass prior_mean_vals(param_space->zeroVector());
   // Variance
-  uqGslVectorClass prior_var_vals(param_space->zeroVector());
+  QUESO::uqGslVectorClass prior_var_vals(param_space->zeroVector());
   prior_var_vals.cwSet(sigmasq);
 
-  uqGaussianVectorRVClass<uqGslVectorClass, uqGslMatrixClass> *prior;
-  prior = new uqGaussianVectorRVClass<uqGslVectorClass, uqGslMatrixClass>(
+  QUESO::uqGaussianVectorRVClass<QUESO::uqGslVectorClass, QUESO::uqGslMatrixClass> *prior;
+  prior = new QUESO::uqGaussianVectorRVClass<QUESO::uqGslVectorClass, QUESO::uqGslMatrixClass>(
       "prior_", *(param_domain), prior_mean_vals, prior_var_vals);
 
-  uqGslVectorClass draw(param_space->zeroVector());
+  QUESO::uqGslVectorClass draw(param_space->zeroVector());
 
   for (j = 0; j < 4; j++) {
     mean[j] = 0.0;

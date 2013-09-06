@@ -30,6 +30,9 @@
 #define __UQ_BASIC_PDFS_GSL_H__
 
 #include <uqBasicPdfsBase.h>
+
+namespace QUESO {
+
 /*! \file uqBasicPdfsGslClass.h
     \brief Class for Basic PDFs using Gsl library.
 */
@@ -66,5 +69,7 @@ public:
   //@}
 protected:
 };
+
+}  // End namespace QUESO
 
 #endif // __UQ_BASIC_PDFS_GSL_H__

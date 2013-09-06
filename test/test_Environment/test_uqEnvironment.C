@@ -14,11 +14,11 @@ int main(int argc, char **argv) {
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
 #endif
-  uqFullEnvironmentClass *env =
+  QUESO::uqFullEnvironmentClass *env =
 #ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD, "", "", NULL);
+    new QUESO::uqFullEnvironmentClass(MPI_COMM_WORLD, "", "", NULL);
 #else
-    new uqFullEnvironmentClass(0, "", "", NULL);
+    new QUESO::uqFullEnvironmentClass(0, "", "", NULL);
 #endif
 
   delete env;

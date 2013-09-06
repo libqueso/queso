@@ -35,6 +35,6 @@
 
 #include <uqEnvironment.h>
 
-void computeGravityAndTraveledDistance(const uqFullEnvironmentClass& env);
+void computeGravityAndTraveledDistance(const QUESO::uqFullEnvironmentClass& env);
 
 #endif

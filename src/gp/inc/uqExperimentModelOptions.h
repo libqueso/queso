@@ -44,6 +44,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+namespace QUESO {
+
 class uqEmOptionsValuesClass
 {
 public:
@@ -97,4 +99,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const uqExperimentModelOptionsClass& obj);
+
+}  // End namespace QUESO
+
 #endif // __UQ_EXPERIMENT_MODEL_OPTIONS_H__

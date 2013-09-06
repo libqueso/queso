@@ -29,6 +29,7 @@
 #include <uqRngBoost.h>
 #include <mpi.h>
 
+namespace QUESO {
 
 // Default constructor ------------------------------
 uqRngBoostClass::uqRngBoostClass()
@@ -106,3 +107,4 @@ uqRngBoostClass::gammaSample(double a, double b) const
   return quantile(gamma_dist, zeroone());
 }
 
+}  // End namespace QUESO

@@ -35,6 +35,8 @@
 #include <cmath>
 //#include <math.h>
 
+namespace QUESO {
+
 /*!
  * \class uqVectorSpaceClass
  * \brief A class representing a vector space.
@@ -497,4 +499,7 @@ uqVectorSpaceClass<V,M>::print(std::ostream& os) const
      << ": nothing to be printed" << std::endl;
   return;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_VECTOR_SPACE_H__

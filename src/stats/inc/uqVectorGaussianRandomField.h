@@ -32,6 +32,9 @@
 #include <uqMatrixCovarianceFunction.h>
 #include <uqVectorFunction.h>
 #include <uqVectorRV.h>
+
+namespace QUESO {
+
 /*! 
  * \file uqVectorGaussianRandomField.h
  * \brief A class for handling Gaussian random fields (GRF).
@@ -370,5 +373,7 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
 
   return;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_VECTOR_GAUSSIAN_RANDOM_FIELD_H__ 

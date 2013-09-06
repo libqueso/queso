@@ -37,7 +37,7 @@
 #include <fstream>
 
 // Construtor
-likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env)
+likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(const QUESO::uqBaseEnvironmentClass& env)
   :
   m_heights(0),
   m_times  (0),
@@ -66,14 +66,14 @@ likelihoodRoutine_DataClass::~likelihoodRoutine_DataClass()
 // The user defined likelihood routine
 //------------------------------------------------------
 double likelihoodRoutine(
-  const uqGslVectorClass& paramValues,
-  const uqGslVectorClass* paramDirection,
+  const QUESO::uqGslVectorClass& paramValues,
+  const QUESO::uqGslVectorClass* paramDirection,
   const void*             functionDataPtr,
-  uqGslVectorClass*       gradVector,
-  uqGslMatrixClass*       hessianMatrix,
-  uqGslVectorClass*       hessianEffect)
+  QUESO::uqGslVectorClass*       gradVector,
+  QUESO::uqGslMatrixClass*       hessianMatrix,
+  QUESO::uqGslVectorClass*       hessianEffect)
 {
-  const uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass*) functionDataPtr)->m_env);
+  const QUESO::uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass*) functionDataPtr)->m_env);
     
   if (paramDirection && functionDataPtr && gradVector && hessianMatrix && hessianEffect) 
   {

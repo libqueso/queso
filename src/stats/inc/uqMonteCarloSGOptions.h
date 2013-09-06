@@ -55,6 +55,8 @@
 #define UQ_MOC_SG_QSEQ_DATA_OUTPUT_ALLOWED_SET_ODV ""
 #define UQ_MOC_SG_QSEQ_COMPUTE_STATS_ODV           0
 
+namespace QUESO {
+
 /*! \file uqMonteCarloSGOptions.h
     \brief Classes to allow options to be passed to a Monte Carlo sequence generator.
 */
@@ -212,4 +214,7 @@ private:
 
 //! Prints the object \c obj, overloading an operator.
 std::ostream& operator<<(std::ostream& os, const uqMonteCarloSGOptionsClass& obj);
+
+}  // End namespace QUESO
+
 #endif // __UQ_MOC_SG_OPTIONS_H__

@@ -31,6 +31,8 @@
 
 #include <uqValidationCycle.h>
 
+namespace QUESO {
+
 /*! \file uqModelValidation.h
  * \brief A templated class for model validation of the example validationPyramid.
  *
@@ -128,5 +130,7 @@ uqModelValidationClass<P_V,P_M,Q_V,Q_M>::cycle() const
 {
   return *m_cycle;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_MODEL_VALIDATION_H__

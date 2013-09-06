@@ -58,7 +58,7 @@
 
 //#define PRIOR_IS_GAUSSIAN
 
-void computeGravityAndTraveledDistance(const uqFullEnvironmentClass& env) {
+void computeGravityAndTraveledDistance(const QUESO::uqFullEnvironmentClass& env) {
   struct timeval timevalNow;
   
   gettimeofday(&timevalNow, NULL);
@@ -95,18 +95,18 @@ void computeGravityAndTraveledDistance(const uqFullEnvironmentClass& env) {
   //------------------------------------------------------
   // SIP Step 1 of 6: Instantiate the parameter space
   //------------------------------------------------------
-  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> paramSpace(env, "param_", 1, NULL);
+  QUESO::uqVectorSpaceClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass> paramSpace(env, "param_", 1, NULL);
 
   //------------------------------------------------------
   // SIP Step 2 of 6: Instantiate the parameter domain
   //------------------------------------------------------
-  uqGslVectorClass paramMinValues(paramSpace.zeroVector());
-  uqGslVectorClass paramMaxValues(paramSpace.zeroVector());
+  QUESO::uqGslVectorClass paramMinValues(paramSpace.zeroVector());
+  QUESO::uqGslVectorClass paramMaxValues(paramSpace.zeroVector());
   
   paramMinValues[0] = 8.;
   paramMaxValues[0] = 11.;
   
-  uqBoxSubsetClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqBoxSubsetClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     paramDomain("param_",
       paramSpace,
       paramMinValues,
@@ -117,7 +117,7 @@ void computeGravityAndTraveledDistance(const uqFullEnvironmentClass& env) {
   // object to be used by QUESO.
   //------------------------------------------------------
   likelihoodRoutine_DataClass likelihoodRoutine_Data(env);
-  uqGenericScalarFunctionClass<uqGslVectorClass,uqGslMatrixClass> 
+  QUESO::uqGenericScalarFunctionClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     likelihoodFunctionObj("like_",
 			  paramDomain,
 			  likelihoodRoutine,
@@ -129,29 +129,29 @@ void computeGravityAndTraveledDistance(const uqFullEnvironmentClass& env) {
   //------------------------------------------------------
   
 #ifdef PRIOR_IS_GAUSSIAN
-  uqGslVectorClass meanVector( paramSpace.zeroVector() ); 
+  QUESO::uqGslVectorClass meanVector( paramSpace.zeroVector() );
   meanVector[0] = 9;
  
-  uqGslMatrixClass covMatrix = uqGslMatrixClass(paramSpace.zeroVector());  
+  QUESO::uqGslMatrixClass covMatrix = QUESO::uqGslMatrixClass(paramSpace.zeroVector());
   covMatrix(0,0) = 1.; 
   
   // Create a Gaussian prior RV
-  uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> priorRv("prior_",paramDomain,meanVector,covMatrix);
+  QUESO::uqGaussianVectorRVClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass> priorRv("prior_",paramDomain,meanVector,covMatrix);
   
 #else
   // Create an uniform prior RV
-  uqUniformVectorRVClass<uqGslVectorClass,uqGslMatrixClass> priorRv("prior_",paramDomain);
+  QUESO::uqUniformVectorRVClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass> priorRv("prior_",paramDomain);
   
 #endif
   
   //------------------------------------------------------
   // SIP Step 5 of 6: Instantiate the inverse problem
   //------------------------------------------------------
-  uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass> 
+  QUESO::uqGenericVectorRVClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     postRv("post_",  // Extra prefix before the default "rv_" prefix
            paramSpace);
         
-  uqStatisticalInverseProblemClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqStatisticalInverseProblemClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     ip("",          // No extra prefix before the default "ip_" prefix
        NULL, 
        priorRv, 
@@ -165,10 +165,10 @@ void computeGravityAndTraveledDistance(const uqFullEnvironmentClass& env) {
   std::cout << "Solving the SIP with Metropolis Hastings" 
 	    << std::endl << std::endl;  
 
-  uqGslVectorClass paramInitials(paramSpace.zeroVector());
+  QUESO::uqGslVectorClass paramInitials(paramSpace.zeroVector());
   priorRv.realizer().realization(paramInitials);
 
-  uqGslMatrixClass proposalCovMatrix(paramSpace.zeroVector());
+  QUESO::uqGslMatrixClass proposalCovMatrix(paramSpace.zeroVector());
   proposalCovMatrix(0,0) = std::pow( fabs(paramInitials[0])/20. , 2. );
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
@@ -188,7 +188,7 @@ void computeGravityAndTraveledDistance(const uqFullEnvironmentClass& env) {
   // SFP input RV = FIP posterior RV, so SFP parameter space
   // has been already defined.
   //------------------------------------------------------
-  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> qoiSpace(env, "qoi_", 1, NULL);
+  QUESO::uqVectorSpaceClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass> qoiSpace(env, "qoi_", 1, NULL);
   
   //------------------------------------------------------
   // SFP Step 2 of 6: Instantiate the parameter domain 
@@ -206,7 +206,7 @@ void computeGravityAndTraveledDistance(const uqFullEnvironmentClass& env) {
   qoiRoutine_Data.m_initialVelocity= 5.;      //initial speed (m/s) 
   qoiRoutine_Data.m_initialHeight  = 0.;       //initial height (m)
   
-  uqGenericVectorFunctionClass<uqGslVectorClass,uqGslMatrixClass,uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqGenericVectorFunctionClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass,QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     qoiFunctionObj("qoi_",
                    paramDomain,
                    qoiSpace,
@@ -223,9 +223,9 @@ void computeGravityAndTraveledDistance(const uqFullEnvironmentClass& env) {
   //------------------------------------------------------
   // SFP Step 5 of 6: Instantiate the forward problem
   //------------------------------------------------------
-  uqGenericVectorRVClass<uqGslVectorClass,uqGslMatrixClass> qoiRv("qoi_", qoiSpace);
+  QUESO::uqGenericVectorRVClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass> qoiRv("qoi_", qoiSpace);
   
-  uqStatisticalForwardProblemClass<uqGslVectorClass,uqGslMatrixClass,uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqStatisticalForwardProblemClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass,QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     fp("",
        NULL,
        postRv,

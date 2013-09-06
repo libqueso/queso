@@ -33,6 +33,8 @@
 #include <boost/random.hpp>
 #include <boost/math/distributions.hpp> 
 
+namespace QUESO {
+
 /*! \file uqBasicPdfsBoostClass.h
     \brief Class for Basic PDFs using Boost library.
 */
@@ -71,5 +73,6 @@ public:
 private:  
 };
 
-#endif // __UQ_BASIC_PDFS_BOOST_H__
+}  // End namespace QUESO
 
+#endif // __UQ_BASIC_PDFS_BOOST_H__

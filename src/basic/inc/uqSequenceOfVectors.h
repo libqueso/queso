@@ -33,6 +33,7 @@
 #define UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
 #undef  UQ_SEQ_VEC_USES_OPERATOR
 
+namespace QUESO {
 
 /*! \file uqSequenceofVectors.h
  * \brief A templated class for handling vector samples
@@ -3525,6 +3526,8 @@ uqSequenceOfVectorsClass<V,M>::unifiedMeanMonitorFree()
   return;
 }
 #endif // #ifdef UQ_CODE_HAS_MONITORS
+
+}  // End namespace QUESO
 
 #endif // __UQ_SEQUENCE_OF_VECTORS_H__
 

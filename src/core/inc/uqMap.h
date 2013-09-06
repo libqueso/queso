@@ -36,6 +36,7 @@
 
 #include <uqMpiComm.h>
 
+namespace QUESO {
 
 /*! \file uqMap.h
     \brief A class for partitioning vectors and matrices.
@@ -125,5 +126,7 @@ private:
   int            m_numMyElements;
 #endif
 };
+
+}  // End namespace QUESO
 
 #endif // __UQ_MAP_H__

@@ -34,6 +34,8 @@
 #include <sys/time.h>
 #include <cmath>
 
+namespace QUESO {
+
 // Default constructor -------------------------------------------------
 uqGslMatrixClass::uqGslMatrixClass()
   :
@@ -2477,3 +2479,5 @@ uqGslMatrixClass rightDiagScaling(const uqGslMatrixClass& mat, const uqGslVector
 
   return answer;
 }
+
+}  // End namespace QUESO

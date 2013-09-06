@@ -28,6 +28,9 @@
 
 #include <uqStatisticalForwardProblemOptions.h>
 #include <uqMiscellaneous.h>
+
+namespace QUESO {
+
 // --------------------------------------------------
 // uqSfpOptionsValuesClass---------------------------
 // --------------------------------------------------
@@ -267,3 +270,5 @@ std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemOpti
 
   return os;
 }
+
+}  // End namespace QUESO
