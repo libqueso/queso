@@ -111,7 +111,7 @@ MHRawChainInfoStruct::copy(const MHRawChainInfoStruct& rhs)
 }
 //---------------------------------------------------
 void
-MHRawChainInfoStruct::mpiSum(const MpiCommClass& comm, MHRawChainInfoStruct& sumInfo) const
+MHRawChainInfoStruct::mpiSum(const MpiComm& comm, MHRawChainInfoStruct& sumInfo) const
 {
   comm.Allreduce((void *) &runTime, (void *) &sumInfo.runTime, (int) 7, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
                  "MHRawChainInfoStruct::mpiSum()",

@@ -98,13 +98,13 @@ namespace QUESO {
     \brief Classes to allow options to be passed to a Metropolis-Hastings algorithm.
 */
 
-/*! \class MhOptionsValuesClass
+/*! \class MhOptionsValues
  *  \brief This class provides options for the Metropolis-Hastings generator of samples if no input file is available.
  * 
  *  Metropolis-Hastings generator of samples expects some options for its methods to be fully defined. 
  * This class provides default values for such options if no input file is available. */
 
-class MhOptionsValuesClass
+class MhOptionsValues
 {
 public:
   
@@ -112,27 +112,27 @@ public:
   //@{
     
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  MhOptionsValuesClass            (const SsOptionsValuesClass* alternativeRawSsOptionsValues,
-                                     const SsOptionsValuesClass* alternativeFilteredSsOptionsValues);
+  MhOptionsValues            (const SsOptionsValues* alternativeRawSsOptionsValues,
+                                     const SsOptionsValues* alternativeFilteredSsOptionsValues);
 #else
   
   //! Default constructor.
   /*! Assigns the default suite of options to the Metropolis-Hastings generator of samples.*/
-  MhOptionsValuesClass            ();
+  MhOptionsValues            ();
 #endif
   
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
-  MhOptionsValuesClass            (const MhOptionsValuesClass& src);
+  MhOptionsValues            (const MhOptionsValues& src);
 
   //! Destructor
-  ~MhOptionsValuesClass            ();
+  ~MhOptionsValues            ();
   //@}
    
   //! @name Set methods
   //@{ 
   //! Assignment operator; it copies \c rhs to \c this. 
-  MhOptionsValuesClass& operator= (const MhOptionsValuesClass& rhs);
+  MhOptionsValues& operator= (const MhOptionsValues& rhs);
   //@}
   
   std::string                        m_dataOutputFileName;
@@ -193,12 +193,12 @@ public:
 
 private:
   //! Copies the option values from \c src to \c this.
-  void copy(const MhOptionsValuesClass& src);
+  void copy(const MhOptionsValues& src);
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  friend class MetropolisHastingsSGOptionsClass;
-  SsOptionsValuesClass             m_alternativeRawSsOptionsValues;
-  SsOptionsValuesClass             m_alternativeFilteredSsOptionsValues;
+  friend class MetropolisHastingsSGOptions;
+  SsOptionsValues             m_alternativeRawSsOptionsValues;
+  SsOptionsValues             m_alternativeFilteredSsOptionsValues;
 #endif
 };
 
@@ -206,7 +206,7 @@ private:
 // --------------------------------------------------
 // --------------------------------------------------
 
-/*! \class MetropolisHastingsSGOptionsClass
+/*! \class MetropolisHastingsSGOptions
  *  \brief This class reads the options for the  Metropolis-Hastings generator of samples from  an input file.
  * 
  * This class implements a Metropolis-Hastings generator of samples. 'SG' stands for 'Sequence Generator'.
@@ -214,25 +214,25 @@ private:
  * the options for the Metropolis-Hastings generator of samples from an input file provided by the 
  * user. The class expects the prefix '\<prefix\>_mh_'. For instance, if 'prefix' is 'foo_775_fp_', 
  * then the constructor will read all options that begin with 'foo_775_fp_mh_'. Options reading is 
- * handled by class 'MetropolisHastingsOptionsClass'. */
+ * handled by class 'MetropolisHastingsOptions'. */
 
-class MetropolisHastingsSGOptionsClass
+class MetropolisHastingsSGOptions
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Constructor: reads options from the input file.
-  MetropolisHastingsSGOptionsClass(const BaseEnvironmentClass& env, const char* prefix);
+  MetropolisHastingsSGOptions(const BaseEnvironment& env, const char* prefix);
   
   //! Constructor: with alternative option values.
   /*! In this constructor, the input options are given by \c alternativeOptionsValues.*/
-  MetropolisHastingsSGOptionsClass(const BaseEnvironmentClass& env, const char* prefix, const MhOptionsValuesClass& alternativeOptionsValues);
+  MetropolisHastingsSGOptions(const BaseEnvironment& env, const char* prefix, const MhOptionsValues& alternativeOptionsValues);
   
   //! Copy constructor
-  MetropolisHastingsSGOptionsClass(const MLSamplingLevelOptionsClass& mlOptions);
+  MetropolisHastingsSGOptions(const MLSamplingLevelOptions& mlOptions);
   
   //! Destructor
-  ~MetropolisHastingsSGOptionsClass();
+  ~MetropolisHastingsSGOptions();
   //@}
   
   //! @name I/O methods
@@ -244,11 +244,11 @@ public:
   void print            (std::ostream& os) const;
   //@}
   
-  MhOptionsValuesClass             m_ov;
+  MhOptionsValues             m_ov;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  SequenceStatisticalOptionsClass* m_rawChainStatisticalOptionsObj;
+  SequenceStatisticalOptions* m_rawChainStatisticalOptionsObj;
   bool                               m_rawChainStatOptsInstantiated;
-  SequenceStatisticalOptionsClass* m_filteredChainStatisticalOptionsObj;
+  SequenceStatisticalOptions* m_filteredChainStatisticalOptionsObj;
   bool                               m_filteredChainStatOptsInstantiated;
 #endif
   std::string                        m_prefix;
@@ -260,7 +260,7 @@ private:
   //! Gets the sequence options defined to the  Metropolis-Hastings algorithm.
   void   getMyOptionValues(po::options_description& optionsDesc);
 
-  const BaseEnvironmentClass& m_env;
+  const BaseEnvironment& m_env;
   po::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
@@ -320,7 +320,7 @@ private:
   std::string                   m_option_BrooksGelmanLag;
 };
 
-std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSGOptionsClass& obj);
+std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSGOptions& obj);
 
 }  // End namespace QUESO
 

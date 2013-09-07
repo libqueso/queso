@@ -30,16 +30,16 @@
 #include <uqMiscellaneous.h>
 
 // -------------------------------------------------
-// MhOptionsValuesClass --------------------------
+// MhOptionsValues --------------------------
 // -------------------------------------------------
 
 namespace QUESO {
 
 // Default constructor -----------------------------
-MhOptionsValuesClass::MhOptionsValuesClass(
+MhOptionsValues::MhOptionsValues(
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  const SsOptionsValuesClass* alternativeRawSsOptionsValues,
-  const SsOptionsValuesClass* alternativeFilteredSsOptionsValues
+  const SsOptionsValues* alternativeRawSsOptionsValues,
+  const SsOptionsValues* alternativeFilteredSsOptionsValues
 #endif
   )
   :
@@ -106,24 +106,24 @@ MhOptionsValuesClass::MhOptionsValuesClass(
 #endif
 }
 // Copy constructor----------------------------------
-MhOptionsValuesClass::MhOptionsValuesClass(const MhOptionsValuesClass& src)
+MhOptionsValues::MhOptionsValues(const MhOptionsValues& src)
 {
   this->copy(src);
 }
 // Destructor ---------------------------------------
-MhOptionsValuesClass::~MhOptionsValuesClass()
+MhOptionsValues::~MhOptionsValues()
 {
 }
 // Set methods --------------------------------------
-MhOptionsValuesClass&
-MhOptionsValuesClass::operator=(const MhOptionsValuesClass& rhs)
+MhOptionsValues&
+MhOptionsValues::operator=(const MhOptionsValues& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 // Private methods-----------------------------------
 void
-MhOptionsValuesClass::copy(const MhOptionsValuesClass& src)
+MhOptionsValues::copy(const MhOptionsValues& src)
 {
   m_dataOutputFileName                        = src.m_dataOutputFileName;
   m_dataOutputAllowAll                        = src.m_dataOutputAllowAll;
@@ -189,12 +189,12 @@ MhOptionsValuesClass::copy(const MhOptionsValuesClass& src)
 }
 
 //---------------------------------------------------
-// MetropolisHastingsSGOptionsClass ---------------
+// MetropolisHastingsSGOptions ---------------
 //---------------------------------------------------
 
 // Default constructor -----------------------------
-MetropolisHastingsSGOptionsClass::MetropolisHastingsSGOptionsClass(
-  const BaseEnvironmentClass& env,
+MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
+  const BaseEnvironment& env,
   const char*                   prefix)
   :
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -264,14 +264,14 @@ MetropolisHastingsSGOptionsClass::MetropolisHastingsSGOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
-                      "MetropolisHastingsSGOptionsClass::constructor(1)",
+                      "MetropolisHastingsSGOptions::constructor(1)",
                       "this constructor is incompatible with the absence of an options input file");
 }
 // Constructor 2------------------------------------
-MetropolisHastingsSGOptionsClass::MetropolisHastingsSGOptionsClass(
-  const BaseEnvironmentClass& env,
+MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
+  const BaseEnvironment& env,
   const char*                   prefix,
-  const MhOptionsValuesClass& alternativeOptionsValues)
+  const MhOptionsValues& alternativeOptionsValues)
   :
   m_ov                                               (alternativeOptionsValues),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -338,12 +338,12 @@ MetropolisHastingsSGOptionsClass::MetropolisHastingsSGOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
-                      "MetropolisHastingsSGOptionsClass::constructor(2)",
+                      "MetropolisHastingsSGOptions::constructor(2)",
                       "this constructor is incompatible with the existence of an options input file");
 
   if ((m_env.subDisplayFile() != NULL ) &&
       (m_ov.m_totallyMute     == false)) {
-    *m_env.subDisplayFile() << "In MetropolisHastingsSGOptionsClass::constructor(2)"
+    *m_env.subDisplayFile() << "In MetropolisHastingsSGOptions::constructor(2)"
                             << ": after setting values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -352,18 +352,18 @@ MetropolisHastingsSGOptionsClass::MetropolisHastingsSGOptionsClass(
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_ov.m_rawChainComputeStats) {
-    m_rawChainStatisticalOptionsObj = new SequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_",m_ov.m_alternativeRawSsOptionsValues);
+    m_rawChainStatisticalOptionsObj = new SequenceStatisticalOptions(m_env,m_prefix + "rawChain_",m_ov.m_alternativeRawSsOptionsValues);
     m_rawChainStatOptsInstantiated  = true;
   }
   if (m_ov.m_filteredChainComputeStats) {
-    m_filteredChainStatisticalOptionsObj = new SequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_",m_ov.m_alternativeFilteredSsOptionsValues);
+    m_filteredChainStatisticalOptionsObj = new SequenceStatisticalOptions(m_env,m_prefix + "filteredChain_",m_ov.m_alternativeFilteredSsOptionsValues);
     m_filteredChainStatOptsInstantiated  = true;
   }
 #endif
 }
 // Copy constructor---------------------------------
-MetropolisHastingsSGOptionsClass::MetropolisHastingsSGOptionsClass(
-  const MLSamplingLevelOptionsClass& mlOptions)
+MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
+  const MLSamplingLevelOptions& mlOptions)
   :
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_ov                                               (NULL,NULL), // dakota
@@ -495,7 +495,7 @@ MetropolisHastingsSGOptionsClass::MetropolisHastingsSGOptionsClass(
 #endif
   if ((m_env.subDisplayFile()        != NULL ) &&
       (m_ov.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In MetropolisHastingsSGOptionsClass::constructor(3)"
+    *m_env.subDisplayFile() << "In MetropolisHastingsSGOptions::constructor(3)"
                             << ": after copying values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -503,7 +503,7 @@ MetropolisHastingsSGOptionsClass::MetropolisHastingsSGOptionsClass(
   }
 }
 // Destructor --------------------------------------
-MetropolisHastingsSGOptionsClass::~MetropolisHastingsSGOptionsClass()
+MetropolisHastingsSGOptions::~MetropolisHastingsSGOptions()
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_filteredChainStatOptsInstantiated) delete m_filteredChainStatisticalOptionsObj;
@@ -514,11 +514,11 @@ MetropolisHastingsSGOptionsClass::~MetropolisHastingsSGOptionsClass()
 
 // I/O methods -------------------------------------
 void
-MetropolisHastingsSGOptionsClass::scanOptionsValues()
+MetropolisHastingsSGOptions::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
-                      "MetropolisHastingsSGOptionsClass::scanOptionsValues()",
+                      "MetropolisHastingsSGOptions::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -527,7 +527,7 @@ MetropolisHastingsSGOptionsClass::scanOptionsValues()
 
   if ((m_env.subDisplayFile() != NULL) &&
       (m_ov.m_totallyMute == false   )) {
-    *m_env.subDisplayFile() << "In MetropolisHastingsSGOptionsClass::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In MetropolisHastingsSGOptions::scanOptionsValues()"
                             << ": after reading values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -536,11 +536,11 @@ MetropolisHastingsSGOptionsClass::scanOptionsValues()
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_ov.m_rawChainComputeStats) {
-    m_rawChainStatisticalOptionsObj = new SequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
+    m_rawChainStatisticalOptionsObj = new SequenceStatisticalOptions(m_env,m_prefix + "rawChain_");
     m_rawChainStatOptsInstantiated  = true;
   }
   if (m_ov.m_filteredChainComputeStats) {
-    m_filteredChainStatisticalOptionsObj = new SequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
+    m_filteredChainStatisticalOptionsObj = new SequenceStatisticalOptions(m_env,m_prefix + "filteredChain_");
     m_filteredChainStatOptsInstantiated  = true;
   }
 #endif
@@ -549,7 +549,7 @@ MetropolisHastingsSGOptionsClass::scanOptionsValues()
 }
 // -------------------------------------------------
 void
-MetropolisHastingsSGOptionsClass::print(std::ostream& os) const
+MetropolisHastingsSGOptions::print(std::ostream& os) const
 {
   os <<         m_option_dataOutputFileName                         << " = " << m_ov.m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowAll                         << " = " << m_ov.m_dataOutputAllowAll
@@ -626,7 +626,7 @@ MetropolisHastingsSGOptionsClass::print(std::ostream& os) const
 
 // Private methods----------------------------------
 void
-MetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+MetropolisHastingsSGOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                                                                                "produce help msg for Bayesian Metropolis-Hastings"          )
@@ -687,7 +687,7 @@ MetropolisHastingsSGOptionsClass::defineMyOptions(po::options_description& optio
 }
 // -------------------------------------------------
 void
-MetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
     if ((m_env.subDisplayFile()) &&
@@ -815,7 +815,7 @@ MetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& opt
   }
   if ((m_ov.m_filteredChainGenerate == true) &&
       (m_ov.m_filteredChainLag      < 2    )) {
-    std::cerr << "WARNING In MetropolisHastingsSGClass<P_V,P_M>::getMyOptionsValues()"
+    std::cerr << "WARNING In MetropolisHastingsSG<P_V,P_M>::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -886,7 +886,7 @@ MetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& opt
     std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_listOfScalesForExtraStages]).as<std::string>();
     MiscReadDoublesFromString(inputString,tmpScales);
     //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In MetropolisHastingsSGClass<P_V,P_M>::getMyOptionValues(): scales =";
+    //  *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::getMyOptionValues(): scales =";
     //  for (unsigned int i = 0; i < tmpScales.size(); ++i) {
     //    *m_env.subDisplayFile() << " " << tmpScales[i];
     //  }
@@ -978,7 +978,7 @@ MetropolisHastingsSGOptionsClass::getMyOptionValues(po::options_description& opt
 // Operator declared outside class definition ------
 // --------------------------------------------------
 
-std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSGOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSGOptions& obj)
 {
   obj.print(os);
 

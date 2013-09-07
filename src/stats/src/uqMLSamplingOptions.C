@@ -31,7 +31,7 @@
 
 namespace QUESO {
 
-MLSamplingOptionsClass::MLSamplingOptionsClass(const BaseEnvironmentClass& env, const char* prefix)
+MLSamplingOptions::MLSamplingOptions(const BaseEnvironment& env, const char* prefix)
   :
   m_prefix                               ((std::string)(prefix) + "ml_"                        ),
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
@@ -66,20 +66,20 @@ MLSamplingOptionsClass::MLSamplingOptionsClass(const BaseEnvironmentClass& env, 
 {
 }
 
-MLSamplingOptionsClass::~MLSamplingOptionsClass()
+MLSamplingOptions::~MLSamplingOptions()
 {
   if (m_optionsDesc) delete m_optionsDesc;
 } 
 
 void
-MLSamplingOptionsClass::scanOptionsValues()
+MLSamplingOptions::scanOptionsValues()
 {
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
   getMyOptionValues              (*m_optionsDesc);
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In MLSamplingOptionsClass::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In MLSamplingOptions::scanOptionsValues()"
                             << ": after getting values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -90,7 +90,7 @@ MLSamplingOptionsClass::scanOptionsValues()
 }
 
 void
-MLSamplingOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+MLSamplingOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                                                            "produce help msg for ML sampling options"      )
@@ -113,7 +113,7 @@ MLSamplingOptionsClass::defineMyOptions(po::options_description& optionsDesc) co
 }
 
 void
-MLSamplingOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+MLSamplingOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     if (m_env.subDisplayFile()) {
@@ -133,7 +133,7 @@ MLSamplingOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 
   UQ_FATAL_TEST_MACRO((m_restartOutput_levelPeriod > 0) && (m_restartOutput_baseNameForFiles == "."),
                       m_env.worldRank(),
-                      "MLSamplingOptionsClass::getMyOptionsValues()",
+                      "MLSamplingOptions::getMyOptionsValues()",
                       "Option 'restartOutput_levelPeriod' is > 0, but 'restartOutput_baseNameForFiles' is not specified...");
 
   if (m_env.allOptionsMap().count(m_option_restartOutput_fileType.c_str())) {
@@ -181,7 +181,7 @@ MLSamplingOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 }
 
 void
-MLSamplingOptionsClass::print(std::ostream& os) const
+MLSamplingOptions::print(std::ostream& os) const
 {
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   os <<         m_option_restartOutput_levelPeriod      << " = " << m_restartOutput_levelPeriod
@@ -204,7 +204,7 @@ MLSamplingOptionsClass::print(std::ostream& os) const
   return;
 }
 
-std::ostream& operator<<(std::ostream& os, const MLSamplingOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const MLSamplingOptions& obj)
 {
   obj.print(os);
 
