@@ -38,7 +38,7 @@
 #include <gsl/gsl_odeiv.h>
 
 void
-uqAppl(const QUESO::uqBaseEnvironmentClass& env)
+uqAppl(const QUESO::BaseEnvironmentClass& env)
 {
   if (env.fullRank() == 0) {
     std::cout << "Beginning run of 'uqTgaExample' example\n"
@@ -57,16 +57,16 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   std::vector<std::string> paramNames(2,"");
   paramNames[0] = "A_param";
   paramNames[1] = "E_param";
-  QUESO::uqVectorSpaceClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass> paramSpace(env,"param_",paramNames.size(),&paramNames);
+  QUESO::VectorSpaceClass<QUESO::GslVectorClass,QUESO::GslMatrixClass> paramSpace(env,"param_",paramNames.size(),&paramNames);
 
   // Instantiate the parameter domain
-  QUESO::uqGslVectorClass paramMinValues(paramSpace.zeroVector());
+  QUESO::GslVectorClass paramMinValues(paramSpace.zeroVector());
   paramMinValues[0] = 2.40e+11;
   paramMinValues[1] = 1.80e+05;
-  QUESO::uqGslVectorClass paramMaxValues(paramSpace.zeroVector());
+  QUESO::GslVectorClass paramMaxValues(paramSpace.zeroVector());
   paramMaxValues[0] = 2.80e+11;
   paramMaxValues[1] = 2.20e+05;
-  QUESO::uqBoxSubsetClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass> paramDomain("param_",
+  QUESO::BoxSubsetClass<QUESO::GslVectorClass,QUESO::GslMatrixClass> paramDomain("param_",
                                         paramSpace,
                                         paramMinValues,
                                         paramMaxValues);
@@ -74,10 +74,10 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   // Instantiate the qoi space
   std::vector<std::string> qoiNames(1,"");
   qoiNames[0] = "TimeFor25PercentOfMass";
-  QUESO::uqVectorSpaceClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass> qoiSpace(env,"qoi_",qoiNames.size(),&qoiNames);
+  QUESO::VectorSpaceClass<QUESO::GslVectorClass,QUESO::GslMatrixClass> qoiSpace(env,"qoi_",qoiNames.size(),&qoiNames);
 
   // Instantiate the validation cycle
-  QUESO::uqValidationCycleClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass,QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass> cycle(env,
+  QUESO::ValidationCycleClass<QUESO::GslVectorClass,QUESO::GslMatrixClass,QUESO::GslVectorClass,QUESO::GslMatrixClass> cycle(env,
                                                 "", // No extra prefix
                                                 paramSpace,
                                                 qoiSpace);
@@ -93,7 +93,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   }
 
   // Inverse problem: instantiate the prior rv
-  QUESO::uqUniformVectorRVClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
+  QUESO::UniformVectorRVClass<QUESO::GslVectorClass,QUESO::GslMatrixClass> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
                                                                        paramDomain);
 
   // Inverse problem: instantiate the likelihood function object (data + routine)
@@ -102,7 +102,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
                                                         "inputData/scenario_25_K_min.dat",
                                                         "inputData/scenario_50_K_min.dat");
 
-  QUESO::uqGenericScalarFunctionClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass> calLikelihoodFunctionObj("cal_like_",
+  QUESO::GenericScalarFunctionClass<QUESO::GslVectorClass,QUESO::GslMatrixClass> calLikelihoodFunctionObj("cal_like_",
                                                                                            paramDomain,
                                                                                            likelihoodRoutine,
                                                                                            (void *) &calLikelihoodRoutine_Data,
@@ -114,7 +114,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
                          calLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
-  QUESO::uqGslVectorClass paramInitialValues(paramSpace.zeroVector());
+  QUESO::GslVectorClass paramInitialValues(paramSpace.zeroVector());
   if (env.numSubEnvironments() == 1) {
     // For regression test purposes
     paramInitialValues[0] = 2.41e+11;
@@ -124,7 +124,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
     calPriorRv.realizer().realization(paramInitialValues);
   }
 
-  QUESO::uqGslMatrixClass* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
+  QUESO::GslMatrixClass* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
   cycle.calIP().solveWithBayesMetropolisHastings(NULL,
                                                  paramInitialValues,
                                                  calProposalCovMatrix);
@@ -172,7 +172,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
                                                         NULL,
                                                         NULL);
 
-  QUESO::uqGenericScalarFunctionClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass> valLikelihoodFunctionObj("val_like_",
+  QUESO::GenericScalarFunctionClass<QUESO::GslVectorClass,QUESO::GslMatrixClass> valLikelihoodFunctionObj("val_like_",
                                                                                            paramDomain,
                                                                                            likelihoodRoutine,
                                                                                            (void *) &valLikelihoodRoutine_Data,
@@ -182,8 +182,8 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   cycle.instantiateValIP(NULL,valLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
-  const QUESO::uqSequentialVectorRealizerClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>* tmpRealizer = dynamic_cast< const QUESO::uqSequentialVectorRealizerClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>* >(&(cycle.calIP().postRv().realizer()));
-  QUESO::uqGslMatrixClass* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because post. rv was computed with MH
+  const QUESO::SequentialVectorRealizerClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>* tmpRealizer = dynamic_cast< const QUESO::SequentialVectorRealizerClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>* >(&(cycle.calIP().postRv().realizer()));
+  QUESO::GslMatrixClass* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because post. rv was computed with MH
                                                                                                              &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
   cycle.valIP().solveWithBayesMetropolisHastings(NULL,
                                                  tmpRealizer->unifiedSampleExpVector(),
@@ -250,13 +250,13 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
 // The 'local comparison stage' of the driving routine "uqAppl()"
 //********************************************************
 void 
-uqAppl_LocalComparisonStage(QUESO::uqValidationCycleClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass,QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>& cycle)
+uqAppl_LocalComparisonStage(QUESO::ValidationCycleClass<QUESO::GslVectorClass,QUESO::GslMatrixClass,QUESO::GslVectorClass,QUESO::GslMatrixClass>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
-    QUESO::uqGslVectorClass cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
-    QUESO::uqGslVectorClass epsilonVec     (cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
+    QUESO::GslVectorClass cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
+    QUESO::GslVectorClass epsilonVec     (cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
 
     // Epsilon = 0.02
     epsilonVec.cwSet(0.02);
@@ -338,13 +338,13 @@ uqAppl_LocalComparisonStage(QUESO::uqValidationCycleClass<QUESO::uqGslVectorClas
 // The 'unified comparison stage' of the driving routine "uqAppl()"
 //********************************************************
 void 
-uqAppl_UnifiedComparisonStage(QUESO::uqValidationCycleClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass,QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>& cycle)
+uqAppl_UnifiedComparisonStage(QUESO::ValidationCycleClass<QUESO::GslVectorClass,QUESO::GslMatrixClass,QUESO::GslVectorClass,QUESO::GslMatrixClass>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
-    QUESO::uqGslVectorClass cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
-    QUESO::uqGslVectorClass epsilonVec     (cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
+    QUESO::GslVectorClass cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
+    QUESO::GslVectorClass epsilonVec     (cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
 
     // Epsilon = 0.02
     epsilonVec.cwSet(0.02);

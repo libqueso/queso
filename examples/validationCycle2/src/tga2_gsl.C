@@ -46,9 +46,9 @@ int main(int argc, char* argv[])
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
 #ifdef QUESO_HAS_MPI
-  QUESO::uqFullEnvironmentClass* env = new QUESO::uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+  QUESO::FullEnvironmentClass* env = new QUESO::FullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
 #else
-  QUESO::uqFullEnvironmentClass* env = new QUESO::uqFullEnvironmentClass(0,argv[1],"",NULL);
+  QUESO::FullEnvironmentClass* env = new QUESO::FullEnvironmentClass(0,argv[1],"",NULL);
 #endif
 
   //************************************************
