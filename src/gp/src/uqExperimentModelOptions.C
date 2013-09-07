@@ -31,7 +31,7 @@
 
 namespace QUESO {
 
-EmOptionsValuesClass::EmOptionsValuesClass()
+EmOptionsValues::EmOptionsValues()
   :
   m_Gvalues(0),
   m_a_v    (UQ_EXPERIMENT_MODEL_A_V_ODV    ),
@@ -43,24 +43,24 @@ EmOptionsValuesClass::EmOptionsValuesClass()
 {
 }
 
-EmOptionsValuesClass::~EmOptionsValuesClass()
+EmOptionsValues::~EmOptionsValues()
 {
 }
 
-EmOptionsValuesClass::EmOptionsValuesClass(const EmOptionsValuesClass& src)
+EmOptionsValues::EmOptionsValues(const EmOptionsValues& src)
 {
   this->copy(src);
 }
 
-EmOptionsValuesClass&
-EmOptionsValuesClass::operator=(const EmOptionsValuesClass& rhs)
+EmOptionsValues&
+EmOptionsValues::operator=(const EmOptionsValues& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 
 void
-EmOptionsValuesClass::copy(const EmOptionsValuesClass& src)
+EmOptionsValues::copy(const EmOptionsValues& src)
 {
   m_Gvalues = src.m_Gvalues;
   m_a_v     = src.m_a_v;
@@ -73,8 +73,8 @@ EmOptionsValuesClass::copy(const EmOptionsValuesClass& src)
   return;
 }
 
-ExperimentModelOptionsClass::ExperimentModelOptionsClass(
-  const BaseEnvironmentClass& env,
+ExperimentModelOptions::ExperimentModelOptions(
+  const BaseEnvironment& env,
   const char*                   prefix)
   :
   m_ov            (),
@@ -92,14 +92,14 @@ ExperimentModelOptionsClass::ExperimentModelOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
-                      "ExperimentModelOptionsClass::constructor(1)",
+                      "ExperimentModelOptions::constructor(1)",
                       "this constructor is incompatible with the abscense of an options input file");
 }
 
-ExperimentModelOptionsClass::ExperimentModelOptionsClass(
-  const BaseEnvironmentClass&  env,
+ExperimentModelOptions::ExperimentModelOptions(
+  const BaseEnvironment&  env,
   const char*                    prefix,
-  const EmOptionsValuesClass& alternativeOptionsValues)
+  const EmOptionsValues& alternativeOptionsValues)
   :
   m_ov            (alternativeOptionsValues),
   m_prefix        ((std::string)(prefix) + "em_"),
@@ -116,11 +116,11 @@ ExperimentModelOptionsClass::ExperimentModelOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
-                      "ExperimentModelOptionsClass::constructor(2)",
+                      "ExperimentModelOptions::constructor(2)",
                       "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In ExperimentModelOptionsClass::constructor(2)"
+    *m_env.subDisplayFile() << "In ExperimentModelOptions::constructor(2)"
                             << ": after setting values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -128,17 +128,17 @@ ExperimentModelOptionsClass::ExperimentModelOptionsClass(
   }
 }
 
-ExperimentModelOptionsClass::~ExperimentModelOptionsClass()
+ExperimentModelOptions::~ExperimentModelOptions()
 {
   if (m_optionsDesc) delete m_optionsDesc;
 } 
 
 void
-ExperimentModelOptionsClass::scanOptionsValues()
+ExperimentModelOptions::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
-                      "ExperimentModelOptionsClass::scanOptionsValues()",
+                      "ExperimentModelOptions::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -146,7 +146,7 @@ ExperimentModelOptionsClass::scanOptionsValues()
   getMyOptionValues              (*m_optionsDesc);
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In ExperimentModelOptionsClass::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In ExperimentModelOptions::scanOptionsValues()"
                             << ": after reading values of options with prefix '" << m_prefix
                             << "', state of  object is:"
                             << "\n" << *this
@@ -157,7 +157,7 @@ ExperimentModelOptionsClass::scanOptionsValues()
 }
 
 void
-ExperimentModelOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+ExperimentModelOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                "produce help message for experiment model options")
@@ -174,7 +174,7 @@ ExperimentModelOptionsClass::defineMyOptions(po::options_description& optionsDes
 }
 
 void
-ExperimentModelOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+ExperimentModelOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
@@ -188,7 +188,7 @@ ExperimentModelOptionsClass::getMyOptionValues(po::options_description& optionsD
     std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_Gvalues]).as<std::string>();
     MiscReadDoublesFromString(inputString,tmpValues);
     //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In ExperimentModelOptionsClass::getMyOptionValues(): tmpValues =";
+    //  *m_env.subDisplayFile() << "In ExperimentModelOptions::getMyOptionValues(): tmpValues =";
     //  for (unsigned int i = 0; i < tmpValues.size(); ++i) {
     //    *m_env.subDisplayFile() << " " << tmpValues[i];
     //  }
@@ -230,7 +230,7 @@ ExperimentModelOptionsClass::getMyOptionValues(po::options_description& optionsD
 }
 
 void
-ExperimentModelOptionsClass::print(std::ostream& os) const
+ExperimentModelOptions::print(std::ostream& os) const
 {
   os << "\n" << m_option_Gvalues << " = ";
   for (unsigned int i = 0; i < m_ov.m_Gvalues.size(); ++i) {
@@ -247,7 +247,7 @@ ExperimentModelOptionsClass::print(std::ostream& os) const
   return;
 }
 
-std::ostream& operator<<(std::ostream& os, const ExperimentModelOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const ExperimentModelOptions& obj)
 {
   obj.print(os);
 

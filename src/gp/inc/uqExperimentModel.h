@@ -37,15 +37,15 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M>
-class ExperimentModelClass
+class ExperimentModel
 {
 public:
-  ExperimentModelClass(const char*                                      prefix,
-                         const EmOptionsValuesClass*                    alternativeOptionsValues, // dakota
-                         const ExperimentStorageClass<S_V,S_M,D_V,D_M>& experimentStorage,
+  ExperimentModel(const char*                                      prefix,
+                         const EmOptionsValues*                    alternativeOptionsValues, // dakota
+                         const ExperimentStorage<S_V,S_M,D_V,D_M>& experimentStorage,
                          const std::vector<D_M* >&                        Dmats,
                          const std::vector<D_M* >&                        Kmats_interp);
- ~ExperimentModelClass();
+ ~ExperimentModel();
 
         unsigned int                   numBasis      () const;
         unsigned int                   numBasisGroups() const;
@@ -54,14 +54,14 @@ public:
   const D_M&                           Dmat_BlockDiag() const;
   const std::vector<D_M* >&            Kmats_interp  () const;
 
-  const ExperimentModelOptionsClass& optionsObj    () const;
+  const ExperimentModelOptions& optionsObj    () const;
         void                           print         (std::ostream& os) const;
 
 private:
   // Private variables
-  const BaseEnvironmentClass&           m_env;
-        EmOptionsValuesClass            m_alternativeOptionsValues;
-        ExperimentModelOptionsClass*    m_optionsObj;
+  const BaseEnvironment&           m_env;
+        EmOptionsValues            m_alternativeOptionsValues;
+        ExperimentModelOptions*    m_optionsObj;
 
         unsigned int                      m_paper_p_x;
         unsigned int                      m_paper_n;
@@ -69,18 +69,18 @@ private:
         unsigned int                      m_paper_n_y;
         std::vector<D_M* >                m_Dmats;          // NOT to be deleted on destructor
         std::vector<D_M* >                m_Kmats_interp;   // NOT to be deleted on destructor
-        VectorSpaceClass<D_V,D_M>*      m_n_y_space;      // to be deleted on destructor
+        VectorSpace<D_V,D_M>*      m_n_y_space;      // to be deleted on destructor
         D_M*                              m_Dmat_BlockDiag; // to be deleted on destructor
 };
 
 template<class S_V,class S_M,class D_V,class D_M>
-std::ostream& operator<<(std::ostream& os, const ExperimentModelClass<S_V,S_M,D_V,D_M>& obj);
+std::ostream& operator<<(std::ostream& os, const ExperimentModel<S_V,S_M,D_V,D_M>& obj);
 
 template<class S_V,class S_M,class D_V,class D_M>
-ExperimentModelClass<S_V,S_M,D_V,D_M>::ExperimentModelClass(
+ExperimentModel<S_V,S_M,D_V,D_M>::ExperimentModel(
   const char*                                      prefix,
-  const EmOptionsValuesClass*                    alternativeOptionsValues, // dakota
-  const ExperimentStorageClass<S_V,S_M,D_V,D_M>& experimentStorage,
+  const EmOptionsValues*                    alternativeOptionsValues, // dakota
+  const ExperimentStorage<S_V,S_M,D_V,D_M>& experimentStorage,
   const std::vector<D_M* >&                        Dmats,
   const std::vector<D_M* >&                        Kmats_interp)
   :
@@ -97,7 +97,7 @@ ExperimentModelClass<S_V,S_M,D_V,D_M>::ExperimentModelClass(
   m_Dmat_BlockDiag          (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering ExperimentModelClass<S_V,S_M,D_V,D_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering ExperimentModel<S_V,S_M,D_V,D_M>::constructor()"
                             << ": prefix = " << prefix
                             << ", alternativeOptionsValues = " << alternativeOptionsValues
                             << ", m_env.optionsInputFileName() = " << m_env.optionsInputFileName()
@@ -110,21 +110,21 @@ ExperimentModelClass<S_V,S_M,D_V,D_M>::ExperimentModelClass(
 
   if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
   if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new ExperimentModelOptionsClass(m_env,prefix,m_alternativeOptionsValues);
+    m_optionsObj = new ExperimentModelOptions(m_env,prefix,m_alternativeOptionsValues);
   }
   else {
-    m_optionsObj = new ExperimentModelOptionsClass(m_env,prefix);
+    m_optionsObj = new ExperimentModelOptions(m_env,prefix);
     m_optionsObj->scanOptionsValues();
   }
 
   UQ_FATAL_TEST_MACRO(m_optionsObj->m_ov.m_Gvalues.size() < 1,
                       m_env.worldRank(),
-                      "ExperimentModelClass<S_V,S_M,D_V,D_M>::constructor()",
+                      "ExperimentModel<S_V,S_M,D_V,D_M>::constructor()",
                       "invalid m_Gs");
 
   UQ_FATAL_TEST_MACRO(m_paper_n != experimentStorage.xs_standard().size(),
                       m_env.worldRank(),
-                      "ExperimentModelClass<S_V,S_M,D_V,D_M>::constructor()",
+                      "ExperimentModel<S_V,S_M,D_V,D_M>::constructor()",
                       "invalid m_paper_n");
 
   unsigned int sumGs = 0;
@@ -133,7 +133,7 @@ ExperimentModelClass<S_V,S_M,D_V,D_M>::ExperimentModelClass(
   }
   UQ_FATAL_TEST_MACRO(m_paper_p_delta != sumGs,
                       m_env.worldRank(),
-                      "ExperimentModelClass<S_V,S_M,D_V,D_M>::constructor()",
+                      "ExperimentModel<S_V,S_M,D_V,D_M>::constructor()",
                       "inconsistent input");
 
   //***********************************************************************
@@ -142,17 +142,17 @@ ExperimentModelClass<S_V,S_M,D_V,D_M>::ExperimentModelClass(
   for (unsigned int i = 0; i < m_Dmats.size(); ++i) {
     UQ_FATAL_TEST_MACRO(m_Dmats[i]->numCols() != m_paper_p_delta,
                         m_env.worldRank(),
-                        "ExperimentModelClass<S_V,S_M,D_V,D_M>::constructor()",
+                        "ExperimentModel<S_V,S_M,D_V,D_M>::constructor()",
                         "inconsistent m_Dmats");
     m_paper_n_y += m_Dmats[i]->numRowsLocal();
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In ExperimentModelClass<S_V,S_M,D_V,D_M>::constructor()"
+    *m_env.subDisplayFile() << "In ExperimentModel<S_V,S_M,D_V,D_M>::constructor()"
                             << ": prefix = " << prefix
                             << "\n  m_paper_n_y = " << m_paper_n_y
                             << std::endl;
   }
-  m_n_y_space = new VectorSpaceClass<D_V,D_M>(m_env, "n_y_", m_paper_n_y, NULL),
+  m_n_y_space = new VectorSpace<D_V,D_M>(m_env, "n_y_", m_paper_n_y, NULL),
   m_Dmat_BlockDiag = new D_M(m_env,m_n_y_space->map(),m_paper_n*m_paper_p_delta);
   m_Dmat_BlockDiag->fillWithBlocksDiagonally(0,0,m_Dmats,true,true);
 
@@ -166,17 +166,17 @@ ExperimentModelClass<S_V,S_M,D_V,D_M>::ExperimentModelClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving ExperimentModelClass<S_V,S_M,D_V,D_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving ExperimentModel<S_V,S_M,D_V,D_M>::constructor()"
                             << ": prefix = " << m_optionsObj->m_prefix
                             << std::endl;
   }
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
-ExperimentModelClass<S_V,S_M,D_V,D_M>::~ExperimentModelClass()
+ExperimentModel<S_V,S_M,D_V,D_M>::~ExperimentModel()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering ExperimentModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()..."
+    *m_env.subDisplayFile() << "Entering ExperimentModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()..."
                             << std::endl;
   }
 
@@ -185,70 +185,70 @@ ExperimentModelClass<S_V,S_M,D_V,D_M>::~ExperimentModelClass()
   if (m_optionsObj    ) delete m_optionsObj;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving ExperimentModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving ExperimentModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()"
                             << std::endl;
   }
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 unsigned int
-ExperimentModelClass<S_V,S_M,D_V,D_M>::numBasis() const
+ExperimentModel<S_V,S_M,D_V,D_M>::numBasis() const
 {
   return m_paper_p_delta;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 unsigned int
-ExperimentModelClass<S_V,S_M,D_V,D_M>::numBasisGroups() const
+ExperimentModel<S_V,S_M,D_V,D_M>::numBasisGroups() const
 {
   return m_optionsObj->m_ov.m_Gvalues.size();
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 const std::vector<unsigned int>&
-ExperimentModelClass<S_V,S_M,D_V,D_M>::Gs() const
+ExperimentModel<S_V,S_M,D_V,D_M>::Gs() const
 {
   return m_optionsObj->m_ov.m_Gvalues;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 const std::vector<D_M* >&
-ExperimentModelClass<S_V,S_M,D_V,D_M>::Kmats_interp() const
+ExperimentModel<S_V,S_M,D_V,D_M>::Kmats_interp() const
 {
   return m_Kmats_interp;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 const D_M&
-ExperimentModelClass<S_V,S_M,D_V,D_M>::Dmat(unsigned int basisId) const
+ExperimentModel<S_V,S_M,D_V,D_M>::Dmat(unsigned int basisId) const
 {
   return *(m_Dmats[basisId]);
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 const D_M&
-ExperimentModelClass<S_V,S_M,D_V,D_M>::Dmat_BlockDiag() const
+ExperimentModel<S_V,S_M,D_V,D_M>::Dmat_BlockDiag() const
 {
   return *m_Dmat_BlockDiag;
 }
 
 
 template<class S_V,class S_M,class D_V,class D_M>
-const ExperimentModelOptionsClass&
-ExperimentModelClass<S_V,S_M,D_V,D_M>::optionsObj() const
+const ExperimentModelOptions&
+ExperimentModel<S_V,S_M,D_V,D_M>::optionsObj() const
 {
   return *m_optionsObj;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 void
-ExperimentModelClass<S_V,S_M,D_V,D_M>::print(std::ostream& os) const
+ExperimentModel<S_V,S_M,D_V,D_M>::print(std::ostream& os) const
 {
   return;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
-std::ostream& operator<<(std::ostream& os, const ExperimentModelClass<S_V,S_M,D_V,D_M>& obj)
+std::ostream& operator<<(std::ostream& os, const ExperimentModel<S_V,S_M,D_V,D_M>& obj)
 {
   obj.print(os);
 

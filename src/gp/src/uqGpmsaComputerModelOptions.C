@@ -31,7 +31,7 @@
 
 namespace QUESO {
 
-GcmOptionsValuesClass::GcmOptionsValuesClass()
+GcmOptionsValues::GcmOptionsValues()
   :
   m_checkAgainstPreviousSample     (UQ_GCM_CHECK_AGAINST_PREVIOUS_SAMPLE_ODV        ),
   m_dataOutputFileName             (UQ_GCM_DATA_OUTPUT_FILE_NAME_ODV                ),
@@ -56,24 +56,24 @@ GcmOptionsValuesClass::GcmOptionsValuesClass()
 {
 }
 
-GcmOptionsValuesClass::~GcmOptionsValuesClass()
+GcmOptionsValues::~GcmOptionsValues()
 {
 }
 
-GcmOptionsValuesClass::GcmOptionsValuesClass(const GcmOptionsValuesClass& src)
+GcmOptionsValues::GcmOptionsValues(const GcmOptionsValues& src)
 {
   this->copy(src);
 }
 
-GcmOptionsValuesClass&
-GcmOptionsValuesClass::operator=(const GcmOptionsValuesClass& rhs)
+GcmOptionsValues&
+GcmOptionsValues::operator=(const GcmOptionsValues& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 
 void
-GcmOptionsValuesClass::copy(const GcmOptionsValuesClass& src)
+GcmOptionsValues::copy(const GcmOptionsValues& src)
 {
   m_checkAgainstPreviousSample      = src.m_checkAgainstPreviousSample;
   m_dataOutputFileName              = src.m_dataOutputFileName;
@@ -99,8 +99,8 @@ GcmOptionsValuesClass::copy(const GcmOptionsValuesClass& src)
   return;
 }
 
-GpmsaComputerModelOptionsClass::GpmsaComputerModelOptionsClass(
-  const BaseEnvironmentClass& env,
+GpmsaComputerModelOptions::GpmsaComputerModelOptions(
+  const BaseEnvironment& env,
   const char*                   prefix)
   :
   m_ov                                    (),
@@ -131,14 +131,14 @@ GpmsaComputerModelOptionsClass::GpmsaComputerModelOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
-                      "GpmsaComputerModelOptionsClass::constructor(1)",
+                      "GpmsaComputerModelOptions::constructor(1)",
                       "this constructor is incompatible with the abscense of an options input file");
 }
 
-GpmsaComputerModelOptionsClass::GpmsaComputerModelOptionsClass(
-  const BaseEnvironmentClass&  env,
+GpmsaComputerModelOptions::GpmsaComputerModelOptions(
+  const BaseEnvironment&  env,
   const char*                    prefix,
-  const GcmOptionsValuesClass& alternativeOptionsValues)
+  const GcmOptionsValues& alternativeOptionsValues)
   :
   m_ov                                    (alternativeOptionsValues),
   m_prefix                                ((std::string)(prefix) + "gcm_"),
@@ -168,11 +168,11 @@ GpmsaComputerModelOptionsClass::GpmsaComputerModelOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
-                      "GpmsaComputerModelOptionsClass::constructor(2)",
+                      "GpmsaComputerModelOptions::constructor(2)",
                       "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelOptionsClass::constructor(2)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModelOptions::constructor(2)"
                             << ": after setting values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -180,17 +180,17 @@ GpmsaComputerModelOptionsClass::GpmsaComputerModelOptionsClass(
   }
 }
 
-GpmsaComputerModelOptionsClass::~GpmsaComputerModelOptionsClass()
+GpmsaComputerModelOptions::~GpmsaComputerModelOptions()
 {
   if (m_optionsDesc) delete m_optionsDesc;
 } 
 
 void
-GpmsaComputerModelOptionsClass::scanOptionsValues()
+GpmsaComputerModelOptions::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
-                      "GpmsaComputerModelOptionsClass::scanOptionsValues()",
+                      "GpmsaComputerModelOptions::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -202,7 +202,7 @@ GpmsaComputerModelOptionsClass::scanOptionsValues()
   //          << std::endl;
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelOptionsClass::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModelOptions::scanOptionsValues()"
                             << ": after reading values of options with prefix '" << m_prefix
                             << "', state of  object is:"
                             << "\n" << *this
@@ -213,7 +213,7 @@ GpmsaComputerModelOptionsClass::scanOptionsValues()
 }
 
 void
-GpmsaComputerModelOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+GpmsaComputerModelOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                        "produce help message for mixed inverse problem")
@@ -243,7 +243,7 @@ GpmsaComputerModelOptionsClass::defineMyOptions(po::options_description& options
 }
 
 void
-GpmsaComputerModelOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+GpmsaComputerModelOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
@@ -280,11 +280,11 @@ GpmsaComputerModelOptionsClass::getMyOptionValues(po::options_description& optio
     }
   }
 
-  //std::cout << "In GpmsaComputerModelOptionsClass::getMyOptionValues(), m_option_priorSeqNumSamples = " << m_option_priorSeqNumSamples << "___" << std::endl;
+  //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), m_option_priorSeqNumSamples = " << m_option_priorSeqNumSamples << "___" << std::endl;
   if (m_env.allOptionsMap().count(m_option_priorSeqNumSamples)) {
-    //std::cout << "In GpmsaComputerModelOptionsClass::getMyOptionValues(), going to read m_option_priorSeqNumSamples..." << std::endl;
+    //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), going to read m_option_priorSeqNumSamples..." << std::endl;
     m_ov.m_priorSeqNumSamples = ((const po::variable_value&) m_env.allOptionsMap()[m_option_priorSeqNumSamples]).as<unsigned int>();
-    //std::cout << "In GpmsaComputerModelOptionsClass::getMyOptionValues(), just read m_option_priorSeqNumSamples = " << m_ov.m_priorSeqNumSamples << std::endl;
+    //std::cout << "In GpmsaComputerModelOptions::getMyOptionValues(), just read m_option_priorSeqNumSamples = " << m_ov.m_priorSeqNumSamples << std::endl;
   }
 
   if (m_env.allOptionsMap().count(m_option_priorSeqDataOutputFileName)) {
@@ -363,7 +363,7 @@ GpmsaComputerModelOptionsClass::getMyOptionValues(po::options_description& optio
 }
 
 void
-GpmsaComputerModelOptionsClass::print(std::ostream& os) const
+GpmsaComputerModelOptions::print(std::ostream& os) const
 {
   os << "\n" << m_option_checkAgainstPreviousSample << " = " << m_ov.m_checkAgainstPreviousSample
      << "\n" << m_option_dataOutputFileName         << " = " << m_ov.m_dataOutputFileName
@@ -396,7 +396,7 @@ GpmsaComputerModelOptionsClass::print(std::ostream& os) const
   return;
 }
 
-std::ostream& operator<<(std::ostream& os, const GpmsaComputerModelOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const GpmsaComputerModelOptions& obj)
 {
   obj.print(os);
 

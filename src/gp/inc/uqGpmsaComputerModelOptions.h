@@ -59,13 +59,13 @@
 
 namespace QUESO {
 
-class GcmOptionsValuesClass
+class GcmOptionsValues
 {
 public:
-  GcmOptionsValuesClass            ();
-  GcmOptionsValuesClass            (const GcmOptionsValuesClass& src);
-  GcmOptionsValuesClass& operator= (const GcmOptionsValuesClass& rhs);
- ~GcmOptionsValuesClass            ();
+  GcmOptionsValues            ();
+  GcmOptionsValues            (const GcmOptionsValues& src);
+  GcmOptionsValues& operator= (const GcmOptionsValues& rhs);
+ ~GcmOptionsValues            ();
 
   bool                   m_checkAgainstPreviousSample;
   std::string            m_dataOutputFileName;
@@ -88,30 +88,30 @@ public:
   bool                   m_predWsBySummingRVs;
   bool                   m_predWsAtKeyPoints;
 
-  //MhOptionsValuesClass m_mhOptionsValues;
+  //MhOptionsValues m_mhOptionsValues;
 
 private:
-  void copy(const GcmOptionsValuesClass& src);
+  void copy(const GcmOptionsValues& src);
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  friend class GpmsaComputerModelOptionsClass;
-  SsOptionsValuesClass m_alternativePriorSeqSsOptionsValues;
+  friend class GpmsaComputerModelOptions;
+  SsOptionsValues m_alternativePriorSeqSsOptionsValues;
 #endif
 };
 
-class GpmsaComputerModelOptionsClass
+class GpmsaComputerModelOptions
 {
 public:
-  GpmsaComputerModelOptionsClass(const BaseEnvironmentClass& env, const char* prefix);
-  GpmsaComputerModelOptionsClass(const BaseEnvironmentClass& env, const char* prefix, const GcmOptionsValuesClass& alternativeOptionsValues);
- ~GpmsaComputerModelOptionsClass();
+  GpmsaComputerModelOptions(const BaseEnvironment& env, const char* prefix);
+  GpmsaComputerModelOptions(const BaseEnvironment& env, const char* prefix, const GcmOptionsValues& alternativeOptionsValues);
+ ~GpmsaComputerModelOptions();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  GcmOptionsValuesClass            m_ov;
+  GcmOptionsValues            m_ov;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  SequenceStatisticalOptionsClass* m_priorSeqStatisticalOptionsObj;
+  SequenceStatisticalOptions* m_priorSeqStatisticalOptionsObj;
   bool                               m_priorSeqStatOptsInstantiated;
 #endif
   std::string                        m_prefix;
@@ -120,7 +120,7 @@ private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   void   getMyOptionValues(po::options_description& optionsDesc);
 
-  const BaseEnvironmentClass& m_env;
+  const BaseEnvironment& m_env;
 
   po::options_description*      m_optionsDesc;
   std::string                   m_option_help;
@@ -146,7 +146,7 @@ private:
   std::string                   m_option_predWsAtKeyPoints;
 };
 
-std::ostream& operator<<(std::ostream& os, const GpmsaComputerModelOptionsClass& obj);
+std::ostream& operator<<(std::ostream& os, const GpmsaComputerModelOptions& obj);
 
 }  // End namespace QUESO
 
