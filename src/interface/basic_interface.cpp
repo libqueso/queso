@@ -43,7 +43,7 @@ using namespace QUESO_Basic_API;
 
 extern "C" void QUESO_init(const char *inputfile)
 {
-  _QUESO_Basic = new QUESO_Basic_Class();
+  _QUESO_Basic = new QUESO_Basic_();
   _QUESO_Basic->Initialize(inputfile);
   return;
 }

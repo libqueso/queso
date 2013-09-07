@@ -37,15 +37,15 @@ using namespace std;
 
 namespace QUESO_Basic_API {
 
-#define basicV GslVectorClass
-#define basicM GslMatrixClass
+#define basicV GslVector
+#define basicM GslMatrix
 
   void   QUESO_fatal        (const char *message);
   double Likelihood_Wrapper (const basicV &,const basicV *,const void *,basicV *,basicM *,basicV *);
 
   // Note: the Basic QUESO API uses GSL for the base vector/matrix class
 
-  class QUESO_Basic_Class {
+  class QUESO_Basic_ {
   private:
     short int m_initialized;	                                       // basic API initialized?
     short int m_silent; 		                               // silence error messages?
@@ -55,28 +55,28 @@ namespace QUESO_Basic_API {
     //------------------------				           
 
     string *m_inputfile;                                               // QUESO ascii input file
-    BaseEnvironmentClass *m_env;                                     // QUESO environment
+    BaseEnvironment *m_env;                                     // QUESO environment
     int     m_num_params;	                                       // number of defined UQ parameter variables
     basicV *m_queso_var_min;                                           // min UQ paramater values
     basicV *m_queso_var_max;                                           // max UQ paramater values
     basicV *m_queso_var_ini;                                           // initial UQ paramater values
-    VectorSpaceClass <basicV,basicM> *m_paramSpace;                  // QUESO parameter space
+    VectorSpace <basicV,basicM> *m_paramSpace;                  // QUESO parameter space
     
     //--------------------------------------
     // Inverse/calibration related variables
     //--------------------------------------
     
-    BoxSubsetClass                 <basicV,basicM> *m_paramDomain;   // QUESO parameter domain
-    UniformVectorRVClass           <basicV,basicM> *m_priorRV;       // QUESO prior vector
-    GenericVectorRVClass           <basicV,basicM> *m_postRV;        // QUESO post vector
-    StatisticalInverseProblemClass <basicV,basicM> *m_ip;            // QUESO inverse problem
-    GenericScalarFunctionClass     <basicV,basicM> *m_likelihoodObj; // QUESO likelihood object
+    BoxSubset                 <basicV,basicM> *m_paramDomain;   // QUESO parameter domain
+    UniformVectorRV           <basicV,basicM> *m_priorRV;       // QUESO prior vector
+    GenericVectorRV           <basicV,basicM> *m_postRV;        // QUESO post vector
+    StatisticalInverseProblem <basicV,basicM> *m_ip;            // QUESO inverse problem
+    GenericScalarFunction     <basicV,basicM> *m_likelihoodObj; // QUESO likelihood object
     basicM *m_CovMatrix;                                               // QUESO covariance matrix
     double (*m_user_likelihood_func) (double *);	               // User supplied likelihood function 
     
   public:
-    QUESO_Basic_Class                 ();
-   ~QUESO_Basic_Class                 (); // prudenci 2010-05-17
+    QUESO_Basic_                 ();
+   ~QUESO_Basic_                 (); // prudenci 2010-05-17
     void Initialize                   (const char *inputfile);
     void VerifyInit                   ();
     void DefineParameterSpace         ();
