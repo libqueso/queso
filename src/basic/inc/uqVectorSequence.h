@@ -1590,7 +1590,7 @@ BaseVectorSequenceClass<V,M>::computeAutoCorrViaDef(
     *m_env.subDisplayFile() << std::endl;
   }
 
-  2dArrayOfStuff<V> _2dArrayOfAutoCorrs(initialPosForStatistics.size(),lagsForCorrs.size());
+  TwoDArray<V> _2dArrayOfAutoCorrs(initialPosForStatistics.size(),lagsForCorrs.size());
   for (unsigned int i = 0; i < _2dArrayOfAutoCorrs.numRows(); ++i) {
     for (unsigned int j = 0; j < _2dArrayOfAutoCorrs.numCols(); ++j) {
       _2dArrayOfAutoCorrs.setLocation(i,j,new V(m_vectorSpace.zeroVector()) /*.*/);
@@ -1712,7 +1712,7 @@ BaseVectorSequenceClass<V,M>::computeAutoCorrViaFFT(
      *m_env.subDisplayFile() << std::endl;
   }
 
-  2dArrayOfStuff<V> _2dArrayOfAutoCorrs(initialPosForStatistics.size(),lagsForCorrs.size());
+  TwoDArray<V> _2dArrayOfAutoCorrs(initialPosForStatistics.size(),lagsForCorrs.size());
   for (unsigned int i = 0; i < _2dArrayOfAutoCorrs.numRows(); ++i) {
     for (unsigned int j = 0; j < _2dArrayOfAutoCorrs.numCols(); ++j) {
       _2dArrayOfAutoCorrs.setLocation(i,j,new V(m_vectorSpace.zeroVector()) /*.*/);
@@ -2657,7 +2657,7 @@ BaseVectorSequenceClass<V,M>::computeBMM(
     *m_env.subDisplayFile() << std::endl;
   }
 
-  2dArrayOfStuff<V> _2dArrayOfBMM(initialPosForStatistics.size(),statisticalOptions.bmmLengths().size());
+  TwoDArray<V> _2dArrayOfBMM(initialPosForStatistics.size(),statisticalOptions.bmmLengths().size());
   for (unsigned int i = 0; i < _2dArrayOfBMM.numRows(); ++i) {
     for (unsigned int j = 0; j < _2dArrayOfBMM.numCols(); ++j) {
       _2dArrayOfBMM.setLocation(i,j,new V(m_vectorSpace.zeroVector()) /*.*/);
@@ -2864,7 +2864,7 @@ BaseVectorSequenceClass<V,M>::computePSDAtZero(
                             << std::endl;
   }
 
-  2dArrayOfStuff<V> _2dArrayOfPSDAtZero(initialPosForStatistics.size(),statisticalOptions.psdAtZeroNumBlocks().size());
+  TwoDArray<V> _2dArrayOfPSDAtZero(initialPosForStatistics.size(),statisticalOptions.psdAtZeroNumBlocks().size());
   for (unsigned int i = 0; i < _2dArrayOfPSDAtZero.numRows(); ++i) {
     for (unsigned int j = 0; j < _2dArrayOfPSDAtZero.numCols(); ++j) {
       _2dArrayOfPSDAtZero.setLocation(i,j,new V(m_vectorSpace.zeroVector()) /*.*/);
