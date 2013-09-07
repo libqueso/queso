@@ -35,17 +35,17 @@ namespace QUESO {
 
 template <class V, class M>
 void
-uqCovCond(
+CovCond(
   double   condNumber,
   const V& direction,
   M&       covMatrix,
   M&       precMatrix)
 {
-  //std::cout << "Entering uqCovCond()"
+  //std::cout << "Entering CovCond()"
   //          << std::endl;
 
   V v1(direction);
-  //std::cout << "In uqCovCond(), v1 contents are:"
+  //std::cout << "In CovCond(), v1 contents are:"
   //          << std::endl
   //          << v1
   //          << std::endl;
@@ -53,7 +53,7 @@ uqCovCond(
   V v2(direction,condNumber,1.0); // MATLAB linspace
   v2.cwInvert();
   v2.sort();
-  //std::cout << "In uqCovCond(), v2 contents are:"
+  //std::cout << "In CovCond(), v2 contents are:"
   //          << std::endl
   //          << v2
   //          << std::endl;
@@ -65,7 +65,7 @@ uqCovCond(
 
   M Z(direction,1.0);
   Z -= (2./v1Norm2Sq) * matrixProduct(v1,v1);
-  //std::cout << "In uqCovCond(), Z contents are:"
+  //std::cout << "In CovCond(), Z contents are:"
   //          << std::endl
   //          << Z
   //          << std::endl;
@@ -74,7 +74,7 @@ uqCovCond(
   covMatrix  = Z * leftDiagScaling(v2,   Zt);
   precMatrix = Z * leftDiagScaling(1./v2,Zt);
 
-  //std::cout << "Leaving uqCovCond()"
+  //std::cout << "Leaving CovCond()"
   //          << std::endl;
 }
 

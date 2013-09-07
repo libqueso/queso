@@ -34,22 +34,22 @@ namespace QUESO {
 /*! \file uq2dArrayOfStuff.h
  * \brief A templated class for handling arrays of data
  * 
- * \class uq2dArrayOfStuff
+ * \class 2dArrayOfStuff
  * \brief Class for handling arrays of generic data.
  *
  * This class handles array of generic data (doubles, ints, strings, structs, etc.).*/
 
 template <class T>
-class uq2dArrayOfStuff
+class 2dArrayOfStuff
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uq2dArrayOfStuff(unsigned int numRows, unsigned int numCols);
+  2dArrayOfStuff(unsigned int numRows, unsigned int numCols);
   
   //! Destructor.
- ~uq2dArrayOfStuff();
+ ~2dArrayOfStuff();
   //@}
 
   //! @name Attribute methods
@@ -86,7 +86,7 @@ private:
 };
 // Default constructor -------------------------------------------------
 template <class T>
-uq2dArrayOfStuff<T>::uq2dArrayOfStuff(
+2dArrayOfStuff<T>::2dArrayOfStuff(
   unsigned int numRows,
   unsigned int numCols)
   :
@@ -100,7 +100,7 @@ uq2dArrayOfStuff<T>::uq2dArrayOfStuff(
 }
 // Destructor ----------------------------------------------------------
 template <class T>
-uq2dArrayOfStuff<T>::~uq2dArrayOfStuff()
+2dArrayOfStuff<T>::~2dArrayOfStuff()
 {
   for (unsigned int i = 0; i < m_numRows; ++i) {
     for (unsigned int j = 0; j < m_numCols; ++j) {
@@ -112,25 +112,25 @@ uq2dArrayOfStuff<T>::~uq2dArrayOfStuff()
 // Property methods-----------------------------------------------------
 template <class T>
 unsigned int
-uq2dArrayOfStuff<T>::numRows() const
+2dArrayOfStuff<T>::numRows() const
 {
   return m_numRows;
 }
 //----------------------------------------------------------------------
 template <class T>
 unsigned int
-uq2dArrayOfStuff<T>::numCols() const
+2dArrayOfStuff<T>::numCols() const
 {
   return m_numCols;
 }
 //----------------------------------------------------------------------
 template <class T>
 void
-uq2dArrayOfStuff<T>::setLocation(unsigned int i, unsigned int j, T* info)
+2dArrayOfStuff<T>::setLocation(unsigned int i, unsigned int j, T* info)
 {
   UQ_FATAL_TEST_MACRO((i >= m_numRows) || (j >= m_numCols) || (m_data[i] == NULL),
                       UQ_UNAVAILABLE_RANK,
-                      "uq2dArrayOfStuff<T>::setLocation()",
+                      "2dArrayOfStuff<T>::setLocation()",
                       "invalid situation");
   (*(m_data[i]))[j] = info;
   return;
@@ -138,22 +138,22 @@ uq2dArrayOfStuff<T>::setLocation(unsigned int i, unsigned int j, T* info)
 // Accessor methods-----------------------------------------------------
 template <class T>
 T&
-uq2dArrayOfStuff<T>::operator()(unsigned int i, unsigned int j)
+2dArrayOfStuff<T>::operator()(unsigned int i, unsigned int j)
 {
   UQ_FATAL_TEST_MACRO((i >= m_numRows) || (j >= m_numCols) || (m_data[i] == NULL) || ((*m_data[i])[j] == NULL),
                       UQ_UNAVAILABLE_RANK,
-                      "uq2dArrayOfStuff<T>::operator(1)",
+                      "2dArrayOfStuff<T>::operator(1)",
                       "invalid situation");
   return *(*(m_data[i]))[j];
 }
 //----------------------------------------------------------------------
 template <class T>
 const T&
-uq2dArrayOfStuff<T>::operator()(unsigned int i, unsigned int j) const
+2dArrayOfStuff<T>::operator()(unsigned int i, unsigned int j) const
 {
   UQ_FATAL_TEST_MACRO((i >= m_numRows) || (j >= m_numCols) || (m_data[i] == NULL) || ((*m_data[i])[j] == NULL),
                       UQ_UNAVAILABLE_RANK,
-                      "uq2dArrayOfStuff<T>::operator(2)",
+                      "2dArrayOfStuff<T>::operator(2)",
                       "invalid situation");
   return *(*(m_data[i]))[j];
 }
