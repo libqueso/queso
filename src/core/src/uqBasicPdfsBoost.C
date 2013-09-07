@@ -32,47 +32,47 @@
 namespace QUESO {
 
 // Default constructor ------------------------------
-BasicPdfsBoostClass::BasicPdfsBoostClass()
+BasicPdfsBoost::BasicPdfsBoost()
   :
-  BasicPdfsBaseClass()
+  BasicPdfsBase()
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_worldRank,
-                      "BasicPdfsBoostClass::constructor(), default",
+                      "BasicPdfsBoost::constructor(), default",
                       "should not be used by user");
 }
 
 //! Constructor ---------------------------
-BasicPdfsBoostClass::BasicPdfsBoostClass(int worldRank)
+BasicPdfsBoost::BasicPdfsBoost(int worldRank)
   :
-  BasicPdfsBaseClass(worldRank)
+  BasicPdfsBase(worldRank)
 {
 }
 
 // Destructor ---------------------------------------
-BasicPdfsBoostClass::~BasicPdfsBoostClass()
+BasicPdfsBoost::~BasicPdfsBoost()
 {
   //this function does nothing
 }
 
 // --------------------------------------------------
 double
-BasicPdfsBoostClass::betaPdfActualValue(double x, double alpha, double beta) const
+BasicPdfsBoost::betaPdfActualValue(double x, double alpha, double beta) const
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_worldRank,
-                      "BasicPdfsBoostClass::betaPdfActualValue()",
+                      "BasicPdfsBoost::betaPdfActualValue()",
                       "code incomplete yet");
   return 0.;
 }
 
 // --------------------------------------------------
 double
-BasicPdfsBoostClass::gammaPdfActualValue(double x, double a, double b) const
+BasicPdfsBoost::gammaPdfActualValue(double x, double a, double b) const
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_worldRank,
-                      "BasicPdfsBoostClass::gammaPdfActualValue()",
+                      "BasicPdfsBoost::gammaPdfActualValue()",
                       "code incomplete yet");
   return 0.;
 }

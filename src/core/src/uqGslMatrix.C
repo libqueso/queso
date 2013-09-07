@@ -37,22 +37,22 @@
 namespace QUESO {
 
 // Default constructor -------------------------------------------------
-GslMatrixClass::GslMatrixClass()
+GslMatrix::GslMatrix()
   :
-  MatrixClass()
+  Matrix()
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
-                      "GslMatrixClass::constructor(), default",
+                      "GslMatrix::constructor(), default",
                       "should not be used by user");
 }
 
-GslMatrixClass::GslMatrixClass( // can be a rectangular matrix
-  const BaseEnvironmentClass& env,
-  const MapClass&             map,
+GslMatrix::GslMatrix( // can be a rectangular matrix
+  const BaseEnvironment& env,
+  const Map&             map,
   unsigned int                  nCols)
   :
-  MatrixClass  (env,map),
+  Matrix  (env,map),
   m_mat          (gsl_matrix_calloc(map.NumGlobalElements(),nCols)),
   m_LU           (NULL),
   m_inverse      (NULL),
@@ -69,17 +69,17 @@ GslMatrixClass::GslMatrixClass( // can be a rectangular matrix
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
-                      "GslMatrixClass::constructor()",
+                      "GslMatrix::constructor()",
                       "null matrix generated");
 }
 
 // Shaped constructor --------------------------------------------------
-GslMatrixClass::GslMatrixClass( // square matrix
-  const BaseEnvironmentClass& env,
-  const MapClass&             map,
+GslMatrix::GslMatrix( // square matrix
+  const BaseEnvironment& env,
+  const Map&             map,
   double                        diagValue)
   :
-  MatrixClass  (env,map),
+  Matrix  (env,map),
   m_mat          (gsl_matrix_calloc(map.NumGlobalElements(),map.NumGlobalElements())),
   m_LU           (NULL),
   m_inverse      (NULL),
@@ -96,7 +96,7 @@ GslMatrixClass::GslMatrixClass( // square matrix
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
-                      "GslMatrixClass::constructor(), eye",
+                      "GslMatrix::constructor(), eye",
                       "null matrix generated");
 
   for (unsigned int i = 0; i < m_mat->size1; ++i) {
@@ -104,11 +104,11 @@ GslMatrixClass::GslMatrixClass( // square matrix
   }
 }
 // Shaped constructor --------------------------------------------------
-GslMatrixClass::GslMatrixClass( // square matrix
-  const GslVectorClass& v,
+GslMatrix::GslMatrix( // square matrix
+  const GslVector& v,
   double                  diagValue)
   :
-  MatrixClass  (v.env(),v.map()),
+  Matrix  (v.env(),v.map()),
   m_mat          (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
   m_LU           (NULL),
   m_inverse      (NULL),
@@ -125,7 +125,7 @@ GslMatrixClass::GslMatrixClass( // square matrix
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
-                      "GslMatrixClass::constructor(), eye",
+                      "GslMatrix::constructor(), eye",
                       "null matrix generated");
 
   for (unsigned int i = 0; i < m_mat->size1; ++i) {
@@ -133,9 +133,9 @@ GslMatrixClass::GslMatrixClass( // square matrix
   }
 }
 // Shaped constructor --------------------------------------------------
-GslMatrixClass::GslMatrixClass(const GslVectorClass& v) // square matrix
+GslMatrix::GslMatrix(const GslVector& v) // square matrix
   :
-  MatrixClass  (v.env(),v.map()),
+  Matrix  (v.env(),v.map()),
   m_mat          (gsl_matrix_calloc(v.sizeLocal(),v.sizeLocal())),
   m_LU           (NULL),
   m_inverse      (NULL),
@@ -152,7 +152,7 @@ GslMatrixClass::GslMatrixClass(const GslVectorClass& v) // square matrix
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
-                      "GslMatrixClass::constructor(), from vector",
+                      "GslMatrix::constructor(), from vector",
                       "null matrix generated");
 
   unsigned int dim = v.sizeLocal();
@@ -162,9 +162,9 @@ GslMatrixClass::GslMatrixClass(const GslVectorClass& v) // square matrix
 }
 
 // Shaped constructor --------------------------------------------------
-GslMatrixClass::GslMatrixClass(const GslMatrixClass& B) // can be a rectangular matrix
+GslMatrix::GslMatrix(const GslMatrix& B) // can be a rectangular matrix
   :
-  MatrixClass  (B.env(),B.map()),
+  Matrix  (B.env(),B.map()),
   m_mat          (gsl_matrix_calloc(B.numRowsLocal(),B.numCols())),
   m_LU           (NULL),
   m_inverse      (NULL),
@@ -181,43 +181,43 @@ GslMatrixClass::GslMatrixClass(const GslMatrixClass& B) // can be a rectangular 
 {
   UQ_FATAL_TEST_MACRO((m_mat == NULL),
                       m_env.worldRank(),
-                      "GslMatrixClass::constructor(), copy",
+                      "GslMatrix::constructor(), copy",
                       "null vector generated");
-  this->MatrixClass::copy(B);
+  this->Matrix::copy(B);
   this->copy(B);
 }
 
 // Destructor ----------------------------------------------------------
-GslMatrixClass::~GslMatrixClass()
+GslMatrix::~GslMatrix()
 {
   this->resetLU();
   if (m_mat) gsl_matrix_free(m_mat);
 }
 
 // Set methods (operators) ---------------------------------------------
-GslMatrixClass&
-GslMatrixClass::operator=(const GslMatrixClass& obj)
+GslMatrix&
+GslMatrix::operator=(const GslMatrix& obj)
 {
   this->resetLU();
   this->copy(obj);
   return *this;
 }
 
-GslMatrixClass&
-GslMatrixClass::operator*=(double a)
+GslMatrix&
+GslMatrix::operator*=(double a)
 {
   this->resetLU();
   int iRC;
   iRC = gsl_matrix_scale(m_mat,a);
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.worldRank(),
-                    "GslMatrixClass::operator*=()",
+                    "GslMatrix::operator*=()",
                     "scaling failed");
   return *this;
 }
 
-GslMatrixClass&
-GslMatrixClass::operator/=(double a)
+GslMatrix&
+GslMatrix::operator/=(double a)
 {
   this->resetLU();
   *this *= (1./a);
@@ -225,29 +225,29 @@ GslMatrixClass::operator/=(double a)
   return *this;
 }
 
-GslMatrixClass&
-GslMatrixClass::operator+=(const GslMatrixClass& rhs)
+GslMatrix&
+GslMatrix::operator+=(const GslMatrix& rhs)
 {
   this->resetLU();
   int iRC;
   iRC = gsl_matrix_add(m_mat,rhs.m_mat);
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.worldRank(),
-                    "GslMatrixClass::operator+=()",
+                    "GslMatrix::operator+=()",
                     "failed");
 
   return *this;
 }
 
-GslMatrixClass&
-GslMatrixClass::operator-=(const GslMatrixClass& rhs)
+GslMatrix&
+GslMatrix::operator-=(const GslMatrix& rhs)
 {
   this->resetLU();
   int iRC;
   iRC = gsl_matrix_sub(m_mat,rhs.m_mat);
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.worldRank(),
-                    "GslMatrixClass::operator-=()",
+                    "GslMatrix::operator-=()",
                     "failed");
 
   return *this;
@@ -255,12 +255,12 @@ GslMatrixClass::operator-=(const GslMatrixClass& rhs)
 
 // Acessor methods (operators) ----------------------------------------
 double&
-GslMatrixClass::operator()(unsigned int i, unsigned int j)
+GslMatrix::operator()(unsigned int i, unsigned int j)
 {
   this->resetLU();
   if ((i >= m_mat->size1) ||
       (j >= m_mat->size2)) {
-    std::cerr << "In GslMatrixClass::operator(i,j)"
+    std::cerr << "In GslMatrix::operator(i,j)"
               << ": i = " << i
               << ", j = " << j
               << ", m_mat->size1 = " << m_mat->size1
@@ -268,46 +268,46 @@ GslMatrixClass::operator()(unsigned int i, unsigned int j)
               << std::endl;
     UQ_FATAL_TEST_MACRO(i >= m_mat->size1,
                         m_env.worldRank(),
-                        "GslMatrixClass::operator(i,j)",
+                        "GslMatrix::operator(i,j)",
                         "i is too large");
     UQ_FATAL_TEST_MACRO(j >= m_mat->size2,
                         m_env.worldRank(),
-                        "GslMatrixClass::operator(i,j)",
+                        "GslMatrix::operator(i,j)",
                         "j is too large");
   }
   return *gsl_matrix_ptr(m_mat,i,j);
 }
 
 const double&
-GslMatrixClass::operator()(unsigned int i, unsigned int j) const
+GslMatrix::operator()(unsigned int i, unsigned int j) const
 {
   UQ_FATAL_TEST_MACRO(i >= m_mat->size1,
                       m_env.worldRank(),
-                      "GslMatrixClass::operator(i,j) const",
+                      "GslMatrix::operator(i,j) const",
                       "i is too large");
   UQ_FATAL_TEST_MACRO(j >= m_mat->size2,
                       m_env.worldRank(),
-                      "GslMatrixClass::operator(i,j) const",
+                      "GslMatrix::operator(i,j) const",
                       "j is too large");
   return *gsl_matrix_const_ptr(m_mat,i,j);
 }
 
 void
-GslMatrixClass::copy(const GslMatrixClass& src)
+GslMatrix::copy(const GslMatrix& src)
 {
   this->resetLU();
   int iRC;
   iRC = gsl_matrix_memcpy(this->m_mat, src.m_mat);
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.worldRank(),
-                    "GslMatrixClass::copy()",
+                    "GslMatrix::copy()",
                     "failed");
 
   return;
 }
 
 void
-GslMatrixClass::resetLU()
+GslMatrix::resetLU()
 {
   if (m_LU) {
     gsl_matrix_free(m_LU);
@@ -350,25 +350,25 @@ GslMatrixClass::resetLU()
 }
 
 unsigned int
-GslMatrixClass::numRowsLocal() const
+GslMatrix::numRowsLocal() const
 {
   return m_mat->size1;
 }
 
 unsigned int
-GslMatrixClass::numRowsGlobal() const
+GslMatrix::numRowsGlobal() const
 {
   return m_mat->size1;
 }
 
 unsigned int
-GslMatrixClass::numCols() const
+GslMatrix::numCols() const
 {
   return m_mat->size2;
 }
 
 double
-GslMatrixClass::normFrob() const
+GslMatrix::normFrob() const
 {
   double value = 0.;
 
@@ -386,7 +386,7 @@ GslMatrixClass::normFrob() const
 }
 
 double
-GslMatrixClass::normMax() const
+GslMatrix::normMax() const
 {
   double value = 0.;
 
@@ -404,7 +404,7 @@ GslMatrixClass::normMax() const
 }
 
 double
-GslMatrixClass::max() const
+GslMatrix::max() const
 {
   double value = -INFINITY;
 
@@ -422,7 +422,7 @@ GslMatrixClass::max() const
 }
 
 void
-GslMatrixClass::cwSet(double value)
+GslMatrix::cwSet(double value)
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
@@ -437,29 +437,29 @@ GslMatrixClass::cwSet(double value)
 }
 
 void
-GslMatrixClass::cwSet(
+GslMatrix::cwSet(
   unsigned int            initialTargetRowId,
   unsigned int            initialTargetColId,
-  const GslMatrixClass& mat)
+  const GslMatrix& mat)
 {
   UQ_FATAL_TEST_MACRO(initialTargetRowId >= this->numRowsLocal(),
                       m_env.worldRank(),
-                      "GslMatrixClass::cwSet()",
+                      "GslMatrix::cwSet()",
                       "invalid initialTargetRowId");
 
   UQ_FATAL_TEST_MACRO((initialTargetRowId + mat.numRowsLocal()) > this->numRowsLocal(),
                       m_env.worldRank(),
-                      "GslMatrixClass::cwSet()",
+                      "GslMatrix::cwSet()",
                       "invalid vec.numRowsLocal()");
 
   UQ_FATAL_TEST_MACRO(initialTargetColId >= this->numCols(),
                       m_env.worldRank(),
-                      "GslMatrixClass::cwSet()",
+                      "GslMatrix::cwSet()",
                       "invalid initialTargetColId");
 
   UQ_FATAL_TEST_MACRO((initialTargetColId + mat.numCols()) > this->numCols(),
                       m_env.worldRank(),
-                      "GslMatrixClass::cwSet()",
+                      "GslMatrix::cwSet()",
                       "invalid vec.numCols()");
 
   for (unsigned int i = 0; i < mat.numRowsLocal(); ++i) {
@@ -472,29 +472,29 @@ GslMatrixClass::cwSet(
 }
 
 void
-GslMatrixClass::cwExtract(
+GslMatrix::cwExtract(
   unsigned int      initialTargetRowId,
   unsigned int      initialTargetColId,
-  GslMatrixClass& mat) const
+  GslMatrix& mat) const
 {
   UQ_FATAL_TEST_MACRO(initialTargetRowId >= this->numRowsLocal(),
                       m_env.worldRank(),
-                      "GslMatrixClass::cwExtract()",
+                      "GslMatrix::cwExtract()",
                       "invalid initialTargetRowId");
 
   UQ_FATAL_TEST_MACRO((initialTargetRowId + mat.numRowsLocal()) > this->numRowsLocal(),
                       m_env.worldRank(),
-                      "GslMatrixClass::cwExtract()",
+                      "GslMatrix::cwExtract()",
                       "invalid vec.numRowsLocal()");
 
   UQ_FATAL_TEST_MACRO(initialTargetColId >= this->numCols(),
                       m_env.worldRank(),
-                      "GslMatrixClass::cwExtract()",
+                      "GslMatrix::cwExtract()",
                       "invalid initialTargetColId");
 
   UQ_FATAL_TEST_MACRO((initialTargetColId + mat.numCols()) > this->numCols(),
                       m_env.worldRank(),
-                      "GslMatrixClass::cwExtract()",
+                      "GslMatrix::cwExtract()",
                       "invalid vec.numCols()");
 
   for (unsigned int i = 0; i < mat.numRowsLocal(); ++i) {
@@ -507,7 +507,7 @@ GslMatrixClass::cwExtract(
 }
 
 int
-GslMatrixClass::chol()
+GslMatrix::chol()
 {
   int iRC;
   //std::cout << "Calling gsl_linalg_cholesky_decomp()..." << std::endl;
@@ -515,7 +515,7 @@ GslMatrixClass::chol()
   oldHandler = gsl_set_error_handler_off();
   iRC = gsl_linalg_cholesky_decomp(m_mat);
   if (iRC != 0) {
-    std::cerr << "In GslMatrixClass::chol()"
+    std::cerr << "In GslMatrix::chol()"
               << ": iRC = " << iRC
               << ", gsl error message = " << gsl_strerror(iRC)
               << std::endl;
@@ -524,7 +524,7 @@ GslMatrixClass::chol()
   //std::cout << "Returned from gsl_linalg_cholesky_decomp() with iRC = " << iRC << std::endl;
   UQ_RC_MACRO(iRC, // Yes, *not* a fatal check on RC
               m_env.worldRank(),
-              "GslMatrixClass::chol()",
+              "GslMatrix::chol()",
               "matrix is not positive definite",
               UQ_MATRIX_IS_NOT_POS_DEFINITE_RC);
 
@@ -532,24 +532,24 @@ GslMatrixClass::chol()
 }
 
 int
-GslMatrixClass::svd(GslMatrixClass& matU, GslVectorClass& vecS, GslMatrixClass& matVt) const
+GslMatrix::svd(GslMatrix& matU, GslVector& vecS, GslMatrix& matVt) const
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
   UQ_FATAL_TEST_MACRO((matU.numRowsLocal() != nRows) || (matU.numCols() != nCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::svd()",
+                      "GslMatrix::svd()",
                       "invalid matU");
 
   UQ_FATAL_TEST_MACRO((vecS.sizeLocal() != nCols), //std::min(nRows,nRows)),
                       m_env.worldRank(),
-                      "GslMatrixClass::svd()",
+                      "GslMatrix::svd()",
                       "invalid vecS");
 
   UQ_FATAL_TEST_MACRO((matVt.numRowsLocal() != nCols) || (matVt.numCols() != nCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::svd()",
+                      "GslMatrix::svd()",
                       "invalid matVt");
 
   int iRC = internalSvd();
@@ -562,25 +562,25 @@ GslMatrixClass::svd(GslMatrixClass& matU, GslVectorClass& vecS, GslMatrixClass& 
 }
 
 int
-GslMatrixClass::svdSolve(const GslVectorClass& rhsVec, GslVectorClass& solVec) const
+GslMatrix::svdSolve(const GslVector& rhsVec, GslVector& solVec) const
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
   UQ_FATAL_TEST_MACRO((rhsVec.sizeLocal() != nRows),
                       m_env.worldRank(),
-                      "GslMatrixClass::svdSolve()",
+                      "GslMatrix::svdSolve()",
                       "invalid rhsVec");
 
   UQ_FATAL_TEST_MACRO((solVec.sizeLocal() != nCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::svdSolve()",
+                      "GslMatrix::svdSolve()",
                       "invalid solVec");
 
   int iRC = internalSvd();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "In GslMatrixClass::svdSolve():"
+    *m_env.subDisplayFile() << "In GslMatrix::svdSolve():"
                             << "\n this->numRowsLocal()      = " << this->numRowsLocal()
                             << ", this->numCols()      = "       << this->numCols()
                             << "\n m_svdUmat->numRowsLocal() = " << m_svdUmat->numRowsLocal()
@@ -599,28 +599,28 @@ GslMatrixClass::svdSolve(const GslVectorClass& rhsVec, GslVectorClass& solVec) c
 }
 
 int
-GslMatrixClass::svdSolve(const GslMatrixClass& rhsMat, GslMatrixClass& solMat) const
+GslMatrix::svdSolve(const GslMatrix& rhsMat, GslMatrix& solMat) const
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
   UQ_FATAL_TEST_MACRO((rhsMat.numRowsLocal() != nRows),
                       m_env.worldRank(),
-                      "GslMatrixClass::svdSolve()",
+                      "GslMatrix::svdSolve()",
                       "invalid rhsMat");
 
   UQ_FATAL_TEST_MACRO((solMat.numRowsLocal() != nCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::svdSolve()",
+                      "GslMatrix::svdSolve()",
                       "invalid solMat");
 
   UQ_FATAL_TEST_MACRO((rhsMat.numCols() != solMat.numCols()),
                       m_env.worldRank(),
-                      "GslMatrixClass::svdSolve()",
+                      "GslMatrix::svdSolve()",
                       "rhsMat and solMat are not compatible");
 
-  GslVectorClass rhsVec(m_env,rhsMat.map());
-  GslVectorClass solVec(m_env,solMat.map());
+  GslVector rhsVec(m_env,rhsMat.map());
+  GslVector solVec(m_env,solMat.map());
   int iRC = 0;
   for (unsigned int j = 0; j < rhsMat.numCols(); ++j) {
     rhsVec = rhsMat.getColumn(j);
@@ -632,8 +632,8 @@ GslMatrixClass::svdSolve(const GslMatrixClass& rhsMat, GslMatrixClass& solMat) c
   return iRC;
 }
 
-const GslMatrixClass&
-GslMatrixClass::svdMatU() const
+const GslMatrix&
+GslMatrix::svdMatU() const
 {
   int iRC = 0;
   iRC = internalSvd();
@@ -642,8 +642,8 @@ GslMatrixClass::svdMatU() const
   return *m_svdUmat;
 }
 
-const GslMatrixClass&
-GslMatrixClass::svdMatV() const
+const GslMatrix&
+GslMatrix::svdMatV() const
 {
   int iRC = 0;
   iRC = internalSvd();
@@ -653,7 +653,7 @@ GslMatrixClass::svdMatV() const
 }
 
 int
-GslMatrixClass::internalSvd() const
+GslMatrix::internalSvd() const
 {
   int iRC = 0;
 
@@ -662,16 +662,16 @@ GslMatrixClass::internalSvd() const
     unsigned int nCols = this->numCols();
     UQ_FATAL_TEST_MACRO(nRows < nCols,
                         m_env.worldRank(),
-                        "GslMatrixClass::internalSvd()",
+                        "GslMatrix::internalSvd()",
                         "GSL only supports cases where nRows >= nCols");
 
-    m_svdColMap = new MapClass(this->numCols(),0,this->map().Comm()); // see 'VectorSpaceClass<.,.>::newMap()' in src/basic/src/GslVectorSpace.C
-    m_svdUmat   = new GslMatrixClass(*this); // Yes, 'this'
-    m_svdSvec   = new GslVectorClass(m_env,*m_svdColMap);
-    m_svdVmat   = new GslMatrixClass(*m_svdSvec);
-    m_svdVTmat  = new GslMatrixClass(*m_svdSvec);
+    m_svdColMap = new Map(this->numCols(),0,this->map().Comm()); // see 'VectorSpace<.,.>::newMap()' in src/basic/src/GslVectorSpace.C
+    m_svdUmat   = new GslMatrix(*this); // Yes, 'this'
+    m_svdSvec   = new GslVector(m_env,*m_svdColMap);
+    m_svdVmat   = new GslMatrix(*m_svdSvec);
+    m_svdVTmat  = new GslMatrix(*m_svdSvec);
     
-    //std::cout << "In GslMatrixClass::internalSvd()"
+    //std::cout << "In GslMatrix::internalSvd()"
     //          << ", calling gsl_linalg_SV_decomp_jacobi()..."
     //          << ": nRows = " << nRows
     //          << ", nCols = " << nCols
@@ -683,11 +683,11 @@ GslMatrixClass::internalSvd() const
 #if 1
     iRC = gsl_linalg_SV_decomp_jacobi(m_svdUmat->data(), m_svdVmat->data(), m_svdSvec->data());
 #else
-    GslVectorClass vecWork(*m_svdSvec );
+    GslVector vecWork(*m_svdSvec );
     iRC = gsl_linalg_SV_decomp(m_svdUmat->data(), m_svdVmat->data(), m_svdSvec->data(), vecWork.data());
 #endif
     if (iRC != 0) {
-      std::cerr << "In GslMatrixClass::internalSvd()"
+      std::cerr << "In GslMatrix::internalSvd()"
                 << ": iRC = " << iRC
                 << ", gsl error message = " << gsl_strerror(iRC)
                 << std::endl;
@@ -696,14 +696,14 @@ GslMatrixClass::internalSvd() const
 
     struct timeval timevalNow;
     gettimeofday(&timevalNow, NULL);
-    //std::cout << "In GslMatrixClass::internalSvd()"
+    //std::cout << "In GslMatrix::internalSvd()"
     //          << ": returned from gsl_linalg_SV_decomp_jacobi() with iRC = " << iRC
     //          << " after " << timevalNow.tv_sec - timevalBegin.tv_sec
     //          << " seconds"
     //          << std::endl;
     UQ_RC_MACRO(iRC, // Yes, *not* a fatal check on RC
                 m_env.worldRank(),
-                "GslMatrixClass::internalSvd()",
+                "GslMatrix::internalSvd()",
                 "matrix svd failed",
                 UQ_MATRIX_SVD_FAILED_RC);
     *m_svdVTmat = m_svdVmat->transpose();
@@ -715,14 +715,14 @@ GslMatrixClass::internalSvd() const
 
 
 void
-GslMatrixClass::zeroLower(bool includeDiagonal)
+GslMatrix::zeroLower(bool includeDiagonal)
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
   UQ_FATAL_TEST_MACRO((nRows != nCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::zeroLower()",
+                      "GslMatrix::zeroLower()",
                       "routine works only for square matrices");
 
   this->resetLU();
@@ -746,14 +746,14 @@ GslMatrixClass::zeroLower(bool includeDiagonal)
 }
 
 void
-GslMatrixClass::zeroUpper(bool includeDiagonal)
+GslMatrix::zeroUpper(bool includeDiagonal)
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
   UQ_FATAL_TEST_MACRO((nRows != nCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::zeroUpper()",
+                      "GslMatrix::zeroUpper()",
                       "routine works only for square matrices");
 
   this->resetLU();
@@ -777,7 +777,7 @@ GslMatrixClass::zeroUpper(bool includeDiagonal)
 }
 
 void
-GslMatrixClass::filterSmallValues(double thresholdValue)
+GslMatrix::filterSmallValues(double thresholdValue)
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
@@ -800,7 +800,7 @@ GslMatrixClass::filterSmallValues(double thresholdValue)
 }
 
 void
-GslMatrixClass::filterLargeValues(double thresholdValue)
+GslMatrix::filterLargeValues(double thresholdValue)
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
@@ -822,18 +822,18 @@ GslMatrixClass::filterLargeValues(double thresholdValue)
   return;
 }
 
-GslMatrixClass
-GslMatrixClass::transpose() const
+GslMatrix
+GslMatrix::transpose() const
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
   UQ_FATAL_TEST_MACRO((nRows != nCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::transpose()",
+                      "GslMatrix::transpose()",
                       "routine works only for square matrices");
 
-  GslMatrixClass mat(m_env,m_map,nCols);
+  GslMatrix mat(m_env,m_map,nCols);
   for (unsigned int row = 0; row < nRows; ++row) {
     for (unsigned int col = 0; col < nCols; ++col) {
       mat(row,col) = (*this)(col,row);
@@ -843,22 +843,22 @@ GslMatrixClass::transpose() const
   return mat;
 }
 
-GslMatrixClass
-GslMatrixClass::inverse() const
+GslMatrix
+GslMatrix::inverse() const
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
 
   UQ_FATAL_TEST_MACRO((nRows != nCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::inverse()",
+                      "GslMatrix::inverse()",
                       "matrix is not square");
 
   if (m_inverse == NULL) {
-    m_inverse = new GslMatrixClass(m_env,m_map,nCols);
-    GslVectorClass unitVector(m_env,m_map);
+    m_inverse = new GslMatrix(m_env,m_map,nCols);
+    GslVector unitVector(m_env,m_map);
     unitVector.cwSet(0.);
-    GslVectorClass multVector(m_env,m_map);
+    GslVector multVector(m_env,m_map);
     for (unsigned int j = 0; j < nCols; ++j) {
       if (j > 0) unitVector[j-1] = 0.;
       unitVector[j] = 1.;
@@ -869,13 +869,13 @@ GslMatrixClass::inverse() const
     }
   }
   if (m_env.checkingLevel() >= 1) {
-    *m_env.subDisplayFile() << "CHECKING In GslMatrixClass::inverse()"
+    *m_env.subDisplayFile() << "CHECKING In GslMatrix::inverse()"
                             << ": M.lnDet = "      << this->lnDeterminant()
                             << ", M^{-1}.lnDet = " << m_inverse->lnDeterminant()
                             << std::endl;
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "In GslMatrixClass::inverse():"
+    *m_env.subDisplayFile() << "In GslMatrix::inverse():"
                             << "\n M = "        << *this
                             << "\n M^{-1} = "   << *m_inverse
                             << "\n M*M^{-1} = " << (*this)*(*m_inverse)
@@ -887,10 +887,10 @@ GslMatrixClass::inverse() const
 }
 
 void
-GslMatrixClass::fillWithBlocksDiagonally(
+GslMatrix::fillWithBlocksDiagonally(
   unsigned int                                 initialTargetRowId,
   unsigned int                                 initialTargetColId,
-  const std::vector<const GslMatrixClass* >& matrices,
+  const std::vector<const GslMatrix* >& matrices,
   bool                                         checkForExactNumRowsMatching,
   bool                                         checkForExactNumColsMatching)
 {
@@ -902,19 +902,19 @@ GslMatrixClass::fillWithBlocksDiagonally(
   }
   UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + sumNumRowsLocals),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksDiagonally(const)",
+                      "GslMatrix::fillWithBlocksDiagonally(const)",
                       "too big number of rows");
   UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + sumNumRowsLocals)),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksDiagonally(const)",
+                      "GslMatrix::fillWithBlocksDiagonally(const)",
                       "inconsistent number of rows");
   UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + sumNumCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksDiagonally(const)",
+                      "GslMatrix::fillWithBlocksDiagonally(const)",
                       "too big number of cols");
   UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + sumNumCols)),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksDiagonally(const)",
+                      "GslMatrix::fillWithBlocksDiagonally(const)",
                       "inconsistent number of cols");
 
   unsigned int cumulativeRowId = 0;
@@ -935,10 +935,10 @@ GslMatrixClass::fillWithBlocksDiagonally(
 }
 
 void
-GslMatrixClass::fillWithBlocksDiagonally(
+GslMatrix::fillWithBlocksDiagonally(
   unsigned int                           initialTargetRowId,
   unsigned int                           initialTargetColId,
-  const std::vector<GslMatrixClass* >& matrices,
+  const std::vector<GslMatrix* >& matrices,
   bool                                   checkForExactNumRowsMatching,
   bool                                   checkForExactNumColsMatching)
 {
@@ -950,19 +950,19 @@ GslMatrixClass::fillWithBlocksDiagonally(
   }
   UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + sumNumRowsLocals),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksDiagonally()",
+                      "GslMatrix::fillWithBlocksDiagonally()",
                       "too big number of rows");
   UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + sumNumRowsLocals)),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksDiagonally()",
+                      "GslMatrix::fillWithBlocksDiagonally()",
                       "inconsistent number of rows");
   UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + sumNumCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksDiagonally()",
+                      "GslMatrix::fillWithBlocksDiagonally()",
                       "too big number of cols");
   UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + sumNumCols)),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksDiagonally()",
+                      "GslMatrix::fillWithBlocksDiagonally()",
                       "inconsistent number of cols");
 
   unsigned int cumulativeRowId = 0;
@@ -983,10 +983,10 @@ GslMatrixClass::fillWithBlocksDiagonally(
 }
 
 void
-GslMatrixClass::fillWithBlocksHorizontally(
+GslMatrix::fillWithBlocksHorizontally(
   unsigned int                                 initialTargetRowId,
   unsigned int                                 initialTargetColId,
-  const std::vector<const GslMatrixClass* >& matrices,
+  const std::vector<const GslMatrix* >& matrices,
   bool                                         checkForExactNumRowsMatching,
   bool                                         checkForExactNumColsMatching)
 {
@@ -994,21 +994,21 @@ GslMatrixClass::fillWithBlocksHorizontally(
   for (unsigned int i = 0; i < matrices.size(); ++i) {
     UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + matrices[i]->numRowsLocal()),
                         m_env.worldRank(),
-                        "GslMatrixClass::fillWithBlocksHorizontally(const)",
+                        "GslMatrix::fillWithBlocksHorizontally(const)",
                         "too big number of rows");
     UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + matrices[i]->numRowsLocal())),
                         m_env.worldRank(),
-                        "GslMatrixClass::fillWithBlocksHorizontally(const)",
+                        "GslMatrix::fillWithBlocksHorizontally(const)",
                         "inconsistent number of rows");
     sumNumCols += matrices[i]->numCols();
   }
   UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + sumNumCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksHorizontally(const)",
+                      "GslMatrix::fillWithBlocksHorizontally(const)",
                       "too big number of cols");
   UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + sumNumCols)),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksHorizontally(const)",
+                      "GslMatrix::fillWithBlocksHorizontally(const)",
                       "inconsistent number of cols");
 
   unsigned int cumulativeColId = 0;
@@ -1027,10 +1027,10 @@ GslMatrixClass::fillWithBlocksHorizontally(
 }
 
 void
-GslMatrixClass::fillWithBlocksHorizontally(
+GslMatrix::fillWithBlocksHorizontally(
   unsigned int                           initialTargetRowId,
   unsigned int                           initialTargetColId,
-  const std::vector<GslMatrixClass* >& matrices,
+  const std::vector<GslMatrix* >& matrices,
   bool                                   checkForExactNumRowsMatching,
   bool                                   checkForExactNumColsMatching)
 {
@@ -1038,21 +1038,21 @@ GslMatrixClass::fillWithBlocksHorizontally(
   for (unsigned int i = 0; i < matrices.size(); ++i) {
     UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + matrices[i]->numRowsLocal()),
                         m_env.worldRank(),
-                        "GslMatrixClass::fillWithBlocksHorizontally()",
+                        "GslMatrix::fillWithBlocksHorizontally()",
                         "too big number of rows");
     UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + matrices[i]->numRowsLocal())),
                         m_env.worldRank(),
-                        "GslMatrixClass::fillWithBlocksHorizontally()",
+                        "GslMatrix::fillWithBlocksHorizontally()",
                         "inconsistent number of rows");
     sumNumCols += matrices[i]->numCols();
   }
   UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + sumNumCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksHorizontally()",
+                      "GslMatrix::fillWithBlocksHorizontally()",
                       "too big number of cols");
   UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + sumNumCols)),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksHorizontally()",
+                      "GslMatrix::fillWithBlocksHorizontally()",
                       "inconsistent number of cols");
 
   unsigned int cumulativeColId = 0;
@@ -1071,10 +1071,10 @@ GslMatrixClass::fillWithBlocksHorizontally(
 }
 
 void
-GslMatrixClass::fillWithBlocksVertically( // checar
+GslMatrix::fillWithBlocksVertically( // checar
   unsigned int                                 initialTargetRowId,
   unsigned int                                 initialTargetColId,
-  const std::vector<const GslMatrixClass* >& matrices,
+  const std::vector<const GslMatrix* >& matrices,
   bool                                         checkForExactNumRowsMatching,
   bool                                         checkForExactNumColsMatching)
 {
@@ -1082,21 +1082,21 @@ GslMatrixClass::fillWithBlocksVertically( // checar
   for (unsigned int i = 0; i < matrices.size(); ++i) {
     UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + matrices[i]->numCols()),
                         m_env.worldRank(),
-                        "GslMatrixClass::fillWithBlocksVertically(const)",
+                        "GslMatrix::fillWithBlocksVertically(const)",
                         "too big number of cols");
     UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + matrices[i]->numCols())),
                         m_env.worldRank(),
-                        "GslMatrixClass::fillWithBlocksVertically(const)",
+                        "GslMatrix::fillWithBlocksVertically(const)",
                         "inconsistent number of cols");
     sumNumRows += matrices[i]->numRowsLocal();
   }
   UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + sumNumRows),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksVertically(const)",
+                      "GslMatrix::fillWithBlocksVertically(const)",
                       "too big number of rows");
   UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + sumNumRows)),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksVertically(const)",
+                      "GslMatrix::fillWithBlocksVertically(const)",
                       "inconsistent number of rows");
 
   unsigned int cumulativeRowId = 0;
@@ -1115,10 +1115,10 @@ GslMatrixClass::fillWithBlocksVertically( // checar
 }
 
 void
-GslMatrixClass::fillWithBlocksVertically( // checar
+GslMatrix::fillWithBlocksVertically( // checar
   unsigned int                           initialTargetRowId,
   unsigned int                           initialTargetColId,
-  const std::vector<GslMatrixClass* >& matrices,
+  const std::vector<GslMatrix* >& matrices,
   bool                                   checkForExactNumRowsMatching,
   bool                                   checkForExactNumColsMatching)
 {
@@ -1126,21 +1126,21 @@ GslMatrixClass::fillWithBlocksVertically( // checar
   for (unsigned int i = 0; i < matrices.size(); ++i) {
     UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + matrices[i]->numCols()),
                         m_env.worldRank(),
-                        "GslMatrixClass::fillWithBlocksVertically()",
+                        "GslMatrix::fillWithBlocksVertically()",
                         "too big number of cols");
     UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + matrices[i]->numCols())),
                         m_env.worldRank(),
-                        "GslMatrixClass::fillWithBlocksVertically()",
+                        "GslMatrix::fillWithBlocksVertically()",
                         "inconsistent number of cols");
     sumNumRows += matrices[i]->numRowsLocal();
   }
   UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + sumNumRows),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksVertically()",
+                      "GslMatrix::fillWithBlocksVertically()",
                       "too big number of rows");
   UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + sumNumRows)),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithBlocksVertically()",
+                      "GslMatrix::fillWithBlocksVertically()",
                       "inconsistent number of rows");
 
   unsigned int cumulativeRowId = 0;
@@ -1159,29 +1159,29 @@ GslMatrixClass::fillWithBlocksVertically( // checar
 }
 
 void
-GslMatrixClass::fillWithTensorProduct(
+GslMatrix::fillWithTensorProduct(
   unsigned int            initialTargetRowId,
   unsigned int            initialTargetColId,
-  const GslMatrixClass& mat1,
-  const GslMatrixClass& mat2,
+  const GslMatrix& mat1,
+  const GslMatrix& mat2,
   bool                    checkForExactNumRowsMatching,
   bool                    checkForExactNumColsMatching)
 {
   UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + (mat1.numRowsLocal() * mat2.numRowsLocal())),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillTensorProduct(mat and mat)",
+                      "GslMatrix::fillTensorProduct(mat and mat)",
                       "too big number of rows");
   UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + (mat1.numRowsLocal() * mat2.numRowsLocal()))),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillTensorProduct(mat and mat)",
+                      "GslMatrix::fillTensorProduct(mat and mat)",
                       "inconsistent number of rows");
   UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + (mat1.numCols() * mat2.numCols())),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillTensorProduct(mat and mat)",
+                      "GslMatrix::fillTensorProduct(mat and mat)",
                       "too big number of columns");
   UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + (mat1.numCols() * mat2.numCols()))),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillTensorProduct(mat and mat)",
+                      "GslMatrix::fillTensorProduct(mat and mat)",
                       "inconsistent number of columns");
 
   for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
@@ -1201,29 +1201,29 @@ GslMatrixClass::fillWithTensorProduct(
 }
 
 void
-GslMatrixClass::fillWithTensorProduct(
+GslMatrix::fillWithTensorProduct(
   unsigned int            initialTargetRowId,
   unsigned int            initialTargetColId,
-  const GslMatrixClass& mat1,
-  const GslVectorClass& vec2,
+  const GslMatrix& mat1,
+  const GslVector& vec2,
   bool                    checkForExactNumRowsMatching,
   bool                    checkForExactNumColsMatching)
 {
   UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + (mat1.numRowsLocal() * vec2.sizeLocal())),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillTensorProduct(mat and vec)",
+                      "GslMatrix::fillTensorProduct(mat and vec)",
                       "too big number of rows");
   UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + (mat1.numRowsLocal() * vec2.sizeLocal()))),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillTensorProduct(mat and vec)",
+                      "GslMatrix::fillTensorProduct(mat and vec)",
                       "inconsistent number of rows");
   UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + (mat1.numCols() * 1)),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillTensorProduct(mat and vec)",
+                      "GslMatrix::fillTensorProduct(mat and vec)",
                       "too big number of columns");
   UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + (mat1.numCols() * 1))),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillTensorProduct(mat and vec)",
+                      "GslMatrix::fillTensorProduct(mat and vec)",
                       "inconsistent number of columns");
 
   for (unsigned int rowId1 = 0; rowId1 < mat1.numRowsLocal(); ++rowId1) {
@@ -1244,10 +1244,10 @@ GslMatrixClass::fillWithTensorProduct(
 }
 
 void
-GslMatrixClass::fillWithTranspose(
+GslMatrix::fillWithTranspose(
   unsigned int            initialTargetRowId,
   unsigned int            initialTargetColId,
-  const GslMatrixClass& mat,
+  const GslMatrix& mat,
   bool                    checkForExactNumRowsMatching,
   bool                    checkForExactNumColsMatching)
 {
@@ -1255,19 +1255,19 @@ GslMatrixClass::fillWithTranspose(
   unsigned int nCols = mat.numCols();
   UQ_FATAL_TEST_MACRO(this->numRowsLocal() < (initialTargetRowId + nCols),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithTranspose()",
+                      "GslMatrix::fillWithTranspose()",
                       "too big number of rows");
   UQ_FATAL_TEST_MACRO(checkForExactNumRowsMatching && (this->numRowsLocal() != (initialTargetRowId + nCols)),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithTranspose()",
+                      "GslMatrix::fillWithTranspose()",
                       "inconsistent number of rows");
   UQ_FATAL_TEST_MACRO(this->numCols() < (initialTargetColId + nRows),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithTranspose()",
+                      "GslMatrix::fillWithTranspose()",
                       "too big number of cols");
   UQ_FATAL_TEST_MACRO(checkForExactNumColsMatching && (this->numCols() != (initialTargetColId + nRows)),
                       m_env.worldRank(),
-                      "GslMatrixClass::fillWithTranspose()",
+                      "GslMatrix::fillWithTranspose()",
                       "inconsistent number of cols");
 
   for (unsigned int row = 0; row < nRows; ++row) {
@@ -1280,38 +1280,38 @@ GslMatrixClass::fillWithTranspose(
 }
 
 double
-GslMatrixClass::determinant() const
+GslMatrix::determinant() const
 {
   if (m_determinant == -INFINITY) {
     if (m_LU == NULL) {
-      GslVectorClass tmpB(m_env,m_map);
-      GslVectorClass tmpX(m_env,m_map);
+      GslVector tmpB(m_env,m_map);
+      GslVector tmpX(m_env,m_map);
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-        *m_env.subDisplayFile() << "In GslMatrixClass::determinant()"
+        *m_env.subDisplayFile() << "In GslMatrix::determinant()"
                                 << ": before 'this->invertMultiply()'"
                                 << std::endl;
       }
       this->invertMultiply(tmpB,tmpX);
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-        *m_env.subDisplayFile() << "In GslMatrixClass::determinant()"
+        *m_env.subDisplayFile() << "In GslMatrix::determinant()"
                                 << ": after 'this->invertMultiply()'"
                                 << std::endl;
       }
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In GslMatrixClass::determinant()"
+      *m_env.subDisplayFile() << "In GslMatrix::determinant()"
                               << ": before 'gsl_linalg_LU_det()'"
                               << std::endl;
     }
     m_determinant   = gsl_linalg_LU_det(m_LU,m_signum); 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In GslMatrixClass::determinant()"
+      *m_env.subDisplayFile() << "In GslMatrix::determinant()"
                               << ": after 'gsl_linalg_LU_det()'"
                               << std::endl;
     }
     m_lnDeterminant = gsl_linalg_LU_lndet(m_LU);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In GslMatrixClass::determinant()"
+      *m_env.subDisplayFile() << "In GslMatrix::determinant()"
                               << ": after 'gsl_linalg_LU_lndet()'"
                               << std::endl;
     }
@@ -1321,38 +1321,38 @@ GslMatrixClass::determinant() const
 }
 
 double
-GslMatrixClass::lnDeterminant() const
+GslMatrix::lnDeterminant() const
 {
   if (m_lnDeterminant == -INFINITY) {
     if (m_LU == NULL) {
-      GslVectorClass tmpB(m_env,m_map);
-      GslVectorClass tmpX(m_env,m_map);
+      GslVector tmpB(m_env,m_map);
+      GslVector tmpX(m_env,m_map);
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-        *m_env.subDisplayFile() << "In GslMatrixClass::lnDeterminant()"
+        *m_env.subDisplayFile() << "In GslMatrix::lnDeterminant()"
                                 << ": before 'this->invertMultiply()'"
                                 << std::endl;
       }
       this->invertMultiply(tmpB,tmpX);
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-        *m_env.subDisplayFile() << "In GslMatrixClass::lnDeterminant()"
+        *m_env.subDisplayFile() << "In GslMatrix::lnDeterminant()"
                                 << ": after 'this->invertMultiply()'"
                                 << std::endl;
       }
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In GslMatrixClass::lnDeterminant()"
+      *m_env.subDisplayFile() << "In GslMatrix::lnDeterminant()"
                               << ": before 'gsl_linalg_LU_det()'"
                               << std::endl;
     }
     m_determinant   = gsl_linalg_LU_det(m_LU,m_signum); 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In GslMatrixClass::lnDeterminant()"
+      *m_env.subDisplayFile() << "In GslMatrix::lnDeterminant()"
                               << ": after 'gsl_linalg_LU_det()'"
                               << std::endl;
     }
     m_lnDeterminant = gsl_linalg_LU_lndet(m_LU);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In GslMatrixClass::lnDeterminant()"
+      *m_env.subDisplayFile() << "In GslMatrix::lnDeterminant()"
                               << ": before 'gsl_linalg_LU_lndet()'"
                               << std::endl;
     }
@@ -1362,13 +1362,13 @@ GslMatrixClass::lnDeterminant() const
 }
 
 unsigned int
-GslMatrixClass::rank(double absoluteZeroThreshold, double relativeZeroThreshold) const
+GslMatrix::rank(double absoluteZeroThreshold, double relativeZeroThreshold) const
 {
   int iRC = 0;
   iRC = internalSvd();
   if (iRC) {}; // just to remove compiler warning
 
-  GslVectorClass relativeVec(*m_svdSvec);
+  GslVector relativeVec(*m_svdSvec);
   if (relativeVec[0] > 0.) {
     relativeVec = (1./relativeVec[0])*relativeVec;
   }
@@ -1382,7 +1382,7 @@ GslMatrixClass::rank(double absoluteZeroThreshold, double relativeZeroThreshold)
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GslMatrixClass::rank()"
+    *m_env.subDisplayFile() << "In GslMatrix::rank()"
                             << ": this->numRowsLocal() = "  << this->numRowsLocal()
                             << ", this->numCols() = "       << this->numCols()
                             << ", absoluteZeroThreshold = " << absoluteZeroThreshold
@@ -1396,34 +1396,34 @@ GslMatrixClass::rank(double absoluteZeroThreshold, double relativeZeroThreshold)
   return rankValue;
 }
 
-GslVectorClass
-GslMatrixClass::multiply(
-  const GslVectorClass& x) const
+GslVector
+GslMatrix::multiply(
+  const GslVector& x) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != x.sizeLocal()),
                       m_env.worldRank(),
-                      "GslMatrixClass::multiply(), return vector",
+                      "GslMatrix::multiply(), return vector",
                       "matrix and vector have incompatible sizes");
 
-  GslVectorClass y(m_env,m_map);
+  GslVector y(m_env,m_map);
   this->multiply(x,y);
 
   return y;
 }
 
 void
-GslMatrixClass::multiply(
-  const GslVectorClass& x,
-        GslVectorClass& y) const
+GslMatrix::multiply(
+  const GslVector& x,
+        GslVector& y) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != x.sizeLocal()),
                       m_env.worldRank(),
-                      "GslMatrixClass::multiply(), vector return void",
+                      "GslMatrix::multiply(), vector return void",
                       "matrix and x have incompatible sizes");
 
   UQ_FATAL_TEST_MACRO((this->numRowsLocal() != y.sizeLocal()),
                       m_env.worldRank(),
-                      "GslMatrixClass::multiply(), vector return void",
+                      "GslMatrix::multiply(), vector return void",
                       "matrix and y have incompatible sizes");
 
   unsigned int sizeX = this->numCols();
@@ -1439,63 +1439,63 @@ GslMatrixClass::multiply(
   return;
 }
 
-GslVectorClass
-GslMatrixClass::invertMultiply(
-  const GslVectorClass& b) const
+GslVector
+GslMatrix::invertMultiply(
+  const GslVector& b) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
                       m_env.worldRank(),
-                      "GslMatrixClass::invertMultiply(), return vector",
+                      "GslMatrix::invertMultiply(), return vector",
                       "matrix and rhs have incompatible sizes");
 
-  GslVectorClass x(m_env,m_map);
+  GslVector x(m_env,m_map);
   this->invertMultiply(b,x);
 
   return x;
 }
 
 void
-GslMatrixClass::invertMultiply(
-  const GslVectorClass& b,
-        GslVectorClass& x) const
+GslMatrix::invertMultiply(
+  const GslVector& b,
+        GslVector& x) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
                       m_env.worldRank(),
-                      "GslMatrixClass::invertMultiply(), return void",
+                      "GslMatrix::invertMultiply(), return void",
                       "matrix and rhs have incompatible sizes");
 
   UQ_FATAL_TEST_MACRO((x.sizeLocal() != b.sizeLocal()),
                       m_env.worldRank(),
-                      "GslMatrixClass::invertMultiply(), return void",
+                      "GslMatrix::invertMultiply(), return void",
                       "solution and rhs have incompatible sizes");
 
   int iRC;
   if (m_LU == NULL) {
     UQ_FATAL_TEST_MACRO((m_permutation != NULL),
                         m_env.worldRank(),
-                        "GslMatrixClass::invertMultiply()",
+                        "GslMatrix::invertMultiply()",
                         "m_permutation should be NULL");
 
     m_LU = gsl_matrix_calloc(this->numRowsLocal(),this->numCols());
     UQ_FATAL_TEST_MACRO((m_LU == NULL),
                         m_env.worldRank(),
-                        "GslMatrixClass::invertMultiply()",
+                        "GslMatrix::invertMultiply()",
                         "gsl_matrix_calloc() failed");
 
     iRC = gsl_matrix_memcpy(m_LU, m_mat);
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.worldRank(),
-                      "GslMatrixClass::invertMultiply()",
+                      "GslMatrix::invertMultiply()",
                       "gsl_matrix_memcpy() failed");
 
     m_permutation = gsl_permutation_calloc(numCols());
     UQ_FATAL_TEST_MACRO((m_permutation == NULL),
                         m_env.worldRank(),
-                        "GslMatrixClass::invertMultiply()",
+                        "GslMatrix::invertMultiply()",
                         "gsl_permutation_calloc() failed");
 
     if (m_inDebugMode) {
-      std::cout << "In GslMatrixClass::invertMultiply()"
+      std::cout << "In GslMatrix::invertMultiply()"
                 << ": before LU decomposition, m_LU = ";
       gsl_matrix_fprintf(stdout, m_LU, "%f");
       std::cout << std::endl;
@@ -1504,13 +1504,13 @@ GslMatrixClass::invertMultiply(
     gsl_error_handler_t* oldHandler;
     oldHandler = gsl_set_error_handler_off();
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In GslMatrixClass::invertMultiply()"
+      *m_env.subDisplayFile() << "In GslMatrix::invertMultiply()"
                               << ": before 'gsl_linalg_LU_decomp()'"
                               << std::endl;
     }
     iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&m_signum); 
     if (iRC != 0) {
-      std::cerr << "In GslMatrixClass::invertMultiply()"
+      std::cerr << "In GslMatrix::invertMultiply()"
                 << ", after gsl_linalg_LU_decomp()"
                 << ": iRC = " << iRC
                 << ", gsl error message = " << gsl_strerror(iRC)
@@ -1518,18 +1518,18 @@ GslMatrixClass::invertMultiply(
     } 
     gsl_set_error_handler(oldHandler);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In GslMatrixClass::invertMultiply()"
+      *m_env.subDisplayFile() << "In GslMatrix::invertMultiply()"
                               << ": after 'gsl_linalg_LU_decomp()'"
                               << ", IRC = " << iRC
                               << std::endl;
     }
     UQ_FATAL_RC_MACRO(iRC,
                       m_env.worldRank(),
-                      "GslMatrixClass::invertMultiply()",
+                      "GslMatrix::invertMultiply()",
                       "gsl_linalg_LU_decomp() failed");
 
     if (m_inDebugMode) {
-      std::cout << "In GslMatrixClass::invertMultiply()"
+      std::cout << "In GslMatrix::invertMultiply()"
                 << ": after LU decomposition, m_LU = ";
       gsl_matrix_fprintf(stdout, m_LU, "%f");
       std::cout << std::endl;
@@ -1539,14 +1539,14 @@ GslMatrixClass::invertMultiply(
   gsl_error_handler_t* oldHandler;
   oldHandler = gsl_set_error_handler_off();
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In GslMatrixClass::invertMultiply()"
+    *m_env.subDisplayFile() << "In GslMatrix::invertMultiply()"
                             << ": before 'gsl_linalg_LU_solve()'"
                             << std::endl;
   }
   iRC = gsl_linalg_LU_solve(m_LU,m_permutation,b.data(),x.data()); 
   if (iRC != 0) {
     m_isSingular = true;
-    std::cerr << "In GslMatrixClass::invertMultiply()"
+    std::cerr << "In GslMatrix::invertMultiply()"
               << ", after gsl_linalg_LU_solve()"
               << ": iRC = " << iRC
               << ", gsl error message = " << gsl_strerror(iRC)
@@ -1554,7 +1554,7 @@ GslMatrixClass::invertMultiply(
   } 
   gsl_set_error_handler(oldHandler);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In GslMatrixClass::invertMultiply()"
+    *m_env.subDisplayFile() << "In GslMatrix::invertMultiply()"
                             << ": after 'gsl_linalg_LU_solve()'"
                             << ", IRC = " << iRC
                             << std::endl;
@@ -1562,12 +1562,12 @@ GslMatrixClass::invertMultiply(
   // prudenci, 2012-09-26: commented the 'UQ_FATAL_RC_MACRO' below
   //UQ_FATAL_RC_MACRO(iRC,
   //                  m_env.worldRank(),
-  //                  "GslMatrixClass::invertMultiply()",
+  //                  "GslMatrix::invertMultiply()",
   //                  "gsl_linalg_LU_solve() failed");
 
   if (m_inDebugMode) {
-    GslVectorClass tmpVec(b - (*this)*x);
-    std::cout << "In GslMatrixClass::invertMultiply()"
+    GslVector tmpVec(b - (*this)*x);
+    std::cout << "In GslMatrix::invertMultiply()"
               << ": ||b - Ax||_2 = "         << tmpVec.norm2()
               << ": ||b - Ax||_2/||b||_2 = " << tmpVec.norm2()/b.norm2()
               << std::endl;
@@ -1576,35 +1576,35 @@ GslMatrixClass::invertMultiply(
   return;
 }
 
-GslMatrixClass
-GslMatrixClass::invertMultiply(const GslMatrixClass& B) const
+GslMatrix
+GslMatrix::invertMultiply(const GslMatrix& B) const
 {
-  GslMatrixClass X(m_env,m_map,B.numCols());
+  GslMatrix X(m_env,m_map,B.numCols());
   this->invertMultiply(B,X);
 
   return X;
 }
 
 void              
-GslMatrixClass::invertMultiply(const GslMatrixClass& B, GslMatrixClass& X) const
+GslMatrix::invertMultiply(const GslMatrix& B, GslMatrix& X) const
 {
   
   // Sanity Checks
   UQ_FATAL_RC_MACRO(((B.numRowsLocal() != X.numRowsLocal()) ||
 		     (B.numCols()      != X.numCols()     )),
                     m_env.worldRank(),
-		    "GslMatrixClass::invertMultiply()",
+		    "GslMatrix::invertMultiply()",
 		    "Matrices B and X are incompatible");
 
   
   UQ_FATAL_RC_MACRO((this->numRowsLocal() != X.numRowsLocal()),
                     m_env.worldRank(),
-		    "GslMatrixClass::invertMultiply()",
+		    "GslMatrix::invertMultiply()",
 		    "This and X matrices are incompatible");
 
   // Some local variables used within the loop.
-  GslVectorClass b(m_env, m_map);
-  GslVectorClass x(m_env, m_map);
+  GslVector b(m_env, m_map);
+  GslVector x(m_env, m_map);
 
   for( unsigned int j = 0; j < B.numCols(); ++j )
     {
@@ -1620,34 +1620,34 @@ GslMatrixClass::invertMultiply(const GslMatrixClass& B, GslMatrixClass& X) const
   return;
 }
 
-GslVectorClass
-GslMatrixClass::invertMultiplyForceLU(
-  const GslVectorClass& b) const
+GslVector
+GslMatrix::invertMultiplyForceLU(
+  const GslVector& b) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
                       m_env.worldRank(),
-                      "GslMatrixClass::invertMultiply(), return vector",
+                      "GslMatrix::invertMultiply(), return vector",
                       "matrix and rhs have incompatible sizes");
 
-  GslVectorClass x(m_env,m_map);
+  GslVector x(m_env,m_map);
   this->invertMultiplyForceLU(b,x);
 
   return x;
 }
 
 void
-GslMatrixClass::invertMultiplyForceLU(
-  const GslVectorClass& b,
-        GslVectorClass& x) const
+GslMatrix::invertMultiplyForceLU(
+  const GslVector& b,
+        GslVector& x) const
 {
   UQ_FATAL_TEST_MACRO((this->numCols() != b.sizeLocal()),
                       m_env.worldRank(),
-                      "GslMatrixClass::invertMultiplyForceLU(), return void",
+                      "GslMatrix::invertMultiplyForceLU(), return void",
                       "matrix and rhs have incompatible sizes");
 
   UQ_FATAL_TEST_MACRO((x.sizeLocal() != b.sizeLocal()),
                       m_env.worldRank(),
-                      "GslMatrixClass::invertMultiplyForceLU(), return void",
+                      "GslMatrix::invertMultiplyForceLU(), return void",
                       "solution and rhs have incompatible sizes");
 
   int iRC;
@@ -1655,31 +1655,31 @@ GslMatrixClass::invertMultiplyForceLU(
   if ( m_LU == NULL ) {
     UQ_FATAL_TEST_MACRO((m_permutation != NULL),
                         m_env.worldRank(),
-                        "GslMatrixClass::invertMultiplyForceLU()",
+                        "GslMatrix::invertMultiplyForceLU()",
                         "m_permutation should be NULL");
     m_LU = gsl_matrix_calloc(this->numRowsLocal(),this->numCols());
   }
   UQ_FATAL_TEST_MACRO((m_LU == NULL),
 		      m_env.worldRank(),
-		      "GslMatrixClass::invertMultiplyForceLU()",
+		      "GslMatrix::invertMultiplyForceLU()",
 		      "gsl_matrix_calloc() failed");
   
   iRC = gsl_matrix_memcpy(m_LU, m_mat);
   UQ_FATAL_RC_MACRO(iRC,
 		    m_env.worldRank(),
-		    "GslMatrixClass::invertMultiplyForceLU()",
+		    "GslMatrix::invertMultiplyForceLU()",
 		    "gsl_matrix_memcpy() failed");
   
   if( m_permutation == NULL ) m_permutation = gsl_permutation_calloc(numCols());
   UQ_FATAL_TEST_MACRO((m_permutation == NULL),
 		      m_env.worldRank(),
-		      "GslMatrixClass::invertMultiplyForceLU()",
+		      "GslMatrix::invertMultiplyForceLU()",
 		      "gsl_permutation_calloc() failed");
   
   iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&m_signum); 
   UQ_FATAL_RC_MACRO(iRC,
 		    m_env.worldRank(),
-		    "GslMatrixClass::invertMultiplyForceLU()",
+		    "GslMatrix::invertMultiplyForceLU()",
 		    "gsl_linalg_LU_decomp() failed");
 
   iRC = gsl_linalg_LU_solve(m_LU,m_permutation,b.data(),x.data()); 
@@ -1688,26 +1688,26 @@ GslMatrixClass::invertMultiplyForceLU(
   }
   UQ_FATAL_RC_MACRO(iRC,
                     m_env.worldRank(),
-                    "GslMatrixClass::invertMultiplyForceLU()",
+                    "GslMatrix::invertMultiplyForceLU()",
                     "gsl_linalg_LU_solve() failed");
 
   return;
 }
 
 void
-GslMatrixClass::eigen(GslVectorClass& eigenValues, GslMatrixClass* eigenVectors) const
+GslMatrix::eigen(GslVector& eigenValues, GslMatrix* eigenVectors) const
 {
   unsigned int n = eigenValues.sizeLocal();
 
   UQ_FATAL_TEST_MACRO((n == 0),
                       env().fullRank(),
-                      "GslMatrixClass::eigen()",
+                      "GslMatrix::eigen()",
                       "invalid input vector size");
 
   if (eigenVectors) {
     UQ_FATAL_TEST_MACRO((eigenValues.sizeLocal() != eigenVectors->numRowsLocal()),
                         env().fullRank(),
-                        "GslVectorClass::eigen()",
+                        "GslVector::eigen()",
                         "different input vector sizes");
   }
 
@@ -1727,7 +1727,7 @@ GslMatrixClass::eigen(GslVectorClass& eigenValues, GslMatrixClass* eigenVectors)
 }
 
 void
-GslMatrixClass::largestEigen(double& eigenValue, GslVectorClass& eigenVector) const
+GslMatrix::largestEigen(double& eigenValue, GslVector& eigenVector) const
 {
 
   // Sanity Checks
@@ -1735,7 +1735,7 @@ GslMatrixClass::largestEigen(double& eigenValue, GslVectorClass& eigenVector) co
 
   UQ_FATAL_TEST_MACRO((n == 0),
                       env().fullRank(),
-                      "GslMatrixClass::largestEigen()",
+                      "GslMatrix::largestEigen()",
                       "invalid input vector size");
 
   /* The following notation is used:
@@ -1752,8 +1752,8 @@ GslMatrixClass::largestEigen(double& eigenValue, GslVectorClass& eigenVector) co
   // TODO: We shouldn't have to use these - we ought to be able to work directly
   // TODO: with eigenValue and eigenVector. Optimize this once we have regression
   // TODO: tests.
-  GslVectorClass z(m_env, m_map, 1.0 ); // Needs to be initialized to 1.0
-  GslVectorClass w(m_env, m_map);
+  GslVector z(m_env, m_map, 1.0 ); // Needs to be initialized to 1.0
+  GslVector w(m_env, m_map);
 
   // Some variables we use inside the loop.
   int index;
@@ -1794,7 +1794,7 @@ GslMatrixClass::largestEigen(double& eigenValue, GslVectorClass& eigenVector) co
   // TODO: Just specify the error.
   UQ_FATAL_TEST_MACRO((residual >= tolerance),
                       env().fullRank(),
-                      "GslMatrixClass::largestEigen()",
+                      "GslMatrix::largestEigen()",
                       "Maximum num iterations exceeded");
 
   
@@ -1802,14 +1802,14 @@ GslMatrixClass::largestEigen(double& eigenValue, GslVectorClass& eigenVector) co
 }
 
 void
-GslMatrixClass::smallestEigen(double& eigenValue, GslVectorClass& eigenVector) const
+GslMatrix::smallestEigen(double& eigenValue, GslVector& eigenVector) const
 {
   // Sanity Checks
   unsigned int n = eigenVector.sizeLocal();
 
   UQ_FATAL_TEST_MACRO((n == 0),
                       env().fullRank(),
-                      "GslMatrixClass::smallestEigen()",
+                      "GslMatrix::smallestEigen()",
                       "invalid input vector size");
 
   /* The following notation is used:
@@ -1826,8 +1826,8 @@ GslMatrixClass::smallestEigen(double& eigenValue, GslVectorClass& eigenVector) c
   // TODO: We shouldn't have to use these - we ought to be able to work directly
   // TODO: with eigenValue and eigenVector. Optimize this once we have regression
   // TODO: tests.
-  GslVectorClass z(m_env, m_map, 1.0 ); // Needs to be initialized to 1.0
-  GslVectorClass w(m_env, m_map);
+  GslVector z(m_env, m_map, 1.0 ); // Needs to be initialized to 1.0
+  GslVector w(m_env, m_map);
 
   // Some variables we use inside the loop.
   int index;
@@ -1872,24 +1872,24 @@ GslMatrixClass::smallestEigen(double& eigenValue, GslVectorClass& eigenVector) c
   // TODO: Just specify the error.
   UQ_FATAL_TEST_MACRO((residual >= tolerance),
                       env().fullRank(),
-                      "GslMatrixClass::smallestEigen()",
+                      "GslMatrix::smallestEigen()",
                       "Maximum num iterations exceeded");
 
   return;
 }
 
 void
-GslMatrixClass::getColumn(unsigned int column_num, GslVectorClass& column) const
+GslMatrix::getColumn(unsigned int column_num, GslVector& column) const
 {
   // Sanity checks
   UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
                       env().fullRank(),
-                      "GslMatrixClass::getColumn",
+                      "GslMatrix::getColumn",
                       "Specified row number not within range");
 
   UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
                       env().fullRank(),
-                      "GslMatrixClass::getColumn",
+                      "GslMatrix::getColumn",
                       "column vector not same size as this matrix");
 
   // Temporary working vector
@@ -1898,7 +1898,7 @@ GslMatrixClass::getColumn(unsigned int column_num, GslVectorClass& column) const
   int error_code = gsl_matrix_get_col( gsl_column, m_mat, column_num );
   UQ_FATAL_RC_MACRO( (error_code != 0),
 		     env().fullRank(),
-		     "GslMatrixClass::getColumn()",
+		     "GslMatrix::getColumn()",
 		     "gsl_matrix_get_col failed");
 
   // Copy column from gsl matrix into our GslVector object
@@ -1914,17 +1914,17 @@ GslMatrixClass::getColumn(unsigned int column_num, GslVectorClass& column) const
 }
 
 void
-GslMatrixClass::getRow(unsigned int row_num, GslVectorClass& row) const
+GslMatrix::getRow(unsigned int row_num, GslVector& row) const
 {
   // Sanity checks
   UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
                       env().fullRank(),
-                      "GslMatrixClass::getRow",
+                      "GslMatrix::getRow",
                       "Specified row number not within range");
 
   UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numCols()),
                       env().fullRank(),
-                      "GslMatrixClass::getRow",
+                      "GslMatrix::getRow",
                       "row vector not same size as this matrix");
 
   // Temporary working vector
@@ -1933,7 +1933,7 @@ GslMatrixClass::getRow(unsigned int row_num, GslVectorClass& row) const
   int error_code = gsl_matrix_get_row( gsl_row, m_mat, row_num );
   UQ_FATAL_RC_MACRO( (error_code != 0),
 		     env().fullRank(),
-		     "GslMatrixClass::getRow()",
+		     "GslMatrix::getRow()",
 		     "gsl_matrix_get_row failed");
 
   // Copy row from gsl matrix into our GslVector object
@@ -1948,26 +1948,26 @@ GslMatrixClass::getRow(unsigned int row_num, GslVectorClass& row) const
   return;
 }
 
-GslVectorClass
-GslMatrixClass::getRow(unsigned int row_num ) const
+GslVector
+GslMatrix::getRow(unsigned int row_num ) const
 {
   // We rely on the void getRow's to do sanity checks
   // So we don't do them here.
 
-  GslVectorClass row(m_env, m_map);
+  GslVector row(m_env, m_map);
 
   this->getRow( row_num, row );
   
   return row;
 }
 
-GslVectorClass
-GslMatrixClass::getColumn(unsigned int column_num ) const
+GslVector
+GslMatrix::getColumn(unsigned int column_num ) const
 {
   // We rely on the void getRow's to do sanity checks
   // So we don't do them here.
 
-  GslVectorClass column(m_env, m_map);
+  GslVector column(m_env, m_map);
 
   this->getColumn( column_num, column );
   
@@ -1975,18 +1975,18 @@ GslMatrixClass::getColumn(unsigned int column_num ) const
 }
 
 void
-GslMatrixClass::setRow(unsigned int row_num, const GslVectorClass& row)
+GslMatrix::setRow(unsigned int row_num, const GslVector& row)
 {
   this->resetLU();
   // Sanity checks
   UQ_FATAL_TEST_MACRO(row_num >= this->numRowsLocal(),
                       env().fullRank(),
-                      "GslMatrixClass::setRow",
+                      "GslMatrix::setRow",
                       "Specified row number not within range");
 
   UQ_FATAL_TEST_MACRO((row.sizeLocal() != this->numCols()),
                       env().fullRank(),
-                      "GslMatrixClass::setRow",
+                      "GslMatrix::setRow",
                       "row vector not same size as this matrix");
 
   gsl_vector* gsl_row = row.data();
@@ -1994,25 +1994,25 @@ GslMatrixClass::setRow(unsigned int row_num, const GslVectorClass& row)
   int error_code = gsl_matrix_set_row( m_mat, row_num, gsl_row );
   UQ_FATAL_RC_MACRO( (error_code != 0),
 		     env().fullRank(),
-		     "GslMatrixClass::setRow()",
+		     "GslMatrix::setRow()",
 		     "gsl_matrix_set_row failed");
 
   return;
 }
 
 void
-GslMatrixClass::setColumn(unsigned int column_num, const GslVectorClass& column)
+GslMatrix::setColumn(unsigned int column_num, const GslVector& column)
 {
   this->resetLU();
   // Sanity checks
   UQ_FATAL_TEST_MACRO(column_num >= this->numCols(),
                       env().fullRank(),
-                      "GslMatrixClass::setColumn",
+                      "GslMatrix::setColumn",
                       "Specified column number not within range");
 
   UQ_FATAL_TEST_MACRO((column.sizeLocal() != this->numRowsLocal()),
                       env().fullRank(),
-                      "GslMatrixClass::setColumn",
+                      "GslMatrix::setColumn",
                       "column vector not same size as this matrix");
 
   gsl_vector* gsl_column = column.data();
@@ -2020,20 +2020,20 @@ GslMatrixClass::setColumn(unsigned int column_num, const GslVectorClass& column)
   int error_code = gsl_matrix_set_col( m_mat, column_num, gsl_column );
   UQ_FATAL_RC_MACRO( (error_code != 0),
 		     env().fullRank(),
-		     "GslMatrixClass::setColumn()",
+		     "GslMatrix::setColumn()",
 		     "gsl_matrix_set_col failed");
 
   return;
 }
 
 void
-GslMatrixClass::mpiSum( const MpiCommClass& comm, GslMatrixClass& M_global ) const
+GslMatrix::mpiSum( const MpiComm& comm, GslMatrix& M_global ) const
 {
   // Sanity Checks
   UQ_FATAL_RC_MACRO(((this->numRowsLocal() != M_global.numRowsLocal()) ||
                      (this->numCols()      != M_global.numCols()     )),
 		    env().fullRank(),
-		    "GslMatrixClass::mpiSum()",
+		    "GslMatrix::mpiSum()",
 		    "local and global matrices incompatible");
 
   /* TODO: Probably a better way to handle this unpacking/packing of data */
@@ -2053,7 +2053,7 @@ GslMatrixClass::mpiSum( const MpiCommClass& comm, GslMatrixClass& M_global ) con
     }
 
   comm.Allreduce((void*) &local[0], (void*) &global[0], size, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
-                 "GslMatrixClass::mpiSum()",
+                 "GslMatrix::mpiSum()",
                  "failed MPI.Allreduce()");
 
   for( unsigned int i = 0; i < this->numRowsLocal(); i++ )
@@ -2070,33 +2070,33 @@ GslMatrixClass::mpiSum( const MpiCommClass& comm, GslMatrixClass& M_global ) con
 }
 
 void
-GslMatrixClass::matlabLinearInterpExtrap(
-  const GslVectorClass& x1Vec,
-  const GslMatrixClass& y1Mat,
-  const GslVectorClass& x2Vec)
+GslMatrix::matlabLinearInterpExtrap(
+  const GslVector& x1Vec,
+  const GslMatrix& y1Mat,
+  const GslVector& x2Vec)
 {
   UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() <= 1,
                       m_env.worldRank(),
-                      "GslMatrixClass::matlabLinearInterpExtrap()",
+                      "GslMatrix::matlabLinearInterpExtrap()",
                       "invalid 'x1' size");
 
   UQ_FATAL_TEST_MACRO(x1Vec.sizeLocal() != y1Mat.numRowsLocal(),
                       m_env.worldRank(),
-                      "GslMatrixClass::matlabLinearInterpExtrap()",
+                      "GslMatrix::matlabLinearInterpExtrap()",
                       "invalid 'x1' and 'y1' sizes");
 
   UQ_FATAL_TEST_MACRO(x2Vec.sizeLocal() != this->numRowsLocal(),
                       m_env.worldRank(),
-                      "GslMatrixClass::matlabLinearInterpExtrap()",
+                      "GslMatrix::matlabLinearInterpExtrap()",
                       "invalid 'x2' and 'this' sizes");
 
   UQ_FATAL_TEST_MACRO(y1Mat.numCols() != this->numCols(),
                       m_env.worldRank(),
-                      "GslMatrixClass::matlabLinearInterpExtrap()",
+                      "GslMatrix::matlabLinearInterpExtrap()",
                       "invalid 'y1' and 'this' sizes");
 
-  GslVectorClass y1Vec(x1Vec);
-  GslVectorClass y2Vec(x2Vec);
+  GslVector y1Vec(x1Vec);
+  GslVector y2Vec(x2Vec);
   for (unsigned int colId = 0; colId < y1Mat.numCols(); ++colId) {
     y1Mat.getColumn(colId,y1Vec);
     y2Vec.matlabLinearInterpExtrap(x1Vec,y1Vec,x2Vec);
@@ -2107,13 +2107,13 @@ GslMatrixClass::matlabLinearInterpExtrap(
 }
 
 gsl_matrix*
-GslMatrixClass::data()
+GslMatrix::data()
 {
   return m_mat;
 }
 
 void
-GslMatrixClass::print(std::ostream& os) const
+GslMatrix::print(std::ostream& os) const
 {
   unsigned int nRows = this->numRowsLocal();
   unsigned int nCols = this->numCols();
@@ -2142,7 +2142,7 @@ GslMatrixClass::print(std::ostream& os) const
 }
 
 void
-GslMatrixClass::subWriteContents(
+GslMatrix::subWriteContents(
   const std::string&            varNamePrefix,
   const std::string&            fileName,
   const std::string&            fileType,
@@ -2150,12 +2150,12 @@ GslMatrixClass::subWriteContents(
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
                       m_env.worldRank(),
-                      "GslMatrixClass::subWriteContents()",
+                      "GslMatrix::subWriteContents()",
                       "unexpected subRank");
 
   UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
                       m_env.worldRank(),
-                      "GslMatrixClass::subWriteContents()",
+                      "GslMatrix::subWriteContents()",
                       "implemented just for sequential vectors for now");
 
   FilePtrSetStruct filePtrSet;
@@ -2188,19 +2188,19 @@ GslMatrixClass::subWriteContents(
 }
 
 void
-GslMatrixClass::subReadContents(
+GslMatrix::subReadContents(
   const std::string&            fileName,
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds)
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
                       m_env.worldRank(),
-                      "GslMatrixClass::subReadContents()",
+                      "GslMatrix::subReadContents()",
                       "unexpected subRank");
 
   UQ_FATAL_TEST_MACRO(this->numOfProcsForStorage() > 1,
                       m_env.worldRank(),
-                      "GslMatrixClass::subReadContents()",
+                      "GslMatrix::subReadContents()",
                       "implemented just for sequential vectors for now");
 
   FilePtrSetStruct filePtrSet;
@@ -2230,7 +2230,7 @@ GslMatrixClass::subReadContents(
     //std::cout << "Just read '" << tmpString << "'" << std::endl;
     UQ_FATAL_TEST_MACRO(tmpString != "=",
                         m_env.worldRank(),
-                        "GslMatrixClass::subReadContents()",
+                        "GslMatrix::subReadContents()",
                         "string should be the '=' sign");
 
     // Read 'zeros(n_rows,n_cols)' string
@@ -2244,7 +2244,7 @@ GslMatrixClass::subReadContents(
     do {
       UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
                           m_env.worldRank(),
-                          "GslMatrixClass::subReadContents()",
+                          "GslMatrix::subReadContents()",
                           "symbol ',' not found in first line of file");
       nRowsString[posInRowsString++] = tmpString[posInTmpString++];
     } while (tmpString[posInTmpString] != ',');
@@ -2257,7 +2257,7 @@ GslMatrixClass::subReadContents(
     do {
       UQ_FATAL_TEST_MACRO(posInTmpString >= tmpString.size(),
                           m_env.worldRank(),
-                          "GslMatrixClass::subReadContents()",
+                          "GslMatrix::subReadContents()",
                           "symbol ')' not found in first line of file");
       nColsString[posInColsString++] = tmpString[posInTmpString++];
     } while (tmpString[posInTmpString] != ')');
@@ -2267,7 +2267,7 @@ GslMatrixClass::subReadContents(
     unsigned int numRowsInFile = (unsigned int) strtod(nRowsString,NULL);
     unsigned int numColsInFile = (unsigned int) strtod(nColsString,NULL);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GslMatrixClass::subReadContents()"
+      *m_env.subDisplayFile() << "In GslMatrix::subReadContents()"
                               << ": fullRank "        << m_env.fullRank()
                               << ", numRowsInFile = " << numRowsInFile
                               << ", numColsInFile = " << numColsInFile
@@ -2279,13 +2279,13 @@ GslMatrixClass::subReadContents(
     // Check if [num of rows in file] == [requested matrix row size]
     UQ_FATAL_TEST_MACRO(numRowsInFile != nRowsLocal,
                         m_env.worldRank(),
-                        "GslMatrixClass::subReadContents()",
+                        "GslMatrix::subReadContents()",
                         "size of vec in file is not big enough");
 
     // Check if [num of cols in file] == [num cols in current matrix]
     UQ_FATAL_TEST_MACRO(numColsInFile != nCols,
                         m_env.worldRank(),
-                        "GslMatrixClass::subReadContents()",
+                        "GslMatrix::subReadContents()",
                         "number of parameters of vec in file is different than number of parameters in this vec object");
 
     // Code common to any core in a communicator
@@ -2298,7 +2298,7 @@ GslMatrixClass::subReadContents(
     };
 
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GslMatrixClass::subReadContents()"
+      *m_env.subDisplayFile() << "In GslMatrix::subReadContents()"
                               << ": beginning to read input actual data"
                               << std::endl;
     }
@@ -2314,7 +2314,7 @@ GslMatrixClass::subReadContents(
     //std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;
     UQ_FATAL_TEST_MACRO(tmpString != "=",
                         m_env.worldRank(),
-                        "GslMatrixClass::subReadContents()",
+                        "GslMatrix::subReadContents()",
                         "in core 0, string should be the '=' sign");
 
     // Take into account the ' [' portion
@@ -2322,7 +2322,7 @@ GslMatrixClass::subReadContents(
     filePtrSet.ifsVar->seekg(tmpPos+(std::streampos)2);
 
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GslMatrixClass::subReadContents()"
+      *m_env.subDisplayFile() << "In GslMatrix::subReadContents()"
                               << ": beginning to read lines with numbers only"
                               << ", lineId = "          << lineId
                               << ", idOfMyFirstLine = " << idOfMyFirstLine
@@ -2346,26 +2346,26 @@ GslMatrixClass::subReadContents(
 }
 
 std::ostream&
-operator<<(std::ostream& os, const GslMatrixClass& obj)
+operator<<(std::ostream& os, const GslMatrix& obj)
 {
   obj.print(os);
 
   return os;
 }
 
-GslMatrixClass operator*(double a, const GslMatrixClass& mat)
+GslMatrix operator*(double a, const GslMatrix& mat)
 {
-  GslMatrixClass answer(mat);
+  GslMatrix answer(mat);
   answer *= a;
   return answer;
 }
 
-GslVectorClass operator*(const GslMatrixClass& mat, const GslVectorClass& vec)
+GslVector operator*(const GslMatrix& mat, const GslVector& vec)
 {
   return mat.multiply(vec);
 }
 
-GslMatrixClass operator*(const GslMatrixClass& m1, const GslMatrixClass& m2)
+GslMatrix operator*(const GslMatrix& m1, const GslMatrix& m2)
 {
   unsigned int m1Rows = m1.numRowsLocal();
   unsigned int m1Cols = m1.numCols();
@@ -2374,12 +2374,12 @@ GslMatrixClass operator*(const GslMatrixClass& m1, const GslMatrixClass& m2)
 
   UQ_FATAL_TEST_MACRO((m1Cols != m2Rows),
                       m1.env().worldRank(),
-                      "GslMatrixClass operator*(matrix,matrix)",
+                      "GslMatrix operator*(matrix,matrix)",
                       "different sizes m1Cols and m2Rows");
 
-  GslMatrixClass mat(m1.env(),m1.map(),m2Cols);
+  GslMatrix mat(m1.env(),m1.map(),m2Cols);
 
-  //std::cout << "In GslMatrixClass(mat * mat): m1Cols = " << m1Cols << std::endl;
+  //std::cout << "In GslMatrix(mat * mat): m1Cols = " << m1Cols << std::endl;
 
   unsigned int commonSize = m1Cols;
   for (unsigned int row1 = 0; row1 < m1Rows; ++row1) {
@@ -2390,31 +2390,31 @@ GslMatrixClass operator*(const GslMatrixClass& m1, const GslMatrixClass& m2)
       }
       mat(row1,col2) = result;
     }
-    //std::cout << "In GslMatrixClass(mat * mat): ended row " << row1 << std::endl;
+    //std::cout << "In GslMatrix(mat * mat): ended row " << row1 << std::endl;
   }
 
   return mat;
 }
 
-GslMatrixClass operator+(const GslMatrixClass& m1, const GslMatrixClass& m2)
+GslMatrix operator+(const GslMatrix& m1, const GslMatrix& m2)
 {
-  GslMatrixClass answer(m1);
+  GslMatrix answer(m1);
   answer += m2;
   return answer;
 }
 
-GslMatrixClass operator-(const GslMatrixClass& m1, const GslMatrixClass& m2)
+GslMatrix operator-(const GslMatrix& m1, const GslMatrix& m2)
 {
-  GslMatrixClass answer(m1);
+  GslMatrix answer(m1);
   answer -= m2;
   return answer;
 }
 
-GslMatrixClass matrixProduct(const GslVectorClass& v1, const GslVectorClass& v2)
+GslMatrix matrixProduct(const GslVector& v1, const GslVector& v2)
 {
   unsigned int nRows = v1.sizeLocal();
   unsigned int nCols = v2.sizeLocal();
-  GslMatrixClass answer(v1.env(),v1.map(),nCols);
+  GslMatrix answer(v1.env(),v1.map(),nCols);
 
   for (unsigned int i = 0; i < nRows; ++i) {
     double value1 = v1[i];
@@ -2426,7 +2426,7 @@ GslMatrixClass matrixProduct(const GslVectorClass& v1, const GslVectorClass& v2)
   return answer;
 }
 
-GslMatrixClass leftDiagScaling(const GslVectorClass& vec, const GslMatrixClass& mat)
+GslMatrix leftDiagScaling(const GslVector& vec, const GslMatrix& mat)
 {
   unsigned int vSize = vec.sizeLocal();
   unsigned int mRows = mat.numRowsLocal();
@@ -2434,15 +2434,15 @@ GslMatrixClass leftDiagScaling(const GslVectorClass& vec, const GslMatrixClass& 
 
   UQ_FATAL_TEST_MACRO((vSize != mRows),
                       mat.env().worldRank(),
-                      "GslMatrixClass leftDiagScaling(vector,matrix)",
+                      "GslMatrix leftDiagScaling(vector,matrix)",
                       "size of vector is different from the number of rows in matrix");
 
   UQ_FATAL_TEST_MACRO((mCols != mRows),
                       mat.env().worldRank(),
-                      "GslMatrixClass leftDiagScaling(vector,matrix)",
+                      "GslMatrix leftDiagScaling(vector,matrix)",
                       "routine currently works for square matrices only");
 
-  GslMatrixClass answer(mat);
+  GslMatrix answer(mat);
   for (unsigned int i = 0; i < mRows; ++i) {
     double vecValue = vec[i];
     for (unsigned int j = 0; j < mCols; ++j) {
@@ -2453,7 +2453,7 @@ GslMatrixClass leftDiagScaling(const GslVectorClass& vec, const GslMatrixClass& 
   return answer;
 }
 
-GslMatrixClass rightDiagScaling(const GslMatrixClass& mat, const GslVectorClass& vec)
+GslMatrix rightDiagScaling(const GslMatrix& mat, const GslVector& vec)
 {
   unsigned int vSize = vec.sizeLocal();
   unsigned int mRows = mat.numRowsLocal();
@@ -2461,15 +2461,15 @@ GslMatrixClass rightDiagScaling(const GslMatrixClass& mat, const GslVectorClass&
 
   UQ_FATAL_TEST_MACRO((vSize != mCols),
                       mat.env().worldRank(),
-                      "GslMatrixClass rightDiagScaling(matrix,vector)",
+                      "GslMatrix rightDiagScaling(matrix,vector)",
                       "size of vector is different from the number of cols in matrix");
 
   UQ_FATAL_TEST_MACRO((mCols != mRows),
                       mat.env().worldRank(),
-                      "GslMatrixClass rightDiagScaling(matrix,vector)",
+                      "GslMatrix rightDiagScaling(matrix,vector)",
                       "routine currently works for square matrices only");
 
-  GslMatrixClass answer(mat);
+  GslMatrix answer(mat);
   for (unsigned int j = 0; j < mCols; ++j) {
     double vecValue = vec[j];
     for (unsigned int i = 0; i < mRows; ++i) {

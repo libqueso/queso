@@ -38,7 +38,7 @@
     \brief Boost Random Number Generation class.
 */
 
-/*! \class RngBoostClass
+/*! \class RngBoost
     \brief Class for random number generation using Boost library. 
     
     This class is  class of random number generator, using Boost library. The Boost Random Number 
@@ -48,19 +48,19 @@
 
 namespace QUESO {
 
-class RngBoostClass : public RngBaseClass
+class RngBoost : public RngBase
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default Constructor: it should not be used.
-  RngBoostClass();
+  RngBoost();
   
   //! Constructor with seed.
-  RngBoostClass(int seed, int worldRank);
+  RngBoost(int seed, int worldRank);
   
   //! Destructor
- ~RngBoostClass();
+ ~RngBoost();
   //@}
  
   //! @name Sampling methods
