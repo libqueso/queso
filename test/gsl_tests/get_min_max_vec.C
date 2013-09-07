@@ -38,11 +38,11 @@ int main(int argc, char* argv[])
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
 #endif
-  QUESO::uqFullEnvironmentClass* env =
+  QUESO::FullEnvironmentClass* env =
 #ifdef QUESO_HAS_MPI
-    new QUESO::uqFullEnvironmentClass(MPI_COMM_WORLD,"input","",NULL);
+    new QUESO::FullEnvironmentClass(MPI_COMM_WORLD,"input","",NULL);
 #else
-    new QUESO::uqFullEnvironmentClass(0,"input","",NULL);
+    new QUESO::FullEnvironmentClass(0,"input","",NULL);
 #endif
 
   return_flag = actualChecking(env);
@@ -60,17 +60,17 @@ int main(int argc, char* argv[])
 /* Separated this out into a function because we want
    the destructor for paramSpace to be called before
    we delete env in main. */
-int actualChecking(const QUESO::uqFullEnvironmentClass* env)
+int actualChecking(const QUESO::FullEnvironmentClass* env)
 {
 
   int return_flag = 0;
 
   // Instantiate the parameter space
-  QUESO::uqVectorSpaceClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
+  QUESO::VectorSpaceClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
     paramSpace( (*env), "param_", 2, NULL);
 
   // Instantiate the parameter domain
-  QUESO::uqGslVectorClass Vector( paramSpace.zeroVector() );
+  QUESO::GslVectorClass Vector( paramSpace.zeroVector() );
 
   Vector[0] = -4.;
   Vector[1] =  3.;

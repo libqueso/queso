@@ -42,11 +42,11 @@ int main(int argc, char* argv[])
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
 #endif
-  QUESO::uqFullEnvironmentClass* env =
+  QUESO::FullEnvironmentClass* env =
 #ifdef QUESO_HAS_MPI
-    new QUESO::uqFullEnvironmentClass(MPI_COMM_WORLD,"input","",NULL);
+    new QUESO::FullEnvironmentClass(MPI_COMM_WORLD,"input","",NULL);
 #else
-    new QUESO::uqFullEnvironmentClass(0,"input","",NULL);
+    new QUESO::FullEnvironmentClass(0,"input","",NULL);
 #endif
 
   return_flag = actualChecking(env);
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 /* Separated this out into a function because we want
    the destructor for paramSpace to be called before
    we delete env in main. */
-int actualChecking(const QUESO::uqFullEnvironmentClass* env)
+int actualChecking(const QUESO::FullEnvironmentClass* env)
 {
   int return_flag = 0;
 
@@ -71,17 +71,17 @@ int actualChecking(const QUESO::uqFullEnvironmentClass* env)
   const double fp_tol = 1.0e-13;
 
   // Instantiate the parameter space
-  QUESO::uqVectorSpaceClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
+  QUESO::VectorSpaceClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
     paramSpace( (*env), "param_", 2, NULL);
 
   // Populate Matrix.
-  QUESO::uqGslMatrixClass* Matrix = paramSpace.newMatrix();
+  QUESO::GslMatrixClass* Matrix = paramSpace.newMatrix();
   (*Matrix)(0,0) = 4.; (*Matrix)(0,1) = 3.;
   (*Matrix)(1,0) = 5.; (*Matrix)(1,1) = 7.;
 
   // Conduct test.
   double eValue = 0.0;
-  QUESO::uqGslVectorClass eVector( (*paramSpace.newVector()) );
+  QUESO::GslVectorClass eVector( (*paramSpace.newVector()) );
 
   Matrix->smallestEigen( eValue, eVector );
 
@@ -104,7 +104,7 @@ int actualChecking(const QUESO::uqFullEnvironmentClass* env)
   // Note the minus sign doesn't matter (as long as the sign change is
   // consistent within the vector). We just need to make sure
   // that we get the right values in the vector.
-  QUESO::uqGslVectorClass eVectorExact( (*paramSpace.newVector() ) );
+  QUESO::GslVectorClass eVectorExact( (*paramSpace.newVector() ) );
   eVectorExact[0] = -0.749062754969087;
   eVectorExact[1] =  0.662499048390352;
 
