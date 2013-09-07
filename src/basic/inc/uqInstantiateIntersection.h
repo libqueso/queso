@@ -42,33 +42,33 @@ namespace QUESO {
 /*! It is used, for instance, to calculate the domain of the Posterior PDF, which is 
  * the intersection of the domain of the Prior PDF and of the likelihood function.*/
 template<class V, class M>
-VectorSetClass<V,M>*
-InstantiateIntersection(const VectorSetClass<V,M>& domain1, const VectorSetClass<V,M>& domain2)
+VectorSet<V,M>*
+InstantiateIntersection(const VectorSet<V,M>& domain1, const VectorSet<V,M>& domain2)
 {
-  VectorSetClass<V,M>* result = NULL;
+  VectorSet<V,M>* result = NULL;
 
   unsigned int dim1 = domain1.vectorSpace().dimGlobal();
   unsigned int dim2 = domain2.vectorSpace().dimGlobal();
 
   if (result == NULL) {
-    const VectorSpaceClass<V,M>* tmp1 = dynamic_cast<const VectorSpaceClass<V,M>* >(&domain1);
-    const VectorSpaceClass<V,M>* tmp2 = dynamic_cast<const VectorSpaceClass<V,M>* >(&domain2);
+    const VectorSpace<V,M>* tmp1 = dynamic_cast<const VectorSpace<V,M>* >(&domain1);
+    const VectorSpace<V,M>* tmp2 = dynamic_cast<const VectorSpace<V,M>* >(&domain2);
 
     if ((tmp1 != NULL) && (tmp2 != NULL)) {
       if (dim1 < dim2) {
-        result = new VectorSpaceClass<V,M>(tmp1->env(),
+        result = new VectorSpace<V,M>(tmp1->env(),
                                              tmp1->prefix().c_str(),
                                              tmp1->dimGlobal(),
                                              NULL);//tmp1->componentsNames());
       }
       else if (dim1 == dim2) {
-        result = new VectorSpaceClass<V,M>(tmp1->env(),
+        result = new VectorSpace<V,M>(tmp1->env(),
                                              tmp1->prefix().c_str(),
                                              tmp1->dimGlobal(),
                                              NULL);//tmp1->componentsNames());
       }
       else {
-        result = new VectorSpaceClass<V,M>(tmp2->env(),
+        result = new VectorSpace<V,M>(tmp2->env(),
                                              tmp2->prefix().c_str(),
                                              tmp2->dimGlobal(),
                                              NULL);//tmp2->componentsNames());
@@ -77,13 +77,13 @@ InstantiateIntersection(const VectorSetClass<V,M>& domain1, const VectorSetClass
   }
 
   if (result == NULL) {
-    const VectorSubsetClass<V,M>* tmp1 = dynamic_cast<const VectorSubsetClass<V,M>* >(&domain1);
-    const VectorSubsetClass<V,M>* tmp2 = dynamic_cast<const VectorSubsetClass<V,M>* >(&domain2);
+    const VectorSubset<V,M>* tmp1 = dynamic_cast<const VectorSubset<V,M>* >(&domain1);
+    const VectorSubset<V,M>* tmp2 = dynamic_cast<const VectorSubset<V,M>* >(&domain2);
 
     if ((tmp1 != NULL) && (tmp2 != NULL)) {
       if (dim1 == dim2) {
-        const BoxSubsetClass<V,M>* box1 = dynamic_cast<const BoxSubsetClass<V,M>* >(&domain1);
-        const BoxSubsetClass<V,M>* box2 = dynamic_cast<const BoxSubsetClass<V,M>* >(&domain2);
+        const BoxSubset<V,M>* box1 = dynamic_cast<const BoxSubset<V,M>* >(&domain1);
+        const BoxSubset<V,M>* box2 = dynamic_cast<const BoxSubset<V,M>* >(&domain2);
 
         if ((box1 != NULL) && (box2 != NULL)) {
           V minV(box1->minValues());
@@ -96,13 +96,13 @@ InstantiateIntersection(const VectorSetClass<V,M>& domain1, const VectorSetClass
             maxV[i] = std::min(box1->maxValues()[i],
                                box2->maxValues()[i]);
           }
-          result = new BoxSubsetClass<V,M>(box1->prefix().c_str(),
+          result = new BoxSubset<V,M>(box1->prefix().c_str(),
                                              box1->vectorSpace(),
                                              minV,
                                              maxV);
         }
         else {
-          result = new IntersectionSubsetClass<V,M>(tmp1->prefix().c_str(),
+          result = new IntersectionSubset<V,M>(tmp1->prefix().c_str(),
                                                       tmp1->vectorSpace(),
                                                       0., // FIX ME
                                                       domain1,
@@ -119,14 +119,14 @@ InstantiateIntersection(const VectorSetClass<V,M>& domain1, const VectorSetClass
   }
 
   if (result == NULL) {
-    const VectorSubsetClass<V,M>* tmp1 = dynamic_cast<const VectorSubsetClass<V,M>* >(&domain1);
-    const VectorSpaceClass <V,M>* tmp2 = dynamic_cast<const VectorSpaceClass <V,M>* >(&domain2);
+    const VectorSubset<V,M>* tmp1 = dynamic_cast<const VectorSubset<V,M>* >(&domain1);
+    const VectorSpace <V,M>* tmp2 = dynamic_cast<const VectorSpace <V,M>* >(&domain2);
 
     if ((tmp1 != NULL) && (tmp2 != NULL)) {
       if (dim1 == dim2) {
-        const BoxSubsetClass<V,M>* box1 = dynamic_cast<const BoxSubsetClass<V,M>* >(&domain1);
+        const BoxSubset<V,M>* box1 = dynamic_cast<const BoxSubset<V,M>* >(&domain1);
         if (box1 != NULL) {
-          result = new BoxSubsetClass<V,M>(box1->prefix().c_str(),
+          result = new BoxSubset<V,M>(box1->prefix().c_str(),
                                              box1->vectorSpace(),
                                              box1->minValues(),
                                              box1->maxValues());
@@ -148,14 +148,14 @@ InstantiateIntersection(const VectorSetClass<V,M>& domain1, const VectorSetClass
   }
 
   if (result == NULL) {
-    const VectorSpaceClass <V,M>* tmp1 = dynamic_cast<const VectorSpaceClass <V,M>* >(&domain1);
-    const VectorSubsetClass<V,M>* tmp2 = dynamic_cast<const VectorSubsetClass<V,M>* >(&domain2);
+    const VectorSpace <V,M>* tmp1 = dynamic_cast<const VectorSpace <V,M>* >(&domain1);
+    const VectorSubset<V,M>* tmp2 = dynamic_cast<const VectorSubset<V,M>* >(&domain2);
 
     if ((tmp1 != NULL) && (tmp2 != NULL)) {
       if (dim1 == dim2) {
-        const BoxSubsetClass<V,M>* box2 = dynamic_cast<const BoxSubsetClass<V,M>* >(&domain2);
+        const BoxSubset<V,M>* box2 = dynamic_cast<const BoxSubset<V,M>* >(&domain2);
         if (box2 != NULL) {
-          result = new BoxSubsetClass<V,M>(box2->prefix().c_str(),
+          result = new BoxSubset<V,M>(box2->prefix().c_str(),
                                              box2->vectorSpace(),
                                              box2->minValues(),
                                              box2->maxValues());

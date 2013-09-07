@@ -34,7 +34,7 @@ namespace QUESO {
 /*! \file uqVectorFunctionSynchronizer.h
  * \brief Class for synchronizing the calls of vector-valued functions
  * 
- * \class VectorFunctionSynchronizerClass
+ * \class VectorFunctionSynchronizer
  * \brief A templated class for synchronizing the calls of vector-valued functions.
  *
  * This class creates a synchronization point among processes which call vector-valued 
@@ -42,23 +42,23 @@ namespace QUESO {
  * can all begin executing again. */
 
 template <class P_V, class P_M, class Q_V, class Q_M>
-class VectorFunctionSynchronizerClass
+class VectorFunctionSynchronizer
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  VectorFunctionSynchronizerClass(const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& inputFunction,
+  VectorFunctionSynchronizer(const BaseVectorFunction<P_V,P_M,Q_V,Q_M>& inputFunction,
                                     const P_V&                                        auxPVec,
                                     const Q_V&                                        auxQVec);
   //! Destructor
- ~VectorFunctionSynchronizerClass();
+ ~VectorFunctionSynchronizer();
   //@}
  
   //! @name Mathematical methods
   //@{  
   //! Access to the domain set of the vector-valued function which will be synchronized.
-  const VectorSetClass<P_V,P_M>& domainSet() const;
+  const VectorSet<P_V,P_M>& domainSet() const;
   //@}
   
   //! @name Sync method
@@ -69,20 +69,20 @@ public:
   void callFunction(const P_V*                    vecValues,
                     const P_V*                    vecDirection,
                           Q_V*                    imageVector,
-                          DistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
-                          DistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
-                          DistArrayClass<P_V*>* hessianEffects) const;
+                          DistArray<P_V*>* gradVectors,     // Yes, 'P_V'
+                          DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
+                          DistArray<P_V*>* hessianEffects) const;
   //@}
 private:
-  const BaseEnvironmentClass&                     m_env;
-  const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_vectorFunction;
+  const BaseEnvironment&                     m_env;
+  const BaseVectorFunction<P_V,P_M,Q_V,Q_M>& m_vectorFunction;
   const P_V&                                        m_auxPVec;
   const Q_V&                                        m_auxQVec;
 };
 // Default constructor -----------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
-VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::VectorFunctionSynchronizerClass(
-  const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& inputFunction,
+VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>::VectorFunctionSynchronizer(
+  const BaseVectorFunction<P_V,P_M,Q_V,Q_M>& inputFunction,
   const P_V&                                        auxPVec,
   const Q_V&                                        auxQVec)
   :
@@ -94,26 +94,26 @@ VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::VectorFunctionSynchronizerClas
 }
 // Destructor ---------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
-VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::~VectorFunctionSynchronizerClass()
+VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>::~VectorFunctionSynchronizer()
 {
 }
 // Math methods -------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
-const VectorSetClass<P_V,P_M>&
-VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::domainSet() const
+const VectorSet<P_V,P_M>&
+VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>::domainSet() const
 {
   return m_vectorFunction.domainSet();
 }
 // Sync methods -------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
 void
-VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
+VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>::callFunction(
   const P_V*                    vecValues,
   const P_V*                    vecDirection,
         Q_V*                    imageVector,
-        DistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
-        DistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
-        DistArrayClass<P_V*>* hessianEffects) const
+        DistArray<P_V*>* gradVectors,     // Yes, 'P_V'
+        DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
+        DistArray<P_V*>* hessianEffects) const
 {
   if ((m_env.numSubEnvironments() < (unsigned int) m_env.fullComm().NumProc()) &&
       (m_auxPVec.numOfProcsForStorage() == 1                                 ) &&
@@ -123,9 +123,9 @@ VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
       const P_V*                    internalValues    = NULL;
       const P_V*                    internalDirection = NULL;
             Q_V*                    internalImageVec  = NULL;
-            DistArrayClass<P_V*>* internalGrads     = NULL; // Yes, 'P_V'
-            DistArrayClass<P_M*>* internalHessians  = NULL; // Yes, 'P_M'
-            DistArrayClass<P_V*>* internalEffects   = NULL;
+            DistArray<P_V*>* internalGrads     = NULL; // Yes, 'P_V'
+            DistArray<P_M*>* internalHessians  = NULL; // Yes, 'P_M'
+            DistArray<P_V*>* internalEffects   = NULL;
 
       /////////////////////////////////////////////////
       // Broadcast 1 of 3
@@ -141,7 +141,7 @@ VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
       if (m_env.subRank() == 0) {
         UQ_FATAL_TEST_MACRO((vecValues != NULL) && (imageVector == NULL),
                             m_env.worldRank(),
-                            "VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
+                            "VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>::callFunction()",
                             "imageVector should not be NULL");
         internalValues    = vecValues;
         internalDirection = vecDirection;
@@ -158,12 +158,12 @@ VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
         if (internalEffects   != NULL) bufferChar[5] = '1';
       }
 
-      m_env.subComm().syncPrintDebugMsg("In VectorFunctionSynchronizerClass<V,M>::callFunction(), just before char Bcast()",3,3000000);
+      m_env.subComm().syncPrintDebugMsg("In VectorFunctionSynchronizer<V,M>::callFunction(), just before char Bcast()",3,3000000);
       //if (m_env.subId() != 0) while (true) sleep(1);
 
       int count = (int) bufferChar.size();
       m_env.subComm().Bcast((void *) &bufferChar[0], count, RawValue_MPI_CHAR, 0,
-                            "VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
+                            "VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>::callFunction()",
                             "failed broadcast 1 of 3");
 
       if (bufferChar[0] == '1') {
@@ -182,7 +182,7 @@ VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
 
         count = (int) bufferDouble.size();
         m_env.subComm().Bcast((void *) &bufferDouble[0], count, RawValue_MPI_DOUBLE, 0,
-                              "VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
+                              "VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>::callFunction()",
                               "failed broadcast 2 of 3");
 
         if (m_env.subRank() != 0) {
@@ -207,7 +207,7 @@ VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
 
           count = (int) bufferDouble.size();
           m_env.subComm().Bcast((void *) &bufferDouble[0], count, RawValue_MPI_DOUBLE, 0,
-                                "VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction()",
+                                "VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>::callFunction()",
                                 "failed broadcast 3 of 3");
 
           if (m_env.subRank() != 0) {
@@ -259,11 +259,11 @@ VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>::callFunction(
   else {
     UQ_FATAL_TEST_MACRO((vecValues == NULL) || (imageVector == NULL),
                         m_env.worldRank(),
-                        "VectorFunctionSynchronizerClass<V,M>::callFunction()",
+                        "VectorFunctionSynchronizer<V,M>::callFunction()",
                         "Neither vecValues nor imageVector should not be NULL");
     UQ_FATAL_TEST_MACRO((m_auxPVec.numOfProcsForStorage() != m_auxQVec.numOfProcsForStorage()),
                         m_env.worldRank(),
-                        "VectorFunctionSynchronizerClass<V,M>::callFunction()",
+                        "VectorFunctionSynchronizer<V,M>::callFunction()",
                         "Number of processors required for storage should be the same");
 
     m_env.subComm().Barrier();

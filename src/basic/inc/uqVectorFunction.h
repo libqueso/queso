@@ -43,64 +43,64 @@ namespace QUESO {
 /*! \file uqVectorFunction.h
  * \brief Set of classes for handling vector functions.
  * 
- * \class BaseVectorFunctionClass
+ * \class BaseVectorFunction
  * \brief A templated (base) class for handling vector functions.
  *
  * This class allows the mathematical definition of a vector function such as:
  * \f$ \mathbf{q}: B \subset R^n \rightarrow R^m \f$. It requires the specification 
  * of the domain \f$ B \f$, which is a subset of the vector space (set) \f$ R^n \f$,
- * (and have already been introduced by the class VectorSetClass) and  of the 
+ * (and have already been introduced by the class VectorSet) and  of the 
  * image set \f$ R^m \f$.*/
 
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-class BaseVectorFunctionClass {
+class BaseVectorFunction {
 public:
   //! @name Constructor/Destructor methods.
   //@{ 
   //! Default Constructor
   /*! Instantiates an object of the class, i.e. a vector function, given a prefix, its domain and image.*/
-  BaseVectorFunctionClass(const char*                      prefix,
-			    const VectorSetClass<P_V,P_M>& domainSet,
-			    const VectorSetClass<Q_V,Q_M>& imageSet);
+  BaseVectorFunction(const char*                      prefix,
+			    const VectorSet<P_V,P_M>& domainSet,
+			    const VectorSet<Q_V,Q_M>& imageSet);
   //! Destructor	   
-  virtual ~BaseVectorFunctionClass();
+  virtual ~BaseVectorFunction();
   //@}
   
   //! @name Mathematical methods.
   //@{  
-  //! Access to the protected attribute \c m_domainSet: domain set of the vector function. It is an instance of the class VectorSetClass.  
+  //! Access to the protected attribute \c m_domainSet: domain set of the vector function. It is an instance of the class VectorSet.  
   /*! This is one example of the advantage of how QUESO represents mathematical 
    * identities in a straightforward manner. */
-  const VectorSetClass<P_V,P_M>& domainSet() const;
+  const VectorSet<P_V,P_M>& domainSet() const;
   
-  //! Access to the protected attribute \c m_imageSet: image set of the vector function/ It is an instance of the class VectorSetClass.   
-  const VectorSetClass<Q_V,Q_M>& imageSet () const;
+  //! Access to the protected attribute \c m_imageSet: image set of the vector function/ It is an instance of the class VectorSet.   
+  const VectorSet<Q_V,Q_M>& imageSet () const;
   
   //! Computes the image vector. See template specialization.
   virtual void  compute  (const P_V&              domainVector,
 			  const P_V*              domainDirection,
 			  Q_V&                    imageVector,
-			  DistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
-			  DistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'	
-			  DistArrayClass<P_V*>* hessianEffects) const = 0;
+			  DistArray<P_V*>* gradVectors,     // Yes, 'P_V'
+			  DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'	
+			  DistArray<P_V*>* hessianEffects) const = 0;
   //@}
 protected:
-  const BaseEnvironmentClass&    m_env;
+  const BaseEnvironment&    m_env;
         std::string                m_prefix;
 	
   //! Domain set of the vector function.	
-  const VectorSetClass<P_V,P_M>& m_domainSet;
+  const VectorSet<P_V,P_M>& m_domainSet;
   
   //! Image set of the vector function.
-  const VectorSetClass<Q_V,Q_M>& m_imageSet;
+  const VectorSet<Q_V,Q_M>& m_imageSet;
 };
 // Default constructor -----------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::BaseVectorFunctionClass(
+BaseVectorFunction<P_V,P_M,Q_V,Q_M>::BaseVectorFunction(
   const char*                      prefix,
-  const VectorSetClass<P_V,P_M>& domainSet,
-  const VectorSetClass<Q_V,Q_M>& imageSet)
+  const VectorSet<P_V,P_M>& domainSet,
+  const VectorSet<Q_V,Q_M>& imageSet)
   :
   m_env      (domainSet.env()),
   m_prefix   ((std::string)(prefix)+"func_"),
@@ -110,20 +110,20 @@ BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::BaseVectorFunctionClass(
 }
 // Destructor ---------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~BaseVectorFunctionClass()
+BaseVectorFunction<P_V,P_M,Q_V,Q_M>::~BaseVectorFunction()
 {
 }
 // Math methods -------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-const VectorSetClass<P_V,P_M>&
-BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::domainSet() const
+const VectorSet<P_V,P_M>&
+BaseVectorFunction<P_V,P_M,Q_V,Q_M>::domainSet() const
 {
   return m_domainSet;
 }
 // --------------------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-const VectorSetClass<Q_V,Q_M>&
-BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::imageSet() const
+const VectorSet<Q_V,Q_M>&
+BaseVectorFunction<P_V,P_M,Q_V,Q_M>::imageSet() const
 {
   return m_imageSet;
 }
@@ -132,16 +132,16 @@ BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::imageSet() const
 // Generic class
 //*****************************************************
 
-/*!\class GenericVectorFunctionClass
+/*!\class GenericVectorFunction
  * \brief A class for handling generic vector functions.
  *
  * This class allows the mathematical definition of a vector function such as:
  * \f$ \mathbf{q}: B \subset R^n \rightarrow R^m \f$. It is derived from 
- * BaseVectorFunctionClass.
+ * BaseVectorFunction.
  */
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-class GenericVectorFunctionClass : public BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M> {
+class GenericVectorFunction : public BaseVectorFunction<P_V,P_M,Q_V,Q_M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
@@ -150,19 +150,19 @@ public:
   /*! Instantiates an object of \c this class given its prefix, domain and a pointer to a routine. 
    This routine plays the role of a vector-valued function, and it is useful, for instance, to 
    calculate the likelihood (and its image set).*/
-  GenericVectorFunctionClass(const char*                      prefix,
-                               const VectorSetClass<P_V,P_M>& domainSet,
-                               const VectorSetClass<Q_V,Q_M>& imageSet,
+  GenericVectorFunction(const char*                      prefix,
+                               const VectorSet<P_V,P_M>& domainSet,
+                               const VectorSet<Q_V,Q_M>& imageSet,
                                void (*routinePtr)(const P_V&                    domainVector,
                                                   const P_V*                    domainDirection,
                                                   const void*                   functionDataPtr,
                                                         Q_V&                    imageVector,
-                                                        DistArrayClass<P_V*>* gradVectors,
-                                                        DistArrayClass<P_M*>* hessianMatrices,
-                                                        DistArrayClass<P_V*>* hessianEffects),
+                                                        DistArray<P_V*>* gradVectors,
+                                                        DistArray<P_M*>* hessianMatrices,
+                                                        DistArray<P_V*>* hessianEffects),
                                const void* functionDataPtr);
   //! Virtual destructor.
-  virtual ~GenericVectorFunctionClass();
+  virtual ~GenericVectorFunction();
 
   
   //! @name Mathematical method
@@ -171,9 +171,9 @@ public:
   void compute  (const P_V&                    domainVector,
                  const P_V*                    domainDirection,
                        Q_V&                    imageVector,
-                       DistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
-                       DistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
-                       DistArrayClass<P_V*>* hessianEffects) const;
+                       DistArray<P_V*>* gradVectors,     // Yes, 'P_V'
+                       DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
+                       DistArray<P_V*>* hessianEffects) const;
   //@}
 		       
 protected:
@@ -186,32 +186,32 @@ protected:
                        const P_V*                    domainDirection,
                        const void*                   functionDataPtr,
                              Q_V&                    imageVector,
-                             DistArrayClass<P_V*>* gradVectors,
-                             DistArrayClass<P_M*>* hessianMatrices,
-                             DistArrayClass<P_V*>* hessianEffects);
+                             DistArray<P_V*>* gradVectors,
+                             DistArray<P_M*>* hessianMatrices,
+                             DistArray<P_V*>* hessianEffects);
   const void* m_routineDataPtr;
 
-  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
-  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
-  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_domainSet;
-  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_imageSet;
+  using BaseVectorFunction<P_V,P_M,Q_V,Q_M>::m_env;
+  using BaseVectorFunction<P_V,P_M,Q_V,Q_M>::m_prefix;
+  using BaseVectorFunction<P_V,P_M,Q_V,Q_M>::m_domainSet;
+  using BaseVectorFunction<P_V,P_M,Q_V,Q_M>::m_imageSet;
 };
 // Default constructor -----------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-GenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::GenericVectorFunctionClass(
+GenericVectorFunction<P_V,P_M,Q_V,Q_M>::GenericVectorFunction(
   const char*                      prefix,
-  const VectorSetClass<P_V,P_M>& domainSet,
-  const VectorSetClass<Q_V,Q_M>& imageSet,
+  const VectorSet<P_V,P_M>& domainSet,
+  const VectorSet<Q_V,Q_M>& imageSet,
   void (*routinePtr)(const P_V&                    domainVector,
                      const P_V*                    domainDirection,
                      const void*                   functionDataPtr,
                            Q_V&                    imageVector,
-                           DistArrayClass<P_V*>* gradVectors,
-                           DistArrayClass<P_M*>* hessianMatrices,
-                           DistArrayClass<P_V*>* hessianEffects),
+                           DistArray<P_V*>* gradVectors,
+                           DistArray<P_M*>* hessianMatrices,
+                           DistArray<P_V*>* hessianEffects),
   const void* functionDataPtr)
   :
-  BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
+  BaseVectorFunction<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
                                              domainSet,
                                              imageSet),
   m_routinePtr    (routinePtr),
@@ -220,23 +220,23 @@ GenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::GenericVectorFunctionClass(
 }
 // Destructor ---------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-GenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~GenericVectorFunctionClass()
+GenericVectorFunction<P_V,P_M,Q_V,Q_M>::~GenericVectorFunction()
 {
 }
 // Math methods -------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
 void
-GenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
+GenericVectorFunction<P_V,P_M,Q_V,Q_M>::compute(
   const P_V&                    domainVector,
   const P_V*                    domainDirection,
         Q_V&                    imageVector,
-        DistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
-        DistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
-        DistArrayClass<P_V*>* hessianEffects) const
+        DistArray<P_V*>* gradVectors,     // Yes, 'P_V'
+        DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
+        DistArray<P_V*>* hessianEffects) const
 {
   //UQ_FATAL_TEST_MACRO(false,
   //                    domainVector.env().worldRank(),
-  //                    "GenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute()",
+  //                    "GenericVectorFunction<P_V,P_M,Q_V,Q_M>::compute()",
   //                    "this method should not be called in the case of this class");
 
   m_routinePtr(domainVector, domainDirection, m_routineDataPtr, imageVector, gradVectors, hessianMatrices, hessianEffects);
@@ -248,25 +248,25 @@ GenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
 // Constant class
 //*****************************************************
 
-/*!\class ConstantVectorFunctionClass
+/*!\class ConstantVectorFunction
  * \brief A class for handling vector functions which image is constant.
  *
  * This class allows the mathematical definition of a vector-valued function which image 
  * set is constant vector. */
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-class ConstantVectorFunctionClass : public BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M> {
+class ConstantVectorFunction : public BaseVectorFunction<P_V,P_M,Q_V,Q_M> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default Constructor
   /*! Instantiates an object of the class, i.e. a vector function, given a prefix, its domain and constant image.*/
-  ConstantVectorFunctionClass(const char*                      prefix,
-                                const VectorSetClass<P_V,P_M>& domainSet,
-                                const VectorSetClass<Q_V,Q_M>& imageSet,
+  ConstantVectorFunction(const char*                      prefix,
+                                const VectorSet<P_V,P_M>& domainSet,
+                                const VectorSet<Q_V,Q_M>& imageSet,
                                 const Q_V&                       constantImageVector);
   //! Destructor
-  virtual ~ConstantVectorFunctionClass();
+  virtual ~ConstantVectorFunction();
   //@}
   
   //! @name Mathematical method
@@ -275,27 +275,27 @@ public:
   void compute  (const P_V&                    domainVector,
                  const P_V*                    domainDirection,
                        Q_V&                    imageVector,
-                       DistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
-                       DistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
-                       DistArrayClass<P_V*>* hessianEffects) const;
+                       DistArray<P_V*>* gradVectors,     // Yes, 'P_V'
+                       DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
+                       DistArray<P_V*>* hessianEffects) const;
   //@}
 protected:
   const Q_V* m_constantImageVector;
 
-  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
-  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
-  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_domainSet;
-  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_imageSet;
+  using BaseVectorFunction<P_V,P_M,Q_V,Q_M>::m_env;
+  using BaseVectorFunction<P_V,P_M,Q_V,Q_M>::m_prefix;
+  using BaseVectorFunction<P_V,P_M,Q_V,Q_M>::m_domainSet;
+  using BaseVectorFunction<P_V,P_M,Q_V,Q_M>::m_imageSet;
 };
 // Default constructor -----------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-ConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::ConstantVectorFunctionClass(
+ConstantVectorFunction<P_V,P_M,Q_V,Q_M>::ConstantVectorFunction(
   const char*                      prefix,
-  const VectorSetClass<P_V,P_M>& domainSet,
-  const VectorSetClass<Q_V,Q_M>& imageSet,
+  const VectorSet<P_V,P_M>& domainSet,
+  const VectorSet<Q_V,Q_M>& imageSet,
   const Q_V&                       constantImageVector)
   :
-  BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
+  BaseVectorFunction<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
                                              domainSet,
                                              imageSet),
   m_constantImageVector(NULL)
@@ -304,24 +304,24 @@ ConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::ConstantVectorFunctionClass(
 }
 // Destructor ---------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-ConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~ConstantVectorFunctionClass()
+ConstantVectorFunction<P_V,P_M,Q_V,Q_M>::~ConstantVectorFunction()
 {
   delete m_constantImageVector;
 }
 // Math methods -------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
 void
-ConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
+ConstantVectorFunction<P_V,P_M,Q_V,Q_M>::compute(
   const P_V&                    domainVector,
   const P_V*                    domainDirection,
         Q_V&                    imageVector,
-        DistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
-        DistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
-        DistArrayClass<P_V*>* hessianEffects) const
+        DistArray<P_V*>* gradVectors,     // Yes, 'P_V'
+        DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
+        DistArray<P_V*>* hessianEffects) const
 {
   UQ_FATAL_TEST_MACRO(m_constantImageVector == NULL,
                       domainVector.env().worldRank(),
-                      "ConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute()",
+                      "ConstantVectorFunction<P_V,P_M,Q_V,Q_M>::compute()",
                       "m_constantImageVector is NULL");
 
   imageVector = *m_constantImageVector;
