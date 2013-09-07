@@ -29,19 +29,19 @@
 #include <example_likelihood.h>
 
 double likelihoodRoutine(
-  const QUESO::GslVectorClass& paramValues,
-  const QUESO::GslVectorClass* paramDirection,
+  const QUESO::GslVector& paramValues,
+  const QUESO::GslVector* paramDirection,
   const void*             functionDataPtr,
-  QUESO::GslVectorClass*       gradVector,
-  QUESO::GslMatrixClass*       hessianMatrix,
-  QUESO::GslVectorClass*       hessianEffect)
+  QUESO::GslVector*       gradVector,
+  QUESO::GslMatrix*       hessianMatrix,
+  QUESO::GslVector*       hessianEffect)
 {
   // Logic just to avoid warnings from INTEL compiler
-  const QUESO::GslVectorClass* aux1 = paramDirection;
+  const QUESO::GslVector* aux1 = paramDirection;
   if (aux1) {};
   aux1 = gradVector;
   aux1 = hessianEffect;
-  QUESO::GslMatrixClass* aux2 = hessianMatrix;
+  QUESO::GslMatrix* aux2 = hessianMatrix;
   if (aux2) {};
 
   // Just checking: the user, at the application level, expects
@@ -65,14 +65,14 @@ double likelihoodRoutine(
   // want to use 'env.subComm()' or 'env.subComm().Comm()'
   
   double result = 0.;
-  const QUESO::BaseEnvironmentClass& env = paramValues.env();
+  const QUESO::BaseEnvironment& env = paramValues.env();
   if (env.subRank() == 0) {
-    const QUESO::GslVectorClass& meanVector =
+    const QUESO::GslVector& meanVector =
       *((likelihoodRoutine_DataType *) functionDataPtr)->meanVector;
-    const QUESO::GslMatrixClass& covMatrix  =
+    const QUESO::GslMatrix& covMatrix  =
       *((likelihoodRoutine_DataType *) functionDataPtr)->covMatrix;
 
-    QUESO::GslVectorClass diffVec(paramValues - meanVector);
+    QUESO::GslVector diffVec(paramValues - meanVector);
 
     result= scalarProduct(diffVec,covMatrix.invertMultiply(diffVec));
   }

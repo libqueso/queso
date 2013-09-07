@@ -31,25 +31,25 @@
 #include <uqGslMatrix.h>
 #include <uqStatisticalInverseProblem.h>
 
-void compute(const QUESO::FullEnvironmentClass& env) {
+void compute(const QUESO::FullEnvironment& env) {
   // Step 1 of 5: Instantiate the parameter space
-  QUESO::VectorSpaceClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::VectorSpace<QUESO::GslVector,QUESO::GslMatrix>
     paramSpace(env, "param_", 2, NULL);
 
   // Step 2 of 5: Instantiate the parameter domain
-  QUESO::GslVectorClass paramMins(paramSpace.zeroVector());
+  QUESO::GslVector paramMins(paramSpace.zeroVector());
   paramMins.cwSet(-INFINITY);
-  QUESO::GslVectorClass paramMaxs(paramSpace.zeroVector());
+  QUESO::GslVector paramMaxs(paramSpace.zeroVector());
   paramMaxs.cwSet( INFINITY);
-  QUESO::BoxSubsetClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::BoxSubset<QUESO::GslVector,QUESO::GslMatrix>
     paramDomain("param_",paramSpace,paramMins,paramMaxs);
 
   // Step 3 of 5: Instantiate the likelihood function object
-  QUESO::GslVectorClass meanVector(paramSpace.zeroVector());
+  QUESO::GslVector meanVector(paramSpace.zeroVector());
   meanVector[0] = -1;
   meanVector[1] =  2;
   
-  QUESO::GslMatrixClass covMatrix(paramSpace.zeroVector());
+  QUESO::GslMatrix covMatrix(paramSpace.zeroVector());
   covMatrix(0,0) = 4.; covMatrix(0,1) = 0.;
   covMatrix(1,0) = 0.; covMatrix(1,1) = 1.;
   
@@ -57,7 +57,7 @@ void compute(const QUESO::FullEnvironmentClass& env) {
   likelihoodRoutine_Data.meanVector = &meanVector;
   likelihoodRoutine_Data.covMatrix  = &covMatrix;
   
-  QUESO::GenericScalarFunctionClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::GenericScalarFunction<QUESO::GslVector,QUESO::GslMatrix>
     likelihoodFunctionObj("like_",
                           paramDomain,
                           likelihoodRoutine,
@@ -65,19 +65,19 @@ void compute(const QUESO::FullEnvironmentClass& env) {
                           true); // routine computes [ln(function)]
 
   // Step 4 of 5: Instantiate the inverse problem
-  QUESO::UniformVectorRVClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::UniformVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     priorRv("prior_", paramDomain);
-  QUESO::GenericVectorRVClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::GenericVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     postRv("post_", paramSpace);
-  QUESO::StatisticalInverseProblemClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::StatisticalInverseProblem<QUESO::GslVector,QUESO::GslMatrix>
     ip("", NULL, priorRv, likelihoodFunctionObj, postRv);
 
   // Step 5 of 5: Solve the inverse problem
-  QUESO::GslVectorClass paramInitials(paramSpace.zeroVector());
+  QUESO::GslVector paramInitials(paramSpace.zeroVector());
   paramInitials[0] = 0.1;
   paramInitials[1] = -1.4;
   
-  QUESO::GslMatrixClass proposalCovMatrix(paramSpace.zeroVector());
+  QUESO::GslMatrix proposalCovMatrix(paramSpace.zeroVector());
   proposalCovMatrix(0,0) = 8.; proposalCovMatrix(0,1) = 4.;
   proposalCovMatrix(1,0) = 4.; proposalCovMatrix(1,1) = 16.;
   
