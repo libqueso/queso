@@ -42,7 +42,7 @@
 //********************************************************
 template<class P_V,class P_M, class Q_V, class Q_M>
 void 
-uqAppl(const QUESO::BaseEnvironmentClass& env)
+uqAppl(const QUESO::BaseEnvironment& env)
 {
   if (env.fullRank() == 0) {
     std::cout << "Beginning run of 'exStatisticalForwardProblem_example'\n"
@@ -58,7 +58,7 @@ uqAppl(const QUESO::BaseEnvironmentClass& env)
               << std::endl;
   }
 
-  QUESO::VectorSpaceClass<P_V,P_M> paramSpace(env,"param_",2,NULL);
+  QUESO::VectorSpace<P_V,P_M> paramSpace(env,"param_",2,NULL);
 
   //******************************************************
   // Step 2 of 6: Instantiate the parameter domain
@@ -74,7 +74,7 @@ uqAppl(const QUESO::BaseEnvironmentClass& env)
   P_V paramMaxs(paramSpace.zeroVector());
   paramMaxs[0] = 101.;
   paramMaxs[1] = 99.;
-  QUESO::BoxSubsetClass<P_V,P_M> paramDomain("param_",paramSpace,paramMins,paramMaxs);
+  QUESO::BoxSubset<P_V,P_M> paramDomain("param_",paramSpace,paramMins,paramMaxs);
 
   //******************************************************
   // Step 3 of 6: Instantiate the qoi space (with Q_V and Q_M)
@@ -85,7 +85,7 @@ uqAppl(const QUESO::BaseEnvironmentClass& env)
               << std::endl;
   }
 
-  QUESO::VectorSpaceClass<Q_V,Q_M> qoiSpace(env,"qoi_",1,NULL);
+  QUESO::VectorSpace<Q_V,Q_M> qoiSpace(env,"qoi_",1,NULL);
 
   //******************************************************
   // Step 4 of 6: Instantiate the qoi function object (data + routine), to be used by QUESO.
@@ -101,7 +101,7 @@ uqAppl(const QUESO::BaseEnvironmentClass& env)
   qoiRoutine_Data.p2MultiplicativeFactor = 3.;
   qoiRoutine_Data.p2ExponentFactor       = 1.1;
 
-  QUESO::GenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> qoiFunctionObj("qoi_",
+  QUESO::GenericVectorFunction<P_V,P_M,Q_V,Q_M> qoiFunctionObj("qoi_",
                                                                paramDomain,
                                                                qoiSpace,
                                                                qoiRoutine<P_V,P_M,Q_V,Q_M>,
@@ -115,13 +115,13 @@ uqAppl(const QUESO::BaseEnvironmentClass& env)
               << std::endl;
   }
 
-  QUESO::UniformVectorRVClass<P_V,P_M> paramRv("param_", // Extra prefix before the default "rv_" prefix
+  QUESO::UniformVectorRV<P_V,P_M> paramRv("param_", // Extra prefix before the default "rv_" prefix
                                           paramDomain);
 
-  QUESO::GenericVectorRVClass<Q_V,Q_M> qoiRv("qoi_", // Extra prefix before the default "rv_" prefix
+  QUESO::GenericVectorRV<Q_V,Q_M> qoiRv("qoi_", // Extra prefix before the default "rv_" prefix
                                          qoiSpace);
 
-  QUESO::StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> fp("", // No extra prefix before the default "fp_" prefix
+  QUESO::StatisticalForwardProblem<P_V,P_M,Q_V,Q_M> fp("", // No extra prefix before the default "fp_" prefix
                                                        NULL,
                                                        paramRv,
                                                        qoiFunctionObj,
