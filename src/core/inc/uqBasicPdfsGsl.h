@@ -37,26 +37,26 @@ namespace QUESO {
     \brief Class for Basic PDFs using Gsl library.
 */
 
-/*! \class uqBasicPdfsGslClass
+/*! \class BasicPdfsGslClass
     \brief TODO: Base class for basic PDFs using Gsl library. 
     
     \todo This class \b will acommodate the definition of a Joint PDF using distributions
-    available in the Gsl library. It will ultimately be called by uqBaseJointPdfClass and/or its
+    available in the Gsl library. It will ultimately be called by BaseJointPdfClass and/or its
     derived classes (via m_env.basicPdfs()) during the construction of Joint PDFs.
 */
-class uqBasicPdfsGslClass : public uqBasicPdfsBaseClass
+class BasicPdfsGslClass : public BasicPdfsBaseClass
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqBasicPdfsGslClass();
+  BasicPdfsGslClass();
   
   //! Constructor.
-  uqBasicPdfsGslClass(int worldRank);
+  BasicPdfsGslClass(int worldRank);
 
   //! Destructor.
-  ~uqBasicPdfsGslClass();
+  ~BasicPdfsGslClass();
   //@}
 
   //! @name Mathematical methods

@@ -42,7 +42,7 @@ namespace QUESO {
     \brief A class to store row-oriented multi-vectors of type T.
 */
 
-/*! \class uqDistArrayClass
+/*! \class DistArrayClass
     \brief A class for partitioning vectors and matrices.
     
     Class DistArray allows the construction and usage of multi-vectors. 
@@ -50,14 +50,14 @@ namespace QUESO {
     (instead of and not column-oriented; thus his class should be used as a container 
     for data, on which no BLAS-like operations are performed). 
       
-    DistArray objects are identified by an uqMap and a RowSize. The map specifies 
+    DistArray objects are identified by an Map and a RowSize. The map specifies
     the distribution of the elements across the processors and therefore the number 
     of local elements, while the RowSize gives the total number of data assigned to
     each node. RowSize is constant for all elements.
 */
 
 template<typename T>
-class uqDistArrayClass
+class DistArrayClass
 {
 public:
   
@@ -65,23 +65,23 @@ public:
   //@{
 
   //! Default constructor. Do not call this directly.
-  uqDistArrayClass();
+  DistArrayClass();
   
   //! Constructor for a given inputMap and inputRowSize. 
-  uqDistArrayClass(const uqMapClass& inputMap, 
+  DistArrayClass(const MapClass& inputMap,
                    const int         inputRowSize);
   
   //! Copy constructor
-  uqDistArrayClass(const uqDistArrayClass<T>& src);
+  DistArrayClass(const DistArrayClass<T>& src);
   
   //! Destructor
- ~uqDistArrayClass();
+ ~DistArrayClass();
  //@}
  
   //! @name Set methods
   //@{
   //! Assignment operator.
-  uqDistArrayClass<T>& operator= (const uqDistArrayClass<T>& rhs);
+  DistArrayClass<T>& operator= (const DistArrayClass<T>& rhs);
   //@}
     
   //! @name Query methods
@@ -112,9 +112,9 @@ public:
 private:
 //! Copies the array.
 
-        void copy        (const uqDistArrayClass<T>& src);
+        void copy        (const DistArrayClass<T>& src);
 
-  uqMapClass                   m_uqMap;
+  MapClass                   m_Map;
 #ifdef QUESO_HAS_TRILINOS
   EpetraExt::DistArray<T>*     m_epetraDistArray;
 #else
@@ -129,83 +129,83 @@ private:
 
 // Default constructor ------------------------------
 template<typename T>
-uqDistArrayClass<T>::uqDistArrayClass()
+DistArrayClass<T>::DistArrayClass()
   :
-  m_uqMap()
+  m_Map()
 {
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
-                      "uqDistArrayClass<T>::constructor()",
+                      "DistArrayClass<T>::constructor()",
                       "should not be called");
 }
 // Constructor for a given inputMap and inputRowSize. 
 template<typename T>
-uqDistArrayClass<T>::uqDistArrayClass(
-  const uqMapClass& inputMap, 
+DistArrayClass<T>::DistArrayClass(
+  const MapClass& inputMap,
   const int         inputRowSize)
   :
-  m_uqMap  (inputMap),
+  m_Map  (inputMap),
 #ifdef QUESO_HAS_TRILINOS
   m_epetraDistArray(new EpetraExt::DistArray<T>(inputMap.epetraMap(),inputRowSize))
 #else
   m_rowSize(inputRowSize)
 #endif
 {
-  //std::cout << "Entering uqDistArrayClass<T>::constructor(1)" << std::endl;
+  //std::cout << "Entering DistArrayClass<T>::constructor(1)" << std::endl;
 #ifdef QUESO_HAS_TRILINOS
 #else
-  m_elements.resize(m_uqMap.NumGlobalElements());
-  for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
+  m_elements.resize(m_Map.NumGlobalElements());
+  for (int i = 0; i < m_Map.NumGlobalElements(); ++i) {
     m_elements[i].resize(m_rowSize);
   }
 #endif
-  //std::cout << "Leaving uqDistArrayClass<T>::constructor(1)" << std::endl;
+  //std::cout << "Leaving DistArrayClass<T>::constructor(1)" << std::endl;
 }
 // Copy constructor ---------------------------------
 template<typename T>
-uqDistArrayClass<T>::uqDistArrayClass(const uqDistArrayClass<T>& src)
+DistArrayClass<T>::DistArrayClass(const DistArrayClass<T>& src)
   :
-  m_uqMap(src.m_uqMap)
+  m_Map(src.m_Map)
 #ifdef QUESO_HAS_TRILINOS
   ,
   m_epetraDistArray(NULL)
 #endif
 {
-  //std::cout << "Entering uqDistArrayClass<T>::constructor(2)" << std::endl;
+  //std::cout << "Entering DistArrayClass<T>::constructor(2)" << std::endl;
 #ifdef QUESO_HAS_TRILINOS
 #else
   m_elements.clear();
 #endif
   this->copy(src);
-  //std::cout << "Leaving uqDistArrayClass<T>::constructor(2)" << std::endl;
+  //std::cout << "Leaving DistArrayClass<T>::constructor(2)" << std::endl;
 }
 
 // Destructor ---------------------------------------
 template<typename T>
-uqDistArrayClass<T>::~uqDistArrayClass()
+DistArrayClass<T>::~DistArrayClass()
 {
-  //std::cout << "Entering uqDistArrayClass<T>::destructor()" << std::endl;
+  //std::cout << "Entering DistArrayClass<T>::destructor()" << std::endl;
 #ifdef QUESO_HAS_TRILINOS
   delete m_epetraDistArray;
   m_epetraDistArray = NULL;
 #else
-  for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
+  for (int i = 0; i < m_Map.NumGlobalElements(); ++i) {
     m_elements[i].clear();
   }
   m_elements.clear();
 #endif
-  //std::cout << "Leaving uqDistArrayClass<T>::destructor()" << std::endl;
+  //std::cout << "Leaving DistArrayClass<T>::destructor()" << std::endl;
 }
 
 // ---------------------------------------------------
 // Set methods----------------------------------------
 template<typename T>
-uqDistArrayClass<T>&
-uqDistArrayClass<T>::operator=(const uqDistArrayClass<T>& rhs)
+DistArrayClass<T>&
+DistArrayClass<T>::operator=(const DistArrayClass<T>& rhs)
 {
 #ifdef QUESO_HAS_TRILINOS
 #else
-  for (int i = 0; i < m_uqMap.NumGlobalElements(); ++i) {
+  for (int i = 0; i < m_Map.NumGlobalElements(); ++i) {
     m_elements[i].clear();
   }
   m_elements.clear();
@@ -218,7 +218,7 @@ uqDistArrayClass<T>::operator=(const uqDistArrayClass<T>& rhs)
 // Query methods -------------------------------------
 template<typename T>
 T&
-uqDistArrayClass<T>::operator()(int localElementId, int colId)
+DistArrayClass<T>::operator()(int localElementId, int colId)
 {
 #ifdef QUESO_HAS_TRILINOS
   return (*m_epetraDistArray)(localElementId,colId);
@@ -229,7 +229,7 @@ uqDistArrayClass<T>::operator()(int localElementId, int colId)
 // ---------------------------------------------------
 template<typename T>
 const T&
-uqDistArrayClass<T>::operator()(int localElementId, int colId) const
+DistArrayClass<T>::operator()(int localElementId, int colId) const
 {
 #ifdef QUESO_HAS_TRILINOS
   return (*m_epetraDistArray)(localElementId,colId);
@@ -240,29 +240,29 @@ uqDistArrayClass<T>::operator()(int localElementId, int colId) const
 // ---------------------------------------------------
 template<typename T>
 int
-uqDistArrayClass<T>::GlobalLength() const
+DistArrayClass<T>::GlobalLength() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraDistArray->GlobalLength();
 #else
-  return m_uqMap.NumGlobalElements();
+  return m_Map.NumGlobalElements();
 #endif
 }
 // ---------------------------------------------------
 template<typename T>
 int
-uqDistArrayClass<T>::MyLength() const
+DistArrayClass<T>::MyLength() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraDistArray->MyLength();
 #else
-  return m_uqMap.NumMyElements();
+  return m_Map.NumMyElements();
 #endif
 }
 // ---------------------------------------------------
 template<typename T>
 int
-uqDistArrayClass<T>::RowSize() const
+DistArrayClass<T>::RowSize() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraDistArray->RowSize();
@@ -274,7 +274,7 @@ uqDistArrayClass<T>::RowSize() const
 // I/O methods----------------------------------------
 template<typename T>
 void
-uqDistArrayClass<T>::print(std::ostream& os) const
+DistArrayClass<T>::print(std::ostream& os) const
 {
 #ifdef QUESO_HAS_TRILINOS
   os << *m_epetraDistArray;
@@ -288,7 +288,7 @@ uqDistArrayClass<T>::print(std::ostream& os) const
 }
 // ---------------------------------------------------
 template<typename T>
-std::ostream& operator<<(std::ostream& os, const uqDistArrayClass<T>& obj)
+std::ostream& operator<<(std::ostream& os, const DistArrayClass<T>& obj)
 {
   obj.print(os);
 

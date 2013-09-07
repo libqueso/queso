@@ -33,33 +33,33 @@
 namespace QUESO {
 
 // Default constructor ------------------------------
-uqRngGslClass::uqRngGslClass()
+RngGslClass::RngGslClass()
   :
-  uqRngBaseClass()
+  RngBaseClass()
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_worldRank,
-                      "uqRngGslClass::constructor(), default",
+                      "RngGslClass::constructor(), default",
                       "should not be used by user");
 }
 
 //! Constructor with seed ---------------------------
-uqRngGslClass::uqRngGslClass(int seed, int worldRank)
+RngGslClass::RngGslClass(int seed, int worldRank)
   :
-  uqRngBaseClass(seed,worldRank),
+  RngBaseClass(seed,worldRank),
   m_rng         (NULL)
 {
   gsl_rng_default_seed = (unsigned long int) m_seed;
   m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
   UQ_FATAL_TEST_MACRO((m_rng == NULL),
                       m_worldRank,
-                      "uqRngGslClass::constructor()",
+                      "RngGslClass::constructor()",
                       "null m_rng");
 
 //gsl_rng_set(m_rng, gsl_rng_default_seed);
 #if 0
   if (m_worldRank == 0) {
-    std::cout << "In uqRngGslClass::constructor():"
+    std::cout << "In RngGslClass::constructor():"
               << "\n  m_seed = "                                              << m_seed
               << "\n  internal seed = "                                       << gsl_rng_default_seed
             //<< "\n  first generated sample from uniform distribution = "    << gsl_rng_uniform(m_rng)
@@ -70,51 +70,51 @@ uqRngGslClass::uqRngGslClass(int seed, int worldRank)
 }
 
 // Destructor ---------------------------------------
-uqRngGslClass::~uqRngGslClass()
+RngGslClass::~RngGslClass()
 {
   if (m_rng) gsl_rng_free(m_rng);
 }
 
 // Sampling methods ---------------------------------
 void
-uqRngGslClass::resetSeed(int newSeed)
+RngGslClass::resetSeed(int newSeed)
 {
-  uqRngBaseClass::resetSeed(newSeed);
+  RngBaseClass::resetSeed(newSeed);
   gsl_rng_free(m_rng);
 
   gsl_rng_default_seed = (unsigned long int) m_seed;
   m_rng = gsl_rng_alloc(gsl_rng_ranlxd2);
   UQ_FATAL_TEST_MACRO((m_rng == NULL),
                       m_worldRank,
-                      "uqRngGslClass::resetSeed()",
+                      "RngGslClass::resetSeed()",
                       "null m_rng");
   return;
 }
 
 // --------------------------------------------------
 double
-uqRngGslClass::uniformSample() const
+RngGslClass::uniformSample() const
 {
   return gsl_rng_uniform(m_rng);
 }
 
 // --------------------------------------------------
 double
-uqRngGslClass::gaussianSample(double stdDev) const
+RngGslClass::gaussianSample(double stdDev) const
 {
   return gsl_ran_gaussian(m_rng,stdDev);
 }
 
 // --------------------------------------------------
 double
-uqRngGslClass::betaSample(double alpha, double beta) const
+RngGslClass::betaSample(double alpha, double beta) const
 {
   return gsl_ran_beta(m_rng,alpha,beta);
 }
 
 // --------------------------------------------------
 double
-uqRngGslClass::gammaSample(double a, double b) const
+RngGslClass::gammaSample(double a, double b) const
 {
   return gsl_ran_gamma(m_rng,a,b);
 }

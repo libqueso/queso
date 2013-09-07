@@ -32,39 +32,39 @@
 namespace QUESO {
 
 // Default constructor ------------------------------
-uqRngBoostClass::uqRngBoostClass()
+RngBoostClass::RngBoostClass()
   :
-  uqRngBaseClass()
+  RngBaseClass()
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_worldRank,
-                      "uqRngBoostClass::constructor(), default",
+                      "RngBoostClass::constructor(), default",
                       "should not be used by user");
 }
 
 //! Constructor with seed ---------------------------
-uqRngBoostClass::uqRngBoostClass(int seed, int worldRank)
+RngBoostClass::RngBoostClass(int seed, int worldRank)
   :
-  uqRngBaseClass(seed,worldRank)
+  RngBaseClass(seed,worldRank)
   //m_rng(seed)
 {
   resetSeed(seed);
 //TODO Find a suitable test for here; Kemelli todo
 //   UQ_FATAL_TEST_MACRO(true,
 //                       m_worldRank,
-//                       "uqRngBoosClass::constructor()",
+//                       "RngBoosClass::constructor()",
 //                       "Kemelli todo: boost rng");
 }
 
 // Destructor ---------------------------------------
-uqRngBoostClass::~uqRngBoostClass()
+RngBoostClass::~RngBoostClass()
 {
   //this function does nothing
 }
 
 // Sampling methods ---------------------------------  
 void
-uqRngBoostClass::resetSeed(int newSeed)
+RngBoostClass::resetSeed(int newSeed)
 {
   m_rng.seed(newSeed);
 
@@ -73,7 +73,7 @@ uqRngBoostClass::resetSeed(int newSeed)
 
 // --------------------------------------------------
 double
-uqRngBoostClass::uniformSample() const
+RngBoostClass::uniformSample() const
 {
   static boost::uniform_01<boost::mt19937> zeroone(m_rng);
   return zeroone();
@@ -81,7 +81,7 @@ uqRngBoostClass::uniformSample() const
 
 // --------------------------------------------------
 double
-uqRngBoostClass::gaussianSample(double stdDev) const
+RngBoostClass::gaussianSample(double stdDev) const
 {
   double mean = 0.; //it will be added conveniently later
   static boost::uniform_01<boost::mt19937> zeroone(m_rng);
@@ -91,7 +91,7 @@ uqRngBoostClass::gaussianSample(double stdDev) const
 
 // --------------------------------------------------
 double
-uqRngBoostClass::betaSample(double alpha, double beta) const
+RngBoostClass::betaSample(double alpha, double beta) const
 {
   static boost::uniform_01<boost::mt19937> zeroone(m_rng); 
   boost::math::beta_distribution<double> beta_dist(alpha, beta); 
@@ -100,7 +100,7 @@ uqRngBoostClass::betaSample(double alpha, double beta) const
 
 // --------------------------------------------------
 double
-uqRngBoostClass::gammaSample(double a, double b) const
+RngBoostClass::gammaSample(double a, double b) const
 {
   static boost::uniform_01<boost::mt19937> zeroone(m_rng);
   boost::math::gamma_distribution<double>  gamma_dist(a,b);

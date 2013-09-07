@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------bl-
 //--------------------------------------------------------------------------
-// 
+//
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
@@ -17,11 +17,11 @@
 //
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
-// Foundation, Inc. 51 Franklin Street, Fifth Floor, 
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
+//
 // $Id$
 //
 //--------------------------------------------------------------------------
@@ -31,7 +31,7 @@
 
 #include <uqDefines.h>
 namespace QUESO {
-  class uqEnvironmentOptionsClass;
+  class EnvironmentOptionsClass;
 }  // End namespace QUESO
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
@@ -50,24 +50,24 @@ namespace po = boost::program_options;
 
 namespace QUESO {
 
-/*! \struct uqFilePtrSetStruct
+/*! \struct FilePtrSetStruct
  *  \brief Struct for handling data input and output from files.
  *
  *  This struct deals with data input and output from files. It encapsulates the input/output stream class std:: fstream.
  */
- 
-//! 
-struct uqFilePtrSetStruct {
+
+//!
+struct FilePtrSetStruct {
 
   //! Struct constructor
-  uqFilePtrSetStruct();
-  
-  //! Destructor 
-  ~uqFilePtrSetStruct();
+  FilePtrSetStruct();
+
+  //! Destructor
+  ~FilePtrSetStruct();
 
   //! Provides a stream interface to write data to files.
   std::ofstream* ofsVar;
-  
+
   //! Provides a stream interface to read data from files.
   std::ifstream* ifsVar;
 #ifdef QUESO_HAS_HDF5
@@ -90,44 +90,44 @@ struct uqFilePtrSetStruct {
 //*****************************************************
 /*! \file uqEnvironment.h
  *  \brief Class to set up a QUESO environment.
- *  \class uqBaseEnvironmentClass
+ *  \class BaseEnvironmentClass
  *  \brief This (virtual) class sets up the environment underlying the use of the QUESO library by an executable.
  */
-  
+
 /*! This class sets up the environment underlying the use of the QUESO library by an executable. It:
 <list type=number>
 <item> assigns rank numbers, other than the world rank, to nodes participating in a parallel job,
 <item> provides communicators for generating a sequence of vectors in a distributed way,
-<item> provides functionality to read options from the 'options input file' (whose name is passed 
+<item> provides functionality to read options from the 'options input file' (whose name is passed
 in the constructor of this environment class),
-<item> opens output files for messages that would otherwise be written to the screen (one output 
+<item> opens output files for messages that would otherwise be written to the screen (one output
 file per allowed rank is opened and allowed ranks can be specified through the 'options input file').
 </list>
 -------------------------------------------------------------*/
-/*! This class is virtual. It is inherited by 'uqEmptyEnvironmentClass' and 'uqFullEnvironmentClass'.
-    The QUESO environment class is instantiated at the application level, right after 'MPI_Init(&argc,&argv)'. 
-    The QUESO environment is required by reference by many constructors in the QUESO library, 
+/*! This class is virtual. It is inherited by 'EmptyEnvironmentClass' and 'FullEnvironmentClass'.
+    The QUESO environment class is instantiated at the application level, right after 'MPI_Init(&argc,&argv)'.
+    The QUESO environment is required by reference by many constructors in the QUESO library,
     and is available by reference from many classes as well.
 -------------------------------------------------------------*/
 /*! Throughout QUESO, there are five classes whose constructors check options in the 'options input file':
 <list type=number>
-<item> uqBaseEnvironmentClass
-<item> uqStatisticalInverseProblemClass
-<item> uqStatisticalForwardProblemClass
-<item> uqMetropolisHastingsSGClass ('SG' stands for 'sequence generator')
-<item> uqMonteCarloSGClass
+<item> BaseEnvironmentClass
+<item> StatisticalInverseProblemClass
+<item> StatisticalForwardProblemClass
+<item> MetropolisHastingsSGClass ('SG' stands for 'sequence generator')
+<item> MonteCarloSGClass
 </list>
 */
 /*! These classes rely on 'options classes' to read their options from the input file.
     The options classes are, respectively:
 <list type=number>
-<item> uqEnvironmentOptionsClass
-<item> uqStatisticalInverseProblemOptionsClass
-<item> uqStatisticalForwardProblemOptionsClass
-<item> uqMetropolisHastingsSGOptionsClass
-<item> uqMonteCarloSGOptionsClass
+<item> EnvironmentOptionsClass
+<item> StatisticalInverseProblemOptionsClass
+<item> StatisticalForwardProblemOptionsClass
+<item> MetropolisHastingsSGOptionsClass
+<item> MonteCarloSGOptionsClass
 </list>
-    The last two classes also rely on uqSequenceStatisticalOptionsClass for reading the
+    The last two classes also rely on SequenceStatisticalOptionsClass for reading the
     options specifying which statistics have to be computed on the sequences of vectors
     involved.
 -------------------------------------------------------------*/
@@ -136,39 +136,39 @@ file per allowed rank is opened and allowed ranks can be specified through the '
 <list type=number>
 <item> 'W >= 1' be the size of whole world communicator involved in a parallel run;
 <item> 'N >= 1' be the size of the communicator passed to the QUESO environment constructor;
-<item> 'S >= 1' be the number of statistical problems a QUESO environment will be handling 
+<item> 'S >= 1' be the number of statistical problems a QUESO environment will be handling
 at the same time, in parallel.
 </list>
     Usually 'W'='N', but such equality is not necessary.
-    The number 'S' is equal to the QUESO environment option 'm_numSubEnvironments', and is equal to 
+    The number 'S' is equal to the QUESO environment option 'm_numSubEnvironments', and is equal to
     1 by default. The number 'N' must be a multiple of 'S', otherwise the QUESO class prints a fatal
     error message and MPI aborts. The five types of communicators that QUESO manages are referred to as:
 <list type=number>
 <item> world = MPI_WORLD_COMM, of size W;
-<item> full = communicator passed to the constructor of uqBaseEnvironmentClass, of size N and usually equal to the world communicator;
+<item> full = communicator passed to the constructor of BaseEnvironmentClass, of size N and usually equal to the world communicator;
 <item> sub = communicator of size N/S that contains the number of MPI nodes necessary to solve a statistical inverse problem or a statistical forward problem.
 <item> self = MPI_SELF_COMM, of size 1;
 <item> inter0 = communicator of size S formed by all MPI nodes that have 'sub' rank 0 in their respective 'sub' communicators.
 </list>
     So, any given node has potentially five different ranks. Of course, if the user is solving just one statistical problem with just one MPI node, then all ranks are equal to zero.
-    
+
 -------------------------------------------------------------*/
 
-/*! In the QUESO library terminology, one might refer to a QUESO "full" environment composed of 
- * 'S' QUESO "sub" environments. Each sub environment is assigned a "sub" id varying from 0 (zero) 
- * to S-1. Each sub environment is able to generate a statistical inverse problem and/or a statistical 
- * forward problem. That is, each sub environment is able to handle a "sub" Markov chain (a sequence) 
- * of vectors and/or a "sub" Monte Carlo sequence of output vectors. The "sub" sequences can be seen 
- * as forming a "unified" sequence in a distributed way. Indeed, the virtual class 'uqVectorSequenceClass' 
+/*! In the QUESO library terminology, one might refer to a QUESO "full" environment composed of
+ * 'S' QUESO "sub" environments. Each sub environment is assigned a "sub" id varying from 0 (zero)
+ * to S-1. Each sub environment is able to generate a statistical inverse problem and/or a statistical
+ * forward problem. That is, each sub environment is able to handle a "sub" Markov chain (a sequence)
+ * of vectors and/or a "sub" Monte Carlo sequence of output vectors. The "sub" sequences can be seen
+ * as forming a "unified" sequence in a distributed way. Indeed, the virtual class 'VectorSequenceClass'
  * provides "sub" and "unified" statistical operations.
  *
  *  A QUESO "sub" environment eventually prints messages to its own output file. In order for that to
  * happen, the requirements are:
 <list type=number>
 <item> option 'm_subDisplayFileName', a string, must be different than the default value ".";
-<item> option 'm_subDisplayAllowedSet', a set of sub ids, must contain the id of the sub environment 
+<item> option 'm_subDisplayAllowedSet', a set of sub ids, must contain the id of the sub environment
 wanting to write a message to the output file;
-<item> the previous requirement is automatically satisfied if the option 'm_subDisplayAllowAll', 
+<item> the previous requirement is automatically satisfied if the option 'm_subDisplayAllowAll',
 a boolean, is set to 1 (the default value is 0);
 <item> the processor wanting to write a message to the output file must have sub rank 0 (zero).
 </list>
@@ -178,167 +178,167 @@ a boolean, is set to 1 (the default value is 0);
 */
 
 
-class uqBaseEnvironmentClass {
+class BaseEnvironmentClass {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
-  uqBaseEnvironmentClass(const char* passedOptionsInputFileName, const uqEnvOptionsValuesClass* alternativeOptionsValues);
-  
+  BaseEnvironmentClass(const char* passedOptionsInputFileName, const EnvOptionsValuesClass* alternativeOptionsValues);
+
   //! Copy constructor. It should not be used be the user.
-  uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj);
-  
+  BaseEnvironmentClass(const BaseEnvironmentClass& obj);
+
   //! Destructor
-  /*! It deallocates memory and does other cleanup for the class object and its class members when 
+  /*! It deallocates memory and does other cleanup for the class object and its class members when
    * the object is destroyed. It displays the total run time of the combo QUESO + application using
      the function gettimeofday() from a struct timeval (as specified in <sys/time.h>). */
-  virtual ~uqBaseEnvironmentClass();
+  virtual ~BaseEnvironmentClass();
   //@}
-  
+
   //! @name Set methods
   //@{
   //! Assignment operator. It should not be used be the user.
-  uqBaseEnvironmentClass& operator= (const uqBaseEnvironmentClass& rhs);
+  BaseEnvironmentClass& operator= (const BaseEnvironmentClass& rhs);
   //@}
 
   //! @name Environment, Communicator and Options Input File methods
   //@{
   //! Returns whether the full environment class is ready (constructor has successfully been called).
   bool    fullEnvIsReady() const;
-  
+
   //! Returns the process world rank.
   int     worldRank     () const;
 
   //! Returns the process full rank.
   int     fullRank      () const;
-  
-  //! Access function for uqMpiComm full communicator. 
-  const uqMpiCommClass&   fullComm      () const; 
 
-  //! Access function for sub-group. 
-  uqRawType_MPI_Group     subGroup      () const;
-  
-  //! Access function for sub-rank. 
+  //! Access function for MpiComm full communicator.
+  const MpiCommClass&   fullComm      () const;
+
+  //! Access function for sub-group.
+  RawType_MPI_Group     subGroup      () const;
+
+  //! Access function for sub-rank.
   int     subRank       () const;
-  
-  //! Access function for uqMpiComm sub communicator. 
-  const uqMpiCommClass&   subComm       () const; 
 
-  //! Access function for uqMpiComm self-communicator. 
-  const uqMpiCommClass&   selfComm      () const; 
+  //! Access function for MpiComm sub communicator.
+  const MpiCommClass&   subComm       () const;
+
+  //! Access function for MpiComm self-communicator.
+  const MpiCommClass&   selfComm      () const;
 
   //! Returns the process inter0 rank.
   int     inter0Rank    () const;
-  
-  //! Access function for uqMpiComm inter0-communicator. 
-  const uqMpiCommClass&   inter0Comm    () const;
+
+  //! Access function for MpiComm inter0-communicator.
+  const MpiCommClass&   inter0Comm    () const;
 
   //! Access function for m_subDisplayFile (displays file on stream).
   std::ofstream*  subDisplayFile() const;
-  
+
   //! Access function for m_subDisplayFileName (displays filename on stream).
   std::string     subDisplayFileName    () const;
 
   //! Access function to the number of sub-environments.
   unsigned int    numSubEnvironments    () const;
-  
+
   //! Access function to the number of each sub-environment Id: m_subId.
   unsigned int    subId () const;
-  
+
   //! Access to the attribute m_subIdString; which stores the string for the sub-environment, and it will be used, for instance,    to create the output files for each sub-environment.
   const std::string&      subIdString   () const;
-  
+
   //TODO Not implemented?
   void    checkTheParallelEnvironment   () const;
 
   //! Access to the attribute m_optionsInputFileName, which stores the  name of the input file passed by the user to QUESO.
   std::string     optionsInputFileName  () const;
-  
+
   void    setOptionsInputFileAccessState(bool newState) const; // Yes, 'const'
-	    
+
 
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
   const po::options_description& allOptionsDesc () const;
 #endif
-  
+
   //! Access function to private attribute m_allOptionsMap. It is an instance of po::variables_map(), which
   //! allows concrete variables to map which store variables in real map.
   po::variables_map&      allOptionsMap () const;
-  
-  
+
+
   //! This method scans the input file provided by the user to QUESO.
   /*! It checks if no input file is passed and updates the private attribute m_allOptionsDesc, which
    * keeps all the options.*/
   void    scanInputFileForMyOptions(const po::options_description& optionsDesc) const;
-  
+
   //! Access function to private attribute m_displayVerbosity. It manages how much information will be
   //! release during the use of the QUESO library.
   unsigned int    displayVerbosity () const;
-  
+
   //! Access function to private attribute m_syncVerbosity.
   unsigned int    syncVerbosity    () const;
-  
+
   //! Access function to private attribute m_checkingLevel.
   unsigned int    checkingLevel    () const;
-  
+
   //! Access to the RNG object.
-  const uqRngBaseClass* rngObject  () const;
-  
+  const RngBaseClass* rngObject  () const;
+
   //! Reset RNG seed.
   void                  resetSeed  (int newSeedOption);
-  
+
   //! Access to the RNG seed.
   int                   seed       () const;
 
   //! Access to Basic PDFs.
-  const uqBasicPdfsBaseClass* basicPdfs() const;
-  
+  const BasicPdfsBaseClass* basicPdfs() const;
+
   //! Access to the platform name.
   std::string platformName      () const;
-  
+
    //! Access function to private attribute m_identifyingString: identifying string.
   std::string identifyingString () const;
-  
+
   //! Reset private attribute m_identifyingString with the value \c newString.
   void    resetIdentifyingString(const std::string& newString) const; // Yes, const
-  
+
   //! //TODO Not implemented? it is called in examples/validationCycle/tests_old/results_5_25/uqTgaEx4.h.
   bool    isThereInputFile      () const;
-  
+
   //! Used to save the time when the combo `QUESO+user's application' started to run.
   struct timeval  timevalBegin  () const;
   //@}
-  
+
   //! @name I/O methods
   //@{
-    
-  //! Opens an output file for each sub-environment that was chosen to send data to the file.  
-  bool    openOutputFile(const std::string& fileName, const std::string& fileType, 
+
+  //! Opens an output file for each sub-environment that was chosen to send data to the file.
+  bool    openOutputFile(const std::string& fileName, const std::string& fileType,
 			 const std::set<unsigned int>& allowedSubEnvIds, bool writeOver,
-			 uqFilePtrSetStruct& filePtrSet) const;
+			 FilePtrSetStruct& filePtrSet) const;
 
   //! Opens a unified output file, that will contain data from all sub-environments.
   bool    openUnifiedOutputFile (const std::string& fileName, const std::string& fileType,
-				 bool writeOver, uqFilePtrSetStruct& filePtrSet) const;
-				 
+				 bool writeOver, FilePtrSetStruct& filePtrSet) const;
+
   //! Opens an input file.
   bool    openInputFile (const std::string& fileName, const std::string& fileType,
 			 const std::set<unsigned int>& allowedSubEnvIds,
-			 uqFilePtrSetStruct& filePtrSet) const;
-			 
-  //! Opens the unified input file.			 
+			 FilePtrSetStruct& filePtrSet) const;
+
+  //! Opens the unified input file.
   bool    openUnifiedInputFile  (const std::string& fileName, const std::string& fileType,
-				 uqFilePtrSetStruct& filePtrSet) const;
-				 
-  //! Closes the file.				 
-  void    closeFile     (uqFilePtrSetStruct& filePtrSet, const std::string& fileType) const; 
-  
+				 FilePtrSetStruct& filePtrSet) const;
+
+  //! Closes the file.
+  void    closeFile     (FilePtrSetStruct& filePtrSet, const std::string& fileType) const;
+
   //! Set an exceptional circumstance.
   void    setExceptionalCircumstance    (bool value) const;
-  
+
     //! Decides whether there is an exceptional circumstance.
   bool    exceptionalCircumstance       () const;
-  
+
 
   virtual void    print (std::ostream& os) const = 0;
 
@@ -347,10 +347,10 @@ protected:
   bool       		     m_fullEnvIsReady;
   int 	     		     m_worldRank;
 
-  uqMpiCommClass*    	     m_fullComm;
+  MpiCommClass*    	     m_fullComm;
   int                        m_fullRank;
   int                        m_fullCommSize;
-  uqRawType_MPI_Group        m_fullGroup;
+  RawType_MPI_Group        m_fullGroup;
 
   std::string		     m_optionsInputFileName;
   mutable bool       	     m_optionsInputFileAccessState; // Yes, 'mutable'
@@ -359,73 +359,73 @@ protected:
 
   unsigned int               m_subId;
   std::string 		     m_subIdString;
-  uqRawType_MPI_Group        m_subGroup;
-  uqMpiCommClass*            m_subComm;
+  RawType_MPI_Group        m_subGroup;
+  MpiCommClass*            m_subComm;
   int			     m_subRank;
   int			     m_subCommSize;
 
-  uqMpiCommClass*            m_selfComm;
+  MpiCommClass*            m_selfComm;
 
-  uqRawType_MPI_Group        m_inter0Group;
-  uqMpiCommClass*            m_inter0Comm;
+  RawType_MPI_Group        m_inter0Group;
+  MpiCommClass*            m_inter0Comm;
   int	                     m_inter0Rank;
   int                        m_inter0CommSize;
 
   mutable std::ofstream*     m_subDisplayFile;
-  uqRngBaseClass*    	     m_rngObject;
-  uqBasicPdfsBaseClass*      m_basicPdfs;
+  RngBaseClass*    	     m_rngObject;
+  BasicPdfsBaseClass*      m_basicPdfs;
   struct timeval             m_timevalBegin;
   mutable bool       	     m_exceptionalCircumstance;
 
-  uqEnvOptionsValuesClass    m_alternativeOptionsValues;
-  uqEnvironmentOptionsClass* m_optionsObj;
+  EnvOptionsValuesClass    m_alternativeOptionsValues;
+  EnvironmentOptionsClass* m_optionsObj;
 };
 
 //*****************************************************
 // Empty Environment
 //*****************************************************
-/*!  \class uqEmptyEnvironmentClass
+/*!  \class EmptyEnvironmentClass
  *  \brief This class sets up the environment underlying the use of the QUESO library by an executable.
  */
-class uqEmptyEnvironmentClass : public uqBaseEnvironmentClass {
+class EmptyEnvironmentClass : public BaseEnvironmentClass {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor. Does nothing.
-  /*! It initialized uqBaseEnvironmentClass with no input file and a NULL pointer for the alternativeOptionsValues.*/ 
-  uqEmptyEnvironmentClass();
-  
+  /*! It initialized BaseEnvironmentClass with no input file and a NULL pointer for the alternativeOptionsValues.*/
+  EmptyEnvironmentClass();
+
   //! Destructor
- ~uqEmptyEnvironmentClass();
+ ~EmptyEnvironmentClass();
   //@}
- 
+
 void print(std::ostream& os) const;
 };
 
 //*****************************************************
 // Full Environment
 //*****************************************************
-/*!  \class uqFullEnvironmentClass
+/*!  \class FullEnvironmentClass
  *  \brief This class sets up the full environment underlying the use of the QUESO library by an executable.
- * 
+ *
  * This is the class that is actually used during a QUESO+application run.
  */
 
-class uqFullEnvironmentClass : public uqBaseEnvironmentClass {
+class FullEnvironmentClass : public BaseEnvironmentClass {
 public:
     //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
-  /*! It initializes the full communicator, reads the options, deals with multiple sub-environments, 
+  /*! It initializes the full communicator, reads the options, deals with multiple sub-environments,
    * e.g. dealing with sub/self/inter0-communicators, handles path for output files. */
-  uqFullEnvironmentClass(uqRawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, const uqEnvOptionsValuesClass* alternativeOptionsValues);
- 
+  FullEnvironmentClass(RawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, const EnvOptionsValuesClass* alternativeOptionsValues);
+
   //! Destructor
- ~uqFullEnvironmentClass();
+ ~FullEnvironmentClass();
   //@}
- 
+
   //! @name I/O methods
-  //@{ 
+  //@{
   //! Sends the environment options to the stream.
   void	print       (std::ostream& os) const;
   //@}
@@ -435,7 +435,7 @@ private:
 void	readOptionsInputFile();
 };
 
-std::ostream& operator<<(std::ostream& os, const uqBaseEnvironmentClass& obj);
+std::ostream& operator<<(std::ostream& os, const BaseEnvironmentClass& obj);
 
 }  // End namespace QUESO
 

@@ -32,19 +32,19 @@
 namespace QUESO {
 
 // Default constructor ------------------------------
-uqMatrixClass::uqMatrixClass()
+MatrixClass::MatrixClass()
   :
-  m_env(*(new uqEmptyEnvironmentClass())                                               ),
-  m_map(*(new uqMapClass( 1,0,*(new uqMpiCommClass(m_env,uqRawValue_MPI_COMM_SELF)) ) )) // avoid using MPI_COMM_WORLD
+  m_env(*(new EmptyEnvironmentClass())                                               ),
+  m_map(*(new MapClass( 1,0,*(new MpiCommClass(m_env,RawValue_MPI_COMM_SELF)) ) )) // avoid using MPI_COMM_WORLD
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
-                      "uqMatrixClass::constructor(), default",
+                      "MatrixClass::constructor(), default",
                       "should not be used by user");
 }
 
 // Shaped constructor --------------------------------
-uqMatrixClass::uqMatrixClass(const uqBaseEnvironmentClass& env, const uqMapClass& map)
+MatrixClass::MatrixClass(const BaseEnvironmentClass& env, const MapClass& map)
   :
   m_env              (env),
   m_map              (map),
@@ -54,92 +54,92 @@ uqMatrixClass::uqMatrixClass(const uqBaseEnvironmentClass& env, const uqMapClass
 }
 
 // Copy constructor -----------------------------------
-uqMatrixClass::uqMatrixClass(const uqMatrixClass& rhs)
+MatrixClass::MatrixClass(const MatrixClass& rhs)
   :
   m_env(rhs.m_env),
   m_map(rhs.m_map)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       m_env.worldRank(),
-                      "uqMatrixClass::constructor(), copy",
+                      "MatrixClass::constructor(), copy",
                       "code should not execute through here");
 }
 
 // Destructor ---------------------------------------
-uqMatrixClass::~uqMatrixClass()
+MatrixClass::~MatrixClass()
 {
 }
 
 // Set methods --------------------------------------
-uqMatrixClass&
-uqMatrixClass::operator= (const uqMatrixClass& rhs)
+MatrixClass&
+MatrixClass::operator= (const MatrixClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       rhs.m_env.worldRank(),
-                      "uqMatrixClass::operator=()",
+                      "MatrixClass::operator=()",
                       "code should not execute through here");
   return *this;
 }
 
 // --------------------------------------------------
-uqMatrixClass&
-uqMatrixClass::operator*=(double a)
+MatrixClass&
+MatrixClass::operator*=(double a)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       m_env.worldRank(),
-                      "uqMatrixClass::operator*=()",
+                      "MatrixClass::operator*=()",
                       "code should not execute through here");
   double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
 // --------------------------------------------------
-uqMatrixClass&
-uqMatrixClass::operator+=(const uqMatrixClass& rhs)
+MatrixClass&
+MatrixClass::operator+=(const MatrixClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       rhs.m_env.worldRank(),
-                      "uqMatrixClass::operator+=()",
+                      "MatrixClass::operator+=()",
                       "code should not execute through here");
   return *this;
 }
 
 // --------------------------------------------------
-uqMatrixClass&
-uqMatrixClass::operator-=(const uqMatrixClass& rhs)
+MatrixClass&
+MatrixClass::operator-=(const MatrixClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       rhs.m_env.worldRank(),
-                      "uqMatrixClass::operator-=()",
+                      "MatrixClass::operator-=()",
                       "code should not execute through here");
   return *this;
 }
 
 // Environment and Map methods ----------------------
-const uqBaseEnvironmentClass&
-uqMatrixClass::env() const
+const BaseEnvironmentClass&
+MatrixClass::env() const
 {
   return m_env;
 }
 
 // --------------------------------------------------
-const uqMapClass&
-uqMatrixClass::map() const
+const MapClass&
+MatrixClass::map() const
 {
   return m_map;
-  //return (const uqMapClass&) (m_mat->Map());
+  //return (const MapClass&) (m_mat->Map());
 }
 
 // --------------------------------------------------
 unsigned int
-uqMatrixClass::numOfProcsForStorage() const
+MatrixClass::numOfProcsForStorage() const
 {
   return m_map.Comm().NumProc();
 }
 
 // I/O and Miscellaneous methods --------------------
 void
-uqMatrixClass::setPrintHorizontally(bool value) const
+MatrixClass::setPrintHorizontally(bool value) const
 {
   m_printHorizontally = value;
   return;
@@ -147,14 +147,14 @@ uqMatrixClass::setPrintHorizontally(bool value) const
 
 // --------------------------------------------------
 bool
-uqMatrixClass::getPrintHorizontally() const
+MatrixClass::getPrintHorizontally() const
 {
   return m_printHorizontally;
 }
 
 // --------------------------------------------------
 void
-uqMatrixClass::setInDebugMode(bool value) const
+MatrixClass::setInDebugMode(bool value) const
 {
   m_inDebugMode = value;
   return;
@@ -162,14 +162,14 @@ uqMatrixClass::setInDebugMode(bool value) const
 
 // --------------------------------------------------
 bool
-uqMatrixClass::getInDebugMode() const
+MatrixClass::getInDebugMode() const
 {
   return m_inDebugMode;
 }
 
 // --------------------------------------------------
 void
-uqMatrixClass::copy(const uqMatrixClass& src)
+MatrixClass::copy(const MatrixClass& src)
 {
   //m_env = src.env;
   //m_map = src.map;

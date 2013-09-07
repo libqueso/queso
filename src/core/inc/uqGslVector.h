@@ -40,16 +40,16 @@
 
 namespace QUESO {
 
-/*! \class uqGslVectorClass
+/*! \class GslVectorClass
 
     \brief Class for vector operations using GSL library.
     
     This class creates and provides basic support for vectors of templated 
-    type as a specialization of uqVectorClass using GSL vectors, which are defined 
+    type as a specialization of VectorClass using GSL vectors, which are defined 
     by an encapsulated gsl_vector structure.
 */
 
-class uqGslVectorClass : public uqVectorClass
+class GslVectorClass : public VectorClass
 {
 public:
   
@@ -58,42 +58,42 @@ public:
 
   //! Default Constructor
   /*! Creates an empty vector of no length.*/
-  uqGslVectorClass();
+  GslVectorClass();
   
-  uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map);
-  uqGslVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map, double value);
-  uqGslVectorClass(const uqBaseEnvironmentClass& env, double d1, double d2, const uqMapClass& map); // MATLAB linspace
+  GslVectorClass(const BaseEnvironmentClass& env, const MapClass& map);
+  GslVectorClass(const BaseEnvironmentClass& env, const MapClass& map, double value);
+  GslVectorClass(const BaseEnvironmentClass& env, double d1, double d2, const MapClass& map); // MATLAB linspace
 
   //! Construct a vector, with length the same as \c v, with evenly spaced numbers from \c start to \c end, inclusive
-  uqGslVectorClass(const uqGslVectorClass&         v, double start, double end);
-  uqGslVectorClass(const uqGslVectorClass&         y);
+  GslVectorClass(const GslVectorClass&         v, double start, double end);
+  GslVectorClass(const GslVectorClass&         y);
   
   //! Destructor
-  ~uqGslVectorClass();
+  ~GslVectorClass();
   //@}
  
   //! @name Set methods.
   //@{ 
   //! 	Copies values from vector rhs to \c this. 
-  uqGslVectorClass& operator= (const uqGslVectorClass& rhs);
+  GslVectorClass& operator= (const GslVectorClass& rhs);
   
   //! Stores in \c this the coordinate-wise multiplication of \c this and a.
-  uqGslVectorClass& operator*=(double a);
+  GslVectorClass& operator*=(double a);
   
   //! Stores in \c this the coordinate-wise division of \c this by a.
-  uqGslVectorClass& operator/=(double a);
+  GslVectorClass& operator/=(double a);
   
   //! Stores in \c this the coordinate-wise multiplication of \c this with rhs.
-  uqGslVectorClass& operator*=(const uqGslVectorClass& rhs);
+  GslVectorClass& operator*=(const GslVectorClass& rhs);
   
   //! Stores in \c this the coordinate-wise division of \c this by rhs.
-  uqGslVectorClass& operator/=(const uqGslVectorClass& rhs);
+  GslVectorClass& operator/=(const GslVectorClass& rhs);
   
    //! Stores in \c this the coordinate-wise addition of \c this and rhs.
-  uqGslVectorClass& operator+=(const uqGslVectorClass& rhs);
+  GslVectorClass& operator+=(const GslVectorClass& rhs);
   
   //! Stores in \c this the coordinate-wise subtraction of \c this by rhs.
-  uqGslVectorClass& operator-=(const uqGslVectorClass& rhs);
+  GslVectorClass& operator-=(const GslVectorClass& rhs);
   //@}
   
   //! @name Accessor methods.
@@ -144,31 +144,31 @@ public:
   void         cwSetGaussian    (double mean, double stdDev);
   
   //! This function sets component-wise Gaussian random variates, with vectors for mean and standard deviation.
-  void         cwSetGaussian    (const uqGslVectorClass& meanVec, const uqGslVectorClass& stdDevVec);
+  void         cwSetGaussian    (const GslVectorClass& meanVec, const GslVectorClass& stdDevVec);
   
   //! This function sets component-wise a number uniformly distributed in the range of elements of [aVec,bVec].
-  void         cwSetUniform     (const uqGslVectorClass& aVec, const uqGslVectorClass& bVec);
+  void         cwSetUniform     (const GslVectorClass& aVec, const GslVectorClass& bVec);
   
   //! This function returns a random variate from the beta distribution, with vector parameters alpha and beta.
-  void         cwSetBeta        (const uqGslVectorClass& alpha, const uqGslVectorClass& beta);
+  void         cwSetBeta        (const GslVectorClass& alpha, const GslVectorClass& beta);
   
   //! This function returns a random variate from the gamma distribution with vector parameters a and b. 
-  void         cwSetGamma       (const uqGslVectorClass& a, const uqGslVectorClass& b);
+  void         cwSetGamma       (const GslVectorClass& a, const GslVectorClass& b);
   
   //! This function returns a random variate from the inverse gamma distribution with vector parameters alpha and beta. 
-  void         cwSetInverseGamma(const uqGslVectorClass& alpha, const uqGslVectorClass& beta);
+  void         cwSetInverseGamma(const GslVectorClass& alpha, const GslVectorClass& beta);
   
-  //! This function concatenates uqGslVectorClass v1 and uqGslVectorClass v2 into  \c this.
-  void         cwSetConcatenated(const uqGslVectorClass& v1, const uqGslVectorClass& v2);
+  //! This function concatenates GslVectorClass v1 and GslVectorClass v2 into  \c this.
+  void         cwSetConcatenated(const GslVectorClass& v1, const GslVectorClass& v2);
   
   //! This function concatenates vectors \c v1 and \c v2 into \c this vector.
-  void         cwSetConcatenated(const std::vector<const uqGslVectorClass* >& vecs);
+  void         cwSetConcatenated(const std::vector<const GslVectorClass* >& vecs);
   
   //! This function sets the vector vec into \c this starting at position initialPos.  
-  void         cwSet            (unsigned int initialPos, const uqGslVectorClass& vec);
+  void         cwSet            (unsigned int initialPos, const GslVectorClass& vec);
 
   //! This function sets the values of this starting at position initialPos ans saves them in vector vec.  
-  void         cwExtract        (unsigned int initialPos, uqGslVectorClass& vec) const;
+  void         cwExtract        (unsigned int initialPos, GslVectorClass& vec) const;
   
   //! This function inverts component-wise the element values of \c this.  
   void         cwInvert         ();
@@ -186,11 +186,11 @@ public:
   //! This function sorts the elements of the vector \c this in ascending numerical order. 
   void         sort             ();
     
-  void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, uqGslVectorClass& outputVec) const;
-  void         matlabLinearInterpExtrap(const uqGslVectorClass& x1Vec, const uqGslVectorClass& y1Vec, const uqGslVectorClass& x2Vec);
-  void         mpiBcast         (int srcRank, const uqMpiCommClass& bcastComm);
-  void         mpiAllReduce     (uqRawType_MPI_Op mpiOperation, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const;
-  void         mpiAllQuantile   (double probability, const uqMpiCommClass& opComm, uqGslVectorClass& resultVec) const;
+  void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, GslVectorClass& outputVec) const;
+  void         matlabLinearInterpExtrap(const GslVectorClass& x1Vec, const GslVectorClass& y1Vec, const GslVectorClass& x2Vec);
+  void         mpiBcast         (int srcRank, const MpiCommClass& bcastComm);
+  void         mpiAllReduce     (RawType_MPI_Op mpiOperation, const MpiCommClass& opComm, GslVectorClass& resultVec) const;
+  void         mpiAllQuantile   (double probability, const MpiCommClass& opComm, GslVectorClass& resultVec) const;
   void         subWriteContents (const std::string&            varNamePrefix,
                                  const std::string&            fileName,
                                  const std::string&            fileType,
@@ -202,19 +202,19 @@ public:
 //! @name Comparison methods.
   //@{ 
   //! This function returns true if at least one component of \c this is smaller than the respective component of rhs.
-  bool         atLeastOneComponentSmallerThan       (const uqGslVectorClass& rhs) const;
+  bool         atLeastOneComponentSmallerThan       (const GslVectorClass& rhs) const;
   
   //! This function returns true if at least one component of \c this is bigger than the respective component of rhs. 
-  bool         atLeastOneComponentBiggerThan        (const uqGslVectorClass& rhs) const;
+  bool         atLeastOneComponentBiggerThan        (const GslVectorClass& rhs) const;
   
   //! This function returns true if at least one component of \c this is smaller than or equal to the respective component of rhs.
-  bool         atLeastOneComponentSmallerOrEqualThan(const uqGslVectorClass& rhs) const;
+  bool         atLeastOneComponentSmallerOrEqualThan(const GslVectorClass& rhs) const;
   
   //! This function returns true if at least one component of \c this is bigger than or equal to the respective component of rhs. 
-  bool         atLeastOneComponentBiggerOrEqualThan (const uqGslVectorClass& rhs) const;
+  bool         atLeastOneComponentBiggerOrEqualThan (const GslVectorClass& rhs) const;
   //@}
 
-  // Necessary for uqGslMatrixClass::invertMultiply() and uqGslMatrixClass::setRow/Column
+  // Necessary for GslMatrixClass::invertMultiply() and GslMatrixClass::setRow/Column
   gsl_vector*  data                          () const; 
 
 //! @name Attribute methods.
@@ -238,12 +238,12 @@ public:
   void         getMinValueAndIndex( double& value, int& index );
 
   //! This function returns absolute value of elements in \c this.
-  uqGslVectorClass abs() const;
+  GslVectorClass abs() const;
  //@}
 private:
 
   //! This function copies the elements of the vector src into \c this.
-  void         copy             (const uqGslVectorClass& src);
+  void         copy             (const GslVectorClass& src);
 
   //! GSL vector.
   gsl_vector* m_vec;
@@ -251,15 +251,15 @@ private:
 
 // Comments in this part of file don't appear in the doxygen docs.
 
-uqGslVectorClass operator/    (      double a,              const uqGslVectorClass& x  );
-uqGslVectorClass operator/    (const uqGslVectorClass& x,   const uqGslVectorClass& y  );
-uqGslVectorClass operator*    (      double a,              const uqGslVectorClass& x  );
-uqGslVectorClass operator*    (const uqGslVectorClass& x,   const uqGslVectorClass& y  );
-double           scalarProduct(const uqGslVectorClass& x,   const uqGslVectorClass& y  );
-uqGslVectorClass operator+    (const uqGslVectorClass& x,   const uqGslVectorClass& y  );
-uqGslVectorClass operator-    (const uqGslVectorClass& x,   const uqGslVectorClass& y  );
-bool             operator==   (const uqGslVectorClass& lhs, const uqGslVectorClass& rhs);
-std::ostream&    operator<<   (std::ostream& os,            const uqGslVectorClass& obj);
+GslVectorClass operator/    (      double a,              const GslVectorClass& x  );
+GslVectorClass operator/    (const GslVectorClass& x,   const GslVectorClass& y  );
+GslVectorClass operator*    (      double a,              const GslVectorClass& x  );
+GslVectorClass operator*    (const GslVectorClass& x,   const GslVectorClass& y  );
+double           scalarProduct(const GslVectorClass& x,   const GslVectorClass& y  );
+GslVectorClass operator+    (const GslVectorClass& x,   const GslVectorClass& y  );
+GslVectorClass operator-    (const GslVectorClass& x,   const GslVectorClass& y  );
+bool             operator==   (const GslVectorClass& lhs, const GslVectorClass& rhs);
+std::ostream&    operator<<   (std::ostream& os,            const GslVectorClass& obj);
 
 }  // End namespace QUESO
 
