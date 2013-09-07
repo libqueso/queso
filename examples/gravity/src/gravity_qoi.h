@@ -37,7 +37,7 @@
 #include <uqDistArray.h>
 
 struct
-qoiRoutine_DataClass
+qoiRoutine_Data
 {
   double m_angle;
   double m_initialVelocity;
@@ -46,12 +46,12 @@ qoiRoutine_DataClass
 
 void
 qoiRoutine(
-  const QUESO::GslVectorClass&                     paramValues,
-  const QUESO::GslVectorClass*                     paramDirection,
+  const QUESO::GslVector&                     paramValues,
+  const QUESO::GslVector*                     paramDirection,
   const void*                                 functionDataPtr,
-        QUESO::GslVectorClass&                     qoiValues,
-        QUESO::DistArrayClass<QUESO::GslVectorClass* >* gradVectors,
-        QUESO::DistArrayClass<QUESO::GslMatrixClass* >* hessianMatrices,
-        QUESO::DistArrayClass<QUESO::GslVectorClass* >* hessianEffects);
+        QUESO::GslVector&                     qoiValues,
+        QUESO::DistArray<QUESO::GslVector* >* gradVectors,
+        QUESO::DistArray<QUESO::GslMatrix* >* hessianMatrices,
+        QUESO::DistArray<QUESO::GslVector* >* hessianEffects);
 
 #endif
