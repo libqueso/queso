@@ -102,16 +102,16 @@
 
 namespace QUESO {
 
-class uqMLSamplingLevelOptionsClass
+class MLSamplingLevelOptionsClass
 {
 public:
-  uqMLSamplingLevelOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
-//uqMLSamplingLevelOptionsClass(const uqMLSamplingLevelOptionsClass& inputOptions);
- ~uqMLSamplingLevelOptionsClass();
+  MLSamplingLevelOptionsClass(const BaseEnvironmentClass& env, const char* prefix);
+//MLSamplingLevelOptionsClass(const MLSamplingLevelOptionsClass& inputOptions);
+ ~MLSamplingLevelOptionsClass();
 
-  const uqBaseEnvironmentClass& env() const;
+  const BaseEnvironmentClass& env() const;
 //void changePrefix     (const char* prefix);
-  void scanOptionsValues(const uqMLSamplingLevelOptionsClass* defaultOptions);
+  void scanOptionsValues(const MLSamplingLevelOptionsClass* defaultOptions);
   void print            (std::ostream& os) const;
 
   std::string                        m_prefix;
@@ -153,7 +153,7 @@ public:
   std::string                        m_str2;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   bool                               m_rawChainComputeStats;
-  uqSequenceStatisticalOptionsClass* m_rawChainStatisticalOptionsObj;
+  SequenceStatisticalOptionsClass* m_rawChainStatisticalOptionsObj;
   bool                               m_rawChainStatOptsInstantiated;
 #endif
 
@@ -167,7 +167,7 @@ public:
   std::string                        m_str3;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   bool                               m_filteredChainComputeStats;
-  uqSequenceStatisticalOptionsClass* m_filteredChainStatisticalOptionsObj;
+  SequenceStatisticalOptionsClass* m_filteredChainStatisticalOptionsObj;
   bool                               m_filteredChainStatOptsInstantiated;
 #endif
 
@@ -192,11 +192,11 @@ public:
   double                             m_amEpsilon;
 
 private:
-  void   copyOptionsValues(const uqMLSamplingLevelOptionsClass& srcOptions);
+  void   copyOptionsValues(const MLSamplingLevelOptionsClass& srcOptions);
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   void   getMyOptionValues(po::options_description& optionsDesc);
 
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
   po::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
@@ -268,7 +268,7 @@ private:
   std::string                   m_option_am_epsilon;
 };
 
-std::ostream& operator<<(std::ostream& os, const uqMLSamplingLevelOptionsClass& obj);
+std::ostream& operator<<(std::ostream& os, const MLSamplingLevelOptionsClass& obj);
 
 }  // End namespace QUESO
 

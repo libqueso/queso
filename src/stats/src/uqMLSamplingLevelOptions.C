@@ -31,8 +31,8 @@
 
 namespace QUESO {
 
-uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
-  const uqBaseEnvironmentClass& env,
+MLSamplingLevelOptionsClass::MLSamplingLevelOptionsClass(
+  const BaseEnvironmentClass& env,
   const char*                   prefix)
   :
   m_prefix                                   ((std::string)(prefix) + ""),
@@ -178,7 +178,7 @@ uqMLSamplingLevelOptionsClass::uqMLSamplingLevelOptionsClass(
 }
 
 void
-uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsClass& srcOptions)
+MLSamplingLevelOptionsClass::copyOptionsValues(const MLSamplingLevelOptionsClass& srcOptions)
 {
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -257,9 +257,9 @@ uqMLSamplingLevelOptionsClass::copyOptionsValues(const uqMLSamplingLevelOptionsC
   return;
 }
 
-uqMLSamplingLevelOptionsClass::~uqMLSamplingLevelOptionsClass()
+MLSamplingLevelOptionsClass::~MLSamplingLevelOptionsClass()
 {
-  //std::cout << "In uqMLSamplingLevelOptionsClass::destructor()"
+  //std::cout << "In MLSamplingLevelOptionsClass::destructor()"
   //          << ": m_filteredChainStatOptsInstantiated = " << m_filteredChainStatOptsInstantiated
   //          << ", m_rawChainStatOptsInstantiated = "      << m_rawChainStatOptsInstantiated
   //          << std::endl;
@@ -272,7 +272,7 @@ uqMLSamplingLevelOptionsClass::~uqMLSamplingLevelOptionsClass()
 } 
 
 void
-uqMLSamplingLevelOptionsClass::scanOptionsValues(const uqMLSamplingLevelOptionsClass* defaultOptions)
+MLSamplingLevelOptionsClass::scanOptionsValues(const MLSamplingLevelOptionsClass* defaultOptions)
 {
   if (m_optionsDesc == NULL) m_optionsDesc = new po::options_description("Multilevel sampling level options");
   if (defaultOptions) this->copyOptionsValues(*defaultOptions);
@@ -283,7 +283,7 @@ uqMLSamplingLevelOptionsClass::scanOptionsValues(const uqMLSamplingLevelOptionsC
 
   if ((m_env.subDisplayFile() != NULL ) &&
       (1)) { //m_totallyMute          == false)) {
-    *m_env.subDisplayFile() << "In uqMLSamplingLevelOptionsClass::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In MLSamplingLevelOptionsClass::scanOptionsValues()"
                             << ": after getting values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -292,11 +292,11 @@ uqMLSamplingLevelOptionsClass::scanOptionsValues(const uqMLSamplingLevelOptionsC
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_rawChainComputeStats) {
-    m_rawChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
+    m_rawChainStatisticalOptionsObj = new SequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
     m_rawChainStatOptsInstantiated  = true;
   }
   if (m_filteredChainComputeStats) {
-    m_filteredChainStatisticalOptionsObj = new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
+    m_filteredChainStatisticalOptionsObj = new SequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
     m_filteredChainStatOptsInstantiated  = true;
   }
 #endif
@@ -304,7 +304,7 @@ uqMLSamplingLevelOptionsClass::scanOptionsValues(const uqMLSamplingLevelOptionsC
 }
 
 void
-uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+MLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                                                              "produce help message for Bayesian Markov chain distr. calculator")
@@ -377,7 +377,7 @@ uqMLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsD
 }
 
 void
-uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+MLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
   char tmpStr[64];
 
@@ -414,7 +414,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet.c_str()].as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpAllow);
+    MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
@@ -441,7 +441,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_minEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minEffectiveSizeRatio.c_str()]).as<double>();
   }
   if (m_minEffectiveSizeRatio >= 1.) {
-    std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+    std::cerr << "WARNING In MLSamplingLevelOptionsClass::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -458,7 +458,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_maxEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxEffectiveSizeRatio.c_str()]).as<double>();
   }
   if (m_maxEffectiveSizeRatio >= 1.) {
-    std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+    std::cerr << "WARNING In MLSamplingLevelOptionsClass::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -479,7 +479,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_minRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minRejectionRate.c_str()]).as<double>();
   }
   if (m_minRejectionRate >= 1.) {
-    std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+    std::cerr << "WARNING In MLSamplingLevelOptionsClass::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -496,7 +496,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_maxRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxRejectionRate.c_str()]).as<double>();
   }
   if (m_maxRejectionRate >= 1.) {
-    std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+    std::cerr << "WARNING In MLSamplingLevelOptionsClass::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -513,7 +513,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_covRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_covRejectionRate.c_str()]).as<double>();
   }
   if (m_covRejectionRate >= 1.) {
-    std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+    std::cerr << "WARNING In MLSamplingLevelOptionsClass::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -595,7 +595,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_rawChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_rawChain_dataOutputAllowedSet.c_str()].as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpAllow);
+    MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
@@ -632,7 +632,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   }
   if ((m_filteredChainGenerate == true) &&
       (m_filteredChainLag      < 2    )) {
-    std::cerr << "WARNING In uqMLSamplingLevelOptionsClass::getMyOptionsValues()"
+    std::cerr << "WARNING In MLSamplingLevelOptionsClass::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -664,7 +664,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_filteredChainDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_filteredChain_dataOutputAllowedSet.c_str()].as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpAllow);
+    MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
@@ -707,9 +707,9 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
   std::vector<double> tmpScales(0,0.);
   if (m_env.allOptionsMap().count(m_option_dr_listOfScalesForExtraStages.c_str())) {
     std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_listOfScalesForExtraStages.c_str()]).as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpScales);
+    MiscReadDoublesFromString(inputString,tmpScales);
     //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In uqMLSamplingLevelOptionsClass::getMyOptionValues(): scales =";
+    //  *m_env.subDisplayFile() << "In MLSamplingLevelOptionsClass::getMyOptionValues(): scales =";
     //  for (unsigned int i = 0; i < tmpScales.size(); ++i) {
     //    *m_env.subDisplayFile() << " " << tmpScales[i];
     //  }
@@ -779,7 +779,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
     m_amAdaptedMatricesDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str()].as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpAllow);
+    MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
@@ -806,7 +806,7 @@ uqMLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& option
 }
 
 void
-uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
+MLSamplingLevelOptionsClass::print(std::ostream& os) const
 {
   os <<        "m_prefix"                         << " = " << m_prefix
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
@@ -894,13 +894,13 @@ uqMLSamplingLevelOptionsClass::print(std::ostream& os) const
   return;
 }
 
-const uqBaseEnvironmentClass& 
-uqMLSamplingLevelOptionsClass::env() const
+const BaseEnvironmentClass& 
+MLSamplingLevelOptionsClass::env() const
 {
   return m_env;
 }
 
-std::ostream& operator<<(std::ostream& os, const uqMLSamplingLevelOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const MLSamplingLevelOptionsClass& obj)
 {
   obj.print(os);
 
