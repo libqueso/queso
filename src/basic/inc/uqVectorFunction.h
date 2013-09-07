@@ -43,64 +43,64 @@ namespace QUESO {
 /*! \file uqVectorFunction.h
  * \brief Set of classes for handling vector functions.
  * 
- * \class uqBaseVectorFunctionClass
+ * \class BaseVectorFunctionClass
  * \brief A templated (base) class for handling vector functions.
  *
  * This class allows the mathematical definition of a vector function such as:
  * \f$ \mathbf{q}: B \subset R^n \rightarrow R^m \f$. It requires the specification 
  * of the domain \f$ B \f$, which is a subset of the vector space (set) \f$ R^n \f$,
- * (and have already been introduced by the class uqVectorSetClass) and  of the 
+ * (and have already been introduced by the class VectorSetClass) and  of the 
  * image set \f$ R^m \f$.*/
 
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-class uqBaseVectorFunctionClass {
+class BaseVectorFunctionClass {
 public:
   //! @name Constructor/Destructor methods.
   //@{ 
   //! Default Constructor
   /*! Instantiates an object of the class, i.e. a vector function, given a prefix, its domain and image.*/
-  uqBaseVectorFunctionClass(const char*                      prefix,
-			    const uqVectorSetClass<P_V,P_M>& domainSet,
-			    const uqVectorSetClass<Q_V,Q_M>& imageSet);
+  BaseVectorFunctionClass(const char*                      prefix,
+			    const VectorSetClass<P_V,P_M>& domainSet,
+			    const VectorSetClass<Q_V,Q_M>& imageSet);
   //! Destructor	   
-  virtual ~uqBaseVectorFunctionClass();
+  virtual ~BaseVectorFunctionClass();
   //@}
   
   //! @name Mathematical methods.
   //@{  
-  //! Access to the protected attribute \c m_domainSet: domain set of the vector function. It is an instance of the class uqVectorSetClass.  
+  //! Access to the protected attribute \c m_domainSet: domain set of the vector function. It is an instance of the class VectorSetClass.  
   /*! This is one example of the advantage of how QUESO represents mathematical 
    * identities in a straightforward manner. */
-  const uqVectorSetClass<P_V,P_M>& domainSet() const;
+  const VectorSetClass<P_V,P_M>& domainSet() const;
   
-  //! Access to the protected attribute \c m_imageSet: image set of the vector function/ It is an instance of the class uqVectorSetClass.   
-  const uqVectorSetClass<Q_V,Q_M>& imageSet () const;
+  //! Access to the protected attribute \c m_imageSet: image set of the vector function/ It is an instance of the class VectorSetClass.   
+  const VectorSetClass<Q_V,Q_M>& imageSet () const;
   
   //! Computes the image vector. See template specialization.
   virtual void  compute  (const P_V&              domainVector,
 			  const P_V*              domainDirection,
 			  Q_V&                    imageVector,
-			  uqDistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
-			  uqDistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'	
-			  uqDistArrayClass<P_V*>* hessianEffects) const = 0;
+			  DistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
+			  DistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'	
+			  DistArrayClass<P_V*>* hessianEffects) const = 0;
   //@}
 protected:
-  const uqBaseEnvironmentClass&    m_env;
+  const BaseEnvironmentClass&    m_env;
         std::string                m_prefix;
 	
   //! Domain set of the vector function.	
-  const uqVectorSetClass<P_V,P_M>& m_domainSet;
+  const VectorSetClass<P_V,P_M>& m_domainSet;
   
   //! Image set of the vector function.
-  const uqVectorSetClass<Q_V,Q_M>& m_imageSet;
+  const VectorSetClass<Q_V,Q_M>& m_imageSet;
 };
 // Default constructor -----------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqBaseVectorFunctionClass(
+BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::BaseVectorFunctionClass(
   const char*                      prefix,
-  const uqVectorSetClass<P_V,P_M>& domainSet,
-  const uqVectorSetClass<Q_V,Q_M>& imageSet)
+  const VectorSetClass<P_V,P_M>& domainSet,
+  const VectorSetClass<Q_V,Q_M>& imageSet)
   :
   m_env      (domainSet.env()),
   m_prefix   ((std::string)(prefix)+"func_"),
@@ -110,20 +110,20 @@ uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqBaseVectorFunctionClass(
 }
 // Destructor ---------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~uqBaseVectorFunctionClass()
+BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~BaseVectorFunctionClass()
 {
 }
 // Math methods -------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-const uqVectorSetClass<P_V,P_M>&
-uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::domainSet() const
+const VectorSetClass<P_V,P_M>&
+BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::domainSet() const
 {
   return m_domainSet;
 }
 // --------------------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-const uqVectorSetClass<Q_V,Q_M>&
-uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::imageSet() const
+const VectorSetClass<Q_V,Q_M>&
+BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::imageSet() const
 {
   return m_imageSet;
 }
@@ -132,16 +132,16 @@ uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::imageSet() const
 // Generic class
 //*****************************************************
 
-/*!\class uqGenericVectorFunctionClass
+/*!\class GenericVectorFunctionClass
  * \brief A class for handling generic vector functions.
  *
  * This class allows the mathematical definition of a vector function such as:
  * \f$ \mathbf{q}: B \subset R^n \rightarrow R^m \f$. It is derived from 
- * uqBaseVectorFunctionClass.
+ * BaseVectorFunctionClass.
  */
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-class uqGenericVectorFunctionClass : public uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M> {
+class GenericVectorFunctionClass : public BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
@@ -150,19 +150,19 @@ public:
   /*! Instantiates an object of \c this class given its prefix, domain and a pointer to a routine. 
    This routine plays the role of a vector-valued function, and it is useful, for instance, to 
    calculate the likelihood (and its image set).*/
-  uqGenericVectorFunctionClass(const char*                      prefix,
-                               const uqVectorSetClass<P_V,P_M>& domainSet,
-                               const uqVectorSetClass<Q_V,Q_M>& imageSet,
+  GenericVectorFunctionClass(const char*                      prefix,
+                               const VectorSetClass<P_V,P_M>& domainSet,
+                               const VectorSetClass<Q_V,Q_M>& imageSet,
                                void (*routinePtr)(const P_V&                    domainVector,
                                                   const P_V*                    domainDirection,
                                                   const void*                   functionDataPtr,
                                                         Q_V&                    imageVector,
-                                                        uqDistArrayClass<P_V*>* gradVectors,
-                                                        uqDistArrayClass<P_M*>* hessianMatrices,
-                                                        uqDistArrayClass<P_V*>* hessianEffects),
+                                                        DistArrayClass<P_V*>* gradVectors,
+                                                        DistArrayClass<P_M*>* hessianMatrices,
+                                                        DistArrayClass<P_V*>* hessianEffects),
                                const void* functionDataPtr);
   //! Virtual destructor.
-  virtual ~uqGenericVectorFunctionClass();
+  virtual ~GenericVectorFunctionClass();
 
   
   //! @name Mathematical method
@@ -171,9 +171,9 @@ public:
   void compute  (const P_V&                    domainVector,
                  const P_V*                    domainDirection,
                        Q_V&                    imageVector,
-                       uqDistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
-                       uqDistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
-                       uqDistArrayClass<P_V*>* hessianEffects) const;
+                       DistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
+                       DistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
+                       DistArrayClass<P_V*>* hessianEffects) const;
   //@}
 		       
 protected:
@@ -186,32 +186,32 @@ protected:
                        const P_V*                    domainDirection,
                        const void*                   functionDataPtr,
                              Q_V&                    imageVector,
-                             uqDistArrayClass<P_V*>* gradVectors,
-                             uqDistArrayClass<P_M*>* hessianMatrices,
-                             uqDistArrayClass<P_V*>* hessianEffects);
+                             DistArrayClass<P_V*>* gradVectors,
+                             DistArrayClass<P_M*>* hessianMatrices,
+                             DistArrayClass<P_V*>* hessianEffects);
   const void* m_routineDataPtr;
 
-  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
-  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
-  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_domainSet;
-  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_imageSet;
+  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
+  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
+  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_domainSet;
+  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_imageSet;
 };
 // Default constructor -----------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqGenericVectorFunctionClass(
+GenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::GenericVectorFunctionClass(
   const char*                      prefix,
-  const uqVectorSetClass<P_V,P_M>& domainSet,
-  const uqVectorSetClass<Q_V,Q_M>& imageSet,
+  const VectorSetClass<P_V,P_M>& domainSet,
+  const VectorSetClass<Q_V,Q_M>& imageSet,
   void (*routinePtr)(const P_V&                    domainVector,
                      const P_V*                    domainDirection,
                      const void*                   functionDataPtr,
                            Q_V&                    imageVector,
-                           uqDistArrayClass<P_V*>* gradVectors,
-                           uqDistArrayClass<P_M*>* hessianMatrices,
-                           uqDistArrayClass<P_V*>* hessianEffects),
+                           DistArrayClass<P_V*>* gradVectors,
+                           DistArrayClass<P_M*>* hessianMatrices,
+                           DistArrayClass<P_V*>* hessianEffects),
   const void* functionDataPtr)
   :
-  uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
+  BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
                                              domainSet,
                                              imageSet),
   m_routinePtr    (routinePtr),
@@ -220,23 +220,23 @@ uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqGenericVectorFunctionClass(
 }
 // Destructor ---------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~uqGenericVectorFunctionClass()
+GenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~GenericVectorFunctionClass()
 {
 }
 // Math methods -------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
 void
-uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
+GenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
   const P_V&                    domainVector,
   const P_V*                    domainDirection,
         Q_V&                    imageVector,
-        uqDistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
-        uqDistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
-        uqDistArrayClass<P_V*>* hessianEffects) const
+        DistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
+        DistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
+        DistArrayClass<P_V*>* hessianEffects) const
 {
   //UQ_FATAL_TEST_MACRO(false,
   //                    domainVector.env().worldRank(),
-  //                    "uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute()",
+  //                    "GenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute()",
   //                    "this method should not be called in the case of this class");
 
   m_routinePtr(domainVector, domainDirection, m_routineDataPtr, imageVector, gradVectors, hessianMatrices, hessianEffects);
@@ -248,25 +248,25 @@ uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
 // Constant class
 //*****************************************************
 
-/*!\class uqConstantVectorFunctionClass
+/*!\class ConstantVectorFunctionClass
  * \brief A class for handling vector functions which image is constant.
  *
  * This class allows the mathematical definition of a vector-valued function which image 
  * set is constant vector. */
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-class uqConstantVectorFunctionClass : public uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M> {
+class ConstantVectorFunctionClass : public BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default Constructor
   /*! Instantiates an object of the class, i.e. a vector function, given a prefix, its domain and constant image.*/
-  uqConstantVectorFunctionClass(const char*                      prefix,
-                                const uqVectorSetClass<P_V,P_M>& domainSet,
-                                const uqVectorSetClass<Q_V,Q_M>& imageSet,
+  ConstantVectorFunctionClass(const char*                      prefix,
+                                const VectorSetClass<P_V,P_M>& domainSet,
+                                const VectorSetClass<Q_V,Q_M>& imageSet,
                                 const Q_V&                       constantImageVector);
   //! Destructor
-  virtual ~uqConstantVectorFunctionClass();
+  virtual ~ConstantVectorFunctionClass();
   //@}
   
   //! @name Mathematical method
@@ -275,27 +275,27 @@ public:
   void compute  (const P_V&                    domainVector,
                  const P_V*                    domainDirection,
                        Q_V&                    imageVector,
-                       uqDistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
-                       uqDistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
-                       uqDistArrayClass<P_V*>* hessianEffects) const;
+                       DistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
+                       DistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
+                       DistArrayClass<P_V*>* hessianEffects) const;
   //@}
 protected:
   const Q_V* m_constantImageVector;
 
-  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
-  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
-  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_domainSet;
-  using uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_imageSet;
+  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
+  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
+  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_domainSet;
+  using BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>::m_imageSet;
 };
 // Default constructor -----------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-uqConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqConstantVectorFunctionClass(
+ConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::ConstantVectorFunctionClass(
   const char*                      prefix,
-  const uqVectorSetClass<P_V,P_M>& domainSet,
-  const uqVectorSetClass<Q_V,Q_M>& imageSet,
+  const VectorSetClass<P_V,P_M>& domainSet,
+  const VectorSetClass<Q_V,Q_M>& imageSet,
   const Q_V&                       constantImageVector)
   :
-  uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
+  BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>(((std::string)(prefix)+"gen").c_str(),
                                              domainSet,
                                              imageSet),
   m_constantImageVector(NULL)
@@ -304,24 +304,24 @@ uqConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::uqConstantVectorFunctionClass(
 }
 // Destructor ---------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-uqConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~uqConstantVectorFunctionClass()
+ConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::~ConstantVectorFunctionClass()
 {
   delete m_constantImageVector;
 }
 // Math methods -------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
 void
-uqConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
+ConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute(
   const P_V&                    domainVector,
   const P_V*                    domainDirection,
         Q_V&                    imageVector,
-        uqDistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
-        uqDistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
-        uqDistArrayClass<P_V*>* hessianEffects) const
+        DistArrayClass<P_V*>* gradVectors,     // Yes, 'P_V'
+        DistArrayClass<P_M*>* hessianMatrices, // Yes, 'P_M'
+        DistArrayClass<P_V*>* hessianEffects) const
 {
   UQ_FATAL_TEST_MACRO(m_constantImageVector == NULL,
                       domainVector.env().worldRank(),
-                      "uqConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute()",
+                      "ConstantVectorFunctionClass<P_V,P_M,Q_V,Q_M>::compute()",
                       "m_constantImageVector is NULL");
 
   imageVector = *m_constantImageVector;
