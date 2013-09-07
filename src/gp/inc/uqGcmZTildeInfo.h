@@ -35,22 +35,22 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-class uqGcmZTildeInfoClass
+class GcmZTildeInfoClass
 {
 public:
-  uqGcmZTildeInfoClass(const uqGpmsaComputerModelOptionsClass&                               gcmOptionsObj,
-                       const uqGcmJointInfoClass          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jj,
-                       const uqGcmZInfoClass              <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& z);
-  uqGcmZTildeInfoClass(const uqGpmsaComputerModelOptionsClass&                               gcmOptionsObj,
-                       const uqGcmJointInfoClass          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jj,
-                       const uqGcmZInfoClass              <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& z,
-                       const uqGcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>&         st,
-                       const uqGcmJointTildeInfoClass     <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jt);
- ~uqGcmZTildeInfoClass();
+  GcmZTildeInfoClass(const GpmsaComputerModelOptionsClass&                               gcmOptionsObj,
+                       const GcmJointInfoClass          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jj,
+                       const GcmZInfoClass              <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& z);
+  GcmZTildeInfoClass(const GpmsaComputerModelOptionsClass&                               gcmOptionsObj,
+                       const GcmJointInfoClass          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jj,
+                       const GcmZInfoClass              <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& z,
+                       const GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>&         st,
+                       const GcmJointTildeInfoClass     <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jt);
+ ~GcmZTildeInfoClass();
 
-  const uqBaseEnvironmentClass&         m_env;
+  const BaseEnvironmentClass&         m_env;
         D_M                             m_Cmat_tilde;
-        uqVectorSpaceClass<D_V,D_M>     m_z_tilde_space;
+        VectorSpaceClass<D_V,D_M>     m_z_tilde_space;
         D_M                             m_Lmat;
         D_M                             m_Lmat_t;
         D_V                             m_Zvec_tilde_hat;
@@ -61,14 +61,14 @@ public:
         D_M                             m_tmp_Smat_z_tilde_hat_inv;
 
 private:
-  void commonConstructor(const uqGcmZInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& z);
+  void commonConstructor(const GcmZInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& z);
 };
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmZTildeInfoClass(
-  const uqGpmsaComputerModelOptionsClass&                     gcmOptionsObj,
-  const uqGcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jj,
-  const uqGcmZInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>&     z)
+GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmZTildeInfoClass(
+  const GpmsaComputerModelOptionsClass&                     gcmOptionsObj,
+  const GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jj,
+  const GcmZInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>&     z)
   :
   m_env                     (jj.m_env),
   m_Cmat_tilde              (m_env,jj.m_omega_space.map(),z.m_Cmat_rank),
@@ -82,7 +82,7 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmZTildeInfoClass(
   m_tmp_Smat_z_tilde_hat_inv(m_z_tilde_space.zeroVector())
 {
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)"
+    *m_env.subDisplayFile() << "Entering GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)"
                             << std::endl;
   }
 
@@ -94,7 +94,7 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmZTildeInfoClass(
     unsigned int uMatRank   = matU.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int uMatRank14 = matU.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)"
+      *m_env.subDisplayFile() << "In GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)"
                               << ": matU.numRowsLocal() = "  << matU.numRowsLocal()
                               << ", matU.numCols() = "       << matU.numCols()
                               << ", matU.rank(0.,1.e-8) = "  << uMatRank
@@ -115,7 +115,7 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmZTildeInfoClass(
       }
       matUcheck.setPrintHorizontally(false);
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)"
+        *m_env.subDisplayFile() << "In GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)"
                                 << ": m_Cmat_rank = "              << z.m_Cmat_rank
                                 << ", matUcheck.numRowsLocal() = " << matUcheck.numRowsLocal()
                                 << ", matUcheck.numCols() = "      << matUcheck.numCols()
@@ -137,7 +137,7 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmZTildeInfoClass(
                                     tmpSet);
     }
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)"
+      *m_env.subDisplayFile() << "In GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)"
                               << ": m_Cmat_tilde formed (2)"
                               << std::endl;
     }
@@ -149,12 +149,12 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmZTildeInfoClass(
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmZTildeInfoClass(
-  const uqGpmsaComputerModelOptionsClass&                               gcmOptionsObj,
-  const uqGcmJointInfoClass          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jj,
-  const uqGcmZInfoClass              <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& z,
-  const uqGcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>&         st,
-  const uqGcmJointTildeInfoClass     <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jt)
+GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmZTildeInfoClass(
+  const GpmsaComputerModelOptionsClass&                               gcmOptionsObj,
+  const GcmJointInfoClass          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jj,
+  const GcmZInfoClass              <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& z,
+  const GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>&         st,
+  const GcmJointTildeInfoClass     <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jt)
   :
   m_env                     (jj.m_env),
   m_Cmat_tilde              (m_env,jj.m_omega_space.map(),z.m_Cmat_rank),
@@ -168,7 +168,7 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmZTildeInfoClass(
   m_tmp_Smat_z_tilde_hat_inv(m_z_tilde_space.zeroVector())
 {
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)"
+    *m_env.subDisplayFile() << "Entering GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)"
                             << std::endl;
   }
 
@@ -185,7 +185,7 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmZTildeInfoClass(
                                     tmpSet);
     }
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)"
+      *m_env.subDisplayFile() << "In GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)"
                               << ": m_Cmat_tilde formed (1)"
                               << std::endl;
     }
@@ -199,7 +199,7 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmZTildeInfoClass(
                               tmpSet);
     }
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)"
+      *m_env.subDisplayFile() << "In GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)"
                               << ": m_Lmat_tilde formed"
                               << std::endl;
     }
@@ -210,18 +210,18 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::uqGcmZTildeInfoClass(
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~uqGcmZTildeInfoClass()
+GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~GcmZTildeInfoClass()
 {
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor(const uqGcmZInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& z)
+GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor(const GcmZInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& z)
 {
     unsigned int cMatTildeRank   = m_Cmat_tilde.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int cMatTildeRank14 = m_Cmat_tilde.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Cmat_tilde.numRowsLocal() = "  << m_Cmat_tilde.numRowsLocal()
                               << ", m_Cmat_tilde.numCols() = "       << m_Cmat_tilde.numCols()
                               << ", m_Cmat_tilde.rank(0.,1.e-8) = "  << cMatTildeRank
@@ -230,12 +230,12 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor(const u
     }
     UQ_FATAL_TEST_MACRO(cMatTildeRank != z.m_Cmat_rank,
                         m_env.worldRank(),
-                        "uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()",
+                        "GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()",
                         "'m_Cmat_tilde' should have full column rank");
 
     UQ_FATAL_TEST_MACRO(m_Lmat.numRowsGlobal() >= m_Lmat.numCols(),
                         m_env.worldRank(),
-                        "uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()",
+                        "GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()",
                         "'m_Lmat' should be a 'horizontal' rectangular matrix");
 
     //******************************************************************************
@@ -245,7 +245,7 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor(const u
     unsigned int lMatRank   = m_Lmat_t.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int lMatRank14 = m_Lmat_t.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()"
+      *m_env.subDisplayFile() << "In GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()"
                               << ": m_Lmat.numRowsLocal() = "  << m_Lmat.numRowsLocal()
                               << ", m_Lmat.numCols() = "       << m_Lmat.numCols()
                               << ", m_Lmat.rank(0.,1.e-8) = "  << lMatRank
@@ -255,7 +255,7 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor(const u
 
     UQ_FATAL_TEST_MACRO(lMatRank != z.m_Cmat_rank,
                         m_env.worldRank(),
-                        "uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()",
+                        "GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()",
                         "'m_Lmat' should have full row rank");
 
     if (m_env.checkingLevel() >= 1) {
@@ -264,7 +264,7 @@ uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor(const u
       tmpCmat -= *z.m_Cmat;
       double cDiffNorm = tmpCmat.normFrob();
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In uqGcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()"
+        *m_env.subDisplayFile() << "In GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()"
                                 << ": ||tmpC - C||_2 = " << cDiffNorm
                                 << std::endl;
       }
