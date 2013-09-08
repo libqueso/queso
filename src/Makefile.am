@@ -33,7 +33,7 @@ endif
 # make it easier for the user.
 
 lib_LTLIBRARIES      = libqueso.la
-libqueso_includedir  = $(prefix)/include
+libqueso_includedir  = $(prefix)/include/queso
 libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
 libqueso_la_LDFLAGS += $(GSL_LIBS) 
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
