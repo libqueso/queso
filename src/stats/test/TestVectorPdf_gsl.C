@@ -2,9 +2,9 @@
 #include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 
-#include <uqVectorSpace.h>
-#include <uqVectorPdf.h>
-#include <uqGslMatrix.h>
+#include <queso/VectorSpace.h>
+#include <queso/VectorPdf.h>
+#include <queso/GslMatrix.h>
 
 #define PI 3.14159265358979323846
 

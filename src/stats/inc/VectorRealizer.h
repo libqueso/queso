@@ -29,8 +29,8 @@
 #ifndef __UQ_REALIZER_H__
 #define __UQ_REALIZER_H__
 
-#include <uqVectorSequence.h>
-#include <uqEnvironment.h>
+#include <queso/VectorSequence.h>
+#include <queso/Environment.h>
 #include <math.h>
 
 namespace QUESO {

@@ -29,7 +29,7 @@
 #ifndef __UQ_INFO_THEORY_H__
 #define __UQ_INFO_THEORY_H__
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 #ifdef QUESO_HAS_ANN
 
 #include <ANN/ANN.h>

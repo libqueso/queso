@@ -29,8 +29,8 @@
 #ifndef __UQ_SFP_OPTIONS_H__
 #define __UQ_SFP_OPTIONS_H__
 
-#include <uqEnvironment.h>
-//#include <uqMonteCarloSGOptions.h>
+#include <queso/Environment.h>
+//#include <queso/MonteCarloSGOptions.h>
 
 #undef UQ_SFP_READS_SOLVER_OPTION
 

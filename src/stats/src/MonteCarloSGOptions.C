@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqMonteCarloSGOptions.h>
-#include <uqMiscellaneous.h>
+#include <queso/MonteCarloSGOptions.h>
+#include <queso/Miscellaneous.h>
 
 // -------------------------------------------------
 // McOptionsValues --------------------------

@@ -29,9 +29,9 @@
 #ifndef __UQ_VECTOR_MARGINAL_DENSITY_FUNCTION_H__
 #define __UQ_VECTOR_MARGINAL_DENSITY_FUNCTION_H__
 
-#include <uqArrayOfOneDGrids.h>
-#include <uqArrayOfOneDTables.h>
-#include <uqEnvironment.h>
+#include <queso/ArrayOfOneDGrids.h>
+#include <queso/ArrayOfOneDTables.h>
+#include <queso/Environment.h>
 #include <math.h>
 
 namespace QUESO {

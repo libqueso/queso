@@ -29,8 +29,8 @@
 #ifndef __UQ_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__
 #define __UQ_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__
 
-#include <uqOneDGrid.h>
-#include <uqEnvironment.h>
+#include <queso/OneDGrid.h>
+#include <queso/Environment.h>
 #include <math.h>
 
 namespace QUESO {

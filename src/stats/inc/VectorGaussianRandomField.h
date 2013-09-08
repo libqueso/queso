@@ -29,9 +29,9 @@
 #ifndef __UQ_VECTOR_GAUSSIAN_RANDOM_FIELD_H__
 #define __UQ_VECTOR_GAUSSIAN_RANDOM_FIELD_H__
 
-#include <uqMatrixCovarianceFunction.h>
-#include <uqVectorFunction.h>
-#include <uqVectorRV.h>
+#include <queso/MatrixCovarianceFunction.h>
+#include <queso/VectorFunction.h>
+#include <queso/VectorRV.h>
 
 namespace QUESO {
 

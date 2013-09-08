@@ -29,11 +29,11 @@
 #ifndef __UQ_SFP_H__
 #define __UQ_SFP_H__
 
-#include <uqStatisticalForwardProblemOptions.h>
-#include <uqVectorFunction.h>
-#include <uqMonteCarloSG.h>
-#include <uqVectorRV.h>
-#include <uqSequenceOfVectors.h>
+#include <queso/StatisticalForwardProblemOptions.h>
+#include <queso/VectorFunction.h>
+#include <queso/MonteCarloSG.h>
+#include <queso/VectorRV.h>
+#include <queso/SequenceOfVectors.h>
 
 namespace QUESO {
 

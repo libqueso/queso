@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqInfoTheory.h>
+#include <queso/InfoTheory.h>
 
 #ifdef QUESO_HAS_ANN
 

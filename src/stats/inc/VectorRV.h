@@ -29,13 +29,13 @@
 #ifndef __UQ_VECTOR_RV_H__
 #define __UQ_VECTOR_RV_H__
 
-#include <uqVectorSpace.h>
-#include <uqJointPdf.h>
-#include <uqVectorRealizer.h>
-#include <uqVectorCdf.h>
-#include <uqVectorMdf.h>
-#include <uqSequenceOfVectors.h>
-#include <uqInfoTheory.h>
+#include <queso/VectorSpace.h>
+#include <queso/JointPdf.h>
+#include <queso/VectorRealizer.h>
+#include <queso/VectorCdf.h>
+#include <queso/VectorMdf.h>
+#include <queso/SequenceOfVectors.h>
+#include <queso/InfoTheory.h>
 #include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
 
 namespace QUESO {

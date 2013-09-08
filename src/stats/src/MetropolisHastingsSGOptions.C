@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqMetropolisHastingsSGOptions.h>
-#include <uqMiscellaneous.h>
+#include <queso/MetropolisHastingsSGOptions.h>
+#include <queso/Miscellaneous.h>
 
 // -------------------------------------------------
 // MhOptionsValues --------------------------

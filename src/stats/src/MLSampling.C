@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqMLSampling1.h>
+#include <queso/MLSampling1.h>
 
 #ifdef QUESO_HAS_GLPK
 

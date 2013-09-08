@@ -29,9 +29,9 @@
 #ifndef __UQ_JOINT_PROB_DENSITY_H__
 #define __UQ_JOINT_PROB_DENSITY_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 #include <math.h>
-#include <uqScalarFunction.h>
+#include <queso/ScalarFunction.h>
 #include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
 //#include <gsl/gsl_randist.h>
 

@@ -29,8 +29,8 @@
 #ifndef __UQ_TRANSITION_KERNEL_GROUP_H__
 #define __UQ_TRANSITION_KERNEL_GROUP_H__
 
-#include <uqVectorRV.h>
-#include <uqScalarFunctionSynchronizer.h>
+#include <queso/VectorRV.h>
+#include <queso/ScalarFunctionSynchronizer.h>
 
 namespace QUESO {
 

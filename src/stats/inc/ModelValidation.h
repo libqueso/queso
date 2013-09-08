@@ -29,7 +29,7 @@
 #ifndef __UQ_MODEL_VALIDATION_H__
 #define __UQ_MODEL_VALIDATION_H__
 
-#include <uqValidationCycle.h>
+#include <queso/ValidationCycle.h>
 
 namespace QUESO {
 

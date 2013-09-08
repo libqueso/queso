@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqMLSamplingLevelOptions.h>
-#include <uqMiscellaneous.h>
+#include <queso/MLSamplingLevelOptions.h>
+#include <queso/Miscellaneous.h>
 
 namespace QUESO {
 

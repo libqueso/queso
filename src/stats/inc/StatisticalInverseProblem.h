@@ -29,12 +29,12 @@
 #ifndef __UQ_SIP_H__
 #define __UQ_SIP_H__
 
-#include <uqStatisticalInverseProblemOptions.h>
-#include <uqMetropolisHastingsSG1.h>
-#include <uqMLSampling1.h>
-#include <uqInstantiateIntersection.h>
-#include <uqVectorRV.h>
-#include <uqScalarFunction.h>
+#include <queso/StatisticalInverseProblemOptions.h>
+#include <queso/MetropolisHastingsSG1.h>
+#include <queso/MLSampling1.h>
+#include <queso/InstantiateIntersection.h>
+#include <queso/VectorRV.h>
+#include <queso/ScalarFunction.h>
 //#include <grvy.h>
 
 namespace QUESO {

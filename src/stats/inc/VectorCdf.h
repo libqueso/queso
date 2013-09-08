@@ -29,10 +29,10 @@
 #ifndef __UQ_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__
 #define __UQ_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__
 
-#include <uqArrayOfOneDGrids.h>
-#include <uqArrayOfOneDTables.h>
-#include <uqScalarCdf.h>
-#include <uqEnvironment.h>
+#include <queso/ArrayOfOneDGrids.h>
+#include <queso/ArrayOfOneDTables.h>
+#include <queso/ScalarCdf.h>
+#include <queso/Environment.h>
 #include <math.h>
 
 namespace QUESO {

@@ -29,14 +29,14 @@
 #ifndef __UQ_MH_SG1_H__
 #define __UQ_MH_SG1_H__
 
-#include <uqMetropolisHastingsSGOptions.h>
-#include <uqTKGroup.h>
-#include <uqVectorRV.h>
-#include <uqVectorSpace.h>
-#include <uqMarkovChainPositionData.h>
-#include <uqScalarFunctionSynchronizer.h>
-#include <uqSequenceOfVectors.h>
-#include <uqArrayOfSequences.h>
+#include <queso/MetropolisHastingsSGOptions.h>
+#include <queso/TKGroup.h>
+#include <queso/VectorRV.h>
+#include <queso/VectorSpace.h>
+#include <queso/MarkovChainPositionData.h>
+#include <queso/ScalarFunctionSynchronizer.h>
+#include <queso/SequenceOfVectors.h>
+#include <queso/ArrayOfSequences.h>
 #include <sys/time.h>
 #include <fstream>
 #include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
@@ -277,7 +277,7 @@ template<class P_V,class P_M>
 std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSG<P_V,P_M>& obj);
 }  // End namespace QUESO
 
-#include <uqMetropolisHastingsSG2.h>  // We should probably do something about this
+#include <queso/MetropolisHastingsSG2.h>  // We should probably do something about this
 
 namespace QUESO {
 // Default constructor -----------------------------

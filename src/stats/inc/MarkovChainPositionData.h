@@ -29,7 +29,7 @@
 #ifndef __UQ_CHAIN_POSITION_DATA_H__
 #define __UQ_CHAIN_POSITION_DATA_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 namespace QUESO {
 

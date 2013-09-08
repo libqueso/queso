@@ -29,8 +29,8 @@
 #ifndef __UQ_SCALAR_COVARIANCE_FUNCTION_H__
 #define __UQ_SCALAR_COVARIANCE_FUNCTION_H__
 
-#include <uqVectorSet.h>
-#include <uqEnvironment.h>
+#include <queso/VectorSet.h>
+#include <queso/Environment.h>
 #include <cmath>
 
 namespace QUESO {

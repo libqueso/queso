@@ -31,8 +31,8 @@
 
 #define LEVEL_REF_ID 0
 
-#include <uqEnvironment.h>
-#include <uqSequenceStatisticalOptions.h>
+#include <queso/Environment.h>
+#include <queso/SequenceStatisticalOptions.h>
 #define UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE "."
 
 // _ODV = option default value

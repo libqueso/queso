@@ -29,10 +29,10 @@
 #ifndef __UQ_MOC_SG_H__
 #define __UQ_MOC_SG_H__
 
-#include <uqVectorRV.h>
-#include <uqVectorFunction.h>
-#include <uqVectorFunctionSynchronizer.h>
-#include <uqMonteCarloSGOptions.h>
+#include <queso/VectorRV.h>
+#include <queso/VectorFunction.h>
+#include <queso/VectorFunctionSynchronizer.h>
+#include <queso/MonteCarloSGOptions.h>
 
 namespace QUESO {
 

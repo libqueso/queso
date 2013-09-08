@@ -29,8 +29,8 @@
 #ifndef __UQ_SIP_OPTIONS_H__
 #define __UQ_SIP_OPTIONS_H__
 
-#include <uqEnvironment.h>
-//#include <uqMetropolisHastingsSGOptions.h>
+#include <queso/Environment.h>
+//#include <queso/MetropolisHastingsSGOptions.h>
 
 #undef UQ_SIP_READS_SOLVER_OPTION
 

@@ -29,8 +29,8 @@
 #ifndef __UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H__
 #define __UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H__
 
-#include <uqEnvironment.h>
-#include <uqMLSamplingLevelOptions.h>
+#include <queso/Environment.h>
+#include <queso/MLSamplingLevelOptions.h>
 
 #define UQ_ML_SAMPLING_FILENAME_FOR_NO_FILE "."
 

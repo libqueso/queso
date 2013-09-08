@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqStatisticalInverseProblemOptions.h>
-#include <uqMiscellaneous.h>
+#include <queso/StatisticalInverseProblemOptions.h>
+#include <queso/Miscellaneous.h>
 
 // -------------------------------------------------
 // SipOptionsValues--------------------------

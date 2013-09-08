@@ -29,8 +29,8 @@
 #ifndef __UQ_MOC_SG_OPTIONS_H__
 #define __UQ_MOC_SG_OPTIONS_H__
 
-#include <uqEnvironment.h>
-#include <uqSequenceStatisticalOptions.h>
+#include <queso/Environment.h>
+#include <queso/SequenceStatisticalOptions.h>
 
 #define UQ_MOC_SG_FILENAME_FOR_NO_FILE "."
 

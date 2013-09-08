@@ -31,15 +31,15 @@
 
 #define ML_NEW_CODE_2009_12_29
 
-#include <uqMLSamplingOptions.h>
-#include <uqMetropolisHastingsSG1.h>
-#include <uqFiniteDistribution.h>
-#include <uqVectorRV.h>
-#include <uqVectorSpace.h>
-#include <uqMarkovChainPositionData.h>
-#include <uqScalarFunctionSynchronizer.h>
-#include <uqSequenceOfVectors.h>
-#include <uqArrayOfSequences.h>
+#include <queso/MLSamplingOptions.h>
+#include <queso/MetropolisHastingsSG1.h>
+#include <queso/FiniteDistribution.h>
+#include <queso/VectorRV.h>
+#include <queso/VectorSpace.h>
+#include <queso/MarkovChainPositionData.h>
+#include <queso/ScalarFunctionSynchronizer.h>
+#include <queso/SequenceOfVectors.h>
+#include <queso/ArrayOfSequences.h>
 #ifdef QUESO_HAS_GLPK
 #include <glpk.h>
 #endif
@@ -305,8 +305,8 @@ template<class P_V,class P_M>
 std::ostream& operator<<(std::ostream& os, const MLSampling<P_V,P_M>& obj);
 }  // End namespace QUESO
 
-#include <uqMLSampling3.h>  // We should do something about this
-#include <uqMLSampling2.h>  // We should do something about this
+#include <queso/MLSampling3.h>  // We should do something about this
+#include <queso/MLSampling2.h>  // We should do something about this
 
 namespace QUESO {
 template<class P_V,class P_M>

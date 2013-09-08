@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqFiniteDistribution.h>
+#include <queso/FiniteDistribution.h>
 
 namespace QUESO {
 

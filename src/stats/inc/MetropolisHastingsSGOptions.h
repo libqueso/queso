@@ -29,9 +29,9 @@
 #ifndef __UQ_MH_SG_OPTIONS_H__
 #define __UQ_MH_SG_OPTIONS_H__
 
-#include <uqEnvironment.h>
-#include <uqMLSamplingLevelOptions.h>
-#include <uqSequenceStatisticalOptions.h>
+#include <queso/Environment.h>
+#include <queso/MLSamplingLevelOptions.h>
+#include <queso/SequenceStatisticalOptions.h>
 
 #undef  UQ_MH_SG_REQUIRES_INVERTED_COV_MATRICES
 #define UQ_NOTHING_JUST_FOR_TEST_OF_SVN_ID 1

@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqMetropolisHastingsSG1.h>
+#include <queso/MetropolisHastingsSG1.h>
 
 namespace QUESO {
 

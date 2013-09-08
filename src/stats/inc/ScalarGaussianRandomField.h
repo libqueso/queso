@@ -29,9 +29,9 @@
 #ifndef __UQ_SCALAR_GAUSSIAN_RANDOM_FIELD_H__
 #define __UQ_SCALAR_GAUSSIAN_RANDOM_FIELD_H__
 
-#include <uqScalarCovarianceFunction.h>
-#include <uqScalarFunction.h>
-#include <uqVectorRV.h>
+#include <queso/ScalarCovarianceFunction.h>
+#include <queso/ScalarFunction.h>
+#include <queso/VectorRV.h>
 
 namespace QUESO {
 

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqStatisticalForwardProblemOptions.h>
-#include <uqMiscellaneous.h>
+#include <queso/StatisticalForwardProblemOptions.h>
+#include <queso/Miscellaneous.h>
 
 namespace QUESO {
 

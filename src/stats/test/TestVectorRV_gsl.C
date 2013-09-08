@@ -2,9 +2,9 @@
 #include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 
-#include <uqVectorSpace.h>
-#include <uqVectorRV.h>
-#include <uqGslMatrix.h>
+#include <queso/VectorSpace.h>
+#include <queso/VectorRV.h>
+#include <queso/GslMatrix.h>
 
 using namespace QUESO;
 

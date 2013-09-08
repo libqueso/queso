@@ -29,8 +29,8 @@
 #ifndef __UQ_VALIDATION_CYCLE_H__
 #define __UQ_VALIDATION_CYCLE_H__
 
-#include <uqStatisticalInverseProblem.h>
-#include <uqStatisticalForwardProblem.h>
+#include <queso/StatisticalInverseProblem.h>
+#include <queso/StatisticalForwardProblem.h>
 
 namespace QUESO {
 
