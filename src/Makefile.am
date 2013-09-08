@@ -6,6 +6,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
 	      -I$(top_srcdir)/src/basic/inc \
 	      -I$(top_srcdir)/src/stats/inc \
 	      -I$(top_srcdir)/src/gp/inc \
+		    -I$(top_srcdir)/inc \
 	      -I$(top_builddir)/src/core/inc \
 	        $(BOOST_CPPFLAGS) \
 	        $(GSL_CFLAGS) \

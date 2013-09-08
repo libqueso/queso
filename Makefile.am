@@ -3,7 +3,7 @@ ACLOCAL_AMFLAGS  = -I m4 -I m4/common
 EXTRA_DIST       = $(DX_CONFIG) QUESO_users_manual.pdf CHANGES AUTHORS COPYING LICENSE
 
 # Build in these directories:
-SUBDIRS          = src/contrib/ANN src examples test/gsl_tests test doxygen
+SUBDIRS          = inc/queso src/contrib/ANN src examples test/gsl_tests test doxygen
 
 # Doxygen support
 
