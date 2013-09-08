@@ -33,7 +33,7 @@
 #ifndef __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
 #define __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 #include <EpetraExt_DistArray.h>
 
 //********************************************************

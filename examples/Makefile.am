@@ -5,6 +5,7 @@ QUESO_CPPFLAGS += -I$(top_srcdir)/src/misc/inc
 QUESO_CPPFLAGS += -I$(top_srcdir)/src/basic/inc
 QUESO_CPPFLAGS += -I$(top_srcdir)/src/stats/inc
 QUESO_CPPFLAGS += -I$(top_srcdir)/src/gp/inc
+QUESO_CPPFLAGS += -I$(top_srcdir)/inc
 QUESO_CPPFLAGS += $(BOOST_CPPFLAGS)
 QUESO_CPPFLAGS += $(GSL_CFLAGS)
 QUESO_CPPFLAGS += $(GRVY_CFLAGS)

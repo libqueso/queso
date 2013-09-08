@@ -37,7 +37,7 @@
  *-------------------------------------------------------------------------- */
 
 #include <exStatisticalInverseProblem_appl.h>
-#include <uqGslMatrix.h>
+#include <queso/GslMatrix.h>
 
 int main(int argc, char* argv[])
 {

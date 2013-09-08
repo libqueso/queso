@@ -33,9 +33,9 @@
 #ifndef __TGA2_APPL_H__
 #define __TGA2_APPL_H__
 
-#include <uqValidationCycle.h>
-#include <uqGslMatrix.h>
-#include <uqEnvironment.h>
+#include <queso/ValidationCycle.h>
+#include <queso/GslMatrix.h>
+#include <queso/Environment.h>
 
 void uqAppl(const QUESO::BaseEnvironment& env);
 void uqAppl_LocalComparisonStage(QUESO::ValidationCycle<QUESO::GslVector,QUESO::GslMatrix,QUESO::GslVector,QUESO::GslMatrix>& cycle);

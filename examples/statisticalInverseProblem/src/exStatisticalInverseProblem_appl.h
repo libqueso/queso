@@ -34,8 +34,8 @@
 #define __EX_STATISTICAL_INVERSE_PROBLEM_APPL_H__
 
 #include <exStatisticalInverseProblem_likelihood.h>
-#include <uqStatisticalInverseProblem.h>
-#include <uqCovCond.h>
+#include <queso/StatisticalInverseProblem.h>
+#include <queso/CovCond.h>
 
 //********************************************************
 // The driving routine: called by main()
