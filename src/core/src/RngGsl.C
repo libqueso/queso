@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqRngGsl.h>
+#include <queso/RngGsl.h>
 #include <gsl/gsl_randist.h>
 #include <mpi.h>
 

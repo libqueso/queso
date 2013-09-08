@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqBasicPdfsBoost.h>
+#include <queso/BasicPdfsBoost.h>
 #include <mpi.h>
 
 namespace QUESO {

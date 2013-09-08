@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqVector.h>
-#include <uqDefines.h>
+#include <queso/Vector.h>
+#include <queso/Defines.h>
 
 namespace QUESO {
 

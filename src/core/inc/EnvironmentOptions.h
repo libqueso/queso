@@ -29,7 +29,7 @@
 #ifndef __UQ_ENVIRONMENT_OPTIONS_H__
 #define __UQ_ENVIRONMENT_OPTIONS_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 #define UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE "."
 #define UQ_ENV_FILENAME_FOR_NO_INPUT_FILE  "."

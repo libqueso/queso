@@ -29,7 +29,7 @@
 #ifndef __UQ_BASIC_PDFS_BOOST_H__
 #define __UQ_BASIC_PDFS_BOOST_H__
 
-#include <uqBasicPdfsBase.h>
+#include <queso/BasicPdfsBase.h>
 #include <boost/random.hpp>
 #include <boost/math/distributions.hpp> 
 

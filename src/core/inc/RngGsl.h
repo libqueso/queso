@@ -29,7 +29,7 @@
 #ifndef __UQ_RNG_GSL_H__
 #define __UQ_RNG_GSL_H__
 
-#include <uqRngBase.h>
+#include <queso/RngBase.h>
 #include <gsl/gsl_rng.h>
 
 

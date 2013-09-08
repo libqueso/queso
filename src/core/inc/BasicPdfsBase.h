@@ -29,7 +29,7 @@
 #ifndef __UQ_BASIC_PDFS_BASE_H__
 #define __UQ_BASIC_PDFS_BASE_H__
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 #include <iostream>
 
 namespace QUESO {

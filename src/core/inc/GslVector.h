@@ -34,8 +34,8 @@
     \brief Vector class using GSL
 */
 
-#include <uqDefines.h>
-#include <uqVector.h>
+#include <queso/Defines.h>
+#include <queso/Vector.h>
 #include <gsl/gsl_vector.h>
 
 namespace QUESO {

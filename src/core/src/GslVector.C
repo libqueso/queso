@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqGslVector.h>
-#include <uqDefines.h>
+#include <queso/GslVector.h>
+#include <queso/Defines.h>
 #include <gsl/gsl_sort_vector.h>
 #include <cmath>
 

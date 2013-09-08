@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqEnvironmentOptions.h>
-#include <uqMiscellaneous.h>
+#include <queso/EnvironmentOptions.h>
+#include <queso/Miscellaneous.h>
 
 namespace QUESO {
 

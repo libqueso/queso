@@ -29,8 +29,8 @@
 #ifndef __UQ_DIST_ARRAY_H__
 #define __UQ_DIST_ARRAY_H__
 
-#include <uqDefines.h>
-#include <uqMap.h>
+#include <queso/Defines.h>
+#include <queso/Map.h>
 #ifdef QUESO_HAS_TRILINOS
 #include <EpetraExt_DistArray.h>
 #endif

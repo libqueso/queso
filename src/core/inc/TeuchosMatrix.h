@@ -30,13 +30,13 @@
 #define __UQ_TEUCHOS_MATRIX_H__
 
 #ifdef QUESO_HAS_TRILINOS
-#include <uqTeuchosVector.h>
+#include <queso/TeuchosVector.h>
 #include <Teuchos_SerialDenseVector.hpp>
 #include <Teuchos_SerialDenseMatrix.hpp>
 #include <Teuchos_LAPACK.hpp>
 #endif
 
-#include <uqMatrix.h>
+#include <queso/Matrix.h>
 
 #ifdef QUESO_HAS_TRILINOS
 

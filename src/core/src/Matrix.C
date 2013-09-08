@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqMatrix.h>
-#include <uqDefines.h>
+#include <queso/Matrix.h>
+#include <queso/Defines.h>
 
 namespace QUESO {
 

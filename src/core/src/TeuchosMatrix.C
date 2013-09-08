@@ -26,11 +26,11 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 
 #ifdef QUESO_HAS_TRILINOS
-#include <uqTeuchosMatrix.h>
-#include <uqTeuchosVector.h>
+#include <queso/TeuchosMatrix.h>
+#include <queso/TeuchosVector.h>
 #endif
 #include <sys/time.h>
 #include <cmath>

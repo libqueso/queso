@@ -29,7 +29,7 @@
 #ifndef __UQ_MPI_COMM_H__
 #define __UQ_MPI_COMM_H__
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 
 #ifdef QUESO_HAS_TRILINOS
 #include <Epetra_MpiComm.h>

@@ -29,14 +29,14 @@
 #ifndef __UQ_ENVIRONMENT_H__
 #define __UQ_ENVIRONMENT_H__
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 namespace QUESO {
   class EnvironmentOptions;
 }  // End namespace QUESO
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
 
-#include <uqMpiComm.h>
+#include <queso/MpiComm.h>
 #ifdef QUESO_HAS_HDF5
 #include <hdf5.h>
 #endif
@@ -45,8 +45,8 @@ namespace po = boost::program_options;
 #include <iostream>
 #include <fstream>
 
-#include <uqRngBase.h>
-#include <uqBasicPdfsBase.h>
+#include <queso/RngBase.h>
+#include <queso/BasicPdfsBase.h>
 
 namespace QUESO {
 

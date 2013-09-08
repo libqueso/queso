@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqRngBase.h>
+#include <queso/RngBase.h>
 #include <mpi.h>
 
 namespace QUESO {

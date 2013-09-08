@@ -29,7 +29,7 @@
 #ifndef __UQ_BASIC_PDFS_GSL_H__
 #define __UQ_BASIC_PDFS_GSL_H__
 
-#include <uqBasicPdfsBase.h>
+#include <queso/BasicPdfsBase.h>
 
 namespace QUESO {
 

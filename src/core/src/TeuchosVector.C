@@ -26,11 +26,11 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 
 #ifdef QUESO_HAS_TRILINOS
 
-#include <uqTeuchosVector.h>
+#include <queso/TeuchosVector.h>
 
 namespace QUESO {
 

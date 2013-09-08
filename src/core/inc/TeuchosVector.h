@@ -35,8 +35,8 @@
 #include <Teuchos_LAPACK.hpp>
 #endif
 
-#include <uqDefines.h>
-#include <uqVector.h>
+#include <queso/Defines.h>
+#include <queso/Vector.h>
 #include <vector>
 
 #ifdef QUESO_HAS_TRILINOS

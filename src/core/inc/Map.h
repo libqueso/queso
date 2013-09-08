@@ -29,12 +29,12 @@
 #ifndef __UQ_MAP_H__
 #define __UQ_MAP_H__
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 #ifdef QUESO_HAS_TRILINOS
 #include <Epetra_Map.h>
 #endif
 
-#include <uqMpiComm.h>
+#include <queso/MpiComm.h>
 
 namespace QUESO {
 

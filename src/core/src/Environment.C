@@ -27,13 +27,13 @@
 //--------------------------------------------------------------------------
 
 #include <queso.h>
-#include <uqEnvironment.h>
-#include <uqEnvironmentOptions.h>
-#include <uqRngGsl.h>
-#include <uqRngBoost.h>
-#include <uqBasicPdfsGsl.h>
-#include <uqBasicPdfsBoost.h>
-#include <uqMiscellaneous.h>
+#include <queso/Environment.h>
+#include <queso/EnvironmentOptions.h>
+#include <queso/RngGsl.h>
+#include <queso/RngBoost.h>
+#include <queso/BasicPdfsGsl.h>
+#include <queso/BasicPdfsBoost.h>
+#include <queso/Miscellaneous.h>
 #include <sys/time.h>
 #ifdef HAVE_GRVY
 #include <grvy.h>

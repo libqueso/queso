@@ -29,7 +29,7 @@
 #ifndef __UQ_RNG_BOOST_H__
 #define __UQ_RNG_BOOST_H__
 
-#include <uqRngBase.h>
+#include <queso/RngBase.h>
 #include <boost/random.hpp>
 #include <boost/math/distributions.hpp> 
 

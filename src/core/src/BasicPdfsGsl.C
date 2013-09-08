@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqBasicPdfsGsl.h>
+#include <queso/BasicPdfsGsl.h>
 #include <gsl/gsl_randist.h>
 #include <mpi.h>
 #include <math.h>

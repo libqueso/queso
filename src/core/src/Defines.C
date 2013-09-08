@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>
 #endif

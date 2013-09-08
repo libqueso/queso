@@ -29,8 +29,8 @@
 #ifndef __UQ_MATRIX_H__
 #define __UQ_MATRIX_H__
 
-#include <uqEnvironment.h>
-#include <uqVector.h>
+#include <queso/Environment.h>
+#include <queso/Vector.h>
 #include <iostream>
 
 namespace QUESO {

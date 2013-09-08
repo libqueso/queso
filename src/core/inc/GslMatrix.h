@@ -33,10 +33,10 @@
     \brief QUESO matrix class using GSL.
 */
 
-#include <uqMatrix.h>
+#include <queso/Matrix.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_permutation.h>
-#include <uqGslVector.h>
+#include <queso/GslVector.h>
 
 namespace QUESO {
 

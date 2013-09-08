@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqMpiComm.h>
-#include <uqEnvironment.h>
+#include <queso/MpiComm.h>
+#include <queso/Environment.h>
 
 namespace QUESO {
 

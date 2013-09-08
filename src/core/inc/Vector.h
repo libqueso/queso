@@ -29,10 +29,10 @@
 #ifndef __UQ_VECTOR_H__
 #define __UQ_VECTOR_H__
 
-#include <uqEnvironment.h>
-#include <uqMap.h>
+#include <queso/Environment.h>
+#include <queso/Map.h>
 #include <iostream>
-#include <uqDefines.h>
+#include <queso/Defines.h>
 
 namespace QUESO {
 

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqMap.h>
-#include <uqMpiComm.h>
+#include <queso/Map.h>
+#include <queso/MpiComm.h>
 
 namespace QUESO {
 
