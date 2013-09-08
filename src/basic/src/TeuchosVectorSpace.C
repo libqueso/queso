@@ -26,11 +26,11 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqVectorSpace.h>
+#include <queso/VectorSpace.h>
 
 #ifdef QUESO_HAS_TRILINOS
 
-#include <uqTeuchosMatrix.h>
+#include <queso/TeuchosMatrix.h>
 
 namespace QUESO {
 

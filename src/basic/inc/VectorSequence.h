@@ -31,12 +31,12 @@
 
 #undef UQ_CODE_HAS_MONITORS
 
-#include <uqVectorSubset.h>
-#include <uqScalarSequence.h>
-#include <uqSequenceStatisticalOptions.h>
-#include <uqArrayOfOneDGrids.h>
-#include <uqArrayOfOneDTables.h>
-#include <uq2dArrayOfStuff.h>
+#include <queso/VectorSubset.h>
+#include <queso/ScalarSequence.h>
+#include <queso/SequenceStatisticalOptions.h>
+#include <queso/ArrayOfOneDGrids.h>
+#include <queso/ArrayOfOneDTables.h>
+#include <queso/2dArrayOfStuff.h>
 #include <sys/time.h>
 #include <fstream>
 

@@ -29,7 +29,7 @@
 #ifndef __UQ_ARRAY_OF_SEQUENCES_H__
 #define __UQ_ARRAY_OF_SEQUENCES_H__
 
-#include <uqVectorSequence.h>
+#include <queso/VectorSequence.h>
 
 namespace QUESO {
 

@@ -29,7 +29,7 @@
 #ifndef __UQ_SCALAR_FUNCTION_SYNCHRONIZER_H__
 #define __UQ_SCALAR_FUNCTION_SYNCHRONIZER_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 namespace QUESO {
 

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqVectorSpace.h>
-#include <uqGslMatrix.h>
+#include <queso/VectorSpace.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 

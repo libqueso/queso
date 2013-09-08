@@ -29,9 +29,9 @@
 #ifndef __UQ_VECTOR_FUNCTION_H__
 #define __UQ_VECTOR_FUNCTION_H__
 
-#include <uqEnvironment.h>
-#include <uqDistArray.h>
-#include <uqVectorSet.h>
+#include <queso/Environment.h>
+#include <queso/DistArray.h>
+#include <queso/VectorSet.h>
 
 namespace QUESO {
 

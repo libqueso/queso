@@ -29,11 +29,11 @@
 #ifndef __UQ_SEQUENCE_STATISTICAL_OPTIONS_H__
 #define __UQ_SEQUENCE_STATISTICAL_OPTIONS_H__
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 #define UQ_SEQUENCE_INITIAL_DISCARDED_PORTIONS_ODV   "0."
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS

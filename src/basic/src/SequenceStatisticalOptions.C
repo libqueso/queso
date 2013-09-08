@@ -26,11 +26,11 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
-#include <uqSequenceStatisticalOptions.h>
-#include <uqMiscellaneous.h>
+#include <queso/SequenceStatisticalOptions.h>
+#include <queso/Miscellaneous.h>
 
 namespace QUESO {
 

@@ -29,7 +29,7 @@
 #ifndef __UQ_SEQUENCE_OF_VECTORS_H__
 #define __UQ_SEQUENCE_OF_VECTORS_H__
 
-#include <uqVectorSequence.h>
+#include <queso/VectorSequence.h>
 #define UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
 #undef  UQ_SEQ_VEC_USES_OPERATOR
 

@@ -29,9 +29,9 @@
 #ifndef __UQ_VECTOR_SPACE_H__
 #define __UQ_VECTOR_SPACE_H__
 
-#include <uqDistArray.h>
-#include <uqMap.h>
-#include <uqVectorSet.h>
+#include <queso/DistArray.h>
+#include <queso/Map.h>
+#include <queso/VectorSet.h>
 #include <cmath>
 //#include <math.h>
 

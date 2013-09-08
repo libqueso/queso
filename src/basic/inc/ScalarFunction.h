@@ -29,10 +29,10 @@
 #ifndef __UQ_SCALAR_FUNCTION_H__
 #define __UQ_SCALAR_FUNCTION_H__
 
-#include <uqVectorSet.h>
-#include <uqVectorSubset.h>
-#include <uqEnvironment.h>
-#include <uqDefines.h>
+#include <queso/VectorSet.h>
+#include <queso/VectorSubset.h>
+#include <queso/Environment.h>
+#include <queso/Defines.h>
 
 namespace QUESO {
 

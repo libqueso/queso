@@ -29,8 +29,8 @@
 #ifndef __UQ_VECTOR_SET_H__
 #define __UQ_VECTOR_SET_H__
 
-#include <uqEnvironment.h>
-#include <uqDefines.h>
+#include <queso/Environment.h>
+#include <queso/Defines.h>
 
 namespace QUESO {
 

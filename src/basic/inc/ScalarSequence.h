@@ -29,11 +29,11 @@
 #ifndef __UQ_SCALAR_SEQUENCE_H__
 #define __UQ_SCALAR_SEQUENCE_H__
 
-#include <uqFft.h>
-#include <uqOneDGrid.h>
-#include <uqEnvironment.h>
-#include <uqMiscellaneous.h>
-#include <uqDefines.h>
+#include <queso/Fft.h>
+#include <queso/OneDGrid.h>
+#include <queso/Environment.h>
+#include <queso/Miscellaneous.h>
+#include <queso/Defines.h>
 #include <vector>
 #include <complex>
 #include <sys/time.h>
