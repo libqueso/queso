@@ -29,8 +29,8 @@
 #ifndef __UQ_GCM_OPTIONS_H__
 #define __UQ_GCM_OPTIONS_H__
 
-#include <uqEnvironment.h>
-#include <uqSequenceStatisticalOptions.h>
+#include <queso/Environment.h>
+#include <queso/SequenceStatisticalOptions.h>
 
 #define UQ_GCM_FILENAME_FOR_NO_FILE "."
 

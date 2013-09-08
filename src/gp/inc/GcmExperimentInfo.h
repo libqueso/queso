@@ -29,8 +29,8 @@
 #ifndef __UQ_GCM_EXPERIMENT_INFO_H__
 #define __UQ_GCM_EXPERIMENT_INFO_H__
 
-#include <uqExperimentStorage.h>
-#include <uqExperimentModel.h>
+#include <queso/ExperimentStorage.h>
+#include <queso/ExperimentModel.h>
 
 namespace QUESO {
 

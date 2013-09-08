@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqExperimentModelOptions.h>
-#include <uqMiscellaneous.h>
+#include <queso/ExperimentModelOptions.h>
+#include <queso/Miscellaneous.h>
 
 namespace QUESO {
 

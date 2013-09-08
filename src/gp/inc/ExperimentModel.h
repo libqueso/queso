@@ -29,10 +29,10 @@
 #ifndef __UQ_EXPERIMENT_MODEL_H__
 #define __UQ_EXPERIMENT_MODEL_H__
 
-#include <uqExperimentModelOptions.h>
-#include <uqExperimentStorage.h>
-#include <uqSequenceOfVectors.h>
-#include <uqEnvironment.h>
+#include <queso/ExperimentModelOptions.h>
+#include <queso/ExperimentStorage.h>
+#include <queso/SequenceOfVectors.h>
+#include <queso/Environment.h>
 
 namespace QUESO {
 

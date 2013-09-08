@@ -29,22 +29,22 @@
 #ifndef __UQ_GCM_H__
 #define __UQ_GCM_H__
 
-#include <uqGpmsaComputerModelOptions.h>
-#include <uqExperimentStorage.h>
-#include <uqExperimentModel.h>
-#include <uqSimulationStorage.h>
-#include <uqSimulationModel.h>
-#include <uqGcmSimulationInfo.h>      // 1
-#include <uqGcmExperimentInfo.h>      // 2
-#include <uqGcmJointInfo.h>           // 3
-#include <uqGcmZInfo.h>               // 4
-#include <uqGcmTotalInfo.h>           // 5
-#include <uqGcmSimulationTildeInfo.h> // 6
-#include <uqGcmJointTildeInfo.h>      // 7
-#include <uqGcmZTildeInfo.h>          // 8
-#include <uqVectorRV.h>
-#include <uqInstantiateIntersection.h>
-#include <uqMiscellaneous.h>
+#include <queso/GpmsaComputerModelOptions.h>
+#include <queso/ExperimentStorage.h>
+#include <queso/ExperimentModel.h>
+#include <queso/SimulationStorage.h>
+#include <queso/SimulationModel.h>
+#include <queso/GcmSimulationInfo.h>      // 1
+#include <queso/GcmExperimentInfo.h>      // 2
+#include <queso/GcmJointInfo.h>           // 3
+#include <queso/GcmZInfo.h>               // 4
+#include <queso/GcmTotalInfo.h>           // 5
+#include <queso/GcmSimulationTildeInfo.h> // 6
+#include <queso/GcmJointTildeInfo.h>      // 7
+#include <queso/GcmZTildeInfo.h>          // 8
+#include <queso/VectorRV.h>
+#include <queso/InstantiateIntersection.h>
+#include <queso/Miscellaneous.h>
 #include <sys/time.h>
 
 namespace QUESO {
@@ -287,9 +287,9 @@ std::ostream& operator<<(std::ostream& os, const GpmsaComputerModel<S_V,S_M,D_V,
 
 }  // End namespace QUESO
 
-#include <uqGpmsaComputerModel2.h>
-#include <uqGpmsaComputerModel3.h>
-#include <uqGpmsaComputerModel4.h>
-#include <uqGpmsaComputerModel5.h>
+#include <queso/GpmsaComputerModel2.h>
+#include <queso/GpmsaComputerModel3.h>
+#include <queso/GpmsaComputerModel4.h>
+#include <queso/GpmsaComputerModel5.h>
 
 #endif // __UQ_GCM_H__

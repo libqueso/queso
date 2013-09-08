@@ -29,9 +29,9 @@
 #ifndef __UQ_GCM_SIMULATION_INFO_H__
 #define __UQ_GCM_SIMULATION_INFO_H__
 
-#include <uqSimulationStorage.h>
-#include <uqSimulationModel.h>
-#include <uqVectorRV.h>
+#include <queso/SimulationStorage.h>
+#include <queso/SimulationModel.h>
+#include <queso/VectorRV.h>
 
 namespace QUESO {
 

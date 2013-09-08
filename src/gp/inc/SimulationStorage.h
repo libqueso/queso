@@ -29,7 +29,7 @@
 #ifndef __UQ_SIMULATION_STORAGE_H__
 #define __UQ_SIMULATION_STORAGE_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 namespace QUESO {
 

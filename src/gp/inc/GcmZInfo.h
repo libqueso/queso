@@ -29,8 +29,8 @@
 #ifndef __UQ_GCM_Z_INFO_H__
 #define __UQ_GCM_Z_INFO_H__
 
-#include <uqGcmSimulationInfo.h>
-#include <uqGcmExperimentInfo.h>
+#include <queso/GcmSimulationInfo.h>
+#include <queso/GcmExperimentInfo.h>
 
 namespace QUESO {
 

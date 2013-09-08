@@ -29,7 +29,7 @@
 #ifndef __UQ_EXPERIMENT_STORAGE_H__
 #define __UQ_EXPERIMENT_STORAGE_H__
 
-#include <uqVectorSpace.h>
+#include <queso/VectorSpace.h>
 
 namespace QUESO {
 

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqGpmsaComputerModelOptions.h>
-#include <uqMiscellaneous.h>
+#include <queso/GpmsaComputerModelOptions.h>
+#include <queso/Miscellaneous.h>
 
 namespace QUESO {
 

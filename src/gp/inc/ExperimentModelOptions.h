@@ -29,7 +29,7 @@
 #ifndef __UQ_EXPERIMENT_MODEL_OPTIONS_H__
 #define __UQ_EXPERIMENT_MODEL_OPTIONS_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 

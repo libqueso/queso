@@ -29,11 +29,11 @@
 #ifndef __UQ_GCM_TOTAL_INFO_H__
 #define __UQ_GCM_TOTAL_INFO_H__
 
-#include <uqGcmSimulationInfo.h>
-#include <uqGcmExperimentInfo.h>
-#include <uqGcmJointInfo.h>
-#include <uqMetropolisHastingsSG1.h>
-#include <uqMLSampling1.h>
+#include <queso/GcmSimulationInfo.h>
+#include <queso/GcmExperimentInfo.h>
+#include <queso/GcmJointInfo.h>
+#include <queso/MetropolisHastingsSG1.h>
+#include <queso/MLSampling1.h>
 
 namespace QUESO {
 

@@ -29,10 +29,10 @@
 #ifndef __UQ_SIMULATION_MODEL_H__
 #define __UQ_SIMULATION_MODEL_H__
 
-#include <uqSimulationModelOptions.h>
-#include <uqSimulationStorage.h>
-#include <uqSequenceOfVectors.h>
-#include <uqEnvironment.h>
+#include <queso/SimulationModelOptions.h>
+#include <queso/SimulationStorage.h>
+#include <queso/SequenceOfVectors.h>
+#include <queso/Environment.h>
 
 namespace QUESO {
 

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqSimulationModelOptions.h>
-#include <uqMiscellaneous.h>
+#include <queso/SimulationModelOptions.h>
+#include <queso/Miscellaneous.h>
 
 namespace QUESO {
 
