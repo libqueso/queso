@@ -28,7 +28,7 @@
 #ifndef __EX_LIKELIHOOD_H__
 #define __EX_LIKELIHOOD_H__
 
-#include <uqGslMatrix.h>
+#include <queso/GslMatrix.h>
 
 struct
 likelihoodRoutine_DataType

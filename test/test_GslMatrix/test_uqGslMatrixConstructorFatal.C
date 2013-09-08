@@ -1,4 +1,4 @@
-#include <uqGslMatrix.h>
+#include <queso/GslMatrix.h>
 
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>

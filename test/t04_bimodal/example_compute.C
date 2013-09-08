@@ -28,9 +28,9 @@
 
 #include <example_compute.h>
 #include <example_likelihood.h>
-#include <uqGslMatrix.h>
-#include <uqStatisticalInverseProblem.h>
-#include <uq1D1DFunction.h>
+#include <queso/GslMatrix.h>
+#include <queso/StatisticalInverseProblem.h>
+#include <queso/1D1DFunction.h>
 
 void compute(const QUESO::FullEnvironment& env) {
 #if 0
