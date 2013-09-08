@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uq1DQuadrature.h>
+#include <queso/1DQuadrature.h>
 
 namespace QUESO {
 

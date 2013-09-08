@@ -29,10 +29,10 @@
 #ifndef __UQ_ASCII_TABLE_H__
 #define __UQ_ASCII_TABLE_H__
 
-#include <uqEnvironment.h>
-#include <uqDistArray.h>
-#include <uqMap.h>
-#include <uqMiscellaneous.h>
+#include <queso/Environment.h>
+#include <queso/DistArray.h>
+#include <queso/Map.h>
+#include <queso/Miscellaneous.h>
 
 namespace QUESO {
 

@@ -29,7 +29,7 @@
 #ifndef __UQ_ARRAY_OF_ONE_D_GRIDS_H__
 #define __UQ_ARRAY_OF_ONE_D_GRIDS_H__
 
-#include <uqOneDGrid.h>
+#include <queso/OneDGrid.h>
 
 namespace QUESO {
 

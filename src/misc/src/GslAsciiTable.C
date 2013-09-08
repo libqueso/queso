@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqAsciiTable.h>
+#include <queso/AsciiTable.h>
 
 namespace QUESO {
 

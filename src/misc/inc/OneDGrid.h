@@ -29,7 +29,7 @@
 #ifndef __UQ_ONE_D_GRID_FUNCTION_H__
 #define __UQ_ONE_D_GRID_FUNCTION_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 #include <math.h>
 
 namespace QUESO {

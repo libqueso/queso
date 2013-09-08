@@ -29,8 +29,8 @@
 #ifndef __UQ_MISCELLANEOUS_H__
 #define __UQ_MISCELLANEOUS_H__
 
-#include <uqEnvironment.h>
-#include <uqRngBase.h>
+#include <queso/Environment.h>
+#include <queso/RngBase.h>
 #include <string>
 #include <vector>
 #include <math.h>

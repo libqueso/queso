@@ -29,10 +29,10 @@
 #ifndef __UQ_1D_1D_FUNCTION_H__
 #define __UQ_1D_1D_FUNCTION_H__
 
-#include <uqScalarSequence.h>
-#include <uq1DQuadrature.h>
-#include <uqEnvironment.h>
-#include <uqDefines.h>
+#include <queso/ScalarSequence.h>
+#include <queso/1DQuadrature.h>
+#include <queso/Environment.h>
+#include <queso/Defines.h>
 #include <vector>
 #include <math.h>
 #include <fstream>

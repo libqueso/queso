@@ -29,8 +29,8 @@
 #ifndef __UQ_1D_1D_QUADRATURE_H__
 #define __UQ_1D_1D_QUADRATURE_H__
 
-#include <uqEnvironment.h>
-#include <uqDefines.h>
+#include <queso/Environment.h>
+#include <queso/Defines.h>
 #include <vector>
 #include <math.h>
 #include <fstream>

@@ -29,7 +29,7 @@
 #ifndef __UQ_ARRAY_OF_ONE_D_TABLES_H__
 #define __UQ_ARRAY_OF_ONE_D_TABLES_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 namespace QUESO {
 

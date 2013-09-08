@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uq1D1DFunction.h>
-#include <uq1DQuadrature.h>
+#include <queso/1D1DFunction.h>
+#include <queso/1DQuadrature.h>
 
 namespace QUESO {
 

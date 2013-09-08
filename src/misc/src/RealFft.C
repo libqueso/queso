@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqFft.h>
+#include <queso/Fft.h>
 #include <gsl/gsl_fft_real.h>
 #include <gsl/gsl_fft_complex.h>
 

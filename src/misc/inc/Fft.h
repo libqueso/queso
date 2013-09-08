@@ -29,7 +29,7 @@
 #ifndef __UQ_FFT_H__
 #define __UQ_FFT_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 //#include <gsl/gsl_fft_real.h>
 //#include <gsl/gsl_fft_complex.h>
 #include <vector>

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqDefines.h>
-#include <uqMiscellaneous.h>
+#include <queso/Defines.h>
+#include <queso/Miscellaneous.h>
 #include <sys/time.h>
 #include <iostream>
 #include <fstream>
