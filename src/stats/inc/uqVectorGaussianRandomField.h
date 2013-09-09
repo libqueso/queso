@@ -39,14 +39,14 @@ namespace QUESO {
  * \file uqVectorGaussianRandomField.h
  * \brief A class for handling Gaussian random fields (GRF).
  * 
- * \class uqVectorGaussianRandomFieldClass
+ * \class VectorGaussianRandomFieldClass
  * \brief A class for handling vector Gaussian random fields (GRF).
  *
  * This class implements a vector Gaussian random field (GRF); i.e. a random field involving 
  * vector Gaussian probability density functions (PDFs) of the variables. */
 
 template <class P_V, class P_M, class Q_V, class Q_M>
-class uqVectorGaussianRandomFieldClass
+class VectorGaussianRandomFieldClass
 {
  public:
    //! @name Constructor/Destructor methods
@@ -54,37 +54,37 @@ class uqVectorGaussianRandomFieldClass
   //! Constructor.
   /*! Constructs a new object, given a prefix, an index set, and both a mean and a 
    * covariance function. This method deletes the previous saved positions. */ 
-  uqVectorGaussianRandomFieldClass(const char*                                                 prefix,
-                                   const uqVectorSetClass<P_V,P_M>&                            indexSet,
-                                   const uqVectorSetClass<Q_V,Q_M>&                            imageSetPerIndex,
-                                   const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&           meanFunction, 
-                                   const uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>& covarianceFunction);
+  VectorGaussianRandomFieldClass(const char*                                                 prefix,
+                                   const VectorSetClass<P_V,P_M>&                            indexSet,
+                                   const VectorSetClass<Q_V,Q_M>&                            imageSetPerIndex,
+                                   const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&           meanFunction, 
+                                   const BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>& covarianceFunction);
   
   //! TODO: Copy constructor.
   /*! \todo: implement me!*/
-  uqVectorGaussianRandomFieldClass(const uqVectorGaussianRandomFieldClass&                     obj);
+  VectorGaussianRandomFieldClass(const VectorGaussianRandomFieldClass&                     obj);
  
   //! Destructor.
-  ~uqVectorGaussianRandomFieldClass();
+  ~VectorGaussianRandomFieldClass();
   //@}
  
   //! @name Set methods
   //@{
   //! TODO: Assignment operator; it copies \c rhs to \c this.
   /*! \todo: implement me!*/
-  uqVectorGaussianRandomFieldClass& operator=(const uqVectorGaussianRandomFieldClass& rhs);
+  VectorGaussianRandomFieldClass& operator=(const VectorGaussianRandomFieldClass& rhs);
   //@}
 
   //! @name Math methods
   //@{
   //! Index set; access to protected attribute m_indexSet.
-  const uqVectorSetClass<P_V,P_M>&                   indexSet          () const;
+  const VectorSetClass<P_V,P_M>&                   indexSet          () const;
   
   //! Mean function; access to protected attribute m_meanFunction.
-  const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&  meanFunction      () const;
+  const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&  meanFunction      () const;
   
   //! Covariance function; access to protected attribute m_covarianceFunction.
-  const uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>& covarianceFunction() const;
+  const BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>& covarianceFunction() const;
   
   //! Function that samples from a Gaussian PDF.
   /*! Given the field positions, this method performs a number of tests, calculates the mean vector,
@@ -94,31 +94,31 @@ class uqVectorGaussianRandomFieldClass
   //@}
 protected:
   //! Copy method.
-  void                                              copy          (const uqVectorGaussianRandomFieldClass& src);
+  void                                              copy          (const VectorGaussianRandomFieldClass& src);
 
   //! Environment.
-  const uqBaseEnvironmentClass&                     m_env;
+  const BaseEnvironmentClass&                     m_env;
   
   //! Prefix.
   std::string                                       m_prefix;
  
   //! Index set.	
-  const uqVectorSetClass<P_V,P_M>&                  m_indexSet;
+  const VectorSetClass<P_V,P_M>&                  m_indexSet;
     
   //! Image set of the RV, per index.
-  const uqVectorSetClass<Q_V,Q_M>&                  m_imageSetPerIndex;
+  const VectorSetClass<Q_V,Q_M>&                  m_imageSetPerIndex;
   
   //! Mean function.
-  const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_meanFunction;
+  const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_meanFunction;
   
   //! Covariance function.
-  const uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>& m_covarianceFunction;
+  const BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>& m_covarianceFunction;
 
   //! Saved positions.
   std::vector<P_V*>                                 m_savedPositions;
   
   //! Image set of the RV.
-  uqVectorSpaceClass<Q_V,Q_M>*                      m_savedRvImageSpace;
+  VectorSpaceClass<Q_V,Q_M>*                      m_savedRvImageSpace;
   
   //! Vector of the mean value of the RV.
   Q_V*                                              m_savedRvLawExpVector;
@@ -127,17 +127,17 @@ protected:
   Q_M*                                              m_savedRvLawCovMatrix;
   
   //! My RV.
-  uqGaussianVectorRVClass<Q_V,Q_M>*                 m_savedRv;
+  GaussianVectorRVClass<Q_V,Q_M>*                 m_savedRv;
 };
 
 // Default constructor -----------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
-uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::uqVectorGaussianRandomFieldClass(
+VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::VectorGaussianRandomFieldClass(
   const char*                                                 prefix,
-  const uqVectorSetClass<P_V,P_M>&                            indexSet,
-  const uqVectorSetClass<Q_V,Q_M>&                            imageSetPerIndex,
-  const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&           meanFunction, 
-  const uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>& covarianceFunction)
+  const VectorSetClass<P_V,P_M>&                            indexSet,
+  const VectorSetClass<Q_V,Q_M>&                            imageSetPerIndex,
+  const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&           meanFunction, 
+  const BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>& covarianceFunction)
   :
   m_env                (indexSet.env()),
   m_prefix             ((std::string)(prefix)+"grf_"),
@@ -154,50 +154,50 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::uqVectorGaussianRandomFieldCl
 }
 // Destructor ---------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
-uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::~uqVectorGaussianRandomFieldClass()
+VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::~VectorGaussianRandomFieldClass()
 {
 }
 // Math methods -------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
-const uqVectorSetClass<P_V,P_M>&
-uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::indexSet() const
+const VectorSetClass<P_V,P_M>&
+VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::indexSet() const
 {
   return m_indexSet;
 }
 // --------------------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
-const uqBaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&
-uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::meanFunction() const
+const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>&
+VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::meanFunction() const
 {
   return m_meanFunction;
 }
 // --------------------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
-const uqBaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>&
-uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::covarianceFunction() const
+const BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>&
+VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::covarianceFunction() const
 {
   return m_covarianceFunction;
 }
 // --------------------------------------------------
 template <class P_V, class P_M, class Q_V, class Q_M>
 void
-uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vector<P_V*>& fieldPositions, Q_V& sampleValues)
+VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vector<P_V*>& fieldPositions, Q_V& sampleValues)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "Entering uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
+    *m_env.subDisplayFile() << "Entering VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(( sampleValues.sizeLocal() % fieldPositions.size() ) != 0,
                       m_env.fullRank(),
-                      "uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()",
+                      "VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()",
                       "input data is not multiple of each other");
 
   unsigned int numberOfImageValuesPerIndex = sampleValues.sizeLocal()/fieldPositions.size();
   
   UQ_FATAL_TEST_MACRO(numberOfImageValuesPerIndex != m_imageSetPerIndex.vectorSpace().dimLocal(),
                       m_env.fullRank(),
-                      "uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()",
+                      "VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()",
                       "invalid input data dimension");
 
   if ((m_savedPositions.size() == 0   ) &&
@@ -217,7 +217,7 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_env.fullRank(),
-                        "uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()",
+                        "VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()",
                         "invalid combination of pointer values");
   }
 
@@ -228,7 +228,7 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
     for (unsigned int i = 0; i < numberOfPositions; ++i) {
       UQ_FATAL_TEST_MACRO(m_savedPositions[i] == NULL,
                           m_env.fullRank(),
-                          "uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()",
+                          "VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()",
                           "m_savedPositions[i] should not be NULL");
       if ((m_savedPositions[i]->sizeLocal() == fieldPositions[i]->sizeLocal()) &&
           (*(m_savedPositions[i])           == *(fieldPositions[i])          )) {
@@ -243,7 +243,7 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
+    *m_env.subDisplayFile() << "In VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                             << ": numberOfPositions = " << numberOfPositions
                             << ", instantiate = "       << instantiate
                             << std::endl;
@@ -266,7 +266,7 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
     }
 
     // Set m_savedRvImageSpace
-    m_savedRvImageSpace = new uqVectorSpaceClass<Q_V,Q_M>(m_env, "grf_", numberOfPositions*numberOfImageValuesPerIndex, NULL);
+    m_savedRvImageSpace = new VectorSpaceClass<Q_V,Q_M>(m_env, "grf_", numberOfPositions*numberOfImageValuesPerIndex, NULL);
 
     // Set m_savedRvLawExpVector
     Q_V tmpVec(m_imageSetPerIndex.vectorSpace().zeroVector());
@@ -282,7 +282,7 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
     Q_M tmpMat(m_imageSetPerIndex.vectorSpace().zeroVector());
     m_savedRvLawCovMatrix = new Q_M(m_savedRvImageSpace->zeroVector());
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
+      *m_env.subDisplayFile() << "In VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                               << ": m_savedRvLawCovMatrix order = " << m_savedRvLawCovMatrix->numCols()
                               << ", numberOfPositions = "           << numberOfPositions
                               << ", tmpMat order = "                << tmpMat.numCols()
@@ -295,7 +295,7 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
 #if 1
         Q_M testMat(tmpMat);
         if (testMat.chol() != 0) {
-          *m_env.subDisplayFile() << "In uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
+          *m_env.subDisplayFile() << "In VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                                   << ": i = " << i
                                   << ", j = " << j
                                   << ", *(fieldPositions[i]) = " << *(fieldPositions[i])
@@ -306,7 +306,7 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
                                   << std::endl;
           UQ_FATAL_TEST_MACRO(true,
                               m_env.fullRank(),
-                              "uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()",
+                              "VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()",
                               "tmpMat is not positive definite");
         }
 #endif
@@ -316,7 +316,7 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
             unsigned int tmpJ = j*numberOfImageValuesPerIndex + k2;
             (*m_savedRvLawCovMatrix)(tmpI,tmpJ) = tmpMat(k1,k2);
             if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-              *m_env.subDisplayFile() << "In uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
+              *m_env.subDisplayFile() << "In VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                                       << ": i = " << i
                                       << ", j = " << j
                                       << ", k1 = " << k1
@@ -334,13 +334,13 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
     }
 
     // Set m_savedRv
-    m_savedRv = new uqGaussianVectorRVClass<Q_V,Q_M>("grf_",
+    m_savedRv = new GaussianVectorRVClass<Q_V,Q_M>("grf_",
                                                      *m_savedRvImageSpace,
                                                      *m_savedRvLawExpVector,
                                                      *m_savedRvLawCovMatrix);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
+      *m_env.subDisplayFile() << "In VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                               << ": just instantiated Gaussian RV"
                               << "\n *m_savedRvLawExpVector = " << *m_savedRvLawExpVector
                               << "\n *m_savedRvLawCovMatrix = " << *m_savedRvLawCovMatrix
@@ -355,19 +355,19 @@ uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vec
 
   // Generate sample function
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
+    *m_env.subDisplayFile() << "In VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                             << ": about to realize sample values"
                             << std::endl;
   }
   m_savedRv->realizer().realization(sampleValues);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
+    *m_env.subDisplayFile() << "In VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                             << ": just realized sample values"
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "Leaving uqVectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
+    *m_env.subDisplayFile() << "Leaving VectorGaussianRandomFieldClass<P_V,P_M,Q_V,Q_M>::sampleFunction()"
                             << std::endl;
   }
 

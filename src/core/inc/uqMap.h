@@ -42,39 +42,39 @@ namespace QUESO {
     \brief A class for partitioning vectors and matrices.
 */
 
-/*! \class uqMapClass
+/*! \class MapClass
     \brief A class for partitioning vectors and matrices.
     
     It is often the case that multiple matrix and vector objects have an identical distribution 
-    of elements on a parallel machine. The uqMapClass keeps information that describes this 
+    of elements on a parallel machine. The MapClass keeps information that describes this 
     distribution for matrices and vectors. Inspired by Trilinos Epetra_Map class.
 */
 
-class uqMapClass
+class MapClass
 {
 public:
   //! @name Constructor/Destructor methods
   //@{
 
   //! Default constructor. Do not call this directly.
-  uqMapClass();
+  MapClass();
   
   //! Constructor for a uniform linear distribution of elements. 
-  uqMapClass(int                   numGlobalElements,
+  MapClass(int                   numGlobalElements,
              int                   indexBase,
-             const uqMpiCommClass& comm);
+             const MpiCommClass& comm);
   
   //! Copy constructor.
-  uqMapClass(const uqMapClass& src);
+  MapClass(const MapClass& src);
 
   //! Destructor
- ~uqMapClass();
+ ~MapClass();
  //@}
 
  //! @name Set methods
   //@{
   //! Assignment operator. 
-  uqMapClass& operator= (const uqMapClass& rhs);
+  MapClass& operator= (const MapClass& rhs);
   //@}
 
   
@@ -96,8 +96,8 @@ public:
   
   //! @name Miscellaneous  methods
   //@{
-  //! Access function for uqMpiComm communicator. 
-  const uqMpiCommClass& Comm             () const;
+  //! Access function for MpiComm communicator. 
+  const MpiCommClass& Comm             () const;
   
 #ifdef QUESO_HAS_TRILINOS
   //! Trilinos Epetra_Map: A class for partitioning vectors and matrices.
@@ -107,10 +107,10 @@ public:
   //@}
 private:
   //! Copies the map.
-  void                  copy             (const uqMapClass& src);
+  void                  copy             (const MapClass& src);
 
   //! This communicator can be queried for processor rank and size information. 
-  uqMpiCommClass m_uqMpiComm;
+  MpiCommClass m_MpiComm;
   
 #ifdef QUESO_HAS_TRILINOS
   //! Epetra_Map

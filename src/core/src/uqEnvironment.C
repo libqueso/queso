@@ -107,14 +107,14 @@ namespace QUESO {
     return(major_version*10000 + minor_version*100 + micro_version);
   }
 
-uqFilePtrSetStruct::uqFilePtrSetStruct()
+FilePtrSetStruct::FilePtrSetStruct()
   :
   ofsVar(NULL),
   ifsVar(NULL)
 {
 }
 
-uqFilePtrSetStruct::~uqFilePtrSetStruct()
+FilePtrSetStruct::~FilePtrSetStruct()
 {
 }
 
@@ -122,9 +122,9 @@ uqFilePtrSetStruct::~uqFilePtrSetStruct()
 // Base class
 //*****************************************************
 // Default constructor --------------------------------
-uqBaseEnvironmentClass::uqBaseEnvironmentClass(
+BaseEnvironmentClass::BaseEnvironmentClass(
   const char*                    passedOptionsInputFileName,
-  const uqEnvOptionsValuesClass* alternativeOptionsValues)
+  const EnvOptionsValuesClass* alternativeOptionsValues)
   :
   m_fullEnvIsReady             (false),
   m_worldRank                  (-1),
@@ -153,18 +153,18 @@ uqBaseEnvironmentClass::uqBaseEnvironmentClass(
   if (alternativeOptionsValues  ) m_alternativeOptionsValues = *alternativeOptionsValues;
 }
 // Copy constructor -------------------------------------
-uqBaseEnvironmentClass::uqBaseEnvironmentClass(const uqBaseEnvironmentClass& obj)
+BaseEnvironmentClass::BaseEnvironmentClass(const BaseEnvironmentClass& obj)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       obj.worldRank(),
-                      "uqBaseEnvironmentClass::constructor(), copy",
+                      "BaseEnvironmentClass::constructor(), copy",
                       "code should not execute through here");
 }
 // Destructor -------------------------------------------
-uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
+BaseEnvironmentClass::~BaseEnvironmentClass()
 {
   //if (m_subDisplayFile) {
-  //  *m_subDisplayFile << "Entering uqBaseEnvironmentClass::destructor()"
+  //  *m_subDisplayFile << "Entering BaseEnvironmentClass::destructor()"
   //                          << std::endl;
   //}
 
@@ -199,7 +199,7 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   if (m_rngObject) delete m_rngObject;
 
   //if (m_subDisplayFile) {
-  //  *m_subDisplayFile << "Leaving uqBaseEnvironmentClass::destructor()"
+  //  *m_subDisplayFile << "Leaving BaseEnvironmentClass::destructor()"
   //                          << std::endl;
   //}
 
@@ -210,100 +210,100 @@ uqBaseEnvironmentClass::~uqBaseEnvironmentClass()
   if (m_fullComm      ) delete m_fullComm;
 }
 // Set methods ------------------------------------------
-uqBaseEnvironmentClass&
-uqBaseEnvironmentClass::operator= (const uqBaseEnvironmentClass& rhs)
+BaseEnvironmentClass&
+BaseEnvironmentClass::operator= (const BaseEnvironmentClass& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       rhs.worldRank(),
-                      "uqBaseEnvironmentClass::operator=()",
+                      "BaseEnvironmentClass::operator=()",
                       "code should not execute through here");
   return *this;
 }
 // Environment, Communicator and Options Input File methods 
 bool
-uqBaseEnvironmentClass::fullEnvIsReady() const
+BaseEnvironmentClass::fullEnvIsReady() const
 {
   return m_fullEnvIsReady;
 }
 //-------------------------------------------------------
 int
-uqBaseEnvironmentClass::worldRank() const
+BaseEnvironmentClass::worldRank() const
 {
   return m_worldRank;
 }
 //-------------------------------------------------------
 int
-uqBaseEnvironmentClass::fullRank() const
+BaseEnvironmentClass::fullRank() const
 {
   return m_fullRank;
 }
 //-------------------------------------------------------
-const uqMpiCommClass&
-uqBaseEnvironmentClass::fullComm() const
+const MpiCommClass&
+BaseEnvironmentClass::fullComm() const
 {
   UQ_FATAL_TEST_MACRO(m_fullComm == NULL,
                       m_worldRank,
-                      "uqBaseEnvironmentClass::fullComm()",
+                      "BaseEnvironmentClass::fullComm()",
                       "m_fullComm variable is NULL");
   return *m_fullComm;
 }
 //-------------------------------------------------------
-uqRawType_MPI_Group
-uqBaseEnvironmentClass::subGroup() const
+RawType_MPI_Group
+BaseEnvironmentClass::subGroup() const
 {
   return m_subGroup;
 }
 //-------------------------------------------------------
 int
-uqBaseEnvironmentClass::subRank() const
+BaseEnvironmentClass::subRank() const
 {
   return m_subRank;
 }
 //-------------------------------------------------------
-const uqMpiCommClass&
-uqBaseEnvironmentClass::subComm() const
+const MpiCommClass&
+BaseEnvironmentClass::subComm() const
 {
   UQ_FATAL_TEST_MACRO(m_subComm == NULL,
                       m_worldRank,
-                      "uqBaseEnvironmentClass::subComm()",
+                      "BaseEnvironmentClass::subComm()",
                       "m_subComm variable is NULL");
   return *m_subComm;
 }
 //-------------------------------------------------------
-const uqMpiCommClass&
-uqBaseEnvironmentClass::selfComm() const
+const MpiCommClass&
+BaseEnvironmentClass::selfComm() const
 {
   UQ_FATAL_TEST_MACRO(m_selfComm == NULL,
                       m_worldRank,
-                      "uqBaseEnvironmentClass::selfComm()",
+                      "BaseEnvironmentClass::selfComm()",
                       "m_selfComm variable is NULL");
   return *m_selfComm;
 }
 //-------------------------------------------------------
 int
-uqBaseEnvironmentClass::inter0Rank() const
+BaseEnvironmentClass::inter0Rank() const
 {
   return m_inter0Rank;
 }
 //-------------------------------------------------------
-const uqMpiCommClass&
-uqBaseEnvironmentClass::inter0Comm() const
+const MpiCommClass&
+BaseEnvironmentClass::inter0Comm() const
 {
   UQ_FATAL_TEST_MACRO(m_inter0Comm == NULL,
                       m_worldRank,
-                      "uqBaseEnvironmentClass::inter0Comm()",
+                      "BaseEnvironmentClass::inter0Comm()",
                       "m_inter0Comm variable is NULL");
   return *m_inter0Comm;
 }
 //-------------------------------------------------------
 std::ofstream*
-uqBaseEnvironmentClass::subDisplayFile() const
+BaseEnvironmentClass::subDisplayFile() const
 {
   return m_subDisplayFile;
 }
 //-------------------------------------------------------
 std::string
-uqBaseEnvironmentClass::subDisplayFileName() const
+BaseEnvironmentClass::subDisplayFileName() const
 {
   if (m_optionsObj == NULL) return ".";
 
@@ -311,29 +311,29 @@ uqBaseEnvironmentClass::subDisplayFileName() const
 }
 //-------------------------------------------------------
 unsigned int
-uqBaseEnvironmentClass::numSubEnvironments() const
+BaseEnvironmentClass::numSubEnvironments() const
 {
   UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
                       m_worldRank,
-                      "uqBaseEnvironmentClass::numSubEnvironments()",
+                      "BaseEnvironmentClass::numSubEnvironments()",
                       "m_optionsObj variable is NULL");
   return m_optionsObj->m_ov.m_numSubEnvironments;
 }
 //-------------------------------------------------------
 unsigned int
-uqBaseEnvironmentClass::subId() const
+BaseEnvironmentClass::subId() const
 {
   return m_subId;
 }
 //-------------------------------------------------------
 const std::string&
-uqBaseEnvironmentClass::subIdString() const
+BaseEnvironmentClass::subIdString() const
 {
   return m_subIdString;
 }
 //-------------------------------------------------------
 std::string
-uqBaseEnvironmentClass::optionsInputFileName() const
+BaseEnvironmentClass::optionsInputFileName() const
 {
   if (m_optionsInputFileAccessState) {
     return m_optionsInputFileName;
@@ -344,7 +344,7 @@ uqBaseEnvironmentClass::optionsInputFileName() const
 }
 //-------------------------------------------------------
 void
-uqBaseEnvironmentClass::setOptionsInputFileAccessState(bool newState) const
+BaseEnvironmentClass::setOptionsInputFileAccessState(bool newState) const
 {
   m_optionsInputFileAccessState = newState;
 
@@ -353,44 +353,44 @@ uqBaseEnvironmentClass::setOptionsInputFileAccessState(bool newState) const
 //-------------------------------------------------------
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
 const po::options_description&
-uqBaseEnvironmentClass::allOptionsDesc() const
+BaseEnvironmentClass::allOptionsDesc() const
 {
   return *m_allOptionsDesc;
 }
 #endif
 //-------------------------------------------------------
 po::variables_map&
-uqBaseEnvironmentClass::allOptionsMap() const
+BaseEnvironmentClass::allOptionsMap() const
 {
   UQ_FATAL_TEST_MACRO(m_allOptionsMap == NULL,
                       m_worldRank,
-                      "uqBaseEnvironmentClass::allOptionsMap()",
+                      "BaseEnvironmentClass::allOptionsMap()",
                       "m_allOptionsMap variable is NULL");
   return *m_allOptionsMap;
 }
 //-------------------------------------------------------
 void
-uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description& optionsDesc) const
+BaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description& optionsDesc) const
 {
 #ifdef UQ_USES_COMMAND_LINE_OPTIONS
   // If you want to use command line options, the following line does *not* work outside 'main.C',
-  // e.g., in the constructor of uqFullEnvironmentClass:
+  // e.g., in the constructor of FullEnvironmentClass:
   // Line: po::store(po::parse_command_line(argc, argv, *m_allOptionsDesc), *m_allOptionsMap);
   //
   // Instead, put the following three lines *immediately after* instantianting the UQ environment
-  // variable "uqFullEnvironmentClass* env":
+  // variable "FullEnvironmentClass* env":
   // Line 1: po::store(po::parse_command_line(argc, argv, env->allOptionsDesc()), env->allOptionsMap());
   // Line 2: po::notify(env->allOptionsMap());
   // Line 3: env->getMyOptionValues();
 #endif
 
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "Entering uqBaseEnvClass::scanInputFileForMyOptions()" << std::endl;
+  std::cout << "Entering BaseEnvClass::scanInputFileForMyOptions()" << std::endl;
 #endif
 
   UQ_FATAL_TEST_MACRO(m_allOptionsDesc == NULL,
                       m_worldRank,
-                      "uqBaseEnvironmentClass::scanInputFileForMyOptions()",
+                      "BaseEnvironmentClass::scanInputFileForMyOptions()",
                       "m_allOptionsDesc variable is NULL");
   m_allOptionsDesc->add(optionsDesc);
   //if (m_subDisplayFile) {
@@ -400,120 +400,120 @@ uqBaseEnvironmentClass::scanInputFileForMyOptions(const po::options_description&
 
   UQ_FATAL_TEST_MACRO(m_optionsInputFileName == "",
                       m_worldRank,
-                      "uqBaseEnvironmentClass::scanInputFileForMyOptions()",
+                      "BaseEnvironmentClass::scanInputFileForMyOptions()",
                       "m_optionsInputFileName is 'nothing'");
   //std::ifstream ifs(m_optionsInputFileName.c_str());
   std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "in uqBaseEnvClass::scanInputFileForMyOptions(), before store(a)" << std::endl;
+  std::cout << "in BaseEnvClass::scanInputFileForMyOptions(), before store(a)" << std::endl;
 #endif
 
   UQ_FATAL_TEST_MACRO(m_allOptionsMap == NULL,
                       m_worldRank,
-                      "uqBaseEnvironmentClass::scanInputFileForMyOptions()",
+                      "BaseEnvironmentClass::scanInputFileForMyOptions()",
                       "m_allOptionsMap variable is NULL");
   po::store(po::parse_config_file(*ifs, *m_allOptionsDesc, true), *m_allOptionsMap);
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "in uqBaseEnvClass::scanInputFileForMyOptions(), after store(a)" << std::endl;
+  std::cout << "in BaseEnvClass::scanInputFileForMyOptions(), after store(a)" << std::endl;
 #endif
   po::notify(*m_allOptionsMap);
 
   //ifs.close();
   delete ifs;
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "Leaving uqBaseEnvClass::scanInputFileForMyOptions()" << std::endl;
+  std::cout << "Leaving BaseEnvClass::scanInputFileForMyOptions()" << std::endl;
 #endif
 
   return;
 }
 //-----------------------------------------------------
 unsigned int
-uqBaseEnvironmentClass::displayVerbosity() const
+BaseEnvironmentClass::displayVerbosity() const
 {
   UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
                       m_worldRank,
-                      "uqBaseEnvironmentClass::displayVerbosity()",
+                      "BaseEnvironmentClass::displayVerbosity()",
                       "m_optionsObj variable is NULL");
   return m_optionsObj->m_ov.m_displayVerbosity;
 }
 //-------------------------------------------------------
 unsigned int
-uqBaseEnvironmentClass::syncVerbosity() const
+BaseEnvironmentClass::syncVerbosity() const
 {
   UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
                       m_worldRank,
-                      "uqBaseEnvironmentClass::displayVerbosity()",
+                      "BaseEnvironmentClass::displayVerbosity()",
                       "m_optionsObj variable is NULL");
   return m_optionsObj->m_ov.m_syncVerbosity;
 }
 //-------------------------------------------------------
 unsigned int
-uqBaseEnvironmentClass::checkingLevel() const
+BaseEnvironmentClass::checkingLevel() const
 {
   UQ_FATAL_TEST_MACRO(m_optionsObj == NULL,
                       m_worldRank,
-                      "uqBaseEnvironmentClass::checkingLevel()",
+                      "BaseEnvironmentClass::checkingLevel()",
                       "m_optionsObj variable is NULL");
   return m_optionsObj->m_ov.m_checkingLevel;
 }
 //-------------------------------------------------------
-const uqRngBaseClass*
-uqBaseEnvironmentClass::rngObject() const
+const RngBaseClass*
+BaseEnvironmentClass::rngObject() const
 {
   return m_rngObject;
 }
 //-------------------------------------------------------
 int
-uqBaseEnvironmentClass::seed() const
+BaseEnvironmentClass::seed() const
 {
   return m_rngObject->seed();
 }
 //-------------------------------------------------------
 void
-uqBaseEnvironmentClass::resetSeed(int newSeedOption)
+BaseEnvironmentClass::resetSeed(int newSeedOption)
 {
   m_rngObject->resetSeed(newSeedOption);
   return;
 }
 //-------------------------------------------------------
-const uqBasicPdfsBaseClass*
-uqBaseEnvironmentClass::basicPdfs() const
+const BasicPdfsBaseClass*
+BaseEnvironmentClass::basicPdfs() const
 {
   return m_basicPdfs;
 }
 //-------------------------------------------------------
 std::string
-uqBaseEnvironmentClass::platformName() const
+BaseEnvironmentClass::platformName() const
 {
   return m_optionsObj->m_ov.m_platformName;
 }
 //-------------------------------------------------------
 std::string
-uqBaseEnvironmentClass::identifyingString() const
+BaseEnvironmentClass::identifyingString() const
 {
   return m_optionsObj->m_ov.m_identifyingString;
 }
 //-------------------------------------------------------
 void
-uqBaseEnvironmentClass::resetIdentifyingString(const std::string& newString) const // Yes, const
+BaseEnvironmentClass::resetIdentifyingString(const std::string& newString) const // Yes, const
 {
   m_optionsObj->m_ov.m_identifyingString = newString;
   return;
 }
 //-------------------------------------------------------
 struct timeval
-uqBaseEnvironmentClass::timevalBegin() const
+BaseEnvironmentClass::timevalBegin() const
 {
   return m_timevalBegin;
 }
 //-------------------------------------------------------
 bool
-uqBaseEnvironmentClass::openOutputFile(
+BaseEnvironmentClass::openOutputFile(
   const std::string&            baseFileName,
   const std::string&            inputFileType,
   const std::set<unsigned int>& allowedSubEnvIds,
         bool                    writeOver,
-        uqFilePtrSetStruct&     filePtrSet) const
+        FilePtrSetStruct&     filePtrSet) const
 {
   std::string fileType(inputFileType);
 #ifdef QUESO_HAS_HDF5
@@ -521,7 +521,7 @@ uqBaseEnvironmentClass::openOutputFile(
 #else
   if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
     if (m_subDisplayFile) {
-      *this->subDisplayFile() << "WARNING in uqBaseEnvironmentClass::openOutputFile()"
+      *this->subDisplayFile() << "WARNING in BaseEnvironmentClass::openOutputFile()"
                               << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
                               << "' has been requested, but this QUESO library has not been built with 'hdf5'"
                               << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
@@ -529,7 +529,7 @@ uqBaseEnvironmentClass::openOutputFile(
                               << std::endl;
     }
     if (this->subRank() == 0) {
-      std::cerr << "WARNING in uqBaseEnvironmentClass::openOutputFile()"
+      std::cerr << "WARNING in BaseEnvironmentClass::openOutputFile()"
                 << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
                 << "' has been requested, but this QUESO library has not been built with 'hdf5'"
                 << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
@@ -545,7 +545,7 @@ uqBaseEnvironmentClass::openOutputFile(
   if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_OUTPUT_FILE) ||
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()            )) {
     if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+      *this->subDisplayFile() << "In BaseEnvironmentClass::openOutputFile()"
                               << ", subId = "     << this->subId()
                               << ": no output file opened with base name '" << baseFileName << "." << fileType
                               << "'"
@@ -559,7 +559,7 @@ uqBaseEnvironmentClass::openOutputFile(
     // Open file
     //////////////////////////////////////////////////////////////////
     if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+      *this->subDisplayFile() << "In BaseEnvironmentClass::openOutputFile()"
                               << ", subId = "     << this->subId()
                               << ": opening output file with base name '" << baseFileName << "." << fileType
                               << "'"
@@ -569,7 +569,7 @@ uqBaseEnvironmentClass::openOutputFile(
 
     if (this->subRank() == 0) {
 #if 0
-      std::cout << "In uqBaseEnvironmentClass::openOutputFile()"
+      std::cout << "In BaseEnvironmentClass::openOutputFile()"
                 << ": opening output file with base name '" << baseFileName << "." << fileType
                 << "'"
                 << ", writeOver = " << writeOver
@@ -582,27 +582,27 @@ uqBaseEnvironmentClass::openOutputFile(
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"_sub"+this->subIdString()+"."+fileType << std::endl;
       if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-        *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+        *this->subDisplayFile() << "In BaseEnvironmentClass::openOutputFile()"
                                 << ", subId = "     << this->subId()
                                 << ", trying to open output file with base name '" << baseFileName << "." << fileType
                                 << "'"
                                 << ", writeOver = " << writeOver
-                                << ": calling uqCheckFilePath()..." 
+                                << ": calling CheckFilePath()..." 
                                 << std::endl;
       }
-      int irtrn = uqCheckFilePath((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
+      int irtrn = CheckFilePath((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str());
       if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-        *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+        *this->subDisplayFile() << "In BaseEnvironmentClass::openOutputFile()"
                                 << ", subId = "     << this->subId()
                                 << ", trying to open output file with base name '" << baseFileName << "." << fileType
                                 << "'"
                                 << ", writeOver = " << writeOver
-                                << ": returned from uqCheckFilePath() with irtrn = " << irtrn
+                                << ": returned from CheckFilePath() with irtrn = " << irtrn
                                 << std::endl;
       }
       UQ_FATAL_TEST_MACRO(irtrn < 0,
                           m_worldRank,
-                          "uqBaseEnvironmentClass::openOutputFile()",
+                          "BaseEnvironmentClass::openOutputFile()",
                           "unable to verify output path");
 
       if (writeOver) {
@@ -616,17 +616,17 @@ uqBaseEnvironmentClass::openOutputFile(
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
           UQ_FATAL_TEST_MACRO(true,
                               m_worldRank,
-                              "uqBaseEnvironmentClass::openOutputFile(), writeOver=true",
+                              "BaseEnvironmentClass::openOutputFile(), writeOver=true",
                               "hdf file type not supported yet");
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_worldRank,
-                              "uqBaseEnvironmentClass::openOutputFile(), writeOver=true",
+                              "BaseEnvironmentClass::openOutputFile(), writeOver=true",
                               "invalid file type");
         }
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-          *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+          *this->subDisplayFile() << "In BaseEnvironmentClass::openOutputFile()"
                                   << ": just opened output file with base name '" << baseFileName << "." << fileType
                                   << "'"
                                   << ", writeOver = " << writeOver
@@ -647,24 +647,24 @@ uqBaseEnvironmentClass::openOutputFile(
           if (filePtrSet.ofsVar) std::cout << "filePtrSet.ofsVar(1)->is_open() = " << filePtrSet.ofsVar->is_open() << std::endl;
           if (filePtrSet.ofsVar) delete filePtrSet.ofsVar;
 #endif
-          // 'uqm' and Ranger nodes behave differently on ofstream constructor... prudenci 2010/03/05
+          // 'm' and Ranger nodes behave differently on ofstream constructor... prudenci 2010/03/05
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
                                                 std::ofstream::out /*| std::ofstream::in*/ | std::ofstream::app);
         }
         else if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
           UQ_FATAL_TEST_MACRO(true,
                               m_worldRank,
-                              "uqBaseEnvironmentClass::openOutputFile(), writeOver=false",
+                              "BaseEnvironmentClass::openOutputFile(), writeOver=false",
                               "hdf file type not supported yet");
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_worldRank,
-                              "uqBaseEnvironmentClass::openOutputFile(), writeOver=false",
+                              "BaseEnvironmentClass::openOutputFile(), writeOver=false",
                               "invalid file type");
         }
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-          *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+          *this->subDisplayFile() << "In BaseEnvironmentClass::openOutputFile()"
                                   << ": just opened output file with base name '" << baseFileName << "." << fileType
                                   << "'"
                                   << ", writeOver = " << writeOver
@@ -683,7 +683,7 @@ uqBaseEnvironmentClass::openOutputFile(
             filePtrSet.ofsVar = new std::ofstream((baseFileName+"_sub"+this->subIdString()+"."+fileType).c_str(), 
                                                   std::ofstream::out | std::ofstream::trunc);
             if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-              *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+              *this->subDisplayFile() << "In BaseEnvironmentClass::openOutputFile()"
                                       << ": just opened output file with base name '" << baseFileName << "." << fileType
                                       << "'"
                                       << ", writeOver = " << writeOver
@@ -696,7 +696,7 @@ uqBaseEnvironmentClass::openOutputFile(
       }
       if (filePtrSet.ofsVar != NULL) {
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-          *this->subDisplayFile() << "In uqBaseEnvironmentClass::openOutputFile()"
+          *this->subDisplayFile() << "In BaseEnvironmentClass::openOutputFile()"
                                   << ", subId = "     << this->subId()
                                   << ": succeeded on opening output file with base name '" << baseFileName << "." << fileType
                                   << "'"
@@ -705,7 +705,7 @@ uqBaseEnvironmentClass::openOutputFile(
         }
       }
       else {
-        std::cerr << "In uqBaseEnvironmentClass::openOutputFile()"
+        std::cerr << "In BaseEnvironmentClass::openOutputFile()"
                   << ": failed to open output file with base name '" << baseFileName << "." << fileType
                   << "'"
                   << std::endl;
@@ -725,11 +725,11 @@ uqBaseEnvironmentClass::openOutputFile(
 }
 //-------------------------------------------------------
 bool
-uqBaseEnvironmentClass::openUnifiedOutputFile(
+BaseEnvironmentClass::openUnifiedOutputFile(
   const std::string&        baseFileName,
   const std::string&        inputFileType,
         bool                writeOver,
-        uqFilePtrSetStruct& filePtrSet) const
+        FilePtrSetStruct& filePtrSet) const
 {
   std::string fileType(inputFileType);
 #ifdef QUESO_HAS_HDF5
@@ -737,7 +737,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
 #else
   if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
     if (m_subDisplayFile) {
-      *this->subDisplayFile() << "WARNING in uqBaseEnvironmentClass::openUnifiedOutputFile()"
+      *this->subDisplayFile() << "WARNING in BaseEnvironmentClass::openUnifiedOutputFile()"
                               << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
                               << "' has been requested, but this QUESO library has not been built with 'hdf5'"
                               << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
@@ -745,7 +745,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
                               << std::endl;
     }
     if (this->subRank() == 0) {
-      std::cerr << "WARNING in uqBaseEnvironmentClass::openUnifiedOutputFile()"
+      std::cerr << "WARNING in BaseEnvironmentClass::openUnifiedOutputFile()"
                 << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
                 << "' has been requested, but this QUESO library has not been built with 'hdf5'"
                 << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
@@ -760,7 +760,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
   filePtrSet.ofsVar = NULL;
   if (baseFileName == ".") {
     if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
+      *this->subDisplayFile() << "In BaseEnvironmentClass::openUnifiedOutputFile()"
                               << ": no unified output file opened with base name '" << baseFileName << "." << fileType
                               << "'"
                               << ", writeOver = " << writeOver
@@ -773,7 +773,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
     // Open file
     //////////////////////////////////////////////////////////////////
     if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
+      *this->subDisplayFile() << "In BaseEnvironmentClass::openUnifiedOutputFile()"
                               << ": opening unified output file with base name '" << baseFileName << "." << fileType
                               << "'"
                               << ", writeOver = " << writeOver
@@ -784,7 +784,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
     //if ((this->subRank   () == 0) &&
     //    (this->inter0Rank() == 0)) {
 #if 0
-      std::cout << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
+      std::cout << "In BaseEnvironmentClass::openUnifiedOutputFile()"
                 << ": opening output file with base name '" << baseFileName << "." << fileType
                 << "'"
                 << ", writeOver = " << writeOver
@@ -795,10 +795,10 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
       // specifies a relative path for the desired output file). prudenci 2010/06/26
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
-      int irtrn = uqCheckFilePath((baseFileName+"."+fileType).c_str());
+      int irtrn = CheckFilePath((baseFileName+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
                           m_worldRank,
-                          "uqBaseEnvironmentClass::openUnifiedOutputFile()",
+                          "BaseEnvironmentClass::openUnifiedOutputFile()",
                           "unable to verify output path");
 
       if (writeOver) {
@@ -820,11 +820,11 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_worldRank,
-                              "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=true",
+                              "BaseEnvironmentClass::openUnifiedOutputFile(), writeOver=true",
                               "invalid file type");
         }
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-          *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
+          *this->subDisplayFile() << "In BaseEnvironmentClass::openUnifiedOutputFile()"
                                   << ": just opened output file with base name '" << baseFileName << "." << fileType
                                   << "'"
                                   << ", writeOver = " << writeOver
@@ -836,7 +836,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
       else {
         ////////////////////////////////////////////////////////////////
         // Write at the end of an eventual pre-existing file
-        // 'uqm' and Ranger nodes behave differently on ofstream constructor... prudenci 2010/03/05
+        // 'm' and Ranger nodes behave differently on ofstream constructor... prudenci 2010/03/05
         ////////////////////////////////////////////////////////////////
         if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"."+fileType).c_str(),
@@ -850,18 +850,18 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
                                        H5P_DEFAULT);
           //UQ_FATAL_TEST_MACRO(true,
           //                    m_worldRank,
-          //                    "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=false",
+          //                    "BaseEnvironmentClass::openUnifiedOutputFile(), writeOver=false",
           //                    "hdf file type not supported yet");
         }
 #endif
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_worldRank,
-                              "uqBaseEnvironmentClass::openUnifiedOutputFile(), writeOver=false",
+                              "BaseEnvironmentClass::openUnifiedOutputFile(), writeOver=false",
                               "invalid file type");
         }
         if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-          *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
+          *this->subDisplayFile() << "In BaseEnvironmentClass::openUnifiedOutputFile()"
                                   << ": just opened output file with base name '" << baseFileName << "." << fileType
                                   << "'"
                                   << ", writeOver = " << writeOver
@@ -878,7 +878,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
           filePtrSet.ofsVar = new std::ofstream((baseFileName+"."+fileType).c_str(),
                                                 std::ofstream::out | std::ofstream::trunc);
           if ((m_subDisplayFile) && (this->displayVerbosity() > 10)) { // output debug
-            *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
+            *this->subDisplayFile() << "In BaseEnvironmentClass::openUnifiedOutputFile()"
                                     << ": just opened output file with base name '" << baseFileName << "." << fileType
                                     << "'"
                                     << ", writeOver = " << writeOver
@@ -889,7 +889,7 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
         }
       }
       if (filePtrSet.ofsVar == NULL) {
-        std::cerr << "In uqBaseEnvironmentClass::openUnifiedOutputFile()"
+        std::cerr << "In BaseEnvironmentClass::openUnifiedOutputFile()"
                   << ": failed to open unified output file with base name '" << baseFileName << "." << fileType
                   << "'"
                   << std::endl;
@@ -905,11 +905,11 @@ uqBaseEnvironmentClass::openUnifiedOutputFile(
 }
 //-------------------------------------------------------
 bool
-uqBaseEnvironmentClass::openInputFile(
+BaseEnvironmentClass::openInputFile(
   const std::string&            baseFileName,
   const std::string&            inputFileType,
   const std::set<unsigned int>& allowedSubEnvIds,
-        uqFilePtrSetStruct&     filePtrSet) const
+        FilePtrSetStruct&     filePtrSet) const
 {
   std::string fileType(inputFileType);
 #ifdef QUESO_HAS_HDF5
@@ -917,7 +917,7 @@ uqBaseEnvironmentClass::openInputFile(
 #else
   if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
     if (m_subDisplayFile) {
-      *this->subDisplayFile() << "WARNING in uqBaseEnvironmentClass::openInputFile()"
+      *this->subDisplayFile() << "WARNING in BaseEnvironmentClass::openInputFile()"
                               << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
                               << "' has been requested, but this QUESO library has not been built with 'hdf5'"
                               << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
@@ -925,7 +925,7 @@ uqBaseEnvironmentClass::openInputFile(
                               << std::endl;
     }
     if (this->subRank() == 0) {
-      std::cerr << "WARNING in uqBaseEnvironmentClass::openInputFile()"
+      std::cerr << "WARNING in BaseEnvironmentClass::openInputFile()"
                 << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
                 << "' has been requested, but this QUESO library has not been built with 'hdf5'"
                 << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
@@ -941,7 +941,7 @@ uqBaseEnvironmentClass::openInputFile(
   if ((baseFileName                         == UQ_ENV_FILENAME_FOR_NO_INPUT_FILE) ||
       (allowedSubEnvIds.find(this->subId()) == allowedSubEnvIds.end()           )) {
     if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
-      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openInputFile()"
+      *this->subDisplayFile() << "In BaseEnvironmentClass::openInputFile()"
                               << ": no input file opened with base name '" << baseFileName << "." << fileType
                               << "'"
                               << std::endl;
@@ -953,7 +953,7 @@ uqBaseEnvironmentClass::openInputFile(
     // Open file
     //////////////////////////////////////////////////////////////////
     if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
-      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openInputFile()"
+      *this->subDisplayFile() << "In BaseEnvironmentClass::openInputFile()"
                               << ": opening input file with base name '" << baseFileName << "." << fileType
                               << "'"
                               << std::endl;
@@ -964,24 +964,24 @@ uqBaseEnvironmentClass::openInputFile(
       // specifies a relative path for the desired output file). prudenci 2010/06/26
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
-      int irtrn = uqCheckFilePath((baseFileName+"."+fileType).c_str());
+      int irtrn = CheckFilePath((baseFileName+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
                           m_worldRank,
-                          "uqBaseEnvironmentClass::openInputFile()",
+                          "BaseEnvironmentClass::openInputFile()",
                           "unable to verify input path");
 
       if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
         filePtrSet.ifsVar = new std::ifstream((baseFileName+"."+fileType).c_str(),
                                               std::ofstream::in);
         if ((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false)) {
-          std::cerr << "In uqBaseEnvironmentClass::openInputFile()"
+          std::cerr << "In BaseEnvironmentClass::openInputFile()"
                     << ": failed to open input file with base name '" << baseFileName << "." << fileType
                     << "'"
                     << std::endl;
         }
         UQ_FATAL_TEST_MACRO((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false),
                             this->worldRank(),
-                            "uqBaseEnvironmentClass::openInputFile()",
+                            "BaseEnvironmentClass::openInputFile()",
                             "file with fileName could not be found");
       }
 #ifdef QUESO_HAS_HDF5
@@ -994,7 +994,7 @@ uqBaseEnvironmentClass::openInputFile(
       else {
         UQ_FATAL_TEST_MACRO(true,
                             m_worldRank,
-                            "uqBaseEnvironmentClass::openInputFile()",
+                            "BaseEnvironmentClass::openInputFile()",
                             "invalid file type");
       }
     }
@@ -1008,10 +1008,10 @@ uqBaseEnvironmentClass::openInputFile(
 }
 //-------------------------------------------------------
 bool
-uqBaseEnvironmentClass::openUnifiedInputFile(
+BaseEnvironmentClass::openUnifiedInputFile(
   const std::string&        baseFileName,
   const std::string&        inputFileType,
-        uqFilePtrSetStruct& filePtrSet) const
+        FilePtrSetStruct& filePtrSet) const
 {
   std::string fileType(inputFileType);
 #ifdef QUESO_HAS_HDF5
@@ -1019,7 +1019,7 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
 #else
   if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
     if (m_subDisplayFile) {
-      *this->subDisplayFile() << "WARNING in uqBaseEnvironmentClass::openUnifiedInputFile()"
+      *this->subDisplayFile() << "WARNING in BaseEnvironmentClass::openUnifiedInputFile()"
                               << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
                               << "' has been requested, but this QUESO library has not been built with 'hdf5'"
                               << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
@@ -1027,7 +1027,7 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
                               << std::endl;
     }
     if (this->subRank() == 0) {
-      std::cerr << "WARNING in uqBaseEnvironmentClass::openUnifiedInputFile()"
+      std::cerr << "WARNING in BaseEnvironmentClass::openUnifiedInputFile()"
                 << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
                 << "' has been requested, but this QUESO library has not been built with 'hdf5'"
                 << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
@@ -1042,7 +1042,7 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
   filePtrSet.ifsVar = NULL;
   if (baseFileName == UQ_ENV_FILENAME_FOR_NO_INPUT_FILE) {
     if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
-      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedInputFile()"
+      *this->subDisplayFile() << "In BaseEnvironmentClass::openUnifiedInputFile()"
                               << ": no input file opened with base name '" << baseFileName << "." << fileType
                               << "'"
                               << std::endl;
@@ -1054,7 +1054,7 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
     // Open file
     //////////////////////////////////////////////////////////////////
     if ((m_subDisplayFile) && (this->displayVerbosity() >= 10)) {
-      *this->subDisplayFile() << "In uqBaseEnvironmentClass::openUnifiedInputFile()"
+      *this->subDisplayFile() << "In BaseEnvironmentClass::openUnifiedInputFile()"
                               << ": opening input file with base name '" << baseFileName << "." << fileType
                               << "'"
                               << std::endl;
@@ -1065,24 +1065,24 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
       // specifies a relative path for the desired output file). prudenci 2010/06/26
       ////////////////////////////////////////////////////////////////
       // std::cout << "checking " << baseFileName+"."+fileType << std::endl;
-      int irtrn = uqCheckFilePath((baseFileName+"."+fileType).c_str());
+      int irtrn = CheckFilePath((baseFileName+"."+fileType).c_str());
       UQ_FATAL_TEST_MACRO(irtrn < 0,
                           m_worldRank,
-                          "uqBaseEnvironmentClass::openUnifiedInputFile()",
+                          "BaseEnvironmentClass::openUnifiedInputFile()",
                           "unable to verify input path");
 
       if (fileType == UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT) {
         filePtrSet.ifsVar = new std::ifstream((baseFileName+"."+fileType).c_str(),
                                               std::ofstream::in);
         if ((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false)) {
-          std::cerr << "In uqBaseEnvironmentClass::openUnifiedInputFile()"
+          std::cerr << "In BaseEnvironmentClass::openUnifiedInputFile()"
                     << ": failed to open input file with base name '" << baseFileName << "." << fileType
                     << "'"
                     << std::endl;
         }
         UQ_FATAL_TEST_MACRO((filePtrSet.ifsVar == NULL) || (filePtrSet.ifsVar->is_open() == false),
                             this->worldRank(),
-                            "uqBaseEnvironmentClass::openUnifiedInputFile()",
+                            "BaseEnvironmentClass::openUnifiedInputFile()",
                             "file with fileName could not be found");
       }
 #ifdef QUESO_HAS_HDF5
@@ -1095,7 +1095,7 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
       else {
         UQ_FATAL_TEST_MACRO(true,
                             m_worldRank,
-                            "uqBaseEnvironmentClass::openUnifiedInputFile()",
+                            "BaseEnvironmentClass::openUnifiedInputFile()",
                             "invalid file type");
       }
     }
@@ -1109,8 +1109,8 @@ uqBaseEnvironmentClass::openUnifiedInputFile(
 }
 //-------------------------------------------------------
 void
-uqBaseEnvironmentClass::closeFile(
-  uqFilePtrSetStruct& filePtrSet,
+BaseEnvironmentClass::closeFile(
+  FilePtrSetStruct& filePtrSet,
   const std::string&  inputFileType) const
 {
   std::string fileType(inputFileType);
@@ -1119,7 +1119,7 @@ uqBaseEnvironmentClass::closeFile(
 #else
   if (fileType == UQ_FILE_EXTENSION_FOR_HDF_FORMAT) {
     if (m_subDisplayFile) {
-      *this->subDisplayFile() << "WARNING in uqBaseEnvironmentClass::closeFile()"
+      *this->subDisplayFile() << "WARNING in BaseEnvironmentClass::closeFile()"
                               << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
                               << "' has been requested, but this QUESO library has not been built with 'hdf5'"
                               << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
@@ -1127,7 +1127,7 @@ uqBaseEnvironmentClass::closeFile(
                               << std::endl;
     }
     if (this->subRank() == 0) {
-      std::cerr << "WARNING in uqBaseEnvironmentClass::closeFile()"
+      std::cerr << "WARNING in BaseEnvironmentClass::closeFile()"
                 << ": file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
                 << "' has been requested, but this QUESO library has not been built with 'hdf5'"
                 << ". Code will therefore process the file format '" << UQ_FILE_EXTENSION_FOR_HDF_FORMAT
@@ -1155,7 +1155,7 @@ uqBaseEnvironmentClass::closeFile(
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_worldRank,
-                        "uqBaseEnvironmentClass::closeFile()",
+                        "BaseEnvironmentClass::closeFile()",
                         "invalid file type");
   }
 
@@ -1163,14 +1163,14 @@ uqBaseEnvironmentClass::closeFile(
 }
 //-------------------------------------------------------
 void
-uqBaseEnvironmentClass::setExceptionalCircumstance(bool value) const
+BaseEnvironmentClass::setExceptionalCircumstance(bool value) const
 {
   m_exceptionalCircumstance = value;
   return;
 }
 //-------------------------------------------------------
 bool
-uqBaseEnvironmentClass::exceptionalCircumstance() const
+BaseEnvironmentClass::exceptionalCircumstance() const
 {
   return m_exceptionalCircumstance;
 }
@@ -1179,18 +1179,18 @@ uqBaseEnvironmentClass::exceptionalCircumstance() const
 //*****************************************************
 // Empty Environment
 //*****************************************************
-uqEmptyEnvironmentClass::uqEmptyEnvironmentClass()
+EmptyEnvironmentClass::EmptyEnvironmentClass()
   :
-  uqBaseEnvironmentClass("",NULL)
+  BaseEnvironmentClass("",NULL)
 {
 }
 //-------------------------------------------------------
-uqEmptyEnvironmentClass::~uqEmptyEnvironmentClass()
+EmptyEnvironmentClass::~EmptyEnvironmentClass()
 {
 }
 //-------------------------------------------------------
 void
-uqEmptyEnvironmentClass::print(std::ostream& os) const
+EmptyEnvironmentClass::print(std::ostream& os) const
 {
   os.flush(); // just to avoid icpc warnings
   return;
@@ -1199,16 +1199,16 @@ uqEmptyEnvironmentClass::print(std::ostream& os) const
 //*****************************************************
 // Full Environment
 //*****************************************************
-uqFullEnvironmentClass::uqFullEnvironmentClass(
-  uqRawType_MPI_Comm             inputComm,
+FullEnvironmentClass::FullEnvironmentClass(
+  RawType_MPI_Comm             inputComm,
   const char*                    passedOptionsInputFileName,
   const char*                    prefix,
-  const uqEnvOptionsValuesClass* alternativeOptionsValues)
+  const EnvOptionsValuesClass* alternativeOptionsValues)
   :
-  uqBaseEnvironmentClass(passedOptionsInputFileName,alternativeOptionsValues)
+  BaseEnvironmentClass(passedOptionsInputFileName,alternativeOptionsValues)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "Entering uqFullEnvClass" << std::endl;
+  std::cout << "Entering FullEnvClass" << std::endl;
 #endif
 
   //////////////////////////////////////////////////
@@ -1218,39 +1218,39 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       UQ_UNAVAILABLE_RANK,
-                      "uqFullEnvironmentClass::commonConstructor()",
+                      "FullEnvironmentClass::commonConstructor()",
                       "failed to get world fullRank()");
 #else
   m_worldRank = 0;
 #endif
 
-  m_fullComm = new uqMpiCommClass(*this,inputComm);
+  m_fullComm = new MpiCommClass(*this,inputComm);
   m_fullRank     = m_fullComm->MyPID();
   m_fullCommSize = m_fullComm->NumProc();
 #ifdef QUESO_HAS_MPI
   mpiRC = MPI_Comm_group(m_fullComm->Comm(), &m_fullGroup);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "uqFullEnvironmentClass::commonConstructor()",
+                      "FullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group()");
 #else
   m_fullGroup = 0;
 #endif
 
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "In uqFullEnvClass, finished dealing with MPI initially" << std::endl;
+  std::cout << "In FullEnvClass, finished dealing with MPI initially" << std::endl;
 #endif
 
   //////////////////////////////////////////////////
   // Read options
   //////////////////////////////////////////////////
   if (m_optionsInputFileName == "") {
-    m_optionsObj = new uqEnvironmentOptionsClass(*this,prefix,m_alternativeOptionsValues);
+    m_optionsObj = new EnvironmentOptionsClass(*this,prefix,m_alternativeOptionsValues);
   }
   else {
     m_allOptionsMap  = new po::variables_map();
     m_allOptionsDesc = new po::options_description("Allowed options");
-    m_optionsObj = new uqEnvironmentOptionsClass(*this,prefix);
+    m_optionsObj = new EnvironmentOptionsClass(*this,prefix);
 
     readOptionsInputFile();
 
@@ -1258,7 +1258,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   }
 
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "In uqFullEnvClass, finished scanning options" << std::endl;
+  std::cout << "In FullEnvClass, finished scanning options" << std::endl;
 #endif
 
   // Only display these messages if the user wants them
@@ -1305,29 +1305,29 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   mpiRC = MPI_Group_incl(m_fullGroup, (int) numRanksPerSubEnvironment, &fullRanksOfMySubEnvironment[0], &m_subGroup);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "uqFullEnvironmentClass::commonConstructor()",
+                      "FullEnvironmentClass::commonConstructor()",
                       "failed MPI_Group_incl() for a subEnvironment");
 #else
   m_subGroup = 0;
 #endif
-  uqRawType_MPI_Comm subRawComm;
+  RawType_MPI_Comm subRawComm;
 #ifdef QUESO_HAS_MPI
   mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_subGroup, &subRawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "uqFullEnvironmentClass::commonConstructor()",
+                      "FullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group() for a subEnvironment");
 #else
   subRawComm = 0;
 #endif
-  m_subComm = new uqMpiCommClass(*this,subRawComm);
+  m_subComm = new MpiCommClass(*this,subRawComm);
   m_subRank     = m_subComm->MyPID();
   m_subCommSize = m_subComm->NumProc();
 
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the self communicator
   //////////////////////////////////////////////////
-  m_selfComm = new uqMpiCommClass(*this,uqRawValue_MPI_COMM_SELF);
+  m_selfComm = new MpiCommClass(*this,RawValue_MPI_COMM_SELF);
 
   //////////////////////////////////////////////////
   // Deal with multiple subEnvironments: create the inter0 communicator
@@ -1340,23 +1340,23 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   mpiRC = MPI_Group_incl(m_fullGroup, (int) m_optionsObj->m_ov.m_numSubEnvironments, &fullRanksOfInter0[0], &m_inter0Group);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "uqFullEnvironmentClass::commonConstructor()",
+                      "FullEnvironmentClass::commonConstructor()",
                       "failed MPI_Group_incl() for inter0");
 #else
   m_inter0Group = 0;
 #endif
-  uqRawType_MPI_Comm inter0RawComm;
+  RawType_MPI_Comm inter0RawComm;
 #ifdef QUESO_HAS_MPI
   mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_inter0Group, &inter0RawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "uqFullEnvironmentClass::commonConstructor()",
+                      "FullEnvironmentClass::commonConstructor()",
                       "failed MPI_Comm_group() for inter0");
 #else
   inter0RawComm = 0;
 #endif
   if (m_fullRank%numRanksPerSubEnvironment == 0) {
-    m_inter0Comm = new uqMpiCommClass(*this,inter0RawComm);
+    m_inter0Comm = new MpiCommClass(*this,inter0RawComm);
     m_inter0Rank     = m_inter0Comm->MyPID();
     m_inter0CommSize = m_inter0Comm->NumProc();
   }
@@ -1386,10 +1386,10 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
     // Verify parent directory exists (for cases when a user
     // specifies a relative path for the desired output file).
     //////////////////////////////////////////////////////////////////
-    int irtrn = uqCheckFilePath((m_optionsObj->m_ov.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
+    int irtrn = CheckFilePath((m_optionsObj->m_ov.m_subDisplayFileName+"_sub"+m_subIdString+".txt").c_str());
     UQ_FATAL_TEST_MACRO(irtrn < 0,
                         m_worldRank,
-                        "uqEnvironment::constructor()",
+                        "Environment::constructor()",
                         "unable to verify output path");
   }
 
@@ -1406,7 +1406,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                                          std::ofstream::out | std::ofstream::trunc);
     UQ_FATAL_TEST_MACRO((m_subDisplayFile && m_subDisplayFile->is_open()) == false,
                         m_worldRank,
-                        "uqEnvironment::constructor()",
+                        "Environment::constructor()",
                         "failed to open sub screen file");
 
     QUESO_version_print(*m_subDisplayFile);
@@ -1458,20 +1458,20 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   // Deal with seed
   //////////////////////////////////////////////////
   if (m_optionsObj->m_ov.m_rngType == "gsl") {
-    m_rngObject = new uqRngGslClass(m_optionsObj->m_ov.m_seed,m_worldRank);
-    m_basicPdfs = new uqBasicPdfsGslClass(m_worldRank);
+    m_rngObject = new RngGslClass(m_optionsObj->m_ov.m_seed,m_worldRank);
+    m_basicPdfs = new BasicPdfsGslClass(m_worldRank);
   }
   else if (m_optionsObj->m_ov.m_rngType == "boost") {
-    m_rngObject = new uqRngBoostClass(m_optionsObj->m_ov.m_seed,m_worldRank);
-    m_basicPdfs = new uqBasicPdfsBoostClass(m_worldRank);
+    m_rngObject = new RngBoostClass(m_optionsObj->m_ov.m_seed,m_worldRank);
+    m_basicPdfs = new BasicPdfsBoostClass(m_worldRank);
   }
   else {
-    std::cerr << "In uqEnvironment::constructor()"
+    std::cerr << "In Environment::constructor()"
               << ": rngType = " << m_optionsObj->m_ov.m_rngType
               << std::endl;
     UQ_FATAL_TEST_MACRO(true,
                         m_worldRank,
-                        "uqEnvironment::constructor()",
+                        "Environment::constructor()",
                         "the requested 'rngType' is not supported yet");
   }
 
@@ -1482,19 +1482,19 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
   m_fullEnvIsReady = true;
 
   if ((m_subDisplayFile) && (this->displayVerbosity() >= 5)) {
-    *m_subDisplayFile << "Done with initializations at uqFullEnvironmentClass::commonConstructor()"
+    *m_subDisplayFile << "Done with initializations at FullEnvironmentClass::commonConstructor()"
                       << std::endl;
   }
 
   return;
 }
 //-------------------------------------------------------
-uqFullEnvironmentClass::~uqFullEnvironmentClass()
+FullEnvironmentClass::~FullEnvironmentClass()
 {
 }
 //-------------------------------------------------------
 void
-uqFullEnvironmentClass::print(std::ostream& os) const
+FullEnvironmentClass::print(std::ostream& os) const
 {
   os.flush(); // just to avoid icpc warnings
   return;
@@ -1502,7 +1502,7 @@ uqFullEnvironmentClass::print(std::ostream& os) const
 
 //-------------------------------------------------------
 void
-uqFullEnvironmentClass::readOptionsInputFile()
+FullEnvironmentClass::readOptionsInputFile()
 {
   std::ifstream* ifs = new std::ifstream(m_optionsInputFileName.c_str());
   if (ifs->is_open()) {
@@ -1516,7 +1516,7 @@ uqFullEnvironmentClass::readOptionsInputFile()
 
     if (m_fullRank == 0) std::cout << "\nThis is a help message of the QUESO library."
                                    << "\nAn application using the QUESO library shall be executed by typing"
-                                   << "\n  '<eventual mpi commands and options> <uqApplication> <uqInputFile>'"
+                                   << "\n  '<eventual mpi commands and options> <Application> <InputFile>'"
                                    << "\nin the command line."
                                    << "\n"
                                    << std::endl;

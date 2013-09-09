@@ -48,12 +48,12 @@ qoiRoutine_DataClass
   double m_criticalTime;
 };
 
-void qoiRoutine(const QUESO::uqGslVectorClass&                    paramValues,
-                const QUESO::uqGslVectorClass*                    paramDirection,
+void qoiRoutine(const QUESO::GslVectorClass&                    paramValues,
+                const QUESO::GslVectorClass*                    paramDirection,
                 const void*                                functionDataPtr,
-                      QUESO::uqGslVectorClass&                    qoiValues,
-                      QUESO::uqDistArrayClass<QUESO::uqGslVectorClass*>* gradVectors,
-                      QUESO::uqDistArrayClass<QUESO::uqGslMatrixClass*>* hessianMatrices,
-                      QUESO::uqDistArrayClass<QUESO::uqGslVectorClass*>* hessianEffects);
+                      QUESO::GslVectorClass&                    qoiValues,
+                      QUESO::DistArrayClass<QUESO::GslVectorClass*>* gradVectors,
+                      QUESO::DistArrayClass<QUESO::GslMatrixClass*>* hessianMatrices,
+                      QUESO::DistArrayClass<QUESO::GslVectorClass*>* hessianEffects);
 
 #endif // __TGA2_QOI_H__

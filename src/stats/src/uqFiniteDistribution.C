@@ -31,8 +31,8 @@
 namespace QUESO {
 
 // Default constructor -----------------------------
-uqFiniteDistributionClass::uqFiniteDistributionClass(
-  const uqBaseEnvironmentClass& env,
+FiniteDistributionClass::FiniteDistributionClass(
+  const BaseEnvironmentClass& env,
   const char*                   prefix,
   const std::vector<double>&    inpWeights)
   :
@@ -41,7 +41,7 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
   m_weights(inpWeights.size(),0.)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqFiniteDistributionClass::constructor()"
+    *m_env.subDisplayFile() << "Entering FiniteDistributionClass::constructor()"
                             << ": prefix = " << m_prefix
                             << ", inpWeights.size() = " << inpWeights.size()
                             << std::endl;
@@ -60,13 +60,13 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
     }
     else {
       if ((sumCheck - 1) > 1.e-8) {
-        std::cerr << "In uqFiniteDistributionClass::constructor()"
+        std::cerr << "In FiniteDistributionClass::constructor()"
                   << ": sumCheck - 1 = " << sumCheck - 1.
                   << std::endl;
       }
       UQ_FATAL_TEST_MACRO((sumCheck - 1) > 1.e-8,
                           m_env.worldRank(),
-                          "uqFiniteDistributionClass::constructor()",
+                          "FiniteDistributionClass::constructor()",
                           "weights sum is too bigger than 1.");
 
       if (sumCheck > 1.) sumCheck = 1.;
@@ -79,7 +79,7 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
       else {
         numRareCases++;
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-           *m_env.subDisplayFile() << "In uqFiniteDistributionClass::constructor()"
+           *m_env.subDisplayFile() << "In FiniteDistributionClass::constructor()"
                                    << ": WARNING, map insertion failed"
                                    << std::endl;
         }
@@ -89,18 +89,18 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
   m_weights.resize(j,0.);
 
   if ((1 - sumCheck) > 1.e-8) {
-    std::cerr << "In uqFiniteDistributionClass::constructor()"
+    std::cerr << "In FiniteDistributionClass::constructor()"
               << ": 1 - sumCheck = " << 1. - sumCheck
               << std::endl;
   }
   UQ_FATAL_TEST_MACRO((1 - sumCheck) > 1.e-8,
                       m_env.worldRank(),
-                      "uqFiniteDistributionClass::constructor()",
+                      "FiniteDistributionClass::constructor()",
                       "weights sum is too smaller than 1.");
 
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqFiniteDistributionClass::constructor()"
+    *m_env.subDisplayFile() << "In FiniteDistributionClass::constructor()"
                             << ": inpWeights.size() = " << inpWeights.size()
                             << ", numOfZeroWeights = "  << numOfZeroWeights
                             << ", numRareCases = "      << numRareCases
@@ -111,48 +111,48 @@ uqFiniteDistributionClass::uqFiniteDistributionClass(
 
   UQ_FATAL_TEST_MACRO((inpWeights.size() != (m_weights.size()+numOfZeroWeights+numRareCases)),
                       m_env.worldRank(),
-                      "uqFiniteDistributionClass::constructor()",
+                      "FiniteDistributionClass::constructor()",
                       "number of input weights was not conserved");
 
   UQ_FATAL_TEST_MACRO((m_map.size() != m_weights.size()),
                       m_env.worldRank(),
-                      "uqFiniteDistributionClass::constructor()",
+                      "FiniteDistributionClass::constructor()",
                       "map and inpWeights have different sizes");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqFiniteDistributionClass::constructor()"
+    *m_env.subDisplayFile() << "Leaving FiniteDistributionClass::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
-uqFiniteDistributionClass::~uqFiniteDistributionClass()
+FiniteDistributionClass::~FiniteDistributionClass()
 {
   m_map.empty();
   m_weights.clear();
 }
 // Misc methods--------------------------------------
-const uqBaseEnvironmentClass&
-uqFiniteDistributionClass::env() const
+const BaseEnvironmentClass&
+FiniteDistributionClass::env() const
 {
   return m_env;
 }
 // Stats methods-------------------------------------
 const std::vector<double>&
-uqFiniteDistributionClass::weights() const
+FiniteDistributionClass::weights() const
 {
   return m_weights;
 }
 //---------------------------------------------------
 unsigned int
-uqFiniteDistributionClass::sample() const
+FiniteDistributionClass::sample() const
 {
   unsigned int result = 0;
 
   double aux = m_env.rngObject()->uniformSample();
   UQ_FATAL_TEST_MACRO((aux < 0) || (aux > 1.),
                       m_env.worldRank(),
-                      "uqFiniteDistributionClass::sample()",
+                      "FiniteDistributionClass::sample()",
                       "invalid uniform");
 
   if (aux == 0.) {
@@ -172,7 +172,7 @@ uqFiniteDistributionClass::sample() const
   }
 #if 0 // WE insert 'i' in map, not 'j'. So, the tests below don't make sense
   if (result >= m_map.size()) {
-    std::cerr << "In uqFiniteDistributionClass::sample()"
+    std::cerr << "In FiniteDistributionClass::sample()"
               << ": aux = "          << aux
               << ", m_map.size() = " << m_map.size()
               << ", result = "       << result
@@ -180,7 +180,7 @@ uqFiniteDistributionClass::sample() const
   }
   UQ_FATAL_TEST_MACRO((result >= m_map.size()),
                       m_env.worldRank(),
-                      "uqFiniteDistributionClass::sample()",
+                      "FiniteDistributionClass::sample()",
                       "invalid result");
 #endif
 

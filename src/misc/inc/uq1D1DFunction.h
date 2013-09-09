@@ -49,22 +49,22 @@ namespace QUESO {
 // Base 1D->1D class
 //*****************************************************
 
-/*! \class uqBase1D1DFunctionClass
+/*! \class Base1D1DFunctionClass
     \brief Class for one-dimensional functions. 
     
     Base class for one-dimensional functions. 
 */
 class
-uqBase1D1DFunctionClass {
+Base1D1DFunctionClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqBase1D1DFunctionClass(double minDomainValue,
+  Base1D1DFunctionClass(double minDomainValue,
 			  double maxDomainValue);
   
   //! Destructor.
-  virtual ~uqBase1D1DFunctionClass();
+  virtual ~Base1D1DFunctionClass();
   //@}
   
   //! @name Mathematical  methods
@@ -83,7 +83,7 @@ public:
   
   //! TODO: Multiplies \c this function with \c function, and integrates it numerically.  See template specialization.
   /*! \todo: Please, implement me!*/
-  virtual  double multiplyAndIntegrate(const uqBase1D1DFunctionClass& func, unsigned int quadratureOrder, double* resultWithMultiplicationByTAsWell) const;
+  virtual  double multiplyAndIntegrate(const Base1D1DFunctionClass& func, unsigned int quadratureOrder, double* resultWithMultiplicationByTAsWell) const;
   //@}
 protected:
   double m_minDomainValue;
@@ -93,23 +93,23 @@ protected:
 //*****************************************************
 // Generic 1D->1D class
 //*****************************************************
-/*! \class uqGeneric1D1DFunctionClass
+/*! \class Generic1D1DFunctionClass
     \brief Class for generic one-dimensional functions. 
     
     This class implements generic one-dimensional functions. 
 */
-class uqGeneric1D1DFunctionClass : public uqBase1D1DFunctionClass {
+class Generic1D1DFunctionClass : public Base1D1DFunctionClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqGeneric1D1DFunctionClass(double minDomainValue,
+  Generic1D1DFunctionClass(double minDomainValue,
                              double maxDomainValue,
                              double (*valueRoutinePtr)(double domainValue, const void* routinesDataPtr),
                              double (*derivRoutinePtr)(double domainValue, const void* routinesDataPtr),
                              const void* routinesDataPtr);
   //! Destructor.
-  ~uqGeneric1D1DFunctionClass();
+  ~Generic1D1DFunctionClass();
   //@}
   
   //! @name Mathematical  methods
@@ -125,8 +125,8 @@ public:
   double deriv(double domainValue) const;
   //@}
 protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
+  using Base1D1DFunctionClass::m_minDomainValue;
+  using Base1D1DFunctionClass::m_maxDomainValue;
 
   double (*m_valueRoutinePtr)(double domainValue, const void* routinesDataPtr);
   double (*m_derivRoutinePtr)(double domainValue, const void* routinesDataPtr);
@@ -136,21 +136,21 @@ protected:
 //*****************************************************
 // Constant 1D->1D class
 //*****************************************************
-/*! \class uqConstant1D1DFunctionClass
+/*! \class Constant1D1DFunctionClass
     \brief Class for constant one-dimensional functions. 
     
     This class implements constant one-dimensional functions. 
 */
-class uqConstant1D1DFunctionClass : public uqBase1D1DFunctionClass {
+class Constant1D1DFunctionClass : public Base1D1DFunctionClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqConstant1D1DFunctionClass(double minDomainValue,
+  Constant1D1DFunctionClass(double minDomainValue,
                               double maxDomainValue,
                               double constantValue);
   //! Destructor.
-  ~uqConstant1D1DFunctionClass();
+  ~Constant1D1DFunctionClass();
   //@}
   
   //! @name Mathematical  methods
@@ -167,8 +167,8 @@ public:
   double deriv(double domainValue) const;
 //@}
 protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
+  using Base1D1DFunctionClass::m_minDomainValue;
+  using Base1D1DFunctionClass::m_maxDomainValue;
 
   double m_constantValue;
 };
@@ -176,7 +176,7 @@ protected:
 //*****************************************************
 // Linear 1D->1D class
 //*****************************************************
-/*! \class uqLinear1D1DFunctionClass
+/*! \class Linear1D1DFunctionClass
     \brief Class for linear one-dimensional functions. 
     
     This class implements linear one-dimensional functions. 
@@ -187,20 +187,20 @@ protected:
     This class implements a linear function such as the one describe above where the rate is
     given by \c rateValue, and the point is <c>(referenceDomainValue,referenceImageValue)</c>.
 */
-class uqLinear1D1DFunctionClass : public uqBase1D1DFunctionClass {
+class Linear1D1DFunctionClass : public Base1D1DFunctionClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Constructs a linear function of constant rate of change \c rateValue which passes through
    *  the point (x,y)=<c>(referenceDomainValue,referenceImageValue)</c>.*/
-  uqLinear1D1DFunctionClass(double minDomainValue,
+  Linear1D1DFunctionClass(double minDomainValue,
                             double maxDomainValue,
                             double referenceDomainValue,
                             double referenceImageValue,
                             double rateValue);
   //! Destructor.
-  ~uqLinear1D1DFunctionClass();
+  ~Linear1D1DFunctionClass();
   //@}
   
   //! @name Mathematical  methods
@@ -217,8 +217,8 @@ public:
   double deriv(double domainValue) const;
   //@}
 protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
+  using Base1D1DFunctionClass::m_minDomainValue;
+  using Base1D1DFunctionClass::m_maxDomainValue;
 
   //! Reference value in the function domain; \f$ x_1 \f$ in  \f$ f(x) = y_1 + m (x - x_1)\f$.
   double m_referenceDomainValue;
@@ -233,23 +233,23 @@ protected:
 //*****************************************************
 // PiecewiseLinear 1D->1D class
 //*****************************************************
-/*! \class uqPiecewiseLinear1D1DFunctionClass
+/*! \class PiecewiseLinear1D1DFunctionClass
     \brief Class for piecewise-linear one-dimensional functions. 
     
     This class implements piecewise-linear one-dimensional functions. 
 */
-class uqPiecewiseLinear1D1DFunctionClass : public uqBase1D1DFunctionClass {
+class PiecewiseLinear1D1DFunctionClass : public Base1D1DFunctionClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqPiecewiseLinear1D1DFunctionClass(double                     minDomainValue,
+  PiecewiseLinear1D1DFunctionClass(double                     minDomainValue,
                                      double                     maxDomainValue,
                                      const std::vector<double>& referenceDomainValues,
                                      double                     referenceImageValue0,
                                      const std::vector<double>& rateValues);
   //! Destructor.
-  ~uqPiecewiseLinear1D1DFunctionClass();
+  ~PiecewiseLinear1D1DFunctionClass();
   //@}
   
   //! @name Mathematical  methods
@@ -265,8 +265,8 @@ public:
   double deriv(double domainValue) const;
   //@}
 protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
+  using Base1D1DFunctionClass::m_minDomainValue;
+  using Base1D1DFunctionClass::m_maxDomainValue;
 
   //! Number of points which will be evaluated.
   unsigned int        m_numRefValues;
@@ -284,7 +284,7 @@ protected:
 //*****************************************************
 // Quadratic 1D->1D class
 //*****************************************************
-/*! \class uqQuadratic1D1DFunctionClass
+/*! \class Quadratic1D1DFunctionClass
     \brief Class for one-dimensional quadratic functions.  
     
     This class implements quadratic one-dimensional functions. 
@@ -293,20 +293,20 @@ protected:
     The graph of a quadratic function is a parabola whose axis of symmetry is parallel 
     to the y-axis.
 */
-class uqQuadratic1D1DFunctionClass : public uqBase1D1DFunctionClass {
+class Quadratic1D1DFunctionClass : public Base1D1DFunctionClass {
 public:
     //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Constructs a quadratic function in the interval <c>[minDomainValue,maxDomainValue]</c>,
    * of the type: \f$ f(x)=ax^2+bx+c \f$.*/
-  uqQuadratic1D1DFunctionClass(double minDomainValue,
+  Quadratic1D1DFunctionClass(double minDomainValue,
                                double maxDomainValue,
                                double a,
                                double b,
                                double c);
   //! Destructor.
-  ~uqQuadratic1D1DFunctionClass();
+  ~Quadratic1D1DFunctionClass();
 
     //! @name Mathematical  methods
   //@{
@@ -323,8 +323,8 @@ public:
   double deriv(double domainValue) const;
   //@}
 protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
+  using Base1D1DFunctionClass::m_minDomainValue;
+  using Base1D1DFunctionClass::m_maxDomainValue;
 
   //! 'Quadratic' coefficient of the quadratic function; \f$ a \f$ in \f$ f(x)=ax^2+bx+c \f$.
   double m_a;
@@ -339,31 +339,31 @@ protected:
 //*****************************************************
 // Sampled 1D->1D class
 //*****************************************************
-/*! \class uqSampled1D1DFunctionClass
+/*! \class Sampled1D1DFunctionClass
     \brief Class for one-dimensional sampled functions. 
     
     This class implements sampled one-dimensional functions. 
     A sample function is one whose values are known only at discrete values of the independent
     variable; i.e., its values are only known at grid points. There are several QUESO classes 
-    which handle grids, all derived from uqBaseOneDGridClass.  
+    which handle grids, all derived from BaseOneDGridClass.  
     Sampled functions are usually defined by arrays. */
 
-class uqSampled1D1DFunctionClass : public uqBase1D1DFunctionClass {
+class Sampled1D1DFunctionClass : public Base1D1DFunctionClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor. It should not be called by the user.
-  uqSampled1D1DFunctionClass();
+  Sampled1D1DFunctionClass();
   
   //! Constructor. 
   /*! When calling this constructor, the user provides the values of the independent variable 
    *(\c domainValues) and their respective values in the image set (independent variable, 
    \c imageValue)*/
-  uqSampled1D1DFunctionClass(const std::vector<double>& domainValues,
+  Sampled1D1DFunctionClass(const std::vector<double>& domainValues,
                              const std::vector<double>& imageValues);
   
   //! Destructor.
-  virtual ~uqSampled1D1DFunctionClass();
+  virtual ~Sampled1D1DFunctionClass();
   //@}
   
   //! @name Mathematical  methods
@@ -398,11 +398,11 @@ public:
   //! @name I/O methods
   //@{
   //! Prints the values of the function in Matlab/Octave format.   
-  virtual void                 printForMatlab(const uqBaseEnvironmentClass& env, std::ofstream& ofsvar, const std::string& prefixName) const;
+  virtual void                 printForMatlab(const BaseEnvironmentClass& env, std::ofstream& ofsvar, const std::string& prefixName) const;
   //@}
 protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
+  using Base1D1DFunctionClass::m_minDomainValue;
+  using Base1D1DFunctionClass::m_maxDomainValue;
 
   //! Array of the values in the domain of the function (values of the independent variable).
   std::vector<double> m_domainValues;
@@ -414,24 +414,24 @@ protected:
 //*****************************************************
 // 'ScalarTimesFunc' 1D->1D class
 //*****************************************************
-/*! \class uqScalarTimesFunc1D1DFunctionClass
+/*! \class ScalarTimesFunc1D1DFunctionClass
     \brief Class for multiplication of a one-dimensional function by a scalar. 
     
     This class implements the multiplication of a generic one-dimensional function 
-    (implemented through any class derived from uqBase1D1DFunctionClass) by a given
+    (implemented through any class derived from Base1D1DFunctionClass) by a given
     scalar. 
 */
 
-class uqScalarTimesFunc1D1DFunctionClass : public uqBase1D1DFunctionClass {
+class ScalarTimesFunc1D1DFunctionClass : public Base1D1DFunctionClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqScalarTimesFunc1D1DFunctionClass(double scalar,
-                                     const uqBase1D1DFunctionClass& func);
+  ScalarTimesFunc1D1DFunctionClass(double scalar,
+                                     const Base1D1DFunctionClass& func);
  
   //! Destructor.
-  ~uqScalarTimesFunc1D1DFunctionClass();
+  ~ScalarTimesFunc1D1DFunctionClass();
   //@}
   
   //! @name Mathematical  methods
@@ -446,33 +446,33 @@ public:
   double deriv(double domainValue) const;
   //@}
 protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
+  using Base1D1DFunctionClass::m_minDomainValue;
+  using Base1D1DFunctionClass::m_maxDomainValue;
 
   double m_scalar;
-  const uqBase1D1DFunctionClass& m_func;
+  const Base1D1DFunctionClass& m_func;
 };
 
 //*****************************************************
 // 'FuncTimesFunc' 1D->1D class
 //*****************************************************
-/*! \class uqFuncTimesFunc1D1DFunctionClass
+/*! \class FuncTimesFunc1D1DFunctionClass
     \brief Class for multiplication of a one-dimensional function by another. 
     
     This class implements the multiplication of a generic one-dimensional function 
     by another (both functions may be of any type of functions derived from 
-    uqBase1D1DFunctionClass). 
+    Base1D1DFunctionClass). 
 */
-class uqFuncTimesFunc1D1DFunctionClass : public uqBase1D1DFunctionClass {
+class FuncTimesFunc1D1DFunctionClass : public Base1D1DFunctionClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqFuncTimesFunc1D1DFunctionClass(const uqBase1D1DFunctionClass& func1,
-                                   const uqBase1D1DFunctionClass& func2);
+  FuncTimesFunc1D1DFunctionClass(const Base1D1DFunctionClass& func1,
+                                   const Base1D1DFunctionClass& func2);
  
   //! Destructor.
-  ~uqFuncTimesFunc1D1DFunctionClass();
+  ~FuncTimesFunc1D1DFunctionClass();
   //@}
   
   //! @name Mathematical  methods
@@ -489,32 +489,32 @@ public:
   //@}
 
 protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
+  using Base1D1DFunctionClass::m_minDomainValue;
+  using Base1D1DFunctionClass::m_maxDomainValue;
 
-  const uqBase1D1DFunctionClass& m_func1;
-  const uqBase1D1DFunctionClass& m_func2;
+  const Base1D1DFunctionClass& m_func1;
+  const Base1D1DFunctionClass& m_func2;
 };
 
 //*****************************************************
 // 'FuncPlusFunc' 1D->1D class
 //*****************************************************
-/*! \class uqFuncPlusFunc1D1DFunctionClass
+/*! \class FuncPlusFunc1D1DFunctionClass
     \brief Class for addition of a one-dimensional function with another. 
     
     This class implements the addition of two generic one-dimensional functions 
-    (both functions may be of any type of functions derived from uqBase1D1DFunctionClass). 
+    (both functions may be of any type of functions derived from Base1D1DFunctionClass). 
 */
-class uqFuncPlusFunc1D1DFunctionClass : public uqBase1D1DFunctionClass {
+class FuncPlusFunc1D1DFunctionClass : public Base1D1DFunctionClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqFuncPlusFunc1D1DFunctionClass(const uqBase1D1DFunctionClass& func1,
-                                  const uqBase1D1DFunctionClass& func2);
+  FuncPlusFunc1D1DFunctionClass(const Base1D1DFunctionClass& func1,
+                                  const Base1D1DFunctionClass& func2);
   
   //! Destructor.
-  ~uqFuncPlusFunc1D1DFunctionClass();
+  ~FuncPlusFunc1D1DFunctionClass();
 //@}
   
   //! @name Mathematical  methods
@@ -529,16 +529,16 @@ public:
   double deriv(double domainValue) const;
   //@}
 protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
+  using Base1D1DFunctionClass::m_minDomainValue;
+  using Base1D1DFunctionClass::m_maxDomainValue;
 
-  const uqBase1D1DFunctionClass& m_func1;
-  const uqBase1D1DFunctionClass& m_func2;
+  const Base1D1DFunctionClass& m_func1;
+  const Base1D1DFunctionClass& m_func2;
 };
 //*****************************************************
 // Lagrange Polynomial 1D->1D class
 //*****************************************************
-/*! \class uqLagrangePolynomial1D1DFunctionClass
+/*! \class LagrangePolynomial1D1DFunctionClass
     \brief Class for one-dimensional Lagrange polynomials.     
 */
 
@@ -559,16 +559,16 @@ protected:
  * 
  * \see Archer, Branden and Weisstein, Eric W. "Lagrange Interpolating Polynomial." From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/LagrangeInterpolatingPolynomial.html.*/
 
-class uqLagrangePolynomial1D1DFunctionClass : public uqBase1D1DFunctionClass {
+class LagrangePolynomial1D1DFunctionClass : public Base1D1DFunctionClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqLagrangePolynomial1D1DFunctionClass(const std::vector<double>& positionValues,
+  LagrangePolynomial1D1DFunctionClass(const std::vector<double>& positionValues,
                                         const std::vector<double>* functionValues);
  
   //! Destructor.
-  ~uqLagrangePolynomial1D1DFunctionClass();
+  ~LagrangePolynomial1D1DFunctionClass();
   //@}
   
   //! @name Mathematical  methods
@@ -582,8 +582,8 @@ public:
   double deriv(double domainValue) const;
   //@}
 protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
+  using Base1D1DFunctionClass::m_minDomainValue;
+  using Base1D1DFunctionClass::m_maxDomainValue;
 
   std::vector<double> m_positionValues;
   std::vector<double> m_functionValues;
@@ -592,7 +592,7 @@ protected:
 //*****************************************************
 // Lagrange Basis 1D->1D class
 //*****************************************************
-/*! \class uqLagrangeBasis1D1DFunctionClass
+/*! \class LagrangeBasis1D1DFunctionClass
  *  \brief Class for Lagrange polynomial basis.
  *
  * Given a set of \f$ k+1 \f$ data points \f$(x_0, y_0),\ldots,(x_j, y_j),\ldots,(x_k, y_k)\f$
@@ -610,16 +610,16 @@ protected:
   * In this class, the array <c> std::vector<double>& positionValues </c> stores the points
   * \f$ x_1, x_2, ... x_n \f$  and the  index \f$ j \f$ is stored in \c basisIndex. */
 
-class uqLagrangeBasis1D1DFunctionClass : public uqBase1D1DFunctionClass {
+class LagrangeBasis1D1DFunctionClass : public Base1D1DFunctionClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqLagrangeBasis1D1DFunctionClass(const std::vector<double>& positionValues,
+  LagrangeBasis1D1DFunctionClass(const std::vector<double>& positionValues,
                                    unsigned int basisIndex);
  
   //! Destructor.
-  ~uqLagrangeBasis1D1DFunctionClass();
+  ~LagrangeBasis1D1DFunctionClass();
   //@}
   
   //! @name Mathematical  methods
@@ -633,8 +633,8 @@ public:
   double deriv(double domainValue) const;
   //@}
 protected:
-  using uqBase1D1DFunctionClass::m_minDomainValue;
-  using uqBase1D1DFunctionClass::m_maxDomainValue;
+  using Base1D1DFunctionClass::m_minDomainValue;
+  using Base1D1DFunctionClass::m_maxDomainValue;
 
   std::vector<double> m_positionValues;
   unsigned int        m_basisIndex;
@@ -643,38 +643,38 @@ protected:
 //----------------------------------------------------------------------
 //! Calculates the integral of a 2D Gaussian KDE.
 /*! This function performs numerical integration (via Hermite-Gauss quadrature, 
- * see uqGaussianHermite1DQuadratureClass), of a bi-variate Gaussian KDE (refer
- * to uqScalarSequenceClass::subGaussian1dKde(), uqArrayOfSequencesClass::gaussianKDE(), 
- * or uqSequenceOfVectorsClass::subGaussian1dKde(). */
+ * see GaussianHermite1DQuadratureClass), of a bi-variate Gaussian KDE (refer
+ * to ScalarSequenceClass::subGaussian1dKde(), ArrayOfSequencesClass::gaussianKDE(), 
+ * or SequenceOfVectorsClass::subGaussian1dKde(). */
 
 template <class T>
 double
-uqSubF1F2Gaussian2dKdeIntegral(const uqScalarSequenceClass<T>& scalarSeq1,
-                               const uqScalarSequenceClass<T>& scalarSeq2,
+SubF1F2Gaussian2dKdeIntegral(const ScalarSequenceClass<T>& scalarSeq1,
+                               const ScalarSequenceClass<T>& scalarSeq2,
                                unsigned int                    initialPos,
                                double                          scaleValue1,
                                double                          scaleValue2,
-                               const uqBase1D1DFunctionClass&  func1,
-                               const uqBase1D1DFunctionClass&  func2,
+                               const Base1D1DFunctionClass&  func1,
+                               const Base1D1DFunctionClass&  func2,
                                unsigned int                    quadratureOrder)
 {
   double resultValue = 0.;
 
   UQ_FATAL_TEST_MACRO(initialPos != 0,
                       scalarSeq1.env().worldRank(),
-                      "uqSubF1F2Gaussian2dKdeIntegral()",
+                      "SubF1F2Gaussian2dKdeIntegral()",
                       "not implemented yet for initialPos != 0");
   UQ_FATAL_TEST_MACRO(scalarSeq1.subSequenceSize() != scalarSeq2.subSequenceSize(),
                       scalarSeq1.env().worldRank(),
-                      "uqSubF1F2Gaussian2dKdeIntegral()",
+                      "SubF1F2Gaussian2dKdeIntegral()",
                       "different sizes");
 
-  uqGaussianHermite1DQuadratureClass quadObj(0.,1.,quadratureOrder);
+  GaussianHermite1DQuadratureClass quadObj(0.,1.,quadratureOrder);
   const std::vector<double>& quadPositions = quadObj.positions();
   const std::vector<double>& quadWeights   = quadObj.weights  ();
   UQ_FATAL_TEST_MACRO(quadPositions.size() != quadWeights.size(),
                       UQ_UNAVAILABLE_RANK,
-                      "uqSubF1F2Gaussian2dKdeIntegral()",
+                      "SubF1F2Gaussian2dKdeIntegral()",
                       "quadObj has invalid state");
 
   unsigned int numQuadraturePositions = quadPositions.size();

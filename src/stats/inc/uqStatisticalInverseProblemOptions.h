@@ -50,33 +50,33 @@ namespace QUESO {
     \brief Classes to allow options to be passed to a Statistical Inverse Problem.
 */
 
-/*! \class uqSipOptionsValuesClass
+/*! \class SipOptionsValuesClass
  *  \brief This class provides options for a Statistical Inverse Problem if no input file is available.
  * 
  *  In order to solve a Statistical Inverse Problem (SIP), QUESO expects some options for its methods to be 
  * fully defined. This class provides default values for such options if no input file is available. */
 
-class uqSipOptionsValuesClass
+class SipOptionsValuesClass
 {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor.
   /*! Assigns the default suite of options to the Statistical Inverse Problem.*/
-  uqSipOptionsValuesClass            ();
+  SipOptionsValuesClass            ();
   
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
-  uqSipOptionsValuesClass            (const uqSipOptionsValuesClass& src);
+  SipOptionsValuesClass            (const SipOptionsValuesClass& src);
   
   //! Destructor
-  ~uqSipOptionsValuesClass            (); 
+  ~SipOptionsValuesClass            (); 
   //@}
   
   //! @name Set methods
   //@{ 
   //! Assignment operator; it copies \c rhs to \c this. 
-  uqSipOptionsValuesClass& operator= (const uqSipOptionsValuesClass& rhs);
+  SipOptionsValuesClass& operator= (const SipOptionsValuesClass& rhs);
   //@}
 
   bool                   m_computeSolution;
@@ -86,18 +86,18 @@ public:
   std::string            m_solverString;
 #endif
 
-  //uqMhOptionsValuesClass m_mhOptionsValues;
+  //MhOptionsValuesClass m_mhOptionsValues;
 
 private:
   //! Copies the option values from \c src to \c this.
-  void copy(const uqSipOptionsValuesClass& src);
+  void copy(const SipOptionsValuesClass& src);
 };
 
 // --------------------------------------------------
 // --------------------------------------------------
 // --------------------------------------------------
 
-/*! \class uqStatisticalInverseProblemOptionsClass
+/*! \class StatisticalInverseProblemOptionsClass
  *  \brief This class reads option values for a Statistical Inverse Problem from an input file.
  * 
  *  This class reads the option values for the Statistical Inverse Problem (SIP) from an input file 
@@ -107,21 +107,21 @@ private:
  * can run 'grep zeros \<OUTPUT FILE NAME\>' after the solution procedure ends in order to check 
  * which MATLAB variables are defined and set. The names of the variables are self explanatory.*/
 
-class uqStatisticalInverseProblemOptionsClass
+class StatisticalInverseProblemOptionsClass
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Constructor: reads options from the input file.
-  uqStatisticalInverseProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+  StatisticalInverseProblemOptionsClass(const BaseEnvironmentClass& env, const char* prefix);
   
   //! Constructor: with alternative option values.
   /*! In this constructor, the input options are given by \c alternativeOptionsValues, rather than the 
    * options input file*/
-  uqStatisticalInverseProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqSipOptionsValuesClass& alternativeOptionsValues);
+  StatisticalInverseProblemOptionsClass(const BaseEnvironmentClass& env, const char* prefix, const SipOptionsValuesClass& alternativeOptionsValues);
  
   //! Destructor
-  ~uqStatisticalInverseProblemOptionsClass();
+  ~StatisticalInverseProblemOptionsClass();
   //@}
   
   //! @name I/O methods
@@ -133,7 +133,7 @@ public:
   void print            (std::ostream& os) const;
   //@}
   
-  uqSipOptionsValuesClass       m_ov;
+  SipOptionsValuesClass       m_ov;
   std::string                   m_prefix;
 
 private:
@@ -143,7 +143,7 @@ private:
   //! Gets the option values of the SIP.
   void   getMyOptionValues(po::options_description& optionsDesc);
 
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
 
   po::options_description*      m_optionsDesc;
   std::string                   m_option_help;
@@ -156,7 +156,7 @@ private:
 };
 
 //! Prints the object \c obj, overloading an operator.
-std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemOptionsClass& obj);
+std::ostream& operator<<(std::ostream& os, const StatisticalInverseProblemOptionsClass& obj);
 
 }  // End namespace QUESO
 

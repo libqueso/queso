@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
   MPI_Init(&argc, &argv);
 #endif
 
-  QUESO::uqGslMatrixClass matrix;
+  QUESO::GslMatrixClass matrix;
 
 #ifdef QUESO_HAS_MPI
   MPI_Finalize();

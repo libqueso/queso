@@ -30,6 +30,6 @@
 
 #include <uqEnvironment.h>
 
-void compute(const QUESO::uqFullEnvironmentClass& env);
+void compute(const QUESO::FullEnvironmentClass& env);
 
 #endif

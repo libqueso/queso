@@ -39,11 +39,11 @@ namespace QUESO {
 /*!\file uqOneDGrid.h
  * \brief Class to read ASCII values from a table.
  * 
- * \class uqAsciiTableClass
+ * \class AsciiTableClass
  * \brief Class for reading ASCII values from a table in a file.*/
 
 template <class V, class M>
-class uqAsciiTableClass
+class AsciiTableClass
 {
 public:
   //! @name Constructor/Destructor methods
@@ -51,13 +51,13 @@ public:
   //! Default constructor.
   /*! This constructor reads the data from file \c fileName, checking whether the data in each
    * column of the file is or not a string, and whether the data in each row is or not valid.*/
-  uqAsciiTableClass(const uqBaseEnvironmentClass& env,
+  AsciiTableClass(const BaseEnvironmentClass& env,
                           unsigned int            numRows,
                           unsigned int            numExtraCols,
                     const std::vector<bool>*      extraColIsString,
                     const std::string&            fileName);
   //! Destructor.
-  ~uqAsciiTableClass();
+  ~AsciiTableClass();
   //@}
   
   //! @name Property methods
@@ -69,7 +69,7 @@ public:
   unsigned int                         numCols     ()                 const;
   
   //! Returns the string stored in column \c j.
-  const uqDistArrayClass<std::string>& stringColumn(unsigned int j)   const;
+  const DistArrayClass<std::string>& stringColumn(unsigned int j)   const;
   
   //! Returns the value (double) stored in column \c j.
   const V&                             doubleColumn(unsigned int j)   const;
@@ -81,24 +81,24 @@ public:
   void                                 print       (std::ostream& os) const;
   //@}
 private:
-  uqMapClass* newMap(); // See template specialization
+  MapClass* newMap(); // See template specialization
 
-  const uqBaseEnvironmentClass&               m_env;
+  const BaseEnvironmentClass&               m_env;
   unsigned int                                m_numRows;
   unsigned int                                m_numCols;
   std::vector<bool>                           m_colIsString;
   std::string                                 m_fileName;
 
-  const uqMapClass*                           m_map;
-  std::vector<uqDistArrayClass<std::string>*> m_stringColumns;
+  const MapClass*                           m_map;
+  std::vector<DistArrayClass<std::string>*> m_stringColumns;
   std::vector<V*>                             m_doubleColumns;
 
   void readColumnsFromFile();
 };
 // Default constructor -------------------------------------------------
 template <class V, class M>
-uqAsciiTableClass<V,M>::uqAsciiTableClass(
-  const uqBaseEnvironmentClass& env,
+AsciiTableClass<V,M>::AsciiTableClass(
+  const BaseEnvironmentClass& env,
         unsigned int            numRows,
         unsigned int            numExtraCols,
   const std::vector<bool>*      extraColIsString,
@@ -114,7 +114,7 @@ uqAsciiTableClass<V,M>::uqAsciiTableClass(
   m_doubleColumns(0)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqAsciiTableClass<V,M>::constructor()..."
+    *m_env.subDisplayFile() << "Entering AsciiTableClass<V,M>::constructor()..."
                             << std::endl;
   }
 
@@ -135,13 +135,13 @@ uqAsciiTableClass<V,M>::uqAsciiTableClass(
   readColumnsFromFile();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqAsciiTableClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving AsciiTableClass<V,M>::constructor()"
                             << std::endl;
   }
 }
 // Destructor ----------------------------------------------------------
 template <class V, class M>
-uqAsciiTableClass<V,M>::~uqAsciiTableClass()
+AsciiTableClass<V,M>::~AsciiTableClass()
 {
   for (unsigned int j = 0; j < m_doubleColumns.size(); ++j) {
     if (m_doubleColumns[j]) delete m_doubleColumns[j];
@@ -153,14 +153,14 @@ uqAsciiTableClass<V,M>::~uqAsciiTableClass()
 // Private method ------------------------------------------------------
 template <class V, class M>
 void
-uqAsciiTableClass<V,M>::readColumnsFromFile()
+AsciiTableClass<V,M>::readColumnsFromFile()
 {
   unsigned int maxCharsPerLine = 512;
 
   std::ifstream ifs(m_fileName.c_str());
   UQ_FATAL_TEST_MACRO(ifs.is_open() == false,
                       m_env.worldRank(),
-                      "uqAsciiTableClass<V,M>::readColumnsFromFile()",
+                      "AsciiTableClass<V,M>::readColumnsFromFile()",
                       "file was not found");
 
   // Determine number of lines
@@ -175,10 +175,10 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
   unsigned int numValidLines = 0;
   std::string tempString;
   while ((lineId < numLines) && (ifs.eof() == false)) {
-    iRC = uqMiscReadStringAndDoubleFromFile(ifs,tempString,NULL);
+    iRC = MiscReadStringAndDoubleFromFile(ifs,tempString,NULL);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.worldRank(),
-                        "uqAsciiTableClass<V,M>::readColumnsFromFile()",
+                        "AsciiTableClass<V,M>::readColumnsFromFile()",
                         "failed reading during the determination of the number of valid lines");
     //*m_env.subDisplayFile() << "lineId = "          << lineId
     //                        << ", numValidLines = " << numValidLines
@@ -190,14 +190,14 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
   }
   UQ_FATAL_TEST_MACRO(lineId != numLines,
                       m_env.worldRank(),
-                      "uqAsciiTableClass<V,M>::readColumnsFromFile()",
+                      "AsciiTableClass<V,M>::readColumnsFromFile()",
                       "the first number of lines read is nonconsistent");
   if (m_numRows != numValidLines) {
     char errorExplanation[512];
     sprintf(errorExplanation,"number of valid lines (%u) in ASCII table file does not match number of rows (%u)",numValidLines,m_numRows);
     UQ_FATAL_TEST_MACRO(true,
                         m_env.worldRank(),
-                        "uqAsciiTableClass<V,M>::readColumnsFromFile()",
+                        "AsciiTableClass<V,M>::readColumnsFromFile()",
                         errorExplanation);
   }
 
@@ -216,7 +216,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
                                 << " is a columns of strings"
                                 << std::endl;
       }
-      m_stringColumns[j] = new uqDistArrayClass<std::string>(*m_map,1);
+      m_stringColumns[j] = new DistArrayClass<std::string>(*m_map,1);
     }
     else {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
@@ -237,10 +237,10 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
     //*m_env.subDisplayFile() << "Beginning read of line (in ASCII table file) of id = " << lineId << std::endl;
     bool endOfLineAchieved = false;
 
-    iRC = uqMiscReadCharsAndDoubleFromFile(ifs, tmpString, NULL, endOfLineAchieved);
+    iRC = MiscReadCharsAndDoubleFromFile(ifs, tmpString, NULL, endOfLineAchieved);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.worldRank(),
-                        "uqAsciiTableClass<V,M>::readColumnsFromFile()",
+                        "AsciiTableClass<V,M>::readColumnsFromFile()",
                         "failed reading a first column during the valid lines reading loop");
 
     lineId++;
@@ -249,7 +249,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
       continue;
     }
 
-    uqDistArrayClass<std::string>& firstColumn = *m_stringColumns[0];
+    DistArrayClass<std::string>& firstColumn = *m_stringColumns[0];
     firstColumn(validLineId,0) = tmpString;
 
     // Check 'validLineId' before setting one more valid line
@@ -258,7 +258,7 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
       sprintf(errorExplanation,"validLineId (%u) got too large during reading of ASCII table file",validLineId);
       UQ_FATAL_TEST_MACRO(true,
                           m_env.worldRank(),
-                          "uqAsciiTableClass<V,M>::readColumnsFromFile()",
+                          "AsciiTableClass<V,M>::readColumnsFromFile()",
                           errorExplanation);
     }
 
@@ -272,14 +272,14 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
     for (unsigned int j=1; j < m_numCols; ++j) {
       UQ_FATAL_TEST_MACRO(endOfLineAchieved,
                           m_env.worldRank(),
-                          "uqAsciiTableClass<V,M>::readColumnsFromFile()",
+                          "AsciiTableClass<V,M>::readColumnsFromFile()",
                           "failed reading all columns in a valid line");
       if (m_colIsString[j]) {
-        uqDistArrayClass<std::string>& arrayOfStrings = *m_stringColumns[j];
-        iRC = uqMiscReadCharsAndDoubleFromFile(ifs, arrayOfStrings(validLineId,0), NULL, endOfLineAchieved);
+        DistArrayClass<std::string>& arrayOfStrings = *m_stringColumns[j];
+        iRC = MiscReadCharsAndDoubleFromFile(ifs, arrayOfStrings(validLineId,0), NULL, endOfLineAchieved);
         UQ_FATAL_TEST_MACRO(iRC,
                             m_env.worldRank(),
-                            "uqAsciiTableClass<V,M>::readColumnsFromFile()",
+                            "AsciiTableClass<V,M>::readColumnsFromFile()",
                             "failed reading a string column in a valid line");
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
           *m_env.subDisplayFile() << "Just read a string: table[" << validLineId
@@ -289,10 +289,10 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
         }
       }
       else {
-        iRC = uqMiscReadCharsAndDoubleFromFile(ifs, tmpString, &(*m_doubleColumns[j])[validLineId], endOfLineAchieved);
+        iRC = MiscReadCharsAndDoubleFromFile(ifs, tmpString, &(*m_doubleColumns[j])[validLineId], endOfLineAchieved);
         UQ_FATAL_TEST_MACRO(iRC,
                             m_env.worldRank(),
-                            "uqAsciiTableClass<V,M>::readColumnsFromFile()",
+                            "AsciiTableClass<V,M>::readColumnsFromFile()",
                             "failed reading a double column in a valid line");
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
           *m_env.subDisplayFile() << "Just read a double: table[" << validLineId
@@ -309,11 +309,11 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
 
   UQ_FATAL_TEST_MACRO(lineId != numLines,
                       m_env.worldRank(),
-                      "uqAsciiTableClass<V,M>::readColumnsFromFile()",
+                      "AsciiTableClass<V,M>::readColumnsFromFile()",
                       "the second number of lines read is not consistent");
   UQ_FATAL_TEST_MACRO(validLineId != numValidLines,
                       m_env.worldRank(),
-                      "uqAsciiTableClass<V,M>::readColumnsFromFile()",
+                      "AsciiTableClass<V,M>::readColumnsFromFile()",
                       "the number of valid lines just read is not consistent");
 
   if (m_env.displayVerbosity() >= 5) {
@@ -331,30 +331,30 @@ uqAsciiTableClass<V,M>::readColumnsFromFile()
 // Property methods-----------------------------------------------------
 template <class V, class M>
 unsigned int
-uqAsciiTableClass<V,M>::numRows() const
+AsciiTableClass<V,M>::numRows() const
 {
   return m_numRows;
 }
 //----------------------------------------------------------------------
 template <class V, class M>
 unsigned int
-uqAsciiTableClass<V,M>::numCols() const
+AsciiTableClass<V,M>::numCols() const
 {
   return m_numCols;
 }
 //----------------------------------------------------------------------
 template <class V, class M>
-const uqDistArrayClass<std::string>&
-uqAsciiTableClass<V,M>::stringColumn(unsigned int j) const
+const DistArrayClass<std::string>&
+AsciiTableClass<V,M>::stringColumn(unsigned int j) const
 {
   UQ_FATAL_TEST_MACRO(j >= m_numCols,
                       m_env.worldRank(),
-                      "uqAsciiTableClass<V,M>::stringColumn()",
+                      "AsciiTableClass<V,M>::stringColumn()",
                       "invalid j");
 
   UQ_FATAL_TEST_MACRO(m_stringColumns[j] == NULL,
                       m_env.worldRank(),
-                      "uqAsciiTableClass<V,M>::stringColumn()",
+                      "AsciiTableClass<V,M>::stringColumn()",
                       "string column is not ready");
 
   return *m_stringColumns[j];
@@ -362,16 +362,16 @@ uqAsciiTableClass<V,M>::stringColumn(unsigned int j) const
 //----------------------------------------------------------------------
 template <class V, class M>
 const V&
-uqAsciiTableClass<V,M>::doubleColumn(unsigned int j) const
+AsciiTableClass<V,M>::doubleColumn(unsigned int j) const
 {
   UQ_FATAL_TEST_MACRO(j >= m_numCols,
                       m_env.worldRank(),
-                      "uqAsciiTableClass<V,M>::doubleColumn()",
+                      "AsciiTableClass<V,M>::doubleColumn()",
                       "invalid j");
 
   UQ_FATAL_TEST_MACRO(m_doubleColumns[j] == NULL,
                       m_env.worldRank(),
-                      "uqAsciiTableClass<V,M>::doubleColumn()",
+                      "AsciiTableClass<V,M>::doubleColumn()",
                       "double column is not ready");
 
   return *m_doubleColumns[j];
@@ -379,16 +379,16 @@ uqAsciiTableClass<V,M>::doubleColumn(unsigned int j) const
 // I/O methods----------------------------------------------------------
 template <class V, class M>
 void
-uqAsciiTableClass<V,M>::print(std::ostream& os) const
+AsciiTableClass<V,M>::print(std::ostream& os) const
 {
   for (unsigned int j = 0; j < m_numCols; ++j) {
     UQ_FATAL_TEST_MACRO((m_stringColumns[j] != NULL) && (m_doubleColumns[j] != NULL),
                         m_env.worldRank(),
-                        "uqAsciiTableClass<V,M>::print()",
+                        "AsciiTableClass<V,M>::print()",
                         "column is not null on both possible ways");
     UQ_FATAL_TEST_MACRO((m_stringColumns[j] == NULL) && (m_doubleColumns[j] == NULL),
                         m_env.worldRank(),
-                        "uqAsciiTableClass<V,M>::print()",
+                        "AsciiTableClass<V,M>::print()",
                         "column is null on both possible ways");
 
     os << "\nContents of table '" << m_fileName
@@ -397,7 +397,7 @@ uqAsciiTableClass<V,M>::print(std::ostream& os) const
        << std::endl;
     if (m_stringColumns[j] != NULL) {
       os << *m_stringColumns[j];
-      //uqDistArrayClass<std::string>& arrayOfStrings = *m_stringColumns[j];
+      //DistArrayClass<std::string>& arrayOfStrings = *m_stringColumns[j];
       //for (unsigned int i = 0; i < m_numRows; ++i) {
       //  os << arrayOfStrings(i,0)
       //     << std::endl;
@@ -413,7 +413,7 @@ uqAsciiTableClass<V,M>::print(std::ostream& os) const
 }
 //----------------------------------------------------------------------
 template<class V, class M>
-std::ostream& operator<<(std::ostream& os, const uqAsciiTableClass<V,M>& obj)
+std::ostream& operator<<(std::ostream& os, const AsciiTableClass<V,M>& obj)
 {
   obj.print(os);
 

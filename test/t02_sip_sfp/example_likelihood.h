@@ -33,16 +33,16 @@
 struct
 likelihoodRoutine_DataType
 {
-  const QUESO::uqGslVectorClass* meanVector;
-  const QUESO::uqGslMatrixClass* covMatrix;
+  const QUESO::GslVectorClass* meanVector;
+  const QUESO::GslMatrixClass* covMatrix;
 };
 
 double likelihoodRoutine(
-  const QUESO::uqGslVectorClass& paramValues,
-  const QUESO::uqGslVectorClass* paramDirection,
+  const QUESO::GslVectorClass& paramValues,
+  const QUESO::GslVectorClass* paramDirection,
   const void*             functionDataPtr,
-  QUESO::uqGslVectorClass*       gradVector,
-  QUESO::uqGslMatrixClass*       hessianMatrix,
-  QUESO::uqGslVectorClass*       hessianEffect);
+  QUESO::GslVectorClass*       gradVector,
+  QUESO::GslMatrixClass*       hessianMatrix,
+  QUESO::GslVectorClass*       hessianEffect);
 
 #endif

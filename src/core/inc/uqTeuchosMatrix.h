@@ -46,15 +46,15 @@ namespace QUESO {
     \brief Matrix class using Trilinos Teuchos
 */
 
-/*! \class uqTeuchosMatrixClass
+/*! \class TeuchosMatrixClass
     \brief Class for matrix operations using Teuchos (Trilinos).
     
     This class creates and provides basic support for matrices of templated 
-    type as a specialization of uqMatrixClass using Teuchos matrices (from Trilinos), which are defined 
+    type as a specialization of MatrixClass using Teuchos matrices (from Trilinos), which are defined 
     by an encapsulated Teuchos::SerialDenseMatrix structure.
 */
 
-class uqTeuchosMatrixClass : public uqMatrixClass
+class TeuchosMatrixClass : public MatrixClass
 {
 public:
    //! @name Constructor/Destructor methods
@@ -62,48 +62,48 @@ public:
 
   //! Default Constructor
   /*! Creates an empty matrix vector of no dimension. It should not be used by user.*/
-  uqTeuchosMatrixClass();
+  TeuchosMatrixClass();
   
    //! Shaped Constructor: creates a shaped matrix with \c numCols columns.  
-  uqTeuchosMatrixClass(const uqBaseEnvironmentClass& env,
-                       const uqMapClass&             map,
+  TeuchosMatrixClass(const BaseEnvironmentClass& env,
+                       const MapClass&             map,
                        unsigned int                  numCols);
   
     //! Shaped Constructor: creates a square matrix with size \c map.NumGlobalElements() and diagonal values all equal to \c diagValue.  
-  uqTeuchosMatrixClass(const uqBaseEnvironmentClass& env,
-                       const uqMapClass&             map,
+  TeuchosMatrixClass(const BaseEnvironmentClass& env,
+                       const MapClass&             map,
      	               double                        diagValue); 
   
     //! Shaped Constructor: creates a square matrix with size \c v.sizeLocal() and diagonal values all equal to \c diagValue.  
-  uqTeuchosMatrixClass(const uqTeuchosVectorClass&   v,
+  TeuchosMatrixClass(const TeuchosVectorClass&   v,
                    	   double                    diagValue); 
   
   //! Shaped Constructor: creates a square matrix with size \c v.sizeLocal().  
   /*! The diagonal values of this matrix are the elements in vector \c v. */  
-  uqTeuchosMatrixClass(const uqTeuchosVectorClass&   v);         
+  TeuchosMatrixClass(const TeuchosVectorClass&   v);         
   
   //! Shaped Constructor: \c this matrix is a copy of matrix \c B.
-  uqTeuchosMatrixClass(const uqTeuchosMatrixClass&   B);
+  TeuchosMatrixClass(const TeuchosMatrixClass&   B);
   
     //! Destructor
- ~uqTeuchosMatrixClass();
+ ~TeuchosMatrixClass();
 //@}
 
   //! @name Set methods
   //@{ 
   //! Copies values from matrix \c rhs to \c this. 
-  uqTeuchosMatrixClass& operator= (const uqTeuchosMatrixClass& rhs);
+  TeuchosMatrixClass& operator= (const TeuchosMatrixClass& rhs);
   
   //! Stores in \c this the coordinate-wise multiplication of \c this and \c a.
-  uqTeuchosMatrixClass& operator*=(double a);
+  TeuchosMatrixClass& operator*=(double a);
   
   //! Stores in \c this the coordinate-wise division of \c this by \c a.
-  uqTeuchosMatrixClass& operator/=(double a);
+  TeuchosMatrixClass& operator/=(double a);
   
   //! Stores in \c this the coordinate-wise addition of \c this and \c rhs.
-  uqTeuchosMatrixClass& operator+=(const uqTeuchosMatrixClass& rhs);
+  TeuchosMatrixClass& operator+=(const TeuchosMatrixClass& rhs);
   //! Stores in \c this the coordinate-wise subtraction of \c this by \c rhs.
-  uqTeuchosMatrixClass& operator-=(const uqTeuchosMatrixClass& rhs);
+  TeuchosMatrixClass& operator-=(const TeuchosMatrixClass& rhs);
   //@}
   
     //! @name Accessor methods
@@ -140,10 +140,10 @@ public:
   unsigned int      rank                      (double absoluteZeroThreshold, double relativeZeroThreshold) const;
   
   //! This function calculates the transpose of \c this matrix  (square).
-  uqTeuchosMatrixClass  transpose                 () const;
+  TeuchosMatrixClass  transpose                 () const;
   
   //! This function calculates the inverse of \c this matrix  (square).
-  uqTeuchosMatrixClass  inverse                   () const;
+  TeuchosMatrixClass  inverse                   () const;
   
   //! Calculates the determinant of \c this matrix.
   double                determinant               () const;
@@ -168,68 +168,68 @@ public:
   int               chol                   () ; 
   
   //! Checks for the dimension of \c this matrix, \c matU, \c VecS and \c matVt, and calls the protected routine \c internalSvd to compute the singular values of \c this. 
-  int               svd                    (uqTeuchosMatrixClass& matU, uqTeuchosVectorClass& vecS, uqTeuchosMatrixClass& matVt) const;
+  int               svd                    (TeuchosMatrixClass& matU, TeuchosVectorClass& vecS, TeuchosMatrixClass& matVt) const;
   
-  //! This function calls private member uqTeuchosMatrixClass::internalSvd() to set a M-by-N orthogonal matrix U of the singular value decomposition (svd) of a general rectangular M-by-N matrix A. 
+  //! This function calls private member TeuchosMatrixClass::internalSvd() to set a M-by-N orthogonal matrix U of the singular value decomposition (svd) of a general rectangular M-by-N matrix A. 
   /*! A general rectangular M-by-N matrix A has a singular value decomposition (svd) into the product of an M-by-N orthogonal matrix U, an N-by-N diagonal matrix of singular values S and the transpose of an N-by-N orthogonal square matrix V,  A = U S V^T.  */
-  const uqTeuchosMatrixClass& svdMatU      () const;
+  const TeuchosMatrixClass& svdMatU      () const;
   
-  //! This function calls private member  uqTeuchosMatrixClass::internalSvd() to set a N-by-N orthogonal square matrix V of the singular value decomposition (svd) of a general rectangular M-by-N matrix A. 
+  //! This function calls private member  TeuchosMatrixClass::internalSvd() to set a N-by-N orthogonal square matrix V of the singular value decomposition (svd) of a general rectangular M-by-N matrix A. 
   /*! A general rectangular M-by-N matrix A has a singular value decomposition (svd) into the product of an M-by-N orthogonal matrix U, an N-by-N diagonal matrix of singular values S and the transpose of an N-by-N orthogonal square matrix V,  A = U S V^T.  */
-  const uqTeuchosMatrixClass& svdMatV      () const;
+  const TeuchosMatrixClass& svdMatV      () const;
   
-  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with uqTeuchosMatrixClass::svd (x=solVec, b=rhsVec). 
+  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with TeuchosMatrixClass::svd (x=solVec, b=rhsVec). 
  /*! An orthogonal matrix A has a norm-preserving property, i.e. for any vector v,\f[ ||Av|| = ||v|| \f]
   * Then:  \f[ min( ||Ax - b||^2) = min(||Ax - b||) = min(||U D V^T x - b||) = min(||D V x - U b||)\f]
   * Substituting \f[ y = V^T x \f] and \f[ b' = U^T b \f] gives us \f[ Dy = b'\f] with D being a diagonal matrix. 
   * Or, \f[  y = inv(D) U^T b \f] and we only have to solve the linear system: \f[ V^T x = y\f] */
-  int               svdSolve               (const uqTeuchosVectorClass& rhsVec, uqTeuchosVectorClass& solVec) const;
+  int               svdSolve               (const TeuchosVectorClass& rhsVec, TeuchosVectorClass& solVec) const;
   
-  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with uqTeuchosMatrixClass::svd (x=solMat, b=rhsMat).
+  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with TeuchosMatrixClass::svd (x=solMat, b=rhsMat).
   /*! Note that solMat is a matrix. Thus, to solve the system of equations '\this * solMath = rhsMat', this method calls 
-   * svdSolve(const uqTeuchosVectorClass& rhsVec, uqTeuchosVectorClass& solVec)
+   * svdSolve(const TeuchosVectorClass& rhsVec, TeuchosVectorClass& solVec)
    * passing one column of solMat with its respective column of rhsMat, .*/
-  int               svdSolve               (const uqTeuchosMatrixClass& rhsMat, uqTeuchosMatrixClass& solMat) const;
+  int               svdSolve               (const TeuchosMatrixClass& rhsMat, TeuchosMatrixClass& solMat) const;
 
   
   
   //! This function multiplies \c this matrix by vector \c x and returns a vector.
-  uqTeuchosVectorClass  multiply                  (const uqTeuchosVectorClass& x) const;
+  TeuchosVectorClass  multiply                  (const TeuchosVectorClass& x) const;
   
   //! This function calculates the inverse of \c this matrix, multiplies it with vector \c b and stores the result in vector \c x.
   /*! It checks for a previous LU decomposition of \c this matrix and does not recompute it
    if private attribute m_LU != NULL .*/
-  void                  invertMultiply            (const uqTeuchosVectorClass& b, uqTeuchosVectorClass& x) const;
+  void                  invertMultiply            (const TeuchosVectorClass& b, TeuchosVectorClass& x) const;
   
   //! This function calculates the inverse of \c this matrix and multiplies it with vector \c b. 
-  /*! It calls void uqTeuchosMatrixClass::invertMultiply(const uqTeuchosVectorClass& b, uqTeuchosVectorClass& x) internally.*/
-  uqTeuchosVectorClass  invertMultiply            (const uqTeuchosVectorClass& b) const;
+  /*! It calls void TeuchosMatrixClass::invertMultiply(const TeuchosVectorClass& b, TeuchosVectorClass& x) internally.*/
+  TeuchosVectorClass  invertMultiply            (const TeuchosVectorClass& b) const;
   
   //! This function calculates the inverse of \c this matrix, multiplies it with matrix \c B and stores the result in matrix \c X.
   /*! It checks for a previous LU decomposition of \c this matrix and does not recompute it if private attribute \c m_LU != NULL .*/
-  void                  invertMultiply            (const uqTeuchosMatrixClass& B, uqTeuchosMatrixClass& X) const;
+  void                  invertMultiply            (const TeuchosMatrixClass& B, TeuchosMatrixClass& X) const;
   
   //! This function calculates the inverse of \c this matrix and multiplies it with matrix \c B.
-  /*! It calls void uqTeuchosMatrixClass::invertMultiply(const uqTeuchosMatrixClass& B, uqTeuchosMatrixClass& X) const internally.*/
-  uqTeuchosMatrixClass  invertMultiply            (const uqTeuchosMatrixClass& B) const;
+  /*! It calls void TeuchosMatrixClass::invertMultiply(const TeuchosMatrixClass& B, TeuchosMatrixClass& X) const internally.*/
+  TeuchosMatrixClass  invertMultiply            (const TeuchosMatrixClass& B) const;
   
   //! This function calculates the inverse of \c this matrix, multiplies it with vector \c b and stores the result in vector \c x.
   /*! It recalculates the LU decomposition of \c this matrix.*/
-  void                  invertMultiplyForceLU     (const uqTeuchosVectorClass& b, uqTeuchosVectorClass& x) const;
+  void                  invertMultiplyForceLU     (const TeuchosVectorClass& b, TeuchosVectorClass& x) const;
   
   //! This function calculates the inverse of \c this matrix and multiplies it with vector \c b. 
-  /*! It calls void uqTeuchosMatrixClass::InvertMultiplyForceLU(const uqTeuchosVectorClass& b, uqTeuchosVectorClass& x) const;(const uqTeuchosVectorClass& b,
-uqTeuchosVectorClass& x) internally.*/
-  uqTeuchosVectorClass  invertMultiplyForceLU     (const uqTeuchosVectorClass& b) const;
+  /*! It calls void TeuchosMatrixClass::InvertMultiplyForceLU(const TeuchosVectorClass& b, TeuchosVectorClass& x) const;(const TeuchosVectorClass& b,
+TeuchosVectorClass& x) internally.*/
+  TeuchosVectorClass  invertMultiplyForceLU     (const TeuchosVectorClass& b) const;
     
   //! This function computes the eigenvalues of a real symmetric matrix.
-  void              eigen                     (uqTeuchosVectorClass& eigenValues, uqTeuchosMatrixClass* eigenVectors) const;			
+  void              eigen                     (TeuchosVectorClass& eigenValues, TeuchosMatrixClass* eigenVectors) const;			
   
   //! This function finds largest eigenvalue, namely \c eigenValue, of \c this matrix and its corresponding eigenvector, namely \c eigenVector.
-  void              largestEigen              (double& eigenValue, uqTeuchosVectorClass& eigenVector) const;
+  void              largestEigen              (double& eigenValue, TeuchosVectorClass& eigenVector) const;
   
   //! This function finds smallest eigenvalue, namely \c eigenValue, of \c this matrix and its corresponding eigenvector, namely \c eigenVector.
-  void              smallestEigen             (double& eigenValue, uqTeuchosVectorClass& eigenVector) const;
+  void              smallestEigen             (double& eigenValue, TeuchosVectorClass& eigenVector) const;
  
   //@}
   
@@ -240,26 +240,26 @@ uqTeuchosVectorClass& x) internally.*/
   void                  cwSet                     (double value);
   
   //! Set the components of \c which positions are greater than (rowId,colId) with the value of mat(rowId,colId).
-  void                  cwSet                     (unsigned int rowId, unsigned int colId, const uqTeuchosMatrixClass& mat);
+  void                  cwSet                     (unsigned int rowId, unsigned int colId, const TeuchosMatrixClass& mat);
 
   
   //! This function gets the column_num-th column of \c this matrix and stores it into vector \c column.
-  void                  getColumn                 (const unsigned int column_num, uqTeuchosVectorClass& column) const;
+  void                  getColumn                 (const unsigned int column_num, TeuchosVectorClass& column) const;
   
   //! This function gets the column_num-th column of \c this matrix.
-  uqTeuchosVectorClass  getColumn                 (const unsigned int column_num) const;
+  TeuchosVectorClass  getColumn                 (const unsigned int column_num) const;
   
   //! This function copies vector \c column into the column_num-th column of \c this matrix. 
-  void                  setColumn                 (const unsigned int column_num, const uqTeuchosVectorClass& column);
+  void                  setColumn                 (const unsigned int column_num, const TeuchosVectorClass& column);
   
   //! This function gets the row_num-th column of \c this matrix and stores it into vector \c row.
-  void                  getRow                    (const unsigned int row_num, uqTeuchosVectorClass& row) const;
+  void                  getRow                    (const unsigned int row_num, TeuchosVectorClass& row) const;
   
   //! This function gets the row_num-th column of \c this matrix.
-  uqTeuchosVectorClass  getRow                    (const unsigned int row_num) const;
+  TeuchosVectorClass  getRow                    (const unsigned int row_num) const;
   
   //! This function copies vector \c row into the row_num-th column of \c this matrix. 
-  void                  setRow                    (const unsigned int row_num, const uqTeuchosVectorClass& row);
+  void                  setRow                    (const unsigned int row_num, const TeuchosVectorClass& row);
   
   //! This function sets all the entries above the main diagonal  (inclusive or not) of \c this matrix to zero.
   /*! If \c includeDiagonal = false, then only the entries above the main diagonal are set to zero; 
@@ -280,40 +280,40 @@ uqTeuchosVectorClass& x) internally.*/
   void               filterLargeValues         (double thresholdValue);
   
    //! This function stores the transpose of \c this matrix into \c this matrix.
-  void               fillWithTranspose         (const uqTeuchosMatrixClass& mat); 
+  void               fillWithTranspose         (const TeuchosMatrixClass& mat); 
   
   //! This function fills \c this matrix diagonally with const block  matrices.
-  void               fillWithBlocksDiagonally  (const std::vector<const uqTeuchosMatrixClass* >& matrices);
+  void               fillWithBlocksDiagonally  (const std::vector<const TeuchosMatrixClass* >& matrices);
   
   //! This function fills \c this matrix diagonally with block matrices.
-  void               fillWithBlocksDiagonally  (const std::vector<      uqTeuchosMatrixClass* >& matrices);
+  void               fillWithBlocksDiagonally  (const std::vector<      TeuchosMatrixClass* >& matrices);
   
   //! This function fills \c this matrix horizontally with const block matrices.
-  void               fillWithBlocksHorizontally(const std::vector<const uqTeuchosMatrixClass* >& matrices);
+  void               fillWithBlocksHorizontally(const std::vector<const TeuchosMatrixClass* >& matrices);
   
   //! This function fills \c this matrix horizontally with block matrices.
-  void               fillWithBlocksHorizontally(const std::vector<      uqTeuchosMatrixClass* >& matrices);
+  void               fillWithBlocksHorizontally(const std::vector<      TeuchosMatrixClass* >& matrices);
   
   //! This function fills \c this matrix vertically with const block matrices.
-  void               fillWithBlocksVertically  (const std::vector<const uqTeuchosMatrixClass* >& matrices);
+  void               fillWithBlocksVertically  (const std::vector<const TeuchosMatrixClass* >& matrices);
   
   //! This function fills \c this matrix vertically with block matrices.
-  void               fillWithBlocksVertically  (const std::vector<      uqTeuchosMatrixClass* >& matrices);
+  void               fillWithBlocksVertically  (const std::vector<      TeuchosMatrixClass* >& matrices);
   
   //! This function calculates the tensor product of matrices \c mat1 and \c mat2 and stores it in \c this matrix.
-  void               fillWithTensorProduct     (const uqTeuchosMatrixClass& mat1, const uqTeuchosMatrixClass& mat2);
+  void               fillWithTensorProduct     (const TeuchosMatrixClass& mat1, const TeuchosMatrixClass& mat2);
   
   //! This function calculates the tensor product of matrix \c mat1 and  vector \c vec2 and stores it in \c this matrix.
-  void               fillWithTensorProduct     (const uqTeuchosMatrixClass& mat1, const uqTeuchosVectorClass& vec2); 
+  void               fillWithTensorProduct     (const TeuchosMatrixClass& mat1, const TeuchosVectorClass& vec2); 
   //@}
   
  
     //! @name Miscellaneous methods
   //@{
 
-  void              mpiSum                 (const uqMpiCommClass& comm, uqTeuchosMatrixClass& M_global) const;
+  void              mpiSum                 (const MpiCommClass& comm, TeuchosMatrixClass& M_global) const;
   
-  void              matlabLinearInterpExtrap  (const uqTeuchosVectorClass& x1Vec, const uqTeuchosMatrixClass& y1Mat, const uqTeuchosVectorClass& x2Vec);
+  void              matlabLinearInterpExtrap  (const TeuchosVectorClass& x1Vec, const TeuchosMatrixClass& y1Mat, const TeuchosVectorClass& x2Vec);
   //@}
  
    //! @name I/O methods
@@ -336,13 +336,13 @@ uqTeuchosVectorClass& x) internally.*/
 private:
   
   //! In this function \c this matrix receives a copy of matrix \c src.  
-  void              copy                      (const uqTeuchosMatrixClass& src);
+  void              copy                      (const TeuchosMatrixClass& src);
   
   //! In this function resets the LU decomposition of \c this matrix, as well as deletes the private member pointers, if existing.	
   void              resetLU                   ();
   
   //! This function multiplies \c this matrix by vector \c x and stores the resulting vector in \c y.
-  void              multiply                  (const uqTeuchosVectorClass& x, uqTeuchosVectorClass& y) const;
+  void              multiply                  (const TeuchosVectorClass& x, TeuchosVectorClass& y) const;
 	
   //! This function factorizes the M-by-N matrix A into the singular value decomposition A = U S V^T for M >= N. On output the matrix A is replaced by U.	
   /*! This function uses Teuchos GESVD computes the singular value decomposition (SVD) of a real  M-by-N matrix A, optionally computing 
@@ -360,22 +360,22 @@ private:
   mutable Teuchos::SerialDenseMatrix<int,double> m_LU; 
   
   //! Stores the inverse of \c this matrix.
-  mutable uqTeuchosMatrixClass* m_inverse;
+  mutable TeuchosMatrixClass* m_inverse;
   
   //! Mapping for matrices involved in the singular value decomposition (svd) routine.
-  mutable uqMapClass*       	m_svdColMap;
+  mutable MapClass*       	m_svdColMap;
   
   //! m_svdUmat stores the M-by-N orthogonal matrix U after the singular value decomposition of a matrix.
-  mutable uqTeuchosMatrixClass* m_svdUmat;
+  mutable TeuchosMatrixClass* m_svdUmat;
   
   //! m_svdSvec stores the diagonal of the N-by-N diagonal matrix of singular values S after the singular value decomposition of a matrix.
-  mutable uqTeuchosVectorClass* m_svdSvec;
+  mutable TeuchosVectorClass* m_svdSvec;
   
   //! m_svdVmat stores the N-by-N orthogonal square matrix V after the singular value decomposition of a matrix.
-  mutable uqTeuchosMatrixClass* m_svdVmat;
+  mutable TeuchosMatrixClass* m_svdVmat;
   
   //! m_svdVmatT stores the transpose of N-by-N orthogonal square matrix V, namely V^T, after the singular value decomposition of a matrix.
-  mutable uqTeuchosMatrixClass* m_svdVTmat;
+  mutable TeuchosMatrixClass* m_svdVTmat;
   
    //! The determinant of \c this matrix. 
   mutable double                m_determinant;
@@ -383,7 +383,7 @@ private:
     //! The natural logarithm of the determinant of \c this matrix.
   mutable double                m_lnDeterminant;
   
-  mutable uqTeuchosMatrixClass*  m_permutation;
+  mutable TeuchosMatrixClass*  m_permutation;
   
   //! The pivoting vector of a LU decomposition.
   mutable int*              v_pivoting; 
@@ -395,15 +395,15 @@ private:
   mutable bool              m_isSingular;
 };
 
-uqTeuchosMatrixClass operator*       (double a,                    const uqTeuchosMatrixClass& mat);
-uqTeuchosVectorClass operator*       (const uqTeuchosMatrixClass& mat, const uqTeuchosVectorClass& vec);
-uqTeuchosMatrixClass operator*       (const uqTeuchosMatrixClass& m1,  const uqTeuchosMatrixClass& m2 );
-uqTeuchosMatrixClass operator+       (const uqTeuchosMatrixClass& m1,  const uqTeuchosMatrixClass& m2 );
-uqTeuchosMatrixClass operator-       (const uqTeuchosMatrixClass& m1,  const uqTeuchosMatrixClass& m2 );
-uqTeuchosMatrixClass matrixProduct   (const uqTeuchosVectorClass& v1,  const uqTeuchosVectorClass& v2 );
-uqTeuchosMatrixClass leftDiagScaling (const uqTeuchosVectorClass& vec, const uqTeuchosMatrixClass& mat);
-uqTeuchosMatrixClass rightDiagScaling(const uqTeuchosMatrixClass& mat, const uqTeuchosVectorClass& vec);
-std::ostream&        operator<<      (std::ostream& os,            const uqTeuchosMatrixClass& obj);
+TeuchosMatrixClass operator*       (double a,                    const TeuchosMatrixClass& mat);
+TeuchosVectorClass operator*       (const TeuchosMatrixClass& mat, const TeuchosVectorClass& vec);
+TeuchosMatrixClass operator*       (const TeuchosMatrixClass& m1,  const TeuchosMatrixClass& m2 );
+TeuchosMatrixClass operator+       (const TeuchosMatrixClass& m1,  const TeuchosMatrixClass& m2 );
+TeuchosMatrixClass operator-       (const TeuchosMatrixClass& m1,  const TeuchosMatrixClass& m2 );
+TeuchosMatrixClass matrixProduct   (const TeuchosVectorClass& v1,  const TeuchosVectorClass& v2 );
+TeuchosMatrixClass leftDiagScaling (const TeuchosVectorClass& vec, const TeuchosMatrixClass& mat);
+TeuchosMatrixClass rightDiagScaling(const TeuchosMatrixClass& mat, const TeuchosVectorClass& vec);
+std::ostream&        operator<<      (std::ostream& os,            const TeuchosMatrixClass& obj);
 
 }  // End namespace QUESO
 

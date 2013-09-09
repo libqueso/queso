@@ -66,38 +66,38 @@ int main(int argc, char* argv[])
   MPI_Init(&argc,&argv);
 #endif
 
-  QUESO::uqEnvOptionsValuesClass* envOptionsValues = NULL;
+  QUESO::EnvOptionsValuesClass* envOptionsValues = NULL;
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
   UQ_FATAL_TEST_MACRO(argc != 2,
                       QUESO::UQ_UNAVAILABLE_RANK,
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
 #ifdef QUESO_HAS_MPI
-  QUESO::uqFullEnvironmentClass* env = new QUESO::uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",envOptionsValues);
+  QUESO::FullEnvironmentClass* env = new QUESO::FullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",envOptionsValues);
 #else
-  QUESO::uqFullEnvironmentClass* env = new QUESO::uqFullEnvironmentClass(0,argv[1],"",envOptionsValues);
+  QUESO::FullEnvironmentClass* env = new QUESO::FullEnvironmentClass(0,argv[1],"",envOptionsValues);
 #endif
 #else
-  envOptionsValues = new QUESO::uqEnvOptionsValuesClass();
+  envOptionsValues = new QUESO::EnvOptionsValuesClass();
   envOptionsValues->m_subDisplayFileName   = "outputData/display";
   envOptionsValues->m_subDisplayAllowedSet.insert(0);
   envOptionsValues->m_subDisplayAllowedSet.insert(1);
   envOptionsValues->m_displayVerbosity     = 2;
   envOptionsValues->m_seed                 = 0;
 #ifdef QUESO_HAS_MPI
-  QUESO::uqFullEnvironmentClass* env = new QUESO::uqFullEnvironmentClass(MPI_COMM_WORLD,"","",envOptionsValues);
+  QUESO::FullEnvironmentClass* env = new QUESO::FullEnvironmentClass(MPI_COMM_WORLD,"","",envOptionsValues);
 #else
-  QUESO::uqFullEnvironmentClass* env = new QUESO::uqFullEnvironmentClass(0,"","",envOptionsValues);
+  QUESO::FullEnvironmentClass* env = new QUESO::FullEnvironmentClass(0,"","",envOptionsValues);
 #endif
 #endif
 
   //************************************************
   // Run application
   //************************************************
-  uqAppl<QUESO::uqGslVectorClass, // type for parameter vectors
-         QUESO::uqGslMatrixClass, // type for parameter matrices
-         QUESO::uqGslVectorClass, // type for qoi vectors
-         QUESO::uqGslMatrixClass  // type for qoi matrices
+  uqAppl<QUESO::GslVectorClass, // type for parameter vectors
+         QUESO::GslMatrixClass, // type for parameter matrices
+         QUESO::GslVectorClass, // type for qoi vectors
+         QUESO::GslMatrixClass  // type for qoi matrices
         >(*env);
 
   //************************************************

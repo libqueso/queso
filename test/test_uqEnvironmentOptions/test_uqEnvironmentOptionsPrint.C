@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
   MPI_Init(&argc, &argv);
 #endif
 
-  QUESO::uqEnvOptionsValuesClass options;
+  QUESO::EnvOptionsValuesClass options;
   options.m_numSubEnvironments = 1;
   options.m_subDisplayFileName = "";
   options.m_seed = 1.0;
@@ -29,14 +29,14 @@ int main(int argc, char **argv) {
   options.m_subDisplayAllowedSet = subDisplayAllowed;
   options.m_subDisplayAllowAll = 0;
 
-  QUESO::uqFullEnvironmentClass *env =
+  QUESO::FullEnvironmentClass *env =
 #ifdef QUESO_HAS_MPI
-    new QUESO::uqFullEnvironmentClass(MPI_COMM_WORLD, "", "", &options);
+    new QUESO::FullEnvironmentClass(MPI_COMM_WORLD, "", "", &options);
 #else
-    new QUESO::uqFullEnvironmentClass(0, "", "", &options);
+    new QUESO::FullEnvironmentClass(0, "", "", &options);
 #endif
 
-  QUESO::uqEnvironmentOptionsClass env_options(*env, "", options);
+  QUESO::EnvironmentOptionsClass env_options(*env, "", options);
   std::cout << env_options;
 
   delete env;

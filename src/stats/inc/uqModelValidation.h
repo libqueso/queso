@@ -36,24 +36,24 @@ namespace QUESO {
 /*! \file uqModelValidation.h
  * \brief A templated class for model validation of the example validationPyramid.
  *
- * \class uqModelValidationClass
+ * \class ModelValidationClass
  * \brief A templated class for model validation of the example validationPyramid. 
  * 
  * Its derived class exPhysics1ValidationClass enables comparison between the calibration
  * and validate stages. */
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-class uqModelValidationClass
+class ModelValidationClass
 {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor.
-  uqModelValidationClass(const uqBaseEnvironmentClass& env,
+  ModelValidationClass(const BaseEnvironmentClass& env,
                          const char*                   prefix);
   
   //! Virtual destructor.
-  virtual ~uqModelValidationClass();
+  virtual ~ModelValidationClass();
   //@}
   
   //! @name Misc methods
@@ -62,22 +62,22 @@ public:
   virtual void run() = 0;
 
   //! Access to the environment variable (m_env).
-  const uqBaseEnvironmentClass&                  env  () const;
+  const BaseEnvironmentClass&                  env  () const;
   
   //! Access to the cycle (m_cycle).
-  const uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle() const;
+  const ValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle() const;
   //@}
   
 protected:
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
         std::string             m_prefix;
 
-  uqValidationCycleClass<P_V,P_M,Q_V,Q_M>* m_cycle;
+  ValidationCycleClass<P_V,P_M,Q_V,Q_M>* m_cycle;
 };
 // Constructor -------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-uqModelValidationClass<P_V,P_M,Q_V,Q_M>::uqModelValidationClass(
-  const uqBaseEnvironmentClass& env,
+ModelValidationClass<P_V,P_M,Q_V,Q_M>::ModelValidationClass(
+  const BaseEnvironmentClass& env,
   const char*                   prefix)
   :
   m_env   (env),
@@ -85,13 +85,13 @@ uqModelValidationClass<P_V,P_M,Q_V,Q_M>::uqModelValidationClass(
   m_cycle (NULL)
 {
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering uqModelValidationClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering ModelValidationClass<P_V,P_M,Q_V,Q_M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Leaving uqModelValidationClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving ModelValidationClass<P_V,P_M,Q_V,Q_M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -100,10 +100,10 @@ uqModelValidationClass<P_V,P_M,Q_V,Q_M>::uqModelValidationClass(
 }
 // Destructor---------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-uqModelValidationClass<P_V,P_M,Q_V,Q_M>::~uqModelValidationClass()
+ModelValidationClass<P_V,P_M,Q_V,Q_M>::~ModelValidationClass()
 {
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering uqModeValidation::destructor()"
+    *m_env.subDisplayFile() << "Entering ModeValidation::destructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -111,22 +111,22 @@ uqModelValidationClass<P_V,P_M,Q_V,Q_M>::~uqModelValidationClass()
   if (m_cycle) delete m_cycle;
 
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Leaving uqModeValidation::destructor()"
+    *m_env.subDisplayFile() << "Leaving ModeValidation::destructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 }
 // Misc methods-------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-const uqBaseEnvironmentClass&
-uqModelValidationClass<P_V,P_M,Q_V,Q_M>::env() const
+const BaseEnvironmentClass&
+ModelValidationClass<P_V,P_M,Q_V,Q_M>::env() const
 {
   return m_env;
 }
 //--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-const uqValidationCycleClass<P_V,P_M,Q_V,Q_M>&
-uqModelValidationClass<P_V,P_M,Q_V,Q_M>::cycle() const
+const ValidationCycleClass<P_V,P_M,Q_V,Q_M>&
+ModelValidationClass<P_V,P_M,Q_V,Q_M>::cycle() const
 {
   return *m_cycle;
 }

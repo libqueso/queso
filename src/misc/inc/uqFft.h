@@ -41,7 +41,7 @@ namespace QUESO {
     \brief Matrix class.
 */
 
-/*! \class uqFftClass
+/*! \class FftClass
     \brief Class for a Fast Fourier Transform (FFT) algorithm. 
     
     This class implements a Fast Fourier Transform (FFT) algorithm. 
@@ -69,16 +69,16 @@ namespace QUESO {
     is at the expense of broadening the spectral response.*/
 
 template <class T>
-class uqFftClass
+class FftClass
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default Constructor
-  uqFftClass(const uqBaseEnvironmentClass& env);
+  FftClass(const BaseEnvironmentClass& env);
 
   //! Destructor
-  ~uqFftClass();
+  ~FftClass();
   //@}
 
   //! @name Mathematical methods
@@ -116,7 +116,7 @@ private:
   //void allocTables(unsigned int fftSize);
   //void freeTables ();
 
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
   //unsigned int               m_fftSize;
 
   //gsl_fft_real_workspace*    m_realWkSpace;
@@ -126,14 +126,14 @@ private:
 };
 // Constructor-------------------------------------------
 template <class T>
-uqFftClass<T>::uqFftClass(const uqBaseEnvironmentClass& env)
+FftClass<T>::FftClass(const BaseEnvironmentClass& env)
   :
   m_env(env)
 {
 }
 // Destructor--------------------------------------------
 template <class T>
-uqFftClass<T>::~uqFftClass()
+FftClass<T>::~FftClass()
 {
 }
 

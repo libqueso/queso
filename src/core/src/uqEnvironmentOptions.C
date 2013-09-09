@@ -32,11 +32,11 @@
 namespace QUESO {
 
 // --------------------------------------------------
-// uqEnvOptionsValuesClass --------------------------
+// EnvOptionsValuesClass --------------------------
 // --------------------------------------------------
 
 // Default constructor ------------------------------
-uqEnvOptionsValuesClass::uqEnvOptionsValuesClass()
+EnvOptionsValuesClass::EnvOptionsValuesClass()
   :
   m_numSubEnvironments   (UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),
   m_subDisplayFileName   (UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),
@@ -56,26 +56,26 @@ uqEnvOptionsValuesClass::uqEnvOptionsValuesClass()
 }
 
 // Copy constructor ---------------------------------
-uqEnvOptionsValuesClass::uqEnvOptionsValuesClass(const uqEnvOptionsValuesClass& src)
+EnvOptionsValuesClass::EnvOptionsValuesClass(const EnvOptionsValuesClass& src)
 {
   this->copy(src);
 }
 
 // Destructor ---------------------------------------
-uqEnvOptionsValuesClass::~uqEnvOptionsValuesClass()
+EnvOptionsValuesClass::~EnvOptionsValuesClass()
 {
 }
 
 // Set methods---------------------------------------
-uqEnvOptionsValuesClass&
-uqEnvOptionsValuesClass::operator=(const uqEnvOptionsValuesClass& rhs)
+EnvOptionsValuesClass&
+EnvOptionsValuesClass::operator=(const EnvOptionsValuesClass& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 // Private methods-----------------------------------
 void
-uqEnvOptionsValuesClass::copy(const uqEnvOptionsValuesClass& src)
+EnvOptionsValuesClass::copy(const EnvOptionsValuesClass& src)
 {
   m_numSubEnvironments    = src.m_numSubEnvironments;
   m_subDisplayFileName    = src.m_subDisplayFileName;
@@ -96,12 +96,12 @@ uqEnvOptionsValuesClass::copy(const uqEnvOptionsValuesClass& src)
 }
 
 // --------------------------------------------------
-// uqEnvironmentOptionsClass ------------------------
+// EnvironmentOptionsClass ------------------------
 // --------------------------------------------------
 
 // Default constructor ------------------------------
-uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
-  const uqBaseEnvironmentClass& env,
+EnvironmentOptionsClass::EnvironmentOptionsClass(
+  const BaseEnvironmentClass& env,
   const char*                   prefix)
   :
   m_ov                          (),
@@ -124,14 +124,14 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
-                      "uqEnvironmentOptionsClass::constructor(1)",
+                      "EnvironmentOptionsClass::constructor(1)",
                       "this constructor is incompatible with the abscense of an options input file");
 }
 // Constructor with alternative values --------------
-uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
-  const uqBaseEnvironmentClass&  env,
+EnvironmentOptionsClass::EnvironmentOptionsClass(
+  const BaseEnvironmentClass&  env,
   const char*                    prefix,
-  const uqEnvOptionsValuesClass& alternativeOptionsValues)
+  const EnvOptionsValuesClass& alternativeOptionsValues)
   :
   m_ov                          (alternativeOptionsValues),
   m_env                         (env),
@@ -153,11 +153,11 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
-                      "uqEnvironmentOptionsClass::constructor(2)",
+                      "EnvironmentOptionsClass::constructor(2)",
                       "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In uqEnvironmentOptionsClass::constructor(2)"
+    *m_env.subDisplayFile() << "In EnvironmentOptionsClass::constructor(2)"
                             << ": after setting values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -165,18 +165,18 @@ uqEnvironmentOptionsClass::uqEnvironmentOptionsClass(
   }
 }
 // Destructor ---------------------------------------
-uqEnvironmentOptionsClass::~uqEnvironmentOptionsClass()
+EnvironmentOptionsClass::~EnvironmentOptionsClass()
 {
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
 // I/O methods---------------------------------------
 void
-uqEnvironmentOptionsClass::scanOptionsValues()
+EnvironmentOptionsClass::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
-                      "uqEnvironmentOptionsClass::scanOptionsValues()",
+                      "EnvironmentOptionsClass::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
   defineMyOptions                (*m_optionsDesc);
   m_env.scanInputFileForMyOptions(*m_optionsDesc);
@@ -186,7 +186,7 @@ uqEnvironmentOptionsClass::scanOptionsValues()
   //if (m_env.subScreenFile() != NULL) {
   //  *m_env.subScreenFile()
   if ((m_env.fullRank() == 0) && (m_env.displayVerbosity() >= 3)) {
-    std::cout << "In uqEnvironmentOptionsClass::scanOptionsValues()"
+    std::cout << "In EnvironmentOptionsClass::scanOptionsValues()"
               << ": after reading values of options with prefix '" << m_prefix
               << "', state of object is:"
               << "\n" << *this
@@ -197,7 +197,7 @@ uqEnvironmentOptionsClass::scanOptionsValues()
 }
 // --------------------------------------------------
 void
-uqEnvironmentOptionsClass::print(std::ostream& os) const
+EnvironmentOptionsClass::print(std::ostream& os) const
 {
   os <<         m_option_numSubEnvironments    << " = " << m_ov.m_numSubEnvironments
      << "\n" << m_option_subDisplayFileName    << " = " << m_ov.m_subDisplayFileName
@@ -221,13 +221,13 @@ uqEnvironmentOptionsClass::print(std::ostream& os) const
 
 // Private methods ----------------------------------
 void
-uqEnvironmentOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+EnvironmentOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "In uqEnvOptionsClass::defineMyOptions(), before add_options()" << std::endl;
+  std::cout << "In EnvOptionsClass::defineMyOptions(), before add_options()" << std::endl;
 #endif
   optionsDesc.add_options()
-    (m_option_help.c_str(),                                                                                                 "produce help message for uq environment"       )
+    (m_option_help.c_str(),                                                                                                 "produce help message for  environment"       )
     (m_option_numSubEnvironments.c_str(),    po::value<unsigned int>()->default_value(UQ_ENV_NUM_SUB_ENVIRONMENTS_ODV),     "number of subEnvironments"                     )
     (m_option_subDisplayFileName.c_str(),    po::value<std::string >()->default_value(UQ_ENV_SUB_DISPLAY_FILE_NAME_ODV),    "output filename for subscreen writing"         )
     (m_option_subDisplayAllowAll.c_str(),    po::value<bool        >()->default_value(UQ_ENV_SUB_DISPLAY_ALLOW_ALL_ODV),    "Allow all processors to write to output file"  )
@@ -243,17 +243,17 @@ uqEnvironmentOptionsClass::defineMyOptions(po::options_description& optionsDesc)
   //(m_option_numDebugParams.c_str(),        po::value<unsigned int>()->default_value(UQ_ENV_NUM_DEBUG_PARAMS_ODV),         "set number of debug parameters"                )
   ;
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "In uqEnvOptionsClass::defineMyOptions(), after add_options()" << std::endl;
+  std::cout << "In EnvOptionsClass::defineMyOptions(), after add_options()" << std::endl;
 #endif
 
   return;
 }
 // --------------------------------------------------
 void
-uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+EnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "Entering uqEnvOptionsClass::getMyOptionsValues()" << std::endl;
+  std::cout << "Entering EnvOptionsClass::getMyOptionsValues()" << std::endl;
 #endif
   if (m_env.allOptionsMap().count(m_option_help.c_str())) {
     // 'm_subDisplayOutputFile' is still not available at this moment. Use 'std::cout'
@@ -265,14 +265,14 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
     m_ov.m_numSubEnvironments = m_env.allOptionsMap()[m_option_numSubEnvironments].as<unsigned int>();
   }
   if ((m_env.fullComm().NumProc()%m_ov.m_numSubEnvironments) != 0) {
-    std::cerr << "In uqBaseEnvironmentClass::getMyOptionValues()"
+    std::cerr << "In BaseEnvironmentClass::getMyOptionValues()"
               << ": m_env.fullComm().NumProc() = " << m_env.fullComm().NumProc()
               << ", m_numSubEnvironments = "       << m_ov.m_numSubEnvironments
               << std::endl;
   }
   UQ_FATAL_TEST_MACRO((m_env.fullComm().NumProc()%m_ov.m_numSubEnvironments) != 0,
                       m_env.worldRank(),
-                      "uqBaseEnvironmentClass::getMyOptionValues()",
+                      "BaseEnvironmentClass::getMyOptionValues()",
                       "total number of processors in environment must be multiple of the specified number of subEnvironments");
 
   if (m_env.allOptionsMap().count(m_option_subDisplayFileName.c_str())) {
@@ -299,9 +299,9 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
     m_ov.m_subDisplayAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_subDisplayAllowedSet].as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpAllow);
+    MiscReadDoublesFromString(inputString,tmpAllow);
     //if (m_subDisplayOutputFile) {
-    //  *m_subDisplayOutputFile << "In uqEnvironmentOptionsClass::getMyOptionValues(): allow = ";
+    //  *m_subDisplayOutputFile << "In EnvironmentOptionsClass::getMyOptionValues(): allow = ";
     //  for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
     //    *m_subDisplayOutputFile << " " << tmpAllow[i];
     //  }
@@ -348,14 +348,14 @@ uqEnvironmentOptionsClass::getMyOptionValues(po::options_description& optionsDes
   //}
 
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "Leaving uqEnvOptionsClass::getMyOptionsValues()" << std::endl;
+  std::cout << "Leaving EnvOptionsClass::getMyOptionsValues()" << std::endl;
 #endif
 
   return;
 }
 
 // Operator outside class definition ----------------
-std::ostream& operator<<(std::ostream& os, const uqEnvironmentOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const EnvironmentOptionsClass& obj)
 {
   obj.print(os);
 
