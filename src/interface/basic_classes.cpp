@@ -28,7 +28,7 @@
 
 using namespace std;
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 #include <basic_classes.h>
 #include <basic_int.h>
 #include <grvy.h>

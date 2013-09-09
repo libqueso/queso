@@ -1,9 +1,9 @@
 #include <vector>
 #include <set>
-#include <uqGslVector.h>
-#include <uqGslMatrix.h>
-#include <uqVectorSpace.h>
-#include <uqEnvironment.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
+#include <queso/VectorSpace.h>
+#include <queso/Environment.h>
 
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>

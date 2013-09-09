@@ -1,6 +1,6 @@
 /* #include <set> */
-#include <uqEnvironment.h>
-#include <uqDefines.h>
+#include <queso/Environment.h>
+#include <queso/Defines.h>
 
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>

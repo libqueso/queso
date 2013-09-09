@@ -34,8 +34,8 @@
 #define __EX_STATISTICAL_FORWARD_PROBLEM_APPL_H__
 
 #include <exStatisticalForwardProblem_qoi.h>
-#include <uqStatisticalForwardProblem.h>
-#include <uqCovCond.h>
+#include <queso/StatisticalForwardProblem.h>
+#include <queso/CovCond.h>
 
 //********************************************************
 // The driving routine: called by main()

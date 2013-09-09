@@ -33,8 +33,8 @@
 #ifndef __GRAVITY_QOI_H__
 #define __GRAVITY_QOI_H__
 
-#include <uqGslMatrix.h>
-#include <uqDistArray.h>
+#include <queso/GslMatrix.h>
+#include <queso/DistArray.h>
 
 struct
 qoiRoutine_Data

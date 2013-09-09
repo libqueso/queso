@@ -33,7 +33,7 @@
 #ifndef __TGA2_LIKELIHOOD_H__
 #define __TGA2_LIKELIHOOD_H__
 
-#include <uqGslMatrix.h>
+#include <queso/GslMatrix.h>
 
 //********************************************************
 // The (user defined) data class that carries the data

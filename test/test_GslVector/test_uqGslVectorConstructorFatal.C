@@ -1,4 +1,4 @@
-#include <uqGslVector.h>
+#include <queso/GslVector.h>
 
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>

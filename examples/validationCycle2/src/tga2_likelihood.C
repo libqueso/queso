@@ -32,7 +32,7 @@
 
 #include <tga2_func.h>
 #include <tga2_likelihood.h>
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 #include <gsl/gsl_odeiv.h>
 
 likelihoodRoutine_Data::likelihoodRoutine_Data(

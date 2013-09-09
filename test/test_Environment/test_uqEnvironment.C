@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
-#include <uqEnvironment.h>
-#include <uqGslVector.h>
-#include <uqGslMatrix.h>
-#include <uqVectorSpace.h>
-#include <uqVectorSubset.h>
-#include <uqVectorRV.h>
+#include <queso/Environment.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
+#include <queso/VectorSpace.h>
+#include <queso/VectorSubset.h>
+#include <queso/VectorRV.h>
 
 using namespace std;
 

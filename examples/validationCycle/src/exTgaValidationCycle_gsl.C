@@ -54,8 +54,8 @@
  *-------------------------------------------------------------------------- */
 
 #include <exTgaValidationCycle_appl.h>
-#include <uqGslMatrix.h>
-#include <uqEnvironmentOptions.h>
+#include <queso/GslMatrix.h>
+#include <queso/EnvironmentOptions.h>
 
 int main(int argc, char* argv[])
 {

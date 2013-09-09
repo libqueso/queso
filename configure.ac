@@ -164,6 +164,7 @@ AX_SUMMARIZE_ENV
 
 AC_CONFIG_FILES([
   Makefile
+  inc/queso/Makefile
   src/Makefile
   src/contrib/ANN/Makefile
   src/contrib/ANN/lib/Makefile

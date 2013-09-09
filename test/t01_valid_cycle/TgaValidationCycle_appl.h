@@ -31,9 +31,9 @@
 
 #include <TgaValidationCycle_likelihood.h>
 #include <TgaValidationCycle_qoi.h>
-#include <uqValidationCycle.h>
-#include <uqVectorSubset.h>
-#include <uqAsciiTable.h>
+#include <queso/ValidationCycle.h>
+#include <queso/VectorSubset.h>
+#include <queso/AsciiTable.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 

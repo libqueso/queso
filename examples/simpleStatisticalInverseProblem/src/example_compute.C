@@ -28,8 +28,8 @@
 
 #include <example_compute.h>
 #include <example_likelihood.h>
-#include <uqGslMatrix.h>
-#include <uqStatisticalInverseProblem.h>
+#include <queso/GslMatrix.h>
+#include <queso/StatisticalInverseProblem.h>
 
 void compute(const QUESO::FullEnvironment& env) {
   // Step 1 of 5: Instantiate the parameter space

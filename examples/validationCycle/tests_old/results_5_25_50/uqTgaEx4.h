@@ -20,9 +20,9 @@
 #ifndef __UQ_TGA_EX4_H__
 #define __UQ_TGA_EX4_H__
 
-#include <uqCalibProblem.h>
-#include <uqPropagProblem.h>
-#include <uqAsciiTable.h>
+#include <queso/CalibProblem.h>
+#include <queso/PropagProblem.h>
+#include <queso/AsciiTable.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 

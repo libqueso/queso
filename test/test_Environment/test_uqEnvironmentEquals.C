@@ -1,4 +1,4 @@
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>

@@ -41,6 +41,8 @@ src/core/inc/queso.h
 src/libqueso.la
 src/queso_version
 
+inc/queso/*.h
+
 test/gsl_tests/get_min_max_vec
 test/gsl_tests/get_set_row_column
 test/gsl_tests/input

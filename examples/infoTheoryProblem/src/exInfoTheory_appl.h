@@ -33,11 +33,11 @@
 #ifndef __EX_INFO_THEORY_APPL_H__
 #define __EX_INFO_THEORY_APPL_H__
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 #ifdef QUESO_HAS_ANN
 
-#include <uqStatisticalForwardProblem.h>
-#include <uqInfoTheory.h>
+#include <queso/StatisticalForwardProblem.h>
+#include <queso/InfoTheory.h>
 #include <gsl/gsl_linalg.h>
 //#include <exInfoTheory_qoi.h>
 

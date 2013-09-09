@@ -31,8 +31,8 @@
 
 using namespace std;
 
-#include <uqStatisticalInverseProblem.h>
-#include <uqGslMatrix.h>
+#include <queso/StatisticalInverseProblem.h>
+#include <queso/GslMatrix.h>
 #include <string.h>
 
 namespace QUESO_Basic_API {

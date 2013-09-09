@@ -29,7 +29,7 @@
 #ifndef __GET_SET_ROW_COLUMN_TESTS_H__
 #define __GET_SET_ROW_COLUMN_TESTS_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 int actualChecking(const QUESO::FullEnvironment* env);
 
 #endif // __GET_SET_ROW_COLUMN_TESTS_H__

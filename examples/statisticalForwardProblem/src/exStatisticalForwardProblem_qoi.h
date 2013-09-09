@@ -33,8 +33,8 @@
 #ifndef __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
 #define __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
 
-#include <uqEnvironment.h>
-#include <uqDistArray.h>
+#include <queso/Environment.h>
+#include <queso/DistArray.h>
 
 //********************************************************
 // The qoi routine: provided by user and called by QUESO

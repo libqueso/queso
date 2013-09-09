@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 int main() 
 {

@@ -31,7 +31,7 @@
  *-------------------------------------------------------------------------- */
 
 #include <exTgaValidationCycle_appl.h>
-#include <uqTrilinosMatrix.h>
+#include <queso/TrilinosMatrix.h>
 
 int main(int argc, char* argv[])
 {

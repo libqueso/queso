@@ -2,19 +2,17 @@
 
 DIST_SUBDIRS = physics_1 physics_2 physics_1_2
 
-AM_CPPFLAGS = -I. \
-	      -I$(top_srcdir)/examples/validationPyramid/src/physics_1   \
-	      -I$(top_srcdir)/examples/validationPyramid/src/physics_2   \
-	      -I$(top_srcdir)/examples/validationPyramid/src/physics_1_2 \
-	      -I$(top_srcdir)/src/core/inc  \
-	      -I$(top_srcdir)/src/misc/inc  \
-	      -I$(top_srcdir)/src/basic/inc \
-	      -I$(top_srcdir)/src/stats/inc \
-	      -I$(top_srcdir)/src/gp/inc    \
-	        $(BOOST_CPPFLAGS)   \
-	        $(GSL_CFLAGS)       \
-	        $(GRVY_CFLAGS)      \
-		$(ANN_CFLAGS)
+AM_CPPFLAGS =
+AM_CPPFLAGS += -I.
+AM_CPPFLAGS += -I$(top_srcdir)/examples/validationPyramid/src/physics_1
+AM_CPPFLAGS += -I$(top_srcdir)/examples/validationPyramid/src/physics_2
+AM_CPPFLAGS += -I$(top_srcdir)/examples/validationPyramid/src/physics_1_2
+AM_CPPFLAGS += -I$(top_builddir)/inc
+AM_CPPFLAGS += -I$(top_builddir)/src/core/inc  # For queso.h
+AM_CPPFLAGS += $(BOOST_CPPFLAGS)
+AM_CPPFLAGS += $(GSL_CFLAGS)
+AM_CPPFLAGS += $(GRVY_CFLAGS)
+AM_CPPFLAGS += $(ANN_CFLAGS)
 
 if TRILINOS_ENABLED
   AM_CPPFLAGS += -I$(TRILINOS_INCLUDE) 

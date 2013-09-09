@@ -29,7 +29,7 @@
 #ifndef __EX_TGA_VALIDATION_CYCLE_QOI_H__
 #define __EX_TGA_VALIDATION_CYCLE_QOI_H__
 
-#include <uqDistArray.h>
+#include <queso/DistArray.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 

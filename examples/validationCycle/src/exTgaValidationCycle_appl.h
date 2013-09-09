@@ -37,8 +37,8 @@
 
 #include <exTgaValidationCycle_likelihood.h>
 #include <exTgaValidationCycle_qoi.h>
-#include <uqValidationCycle.h>
-#include <uqVectorSubset.h>
+#include <queso/ValidationCycle.h>
+#include <queso/VectorSubset.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 

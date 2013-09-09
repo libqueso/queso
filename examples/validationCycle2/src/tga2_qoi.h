@@ -33,8 +33,8 @@
 #ifndef __TGA2_QOI_H__
 #define __TGA2_QOI_H__
 
-#include <uqGslMatrix.h>
-#include <uqDistArray.h>
+#include <queso/GslMatrix.h>
+#include <queso/DistArray.h>
 
 //********************************************************
 // The (user defined) data class that carries the data

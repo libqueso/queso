@@ -2,14 +2,12 @@ if SVN_CHECKOUT
 BUILT_SOURCES = .license.stamp
 endif
 
-AM_CPPFLAGS  = -I. \
-	-I$(top_srcdir)/src/core/inc \
-	-I$(top_srcdir)/src/misc/inc \
-	-I$(top_srcdir)/src/basic/inc \
-	-I$(top_srcdir)/src/stats/inc \
-	-I$(top_srcdir)/src/gp/inc \
-	-I$(TRILINOS_INCLUDE) \
-           $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(GRVY_CFLAGS) $(GLPK_CFLAGS) $(HDF5_CFLAGS)
+AM_CPPFLAGS =
+AM_CPPFLAGS += -I.
+AM_CPPFLAGS += -I$(top_builddir)/inc
+AM_CPPFLAGS += -I$(TRILINOS_INCLUDE)
+AM_CPPFLAGS += $(BOOST_CPPFLAGS) $(GSL_CFLAGS)
+AM_CPPFLAGS += $(GRVY_CFLAGS) $(GLPK_CFLAGS) $(HDF5_CFLAGS)
 
 LIBS  = -L$(top_builddir)/src/ -lqueso
 
