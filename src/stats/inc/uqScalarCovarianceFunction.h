@@ -41,7 +41,7 @@ namespace QUESO {
 /*! \file uqScalarCovarianceFunction.h
  * \brief Classes to accommodate covariance of scalar functions (random variables).
  * 
- * \class BaseScalarCovarianceFunctionClass
+ * \class BaseScalarCovarianceFunction
  * \brief A templated (base) class to accommodate scalar covariance functions (of random variables).
  *
  * This class allows the mathematical definition of the covariance function of a random variable
@@ -54,75 +54,75 @@ namespace QUESO {
  * explicitly as \f[ cov (X,Y) = \sum_{i=1}^{N} \frac{(x_i - \bar{x})(y_i - \bar{y})}{N}\f] */
 
 template<class V,class M>
-class BaseScalarCovarianceFunctionClass {
+class BaseScalarCovarianceFunction {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class  given a prefix and the domain set.*/
-  BaseScalarCovarianceFunctionClass(const char*                  prefix,
-                                      const VectorSetClass<V,M>& basicDomainSet);
+  BaseScalarCovarianceFunction(const char*                  prefix,
+                                      const VectorSet<V,M>& basicDomainSet);
   
   //! Virtual destructor.
-  virtual ~BaseScalarCovarianceFunctionClass();
+  virtual ~BaseScalarCovarianceFunction();
 //@}
   
   //! @name Math methods
   //@{
   //! Domain set; access to private attribute m_basicDomainSet.
-  const VectorSetClass<V,M>& basicDomainSet   ()       const;
+  const VectorSet<V,M>& basicDomainSet   ()       const;
   
   //! The value of the covariance function. See template specialization.
   virtual       double                 value    (const V& domainVector1, const V& domainVector2) const = 0;
   //@}
 
 protected:
-  const BaseEnvironmentClass& m_env;
+  const BaseEnvironment& m_env;
         std::string             m_prefix;
-  const VectorSetClass<V,M>&  m_basicDomainSet;
+  const VectorSet<V,M>&  m_basicDomainSet;
 };
 // Default constructor -----------------------------
 template<class V, class M>
-BaseScalarCovarianceFunctionClass<V,M>::BaseScalarCovarianceFunctionClass(
+BaseScalarCovarianceFunction<V,M>::BaseScalarCovarianceFunction(
   const char*                  prefix,
-  const VectorSetClass<V,M>& basicDomainSet)
+  const VectorSet<V,M>& basicDomainSet)
   :
   m_env           (basicDomainSet.env()),
   m_prefix        ((std::string)(prefix)+"cov_func_"),
   m_basicDomainSet(basicDomainSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering BaseScalarCovarianceFunctionClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering BaseScalarCovarianceFunction<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving BaseScalarCovarianceFunctionClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving BaseScalarCovarianceFunction<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-BaseScalarCovarianceFunctionClass<V,M>::~BaseScalarCovarianceFunctionClass()
+BaseScalarCovarianceFunction<V,M>::~BaseScalarCovarianceFunction()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering BaseScalarCovarianceFunctionClass<V,M>::destructor()"
+    *m_env.subDisplayFile() << "Entering BaseScalarCovarianceFunction<V,M>::destructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving BaseScalarCovarianceFunctionClass<V,M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving BaseScalarCovarianceFunction<V,M>::destructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Math methods -------------------------------------
 template<class V, class M>
-const VectorSetClass<V,M>&
-BaseScalarCovarianceFunctionClass<V,M>::basicDomainSet() const
+const VectorSet<V,M>&
+BaseScalarCovarianceFunction<V,M>::basicDomainSet() const
 {
   return m_basicDomainSet;
 }
@@ -131,7 +131,7 @@ BaseScalarCovarianceFunctionClass<V,M>::basicDomainSet() const
 // Exponential class
 //*****************************************************
 /*! 
- * \class ExponentialScalarCovarianceFunctionClass
+ * \class ExponentialScalarCovarianceFunction
  * \brief A class for exponential covariances.
  *  
  * This class implements squared exponential covariance functions of the form:
@@ -141,19 +141,19 @@ BaseScalarCovarianceFunctionClass<V,M>::basicDomainSet() const
  * functions are largely employed in Gaussian processes.  */
  
 template<class V,class M>
-class ExponentialScalarCovarianceFunctionClass : public BaseScalarCovarianceFunctionClass<V,M> {
+class ExponentialScalarCovarianceFunction : public BaseScalarCovarianceFunction<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class given a prefix, the domain set, the variance and a scale factor. */
-  ExponentialScalarCovarianceFunctionClass(const char*                  prefix,
-					     const VectorSetClass<V,M>& basicDomainSet,
+  ExponentialScalarCovarianceFunction(const char*                  prefix,
+					     const VectorSet<V,M>& basicDomainSet,
 					     double                       sigma,
 					     double                       a);
   
   //! Virtual destructor.
-  virtual ~ExponentialScalarCovarianceFunctionClass();
+  virtual ~ExponentialScalarCovarianceFunction();
   
   //! @name Math methods
   //@{
@@ -164,49 +164,49 @@ public:
   //@}
   
 protected:
-  using BaseScalarCovarianceFunctionClass<V,M>::m_env;
-  using BaseScalarCovarianceFunctionClass<V,M>::m_prefix;
-  using BaseScalarCovarianceFunctionClass<V,M>::m_basicDomainSet;
+  using BaseScalarCovarianceFunction<V,M>::m_env;
+  using BaseScalarCovarianceFunction<V,M>::m_prefix;
+  using BaseScalarCovarianceFunction<V,M>::m_basicDomainSet;
 
   double m_sigma;
   double m_a;
 };
 // Default constructor -----------------------------
 template<class V,class M>
-ExponentialScalarCovarianceFunctionClass<V,M>::ExponentialScalarCovarianceFunctionClass(
+ExponentialScalarCovarianceFunction<V,M>::ExponentialScalarCovarianceFunction(
   const char*                  prefix,
-  const VectorSetClass<V,M>& basicDomainSet,
+  const VectorSet<V,M>& basicDomainSet,
   double                       sigma,
   double                       a)
   : 
-  BaseScalarCovarianceFunctionClass<V,M>(prefix,basicDomainSet),
+  BaseScalarCovarianceFunction<V,M>(prefix,basicDomainSet),
   m_sigma(sigma),
   m_a    (a)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering ExponentialScalarCovarianceFunctionClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering ExponentialScalarCovarianceFunction<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving ExponentialScalarCovarianceFunctionClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving ExponentialScalarCovarianceFunction<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V,class M>
-ExponentialScalarCovarianceFunctionClass<V,M>::~ExponentialScalarCovarianceFunctionClass()
+ExponentialScalarCovarianceFunction<V,M>::~ExponentialScalarCovarianceFunction()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering ExponentialScalarCovarianceFunctionClass<V,M>::destructor()"
+    *m_env.subDisplayFile() << "Entering ExponentialScalarCovarianceFunction<V,M>::destructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving ExponentialScalarCovarianceFunctionClass<V,M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving ExponentialScalarCovarianceFunction<V,M>::destructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -214,10 +214,10 @@ ExponentialScalarCovarianceFunctionClass<V,M>::~ExponentialScalarCovarianceFunct
 // Math methods -------------------------------------
 template<class V,class M>
 double
-ExponentialScalarCovarianceFunctionClass<V,M>::value(const V& domainVector1, const V& domainVector2) const
+ExponentialScalarCovarianceFunction<V,M>::value(const V& domainVector1, const V& domainVector2) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering ExponentialScalarCovarianceFunctionClass<V,M>::value()"
+    *m_env.subDisplayFile() << "Entering ExponentialScalarCovarianceFunction<V,M>::value()"
                           << std::endl;
   }
 
@@ -228,7 +228,7 @@ ExponentialScalarCovarianceFunctionClass<V,M>::value(const V& domainVector1, con
   result = m_a*std::exp(exponent);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving ExponentialScalarCovarianceFunctionClass<V,M>::value()"
+    *m_env.subDisplayFile() << "Leaving ExponentialScalarCovarianceFunction<V,M>::value()"
                           << std::endl;
   }
 
@@ -239,25 +239,25 @@ ExponentialScalarCovarianceFunctionClass<V,M>::value(const V& domainVector1, con
 // Generic class
 //*****************************************************
 /*! 
- * \class GenericScalarCovarianceFunctionClass
+ * \class GenericScalarCovarianceFunction
  * \brief A class for generic covariances.
  *  
  * This class implements a generic covariance functions, by calling a routine (via pointer).*/
 
 template<class V,class M>
-class GenericScalarCovarianceFunctionClass : public BaseScalarCovarianceFunctionClass<V,M> {
+class GenericScalarCovarianceFunction : public BaseScalarCovarianceFunction<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class given a prefix, the domain set, the pointer to the routine. */
-  GenericScalarCovarianceFunctionClass(const char*                  prefix,
-					 const VectorSetClass<V,M>& domainSet,
+  GenericScalarCovarianceFunction(const char*                  prefix,
+					 const VectorSet<V,M>& domainSet,
 					 double (*covRoutinePtr)(const V& positionVector1, const V& positionVector2, const void* routineDataPtr),
 					 const void*                  routinesDataPtr);
   
   //! Virtual destructor
-  virtual ~GenericScalarCovarianceFunctionClass();
+  virtual ~GenericScalarCovarianceFunction();
   //@}
     //! @name Math methods
   //@{
@@ -266,49 +266,49 @@ public:
   double value(const V& positionVector1, const V& positionVector2) const;
 
 protected:
-  using BaseScalarCovarianceFunctionClass<V,M>::m_env;
-  using BaseScalarCovarianceFunctionClass<V,M>::m_prefix;
-  using BaseScalarCovarianceFunctionClass<V,M>::m_basicDomainSet;
+  using BaseScalarCovarianceFunction<V,M>::m_env;
+  using BaseScalarCovarianceFunction<V,M>::m_prefix;
+  using BaseScalarCovarianceFunction<V,M>::m_basicDomainSet;
 
   double (*m_covRoutinePtr)(const V& positionVector1, const V& positionVector2, const void* routineDataPtr);
   const void* m_routineDataPtr;
 };
 // Default constructor -----------------------------
 template<class V,class M>
-GenericScalarCovarianceFunctionClass<V,M>::GenericScalarCovarianceFunctionClass(
+GenericScalarCovarianceFunction<V,M>::GenericScalarCovarianceFunction(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet,
+  const VectorSet<V,M>& domainSet,
   double (*covRoutinePtr)(const V& positionVector1, const V& positionVector2, const void* routineDataPtr),
   const void*                  routinesDataPtr)
   : 
-  BaseScalarCovarianceFunctionClass<V,M>(prefix,domainSet),
+  BaseScalarCovarianceFunction<V,M>(prefix,domainSet),
   m_covRoutinePtr                         (covRoutinePtr),
   m_routineDataPtr                        (routinesDataPtr)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GenericScalarCovarianceFunctionClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering GenericScalarCovarianceFunction<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GenericScalarCovarianceFunctionClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving GenericScalarCovarianceFunction<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V,class M>
-GenericScalarCovarianceFunctionClass<V,M>::~GenericScalarCovarianceFunctionClass()
+GenericScalarCovarianceFunction<V,M>::~GenericScalarCovarianceFunction()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GenericScalarCovarianceFunctionClass<V,M>::destructor()"
+    *m_env.subDisplayFile() << "Entering GenericScalarCovarianceFunction<V,M>::destructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GenericScalarCovarianceFunctionClass<V,M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving GenericScalarCovarianceFunction<V,M>::destructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -316,22 +316,22 @@ GenericScalarCovarianceFunctionClass<V,M>::~GenericScalarCovarianceFunctionClass
 // Math methods -------------------------------------
 template<class V,class M>
 double
-GenericScalarCovarianceFunctionClass<V,M>::value(const V& positionVector1, const V& positionVector2) const
+GenericScalarCovarianceFunction<V,M>::value(const V& positionVector1, const V& positionVector2) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GenericScalarCovarianceFunctionClass<V,M>::value()"
+    *m_env.subDisplayFile() << "Entering GenericScalarCovarianceFunction<V,M>::value()"
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(m_covRoutinePtr == NULL,
                       m_env.worldRank(),
-                      "GenericScalarCovarianceFunctionClass<V,M>::value()",
+                      "GenericScalarCovarianceFunction<V,M>::value()",
                       "m_covRoutinePtr = NULL");
 
   double result = m_covRoutinePtr(positionVector1, positionVector2, m_routineDataPtr);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GenericScalarCovarianceFunctionClass<V,M>::value()"
+    *m_env.subDisplayFile() << "Leaving GenericScalarCovarianceFunction<V,M>::value()"
                             << std::endl;
   }
 

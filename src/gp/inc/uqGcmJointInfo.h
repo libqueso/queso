@@ -35,21 +35,21 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-class GcmJointInfoClass
+class GcmJointInfo
 {
 public:
-  GcmJointInfoClass(const GpmsaComputerModelOptionsClass&                  gcmOptionsObj,
+  GcmJointInfo(const GpmsaComputerModelOptions&                  gcmOptionsObj,
                       bool                                                     allOutputsAreScalar,
-                      const GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& s,
-                      const GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>& e);
- ~GcmJointInfoClass();
+                      const GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>& s,
+                      const GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>& e);
+ ~GcmJointInfo();
 
-  const BaseEnvironmentClass&                    m_env;
+  const BaseEnvironment&                    m_env;
 
-        VectorSpaceClass<Q_V,Q_M>                m_unique_u_space;
+        VectorSpace<Q_V,Q_M>                m_unique_u_space;
         Q_M                                        m_Smat_u_asterisk_u_asterisk;
         unsigned int                               m_u_size;
-        VectorSpaceClass<D_V,D_M>                m_u_space;
+        VectorSpace<D_V,D_M>                m_u_space;
 	std::vector<D_M* >                         m_Rmat_u_is;       // to be deleted on destructor
 	std::vector<D_M* >                         m_Smat_u_is;       // to be deleted on destructor
 	std::vector<D_M* >                         m_Rmat_uw_is;      // to be deleted on destructor
@@ -68,9 +68,9 @@ public:
         D_M                                        m_Smat_w_hat_u_asterisk_t;
 
         unsigned int                               m_vu_size;
-        VectorSpaceClass<D_V,D_M>                m_vu_space;
+        VectorSpace<D_V,D_M>                m_vu_space;
 
-        VectorSpaceClass<D_V,D_M>                m_unique_vu_space;
+        VectorSpace<D_V,D_M>                m_unique_vu_space;
         unsigned int                               m_predVU_counter;
 #if 0
         P_V                                        m_predVU_samplingRVs_unique_vu_meanVec; // todo_rr
@@ -100,7 +100,7 @@ public:
 #endif
 
         unsigned int                               m_omega_size;
-        VectorSpaceClass<D_V,D_M>                m_omega_space;
+        VectorSpace<D_V,D_M>                m_omega_space;
 
         D_V                                        m_Zvec_hat_vu;
         D_M                                        m_Smat_u;  // Computed with 'experimentModel'
@@ -118,11 +118,11 @@ public:
 };
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
-  const GpmsaComputerModelOptionsClass&                  gcmOptionsObj,
+GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfo(
+  const GpmsaComputerModelOptions&                  gcmOptionsObj,
   bool                                                     allOutputsAreScalar,
-  const GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& s,
-  const GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>& e)
+  const GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>& s,
+  const GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>& e)
   :
   m_env                                            (s.m_env),
   m_unique_u_space                                 (m_env, "unique_u_", s.m_paper_p_eta, NULL),
@@ -166,7 +166,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
   m_b_y_modifier                                   (0.)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": allOutputsAreScalar = " << allOutputsAreScalar
                             << std::endl;
   }
@@ -195,7 +195,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       // Check transpose operation
       D_M PKt(PK.transpose());
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ", tests on PK"
                                 << ": PK.numRowsLocal() = "  << PK.numRowsLocal()
                                 << ", PK.numCols() = "       << PK.numCols()
@@ -221,7 +221,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       double auxNorm2 = matShouldBeI2.normFrob();
 
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ", tests on PK"
                                 << ": matShouldBeI1.numRowsLocal() = "  << matShouldBeI1.numRowsLocal()
                                 << ", ||matI1||_2^2 = "                 << matI1.normFrob() * matI1.normFrob()
@@ -234,7 +234,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     }
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished forming 'P_K'"
                               << std::endl;
     }
@@ -246,7 +246,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     D_M Kmat_interp_BlockDiag_permut(m_env,e.m_y_space.map(),m_u_size);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": Kmat_interp_BlockDiag.numRowsLocal() = " << Kmat_interp_BlockDiag.numRowsLocal()
                               << ", Kmat_interp_BlockDiag.numCols() = "      << Kmat_interp_BlockDiag.numCols()
                               << std::endl;
@@ -255,7 +255,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     Kmat_interp_BlockDiag.fillWithBlocksDiagonally(0,0,e.m_experimentModel.Kmats_interp(),true,true);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished forming 'Kmat_interp_BlockDiag'"
                               << std::endl;
     }
@@ -273,7 +273,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     Kmat_interp_BlockDiag_permut = Kmat_interp_BlockDiag * (PK.transpose());
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'Kmat_interp_BlockDiag_permut'"
                               << std::endl;
     }
@@ -290,7 +290,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     m_Bop_t__Wy__Bop__inv = new D_M(m_vu_space.zeroVector()); // to be deleted on destructor
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor():"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor():"
                               << "\n  m_Bmat_with_permut->numRowsLocal() = "          << m_Bmat_with_permut->numRowsLocal()
                               << "\n  m_Bmat_with_permut->numCols() = "               << m_Bmat_with_permut->numCols()
                               << "\n  m_Dmat_BlockDiag_permut->numRowsLocal() = "     << e.m_Dmat_BlockDiag_permut->numRowsLocal()
@@ -336,7 +336,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       Btt -= *m_Bmat_with_permut;
       double btDiffNorm = Btt.normFrob();
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": ||Btt - B||_2 = " << btDiffNorm
                                 << std::endl;
       }
@@ -353,7 +353,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     }
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished forming 'm_Bmat'"
                               << ", m_Bmat_with_permut->numRowsLocal() = "  << m_Bmat_with_permut->numRowsLocal()
                               << ", m_Bmat_with_permut->numCols() = "       << m_Bmat_with_permut->numCols()
@@ -371,7 +371,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       D_M Bmat_filtered(*m_Bmat_with_permut);
       Bmat_filtered.setPrintHorizontally(false);
       Bmat_filtered.filterSmallValues(1.e-6);
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": Bmat_filtered.numRowsLocal() = " << Bmat_filtered.numRowsLocal()
                               << ", Bmat_filtered.numCols() = "      << Bmat_filtered.numCols()
                               << ", Bmat_filtered contents =\n"      << Bmat_filtered
@@ -382,7 +382,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     // Compute 'Bwp^T W_y Bwp' matrix
     //********************************************************************************
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor():"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor():"
                               << "\n  m_Bwp_t__Wy__Bwp->numRowsLocal() = "     << m_Bwp_t__Wy__Bwp->numRowsLocal()
                               << "\n  m_Bwp_t__Wy__Bwp->numCols() = "          << m_Bwp_t__Wy__Bwp->numCols()
                               << "\n  Bwp_t.numRowsLocal() = "                 << Bwp_t.numRowsLocal()
@@ -396,7 +396,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     *m_Bwp_t__Wy__Bwp = Bwp_t * (*e.m_Wmat_transformed_y * *m_Bmat_with_permut);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'm_Bwp_t__Wy__Bwp'"
                               << std::endl;
     }
@@ -412,7 +412,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       unsigned int Bwp_t__Wy__Bwp__Rank          = m_Bwp_t__Wy__Bwp->rank(0.,1.e-8 ); // todo: should be an option
       unsigned int Bwp_t__Wy__Bwp__Rank14        = m_Bwp_t__Wy__Bwp->rank(0.,1.e-14);
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": m_Bwp_t__Wy__Bwp->numRowsLocal() = "  << m_Bwp_t__Wy__Bwp->numRowsLocal()
                                 << ", m_Bwp_t__Wy__Bwp->numCols() = "       << m_Bwp_t__Wy__Bwp->numCols()
                                 << ", m_Bwp_t__Wy__Bwp->lnDeterminant() = " << Bwp_t__Wy__Bwp__LnDeterminant
@@ -429,7 +429,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     if (m_env.displayVerbosity() >= 4) {
       double Bwp_t__Wy__Bwp__inv__LnDeterminant = m_Bwp_t__Wy__Bwp__inv->lnDeterminant();
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": finished computing 'm_Bwp_t__Wy__Bwp__inv'"
                                 << ", m_Bwp_t__Wy__Bwp__inv->lnDeterminant() = " << Bwp_t__Wy__Bwp__inv__LnDeterminant
                                 << std::endl;
@@ -447,7 +447,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       unsigned int Bwp_t__Wy__Bwp__InvRank          = m_Bwp_t__Wy__Bwp__inv->rank(0.,1.e-8 ); // todo: should be an option
       unsigned int Bwp_t__Wy__Bwp__InvRank14        = m_Bwp_t__Wy__Bwp__inv->rank(0.,1.e-14);
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ", m_Bwp_t__Wy__Bwp__inv->numRowsLocal() = "  << m_Bwp_t__Wy__Bwp__inv->numRowsLocal()
                                 << ", m_Bwp_t__Wy__Bwp__inv->numCols() = "       << m_Bwp_t__Wy__Bwp__inv->numCols()
                                 << ": m_Bwp_t__Wy__Bwp__inv->lnDeterminant() = " << Bwp_t__Wy__Bwp__InvLnDeterminant
@@ -470,7 +470,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       matShouldBeI2 -= matI;
       double auxNorm2 = matShouldBeI2.normFrob();
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ", tests on m_Bt_Wy_B"
                                 << ": matShouldBeI1.numRowsLocal() = " << matShouldBeI1.numRowsLocal()
                               //<< ", ||matShouldBeI1||_2^2 = "        << matShouldBeI1.normFrob() * matShouldBeI1.normFrob()
@@ -492,7 +492,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     // Compute 'Bop^T W_y Bop' matrix
     //********************************************************************************
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor():"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor():"
                               << "\n  m_Bop_t__Wy__Bop->numRowsLocal() = "     << m_Bop_t__Wy__Bop->numRowsLocal()
                               << "\n  m_Bop_t__Wy__Bop->numCols() = "          << m_Bop_t__Wy__Bop->numCols()
                               << "\n  Bop_t.numRowsLocal() = "                 << Bop_t.numRowsLocal()
@@ -506,7 +506,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
 
     *m_Bop_t__Wy__Bop = Bop_t * (*e.m_Wmat_transformed_y * *m_Bmat_without_permut);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'm_Bop_t__Wy__Bop before nugget'"
                               << std::endl;
     }
@@ -523,7 +523,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       unsigned int Bop_t__Wy__Bop__beforeNugget__Rank          = m_Bop_t__Wy__Bop->rank(0.,1.e-8 ); // todo: should be an option
       unsigned int Bop_t__Wy__Bop__beforeNugget__Rank14        = m_Bop_t__Wy__Bop->rank(0.,1.e-14);
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ", m_Bop_t__Wy__Bop__beforeNugget.numRowsLocal() = "  << m_Bop_t__Wy__Bop->numRowsLocal()
                                 << ", m_Bop_t__Wy__Bop__beforeNugget.numCols() = "       << m_Bop_t__Wy__Bop->numCols()
                                 << ": m_Bop_t__Wy__Bop__beforeNugget.lnDeterminant() = " << Bop_t__Wy__Bop__beforeNugget__LnDeterminant
@@ -543,7 +543,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     *m_Bop_t__Wy__Bop = matP * (*m_Bop_t__Wy__Bop * (matP.transpose()));
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'm_Bop_t__Wy__Bop after permutation'"
                               << std::endl;
     }
@@ -559,7 +559,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       unsigned int Bop_t__Wy__Bop__Rank          = m_Bop_t__Wy__Bop->rank(0.,1.e-8 ); // todo: should be an option
       unsigned int Bop_t__Wy__Bop__Rank14        = m_Bop_t__Wy__Bop->rank(0.,1.e-14);
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": m_Bop_t__Wy__Bop->numRowsLocal() = "  << m_Bop_t__Wy__Bop->numRowsLocal()
                                 << ", m_Bop_t__Wy__Bop->numCols() = "       << m_Bop_t__Wy__Bop->numCols()
                                 << ", m_Bop_t__Wy__Bop->lnDeterminant() = " << Bop_t__Wy__Bop__LnDeterminant
@@ -578,7 +578,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       }
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'm_Bop_t__Wy__Bop after permutation and after nugget'"
                               << std::endl;
     }
@@ -595,7 +595,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       unsigned int Bop_t__Wy__Bop__afterNugget__Rank          = m_Bop_t__Wy__Bop->rank(0.,1.e-8 ); // todo: should be an option
       unsigned int Bop_t__Wy__Bop__afterNugget__Rank14        = m_Bop_t__Wy__Bop->rank(0.,1.e-14);
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ", m_Bop_t__Wy__Bop__afterNugget.numRowsLocal() = "  << m_Bop_t__Wy__Bop->numRowsLocal()
                                 << ", m_Bop_t__Wy__Bop__afterNugget.numCols() = "       << m_Bop_t__Wy__Bop->numCols()
                                 << ": m_Bop_t__Wy__Bop__afterNugget.lnDeterminant() = " << Bop_t__Wy__Bop__afterNugget__LnDeterminant
@@ -615,7 +615,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       unsigned int Bop_t__Wy__Bop__beforeNugget__InvRank            = m_Bop_t__Wy__Bop__inv->rank(0.,1.e-8 ); // todo: should be an option
       unsigned int Bop_t__Wy__Bop__beforeNugget__InvRank14          = m_Bop_t__Wy__Bop__inv->rank(0.,1.e-14);
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ", m_Bop_t__Wy__Bop__inv__beforeNugget.numRowsLocal() = "  << m_Bop_t__Wy__Bop__inv->numRowsLocal()
                                 << ", m_Bop_t__Wy__Bop__inv__beforeNugget.numCols() = "       << m_Bop_t__Wy__Bop__inv->numCols()
                                 << ": m_Bop_t__Wy__Bop__inv__beforeNugget.lnDeterminant() = " << Bop_t__Wy__Bop__inv__beforeNugget__LnDeterminant
@@ -644,7 +644,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       unsigned int Bop_t__Wy__Bop__afterNugget__InvRank            = m_Bop_t__Wy__Bop__inv->rank(0.,1.e-8 ); // todo: should be an option
       unsigned int Bop_t__Wy__Bop__afterNugget__InvRank14          = m_Bop_t__Wy__Bop__inv->rank(0.,1.e-14);
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ", m_Bop_t__Wy__Bop__inv__afterNugget.numRowsLocal() = "  << m_Bop_t__Wy__Bop__inv->numRowsLocal()
                                 << ", m_Bop_t__Wy__Bop__inv__afterNugget.numCols() = "       << m_Bop_t__Wy__Bop__inv->numCols()
                                 << ": m_Bop_t__Wy__Bop__inv__afterNugget.lnDeterminant() = " << Bop_t__Wy__Bop__inv__afterNugget__LnDeterminant
@@ -674,7 +674,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
       matShouldBeI2 -= matI;
       double auxNorm2 = matShouldBeI2.normFrob();
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ", tests on m_Bt_Wy_B"
                                 << ": matShouldBeI1.numRowsLocal() = " << matShouldBeI1.numRowsLocal()
                               //<< ", ||matShouldBeI1||_2^2 = "        << matShouldBeI1.normFrob() * matShouldBeI1.normFrob()
@@ -691,14 +691,14 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     //********************************************************************************
     m_a_y_modifier = ((double) (e.m_paper_n_y - m_Bmat_rank)) / 2.;
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_a_y_modifier = "   << m_a_y_modifier
                               << std::endl;
     }
 
     D_V yVec_transformed(e.m_experimentStorage.yVec_transformed());
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Zvec_hat_vu.sizeLocal() = "             << m_Zvec_hat_vu.sizeLocal()
                               << ", m_Bop_t__Wy__Bop__inv->numRowsLocal() = " << m_Bop_t__Wy__Bop__inv->numRowsLocal()
                               << ", m_Bop_t__Wy__Bop__inv->numCols() = "      << m_Bop_t__Wy__Bop__inv->numCols()
@@ -718,7 +718,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     }
     D_V tmpVec2(yVec_transformed - (*m_Bmat_with_permut * m_Zvec_hat_vu));
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ", yVec_transformed = "  << yVec_transformed.sizeLocal()
                               << ", m_Zvec_hat_vu = "     << m_Zvec_hat_vu
                               << ", tmpVec2 (initial) = " << tmpVec2
@@ -728,7 +728,7 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     tmpVec2 = *e.m_Wmat_transformed_y * tmpVec2;
     m_b_y_modifier = scalarProduct(yVec_transformed,tmpVec2) / 2.;
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": tmpVec2 (final) = " << tmpVec2
                               << ", m_b_y_modifier = "  << m_b_y_modifier
                               << std::endl;
@@ -745,13 +745,13 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     sumDims += e.m_paper_n;
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished instantiating the m_Smat_u_i spaces"
                             << std::endl;
   }
   UQ_FATAL_TEST_MACRO(sumDims != m_u_size,
                       m_env.worldRank(),
-                      "GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'sumDims' and 'm_u_size' should be equal");
 
   unsigned int sumNumRows = 0;
@@ -763,17 +763,17 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     sumNumCols += s.m_paper_m;
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished instantiating the m_Smat_uw_i matrices"
                             << std::endl;
   }
   UQ_FATAL_TEST_MACRO(sumNumRows != m_u_size,
                       m_env.worldRank(),
-                      "GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'sumNumRows' and 'm_u_size' should be equal");
   UQ_FATAL_TEST_MACRO(sumNumCols != s.m_w_size,
                       m_env.worldRank(),
-                      "GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'sumNumCols' and 'm_w_size' should be equal");
 
   //********************************************************************************
@@ -788,17 +788,17 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     sumNumCols += 1;
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished instantiating the m_Smat_u_hat_u_asterisk_i matrices"
                             << std::endl;
   }
   UQ_FATAL_TEST_MACRO(sumNumRows != m_u_size,
                       m_env.worldRank(),
-                      "GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'sumNumRows' and 'm_u_size' should be equal");
   UQ_FATAL_TEST_MACRO(sumNumCols != s.m_paper_p_eta,
                       m_env.worldRank(),
-                      "GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'sumNumCols (1)' and 'm_paper_p_eta' should be equal");
 
   //********************************************************************************
@@ -813,27 +813,27 @@ GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfoClass(
     sumNumCols += 1;
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished instantiating the m_Smat_w_hat_u_asterisk_i matrices"
                             << std::endl;
   }
   UQ_FATAL_TEST_MACRO(sumNumRows != s.m_w_size,
                       m_env.worldRank(),
-                      "GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'sumNumRows' and 'm_w_size' should be equal");
   UQ_FATAL_TEST_MACRO(sumNumCols != s.m_paper_p_eta,
                       m_env.worldRank(),
-                      "GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'sumNumCols (2)' and 'm_paper_p_eta' should be equal");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << std::endl;
   }
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~GcmJointInfoClass()
+GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~GcmJointInfo()
 {
   for (unsigned int i = 0; i < m_Smat_w_hat_u_asterisk_is.size(); ++i) {
     delete m_Smat_w_hat_u_asterisk_is[i]; // to be deleted on destructor

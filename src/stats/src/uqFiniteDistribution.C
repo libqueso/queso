@@ -31,8 +31,8 @@
 namespace QUESO {
 
 // Default constructor -----------------------------
-FiniteDistributionClass::FiniteDistributionClass(
-  const BaseEnvironmentClass& env,
+FiniteDistribution::FiniteDistribution(
+  const BaseEnvironment& env,
   const char*                   prefix,
   const std::vector<double>&    inpWeights)
   :
@@ -41,7 +41,7 @@ FiniteDistributionClass::FiniteDistributionClass(
   m_weights(inpWeights.size(),0.)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering FiniteDistributionClass::constructor()"
+    *m_env.subDisplayFile() << "Entering FiniteDistribution::constructor()"
                             << ": prefix = " << m_prefix
                             << ", inpWeights.size() = " << inpWeights.size()
                             << std::endl;
@@ -60,13 +60,13 @@ FiniteDistributionClass::FiniteDistributionClass(
     }
     else {
       if ((sumCheck - 1) > 1.e-8) {
-        std::cerr << "In FiniteDistributionClass::constructor()"
+        std::cerr << "In FiniteDistribution::constructor()"
                   << ": sumCheck - 1 = " << sumCheck - 1.
                   << std::endl;
       }
       UQ_FATAL_TEST_MACRO((sumCheck - 1) > 1.e-8,
                           m_env.worldRank(),
-                          "FiniteDistributionClass::constructor()",
+                          "FiniteDistribution::constructor()",
                           "weights sum is too bigger than 1.");
 
       if (sumCheck > 1.) sumCheck = 1.;
@@ -79,7 +79,7 @@ FiniteDistributionClass::FiniteDistributionClass(
       else {
         numRareCases++;
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-           *m_env.subDisplayFile() << "In FiniteDistributionClass::constructor()"
+           *m_env.subDisplayFile() << "In FiniteDistribution::constructor()"
                                    << ": WARNING, map insertion failed"
                                    << std::endl;
         }
@@ -89,18 +89,18 @@ FiniteDistributionClass::FiniteDistributionClass(
   m_weights.resize(j,0.);
 
   if ((1 - sumCheck) > 1.e-8) {
-    std::cerr << "In FiniteDistributionClass::constructor()"
+    std::cerr << "In FiniteDistribution::constructor()"
               << ": 1 - sumCheck = " << 1. - sumCheck
               << std::endl;
   }
   UQ_FATAL_TEST_MACRO((1 - sumCheck) > 1.e-8,
                       m_env.worldRank(),
-                      "FiniteDistributionClass::constructor()",
+                      "FiniteDistribution::constructor()",
                       "weights sum is too smaller than 1.");
 
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In FiniteDistributionClass::constructor()"
+    *m_env.subDisplayFile() << "In FiniteDistribution::constructor()"
                             << ": inpWeights.size() = " << inpWeights.size()
                             << ", numOfZeroWeights = "  << numOfZeroWeights
                             << ", numRareCases = "      << numRareCases
@@ -111,48 +111,48 @@ FiniteDistributionClass::FiniteDistributionClass(
 
   UQ_FATAL_TEST_MACRO((inpWeights.size() != (m_weights.size()+numOfZeroWeights+numRareCases)),
                       m_env.worldRank(),
-                      "FiniteDistributionClass::constructor()",
+                      "FiniteDistribution::constructor()",
                       "number of input weights was not conserved");
 
   UQ_FATAL_TEST_MACRO((m_map.size() != m_weights.size()),
                       m_env.worldRank(),
-                      "FiniteDistributionClass::constructor()",
+                      "FiniteDistribution::constructor()",
                       "map and inpWeights have different sizes");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving FiniteDistributionClass::constructor()"
+    *m_env.subDisplayFile() << "Leaving FiniteDistribution::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
-FiniteDistributionClass::~FiniteDistributionClass()
+FiniteDistribution::~FiniteDistribution()
 {
   m_map.empty();
   m_weights.clear();
 }
 // Misc methods--------------------------------------
-const BaseEnvironmentClass&
-FiniteDistributionClass::env() const
+const BaseEnvironment&
+FiniteDistribution::env() const
 {
   return m_env;
 }
 // Stats methods-------------------------------------
 const std::vector<double>&
-FiniteDistributionClass::weights() const
+FiniteDistribution::weights() const
 {
   return m_weights;
 }
 //---------------------------------------------------
 unsigned int
-FiniteDistributionClass::sample() const
+FiniteDistribution::sample() const
 {
   unsigned int result = 0;
 
   double aux = m_env.rngObject()->uniformSample();
   UQ_FATAL_TEST_MACRO((aux < 0) || (aux > 1.),
                       m_env.worldRank(),
-                      "FiniteDistributionClass::sample()",
+                      "FiniteDistribution::sample()",
                       "invalid uniform");
 
   if (aux == 0.) {
@@ -172,7 +172,7 @@ FiniteDistributionClass::sample() const
   }
 #if 0 // WE insert 'i' in map, not 'j'. So, the tests below don't make sense
   if (result >= m_map.size()) {
-    std::cerr << "In FiniteDistributionClass::sample()"
+    std::cerr << "In FiniteDistribution::sample()"
               << ": aux = "          << aux
               << ", m_map.size() = " << m_map.size()
               << ", result = "       << result
@@ -180,7 +180,7 @@ FiniteDistributionClass::sample() const
   }
   UQ_FATAL_TEST_MACRO((result >= m_map.size()),
                       m_env.worldRank(),
-                      "FiniteDistributionClass::sample()",
+                      "FiniteDistribution::sample()",
                       "invalid result");
 #endif
 

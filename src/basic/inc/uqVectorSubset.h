@@ -33,10 +33,10 @@
 
 namespace QUESO {
 
-/*! \file uqVectorSubsetClass.h
+/*! \file uqVectorSubset.h
  * \brief A templated class for handling subsets.
  * 
- * \class VectorSubsetClass
+ * \class VectorSubset
  * \brief A templated class for handling subsets.
  *
  * This class specifies a subset. The most common example of a subset is a subset of a vector space,
@@ -48,26 +48,26 @@ namespace QUESO {
 // Base class
 //*****************************************************
 template <class V, class M>
-class VectorSubsetClass : public VectorSetClass<V,M>
+class VectorSubset : public VectorSet<V,M>
 {
 public:
   //! @name Constructor/Destructor methods.
   //@{ 
   //! Default Constructor
   /*! It should not be used by the user.*/
-  VectorSubsetClass();
+  VectorSubset();
   
   //! Shaped constructor (with volume).
-  VectorSubsetClass(const char* prefix, const VectorSpaceClass<V,M>& vectorSpace, double volume);
+  VectorSubset(const char* prefix, const VectorSpace<V,M>& vectorSpace, double volume);
   
   //! Destructor.
-  virtual ~VectorSubsetClass();
+  virtual ~VectorSubset();
   //@}
   
     //! @name Mathematical methods.
   //@{
   //!  Vector space to which \c this set belongs to. See template specialization.
-  const VectorSpaceClass<V,M>& vectorSpace()                 const;
+  const VectorSpace<V,M>& vectorSpace()                 const;
   
   //! Returns whether \c this contains vector \c vec. See template specialization.
   virtual        bool                     contains   (const V& vec)     const = 0;
@@ -80,71 +80,71 @@ public:
   //@}
   
 protected:
-  using VectorSetClass<V,M>::m_env;
-  using VectorSetClass<V,M>::m_prefix;
+  using VectorSet<V,M>::m_env;
+  using VectorSet<V,M>::m_prefix;
 
-  const VectorSpaceClass<V,M>* m_vectorSpace;
+  const VectorSpace<V,M>* m_vectorSpace;
 };
 
 // Default constructor-------------------------------
 template <class V, class M>
-VectorSubsetClass<V,M>::VectorSubsetClass()
+VectorSubset<V,M>::VectorSubset()
   :
-  VectorSetClass<V,M>(),
+  VectorSet<V,M>(),
   m_vectorSpace        (NULL)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
-                      "VectorSubsetClass<V,M>::constructor(), default",
+                      "VectorSubset<V,M>::constructor(), default",
                       "should not be used by user");
 }
 // Shaped constructor--------------------------------
 template <class V, class M>
-VectorSubsetClass<V,M>::VectorSubsetClass(
+VectorSubset<V,M>::VectorSubset(
   const char*                    prefix,
-  const VectorSpaceClass<V,M>& vectorSpace,
+  const VectorSpace<V,M>& vectorSpace,
   double                         volume)
   :
-  VectorSetClass<V,M>(vectorSpace.env(),prefix,volume),
+  VectorSet<V,M>(vectorSpace.env(),prefix,volume),
   m_vectorSpace        (&vectorSpace)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering VectorSubsetClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering VectorSubset<V,M>::constructor()"
               << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving VectorSubsetClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving VectorSubset<V,M>::constructor()"
               << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template <class V, class M>
-VectorSubsetClass<V,M>::~VectorSubsetClass()
+VectorSubset<V,M>::~VectorSubset()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering VectorSubsetClass<V,M>::destructor()"
+    *m_env.subDisplayFile() << "Entering VectorSubset<V,M>::destructor()"
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving VectorSubsetClass<V,M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving VectorSubset<V,M>::destructor()"
                             << std::endl;
   }
 }
 // Math methods -------------------------------------
 template <class V, class M>
-const VectorSpaceClass<V,M>&
-VectorSubsetClass<V,M>::vectorSpace() const
+const VectorSpace<V,M>&
+VectorSubset<V,M>::vectorSpace() const
 {
   return *m_vectorSpace;
 }
 // I/O methods---------------------------------------
 template <class V, class M>
 void
-VectorSubsetClass<V,M>::print(std::ostream& os) const
+VectorSubset<V,M>::print(std::ostream& os) const
 {
-  os << "In VectorSubsetClass<V,M>::print()"
+  os << "In VectorSubset<V,M>::print()"
      << ": nothing to be printed" << std::endl;
   return;
 }
@@ -154,14 +154,14 @@ VectorSubsetClass<V,M>::print(std::ostream& os) const
 //*****************************************************
 
 /*!
- * \class BoxSubsetClass
+ * \class BoxSubset
  * \brief Class representing a subset of a vector space shaped like a hypercube
  *
  * This class is determined by a collection of upper and lower limits of the hypercube.
  * (line segment in \f$ R \f$, rectangle in \f$ R^2 \f$, and so on). */
 
 template<class V, class M>
-class BoxSubsetClass : public VectorSubsetClass<V,M> {
+class BoxSubset : public VectorSubset<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
@@ -170,13 +170,13 @@ public:
   /*! Construct a subspace of \c vectorSpace, with min and max values given by the vectors \c minValues 
    * and \c maxValues, respectively. It checks for possible inconsistencies between the values stored in
    * \c minValues and \c maxValues, and calculates the volume of the box subset, assigning it to m_volume. */
-  BoxSubsetClass(const char*                    prefix,
-                   const VectorSpaceClass<V,M>& vectorSpace,
+  BoxSubset(const char*                    prefix,
+                   const VectorSpace<V,M>& vectorSpace,
                    const V&                       minValues,
                    const V&                       maxValues);
 
   //! Destructor
-  ~BoxSubsetClass();
+  ~BoxSubset();
   //@}
 
   //! @name Mathematical methods.
@@ -197,10 +197,10 @@ public:
   void print    (std::ostream& os) const;
 
 protected:
-  using VectorSetClass   <V,M>::m_env;
-  using VectorSetClass   <V,M>::m_prefix;
-  using VectorSetClass   <V,M>::m_volume;
-  using VectorSubsetClass<V,M>::m_vectorSpace;
+  using VectorSet   <V,M>::m_env;
+  using VectorSet   <V,M>::m_prefix;
+  using VectorSet   <V,M>::m_volume;
+  using VectorSubset<V,M>::m_vectorSpace;
  
   //! Vector of templated type \c V to store the minimum values of the box subset class.
   V m_minValues;
@@ -211,28 +211,28 @@ protected:
 
 // Default, shaped constructor ----------------------
 template<class V, class M>
-BoxSubsetClass<V,M>::BoxSubsetClass(
+BoxSubset<V,M>::BoxSubset(
   const char*                    prefix,
-  const VectorSpaceClass<V,M>& vectorSpace,
+  const VectorSpace<V,M>& vectorSpace,
   const V&                       minValues,
   const V&                       maxValues)
   :
-  VectorSubsetClass<V,M>(prefix,vectorSpace,0.),
+  VectorSubset<V,M>(prefix,vectorSpace,0.),
   m_minValues(minValues),
   m_maxValues(maxValues)
 {
   UQ_FATAL_TEST_MACRO(minValues.sizeLocal() != maxValues.sizeLocal(),
                       m_env.worldRank(),
-                      "BoxSubsetClass<V,M>::BoxSubsetClass()",
+                      "BoxSubset<V,M>::BoxSubset()",
                       "vectors 'minValues' and 'maxValues' should have the same size");
   UQ_FATAL_TEST_MACRO(minValues.sizeLocal() != vectorSpace.dimLocal(),
                       m_env.worldRank(),
-                      "BoxSubsetClass<V,M>::BoxSubsetClass()",
+                      "BoxSubset<V,M>::BoxSubset()",
                       "sizes of vectors 'minValues' and 'maxValues' should be equal to dimension of the vector space");
   for (unsigned int i = 0; i < m_vectorSpace->dimLocal(); ++i) {
     UQ_FATAL_TEST_MACRO(minValues[i] > maxValues[i],
                         m_env.worldRank(),
-                        "BoxSubsetClass<V,M>::BoxSubsetClass()",
+                        "BoxSubset<V,M>::BoxSubset()",
                         "it should happen minValue <= maxValue for all dimensions");
   }
 
@@ -243,13 +243,13 @@ BoxSubsetClass<V,M>::BoxSubsetClass(
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-BoxSubsetClass<V,M>::~BoxSubsetClass()
+BoxSubset<V,M>::~BoxSubset()
 {
 }
 // Math methods -------------------------------------
 template<class V, class M>
 bool
-BoxSubsetClass<V,M>::contains(const V& vec) const
+BoxSubset<V,M>::contains(const V& vec) const
 {
   // prudenci, 2012-09-26: allow boundary values because of 'beta' realizer, which can generate a sample with boundary value '1'
   //return (!vec.atLeastOneComponentSmallerOrEqualThan(m_minValues) &&
@@ -260,23 +260,23 @@ BoxSubsetClass<V,M>::contains(const V& vec) const
 // --------------------------------------------------
 template<class V, class M>
 const V&
-BoxSubsetClass<V,M>::minValues() const
+BoxSubset<V,M>::minValues() const
 {
   return m_minValues;
 }
 // --------------------------------------------------
 template<class V, class M>
 const V&
-BoxSubsetClass<V,M>::maxValues() const
+BoxSubset<V,M>::maxValues() const
 {
   return m_maxValues;
 }
 // I/O method ---------------------------------------
 template <class V, class M>
 void
-BoxSubsetClass<V,M>::print(std::ostream& os) const
+BoxSubset<V,M>::print(std::ostream& os) const
 {
-  os << "In BoxSubsetClass<V,M>::print()"
+  os << "In BoxSubset<V,M>::print()"
      << ": m_minValues = " << m_minValues
      << ", m_maxValues = " << m_maxValues
      << ", m_volume = "    << m_volume
@@ -290,7 +290,7 @@ BoxSubsetClass<V,M>::print(std::ostream& os) const
 // Intersection class
 //*****************************************************
 
-/*! \class IntersectionSubsetClass
+/*! \class IntersectionSubset
  * \brief A templated class representing the intersection of two vector sets.
  *
  * This class is used to determine if a vector  belongs to the intersection of
@@ -299,21 +299,21 @@ BoxSubsetClass<V,M>::print(std::ostream& os) const
  * likelihood function.*/
 
 template<class V, class M>
-class IntersectionSubsetClass : public VectorSubsetClass<V,M> {
+class IntersectionSubset : public VectorSubset<V,M> {
 public:
   //! @name Constructor/Destructor methods.
   //@{ 
   //! Default, shaped constructor.
   /*! Creates the class for the intersection of two vector sets, given a vector space, its volume and the
    * sets.*/
-  IntersectionSubsetClass(const char*                    prefix,
-                            const VectorSpaceClass<V,M>& vectorSpace,
+  IntersectionSubset(const char*                    prefix,
+                            const VectorSpace<V,M>& vectorSpace,
                                   double                   volume,
-                            const VectorSetClass<V,M>&   set1,
-                            const VectorSetClass<V,M>&   set2);
+                            const VectorSet<V,M>&   set1,
+                            const VectorSet<V,M>&   set2);
   
   //! Destructor.
- ~IntersectionSubsetClass();
+ ~IntersectionSubset();
   //@}
  
    //! @name Mathematical methods.
@@ -329,52 +329,52 @@ public:
   //@}
   
 protected:
-  using VectorSetClass   <V,M>::m_env;
-  using VectorSetClass   <V,M>::m_prefix;
-  using VectorSetClass   <V,M>::m_volume;
-  using VectorSubsetClass<V,M>::m_vectorSpace;
+  using VectorSet   <V,M>::m_env;
+  using VectorSet   <V,M>::m_prefix;
+  using VectorSet   <V,M>::m_volume;
+  using VectorSubset<V,M>::m_vectorSpace;
  
   //! Vector set: m_set1. 
   /*! We seek the intersection of vectors set m_set1 and m_set2.*/
-  const VectorSetClass<V,M>& m_set1;
+  const VectorSet<V,M>& m_set1;
   
   //! Vector set: m_set2.
-  const VectorSetClass<V,M>& m_set2;
+  const VectorSet<V,M>& m_set2;
 };
 // --------------------------------------------------
 // Constructor/Destructor methods -------------------
 // Default, shaped constructor ----------------------
 template<class V, class M>
-IntersectionSubsetClass<V,M>::IntersectionSubsetClass(
+IntersectionSubset<V,M>::IntersectionSubset(
   const char*                    prefix,
-  const VectorSpaceClass<V,M>& vectorSpace,
+  const VectorSpace<V,M>& vectorSpace,
         double                   volume,
-  const VectorSetClass<V,M>&   set1,
-  const VectorSetClass<V,M>&   set2)
+  const VectorSet<V,M>&   set1,
+  const VectorSet<V,M>&   set2)
   :
-  VectorSubsetClass<V,M>(prefix,vectorSpace,volume),
+  VectorSubset<V,M>(prefix,vectorSpace,volume),
   m_set1                  (set1),
   m_set2                  (set2)
 {
 }
 // Destructor --------------------------------------------
 template<class V, class M>
-IntersectionSubsetClass<V,M>::~IntersectionSubsetClass()
+IntersectionSubset<V,M>::~IntersectionSubset()
 {
 }
 // Mathematical methods-----------------------------------
 template<class V, class M>
 bool
-IntersectionSubsetClass<V,M>::contains(const V& vec) const
+IntersectionSubset<V,M>::contains(const V& vec) const
 {
   return (m_set1.contains(vec) && m_set2.contains(vec));
 }
 // I/O methods--------------------------------------------
 template <class V, class M>
 void
-IntersectionSubsetClass<V,M>::print(std::ostream& os) const
+IntersectionSubset<V,M>::print(std::ostream& os) const
 {
-  os << "In IntersectionSubsetClass<V,M>::print()"
+  os << "In IntersectionSubset<V,M>::print()"
      << ": m_set1 = " << m_set1
      << ", m_set2 = " << m_set2
      << std::endl;
@@ -386,34 +386,34 @@ IntersectionSubsetClass<V,M>::print(std::ostream& os) const
 // Concatenation class
 //*****************************************************
 
-/*! \class ConcatenationSubsetClass
+/*! \class ConcatenationSubset
  * \brief A templated class representing the concatenation of two vector subsets.
  *
  * This class is used to represent the concatenation of two subsets. It allows concatenation
  * of both two subsets as well as a collection of subsets into one.
  */
 template<class V, class M>
-class ConcatenationSubsetClass : public VectorSubsetClass<V,M> {
+class ConcatenationSubset : public VectorSubset<V,M> {
 public:
    //! @name Constructor/Destructor methods.
   //@{ 
   //! Constructor - two sets only
   /*! It concatenates set1 and set2 into a new set, m_set, of volume given by
    * set1.volume()*set2.volume(). */
-  ConcatenationSubsetClass(const char*                    prefix,
-                             const VectorSpaceClass<V,M>& vectorSpace,
-                             const VectorSetClass<V,M>&   set1,
-                             const VectorSetClass<V,M>&   set2);
+  ConcatenationSubset(const char*                    prefix,
+                             const VectorSpace<V,M>& vectorSpace,
+                             const VectorSet<V,M>&   set1,
+                             const VectorSet<V,M>&   set2);
   
   //! Constructor - collection of sets
   /*! It concatenates a collection of n subsets (using the std::vector to represent such collection)
    * into a new set, m_set, of volume given by sets[0].volume()*sets[1].volume()*...*sets[n-1].volume(). */
-  ConcatenationSubsetClass(const char*                                       prefix,
-                             const VectorSpaceClass<V,M>&                    vectorSpace,
+  ConcatenationSubset(const char*                                       prefix,
+                             const VectorSpace<V,M>&                    vectorSpace,
                              double                                            volume,
-                             const std::vector<const VectorSetClass<V,M>* >& sets);
+                             const std::vector<const VectorSet<V,M>* >& sets);
   //! Destructor
-  ~ConcatenationSubsetClass();
+  ~ConcatenationSubset();
   //@}
   
   //! @name Mathematical methods.
@@ -428,40 +428,40 @@ public:
   void print   (std::ostream& os) const;
   //@}
 protected:
-  using VectorSetClass   <V,M>::m_env;
-  using VectorSetClass   <V,M>::m_prefix;
-  using VectorSetClass   <V,M>::m_volume;
-  using VectorSubsetClass<V,M>::m_vectorSpace;
+  using VectorSet   <V,M>::m_env;
+  using VectorSet   <V,M>::m_prefix;
+  using VectorSet   <V,M>::m_volume;
+  using VectorSubset<V,M>::m_vectorSpace;
 
-  std::vector<const VectorSetClass<V,M>* > m_sets;
+  std::vector<const VectorSet<V,M>* > m_sets;
 };
 
 // --------------------------------------------------
 // Constructor/Destructor methods -------------------
 // Default, shaped constructor ----------------------
 template<class V, class M>
-ConcatenationSubsetClass<V,M>::ConcatenationSubsetClass(
+ConcatenationSubset<V,M>::ConcatenationSubset(
   const char*                    prefix,
-  const VectorSpaceClass<V,M>& vectorSpace,
-  const VectorSetClass<V,M>&   set1,
-  const VectorSetClass<V,M>&   set2)
+  const VectorSpace<V,M>& vectorSpace,
+  const VectorSet<V,M>&   set1,
+  const VectorSet<V,M>&   set2)
   :
-  VectorSubsetClass<V,M>(prefix,vectorSpace,set1.volume()*set2.volume()),
-  m_sets                  (2,(const VectorSetClass<V,M>*) NULL)
+  VectorSubset<V,M>(prefix,vectorSpace,set1.volume()*set2.volume()),
+  m_sets                  (2,(const VectorSet<V,M>*) NULL)
 {
   m_sets[0] = &set1;
   m_sets[1] = &set2;
 }
 // Default, shaped constructor ----------------------
 template<class V, class M>
-ConcatenationSubsetClass<V,M>::ConcatenationSubsetClass(
+ConcatenationSubset<V,M>::ConcatenationSubset(
   const char*                                       prefix,
-  const VectorSpaceClass<V,M>&                    vectorSpace,
+  const VectorSpace<V,M>&                    vectorSpace,
   double                                            volume,
-  const std::vector<const VectorSetClass<V,M>* >& sets)
+  const std::vector<const VectorSet<V,M>* >& sets)
   :
-  VectorSubsetClass<V,M>(prefix,vectorSpace,volume),
-  m_sets                  (sets.size(),(const VectorSetClass<V,M>*) NULL)
+  VectorSubset<V,M>(prefix,vectorSpace,volume),
+  m_sets                  (sets.size(),(const VectorSet<V,M>*) NULL)
 {
   for (unsigned int i = 0; i < m_sets.size(); ++i) {
     m_sets[i] = sets[i];
@@ -469,13 +469,13 @@ ConcatenationSubsetClass<V,M>::ConcatenationSubsetClass(
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-ConcatenationSubsetClass<V,M>::~ConcatenationSubsetClass()
+ConcatenationSubset<V,M>::~ConcatenationSubset()
 {
 }
 // Mathematical methods ------------------------------
 template<class V, class M>
 bool
-ConcatenationSubsetClass<V,M>::contains(const V& vec) const
+ConcatenationSubset<V,M>::contains(const V& vec) const
 {
   bool result = true;
 
@@ -492,7 +492,7 @@ ConcatenationSubsetClass<V,M>::contains(const V& vec) const
 
   UQ_FATAL_TEST_MACRO(vec.sizeLocal() != cummulativeSize,
                       m_env.worldRank(),
-                      "ConcatenationSubsetClass<V,M>::contains()",
+                      "ConcatenationSubset<V,M>::contains()",
                       "incompatible vector sizes");
 
   for (unsigned int i = 0; i < m_sets.size(); ++i) {
@@ -507,9 +507,9 @@ ConcatenationSubsetClass<V,M>::contains(const V& vec) const
 // I/O methods --------------------------------------
 template <class V, class M>
 void
-ConcatenationSubsetClass<V,M>::print(std::ostream& os) const
+ConcatenationSubset<V,M>::print(std::ostream& os) const
 {
-  os << "In ConcatenationSubsetClass<V,M>::print()"
+  os << "In ConcatenationSubset<V,M>::print()"
      << ": m_sets.size() = " << m_sets.size()
      << std::endl;
   for (unsigned int i = 0; i < m_sets.size(); ++i) {
@@ -526,7 +526,7 @@ ConcatenationSubsetClass<V,M>::print(std::ostream& os) const
 //*****************************************************
 // Discrete class
 //*****************************************************
-/*! \class DiscreteSubsetClass
+/*! \class DiscreteSubset
  * \brief A templated class representing the discrete vector subsets.
  *
  * This class is used to represent the a discrete vector subset. Here the 
@@ -535,18 +535,18 @@ ConcatenationSubsetClass<V,M>::print(std::ostream& os) const
  */
 
 template<class V, class M>
-class DiscreteSubsetClass : public VectorSubsetClass<V,M> {
+class DiscreteSubset : public VectorSubset<V,M> {
 public:
   //! @name Constructor/Destructor methods.
   //@{ 
   //! Default Constructor
   /*! It constructs a class object given the prefix, vector space to which it
    * belongs  and its number of elements.*/
-  DiscreteSubsetClass(const char*                    prefix,
-                        const VectorSpaceClass<V,M>& vectorSpace,
+  DiscreteSubset(const char*                    prefix,
+                        const VectorSpace<V,M>& vectorSpace,
                         const std::vector<V*>&         elements);
   //! Destructor
-  ~DiscreteSubsetClass();
+  ~DiscreteSubset();
   //@}
   
   //! @name Mathematical methods.
@@ -561,10 +561,10 @@ public:
   void print    (std::ostream& os) const;
   //@}
 protected:
-  using VectorSetClass   <V,M>::m_env;
-  using VectorSetClass   <V,M>::m_prefix;
-  using VectorSetClass   <V,M>::m_volume;
-  using VectorSubsetClass<V,M>::m_vectorSpace;
+  using VectorSet   <V,M>::m_env;
+  using VectorSet   <V,M>::m_prefix;
+  using VectorSet   <V,M>::m_volume;
+  using VectorSubset<V,M>::m_vectorSpace;
  
   //! Number of elements in the discrete vector subset.
   std::vector<V*> m_elements;
@@ -574,33 +574,33 @@ protected:
 // Constructor/Destructor methods -------------------
 // Default constructor-------------------------------
 template<class V, class M>
-DiscreteSubsetClass<V,M>::DiscreteSubsetClass(
+DiscreteSubset<V,M>::DiscreteSubset(
   const char*                    prefix,
-  const VectorSpaceClass<V,M>& vectorSpace,
+  const VectorSpace<V,M>& vectorSpace,
   const std::vector<V*>&         elements)
   :
-  VectorSubsetClass<V,M>(prefix,vectorSpace,0.),
+  VectorSubset<V,M>(prefix,vectorSpace,0.),
   m_elements(elements.size(),NULL)
 {
   m_volume = 0.;
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
-                      "DiscreteSubsetClass<V,M>::contains()",
+                      "DiscreteSubset<V,M>::contains()",
                       "incomplete code");
 }
 // Destructor --------------------------------------------
 template<class V, class M>
-DiscreteSubsetClass<V,M>::~DiscreteSubsetClass()
+DiscreteSubset<V,M>::~DiscreteSubset()
 {
 }
 // Mathematical methods-----------------------------------
 template<class V, class M>
 bool
-DiscreteSubsetClass<V,M>::contains(const V& vec) const
+DiscreteSubset<V,M>::contains(const V& vec) const
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
-                      "DiscreteSubsetClass<V,M>::contains()",
+                      "DiscreteSubset<V,M>::contains()",
                       "incomplete code");
 
   return false;
@@ -608,9 +608,9 @@ DiscreteSubsetClass<V,M>::contains(const V& vec) const
 // I/O methods--------------------------------------------
 template <class V, class M>
 void
-DiscreteSubsetClass<V,M>::print(std::ostream& os) const
+DiscreteSubset<V,M>::print(std::ostream& os) const
 {
-  os << "In DiscreteSubsetClass<V,M>::print()"
+  os << "In DiscreteSubset<V,M>::print()"
      << ": nothing to print"
      << std::endl;
 

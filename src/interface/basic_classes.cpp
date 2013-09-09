@@ -41,7 +41,7 @@ namespace QUESO_Basic_API {
   // Member Functions
   //------------------
 
-  QUESO_Basic_Class::QUESO_Basic_Class()
+  QUESO_Basic_::QUESO_Basic_()
   {
     m_initialized           = 0;		
     m_silent                = 0; 		
@@ -51,12 +51,12 @@ namespace QUESO_Basic_API {
     m_env                   = NULL; // prudenci 2010-05-17
   }
 
-  QUESO_Basic_Class::~QUESO_Basic_Class()
+  QUESO_Basic_::~QUESO_Basic_()
   {
     if (m_env) delete m_env; // prudenci 2010-05-17
   }
 
-  void QUESO_Basic_Class::Initialize(const char *inputfile)
+  void QUESO_Basic_::Initialize(const char *inputfile)
   {
 
     grvy_timer_init("QUESO");
@@ -64,9 +64,9 @@ namespace QUESO_Basic_API {
     // Define new QUESO environment and store inputfile information
 
 #ifdef QUESO_HAS_MPI
-    m_env         = new FullEnvironmentClass(MPI_COMM_WORLD,inputfile,"",NULL);
+    m_env         = new FullEnvironment(MPI_COMM_WORLD,inputfile,"",NULL);
 #else
-    m_env         = new FullEnvironmentClass(0,inputfile,"",NULL);
+    m_env         = new FullEnvironment(0,inputfile,"",NULL);
 #endif
 
     m_inputfile   = new string(inputfile);
@@ -75,7 +75,7 @@ namespace QUESO_Basic_API {
 
 }
 
-  void QUESO_Basic_Class:: DefineParameterSpace()
+  void QUESO_Basic_:: DefineParameterSpace()
   {
     double *param_min;		// min value of each parameter
     double *param_max;		// max value of each parameter
@@ -102,7 +102,7 @@ namespace QUESO_Basic_API {
     grvy_printf(GRVY_INFO,"%s: Num params defined\n",log_prefix,m_num_params);
     
     printf("--> Setup parameter space variables/ranges...\n");
-    m_paramSpace  = new VectorSpaceClass <basicV,basicM> (*m_env,"queso_basic_",m_num_params,NULL);
+    m_paramSpace  = new VectorSpace <basicV,basicM> (*m_env,"queso_basic_",m_num_params,NULL);
     
     param_min = (double *) calloc(m_num_params,sizeof(double));
     param_max = (double *) calloc(m_num_params,sizeof(double));
@@ -139,7 +139,7 @@ namespace QUESO_Basic_API {
       }
     
     printf("--> Setup parameter search box...\n");
-    m_paramDomain = new BoxSubsetClass<basicV, basicM> ("queso_basic_",*m_paramSpace,
+    m_paramDomain = new BoxSubset<basicV, basicM> ("queso_basic_",*m_paramSpace,
 							  *m_queso_var_min,*m_queso_var_max);
     // un poquito de clean up.
 
@@ -151,23 +151,23 @@ namespace QUESO_Basic_API {
 
   }
 
-  void QUESO_Basic_Class:: VerifyInit()
+  void QUESO_Basic_:: VerifyInit()
   {
     if(!m_initialized)
       QUESO_fatal("QUESO not initialized prior to use");
   }
 
-  void QUESO_Basic_Class::Likelihood_Register(double (*fp)(double *) )
+  void QUESO_Basic_::Likelihood_Register(double (*fp)(double *) )
   {
 
     VerifyInit();
 
     printf("--> Setting prior and post vectors...\n");
 
-    m_priorRV = new UniformVectorRVClass <basicV, basicM> ("prior_",*m_paramDomain);
-    m_postRV  = new GenericVectorRVClass <basicV, basicM> ("post_" ,*m_paramSpace );
+    m_priorRV = new UniformVectorRV <basicV, basicM> ("prior_",*m_paramDomain);
+    m_postRV  = new GenericVectorRV <basicV, basicM> ("post_" ,*m_paramSpace );
     
-    m_likelihoodObj = new GenericScalarFunctionClass 
+    m_likelihoodObj = new GenericScalarFunction 
       <basicV,basicM> ("like_",*m_paramDomain,Likelihood_Wrapper,NULL,true);
     
     m_user_likelihood_func = fp;
@@ -176,7 +176,7 @@ namespace QUESO_Basic_API {
     
     printf("--> Defining inverse problem...\n");
     
-    m_ip = new StatisticalInverseProblemClass <basicV,basicM> ("",NULL,*m_priorRV,*m_likelihoodObj,*m_postRV);
+    m_ip = new StatisticalInverseProblem <basicV,basicM> ("",NULL,*m_priorRV,*m_likelihoodObj,*m_postRV);
     
     // Default covariance matrix for now - default assumption assumes
     // 6-sigma distribution range falls over 1/3 of the max parameter range.
@@ -200,7 +200,7 @@ namespace QUESO_Basic_API {
       }
   }
 
-  void QUESO_Basic_Class::SolveInverseProblem()
+  void QUESO_Basic_::SolveInverseProblem()
   {
     VerifyInit();  
 
@@ -233,11 +233,11 @@ namespace QUESO_Basic_API {
 			    basicV *hessianE)
   {
     // Logic just to avoid warnings from INTEL compiler: added by prudenci on 2009/Sep/06
-    const GslVectorClass* aux1 = paramDirection;
+    const GslVector* aux1 = paramDirection;
     if (aux1) {};
     aux1 = gradV;
     aux1 = hessianE;
-    GslMatrixClass* aux2 = hessianM;
+    GslMatrix* aux2 = hessianM;
     if (aux2) {};
     const void* aux3 = Data;
     if (aux3) {};

@@ -37,8 +37,8 @@
 #include <uqGslMatrix.h>
 #include <uqEnvironment.h>
 
-void uqAppl(const QUESO::BaseEnvironmentClass& env);
-void uqAppl_LocalComparisonStage(QUESO::ValidationCycleClass<QUESO::GslVectorClass,QUESO::GslMatrixClass,QUESO::GslVectorClass,QUESO::GslMatrixClass>& cycle);
-void uqAppl_UnifiedComparisonStage(QUESO::ValidationCycleClass<QUESO::GslVectorClass,QUESO::GslMatrixClass,QUESO::GslVectorClass,QUESO::GslMatrixClass>& cycle);
+void uqAppl(const QUESO::BaseEnvironment& env);
+void uqAppl_LocalComparisonStage(QUESO::ValidationCycle<QUESO::GslVector,QUESO::GslMatrix,QUESO::GslVector,QUESO::GslMatrix>& cycle);
+void uqAppl_UnifiedComparisonStage(QUESO::ValidationCycle<QUESO::GslVector,QUESO::GslMatrix,QUESO::GslVector,QUESO::GslMatrix>& cycle);
 
 #endif // __TGA2_APPL_H__

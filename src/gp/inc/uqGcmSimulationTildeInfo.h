@@ -36,16 +36,16 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-class GcmSimulationTildeInfoClass
+class GcmSimulationTildeInfo
 {
 public:
-  GcmSimulationTildeInfoClass(const GpmsaComputerModelOptionsClass&                  gcmOptionsObj,
-                                const GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& s);
- ~GcmSimulationTildeInfoClass();
+  GcmSimulationTildeInfo(const GpmsaComputerModelOptions&                  gcmOptionsObj,
+                                const GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>& s);
+ ~GcmSimulationTildeInfo();
 
-  const BaseEnvironmentClass&     m_env;
+  const BaseEnvironment&     m_env;
         Q_M                         m_Kmat_tilde;
-        VectorSpaceClass<Q_V,Q_M> m_w_tilde_space;
+        VectorSpace<Q_V,Q_M> m_w_tilde_space;
         Q_M                         m_Lkmat;
         Q_M                         m_Ktildet_Ktilde;
         Q_M                         m_Ktildet_Ktilde_inv;
@@ -55,9 +55,9 @@ public:
 };
 
 template <class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClass(
-  const GpmsaComputerModelOptionsClass&                  gcmOptionsObj,
-  const GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& s)
+GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfo(
+  const GpmsaComputerModelOptions&                  gcmOptionsObj,
+  const GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>& s)
   :
   m_env                 (s.m_env),
   m_Kmat_tilde          (m_env,s.m_eta_space.map(),s.m_Kmat_rank),
@@ -82,7 +82,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
       unsigned int kuMatRank   = matkU.rank(0.,1.e-8 ); // todo: should be an option
       unsigned int kuMatRank14 = matkU.rank(0.,1.e-14);
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": matkU.numRowsLocal() = "  << matkU.numRowsLocal()
                                 << ", matkU.numCols() = "       << matkU.numCols()
                                 << ", matkU.rank(0.,1.e-8) = "  << kuMatRank
@@ -103,7 +103,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
         }
         matkUcheck.setPrintHorizontally(false);
         if (m_env.subDisplayFile()) {
-          *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+          *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                   << ": matkUcheck.numRowsLocal() = " << matkUcheck.numRowsLocal()
                                   << ", matkUcheck.numCols() = "      << matkUcheck.numCols()
                                   << ", m_Kmat_rank = "               << s.m_Kmat_rank
@@ -124,7 +124,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
                                       tmpSet);
       }
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": m_Kmat_tilde computed (1)"
                                 << std::endl;
       }
@@ -132,7 +132,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
     else {
       UQ_FATAL_TEST_MACRO(true,
                           m_env.worldRank(),
-                          "GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                          "GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
                           "code for horizontal 'm_Kmat' is not ready yet");
       if (gcmOptionsObj.m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != gcmOptionsObj.m_ov.m_dataOutputAllowedSet.end()) {
         m_Kmat_tilde.subWriteContents("Ktilde",
@@ -141,14 +141,14 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
                                       tmpSet);
       }
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": m_Kmat_tilde computed (2)"
                                 << std::endl;
       }
     }
 
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished forming 'm_Kmat_tilde'"
                               << ", m_Kmat_tilde.numRowsLocal() = " << m_Kmat_tilde.numRowsLocal()
                               << ", m_Kmat_tilde.numCols() = "      << m_Kmat_tilde.numCols()
@@ -163,7 +163,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
                                tmpSet);
     }
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Lkmat_tilde computed"
                               << std::endl;
     }
@@ -180,7 +180,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
     unsigned int kTildeRank = m_Kmat_tilde.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int kRank14    = m_Kmat_tilde.rank(0.,1.e-14);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-      *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Kmat_tilde.numRowsLocal() = "  << m_Kmat_tilde.numRowsLocal()
                               << ", m_Kmat_tilde.numCols() = "       << m_Kmat_tilde.numCols()
                               << ", m_Kmat_tilde.rank(0.,1.e-8) = "  << kTildeRank
@@ -190,7 +190,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
 
     UQ_FATAL_TEST_MACRO(kTildeRank != std::min(m_Kmat_tilde.numRowsGlobal(),m_Kmat_tilde.numCols()),
                         m_env.worldRank(),
-                        "GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                        "GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
                         "'m_Kmat_tilde' does not have a proper rank");
 
     //******************************************************************************
@@ -199,7 +199,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
     m_Ktildet_Ktilde = Ktildet * m_Kmat_tilde;
     if (m_env.subDisplayFile()) {
       m_Ktildet_Ktilde.setPrintHorizontally(false);
-      *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'm_Ktildet_Ktilde'"
         //<< "\n m_Ktildet_Ktilde =\n" << m_Ktildet_Ktilde
                               << std::endl;
@@ -211,7 +211,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
                                         tmpSet);
     }
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Ktildet_Ktilde computed"
                               << std::endl;
     }
@@ -220,7 +220,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
     unsigned int ktildetKtildeRank          = m_Ktildet_Ktilde.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int ktildetKtildeRank14        = m_Ktildet_Ktilde.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Ktildet_Ktilde.numRowsLocal() = "  << m_Ktildet_Ktilde.numRowsLocal()
                               << ", m_Ktildet_Ktilde.numCols() = "       << m_Ktildet_Ktilde.numCols()
                               << ", m_Ktildet_Ktilde.lnDeterminant() = " << ktildetKtildeLnDeterminant
@@ -232,7 +232,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
     m_Ktildet_Ktilde_inv = m_Ktildet_Ktilde.inverse();
     if (m_env.subDisplayFile()) {
       m_Ktildet_Ktilde_inv.setPrintHorizontally(false);
-      *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'm_Ktildet_Ktilde_inv'"
         //<< "\n m_Ktildet_Ktilde_inv =\n" << m_Ktildet_Ktilde_inv
                               << std::endl;
@@ -244,7 +244,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
                                             tmpSet);
     }
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Ktildet_Ktilde_inv computed"
                               << std::endl;
     }
@@ -253,7 +253,7 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
     unsigned int ktildetKtildeInvRank          = m_Ktildet_Ktilde_inv.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int ktildetKtildeInvRank14        = m_Ktildet_Ktilde_inv.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Ktildet_Ktilde_inv.numRowsLocal() = "  << m_Ktildet_Ktilde_inv.numRowsLocal()
                               << ", m_Ktildet_Ktilde_inv.numCols() = "       << m_Ktildet_Ktilde_inv.numCols()
                               << ", m_Ktildet_Ktilde_inv.lnDeterminant() = " << ktildetKtildeInvLnDeterminant
@@ -267,14 +267,14 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
     //********************************************************************************
     m_a_eta_modifier_tilde = ((double) s.m_paper_m) * ((double) (s.m_paper_n_eta - s.m_paper_p_eta)) / 2.;
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_a_eta_modifier_tilde = " << m_a_eta_modifier_tilde
                               << std::endl;
     }
 
     Q_V etaVec_transformed(s.m_simulationModel.etaVec_transformed("Gp.h.003"));
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Zvec_tilde_hat_w.sizeLocal() = "      << m_Zvec_tilde_hat_w.sizeLocal()
                               << ", m_Ktildet_Ktilde_inv.numRowsLocal() = " << m_Ktildet_Ktilde_inv.numRowsLocal()
                               << ", m_Ktildet_Ktilde_inv.numCols() = "      << m_Ktildet_Ktilde_inv.numCols()
@@ -288,14 +288,14 @@ GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfoClas
     m_b_eta_modifier_tilde = scalarProduct(etaVec_transformed,tmpVec1) / 2.;
 
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_b_eta_modifier_tilde = " << m_b_eta_modifier_tilde
                               << std::endl;
     }
 }
 
 template <class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::~GcmSimulationTildeInfoClass()
+GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::~GcmSimulationTildeInfo()
 {
 }
 

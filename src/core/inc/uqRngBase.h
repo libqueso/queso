@@ -38,7 +38,7 @@ namespace QUESO {
     \brief Random Number Generation class.
 */
 
-/*! \class RngBaseClass
+/*! \class RngBase
     \brief Class for random number generation (base class for either GSL or Boost RNG). 
     
     This class is  a “virtual” class of generic random number generator, in order 
@@ -46,20 +46,20 @@ namespace QUESO {
 */
 
 
-class RngBaseClass
+class RngBase
 {
 public:
   
     //! @name Constructor/Destructor methods
   //@{ 
   //! Default Constructor: it should not be used.
-  RngBaseClass();
+  RngBase();
   
   //! Constructor with seed.
-  RngBaseClass(int seed, int worldRank);
+  RngBase(int seed, int worldRank);
 	   
   //! Virtual destructor.
-  virtual ~RngBaseClass();
+  virtual ~RngBase();
   //@}
   
   

@@ -36,31 +36,31 @@ namespace QUESO {
 /*! \file uqScalarFunctionSynchronizer.h
  * \brief Class for synchronizing the calls of scalar functions
  * 
- * \class ScalarFunctionSynchronizerClass
- * \brief A templated class for synchronizing the calls of scalar functions (BaseScalarFunctionClass and derived classes).
+ * \class ScalarFunctionSynchronizer
+ * \brief A templated class for synchronizing the calls of scalar functions (BaseScalarFunction and derived classes).
  *
  * This class creates a synchronization point among processes which call scalar functions. 
  * This means that all processes must reach a point in their code before they can all begin 
  * executing again. */
 
 template <class V, class M>
-class ScalarFunctionSynchronizerClass
+class ScalarFunctionSynchronizer
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  ScalarFunctionSynchronizerClass(const BaseScalarFunctionClass<V,M>& inputFunction,
+  ScalarFunctionSynchronizer(const BaseScalarFunction<V,M>& inputFunction,
                                     const V&                              auxVec);
   
   //! Destructor.
- ~ScalarFunctionSynchronizerClass();
+ ~ScalarFunctionSynchronizer();
   //@}
  
   //! @name Mathematical methods
   //@{  
   //! Access to the domain set of the scalar function which will be synchronized.
-  const VectorSetClass<V,M>& domainSet() const;
+  const VectorSet<V,M>& domainSet() const;
   //@}
   
   //! @name Sync method
@@ -77,39 +77,39 @@ public:
                             double* extraOutput2) const;
   //@}			    
 private:
-  const BaseEnvironmentClass&         m_env;
-  const BaseScalarFunctionClass<V,M>& m_scalarFunction;
-  const BayesianJointPdfClass<V,M>*   m_bayesianJointPdfPtr;
+  const BaseEnvironment&         m_env;
+  const BaseScalarFunction<V,M>& m_scalarFunction;
+  const BayesianJointPdf<V,M>*   m_bayesianJointPdfPtr;
   const V&                              m_auxVec;
 };
 // Default constructor -----------------------------
 template <class V, class M>
-ScalarFunctionSynchronizerClass<V,M>::ScalarFunctionSynchronizerClass(
-  const BaseScalarFunctionClass<V,M>& inputFunction,
+ScalarFunctionSynchronizer<V,M>::ScalarFunctionSynchronizer(
+  const BaseScalarFunction<V,M>& inputFunction,
   const V&                              auxVec)
   :
   m_env                (inputFunction.domainSet().env()),
   m_scalarFunction     (inputFunction),
-  m_bayesianJointPdfPtr(dynamic_cast<const BayesianJointPdfClass<V,M>* >(&m_scalarFunction)),
+  m_bayesianJointPdfPtr(dynamic_cast<const BayesianJointPdf<V,M>* >(&m_scalarFunction)),
   m_auxVec             (auxVec)
 {
 }
 // Destructor ---------------------------------------
 template <class V, class M>
-ScalarFunctionSynchronizerClass<V,M>::~ScalarFunctionSynchronizerClass()
+ScalarFunctionSynchronizer<V,M>::~ScalarFunctionSynchronizer()
 {
 }
 // Math methods -------------------------------------
 template<class V,class M>
-const VectorSetClass<V,M>&
-ScalarFunctionSynchronizerClass<V,M>::domainSet() const
+const VectorSet<V,M>&
+ScalarFunctionSynchronizer<V,M>::domainSet() const
 {
   return m_scalarFunction.domainSet();
 }
 // Sync methods -------------------------------------
 template <class V,class M>
 double
-ScalarFunctionSynchronizerClass<V,M>::callFunction(
+ScalarFunctionSynchronizer<V,M>::callFunction(
   const V* vecValues,
   const V* vecDirection,
         V* gradVector,
@@ -154,15 +154,15 @@ ScalarFunctionSynchronizerClass<V,M>::callFunction(
         if (internalEffect    != NULL) bufferChar[4] = '1';
       }
 
-      m_env.subComm().syncPrintDebugMsg("In ScalarFunctionSynchronizerClass<V,M>::callFunction(), just before char Bcast()",3,3000000);
+      m_env.subComm().syncPrintDebugMsg("In ScalarFunctionSynchronizer<V,M>::callFunction(), just before char Bcast()",3,3000000);
       //if (m_env.subId() != 0) while (true) sleep(1);
 
       int count = (int) bufferChar.size();
       m_env.subComm().Bcast((void *) &bufferChar[0], count, RawValue_MPI_CHAR, 0,
-                            "ScalarFunctionSynchronizerClass<V,M>::callFunction()",
+                            "ScalarFunctionSynchronizer<V,M>::callFunction()",
                             "failed broadcast 1 of 3");
 
-      m_env.subComm().syncPrintDebugMsg("In ScalarFunctionSynchronizerClass<V,M>::callFunction(), just after char Bcast()",3,3000000);
+      m_env.subComm().syncPrintDebugMsg("In ScalarFunctionSynchronizer<V,M>::callFunction(), just after char Bcast()",3,3000000);
       //std::cout << "char contents = " << bufferChar[0] << " " << bufferChar[1] << " " << bufferChar[2] << " " << bufferChar[3] << " " << bufferChar[4]
       //          << std::endl;
 
@@ -183,7 +183,7 @@ ScalarFunctionSynchronizerClass<V,M>::callFunction(
         //m_env.fullComm().Barrier();
         //for (int i = 0; i < m_env.fullComm().NumProc(); ++i) {
         //  if (i == m_env.fullRank()) {
-        //    std::cout << " In ScalarFunctionSynchronizerClass<V,M>::callFunction(), just before double Bcast()"
+        //    std::cout << " In ScalarFunctionSynchronizer<V,M>::callFunction(), just before double Bcast()"
         //              << ": fullRank "       << m_env.fullRank()
         //              << ", subEnvironment " << m_env.subId()
         //              << ", subRank "        << m_env.subRank()
@@ -206,7 +206,7 @@ ScalarFunctionSynchronizerClass<V,M>::callFunction(
 
         count = (int) bufferDouble.size();
         m_env.subComm().Bcast((void *) &bufferDouble[0], count, RawValue_MPI_DOUBLE, 0,
-                              "ScalarFunctionSynchronizerClass<V,M>::callFunction()",
+                              "ScalarFunctionSynchronizer<V,M>::callFunction()",
                               "failed broadcast 2 of 3");
 
         if (m_env.subRank() != 0) {
@@ -232,7 +232,7 @@ ScalarFunctionSynchronizerClass<V,M>::callFunction(
 
           count = (int) bufferDouble.size();
           m_env.subComm().Bcast((void *) &bufferDouble[0], count, RawValue_MPI_DOUBLE, 0,
-                                "ScalarFunctionSynchronizerClass<V,M>::callFunction()",
+                                "ScalarFunctionSynchronizer<V,M>::callFunction()",
                                 "failed broadcast 3 of 3");
 
           if (m_env.subRank() != 0) {
@@ -253,7 +253,7 @@ ScalarFunctionSynchronizerClass<V,M>::callFunction(
           if (bufferChar[4] == '1') internalEffect  = new V(m_auxVec);
         }
 
-        m_env.subComm().syncPrintDebugMsg("In ScalarFunctionSynchronizerClass<V,M>::callFunction(), just before actual lnValue()",3,3000000);
+        m_env.subComm().syncPrintDebugMsg("In ScalarFunctionSynchronizer<V,M>::callFunction(), just before actual lnValue()",3,3000000);
         m_env.subComm().Barrier();
         result = m_scalarFunction.lnValue(*internalValues,   // input
                                           internalDirection, // input
@@ -293,7 +293,7 @@ ScalarFunctionSynchronizerClass<V,M>::callFunction(
   else {
     UQ_FATAL_TEST_MACRO(vecValues == NULL,
                         m_env.worldRank(),
-                        "ScalarFunctionSynchronizerClass<V,M>::callFunction()",
+                        "ScalarFunctionSynchronizer<V,M>::callFunction()",
                         "vecValues should not be NULL");
 
     m_env.subComm().Barrier();

@@ -10,18 +10,18 @@
 
 using namespace QUESO;
 
-BOOST_AUTO_TEST_CASE( test_uqGaussianVectorPdfClass )
+BOOST_AUTO_TEST_CASE( test_uqGaussianVectorPdf )
 {
   // Initialize
   MPI_Init(NULL, NULL);
-  uqFullEnvironmentClass env;
-  uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> domainSpace(env, "test_space", 2, NULL);
+  uqFullEnvironment env;
+  uqVectorSpace<uqGslVector, uqGslMatrix> domainSpace(env, "test_space", 2, NULL);
   uqMap eMap(2, 0, env.comm());
 
-  uqGslVectorClass domainMinVal(env, eMap, -1e30);
-  uqGslVectorClass domainMaxVal(env, eMap,  1e30);
+  uqGslVector domainMinVal(env, eMap, -1e30);
+  uqGslVector domainMaxVal(env, eMap,  1e30);
 
-  uqGaussianVectorPdfClass<uqGslVectorClass, uqGslMatrixClass>* gaussianPdf;
+  uqGaussianVectorPdf<uqGslVector, uqGslMatrix>* gaussianPdf;
   double tolClose = 1e-13, tolSmall = 1e-16;
   
   //***********************************************************************
@@ -30,11 +30,11 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorPdfClass )
   //***********************************************************************
 
   // mean = [0; 0], var = [1; 1]
-  uqGslVectorClass expectedVal(env, eMap, 0.0);
-  uqGslVectorClass varianceVal(env, eMap, 1.0);
-  uqGslVectorClass testValues(env, eMap, 0.0);
+  uqGslVector expectedVal(env, eMap, 0.0);
+  uqGslVector varianceVal(env, eMap, 1.0);
+  uqGslVector testValues(env, eMap, 0.0);
 
-  gaussianPdf = new uqGaussianVectorPdfClass<uqGslVectorClass, uqGslMatrixClass>("test_pdf", domainSpace, domainMinVal, 
+  gaussianPdf = new uqGaussianVectorPdf<uqGslVector, uqGslMatrix>("test_pdf", domainSpace, domainMinVal, 
 										 domainMaxVal, expectedVal, varianceVal);
 
   testValues[0] = testValues[1] = 0.0;
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorPdfClass )
   // mean = [0; 0], var = [0.25; 0.5]
   varianceVal[0] = 0.25; varianceVal[1] = 0.5;
 
-  gaussianPdf = new uqGaussianVectorPdfClass<uqGslVectorClass, uqGslMatrixClass>("test_pdf", domainSpace, domainMinVal, 
+  gaussianPdf = new uqGaussianVectorPdf<uqGslVector, uqGslMatrix>("test_pdf", domainSpace, domainMinVal, 
 										 domainMaxVal, expectedVal, varianceVal);
   
   testValues[0] = testValues[1] = 0.0;
@@ -168,9 +168,9 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorPdfClass )
   // mean = [0; 0], covar = [1, 0; 0, 1], i.e. same as first case for diagonal matrices
   expectedVal[0] = expectedVal[1] = 0.0;
 
-  uqGslMatrixClass covMatrix(env, eMap, 1.0);  // actually diagonal
+  uqGslMatrix covMatrix(env, eMap, 1.0);  // actually diagonal
 
-  gaussianPdf = new uqGaussianVectorPdfClass<uqGslVectorClass, uqGslMatrixClass>("test_pdf", domainSpace, domainMinVal, 
+  gaussianPdf = new uqGaussianVectorPdf<uqGslVector, uqGslMatrix>("test_pdf", domainSpace, domainMinVal, 
 										 domainMaxVal, expectedVal, covMatrix);
 
   testValues[0] = testValues[1] = 0.0;
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorPdfClass )
   covMatrix(0,0) = 2.0; covMatrix(0,1) = 1.0;
   covMatrix(1,0) = 1.0; covMatrix(1,1) = 2.0;
 
-//   gaussianPdf = new uqGaussianVectorPdfClass<uqGslVectorClass, uqGslMatrixClass>("test_pdf", domainSpace, domainMinVal, 
+//   gaussianPdf = new uqGaussianVectorPdf<uqGslVector, uqGslMatrix>("test_pdf", domainSpace, domainMinVal, 
 // 										 domainMaxVal, expectedVal, covMatrix);
 
   gaussianPdf->updateCovMatrix(covMatrix);

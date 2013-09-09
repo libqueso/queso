@@ -32,18 +32,18 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-class GcmJointTildeInfoClass
+class GcmJointTildeInfo
 {
 public:
-  GcmJointTildeInfoClass(const GpmsaComputerModelOptionsClass&                     gcmOptionsObj,
-                           const GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>&    e,
-                           const GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jj);
- ~GcmJointTildeInfoClass();
+  GcmJointTildeInfo(const GpmsaComputerModelOptions&                     gcmOptionsObj,
+                           const GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>&    e,
+                           const GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jj);
+ ~GcmJointTildeInfo();
 
-  const BaseEnvironmentClass&     m_env;
+  const BaseEnvironment&     m_env;
         D_M                         m_Bmat_tilde;
         unsigned int                m_Bmat_tilde_rank;
-        VectorSpaceClass<D_V,D_M> m_vu_tilde_space;
+        VectorSpace<D_V,D_M> m_vu_tilde_space;
         D_M                         m_Lbmat;
         D_M                         m_Btildet_Wy_Btilde;
         D_M                         m_Btildet_Wy_Btilde_inv;
@@ -53,10 +53,10 @@ public:
 };
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-  GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointTildeInfoClass(
-  const GpmsaComputerModelOptionsClass&                     gcmOptionsObj,
-  const GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>&    e,
-  const GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jj)
+  GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointTildeInfo(
+  const GpmsaComputerModelOptions&                     gcmOptionsObj,
+  const GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>&    e,
+  const GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& jj)
   :
   m_env                  (jj.m_env),
   m_Bmat_tilde           (m_env,e.m_y_space.map(),jj.m_Bmat_rank),
@@ -82,7 +82,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
       unsigned int buMatRank   = matbU.rank(0.,1.e-8 ); // todo: should be an option
       unsigned int buMatRank14 = matbU.rank(0.,1.e-14);
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": matbU.numRowsLocal() = "  << matbU.numRowsLocal()
                                 << ", matbU.numCols() = "       << matbU.numCols()
                                 << ", matbU.rank(0.,1.e-8) = "  << buMatRank
@@ -103,7 +103,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
         }
         matbUcheck.setPrintHorizontally(false);
         if (m_env.subDisplayFile()) {
-          *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+          *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                   << ": m_Bmat_with_permut->numRowsLocal() = " << jj.m_Bmat_with_permut->numRowsLocal()
                                   << ", m_Bmat_with_permut->numCols() = "      << jj.m_Bmat_with_permut->numCols()
                                   << ", m_Bmat_rank = "                       << jj.m_Bmat_rank
@@ -130,7 +130,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
                                        tmpSet);
       }
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": m_Bmat_tilde computed (1)"
                                 << std::endl;
       }
@@ -144,7 +144,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
       unsigned int bvMatRank   = matbV.rank(0.,1.e-8); // todo: should be an option
       unsigned int bvMatRank14 = matbV.rank(0.,1.e-14);
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": matbV.numRowsLocal() = "  << matbV.numRowsLocal()
                                 << ", matbV.numCols() = "       << matbV.numCols()
                                 << ", matbV.rank(0.,1.e-8) = "  << bvMatRank
@@ -165,7 +165,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
         }
         matbVcheck.setPrintHorizontally(false);
         if (m_env.subDisplayFile()) {
-          *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+          *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                   << ": m_Bmat_with_permut->numRowsLocal() = " << jj.m_Bmat_with_permut->numRowsLocal()
                                   << ", m_Bmat_with_permut->numCols() = "      << jj.m_Bmat_with_permut->numCols()
                                   << ", m_Bmat_rank = "                       << jj.m_Bmat_rank
@@ -192,14 +192,14 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
                                        tmpSet);
       }
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": m_Bmat_tilde computed (2)"
                                 << std::endl;
       }
     }
 
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished forming 'm_Bmat_tilde'"
                               << ", m_Bmat_tilde.numRowsLocal() = " << m_Bmat_tilde.numRowsLocal()
                               << ", m_Bmat_tilde.numCols() = "      << m_Bmat_tilde.numCols()
@@ -214,7 +214,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
                                 tmpSet);
     }
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Lbmat_tilde computed"
                               << std::endl;
     }
@@ -232,7 +232,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
       Btildett -= m_Bmat_tilde;
       double btDiffNorm = Btildett.normFrob();
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": ||Btildett - Btilde||_2 = " << btDiffNorm
                                 << std::endl;
       }
@@ -252,7 +252,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
     }
 
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Bmat_tilde.numRowsLocal() = "  << m_Bmat_tilde.numRowsLocal()
                               << ", m_Bmat_tilde.numCols() = "       << m_Bmat_tilde.numCols()
                               << ", m_Bmat_tilde.rank(0.,1.e-8) = "  << m_Bmat_tilde_rank
@@ -261,7 +261,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
     }
     UQ_FATAL_TEST_MACRO(m_Bmat_tilde_rank != std::min(m_Bmat_tilde.numRowsGlobal(),m_Bmat_tilde.numCols()),
                         m_env.worldRank(),
-                        "GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                        "GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                         "'m_Bmat_tilde' does not have a proper rank");
 
     //******************************************************************************
@@ -269,7 +269,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
     //******************************************************************************
     m_Btildet_Wy_Btilde = Btildet * (*e.m_Wmat_transformed_y * m_Bmat_tilde); // todo: add 1.e-4 to diagonal
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'm_Btildet_Wy_Btilde'"
                               << std::endl;
     }
@@ -280,7 +280,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
                                             tmpSet);
     }
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Btildet_Wy_Btilde computed"
                               << std::endl;
     }
@@ -289,7 +289,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
     unsigned int btildetWyBtildeRank          = m_Btildet_Wy_Btilde.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int btildetWyBtildeRank14        = m_Btildet_Wy_Btilde.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Btildet_Wy_Btilde.numRowsLocal() = "  << m_Btildet_Wy_Btilde.numRowsLocal()
                               << ", m_Btildet_Wy_Btilde.numCols() = "       << m_Btildet_Wy_Btilde.numCols()
                               << ", m_Btildet_Wy_Btilde.lnDeterminant() = " << btildetWyBtildeLnDeterminant
@@ -300,7 +300,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
 
     m_Btildet_Wy_Btilde_inv = m_Btildet_Wy_Btilde.inverse(); // todo: add 1.e-6 to diagonal
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'm_Btildet_Wy_Btilde_inv'"
                               << ", m_Btildet_Wy_Btilde_inv.lnDeterminant() = " << m_Btildet_Wy_Btilde_inv.lnDeterminant()
                               << std::endl;
@@ -312,7 +312,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
                                                 tmpSet);
     }
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Btildet_Wy_Btilde_inv computed"
                               << std::endl;
     }
@@ -321,7 +321,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
     unsigned int btildetWyBtildeInvRank          = m_Btildet_Wy_Btilde_inv.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int btildetWyBtildeInvRank14        = m_Btildet_Wy_Btilde_inv.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Btildet_Wy_Btilde_inv.numRowsLocal() = "  << m_Btildet_Wy_Btilde_inv.numRowsLocal()
                               << ", m_Btildet_Wy_Btilde_inv.numCols() = "       << m_Btildet_Wy_Btilde_inv.numCols()
                               << ": m_Btildet_Wy_Btilde_inv.lnDeterminant() = " << btildetWyBtildeInvLnDeterminant
@@ -335,14 +335,14 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
     //********************************************************************************
     m_a_y_modifier_tilde   = ((double) (e.m_paper_n_y - m_Bmat_tilde_rank)) / 2.;
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_a_y_modifier_tilde = " << m_a_y_modifier_tilde
                               << std::endl;
     }
 
     D_V yVec_transformed(e.m_experimentStorage.yVec_transformed());
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Zvec_tilde_hat_vu.sizeLocal() = "        << m_Zvec_tilde_hat_vu.sizeLocal()
                               << ", m_Btildet_Wy_Btilde_inv.numRowsLocal() = " << m_Btildet_Wy_Btilde_inv.numRowsLocal()
                               << ", m_Btildet_Wy_Btilde_inv.numCols() = "      << m_Btildet_Wy_Btilde_inv.numCols()
@@ -359,20 +359,20 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
     m_b_y_modifier_tilde = scalarProduct(yVec_transformed,tmpVec2) / 2.;
 
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_b_y_modifier_tilde = " << m_b_y_modifier_tilde
                               << std::endl;
     }
 
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'tilde' exponent modifiers"
                               << std::endl;
     }
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~GcmJointTildeInfoClass()
+GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~GcmJointTildeInfo()
 {
 }
 

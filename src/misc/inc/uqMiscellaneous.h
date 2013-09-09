@@ -56,7 +56,7 @@ int          MiscReadCharsAndDoubleFromFile (std::ifstream&            ifs,
                                                bool&                     endOfLineAchieved);
 double       MiscGammar                     (double                    a,
                                                double                    b,
-                                               const RngBaseClass*     rngObject);
+                                               const RngBase*     rngObject);
 double       MiscGetEllapsedSeconds         (struct timeval*           timeval0);
 double       MiscHammingWindow              (unsigned int              N,
                                                unsigned int              j);
@@ -77,7 +77,7 @@ template <class T>
 bool
 MiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not' const
                                   double                acceptableTreshold,
-                                  const MpiCommClass& comm,
+                                  const MpiComm& comm,
                                   const char*           whereString)
 {
   // Filter out those nodes that should not participate
@@ -165,7 +165,7 @@ template <class V1,class V2>
 void
 MiscCheckTheParallelEnvironment(const V1& vec1, const V2& vec2)
 {
-  const BaseEnvironmentClass& env = vec1.env();
+  const BaseEnvironment& env = vec1.env();
 
   if (env.numSubEnvironments() == (unsigned int) env.fullComm().NumProc()) {
     UQ_FATAL_TEST_MACRO(env.subRank() != 0,

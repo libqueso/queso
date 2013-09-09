@@ -38,11 +38,11 @@ int main(int argc, char* argv[])
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
 #endif
-  QUESO::FullEnvironmentClass* env =
+  QUESO::FullEnvironment* env =
 #ifdef QUESO_HAS_MPI
-    new QUESO::FullEnvironmentClass(MPI_COMM_WORLD,"input","",NULL);
+    new QUESO::FullEnvironment(MPI_COMM_WORLD,"input","",NULL);
 #else
-    new QUESO::FullEnvironmentClass(0,"input","",NULL);
+    new QUESO::FullEnvironment(0,"input","",NULL);
 #endif
 
   return_flag = actualChecking(env);
@@ -59,21 +59,21 @@ int main(int argc, char* argv[])
 /* Separated this out into a function because we want
    the destructor for paramSpace to be called before
    we delete env in main. */
-int actualChecking(const QUESO::FullEnvironmentClass* env)
+int actualChecking(const QUESO::FullEnvironment* env)
 {
   int return_flag = 0;
 
   // Instantiate the parameter space
-  QUESO::VectorSpaceClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::VectorSpace<QUESO::GslVector,QUESO::GslMatrix>
     paramSpace( (*env), "param_", 2, NULL);
 
   // Set matrix values
-  QUESO::GslMatrixClass* Matrix = paramSpace.newMatrix();
+  QUESO::GslMatrix* Matrix = paramSpace.newMatrix();
   (*Matrix)(0,0) = 4.; (*Matrix)(0,1) = 3.;
   (*Matrix)(1,0) = 5.; (*Matrix)(1,1) = 7.;
 
   // Conduct tests
-  QUESO::GslVectorClass row(Matrix->getRow(0));
+  QUESO::GslVector row(Matrix->getRow(0));
   if( row[0] != (*Matrix)(0,0) || row[1] != (*Matrix)(0,1) )
     {
       return_flag = 1;
@@ -85,7 +85,7 @@ int actualChecking(const QUESO::FullEnvironmentClass* env)
       return_flag = 1;
     }
 
-  QUESO::GslVectorClass column(Matrix->getColumn(0));
+  QUESO::GslVector column(Matrix->getColumn(0));
   if( column[0] != (*Matrix)(0,0) || column[1] != (*Matrix)(1,0) )
     {
       return_flag = 1;

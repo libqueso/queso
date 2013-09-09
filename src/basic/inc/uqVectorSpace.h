@@ -38,7 +38,7 @@
 namespace QUESO {
 
 /*!
- * \class VectorSpaceClass
+ * \class VectorSpace
  * \brief A class representing a vector space.
  *
  * Template classes \c V and \c M are to represent a vector class and a matrix class 
@@ -46,37 +46,37 @@ namespace QUESO {
  * implemented using either GSL or Trilinos-Teuchos libraries. */
 
 template <class V, class M>
-class VectorSpaceClass : public VectorSetClass<V,M>
+class VectorSpace : public VectorSet<V,M>
 {
 public:
   //! @name Constructor/Destructor methods
   //@{
 
   //! Default constructor
-  VectorSpaceClass();
+  VectorSpace();
 
   //! Shaped constructor.
   /*! Construct a vector space with QUESO environment \c env and of dimension \c dimGlobalValue.*/
-  VectorSpaceClass(const BaseEnvironmentClass&   env,
+  VectorSpace(const BaseEnvironment&   env,
                      const char*                     prefix,
                      unsigned int                    dimGlobalValue,
                      const std::vector<std::string>* componentsNamesVec);
   
   //! Copy constructor.
-  VectorSpaceClass(const VectorSpaceClass<V,M>&  aux);
+  VectorSpace(const VectorSpace<V,M>&  aux);
 
   //! Destructor
-  ~VectorSpaceClass();
+  ~VectorSpace();
   //@}
 
   
   //! @name Attribute methods
   //@{
   //! Environment.
-  const BaseEnvironmentClass&  env                     () const;
+  const BaseEnvironment&  env                     () const;
   
   //! Map.
-  const MapClass&              map                     () const;
+  const Map&              map                     () const;
   
   //! Returns total number of processes.
   unsigned int                   numOfProcsForStorage    () const;
@@ -92,22 +92,22 @@ public:
   //! Returns a vector filled with zeros
   const V&                       zeroVector              () const;
   
-  //! Creates an empty vector of size given by MapClass& map. See template specialization.
+  //! Creates an empty vector of size given by Map& map. See template specialization.
   V*                             newVector               () const; // See template specialization
         
-  //! Creates a vector of size given by MapClass& map and all values give by \c value. See template specialization
+  //! Creates a vector of size given by Map& map and all values give by \c value. See template specialization
   V*                             newVector               (double value) const; // See template specialization
         
   //! Creates vector as a copy of another.
   V*                             newVector               (const V& v) const;
 	
-  //! Creates an empty matrix of size given by MapClass& map. See template specialization.	
+  //! Creates an empty matrix of size given by Map& map. See template specialization.	
   M*                             newMatrix               () const; // See template specialization
   
   //! Creates a diagonal matrix with the elements and size of vector \c v.
   M*                             newDiagMatrix           (const V& v) const;
   
-  //! Creates a diagonal matrix with the elements \c diagValue and size given by MapClass& map. See template specialization.	
+  //! Creates a diagonal matrix with the elements \c diagValue and size given by Map& map. See template specialization.	
   M*                             newDiagMatrix           (double diagValue) const; // See template specialization
   
   //! Creates a diagonal matrix conditionally to values from vector \c varVec, guaranteeing that its values are neither 0, NAN nor INFINITY.
@@ -116,14 +116,14 @@ public:
   M*                             newProposalMatrix       (const V* varVec, const V* auxVec) const;
 
   //! Accessor method to \c this. Vector space to which \c this vector set belongs to.
-  /*! It is virtual in the base class 'VectorSetClass'*/
-  const VectorSpaceClass<V,M>&       vectorSpace             () const; // 
+  /*! It is virtual in the base class 'VectorSet'*/
+  const VectorSpace<V,M>&       vectorSpace             () const; // 
   
   //! Whether \this vector contains vector \c vec.
   bool                           contains                (const V& vec) const;
 
-  //! Access to private attribute m_componentsNamesArray, which is an instance of DistArrayClass.
-  const DistArrayClass<std::string>* componentsNamesArray    () const;
+  //! Access to private attribute m_componentsNamesArray, which is an instance of DistArray.
+  const DistArray<std::string>* componentsNamesArray    () const;
   
   //! Access to private attribute m_componentsNamesVec.
   const std::vector<std::string>*      componentsNamesVec      () const;
@@ -142,26 +142,26 @@ public:
   //@}
 protected:
   //! Creates a new map. See template specialization.
-  MapClass*                    newMap                  (); // See template specialization
+  Map*                    newMap                  (); // See template specialization
 
-  using VectorSetClass<V,M>::m_env;
-  using VectorSetClass<V,M>::m_prefix;
-  using VectorSetClass<V,M>::m_volume;
+  using VectorSet<V,M>::m_env;
+  using VectorSet<V,M>::m_prefix;
+  using VectorSet<V,M>::m_volume;
 
   //! Global dimension.
   unsigned int                   m_dimGlobal;
   
   //! Map.
-  const MapClass*              m_map;
+  const Map*              m_map;
   
   //! Local dimension (number of elements owned by the calling processor.).
   unsigned int                   m_dimLocal;
   
-  //! Array of strings of the type DistArrayClass to store the names of the components
-  DistArrayClass<std::string>* m_componentsNamesArray;
+  //! Array of strings of the type DistArray to store the names of the components
+  DistArray<std::string>* m_componentsNamesArray;
   
-  //! Vector of strings of the type DistArrayClass to store the names of the components
-  DistArrayClass<std::string>* m_componentsNamesVec;
+  //! Vector of strings of the type DistArray to store the names of the components
+  DistArray<std::string>* m_componentsNamesVec;
   
   //! Empty string for the components names.
   std::string                    m_emptyComponentName;
@@ -174,24 +174,24 @@ protected:
 // Constructor/Destructor methods ------------------------
 // Default constructor -----------------------------------
 template <class V, class M>
-VectorSpaceClass<V,M>::VectorSpaceClass()
+VectorSpace<V,M>::VectorSpace()
   :
-  VectorSetClass<V,M>()
+  VectorSet<V,M>()
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
-                      "VectorSpaceClass<V,M>::constructor(), default",
+                      "VectorSpace<V,M>::constructor(), default",
                       "should not be used by user");
 }
 // Shaped constructor -----------------------------------
 template <class V, class M>
-VectorSpaceClass<V,M>::VectorSpaceClass(
-  const BaseEnvironmentClass&   env,
+VectorSpace<V,M>::VectorSpace(
+  const BaseEnvironment&   env,
   const char*                     prefix,
         unsigned int              dimGlobalValue,
   const std::vector<std::string>* componentsNamesVec)
   :
-  VectorSetClass<V,M> (env,((std::string)(prefix) + "space_").c_str(),INFINITY),
+  VectorSet<V,M> (env,((std::string)(prefix) + "space_").c_str(),INFINITY),
   m_dimGlobal           (dimGlobalValue),
   m_map                 (newMap()),
   m_dimLocal            (m_map->NumMyElements()),
@@ -201,7 +201,7 @@ VectorSpaceClass<V,M>::VectorSpaceClass(
   m_zeroVector          (new V(m_env,*m_map))
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering VectorSpaceClass<V,M>::constructor(1)"
+    *m_env.subDisplayFile() << "Entering VectorSpace<V,M>::constructor(1)"
                             << ", with m_prefix = "                << m_prefix
                             << "\n  m_zeroVector->sizeGlobal() = " << m_zeroVector->sizeGlobal()
                             << "\n  m_dimGlobal                = " << m_dimGlobal
@@ -213,7 +213,7 @@ VectorSpaceClass<V,M>::VectorSpaceClass(
   }
  
   if (m_zeroVector->sizeGlobal() != m_dimGlobal) {
-    std::cerr << "In VectorSpaceClass<V,M>::constructor(1)"
+    std::cerr << "In VectorSpace<V,M>::constructor(1)"
               << ", with m_prefix = " << m_prefix
               << ": m_zeroVector->sizeGlobal() = " << m_zeroVector->sizeGlobal()
               << ", m_dimGlobal = "                << m_dimGlobal
@@ -221,11 +221,11 @@ VectorSpaceClass<V,M>::VectorSpaceClass(
   }
   UQ_FATAL_TEST_MACRO((m_zeroVector->sizeGlobal() != m_dimGlobal),
                       m_env.worldRank(),
-                      "VectorSpaceClass<V,M>::constructor(1)",
+                      "VectorSpace<V,M>::constructor(1)",
                       "global size of 'm_zeroVector' is not equal to m_dimGlobal");
 
   if (m_zeroVector->sizeLocal() != m_dimLocal) {
-    std::cerr << "In VectorSpaceClass<V,M>::constructor(1)"
+    std::cerr << "In VectorSpace<V,M>::constructor(1)"
               << ", with m_prefix = " << m_prefix
               << ": m_zeroVector->sizeLocal() = " << m_zeroVector->sizeLocal()
               << ", m_dimLocal = "                << m_dimLocal
@@ -233,16 +233,16 @@ VectorSpaceClass<V,M>::VectorSpaceClass(
   }
   UQ_FATAL_TEST_MACRO((m_zeroVector->sizeLocal() != m_dimLocal),
                       m_env.worldRank(),
-                      "VectorSpaceClass<V,M>::constructor(1)",
+                      "VectorSpace<V,M>::constructor(1)",
                       "local size of 'm_zeroVector' is not equal to m_dimLocal");
 
   if (componentsNamesVec != NULL) {
     UQ_FATAL_TEST_MACRO((componentsNamesVec->size() != (size_t) m_dimGlobal),
                         m_env.worldRank(),
-                        "VectorSpaceClass<V,M>::constructor(1)",
+                        "VectorSpace<V,M>::constructor(1)",
                         "global size of 'componentsNames' is not equal to m_dimGlobal");
 
-    m_componentsNamesArray = new DistArrayClass<std::string>(*m_map,1);
+    m_componentsNamesArray = new DistArray<std::string>(*m_map,1);
     unsigned int myFirstId = this->globalIdOfFirstComponent();
     for (unsigned int i = 0; i < m_dimLocal; ++i) {
       (*m_componentsNamesArray)(i,0) = (*componentsNamesVec)[myFirstId+i];
@@ -250,25 +250,25 @@ VectorSpaceClass<V,M>::VectorSpaceClass(
 
     UQ_FATAL_TEST_MACRO((m_componentsNamesArray->GlobalLength() != (int) m_dimGlobal),
                         m_env.worldRank(),
-                        "VectorSpaceClass<V,M>::constructor(1)",
+                        "VectorSpace<V,M>::constructor(1)",
                         "global size of 'm_componentsNamesArray' is not equal to m_dimGlobal");
     UQ_FATAL_TEST_MACRO((m_componentsNamesArray->MyLength() != (int) m_dimLocal),
                         m_env.worldRank(),
-                        "VectorSpaceClass<V,M>::constructor(1)",
+                        "VectorSpace<V,M>::constructor(1)",
                         "local size of 'm_componentsNamesArray' is not equal to m_dimLocal");
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving VectorSpaceClass<V,M>::constructor(1)"
+    *m_env.subDisplayFile() << "Leaving VectorSpace<V,M>::constructor(1)"
                             << ", with m_prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Copy constructor --------------------------------------
 template <class V, class M>
-VectorSpaceClass<V,M>::VectorSpaceClass(const VectorSpaceClass<V,M>& aux)
+VectorSpace<V,M>::VectorSpace(const VectorSpace<V,M>& aux)
   :
-  VectorSetClass<V,M> (aux.env(),((std::string)(aux.m_prefix)).c_str(),INFINITY),
+  VectorSet<V,M> (aux.env(),((std::string)(aux.m_prefix)).c_str(),INFINITY),
   m_dimGlobal           (aux.m_dimGlobal),
   m_map                 (newMap()),
   m_dimLocal            (m_map->NumMyElements()),
@@ -278,27 +278,27 @@ VectorSpaceClass<V,M>::VectorSpaceClass(const VectorSpaceClass<V,M>& aux)
   m_zeroVector          (new V(m_env,*m_map))
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering VectorSpaceClass<V,M>::constructor(2)"
+    *m_env.subDisplayFile() << "Entering VectorSpace<V,M>::constructor(2)"
                             << ": aux.m_componentsNamesArray = " << aux.m_componentsNamesArray
                             << ", aux.m_componentsNamesVec = "   << aux.m_componentsNamesVec
                             << std::endl;
   }
 
   if (aux.m_componentsNamesArray != NULL) {
-    m_componentsNamesArray = new DistArrayClass<std::string>(*(aux.m_componentsNamesArray));
+    m_componentsNamesArray = new DistArray<std::string>(*(aux.m_componentsNamesArray));
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving VectorSpaceClass<V,M>::constructor(2)"
+    *m_env.subDisplayFile() << "Leaving VectorSpace<V,M>::constructor(2)"
                             << std::endl;
   }
 }
 // Destructor --------------------------------------------
 template <class V, class M>
-VectorSpaceClass<V,M>::~VectorSpaceClass()
+VectorSpace<V,M>::~VectorSpace()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering VectorSpaceClass<V,M>::destructor()"
+    *m_env.subDisplayFile() << "Entering VectorSpace<V,M>::destructor()"
                             << std::endl;
   }
 
@@ -308,7 +308,7 @@ VectorSpaceClass<V,M>::~VectorSpaceClass()
   if (m_map                  != NULL) delete m_map;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving VectorSpaceClass<V,M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving VectorSpace<V,M>::destructor()"
                             << std::endl;
   }
 }
@@ -316,47 +316,47 @@ VectorSpaceClass<V,M>::~VectorSpaceClass()
 // -------------------------------------------------------
 // Attribute methods--------------------------------------
 template <class V, class M>
-const BaseEnvironmentClass&
-VectorSpaceClass<V,M>::env() const
+const BaseEnvironment&
+VectorSpace<V,M>::env() const
 {
   return m_env;
 }
 // -------------------------------------------------------
 template <class V, class M>
-const MapClass&
-VectorSpaceClass<V,M>::map() const
+const Map&
+VectorSpace<V,M>::map() const
 {
   UQ_FATAL_TEST_MACRO(m_map == NULL,
                       m_env.worldRank(),
-                      "VectorSpaceClass<V,M>::map()",
+                      "VectorSpace<V,M>::map()",
                       "m_map is still NULL");
   return *m_map;
 }
 // -------------------------------------------------------
 template <class V, class M>
 unsigned int
-VectorSpaceClass<V,M>::numOfProcsForStorage() const
+VectorSpace<V,M>::numOfProcsForStorage() const
 {
   return m_map->Comm().NumProc();
 }
 // -------------------------------------------------------
 template <class V, class M>
 unsigned int
-VectorSpaceClass<V,M>::dimLocal() const
+VectorSpace<V,M>::dimLocal() const
 {
   return m_dimLocal;
 }
 // -------------------------------------------------------
 template <class V, class M>
 unsigned int
-VectorSpaceClass<V,M>::dimGlobal() const
+VectorSpace<V,M>::dimGlobal() const
 {
   return m_dimGlobal;
 }
 // -------------------------------------------------------
 template <class V, class M>
 unsigned int
-VectorSpaceClass<V,M>::globalIdOfFirstComponent() const
+VectorSpace<V,M>::globalIdOfFirstComponent() const
 {
   return m_map->MinMyGID();
 }
@@ -364,18 +364,18 @@ VectorSpaceClass<V,M>::globalIdOfFirstComponent() const
 
 template<class V, class M>
 const V&
-VectorSpaceClass<V,M>::zeroVector() const
+VectorSpace<V,M>::zeroVector() const
 {
   UQ_FATAL_TEST_MACRO(m_zeroVector == NULL,
                       m_env.worldRank(),
-                      "VectorSpaceClass<V,M>::zeroVector()",
+                      "VectorSpace<V,M>::zeroVector()",
                       "m_zeroVector is still NULL");
   return *m_zeroVector;
 }
 // -------------------------------------------------------
 template <class V, class M>
 V*
-VectorSpaceClass<V,M>::newVector(const V& v) const
+VectorSpace<V,M>::newVector(const V& v) const
 {
   if (v.sizeGlobal() != m_dimGlobal) return NULL;
   if (v.sizeLocal () != m_dimLocal ) return NULL;
@@ -385,7 +385,7 @@ VectorSpaceClass<V,M>::newVector(const V& v) const
 
 template <class V, class M>
 M*
-VectorSpaceClass<V,M>::newDiagMatrix(const V& v) const
+VectorSpace<V,M>::newDiagMatrix(const V& v) const
 {
   if (v.sizeGlobal() != m_dimGlobal) return NULL;
   if (v.sizeLocal () != m_dimLocal ) return NULL;
@@ -395,7 +395,7 @@ VectorSpaceClass<V,M>::newDiagMatrix(const V& v) const
 // -------------------------------------------------------
 template <class V, class M>
 M*
-VectorSpaceClass<V,M>::newProposalMatrix(
+VectorSpace<V,M>::newProposalMatrix(
   const V* varVec,
   const V* auxVec) const
 {
@@ -404,7 +404,7 @@ VectorSpaceClass<V,M>::newProposalMatrix(
     double variance = INFINITY;
     if (varVec) variance = (*varVec)[i];
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In VectorSpaceClass<V,M>::newProposalMatrix()"
+      *m_env.subDisplayFile() << "In VectorSpace<V,M>::newProposalMatrix()"
                               << ": i = "        << i
                               << ", variance = " << variance
                               << std::endl;
@@ -435,45 +435,45 @@ VectorSpaceClass<V,M>::newProposalMatrix(
 }
 // -------------------------------------------------------
 template <class V, class M>
-const VectorSpaceClass<V,M>&
-VectorSpaceClass<V,M>::vectorSpace() const
+const VectorSpace<V,M>&
+VectorSpace<V,M>::vectorSpace() const
 {
   return *this;
 }
 // -------------------------------------------------------
 template <class V, class M>
 bool
-VectorSpaceClass<V,M>::contains(const V& vec) const
+VectorSpace<V,M>::contains(const V& vec) const
 {
   if (vec[0]) {}; // just to remove compiler warning
   return true;
 }
 // -------------------------------------------------------
 template <class V, class M>
-const DistArrayClass<std::string>* 
-VectorSpaceClass<V,M>::componentsNamesArray() const
+const DistArray<std::string>* 
+VectorSpace<V,M>::componentsNamesArray() const
 {
   return m_componentsNamesArray;
 }
 // -------------------------------------------------------
 template <class V, class M>
 const std::string&
-VectorSpaceClass<V,M>::localComponentName(unsigned int localComponentId) const
+VectorSpace<V,M>::localComponentName(unsigned int localComponentId) const
 {
   if (m_componentsNamesArray == NULL) return m_emptyComponentName;
 
   UQ_FATAL_TEST_MACRO(localComponentId > m_dimLocal,
                       m_env.worldRank(),
-                      "VectorSpaceClass<V,M>::localComponentName()",
+                      "VectorSpace<V,M>::localComponentName()",
                       "localComponentId is too big");
 
-//return (*(const_cast<DistArrayClass<std::string>*>(m_componentsNamesArray)))(localComponentId,0);
+//return (*(const_cast<DistArray<std::string>*>(m_componentsNamesArray)))(localComponentId,0);
   return (*m_componentsNamesArray)(localComponentId,0);
 }
 // -------------------------------------------------------
 template<class V, class M>
 void
-VectorSpaceClass<V,M>::printComponentsNames(std::ostream& os, bool printHorizontally) const
+VectorSpace<V,M>::printComponentsNames(std::ostream& os, bool printHorizontally) const
 {
   if (printHorizontally) { 
     for (unsigned int i = 0; i < this->dimLocal(); ++i) {
@@ -493,9 +493,9 @@ VectorSpaceClass<V,M>::printComponentsNames(std::ostream& os, bool printHorizont
 // -------------------------------------------------------
 template <class V, class M>
 void
-VectorSpaceClass<V,M>::print(std::ostream& os) const
+VectorSpace<V,M>::print(std::ostream& os) const
 {
-  os << "In VectorSpaceClass<V,M>::print()"
+  os << "In VectorSpace<V,M>::print()"
      << ": nothing to be printed" << std::endl;
   return;
 }
