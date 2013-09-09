@@ -1,16 +1,12 @@
 # Build in these directories:
 # DIST_SUBDIRS = basic stats
 
-AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
-	      -I$(top_srcdir)/src/misc/inc  \
-	      -I$(top_srcdir)/src/basic/inc \
-	      -I$(top_srcdir)/src/stats/inc \
-	      -I$(top_srcdir)/src/gp/inc \
-		    -I$(top_builddir)/inc \
-	      -I$(top_builddir)/src/core/inc \
-	        $(BOOST_CPPFLAGS) \
-	        $(GSL_CFLAGS) \
-	        $(ANN_CFLAGS)
+AM_CPPFLAGS =
+AM_CPPFLAGS += -I$(top_builddir)/inc
+AM_CPPFLAGS += -I$(top_builddir)/src/core/inc  # For queso.h
+AM_CPPFLAGS += $(BOOST_CPPFLAGS)
+AM_CPPFLAGS += $(GSL_CFLAGS)
+AM_CPPFLAGS += $(ANN_CFLAGS)
 
 ###	      -I$(top_srcdir)/src/interface 
 

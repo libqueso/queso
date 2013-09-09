@@ -1,10 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-QUESO_CPPFLAGS  = -I$(top_srcdir)/src/core/inc
-QUESO_CPPFLAGS += -I$(top_srcdir)/src/misc/inc
-QUESO_CPPFLAGS += -I$(top_srcdir)/src/basic/inc
-QUESO_CPPFLAGS += -I$(top_srcdir)/src/stats/inc
-QUESO_CPPFLAGS += -I$(top_srcdir)/src/gp/inc
+QUESO_CPPFLAGS  = -I$(top_builddir)/src/core/inc
 QUESO_CPPFLAGS += -I$(top_builddir)/inc
 QUESO_CPPFLAGS += $(BOOST_CPPFLAGS)
 QUESO_CPPFLAGS += $(GSL_CFLAGS)

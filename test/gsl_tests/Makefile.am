@@ -9,17 +9,12 @@ check_PROGRAMS += get_set_row_column \
                   power_method \
                   inverse_power_method
 
-AM_CPPFLAGS  = -I$(top_srcdir)/src -I$(top_builddir)/src
-LIBS         = -L$(top_builddir)/src/ -lqueso 
+AM_CPPFLAGS =
+AM_CPPFLAGS += -I.
+AM_CPPFLAGS += -I$(top_builddir)/inc
+AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 
-AM_CPPFLAGS  += -I. \
-                -I$(top_srcdir)/src/core/inc \
-                -I$(top_srcdir)/src/misc/inc \
-                -I$(top_srcdir)/src/basic/inc \
-                -I$(top_srcdir)/src/stats/inc \
-                -I$(top_srcdir)/src/gp/inc \
-	              -I$(top_builddir)/inc \
-	                $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
+LIBS         = -L$(top_builddir)/src/ -lqueso
 
 if GRVY_ENABLED	
   AM_CPPFLAGS += $(GRVY_CFLAGS)

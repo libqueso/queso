@@ -5,7 +5,7 @@
 # include the magic script!
 EXTRA_DIST = rebuild_makefile.sh
 
-BUILT_SOURCES =  ArrayOfSequences.h InstantiateIntersection.h ScalarFunction.h ScalarFunctionSynchronizer.h ScalarSequence.h SequenceOfVectors.h SequenceStatisticalOptions.h VectorFunction.h VectorFunctionSynchronizer.h VectorSequence.h VectorSet.h VectorSpace.h VectorSubset.h ANN.h ANNperf.h ANNx.h bd_tree.h kd_fix_rad_search.h kd_pr_search.h kd_search.h kd_split.h kd_tree.h kd_util.h pr_queue.h pr_queue_k.h rand.h BasicPdfsBase.h BasicPdfsBoost.h BasicPdfsGsl.h Defines.h DistArray.h Environment.h EnvironmentOptions.h GslMatrix.h GslVector.h Map.h Matrix.h MpiComm.h RngBase.h RngBoost.h RngGsl.h TeuchosMatrix.h TeuchosVector.h Vector.h ExperimentModel.h ExperimentModelOptions.h ExperimentStorage.h GcmExperimentInfo.h GcmJointInfo.h GcmJointTildeInfo.h GcmSimulationInfo.h GcmSimulationTildeInfo.h GcmTotalInfo.h GcmZInfo.h GcmZTildeInfo.h GpmsaComputerModel.h GpmsaComputerModel2.h GpmsaComputerModel3.h GpmsaComputerModel4.h GpmsaComputerModel5.h GpmsaComputerModelOptions.h SimulationModel.h SimulationModelOptions.h SimulationStorage.h basic_classes.h basic_int.h basic_interface.h queso_basic.h 1D1DFunction.h 1DQuadrature.h 2dArrayOfStuff.h ArrayOfOneDGrids.h ArrayOfOneDTables.h AsciiTable.h CovCond.h Fft.h Miscellaneous.h OneDGrid.h FiniteDistribution.h InfoTheory.h JointPdf.h MLSampling1.h MLSampling2.h MLSampling3.h MLSamplingLevelOptions.h MLSamplingOptions.h MarkovChainPositionData.h MatrixCovarianceFunction.h MetropolisHastingsSG1.h MetropolisHastingsSG2.h MetropolisHastingsSGOptions.h ModelValidation.h MonteCarloSG.h MonteCarloSGOptions.h ScalarCdf.h ScalarCovarianceFunction.h ScalarGaussianRandomField.h StatisticalForwardProblem.h StatisticalForwardProblemOptions.h StatisticalInverseProblem.h StatisticalInverseProblemOptions.h TKGroup.h ValidationCycle.h VectorCdf.h VectorGaussianRandomField.h VectorMdf.h VectorRV.h VectorRealizer.h
+BUILT_SOURCES =  ArrayOfSequences.h InstantiateIntersection.h ScalarFunction.h ScalarFunctionSynchronizer.h ScalarSequence.h SequenceOfVectors.h SequenceStatisticalOptions.h VectorFunction.h VectorFunctionSynchronizer.h VectorSequence.h VectorSet.h VectorSpace.h VectorSubset.h BasicPdfsBase.h BasicPdfsBoost.h BasicPdfsGsl.h Defines.h DistArray.h Environment.h EnvironmentOptions.h GslMatrix.h GslVector.h Map.h Matrix.h MpiComm.h RngBase.h RngBoost.h RngGsl.h TeuchosMatrix.h TeuchosVector.h Vector.h ExperimentModel.h ExperimentModelOptions.h ExperimentStorage.h GcmExperimentInfo.h GcmJointInfo.h GcmJointTildeInfo.h GcmSimulationInfo.h GcmSimulationTildeInfo.h GcmTotalInfo.h GcmZInfo.h GcmZTildeInfo.h GpmsaComputerModel.h GpmsaComputerModel2.h GpmsaComputerModel3.h GpmsaComputerModel4.h GpmsaComputerModel5.h GpmsaComputerModelOptions.h SimulationModel.h SimulationModelOptions.h SimulationStorage.h 1D1DFunction.h 1DQuadrature.h 2dArrayOfStuff.h ArrayOfOneDGrids.h ArrayOfOneDTables.h AsciiTable.h CovCond.h Fft.h Miscellaneous.h OneDGrid.h FiniteDistribution.h InfoTheory.h JointPdf.h MLSampling1.h MLSampling2.h MLSampling3.h MLSamplingLevelOptions.h MLSamplingOptions.h MarkovChainPositionData.h MatrixCovarianceFunction.h MetropolisHastingsSG1.h MetropolisHastingsSG2.h MetropolisHastingsSGOptions.h ModelValidation.h MonteCarloSG.h MonteCarloSGOptions.h ScalarCdf.h ScalarCovarianceFunction.h ScalarGaussianRandomField.h StatisticalForwardProblem.h StatisticalForwardProblemOptions.h StatisticalInverseProblem.h StatisticalInverseProblemOptions.h TKGroup.h ValidationCycle.h VectorCdf.h VectorGaussianRandomField.h VectorMdf.h VectorRV.h VectorRealizer.h
 
 DISTCLEANFILES = $(BUILT_SOURCES)
 
@@ -36,32 +36,6 @@ VectorSet.h: $(top_srcdir)/src/basic/inc/VectorSet.h
 VectorSpace.h: $(top_srcdir)/src/basic/inc/VectorSpace.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 VectorSubset.h: $(top_srcdir)/src/basic/inc/VectorSubset.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-ANN.h: $(top_srcdir)/src/contrib/ANN/include/ANN/ANN.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-ANNperf.h: $(top_srcdir)/src/contrib/ANN/include/ANN/ANNperf.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-ANNx.h: $(top_srcdir)/src/contrib/ANN/include/ANN/ANNx.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-bd_tree.h: $(top_srcdir)/src/contrib/ANN/src/bd_tree.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-kd_fix_rad_search.h: $(top_srcdir)/src/contrib/ANN/src/kd_fix_rad_search.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-kd_pr_search.h: $(top_srcdir)/src/contrib/ANN/src/kd_pr_search.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-kd_search.h: $(top_srcdir)/src/contrib/ANN/src/kd_search.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-kd_split.h: $(top_srcdir)/src/contrib/ANN/src/kd_split.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-kd_tree.h: $(top_srcdir)/src/contrib/ANN/src/kd_tree.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-kd_util.h: $(top_srcdir)/src/contrib/ANN/src/kd_util.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-pr_queue.h: $(top_srcdir)/src/contrib/ANN/src/pr_queue.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-pr_queue_k.h: $(top_srcdir)/src/contrib/ANN/src/pr_queue_k.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-rand.h: $(top_srcdir)/src/contrib/ANN/test/rand.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BasicPdfsBase.h: $(top_srcdir)/src/core/inc/BasicPdfsBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -138,14 +112,6 @@ SimulationModel.h: $(top_srcdir)/src/gp/inc/SimulationModel.h
 SimulationModelOptions.h: $(top_srcdir)/src/gp/inc/SimulationModelOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 SimulationStorage.h: $(top_srcdir)/src/gp/inc/SimulationStorage.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-basic_classes.h: $(top_srcdir)/src/interface/basic_classes.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-basic_int.h: $(top_srcdir)/src/interface/basic_int.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-basic_interface.h: $(top_srcdir)/src/interface/basic_interface.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-queso_basic.h: $(top_srcdir)/src/interface/queso_basic.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 1D1DFunction.h: $(top_srcdir)/src/misc/inc/1D1DFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

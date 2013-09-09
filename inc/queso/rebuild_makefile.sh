@@ -5,7 +5,7 @@
 
 built_sources=""
 
-headers=`find ../../src -name "*.h" -a -not -name queso.h -type f | LC_COLLATE=POSIX sort`
+headers=`find ../../src -name "*.h" -a -not -name queso.h -type f | grep -v 'ANN' | grep -v 'interface' | LC_COLLATE=POSIX sort`
 
 for header_with_path in $headers ; do
   # Strip out path
