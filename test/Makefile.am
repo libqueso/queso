@@ -26,7 +26,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src \
               -I$(top_srcdir)/src/basic/inc \
               -I$(top_srcdir)/src/stats/inc \
               -I$(top_srcdir)/src/gp/inc \
-	            -I$(top_srcdir)/inc \
+	            -I$(top_builddir)/inc \
               $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 
 if GRVY_ENABLED	
