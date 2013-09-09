@@ -33,7 +33,7 @@ namespace QUESO {
 //*****************************************************
 // Base 1D quadrature class
 //*****************************************************
-Base1DQuadratureClass::Base1DQuadratureClass(
+Base1DQuadrature::Base1DQuadrature(
   double minDomainValue,
   double maxDomainValue,
   unsigned int order)
@@ -46,52 +46,52 @@ Base1DQuadratureClass::Base1DQuadratureClass(
 {
   UQ_FATAL_TEST_MACRO(m_minDomainValue >= m_maxDomainValue,
                       UQ_UNAVAILABLE_RANK,
-                      "Base1DQuadratureClass::constructor()",
+                      "Base1DQuadrature::constructor()",
                       "min >= max");
   //UQ_FATAL_TEST_MACRO(order == 0, // eep2011
   //                    UQ_UNAVAILABLE_RANK,
-  //                    "Base1DQuadratureClass::constructor()",
+  //                    "Base1DQuadrature::constructor()",
   //                    "order = 0");
 }
 
-Base1DQuadratureClass::~Base1DQuadratureClass()
+Base1DQuadrature::~Base1DQuadrature()
 {
 }
 
 double
-Base1DQuadratureClass::minDomainValue() const
+Base1DQuadrature::minDomainValue() const
 {
   return m_minDomainValue;
 }
 
 double
-Base1DQuadratureClass::maxDomainValue() const
+Base1DQuadrature::maxDomainValue() const
 {
   return m_maxDomainValue;
 }
 
 unsigned int
-Base1DQuadratureClass::order() const
+Base1DQuadrature::order() const
 {
   return m_order;
 }
 
 const std::vector<double>&
-Base1DQuadratureClass::positions() const
+Base1DQuadrature::positions() const
 {
   UQ_FATAL_TEST_MACRO(m_positions.size() == 0,
                       UQ_UNAVAILABLE_RANK,
-                      "Base1DQuadratureClass::positions()",
+                      "Base1DQuadrature::positions()",
                       "size = 0");
   return m_positions;
 }
 
 const std::vector<double>&
-Base1DQuadratureClass::weights() const
+Base1DQuadrature::weights() const
 {
   UQ_FATAL_TEST_MACRO(m_weights.size() == 0,
                       UQ_UNAVAILABLE_RANK,
-                      "Base1DQuadratureClass::weights()",
+                      "Base1DQuadrature::weights()",
                       "size = 0");
   return m_weights;
 }
@@ -99,34 +99,34 @@ Base1DQuadratureClass::weights() const
 //*****************************************************
 // Generic 1D quadrature class
 //*****************************************************
-Generic1DQuadratureClass::Generic1DQuadratureClass(
+Generic1DQuadrature::Generic1DQuadrature(
   double minDomainValue,
   double maxDomainValue,
   const std::vector<double>& positions,
   const std::vector<double>& weights)
   :
-  Base1DQuadratureClass(minDomainValue,maxDomainValue,positions.size()-1)
+  Base1DQuadrature(minDomainValue,maxDomainValue,positions.size()-1)
 {
   m_positions = positions;
   m_weights   = weights;
 
   UQ_FATAL_TEST_MACRO(m_positions.size() == 0,
                       UQ_UNAVAILABLE_RANK,
-                      "Generic1DQuadratureClass::constructor()",
+                      "Generic1DQuadrature::constructor()",
                       "invalid positions");
 
   UQ_FATAL_TEST_MACRO(m_positions.size() != m_weights.size(),
                       UQ_UNAVAILABLE_RANK,
-                      "Generic1DQuadratureClass::constructor()",
+                      "Generic1DQuadrature::constructor()",
                       "inconsistent positions and weight");
 }
 
-Generic1DQuadratureClass::~Generic1DQuadratureClass()
+Generic1DQuadrature::~Generic1DQuadrature()
 {
 }
 
 void
-Generic1DQuadratureClass::dumbRoutine() const
+Generic1DQuadrature::dumbRoutine() const
 {
   return;
 }
@@ -134,13 +134,13 @@ Generic1DQuadratureClass::dumbRoutine() const
 //*****************************************************
 // UniformLegendre 1D quadrature class
 //*****************************************************
-UniformLegendre1DQuadratureClass::UniformLegendre1DQuadratureClass(
+UniformLegendre1DQuadrature::UniformLegendre1DQuadrature(
   double       minDomainValue,
   double       maxDomainValue,
   unsigned int order,
   bool         densityIsNormalized)
   :
-  Base1DQuadratureClass(minDomainValue,maxDomainValue,order)
+  Base1DQuadrature(minDomainValue,maxDomainValue,order)
 {
   m_positions.resize(m_order+1,0.); // Yes, '+1'
   m_weights.resize  (m_order+1,0.); // Yes, '+1'
@@ -410,12 +410,12 @@ UniformLegendre1DQuadratureClass::UniformLegendre1DQuadratureClass(
     break;
 
     default:
-      std::cerr << "In UniformLegendre1DQuadratureClass::constructor()"
+      std::cerr << "In UniformLegendre1DQuadrature::constructor()"
                 << ": m_order = " << m_order
                 << std::endl;
       UQ_FATAL_TEST_MACRO(true,
                           UQ_UNAVAILABLE_RANK,
-                          "UniformLegendre1DQuadratureClass::constructor()",
+                          "UniformLegendre1DQuadrature::constructor()",
                           "order not supported");
     break;
   }
@@ -434,12 +434,12 @@ UniformLegendre1DQuadratureClass::UniformLegendre1DQuadratureClass(
   }
 }
 
-UniformLegendre1DQuadratureClass::~UniformLegendre1DQuadratureClass()
+UniformLegendre1DQuadrature::~UniformLegendre1DQuadrature()
 {
 }
 
 void
-UniformLegendre1DQuadratureClass::dumbRoutine() const
+UniformLegendre1DQuadrature::dumbRoutine() const
 {
   return;
 }
@@ -447,12 +447,12 @@ UniformLegendre1DQuadratureClass::dumbRoutine() const
 //*****************************************************
 // GaussianHermite 1D quadrature class
 //*****************************************************
-GaussianHermite1DQuadratureClass::GaussianHermite1DQuadratureClass(
+GaussianHermite1DQuadrature::GaussianHermite1DQuadrature(
   double mean,
   double stddev,
   unsigned int order)
   :
-  Base1DQuadratureClass(-INFINITY,INFINITY,order),
+  Base1DQuadrature(-INFINITY,INFINITY,order),
   m_mean  (mean),
   m_stddev(stddev)
 {
@@ -651,12 +651,12 @@ GaussianHermite1DQuadratureClass::GaussianHermite1DQuadratureClass(
     break;
 
     default:
-      std::cerr << "In GaussianHermite1DQuadratureClass::constructor()"
+      std::cerr << "In GaussianHermite1DQuadrature::constructor()"
                 << ": m_order = " << m_order
                 << std::endl;
       UQ_FATAL_TEST_MACRO(true,
                           UQ_UNAVAILABLE_RANK,
-                          "GaussianHermite1DQuadratureClass::constructor()",
+                          "GaussianHermite1DQuadrature::constructor()",
                           "order not supported");
     break;
   }
@@ -666,12 +666,12 @@ GaussianHermite1DQuadratureClass::GaussianHermite1DQuadratureClass(
   }
 }
 
-GaussianHermite1DQuadratureClass::~GaussianHermite1DQuadratureClass()
+GaussianHermite1DQuadrature::~GaussianHermite1DQuadrature()
 {
 }
 
 void
-GaussianHermite1DQuadratureClass::dumbRoutine() const
+GaussianHermite1DQuadrature::dumbRoutine() const
 {
   return;
 }
@@ -679,12 +679,12 @@ GaussianHermite1DQuadratureClass::dumbRoutine() const
 //*****************************************************
 // WignerInverseChebyshev1st 1D quadrature class
 //*****************************************************
-WignerInverseChebyshev1st1DQuadratureClass::WignerInverseChebyshev1st1DQuadratureClass(
+WignerInverseChebyshev1st1DQuadrature::WignerInverseChebyshev1st1DQuadrature(
   double       minDomainValue,
   double       maxDomainValue,
   unsigned int order)
   :
-  Base1DQuadratureClass(minDomainValue,maxDomainValue,order)
+  Base1DQuadrature(minDomainValue,maxDomainValue,order)
 {
   m_positions.resize(m_order+1,0.); // Yes, '+1'
   m_weights.resize  (m_order+1,0.); // Yes, '+1'
@@ -694,7 +694,7 @@ WignerInverseChebyshev1st1DQuadratureClass::WignerInverseChebyshev1st1DQuadratur
     default:
       UQ_FATAL_TEST_MACRO(true,
                           UQ_UNAVAILABLE_RANK,
-                          "WignerInverseChebyshev1st1DQuadratureClass::constructor()",
+                          "WignerInverseChebyshev1st1DQuadrature::constructor()",
                           "order not supported");
     break;
   }
@@ -706,12 +706,12 @@ WignerInverseChebyshev1st1DQuadratureClass::WignerInverseChebyshev1st1DQuadratur
   }
 }
 
-WignerInverseChebyshev1st1DQuadratureClass::~WignerInverseChebyshev1st1DQuadratureClass()
+WignerInverseChebyshev1st1DQuadrature::~WignerInverseChebyshev1st1DQuadrature()
 {
 }
 
 void
-WignerInverseChebyshev1st1DQuadratureClass::dumbRoutine() const
+WignerInverseChebyshev1st1DQuadrature::dumbRoutine() const
 {
   return;
 }
@@ -719,12 +719,12 @@ WignerInverseChebyshev1st1DQuadratureClass::dumbRoutine() const
 //*****************************************************
 // WignerChebyshev2nd 1D quadrature class
 //*****************************************************
-WignerChebyshev2nd1DQuadratureClass::WignerChebyshev2nd1DQuadratureClass(
+WignerChebyshev2nd1DQuadrature::WignerChebyshev2nd1DQuadrature(
   double       minDomainValue,
   double       maxDomainValue,
   unsigned int order)
   :
-  Base1DQuadratureClass(minDomainValue,maxDomainValue,order)
+  Base1DQuadrature(minDomainValue,maxDomainValue,order)
 {
   m_positions.resize(m_order+1,0.); // Yes, '+1'
   m_weights.resize  (m_order+1,0.); // Yes, '+1'
@@ -746,12 +746,12 @@ WignerChebyshev2nd1DQuadratureClass::WignerChebyshev2nd1DQuadratureClass(
   }
 }
 
-WignerChebyshev2nd1DQuadratureClass::~WignerChebyshev2nd1DQuadratureClass()
+WignerChebyshev2nd1DQuadrature::~WignerChebyshev2nd1DQuadrature()
 {
 }
 
 void
-WignerChebyshev2nd1DQuadratureClass::dumbRoutine() const
+WignerChebyshev2nd1DQuadrature::dumbRoutine() const
 {
   return;
 }

@@ -47,7 +47,7 @@ namespace QUESO {
 /*! \file uqJointPdf.h
  * \brief Classes to accommodate a probability density.
  * 
- * \class BaseJointPdfClass
+ * \class BaseJointPdf
  * \brief A templated (base) class for handling joint PDFs.
  *
  * This class allows the mathematical definition of a Joint PDF, which is a scalar 
@@ -55,20 +55,20 @@ namespace QUESO {
  * or more variables that has always one-dimensional range. QUESO currently supports 
  * basic PDFs such as uniform and Gaussian and also more complex PDFs, such as the 
  * ones coming from a Bayesian analysis. They are implemented in the derived classes 
- * UniformJointPdfClass, GaussianJointPdfClass, and BayesianJointPdfClass, 
- * respectively. The posterior PDF may be represented within QUESO by GenericJointPdfClass. */
+ * UniformJointPdf, GaussianJointPdf, and BayesianJointPdf, 
+ * respectively. The posterior PDF may be represented within QUESO by GenericJointPdf. */
 
 template<class V, class M>
-class BaseJointPdfClass : public BaseScalarFunctionClass<V,M> {
+class BaseJointPdf : public BaseScalarFunction<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class, i.e. a scalar function, given a prefix and its domain.*/
-  BaseJointPdfClass(const char*                  prefix,
-		      const VectorSetClass<V,M>& domainSet);
+  BaseJointPdf(const char*                  prefix,
+		      const VectorSet<V,M>& domainSet);
   //! Destructor
-  virtual ~BaseJointPdfClass();
+  virtual ~BaseJointPdf();
   //@}
 
   //! @name Mathematical methods
@@ -88,7 +88,7 @@ public:
   //! Computes the logarithm of the normalization factor. See template specialization.
   virtual double computeLogOfNormalizationFactor(unsigned int numSamples, bool m_logOfNormalizationFactor) const = 0;
   
-  //const BaseScalarPdfClass<double>& component(unsigned int componentId) const;
+  //const BaseScalarPdf<double>& component(unsigned int componentId) const;
   //@}
 protected:
   //! Common method (to the derived classes) to compute the logarithm of the normalization factor.
@@ -98,47 +98,47 @@ protected:
    * m_logOfNormalizationFactor if the parameter \c m_logOfNormalizationFactor is true. */
   double commonComputeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
 
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
 
   mutable unsigned int m_normalizationStyle;
   mutable double       m_logOfNormalizationFactor;
   
-//std::vector<BaseScalarPdfClass<double>*> m_components; // FIXME: will need to be a parallel vector in case of a very large number of components
-//BaseScalarPdfClass<double>               m_dummyComponent;
+//std::vector<BaseScalarPdf<double>*> m_components; // FIXME: will need to be a parallel vector in case of a very large number of components
+//BaseScalarPdf<double>               m_dummyComponent;
 };
 // Default constructor -----------------------------
 template<class V, class M>
-BaseJointPdfClass<V,M>::BaseJointPdfClass(
+BaseJointPdf<V,M>::BaseJointPdf(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet)
+  const VectorSet<V,M>& domainSet)
   :
-  BaseScalarFunctionClass<V,M>(((std::string)(prefix)+"pd_").c_str(), domainSet),
+  BaseScalarFunction<V,M>(((std::string)(prefix)+"pd_").c_str(), domainSet),
   m_normalizationStyle(0),
   m_logOfNormalizationFactor(0.)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering BaseJointPdfClass<V,M>::constructor() [3]"
+    *m_env.subDisplayFile() << "Entering BaseJointPdf<V,M>::constructor() [3]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving BaseJointPdfClass<V,M>::constructor() [3]"
+    *m_env.subDisplayFile() << "Leaving BaseJointPdf<V,M>::constructor() [3]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-BaseJointPdfClass<V,M>::~BaseJointPdfClass()
+BaseJointPdf<V,M>::~BaseJointPdf()
 {
 }
 // Math methods -------------------------------------
 template<class V,class M>
 void
-BaseJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
+BaseJointPdf<V,M>::setNormalizationStyle(unsigned int value) const
 {
   m_normalizationStyle = value;
   return;
@@ -146,7 +146,7 @@ BaseJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
 //---------------------------------------------------
 template<class V,class M>
 void
-BaseJointPdfClass<V,M>::setLogOfNormalizationFactor(double value) const
+BaseJointPdf<V,M>::setLogOfNormalizationFactor(double value) const
 {
   m_logOfNormalizationFactor = value;
   return;
@@ -154,7 +154,7 @@ BaseJointPdfClass<V,M>::setLogOfNormalizationFactor(double value) const
 //---------------------------------------------------
 template<class V,class M>
 double
-BaseJointPdfClass<V,M>::commonComputeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
   double value = 0.;
 
@@ -166,7 +166,7 @@ BaseJointPdfClass<V,M>::commonComputeLogOfNormalizationFactor(unsigned int numSa
     // Do nothing
   }
   else {
-    const BoxSubsetClass<V,M>* boxSubset = dynamic_cast<const BoxSubsetClass<V,M>* >(&m_domainSet);
+    const BoxSubset<V,M>* boxSubset = dynamic_cast<const BoxSubset<V,M>* >(&m_domainSet);
     if (boxSubset == NULL) {
       // Do nothing
     }
@@ -190,8 +190,8 @@ BaseJointPdfClass<V,M>::commonComputeLogOfNormalizationFactor(unsigned int numSa
 
 #if 0
 template <class V, class M>
-const BaseScalarPdfClass&
-BaseJointPdfClass<V,M>::component(unsigned int componentId) const
+const BaseScalarPdf&
+BaseJointPdf<V,M>::component(unsigned int componentId) const
 {
   if (componentId > m_components.size()) return m_dummyComponent;
   if (m_components[componentId] == NULL) return m_dummyComponent;
@@ -203,13 +203,13 @@ BaseJointPdfClass<V,M>::component(unsigned int componentId) const
 // Generic probability density class [PDF-01]
 //*****************************************************
 /*!
- * \class GenericJointPdfClass
+ * \class GenericJointPdf
  * \brief A class for handling generic joint PDFs.
  *
  * This class allows the mathematical definition of a generic Joint PDF, such as the posterior PDF.*/
 
 template<class V, class M>
-class GenericJointPdfClass : public BaseJointPdfClass<V,M> {
+class GenericJointPdf : public BaseJointPdf<V,M> {
 public:
   
   //! @name Constructor/Destructor methods
@@ -218,46 +218,46 @@ public:
   /*! Instantiates an object of this class given a prefix and a scalar function.
    * The domain of the scalar function is assigned to the protected attribute m_domainSet, 
    * and the scalar function is also itself copied to the protected attribute m_scalarFunction.*/
-  GenericJointPdfClass(const char*                           prefix,
-                         const BaseScalarFunctionClass<V,M>& scalarFunction);
+  GenericJointPdf(const char*                           prefix,
+                         const BaseScalarFunction<V,M>& scalarFunction);
   //! Destructor
- ~GenericJointPdfClass();
+ ~GenericJointPdf();
  //@}
 
    //! @name Math methods
   //@{
-  // See base class (BaseJointPdfClass) for description.
+  // See base class (BaseJointPdf) for description.
   double actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
   //@}
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
-  using BaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
+  using BaseJointPdf<V,M>::m_logOfNormalizationFactor;
 
-  const BaseScalarFunctionClass<V,M>& m_scalarFunction;
+  const BaseScalarFunction<V,M>& m_scalarFunction;
 };
 // Default constructor -----------------------------
 template<class V, class M>
-GenericJointPdfClass<V,M>::GenericJointPdfClass(
+GenericJointPdf<V,M>::GenericJointPdf(
   const char*                           prefix,
-  const BaseScalarFunctionClass<V,M>& scalarFunction)
+  const BaseScalarFunction<V,M>& scalarFunction)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"gen").c_str(),scalarFunction.domainSet()),
+  BaseJointPdf<V,M>(((std::string)(prefix)+"gen").c_str(),scalarFunction.domainSet()),
   m_scalarFunction(scalarFunction)
 {
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-GenericJointPdfClass<V,M>::~GenericJointPdfClass()
+GenericJointPdf<V,M>::~GenericJointPdf()
 {
 }
 // Math methods -------------------------------------
 template<class V, class M>
 double
-GenericJointPdfClass<V,M>::actualValue(
+GenericJointPdf<V,M>::actualValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -269,7 +269,7 @@ GenericJointPdfClass<V,M>::actualValue(
 // --------------------------------------------------
 template<class V, class M>
 double
-GenericJointPdfClass<V,M>::lnValue(
+GenericJointPdf<V,M>::lnValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -281,17 +281,17 @@ GenericJointPdfClass<V,M>::lnValue(
 // --------------------------------------------------
 template<class V, class M>
 double
-GenericJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+GenericJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
   double value = 0.;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GenericJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Entering GenericJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << std::endl;
   }
-  value = BaseJointPdfClass<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
+  value = BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GenericJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Leaving GenericJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << ", m_logOfNormalizationFactor = " << m_logOfNormalizationFactor
                             << std::endl;
   }
@@ -303,13 +303,13 @@ GenericJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSampl
 // Bayesian probability density class [PDF-02]
 //*****************************************************
 /*!
- * \class BayesianJointPdfClass
+ * \class BayesianJointPdf
  * \brief A class for handling Bayesian joint PDFs.
  *
  * This class allows the mathematical definition of a Bayesian Joint PDF.*/
 
 template<class V, class M>
-class BayesianJointPdfClass : public BaseJointPdfClass<V,M> {
+class BayesianJointPdf : public BaseJointPdf<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{
@@ -317,13 +317,13 @@ public:
   /*! Instantiates an object of this class given a prefix and a scalar function.
    * The domain of the scalar function is assigned to the protected attribute m_domainSet, 
    * and the scalar fiction is also itself copied to the protected attribute m_scalarFunction.*/
-  BayesianJointPdfClass(const char*                           prefix,
-                          const BaseJointPdfClass      <V,M>& priorDensity,
-                          const BaseScalarFunctionClass<V,M>& likelihoodFunction,
+  BayesianJointPdf(const char*                           prefix,
+                          const BaseJointPdf      <V,M>& priorDensity,
+                          const BaseScalarFunction<V,M>& likelihoodFunction,
                           double                                likelihoodExponent,
-                          const VectorSetClass         <V,M>& intersectionDomain); 
+                          const VectorSet         <V,M>& intersectionDomain); 
   //! Destructor
-  ~BayesianJointPdfClass();
+  ~BayesianJointPdf();
 
   
   //! @name Math methods
@@ -358,13 +358,13 @@ public:
   //@}
 
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
-  using BaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
+  using BaseJointPdf<V,M>::m_logOfNormalizationFactor;
 
-  const BaseJointPdfClass      <V,M>& m_priorDensity;
-  const BaseScalarFunctionClass<V,M>& m_likelihoodFunction;
+  const BaseJointPdf      <V,M>& m_priorDensity;
+  const BaseScalarFunction<V,M>& m_likelihoodFunction;
   double                                m_likelihoodExponent;
   mutable double                        m_lastComputedLogPrior;
   mutable double                        m_lastComputedLogLikelihood;
@@ -375,14 +375,14 @@ protected:
 };
 // Default constructor -----------------------------
 template<class V,class M>
-BayesianJointPdfClass<V,M>::BayesianJointPdfClass(
+BayesianJointPdf<V,M>::BayesianJointPdf(
   const char*                           prefix,
-  const BaseJointPdfClass     <V,M>&  priorDensity,
-  const BaseScalarFunctionClass<V,M>& likelihoodFunction,
+  const BaseJointPdf     <V,M>&  priorDensity,
+  const BaseScalarFunction<V,M>& likelihoodFunction,
         double                          likelihoodExponent,
-  const VectorSetClass         <V,M>& intersectionDomain)
+  const VectorSet         <V,M>& intersectionDomain)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"bay").c_str(),intersectionDomain),
+  BaseJointPdf<V,M>(((std::string)(prefix)+"bay").c_str(),intersectionDomain),
   m_priorDensity             (priorDensity),
   m_likelihoodFunction       (likelihoodFunction),
   m_likelihoodExponent       (likelihoodExponent),
@@ -395,14 +395,14 @@ BayesianJointPdfClass<V,M>::BayesianJointPdfClass(
 }
 // Destructor ---------------------------------------
 template<class V,class M>
-BayesianJointPdfClass<V,M>::~BayesianJointPdfClass()
+BayesianJointPdf<V,M>::~BayesianJointPdf()
 {
   delete m_tmpMatrix;
 }
 // Math methods -------------------------------------
 template<class V,class M>
 void
-BayesianJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
+BayesianJointPdf<V,M>::setNormalizationStyle(unsigned int value) const
 {
   m_priorDensity.setNormalizationStyle(value);
   return;
@@ -410,21 +410,21 @@ BayesianJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
 // --------------------------------------------------
 template<class V,class M>
 double
-BayesianJointPdfClass<V,M>::lastComputedLogPrior() const
+BayesianJointPdf<V,M>::lastComputedLogPrior() const
 {
   return m_lastComputedLogPrior;
 }
 // --------------------------------------------------
 template<class V,class M>
 double
-BayesianJointPdfClass<V,M>::lastComputedLogLikelihood() const
+BayesianJointPdf<V,M>::lastComputedLogLikelihood() const
 {
   return m_lastComputedLogLikelihood;
 }
 // --------------------------------------------------
 template<class V, class M>
 double
-BayesianJointPdfClass<V,M>::actualValue(
+BayesianJointPdf<V,M>::actualValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -432,14 +432,14 @@ BayesianJointPdfClass<V,M>::actualValue(
         V* hessianEffect) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering BayesianJointPdfClass<V,M>::actualValue()"
+    *m_env.subDisplayFile() << "Entering BayesianJointPdf<V,M>::actualValue()"
                             << ": domainVector = " << domainVector
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "BayesianJointPdfClass<V,M>::actualValue()",
+                      "BayesianJointPdf<V,M>::actualValue()",
                       "invalid input");
 
   V* gradVLike = NULL;
@@ -459,7 +459,7 @@ BayesianJointPdfClass<V,M>::actualValue(
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "BayesianJointPdfClass<V,M>::actualValue()",
+                      "BayesianJointPdf<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = value1;
@@ -478,7 +478,7 @@ BayesianJointPdfClass<V,M>::actualValue(
   m_lastComputedLogLikelihood = m_likelihoodExponent*log(value2);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving BayesianJointPdfClass<V,M>::actualValue()"
+    *m_env.subDisplayFile() << "Leaving BayesianJointPdf<V,M>::actualValue()"
                             << ": domainVector = " << domainVector
                             << ", returnValue = "  << returnValue
                             << std::endl;
@@ -489,7 +489,7 @@ BayesianJointPdfClass<V,M>::actualValue(
 // --------------------------------------------------
 template<class V, class M>
 double
-BayesianJointPdfClass<V,M>::lnValue(
+BayesianJointPdf<V,M>::lnValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -497,7 +497,7 @@ BayesianJointPdfClass<V,M>::lnValue(
         V* hessianEffect) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering BayesianJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "Entering BayesianJointPdf<V,M>::lnValue()"
                             << ": domainVector = " << domainVector
                             << std::endl;
   }
@@ -512,7 +512,7 @@ BayesianJointPdfClass<V,M>::lnValue(
   if (hessianEffect) hessianELike = &m_tmpVector2;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "In BayesianJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
                             << ", domainVector = " << domainVector
                             << ": about to call prior()"
                             << std::endl;
@@ -521,14 +521,14 @@ BayesianJointPdfClass<V,M>::lnValue(
   double value1 = m_priorDensity.lnValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "In BayesianJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
                             << ", domainVector = " << domainVector
                             << ": lnPrior = " << value1
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "In BayesianJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
                             << ", domainVector = " << domainVector
                             << ": about to call likelihood()"
                             << std::endl;
@@ -540,27 +540,27 @@ BayesianJointPdfClass<V,M>::lnValue(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "In BayesianJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
                             << ", domainVector = " << domainVector
                             << ": value1 = "       << value1
                             << ", value2 = "       << value2
                             << std::endl;
     if (gradVector) {
-      *m_env.subDisplayFile() << "In BayesianJointPdfClass<V,M>::lnValue()"
+      *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
                               << ", domainVector = " << domainVector
                               << ": gradVector = "   << *gradVector
                               << ", gradVLike = "    << *gradVLike
                               << std::endl;
     }
     if (hessianMatrix) {
-      *m_env.subDisplayFile() << "In BayesianJointPdfClass<V,M>::lnValue()"
+      *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
                               << ", domainVector = "  << domainVector
                               << ": hessianMatrix = " << *hessianMatrix
                               << ", hessianMLike = "  << *hessianMLike
                               << std::endl;
     }
     if (hessianEffect) {
-      *m_env.subDisplayFile() << "In BayesianJointPdfClass<V,M>::lnValue()"
+      *m_env.subDisplayFile() << "In BayesianJointPdf<V,M>::lnValue()"
                               << ", domainVector = "  << domainVector
                               << ": hessianEffect = " << *hessianEffect
                               << ", hessianELike = "  << *hessianELike
@@ -588,7 +588,7 @@ BayesianJointPdfClass<V,M>::lnValue(
   m_lastComputedLogLikelihood = m_likelihoodExponent*value2;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving BayesianJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "Leaving BayesianJointPdf<V,M>::lnValue()"
                             << ": domainVector = " << domainVector
                             << ", returnValue = "  << returnValue
                             << std::endl;
@@ -599,7 +599,7 @@ BayesianJointPdfClass<V,M>::lnValue(
 // --------------------------------------------------
 template<class V, class M>
 double
-BayesianJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+BayesianJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
   double value = 0.;
 
@@ -613,7 +613,7 @@ BayesianJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamp
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_env.worldRank(),
-                        "BayesianJointPdfClass<V,M>::lnValue()",
+                        "BayesianJointPdf<V,M>::lnValue()",
                         "incomplete code for computeLogOfNormalizationFactor()");
   }
 
@@ -624,13 +624,13 @@ BayesianJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamp
 // Gaussian probability density class [PDF-03]
 //*****************************************************
 /*! 
- * \class GaussianJointPdfClass
+ * \class GaussianJointPdf
  * \brief A class for handling Gaussian joint PDFs.
  *
  * This class allows the mathematical definition of a Gaussian Joint PDF.*/
 
 template<class V, class M>
-class GaussianJointPdfClass : public BaseJointPdfClass<V,M> {
+class GaussianJointPdf : public BaseJointPdf<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{
@@ -638,19 +638,19 @@ public:
   /*! Constructs a new object, given a prefix and the domain of the PDF, a vector of mean
    * values, \c lawExpVector, and a vector of covariance values \c lawVarVector (an 
    * alternative representation for a diagonal covariance matrix).  */ 
-  GaussianJointPdfClass(const char*                  prefix,
-                          const VectorSetClass<V,M>& domainSet,
+  GaussianJointPdf(const char*                  prefix,
+                          const VectorSet<V,M>& domainSet,
                           const V&                     lawExpVector,
                           const V&                     lawVarVector);
   //! Constructor
   /*! Constructs a new object, given a prefix and the image set of the vector realizer, a
    * vector of mean values, \c lawExpVector, and a covariance matrix, \c lawCovMatrix. */ 
-  GaussianJointPdfClass(const char*                  prefix,
-                          const VectorSetClass<V,M>& domainSet,
+  GaussianJointPdf(const char*                  prefix,
+                          const VectorSet<V,M>& domainSet,
                           const V&                     lawExpVector,
                           const M&                     lawCovMatrix);
   //! Destructor
- ~GaussianJointPdfClass();
+ ~GaussianJointPdf();
  //@}
   
   //! @name Math methods
@@ -668,7 +668,7 @@ public:
   double   lnValue           (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   
   //! Computes the logarithm of the normalization factor.
-  /*! This routine calls BaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
+  /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double   computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
     
   //! Updates the mean with the new value \c newLawExpVector.  
@@ -689,11 +689,11 @@ public:
   const V& lawVarVector() const;
   //@}
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
-  using BaseJointPdfClass<V,M>::m_normalizationStyle;
-  using BaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
+  using BaseJointPdf<V,M>::m_normalizationStyle;
+  using BaseJointPdf<V,M>::m_logOfNormalizationFactor;
   V*       m_lawExpVector;
   V*       m_lawVarVector;
   bool     m_diagonalCovMatrix;
@@ -701,13 +701,13 @@ protected:
 };
 // Constructor -------------------------------------
 template<class V,class M>
-GaussianJointPdfClass<V,M>::GaussianJointPdfClass(
+GaussianJointPdf<V,M>::GaussianJointPdf(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet,
+  const VectorSet<V,M>& domainSet,
   const V&                     lawExpVector,
   const V&                     lawVarVector)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet),
+  BaseJointPdf<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet),
   m_lawExpVector     (new V(lawExpVector)),
   m_lawVarVector     (new V(lawVarVector)),
   m_diagonalCovMatrix(true),
@@ -715,13 +715,13 @@ GaussianJointPdfClass<V,M>::GaussianJointPdfClass(
 {
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GaussianJointPdfClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Entering GaussianJointPdf<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
-    *m_env.subDisplayFile() << "In GaussianJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "In GaussianJointPdf<V,M>::constructor()"
                           //<< ", prefix = "     << m_prefix
                             << ": meanVector = " << this->lawExpVector()
 	                    << ", Variances = "  << this->lawVarVector()
@@ -729,33 +729,33 @@ GaussianJointPdfClass<V,M>::GaussianJointPdfClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GaussianJointPdfClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Leaving GaussianJointPdf<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Constructor -------------------------------------
 template<class V,class M>
-GaussianJointPdfClass<V,M>::GaussianJointPdfClass(
+GaussianJointPdf<V,M>::GaussianJointPdf(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet,
+  const VectorSet<V,M>& domainSet,
   const V&                     lawExpVector,
   const M&                     lawCovMatrix)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet),
+  BaseJointPdf<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet),
   m_lawExpVector     (new V(lawExpVector)),
   m_lawVarVector     (domainSet.vectorSpace().newVector(INFINITY)), // FIX ME
   m_diagonalCovMatrix(false),
   m_lawCovMatrix     (new M(lawCovMatrix))
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GaussianJointPdfClass<V,M>::constructor() [2]"
+    *m_env.subDisplayFile() << "Entering GaussianJointPdf<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
-    *m_env.subDisplayFile() << "In GaussianJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "In GaussianJointPdf<V,M>::constructor()"
                           //<< ", prefix = "            << m_prefix
                             << ": meanVector = "        << this->lawExpVector()
 	                    << ", Covariance Matrix = " << lawCovMatrix
@@ -763,14 +763,14 @@ GaussianJointPdfClass<V,M>::GaussianJointPdfClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GaussianJointPdfClass<V,M>::constructor() [2]"
+    *m_env.subDisplayFile() << "Leaving GaussianJointPdf<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V,class M>
-GaussianJointPdfClass<V,M>::~GaussianJointPdfClass()
+GaussianJointPdf<V,M>::~GaussianJointPdf()
 {
   delete m_lawCovMatrix;
   delete m_lawVarVector;
@@ -779,21 +779,21 @@ GaussianJointPdfClass<V,M>::~GaussianJointPdfClass()
 // Math methods-------------------------------------
 template <class V, class M>
 const V&
-GaussianJointPdfClass<V,M>::lawExpVector() const
+GaussianJointPdf<V,M>::lawExpVector() const
 {
   return *m_lawExpVector;
 }
 //--------------------------------------------------
 template <class V, class M>
 const V&
-GaussianJointPdfClass<V,M>::lawVarVector() const
+GaussianJointPdf<V,M>::lawVarVector() const
 {
   return *m_lawVarVector;
 }
 //--------------------------------------------------
 template<class V, class M>
 double
-GaussianJointPdfClass<V,M>::actualValue(
+GaussianJointPdf<V,M>::actualValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -801,7 +801,7 @@ GaussianJointPdfClass<V,M>::actualValue(
         V* hessianEffect) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
-    *m_env.subDisplayFile() << "Entering GaussianJointPdfClass<V,M>::actualValue()"
+    *m_env.subDisplayFile() << "Entering GaussianJointPdf<V,M>::actualValue()"
                             << ", meanVector = "   << *m_lawExpVector
 	                    << ", lawCovMatrix = " << *m_lawCovMatrix
                             << ": domainVector = " << domainVector
@@ -810,12 +810,12 @@ GaussianJointPdfClass<V,M>::actualValue(
 
   UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "GaussianJointPdfClass<V,M>::actualValue()",
+                      "GaussianJointPdf<V,M>::actualValue()",
                       "invalid input");
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "GaussianJointPdfClass<V,M>::actualValue()",
+                      "GaussianJointPdf<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = 0.;
@@ -829,7 +829,7 @@ GaussianJointPdfClass<V,M>::actualValue(
   //returnValue *= exp(m_logOfNormalizationFactor); // No need, because 'lnValue()' is called right above [PDF-03]
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
-    *m_env.subDisplayFile() << "Leaving GaussianJointPdfClass<V,M>::actualValue()"
+    *m_env.subDisplayFile() << "Leaving GaussianJointPdf<V,M>::actualValue()"
                             << ", meanVector = "   << *m_lawExpVector
 	                    << ", lawCovMatrix = " << *m_lawCovMatrix
                             << ": domainVector = " << domainVector
@@ -842,7 +842,7 @@ GaussianJointPdfClass<V,M>::actualValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-GaussianJointPdfClass<V,M>::lnValue(
+GaussianJointPdf<V,M>::lnValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -850,7 +850,7 @@ GaussianJointPdfClass<V,M>::lnValue(
         V* hessianEffect) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
-    *m_env.subDisplayFile() << "Entering GaussianJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "Entering GaussianJointPdf<V,M>::lnValue()"
                             << ", meanVector = "   << *m_lawExpVector
 	                    << ", lawCovMatrix = " << *m_lawCovMatrix
                             << ": domainVector = " << domainVector
@@ -859,7 +859,7 @@ GaussianJointPdfClass<V,M>::lnValue(
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "GaussianJointPdfClass<V,M>::lnValue()",
+                      "GaussianJointPdf<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   if (domainDirection) {}; // just to remove compiler warning
@@ -897,7 +897,7 @@ GaussianJointPdfClass<V,M>::lnValue(
   returnValue += m_logOfNormalizationFactor; // [PDF-03]
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
-    *m_env.subDisplayFile() << "Leaving GaussianJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "Leaving GaussianJointPdf<V,M>::lnValue()"
                             << ", m_normalizationStyle = " << m_normalizationStyle
                             << ", meanVector = "           << *m_lawExpVector
 	                    << ", lawCovMatrix = "         << *m_lawCovMatrix
@@ -911,17 +911,17 @@ GaussianJointPdfClass<V,M>::lnValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-GaussianJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+GaussianJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
   double value = 0.;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GaussianJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Entering GaussianJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << std::endl;
   }
-  value = BaseJointPdfClass<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
+  value = BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GaussianJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Leaving GaussianJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << ", m_logOfNormalizationFactor = " << m_logOfNormalizationFactor
                             << std::endl;
   }
@@ -931,7 +931,7 @@ GaussianJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamp
 //--------------------------------------------------
 template<class V, class M>
 void
-GaussianJointPdfClass<V,M>::updateLawExpVector(const V& newLawExpVector)
+GaussianJointPdf<V,M>::updateLawExpVector(const V& newLawExpVector)
 {
   // delete old expected values (allocated at construction or last call to this function)
   delete m_lawExpVector;
@@ -941,7 +941,7 @@ GaussianJointPdfClass<V,M>::updateLawExpVector(const V& newLawExpVector)
 
 template<class V, class M>
 void
-GaussianJointPdfClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
+GaussianJointPdf<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
 {
   // delete old expected values (allocated at construction or last call to this function)
   delete m_lawCovMatrix;
@@ -951,7 +951,7 @@ GaussianJointPdfClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
 
 template<class V, class M>
 const M&
-GaussianJointPdfClass<V,M>::lawCovMatrix() const
+GaussianJointPdf<V,M>::lawCovMatrix() const
 {
   return *m_lawCovMatrix;
 }
@@ -960,22 +960,22 @@ GaussianJointPdfClass<V,M>::lawCovMatrix() const
 // Uniform probability density class [PDF-04]
 //*****************************************************
 /*!
- * \class UniformJointPdfClass
+ * \class UniformJointPdf
  * \brief A class for handling uniform joint PDFs.
  *
  * This class allows the mathematical definition of a Uniform Joint PDF.*/
 
 template<class V, class M>
-class UniformJointPdfClass : public BaseJointPdfClass<V,M> {
+class UniformJointPdf : public BaseJointPdf<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor
   /*! Constructs a new object of the class, given a prefix and the domain set of the uniform PDF.  */
-  UniformJointPdfClass(const char*                  prefix,
-                         const VectorSetClass<V,M>& domainSet);
+  UniformJointPdf(const char*                  prefix,
+                         const VectorSet<V,M>& domainSet);
   //! Destructor
- ~UniformJointPdfClass();
+ ~UniformJointPdf();
  //@}
 
    //! @name Math methods
@@ -991,46 +991,46 @@ public:
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   
   //! Computes the logarithm of the normalization factor.
-  /*! This routine calls BaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
+  /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
   //@}
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
-  using BaseJointPdfClass<V,M>::m_normalizationStyle;
-  using BaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
+  using BaseJointPdf<V,M>::m_normalizationStyle;
+  using BaseJointPdf<V,M>::m_logOfNormalizationFactor;
 };
 // Constructor -------------------------------------
 template<class V,class M>
-UniformJointPdfClass<V,M>::UniformJointPdfClass(
+UniformJointPdf<V,M>::UniformJointPdf(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet)
+  const VectorSet<V,M>& domainSet)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"uni").c_str(),
+  BaseJointPdf<V,M>(((std::string)(prefix)+"uni").c_str(),
                             domainSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering UniformJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering UniformJointPdf<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving UniformJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving UniformJointPdf<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V,class M>
-UniformJointPdfClass<V,M>::~UniformJointPdfClass()
+UniformJointPdf<V,M>::~UniformJointPdf()
 {
 }
 // Math methods-------------------------------------
 template<class V, class M>
 double
-UniformJointPdfClass<V,M>::actualValue(
+UniformJointPdf<V,M>::actualValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1039,7 +1039,7 @@ UniformJointPdfClass<V,M>::actualValue(
 {
   UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "UniformJointPdfClass<V,M>::actualValue()",
+                      "UniformJointPdf<V,M>::actualValue()",
                       "invalid input");
 
   if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
@@ -1062,7 +1062,7 @@ UniformJointPdfClass<V,M>::actualValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-UniformJointPdfClass<V,M>::lnValue(
+UniformJointPdf<V,M>::lnValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1090,17 +1090,17 @@ UniformJointPdfClass<V,M>::lnValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-UniformJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+UniformJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
   double value = 0.;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering UniformJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Entering UniformJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << std::endl;
   }
-  value = BaseJointPdfClass<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
+  value = BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving UniformJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Leaving UniformJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << ", m_logOfNormalizationFactor = " << m_logOfNormalizationFactor
                             << std::endl;
   }
@@ -1112,25 +1112,25 @@ UniformJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSampl
 // Beta probability density class [PDF-05]
 //*****************************************************
 /*!
- * \class BetaJointPdfClass
+ * \class BetaJointPdf
  * \brief A class for handling Beta joint PDFs.
  *
  * This class allows the mathematical definition of a Beta Joint PDF.*/
 
 template<class V, class M>
-class BetaJointPdfClass : public BaseJointPdfClass<V,M> {
+class BetaJointPdf : public BaseJointPdf<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{
   //! Constructor
   /*! Constructs a new object of the class, given a prefix, the domain set, and the parameters
    * \c alpha and \c beta of the Beta PDF.  */
-  BetaJointPdfClass(const char*                  prefix,
-                      const VectorSetClass<V,M>& domainSet,
+  BetaJointPdf(const char*                  prefix,
+                      const VectorSet<V,M>& domainSet,
                       const V&                     alpha,
                       const V&                     beta);
   //! Destructor
- ~BetaJointPdfClass();
+ ~BetaJointPdf();
  //@}
 
     //! @name Math methods
@@ -1147,52 +1147,52 @@ public:
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   
   //! Computes the logarithm of the normalization factor.
-  /*! This routine calls BaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
+  /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
   //@}
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
-  using BaseJointPdfClass<V,M>::m_normalizationStyle;
-  using BaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
+  using BaseJointPdf<V,M>::m_normalizationStyle;
+  using BaseJointPdf<V,M>::m_logOfNormalizationFactor;
 
   V m_alpha;
   V m_beta;
 };
 // Constructor -------------------------------------
 template<class V,class M>
-BetaJointPdfClass<V,M>::BetaJointPdfClass(
+BetaJointPdf<V,M>::BetaJointPdf(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet,
+  const VectorSet<V,M>& domainSet,
   const V&                     alpha,
   const V&                     beta)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"uni").c_str(),domainSet),
+  BaseJointPdf<V,M>(((std::string)(prefix)+"uni").c_str(),domainSet),
   m_alpha(alpha),
   m_beta (beta)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering BetaJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering BetaJointPdf<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving BetaJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving BetaJointPdf<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V,class M>
-BetaJointPdfClass<V,M>::~BetaJointPdfClass()
+BetaJointPdf<V,M>::~BetaJointPdf()
 {
 }
 // Math methods-------------------------------------
 template<class V, class M>
 double
-BetaJointPdfClass<V,M>::actualValue(
+BetaJointPdf<V,M>::actualValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1201,12 +1201,12 @@ BetaJointPdfClass<V,M>::actualValue(
 {
   UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "BetaJointPdfClass<V,M>::actualValue()",
+                      "BetaJointPdf<V,M>::actualValue()",
                       "invalid input");
 
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "BetaJointPdfClass<V,M>::actualValue()",
+                      "BetaJointPdf<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   // No need to multiply by exp(m_logOfNormalizationFactor) because 'lnValue()' is called [PDF-05]
@@ -1215,7 +1215,7 @@ BetaJointPdfClass<V,M>::actualValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-BetaJointPdfClass<V,M>::lnValue(
+BetaJointPdf<V,M>::lnValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1224,7 +1224,7 @@ BetaJointPdfClass<V,M>::lnValue(
 {
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "BetaJointPdfClass<V,M>::lnValue()",
+                      "BetaJointPdf<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double aux = 0.;
@@ -1238,7 +1238,7 @@ BetaJointPdfClass<V,M>::lnValue(
       aux = (m_alpha[i]-1.)*log(domainVector[i]) + (m_beta[i]-1.)*log(1.-domainVector[i]);
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In BetaJointPdfClass<V,M>::lnValue()"
+      *m_env.subDisplayFile() << "In BetaJointPdf<V,M>::lnValue()"
                               << ", m_normalizationStyle = "      << m_normalizationStyle
                               << ": domainVector[" << i << "] = " << domainVector[i]
                               << ", m_alpha[" << i << "] = "      << m_alpha[i]
@@ -1255,17 +1255,17 @@ BetaJointPdfClass<V,M>::lnValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-BetaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+BetaJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
   double value = 0.;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering BetaJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Entering BetaJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << std::endl;
   }
-  value = BaseJointPdfClass<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
+  value = BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving BetaJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Leaving BetaJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << ", m_logOfNormalizationFactor = " << m_logOfNormalizationFactor
                             << std::endl;
   }
@@ -1277,25 +1277,25 @@ BetaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples,
 // Gamma probability density class [PDF-06]
 //*****************************************************
 /*!
- * \class GammaJointPdfClass
+ * \class GammaJointPdf
  * \brief A class for handling Gamma joint PDFs.
  *
  * This class allows the mathematical definition of a Gamma Joint PDF.*/
 
 template<class V, class M>
-class GammaJointPdfClass : public BaseJointPdfClass<V,M> {
+class GammaJointPdf : public BaseJointPdf<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor
   /*! Constructs a new object of the class, given a prefix, the domain set, and the parameters
    * \c a and \c b of the Gamma PDF.  */
-  GammaJointPdfClass(const char*                  prefix,
-                       const VectorSetClass<V,M>& domainSet,
+  GammaJointPdf(const char*                  prefix,
+                       const VectorSet<V,M>& domainSet,
                        const V&                     a,
                        const V&                     b);
   //! Destructor
- ~GammaJointPdfClass();
+ ~GammaJointPdf();
  //@}
 
   //! @name Math methods
@@ -1313,52 +1313,52 @@ public:
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   
   //! Computes the logarithm of the normalization factor.
-  /*! This routine calls BaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
+  /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
  //@}
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
-  using BaseJointPdfClass<V,M>::m_normalizationStyle;
-  using BaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
+  using BaseJointPdf<V,M>::m_normalizationStyle;
+  using BaseJointPdf<V,M>::m_logOfNormalizationFactor;
 
   V m_a;
   V m_b;
 };
 // Constructor -------------------------------------
 template<class V,class M>
-GammaJointPdfClass<V,M>::GammaJointPdfClass(
+GammaJointPdf<V,M>::GammaJointPdf(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet,
+  const VectorSet<V,M>& domainSet,
   const V&                     a,
   const V&                     b)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"uni").c_str(),domainSet),
+  BaseJointPdf<V,M>(((std::string)(prefix)+"uni").c_str(),domainSet),
   m_a(a),
   m_b(b)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GammaJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering GammaJointPdf<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GammaJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving GammaJointPdf<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V,class M>
-GammaJointPdfClass<V,M>::~GammaJointPdfClass()
+GammaJointPdf<V,M>::~GammaJointPdf()
 {
 }
 // Math methods-------------------------------------
 template<class V, class M>
 double
-GammaJointPdfClass<V,M>::actualValue(
+GammaJointPdf<V,M>::actualValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1367,12 +1367,12 @@ GammaJointPdfClass<V,M>::actualValue(
 {
   UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "GammaJointPdfClass<V,M>::actualValue()",
+                      "GammaJointPdf<V,M>::actualValue()",
                       "invalid input");
 
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "GammaJointPdfClass<V,M>::actualValue()",
+                      "GammaJointPdf<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   // No need to multiply by exp(m_logOfNormalizationFactor) because 'lnValue()' is called [PDF-06]
@@ -1381,7 +1381,7 @@ GammaJointPdfClass<V,M>::actualValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-GammaJointPdfClass<V,M>::lnValue(
+GammaJointPdf<V,M>::lnValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1390,7 +1390,7 @@ GammaJointPdfClass<V,M>::lnValue(
 {
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "GammaJointPdfClass<V,M>::lnValue()",
+                      "GammaJointPdf<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double aux = 0.;
@@ -1404,7 +1404,7 @@ GammaJointPdfClass<V,M>::lnValue(
       aux = (m_a[i]-1.)*log(domainVector[i]) - domainVector[i]/m_b[i];
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In GammaJointPdfClass<V,M>::lnValue()"
+      *m_env.subDisplayFile() << "In GammaJointPdf<V,M>::lnValue()"
                               << ", m_normalizationStyle = "      << m_normalizationStyle
                               << ": domainVector[" << i << "] = " << domainVector[i]
                               << ", m_a[" << i << "] = "          << m_a[i]
@@ -1421,17 +1421,17 @@ GammaJointPdfClass<V,M>::lnValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-GammaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+GammaJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
   double value = 0.;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GammaJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Entering GammaJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << std::endl;
   }
-  value = BaseJointPdfClass<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
+  value = BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GammaJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Leaving GammaJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << ", m_logOfNormalizationFactor = " << m_logOfNormalizationFactor
                             << std::endl;
   }
@@ -1443,25 +1443,25 @@ GammaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples
 // InverseGamma probability density class [PDF-07]
 //*****************************************************
 /*!
- * \class InverseGammaJointPdfClass
+ * \class InverseGammaJointPdf
  * \brief A class for handling Inverse Gamma joint PDFs.
  *
  * This class allows the mathematical definition of an Inverse Gamma Joint PDF.*/
 
 template<class V, class M>
-class InverseGammaJointPdfClass : public BaseJointPdfClass<V,M> {
+class InverseGammaJointPdf : public BaseJointPdf<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{
   //! Constructor
   /*! Constructs a new object of the class, given a prefix, the domain set, and the parameters
    * \c alpha and \c beta of the Inverse Gamma PDF.  */
-  InverseGammaJointPdfClass(const char*                  prefix,
-                              const VectorSetClass<V,M>& domainSet,
+  InverseGammaJointPdf(const char*                  prefix,
+                              const VectorSet<V,M>& domainSet,
                               const V&                     alpha,
                               const V&                     beta);
   //! Destructor
- ~InverseGammaJointPdfClass();
+ ~InverseGammaJointPdf();
  //@}
 
    //! @name Math methods
@@ -1475,53 +1475,53 @@ public:
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   
   //! Computes the logarithm of the normalization factor.
-  /*! This routine calls BaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
+  /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
   //@}
 
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
-  using BaseJointPdfClass<V,M>::m_normalizationStyle;
-  using BaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
+  using BaseJointPdf<V,M>::m_normalizationStyle;
+  using BaseJointPdf<V,M>::m_logOfNormalizationFactor;
 
   V m_alpha;
   V m_beta;
 };
 // Constructor -------------------------------------
 template<class V,class M>
-InverseGammaJointPdfClass<V,M>::InverseGammaJointPdfClass(
+InverseGammaJointPdf<V,M>::InverseGammaJointPdf(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet,
+  const VectorSet<V,M>& domainSet,
   const V&                     alpha,
   const V&                     beta)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"uni").c_str(),domainSet),
+  BaseJointPdf<V,M>(((std::string)(prefix)+"uni").c_str(),domainSet),
   m_alpha(alpha),
   m_beta (beta)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering InverseGammaJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering InverseGammaJointPdf<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving InverseGammaJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving InverseGammaJointPdf<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V,class M>
-InverseGammaJointPdfClass<V,M>::~InverseGammaJointPdfClass()
+InverseGammaJointPdf<V,M>::~InverseGammaJointPdf()
 {
 }
 // Math methods-------------------------------------
 template<class V, class M>
 double
-InverseGammaJointPdfClass<V,M>::actualValue(
+InverseGammaJointPdf<V,M>::actualValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1530,12 +1530,12 @@ InverseGammaJointPdfClass<V,M>::actualValue(
 {
   UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "InverseGammaJointPdfClass<V,M>::actualValue()",
+                      "InverseGammaJointPdf<V,M>::actualValue()",
                       "invalid input");
 
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "InverseGammaJointPdfClass<V,M>::actualValue()",
+                      "InverseGammaJointPdf<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   // No need to multiply by exp(m_logOfNormalizationFactor) because 'lnValue()' is called [PDF-07]
@@ -1544,7 +1544,7 @@ InverseGammaJointPdfClass<V,M>::actualValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-InverseGammaJointPdfClass<V,M>::lnValue(
+InverseGammaJointPdf<V,M>::lnValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1553,7 +1553,7 @@ InverseGammaJointPdfClass<V,M>::lnValue(
 {
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "InverseGammaJointPdfClass<V,M>::lnValue()",
+                      "InverseGammaJointPdf<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double result = 0.;
@@ -1571,17 +1571,17 @@ InverseGammaJointPdfClass<V,M>::lnValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-InverseGammaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+InverseGammaJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
   double value = 0.;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering InverseGammaJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Entering InverseGammaJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << std::endl;
   }
-  value = BaseJointPdfClass<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
+  value = BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving InverseGammaJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Leaving InverseGammaJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << ", m_logOfNormalizationFactor = " << m_logOfNormalizationFactor
                             << std::endl;
   }
@@ -1593,36 +1593,36 @@ InverseGammaJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int num
 // Powered probability density class [PDF-08]
 //*****************************************************
 /*!
- * \class PoweredJointPdfClass
+ * \class PoweredJointPdf
  * \brief A class for handling a powered joint PDFs.
  *
  * This class allows the mathematical definition of a Powered Joint PDF.*/
 
 template<class V, class M>
-class PoweredJointPdfClass : public BaseJointPdfClass<V,M> {
+class PoweredJointPdf : public BaseJointPdf<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{
   //! Constructor
   /*! Constructs a new object of the class, given a prefix, the domain set and the exponent of 
    * the powered PDF.  */
-  PoweredJointPdfClass(const char*                     prefix,
-                         const BaseJointPdfClass<V,M>& srcDensity,
+  PoweredJointPdf(const char*                     prefix,
+                         const BaseJointPdf<V,M>& srcDensity,
                                double                    exponent);
   //! Destructor
- ~PoweredJointPdfClass();
+ ~PoweredJointPdf();
  //@}
 
   //! @name Math methods
   //@{
   //! Actual value of the powered PDF.
-  /*! Finds the actual value using BaseJointPdfClass::actualValue() and apply it to the power of 
+  /*! Finds the actual value using BaseJointPdf::actualValue() and apply it to the power of 
    * \c this PDF, which given by \c exponent, and multiplies it by the normalization factor, which is 
    * given by exp(m_logOfNormalizationFactor).*/
   double actualValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   
   //! Logarithm of the value of the powered PDF.
-    /*! Finds the logarithm of actual value using BaseJointPdfClass::lnValue() and multiplies by the power of 
+    /*! Finds the logarithm of actual value using BaseJointPdf::lnValue() and multiplies by the power of 
    * \c this PDF, which given by \c exponent, and then adds the normalization factor, which is 
    * given by m_logOfNormalizationFactor.*/
   double lnValue              (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
@@ -1636,52 +1636,52 @@ public:
   //@}
   
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
-  using BaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
+  using BaseJointPdf<V,M>::m_logOfNormalizationFactor;
 
-  const BaseJointPdfClass<V,M>& m_srcDensity;
+  const BaseJointPdf<V,M>& m_srcDensity;
   double                          m_exponent;
 };
 // Constructor -------------------------------------
 template<class V,class M>
-PoweredJointPdfClass<V,M>::PoweredJointPdfClass(
+PoweredJointPdf<V,M>::PoweredJointPdf(
   const char*                     prefix,
-  const BaseJointPdfClass<V,M>& srcDensity,
+  const BaseJointPdf<V,M>& srcDensity,
         double                    exponent)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"pow").c_str(),srcDensity.domainSet()),
+  BaseJointPdf<V,M>(((std::string)(prefix)+"pow").c_str(),srcDensity.domainSet()),
   m_srcDensity            (srcDensity),
   m_exponent              (exponent)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering PoweredJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering PoweredJointPdf<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "In PoweredJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "In PoweredJointPdf<V,M>::constructor()"
                           //<< ", prefix = "     << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving PoweredJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving PoweredJointPdf<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V,class M>
-PoweredJointPdfClass<V,M>::~PoweredJointPdfClass()
+PoweredJointPdf<V,M>::~PoweredJointPdf()
 {
 }
 // Math methods-------------------------------------
 template<class V,class M>
 void
-PoweredJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
+PoweredJointPdf<V,M>::setNormalizationStyle(unsigned int value) const
 {
   m_srcDensity.setNormalizationStyle(value);
   return;
@@ -1689,7 +1689,7 @@ PoweredJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
 //--------------------------------------------------
 template<class V, class M>
 double
-PoweredJointPdfClass<V,M>::actualValue(
+PoweredJointPdf<V,M>::actualValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1697,28 +1697,28 @@ PoweredJointPdfClass<V,M>::actualValue(
         V* hessianEffect) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering PoweredJointPdfClass<V,M>::actualValue()"
+    *m_env.subDisplayFile() << "Entering PoweredJointPdf<V,M>::actualValue()"
                             << ": domainVector = " << domainVector
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "PoweredJointPdfClass<V,M>::actualValue()",
+                      "PoweredJointPdf<V,M>::actualValue()",
                       "invalid input");
 
   double value = m_srcDensity.actualValue(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect);
 
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "PoweredJointPdfClass<V,M>::actualValue()",
+                      "PoweredJointPdf<V,M>::actualValue()",
                       "incomplete code for domainDirection, gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = pow(value,m_exponent);
   returnValue *= exp(m_logOfNormalizationFactor); // [PDF-08] ???
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving PoweredJointPdfClass<V,M>::actualValue()"
+    *m_env.subDisplayFile() << "Leaving PoweredJointPdf<V,M>::actualValue()"
                             << ": domainVector = " << domainVector
                             << ", returnValue = "  << returnValue
                             << std::endl;
@@ -1729,7 +1729,7 @@ PoweredJointPdfClass<V,M>::actualValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-PoweredJointPdfClass<V,M>::lnValue(
+PoweredJointPdf<V,M>::lnValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1737,7 +1737,7 @@ PoweredJointPdfClass<V,M>::lnValue(
         V* hessianEffect) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering PoweredJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "Entering PoweredJointPdf<V,M>::lnValue()"
                             << ": domainVector = " << domainVector
                             << std::endl;
   }
@@ -1746,14 +1746,14 @@ PoweredJointPdfClass<V,M>::lnValue(
 
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "PoweredJointPdfClass<V,M>::lnValue()",
+                      "PoweredJointPdf<V,M>::lnValue()",
                       "incomplete code for domainDirection, gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = m_exponent*value;
   returnValue += m_logOfNormalizationFactor; // [PDF-08] ???
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving PoweredJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "Leaving PoweredJointPdf<V,M>::lnValue()"
                             << ": domainVector = " << domainVector
                             << ", returnValue = "  << returnValue
                             << std::endl;
@@ -1764,7 +1764,7 @@ PoweredJointPdfClass<V,M>::lnValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-PoweredJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+PoweredJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
   double value = 0.;
 
@@ -1778,7 +1778,7 @@ PoweredJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSampl
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_env.worldRank(),
-                        "PoweredJointPdfClass<V,M>::lnValue()",
+                        "PoweredJointPdf<V,M>::lnValue()",
                         "incomplete code for computeLogOfNormalizationFactor()");
   }
 
@@ -1789,25 +1789,25 @@ PoweredJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSampl
 // Wigner probability density class [PDF-09]
 //*****************************************************
 /*!
- * \class WignerJointPdfClass
+ * \class WignerJointPdf
  * \brief A class for handling Wigner joint PDFs.
  *
  * This class allows the mathematical definition of a Wigner Joint PDF.*/
 
 template<class V, class M>
-class WignerJointPdfClass : public BaseJointPdfClass<V,M> {
+class WignerJointPdf : public BaseJointPdf<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor
   /*! Constructs a new object of the class, given a prefix, the domain set of the PDF, the
    * center position \c centerPos, and a radius \c radius.*/  
-  WignerJointPdfClass(const char*                  prefix,
-                        const VectorSetClass<V,M>& domainSet,
+  WignerJointPdf(const char*                  prefix,
+                        const VectorSet<V,M>& domainSet,
                         const V&                     centerPos,
                         double                       radius);
   //! Destructor
- ~WignerJointPdfClass();
+ ~WignerJointPdf();
   //@}
  
     //! @name Math methods
@@ -1821,57 +1821,57 @@ public:
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
  
   //! Computes the logarithm of the normalization factor.
-  /*! This routine calls BaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
+  /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
   //@}
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
-  using BaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
+  using BaseJointPdf<V,M>::m_logOfNormalizationFactor;
   V*     m_centerPos;
   double m_radius;
 };
 // Constructor -------------------------------------
 template<class V,class M>
-WignerJointPdfClass<V,M>::WignerJointPdfClass(
+WignerJointPdf<V,M>::WignerJointPdf(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet,
+  const VectorSet<V,M>& domainSet,
   const V&                     centerPos,
   double                       radius)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"uni").c_str(),
+  BaseJointPdf<V,M>(((std::string)(prefix)+"uni").c_str(),
 			   domainSet),
   m_centerPos(new V(centerPos)),
   m_radius   (radius)    
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering WignerJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering WignerJointPdf<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(m_radius <= 0.,
                       m_env.worldRank(),
-                      "WignerJointPdfClass<V,M>::constructor()",
+                      "WignerJointPdf<V,M>::constructor()",
                       "invalid radius");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving WignerJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving WignerJointPdf<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V,class M>
-WignerJointPdfClass<V,M>::~WignerJointPdfClass()
+WignerJointPdf<V,M>::~WignerJointPdf()
 {
   delete m_centerPos;
 }
 // Math methods-------------------------------------
 template<class V, class M>
 double
-WignerJointPdfClass<V,M>::actualValue(
+WignerJointPdf<V,M>::actualValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1880,7 +1880,7 @@ WignerJointPdfClass<V,M>::actualValue(
 {
   UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "WignerJointPdfClass<V,M>::actualValue()",
+                      "WignerJointPdf<V,M>::actualValue()",
                       "invalid input");
 
   if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
@@ -1899,7 +1899,7 @@ WignerJointPdfClass<V,M>::actualValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-WignerJointPdfClass<V,M>::lnValue(
+WignerJointPdf<V,M>::lnValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -1916,17 +1916,17 @@ WignerJointPdfClass<V,M>::lnValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-WignerJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+WignerJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
   double value = 0.;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering WignerJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Entering WignerJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << std::endl;
   }
-  value = BaseJointPdfClass<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
+  value = BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving WignerJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Leaving WignerJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << ", m_logOfNormalizationFactor = " << m_logOfNormalizationFactor
                             << std::endl;
   }
@@ -1938,13 +1938,13 @@ WignerJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSample
 // LogNormal probability density class [PDF-10]
 //*****************************************************
 /*! 
- * \class LogNormalJointPdfClass
+ * \class LogNormalJointPdf
  * \brief A class for handling Log-Normal joint PDFs.
  *
  * This class allows the mathematical definition of a Log-Normal Joint PDF.*/
 
 template<class V, class M>
-class LogNormalJointPdfClass : public BaseJointPdfClass<V,M> {
+class LogNormalJointPdf : public BaseJointPdf<V,M> {
 public:
   
   //! @name Constructor/Destructor methods
@@ -1953,12 +1953,12 @@ public:
   /*! Constructs a new object of the class, given a prefix and the domain of the PDF, 
    * a vector of mean values, \c lawExpVector, and a vector of covariance values 
    * \c lawVarVector (an alternative representation for a diagonal covariance matrix).*/ 
-  LogNormalJointPdfClass(const char*                  prefix,
-                           const VectorSetClass<V,M>& domainSet,
+  LogNormalJointPdf(const char*                  prefix,
+                           const VectorSet<V,M>& domainSet,
                            const V&                     lawExpVector,
                            const V&                     lawVarVector);
   //! Destructor
- ~LogNormalJointPdfClass();
+ ~LogNormalJointPdf();
  //@}
 
    //! @name Math methods
@@ -1974,7 +1974,7 @@ public:
   double   lnValue     (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   
   //! Computes the logarithm of the normalization factor.
-  /*! This routine calls BaseJointPdfClass::commonComputeLogOfNormalizationFactor().*/
+  /*! This routine calls BaseJointPdf::commonComputeLogOfNormalizationFactor().*/
   double   computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const;
 
   //! Access to the vector of mean values and private attribute:  m_lawExpVector. 
@@ -1984,36 +1984,36 @@ public:
   const V& lawVarVector() const;
 //@}
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
-  using BaseJointPdfClass<V,M>::m_normalizationStyle;
-  using BaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
+  using BaseJointPdf<V,M>::m_normalizationStyle;
+  using BaseJointPdf<V,M>::m_logOfNormalizationFactor;
   V*   m_lawExpVector;
   V*   m_lawVarVector;
   bool m_diagonalCovMatrix;
 };
 // Constructor -------------------------------------
 template<class V,class M>
-LogNormalJointPdfClass<V,M>::LogNormalJointPdfClass(
+LogNormalJointPdf<V,M>::LogNormalJointPdf(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet,
+  const VectorSet<V,M>& domainSet,
   const V&                     lawExpVector,
   const V&                     lawVarVector)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet),
+  BaseJointPdf<V,M>(((std::string)(prefix)+"gau").c_str(),domainSet),
   m_lawExpVector     (new V(lawExpVector)),
   m_lawVarVector     (new V(lawVarVector)),
   m_diagonalCovMatrix(true)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering LogNormalJointPdfClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Entering LogNormalJointPdf<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
-    *m_env.subDisplayFile() << "In LogNormalJointPdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "In LogNormalJointPdf<V,M>::constructor()"
                           //<< ", prefix = "     << m_prefix
                             << ": meanVector = " << this->lawExpVector()
 	                    << ", Variances = "  << this->lawVarVector()
@@ -2021,14 +2021,14 @@ LogNormalJointPdfClass<V,M>::LogNormalJointPdfClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving LogNormalJointPdfClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Leaving LogNormalJointPdf<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V,class M>
-LogNormalJointPdfClass<V,M>::~LogNormalJointPdfClass()
+LogNormalJointPdf<V,M>::~LogNormalJointPdf()
 {
   delete m_lawVarVector;
   delete m_lawExpVector;
@@ -2036,21 +2036,21 @@ LogNormalJointPdfClass<V,M>::~LogNormalJointPdfClass()
 // Math methods-------------------------------------
 template <class V, class M>
 const V&
-LogNormalJointPdfClass<V,M>::lawExpVector() const
+LogNormalJointPdf<V,M>::lawExpVector() const
 {
   return *m_lawExpVector;
 }
 //--------------------------------------------------
 template <class V, class M>
 const V&
-LogNormalJointPdfClass<V,M>::lawVarVector() const
+LogNormalJointPdf<V,M>::lawVarVector() const
 {
   return *m_lawVarVector;
 }
 //--------------------------------------------------
 template<class V, class M>
 double
-LogNormalJointPdfClass<V,M>::actualValue(
+LogNormalJointPdf<V,M>::actualValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -2058,7 +2058,7 @@ LogNormalJointPdfClass<V,M>::actualValue(
         V* hessianEffect) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
-    *m_env.subDisplayFile() << "Entering LogNormalJointPdfClass<V,M>::actualValue()"
+    *m_env.subDisplayFile() << "Entering LogNormalJointPdf<V,M>::actualValue()"
                             << ", meanVector = "               << *m_lawExpVector
                             << ": domainVector = "             << domainVector
                             << ", domainVector.sizeLocal() = " << domainVector.sizeLocal()
@@ -2068,12 +2068,12 @@ LogNormalJointPdfClass<V,M>::actualValue(
 
   UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "LogNormalJointPdfClass<V,M>::actualValue()",
+                      "LogNormalJointPdf<V,M>::actualValue()",
                       "invalid input");
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "LogNormalJointPdfClass<V,M>::actualValue()",
+                      "LogNormalJointPdf<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   double returnValue = 0.;
@@ -2092,7 +2092,7 @@ LogNormalJointPdfClass<V,M>::actualValue(
   //returnValue *= exp(m_logOfNormalizationFactor); // No need, because 'lnValue()' is called right above // [PDF-10]
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
-    *m_env.subDisplayFile() << "Leaving LogNormalJointPdfClass<V,M>::actualValue()"
+    *m_env.subDisplayFile() << "Leaving LogNormalJointPdf<V,M>::actualValue()"
                             << ", meanVector = "   << *m_lawExpVector
                             << ": domainVector = " << domainVector
                             << ", returnValue = "  << returnValue
@@ -2104,7 +2104,7 @@ LogNormalJointPdfClass<V,M>::actualValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-LogNormalJointPdfClass<V,M>::lnValue(
+LogNormalJointPdf<V,M>::lnValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -2112,7 +2112,7 @@ LogNormalJointPdfClass<V,M>::lnValue(
         V* hessianEffect) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
-    *m_env.subDisplayFile() << "Entering LogNormalJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "Entering LogNormalJointPdf<V,M>::lnValue()"
                             << ", meanVector = "   << *m_lawExpVector
                             << ": domainVector = " << domainVector
                             << std::endl;
@@ -2120,7 +2120,7 @@ LogNormalJointPdfClass<V,M>::lnValue(
 
   UQ_FATAL_TEST_MACRO((gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "LogNormalJointPdfClass<V,M>::lnValue()",
+                      "LogNormalJointPdf<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   if (domainDirection) {}; // just to remove compiler warning
@@ -2152,14 +2152,14 @@ LogNormalJointPdfClass<V,M>::lnValue(
     else {
       UQ_FATAL_TEST_MACRO(true,
                           m_env.worldRank(),
-                          "LogNormalJointPdfClass<V,M>::lnValue()",
+                          "LogNormalJointPdf<V,M>::lnValue()",
                           "situation with a non-diagonal covariance matrix makes no sense");
     }
     returnValue += m_logOfNormalizationFactor; // [PDF-10]
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
-    *m_env.subDisplayFile() << "Leaving LogNormalJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "Leaving LogNormalJointPdf<V,M>::lnValue()"
                             << ", meanVector = "   << *m_lawExpVector
                             << ": domainVector = " << domainVector
                             << ", returnValue = "  << returnValue
@@ -2171,17 +2171,17 @@ LogNormalJointPdfClass<V,M>::lnValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-LogNormalJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+LogNormalJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
   double value = 0.;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering LogNormalJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Entering LogNormalJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << std::endl;
   }
-  value = BaseJointPdfClass<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
+  value = BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor(numSamples, updateFactorInternally);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving LogNormalJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Leaving LogNormalJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << ", m_logOfNormalizationFactor = " << m_logOfNormalizationFactor
                             << std::endl;
   }
@@ -2193,7 +2193,7 @@ LogNormalJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSam
 // Concatenated probability density class [PDF-11]
 //*****************************************************
 /*! 
- * \class ConcatenatedJointPdfClass
+ * \class ConcatenatedJointPdf
  * \brief A class for handling concatenated PDFs.
  *
  * This class allows the user to defines concatenated probability density distributions, 
@@ -2202,27 +2202,27 @@ LogNormalJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSam
  * of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. */
 
 template<class V, class M>
-class ConcatenatedJointPdfClass : public BaseJointPdfClass<V,M> {
+class ConcatenatedJointPdf : public BaseJointPdf<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{
   //! Constructor
   /*! Concatenates two PDFs: \c density1 and \c density2 into one vector PDF, given a prefix 
    * and the concatenated domain of such PDFs.*/
-  ConcatenatedJointPdfClass(const char*                     prefix,
-                              const BaseJointPdfClass<V,M>& density1,
-                              const BaseJointPdfClass<V,M>& density2,
-                              const VectorSetClass   <V,M>& concatenatedDomain); 
+  ConcatenatedJointPdf(const char*                     prefix,
+                              const BaseJointPdf<V,M>& density1,
+                              const BaseJointPdf<V,M>& density2,
+                              const VectorSet   <V,M>& concatenatedDomain); 
   
   //! Constructor
-  /*! Concatenates a sequence of PDFs, given by: <c> std::vector<const BaseJointPdfClass<V,M>* >& densities </c>
+  /*! Concatenates a sequence of PDFs, given by: <c> std::vector<const BaseJointPdf<V,M>* >& densities </c>
    * into one single PDF, given a prefix and the concatenated domain of such PDFs.*/
-  ConcatenatedJointPdfClass(const char*                                          prefix,
-                              const std::vector<const BaseJointPdfClass<V,M>* >& densities,
-                              const VectorSetClass<V,M>&                         concatenatedDomain); 
+  ConcatenatedJointPdf(const char*                                          prefix,
+                              const std::vector<const BaseJointPdf<V,M>* >& densities,
+                              const VectorSet<V,M>&                         concatenatedDomain); 
   
   //! Destructor
-  ~ConcatenatedJointPdfClass();
+  ~ConcatenatedJointPdf();
   //@}
 
   //! @name Math methods
@@ -2245,23 +2245,23 @@ public:
   //@}
   
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
-  using BaseJointPdfClass<V,M>::m_logOfNormalizationFactor;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
+  using BaseJointPdf<V,M>::m_logOfNormalizationFactor;
 
-  std::vector<const BaseJointPdfClass<V,M>* > m_densities;
+  std::vector<const BaseJointPdf<V,M>* > m_densities;
 };
 // Constructor -------------------------------------
 template<class V,class M>
-ConcatenatedJointPdfClass<V,M>::ConcatenatedJointPdfClass(
+ConcatenatedJointPdf<V,M>::ConcatenatedJointPdf(
   const char*                     prefix,
-  const BaseJointPdfClass<V,M>& density1,
-  const BaseJointPdfClass<V,M>& density2,
-  const VectorSetClass   <V,M>& concatenatedDomain)
+  const BaseJointPdf<V,M>& density1,
+  const BaseJointPdf<V,M>& density2,
+  const VectorSet   <V,M>& concatenatedDomain)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"concat").c_str(),concatenatedDomain),
-  m_densities             (2,(const BaseJointPdfClass<V,M>*) NULL)
+  BaseJointPdf<V,M>(((std::string)(prefix)+"concat").c_str(),concatenatedDomain),
+  m_densities             (2,(const BaseJointPdf<V,M>*) NULL)
 {
   m_densities[0] = &density1;
   m_densities[1] = &density2;
@@ -2272,18 +2272,18 @@ ConcatenatedJointPdfClass<V,M>::ConcatenatedJointPdfClass(
 
   UQ_FATAL_TEST_MACRO((size1+size2) != size,
                       m_env.worldRank(),
-                      "ConcatenatedJointPdfClass<V,M>::constructor(1)",
+                      "ConcatenatedJointPdf<V,M>::constructor(1)",
                       "incompatible dimensions");
 }
 // Constructor -------------------------------------
 template<class V,class M>
-ConcatenatedJointPdfClass<V,M>::ConcatenatedJointPdfClass(
+ConcatenatedJointPdf<V,M>::ConcatenatedJointPdf(
   const char*                                          prefix,
-  const std::vector<const BaseJointPdfClass<V,M>* >& densities,
-  const VectorSetClass<V,M>&                         concatenatedDomain)
+  const std::vector<const BaseJointPdf<V,M>* >& densities,
+  const VectorSet<V,M>&                         concatenatedDomain)
   :
-  BaseJointPdfClass<V,M>(((std::string)(prefix)+"concat").c_str(),concatenatedDomain),
-  m_densities             (densities.size(),(const BaseJointPdfClass<V,M>*) NULL)
+  BaseJointPdf<V,M>(((std::string)(prefix)+"concat").c_str(),concatenatedDomain),
+  m_densities             (densities.size(),(const BaseJointPdf<V,M>*) NULL)
 {
   unsigned int sumSizes = 0;
   for (unsigned i = 0; i < m_densities.size(); ++i) {
@@ -2295,18 +2295,18 @@ ConcatenatedJointPdfClass<V,M>::ConcatenatedJointPdfClass(
 
   UQ_FATAL_TEST_MACRO(sumSizes != size,
                       m_env.worldRank(),
-                      "ConcatenatedJointPdfClass<V,M>::constructor(2)",
+                      "ConcatenatedJointPdf<V,M>::constructor(2)",
                       "incompatible dimensions");
 }
 // Destructor --------------------------------------
 template<class V,class M>
-ConcatenatedJointPdfClass<V,M>::~ConcatenatedJointPdfClass()
+ConcatenatedJointPdf<V,M>::~ConcatenatedJointPdf()
 {
 }
 // Math methods-------------------------------------
 template<class V,class M>
 void
-ConcatenatedJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
+ConcatenatedJointPdf<V,M>::setNormalizationStyle(unsigned int value) const
 {
   for (unsigned i = 0; i < m_densities.size(); ++i) {
     m_densities[i]->setNormalizationStyle(value);
@@ -2316,7 +2316,7 @@ ConcatenatedJointPdfClass<V,M>::setNormalizationStyle(unsigned int value) const
 //--------------------------------------------------
 template<class V, class M>
 double
-ConcatenatedJointPdfClass<V,M>::actualValue(
+ConcatenatedJointPdf<V,M>::actualValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -2324,19 +2324,19 @@ ConcatenatedJointPdfClass<V,M>::actualValue(
         V* hessianEffect) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering ConcatenatedJointPdfClass<V,M>::actualValue()"
+    *m_env.subDisplayFile() << "Entering ConcatenatedJointPdf<V,M>::actualValue()"
                             << ": domainVector = " << domainVector
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "ConcatenatedJointPdfClass<V,M>::actualValue()",
+                      "ConcatenatedJointPdf<V,M>::actualValue()",
                       "invalid input");
 
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "ConcatenatedJointPdfClass<V,M>::actualValue()",
+                      "ConcatenatedJointPdf<V,M>::actualValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   std::vector<V*> vecs(m_densities.size(),(V*) NULL);
@@ -2349,7 +2349,7 @@ ConcatenatedJointPdfClass<V,M>::actualValue(
     values[i] = m_densities[i]->actualValue(*(vecs[i]),NULL,NULL,NULL,NULL);
     returnValue *= values[i];
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In ConcatenatedJointPdfClass<V,M>::actualValue()"
+      *m_env.subDisplayFile() << "In ConcatenatedJointPdf<V,M>::actualValue()"
                               << ", *(vecs[" << i << "]) = "       << *(vecs[i])
                               << ": values[" << i << "] = "        << values[i]
                               << ", temporary cumulative value = " << returnValue
@@ -2361,7 +2361,7 @@ ConcatenatedJointPdfClass<V,M>::actualValue(
   //returnValue *= exp(m_logOfNormalizationFactor); // No need, because each PDF should be already normalized [PDF-11]
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving ConcatenatedJointPdfClass<V,M>::actualValue()"
+    *m_env.subDisplayFile() << "Leaving ConcatenatedJointPdf<V,M>::actualValue()"
                             << ": domainVector = " << domainVector
                             << ", returnValue = "  << returnValue
                             << std::endl;
@@ -2372,7 +2372,7 @@ ConcatenatedJointPdfClass<V,M>::actualValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-ConcatenatedJointPdfClass<V,M>::lnValue(
+ConcatenatedJointPdf<V,M>::lnValue(
   const V& domainVector,
   const V* domainDirection,
         V* gradVector,
@@ -2380,14 +2380,14 @@ ConcatenatedJointPdfClass<V,M>::lnValue(
         V* hessianEffect) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering ConcatenatedJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "Entering ConcatenatedJointPdf<V,M>::lnValue()"
                             << ": domainVector = " << domainVector
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO((domainDirection || gradVector || hessianMatrix || hessianEffect),
                       m_env.worldRank(),
-                      "ConcatenatedJointPdfClass<V,M>::lnValue()",
+                      "ConcatenatedJointPdf<V,M>::lnValue()",
                       "incomplete code for gradVector, hessianMatrix and hessianEffect calculations");
 
   std::vector<V*> vecs(m_densities.size(),(V*) NULL);
@@ -2400,7 +2400,7 @@ ConcatenatedJointPdfClass<V,M>::lnValue(
     values[i] = m_densities[i]->lnValue(*(vecs[i]),NULL,NULL,NULL,NULL);
     returnValue += values[i];
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In ConcatenatedJointPdfClass<V,M>::lnValue()"
+      *m_env.subDisplayFile() << "In ConcatenatedJointPdf<V,M>::lnValue()"
                               << ", *(vecs[" << i << "]) = "       << *(vecs[i])
                               << ": values[" << i << "] = "        << values[i]
                               << ", temporary cumulative value = " << returnValue
@@ -2412,7 +2412,7 @@ ConcatenatedJointPdfClass<V,M>::lnValue(
   //returnValue += m_logOfNormalizationFactor; // No need, because each PDF should be already normalized [PDF-11]
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving ConcatenatedJointPdfClass<V,M>::lnValue()"
+    *m_env.subDisplayFile() << "Leaving ConcatenatedJointPdf<V,M>::lnValue()"
                             << ": domainVector = " << domainVector
                             << ", returnValue = "  << returnValue
                             << std::endl;
@@ -2423,12 +2423,12 @@ ConcatenatedJointPdfClass<V,M>::lnValue(
 //--------------------------------------------------
 template<class V, class M>
 double
-ConcatenatedJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
+ConcatenatedJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
   double value = 0.;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering ConcatenatedJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Entering ConcatenatedJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << std::endl;
   }
   double volume = m_domainSet.volume();
@@ -2444,7 +2444,7 @@ ConcatenatedJointPdfClass<V,M>::computeLogOfNormalizationFactor(unsigned int num
     }
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving ConcatenatedJointPdfClass<V,M>::computeLogOfNormalizationFactor()"
+    *m_env.subDisplayFile() << "Leaving ConcatenatedJointPdf<V,M>::computeLogOfNormalizationFactor()"
                             << ", m_logOfNormalizationFactor = " << m_logOfNormalizationFactor
                             << std::endl;
   }

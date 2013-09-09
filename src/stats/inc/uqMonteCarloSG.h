@@ -40,17 +40,17 @@ namespace QUESO {
  * \file uqMonteCarloSG.h
  * \brief A templated class that implements a Monte Carlo generator of samples.
  * 
- * \class MonteCarloSGClass
+ * \class MonteCarloSG
  * \brief A templated class that implements a Monte Carlo generator of samples.
  *
  * This class implements a Monte Carlo generator of samples. 'SG' stands for 'Sequence Generator'.
- * Options reading is handled by class 'MonteCarloOptionsClass'. If options request data to be 
+ * Options reading is handled by class 'MonteCarloOptions'. If options request data to be 
  * written in the output file (MATLAB .m format only, for now), the user can check which MATLAB 
  * variables are defined and set by running 'grep zeros <OUTPUT FILE NAME>' after the solution
  * procedures ends. The names of the variables are self explanatory. */
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-class MonteCarloSGClass
+class MonteCarloSG
 {
 public:
   //! @name Constructor/Destructor methods
@@ -60,14 +60,14 @@ public:
  * QoI function 'qoiFunction' should belong to vector spaces of equal dimensions. If the requirements 
  * are satisfied, the constructor then reads input options that begin with the string '\<prefix\>_mc_'.
  * For instance, if 'prefix' is 'pROblem_775_fp_', then the constructor will read all options that begin
- * with 'pROblem_775_fp_mc_'. Options reading is handled by class 'MonteCarloOptionsClass'.*/
-  MonteCarloSGClass(const char*                                       prefix,         
-                      const McOptionsValuesClass*                     alternativeOptionsValues, // dakota
-                      const BaseVectorRVClass      <P_V,P_M>&         paramRv,        
-                      const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction);
+ * with 'pROblem_775_fp_mc_'. Options reading is handled by class 'MonteCarloOptions'.*/
+  MonteCarloSG(const char*                                       prefix,         
+                      const McOptionsValues*                     alternativeOptionsValues, // dakota
+                      const BaseVectorRV      <P_V,P_M>&         paramRv,        
+                      const BaseVectorFunction<P_V,P_M,Q_V,Q_M>& qoiFunction);
   
   //! Destructor.
-  ~MonteCarloSGClass();
+  ~MonteCarloSG();
   //@}
  
   //! @name Statistical methods
@@ -76,8 +76,8 @@ public:
   /*! This method checks for a parallel environment (and uses it if available) and calls the private
    * member function internGenerateSequence() to generate a sequence of values of the Quantity of
    * interest (QoI).*/
-  void generateSequence(BaseVectorSequenceClass<P_V,P_M>& workingPSeq,
-                        BaseVectorSequenceClass<Q_V,Q_M>& workingQSeq);
+  void generateSequence(BaseVectorSequence<P_V,P_M>& workingPSeq,
+                        BaseVectorSequence<Q_V,Q_M>& workingQSeq);
   //@}
   
   //! @name I/O methods
@@ -93,9 +93,9 @@ private:
    * (via the input options file) which sub-environment will write data to files. The unified 
    * sequence of data (QoI and/or Parameter sequences) of all the sub-environments (or of the single
    * environment, in case of a serial run) is also written to files.*/
-  void internGenerateSequence(const BaseVectorRVClass      <P_V,P_M>& paramRv,
-                                    BaseVectorSequenceClass<P_V,P_M>& workingPSeq,
-                                    BaseVectorSequenceClass<Q_V,Q_M>& workingQSeq);
+  void internGenerateSequence(const BaseVectorRV      <P_V,P_M>& paramRv,
+                                    BaseVectorSequence<P_V,P_M>& workingPSeq,
+                                    BaseVectorSequence<Q_V,Q_M>& workingQSeq);
 
   
   //!  This method \b actually generates the QoI sequence.
@@ -105,49 +105,49 @@ private:
    * size of a vector in 'workingQSeq'. If the requirements are satisfied, this operation sets the 
    * size and the contents of 'workingPSeq' and 'workingQSeq' using the algorithm options set in the
    * constructor. */
-  void actualGenerateSequence(const BaseVectorRVClass      <P_V,P_M>& paramRv,
-                                    BaseVectorSequenceClass<P_V,P_M>& workingPSeq,
-                                    BaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
+  void actualGenerateSequence(const BaseVectorRV      <P_V,P_M>& paramRv,
+                                    BaseVectorSequence<P_V,P_M>& workingPSeq,
+                                    BaseVectorSequence<Q_V,Q_M>& workingQSeq,
                                     unsigned int                        seqSize);
   //! Reads the sequence.
-  void actualReadSequence    (const BaseVectorRVClass      <P_V,P_M>& paramRv,
+  void actualReadSequence    (const BaseVectorRV      <P_V,P_M>& paramRv,
                               const std::string&                        dataInputFileName,
                               const std::string&                        dataInputFileType,
-                                    BaseVectorSequenceClass<P_V,P_M>& workingPSeq,
-                                    BaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
+                                    BaseVectorSequence<P_V,P_M>& workingPSeq,
+                                    BaseVectorSequence<Q_V,Q_M>& workingQSeq,
                                     unsigned int                        seqSize);
 
-  const BaseEnvironmentClass&                             m_env;
-  const BaseVectorRVClass              <P_V,P_M>&         m_paramRv;
-  const BaseVectorFunctionClass        <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
-  const VectorSpaceClass               <P_V,P_M>&         m_paramSpace;
-  const VectorSpaceClass               <Q_V,Q_M>&         m_qoiSpace;
-  const VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>* m_qoiFunctionSynchronizer;
+  const BaseEnvironment&                             m_env;
+  const BaseVectorRV              <P_V,P_M>&         m_paramRv;
+  const BaseVectorFunction        <P_V,P_M,Q_V,Q_M>& m_qoiFunction;
+  const VectorSpace               <P_V,P_M>&         m_paramSpace;
+  const VectorSpace               <Q_V,Q_M>&         m_qoiSpace;
+  const VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>* m_qoiFunctionSynchronizer;
   unsigned int                                              m_numPsNotSubWritten;
   unsigned int                                              m_numQsNotSubWritten;
 
-  McOptionsValuesClass                                    m_alternativeOptionsValues;
-  MonteCarloSGOptionsClass*                               m_optionsObj;
+  McOptionsValues                                    m_alternativeOptionsValues;
+  MonteCarloSGOptions*                               m_optionsObj;
 };
 
 //! Prints the object \c obj, overloading an operator.
 template<class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const MonteCarloSGClass<P_V,P_M,Q_V,Q_M>& obj);
+std::ostream& operator<<(std::ostream& os, const MonteCarloSG<P_V,P_M,Q_V,Q_M>& obj);
 
 // Default constructor -----------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::MonteCarloSGClass(
+MonteCarloSG<P_V,P_M,Q_V,Q_M>::MonteCarloSG(
   /*! Prefix                     */ const char*                                       prefix,
-  /*! Options (if no input file) */ const McOptionsValuesClass*                     alternativeOptionsValues, // dakota
-  /*! The parameter RV           */ const BaseVectorRVClass      <P_V,P_M>&         paramRv,
-  /*! The QoI function           */ const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction)
+  /*! Options (if no input file) */ const McOptionsValues*                     alternativeOptionsValues, // dakota
+  /*! The parameter RV           */ const BaseVectorRV      <P_V,P_M>&         paramRv,
+  /*! The QoI function           */ const BaseVectorFunction<P_V,P_M,Q_V,Q_M>& qoiFunction)
   :
   m_env                     (paramRv.env()),
   m_paramRv                 (paramRv),
   m_qoiFunction             (qoiFunction),
   m_paramSpace              (m_paramRv.imageSet().vectorSpace()),
   m_qoiSpace                (m_qoiFunction.imageSet().vectorSpace()),
-  m_qoiFunctionSynchronizer (new VectorFunctionSynchronizerClass<P_V,P_M,Q_V,Q_M>(m_qoiFunction,m_paramRv.imageSet().vectorSpace().zeroVector(),m_qoiFunction.imageSet().vectorSpace().zeroVector())),
+  m_qoiFunctionSynchronizer (new VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>(m_qoiFunction,m_paramRv.imageSet().vectorSpace().zeroVector(),m_qoiFunction.imageSet().vectorSpace().zeroVector())),
   m_numPsNotSubWritten      (0),
   m_numQsNotSubWritten      (0),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -158,7 +158,7 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::MonteCarloSGClass(
   m_optionsObj              (NULL)
 {
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering MonteCarloSG<P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = " << prefix
                             << ", alternativeOptionsValues = " << alternativeOptionsValues
                             << ", m_env.optionsInputFileName() = " << m_env.optionsInputFileName()
@@ -167,26 +167,26 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::MonteCarloSGClass(
 
   if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
   if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new MonteCarloSGOptionsClass(m_env,prefix,m_alternativeOptionsValues);
+    m_optionsObj = new MonteCarloSGOptions(m_env,prefix,m_alternativeOptionsValues);
   }
   else {
-    m_optionsObj = new MonteCarloSGOptionsClass(m_env,prefix);
+    m_optionsObj = new MonteCarloSGOptions(m_env,prefix);
     m_optionsObj->scanOptionsValues();
   }
 
   UQ_FATAL_TEST_MACRO(paramRv.imageSet().vectorSpace().dimLocal() != qoiFunction.domainSet().vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()",
+                      "MonteCarloSG<P_V,P_M,Q_V,Q_M>::constructor()",
                       "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
 
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Leaving MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving MonteCarloSG<P_V,P_M,Q_V,Q_M>::constructor()"
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::~MonteCarloSGClass()
+MonteCarloSG<P_V,P_M,Q_V,Q_M>::~MonteCarloSG()
 {
   if (m_optionsObj             ) delete m_optionsObj;
   if (m_qoiFunctionSynchronizer) delete m_qoiFunctionSynchronizer;
@@ -194,18 +194,18 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::~MonteCarloSGClass()
 // Statistical methods ------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
-  BaseVectorSequenceClass<P_V,P_M>& workingPSeq,
-  BaseVectorSequenceClass<Q_V,Q_M>& workingQSeq)
+MonteCarloSG<P_V,P_M,Q_V,Q_M>::generateSequence(
+  BaseVectorSequence<P_V,P_M>& workingPSeq,
+  BaseVectorSequence<Q_V,Q_M>& workingQSeq)
 {
   UQ_FATAL_TEST_MACRO(m_qoiFunction.domainSet().vectorSpace().dimLocal() != workingPSeq.vectorSizeLocal(),
                       m_env.worldRank(),
-                      "MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
+                      "MonteCarloSG<P_V,P_M,Q_V,Q_M>::generateSequence()",
                       "'m_qoiFunction.domainSet' and 'workingPSeq' are related to vector spaces of different dimensions");
 
   UQ_FATAL_TEST_MACRO(m_qoiFunction.imageSet().vectorSpace().dimLocal() != workingQSeq.vectorSizeLocal(),
                       m_env.worldRank(),
-                      "MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence()",
+                      "MonteCarloSG<P_V,P_M,Q_V,Q_M>::generateSequence()",
                       "'m_qoiFunction.imageSet' and 'workingQSeq' are related to vector spaces of different dimensions");
 
   MiscCheckTheParallelEnvironment<P_V,Q_V>(m_paramRv.imageSet().vectorSpace().zeroVector(),
@@ -217,17 +217,17 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::generateSequence(
 // I/O methods---------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
+MonteCarloSG<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
   return;
 }
 // Private methods----------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
-  const BaseVectorRVClass      <P_V,P_M>& paramRv,
-        BaseVectorSequenceClass<P_V,P_M>& workingPSeq,
-        BaseVectorSequenceClass<Q_V,Q_M>& workingQSeq)
+MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
+  const BaseVectorRV      <P_V,P_M>& paramRv,
+        BaseVectorSequence<P_V,P_M>& workingPSeq,
+        BaseVectorSequence<Q_V,Q_M>& workingQSeq)
 {
   workingPSeq.setName(m_optionsObj->m_prefix+"ParamSeq");
   workingQSeq.setName(m_optionsObj->m_prefix+"QoiSeq");
@@ -237,7 +237,7 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   //****************************************************
   unsigned int subActualSizeBeforeGeneration = std::min(m_optionsObj->m_ov.m_qseqSize,paramRv.realizer().subPeriod());
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                             << ": m_optionsObj->m_ov.m_qseqSize = "                             << m_optionsObj->m_ov.m_qseqSize
                             << ", paramRv.realizer().subPeriod() = "                            << paramRv.realizer().subPeriod()
                             << ", about to call actualGenerateSequence() with subActualSize = " << subActualSizeBeforeGeneration
@@ -260,11 +260,11 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   unsigned int subActualSizeAfterGeneration = workingPSeq.subSequenceSize();
   UQ_FATAL_TEST_MACRO(subActualSizeAfterGeneration != workingQSeq.subSequenceSize(),
                       m_env.worldRank(),
-                      "MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()",
+                      "MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()",
                       "P and Q sequences should have the same size!");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                             << ": returned from call to actualGenerateSequence() with subActualSize = " << subActualSizeAfterGeneration
                             << std::endl;
   }
@@ -273,7 +273,7 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // Open generic output file      
   //****************************************************
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                             << ", prefix = "                                                        << m_optionsObj->m_prefix
                             << ": checking necessity of opening generic output file (qseq name is " << workingQSeq.name()
                             << ") ..."
@@ -292,7 +292,7 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // --> compute statistics on it
   //****************************************************
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                             << ", prefix = "                                            << m_optionsObj->m_prefix
                             << ": checking necessity of opening output files for pseq " << workingPSeq.name()
                             << "..."
@@ -308,13 +308,13 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                                  m_optionsObj->m_ov.m_pseqDataOutputFileType,
                                  m_optionsObj->m_ov.m_pseqDataOutputAllowedSet);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In MonteCarloGClass<P_V,P_M>::internGenerateSequence()"
+      *m_env.subDisplayFile() << "In MonteCarloG<P_V,P_M>::internGenerateSequence()"
                               << ": just wrote remaining pseq positions (per period request)"
                               << std::endl;
     }
     m_numPsNotSubWritten = 0;
     //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    //  *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
     //                          << ", prefix = "                 << m_optionsObj->m_prefix
     //                          << ": closed data output file '" << m_optionsObj->m_ov.m_pseqDataOutputFileName
     //                          << "' for pseq "                 << workingPSeq.name()
@@ -326,7 +326,7 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   if (m_optionsObj->m_ov.m_pseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
     workingPSeq.unifiedWriteContents(m_optionsObj->m_ov.m_pseqDataOutputFileName,m_optionsObj->m_ov.m_pseqDataOutputFileType);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+      *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                               << ", prefix = "                         << m_optionsObj->m_prefix
                               << ": closed unified data output file '" << m_optionsObj->m_ov.m_pseqDataOutputFileName
                               << "' for pseq "                         << workingPSeq.name()
@@ -338,14 +338,14 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_optionsObj->m_ov.m_pseqComputeStats) {
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+      *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                               << ": about to call 'workingPSeq.computeStatistics()'"
                               << std::endl;
     }
     workingPSeq.computeStatistics(*m_optionsObj->m_pseqStatisticalOptionsObj,
                                   genericFilePtrSet.ofsVar);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+      *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                               << ": returned from call to 'workingPSeq.computeStatistics()'"
                               << std::endl;
     }
@@ -357,7 +357,7 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   // --> compute statistics on it
   //****************************************************
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                             << ", prefix = "                                            << m_optionsObj->m_prefix
                             << ": checking necessity of opening output files for qseq " << workingQSeq.name()
                             << "..."
@@ -373,13 +373,13 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
                                  m_optionsObj->m_ov.m_qseqDataOutputFileType,
                                  m_optionsObj->m_ov.m_qseqDataOutputAllowedSet);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In MonteCarloGClass<P_V,P_M>::internGenerateSequence()"
+      *m_env.subDisplayFile() << "In MonteCarloG<P_V,P_M>::internGenerateSequence()"
                               << ": just wrote remaining qseq positions (per period request)"
                               << std::endl;
     }
     m_numQsNotSubWritten = 0;
     //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+    //  *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
     //                          << ", prefix = "                 << m_optionsObj->m_prefix
     //                          << ": closed data output file '" << m_optionsObj->m_ov.m_qseqDataOutputFileName
     //                          << "' for qseq "                 << workingQSeq.name()
@@ -391,7 +391,7 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
   if (m_optionsObj->m_ov.m_qseqDataOutputFileName != UQ_MOC_SG_FILENAME_FOR_NO_FILE) {
     workingQSeq.unifiedWriteContents(m_optionsObj->m_ov.m_qseqDataOutputFileName,m_optionsObj->m_ov.m_qseqDataOutputFileType);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+      *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                               << ", prefix = "                         << m_optionsObj->m_prefix
                               << ": closed unified data output file '" << m_optionsObj->m_ov.m_qseqDataOutputFileName
                               << "' for qseq "                         << workingQSeq.name()
@@ -403,14 +403,14 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_optionsObj->m_ov.m_qseqComputeStats) {
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+      *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                               << ": about to call 'workingQSeq.computeStatistics()'"
                               << std::endl;
     }
     workingQSeq.computeStatistics(*m_optionsObj->m_qseqStatisticalOptionsObj,
                                   genericFilePtrSet.ofsVar);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+      *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                               << ": returned from call to 'workingQSeq.computeStatistics()'"
                               << std::endl;
     }
@@ -425,7 +425,7 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
     //genericFilePtrSet.ofsVar->close();
     //std::cout << "TODAY 001" << std::endl;
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
+      *m_env.subDisplayFile() << "In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence()"
                               << ", prefix = "                         << m_optionsObj->m_prefix
                               << ": closed generic data output file '" << m_optionsObj->m_ov.m_dataOutputFileName
                               << "' for QoI sequence "                 << workingQSeq.name()
@@ -441,10 +441,10 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(
 // --------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
-  const BaseVectorRVClass      <P_V,P_M>& paramRv,
-        BaseVectorSequenceClass<P_V,P_M>& workingPSeq,
-        BaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
+MonteCarloSG<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
+  const BaseVectorRV      <P_V,P_M>& paramRv,
+        BaseVectorSequence<P_V,P_M>& workingPSeq,
+        BaseVectorSequence<Q_V,Q_M>& workingQSeq,
         unsigned int                        requestedSeqSize)
 {
   if (m_env.subDisplayFile()) {
@@ -483,7 +483,7 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
     bool allQsAreFinite = true;
     for (unsigned int j = 0; j < tmpQ.sizeLocal(); ++j) {
       if ((tmpQ[j] == INFINITY) || (tmpQ[j] == -INFINITY)) {
-	std::cerr << "WARNING In MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence()"
+	std::cerr << "WARNING In MonteCarloSG<P_V,P_M,Q_V,Q_M>::actualGenerateSequence()"
                   << ", worldRank "      << m_env.worldRank()
                   << ", fullRank "       << m_env.fullRank()
                   << ", subEnvironment " << m_env.subId()
@@ -518,7 +518,7 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
                                      m_optionsObj->m_ov.m_pseqDataOutputFileType,
                                      m_optionsObj->m_ov.m_pseqDataOutputAllowedSet);
         if (m_env.subDisplayFile()) {
-          *m_env.subDisplayFile() << "In MonteCarloGClass<P_V,P_M>::actualGenerateSequence()"
+          *m_env.subDisplayFile() << "In MonteCarloG<P_V,P_M>::actualGenerateSequence()"
                                   << ": just wrote pseq positions (per period request)"
                                   << std::endl;
         }
@@ -536,7 +536,7 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
                                      m_optionsObj->m_ov.m_qseqDataOutputFileType,
                                      m_optionsObj->m_ov.m_qseqDataOutputAllowedSet);
         if (m_env.subDisplayFile()) {
-          *m_env.subDisplayFile() << "In MonteCarloGClass<P_V,P_M>::actualGenerateSequence()"
+          *m_env.subDisplayFile() << "In MonteCarloG<P_V,P_M>::actualGenerateSequence()"
                                   << ": just wrote qseq positions (per period request)"
                                   << std::endl;
         }
@@ -583,12 +583,12 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualGenerateSequence(
 // --------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualReadSequence(
-  const BaseVectorRVClass      <P_V,P_M>& paramRv,
+MonteCarloSG<P_V,P_M,Q_V,Q_M>::actualReadSequence(
+  const BaseVectorRV      <P_V,P_M>& paramRv,
   const std::string&                        dataInputFileName,
   const std::string&                        dataInputFileType,
-        BaseVectorSequenceClass<P_V,P_M>& workingPSeq,
-        BaseVectorSequenceClass<Q_V,Q_M>& workingQSeq,
+        BaseVectorSequence<P_V,P_M>& workingPSeq,
+        BaseVectorSequence<Q_V,Q_M>& workingQSeq,
         unsigned int                        requestedSeqSize)
 {
   workingPSeq.resizeSequence(requestedSeqSize);
@@ -606,7 +606,7 @@ MonteCarloSGClass<P_V,P_M,Q_V,Q_M>::actualReadSequence(
 // Operator declared outside class definition -------
 //---------------------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M> 
-std::ostream& operator<<(std::ostream& os, const MonteCarloSGClass<P_V,P_M,Q_V,Q_M>& obj)
+std::ostream& operator<<(std::ostream& os, const MonteCarloSG<P_V,P_M,Q_V,Q_M>& obj)
 {
   obj.print(os);
 

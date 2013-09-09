@@ -102,33 +102,33 @@ const int UQ_MATRIX_SVD_FAILED_RC          = -11;
     \brief Definitions and a class to provide default options to  pass to a QUESO environment.
 */
 
-/*! \class EnvOptionsValuesClass
+/*! \class EnvOptionsValues
  *  \brief This class provides a suite options one can pass to a QUESO environment.
  * 
  *  QUESO expects the user to provide an input file with environment options for the library variables.
  *  If no input file, a collection of default values is assigned to some of the variables. The class
- *  EnvOptionsValuesClass is responsible for this task.
+ *  EnvOptionsValues is responsible for this task.
  */
 
-class EnvOptionsValuesClass
+class EnvOptionsValues
 {
 public:
     //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor
-  EnvOptionsValuesClass            ();
+  EnvOptionsValues            ();
   
   //! Copy constructor
-  EnvOptionsValuesClass            (const EnvOptionsValuesClass& src);
+  EnvOptionsValues            (const EnvOptionsValues& src);
  
   //! Destructor
-  ~EnvOptionsValuesClass            ();
+  ~EnvOptionsValues            ();
   //@}
   
    //! @name Set methods
   //@{    
   //! Operator for copying the options of an environment.
-  EnvOptionsValuesClass& operator= (const EnvOptionsValuesClass& rhs);
+  EnvOptionsValues& operator= (const EnvOptionsValues& rhs);
  //@}
 
   //! @name Attributes
@@ -179,7 +179,7 @@ public:
   
 private:
   //! Makes an exact copy of an existing EnvOptionsValues instance.
-  void copy(const EnvOptionsValuesClass& src);
+  void copy(const EnvOptionsValues& src);
 };
 
 //! Macros

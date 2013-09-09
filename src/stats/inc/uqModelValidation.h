@@ -36,24 +36,24 @@ namespace QUESO {
 /*! \file uqModelValidation.h
  * \brief A templated class for model validation of the example validationPyramid.
  *
- * \class ModelValidationClass
+ * \class ModelValidation
  * \brief A templated class for model validation of the example validationPyramid. 
  * 
- * Its derived class exPhysics1ValidationClass enables comparison between the calibration
+ * Its derived class exPhysics1Validation enables comparison between the calibration
  * and validate stages. */
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-class ModelValidationClass
+class ModelValidation
 {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor.
-  ModelValidationClass(const BaseEnvironmentClass& env,
+  ModelValidation(const BaseEnvironment& env,
                          const char*                   prefix);
   
   //! Virtual destructor.
-  virtual ~ModelValidationClass();
+  virtual ~ModelValidation();
   //@}
   
   //! @name Misc methods
@@ -62,22 +62,22 @@ public:
   virtual void run() = 0;
 
   //! Access to the environment variable (m_env).
-  const BaseEnvironmentClass&                  env  () const;
+  const BaseEnvironment&                  env  () const;
   
   //! Access to the cycle (m_cycle).
-  const ValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle() const;
+  const ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle() const;
   //@}
   
 protected:
-  const BaseEnvironmentClass& m_env;
+  const BaseEnvironment& m_env;
         std::string             m_prefix;
 
-  ValidationCycleClass<P_V,P_M,Q_V,Q_M>* m_cycle;
+  ValidationCycle<P_V,P_M,Q_V,Q_M>* m_cycle;
 };
 // Constructor -------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-ModelValidationClass<P_V,P_M,Q_V,Q_M>::ModelValidationClass(
-  const BaseEnvironmentClass& env,
+ModelValidation<P_V,P_M,Q_V,Q_M>::ModelValidation(
+  const BaseEnvironment& env,
   const char*                   prefix)
   :
   m_env   (env),
@@ -85,13 +85,13 @@ ModelValidationClass<P_V,P_M,Q_V,Q_M>::ModelValidationClass(
   m_cycle (NULL)
 {
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering ModelValidationClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering ModelValidation<P_V,P_M,Q_V,Q_M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Leaving ModelValidationClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving ModelValidation<P_V,P_M,Q_V,Q_M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -100,7 +100,7 @@ ModelValidationClass<P_V,P_M,Q_V,Q_M>::ModelValidationClass(
 }
 // Destructor---------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-ModelValidationClass<P_V,P_M,Q_V,Q_M>::~ModelValidationClass()
+ModelValidation<P_V,P_M,Q_V,Q_M>::~ModelValidation()
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering ModeValidation::destructor()"
@@ -118,15 +118,15 @@ ModelValidationClass<P_V,P_M,Q_V,Q_M>::~ModelValidationClass()
 }
 // Misc methods-------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-const BaseEnvironmentClass&
-ModelValidationClass<P_V,P_M,Q_V,Q_M>::env() const
+const BaseEnvironment&
+ModelValidation<P_V,P_M,Q_V,Q_M>::env() const
 {
   return m_env;
 }
 //--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-const ValidationCycleClass<P_V,P_M,Q_V,Q_M>&
-ModelValidationClass<P_V,P_M,Q_V,Q_M>::cycle() const
+const ValidationCycle<P_V,P_M,Q_V,Q_M>&
+ModelValidation<P_V,P_M,Q_V,Q_M>::cycle() const
 {
   return *m_cycle;
 }

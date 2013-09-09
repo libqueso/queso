@@ -43,7 +43,7 @@ namespace QUESO {
 /*! \file uqScalarFunction.h
  * \brief Set of classes for handling vector functions.
  * 
- * \class BaseScalarFunctionClass
+ * \class BaseScalarFunction
  * \brief A templated (base) class for handling scalar functions.
  *
  * This class allows the mathematical definition of a scalar function such as:
@@ -53,22 +53,22 @@ namespace QUESO {
 
 
 template<class V,class M>
-class BaseScalarFunctionClass {
+class BaseScalarFunction {
 public:
   //! @name Constructor/Destructor methods.
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class, i.e. a scalar function, given a prefix and its domain.*/
-  BaseScalarFunctionClass(const char*                  prefix,
-			    const VectorSetClass<V,M>& domainSet);
+  BaseScalarFunction(const char*                  prefix,
+			    const VectorSet<V,M>& domainSet);
   //! Destructor	
-  virtual ~BaseScalarFunctionClass();
+  virtual ~BaseScalarFunction();
   //@}
   
     //! @name Mathematical methods.
   //@{  
   //! Access to the protected attribute \c m_domainSet: domain set of the scalar function.
-  const VectorSetClass<V,M>& domainSet  ()  const;
+  const VectorSet<V,M>& domainSet  ()  const;
   
   
   //! Actual value of the scalar function.
@@ -78,17 +78,17 @@ public:
   virtual       double                 lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
   //@}
 protected:
-  const BaseEnvironmentClass& m_env;
+  const BaseEnvironment& m_env;
         std::string             m_prefix;
 	
   //! Domain set of the scalar function.	
-  const VectorSetClass<V,M>&  m_domainSet;
+  const VectorSet<V,M>&  m_domainSet;
 };
 // Default constructor -----------------------------
 template<class V,class M>
-BaseScalarFunctionClass<V,M>::BaseScalarFunctionClass(
+BaseScalarFunction<V,M>::BaseScalarFunction(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet)
+  const VectorSet<V,M>& domainSet)
   :
   m_env      (domainSet.env()),
   m_prefix   ((std::string)(prefix)+"func_"),
@@ -97,13 +97,13 @@ BaseScalarFunctionClass<V,M>::BaseScalarFunctionClass(
 }
 // Destructor ---------------------------------------
 template<class V,class M>
-BaseScalarFunctionClass<V,M>::~BaseScalarFunctionClass()
+BaseScalarFunction<V,M>::~BaseScalarFunction()
 {
 }
 // Math methods -------------------------------------
 template<class V,class M>
-const VectorSetClass<V,M>&
-BaseScalarFunctionClass<V,M>::domainSet() const
+const VectorSet<V,M>&
+BaseScalarFunction<V,M>::domainSet() const
 {
   return m_domainSet;
 }
@@ -112,14 +112,14 @@ BaseScalarFunctionClass<V,M>::domainSet() const
 // Generic class
 //*****************************************************
 
-/*!\class GenericScalarFunctionClass
+/*!\class GenericScalarFunction
  * \brief A class for handling generic scalar functions.
  *
  * This class allows the mathematical definition of a scalar function such as:
- * \f$ f: B \subset R \rightarrow R \f$. It is derived from BaseScalarFunctionClass. */
+ * \f$ f: B \subset R \rightarrow R \f$. It is derived from BaseScalarFunction. */
 
 template<class V,class M>
-class GenericScalarFunctionClass : public BaseScalarFunctionClass<V,M> {
+class GenericScalarFunction : public BaseScalarFunction<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
@@ -127,13 +127,13 @@ public:
   /*! Instantiates an object of \c this class given its prefix, domain set and a pointer to a routine. 
    This routine plays the role of a scalar math function, and it is useful, for instance, to calculate 
    the likelihood (and its image set).*/
-  GenericScalarFunctionClass(const char*                  prefix,
-                               const VectorSetClass<V,M>& domainSet,
+  GenericScalarFunction(const char*                  prefix,
+                               const VectorSet<V,M>& domainSet,
                                double (*valueRoutinePtr)(const V& domainVector, const V* domainDirection, const void* routinesDataPtr, V* gradVector, M* hessianMatrix, V* hessianEffect),
                                const void* routinesDataPtr,
                                bool routineIsForLn);
   //! Virtual destructor
-  virtual ~GenericScalarFunctionClass();
+  virtual ~GenericScalarFunction();
 
   //! @name Mathematical method
   //@{ 
@@ -145,9 +145,9 @@ public:
   double lnValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   //@}
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
 
    //! Routine defining a scalar function.
    /*! The presence of the parameters \c gradVectors, \c hessianMatrices and \c hessianEffects
@@ -160,14 +160,14 @@ protected:
 };
 // Default constructor -----------------------------
 template<class V,class M>
-GenericScalarFunctionClass<V,M>::GenericScalarFunctionClass(
+GenericScalarFunction<V,M>::GenericScalarFunction(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet,
+  const VectorSet<V,M>& domainSet,
   double (*valueRoutinePtr)(const V& domainVector, const V* domainDirection, const void* routinesDataPtr, V* gradVector, M* hessianMatrix, V* hessianEffect),
   const void* routinesDataPtr,
   bool routineIsForLn)
   :
-  BaseScalarFunctionClass<V,M>(((std::string)(prefix)+"gen").c_str(), domainSet),
+  BaseScalarFunction<V,M>(((std::string)(prefix)+"gen").c_str(), domainSet),
   m_valueRoutinePtr             (valueRoutinePtr),
   m_routinesDataPtr             (routinesDataPtr),
   m_routineIsForLn              (routineIsForLn)
@@ -175,17 +175,17 @@ GenericScalarFunctionClass<V,M>::GenericScalarFunctionClass(
 }
 // Destructor ---------------------------------------
 template<class V,class M>
-GenericScalarFunctionClass<V,M>::~GenericScalarFunctionClass()
+GenericScalarFunction<V,M>::~GenericScalarFunction()
 {
 }
 // Math methods -------------------------------------
 template<class V,class M>
 double
-GenericScalarFunctionClass<V,M>::actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
+GenericScalarFunction<V,M>::actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
 {
   UQ_FATAL_TEST_MACRO(m_valueRoutinePtr == NULL,
                       m_env.worldRank(),
-                      "GenericScalarFunctionClass<V,M>::actualValue()",
+                      "GenericScalarFunction<V,M>::actualValue()",
                       "m_valueRoutinePtr = NULL");
 
   double value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);
@@ -200,7 +200,7 @@ GenericScalarFunctionClass<V,M>::actualValue(const V& domainVector, const V* dom
                         (hessianMatrix   != NULL) ||
                         (hessianEffect   != NULL),
                         m_env.worldRank(),
-                        "GenericScalarFunctionClass<V,M>::gradOfActual()",
+                        "GenericScalarFunction<V,M>::gradOfActual()",
                         "INCOMPLETE CODE");
   }
   return value;
@@ -208,11 +208,11 @@ GenericScalarFunctionClass<V,M>::actualValue(const V& domainVector, const V* dom
 // --------------------------------------------------
 template<class V,class M>
 double
-GenericScalarFunctionClass<V,M>::lnValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
+GenericScalarFunction<V,M>::lnValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
 {
   UQ_FATAL_TEST_MACRO(m_valueRoutinePtr == NULL,
                       m_env.worldRank(),
-                      "GenericScalarFunctionClass<V,M>::lnValue()",
+                      "GenericScalarFunction<V,M>::lnValue()",
                       "m_valueRoutinePtr = NULL");
 
   double value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);
@@ -227,7 +227,7 @@ GenericScalarFunctionClass<V,M>::lnValue(const V& domainVector, const V* domainD
                         (hessianMatrix   != NULL) ||
                         (hessianEffect   != NULL),
                         m_env.worldRank(),
-                        "GenericScalarFunctionClass<V,M>::gradOfLn()",
+                        "GenericScalarFunction<V,M>::gradOfLn()",
                         "INCOMPLETE CODE");
   }
   return value;
@@ -237,24 +237,24 @@ GenericScalarFunctionClass<V,M>::lnValue(const V& domainVector, const V* domainD
 // Constant class
 //*****************************************************
 
-/*!\class ConstantScalarFunctionClass
+/*!\class ConstantScalarFunction
  * \brief A class for handling scalar functions which image is a constant (real number).
  *
  * This class allows the mathematical definition of a scalar function which image set 
  * is a constant (real number). */
 
 template<class V,class M>
-class ConstantScalarFunctionClass : public BaseScalarFunctionClass<V,M> {
+class ConstantScalarFunction : public BaseScalarFunction<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class, i.e. a scalar function, given a prefix, its domain and constant-valued image.*/
-  ConstantScalarFunctionClass(const char*                  prefix,
-                                const VectorSetClass<V,M>& domainSet,
+  ConstantScalarFunction(const char*                  prefix,
+                                const VectorSet<V,M>& domainSet,
                                 double                       constantValue);
   //! Virtual destructor
-  virtual ~ConstantScalarFunctionClass();
+  virtual ~ConstantScalarFunction();
 
   //! @name Mathematical method
   //@{ 
@@ -265,40 +265,40 @@ public:
   double lnValue          (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   //@}
 protected:
-  using BaseScalarFunctionClass<V,M>::m_env;
-  using BaseScalarFunctionClass<V,M>::m_prefix;
-  using BaseScalarFunctionClass<V,M>::m_domainSet;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
 
   //! Constant value is the image set of this scalar function.
   double m_constantValue;
 };
 // Default constructor -----------------------------
 template<class V,class M>
-ConstantScalarFunctionClass<V,M>::ConstantScalarFunctionClass(
+ConstantScalarFunction<V,M>::ConstantScalarFunction(
   const char*                  prefix,
-  const VectorSetClass<V,M>& domainSet,
+  const VectorSet<V,M>& domainSet,
   double                       constantValue)
   :
-  BaseScalarFunctionClass<V,M>(((std::string)(prefix)+"gen").c_str(), domainSet),
+  BaseScalarFunction<V,M>(((std::string)(prefix)+"gen").c_str(), domainSet),
   m_constantValue               (constantValue)
 {
 }
 // Destructor ---------------------------------------
 template<class V,class M>
-ConstantScalarFunctionClass<V,M>::~ConstantScalarFunctionClass()
+ConstantScalarFunction<V,M>::~ConstantScalarFunction()
 {
 }
 // Math methods -------------------------------------
 template<class V,class M>
 double
-ConstantScalarFunctionClass<V,M>::actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
+ConstantScalarFunction<V,M>::actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
 {
   return m_constantValue;
 }
 // --------------------------------------------------
 template<class V,class M>
 double
-ConstantScalarFunctionClass<V,M>::lnValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
+ConstantScalarFunction<V,M>::lnValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const
 {
   return 0.;
 }

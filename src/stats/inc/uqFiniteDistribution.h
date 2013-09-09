@@ -36,7 +36,7 @@ namespace QUESO {
 /*! \file uqFiniteDistribution.h
  * \brief A templated class for a finite distribution.
  *
- * \class FiniteDistributionClass
+ * \class FiniteDistribution
  * \brief A templated class for a finite distribution.
  * 
  * Unordered, discrete distribution, whose weights must be nonnegative, and are treated as unnormalized 
@@ -44,22 +44,22 @@ namespace QUESO {
  * 
  * TODO: Describe me better!*/
 
-class FiniteDistributionClass {
+class FiniteDistribution {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor.
-  FiniteDistributionClass(const BaseEnvironmentClass& env,
+  FiniteDistribution(const BaseEnvironment& env,
                             const char*                   prefix,
                             const std::vector<double>&    inpWeights);
   //! Virtual destructor
-  virtual ~FiniteDistributionClass();
+  virtual ~FiniteDistribution();
   //@}
   
   //! @name Misc methods
   //@{
   //! Environment; access to protected attribute m_env.  
-  const BaseEnvironmentClass& env    () const;
+  const BaseEnvironment& env    () const;
   //@}
   
   //! @name Statistical methods
@@ -72,7 +72,7 @@ public:
  //@}
   
 protected:
-  const BaseEnvironmentClass& m_env;
+  const BaseEnvironment& m_env;
         std::string             m_prefix;
 	std::vector<double>     m_weights;
 

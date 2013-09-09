@@ -33,14 +33,14 @@ namespace QUESO {
 
 template <>
 void
-FftClass<std::complex<double> >::forward(
+Fft<std::complex<double> >::forward(
   const std::vector<std::complex<double> >& data, 
         unsigned int                        fftSize,
         std::vector<std::complex<double> >& forwardResult)
 {
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
-                      "FftClass<complex>::forward()",
+                      "Fft<complex>::forward()",
                       "not implemented yet");
 
   std::complex<double> z = data[0]; z += 0.; // just to avoid icpc warnings
@@ -98,7 +98,7 @@ FftClass<std::complex<double> >::forward(
 
 template <>
 void
-FftClass<std::complex<double> >::inverse(
+Fft<std::complex<double> >::inverse(
   const std::vector<std::complex<double> >& data, 
         unsigned int                        fftSize,
         std::vector<std::complex<double> >& inverseResult)

@@ -31,10 +31,10 @@
 namespace QUESO {
 
 template <>
-MapClass*
-AsciiTableClass<class GslVectorClass, class GslMatrixClass>::newMap()
+Map*
+AsciiTable<class GslVector, class GslMatrix>::newMap()
 {
-  return new MapClass(m_numRows,0,m_env.selfComm());
+  return new Map(m_numRows,0,m_env.selfComm());
 }
 
 }  // End namespace QUESO

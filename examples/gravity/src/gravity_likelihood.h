@@ -35,25 +35,25 @@
 
 #include <uqGslMatrix.h>
 
-struct likelihoodRoutine_DataClass // user defined class
+struct likelihoodRoutine_Data // user defined class
 {
-  likelihoodRoutine_DataClass(const QUESO::BaseEnvironmentClass& env);
- ~likelihoodRoutine_DataClass();
+  likelihoodRoutine_Data(const QUESO::BaseEnvironment& env);
+ ~likelihoodRoutine_Data();
 
   std::vector<double> m_heights; // heights
   std::vector<double> m_times;   // times
   std::vector<double> m_stdDevs; // account for uncertainties in 
 				 // time measurement: sigmas
 
-  const QUESO::BaseEnvironmentClass* m_env;
+  const QUESO::BaseEnvironment* m_env;
 };
 
 double likelihoodRoutine( // user defined routine
-  const QUESO::GslVectorClass& paramValues,
-  const QUESO::GslVectorClass* paramDirection,
+  const QUESO::GslVector& paramValues,
+  const QUESO::GslVector* paramDirection,
   const void*             functionDataPtr,
-  QUESO::GslVectorClass*       gradVector,
-  QUESO::GslMatrixClass*       hessianMatrix,
-  QUESO::GslVectorClass*       hessianEffect);
+  QUESO::GslVector*       gradVector,
+  QUESO::GslMatrix*       hessianMatrix,
+  QUESO::GslVector*       hessianEffect);
 
 #endif

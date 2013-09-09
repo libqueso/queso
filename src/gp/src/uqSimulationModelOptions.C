@@ -31,7 +31,7 @@
 
 namespace QUESO {
 
-SmOptionsValuesClass::SmOptionsValuesClass()
+SmOptionsValues::SmOptionsValues()
   :
   m_dataOutputFileName       (UQ_SIMULATION_MODEL_DATA_OUTPUT_FILE_NAME_ODV       ),
   m_dataOutputAllowAll       (UQ_SIMULATION_MODEL_DATA_OUTPUT_ALLOW_ALL_ODV       ),
@@ -50,24 +50,24 @@ SmOptionsValuesClass::SmOptionsValuesClass()
 {
 }
 
-SmOptionsValuesClass::~SmOptionsValuesClass()
+SmOptionsValues::~SmOptionsValues()
 {
 }
 
-SmOptionsValuesClass::SmOptionsValuesClass(const SmOptionsValuesClass& src)
+SmOptionsValues::SmOptionsValues(const SmOptionsValues& src)
 {
   this->copy(src);
 }
 
-SmOptionsValuesClass&
-SmOptionsValuesClass::operator=(const SmOptionsValuesClass& rhs)
+SmOptionsValues&
+SmOptionsValues::operator=(const SmOptionsValues& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 
 void
-SmOptionsValuesClass::copy(const SmOptionsValuesClass& src)
+SmOptionsValues::copy(const SmOptionsValues& src)
 {
   m_dataOutputFileName        = src.m_dataOutputFileName;
   m_dataOutputAllowAll        = src.m_dataOutputAllowAll;
@@ -87,8 +87,8 @@ SmOptionsValuesClass::copy(const SmOptionsValuesClass& src)
   return;
 }
 
-SimulationModelOptionsClass::SimulationModelOptionsClass(
-  const BaseEnvironmentClass& env,
+SimulationModelOptions::SimulationModelOptions(
+  const BaseEnvironment& env,
   const char*                   prefix)
   :
   m_ov                              (),
@@ -113,14 +113,14 @@ SimulationModelOptionsClass::SimulationModelOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
-                      "SimulationModelOptionsClass::constructor(1)",
+                      "SimulationModelOptions::constructor(1)",
                       "this constructor is incompatible with the abscense of an options input file");
 }
 
-SimulationModelOptionsClass::SimulationModelOptionsClass(
-  const BaseEnvironmentClass&  env,
+SimulationModelOptions::SimulationModelOptions(
+  const BaseEnvironment&  env,
   const char*                    prefix,
-  const SmOptionsValuesClass& alternativeOptionsValues)
+  const SmOptionsValues& alternativeOptionsValues)
   :
   m_ov                              (alternativeOptionsValues),
   m_prefix                          ((std::string)(prefix) + "sm_"),
@@ -144,11 +144,11 @@ SimulationModelOptionsClass::SimulationModelOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
-                      "SimulationModelOptionsClass::constructor(2)",
+                      "SimulationModelOptions::constructor(2)",
                       "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In SimulationModelOptionsClass::constructor(2)"
+    *m_env.subDisplayFile() << "In SimulationModelOptions::constructor(2)"
                             << ": after setting values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -156,17 +156,17 @@ SimulationModelOptionsClass::SimulationModelOptionsClass(
   }
 }
 
-SimulationModelOptionsClass::~SimulationModelOptionsClass()
+SimulationModelOptions::~SimulationModelOptions()
 {
   if (m_optionsDesc) delete m_optionsDesc;
 } 
 
 void
-SimulationModelOptionsClass::scanOptionsValues()
+SimulationModelOptions::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
-                      "SimulationModelOptionsClass::scanOptionsValues()",
+                      "SimulationModelOptions::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -178,7 +178,7 @@ SimulationModelOptionsClass::scanOptionsValues()
   //          << std::endl;
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In SimulationModelOptionsClass::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In SimulationModelOptions::scanOptionsValues()"
                             << ": after reading values of options with prefix '" << m_prefix
                             << "', state of  object is:"
                             << "\n" << *this
@@ -189,7 +189,7 @@ SimulationModelOptionsClass::scanOptionsValues()
 }
 
 void
-SimulationModelOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+SimulationModelOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                                                      "produce help message for simulation model options")
@@ -213,7 +213,7 @@ SimulationModelOptionsClass::defineMyOptions(po::options_description& optionsDes
 }
 
 void
-SimulationModelOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+SimulationModelOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
@@ -294,7 +294,7 @@ SimulationModelOptionsClass::getMyOptionValues(po::options_description& optionsD
 }
 
 void
-SimulationModelOptionsClass::print(std::ostream& os) const
+SimulationModelOptions::print(std::ostream& os) const
 {
   os << "\n" << m_option_dataOutputFileName        << " = " << m_ov.m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowAll        << " = " << m_ov.m_dataOutputAllowAll
@@ -318,7 +318,7 @@ SimulationModelOptionsClass::print(std::ostream& os) const
   return;
 }
 
-std::ostream& operator<<(std::ostream& os, const SimulationModelOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const SimulationModelOptions& obj)
 {
   obj.print(os);
 

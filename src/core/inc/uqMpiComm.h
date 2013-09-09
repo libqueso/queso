@@ -90,7 +90,7 @@ namespace QUESO {
     \brief MPI Communicator Class.
 */
 
-/*! \class MpiCommClass
+/*! \class MpiComm
     \brief The QUESO MPI Communicator Class.
     
     This class uses MPI (the Message Passing Interface) for distributed-memory 
@@ -100,9 +100,9 @@ namespace QUESO {
 */
 
 
-class BaseEnvironmentClass;
+class BaseEnvironment;
 
-class MpiCommClass
+class MpiComm
 {
 public:
    //! @name Constructor/Destructor methods
@@ -110,25 +110,25 @@ public:
 
   //! Default Constructor
   /*! It should not be used by user.*/
-  MpiCommClass();
+  MpiComm();
   
   //! QUESO MpiComm MPI Constructor.
   /*! This constructs an MpiComm that uses the given "raw" MPI communicator underneath. 
    * The MPI_Comm must be valid for the lifetime of this MpiComm.*/
-  MpiCommClass(const BaseEnvironmentClass& env, RawType_MPI_Comm inputRawComm);
+  MpiComm(const BaseEnvironment& env, RawType_MPI_Comm inputRawComm);
   
   //! Copy Constructor.
   /** Makes an exact copy of an existing MpiComm instance.*/
-  MpiCommClass(const MpiCommClass& src);
+  MpiComm(const MpiComm& src);
   
   //! Destructor
- ~MpiCommClass();
+ ~MpiComm();
   //@}
  
   //! @name Set methods
   //@{
   //! Assignment operator. 
-  MpiCommClass& operator= (const MpiCommClass& rhs);
+  MpiComm& operator= (const MpiComm& rhs);
   //@}
   
   
@@ -230,7 +230,7 @@ public:
  //@}
 private:
   //! Copies from an existing MpiComm instance.
-  void               copy          (const MpiCommClass& src);
+  void               copy          (const MpiComm& src);
 #ifdef QUESO_HAS_MPI
 #else
   
@@ -239,7 +239,7 @@ private:
 #endif
 
   // QUESO environment 
-  const BaseEnvironmentClass& m_env;
+  const BaseEnvironment& m_env;
 #ifdef QUESO_HAS_TRILINOS
   
   // Epetra MPI communicator

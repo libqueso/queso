@@ -33,12 +33,12 @@ namespace QUESO {
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::checkpointML(
+MLSampling<P_V,P_M>::checkpointML(
   double                                   currExponent,            // input
   double                                   currEta,                 // input
-  const SequenceOfVectorsClass<P_V,P_M>& currChain,               // input
-  const ScalarSequenceClass<double>&     currLogLikelihoodValues, // input
-  const ScalarSequenceClass<double>&     currLogTargetValues)     // input
+  const SequenceOfVectors<P_V,P_M>& currChain,               // input
+  const ScalarSequence<double>&     currLogLikelihoodValues, // input
+  const ScalarSequence<double>&     currLogTargetValues)     // input
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "\n CHECKPOINTING initiating at level " << m_currLevel
@@ -54,15 +54,15 @@ MLSamplingClass<P_V,P_M>::checkpointML(
   if (m_env.inter0Rank() >= 0) {
     UQ_FATAL_TEST_MACRO(m_logEvidenceFactors.size() != m_currLevel,
                         m_env.fullRank(),
-                        "MLSamplingClass<P_V,P_M>::checkpointML()",
+                        "MLSampling<P_V,P_M>::checkpointML()",
                         "number of evidence factors is not consistent");
     UQ_FATAL_TEST_MACRO(quantity1 != quantity2,
                         m_env.fullRank(),
-                        "MLSamplingClass<P_V,P_M>::checkpointML()",
+                        "MLSampling<P_V,P_M>::checkpointML()",
                         "quantity2 is not consistent");
     UQ_FATAL_TEST_MACRO(quantity1 != quantity3,
                         m_env.fullRank(),
-                        "MLSamplingClass<P_V,P_M>::checkpointML()",
+                        "MLSampling<P_V,P_M>::checkpointML()",
                         "quantity3 is not consistent");
   }
 
@@ -149,12 +149,12 @@ MLSamplingClass<P_V,P_M>::checkpointML(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::restartML(
+MLSampling<P_V,P_M>::restartML(
   double&                            currExponent,            // output
   double&                            currEta,                 // output
-  SequenceOfVectorsClass<P_V,P_M>& currChain,               // output
-  ScalarSequenceClass<double>&     currLogLikelihoodValues, // output
-  ScalarSequenceClass<double>&     currLogTargetValues)     // output
+  SequenceOfVectors<P_V,P_M>& currChain,               // output
+  ScalarSequence<double>&     currLogLikelihoodValues, // output
+  ScalarSequence<double>&     currLogTargetValues)     // output
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "\n RESTARTING initiating at level " << m_currLevel
@@ -190,7 +190,7 @@ MLSamplingClass<P_V,P_M>::restartML(
     *ifsVar >> m_currLevel; // 1
     UQ_FATAL_TEST_MACRO(numLines != (ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA + m_currLevel),
                         m_env.fullRank(),
-                        "MLSamplingClass<P_V,P_M>::restartML()",
+                        "MLSampling<P_V,P_M>::restartML()",
                         "number of lines read is different than pre-established number of lines in control file");
 
     m_logEvidenceFactors.clear();
@@ -205,7 +205,7 @@ MLSamplingClass<P_V,P_M>::restartML(
     *ifsVar >> checkingString; // 6 = ML_CHECKPOINT_FIXED_AMOUNT_OF_DATA
     UQ_FATAL_TEST_MACRO(checkingString != "COMPLETE",
                         m_env.fullRank(),
-                        "MLSamplingClass<P_V,P_M>::restartML()",
+                        "MLSampling<P_V,P_M>::restartML()",
                         "control txt input file is not complete");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
@@ -241,7 +241,7 @@ MLSamplingClass<P_V,P_M>::restartML(
   //******************************************************************************
   unsigned int tmpUint = (unsigned int) m_currLevel;
   m_env.fullComm().Bcast((void *) &tmpUint, (int) 1, RawValue_MPI_UNSIGNED, 0, // Yes, 'fullComm'
-                         "MLSamplingClass<P_V,P_M>::restartML()",
+                         "MLSampling<P_V,P_M>::restartML()",
                          "failed MPI.Bcast() for m_currLevel");
   if (m_env.fullRank() != 0) {
     m_currLevel = tmpUint;
@@ -265,7 +265,7 @@ MLSamplingClass<P_V,P_M>::restartML(
     m_logEvidenceFactors.resize(m_currLevel,0.);
   }
   m_env.fullComm().Bcast((void *) &tmpData[0], (int) tmpData.size(), RawValue_MPI_DOUBLE, 0, // Yes, 'fullComm'
-                         "MLSamplingClass<P_V,P_M>::restartML()",
+                         "MLSampling<P_V,P_M>::restartML()",
                          "failed MPI.Bcast() for rest of information read from input file");
   if (m_env.fullRank() != 0) {
     vectorSpaceDim = tmpData[0];
@@ -282,15 +282,15 @@ MLSamplingClass<P_V,P_M>::restartML(
   //******************************************************************************
   UQ_FATAL_TEST_MACRO(vectorSpaceDim != m_vectorSpace.dimGlobal(),
                       m_env.fullRank(),
-                      "MLSamplingClass<P_V,P_M>::restartML()",
+                      "MLSampling<P_V,P_M>::restartML()",
                       "read vector space dimension is not consistent");
   UQ_FATAL_TEST_MACRO((currExponent < 0.) || (currExponent > 1.),
                       m_env.fullRank(),
-                      "MLSamplingClass<P_V,P_M>::restartML()",
+                      "MLSampling<P_V,P_M>::restartML()",
                       "read currExponent is not consistent");
   UQ_FATAL_TEST_MACRO((quantity1 % m_env.numSubEnvironments()) != 0,
                       m_env.fullRank(),
-                      "MLSamplingClass<P_V,P_M>::restartML()",
+                      "MLSampling<P_V,P_M>::restartML()",
                       "read size of chain should be a multiple of the number of subenvironments");
   unsigned int subSequenceSize = 0;
   subSequenceSize = ((double) quantity1) / ((double) m_env.numSubEnvironments());
@@ -344,12 +344,12 @@ MLSamplingClass<P_V,P_M>::restartML(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
-  const MLSamplingLevelOptionsClass& currOptions,                // input
+MLSampling<P_V,P_M>::generateSequence_Level0_all(
+  const MLSamplingLevelOptions& currOptions,                // input
   unsigned int&                        unifiedRequestedNumSamples, // output
-  SequenceOfVectorsClass<P_V,P_M>&   currChain,                  // output
-  ScalarSequenceClass<double>&       currLogLikelihoodValues,    // output
-  ScalarSequenceClass<double>&       currLogTargetValues)        // output
+  SequenceOfVectors<P_V,P_M>&   currChain,                  // output
+  ScalarSequence<double>&       currLogLikelihoodValues,    // output
+  ScalarSequence<double>&       currLogTargetValues)        // output
 {
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
       *m_env.subDisplayFile() << "KEY In MLSampling<P_V,P_M>::generateSequence()"
@@ -366,7 +366,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
     if (m_env.inter0Rank() >= 0) {
       unsigned int tmpSize = currOptions.m_rawChainSize;
       m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &unifiedRequestedNumSamples, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
-                                   "MLSamplingClass<P_V,P_M>::generateSequence()",
+                                   "MLSampling<P_V,P_M>::generateSequence()",
                                    "failed MPI.Allreduce() for requested num samples in level 0");
     }
     else {
@@ -382,7 +382,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
     currLogTargetValues.resizeSequence    (currOptions.m_rawChainSize); // Ok to use rawChainSize
 
     P_V auxVec(m_vectorSpace.zeroVector());
-    ScalarFunctionSynchronizerClass<P_V,P_M> likelihoodSynchronizer(m_likelihoodFunction,auxVec); // prudencio 2010-08-01
+    ScalarFunctionSynchronizer<P_V,P_M> likelihoodSynchronizer(m_likelihoodFunction,auxVec); // prudencio 2010-08-01
     for (unsigned int i = 0; i < currChain.subSequenceSize(); ++i) {
       //std::cout << "In QUESO: before prior realizer with i = " << i << std::endl;
       bool outOfSupport = true;
@@ -469,7 +469,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
 
     UQ_FATAL_TEST_MACRO((currChain.subSequenceSize() != currOptions.m_rawChainSize), // Ok to use rawChainSize
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::generateSequence()",
+                        "MLSampling<P_V,P_M>::generateSequence()",
                         "currChain (first one) has been generated with invalid size");
 
     double levelRunTime = MiscGetEllapsedSeconds(&timevalLevel);
@@ -485,8 +485,8 @@ MLSamplingClass<P_V,P_M>::generateSequence_Level0_all(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateSequence_Step01_inter0(
-  const MLSamplingLevelOptionsClass* currOptions,                // input
+MLSampling<P_V,P_M>::generateSequence_Step01_inter0(
+  const MLSamplingLevelOptions* currOptions,                // input
   unsigned int&                        unifiedRequestedNumSamples) // output
 {
   int iRC = UQ_OK_RC;
@@ -506,7 +506,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step01_inter0(
       // This computed 'unifiedRequestedNumSamples' needs to be recomputed only at the last
       // level, when 'currOptions' is replaced by 'lastLevelOptions' (see step 3 of 11)
       m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &unifiedRequestedNumSamples, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
-                                   "MLSamplingClass<P_V,P_M>::generateSequence()",
+                                   "MLSampling<P_V,P_M>::generateSequence()",
                                    "failed MPI.Allreduce() for requested num samples in step 1");
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -531,14 +531,14 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step01_inter0(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
-  const MLSamplingLevelOptionsClass* currOptions,             // input
-  SequenceOfVectorsClass<P_V,P_M>&   currChain,               // input/output
-  ScalarSequenceClass<double>&       currLogLikelihoodValues, // input/output
-  ScalarSequenceClass<double>&       currLogTargetValues,     // input/output
-  SequenceOfVectorsClass<P_V,P_M>&   prevChain,               // output
-  ScalarSequenceClass<double>&       prevLogLikelihoodValues, // output
-  ScalarSequenceClass<double>&       prevLogTargetValues,     // output
+MLSampling<P_V,P_M>::generateSequence_Step02_inter0(
+  const MLSamplingLevelOptions* currOptions,             // input
+  SequenceOfVectors<P_V,P_M>&   currChain,               // input/output
+  ScalarSequence<double>&       currLogLikelihoodValues, // input/output
+  ScalarSequence<double>&       currLogTargetValues,     // input/output
+  SequenceOfVectors<P_V,P_M>&   prevChain,               // output
+  ScalarSequence<double>&       prevLogLikelihoodValues, // output
+  ScalarSequence<double>&       prevLogTargetValues,     // output
   unsigned int&                        indexOfFirstWeight,      // output
   unsigned int&                        indexOfLastWeight)       // output
 {
@@ -617,12 +617,12 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
 
       UQ_FATAL_TEST_MACRO((prevChain.subSequenceSize() != prevLogLikelihoodValues.subSequenceSize()),
                           m_env.worldRank(),
-                          "MLSamplingClass<P_V,P_M>::generateSequence()",
+                          "MLSampling<P_V,P_M>::generateSequence()",
                           "different sizes between previous chain and previous sequence of likelihood values");
 
       UQ_FATAL_TEST_MACRO((prevChain.subSequenceSize() != prevLogTargetValues.subSequenceSize()),
                           m_env.worldRank(),
-                          "MLSamplingClass<P_V,P_M>::generateSequence()",
+                          "MLSampling<P_V,P_M>::generateSequence()",
                           "different sizes between previous chain and previous sequence of target values");
 
       // Set 'indexOfFirstWeight' and 'indexOfLastWeight' // KAUST
@@ -638,7 +638,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
           RawType_MPI_Status status;
 	  //std::cout << "Rank " << r << " is entering MPI_Recv()" << std::endl;
           m_env.inter0Comm().Recv((void*) &auxUint, 1, RawValue_MPI_UNSIGNED, r-1, r-1, &status,
-                                  "MLSamplingClass<P_V,P_M>::generateSequence()",
+                                  "MLSampling<P_V,P_M>::generateSequence()",
                                   "failed MPI.Recv()");
 	  //std::cout << "Rank " << r << " received auxUint = " << auxUint << std::endl;
           indexOfFirstWeight = auxUint;
@@ -648,7 +648,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
           auxUint = indexOfLastWeight + 1;
 	  //std::cout << "Rank " << r << " is sending auxUint = " << auxUint << std::endl;
           m_env.inter0Comm().Send((void*) &auxUint, 1, RawValue_MPI_UNSIGNED, r+1, r,
-                                  "MLSamplingClass<P_V,P_M>::generateSequence()",
+                                  "MLSampling<P_V,P_M>::generateSequence()",
                                   "failed MPI.Send()");
 	  //std::cout << "Rank " << r << " sent auxUint = " << auxUint << std::endl;
         }
@@ -669,13 +669,13 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step02_inter0(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
-  const MLSamplingLevelOptionsClass* currOptions,             // input
-  const ScalarSequenceClass<double>& prevLogLikelihoodValues, // input
+MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
+  const MLSamplingLevelOptions* currOptions,             // input
+  const ScalarSequence<double>& prevLogLikelihoodValues, // input
   double                               prevExponent,            // input
   double                               failedExponent,          // input // gpmsa
   double&                              currExponent,            // output
-  ScalarSequenceClass<double>&       weightSequence)          // output
+  ScalarSequence<double>&       weightSequence)          // output
 {
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
@@ -701,7 +701,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
       unsigned int nowAttempt = 0;
       bool testResult = false;
       double meanEffectiveSizeRatio = .5*(currOptions->m_minEffectiveSizeRatio + currOptions->m_maxEffectiveSizeRatio);
-      ScalarSequenceClass<double> omegaLnDiffSequence(m_env,prevLogLikelihoodValues.subSequenceSize(),"");
+      ScalarSequence<double> omegaLnDiffSequence(m_env,prevLogLikelihoodValues.subSequenceSize(),"");
 
       double nowUnifiedEvidenceLnFactor = 0.;
       do {
@@ -774,7 +774,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
 #endif
         }
         m_env.inter0Comm().Allreduce((void *) &subWeightRatioSum, (void *) &unifiedWeightRatioSum, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
-                                     "MLSamplingClass<P_V,P_M>::generateSequence()",
+                                     "MLSampling<P_V,P_M>::generateSequence()",
                                      "failed MPI.Allreduce() for weight ratio sum");
 
         unsigned int auxQuantity = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
@@ -832,18 +832,18 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
         double subQuantity = effectiveSampleSize;
         effectiveSampleSize = 0.;
         m_env.inter0Comm().Allreduce((void *) &subQuantity, (void *) &effectiveSampleSize, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
-                                     "MLSamplingClass<P_V,P_M>::generateSequence()",
+                                     "MLSampling<P_V,P_M>::generateSequence()",
                                      "failed MPI.Allreduce() for effective sample size");
 
         effectiveSampleSize = 1./effectiveSampleSize;
         nowEffectiveSizeRatio = effectiveSampleSize/((double) weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1));
         UQ_FATAL_TEST_MACRO((nowEffectiveSizeRatio > (1.+1.e-8)),
                             m_env.worldRank(),
-                            "MLSamplingClass<P_V,P_M>::generateSequence()",
+                            "MLSampling<P_V,P_M>::generateSequence()",
                             "effective sample size ratio cannot be > 1");
         //UQ_FATAL_TEST_MACRO((nowEffectiveSizeRatio < (1.-1.e-8)),
         //                    m_env.worldRank(),
-        //                    "MLSamplingClass<P_V,P_M>::generateSequence()",
+        //                    "MLSampling<P_V,P_M>::generateSequence()",
         //                    "effective sample size ratio cannot be < 1");
 
         if (failedExponent > 0.) { // gpmsa
@@ -886,7 +886,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
         if (MiscCheckForSameValueInAllNodes(nowExponent,
                                               0., // kept 'zero' on 2010/03/05
                                               m_env.inter0Comm(),
-                                              "MLSamplingClass<P_V,P_M>::generateSequence(), step 3, nowExponent") == false) {
+                                              "MLSampling<P_V,P_M>::generateSequence(), step 3, nowExponent") == false) {
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
             *m_env.subDisplayFile() << "WARNING, In MLSampling<P_V,P_M>::generateSequence()"
                                     << ", level "        << m_currLevel+LEVEL_REF_ID
@@ -901,7 +901,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
         if (MiscCheckForSameValueInAllNodes(testResult,
                                               0., // kept 'zero' on 2010/03/05
                                               m_env.inter0Comm(),
-                                              "MLSamplingClass<P_V,P_M>::generateSequence(), step 3, testResult") == false) {
+                                              "MLSampling<P_V,P_M>::generateSequence(), step 3, testResult") == false) {
           if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
             *m_env.subDisplayFile() << "WARNING, In MLSampling<P_V,P_M>::generateSequence()"
                                     << ", level "        << m_currLevel+LEVEL_REF_ID
@@ -949,7 +949,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
       if (MiscCheckForSameValueInAllNodes(m_logEvidenceFactors[m_logEvidenceFactors.size()-1],
                                             3.0e-16, // changed from 'zero' on 2010/03/03
                                             m_env.inter0Comm(),
-                                            "MLSamplingClass<P_V,P_M>::generateSequence(), step 3, logEvidenceFactor") == false) {
+                                            "MLSampling<P_V,P_M>::generateSequence(), step 3, logEvidenceFactor") == false) {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
           *m_env.subDisplayFile() << "WARNING, In MLSampling<P_V,P_M>::generateSequence()"
                                   << ", level "        << m_currLevel+LEVEL_REF_ID
@@ -976,9 +976,9 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step03_inter0(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateSequence_Step04_inter0(
-  const SequenceOfVectorsClass<P_V,P_M>& prevChain,        // input
-  const ScalarSequenceClass<double>&     weightSequence,   // input
+MLSampling<P_V,P_M>::generateSequence_Step04_inter0(
+  const SequenceOfVectors<P_V,P_M>& prevChain,        // input
+  const ScalarSequence<double>&     weightSequence,   // input
   P_M&                                     unifiedCovMatrix) // output
 {
   int iRC = UQ_OK_RC;
@@ -1024,7 +1024,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step04_inter0(
           double sumValue = 0.;
           if (m_env.inter0Rank() >= 0) {
             m_env.inter0Comm().Allreduce((void *) &localValue, (void *) &sumValue, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
-                                         "MLSamplingClass<P_V,P_M>::generateSequence()",
+                                         "MLSampling<P_V,P_M>::generateSequence()",
                                          "failed MPI.Allreduce() for cov matrix");
           }
           else {
@@ -1056,9 +1056,9 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step04_inter0(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateSequence_Step05_inter0(
+MLSampling<P_V,P_M>::generateSequence_Step05_inter0(
   unsigned int                         unifiedRequestedNumSamples,        // input
-  const ScalarSequenceClass<double>& weightSequence,                    // input
+  const ScalarSequence<double>& weightSequence,                    // input
   std::vector<unsigned int>&           unifiedIndexCountersAtProc0Only,   // output
   std::vector<double>&                 unifiedWeightStdVectorAtProc0Only) // output
 {
@@ -1121,7 +1121,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step05_inter0(
       if (m_env.inter0Rank() == 0) {
         UQ_FATAL_TEST_MACRO(unifiedIndexCountersAtProc0Only.size() != auxUnifiedSize,
                             m_env.worldRank(),
-                            "MLSamplingClass<P_V,P_M>::generateSequence()",
+                            "MLSampling<P_V,P_M>::generateSequence()",
                             "wrong output from sampleIndexesAtProc0() in step 5");
       }
 
@@ -1139,8 +1139,8 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step05_inter0(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateSequence_Step06_all(
-  const MLSamplingLevelOptionsClass* currOptions,                     // input
+MLSampling<P_V,P_M>::generateSequence_Step06_all(
+  const MLSamplingLevelOptions* currOptions,                     // input
   unsigned int                         indexOfFirstWeight,              // input
   unsigned int                         indexOfLastWeight,               // input
   const std::vector<unsigned int>&     unifiedIndexCountersAtProc0Only, // input
@@ -1172,14 +1172,14 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step06_all(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateSequence_Step07_inter0(
+MLSampling<P_V,P_M>::generateSequence_Step07_inter0(
   bool                                      useBalancedChains,               // input
   unsigned int                              indexOfFirstWeight,              // input
   unsigned int                              indexOfLastWeight,               // input
   const std::vector<unsigned int>&          unifiedIndexCountersAtProc0Only, // input
   UnbalancedLinkedChainsPerNodeStruct&    unbalancedLinkControl,           // (possible) output
-  const MLSamplingLevelOptionsClass*      currOptions,                     // input
-  const SequenceOfVectorsClass<P_V,P_M>&  prevChain,                       // input
+  const MLSamplingLevelOptions*      currOptions,                     // input
+  const SequenceOfVectors<P_V,P_M>&  prevChain,                       // input
   std::vector<ExchangeInfoStruct>&        exchangeStdVec,                  // (possible) input/output
   BalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl)             // (possible) output
 {
@@ -1232,9 +1232,9 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step07_inter0(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateSequence_Step08_all(
-  BayesianJointPdfClass<P_V,P_M>& currPdf, // input/output
-  GenericVectorRVClass<P_V,P_M>&  currRv)  // output
+MLSampling<P_V,P_M>::generateSequence_Step08_all(
+  BayesianJointPdf<P_V,P_M>& currPdf, // input/output
+  GenericVectorRV<P_V,P_M>&  currRv)  // output
 {
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
@@ -1265,15 +1265,15 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step08_all(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
-  const SequenceOfVectorsClass<P_V,P_M>& prevChain,                         // input
+MLSampling<P_V,P_M>::generateSequence_Step09_all(
+  const SequenceOfVectors<P_V,P_M>& prevChain,                         // input
   unsigned int                             indexOfFirstWeight,                // input
   unsigned int                             indexOfLastWeight,                 // input
   const std::vector<double>&               unifiedWeightStdVectorAtProc0Only, // input
-  const ScalarSequenceClass<double>&     weightSequence,                    // input
+  const ScalarSequence<double>&     weightSequence,                    // input
   double                                   prevEta,                           // input
-  const GenericVectorRVClass<P_V,P_M>&   currRv,                            // input
-  MLSamplingLevelOptionsClass*           currOptions,                       // input (changed temporarily internally)
+  const GenericVectorRV<P_V,P_M>&   currRv,                            // input
+  MLSamplingLevelOptions*           currOptions,                       // input (changed temporarily internally)
   P_M&                                     unifiedCovMatrix,                  // input/output
   double&                                  currEta)                           // output
 {
@@ -1347,7 +1347,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_env.worldRank(),
-                              "MLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
+                              "MLSampling<P_V,P_M>::generateSequence_Step09_all()",
                               "nowRejectionRate should be out of the requested range at this point of the logic");
         }
 
@@ -1393,7 +1393,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
               else {
                 UQ_FATAL_TEST_MACRO(true,
                                     m_env.worldRank(),
-                                    "MLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
+                                    "MLSampling<P_V,P_M>::generateSequence_Step09_all()",
                                     "before and now range flags are inconsistent");
               }
             } // if (useMiddlePointLogicForEta == false)
@@ -1487,7 +1487,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
           if (m_env.inter0Rank() == 0) {
             UQ_FATAL_TEST_MACRO(nowUnifiedIndexCountersAtProc0Only.size() != auxUnifiedSize,
                                 m_env.worldRank(),
-                                "MLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
+                                "MLSampling<P_V,P_M>::generateSequence_Step09_all()",
                                 "wrong output from sampleIndexesAtProc0() in step 9");
           }
 
@@ -1536,7 +1536,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
                                   << std::endl;
         }
 
-        SequenceOfVectorsClass<P_V,P_M> nowChain(m_vectorSpace,
+        SequenceOfVectors<P_V,P_M> nowChain(m_vectorSpace,
                                                    0,
                                                    m_options.m_prefix+"now_chain");
         double       nowRunTime    = 0.;
@@ -1603,7 +1603,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
         for (unsigned int i = 0; i < nowBalLinkControl.balLinkedChains.size(); ++i) {
           UQ_FATAL_TEST_MACRO(nowBalLinkControl.balLinkedChains[i].initialPosition == NULL,
                               m_env.worldRank(),
-                              "MLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
+                              "MLSampling<P_V,P_M>::generateSequence_Step09_all()",
                               "Initial position pointer in step 9 should not be NULL");
           delete nowBalLinkControl.balLinkedChains[i].initialPosition;
           nowBalLinkControl.balLinkedChains[i].initialPosition = NULL;
@@ -1614,13 +1614,13 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
           // If only one cov matrix is used, then the rejection should be assessed among all inter0Comm nodes // KAUST3
           unsigned int nowUnifiedRejections = 0;
           m_env.inter0Comm().Allreduce((void *) &nowRejections, (void *) &nowUnifiedRejections, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
-                                       "MLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
+                                       "MLSampling<P_V,P_M>::generateSequence_Step09_all()",
                                        "failed MPI.Allreduce() for now rejections");
 
 #if 0 // Round Rock 2009 12 29
           unsigned int tmpUnifiedNumSamples = 0;
           m_env.inter0Comm().Allreduce((void *) &tmpSubNumSamples, (void *) &tmpUnifiedNumSamples, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
-                                       "MLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
+                                       "MLSampling<P_V,P_M>::generateSequence_Step09_all()",
                                        "failed MPI.Allreduce() for num samples in step 9");
 #endif
 
@@ -1637,7 +1637,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
           if (MiscCheckForSameValueInAllNodes(testResult,
                                                 0., // kept 'zero' on 2010/03/03
                                                 m_env.inter0Comm(),
-                                                "MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(), step 9, testResult") == false) {
+                                                "MLSampling<P_V,P_M>::generateSequence_Step09_all(), step 9, testResult") == false) {
             if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
               *m_env.subDisplayFile() << "WARNING, In MLSampling<P_V,P_M>::generateSequence()"
                                       << ", level "        << m_currLevel+LEVEL_REF_ID
@@ -1652,7 +1652,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
         // KAUST: all nodes in 'subComm' should have the same 'testResult'
         unsigned int tmpUint = (unsigned int) testResult;
         m_env.subComm().Bcast((void *) &tmpUint, (int) 1, RawValue_MPI_UNSIGNED, 0, // Yes, 'subComm', important
-                              "MLSamplingClass<P_V,P_M>::generateSequence_Step09_all()",
+                              "MLSampling<P_V,P_M>::generateSequence_Step09_all()",
                               "failed MPI.Bcast() for testResult");
         testResult = (bool) tmpUint;
 
@@ -1678,7 +1678,7 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
           if (MiscCheckForSameValueInAllNodes(nowEta,
                                                 1.0e-16, // changed from 'zero' on 2009/11/dd
                                                 m_env.inter0Comm(),
-                                                "MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(), step 9, nowEta") == false) {
+                                                "MLSampling<P_V,P_M>::generateSequence_Step09_all(), step 9, nowEta") == false) {
             if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
               *m_env.subDisplayFile() << "WARNING, In MLSampling<P_V,P_M>::generateSequence()"
                                       << ", level "        << m_currLevel+LEVEL_REF_ID
@@ -1722,20 +1722,20 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step09_all(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateSequence_Step10_all(
-  MLSamplingLevelOptionsClass&                  currOptions,                  // input (changed temporarily internally)
+MLSampling<P_V,P_M>::generateSequence_Step10_all(
+  MLSamplingLevelOptions&                  currOptions,                  // input (changed temporarily internally)
   const P_M&                                      unifiedCovMatrix,             // input
-  const GenericVectorRVClass  <P_V,P_M>&        currRv,                       // input
+  const GenericVectorRV  <P_V,P_M>&        currRv,                       // input
   bool                                            useBalancedChains,            // input
   const UnbalancedLinkedChainsPerNodeStruct&    unbalancedLinkControl,        // input // Round Rock
   unsigned int                                    indexOfFirstWeight,           // input // Round Rock
-  const SequenceOfVectorsClass<P_V,P_M>&        prevChain,                    // input // Round Rock
+  const SequenceOfVectors<P_V,P_M>&        prevChain,                    // input // Round Rock
   const BalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl,          // input // Round Rock
-  SequenceOfVectorsClass      <P_V,P_M>&        currChain,                    // output
+  SequenceOfVectors      <P_V,P_M>&        currChain,                    // output
   double&                                         cumulativeRawChainRunTime,    // output
   unsigned int&                                   cumulativeRawChainRejections, // output
-  ScalarSequenceClass         <double>*         currLogLikelihoodValues,      // output
-  ScalarSequenceClass         <double>*         currLogTargetValues)          // output
+  ScalarSequence         <double>*         currLogLikelihoodValues,      // output
+  ScalarSequence         <double>*         currLogTargetValues)          // output
 {
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
@@ -1828,13 +1828,13 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step10_all(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
-  const MLSamplingLevelOptionsClass* currOptions,                  // input
+MLSampling<P_V,P_M>::generateSequence_Step11_inter0(
+  const MLSamplingLevelOptions* currOptions,                  // input
   unsigned int                         unifiedRequestedNumSamples,   // input
   unsigned int                         cumulativeRawChainRejections, // input
-  SequenceOfVectorsClass<P_V,P_M>&   currChain,                    // input/output
-  ScalarSequenceClass<double>&       currLogLikelihoodValues,      // input/output
-  ScalarSequenceClass<double>&       currLogTargetValues,          // input/output
+  SequenceOfVectors<P_V,P_M>&   currChain,                    // input/output
+  ScalarSequence<double>&       currLogLikelihoodValues,      // input/output
+  ScalarSequence<double>&       currLogTargetValues,          // input/output
   unsigned int&                        unifiedNumberOfRejections)    // output
 {
   int iRC = UQ_OK_RC;
@@ -1967,20 +1967,20 @@ MLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
     unsigned int tmpSize = currChain.subSequenceSize();
     unsigned int unifiedGeneratedNumSamples = 0;
     m_env.inter0Comm().Allreduce((void *) &tmpSize, (void *) &unifiedGeneratedNumSamples, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
-                                 "MLSamplingClass<P_V,P_M>::generateSequence()",
+                                 "MLSampling<P_V,P_M>::generateSequence()",
                                  "failed MPI.Allreduce() for generated num samples in step 11");
     //std::cout << "unifiedGeneratedNumSamples = "   << unifiedGeneratedNumSamples
     //          << ", unifiedRequestedNumSamples = " << unifiedRequestedNumSamples
     //          << std::endl;
     UQ_FATAL_TEST_MACRO(unifiedGeneratedNumSamples != unifiedRequestedNumSamples,
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::generateSequence()",
+                        "MLSampling<P_V,P_M>::generateSequence()",
                         "currChain (linked one) has been generated with invalid size");
   }
 
   // Compute unified number of rejections
   m_env.inter0Comm().Allreduce((void *) &cumulativeRawChainRejections, (void *) &unifiedNumberOfRejections, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
-                               "MLSamplingClass<P_V,P_M>::generateSequence()",
+                               "MLSampling<P_V,P_M>::generateSequence()",
                                "failed MPI.Allreduce() for number of rejections");
 
   double stepRunTime = MiscGetEllapsedSeconds(&timevalStep);

@@ -34,35 +34,35 @@
 namespace QUESO {
 
 // Default constructor ------------------------------
-BasicPdfsGslClass::BasicPdfsGslClass()
+BasicPdfsGsl::BasicPdfsGsl()
   :
-  BasicPdfsBaseClass()
+  BasicPdfsBase()
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_worldRank,
-                      "BasicPdfsGslClass::constructor(), default",
+                      "BasicPdfsGsl::constructor(), default",
                       "should not be used by user");
 }
 
 //! Constructor ---------------------------
-BasicPdfsGslClass::BasicPdfsGslClass(int worldRank)
+BasicPdfsGsl::BasicPdfsGsl(int worldRank)
   :
-  BasicPdfsBaseClass(worldRank)
+  BasicPdfsBase(worldRank)
 {
 }
 
 // Destructor ---------------------------------------
-BasicPdfsGslClass::~BasicPdfsGslClass()
+BasicPdfsGsl::~BasicPdfsGsl()
 {
 }
 
 // --------------------------------------------------
 double
-BasicPdfsGslClass::betaPdfActualValue(double x, double alpha, double beta) const
+BasicPdfsGsl::betaPdfActualValue(double x, double alpha, double beta) const
 {
   double result = gsl_ran_beta_pdf(x,alpha,beta);
   if (isinf(result)) { // CSRI - 2013-aug-06, with Laura
-    std::cerr << "In BasicPdfsGslClass::betaPdfActualValue(): hitting inf"
+    std::cerr << "In BasicPdfsGsl::betaPdfActualValue(): hitting inf"
               << ", x = "     << x
               << ", alpha = " << alpha
               << ", beta = "  << beta
@@ -75,7 +75,7 @@ BasicPdfsGslClass::betaPdfActualValue(double x, double alpha, double beta) const
 
 // --------------------------------------------------
 double
-BasicPdfsGslClass::gammaPdfActualValue(double x, double a, double b) const
+BasicPdfsGsl::gammaPdfActualValue(double x, double a, double b) const
 {
   return gsl_ran_gamma_pdf(x,a,b);
 }

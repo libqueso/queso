@@ -38,29 +38,29 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-class GcmTotalInfoClass
+class GcmTotalInfo
 {
 public:
-  GcmTotalInfoClass(const GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& s);
-  GcmTotalInfoClass(const GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& s,
-                      const GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>& e);
- ~GcmTotalInfoClass();
+  GcmTotalInfo(const GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>& s);
+  GcmTotalInfo(const GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>& s,
+                      const GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>& e);
+ ~GcmTotalInfo();
 
-  unsigned int initializeTotalDim(const GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& s);
+  unsigned int initializeTotalDim(const GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>& s);
 
-  unsigned int initializeTotalDim(const GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& s,
-                                  const GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>& e);
+  unsigned int initializeTotalDim(const GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>& s,
+                                  const GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>& e);
 
-  const BaseEnvironmentClass&                           m_env;
+  const BaseEnvironment&                           m_env;
         unsigned int                                      m_numConstituents;
-        std::vector<const VectorSetClass   <P_V,P_M>* > m_constitutiveDomains;
-        std::vector<const BaseVectorRVClass<P_V,P_M>* > m_constitutivePriorRvs;
+        std::vector<const VectorSet   <P_V,P_M>* > m_constitutiveDomains;
+        std::vector<const BaseVectorRV<P_V,P_M>* > m_constitutivePriorRvs;
         unsigned int                                      m_totalDim;
-        VectorSpaceClass         <P_V,P_M>              m_totalSpace;
+        VectorSpace         <P_V,P_M>              m_totalSpace;
         double                                            m_totalDomainVolume;
-        ConcatenationSubsetClass <P_V,P_M>              m_totalDomain;
-        ConcatenatedVectorRVClass<P_V,P_M>              m_totalPriorRv;
-        GenericVectorRVClass     <P_V,P_M>              m_totalPostRv;
+        ConcatenationSubset <P_V,P_M>              m_totalDomain;
+        ConcatenatedVectorRV<P_V,P_M>              m_totalPriorRv;
+        GenericVectorRV     <P_V,P_M>              m_totalPostRv;
 
         P_V                                               m_like_previousTotal;
         P_V                                               m_totalPostMean;
@@ -70,26 +70,26 @@ public:
         P_V                                               m_totalMLE;
         double                                            m_totalLikeMaxLnValue;
 
-        VectorSetClass           <P_V,P_M>*             m_solutionDomain;
-        BaseJointPdfClass        <P_V,P_M>*             m_solutionPdf;
-        BaseVectorRealizerClass  <P_V,P_M>*             m_solutionRealizer;
+        VectorSet           <P_V,P_M>*             m_solutionDomain;
+        BaseJointPdf        <P_V,P_M>*             m_solutionPdf;
+        BaseVectorRealizer  <P_V,P_M>*             m_solutionRealizer;
 
-        MetropolisHastingsSGClass<P_V,P_M>*             m_mhSeqGenerator;
-        MLSamplingClass          <P_V,P_M>*             m_mlSampler;
-        BaseVectorSequenceClass  <P_V,P_M>*             m_chain;
+        MetropolisHastingsSG<P_V,P_M>*             m_mhSeqGenerator;
+        MLSampling          <P_V,P_M>*             m_mlSampler;
+        BaseVectorSequence  <P_V,P_M>*             m_chain;
 
 private:
   void commonConstructor();
 };
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmTotalInfoClass(
-  const GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& s)
+GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmTotalInfo(
+  const GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>& s)
   :
   m_env                 (s.m_env),
   m_numConstituents     (4),
-  m_constitutiveDomains (m_numConstituents,(const VectorSetClass   <P_V,P_M>*) NULL),
-  m_constitutivePriorRvs(m_numConstituents,(const BaseVectorRVClass<P_V,P_M>*) NULL),
+  m_constitutiveDomains (m_numConstituents,(const VectorSet   <P_V,P_M>*) NULL),
+  m_constitutivePriorRvs(m_numConstituents,(const BaseVectorRV<P_V,P_M>*) NULL),
   m_totalDim            (initializeTotalDim(s)),
   m_totalSpace          (m_env,"total_",m_totalDim,NULL),
   m_totalDomainVolume   (1.),
@@ -111,27 +111,27 @@ GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmTotalInfoClass(
   m_chain               (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)"
+    *m_env.subDisplayFile() << "Entering GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)"
                             << std::endl;
   }
 
   commonConstructor();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)"
+    *m_env.subDisplayFile() << "Leaving GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(1)"
                             << std::endl;
   }
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmTotalInfoClass(
-  const GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& s,
-  const GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>& e)
+GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmTotalInfo(
+  const GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>& s,
+  const GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>& e)
   :
   m_env                 (s.m_env),
   m_numConstituents     (8),
-  m_constitutiveDomains (m_numConstituents,(const VectorSetClass<P_V,P_M>*) NULL),
-  m_constitutivePriorRvs(m_numConstituents,(const BaseVectorRVClass<P_V,P_M>*) NULL),
+  m_constitutiveDomains (m_numConstituents,(const VectorSet<P_V,P_M>*) NULL),
+  m_constitutivePriorRvs(m_numConstituents,(const BaseVectorRV<P_V,P_M>*) NULL),
   m_totalDim            (initializeTotalDim(s,e)),
   m_totalSpace          (m_env, "total_", m_totalDim, NULL),
   m_totalDomainVolume   (1.),
@@ -153,20 +153,20 @@ GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmTotalInfoClass(
   m_chain               (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)"
+    *m_env.subDisplayFile() << "Entering GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)"
                             << std::endl;
   }
 
   commonConstructor();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)"
+    *m_env.subDisplayFile() << "Leaving GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)"
                             << std::endl;
   }
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~GcmTotalInfoClass()
+GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~GcmTotalInfo()
 {
   if (m_chain) {
     m_chain->clear();
@@ -181,7 +181,7 @@ GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~GcmTotalInfoClass()
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 unsigned int
-GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::initializeTotalDim(const GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& s)
+GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::initializeTotalDim(const GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>& s)
 {
   m_constitutiveDomains[0] = &(s.m_1lambdaEtaDomain);
   m_constitutiveDomains[1] = &(s.m_2lambdaWDomain);
@@ -199,9 +199,9 @@ GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::initializeTotalDim(const Gcm
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 unsigned int
-GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::initializeTotalDim(
-  const GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& s,
-  const GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>& e)
+GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::initializeTotalDim(
+  const GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>& s,
+  const GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>& e)
 {
   m_constitutiveDomains[0] = &(s.m_1lambdaEtaDomain);
   m_constitutiveDomains[1] = &(s.m_2lambdaWDomain);
@@ -226,7 +226,7 @@ GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::initializeTotalDim(
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()
+GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()
 {
   m_totalPriorRv.pdf().setNormalizationStyle(0); // CSRI - 2013-Aug-06 - with Laura
   for (unsigned int i = 0; i < m_numConstituents; ++i) {
@@ -237,7 +237,7 @@ GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()
   // Display information
   //********************************************************************************
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "In GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()"
+    *m_env.subDisplayFile() << "In GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()"
                             << "\n  m_totalDim          = "  << m_totalDim
                             << "\n  m_numConstituents   = "  << m_numConstituents
                             << "\n  m_totalDomainVolume = "  << m_totalDomainVolume

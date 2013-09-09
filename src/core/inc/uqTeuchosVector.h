@@ -47,16 +47,16 @@ namespace QUESO {
     \brief Vector class using Trilinos Teuchos
 */
 
-/*! \class TeuchosVectorClass
+/*! \class TeuchosVector
     \brief Class for vector operations using Teuchos (Trilinos).
     
     This class creates and provides basic support for vectors of templated 
-    type as a specialization of VectorClass using Teuchos vectors (from Trilinos), which are defined 
+    type as a specialization of Vector using Teuchos vectors (from Trilinos), which are defined 
     by an encapsulated Teuchos::SerialDenseVector structure.    
 */
 
 
-class TeuchosVectorClass : public VectorClass
+class TeuchosVector : public Vector
 {
 public:
   
@@ -65,53 +65,53 @@ public:
 
   //! Default Constructor
   /*! Creates an empty vector of no length.*/
-  TeuchosVectorClass();
+  TeuchosVector();
   
-  //! Shaped constructor: creates an empty vector of size given by MapClass& map.
-  TeuchosVectorClass(const BaseEnvironmentClass& env, const MapClass& map);
+  //! Shaped constructor: creates an empty vector of size given by Map& map.
+  TeuchosVector(const BaseEnvironment& env, const Map& map);
   
- //! Shaped constructor: creates an vector of values \c value and of size given by MapClass& map.
-  TeuchosVectorClass(const BaseEnvironmentClass& env, const MapClass& map, double value);
+ //! Shaped constructor: creates an vector of values \c value and of size given by Map& map.
+  TeuchosVector(const BaseEnvironment& env, const Map& map, double value);
   
- //! Shaped constructor: creates an vector of size given by MapClass& map and of values given by an average involving \c d1, \c d2 and the vector size.
-  TeuchosVectorClass(const BaseEnvironmentClass& env, double d1, double d2, const MapClass& map);
+ //! Shaped constructor: creates an vector of size given by Map& map and of values given by an average involving \c d1, \c d2 and the vector size.
+  TeuchosVector(const BaseEnvironment& env, double d1, double d2, const Map& map);
  
   //! Shaped constructor: creates an vector of size given by vector \c v and of values given by an average involving \c d1, \c d2 and \c \this vector size.
-  TeuchosVectorClass(const TeuchosVectorClass&         v, double d1, double d2);                   
+  TeuchosVector(const TeuchosVector&         v, double d1, double d2);                   
   
   //! Copy constructor.
-  TeuchosVectorClass(const TeuchosVectorClass&         y);
+  TeuchosVector(const TeuchosVector&         y);
   
   //! Destructor
-  ~TeuchosVectorClass();
+  ~TeuchosVector();
    //@}
   
 
   //! @name Set methods.
   //@{ 
   //! Set all values in the vector to a constant value.  
-  TeuchosVectorClass& operator= (double a);
+  TeuchosVector& operator= (double a);
   
   //! Copies values from one vector to another. 
-  TeuchosVectorClass& operator= (const TeuchosVectorClass& rhs);
+  TeuchosVector& operator= (const TeuchosVector& rhs);
   
   //! Stores in \c this vector the coordinate-wise multiplication of \c this and a.
-  TeuchosVectorClass& operator*=(double a);
+  TeuchosVector& operator*=(double a);
   
   //! Stores in \c this vector the coordinate-wise division of \c this by a.
-  TeuchosVectorClass& operator/=(double a);
+  TeuchosVector& operator/=(double a);
   
   //! Stores in \c this vector the coordinate-wise multiplication of \c this with rhs.
-  TeuchosVectorClass& operator*=(const TeuchosVectorClass& rhs);
+  TeuchosVector& operator*=(const TeuchosVector& rhs);
   
   //! Stores in \c this vector the coordinate-wise division of \c this by rhs.
-  TeuchosVectorClass& operator/=(const TeuchosVectorClass& rhs);
+  TeuchosVector& operator/=(const TeuchosVector& rhs);
   
    //! Stores in \c this vector the coordinate-wise addition of \c this and rhs.
-  TeuchosVectorClass& operator+=(const TeuchosVectorClass& rhs);
+  TeuchosVector& operator+=(const TeuchosVector& rhs);
   
    //! Stores in \c this vector the coordinate-wise subtraction of \c this and \c rhs.
-  TeuchosVectorClass& operator-=(const TeuchosVectorClass& rhs);
+  TeuchosVector& operator-=(const TeuchosVector& rhs);
   //@}
 
     //! @name Accessor methods.
@@ -174,16 +174,16 @@ public:
   //! @name Comparison methods.
   //@{ 
   //! This function returns true if at least one component of \c this is smaller than the respective component of rhs.
-  bool         atLeastOneComponentSmallerThan       (const TeuchosVectorClass& rhs) const;
+  bool         atLeastOneComponentSmallerThan       (const TeuchosVector& rhs) const;
   
   //! This function returns true if at least one component of \c this is bigger than the respective component of rhs. 
-  bool         atLeastOneComponentBiggerThan        (const TeuchosVectorClass& rhs) const;
+  bool         atLeastOneComponentBiggerThan        (const TeuchosVector& rhs) const;
   
   //! This function returns true if at least one component of \c this is smaller than or equal to the respective component of rhs.
-  bool         atLeastOneComponentSmallerOrEqualThan(const TeuchosVectorClass& rhs) const;
+  bool         atLeastOneComponentSmallerOrEqualThan(const TeuchosVector& rhs) const;
   
   //! This function returns true if at least one component of \c this is bigger than or equal to the respective component of rhs. 
-  bool         atLeastOneComponentBiggerOrEqualThan (const TeuchosVectorClass& rhs) const;
+  bool         atLeastOneComponentBiggerOrEqualThan (const TeuchosVector& rhs) const;
   //@}
   
     //! @name Set methods.
@@ -192,10 +192,10 @@ public:
   void	       cwSet(double value);
   
   //! Component-wise sets all values of \c this with vector \c vec, starting at position \c initialPos.
-  void         cwSet(unsigned int initialPos, const TeuchosVectorClass& vec);
+  void         cwSet(unsigned int initialPos, const TeuchosVector& vec);
   
   //! Component-wise extracts all values of \c this with vector \c vec, starting at position \c initialPos.
-  void         cwExtract(unsigned int initialPos, TeuchosVectorClass& vec) const; 
+  void         cwExtract(unsigned int initialPos, TeuchosVector& vec) const; 
   
   //! This function inverts component-wise the element values of \c this.  
   void         cwInvert();
@@ -204,32 +204,32 @@ public:
   void         cwSqrt();
   
   //! This function concatenates vectors \c v1 and \c v2 into \c this vector.
-  void         cwSetConcatenated(const TeuchosVectorClass& v1, const TeuchosVectorClass& v2);
+  void         cwSetConcatenated(const TeuchosVector& v1, const TeuchosVector& v2);
   
   //! This function sets component-wise Gaussian random variates, with mean \c mean and standard deviation \c stdDev. 
   void	       cwSetGaussian(double mean, double stdDev);
   
   //! This function sets component-wise Gaussian random variates, with vectors for mean and standard deviation.
-  void	       cwSetGaussian(const TeuchosVectorClass& meanVec,       const TeuchosVectorClass& stdDevVec);
+  void	       cwSetGaussian(const TeuchosVector& meanVec,       const TeuchosVector& stdDevVec);
   
   //! This function sets component-wise a number uniformly distributed in the range of elements of [lowerBoundVec,upperBoundVec].
-  void         cwSetUniform (const TeuchosVectorClass& lowerBoundVec, const TeuchosVectorClass& upperBoundVec);
+  void         cwSetUniform (const TeuchosVector& lowerBoundVec, const TeuchosVector& upperBoundVec);
   
   //! This function sets component-wise random variates from the Beta distribution, with vector parameters alpha and beta.
-  void         cwSetBeta        (const TeuchosVectorClass& alpha,   const TeuchosVectorClass& beta     );
+  void         cwSetBeta        (const TeuchosVector& alpha,   const TeuchosVector& beta     );
   
   //! This function sets component-wise random variates from the Inverse Gamma distribution, with parameters given by vectors  \c a and \c b.
-  void         cwSetGamma       (const TeuchosVectorClass& a,       const TeuchosVectorClass& b        );
+  void         cwSetGamma       (const TeuchosVector& a,       const TeuchosVector& b        );
     
   //! This function sets component-wise random variates from the Inverse Gamma distribution, with parameters given by vectors  \c a and \c b.
-  void         cwSetInverseGamma(const TeuchosVectorClass& a,   const TeuchosVectorClass& b     );
+  void         cwSetInverseGamma(const TeuchosVector& a,   const TeuchosVector& b     );
   //@}
   
    //! @name Miscellaneous methods.
   //@{ 
   
    //! This function returns absolute value of all elements in \c this.
-  TeuchosVectorClass abs() const;
+  TeuchosVector abs() const;
       
   //! Copies the values of \c this vector (a TeuchosVector) to a std::vector structure.
   /*! With this method, the std::vector copy of the TeuchosVector may be sorted using std::sort.*/
@@ -247,22 +247,22 @@ public:
   double       sumOfComponents  () const;
   
   //! Broadcasts a message from the process with \c srcRank root to all other processes of the group. 
-  void         mpiBcast         (int srcRank, const MpiCommClass& bcastComm);
+  void         mpiBcast         (int srcRank, const MpiComm& bcastComm);
   
   //! Combines values from all processes and distributes the result back to all processes. 
-  void         mpiAllReduce     (RawType_MPI_Op mpiOperation, const MpiCommClass& opComm, TeuchosVectorClass& resultVec) const;
+  void         mpiAllReduce     (RawType_MPI_Op mpiOperation, const MpiComm& opComm, TeuchosVector& resultVec) const;
   
   //!  Gathers values from a group of processes and returns all quantiles. 
-  void         mpiAllQuantile   (double probability, const MpiCommClass& opComm, TeuchosVectorClass& resultVec) const;
+  void         mpiAllQuantile   (double probability, const MpiComm& opComm, TeuchosVector& resultVec) const;
  
   //!  Reproduces MATLAB linear inter/extra-polation. 
   /*! yiVec.matlabLinearInterpExtrap(xVec,yVec,xiVec) interpolates/extrapolates to find yiVec, the values of the 
    * underlying function yVec at the points in the vector xiVec. Thus, yVec and xVec must have the same size; 
    * and yiVec and xiVec must have the same size.*/
-  void         matlabLinearInterpExtrap(const TeuchosVectorClass& xVec, const TeuchosVectorClass& yVec, const TeuchosVectorClass& xiVec);
+  void         matlabLinearInterpExtrap(const TeuchosVector& xVec, const TeuchosVector& yVec, const TeuchosVector& xiVec);
   
   //TODO
-  void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, TeuchosVectorClass& outputVec) const;
+  void         matlabDiff       (unsigned int firstPositionToStoreDiff, double valueForRemainderPosition, TeuchosVector& outputVec) const;
 
   //@}
   
@@ -289,20 +289,20 @@ private:
   Teuchos::SerialDenseVector<int,double> m_vec;
   
   //! This function copies the elements of the vector \c src into \c this.
-  void         copy             (const TeuchosVectorClass& src);
+  void         copy             (const TeuchosVector& src);
 
 };
 
-//TeuchosVectorClass copy		  (int , 						    double []);
-TeuchosVectorClass operator/    (double a,            		    const TeuchosVectorClass& x  );
-TeuchosVectorClass operator/    (const TeuchosVectorClass& x,   const TeuchosVectorClass& y  );
-TeuchosVectorClass operator*    (double a,		    	        const TeuchosVectorClass& x  );
-TeuchosVectorClass operator*    (const TeuchosVectorClass& x,   const TeuchosVectorClass& y  );
-double               scalarProduct(const TeuchosVectorClass& x,   const TeuchosVectorClass& y  );
-TeuchosVectorClass operator+    (const TeuchosVectorClass& x,   const TeuchosVectorClass& y  );
-TeuchosVectorClass operator-    (const TeuchosVectorClass& x,   const TeuchosVectorClass& y  );
-bool                 operator==   (const TeuchosVectorClass& lhs, const TeuchosVectorClass& rhs);
-std::ostream&        operator<<   (std::ostream& os,                const TeuchosVectorClass& obj);
+//TeuchosVector copy		  (int , 						    double []);
+TeuchosVector operator/    (double a,            		    const TeuchosVector& x  );
+TeuchosVector operator/    (const TeuchosVector& x,   const TeuchosVector& y  );
+TeuchosVector operator*    (double a,		    	        const TeuchosVector& x  );
+TeuchosVector operator*    (const TeuchosVector& x,   const TeuchosVector& y  );
+double               scalarProduct(const TeuchosVector& x,   const TeuchosVector& y  );
+TeuchosVector operator+    (const TeuchosVector& x,   const TeuchosVector& y  );
+TeuchosVector operator-    (const TeuchosVector& x,   const TeuchosVector& y  );
+bool                 operator==   (const TeuchosVector& lhs, const TeuchosVector& rhs);
+std::ostream&        operator<<   (std::ostream& os,                const TeuchosVector& obj);
 
 }  // End namespace QUESO
 

@@ -40,13 +40,13 @@
 // needed by the (user defined) likelihood routine
 //********************************************************
 struct
-likelihoodRoutine_DataClass
+likelihoodRoutine_Data
 {
-  likelihoodRoutine_DataClass(const QUESO::BaseEnvironmentClass& env,
+  likelihoodRoutine_Data(const QUESO::BaseEnvironment& env,
                               const char* inpName1,
                               const char* inpName2,
                               const char* inpName3);
- ~likelihoodRoutine_DataClass();
+ ~likelihoodRoutine_Data();
 
   double              m_beta1;
   double              m_variance1;
@@ -63,16 +63,16 @@ likelihoodRoutine_DataClass
   std::vector<double> m_Te3; // temperatures
   std::vector<double> m_Me3; // relative masses
 
-  const QUESO::BaseEnvironmentClass* m_env;
+  const QUESO::BaseEnvironment* m_env;
 };
 
 double
 likelihoodRoutine(
-  const QUESO::GslVectorClass&  paramValues,
-  const QUESO::GslVectorClass*  paramDirection,
+  const QUESO::GslVector&  paramValues,
+  const QUESO::GslVector*  paramDirection,
   const void*              functionDataPtr,
-  QUESO::GslVectorClass*        gradVector,
-  QUESO::GslMatrixClass*        hessianMatrix,
-  QUESO::GslVectorClass*        hessianEffect);
+  QUESO::GslVector*        gradVector,
+  QUESO::GslMatrix*        hessianMatrix,
+  QUESO::GslVector*        hessianEffect);
 
 #endif // __TGA2_LIKELIHOOD_H__

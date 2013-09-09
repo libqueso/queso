@@ -61,38 +61,38 @@ namespace QUESO {
     \brief Classes to allow options to be passed to a Monte Carlo sequence generator.
 */
 
-/*! \class McOptionsValuesClass
+/*! \class McOptionsValues
  *  \brief This class provides options for the  Monte Carlo sequence generator if no input file is available.
  * 
  *  Monte Carlo sequence generator expects options for its methods. This class provides default
  * values for such options if no input file is available. */
 
-class McOptionsValuesClass
+class McOptionsValues
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  McOptionsValuesClass            (const SsOptionsValuesClass* alternativePSsOptionsValues,
-                                     const SsOptionsValuesClass* alternativeQSsOptionsValues);
+  McOptionsValues            (const SsOptionsValues* alternativePSsOptionsValues,
+                                     const SsOptionsValues* alternativeQSsOptionsValues);
 #else
   //! Default constructor.
   /*! Assigns the default suite of options to the Monte Carlo sequence generator.*/
-  McOptionsValuesClass            ();
+  McOptionsValues            ();
 #endif
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
-  McOptionsValuesClass            (const McOptionsValuesClass& src);
+  McOptionsValues            (const McOptionsValues& src);
   
   //! Destructor
-  ~McOptionsValuesClass            ();
+  ~McOptionsValues            ();
   //@}
   
   //! @name Set methods
   //@{ 
   //! Assignment operator; it copies \c rhs to \c this. 
-  McOptionsValuesClass& operator= (const McOptionsValuesClass& rhs);
+  McOptionsValues& operator= (const McOptionsValues& rhs);
   //@}
 
   std::string                        m_dataOutputFileName;
@@ -121,12 +121,12 @@ public:
 
 private:
   //! Copies the option values from \c src to \c this.
-  void copy(const McOptionsValuesClass& src);
+  void copy(const McOptionsValues& src);
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  friend class MonteCarloSGOptionsClass;
-  SsOptionsValuesClass             m_alternativePSsOptionsValues;
-  SsOptionsValuesClass             m_alternativeQSsOptionsValues;
+  friend class MonteCarloSGOptions;
+  SsOptionsValues             m_alternativePSsOptionsValues;
+  SsOptionsValues             m_alternativeQSsOptionsValues;
 #endif
 };
 
@@ -134,7 +134,7 @@ private:
 // --------------------------------------------------
 // --------------------------------------------------
 
-/*! \class MonteCarloSGOptionsClass
+/*! \class MonteCarloSGOptions
  *  \brief This class reads the options for the  Monte Carlo sequence generator from  an input file.
  * 
  * Monte Carlo sequence generator expects options for its methods. This class reads the 
@@ -142,22 +142,22 @@ private:
  * The class expects the prefix '\<prefix\>_mc_'. For instance, if 'prefix' is 'foo_775_fp_', 
  * then the constructor will read all options that begin with 'foo_775_fp_mc_'. */
 
-class MonteCarloSGOptionsClass
+class MonteCarloSGOptions
 {
 public:
   
   //! @name Constructor/Destructor methods
   //@{ 
   //! Constructor: reads options from the input file.
-  MonteCarloSGOptionsClass(const BaseEnvironmentClass& env, const char* prefix);
+  MonteCarloSGOptions(const BaseEnvironment& env, const char* prefix);
   
   //! Constructor: with alternative option values.
   /*! In this constructor, the input options are given by \c alternativeOptionsValues, thus, they
    * are not read from an input file.*/
-  MonteCarloSGOptionsClass(const BaseEnvironmentClass& env, const char* prefix, const McOptionsValuesClass& alternativeOptionsValues);
+  MonteCarloSGOptions(const BaseEnvironment& env, const char* prefix, const McOptionsValues& alternativeOptionsValues);
  
   //! Destructor
-  ~MonteCarloSGOptionsClass();
+  ~MonteCarloSGOptions();
   //@}
   
   //! @name I/O methods
@@ -169,10 +169,10 @@ public:
   void print            (std::ostream& os) const;
   //@}
   
-  McOptionsValuesClass             m_ov;
+  McOptionsValues             m_ov;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  SequenceStatisticalOptionsClass* m_pseqStatisticalOptionsObj;
-  SequenceStatisticalOptionsClass* m_qseqStatisticalOptionsObj;
+  SequenceStatisticalOptions* m_pseqStatisticalOptionsObj;
+  SequenceStatisticalOptions* m_qseqStatisticalOptionsObj;
 #endif
   std::string                        m_prefix;
 
@@ -183,7 +183,7 @@ private:
   //! Gets the sequence options.
   void   getMyOptionValues(po::options_description& optionsDesc);
 
-  const BaseEnvironmentClass& m_env;
+  const BaseEnvironment& m_env;
   po::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
@@ -213,7 +213,7 @@ private:
 };
 
 //! Prints the object \c obj, overloading an operator.
-std::ostream& operator<<(std::ostream& os, const MonteCarloSGOptionsClass& obj);
+std::ostream& operator<<(std::ostream& os, const MonteCarloSGOptions& obj);
 
 }  // End namespace QUESO
 

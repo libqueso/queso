@@ -42,29 +42,29 @@ template<class P_V,class P_M,class Q_V, class Q_M>
 struct
 exPhysics1QoiInfoStruct
 {
-  exPhysics1QoiInfoStruct(const uqVectorSpaceClass<P_V,P_M>& paramSpace,
+  exPhysics1QoiInfoStruct(const uqVectorSpace<P_V,P_M>& paramSpace,
                           double                             initialTemp,
                           double                             beta,
                           double                             criticalW,
                           double                             criticalTime);
  ~exPhysics1QoiInfoStruct();
 
-  const uqVectorSpaceClass<P_V,P_M>& m_paramSpace;
-  uqBase1D1DFunctionClass*           m_temperatureFunctionObj;
+  const uqVectorSpace<P_V,P_M>& m_paramSpace;
+  uqBase1D1DFunction*           m_temperatureFunctionObj;
   double                             m_criticalW;
   double                             m_criticalTime;
 };
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 exPhysics1QoiInfoStruct<P_V,P_M,Q_V,Q_M>::exPhysics1QoiInfoStruct(
-  const uqVectorSpaceClass<P_V,P_M>& paramSpace,
+  const uqVectorSpace<P_V,P_M>& paramSpace,
   double                             initialTemp,
   double                             beta,
   double                             criticalW,
   double                             criticalTime)
   :
   m_paramSpace            (paramSpace),
-  m_temperatureFunctionObj(new uqLinear1D1DFunctionClass(-INFINITY,INFINITY,0.,initialTemp,beta)),
+  m_temperatureFunctionObj(new uqLinear1D1DFunction(-INFINITY,INFINITY,0.,initialTemp,beta)),
   m_criticalW             (criticalW),
   m_criticalTime          (criticalTime)
 {
@@ -82,9 +82,9 @@ void exPhysics1QoiRoutine(const P_V&                    paramValues,
                           const P_V*                    paramDirection,
                           const void*                   functionDataPtr,
                                 Q_V&                    qoiValues,
-                                uqDistArrayClass<P_V*>* gradVectors,
-                                uqDistArrayClass<P_M*>* hessianMatrices,
-                                uqDistArrayClass<P_V*>* hessianEffects)
+                                uqDistArray<P_V*>* gradVectors,
+                                uqDistArray<P_M*>* hessianMatrices,
+                                uqDistArray<P_V*>* hessianEffects)
 {
   const exPhysics1QoiInfoStruct<P_V,P_M,Q_V,Q_M>& info = *((const exPhysics1QoiInfoStruct<P_V,P_M,Q_V,Q_M> *) functionDataPtr);
 

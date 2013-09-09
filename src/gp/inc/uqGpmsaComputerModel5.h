@@ -33,39 +33,39 @@ namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v(
   const std::vector<const S_V* >& xVecs,
   const P_V&                      rho_v_vec,
         D_M&                      Rmat,
         unsigned int              outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(xVecs.size() != m_e->m_paper_n,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
                       "xVecs.size() is wrong");
   for (unsigned int i = 0; i < xVecs.size(); ++i) {
     UQ_FATAL_TEST_MACRO(xVecs[i]->sizeLocal() != m_s->m_paper_p_x,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
                         "xVecs[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO((rho_v_vec.sizeLocal() == 0) || (rho_v_vec.sizeLocal() > m_s->m_paper_p_x), // Should be equal to m_Gs[i], for some 'i'
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
                       "rho_v_vec.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_e->m_paper_n,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
                       "Rmat.numRowsLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numCols() != m_e->m_paper_n,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
                       "Rmat.numCols() is wrong");
 
   S_V vecI(*(xVecs[0]));  
@@ -79,7 +79,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sig
         double diffTerm = vecI[k] - vecJ[k];
         Rmat(i,j) *= std::pow(rho_v_vec[k],4.*diffTerm*diffTerm);
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-          *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()"
+          *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()"
                                   << ", outerCounter = " << outerCounter
                                   << ": i = "            << i
                                   << ", j = "            << j
@@ -92,7 +92,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sig
         }
       }
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-        *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()"
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()"
                                 << ", outerCounter = " << outerCounter
                                 << ": i = "            << i
                                 << ", j = "            << j
@@ -103,7 +103,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sig
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -113,7 +113,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sig
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u(
   const std::vector<const S_V* >& xVecs,
   const P_V&                      tVec,
   const P_V&                      rho_w_vec,
@@ -121,36 +121,36 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
         unsigned int              outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(xVecs.size() != m_e->m_paper_n,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
                       "xVecs.size() is wrong");
   for (unsigned int i = 0; i < xVecs.size(); ++i) {
     UQ_FATAL_TEST_MACRO(xVecs[i]->sizeLocal() != m_s->m_paper_p_x,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
                         "xVecs[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(tVec.sizeLocal() != m_s->m_paper_p_t,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
                       "tVec.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(rho_w_vec.sizeLocal() != (m_s->m_paper_p_x+m_s->m_paper_p_t),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
                       "rho_w_vec.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_e->m_paper_n,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
                       "Rmat.numRowsLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numCols() != m_e->m_paper_n,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
                       "Rmat.numCols() is wrong");
 
   S_V vecI(*(xVecs[0]));
@@ -168,7 +168,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -178,7 +178,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w(
   const std::vector<const S_V* >& xVecs,
   const std::vector<const P_V* >& tVecs,
   const P_V&                      rho_w_vec,
@@ -186,42 +186,42 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
         unsigned int              outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(xVecs.size() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
                       "xVecs.size() is wrong");
   for (unsigned int i = 0; i < xVecs.size(); ++i) {
     UQ_FATAL_TEST_MACRO(xVecs[i]->sizeLocal() != m_s->m_paper_p_x,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
                         "xVecs[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(tVecs.size() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
                       "tVecs.size() is wrong");
   for (unsigned int i = 0; i < tVecs.size(); ++i) {
     UQ_FATAL_TEST_MACRO(tVecs[i]->sizeLocal() != m_s->m_paper_p_t,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
                         "tVecs[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(rho_w_vec.sizeLocal() != (m_s->m_paper_p_x+m_s->m_paper_p_t),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
                       "rho_w_vec.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
                       "Rmat.numRowsLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numCols() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()",
                       "Rmat.numCols() is wrong");
 
   S_V xVecI(*(xVecs[0]));
@@ -247,7 +247,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -257,7 +257,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw(
   const std::vector<const S_V* >& xVecs1,
   const P_V&                      tVec1,
   const std::vector<const S_V* >& xVecs2,
@@ -267,60 +267,60 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
         unsigned int              outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(xVecs1.size() != m_e->m_paper_n,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
                       "xVecs1.size() is wrong");
   for (unsigned int i = 0; i < xVecs1.size(); ++i) {
     UQ_FATAL_TEST_MACRO(xVecs1[i]->sizeLocal() != m_s->m_paper_p_x,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
                         "xVecs1[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(tVec1.sizeLocal() != m_s->m_paper_p_t,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u()",
                       "tVec1.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(xVecs2.size() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
                       "xVecs2.size() is wrong");
   for (unsigned int i = 0; i < xVecs2.size(); ++i) {
     UQ_FATAL_TEST_MACRO(xVecs2[i]->sizeLocal() != m_s->m_paper_p_x,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
                         "xVecs2[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(tVecs2.size() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
                       "tVecs2.size() is wrong");
   for (unsigned int i = 0; i < tVecs2.size(); ++i) {
     UQ_FATAL_TEST_MACRO(tVecs2[i]->sizeLocal() != m_s->m_paper_p_t,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
                         "tVecs2[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(rho_w_vec.sizeLocal() != (m_s->m_paper_p_x+m_s->m_paper_p_t),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
                       "rho_w_vec.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_e->m_paper_n,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
                       "Rmat.numRowsLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numCols() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()",
                       "Rmat.numCols() is wrong");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -348,7 +348,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_uw()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -358,7 +358,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk(
   const std::vector<const S_V* >& xVecs1,
   const std::vector<const P_V* >& tVecs1,
   const S_V&                      xVec2,
@@ -368,50 +368,50 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sig
         unsigned int              outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(xVecs1.size() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
                       "xVecs1.size() is wrong");
   for (unsigned int i = 0; i < xVecs1.size(); ++i) {
     UQ_FATAL_TEST_MACRO(xVecs1[i]->sizeLocal() != m_s->m_paper_p_x,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
                         "xVecs1[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(tVecs1.size() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
                       "tVecs1.size() is wrong");
   for (unsigned int i = 0; i < tVecs1.size(); ++i) {
     UQ_FATAL_TEST_MACRO(tVecs1[i]->sizeLocal() != m_s->m_paper_p_t,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
                         "tVecs1[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(xVec2.sizeLocal() != m_s->m_paper_p_x,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
                       "xVec2.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(tVec2.sizeLocal() != m_s->m_paper_p_t,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
                       "tVec2.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO((rho_v_vec.sizeLocal() == 0) || (rho_v_vec.sizeLocal() > m_s->m_paper_p_x), // Should be equal to m_Gs[i], for some 'i'
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
                       "rho_v_vec.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_e->m_paper_n,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
                       "Rmat.numRowsLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numCols() != 1,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()",
                       "Rmat.numCols() is wrong");
 
   S_V xVecI(*(xVecs1[0]));
@@ -433,7 +433,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sig
     }
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v_hat_v_asterisk()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -443,7 +443,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sig
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk(
   const std::vector<const S_V* >& xVecs1,
   const std::vector<const P_V* >& tVecs1,
   const S_V&                      xVec2,
@@ -453,49 +453,49 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
         unsigned int              outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
   UQ_FATAL_TEST_MACRO(xVecs1.size() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
                       "xVecs1.size() is wrong");
   for (unsigned int i = 0; i < xVecs1.size(); ++i) {
     UQ_FATAL_TEST_MACRO(xVecs1[i]->sizeLocal() != m_s->m_paper_p_x,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
                         "xVecs1[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(tVecs1.size() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
                       "tVecs1.size() is wrong");
   for (unsigned int i = 0; i < tVecs1.size(); ++i) {
     UQ_FATAL_TEST_MACRO(tVecs1[i]->sizeLocal() != m_s->m_paper_p_t,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
                         "tVecs1[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(xVec2.sizeLocal() != m_s->m_paper_p_x,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
                       "xVec2.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(tVec2.sizeLocal() != m_s->m_paper_p_t,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
                       "tVec2.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(rho_w_vec.sizeLocal() != (m_s->m_paper_p_x+m_s->m_paper_p_t),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
                       "rho_w_vec.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
                       "Rmat.numRowsLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numCols() != 1,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()",
                       "Rmat.numCols() is wrong");
 
   S_V xVecI(*(xVecs1[0]));
@@ -521,7 +521,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
     }
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_u_hat_u_asterisk()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -531,7 +531,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk(
   const std::vector<const S_V* >& xVecs1,
   const std::vector<const P_V* >& tVecs1,
   const S_V&                      xVec2,
@@ -541,49 +541,49 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
         unsigned int              outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
   UQ_FATAL_TEST_MACRO(xVecs1.size() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
                       "xVecs1.size() is wrong");
   for (unsigned int i = 0; i < xVecs1.size(); ++i) {
     UQ_FATAL_TEST_MACRO(xVecs1[i]->sizeLocal() != m_s->m_paper_p_x,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
                         "xVecs1[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(tVecs1.size() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
                       "tVecs1.size() is wrong");
   for (unsigned int i = 0; i < tVecs1.size(); ++i) {
     UQ_FATAL_TEST_MACRO(tVecs1[i]->sizeLocal() != m_s->m_paper_p_t,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
                         "tVecs1[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(xVec2.sizeLocal() != m_s->m_paper_p_x,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
                       "xVec2.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(tVec2.sizeLocal() != m_s->m_paper_p_t,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
                       "tVec2.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(rho_w_vec.sizeLocal() != (m_s->m_paper_p_x+m_s->m_paper_p_t),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
                       "rho_w_vec.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
                       "Rmat.numRowsLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numCols() != 1,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()",
                       "Rmat.numCols() is wrong");
 
   S_V xVecI(*(xVecs1[0]));
@@ -609,7 +609,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
     }
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_u_asterisk()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -619,7 +619,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk(
   const std::vector<const S_V* >& xVecs1,
   const std::vector<const P_V* >& tVecs1,
   const S_V&                      xVec2,
@@ -629,50 +629,50 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
         unsigned int              outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(xVecs1.size() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
                       "xVecs1.size() is wrong");
   for (unsigned int i = 0; i < xVecs1.size(); ++i) {
     UQ_FATAL_TEST_MACRO(xVecs1[i]->sizeLocal() != m_s->m_paper_p_x,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
                         "xVecs1[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(tVecs1.size() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
                       "tVecs1.size() is wrong");
   for (unsigned int i = 0; i < tVecs1.size(); ++i) {
     UQ_FATAL_TEST_MACRO(tVecs1[i]->sizeLocal() != m_s->m_paper_p_t,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
                         "tVecs1[i]->sizeLocal() is wrong");
   }
   UQ_FATAL_TEST_MACRO(xVec2.sizeLocal() != m_s->m_paper_p_x,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
                       "xVec2.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(tVec2.sizeLocal() != m_s->m_paper_p_t,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
                       "tVec2.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(rho_w_vec.sizeLocal() != (m_s->m_paper_p_x+m_s->m_paper_p_t),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
                       "rho_w_vec.sizeLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numRowsLocal() != m_s->m_paper_m,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
                       "Rmat.numRowsLocal() is wrong");
   UQ_FATAL_TEST_MACRO(Rmat.numCols() != 1,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()",
                       "Rmat.numCols() is wrong");
 
   S_V xVecI(*(xVecs1[0]));
@@ -698,7 +698,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sig
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_hat_w_asterisk()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }

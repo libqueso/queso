@@ -39,7 +39,7 @@ namespace QUESO {
     \brief Matrix class.
 */
 
-/*! \class MatrixClass
+/*! \class Matrix
     \brief Class for matrix operations (virtual). 
     
     Base matrix class. The matrix class is an abstract class designed to be used as a base class 
@@ -47,43 +47,43 @@ namespace QUESO {
 */
 
 
-class MatrixClass
+class Matrix
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  MatrixClass();
+  Matrix();
 	   
   //! Shaped constructor.
-  MatrixClass(const BaseEnvironmentClass& env, const MapClass& map);
+  Matrix(const BaseEnvironment& env, const Map& map);
 	   
   //! Copy constructor.
-  MatrixClass(const MatrixClass& rhs);
+  Matrix(const Matrix& rhs);
 	   
   //! Virtual Destructor
-  virtual ~MatrixClass();
+  virtual ~Matrix();
   //@}
 
   //! @name Set methods
   //@{    
   //! Operator for copying a matrix.
-  MatrixClass& operator= (const MatrixClass& rhs);
+  Matrix& operator= (const Matrix& rhs);
   
   //! Operator for multiplication of the matrix by a scalar.
-  MatrixClass& operator*=(double a);
+  Matrix& operator*=(double a);
   
   //! Operator for addition (element-wise) of two matrices.
-  MatrixClass& operator+=(const MatrixClass& rhs);
+  Matrix& operator+=(const Matrix& rhs);
   
   //! Operator for subtraction (element-wise) of two matrices.
-  MatrixClass& operator-=(const MatrixClass& rhs);
+  Matrix& operator-=(const Matrix& rhs);
   //@}
 
   //! @name Environment and Map methods
   //@{ 
-  const BaseEnvironmentClass& env                 ()           const;
-  const MapClass&             map                 ()           const;
+  const BaseEnvironment& env                 ()           const;
+  const Map&             map                 ()           const;
         unsigned int            numOfProcsForStorage()           const;
   //@}       
   
@@ -135,20 +135,20 @@ public:
   
 protected:
   //! Copies matrix \c src to \c this matrix.
-  virtual void                    copy                (const MatrixClass& src);
+  virtual void                    copy                (const Matrix& src);
 
   //! QUESO environment variable.
-  const   BaseEnvironmentClass& m_env;
+  const   BaseEnvironment& m_env;
   
 #ifdef QUESO_CLASSES_INSTANTIATE_NEW_MAPS
 
   //! Mapping variable.
-  const   MapClass              m_map;
+  const   Map              m_map;
 
 #else
 
   //! Mapping variable.
-  const   MapClass&             m_map;
+  const   Map&             m_map;
 
 #endif
 

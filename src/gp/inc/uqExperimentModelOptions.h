@@ -46,13 +46,13 @@
 
 namespace QUESO {
 
-class EmOptionsValuesClass
+class EmOptionsValues
 {
 public:
-  EmOptionsValuesClass            ();
-  EmOptionsValuesClass            (const EmOptionsValuesClass& src);
-  EmOptionsValuesClass& operator= (const EmOptionsValuesClass& rhs);
- ~EmOptionsValuesClass            ();
+  EmOptionsValues            ();
+  EmOptionsValues            (const EmOptionsValues& src);
+  EmOptionsValues& operator= (const EmOptionsValues& rhs);
+ ~EmOptionsValues            ();
 
   std::vector<unsigned int> m_Gvalues;
   double                    m_a_v;
@@ -63,29 +63,29 @@ public:
   double                    m_b_y;
 
 private:
-  void copy(const EmOptionsValuesClass& src);
+  void copy(const EmOptionsValues& src);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-class ExperimentModelOptionsClass
+class ExperimentModelOptions
 {
 public:
-  ExperimentModelOptionsClass(const BaseEnvironmentClass& env, const char* prefix);
-  ExperimentModelOptionsClass(const BaseEnvironmentClass& env, const char* prefix, const EmOptionsValuesClass& alternativeOptionsValues);
- ~ExperimentModelOptionsClass();
+  ExperimentModelOptions(const BaseEnvironment& env, const char* prefix);
+  ExperimentModelOptions(const BaseEnvironment& env, const char* prefix, const EmOptionsValues& alternativeOptionsValues);
+ ~ExperimentModelOptions();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  EmOptionsValuesClass   m_ov;
+  EmOptionsValues   m_ov;
   std::string              m_prefix;
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   void   getMyOptionValues(po::options_description& optionsDesc);
 
-  const BaseEnvironmentClass& m_env;
+  const BaseEnvironment& m_env;
 
   po::options_description* m_optionsDesc;
   std::string              m_option_help;
@@ -98,7 +98,7 @@ private:
   std::string              m_option_b_y;
 };
 
-std::ostream& operator<<(std::ostream& os, const ExperimentModelOptionsClass& obj);
+std::ostream& operator<<(std::ostream& os, const ExperimentModelOptions& obj);
 
 }  // End namespace QUESO
 

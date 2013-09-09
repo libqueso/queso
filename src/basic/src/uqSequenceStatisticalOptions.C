@@ -34,7 +34,7 @@
 
 namespace QUESO {
 
-SsOptionsValuesClass::SsOptionsValuesClass()
+SsOptionsValues::SsOptionsValues()
   :
   m_initialDiscardedPortions(0                                           ),//,0.),
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
@@ -81,24 +81,24 @@ SsOptionsValuesClass::SsOptionsValuesClass()
 {
 }
 
-SsOptionsValuesClass::~SsOptionsValuesClass()
+SsOptionsValues::~SsOptionsValues()
 {
 }
 
-SsOptionsValuesClass::SsOptionsValuesClass(const SsOptionsValuesClass& src)
+SsOptionsValues::SsOptionsValues(const SsOptionsValues& src)
 {
   this->copy(src);
 }
 
-SsOptionsValuesClass&
-SsOptionsValuesClass::operator=(const SsOptionsValuesClass& rhs)
+SsOptionsValues&
+SsOptionsValues::operator=(const SsOptionsValues& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 
 void
-SsOptionsValuesClass::copy(const SsOptionsValuesClass& src)
+SsOptionsValues::copy(const SsOptionsValues& src)
 {
   m_initialDiscardedPortions = src.m_initialDiscardedPortions;
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
@@ -146,8 +146,8 @@ SsOptionsValuesClass::copy(const SsOptionsValuesClass& src)
   return;
 }
 
-SequenceStatisticalOptionsClass::SequenceStatisticalOptionsClass(
-  /*! The QUESO environment                      */ const BaseEnvironmentClass& env,
+SequenceStatisticalOptions::SequenceStatisticalOptions(
+  /*! The QUESO environment                      */ const BaseEnvironment& env,
   /*! Prefix for reading options from input file */ const std::string&            prefix)
   :
   m_ov                              (),
@@ -208,7 +208,7 @@ SequenceStatisticalOptionsClass::SequenceStatisticalOptionsClass(
 
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
-                      "SequenceStatisticalOptionsClass::constructor(1)",
+                      "SequenceStatisticalOptions::constructor(1)",
                       "this constructor is incompatible with the abscense of an options input file");
 
   defineMyOptions                (*m_optionsDesc);
@@ -217,7 +217,7 @@ SequenceStatisticalOptionsClass::SequenceStatisticalOptionsClass(
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "After reading values of options with prefix '" << m_prefix
-                            << "', state of SequenceStatisticalOptionsClass object is:"
+                            << "', state of SequenceStatisticalOptions object is:"
                             << "\n" << *this
                             << std::endl;
   }
@@ -229,10 +229,10 @@ SequenceStatisticalOptionsClass::SequenceStatisticalOptionsClass(
   }
 }
 
-SequenceStatisticalOptionsClass::SequenceStatisticalOptionsClass(
-  /*! The QUESO environment                      */ const BaseEnvironmentClass& env,
+SequenceStatisticalOptions::SequenceStatisticalOptions(
+  /*! The QUESO environment                      */ const BaseEnvironment& env,
   /*! Prefix for reading options from input file */ const std::string&            prefix,
-                                                    const SsOptionsValuesClass& alternativeOptionsValues)
+                                                    const SsOptionsValues& alternativeOptionsValues)
   :
   m_ov                              (alternativeOptionsValues),
   m_prefix                          ((std::string)(prefix) + "stats_"),
@@ -292,12 +292,12 @@ SequenceStatisticalOptionsClass::SequenceStatisticalOptionsClass(
 
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
-                      "SequenceStatisticalOptionsClass::constructor(2)",
+                      "SequenceStatisticalOptions::constructor(2)",
                       "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "After setting values of options with prefix '" << m_prefix
-                            << "', state of SequenceStatisticalOptionsClass object is:"
+                            << "', state of SequenceStatisticalOptions object is:"
                             << "\n" << *this
                             << std::endl;
   }
@@ -309,13 +309,13 @@ SequenceStatisticalOptionsClass::SequenceStatisticalOptionsClass(
   }
 }
 
-SequenceStatisticalOptionsClass::~SequenceStatisticalOptionsClass()
+SequenceStatisticalOptions::~SequenceStatisticalOptions()
 {
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
 void
-SequenceStatisticalOptionsClass::defineMyOptions(
+SequenceStatisticalOptions::defineMyOptions(
   po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()
@@ -368,7 +368,7 @@ SequenceStatisticalOptionsClass::defineMyOptions(
 }
 
 void
-SequenceStatisticalOptionsClass::getMyOptionValues(
+SequenceStatisticalOptions::getMyOptionValues(
   po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
@@ -384,7 +384,7 @@ SequenceStatisticalOptionsClass::getMyOptionValues(
     std::string inputString = m_env.allOptionsMap()[m_option_initialDiscardedPortions].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpPortions);
     //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In SequenceStatisticalOptionsClass::getMyOptionValues(): percents = ";
+    //  *m_env.subDisplayFile() << "In SequenceStatisticalOptions::getMyOptionValues(): percents = ";
     //  for (unsigned int i = 0; i < tmpPortions.size(); ++i) {
     //    *m_env.subDisplayFile() << " " << tmpPortions[i];
     //  }
@@ -414,7 +414,7 @@ SequenceStatisticalOptionsClass::getMyOptionValues(
     std::string inputString = m_env.allOptionsMap()[m_option_bmm_lengths].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpLengths);
     //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In SequenceStatisticalOptionsClass::getMyOptionValues(): lengths for BMM = ";
+    //  *m_env.subDisplayFile() << "In SequenceStatisticalOptions::getMyOptionValues(): lengths for BMM = ";
     //  for (unsigned int i = 0; i < tmpLengths.size(); ++i) {
     //    *m_env.subDisplayFile() << " " << tmpLengths[i];
     //  }
@@ -479,7 +479,7 @@ SequenceStatisticalOptionsClass::getMyOptionValues(
     std::string inputString = m_env.allOptionsMap()[m_option_psdAtZero_numBlocks].as<std::string>();
     MiscReadDoublesFromString(inputString,tmpNumBlocks);
     //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In SequenceStatisticalOptionsClass::getMyOptionValues(): numBlocks for psdAtZero = ";
+    //  *m_env.subDisplayFile() << "In SequenceStatisticalOptions::getMyOptionValues(): numBlocks for psdAtZero = ";
     //  for (unsigned int i = 0; i < tmpNumBlocks.size(); ++i) {
     //    *m_env.subDisplayFile() << " " << numBlocks[i];
     //  }
@@ -594,260 +594,260 @@ SequenceStatisticalOptionsClass::getMyOptionValues(
 }
 
 const std::vector<double>&
-SequenceStatisticalOptionsClass::initialDiscardedPortions() const
+SequenceStatisticalOptions::initialDiscardedPortions() const
 {
   return m_ov.m_initialDiscardedPortions;
 }
 
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 unsigned int
-SequenceStatisticalOptionsClass::meanMonitorPeriod() const
+SequenceStatisticalOptions::meanMonitorPeriod() const
 {
   return m_ov.m_meanMonitorPeriod;
 }
 
 bool
-SequenceStatisticalOptionsClass::bmmRun() const
+SequenceStatisticalOptions::bmmRun() const
 {
   return m_ov.m_bmmRun;
 }
 
 const std::vector<unsigned int>&
-SequenceStatisticalOptionsClass::bmmLengths() const
+SequenceStatisticalOptions::bmmLengths() const
 {
   return m_ov.m_bmmLengths;
 }
 
 bool
-SequenceStatisticalOptionsClass::bmmDisplay() const
+SequenceStatisticalOptions::bmmDisplay() const
 {
   return m_ov.m_bmmDisplay;
 }
 
 bool
-SequenceStatisticalOptionsClass::bmmWrite() const
+SequenceStatisticalOptions::bmmWrite() const
 {
   return m_ov.m_bmmWrite;
 }
 
 bool
-SequenceStatisticalOptionsClass::fftCompute() const
+SequenceStatisticalOptions::fftCompute() const
 {
   return m_ov.m_fftCompute;
 }
 
 unsigned int
-SequenceStatisticalOptionsClass::fftParamId() const
+SequenceStatisticalOptions::fftParamId() const
 {
   return m_ov.m_fftParamId;
 }
 
 unsigned int
-SequenceStatisticalOptionsClass::fftSize() const
+SequenceStatisticalOptions::fftSize() const
 {
   return m_ov.m_fftSize;
 }
 
 bool
-SequenceStatisticalOptionsClass::fftTestInversion() const
+SequenceStatisticalOptions::fftTestInversion() const
 {
   return m_ov.m_fftTestInversion;
 }
 
 bool
-SequenceStatisticalOptionsClass::fftWrite() const
+SequenceStatisticalOptions::fftWrite() const
 {
   return m_ov.m_fftWrite;
 }
 
 bool
-SequenceStatisticalOptionsClass::psdCompute() const
+SequenceStatisticalOptions::psdCompute() const
 {
   return m_ov.m_psdCompute;
 }
 
 unsigned int
-SequenceStatisticalOptionsClass::psdNumBlocks() const
+SequenceStatisticalOptions::psdNumBlocks() const
 {
   return m_ov.m_psdNumBlocks;
 }
 
 double
-SequenceStatisticalOptionsClass::psdHopSizeRatio() const
+SequenceStatisticalOptions::psdHopSizeRatio() const
 {
   return m_ov.m_psdHopSizeRatio;
 }
 
 unsigned int
-SequenceStatisticalOptionsClass::psdParamId() const
+SequenceStatisticalOptions::psdParamId() const
 {
   return m_ov.m_psdParamId;
 }
 
 bool
-SequenceStatisticalOptionsClass::psdWrite() const
+SequenceStatisticalOptions::psdWrite() const
 {
   return m_ov.m_psdWrite;
 }
 
 bool
-SequenceStatisticalOptionsClass::psdAtZeroCompute() const
+SequenceStatisticalOptions::psdAtZeroCompute() const
 {
   return m_ov.m_psdAtZeroCompute;
 }
 
 const std::vector<unsigned int>&
-SequenceStatisticalOptionsClass::psdAtZeroNumBlocks() const
+SequenceStatisticalOptions::psdAtZeroNumBlocks() const
 {
   return m_ov.m_psdAtZeroNumBlocks;
 }
 
 double
-SequenceStatisticalOptionsClass::psdAtZeroHopSizeRatio() const
+SequenceStatisticalOptions::psdAtZeroHopSizeRatio() const
 {
   return m_ov.m_psdAtZeroHopSizeRatio;
 }
 
 bool
-SequenceStatisticalOptionsClass::psdAtZeroDisplay() const
+SequenceStatisticalOptions::psdAtZeroDisplay() const
 {
   return m_ov.m_psdAtZeroDisplay;
 }
 
 bool
-SequenceStatisticalOptionsClass::psdAtZeroWrite() const
+SequenceStatisticalOptions::psdAtZeroWrite() const
 {
   return m_ov.m_psdAtZeroWrite;
 }
 
 bool
-SequenceStatisticalOptionsClass::gewekeCompute() const
+SequenceStatisticalOptions::gewekeCompute() const
 {
   return m_ov.m_gewekeCompute;
 }
 
 double
-SequenceStatisticalOptionsClass::gewekeNaRatio() const
+SequenceStatisticalOptions::gewekeNaRatio() const
 {
   return m_ov.m_gewekeNaRatio;
 }
 
 double
-SequenceStatisticalOptionsClass::gewekeNbRatio() const
+SequenceStatisticalOptions::gewekeNbRatio() const
 {
   return m_ov.m_gewekeNbRatio;
 }
 
 bool
-SequenceStatisticalOptionsClass::gewekeDisplay() const
+SequenceStatisticalOptions::gewekeDisplay() const
 {
   return m_ov.m_gewekeDisplay;
 }
 
 bool
-SequenceStatisticalOptionsClass::gewekeWrite() const
+SequenceStatisticalOptions::gewekeWrite() const
 {
   return m_ov.m_gewekeWrite;
 }
 
 bool
-SequenceStatisticalOptionsClass::meanStaccCompute() const
+SequenceStatisticalOptions::meanStaccCompute() const
 {
   return m_ov.m_meanStaccCompute;
 }
 
 bool
-SequenceStatisticalOptionsClass::histCompute() const
+SequenceStatisticalOptions::histCompute() const
 {
   return m_ov.m_histCompute;
 }
 
 unsigned int
-SequenceStatisticalOptionsClass::histNumInternalBins() const
+SequenceStatisticalOptions::histNumInternalBins() const
 {
   return m_ov.m_histNumInternalBins;
 }
 
 bool
-SequenceStatisticalOptionsClass::cdfStaccCompute() const
+SequenceStatisticalOptions::cdfStaccCompute() const
 {
   return m_ov.m_cdfStaccCompute;
 }
 
 unsigned int
-SequenceStatisticalOptionsClass::cdfStaccNumEvalPositions() const
+SequenceStatisticalOptions::cdfStaccNumEvalPositions() const
 {
   return m_ov.m_cdfStaccNumEvalPositions;
 }
 #endif
 bool
-SequenceStatisticalOptionsClass::autoCorrComputeViaDef() const
+SequenceStatisticalOptions::autoCorrComputeViaDef() const
 {
   return m_ov.m_autoCorrComputeViaDef;
 }
 
 bool
-SequenceStatisticalOptionsClass::autoCorrComputeViaFft() const
+SequenceStatisticalOptions::autoCorrComputeViaFft() const
 {
   return m_ov.m_autoCorrComputeViaFft;
 }
 
 unsigned int
-SequenceStatisticalOptionsClass::autoCorrSecondLag() const
+SequenceStatisticalOptions::autoCorrSecondLag() const
 {
   return m_ov.m_autoCorrSecondLag;
 }
 
 unsigned int
-SequenceStatisticalOptionsClass::autoCorrLagSpacing() const
+SequenceStatisticalOptions::autoCorrLagSpacing() const
 {
   return m_ov.m_autoCorrLagSpacing;
 }
 
 unsigned int
-SequenceStatisticalOptionsClass::autoCorrNumLags() const
+SequenceStatisticalOptions::autoCorrNumLags() const
 {
   return m_ov.m_autoCorrNumLags;
 }
 
 bool
-SequenceStatisticalOptionsClass::autoCorrDisplay() const
+SequenceStatisticalOptions::autoCorrDisplay() const
 {
   return m_ov.m_autoCorrDisplay;
 }
 
 bool
-SequenceStatisticalOptionsClass::autoCorrWrite() const
+SequenceStatisticalOptions::autoCorrWrite() const
 {
   return m_ov.m_autoCorrWrite;
 }
 
 bool
-SequenceStatisticalOptionsClass::kdeCompute() const
+SequenceStatisticalOptions::kdeCompute() const
 {
   return m_ov.m_kdeCompute;
 }
 
 unsigned int
-SequenceStatisticalOptionsClass::kdeNumEvalPositions() const
+SequenceStatisticalOptions::kdeNumEvalPositions() const
 {
   return m_ov.m_kdeNumEvalPositions;
 }
 
 bool
-SequenceStatisticalOptionsClass::covMatrixCompute() const
+SequenceStatisticalOptions::covMatrixCompute() const
 {
   return m_ov.m_covMatrixCompute;
 }
 
 bool
-SequenceStatisticalOptionsClass::corrMatrixCompute() const
+SequenceStatisticalOptions::corrMatrixCompute() const
 {
   return m_ov.m_corrMatrixCompute;
 }
 
 void
-SequenceStatisticalOptionsClass::print(std::ostream& os) const
+SequenceStatisticalOptions::print(std::ostream& os) const
 {
   os << "\n" << m_option_initialDiscardedPortions << " = ";
   for (unsigned int i = 0; i < m_ov.m_initialDiscardedPortions.size(); ++i) {
@@ -907,7 +907,7 @@ SequenceStatisticalOptionsClass::print(std::ostream& os) const
 }
 
 std::ostream&
-operator<<(std::ostream& os, const SequenceStatisticalOptionsClass& obj)
+operator<<(std::ostream& os, const SequenceStatisticalOptions& obj)
 {
   obj.print(os);
 

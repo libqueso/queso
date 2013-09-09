@@ -40,15 +40,15 @@
 
 namespace QUESO {
 
-/*! \class GslMatrixClass
+/*! \class GslMatrix
     \brief Class for matrix operations using GSL library.
     
     This class creates and provides basic support for matrices of templated 
-    type as a specialization of MatrixClass using GSL matrices, which are defined 
+    type as a specialization of Matrix using GSL matrices, which are defined 
     by an encapsulated gsl_matrix structure.
 */
 
-class GslMatrixClass : public MatrixClass
+class GslMatrix : public Matrix
 {
 public:
  //! @name Constructor/Destructor methods
@@ -56,51 +56,51 @@ public:
 
   //! Default Constructor
   /*! Creates an empty matrix vector of no dimension. It should not be used by user.*/
-  GslMatrixClass();
+  GslMatrix();
   
   //! Shaped Constructor: creates a shaped matrix with \c numCols columns.  
-  GslMatrixClass(const BaseEnvironmentClass& env,
-                   const MapClass&             map,
+  GslMatrix(const BaseEnvironment& env,
+                   const Map&             map,
                    unsigned int                  numCols);
   
   //! Shaped Constructor: creates a square matrix with size \c map.NumGlobalElements() and diagonal values all equal to \c diagValue.  
-  GslMatrixClass(const BaseEnvironmentClass& env,
-                   const MapClass&             map,
+  GslMatrix(const BaseEnvironment& env,
+                   const Map&             map,
                    double                        diagValue); // MATLAB eye
   
   //! Shaped Constructor: creates a square matrix with size \c v.sizeLocal() and diagonal values all equal to \c diagValue.  
-  GslMatrixClass(const GslVectorClass&       v,
+  GslMatrix(const GslVector&       v,
                    double                        diagValue); // MATLAB eye
   
   //! Shaped Constructor: creates a square matrix with size \c v.sizeLocal().  
   /*! The diagonal values of this matrix are the elements in vector \c v. */  
-  GslMatrixClass(const GslVectorClass&       v);         // MATLAB diag
+  GslMatrix(const GslVector&       v);         // MATLAB diag
   
   //! Shaped Constructor: creates a matrix with  \c B.numCols() columns and \c B.numRowsLocal() rows.  
   /*! \c This matrix is a copy of matrix \c B. */  
-  GslMatrixClass(const GslMatrixClass&       B);
+  GslMatrix(const GslMatrix&       B);
   
   //! Destructor
-  ~GslMatrixClass();
+  ~GslMatrix();
   //@}
 
 
   //! @name Set methods
   //@{ 
   //! 	Copies values from matrix \c rhs to \c this. 
-  GslMatrixClass& operator= (const GslMatrixClass& rhs);
+  GslMatrix& operator= (const GslMatrix& rhs);
   
   //! Stores in \c this the coordinate-wise multiplication of \c this and \c a.
-  GslMatrixClass& operator*=(double a);
+  GslMatrix& operator*=(double a);
   
   //! Stores in \c this the coordinate-wise division of \c this by \c a.
-  GslMatrixClass& operator/=(double a);
+  GslMatrix& operator/=(double a);
   
   //! Stores in \c this the coordinate-wise addition of \c this and \c rhs.
-  GslMatrixClass& operator+=(const GslMatrixClass& rhs);
+  GslMatrix& operator+=(const GslMatrix& rhs);
   
   //! Stores in \c this the coordinate-wise subtraction of \c this by \c rhs.
-  GslMatrixClass& operator-=(const GslMatrixClass& rhs);
+  GslMatrix& operator-=(const GslMatrix& rhs);
   //@}
   
   
@@ -134,10 +134,10 @@ public:
   unsigned int      rank                      (double absoluteZeroThreshold, double relativeZeroThreshold) const;
   
      //! This function calculated the transpose of \c this matrix  (square).
-  GslMatrixClass  transpose                 () const;
+  GslMatrix  transpose                 () const;
 	
   //! This function calculated the inverse of \c this matrix (square).
-  GslMatrixClass  inverse                   () const;
+  GslMatrix  inverse                   () const;
   
     
   //! Calculates the determinant of \c this matrix.
@@ -169,80 +169,80 @@ public:
   int               chol                      ();
 	
 //! Checks for the dimension of \c this matrix, \c matU, \c VecS and \c matVt, and calls the protected routine \c internalSvd to compute the singular values of \c this. 
-  int               svd                       (GslMatrixClass& matU, GslVectorClass& vecS, GslMatrixClass& matVt) const;
+  int               svd                       (GslMatrix& matU, GslVector& vecS, GslMatrix& matVt) const;
         
-  //! This function calls private member GslMatrixClass::internalSvd() to set a M-by-N orthogonal matrix U of the singular value decomposition (svd) of a general rectangular M-by-N matrix A. 
+  //! This function calls private member GslMatrix::internalSvd() to set a M-by-N orthogonal matrix U of the singular value decomposition (svd) of a general rectangular M-by-N matrix A. 
   /*! A general rectangular M-by-N matrix A has a singular value decomposition (svd) into the product of an M-by-N orthogonal matrix U, an N-by-N diagonal matrix of singular values S and the transpose of an N-by-N orthogonal square matrix V,  A = U S V^T.  */
-  const GslMatrixClass& svdMatU                   () const;
+  const GslMatrix& svdMatU                   () const;
   
-  //! This function calls private member  GslMatrixClass::internalSvd() to set a N-by-N orthogonal square matrix V of the singular value decomposition (svd) of a general rectangular M-by-N matrix A. 
+  //! This function calls private member  GslMatrix::internalSvd() to set a N-by-N orthogonal square matrix V of the singular value decomposition (svd) of a general rectangular M-by-N matrix A. 
   /*! A general rectangular M-by-N matrix A has a singular value decomposition (svd) into the product of an M-by-N orthogonal matrix U, an N-by-N diagonal matrix of singular values S and the transpose of an N-by-N orthogonal square matrix V,  A = U S V^T.  */
-  const GslMatrixClass& svdMatV                   () const;
+  const GslMatrix& svdMatV                   () const;
   
-  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with GslMatrixClass::svd (x=solVec, b=rhsVec). 
-  int               svdSolve                  (const GslVectorClass& rhsVec, GslVectorClass& solVec) const;
+  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with GslMatrix::svd (x=solVec, b=rhsVec). 
+  int               svdSolve                  (const GslVector& rhsVec, GslVector& solVec) const;
         
-  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with GslMatrixClass::svd (x=solMat, b=rhsMat).
-  int               svdSolve                  (const GslMatrixClass& rhsMat, GslMatrixClass& solMat) const;        
+  //! This function solves the system A x = b using the singular value decomposition (U, S, V) of A which must have been computed previously with GslMatrix::svd (x=solMat, b=rhsMat).
+  int               svdSolve                  (const GslMatrix& rhsMat, GslMatrix& solMat) const;        
   
 
 
   //! This function multiplies \c this matrix by vector \c x and returns the resulting vector.
-  GslVectorClass  multiply                  (const GslVectorClass& x) const;
+  GslVector  multiply                  (const GslVector& x) const;
 
   //! This function calculates the inverse of \c this matrix and multiplies it with vector \c b. 
-  /*! It calls void GslMatrixClass::invertMultiply(const GslVectorClass& b, GslVectorClass& x) internally.*/
-  GslVectorClass  invertMultiply            (const GslVectorClass& b) const;
+  /*! It calls void GslMatrix::invertMultiply(const GslVector& b, GslVector& x) internally.*/
+  GslVector  invertMultiply            (const GslVector& b) const;
 	
   //! This function calculates the inverse of \c this matrix, multiplies it with vector \c b and stores the result in vector \c x.
   /*! It checks for a previous LU decomposition of \c this matrix and does not recompute it
    if m_MU != NULL .*/
-  void              invertMultiply            (const GslVectorClass& b, GslVectorClass& x) const;
+  void              invertMultiply            (const GslVector& b, GslVector& x) const;
 	
   //! This function calculates the inverse of \c this matrix and multiplies it with matrix \c B.
-  /*! It calls void GslMatrixClass::invertMultiply(const GslMatrixClass& B, GslMatrixClass& X) const internally.*/
-  GslMatrixClass  invertMultiply            (const GslMatrixClass& B) const;
+  /*! It calls void GslMatrix::invertMultiply(const GslMatrix& B, GslMatrix& X) const internally.*/
+  GslMatrix  invertMultiply            (const GslMatrix& B) const;
 
   //! This function calculates the inverse of \c this matrix, multiplies it with matrix \c B and stores the result in matrix \c X.
   /*! It checks for a previous LU decomposition of \c this matrix and does not recompute it
    if m_MU != NULL .*/
-  void              invertMultiply            (const GslMatrixClass& B, GslMatrixClass& X) const;
+  void              invertMultiply            (const GslMatrix& B, GslMatrix& X) const;
   
   //! This function calculates the inverse of \c this matrix and multiplies it with vector \c b. 
-  /*! It calls void GslMatrixClass::InvertMultiplyForceLU(const GslVectorClass& b, GslVectorClass& x) const;(const GslVectorClass& b,
-GslVectorClass& x) internally.*/
-  GslVectorClass  invertMultiplyForceLU     (const GslVectorClass& b) const;
+  /*! It calls void GslMatrix::InvertMultiplyForceLU(const GslVector& b, GslVector& x) const;(const GslVector& b,
+GslVector& x) internally.*/
+  GslVector  invertMultiplyForceLU     (const GslVector& b) const;
 	
   //! This function calculates the inverse of \c this matrix, multiplies it with vector \c b and stores the result in vector \c x.
   /*! It recalculates the LU decomposition of \c this matrix.*/	
-  void              invertMultiplyForceLU     (const GslVectorClass& b, GslVectorClass& x) const;
+  void              invertMultiplyForceLU     (const GslVector& b, GslVector& x) const;
   
     //! This function gets the column_num-th column of \c this matrix and stores it into vector \c column.
-  void              getColumn                 (const unsigned int column_num, GslVectorClass& column) const;
+  void              getColumn                 (const unsigned int column_num, GslVector& column) const;
   
   //! This function gets the column_num-th column of \c this matrix.
-  GslVectorClass  getColumn                 (const unsigned int column_num) const;
+  GslVector  getColumn                 (const unsigned int column_num) const;
   
   //! This function copies vector \c column into the column_num-th column of \c this matrix. 
-  void              setColumn                 (const unsigned int column_num, const GslVectorClass& column);
+  void              setColumn                 (const unsigned int column_num, const GslVector& column);
   
   //! This function gets the row_num-th column of \c this matrix and stores it into vector \c row.
-  void              getRow                    (const unsigned int row_num, GslVectorClass& row) const;
+  void              getRow                    (const unsigned int row_num, GslVector& row) const;
   
   //! This function gets the row_num-th column of \c this matrix.
-  GslVectorClass  getRow                    (const unsigned int row_num) const;
+  GslVector  getRow                    (const unsigned int row_num) const;
   
   //! This function copies vector \c row into the row_num-th column of \c this matrix. 
-  void              setRow                    (const unsigned int row_num, const GslVectorClass& row);
+  void              setRow                    (const unsigned int row_num, const GslVector& row);
   
   //! This function computes the eigenvalues of a real symmetric matrix.
-  void              eigen                     (GslVectorClass& eigenValues, GslMatrixClass* eigenVectors) const;
+  void              eigen                     (GslVector& eigenValues, GslMatrix* eigenVectors) const;
 	
   //! This function finds largest eigenvalue, namely \c eigenValue, of \c this matrix and its corresponding eigenvector, namely \c eigenVector.
-  void              largestEigen              (double& eigenValue, GslVectorClass& eigenVector) const;
+  void              largestEigen              (double& eigenValue, GslVector& eigenVector) const;
  
   //! This function finds smallest eigenvalue, namely \c eigenValue, of \c this matrix and its corresponding eigenvector, namely \c eigenVector.
-  void              smallestEigen             (double& eigenValue, GslVectorClass& eigenVector) const;
+  void              smallestEigen             (double& eigenValue, GslVector& eigenVector) const;
 
  
   //@} 
@@ -254,9 +254,9 @@ GslVectorClass& x) internally.*/
   void              cwSet                     (double value);
         
   //! Set the components of \c which positions are greater than (rowId,colId) with the value of mat(rowId,colId).
-  void              cwSet                     (unsigned int rowId, unsigned int colId, const GslMatrixClass& mat);
+  void              cwSet                     (unsigned int rowId, unsigned int colId, const GslMatrix& mat);
   
-  void              cwExtract                 (unsigned int rowId, unsigned int colId, GslMatrixClass& mat) const;
+  void              cwExtract                 (unsigned int rowId, unsigned int colId, GslMatrix& mat) const;
   
    //! This function sets all the entries bellow the main diagonal of \c this matrix to zero.
   /*! If \c includeDiagonal = false, then only the entries bellow the main diagonal are set to zero; 
@@ -279,65 +279,65 @@ GslVectorClass& x) internally.*/
   //! This function stores the transpose of \c this matrix into \c this matrix.
   void              fillWithTranspose         (unsigned int            rowId,
                                                unsigned int            colId,
-                                               const GslMatrixClass& mat,
+                                               const GslMatrix& mat,
                                                bool                    checkForExactNumRowsMatching,
                                                bool                    checkForExactNumColsMatching);
   
   //! This function fills \c this matrix diagonally with const block  matrices.
   void              fillWithBlocksDiagonally  (unsigned int                                 rowId,
                                                unsigned int                                 colId,
-                                               const std::vector<const GslMatrixClass* >& matrices,
+                                               const std::vector<const GslMatrix* >& matrices,
                                                bool                                         checkForExactNumRowsMatching,
                                                bool                                         checkForExactNumColsMatching);
   
   //! This function fills \c this matrix diagonally with block matrices.
   void              fillWithBlocksDiagonally  (unsigned int                                 rowId,
                                                unsigned int                                 colId,
-                                               const std::vector<      GslMatrixClass* >& matrices,
+                                               const std::vector<      GslMatrix* >& matrices,
                                                bool                                         checkForExactNumRowsMatching,
                                                bool                                         checkForExactNumColsMatching);
   
   //! This function fills \c this matrix horizontally with const block matrices.
   void              fillWithBlocksHorizontally(unsigned int                                 rowId,
                                                unsigned int                                 colId,
-                                               const std::vector<const GslMatrixClass* >& matrices,
+                                               const std::vector<const GslMatrix* >& matrices,
                                                bool                                         checkForExactNumRowsMatching,
                                                bool                                         checkForExactNumColsMatching);
   
   //! This function fills \c this matrix horizontally with const block 
   void              fillWithBlocksHorizontally(unsigned int                                 rowId,
                                                unsigned int                                 colId,
-                                               const std::vector<      GslMatrixClass* >& matrices,
+                                               const std::vector<      GslMatrix* >& matrices,
                                                bool                                         checkForExactNumRowsMatching,
                                                bool                                         checkForExactNumColsMatching);
   
   //! This function fills \c this matrix vertically with const block matrices.
   void              fillWithBlocksVertically  (unsigned int                                 rowId,
                                                unsigned int                                 colId,
-                                               const std::vector<const GslMatrixClass* >& matrices,
+                                               const std::vector<const GslMatrix* >& matrices,
                                                bool                                         checkForExactNumRowsMatching,
                                                bool                                         checkForExactNumColsMatching);
   
   //! This function fills \c this matrix vertically with block matrices.
   void              fillWithBlocksVertically  (unsigned int                                 rowId,
                                                unsigned int                                 colId,
-                                               const std::vector<      GslMatrixClass* >& matrices,
+                                               const std::vector<      GslMatrix* >& matrices,
                                                bool                                         checkForExactNumRowsMatching,
                                                bool                                         checkForExactNumColsMatching);
 	
   //! This function calculates the tensor product of matrices \c mat1 and \c mat2 and stores it in \c this matrix.
   void              fillWithTensorProduct     (unsigned int            rowId,
                                                unsigned int            colId,
-                                               const GslMatrixClass& mat1,
-                                               const GslMatrixClass& mat2,
+                                               const GslMatrix& mat1,
+                                               const GslMatrix& mat2,
                                                bool                    checkForExactNumRowsMatching,
                                                bool                    checkForExactNumColsMatching);
 
   //! This function calculates the tensor product of matrix \c mat1 and  vector \c vec2 and stores it in \c this matrix.
   void              fillWithTensorProduct     (unsigned int            rowId,
                                                unsigned int            colId,
-                                               const GslMatrixClass& mat1,
-                                               const GslVectorClass& vec2,
+                                               const GslMatrix& mat1,
+                                               const GslVector& vec2,
                                                bool                    checkForExactNumRowsMatching,
                                                bool                    checkForExactNumColsMatching);
   //@}	
@@ -348,9 +348,9 @@ GslVectorClass& x) internally.*/
   //! Returns \c this matrix.  
   gsl_matrix*       data                      ();
      
-  void              mpiSum                    (const MpiCommClass& comm, GslMatrixClass& M_global) const;
+  void              mpiSum                    (const MpiComm& comm, GslMatrix& M_global) const;
   
-  void              matlabLinearInterpExtrap  (const GslVectorClass& x1Vec, const GslMatrixClass& y1Mat, const GslVectorClass& x2Vec);
+  void              matlabLinearInterpExtrap  (const GslVector& x1Vec, const GslMatrix& y1Mat, const GslVector& x2Vec);
   //@}
 	
         
@@ -375,13 +375,13 @@ GslVectorClass& x) internally.*/
 
 private:
   //! In this function \c this matrix receives a copy of matrix \c src.
-  void              copy                      (const GslMatrixClass& src);
+  void              copy                      (const GslMatrix& src);
   
   //! In this function resets the LU decomposition of \c this matrix, as well as deletes the private member pointers, if existing.
   void              resetLU                   ();
 	
   //! This function multiplies \c this matrix by vector \c x and stores the resulting vector in \c y.
-  void              multiply                  (const GslVectorClass& x, GslVectorClass& y) const;
+  void              multiply                  (const GslVector& x, GslVector& y) const;
         
   //! This function factorizes the M-by-N matrix A into the singular value decomposition A = U S V^T for M >= N. On output the matrix A is replaced by U.
   int               internalSvd               () const;
@@ -393,35 +393,35 @@ private:
   mutable gsl_matrix*       m_LU;
   
   //! Inverse matrix of \c this.
-  mutable GslMatrixClass* m_inverse;
+  mutable GslMatrix* m_inverse;
   
   //! Mapping for matrices involved in the singular value decomposition (svd) routine.
-  mutable MapClass*       m_svdColMap;
+  mutable Map*       m_svdColMap;
   
   //! m_svdUmat stores the M-by-N orthogonal matrix U after the singular value decomposition of a matrix.
   /*! A general rectangular M-by-N matrix A has a singular value decomposition (svd) into the product of an 
    * M-by-N orthogonal matrix U, an N-by-N diagonal matrix of singular values S 
    * and the transpose of an N-by-N orthogonal square matrix V,  A = U S V^T.  */
-  mutable GslMatrixClass* m_svdUmat;
+  mutable GslMatrix* m_svdUmat;
   
   //! m_svdSvec stores the diagonal of the N-by-N diagonal matrix of singular values S after the singular value decomposition of a matrix.
   /*! A general rectangular M-by-N matrix A has a singular value decomposition (svd) into the product of an 
    * M-by-N orthogonal matrix U, an N-by-N diagonal matrix of singular values S 
    * and the transpose of an N-by-N orthogonal square matrix V,  A = U S V^T.  */
   
-  mutable GslVectorClass* m_svdSvec;
+  mutable GslVector* m_svdSvec;
   
   //! m_svdVmat stores the N-by-N orthogonal square matrix V after the singular value decomposition of a matrix.
   /*! A general rectangular M-by-N matrix A has a singular value decomposition (svd) into the product of an 
    * M-by-N orthogonal matrix U, an N-by-N diagonal matrix of singular values S 
    * and the transpose of an N-by-N orthogonal square matrix V,  A = U S V^T.  */
-  mutable GslMatrixClass* m_svdVmat;
+  mutable GslMatrix* m_svdVmat;
   
   //! m_svdVmatT stores the transpose of N-by-N orthogonal square matrix V, namely V^T, after the singular value decomposition of a matrix.
   /*! A general rectangular M-by-N matrix A has a singular value decomposition (svd) into the product of an 
    * M-by-N orthogonal matrix U, an N-by-N diagonal matrix of singular values S 
    * and the transpose of an N-by-N orthogonal square matrix V,  A = U S V^T.  */
-  mutable GslMatrixClass* m_svdVTmat;
+  mutable GslMatrix* m_svdVTmat;
   
   //! The determinant of \c this matrix.
   mutable double            m_determinant;
@@ -445,19 +445,19 @@ private:
   mutable bool              m_isSingular;
 };
 
-GslMatrixClass operator*       (double a,                    const GslMatrixClass& mat);
-GslVectorClass operator*       (const GslMatrixClass& mat, const GslVectorClass& vec);
-GslMatrixClass operator*       (const GslMatrixClass& m1,  const GslMatrixClass& m2 );
-GslMatrixClass operator+       (const GslMatrixClass& m1,  const GslMatrixClass& m2 );
-GslMatrixClass operator-       (const GslMatrixClass& m1,  const GslMatrixClass& m2 );
-GslMatrixClass matrixProduct   (const GslVectorClass& v1,  const GslVectorClass& v2 );
+GslMatrix operator*       (double a,                    const GslMatrix& mat);
+GslVector operator*       (const GslMatrix& mat, const GslVector& vec);
+GslMatrix operator*       (const GslMatrix& m1,  const GslMatrix& m2 );
+GslMatrix operator+       (const GslMatrix& m1,  const GslMatrix& m2 );
+GslMatrix operator-       (const GslMatrix& m1,  const GslMatrix& m2 );
+GslMatrix matrixProduct   (const GslVector& v1,  const GslVector& v2 );
 
 // Row \c i of the returned matrix is equal to row \c i of \c mat multiplied by element \c i of \c v.
-GslMatrixClass leftDiagScaling (const GslVectorClass& vec, const GslMatrixClass& mat);
+GslMatrix leftDiagScaling (const GslVector& vec, const GslMatrix& mat);
 
 // Column \c j of the returned matrix is equal to column \c j of \c mat multiplied by element \c j of \c v.
-GslMatrixClass rightDiagScaling(const GslMatrixClass& mat, const GslVectorClass& vec);
-std::ostream&    operator<<      (std::ostream& os,            const GslMatrixClass& obj);
+GslMatrix rightDiagScaling(const GslMatrix& mat, const GslVector& vec);
+std::ostream&    operator<<      (std::ostream& os,            const GslMatrix& obj);
 
 }  // End namespace QUESO
 

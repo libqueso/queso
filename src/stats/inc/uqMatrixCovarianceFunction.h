@@ -38,7 +38,7 @@ namespace QUESO {
 /*! \file uqMatrixCovarianceFunction.h
  * \brief Classes to accommodate covariance matrix of random vector functions.
  * 
- * \class BaseMatrixCovarianceFunctionClass
+ * \class BaseMatrixCovarianceFunction
  * \brief A templated (base) class to accommodate covariance matrix of (random) vector functions.
  *
  * This class allows the mathematical definition of a multivariate covariance function, i.e.
@@ -55,41 +55,41 @@ namespace QUESO {
  * explicitly as \f[ cov (X,Y) = \sum_{i=1}^{N} \frac{(x_i - \bar{x})(y_i - \bar{y})}{N}\f] */
 
 template<class P_V, class P_M, class Q_V, class Q_M>
-class BaseMatrixCovarianceFunctionClass {
+class BaseMatrixCovarianceFunction {
 public:
     //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class  given a prefix, the domain set and the image set.*/
-  BaseMatrixCovarianceFunctionClass(const char*                      prefix,
-				      const VectorSetClass<P_V,P_M>& basicDomainSet,
-				      const VectorSetClass<Q_V,Q_M>& imageSet);
+  BaseMatrixCovarianceFunction(const char*                      prefix,
+				      const VectorSet<P_V,P_M>& basicDomainSet,
+				      const VectorSet<Q_V,Q_M>& imageSet);
   
   //! Virtual destructor
-  virtual ~BaseMatrixCovarianceFunctionClass();
+  virtual ~BaseMatrixCovarianceFunction();
   //@}
   
   //! @name Math methods
   //@{
   //! Domain set; access to private attribute m_basicDomainSet.
-  const VectorSetClass<P_V,P_M>& basicDomainSet()             const;
+  const VectorSet<P_V,P_M>& basicDomainSet()             const;
   
   //! Calculates the covariance matrix. See template specialization.
   virtual void                     covMatrix     (const P_V& domainVector1, const P_V& domainVector2, Q_M& imageMatrix) const = 0;
   //@}
   
 protected:
-  const BaseEnvironmentClass&    m_env;
+  const BaseEnvironment&    m_env;
         std::string                m_prefix;
-  const VectorSetClass<P_V,P_M>& m_basicDomainSet;
-  const VectorSetClass<Q_V,Q_M>& m_imageSet;
+  const VectorSet<P_V,P_M>& m_basicDomainSet;
+  const VectorSet<Q_V,Q_M>& m_imageSet;
 };
 // Default constructor -----------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
-BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::BaseMatrixCovarianceFunctionClass(
+BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::BaseMatrixCovarianceFunction(
   const char*                      prefix,
-  const VectorSetClass<P_V,P_M>& basicDomainSet,
-  const VectorSetClass<Q_V,Q_M>& imageSet)
+  const VectorSet<P_V,P_M>& basicDomainSet,
+  const VectorSet<Q_V,Q_M>& imageSet)
   :
   m_env           (basicDomainSet.env()),
   m_prefix        ((std::string)(prefix)+"cov_func_"),
@@ -97,37 +97,37 @@ BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::BaseMatrixCovarianceFunction
   m_imageSet      (imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
-BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::~BaseMatrixCovarianceFunctionClass()
+BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::~BaseMatrixCovarianceFunction()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::destructor()"
+    *m_env.subDisplayFile() << "Entering BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::destructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::destructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Math methods -------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
-const VectorSetClass<P_V,P_M>&
-BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::basicDomainSet() const
+const VectorSet<P_V,P_M>&
+BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::basicDomainSet() const
 {
   return m_basicDomainSet;
 }
@@ -136,7 +136,7 @@ BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::basicDomainSet() const
 // Exponential class
 //*****************************************************
 /*!
- * \class ExponentialMatrixCovarianceFunctionClass
+ * \class ExponentialMatrixCovarianceFunction
  * \brief A class for exponential covariance matrices.
  *  
  * This class implements squared exponential covariance matrices of the form:
@@ -144,20 +144,20 @@ BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::basicDomainSet() const
  * \f$ \sigma^2 \f$ is the variance matrix and \f$ a \f$ is the length scale ().*/
  
 template<class P_V, class P_M, class Q_V, class Q_M>
-class ExponentialMatrixCovarianceFunctionClass : public BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M> {
+class ExponentialMatrixCovarianceFunction : public BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class given a prefix, the domain and image sets, the variances scale factors.*/
-  ExponentialMatrixCovarianceFunctionClass(const char*                      prefix,
-					     const VectorSetClass<P_V,P_M>& basicDomainSet,
-					     const VectorSetClass<Q_V,Q_M>& imageSet,
+  ExponentialMatrixCovarianceFunction(const char*                      prefix,
+					     const VectorSet<P_V,P_M>& basicDomainSet,
+					     const VectorSet<Q_V,Q_M>& imageSet,
 					     const Q_M&                       sigmas,
 					     const Q_M&                       as);
   
   //! Virtual destructor
-  virtual ~ExponentialMatrixCovarianceFunctionClass();
+  virtual ~ExponentialMatrixCovarianceFunction();
   //@}
   
   //!@ \name Math methods
@@ -167,29 +167,29 @@ public:
   //@}
   
 protected:
-  using BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
-  using BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
-  using BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::m_basicDomainSet;
-  using BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::m_imageSet;
+  using BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::m_env;
+  using BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::m_prefix;
+  using BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::m_basicDomainSet;
+  using BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::m_imageSet;
 
   Q_M* m_sigmas;
   Q_M* m_as;
 };
 // Default constructor -----------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
-ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::ExponentialMatrixCovarianceFunctionClass(
+ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::ExponentialMatrixCovarianceFunction(
   const char*                      prefix,
-  const VectorSetClass<P_V,P_M>& basicDomainSet,
-  const VectorSetClass<Q_V,Q_M>& imageSet,
+  const VectorSet<P_V,P_M>& basicDomainSet,
+  const VectorSet<Q_V,Q_M>& imageSet,
   const Q_M&                       sigmas,
   const Q_M&                       as)
   : 
-  BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>(prefix,basicDomainSet,imageSet),
+  BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>(prefix,basicDomainSet,imageSet),
   m_sigmas(NULL),
   m_as    (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -201,36 +201,36 @@ ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::ExponentialMatrixCova
 
   UQ_FATAL_TEST_MACRO(m_sigmas->numRowsLocal() != matrixOrder,
                       m_env.worldRank(),
-                      "ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::Constructor()",
+                      "ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::Constructor()",
                       "m_sigmas has invalid number of rows");
 
   UQ_FATAL_TEST_MACRO(m_sigmas->numCols() != matrixOrder,
                       m_env.worldRank(),
-                      "ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::Constructor()",
+                      "ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::Constructor()",
                       "m_sigmas has invalid number of columns");
 
   UQ_FATAL_TEST_MACRO(m_as->numRowsLocal() != matrixOrder,
                       m_env.worldRank(),
-                      "ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::Constructor()",
+                      "ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::Constructor()",
                       "m_as has invalid number of rows");
 
   UQ_FATAL_TEST_MACRO(m_as->numCols() != matrixOrder,
                       m_env.worldRank(),
-                      "ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::Constructor()",
+                      "ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::Constructor()",
                       "m_as has invalid number of columns");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
-ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::~ExponentialMatrixCovarianceFunctionClass()
+ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::~ExponentialMatrixCovarianceFunction()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::destructor()"
+    *m_env.subDisplayFile() << "Entering ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::destructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -239,7 +239,7 @@ ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::~ExponentialMatrixCov
   delete m_sigmas;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::destructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -247,10 +247,10 @@ ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::~ExponentialMatrixCov
 // Math methods -------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
 void
-ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& domainVector1, const P_V& domainVector2, Q_M& imageMatrix) const
+ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& domainVector1, const P_V& domainVector2, Q_M& imageMatrix) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix()"
+    *m_env.subDisplayFile() << "Entering ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()"
                           << std::endl;
   }
 
@@ -258,12 +258,12 @@ ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& 
 
   UQ_FATAL_TEST_MACRO(imageMatrix.numRowsLocal() != matrixOrder,
                       m_env.worldRank(),
-                      "ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix()",
+                      "ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()",
                       "imageMatrix has invalid number of rows");
 
   UQ_FATAL_TEST_MACRO(imageMatrix.numCols() != matrixOrder,
                       m_env.worldRank(),
-                      "ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix()",
+                      "ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()",
                       "imageMatrix has invalid number of columns");
 
   double tmpSq = -(domainVector1 - domainVector2).norm2Sq();
@@ -276,7 +276,7 @@ ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& 
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix()"
+    *m_env.subDisplayFile() << "Leaving ExponentialMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()"
                           << std::endl;
   }
 
@@ -287,25 +287,25 @@ ExponentialMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& 
 // Generic class
 //*****************************************************
 /*! 
- * \class GenericMatrixCovarianceFunctionClass
+ * \class GenericMatrixCovarianceFunction
  * \brief A class for generic covariance matrices.
  *  
  * This class implements a generic covariance matrices by calling a routine (via pointer).*/
 
 template<class P_V, class P_M, class Q_V, class Q_M>
-class GenericMatrixCovarianceFunctionClass : public BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M> {
+class GenericMatrixCovarianceFunction : public BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class given a prefix, the domain set, the pointer to the routine. */
-  GenericMatrixCovarianceFunctionClass(const char*                      prefix,
-					 const VectorSetClass<P_V,P_M>& basicDomainSet,
-					 const VectorSetClass<Q_V,Q_M>& imageSet,
+  GenericMatrixCovarianceFunction(const char*                      prefix,
+					 const VectorSet<P_V,P_M>& basicDomainSet,
+					 const VectorSet<Q_V,Q_M>& imageSet,
 					 void (*covRoutinePtr)(const P_V& positionVector1, const P_V& positionVector2, const void* routineDataPtr, Q_M& imageMatrix),
 					 const void*                      routinesDataPtr);
   //! Virtual destructor
-  virtual ~GenericMatrixCovarianceFunctionClass();
+  virtual ~GenericMatrixCovarianceFunction();
   //@}
   
   //! @name Math methods
@@ -315,10 +315,10 @@ public:
   void covMatrix(const P_V& positionVector1, const P_V& positionVector2, Q_M& imageMatrix) const;
 
 protected:
-  using BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::m_env;
-  using BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::m_prefix;
-  using BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::m_basicDomainSet;
-  using BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::m_imageSet;
+  using BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::m_env;
+  using BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::m_prefix;
+  using BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::m_basicDomainSet;
+  using BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::m_imageSet;
 
   void (*m_covRoutinePtr)(const P_V& positionVector1, const P_V& positionVector2, const void* routineDataPtr, Q_M& imageMatrix);
   const void* m_routineDataPtr;
@@ -326,41 +326,41 @@ protected:
 // Default constructor -----------------------------
 
 template<class P_V, class P_M, class Q_V, class Q_M>
-GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::GenericMatrixCovarianceFunctionClass(
+GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::GenericMatrixCovarianceFunction(
   const char*                      prefix,
-  const VectorSetClass<P_V,P_M>& basicDomainSet,
-  const VectorSetClass<Q_V,Q_M>& imageSet,
+  const VectorSet<P_V,P_M>& basicDomainSet,
+  const VectorSet<Q_V,Q_M>& imageSet,
   void (*covRoutinePtr)(const P_V& positionVector1, const P_V& positionVector2, const void* routineDataPtr, Q_M& imageMatrix),
   const void*                      routinesDataPtr)
   : 
-  BaseMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>(prefix,basicDomainSet,imageSet),
+  BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>(prefix,basicDomainSet,imageSet),
   m_covRoutinePtr                                     (covRoutinePtr),
   m_routineDataPtr                                    (routinesDataPtr)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
-GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::~GenericMatrixCovarianceFunctionClass()
+GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::~GenericMatrixCovarianceFunction()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::destructor()"
+    *m_env.subDisplayFile() << "Entering GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::destructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::destructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -368,10 +368,10 @@ GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::~GenericMatrixCovarianceF
 // Math methods -------------------------------------
 template<class P_V, class P_M, class Q_V, class Q_M>
 void
-GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& positionVector1, const P_V& positionVector2, Q_M& imageMatrix) const
+GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& positionVector1, const P_V& positionVector2, Q_M& imageMatrix) const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix()"
+    *m_env.subDisplayFile() << "Entering GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()"
                             << std::endl;
   }
 
@@ -379,23 +379,23 @@ GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& posi
 
   UQ_FATAL_TEST_MACRO(imageMatrix.numRowsLocal() != matrixOrder,
                       m_env.worldRank(),
-                      "GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix()",
+                      "GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()",
                       "imageMatrix has invalid number of rows");
 
   UQ_FATAL_TEST_MACRO(imageMatrix.numCols() != matrixOrder,
                       m_env.worldRank(),
-                      "GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix()",
+                      "GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()",
                       "imageMatrix has invalid number of columns");
 
   UQ_FATAL_TEST_MACRO(m_covRoutinePtr == NULL,
                       m_env.worldRank(),
-                      "GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix()",
+                      "GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()",
                       "m_covRoutinePtr = NULL");
 
   m_covRoutinePtr(positionVector1, positionVector2, m_routineDataPtr, imageMatrix);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GenericMatrixCovarianceFunctionClass<P_V,P_M,Q_V,Q_M>::covMatrix()"
+    *m_env.subDisplayFile() << "Leaving GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix()"
                             << std::endl;
   }
 

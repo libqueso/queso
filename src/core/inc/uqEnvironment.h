@@ -31,7 +31,7 @@
 
 #include <uqDefines.h>
 namespace QUESO {
-  class EnvironmentOptionsClass;
+  class EnvironmentOptions;
 }  // End namespace QUESO
 
 #undef UQ_USES_COMMAND_LINE_OPTIONS
@@ -90,7 +90,7 @@ struct FilePtrSetStruct {
 //*****************************************************
 /*! \file uqEnvironment.h
  *  \brief Class to set up a QUESO environment.
- *  \class BaseEnvironmentClass
+ *  \class BaseEnvironment
  *  \brief This (virtual) class sets up the environment underlying the use of the QUESO library by an executable.
  */
 
@@ -104,30 +104,30 @@ in the constructor of this environment class),
 file per allowed rank is opened and allowed ranks can be specified through the 'options input file').
 </list>
 -------------------------------------------------------------*/
-/*! This class is virtual. It is inherited by 'EmptyEnvironmentClass' and 'FullEnvironmentClass'.
+/*! This class is virtual. It is inherited by 'EmptyEnvironment' and 'FullEnvironment'.
     The QUESO environment class is instantiated at the application level, right after 'MPI_Init(&argc,&argv)'.
     The QUESO environment is required by reference by many constructors in the QUESO library,
     and is available by reference from many classes as well.
 -------------------------------------------------------------*/
 /*! Throughout QUESO, there are five classes whose constructors check options in the 'options input file':
 <list type=number>
-<item> BaseEnvironmentClass
-<item> StatisticalInverseProblemClass
-<item> StatisticalForwardProblemClass
-<item> MetropolisHastingsSGClass ('SG' stands for 'sequence generator')
-<item> MonteCarloSGClass
+<item> BaseEnvironment
+<item> StatisticalInverseProblem
+<item> StatisticalForwardProblem
+<item> MetropolisHastingsSG ('SG' stands for 'sequence generator')
+<item> MonteCarloSG
 </list>
 */
 /*! These classes rely on 'options classes' to read their options from the input file.
     The options classes are, respectively:
 <list type=number>
-<item> EnvironmentOptionsClass
-<item> StatisticalInverseProblemOptionsClass
-<item> StatisticalForwardProblemOptionsClass
-<item> MetropolisHastingsSGOptionsClass
-<item> MonteCarloSGOptionsClass
+<item> EnvironmentOptions
+<item> StatisticalInverseProblemOptions
+<item> StatisticalForwardProblemOptions
+<item> MetropolisHastingsSGOptions
+<item> MonteCarloSGOptions
 </list>
-    The last two classes also rely on SequenceStatisticalOptionsClass for reading the
+    The last two classes also rely on SequenceStatisticalOptions for reading the
     options specifying which statistics have to be computed on the sequences of vectors
     involved.
 -------------------------------------------------------------*/
@@ -145,7 +145,7 @@ at the same time, in parallel.
     error message and MPI aborts. The five types of communicators that QUESO manages are referred to as:
 <list type=number>
 <item> world = MPI_WORLD_COMM, of size W;
-<item> full = communicator passed to the constructor of BaseEnvironmentClass, of size N and usually equal to the world communicator;
+<item> full = communicator passed to the constructor of BaseEnvironment, of size N and usually equal to the world communicator;
 <item> sub = communicator of size N/S that contains the number of MPI nodes necessary to solve a statistical inverse problem or a statistical forward problem.
 <item> self = MPI_SELF_COMM, of size 1;
 <item> inter0 = communicator of size S formed by all MPI nodes that have 'sub' rank 0 in their respective 'sub' communicators.
@@ -159,7 +159,7 @@ at the same time, in parallel.
  * to S-1. Each sub environment is able to generate a statistical inverse problem and/or a statistical
  * forward problem. That is, each sub environment is able to handle a "sub" Markov chain (a sequence)
  * of vectors and/or a "sub" Monte Carlo sequence of output vectors. The "sub" sequences can be seen
- * as forming a "unified" sequence in a distributed way. Indeed, the virtual class 'VectorSequenceClass'
+ * as forming a "unified" sequence in a distributed way. Indeed, the virtual class 'VectorSequence'
  * provides "sub" and "unified" statistical operations.
  *
  *  A QUESO "sub" environment eventually prints messages to its own output file. In order for that to
@@ -178,27 +178,27 @@ a boolean, is set to 1 (the default value is 0);
 */
 
 
-class BaseEnvironmentClass {
+class BaseEnvironment {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor.
-  BaseEnvironmentClass(const char* passedOptionsInputFileName, const EnvOptionsValuesClass* alternativeOptionsValues);
+  BaseEnvironment(const char* passedOptionsInputFileName, const EnvOptionsValues* alternativeOptionsValues);
 
   //! Copy constructor. It should not be used be the user.
-  BaseEnvironmentClass(const BaseEnvironmentClass& obj);
+  BaseEnvironment(const BaseEnvironment& obj);
 
   //! Destructor
   /*! It deallocates memory and does other cleanup for the class object and its class members when
    * the object is destroyed. It displays the total run time of the combo QUESO + application using
      the function gettimeofday() from a struct timeval (as specified in <sys/time.h>). */
-  virtual ~BaseEnvironmentClass();
+  virtual ~BaseEnvironment();
   //@}
 
   //! @name Set methods
   //@{
   //! Assignment operator. It should not be used be the user.
-  BaseEnvironmentClass& operator= (const BaseEnvironmentClass& rhs);
+  BaseEnvironment& operator= (const BaseEnvironment& rhs);
   //@}
 
   //! @name Environment, Communicator and Options Input File methods
@@ -213,7 +213,7 @@ public:
   int     fullRank      () const;
 
   //! Access function for MpiComm full communicator.
-  const MpiCommClass&   fullComm      () const;
+  const MpiComm&   fullComm      () const;
 
   //! Access function for sub-group.
   RawType_MPI_Group     subGroup      () const;
@@ -222,16 +222,16 @@ public:
   int     subRank       () const;
 
   //! Access function for MpiComm sub communicator.
-  const MpiCommClass&   subComm       () const;
+  const MpiComm&   subComm       () const;
 
   //! Access function for MpiComm self-communicator.
-  const MpiCommClass&   selfComm      () const;
+  const MpiComm&   selfComm      () const;
 
   //! Returns the process inter0 rank.
   int     inter0Rank    () const;
 
   //! Access function for MpiComm inter0-communicator.
-  const MpiCommClass&   inter0Comm    () const;
+  const MpiComm&   inter0Comm    () const;
 
   //! Access function for m_subDisplayFile (displays file on stream).
   std::ofstream*  subDisplayFile() const;
@@ -282,7 +282,7 @@ public:
   unsigned int    checkingLevel    () const;
 
   //! Access to the RNG object.
-  const RngBaseClass* rngObject  () const;
+  const RngBase* rngObject  () const;
 
   //! Reset RNG seed.
   void                  resetSeed  (int newSeedOption);
@@ -291,7 +291,7 @@ public:
   int                   seed       () const;
 
   //! Access to Basic PDFs.
-  const BasicPdfsBaseClass* basicPdfs() const;
+  const BasicPdfsBase* basicPdfs() const;
 
   //! Access to the platform name.
   std::string platformName      () const;
@@ -347,7 +347,7 @@ protected:
   bool       		     m_fullEnvIsReady;
   int 	     		     m_worldRank;
 
-  MpiCommClass*    	     m_fullComm;
+  MpiComm*    	     m_fullComm;
   int                        m_fullRank;
   int                        m_fullCommSize;
   RawType_MPI_Group        m_fullGroup;
@@ -360,43 +360,43 @@ protected:
   unsigned int               m_subId;
   std::string 		     m_subIdString;
   RawType_MPI_Group        m_subGroup;
-  MpiCommClass*            m_subComm;
+  MpiComm*            m_subComm;
   int			     m_subRank;
   int			     m_subCommSize;
 
-  MpiCommClass*            m_selfComm;
+  MpiComm*            m_selfComm;
 
   RawType_MPI_Group        m_inter0Group;
-  MpiCommClass*            m_inter0Comm;
+  MpiComm*            m_inter0Comm;
   int	                     m_inter0Rank;
   int                        m_inter0CommSize;
 
   mutable std::ofstream*     m_subDisplayFile;
-  RngBaseClass*    	     m_rngObject;
-  BasicPdfsBaseClass*      m_basicPdfs;
+  RngBase*    	     m_rngObject;
+  BasicPdfsBase*      m_basicPdfs;
   struct timeval             m_timevalBegin;
   mutable bool       	     m_exceptionalCircumstance;
 
-  EnvOptionsValuesClass    m_alternativeOptionsValues;
-  EnvironmentOptionsClass* m_optionsObj;
+  EnvOptionsValues    m_alternativeOptionsValues;
+  EnvironmentOptions* m_optionsObj;
 };
 
 //*****************************************************
 // Empty Environment
 //*****************************************************
-/*!  \class EmptyEnvironmentClass
+/*!  \class EmptyEnvironment
  *  \brief This class sets up the environment underlying the use of the QUESO library by an executable.
  */
-class EmptyEnvironmentClass : public BaseEnvironmentClass {
+class EmptyEnvironment : public BaseEnvironment {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor. Does nothing.
-  /*! It initialized BaseEnvironmentClass with no input file and a NULL pointer for the alternativeOptionsValues.*/
-  EmptyEnvironmentClass();
+  /*! It initialized BaseEnvironment with no input file and a NULL pointer for the alternativeOptionsValues.*/
+  EmptyEnvironment();
 
   //! Destructor
- ~EmptyEnvironmentClass();
+ ~EmptyEnvironment();
   //@}
 
 void print(std::ostream& os) const;
@@ -405,23 +405,23 @@ void print(std::ostream& os) const;
 //*****************************************************
 // Full Environment
 //*****************************************************
-/*!  \class FullEnvironmentClass
+/*!  \class FullEnvironment
  *  \brief This class sets up the full environment underlying the use of the QUESO library by an executable.
  *
  * This is the class that is actually used during a QUESO+application run.
  */
 
-class FullEnvironmentClass : public BaseEnvironmentClass {
+class FullEnvironment : public BaseEnvironment {
 public:
     //! @name Constructor/Destructor methods
   //@{
   //! Default constructor.
   /*! It initializes the full communicator, reads the options, deals with multiple sub-environments,
    * e.g. dealing with sub/self/inter0-communicators, handles path for output files. */
-  FullEnvironmentClass(RawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, const EnvOptionsValuesClass* alternativeOptionsValues);
+  FullEnvironment(RawType_MPI_Comm inputComm, const char* passedOptionsInputFileName, const char* prefix, const EnvOptionsValues* alternativeOptionsValues);
 
   //! Destructor
- ~FullEnvironmentClass();
+ ~FullEnvironment();
   //@}
 
   //! @name I/O methods
@@ -435,7 +435,7 @@ private:
 void	readOptionsInputFile();
 };
 
-std::ostream& operator<<(std::ostream& os, const BaseEnvironmentClass& obj);
+std::ostream& operator<<(std::ostream& os, const BaseEnvironment& obj);
 
 }  // End namespace QUESO
 

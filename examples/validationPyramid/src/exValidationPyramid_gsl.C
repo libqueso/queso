@@ -48,33 +48,33 @@ int main(int argc, char* argv[])
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
 #ifdef QUESO_HAS_MPI
-  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+  uqFullEnvironment* env = new uqFullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
 #else
-  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(0,argv[1],"",NULL);
+  uqFullEnvironment* env = new uqFullEnvironment(0,argv[1],"",NULL);
 #endif
 
   //************************************************
   // Check for the invalidation of model(s): either 'invalid' or 'not invalid'
   //************************************************
-  exPhysics1ValidationClass<uqGslVectorClass, // type for parameter vectors
-                            uqGslMatrixClass, // type for parameter matrices
-                            uqGslVectorClass, // type for qoi vectors
-                            uqGslMatrixClass  // type for qoi matrices
+  exPhysics1Validation<uqGslVector, // type for parameter vectors
+                            uqGslMatrix, // type for parameter matrices
+                            uqGslVector, // type for qoi vectors
+                            uqGslMatrix  // type for qoi matrices
                            > physics1Validation(*env,"physics1_");
   physics1Validation.run();
 
 #if 0
-  uqPhysics2ValidationClass<uqGslVectorClass, // type for parameter vectors
-                            uqGslMatrixClass, // type for parameter matrices
-                            uqGslVectorClass, // type for qoi vectors
-                            uqGslMatrixClass  // type for qoi matrices
+  uqPhysics2Validation<uqGslVector, // type for parameter vectors
+                            uqGslMatrix, // type for parameter matrices
+                            uqGslVector, // type for qoi vectors
+                            uqGslMatrix  // type for qoi matrices
                            > physics2Validation(*env);
   physics2Validation.run();
 
-  uqPhysics1And2ValidationClass<uqGslVectorClass, // type for parameter vectors
-                                uqGslMatrixClass, // type for parameter matrices
-                                uqGslVectorClass, // type for qoi vectors
-                                uqGslMatrixClass  // type for qoi matrices
+  uqPhysics1And2Validation<uqGslVector, // type for parameter vectors
+                                uqGslMatrix, // type for parameter matrices
+                                uqGslVector, // type for qoi vectors
+                                uqGslMatrix  // type for qoi matrices
                                > physics1And2Validation(physics1Validation,physics2Validation);
   physics1And2Validation.run();
 #endif

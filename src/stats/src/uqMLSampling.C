@@ -33,7 +33,7 @@
 namespace QUESO {
 void BIP_routine(glp_tree *tree, void *info)
 {
-  const BaseEnvironmentClass& env = *(((BIP_routine_struct *) info)->env);
+  const BaseEnvironment& env = *(((BIP_routine_struct *) info)->env);
   unsigned int currLevel            =   ((BIP_routine_struct *) info)->currLevel;
 
   int reason = glp_ios_reason(tree);

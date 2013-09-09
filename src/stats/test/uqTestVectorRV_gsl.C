@@ -8,26 +8,26 @@
 
 using namespace QUESO;
 
-BOOST_AUTO_TEST_CASE( test_uqGaussianVectorRVClass )
+BOOST_AUTO_TEST_CASE( test_uqGaussianVectorRV )
 {
   // Initialize
   MPI_Init(NULL, NULL);
-  uqFullEnvironmentClass env;
-  uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> imageSpace(env, "test_space", 2, NULL);
+  uqFullEnvironment env;
+  uqVectorSpace<uqGslVector, uqGslMatrix> imageSpace(env, "test_space", 2, NULL);
   uqMap eMap(2, 0, env.comm());
 
-  uqGslVectorClass imageMinVal(env, eMap, -INFINITY);
-  uqGslVectorClass imageMaxVal(env, eMap,  INFINITY);
+  uqGslVector imageMinVal(env, eMap, -INFINITY);
+  uqGslVector imageMaxVal(env, eMap,  INFINITY);
 
-  uqGslVectorClass initExpectedValues(env, eMap, 0.0);
-  uqGslMatrixClass initCovMatrix(env, eMap, 1.0); 
+  uqGslVector initExpectedValues(env, eMap, 0.0);
+  uqGslMatrix initCovMatrix(env, eMap, 1.0); 
 
-  uqGslVectorClass finalExpectedValues(env, eMap, 1.0);
-  uqGslMatrixClass finalCovMatrix(env, eMap, 3.0);
+  uqGslVector finalExpectedValues(env, eMap, 1.0);
+  uqGslMatrix finalCovMatrix(env, eMap, 3.0);
 
-  uqGslVectorClass testValues(env, eMap, 0.0);
+  uqGslVector testValues(env, eMap, 0.0);
 
-  uqGaussianVectorRVClass<uqGslVectorClass, uqGslMatrixClass> gaussianRV("test_rv", imageSpace, imageMinVal, imageMaxVal,
+  uqGaussianVectorRV<uqGslVector, uqGslMatrix> gaussianRV("test_rv", imageSpace, imageMinVal, imageMaxVal,
 									 initExpectedValues, initCovMatrix);
   double tolClose = 1e-13, tolSmall = 1e-16;
   
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorRVClass )
   // Test realizer
   // NOTE: just calls it... doesn't check values
   //***********************************************************************
-  uqGslVectorClass myRealization(testValues);
+  uqGslVector myRealization(testValues);
   gaussianRV.realizer().realization(myRealization);
 
   std::cout << myRealization;

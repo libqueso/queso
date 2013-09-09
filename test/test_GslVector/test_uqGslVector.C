@@ -11,7 +11,7 @@
 
 #define TOL 1e-10
 
-int checkLinearSpacing(const QUESO::GslVectorClass &v, double d1, double d2) {
+int checkLinearSpacing(const QUESO::GslVector &v, double d1, double d2) {
   unsigned int i;
   double alpha, elt;
 
@@ -34,34 +34,34 @@ int main(int argc, char **argv) {
   MPI_Init(&argc, &argv);
 #endif
 
-  QUESO::EnvOptionsValuesClass options;
+  QUESO::EnvOptionsValues options;
   options.m_numSubEnvironments = 1;
 
-  QUESO::FullEnvironmentClass *env =
+  QUESO::FullEnvironment *env =
 #ifdef QUESO_HAS_MPI
-    new QUESO::FullEnvironmentClass(MPI_COMM_WORLD, "", "", &options);
+    new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", &options);
 #else
-    new QUESO::FullEnvironmentClass(0, "", "", &options);
+    new QUESO::FullEnvironment(0, "", "", &options);
 #endif
 
-  QUESO::VectorSpaceClass<QUESO::GslVectorClass, QUESO::GslMatrixClass> *param_space =
-    new QUESO::VectorSpaceClass<QUESO::GslVectorClass, QUESO::GslMatrixClass>(*env, "param_", 3, NULL);
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> *param_space =
+    new QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>(*env, "param_", 3, NULL);
 
-  QUESO::GslVectorClass v1(param_space->zeroVector());
+  QUESO::GslVector v1(param_space->zeroVector());
   v1.cwSet(2.0);
 
-  QUESO::GslVectorClass *v2 = new QUESO::GslVectorClass(*env, d1, d2, v1.map());
+  QUESO::GslVector *v2 = new QUESO::GslVector(*env, d1, d2, v1.map());
   if (checkLinearSpacing(*v2, d1, d2) == 1) {
     std::cerr << "Linear spacing test 1 failed" << std::endl;
   }
   delete v2;
 
-  v2 = new QUESO::GslVectorClass(v1, d1, d2);
+  v2 = new QUESO::GslVector(v1, d1, d2);
   if (checkLinearSpacing(*v2, d1, d2) == 1) {
     std::cerr << "Linear spacing test 2 failed" << std::endl;
   }
 
-  QUESO::GslVectorClass v3(*v2);
+  QUESO::GslVector v3(*v2);
   *v2 /= v1;
 
   for (i = 0; i < v2->sizeLocal(); i++) {
@@ -83,9 +83,9 @@ int main(int argc, char **argv) {
   }
 
   // Testing concatenate so we need a bigger param space
-  QUESO::VectorSpaceClass<QUESO::GslVectorClass, QUESO::GslMatrixClass> big_param_space(*env,
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> big_param_space(*env,
       "", 6, NULL);
-  QUESO::GslVectorClass v4(big_param_space.zeroVector());
+  QUESO::GslVector v4(big_param_space.zeroVector());
   v4.cwSetConcatenated(v1, v3);
 
   for (i = 0; i < v1.sizeLocal(); i++) {
@@ -100,10 +100,10 @@ int main(int argc, char **argv) {
     }
   }
 
-  std::vector<const QUESO::GslVectorClass*> vecs;
+  std::vector<const QUESO::GslVector*> vecs;
   vecs.push_back(&v1);
   vecs.push_back(&v3);
-  QUESO::GslVectorClass v5(big_param_space.zeroVector());
+  QUESO::GslVector v5(big_param_space.zeroVector());
   v5.cwSetConcatenated(vecs);
   for (i = 0; i < v5.sizeLocal(); i++) {
     if (std::abs(v5[i] - v4[i]) > TOL) {
@@ -225,7 +225,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  QUESO::GslVectorClass ones(v1, 1.0, 1.0);
+  QUESO::GslVector ones(v1, 1.0, 1.0);
   if (!(ones == (v1 / v3))) {
     std::cerr << "division test failed" << std::endl;
     return 1;

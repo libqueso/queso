@@ -50,13 +50,13 @@ int main(int argc, char* argv[])
                       UQ_UNAVAILABLE_RANK,
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
-  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+  uqFullEnvironment* env = new uqFullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
 
   //************************************************
   // Call application
   //************************************************
-  uqAppl<uqGslVectorClass, // type for parameter vectors
-         uqGslMatrixClass  // type for parameter matrices
+  uqAppl<uqGslVector, // type for parameter vectors
+         uqGslMatrix  // type for parameter matrices
         >(*env);
 
   //************************************************

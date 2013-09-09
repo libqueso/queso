@@ -98,7 +98,7 @@ likelihoodRoutine(
 
       // determine local MPI environment info
 
-      const uqBaseEnvironmentClass &env = paramMeans.env();
+      const uqBaseEnvironment &env = paramMeans.env();
       subId                             = (int)env.subId();
       Local_MPI_Comm                    = env.subComm().Comm();
       int num_global_procs;

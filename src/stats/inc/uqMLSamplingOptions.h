@@ -58,11 +58,11 @@
 
 namespace QUESO {
 
-class MLSamplingOptionsClass
+class MLSamplingOptions
 {
 public:
-  MLSamplingOptionsClass(const BaseEnvironmentClass& env, const char* prefix);
- ~MLSamplingOptionsClass();
+  MLSamplingOptions(const BaseEnvironment& env, const char* prefix);
+ ~MLSamplingOptions();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
@@ -88,7 +88,7 @@ private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   void   getMyOptionValues(po::options_description& optionsDesc);
 
-  const BaseEnvironmentClass& m_env;
+  const BaseEnvironment& m_env;
   po::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
@@ -108,7 +108,7 @@ private:
   std::string                   m_option_dataOutputAllowedSet;
 };
 
-std::ostream& operator<<(std::ostream& os, const MLSamplingOptionsClass& obj);
+std::ostream& operator<<(std::ostream& os, const MLSamplingOptions& obj);
 
 }  // End namespace QUESO
 

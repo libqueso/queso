@@ -53,9 +53,9 @@ int main(int argc, char* argv[])
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
 #ifdef QUESO_HAS_MPI
-  QUESO::FullEnvironmentClass* env = new QUESO::FullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
 #else
-  QUESO::FullEnvironmentClass* env = new QUESO::FullEnvironmentClass(0,argv[1],"",NULL);
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(0,argv[1],"",NULL);
 #endif
   //std::cout << "proc " << env->fullRank() << ", HERE main 000" << std::endl;
   //env->fullComm().Barrier();
@@ -64,8 +64,8 @@ int main(int argc, char* argv[])
   //************************************************
   // Call application
   //************************************************
-  uqAppl<QUESO::GslVectorClass, // type for parameter vectors
-         QUESO::GslMatrixClass  // type for parameter matrices
+  uqAppl<QUESO::GslVector, // type for parameter vectors
+         QUESO::GslMatrix  // type for parameter matrices
         >(*env);
 
   //************************************************

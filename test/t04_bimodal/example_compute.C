@@ -32,45 +32,45 @@
 #include <uqStatisticalInverseProblem.h>
 #include <uq1D1DFunction.h>
 
-void compute(const QUESO::FullEnvironmentClass& env) {
+void compute(const QUESO::FullEnvironment& env) {
 #if 0
-  QUESO::Constant1D1DFunctionClass w(-1.,1.,1.);
+  QUESO::Constant1D1DFunction w(-1.,1.,1.);
 
-  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>
+  uqVectorSpace<uqGslVector,uqGslMatrix>
     paramSpace(env, "param_", 5, NULL);
-  uqGslVectorClass v1(paramSpace.zeroVector());
-  uqGslVectorClass v2(paramSpace.zeroVector());
-  w.quadPtsWeights<uqGslVectorClass,uqGslMatrixClass>(200,false,v1,v2);
+  uqGslVector v1(paramSpace.zeroVector());
+  uqGslVector v2(paramSpace.zeroVector());
+  w.quadPtsWeights<uqGslVector,uqGslMatrix>(200,false,v1,v2);
   std::cout << "v1 = " << v1 << std::endl;
   std::cout << "v2 = " << v2 << std::endl;
 #else
   ////////////////////////////////////////////////////////
   // Step 1 of 5: Instantiate the parameter space
   ////////////////////////////////////////////////////////
-  QUESO::VectorSpaceClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::VectorSpace<QUESO::GslVector,QUESO::GslMatrix>
     paramSpace(env, "param_", 1, NULL);
 
   ////////////////////////////////////////////////////////
   // Step 2 of 5: Instantiate the parameter domain
   ////////////////////////////////////////////////////////
-  QUESO::GslVectorClass paramMins(paramSpace.zeroVector());
+  QUESO::GslVector paramMins(paramSpace.zeroVector());
   paramMins.cwSet(-250.);
-  QUESO::GslVectorClass paramMaxs(paramSpace.zeroVector());
+  QUESO::GslVector paramMaxs(paramSpace.zeroVector());
   paramMaxs.cwSet( 250.);
-  QUESO::BoxSubsetClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::BoxSubset<QUESO::GslVector,QUESO::GslMatrix>
     paramDomain("param_",paramSpace,paramMins,paramMaxs);
 
   ////////////////////////////////////////////////////////
   // Step 3 of 5: Instantiate the likelihood function object
   ////////////////////////////////////////////////////////
-  QUESO::GslVectorClass meanVector(paramSpace.zeroVector());
+  QUESO::GslVector meanVector(paramSpace.zeroVector());
   meanVector[0] = 10.;
-  QUESO::GslMatrixClass* covMatrix = paramSpace.newMatrix();
+  QUESO::GslMatrix* covMatrix = paramSpace.newMatrix();
   (*covMatrix)(0,0) = 1.;
   likelihoodRoutine_DataType likelihoodRoutine_Data;
   likelihoodRoutine_Data.meanVector = &meanVector;
   likelihoodRoutine_Data.covMatrix  = covMatrix;
-  QUESO::GenericScalarFunctionClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::GenericScalarFunction<QUESO::GslVector,QUESO::GslMatrix>
     likelihoodFunctionObj("like_",
                           paramDomain,
                           likelihoodRoutine,
@@ -80,20 +80,20 @@ void compute(const QUESO::FullEnvironmentClass& env) {
   ////////////////////////////////////////////////////////
   // Step 4 of 5: Instantiate the inverse problem
   ////////////////////////////////////////////////////////
-  QUESO::UniformVectorRVClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::UniformVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     priorRv("prior_", paramDomain);
-  QUESO::GenericVectorRVClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::GenericVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     postRv("post_", paramSpace);
-  QUESO::StatisticalInverseProblemClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::StatisticalInverseProblem<QUESO::GslVector,QUESO::GslMatrix>
     ip("", NULL, priorRv, likelihoodFunctionObj, postRv);
 
   ////////////////////////////////////////////////////////
   // Step 5 of 5: Solve the inverse problem
   ////////////////////////////////////////////////////////
 #if 0
-  uqGslVectorClass paramInitials(paramSpace.zeroVector());
+  uqGslVector paramInitials(paramSpace.zeroVector());
   paramInitials[0] = 45.;
-  uqGslMatrixClass* proposalCovMatrix = paramSpace.newMatrix();
+  uqGslMatrix* proposalCovMatrix = paramSpace.newMatrix();
   (*proposalCovMatrix)(0,0) = 1600.;
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, proposalCovMatrix);
   delete proposalCovMatrix;
@@ -110,7 +110,7 @@ void compute(const QUESO::FullEnvironmentClass& env) {
                           << std::endl;
   }
 
-  QUESO::GslVectorClass auxVec(paramSpace.zeroVector());
+  QUESO::GslVector auxVec(paramSpace.zeroVector());
   unsigned int numPosSmallerThan40 = 0;
   for (unsigned int i = 0; i < numPosTotal; ++i) {
     postRv.realizer().realization(auxVec);
@@ -122,9 +122,9 @@ void compute(const QUESO::FullEnvironmentClass& env) {
                           << std::endl;
   }
 
-  QUESO::ScalarSequenceClass<double> seq1  (env,numPosSmallerThan40,"");
-  QUESO::ScalarSequenceClass<double> seq2  (env,numPosTotal - numPosSmallerThan40,"");
-  QUESO::ScalarSequenceClass<double> seqAll(env,numPosTotal,"");
+  QUESO::ScalarSequence<double> seq1  (env,numPosSmallerThan40,"");
+  QUESO::ScalarSequence<double> seq2  (env,numPosTotal - numPosSmallerThan40,"");
+  QUESO::ScalarSequence<double> seqAll(env,numPosTotal,"");
   unsigned int i1 = 0;
   unsigned int i2 = 0;
   for (unsigned int i = 0; i < numPosTotal; ++i) {
@@ -190,7 +190,7 @@ void compute(const QUESO::FullEnvironmentClass& env) {
   weights[2] = 0.00;
   weights[3] = 0.67;
   weights[4] = 0.12;
-  uqFiniteDistributionClass tmpFd(env,
+  uqFiniteDistribution tmpFd(env,
                                   "",
                                   weights);
 

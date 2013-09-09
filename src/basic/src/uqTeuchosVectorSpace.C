@@ -35,38 +35,38 @@
 namespace QUESO {
 
 template <>
-MapClass*
-VectorSpaceClass<TeuchosVectorClass, TeuchosMatrixClass>::newMap()
+Map*
+VectorSpace<TeuchosVector, TeuchosMatrix>::newMap()
 {
-  return new MapClass(m_dimGlobal,0,m_env.selfComm());
+  return new Map(m_dimGlobal,0,m_env.selfComm());
 }
 
 template<>
-TeuchosVectorClass*
-VectorSpaceClass<TeuchosVectorClass,TeuchosMatrixClass>::newVector() const
+TeuchosVector*
+VectorSpace<TeuchosVector,TeuchosMatrix>::newVector() const
 {
-  return new TeuchosVectorClass(m_env,*m_map);
+  return new TeuchosVector(m_env,*m_map);
 }
 
 template<>
-TeuchosVectorClass*
-VectorSpaceClass<TeuchosVectorClass,TeuchosMatrixClass>::newVector(double value) const
+TeuchosVector*
+VectorSpace<TeuchosVector,TeuchosMatrix>::newVector(double value) const
 {
-  return new TeuchosVectorClass(m_env,*m_map,value);
+  return new TeuchosVector(m_env,*m_map,value);
 }
 
 template<>
-TeuchosMatrixClass*
-VectorSpaceClass<TeuchosVectorClass,TeuchosMatrixClass>::newMatrix() const
+TeuchosMatrix*
+VectorSpace<TeuchosVector,TeuchosMatrix>::newMatrix() const
 {
-  return new TeuchosMatrixClass(m_env,*m_map,this->dimGlobal());
+  return new TeuchosMatrix(m_env,*m_map,this->dimGlobal());
 }
 
 template<>
-TeuchosMatrixClass*
-VectorSpaceClass<TeuchosVectorClass,TeuchosMatrixClass>::newDiagMatrix(double diagValue) const
+TeuchosMatrix*
+VectorSpace<TeuchosVector,TeuchosMatrix>::newDiagMatrix(double diagValue) const
 {
-  return new TeuchosMatrixClass(m_env,*m_map,diagValue);
+  return new TeuchosMatrix(m_env,*m_map,diagValue);
 }
 
 }  // End namespace QUESO

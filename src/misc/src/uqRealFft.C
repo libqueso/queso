@@ -35,7 +35,7 @@ namespace QUESO {
 // Math methods------------------------------------------
 template <>
 void
-FftClass<double>::forward(
+Fft<double>::forward(
   const std::vector<double>&                data, 
         unsigned int                        fftSize,
         std::vector<std::complex<double> >& forwardResult)
@@ -103,7 +103,7 @@ FftClass<double>::forward(
 //-------------------------------------------------------
 template <>
 void
-FftClass<double>::inverse(
+Fft<double>::inverse(
   const std::vector<double>&                data, 
         unsigned int                        fftSize,
         std::vector<std::complex<double> >& inverseResult)
@@ -120,7 +120,7 @@ FftClass<double>::inverse(
   }
 
   //if (m_subDisplayFile()) {
-  //  *m_subDisplayFile() << "In FftClass<double>::inverse()"
+  //  *m_subDisplayFile() << "In Fft<double>::inverse()"
   //                     << ": about to call gsl_fft_complex_inverse()"
   //                     << " with fftSize = "         << fftSize
   //                     << "; internalData.size() = " << internalData.size()
@@ -140,7 +140,7 @@ FftClass<double>::inverse(
   gsl_fft_complex_workspace_free(complexWkSpace);
 
   //if (m_subDisplayFile()) {
-  //  *m_subDisplayFile() << "In FftClass<double>::inverse()"
+  //  *m_subDisplayFile() << "In Fft<double>::inverse()"
   //                     << ": returned from gsl_fft_complex_inverse()"
   //                     << " with fftSize = "          << fftSize
   //                     << "; inverseResult.size() = " << inverseResult.size()
@@ -156,7 +156,7 @@ FftClass<double>::inverse(
 #if 0
 template <class T>
 void
-FftClass<T>::allocTables(unsigned int fftSize)
+Fft<T>::allocTables(unsigned int fftSize)
 {
   if (m_fftSize != fftSize) {
     if (m_fftSize != 0) freeTables();
@@ -171,7 +171,7 @@ FftClass<T>::allocTables(unsigned int fftSize)
 
 template <class T>
 void
-FftClass<T>::freeTables()
+Fft<T>::freeTables()
 {
   if (m_fftSize != 0) {
   //gsl_fft_halfcomplex_wavetable_free(m_hcWvTable);

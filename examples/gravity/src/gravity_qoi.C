@@ -38,15 +38,15 @@
 //------------------------------------------------------
 void
 qoiRoutine(
-  const QUESO::GslVectorClass&                    paramValues,
-  const QUESO::GslVectorClass*                    paramDirection,
+  const QUESO::GslVector&                    paramValues,
+  const QUESO::GslVector*                    paramDirection,
   const void*                                functionDataPtr,
-        QUESO::GslVectorClass&                    qoiValues,
-        QUESO::DistArrayClass<QUESO::GslVectorClass*>* gradVectors,
-        QUESO::DistArrayClass<QUESO::GslMatrixClass*>* hessianMatrices,
-        QUESO::DistArrayClass<QUESO::GslVectorClass*>* hessianEffects)
+        QUESO::GslVector&                    qoiValues,
+        QUESO::DistArray<QUESO::GslVector*>* gradVectors,
+        QUESO::DistArray<QUESO::GslMatrix*>* hessianMatrices,
+        QUESO::DistArray<QUESO::GslVector*>* hessianEffects)
 {
-  const QUESO::BaseEnvironmentClass& env = paramValues.env();
+  const QUESO::BaseEnvironment& env = paramValues.env();
 
   if (paramDirection && 
       gradVectors    &&
@@ -72,9 +72,9 @@ qoiRoutine(
   double g = paramValues[0]; // Sample of the RV 'gravity acceleration'
   double distanceTraveled = 0.;
   if (env.subRank() == 0) {
-    double velocity = ((qoiRoutine_DataClass *) functionDataPtr)->m_initialVelocity;
-    double heights  = ((qoiRoutine_DataClass *) functionDataPtr)->m_initialHeight;
-    double alpha    = ((qoiRoutine_DataClass *) functionDataPtr)->m_angle;
+    double velocity = ((qoiRoutine_Data *) functionDataPtr)->m_initialVelocity;
+    double heights  = ((qoiRoutine_Data *) functionDataPtr)->m_initialHeight;
+    double alpha    = ((qoiRoutine_Data *) functionDataPtr)->m_angle;
     
     double aux       = velocity * sin(alpha);
     distanceTraveled = (velocity * cos(alpha) / g) * ( aux + sqrt(pow(aux,2) + 2.*g*heights) );

@@ -42,39 +42,39 @@ namespace QUESO {
     \brief A class for partitioning vectors and matrices.
 */
 
-/*! \class MapClass
+/*! \class Map
     \brief A class for partitioning vectors and matrices.
     
     It is often the case that multiple matrix and vector objects have an identical distribution 
-    of elements on a parallel machine. The MapClass keeps information that describes this 
+    of elements on a parallel machine. The Map keeps information that describes this 
     distribution for matrices and vectors. Inspired by Trilinos Epetra_Map class.
 */
 
-class MapClass
+class Map
 {
 public:
   //! @name Constructor/Destructor methods
   //@{
 
   //! Default constructor. Do not call this directly.
-  MapClass();
+  Map();
   
   //! Constructor for a uniform linear distribution of elements. 
-  MapClass(int                   numGlobalElements,
+  Map(int                   numGlobalElements,
              int                   indexBase,
-             const MpiCommClass& comm);
+             const MpiComm& comm);
   
   //! Copy constructor.
-  MapClass(const MapClass& src);
+  Map(const Map& src);
 
   //! Destructor
- ~MapClass();
+ ~Map();
  //@}
 
  //! @name Set methods
   //@{
   //! Assignment operator. 
-  MapClass& operator= (const MapClass& rhs);
+  Map& operator= (const Map& rhs);
   //@}
 
   
@@ -97,7 +97,7 @@ public:
   //! @name Miscellaneous  methods
   //@{
   //! Access function for MpiComm communicator. 
-  const MpiCommClass& Comm             () const;
+  const MpiComm& Comm             () const;
   
 #ifdef QUESO_HAS_TRILINOS
   //! Trilinos Epetra_Map: A class for partitioning vectors and matrices.
@@ -107,10 +107,10 @@ public:
   //@}
 private:
   //! Copies the map.
-  void                  copy             (const MapClass& src);
+  void                  copy             (const Map& src);
 
   //! This communicator can be queried for processor rank and size information. 
-  MpiCommClass m_MpiComm;
+  MpiComm m_MpiComm;
   
 #ifdef QUESO_HAS_TRILINOS
   //! Epetra_Map

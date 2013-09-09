@@ -31,18 +31,18 @@
 
 namespace QUESO {
 
-RngBaseClass::RngBaseClass()
+RngBase::RngBase()
   :
   m_seed     (0),
   m_worldRank(UQ_UNAVAILABLE_RANK)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_worldRank,
-                      "RngBaseClass::constructor(), default",
+                      "RngBase::constructor(), default",
                       "should not be used by user");
 }
 
-RngBaseClass::RngBaseClass(int seed, int worldRank)
+RngBase::RngBase(int seed, int worldRank)
   :
   m_seed     (seed),
   m_worldRank(worldRank)
@@ -50,18 +50,18 @@ RngBaseClass::RngBaseClass(int seed, int worldRank)
   privateResetSeed();
 }
 
-RngBaseClass::~RngBaseClass()
+RngBase::~RngBase()
 {
 }
 
 int
-RngBaseClass::seed() const
+RngBase::seed() const
 {
   return m_seed;
 }
 
 void
-RngBaseClass::resetSeed(int newSeed)
+RngBase::resetSeed(int newSeed)
 {
   m_seed = newSeed;
   privateResetSeed();
@@ -69,7 +69,7 @@ RngBaseClass::resetSeed(int newSeed)
 }
 
 void
-RngBaseClass::privateResetSeed()
+RngBase::privateResetSeed()
 {
   if (m_seed >= 0) {
     // Do nothing

@@ -36,18 +36,18 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-class GcmSimulationInfoClass
+class GcmSimulationInfo
 {
 public:
-  GcmSimulationInfoClass(const GpmsaComputerModelOptionsClass&                  gcmOptionsObj,
+  GcmSimulationInfo(const GpmsaComputerModelOptions&                  gcmOptionsObj,
                            bool                                                     allOutputsAreScalar,
-                           const SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationStorage,
-                           const SimulationModelClass  <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationModel);
- ~GcmSimulationInfoClass();
+                           const SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationStorage,
+                           const SimulationModel  <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationModel);
+ ~GcmSimulationInfo();
 
-  const BaseEnvironmentClass&                            m_env;
-  const SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& m_simulationStorage;
-  const SimulationModelClass  <S_V,S_M,P_V,P_M,Q_V,Q_M>& m_simulationModel;
+  const BaseEnvironment&                            m_env;
+  const SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>& m_simulationStorage;
+  const SimulationModel  <S_V,S_M,P_V,P_M,Q_V,Q_M>& m_simulationModel;
 
         unsigned int                                       m_paper_p_x;
   const std::vector<const S_V* >&                          m_paper_xs_asterisks_standard;
@@ -56,62 +56,62 @@ public:
         unsigned int                                       m_paper_m;
         unsigned int                                       m_paper_n_eta;
         unsigned int                                       m_paper_p_eta;
-        VectorSpaceClass         <P_V,P_M>               m_paper_m_space;
+        VectorSpace         <P_V,P_M>               m_paper_m_space;
 
         unsigned int                                       m_1lambdaEtaDim; // '1' in paper
-        VectorSpaceClass         <P_V,P_M>               m_1lambdaEtaSpace;
+        VectorSpace         <P_V,P_M>               m_1lambdaEtaSpace;
         P_V                                                m_1lambdaEtaMins;
         P_V                                                m_1lambdaEtaMaxs;
-        BoxSubsetClass           <P_V,P_M>               m_1lambdaEtaDomain;
+        BoxSubset           <P_V,P_M>               m_1lambdaEtaDomain;
         P_V                                                m_1lambdaEtaGammaAVec;
         P_V                                                m_1lambdaEtaGammaBVec;
-        GammaVectorRVClass       <P_V,P_M>               m_1lambdaEtaPriorRv;
+        GammaVectorRV       <P_V,P_M>               m_1lambdaEtaPriorRv;
         P_V                                                m_like_previous1;
         P_V                                                m_tmp_1lambdaEtaVec;
 
         unsigned int                                       m_2lambdaWDim; // 'p_eta' in paper
-        VectorSpaceClass         <P_V,P_M>               m_2lambdaWSpace;
+        VectorSpace         <P_V,P_M>               m_2lambdaWSpace;
         P_V                                                m_2lambdaWMins;
         P_V                                                m_2lambdaWMaxs;
-        BoxSubsetClass           <P_V,P_M>               m_2lambdaWDomain;
+        BoxSubset           <P_V,P_M>               m_2lambdaWDomain;
         P_V                                                m_2lambdaWGammaAVec;
         P_V                                                m_2lambdaWGammaBVec;
-        GammaVectorRVClass       <P_V,P_M>               m_2lambdaWPriorRv;
+        GammaVectorRV       <P_V,P_M>               m_2lambdaWPriorRv;
         P_V                                                m_like_previous2;
         P_V                                                m_tmp_2lambdaWVec;
 
         unsigned int                                       m_3rhoWDim; // 'p_eta * (p_x + p_t)' in paper
-        VectorSpaceClass         <P_V,P_M>               m_3rhoWSpace;
+        VectorSpace         <P_V,P_M>               m_3rhoWSpace;
         P_V                                                m_3rhoWMins;
         P_V                                                m_3rhoWMaxs;
-        BoxSubsetClass           <P_V,P_M>               m_3rhoWDomain;
+        BoxSubset           <P_V,P_M>               m_3rhoWDomain;
         P_V                                                m_3rhoWBetaAVec;
         P_V                                                m_3rhoWBetaBVec;
-        BetaVectorRVClass        <P_V,P_M>               m_3rhoWPriorRv;
+        BetaVectorRV        <P_V,P_M>               m_3rhoWPriorRv;
         P_V                                                m_like_previous3;
         P_V                                                m_tmp_3rhoWVec;
 
         unsigned int                                       m_4lambdaSDim; // 'p_eta' in matlab code
-        VectorSpaceClass         <P_V,P_M>               m_4lambdaSSpace;
+        VectorSpace         <P_V,P_M>               m_4lambdaSSpace;
         P_V                                                m_4lambdaSMins;
         P_V                                                m_4lambdaSMaxs;
-        BoxSubsetClass           <P_V,P_M>               m_4lambdaSDomain;
+        BoxSubset           <P_V,P_M>               m_4lambdaSDomain;
         P_V                                                m_4lambdaSGammaAVec;
         P_V                                                m_4lambdaSGammaBVec;
-        GammaVectorRVClass       <P_V,P_M>               m_4lambdaSPriorRv;
+        GammaVectorRV       <P_V,P_M>               m_4lambdaSPriorRv;
         P_V                                                m_like_previous4;
         P_V                                                m_tmp_4lambdaSVec;
 
         unsigned int                                       m_eta_size;
-        VectorSpaceClass<Q_V,Q_M>                        m_eta_space;
+        VectorSpace<Q_V,Q_M>                        m_eta_space;
 
         unsigned int                                       m_w_size;
-        VectorSpaceClass<Q_V,Q_M>                        m_w_space;
+        VectorSpace<Q_V,Q_M>                        m_w_space;
 
-        VectorSpaceClass<Q_V,Q_M>                        m_unique_w_space;
+        VectorSpace<Q_V,Q_M>                        m_unique_w_space;
 
         Q_V                                                m_Zvec_hat_w;
-        VectorSpaceClass<P_V,P_M>                        m_rho_w_space;
+        VectorSpace<P_V,P_M>                        m_rho_w_space;
         P_V                                                m_tmp_rho_w_vec;
 	std::vector<Q_M* >                                 m_Rmat_w_is;       // to be deleted on destructor
 	std::vector<Q_M* >                                 m_Smat_w_is;       // to be deleted on destructor
@@ -162,11 +162,11 @@ public:
 };
 
 template <class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
-  const GpmsaComputerModelOptionsClass&                  gcmOptionsObj,
+GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfo(
+  const GpmsaComputerModelOptions&                  gcmOptionsObj,
   bool                                                     allOutputsAreScalar,
-  const SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationStorage,
-  const SimulationModelClass  <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationModel)
+  const SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationStorage,
+  const SimulationModel  <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationModel)
   :
   m_env                                            (simulationStorage.env()),  
   m_simulationStorage                              (simulationStorage),
@@ -250,7 +250,7 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
   m_predW_summingRVs_corrMatrix_of_unique_w_means  (m_unique_w_space.zeroVector())
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GcmJointInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering GcmJointInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << std::endl;
   }
 
@@ -263,7 +263,7 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
   unsigned int m_Kmat_rank = m_Kmat.rank(0.,1.e-8 ); // todo: should be an option
   unsigned int kRank14     = m_Kmat.rank(0.,1.e-14);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GcmJointInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": m_Kmat.numRowsLocal() = "  << m_Kmat.numRowsLocal()
                             << ", m_Kmat.numCols() = "       << m_Kmat.numCols()
                             << ", m_Kmat.rank(0.,1.e-8) = "  << m_Kmat_rank
@@ -279,7 +279,7 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
 
   Q_V etaVec_transformed(simulationModel.etaVec_transformed("Gp.h.004"));
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": m_Zvec_hat_w.sizeLocal() = "       << m_Zvec_hat_w.sizeLocal()
                             << ", etaVec_transformed.sizeLocal() = " << etaVec_transformed.sizeLocal()
                             << std::endl;
@@ -295,7 +295,7 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
     Q_M Kt(m_env,m_w_space.map(),m_eta_size);
     Kt.fillWithTranspose(0,0,m_Kmat,true,true);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": Kt.numRowsLocal() = "     << Kt.numRowsLocal()
                               << ", Kt.numCols() = "          << Kt.numCols()
                               << std::endl;
@@ -310,7 +310,7 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
     *m_Kt_K = Kt * m_Kmat;
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       m_Kt_K->setPrintHorizontally(false);
-      *m_env.subDisplayFile() << "In GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'm_Kt_K'"
                             //<< "\n m_Kt_K =\n" << m_Kt_K
                               << std::endl;
@@ -327,7 +327,7 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
       unsigned int ktKRank          = m_Kt_K->rank(0.,1.e-8 ); // todo: should be an option
       unsigned int ktKRank14        = m_Kt_K->rank(0.,1.e-14);
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-        *m_env.subDisplayFile() << "In GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": m_Kt_K->numRowsLocal() = "  << m_Kt_K->numRowsLocal()
                                 << ", m_Kt_K->numCols() = "       << m_Kt_K->numCols()
                                 << ", m_Kt_K->lnDeterminant() = " << ktKLnDeterminant
@@ -341,7 +341,7 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       m_Kt_K_inv->setPrintHorizontally(false);
-      *m_env.subDisplayFile() << "In GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'm_Kt_K_inv'"
                             //<< "\n m_Kt_K_inv =\n" << m_Kt_K_inv
                               << std::endl;
@@ -358,7 +358,7 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
       unsigned int ktKInvRank          = m_Kt_K_inv->rank(0.,1.e-8 ); // todo: should be an option
       unsigned int ktKInvRank14        = m_Kt_K_inv->rank(0.,1.e-14);
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": m_Kt_K_inv->numRowsLocal() = "  << m_Kt_K_inv->numRowsLocal()
                                 << ", m_Kt_K_inv->numCols() = "       << m_Kt_K_inv->numCols()
                                 << ", m_Kt_K_inv->lnDeterminant() = " << ktKInvLnDeterminant
@@ -373,13 +373,13 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
     //********************************************************************************
     m_a_eta_modifier = ((double) m_paper_m) * ((double) (m_paper_n_eta - m_paper_p_eta)) / 2.;
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_a_eta_modifier = " << m_a_eta_modifier
                               << std::endl;
     }
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_Kt_K_inv->numRowsLocal() = "     << m_Kt_K_inv->numRowsLocal()
                               << ", m_Kt_K_inv->numCols() = "          << m_Kt_K_inv->numCols()
                               << ", Kt.numRowsLocal() = "              << Kt.numRowsLocal()
@@ -398,7 +398,7 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
     m_b_eta_modifier = scalarProduct(etaVec_transformed,tmpVec1) / 2.;
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_b_eta_modifier = " << m_b_eta_modifier
                               << std::endl;
     }
@@ -414,13 +414,13 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
     sumDims += m_paper_m_space.dimLocal();
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished instantiating m_Smat_w_is"
                             << std::endl;
   }
   UQ_FATAL_TEST_MACRO(sumDims != m_w_size,
                       m_env.worldRank(),
-                      "GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'sumDims' and 'm_w_size' should be equal");
 
   unsigned int sumNumRows = 0;
@@ -432,24 +432,24 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
     sumNumCols += 1; // m_paper_p_eta;
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished instantiating the m_Smat_w_hat_w_asterisk_i matrices"
                             << std::endl;
   }
   UQ_FATAL_TEST_MACRO(sumNumRows != m_w_size,
                       m_env.worldRank(),
-                      "GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'sumNumRows' and 'm_w_size' should be equal");
   UQ_FATAL_TEST_MACRO(sumNumCols != (m_paper_p_eta), //*m_paper_p_eta),
                       m_env.worldRank(),
-                      "GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'sumNumCols' and 'm_paper_p_eta*m_paper_p_eta' should be equal");
 
   //********************************************************************************
   // Display information
   //********************************************************************************
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "KEY In GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "KEY In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << "\n KEY  m_paper_p_x = "            << m_paper_p_x
                             << "\n KEY  m_paper_p_t = "            << m_paper_p_t
                             << "\n KEY  m_paper_m = "              << m_paper_m
@@ -476,22 +476,22 @@ GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfoClass(
   //********************************************************************************
   UQ_FATAL_TEST_MACRO(simulationModel.etaVec_transformed("Gp.h.002").sizeLocal() != m_eta_size,
                       m_env.worldRank(),
-                      "GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "incompatible calculations for 'eta' vector size");
 
   UQ_FATAL_TEST_MACRO(m_paper_p_x != simulationStorage.scenarioSpace().dimLocal(),
                       m_env.worldRank(),
-                      "GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'m_paper_p_x' and 'simulationStorage.scenarioSpace().dimLocal()' should be equal");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GcmJointInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving GcmJointInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << std::endl;
   }
 }
 
 template <class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::~GcmSimulationInfoClass()
+GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::~GcmSimulationInfo()
 {
   for (unsigned int i = 0; i < m_Smat_w_hat_w_asterisk_is.size(); ++i) {
     delete m_Smat_w_hat_w_asterisk_is[i]; // to be deleted on destructor

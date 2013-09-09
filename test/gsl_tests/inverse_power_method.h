@@ -30,6 +30,6 @@
 #define __INVERSE_POWER_METHOD_TESTS_H__
 
 #include <uqEnvironment.h>
-int actualChecking(const QUESO::FullEnvironmentClass* env);
+int actualChecking(const QUESO::FullEnvironment* env);
 
 #endif // __INVERSE_POWER_METHOD_TESTS_H__

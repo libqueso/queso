@@ -33,7 +33,7 @@ namespace QUESO {
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::sampleIndexes_proc0(
+MLSampling<P_V,P_M>::sampleIndexes_proc0(
   unsigned int               unifiedRequestedNumSamples,        // input
   const std::vector<double>& unifiedWeightStdVectorAtProc0Only, // input
   std::vector<unsigned int>& unifiedIndexCountersAtProc0Only)   // output
@@ -41,7 +41,7 @@ MLSamplingClass<P_V,P_M>::sampleIndexes_proc0(
   if (m_env.inter0Rank() != 0) return;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering MLSamplingClass<P_V,P_M>::sampleIndexes_proc0()"
+    *m_env.subDisplayFile() << "Entering MLSampling<P_V,P_M>::sampleIndexes_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": unifiedRequestedNumSamples = "               << unifiedRequestedNumSamples
@@ -73,7 +73,7 @@ MLSamplingClass<P_V,P_M>::sampleIndexes_proc0(
     unifiedIndexCountersAtProc0Only.resize(resizeSize,0);
 
     // Generate 'unifiedRequestedNumSamples' samples from 'tmpFD'
-    FiniteDistributionClass tmpFd(m_env,
+    FiniteDistribution tmpFd(m_env,
                                     "",
                                     unifiedWeightStdVectorAtProc0Only);
     for (unsigned int i = 0; i < unifiedRequestedNumSamples; ++i) {
@@ -87,8 +87,8 @@ MLSamplingClass<P_V,P_M>::sampleIndexes_proc0(
 
 template <class P_V,class P_M>
 bool
-MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
-  const MLSamplingLevelOptionsClass* currOptions,                     // input
+MLSampling<P_V,P_M>::decideOnBalancedChains_all(
+  const MLSamplingLevelOptions* currOptions,                     // input
   unsigned int                         indexOfFirstWeight,              // input
   unsigned int                         indexOfLastWeight,               // input
   const std::vector<unsigned int>&     unifiedIndexCountersAtProc0Only, // input
@@ -97,7 +97,7 @@ MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
   bool result = false;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()"
+    *m_env.subDisplayFile() << "Entering MLSampling<P_V,P_M>::decideOnBalancedChains_all()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": indexOfFirstWeight = " << indexOfFirstWeight
@@ -119,26 +119,26 @@ MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
       //////////////////////////////////////////////////////////////////////////
       unsigned int auxUInt = indexOfFirstWeight;
       m_env.inter0Comm().Gather((void *) &auxUInt, 1, RawValue_MPI_UNSIGNED, (void *) &allFirstIndexes[0], (int) 1, RawValue_MPI_UNSIGNED, 0, // LOAD BALANCE
-                                "MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
+                                "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
                                 "failed MPI.Gather() for first indexes");
 
       if (m_env.inter0Rank() == 0) {
         UQ_FATAL_TEST_MACRO(allFirstIndexes[0] != indexOfFirstWeight,
                             m_env.worldRank(),
-                            "MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
+                            "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
                             "failed MPI.Gather() result for first indexes, at proc 0");
       }
 
       auxUInt = indexOfLastWeight;
       m_env.inter0Comm().Gather((void *) &auxUInt, 1, RawValue_MPI_UNSIGNED, (void *) &allLastIndexes[0], (int) 1, RawValue_MPI_UNSIGNED, 0, // LOAD BALANCE
-                                "MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
+                                "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
                                 "failed MPI.Gather() for last indexes");
 
       if (m_env.inter0Rank() == 0) { // Yes, '== 0'
         //allLastIndexes[0] = indexOfLastWeight; // FIX ME: really necessary????
         UQ_FATAL_TEST_MACRO(allLastIndexes[0] != indexOfLastWeight,
                             m_env.worldRank(),
-                            "MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
+                            "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
                             "failed MPI.Gather() result for last indexes, at proc 0");
       }
     }
@@ -148,7 +148,7 @@ MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
     //////////////////////////////////////////////////////////////////////////
     if (m_env.inter0Rank() == 0) {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-        *m_env.subDisplayFile() << "In MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()"
+        *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::decideOnBalancedChains_all()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
                                 << ", step "  << m_currStep
                                 << ": original distribution of unified indexes in 'inter0Comm' is as follows"
@@ -162,14 +162,14 @@ MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
       for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
         UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
                             m_env.worldRank(),
-                            "MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
+                            "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
                             "wrong indexes");
       }
 
       for (unsigned int r = 0; r < (Np-1); ++r) { // Yes, '-1'
         UQ_FATAL_TEST_MACRO(allFirstIndexes[r+1] != (allLastIndexes[r]+1),
                             m_env.worldRank(),
-                            "MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
+                            "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
                             "wrong indexes");
       }
 
@@ -189,7 +189,7 @@ MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
             // Ok
           }
           else {
-	    std::cerr << "In MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()"
+	    std::cerr << "In MLSampling<P_V,P_M>::decideOnBalancedChains_all()"
                       << ": i = " << i
                       << ", r = " << r
                       << ", allFirstIndexes[r] = " << allFirstIndexes[r]
@@ -197,7 +197,7 @@ MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
                       << std::endl;
             UQ_FATAL_TEST_MACRO(true,
                                 m_env.worldRank(),
-                                "MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
+                                "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
                                 "wrong indexes or 'r' got too large");
           }
         }
@@ -266,12 +266,12 @@ MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
   m_env.fullComm().Barrier();
   unsigned int tmpValue = result;
   m_env.fullComm().Bcast((void *) &tmpValue, (int) 1, RawValue_MPI_UNSIGNED, 0, // LOAD BALANCE
-                         "MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()",
+                         "MLSampling<P_V,P_M>::decideOnBalancedChains_all()",
                          "failed MPI.Bcast() for 'result'");
   if (m_env.inter0Rank() != 0) result = tmpValue;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all()"
+    *m_env.subDisplayFile() << "Leaving MLSampling<P_V,P_M>::decideOnBalancedChains_all()"
                             << ", level "    << m_currLevel+LEVEL_REF_ID
                             << ", step "     << m_currStep
                             << ": result = " << result
@@ -283,16 +283,16 @@ MLSamplingClass<P_V,P_M>::decideOnBalancedChains_all(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALANCE
-  const MLSamplingLevelOptionsClass*      currOptions,         // input
-  const SequenceOfVectorsClass<P_V,P_M>&  prevChain,           // input
+MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALANCE
+  const MLSamplingLevelOptions*      currOptions,         // input
+  const SequenceOfVectors<P_V,P_M>&  prevChain,           // input
   std::vector<ExchangeInfoStruct>&        exchangeStdVec,      // input/output
   BalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl) // output
 {
   if (m_env.inter0Rank() < 0) return;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()"
+    *m_env.subDisplayFile() << "Entering MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << std::endl;
@@ -313,7 +313,7 @@ MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALAN
         solveBIP_proc0(exchangeStdVec); // input/output
 #else
         if (m_env.subDisplayFile()) {
-          *m_env.subDisplayFile() << "WARNING in MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()"
+          *m_env.subDisplayFile() << "WARNING in MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()"
                                   << ": algorithm id '" << currOptions->m_loadBalanceAlgorithmId
                                   << "' has been requested, but this QUESO library has not been built with 'hdf5'"
                                   << ". Code will therefore process the algorithm id '" << 2
@@ -321,7 +321,7 @@ MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALAN
                                   << std::endl;
         }
         if (m_env.subRank() == 0) {
-          std::cerr << "WARNING in MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()"
+          std::cerr << "WARNING in MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()"
                     << ": algorithm id '" << currOptions->m_loadBalanceAlgorithmId
                     << "' has been requested, but this QUESO library has not been built with 'hdf5'"
                     << ". Code will therefore process the algorithm id '" << 2
@@ -342,12 +342,12 @@ MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALAN
   //////////////////////////////////////////////////////////////////////////
   unsigned int exchangeStdVecSize = exchangeStdVec.size();
   m_env.inter0Comm().Bcast((void *) &exchangeStdVecSize, (int) 1, RawValue_MPI_UNSIGNED, 0, // LOAD BALANCE
-                           "MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
+                           "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
                            "failed MPI.Bcast() for exchangeStdVec size");
   if (m_env.inter0Rank() > 0) exchangeStdVec.resize(exchangeStdVecSize);
 
   m_env.inter0Comm().Bcast((void *) &exchangeStdVec[0], (int) (exchangeStdVecSize*sizeof(ExchangeInfoStruct)), RawValue_MPI_CHAR, 0, // LOAD BALANCE
-                           "MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
+                           "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
                            "failed MPI.Bcast() for exchangeStdVec data");
 
   //////////////////////////////////////////////////////////////////////////
@@ -374,23 +374,23 @@ MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALAN
   double minRatio = 0.;
   auxBuf[0] = finalRatioOfPosPerNode;
   m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &minRatio, (int) auxBuf.size(), RawValue_MPI_DOUBLE, RawValue_MPI_MIN, // LOAD BALANCE
-                               "MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
+                               "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
                                "failed MPI.Allreduce() for min");
   //std::cout << m_env.worldRank() << ", minRatio = " << minRatio << std::endl;
   UQ_FATAL_TEST_MACRO(minRatio != finalRatioOfPosPerNode,
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
+                      "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed minRatio sanity check");
 
   double maxRatio = 0.;
   auxBuf[0] = finalRatioOfPosPerNode;
   m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &maxRatio, (int) auxBuf.size(), RawValue_MPI_DOUBLE, RawValue_MPI_MAX, // LOAD BALANCE
-                               "MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
+                               "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
                                "failed MPI.Allreduce() for max");
   //std::cout << m_env.worldRank() << ", maxRatio = " << maxRatio << std::endl;
   UQ_FATAL_TEST_MACRO(maxRatio != finalRatioOfPosPerNode,
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
+                      "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
                       "failed maxRatio sanity check");
 
   //////////////////////////////////////////////////////////////////////////
@@ -398,12 +398,12 @@ MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALAN
   //////////////////////////////////////////////////////////////////////////
   unsigned int finalNumChainsPerNodeSize = finalNumChainsPerNode.size();
   m_env.inter0Comm().Bcast((void *) &finalNumChainsPerNodeSize, (int) 1, RawValue_MPI_UNSIGNED, 0, // LOAD BALANCE
-                           "MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
+                           "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
                            "failed MPI.Bcast() for finalNumChainsPerNode size");
   if (m_env.inter0Rank() > 0) finalNumChainsPerNode.resize(finalNumChainsPerNodeSize);
 
   m_env.inter0Comm().Bcast((void *) &finalNumChainsPerNode[0], (int) finalNumChainsPerNodeSize, RawValue_MPI_UNSIGNED, 0, // LOAD BALANCE
-                           "MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0()",
+                           "MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0()",
                            "failed MPI.Bcast() for finalNumChainsPerNode data");
 
   //////////////////////////////////////////////////////////////////////////
@@ -421,7 +421,7 @@ MLSamplingClass<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALAN
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
+MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0(
   unsigned int                           indexOfFirstWeight,              // input
   unsigned int                           indexOfLastWeight,               // input
   const std::vector<unsigned int>&       unifiedIndexCountersAtProc0Only, // input
@@ -430,7 +430,7 @@ MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
   if (m_env.inter0Rank() < 0) return;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()"
+    *m_env.subDisplayFile() << "Entering MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": indexOfFirstWeight = " << indexOfFirstWeight
@@ -444,7 +444,7 @@ MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
   // All nodes in 'inter0Comm' should resize to the same size // KAUST3
   unsigned int resizeSize = unifiedIndexCountersAtProc0Only.size();
   m_env.inter0Comm().Bcast((void *) &resizeSize, (int) 1, RawValue_MPI_UNSIGNED, 0,
-                           "MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
+                           "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                            "failed MPI.Bcast() for resizeSize");
   unifiedIndexCountersAtAllProcs.resize(resizeSize,0);
 
@@ -452,7 +452,7 @@ MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
 
   // Broadcast index counters to all nodes
   m_env.inter0Comm().Bcast((void *) &unifiedIndexCountersAtAllProcs[0], (int) unifiedIndexCountersAtAllProcs.size(), RawValue_MPI_UNSIGNED, 0,
-                           "MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
+                           "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                            "failed MPI.Bcast() for unified index counters");
 #if 0 // Use allgatherv ??? for subNumSamples instead
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -476,11 +476,11 @@ MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
   // Use 'indexOfFirstWeight' and 'indexOfLastWeight' in order to update 'subNumSamples'
   UQ_FATAL_TEST_MACRO(indexOfFirstWeight >= unifiedIndexCountersAtAllProcs.size(),
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
+                      "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "invalid indexOfFirstWeight");
   UQ_FATAL_TEST_MACRO(indexOfLastWeight >= unifiedIndexCountersAtAllProcs.size(),
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
+                      "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "invalid indexOfLastWeight");
   subNumSamples = 0;
   for (unsigned int i = indexOfFirstWeight; i <= indexOfLastWeight; ++i) {
@@ -492,34 +492,34 @@ MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
   unsigned int minModifiedSubNumSamples = 0;
   auxBuf[0] = subNumSamples;
   m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &minModifiedSubNumSamples, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_MIN,
-                               "MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
+                               "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                                "failed MPI.Allreduce() for min");
 
   unsigned int maxModifiedSubNumSamples = 0;
   auxBuf[0] = subNumSamples;
   m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &maxModifiedSubNumSamples, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_MAX,
-                               "MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
+                               "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                                "failed MPI.Allreduce() for max");
 
   unsigned int sumModifiedSubNumSamples = 0;
   auxBuf[0] = subNumSamples;
   m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &sumModifiedSubNumSamples, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
-                               "MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
+                               "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                                "failed MPI.Allreduce() for sum");
 
   //UQ_FATAL_TEST_MACRO(unifiedRequestedNumSamples != sumModifiedSubNumSamples,
   //                    m_env.worldRank(),
-  //                    "MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
+  //                    "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
   //                    "invalid state");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "KEY Leaving MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()"
+    *m_env.subDisplayFile() << "KEY Leaving MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()"
                             << ", level "                                   << m_currLevel+LEVEL_REF_ID
                             << ", step "                                    << m_currStep
                             << ": subNumSamples = "                         << subNumSamples
                             << ", unifiedIndexCountersAtAllProcs.size() = " << unifiedIndexCountersAtAllProcs.size()
                             << std::endl;
-    *m_env.subDisplayFile() << "KEY Leaving MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()"
+    *m_env.subDisplayFile() << "KEY Leaving MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()"
                             << ", level "                      << m_currLevel+LEVEL_REF_ID
                             << ", step "                       << m_currStep
                             << ": minModifiedSubNumSamples = " << minModifiedSubNumSamples
@@ -572,19 +572,19 @@ MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
       else {
         UQ_FATAL_TEST_MACRO(true, // KAUST4
                             m_env.worldRank(),
-                            "MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
+                            "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                             "should never get here");
       }
     }
   }
   UQ_FATAL_TEST_MACRO(numberOfPositionsToGuaranteeForNode != 0, // subNumSamples, // KAUST4
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()",
+                      "MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()",
                       "numberOfPositionsToGuaranteeForNode exited loop with wrong value");
   // FIX ME: swap trick to save memory
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "KEY Leaving MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0()"
+    *m_env.subDisplayFile() << "KEY Leaving MLSampling<P_V,P_M>::prepareUnbLinkedChains_inter0()"
                             << ", level "                                          << m_currLevel+LEVEL_REF_ID
                             << ", step "                                           << m_currStep
                             << ": unbalancedLinkControl.unbLinkedChains.size() = " << unbalancedLinkControl.unbLinkedChains.size()
@@ -596,21 +596,21 @@ MLSamplingClass<P_V,P_M>::prepareUnbLinkedChains_inter0(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
-  MLSamplingLevelOptionsClass&                  inputOptions,            // input, only m_rawChainSize changes
+MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
+  MLSamplingLevelOptions&                  inputOptions,            // input, only m_rawChainSize changes
   const P_M&                                      unifiedCovMatrix,        // input
-  const GenericVectorRVClass  <P_V,P_M>&        rv,                      // input
+  const GenericVectorRV  <P_V,P_M>&        rv,                      // input
   const BalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl,     // input // Round Rock
-  SequenceOfVectorsClass      <P_V,P_M>&        workingChain,            // output
+  SequenceOfVectors      <P_V,P_M>&        workingChain,            // output
   double&                                         cumulativeRunTime,       // output
   unsigned int&                                   cumulativeRejections,    // output
-  ScalarSequenceClass         <double>*         currLogLikelihoodValues, // output
-  ScalarSequenceClass         <double>*         currLogTargetValues)     // output
+  ScalarSequence         <double>*         currLogLikelihoodValues, // output
+  ScalarSequence         <double>*         currLogTargetValues)     // output
 {
   m_env.fullComm().Barrier();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
+    *m_env.subDisplayFile() << "Entering MLSampling<P_V,P_M>::generateBalLinkedChains_all()"
                             << ": balancedLinkControl.balLinkedChains.size() = " << balancedLinkControl.balLinkedChains.size()
                             << std::endl;
   }
@@ -623,7 +623,7 @@ MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
   }
   // KAUST: all nodes in 'subComm' should have the same 'chainIdMax'
   m_env.subComm().Bcast((void *) &chainIdMax, (int) 1, RawValue_MPI_UNSIGNED, 0, // Yes, 'subComm', important // LOAD BALANCE
-                        "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
+                        "MLSampling<P_V,P_M>::generateBalLinkedChains_all()",
                         "failed MPI.Bcast() for chainIdMax");
 
   struct timeval timevalEntering;
@@ -642,30 +642,30 @@ MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
     unsigned int minNumberOfPositions = 0;
     auxBuf[0] = numberOfPositions;
     m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &minNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_MIN, // LOAD BALANCE
-                                 "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
+                                 "MLSampling<P_V,P_M>::generateBalLinkedChains_all()",
                                  "failed MPI.Allreduce() for min");
 
     unsigned int maxNumberOfPositions = 0;
     auxBuf[0] = numberOfPositions;
     m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &maxNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_MAX, // LOAD BALANCE
-                                 "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
+                                 "MLSampling<P_V,P_M>::generateBalLinkedChains_all()",
                                  "failed MPI.Allreduce() for max");
 
     unsigned int sumNumberOfPositions = 0;
     auxBuf[0] = numberOfPositions;
     m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &sumNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_SUM, // LOAD BALANCE
-                                 "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
+                                 "MLSampling<P_V,P_M>::generateBalLinkedChains_all()",
                                  "failed MPI.Allreduce() for sum");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayFile() << "KEY In MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
+      *m_env.subDisplayFile() << "KEY In MLSampling<P_V,P_M>::generateBalLinkedChains_all()"
                               << ", level "               << m_currLevel+LEVEL_REF_ID
                               << ", step "                << m_currStep
                               << ": chainIdMax = "        << chainIdMax
                               << ", numberOfPositions = " << numberOfPositions
                               << ", at "                  << ctime(&timevalEntering.tv_sec)
                               << std::endl;
-      *m_env.subDisplayFile() << "KEY In MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
+      *m_env.subDisplayFile() << "KEY In MLSampling<P_V,P_M>::generateBalLinkedChains_all()"
                               << ", level "                  << m_currLevel+LEVEL_REF_ID
                               << ", step "                   << m_currStep
                               << ": minNumberOfPositions = " << minNumberOfPositions
@@ -689,7 +689,7 @@ MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
       tmpChainSize = balancedLinkControl.balLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
       if ((m_env.subDisplayFile()       ) &&
           (m_env.displayVerbosity() >= 3)) {
-        *m_env.subDisplayFile() << "In MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
+        *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateBalLinkedChains_all()"
                                 << ", level "            << m_currLevel+LEVEL_REF_ID
                                 << ", step "             << m_currStep
                                 << ", chainId = "        << chainId
@@ -714,18 +714,18 @@ MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
 
     // KAUST: all nodes in 'subComm' should have the same 'tmpChainSize'
     m_env.subComm().Bcast((void *) &tmpChainSize, (int) 1, RawValue_MPI_UNSIGNED, 0, // Yes, 'subComm', important // LOAD BALANCE
-                          "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
+                          "MLSampling<P_V,P_M>::generateBalLinkedChains_all()",
                           "failed MPI.Bcast() for tmpChainSize");
 
     inputOptions.m_rawChainSize = tmpChainSize;
-    SequenceOfVectorsClass<P_V,P_M> tmpChain(m_vectorSpace,
+    SequenceOfVectors<P_V,P_M> tmpChain(m_vectorSpace,
                                                0,
                                                m_options.m_prefix+"tmp_chain");
-    ScalarSequenceClass<double> tmpLogLikelihoodValues(m_env,0,"");
-    ScalarSequenceClass<double> tmpLogTargetValues    (m_env,0,"");
+    ScalarSequence<double> tmpLogLikelihoodValues(m_env,0,"");
+    ScalarSequence<double> tmpLogTargetValues    (m_env,0,"");
 
     // KAUST: all nodes should call here
-    MetropolisHastingsSGClass<P_V,P_M> mcSeqGenerator(inputOptions,
+    MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
                                                         rv,
                                                         auxInitialPosition, // KEY new: pass logPrior and logLikelihood
                                                         &unifiedCovMatrix);
@@ -802,7 +802,7 @@ MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
   if (iRC) {}; // just to remove compiler warning
   double loopTime = MiscGetEllapsedSeconds(&timevalEntering);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
+    *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateBalLinkedChains_all()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": ended chain loop after " << loopTime << " seconds"
@@ -817,7 +817,7 @@ MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
   if (iRC) {}; // just to remove compiler warning
   double barrierTime = MiscGetEllapsedSeconds(&timevalBarrier);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()"
+    *m_env.subDisplayFile() << "Leaving MLSampling<P_V,P_M>::generateBalLinkedChains_all()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": after " << barrierTime << " seconds in fullComm().Barrier()"
@@ -830,23 +830,23 @@ MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
-  MLSamplingLevelOptionsClass&               inputOptions,            // input, only m_rawChainSize changes
+MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
+  MLSamplingLevelOptions&               inputOptions,            // input, only m_rawChainSize changes
   const P_M&                                   unifiedCovMatrix,        // input
-  const GenericVectorRVClass  <P_V,P_M>&     rv,                      // input
+  const GenericVectorRV  <P_V,P_M>&     rv,                      // input
   const UnbalancedLinkedChainsPerNodeStruct& unbalancedLinkControl,   // input // Round Rock
   unsigned int                                 indexOfFirstWeight,      // input // Round Rock
-  const SequenceOfVectorsClass<P_V,P_M>&     prevChain,               // input // Round Rock
-  SequenceOfVectorsClass      <P_V,P_M>&     workingChain,            // output
+  const SequenceOfVectors<P_V,P_M>&     prevChain,               // input // Round Rock
+  SequenceOfVectors      <P_V,P_M>&     workingChain,            // output
   double&                                      cumulativeRunTime,       // output
   unsigned int&                                cumulativeRejections,    // output
-  ScalarSequenceClass         <double>*      currLogLikelihoodValues, // output
-  ScalarSequenceClass         <double>*      currLogTargetValues)     // output
+  ScalarSequence         <double>*      currLogLikelihoodValues, // output
+  ScalarSequence         <double>*      currLogTargetValues)     // output
 {
   m_env.fullComm().Barrier();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Entering MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
+    *m_env.subDisplayFile() << "Entering MLSampling<P_V,P_M>::generateUnbLinkedChains_all()"
                             << ": unbalancedLinkControl.unbLinkedChains.size() = " << unbalancedLinkControl.unbLinkedChains.size()
                             << ", indexOfFirstWeight = "                           << indexOfFirstWeight
                             << std::endl;
@@ -860,7 +860,7 @@ MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
   }
   // KAUST: all nodes in 'subComm' should have the same 'chainIdMax'
   m_env.subComm().Bcast((void *) &chainIdMax, (int) 1, RawValue_MPI_UNSIGNED, 0, // Yes, 'subComm', important
-                        "MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
+                        "MLSampling<P_V,P_M>::generateUnbLinkedChains_all()",
                         "failed MPI.Bcast() for chainIdMax");
 
   struct timeval timevalEntering;
@@ -879,30 +879,30 @@ MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
     unsigned int minNumberOfPositions = 0;
     auxBuf[0] = numberOfPositions;
     m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &minNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_MIN,
-                                 "MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
+                                 "MLSampling<P_V,P_M>::generateUnbLinkedChains_all()",
                                  "failed MPI.Allreduce() for min");
 
     unsigned int maxNumberOfPositions = 0;
     auxBuf[0] = numberOfPositions;
     m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &maxNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_MAX,
-                                 "MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
+                                 "MLSampling<P_V,P_M>::generateUnbLinkedChains_all()",
                                  "failed MPI.Allreduce() for max");
 
     unsigned int sumNumberOfPositions = 0;
     auxBuf[0] = numberOfPositions;
     m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &sumNumberOfPositions, (int) auxBuf.size(), RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
-                                 "MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
+                                 "MLSampling<P_V,P_M>::generateUnbLinkedChains_all()",
                                  "failed MPI.Allreduce() for sum");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayFile() << "KEY In MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
+      *m_env.subDisplayFile() << "KEY In MLSampling<P_V,P_M>::generateUnbLinkedChains_all()"
                               << ", level "               << m_currLevel+LEVEL_REF_ID
                               << ", step "                << m_currStep
                               << ": chainIdMax = "        << chainIdMax
                               << ", numberOfPositions = " << numberOfPositions
                               << ", at "                  << ctime(&timevalEntering.tv_sec)
                               << std::endl;
-      *m_env.subDisplayFile() << "KEY In MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
+      *m_env.subDisplayFile() << "KEY In MLSampling<P_V,P_M>::generateUnbLinkedChains_all()"
                               << ", level "                  << m_currLevel+LEVEL_REF_ID
                               << ", step "                   << m_currStep
                               << ": minNumberOfPositions = " << minNumberOfPositions
@@ -924,7 +924,7 @@ MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
       tmpChainSize = unbalancedLinkControl.unbLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
       if ((m_env.subDisplayFile()       ) &&
           (m_env.displayVerbosity() >= 3)) {
-        *m_env.subDisplayFile() << "In MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
+        *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateUnbLinkedChains_all()"
                                 << ", level "            << m_currLevel+LEVEL_REF_ID
                                 << ", step "             << m_currStep
                                 << ", chainId = "        << chainId
@@ -949,18 +949,18 @@ MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
 
     // KAUST: all nodes in 'subComm' should have the same 'tmpChainSize'
     m_env.subComm().Bcast((void *) &tmpChainSize, (int) 1, RawValue_MPI_UNSIGNED, 0, // Yes, 'subComm', important
-                          "MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
+                          "MLSampling<P_V,P_M>::generateUnbLinkedChains_all()",
                           "failed MPI.Bcast() for tmpChainSize");
 
     inputOptions.m_rawChainSize = tmpChainSize;
-    SequenceOfVectorsClass<P_V,P_M> tmpChain(m_vectorSpace,
+    SequenceOfVectors<P_V,P_M> tmpChain(m_vectorSpace,
                                                0,
                                                m_options.m_prefix+"tmp_chain");
-    ScalarSequenceClass<double> tmpLogLikelihoodValues(m_env,0,"");
-    ScalarSequenceClass<double> tmpLogTargetValues    (m_env,0,"");
+    ScalarSequence<double> tmpLogLikelihoodValues(m_env,0,"");
+    ScalarSequence<double> tmpLogTargetValues    (m_env,0,"");
 
     // KAUST: all nodes should call here
-    MetropolisHastingsSGClass<P_V,P_M> mcSeqGenerator(inputOptions,
+    MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
                                                         rv,
                                                         auxInitialPosition, // KEY new: pass logPrior and logLikelihood
                                                         &unifiedCovMatrix);
@@ -1034,7 +1034,7 @@ MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
   if (iRC) {}; // just to remove compiler warning
   double loopTime = MiscGetEllapsedSeconds(&timevalEntering);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
+    *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateUnbLinkedChains_all()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": ended chain loop after " << loopTime << " seconds"
@@ -1049,7 +1049,7 @@ MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
   if (iRC) {}; // just to remove compiler warning
   double barrierTime = MiscGetEllapsedSeconds(&timevalBarrier);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "Leaving MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()"
+    *m_env.subDisplayFile() << "Leaving MLSampling<P_V,P_M>::generateUnbLinkedChains_all()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": after " << barrierTime << " seconds in fullComm().Barrier()"
@@ -1063,7 +1063,7 @@ MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all(
 #ifdef QUESO_HAS_GLPK
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE 
+MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE 
   std::vector<ExchangeInfoStruct>& exchangeStdVec) // input/output
 {
   if (m_env.inter0Rank() != 0) return;
@@ -1173,7 +1173,7 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
 
   UQ_FATAL_TEST_MACRO(coefId != (int) (ne+1),
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
                       "invalid final coefId");
 
   glp_load_matrix(lp, ne, &iVec[0], &jVec[0], &aVec[0]);
@@ -1196,27 +1196,27 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   //////////////////////////////////////////////////////////////////////////
   UQ_FATAL_TEST_MACRO(glp_get_num_rows(lp) != (int) m, // Not 'm+1'
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of rows");
 
   UQ_FATAL_TEST_MACRO(glp_get_num_cols(lp) != (int) n, // Not 'n+1'
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of columnss");
 
   UQ_FATAL_TEST_MACRO(glp_get_num_nz(lp) != (int) ne,
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of nonzero constraint coefficients");
 
   UQ_FATAL_TEST_MACRO(glp_get_num_int(lp) != (int) n, // ????
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of integer structural variables");
 
   UQ_FATAL_TEST_MACRO(glp_get_num_bin(lp) != (int) n,
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
                       "invalid number of binary structural variables");
 
   //////////////////////////////////////////////////////////////////////////
@@ -1241,13 +1241,13 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
       if (nodeId == 0) {
         UQ_FATAL_TEST_MACRO(initialState != 1,
                             m_env.worldRank(),
-                            "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                            "MLSampling<P_V,P_M>::solveBIP_proc0()",
                             "for nodeId = 0, initial state should be '1'");
       }
       else {
         UQ_FATAL_TEST_MACRO(initialState != 0,
                             m_env.worldRank(),
-                            "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                            "MLSampling<P_V,P_M>::solveBIP_proc0()",
                             "for nodeId > 0, initial state should be '0'");
       }
     }
@@ -1291,7 +1291,7 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
 
   UQ_FATAL_TEST_MACRO(BIP_rc != 0,
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
                       "BIP returned rc != 0");
 
   //////////////////////////////////////////////////////////////////////////
@@ -1299,7 +1299,7 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   //////////////////////////////////////////////////////////////////////////
   int BIP_Status = glp_mip_status(lp);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In MLSamplingClass<P_V,P_M>::solveBIP_proc0()"
+    *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": BIP_Status = " << BIP_Status
@@ -1310,7 +1310,7 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
     case GLP_OPT:
       // Ok 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-        *m_env.subDisplayFile() << "In MLSamplingClass<P_V,P_M>::solveBIP_proc0()"
+        *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::solveBIP_proc0()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
                                 << ", step "  << m_currStep
                                 << ": BIP solution is optimal"
@@ -1321,7 +1321,7 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
     case GLP_FEAS:
       // Ok 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-        *m_env.subDisplayFile() << "In MLSamplingClass<P_V,P_M>::solveBIP_proc0()"
+        *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::solveBIP_proc0()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
                                 << ", step "  << m_currStep
                                 << ": BIP solution is guaranteed to be 'only' feasible"
@@ -1332,7 +1332,7 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
     default:
       UQ_FATAL_TEST_MACRO(true,
                           m_env.worldRank(),
-                          "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                          "MLSampling<P_V,P_M>::solveBIP_proc0()",
                           "BIP has an undefined solution or has no solution");
     break;
   }
@@ -1340,13 +1340,13 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   for (int i = 1; i <= (int) Nc; ++i) {
     UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) != 1,
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                        "MLSampling<P_V,P_M>::solveBIP_proc0()",
                         "row should have value 1 at solution");
   }
   for (int i = (Nc+1); i <= (int) (Nc+Np-1); ++i) {
     UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) > 0,
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                        "MLSampling<P_V,P_M>::solveBIP_proc0()",
                         "row should have value 0 or should be negative at solution");
   }
 
@@ -1364,7 +1364,7 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
       else if (glp_mip_col_val(lp, j) == 1) {
         UQ_FATAL_TEST_MACRO(exchangeStdVec[chainId].finalNodeOfInitialPosition != -1, // important
                             m_env.worldRank(),
-                            "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                            "MLSampling<P_V,P_M>::solveBIP_proc0()",
                             "chain has already been taken care of");
         exchangeStdVec[chainId].finalNodeOfInitialPosition = nodeId;
         finalNumChainsPerNode   [nodeId] += 1;
@@ -1373,7 +1373,7 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
       else {
         UQ_FATAL_TEST_MACRO(true,
                             m_env.worldRank(),
-                            "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                            "MLSampling<P_V,P_M>::solveBIP_proc0()",
                             "control variable should be either '0' or '1'");
       }
     }
@@ -1394,20 +1394,20 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   // Printout solution information
   //////////////////////////////////////////////////////////////////////////
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "KEY In MLSamplingClass<P_V,P_M>::solveBIP_proc0()"
+    *m_env.subDisplayFile() << "KEY In MLSampling<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": solution gives the following redistribution"
                             << std::endl;
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
-      *m_env.subDisplayFile() << "  KEY In MLSamplingClass<P_V,P_M>::solveBIP_proc0()"
+      *m_env.subDisplayFile() << "  KEY In MLSampling<P_V,P_M>::solveBIP_proc0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ", finalNumChainsPerNode["    << nodeId << "] = " << finalNumChainsPerNode[nodeId]
                               << ", finalNumPositionsPerNode[" << nodeId << "] = " << finalNumPositionsPerNode[nodeId]
                               << std::endl;
     }
-    *m_env.subDisplayFile() << "  KEY In MLSamplingClass<P_V,P_M>::solveBIP_proc0()"
+    *m_env.subDisplayFile() << "  KEY In MLSampling<P_V,P_M>::solveBIP_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ", finalRatioOfPosPerNode = " << ((double) finalMaxPosPerNode) / ((double)finalMinPosPerNode)
@@ -1419,13 +1419,13 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   //////////////////////////////////////////////////////////////////////////
   UQ_FATAL_TEST_MACRO(glp_mip_obj_val(lp) != (double) finalNumPositionsPerNode[0],
                       m_env.worldRank(),
-                      "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                      "MLSampling<P_V,P_M>::solveBIP_proc0()",
                       "Invalid objective value");
 
   for (unsigned int nodeId = 1; nodeId < Np; ++nodeId) { // Yes, '1'
     UQ_FATAL_TEST_MACRO(finalNumPositionsPerNode[nodeId-1] < finalNumPositionsPerNode[nodeId],
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                        "MLSampling<P_V,P_M>::solveBIP_proc0()",
                         "Next node should have a number of positions equal or less than the current node");
   }
 
@@ -1434,7 +1434,7 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
     int diff = ((int) finalNumPositionsPerNode[nodeId]) - ((int) finalNumPositionsPerNode[nodeId-1]);
     UQ_FATAL_TEST_MACRO(glp_mip_row_val(lp, i) != diff,
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::solveBIP_proc0()",
+                        "MLSampling<P_V,P_M>::solveBIP_proc0()",
                         "wrong state");
   }
     
@@ -1458,8 +1458,8 @@ MLSamplingClass<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::justBalance_proc0(
-  const MLSamplingLevelOptionsClass* currOptions,    // input
+MLSampling<P_V,P_M>::justBalance_proc0(
+  const MLSamplingLevelOptions* currOptions,    // input
   std::vector<ExchangeInfoStruct>&   exchangeStdVec) // input/output
 {
   if (m_env.inter0Rank() != 0) return;
@@ -1507,7 +1507,7 @@ MLSamplingClass<P_V,P_M>::justBalance_proc0(
                             << ", currRatioOfPosPerNode = " << currRatioOfPosPerNode
                             << std::endl;
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
-      *m_env.subDisplayFile() << "  KEY In MLSamplingClass<P_V,P_M>::justBalance_proc0()"
+      *m_env.subDisplayFile() << "  KEY In MLSampling<P_V,P_M>::justBalance_proc0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ", iter "  << iterId
@@ -1537,7 +1537,7 @@ MLSamplingClass<P_V,P_M>::justBalance_proc0(
       std::sort(vectorOfChainSizesPerNode[nodeId].begin(), vectorOfChainSizesPerNode[nodeId].end());
       UQ_FATAL_TEST_MACRO(vectorOfChainSizesPerNode[nodeId].size() != currNumChainsPerNode[nodeId],
                           m_env.worldRank(),
-                          "MLSamplingClass<P_V,P_M>::justBalance_proc0()",
+                          "MLSampling<P_V,P_M>::justBalance_proc0()",
                           "inconsistent number of chains in node");
     }
    
@@ -1561,12 +1561,12 @@ MLSamplingClass<P_V,P_M>::justBalance_proc0(
 
     UQ_FATAL_TEST_MACRO(currMinPosPerNode != currNumPositionsPerNode[currNodeWithLeastPositions],
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::justBalance_proc0()",
+                        "MLSampling<P_V,P_M>::justBalance_proc0()",
                         "inconsistent currMinPosPerNode");
 
     UQ_FATAL_TEST_MACRO(currMaxPosPerNode != currNumPositionsPerNode[currNodeWithMostPositions],
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::justBalance_proc0()",
+                        "MLSampling<P_V,P_M>::justBalance_proc0()",
                         "inconsistent currMaxPosPerNode");
 
     unsigned int numberOfPositionsToMove = vectorOfChainSizesPerNode[currNodeWithMostPositions][0];
@@ -1646,12 +1646,12 @@ MLSamplingClass<P_V,P_M>::justBalance_proc0(
 
     UQ_FATAL_TEST_MACRO(newMinPosPerNode != newNumPositionsPerNode[newNodeWithLeastPositions],
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::justBalance_proc0()",
+                        "MLSampling<P_V,P_M>::justBalance_proc0()",
                         "inconsistent newMinPosPerNode");
 
     UQ_FATAL_TEST_MACRO(newMaxPosPerNode != newNumPositionsPerNode[newNodeWithMostPositions],
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::justBalance_proc0()",
+                        "MLSampling<P_V,P_M>::justBalance_proc0()",
                         "inconsistent newMaxPosPerNode");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
@@ -1664,7 +1664,7 @@ MLSamplingClass<P_V,P_M>::justBalance_proc0(
                               << ", newRatioOfPosPerNode = " << newRatioOfPosPerNode
                               << std::endl;
       for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
-        *m_env.subDisplayFile() << "  KEY In MLSamplingClass<P_V,P_M>::justBalance_proc0()"
+        *m_env.subDisplayFile() << "  KEY In MLSampling<P_V,P_M>::justBalance_proc0()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
                                 << ", step "  << m_currStep
                                 << ", iter "  << iterId
@@ -1722,20 +1722,20 @@ MLSamplingClass<P_V,P_M>::justBalance_proc0(
   double finalRatioOfPosPerNode = ((double) finalMaxPosPerNode ) / ((double) finalMinPosPerNode);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "KEY In MLSamplingClass<P_V,P_M>::justBalance_proc0()"
+    *m_env.subDisplayFile() << "KEY In MLSampling<P_V,P_M>::justBalance_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ": solution gives the following redistribution"
                             << std::endl;
     for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) {
-      *m_env.subDisplayFile() << "  KEY In MLSamplingClass<P_V,P_M>::justBalance_proc0()"
+      *m_env.subDisplayFile() << "  KEY In MLSampling<P_V,P_M>::justBalance_proc0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ", finalNumChainsPerNode["    << nodeId << "] = " << finalNumChainsPerNode[nodeId]
                               << ", finalNumPositionsPerNode[" << nodeId << "] = " << finalNumPositionsPerNode[nodeId]
                               << std::endl;
     }
-    *m_env.subDisplayFile() << "  KEY In MLSamplingClass<P_V,P_M>::justBalance_proc0()"
+    *m_env.subDisplayFile() << "  KEY In MLSampling<P_V,P_M>::justBalance_proc0()"
                             << ", level " << m_currLevel+LEVEL_REF_ID
                             << ", step "  << m_currStep
                             << ", finalRatioOfPosPerNode = " << finalRatioOfPosPerNode
@@ -1761,8 +1761,8 @@ MLSamplingClass<P_V,P_M>::justBalance_proc0(
 
 template <class P_V,class P_M>
 void
-MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
-  const SequenceOfVectorsClass<P_V,P_M>&  prevChain,                // input
+MLSampling<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
+  const SequenceOfVectors<P_V,P_M>&  prevChain,                // input
   const std::vector<ExchangeInfoStruct>&  exchangeStdVec,           // input
   const std::vector<unsigned int>&          finalNumChainsPerNode,    // input
   const std::vector<unsigned int>&          finalNumPositionsPerNode, // input
@@ -1829,7 +1829,7 @@ MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
     // Printout important information
     //////////////////////////////////////////////////////////////////////////
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-      *m_env.subDisplayFile() << "KEY In MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()"
+      *m_env.subDisplayFile() << "KEY In MLSampling<P_V,P_M>::mpiExchangePositions_inter0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ": r = "                                              << r
@@ -1837,7 +1837,7 @@ MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
                               << ", totalNumberOfInitialPositionsNodeRHasToReceive = " << totalNumberOfInitialPositionsNodeRHasToReceive
                               << ", numberOfInitialPositionsNodeRAlreadyHas = "        << numberOfInitialPositionsNodeRAlreadyHas
                               << std::endl;
-      *m_env.subDisplayFile() << "KEY In MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()"
+      *m_env.subDisplayFile() << "KEY In MLSampling<P_V,P_M>::mpiExchangePositions_inter0()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", step "  << m_currStep
                               << ": r = "                                       << r
@@ -1852,22 +1852,22 @@ MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
     //////////////////////////////////////////////////////////////////////////
     UQ_FATAL_TEST_MACRO(indexesOfInitialPositionsNodeRHasToReceiveFromMe.size() != numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()],
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
+                        "MLSampling<P_V,P_M>::mpiExchangePositions_inter0()",
                         "inconsistent number of initial positions to send to node 'r'");
 
     UQ_FATAL_TEST_MACRO(finalNumChainsPerNode[r] != (totalNumberOfInitialPositionsNodeRHasToReceive + numberOfInitialPositionsNodeRAlreadyHas),
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
+                        "MLSampling<P_V,P_M>::mpiExchangePositions_inter0()",
                         "inconsistent number of chains in node 'r'");
 
     UQ_FATAL_TEST_MACRO(finalNumPositionsPerNode[r] != (totalSumOfChainLenghtsNodeRHasToInherit + sumOfChainLenghtsNodeRAlreadyHas),
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
+                        "MLSampling<P_V,P_M>::mpiExchangePositions_inter0()",
                         "inconsistent sum of chain lenghts in node 'r'");
 
     UQ_FATAL_TEST_MACRO(totalNumberOfInitialPositionsNodeRHasToReceive != totalNumberOfChainLenghtsNodeRHasToInherit,
                         m_env.worldRank(),
-                        "MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
+                        "MLSampling<P_V,P_M>::mpiExchangePositions_inter0()",
                         "inconsistent on total number of initial positions to receive in node 'r'");
 
     // Optimize use of memory (FIX ME: don't need to use swap here ????)
@@ -1910,17 +1910,17 @@ MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
 #if 0
     if (m_env.inter0Rank() == r) {
       m_env.inter0Comm().Gatherv(RawValue_MPI_IN_PLACE, (int) sendcnt, RawValue_MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], RawValue_MPI_DOUBLE, r, // LOAD BALANCE
-                                 "MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0(1)",
+                                 "MLSampling<P_V,P_M>::mpiExchangePositions_inter0(1)",
                                  "failed MPI.Gatherv()");
     }
     else {
       m_env.inter0Comm().Gatherv((void *) &sendbuf[0], (int) sendcnt, RawValue_MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], RawValue_MPI_DOUBLE, r, // LOAD BALANCE
-                                 "MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0(2)",
+                                 "MLSampling<P_V,P_M>::mpiExchangePositions_inter0(2)",
                                  "failed MPI.Gatherv()");
     }
 #else
     m_env.inter0Comm().Gatherv((void *) &sendbuf[0], (int) sendcnt, RawValue_MPI_DOUBLE, (void *) &recvbuf[0], (int *) &recvcnts[0], (int *) &displs[0], RawValue_MPI_DOUBLE, r, // LOAD BALANCE
-                               "MLSamplingClass<P_V,P_M>::mpiExchangePositions_inter0()",
+                               "MLSampling<P_V,P_M>::mpiExchangePositions_inter0()",
                                "failed MPI.Gatherv()");
 #endif
 

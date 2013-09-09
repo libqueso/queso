@@ -31,8 +31,8 @@
 
 namespace QUESO {
 
-MLSamplingLevelOptionsClass::MLSamplingLevelOptionsClass(
-  const BaseEnvironmentClass& env,
+MLSamplingLevelOptions::MLSamplingLevelOptions(
+  const BaseEnvironment& env,
   const char*                   prefix)
   :
   m_prefix                                   ((std::string)(prefix) + ""),
@@ -178,7 +178,7 @@ MLSamplingLevelOptionsClass::MLSamplingLevelOptionsClass(
 }
 
 void
-MLSamplingLevelOptionsClass::copyOptionsValues(const MLSamplingLevelOptionsClass& srcOptions)
+MLSamplingLevelOptions::copyOptionsValues(const MLSamplingLevelOptions& srcOptions)
 {
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -257,9 +257,9 @@ MLSamplingLevelOptionsClass::copyOptionsValues(const MLSamplingLevelOptionsClass
   return;
 }
 
-MLSamplingLevelOptionsClass::~MLSamplingLevelOptionsClass()
+MLSamplingLevelOptions::~MLSamplingLevelOptions()
 {
-  //std::cout << "In MLSamplingLevelOptionsClass::destructor()"
+  //std::cout << "In MLSamplingLevelOptions::destructor()"
   //          << ": m_filteredChainStatOptsInstantiated = " << m_filteredChainStatOptsInstantiated
   //          << ", m_rawChainStatOptsInstantiated = "      << m_rawChainStatOptsInstantiated
   //          << std::endl;
@@ -272,7 +272,7 @@ MLSamplingLevelOptionsClass::~MLSamplingLevelOptionsClass()
 } 
 
 void
-MLSamplingLevelOptionsClass::scanOptionsValues(const MLSamplingLevelOptionsClass* defaultOptions)
+MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultOptions)
 {
   if (m_optionsDesc == NULL) m_optionsDesc = new po::options_description("Multilevel sampling level options");
   if (defaultOptions) this->copyOptionsValues(*defaultOptions);
@@ -283,7 +283,7 @@ MLSamplingLevelOptionsClass::scanOptionsValues(const MLSamplingLevelOptionsClass
 
   if ((m_env.subDisplayFile() != NULL ) &&
       (1)) { //m_totallyMute          == false)) {
-    *m_env.subDisplayFile() << "In MLSamplingLevelOptionsClass::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In MLSamplingLevelOptions::scanOptionsValues()"
                             << ": after getting values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -292,11 +292,11 @@ MLSamplingLevelOptionsClass::scanOptionsValues(const MLSamplingLevelOptionsClass
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_rawChainComputeStats) {
-    m_rawChainStatisticalOptionsObj = new SequenceStatisticalOptionsClass(m_env,m_prefix + "rawChain_");
+    m_rawChainStatisticalOptionsObj = new SequenceStatisticalOptions(m_env,m_prefix + "rawChain_");
     m_rawChainStatOptsInstantiated  = true;
   }
   if (m_filteredChainComputeStats) {
-    m_filteredChainStatisticalOptionsObj = new SequenceStatisticalOptionsClass(m_env,m_prefix + "filteredChain_");
+    m_filteredChainStatisticalOptionsObj = new SequenceStatisticalOptions(m_env,m_prefix + "filteredChain_");
     m_filteredChainStatOptsInstantiated  = true;
   }
 #endif
@@ -304,7 +304,7 @@ MLSamplingLevelOptionsClass::scanOptionsValues(const MLSamplingLevelOptionsClass
 }
 
 void
-MLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+MLSamplingLevelOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                                                              "produce help message for Bayesian Markov chain distr. calculator")
@@ -377,7 +377,7 @@ MLSamplingLevelOptionsClass::defineMyOptions(po::options_description& optionsDes
 }
 
 void
-MLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+MLSamplingLevelOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
   char tmpStr[64];
 
@@ -441,7 +441,7 @@ MLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& optionsD
     m_minEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minEffectiveSizeRatio.c_str()]).as<double>();
   }
   if (m_minEffectiveSizeRatio >= 1.) {
-    std::cerr << "WARNING In MLSamplingLevelOptionsClass::getMyOptionsValues()"
+    std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -458,7 +458,7 @@ MLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& optionsD
     m_maxEffectiveSizeRatio = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxEffectiveSizeRatio.c_str()]).as<double>();
   }
   if (m_maxEffectiveSizeRatio >= 1.) {
-    std::cerr << "WARNING In MLSamplingLevelOptionsClass::getMyOptionsValues()"
+    std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -479,7 +479,7 @@ MLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& optionsD
     m_minRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minRejectionRate.c_str()]).as<double>();
   }
   if (m_minRejectionRate >= 1.) {
-    std::cerr << "WARNING In MLSamplingLevelOptionsClass::getMyOptionsValues()"
+    std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -496,7 +496,7 @@ MLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& optionsD
     m_maxRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_maxRejectionRate.c_str()]).as<double>();
   }
   if (m_maxRejectionRate >= 1.) {
-    std::cerr << "WARNING In MLSamplingLevelOptionsClass::getMyOptionsValues()"
+    std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -513,7 +513,7 @@ MLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& optionsD
     m_covRejectionRate = ((const po::variable_value&) m_env.allOptionsMap()[m_option_covRejectionRate.c_str()]).as<double>();
   }
   if (m_covRejectionRate >= 1.) {
-    std::cerr << "WARNING In MLSamplingLevelOptionsClass::getMyOptionsValues()"
+    std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -632,7 +632,7 @@ MLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& optionsD
   }
   if ((m_filteredChainGenerate == true) &&
       (m_filteredChainLag      < 2    )) {
-    std::cerr << "WARNING In MLSamplingLevelOptionsClass::getMyOptionsValues()"
+    std::cerr << "WARNING In MLSamplingLevelOptions::getMyOptionsValues()"
               << ", worldRank "             << m_env.worldRank()
               << ", fullRank "              << m_env.fullRank()
               << ", subEnvironment "        << m_env.subId()
@@ -709,7 +709,7 @@ MLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& optionsD
     std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_listOfScalesForExtraStages.c_str()]).as<std::string>();
     MiscReadDoublesFromString(inputString,tmpScales);
     //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In MLSamplingLevelOptionsClass::getMyOptionValues(): scales =";
+    //  *m_env.subDisplayFile() << "In MLSamplingLevelOptions::getMyOptionValues(): scales =";
     //  for (unsigned int i = 0; i < tmpScales.size(); ++i) {
     //    *m_env.subDisplayFile() << " " << tmpScales[i];
     //  }
@@ -806,7 +806,7 @@ MLSamplingLevelOptionsClass::getMyOptionValues(po::options_description& optionsD
 }
 
 void
-MLSamplingLevelOptionsClass::print(std::ostream& os) const
+MLSamplingLevelOptions::print(std::ostream& os) const
 {
   os <<        "m_prefix"                         << " = " << m_prefix
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
@@ -894,13 +894,13 @@ MLSamplingLevelOptionsClass::print(std::ostream& os) const
   return;
 }
 
-const BaseEnvironmentClass& 
-MLSamplingLevelOptionsClass::env() const
+const BaseEnvironment& 
+MLSamplingLevelOptions::env() const
 {
   return m_env;
 }
 
-std::ostream& operator<<(std::ostream& os, const MLSamplingLevelOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const MLSamplingLevelOptions& obj)
 {
   obj.print(os);
 

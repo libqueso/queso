@@ -42,10 +42,10 @@ namespace QUESO {
 //*****************************************************
 // Base class [R-00]
 //*****************************************************
-/*! \file uqVectorRealizerClass.h
+/*! \file uqVectorRealizer.h
  * \brief A templated class for sampling from vector RVs (holding probability density distributions).
  * 
- * \class BaseVectorRealizerClass
+ * \class BaseVectorRealizer
  * \brief A templated (base) class for handling sampling from vector RVs.
  *
  * A realizer is an object that, simply put, contains a realization() operation 
@@ -54,25 +54,25 @@ namespace QUESO {
  * and implemented in the derived classes. */
 
 template<class V, class M>
-class BaseVectorRealizerClass {
+class BaseVectorRealizer {
 public:
   
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor
   /*! Constructs a new object, given a prefix and the image set of the vector realizer.*/
-  BaseVectorRealizerClass(const char*                  prefix,
-			    const VectorSetClass<V,M>& unifiedImageSet,
+  BaseVectorRealizer(const char*                  prefix,
+			    const VectorSet<V,M>& unifiedImageSet,
 			    unsigned int                 subPeriod);
 
   //! Virtual destructor
-  virtual ~BaseVectorRealizerClass();
+  virtual ~BaseVectorRealizer();
   //@}
   
   //! @name Realization-related methods
   //@{
   //! Image set where the realizations lie.  Access to protected attribute m_unifiedImageSet.
-  const   VectorSetClass<V,M>& unifiedImageSet()              const;
+  const   VectorSet<V,M>& unifiedImageSet()              const;
   
   //! Sub-period of the realization. Access to protected attribute m_subPeriod.
   unsigned int           subPeriod      ()              const;
@@ -82,16 +82,16 @@ public:
   //@}
   
 protected:
-  const BaseEnvironmentClass& m_env;
+  const BaseEnvironment& m_env;
         std::string             m_prefix;
-  const VectorSetClass<V,M>&  m_unifiedImageSet;
+  const VectorSet<V,M>&  m_unifiedImageSet;
         unsigned int            m_subPeriod;
 };
 // Default constructor -----------------------------
 template<class V, class M>
-BaseVectorRealizerClass<V,M>::BaseVectorRealizerClass(
+BaseVectorRealizer<V,M>::BaseVectorRealizer(
   const char*                  prefix,
-  const VectorSetClass<V,M>& unifiedImageSet,
+  const VectorSet<V,M>& unifiedImageSet,
   unsigned int                 subPeriod)
   :
   m_env            (unifiedImageSet.env()),
@@ -100,33 +100,33 @@ BaseVectorRealizerClass<V,M>::BaseVectorRealizerClass(
   m_subPeriod      (subPeriod)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering BaseVectorRealizerClass<V,M>::constructor() [4]"
+    *m_env.subDisplayFile() << "Entering BaseVectorRealizer<V,M>::constructor() [4]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving BaseVectorRealizerClass<V,M>::constructor() [4]"
+    *m_env.subDisplayFile() << "Leaving BaseVectorRealizer<V,M>::constructor() [4]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V, class M>
-BaseVectorRealizerClass<V,M>::~BaseVectorRealizerClass()
+BaseVectorRealizer<V,M>::~BaseVectorRealizer()
 {
 }
 // Realization-related methods----------------------
 template<class V, class M>
 unsigned int
-BaseVectorRealizerClass<V,M>::subPeriod() const
+BaseVectorRealizer<V,M>::subPeriod() const
 {
   return m_subPeriod;
 }
 //--------------------------------------------------
 template<class V, class M>
-const VectorSetClass<V,M>&
-BaseVectorRealizerClass<V,M>::unifiedImageSet() const
+const VectorSet<V,M>&
+BaseVectorRealizer<V,M>::unifiedImageSet() const
 {
   return m_unifiedImageSet;
 }
@@ -135,7 +135,7 @@ BaseVectorRealizerClass<V,M>::unifiedImageSet() const
 // Generic class [R-01]
 //*****************************************************
 /*! 
- * \class GenericVectorRealizerClass
+ * \class GenericVectorRealizer
  * \brief A class for handling sampling from generic probability density distributions.
  *
  * A realizer is an object that, simply put, contains a realization() operation 
@@ -144,7 +144,7 @@ BaseVectorRealizerClass<V,M>::unifiedImageSet() const
  * for example, to sample, posterior PDFs (the solution of a Bayesian problem).*/
 
 template<class V, class M>
-class GenericVectorRealizerClass : public BaseVectorRealizerClass<V,M> {
+class GenericVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
 
   //! @name Constructor/Destructor methods
@@ -152,13 +152,13 @@ public:
   //! Default constructor
   /*! Constructs a new object, given a prefix and the image set of the vector realizer, 
    * the sub period for the realizations and a pointer to a  generic routine. */ 
-  GenericVectorRealizerClass(const char*                  prefix,
-                               const VectorSetClass<V,M>& unifiedImageSet,
+  GenericVectorRealizer(const char*                  prefix,
+                               const VectorSet<V,M>& unifiedImageSet,
                                unsigned int                 subPeriod,
                                double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
                                const void* routineDataPtr);
  //! Destructor
-  ~GenericVectorRealizerClass();
+  ~GenericVectorRealizer();
   //@}
   
   //! @name Realization-related methods
@@ -172,45 +172,45 @@ private:
   double (*m_routinePtr)(const void* routineDataPtr, V& nextParamValues);
   const void* m_routineDataPtr;
 
-  using BaseVectorRealizerClass<V,M>::m_env;
-  using BaseVectorRealizerClass<V,M>::m_prefix;
-  using BaseVectorRealizerClass<V,M>::m_unifiedImageSet;
-  using BaseVectorRealizerClass<V,M>::m_subPeriod;
+  using BaseVectorRealizer<V,M>::m_env;
+  using BaseVectorRealizer<V,M>::m_prefix;
+  using BaseVectorRealizer<V,M>::m_unifiedImageSet;
+  using BaseVectorRealizer<V,M>::m_subPeriod;
 };
 // Default constructor -----------------------------
 template<class V, class M>
-GenericVectorRealizerClass<V,M>::GenericVectorRealizerClass(
+GenericVectorRealizer<V,M>::GenericVectorRealizer(
   const char*                  prefix,
-  const VectorSetClass<V,M>& unifiedImageSet,
+  const VectorSet<V,M>& unifiedImageSet,
   unsigned int                 subPeriod,
   double (*routinePtr)(const void* routineDataPtr, V& nextParamValues),
   const void* routineDataPtr)
   :
-  BaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,subPeriod),
+  BaseVectorRealizer<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,subPeriod),
   m_routinePtr    (routinePtr),
   m_routineDataPtr(routineDataPtr)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering GenericVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering GenericVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving GenericVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving GenericVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V, class M>
-GenericVectorRealizerClass<V,M>::~GenericVectorRealizerClass()
+GenericVectorRealizer<V,M>::~GenericVectorRealizer()
 {
 }
 // Realization-related methods----------------------
 template<class V, class M>
 void
-GenericVectorRealizerClass<V,M>::realization(V& nextValues) const
+GenericVectorRealizer<V,M>::realization(V& nextValues) const
 {
   m_routinePtr(m_routineDataPtr,nextValues);
   return;
@@ -220,13 +220,13 @@ GenericVectorRealizerClass<V,M>::realization(V& nextValues) const
 // Gaussian class [R-03]
 //*****************************************************
 /*! 
- * \class GaussianVectorRealizerClass
+ * \class GaussianVectorRealizer
  * \brief A class for handling sampling from Gaussian probability density distributions.
  *
  * This class handles sampling from a Gaussian probability density distribution.*/
 
 template<class V, class M>
-class GaussianVectorRealizerClass : public BaseVectorRealizerClass<V,M> {
+class GaussianVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
   
   //! @name Constructor/Destructor methods
@@ -235,8 +235,8 @@ public:
   /*! Constructs a new object, given a prefix and the image set of the vector realizer, a
    * vector of mean values, \c lawExpVector, and a lower triangular matrix resulting from 
    * Cholesky decomposition of the covariance matrix, \c lowerCholLawCovMatrix.  */ 
-  GaussianVectorRealizerClass(const char*                  prefix,
-                                const VectorSetClass<V,M>& unifiedImageSet,
+  GaussianVectorRealizer(const char*                  prefix,
+                                const VectorSet<V,M>& unifiedImageSet,
                                 const V&                     lawExpVector, // vector of mean values
                                 const M&                     lowerCholLawCovMatrix); // lower triangular matrix resulting from Cholesky decomposition of the covariance matrix
 
@@ -245,14 +245,14 @@ public:
    * vector of mean values, \c lawExpVector, and a set of two matrices and one vector 
    * resulting from the Single Value Decomposition of the covariance matrix, \c matU, 
    * \c vecSsqrt and \c matVt.  */ 
-  GaussianVectorRealizerClass(const char*                  prefix,
-                                const VectorSetClass<V,M>& unifiedImageSet,
+  GaussianVectorRealizer(const char*                  prefix,
+                                const VectorSet<V,M>& unifiedImageSet,
                                 const V&                     lawExpVector, // vector of mean values
                                 const M&                     matU,
                                 const V&                     vecSsqrt,
                                 const M&                     matVt);
   //! Destructor
-  ~GaussianVectorRealizerClass();
+  ~GaussianVectorRealizer();
   //@}
 
   //! @name Realization-related methods
@@ -294,19 +294,19 @@ private:
   V* m_vecSsqrt;
   M* m_matVt;
 
-  using BaseVectorRealizerClass<V,M>::m_env;
-  using BaseVectorRealizerClass<V,M>::m_prefix;
-  using BaseVectorRealizerClass<V,M>::m_unifiedImageSet;
-  using BaseVectorRealizerClass<V,M>::m_subPeriod;
+  using BaseVectorRealizer<V,M>::m_env;
+  using BaseVectorRealizer<V,M>::m_prefix;
+  using BaseVectorRealizer<V,M>::m_unifiedImageSet;
+  using BaseVectorRealizer<V,M>::m_subPeriod;
 };
 // Constructor -------------------------------------
 template<class V, class M>
-GaussianVectorRealizerClass<V,M>::GaussianVectorRealizerClass(const char* prefix,
-								  const VectorSetClass<V,M>& unifiedImageSet,
+GaussianVectorRealizer<V,M>::GaussianVectorRealizer(const char* prefix,
+								  const VectorSet<V,M>& unifiedImageSet,
 								  const V& lawExpVector,
 								  const M& lowerCholLawCovMatrix)
   :
-  BaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, std::numeric_limits<unsigned int>::max()), // 2011/Oct/02 - Correction thanks to Corey
+  BaseVectorRealizer<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, std::numeric_limits<unsigned int>::max()), // 2011/Oct/02 - Correction thanks to Corey
   m_unifiedLawExpVector  (new V(lawExpVector)),
   m_unifiedLawVarVector  (unifiedImageSet.vectorSpace().newVector( INFINITY)), // FIX ME
   m_lowerCholLawCovMatrix(new M(lowerCholLawCovMatrix)),
@@ -315,7 +315,7 @@ GaussianVectorRealizerClass<V,M>::GaussianVectorRealizerClass(const char* prefix
   m_matVt                (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering GaussianVectorRealizerClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Entering GaussianVectorRealizer<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -323,21 +323,21 @@ GaussianVectorRealizerClass<V,M>::GaussianVectorRealizerClass(const char* prefix
   *m_unifiedLawExpVector = lawExpVector; // ????
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving GaussianVectorRealizerClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Leaving GaussianVectorRealizer<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Constructor -------------------------------------
 template<class V, class M>
-GaussianVectorRealizerClass<V,M>::GaussianVectorRealizerClass(const char* prefix,
-								  const VectorSetClass<V,M>& unifiedImageSet,
+GaussianVectorRealizer<V,M>::GaussianVectorRealizer(const char* prefix,
+								  const VectorSet<V,M>& unifiedImageSet,
 								  const V& lawExpVector,
 								  const M& matU,
 								  const V& vecSsqrt,
 								  const M& matVt)
   :
-  BaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, std::numeric_limits<unsigned int>::max()), // 2011/Oct/02 - Correction thanks to Corey
+  BaseVectorRealizer<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, std::numeric_limits<unsigned int>::max()), // 2011/Oct/02 - Correction thanks to Corey
   m_unifiedLawExpVector  (new V(lawExpVector)),
   m_unifiedLawVarVector  (unifiedImageSet.vectorSpace().newVector( INFINITY)), // FIX ME
   m_lowerCholLawCovMatrix(NULL),
@@ -346,7 +346,7 @@ GaussianVectorRealizerClass<V,M>::GaussianVectorRealizerClass(const char* prefix
   m_matVt                (new M(matVt))
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering GaussianVectorRealizerClass<V,M>::constructor() [2]"
+    *m_env.subDisplayFile() << "Entering GaussianVectorRealizer<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -354,14 +354,14 @@ GaussianVectorRealizerClass<V,M>::GaussianVectorRealizerClass(const char* prefix
   *m_unifiedLawExpVector = lawExpVector; // ????
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving GaussianVectorRealizerClass<V,M>::constructor() [2]"
+    *m_env.subDisplayFile() << "Leaving GaussianVectorRealizer<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V, class M>
-GaussianVectorRealizerClass<V,M>::~GaussianVectorRealizerClass()
+GaussianVectorRealizer<V,M>::~GaussianVectorRealizer()
 {
   delete m_matVt;
   delete m_vecSsqrt;
@@ -373,21 +373,21 @@ GaussianVectorRealizerClass<V,M>::~GaussianVectorRealizerClass()
 // Realization-related methods----------------------
 template <class V, class M>
 const V&
-GaussianVectorRealizerClass<V,M>::unifiedLawExpVector() const
+GaussianVectorRealizer<V,M>::unifiedLawExpVector() const
 {
   return *m_unifiedLawExpVector;
 }
 //--------------------------------------------------
 template <class V, class M>
 const V&
-GaussianVectorRealizerClass<V,M>::unifiedLawVarVector() const
+GaussianVectorRealizer<V,M>::unifiedLawVarVector() const
 {
   return *m_unifiedLawVarVector;
 }
 //--------------------------------------------------
 template<class V, class M>
 void
-GaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
+GaussianVectorRealizer<V,M>::realization(V& nextValues) const
 {
   V iidGaussianVector(m_unifiedImageSet.vectorSpace().zeroVector());
 
@@ -404,7 +404,7 @@ GaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
     else {
       UQ_FATAL_TEST_MACRO(true,
                           m_env.worldRank(),
-                          "GaussianVectorRealizerClass<V,M>::realization()",
+                          "GaussianVectorRealizer<V,M>::realization()",
                           "inconsistent internal state");
     }
 
@@ -416,7 +416,7 @@ GaussianVectorRealizerClass<V,M>::realization(V& nextValues) const
 //--------------------------------------------------
 template<class V, class M>
 void
-GaussianVectorRealizerClass<V,M>::updateLawExpVector(const V& newLawExpVector)
+GaussianVectorRealizer<V,M>::updateLawExpVector(const V& newLawExpVector)
 {
   // delete old expected values (allocated at construction or last call to this function)
   delete m_unifiedLawExpVector;
@@ -428,7 +428,7 @@ GaussianVectorRealizerClass<V,M>::updateLawExpVector(const V& newLawExpVector)
 //--------------------------------------------------
 template<class V, class M>
 void
-GaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix)
+GaussianVectorRealizer<V,M>::updateLowerCholLawCovMatrix(const M& newLowerCholLawCovMatrix)
 {
   // delete old expected values (allocated at construction or last call to this function)
   delete m_lowerCholLawCovMatrix;
@@ -446,7 +446,7 @@ GaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(const M& newLowerC
 //--------------------------------------------------
 template<class V, class M>
 void
-GaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(
+GaussianVectorRealizer<V,M>::updateLowerCholLawCovMatrix(
   const M& matU,
   const V& vecSsqrt,
   const M& matVt)
@@ -469,23 +469,23 @@ GaussianVectorRealizerClass<V,M>::updateLowerCholLawCovMatrix(
 // Sequential class [R-nn]
 //*****************************************************
 /*! 
- * \class SequentialVectorRealizerClass
+ * \class SequentialVectorRealizer
  * \brief A class for handling sequential draws (sampling) from probability density distributions.
  *
  * This class handles sequential sampling (it returns the next value of the chain) from a 
  * probability density distribution.*/
 
 template<class V, class M>
-class SequentialVectorRealizerClass : public BaseVectorRealizerClass<V,M> {
+class SequentialVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
   
   //!@name Constructor/Destructor methods
   //! Default constructor.
-  SequentialVectorRealizerClass(const char*                           prefix,
-                                  const BaseVectorSequenceClass<V,M>& chain);
+  SequentialVectorRealizer(const char*                           prefix,
+                                  const BaseVectorSequence<V,M>& chain);
   
   //! Destructor.
-  ~SequentialVectorRealizerClass();
+  ~SequentialVectorRealizer();
   //@}
  
   //!@name Sampling-related methods
@@ -500,37 +500,37 @@ public:
   //@}
 
 private:
-  const   BaseVectorSequenceClass<V,M>& m_chain;
+  const   BaseVectorSequence<V,M>& m_chain;
   mutable unsigned int                    m_currentChainPos;
           V*                              m_unifiedSampleExpVector;
           V*                              m_unifiedSampleVarVector;
 
-  using BaseVectorRealizerClass<V,M>::m_env;
-  using BaseVectorRealizerClass<V,M>::m_prefix;
-  using BaseVectorRealizerClass<V,M>::m_unifiedImageSet;
-  using BaseVectorRealizerClass<V,M>::m_subPeriod;
+  using BaseVectorRealizer<V,M>::m_env;
+  using BaseVectorRealizer<V,M>::m_prefix;
+  using BaseVectorRealizer<V,M>::m_unifiedImageSet;
+  using BaseVectorRealizer<V,M>::m_subPeriod;
 };
 // Constructor -------------------------------------
 template<class V, class M>
-SequentialVectorRealizerClass<V,M>::SequentialVectorRealizerClass(
+SequentialVectorRealizer<V,M>::SequentialVectorRealizer(
   const char*                           prefix,
-  const BaseVectorSequenceClass<V,M>& chain)
+  const BaseVectorSequence<V,M>& chain)
   :
-  BaseVectorRealizerClass<V,M>(((std::string)(prefix)+"seq").c_str(),chain.unifiedBoxPlain(),chain.subSequenceSize()),
+  BaseVectorRealizer<V,M>(((std::string)(prefix)+"seq").c_str(),chain.unifiedBoxPlain(),chain.subSequenceSize()),
   m_chain                 (chain),
   m_currentChainPos       (0),
   m_unifiedSampleExpVector(new V(chain.unifiedMeanPlain()          )), // IMPORTANT
   m_unifiedSampleVarVector(new V(chain.unifiedSampleVariancePlain()))  // IMPORTANT
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
-    *m_env.subDisplayFile() << "In SequentialVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "In SequentialVectorRealizer<V,M>::constructor()"
                             << ": m_chain.subSequenceSize() = " << m_chain.subSequenceSize()
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V, class M>
-SequentialVectorRealizerClass<V,M>::~SequentialVectorRealizerClass()
+SequentialVectorRealizer<V,M>::~SequentialVectorRealizer()
 {
   delete m_unifiedSampleVarVector;
   delete m_unifiedSampleExpVector;
@@ -538,7 +538,7 @@ SequentialVectorRealizerClass<V,M>::~SequentialVectorRealizerClass()
 // Realization-related methods----------------------
 template<class V, class M>
 void
-SequentialVectorRealizerClass<V,M>::realization(V& nextParamValues) const
+SequentialVectorRealizer<V,M>::realization(V& nextParamValues) const
 {
   m_chain.getPositionValues(m_currentChainPos++,nextParamValues);
   if (m_currentChainPos >= m_subPeriod) m_currentChainPos = 0;
@@ -548,14 +548,14 @@ SequentialVectorRealizerClass<V,M>::realization(V& nextParamValues) const
 //--------------------------------------------------
 template <class V, class M>
 const V&
-SequentialVectorRealizerClass<V,M>::unifiedSampleExpVector() const
+SequentialVectorRealizer<V,M>::unifiedSampleExpVector() const
 {
   return *m_unifiedSampleExpVector;
 }
 //--------------------------------------------------
 template <class V, class M>
 const V&
-SequentialVectorRealizerClass<V,M>::unifiedSampleVarVector() const
+SequentialVectorRealizer<V,M>::unifiedSampleVarVector() const
 {
   return *m_unifiedSampleVarVector;
 }
@@ -564,23 +564,23 @@ SequentialVectorRealizerClass<V,M>::unifiedSampleVarVector() const
 // Uniform class [R-04]
 //*****************************************************
 /*! 
- * \class UniformVectorRealizerClass
+ * \class UniformVectorRealizer
  * \brief A class for handling sampling from a Uniform probability density distribution.
  *
  * This class handles sampling from a uniform probability density distribution.*/
 
 template<class V, class M>
-class UniformVectorRealizerClass : public BaseVectorRealizerClass<V,M> {
+class UniformVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
   
     //! @name Constructor/Destructor methods
   //@{
   //! Constructor
   /*! Constructs a new object, given a prefix and the image set of the vector realizer.  */
-  UniformVectorRealizerClass(const char*                  prefix,
-                               const VectorSetClass<V,M>& unifiedImageSet);
+  UniformVectorRealizer(const char*                  prefix,
+                               const VectorSet<V,M>& unifiedImageSet);
   //! Destructor
-  ~UniformVectorRealizerClass();
+  ~UniformVectorRealizer();
   //@}
   
   //! @name Realization-related methods
@@ -593,46 +593,46 @@ public:
   //@}
   
 private:
-  using BaseVectorRealizerClass<V,M>::m_env;
-  using BaseVectorRealizerClass<V,M>::m_prefix;
-  using BaseVectorRealizerClass<V,M>::m_unifiedImageSet;
-  using BaseVectorRealizerClass<V,M>::m_subPeriod;
+  using BaseVectorRealizer<V,M>::m_env;
+  using BaseVectorRealizer<V,M>::m_prefix;
+  using BaseVectorRealizer<V,M>::m_unifiedImageSet;
+  using BaseVectorRealizer<V,M>::m_subPeriod;
 };
 // Constructor -------------------------------------
 template<class V, class M>
-UniformVectorRealizerClass<V,M>::UniformVectorRealizerClass(
+UniformVectorRealizer<V,M>::UniformVectorRealizer(
   const char*                  prefix,
-  const VectorSetClass<V,M>& unifiedImageSet)
+  const VectorSet<V,M>& unifiedImageSet)
   :
-  BaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max())
+  BaseVectorRealizer<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max())
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering UniformVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering UniformVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving UniformVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving UniformVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V, class M>
-UniformVectorRealizerClass<V,M>::~UniformVectorRealizerClass()
+UniformVectorRealizer<V,M>::~UniformVectorRealizer()
 {
 }
 // Realization-related methods----------------------
 template<class V, class M>
 void
-UniformVectorRealizerClass<V,M>::realization(V& nextValues) const
+UniformVectorRealizer<V,M>::realization(V& nextValues) const
 {
-  const BoxSubsetClass<V,M>* imageBox = dynamic_cast<const BoxSubsetClass<V,M>* >(&m_unifiedImageSet);
+  const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&m_unifiedImageSet);
 
   UQ_FATAL_TEST_MACRO(imageBox == NULL,
                       m_env.worldRank(),
-                      "UniformVectorRealizerClass<V,M>::realization()",
+                      "UniformVectorRealizer<V,M>::realization()",
                       "only box images are supported right now");
   
   nextValues.cwSetUniform(imageBox->minValues(),imageBox->maxValues());
@@ -643,14 +643,14 @@ UniformVectorRealizerClass<V,M>::realization(V& nextValues) const
 // Beta class [R-05]
 //*****************************************************
 /*! 
- * \class BetaVectorRealizerClass
+ * \class BetaVectorRealizer
  * \brief A class for handling sampling from a Beta probability density distribution.
  *
  * This class handles sampling from a Beta probability density distribution, of 
  * parameters \c alpha and \c beta.*/
 
 template<class V, class M>
-class BetaVectorRealizerClass : public BaseVectorRealizerClass<V,M> {
+class BetaVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
   
    //! @name Constructor/Destructor methods
@@ -659,13 +659,13 @@ public:
   /*! Constructs a new object, given a prefix, the image set of the vector realizer, and the
    * Beta distribution parameters \c alpha and \c beta, which are assigned to private attributes
    * m_alpha and m_beta.  */
-  BetaVectorRealizerClass(const char*                  prefix,
-                            const VectorSetClass<V,M>& unifiedImageSet,
+  BetaVectorRealizer(const char*                  prefix,
+                            const VectorSet<V,M>& unifiedImageSet,
                             const V&                     alpha,
                             const V&                     beta);
  
   //! Destructor
-  ~BetaVectorRealizerClass();
+  ~BetaVectorRealizer();
   //@}
 
     //! @name Realization-related methods
@@ -677,47 +677,47 @@ public:
   void realization(V& nextValues) const;
   //@}
 private:
-  using BaseVectorRealizerClass<V,M>::m_env;
-  using BaseVectorRealizerClass<V,M>::m_prefix;
-  using BaseVectorRealizerClass<V,M>::m_unifiedImageSet;
-  using BaseVectorRealizerClass<V,M>::m_subPeriod;
+  using BaseVectorRealizer<V,M>::m_env;
+  using BaseVectorRealizer<V,M>::m_prefix;
+  using BaseVectorRealizer<V,M>::m_unifiedImageSet;
+  using BaseVectorRealizer<V,M>::m_subPeriod;
 
   V m_alpha;
   V m_beta;
 };
 // Constructor -------------------------------------
 template<class V, class M>
-BetaVectorRealizerClass<V,M>::BetaVectorRealizerClass(
+BetaVectorRealizer<V,M>::BetaVectorRealizer(
   const char*                  prefix,
-  const VectorSetClass<V,M>& unifiedImageSet,
+  const VectorSet<V,M>& unifiedImageSet,
   const V&                     alpha,
   const V&                     beta)
   :
-  BaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
+  BaseVectorRealizer<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
   m_alpha(alpha),
   m_beta (beta)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering BetaVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering BetaVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving BetaVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving BetaVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V, class M>
-BetaVectorRealizerClass<V,M>::~BetaVectorRealizerClass()
+BetaVectorRealizer<V,M>::~BetaVectorRealizer()
 {
 }
 // Realization-related methods----------------------
 template<class V, class M>
 void
-BetaVectorRealizerClass<V,M>::realization(V& nextValues) const
+BetaVectorRealizer<V,M>::realization(V& nextValues) const
 {
   nextValues.cwSetBeta(m_alpha,m_beta);
   return;
@@ -727,13 +727,13 @@ BetaVectorRealizerClass<V,M>::realization(V& nextValues) const
 // Gamma class [R-06]
 //*****************************************************
 /*! 
- * \class GammaVectorRealizerClass
+ * \class GammaVectorRealizer
  * \brief A class for handling sampling from a Gamma probability density distribution.
  *
  * This class handles sampling from a Gamma probability density distribution, of 
  * parameters \c a and \c b.*/
 template<class V, class M>
-class GammaVectorRealizerClass : public BaseVectorRealizerClass<V,M> {
+class GammaVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
   
   //! @name Constructor/Destructor methods
@@ -742,13 +742,13 @@ public:
   /*! Constructs a new object, given a prefix, the image set of the vector realizer, and the
    * Gamma distribution parameters \c a and \c b, which are assigned to private attributes
    * m_alpha and m_beta.  */
-  GammaVectorRealizerClass(const char*                  prefix,
-                             const VectorSetClass<V,M>& unifiedImageSet,
+  GammaVectorRealizer(const char*                  prefix,
+                             const VectorSet<V,M>& unifiedImageSet,
                              const V&                     a,
                              const V&                     b);
   
   //! Destructor
- ~GammaVectorRealizerClass();
+ ~GammaVectorRealizer();
   //@}
  
    //! @name Realization-related methods
@@ -760,52 +760,52 @@ public:
   void realization(V& nextValues) const;
 
 private:
-  using BaseVectorRealizerClass<V,M>::m_env;
-  using BaseVectorRealizerClass<V,M>::m_prefix;
-  using BaseVectorRealizerClass<V,M>::m_unifiedImageSet;
-  using BaseVectorRealizerClass<V,M>::m_subPeriod;
+  using BaseVectorRealizer<V,M>::m_env;
+  using BaseVectorRealizer<V,M>::m_prefix;
+  using BaseVectorRealizer<V,M>::m_unifiedImageSet;
+  using BaseVectorRealizer<V,M>::m_subPeriod;
 
   V m_a;
   V m_b;
 };
 // Constructor -------------------------------------
 template<class V, class M>
-GammaVectorRealizerClass<V,M>::GammaVectorRealizerClass(
+GammaVectorRealizer<V,M>::GammaVectorRealizer(
   const char*                  prefix,
-  const VectorSetClass<V,M>& unifiedImageSet,
+  const VectorSet<V,M>& unifiedImageSet,
   const V&                     a,
   const V&                     b)
   :
-  BaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
+  BaseVectorRealizer<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
   m_a(a),
   m_b(b)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering GammaVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering GammaVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving GammaVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving GammaVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V, class M>
-GammaVectorRealizerClass<V,M>::~GammaVectorRealizerClass()
+GammaVectorRealizer<V,M>::~GammaVectorRealizer()
 {
 }
 // Realization-related methods----------------------
 template<class V, class M>
 void
-GammaVectorRealizerClass<V,M>::realization(V& nextValues) const
+GammaVectorRealizer<V,M>::realization(V& nextValues) const
 {
   // nextValues.cwSetGamma(m_a,m_b);
 
 // begin kemelli 2013-April-22 :
-  const BoxSubsetClass<V,M>* imageBox = dynamic_cast<const BoxSubsetClass<V,M>* >(&this->m_unifiedImageSet);
+  const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&this->m_unifiedImageSet);
 //  double biggerOfMaxValues = imageBox->maxValues().getMaxValue();
   double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
   double smallerOfMinValues = imageBox->minValues().getMinValue();
@@ -813,7 +813,7 @@ GammaVectorRealizerClass<V,M>::realization(V& nextValues) const
  // Gamma dist belongs to (0,inf)		
  if( smallerOfMinValues < 0 ) //(biggerOfMinValues < 0) || 
  {		
-   std::cerr << "In GammaVectorRealizerClass<V,M>::realization()\n" 
+   std::cerr << "In GammaVectorRealizer<V,M>::realization()\n" 
 			 << "Gamma distribution is only defined in (0, infinity).\n"
 			 << "The data provided is: \n"
 			 << *imageBox 
@@ -823,12 +823,12 @@ GammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
                       m_env.worldRank(),
-                      "GammaVectorRealizerClass<V,M>::realization()",
+                      "GammaVectorRealizer<V,M>::realization()",
                       "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0. ");      
                       
  //  UQ_FATAL_TEST_MACRO(biggerOfMaxValues < 0,
  //                     m_env.worldRank(),
- //                     "GammaVectorRealizerClass<V,M>::realization()",
+ //                     "GammaVectorRealizer<V,M>::realization()",
  //                     "invalid input: Gamma distribution is only defined in (0, infinity). ");            
               
  }	
@@ -853,14 +853,14 @@ GammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 // InverseGamma class [R-07]
 //*****************************************************
 /*! 
- * \class InverseGammaVectorRealizerClass
+ * \class InverseGammaVectorRealizer
  * \brief A class for handling sampling from an Inverse Gamma probability density distribution.
  *
  * This class handles sampling from an Inverse Gamma probability density distribution, of 
  * parameters \c alpha and \c beta.*/
 
 template<class V, class M>
-class InverseGammaVectorRealizerClass : public BaseVectorRealizerClass<V,M> {
+class InverseGammaVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
@@ -868,12 +868,12 @@ public:
   /*! Constructs a new object, given a prefix, the image set of the vector realizer, and the
    * Beta distribution parameters \c a and \c b, which are assigned to private attributes
    * m_alpha and m_beta.  */
-  InverseGammaVectorRealizerClass(const char*                  prefix,
-                                    const VectorSetClass<V,M>& unifiedImageSet,
+  InverseGammaVectorRealizer(const char*                  prefix,
+                                    const VectorSet<V,M>& unifiedImageSet,
                                     const V&                     alpha,
                                     const V&                     beta);
   //! Destructor
-  ~InverseGammaVectorRealizerClass();
+  ~InverseGammaVectorRealizer();
   //@}
 
      //! @name Realization-related methods
@@ -886,47 +886,47 @@ public:
   //@}
 
 private:
-  using BaseVectorRealizerClass<V,M>::m_env;
-  using BaseVectorRealizerClass<V,M>::m_prefix;
-  using BaseVectorRealizerClass<V,M>::m_unifiedImageSet;
-  using BaseVectorRealizerClass<V,M>::m_subPeriod;
+  using BaseVectorRealizer<V,M>::m_env;
+  using BaseVectorRealizer<V,M>::m_prefix;
+  using BaseVectorRealizer<V,M>::m_unifiedImageSet;
+  using BaseVectorRealizer<V,M>::m_subPeriod;
 
   V m_alpha;
   V m_beta;
 };
 // Constructor -------------------------------------
 template<class V, class M>
-InverseGammaVectorRealizerClass<V,M>::InverseGammaVectorRealizerClass(
+InverseGammaVectorRealizer<V,M>::InverseGammaVectorRealizer(
   const char*                  prefix,
-  const VectorSetClass<V,M>& unifiedImageSet,
+  const VectorSet<V,M>& unifiedImageSet,
   const V&                     alpha,
   const V&                     beta)
   :
-  BaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
+  BaseVectorRealizer<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
   m_alpha(alpha),
   m_beta (beta)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering InverseGammaVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering InverseGammaVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving InverseGammaVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving InverseGammaVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V, class M>
-InverseGammaVectorRealizerClass<V,M>::~InverseGammaVectorRealizerClass()
+InverseGammaVectorRealizer<V,M>::~InverseGammaVectorRealizer()
 {
 }
 // Realization-related methods----------------------
 template<class V, class M>
 void
-InverseGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
+InverseGammaVectorRealizer<V,M>::realization(V& nextValues) const
 {
   nextValues.cwSetInverseGamma(m_alpha,m_beta);
   return;
@@ -936,30 +936,30 @@ InverseGammaVectorRealizerClass<V,M>::realization(V& nextValues) const
 // Wigner class [R-09]
 //*****************************************************
 /*!
- * \class WignerVectorRealizerClass
+ * \class WignerVectorRealizer
  * \brief A class for handling sampling from a Wigner probability density distribution.
  *
  * This class \b will handle sampling from an Wigner probability density distribution, with a
  * given center position and a radius.
  * 
- * \todo: The method WignerVectorRealizerClass:realization() is not yet available, 
+ * \todo: The method WignerVectorRealizer:realization() is not yet available, 
  * thus this class does  nothing. */
 
 template<class V, class M>
-class WignerVectorRealizerClass : public BaseVectorRealizerClass<V,M> {
+class WignerVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor
   /*! Constructs a new object, given a prefix, the image set of the vector realizer, the
    * center position \c centerPos, and a radius \c radius.*/  
-  WignerVectorRealizerClass(const char*                  prefix,
-                              const VectorSetClass<V,M>& unifiedImageSet,
+  WignerVectorRealizer(const char*                  prefix,
+                              const VectorSet<V,M>& unifiedImageSet,
                               const V&                     centerPos,
                               double                       radius);
   
   //! Destructor
- ~WignerVectorRealizerClass();
+ ~WignerVectorRealizer();
  //@}
   
   //! @name Realization-related methods
@@ -970,45 +970,45 @@ public:
   //@}
  
 private:
-  using BaseVectorRealizerClass<V,M>::m_env;
-  using BaseVectorRealizerClass<V,M>::m_prefix;
-  using BaseVectorRealizerClass<V,M>::m_unifiedImageSet;
-  using BaseVectorRealizerClass<V,M>::m_subPeriod;
+  using BaseVectorRealizer<V,M>::m_env;
+  using BaseVectorRealizer<V,M>::m_prefix;
+  using BaseVectorRealizer<V,M>::m_unifiedImageSet;
+  using BaseVectorRealizer<V,M>::m_subPeriod;
   V*     m_centerPos;
   double m_radius;
 };
 // Constructor -------------------------------------
 template<class V, class M>
-WignerVectorRealizerClass<V,M>::WignerVectorRealizerClass(
+WignerVectorRealizer<V,M>::WignerVectorRealizer(
   const char*                  prefix,
-  const VectorSetClass<V,M>& unifiedImageSet,
+  const VectorSet<V,M>& unifiedImageSet,
   const V&                     centerPos,
   double                       radius)
   :
-  BaseVectorRealizerClass<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
+  BaseVectorRealizer<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
   m_centerPos(new V(centerPos)),
   m_radius   (radius)    
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering WignerVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering WignerVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(m_radius <= 0.,
                       m_env.worldRank(),
-                      "WignerVectorRealizerClass<V,M>::constructor()",
+                      "WignerVectorRealizer<V,M>::constructor()",
                       "invalid radius");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving WignerVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving WignerVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V, class M>
-WignerVectorRealizerClass<V,M>::~WignerVectorRealizerClass()
+WignerVectorRealizer<V,M>::~WignerVectorRealizer()
 {
   delete m_centerPos;
 }
@@ -1016,11 +1016,11 @@ WignerVectorRealizerClass<V,M>::~WignerVectorRealizerClass()
 // TODO: implement me, please!!!!
 template<class V, class M>
 void
-WignerVectorRealizerClass<V,M>::realization(V& nextValues) const
+WignerVectorRealizer<V,M>::realization(V& nextValues) const
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
-                      "WignerVectorRealizerClass<V,M>::realization()",
+                      "WignerVectorRealizer<V,M>::realization()",
                       "not implemented yet");
   
   nextValues.cwSet(0.);
@@ -1031,14 +1031,14 @@ WignerVectorRealizerClass<V,M>::realization(V& nextValues) const
 // LogNormal class [R-10]
 //*****************************************************
 /*! 
- * \class LogNormalVectorRealizerClass
+ * \class LogNormalVectorRealizer
  * \brief A class for handling sampling from a Log-Normal probability density distribution.
  *
  * This class handles sampling from a Log-Normal probability density distribution, of 
  * mean and variance given.*/
 
 template<class V, class M>
-class LogNormalVectorRealizerClass : public BaseVectorRealizerClass<V,M> {
+class LogNormalVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{
@@ -1046,8 +1046,8 @@ public:
   /*! Constructs a new object of the class, given a prefix and the image set, a  vector of 
    * mean values, \c lawExpVector, and a lower triangular matrix resulting from Cholesky 
    * decomposition of the covariance matrix, \c lowerCholLawCovMatrix.  */ 
-  LogNormalVectorRealizerClass(const char*                  prefix,
-                                 const VectorSetClass<V,M>& unifiedImageSet,
+  LogNormalVectorRealizer(const char*                  prefix,
+                                 const VectorSet<V,M>& unifiedImageSet,
                                  const V&                     lawExpVector, // vector of mean values
                                  const M&                     lowerCholLawCovMatrix); // lower triangular matrix resulting from Cholesky decomposition of the covariance matrix
 
@@ -1055,14 +1055,14 @@ public:
   /*! Constructs a new object of the class, given a prefix and the image set, a vector of
    * mean values, \c lawExpVector, and a set of two matrices and one vector resulting from the 
    * Single Value Decomposition of the covariance matrix, \c matU, \c vecSsqrt and \c matVt.*/ 
-  LogNormalVectorRealizerClass(const char*                  prefix,
-                                 const VectorSetClass<V,M>& unifiedImageSet,
+  LogNormalVectorRealizer(const char*                  prefix,
+                                 const VectorSet<V,M>& unifiedImageSet,
                                  const V&                     lawExpVector, // vector of mean values
                                  const M&                     matU,
                                  const V&                     vecSsqrt,
                                  const M&                     matVt);
   //! Destructor
-  ~LogNormalVectorRealizerClass();
+  ~LogNormalVectorRealizer();
   //@}
   
   //! @name Realization-related methods
@@ -1086,19 +1086,19 @@ private:
   V* m_vecSsqrt;
   M* m_matVt;
 
-  using BaseVectorRealizerClass<V,M>::m_env;
-  using BaseVectorRealizerClass<V,M>::m_prefix;
-  using BaseVectorRealizerClass<V,M>::m_unifiedImageSet;
-  using BaseVectorRealizerClass<V,M>::m_subPeriod;
+  using BaseVectorRealizer<V,M>::m_env;
+  using BaseVectorRealizer<V,M>::m_prefix;
+  using BaseVectorRealizer<V,M>::m_unifiedImageSet;
+  using BaseVectorRealizer<V,M>::m_subPeriod;
 };
 // Constructor -------------------------------------
 template<class V, class M>
-LogNormalVectorRealizerClass<V,M>::LogNormalVectorRealizerClass(const char* prefix,
-                                                                    const VectorSetClass<V,M>& unifiedImageSet,
+LogNormalVectorRealizer<V,M>::LogNormalVectorRealizer(const char* prefix,
+                                                                    const VectorSet<V,M>& unifiedImageSet,
                                                                     const V& lawExpVector,
                                                                     const M& lowerCholLawCovMatrix)
   :
-  BaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, std::numeric_limits<unsigned int>::max()), // 2011/Oct/02 - Correction thanks to Corey
+  BaseVectorRealizer<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, std::numeric_limits<unsigned int>::max()), // 2011/Oct/02 - Correction thanks to Corey
   m_unifiedLawExpVector  (new V(lawExpVector)),
   m_unifiedLawVarVector  (unifiedImageSet.vectorSpace().newVector( INFINITY)), // FIX ME
   m_lowerCholLawCovMatrix(new M(lowerCholLawCovMatrix)),
@@ -1107,27 +1107,27 @@ LogNormalVectorRealizerClass<V,M>::LogNormalVectorRealizerClass(const char* pref
   m_matVt                (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering LogNormalVectorRealizerClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Entering LogNormalVectorRealizer<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving LogNormalVectorRealizerClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Leaving LogNormalVectorRealizer<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Constructor -------------------------------------								  
 template<class V, class M>
-LogNormalVectorRealizerClass<V,M>::LogNormalVectorRealizerClass(const char* prefix,
-                                                                    const VectorSetClass<V,M>& unifiedImageSet,
+LogNormalVectorRealizer<V,M>::LogNormalVectorRealizer(const char* prefix,
+                                                                    const VectorSet<V,M>& unifiedImageSet,
                                                                     const V& lawExpVector,
                                                                     const M& matU,
                                                                     const V& vecSsqrt,
                                                                     const M& matVt)
   :
-  BaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, std::numeric_limits<unsigned int>::max()), // 2011/Oct/02 - Correction thanks to Corey
+  BaseVectorRealizer<V,M>( ((std::string)(prefix)+"gau").c_str(), unifiedImageSet, std::numeric_limits<unsigned int>::max()), // 2011/Oct/02 - Correction thanks to Corey
   m_unifiedLawExpVector  (new V(lawExpVector)),
   m_unifiedLawVarVector  (unifiedImageSet.vectorSpace().newVector( INFINITY)), // FIX ME
   m_lowerCholLawCovMatrix(NULL),
@@ -1136,20 +1136,20 @@ LogNormalVectorRealizerClass<V,M>::LogNormalVectorRealizerClass(const char* pref
   m_matVt                (new M(matVt))
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering LogNormalVectorRealizerClass<V,M>::constructor() [2]"
+    *m_env.subDisplayFile() << "Entering LogNormalVectorRealizer<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving LogNormalVectorRealizerClass<V,M>::constructor() [2]"
+    *m_env.subDisplayFile() << "Leaving LogNormalVectorRealizer<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------								  
 template<class V, class M>
-LogNormalVectorRealizerClass<V,M>::~LogNormalVectorRealizerClass()
+LogNormalVectorRealizer<V,M>::~LogNormalVectorRealizer()
 {
   delete m_matVt;
   delete m_vecSsqrt;
@@ -1161,21 +1161,21 @@ LogNormalVectorRealizerClass<V,M>::~LogNormalVectorRealizerClass()
 // Realization-related methods----------------------
 template <class V, class M>
 const V&
-LogNormalVectorRealizerClass<V,M>::unifiedLawExpVector() const
+LogNormalVectorRealizer<V,M>::unifiedLawExpVector() const
 {
   return *m_unifiedLawExpVector;
 }
 //--------------------------------------------------
 template <class V, class M>
 const V&
-LogNormalVectorRealizerClass<V,M>::unifiedLawVarVector() const
+LogNormalVectorRealizer<V,M>::unifiedLawVarVector() const
 {
   return *m_unifiedLawVarVector;
 }
 //--------------------------------------------------
 template<class V, class M>
 void
-LogNormalVectorRealizerClass<V,M>::realization(V& nextValues) const
+LogNormalVectorRealizer<V,M>::realization(V& nextValues) const
 {
   V iidGaussianVector(m_unifiedImageSet.vectorSpace().zeroVector());
 
@@ -1192,7 +1192,7 @@ LogNormalVectorRealizerClass<V,M>::realization(V& nextValues) const
     else {
       UQ_FATAL_TEST_MACRO(true,
                           m_env.worldRank(),
-                          "LogNormalVectorRealizerClass<V,M>::realization()",
+                          "LogNormalVectorRealizer<V,M>::realization()",
                           "inconsistent internal state");
     }
 
@@ -1210,7 +1210,7 @@ LogNormalVectorRealizerClass<V,M>::realization(V& nextValues) const
 // Concatenated class [R-11]
 //*****************************************************
 /*!
- * \class ConcatenatedVectorRealizerClass
+ * \class ConcatenatedVectorRealizer
  * \brief A class for handling sampling from concatenated probability density distributions.
  * 
  * This class allows the user draw samples from concatenated probability density distributions (two 
@@ -1219,26 +1219,26 @@ LogNormalVectorRealizerClass<V,M>::realization(V& nextValues) const
  * where one of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. */
 
 template<class V, class M>
-class ConcatenatedVectorRealizerClass : public BaseVectorRealizerClass<V,M> {
+class ConcatenatedVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
   
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor
   /*! Concatenates two RVs: \c rv1 and \c rv2 into one vector RV, given a prefix and the image set of the vector RV.*/
-  ConcatenatedVectorRealizerClass(const char*                           prefix,
-                                    const BaseVectorRealizerClass<V,M>& realizer1,
-                                    const BaseVectorRealizerClass<V,M>& realizer2,
-                                    const VectorSetClass<V,M>&          unifiedImageSet);
+  ConcatenatedVectorRealizer(const char*                           prefix,
+                                    const BaseVectorRealizer<V,M>& realizer1,
+                                    const BaseVectorRealizer<V,M>& realizer2,
+                                    const VectorSet<V,M>&          unifiedImageSet);
   //! Constructor
-  /*! Concatenates a sequence of RVs, given by: <c> std::vector<const BaseVectorRVClass<V,M>* >& rvs </c>
+  /*! Concatenates a sequence of RVs, given by: <c> std::vector<const BaseVectorRV<V,M>* >& rvs </c>
    * into one single vector RV, given a prefix and the image set of the resulting vector RV.*/
-  ConcatenatedVectorRealizerClass(const char*                                                prefix,
-                                    const std::vector<const BaseVectorRealizerClass<V,M>* >& realizers,
+  ConcatenatedVectorRealizer(const char*                                                prefix,
+                                    const std::vector<const BaseVectorRealizer<V,M>* >& realizers,
                                     unsigned int                                               minPeriod,
-                                    const VectorSetClass<V,M>&                               unifiedImageSet);
+                                    const VectorSet<V,M>&                               unifiedImageSet);
   //! Destructor
-  ~ConcatenatedVectorRealizerClass();
+  ~ConcatenatedVectorRealizer();
   //@}
   
   //! @name Realization-related methods
@@ -1247,26 +1247,26 @@ public:
   //@}
 
 private:
-  using BaseVectorRealizerClass<V,M>::m_env;
-  using BaseVectorRealizerClass<V,M>::m_prefix;
-  using BaseVectorRealizerClass<V,M>::m_unifiedImageSet;
-  using BaseVectorRealizerClass<V,M>::m_subPeriod;
+  using BaseVectorRealizer<V,M>::m_env;
+  using BaseVectorRealizer<V,M>::m_prefix;
+  using BaseVectorRealizer<V,M>::m_unifiedImageSet;
+  using BaseVectorRealizer<V,M>::m_subPeriod;
 
-  std::vector<const BaseVectorRealizerClass<V,M>* > m_realizers;
+  std::vector<const BaseVectorRealizer<V,M>* > m_realizers;
 };
 // Constructor -------------------------------------
 template<class V, class M>
-ConcatenatedVectorRealizerClass<V,M>::ConcatenatedVectorRealizerClass(
+ConcatenatedVectorRealizer<V,M>::ConcatenatedVectorRealizer(
   const char*                           prefix,
-  const BaseVectorRealizerClass<V,M>& realizer1,
-  const BaseVectorRealizerClass<V,M>& realizer2,
-  const VectorSetClass<V,M>&          unifiedImageSet)
+  const BaseVectorRealizer<V,M>& realizer1,
+  const BaseVectorRealizer<V,M>& realizer2,
+  const VectorSet<V,M>&          unifiedImageSet)
   :
-  BaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::min(realizer1.subPeriod(),realizer2.subPeriod()) ), // 2011/Oct/02
-  m_realizers(2,(const BaseVectorRealizerClass<V,M>*) NULL)
+  BaseVectorRealizer<V,M>( ((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::min(realizer1.subPeriod(),realizer2.subPeriod()) ), // 2011/Oct/02
+  m_realizers(2,(const BaseVectorRealizer<V,M>*) NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering ConcatenatedVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering ConcatenatedVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -1275,21 +1275,21 @@ ConcatenatedVectorRealizerClass<V,M>::ConcatenatedVectorRealizerClass(
   m_realizers[1] = &realizer2;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving ConcatenatedVectorRealizerClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving ConcatenatedVectorRealizer<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Constructor -------------------------------------
 template<class V, class M>
-ConcatenatedVectorRealizerClass<V,M>::ConcatenatedVectorRealizerClass(
+ConcatenatedVectorRealizer<V,M>::ConcatenatedVectorRealizer(
   const char*                                                prefix,
-  const std::vector<const BaseVectorRealizerClass<V,M>* >& realizers,
+  const std::vector<const BaseVectorRealizer<V,M>* >& realizers,
   unsigned int                                               minPeriod,
-  const VectorSetClass<V,M>&                               unifiedImageSet)
+  const VectorSet<V,M>&                               unifiedImageSet)
   :
-  BaseVectorRealizerClass<V,M>( ((std::string)(prefix)+"gen").c_str(),unifiedImageSet,minPeriod),
-  m_realizers(realizers.size(),(const BaseVectorRealizerClass<V,M>*) NULL)
+  BaseVectorRealizer<V,M>( ((std::string)(prefix)+"gen").c_str(),unifiedImageSet,minPeriod),
+  m_realizers(realizers.size(),(const BaseVectorRealizer<V,M>*) NULL)
 {
   for (unsigned int i = 0; i < m_realizers.size(); ++i) {
     m_realizers[i] = realizers[i];
@@ -1297,28 +1297,28 @@ ConcatenatedVectorRealizerClass<V,M>::ConcatenatedVectorRealizerClass(
 }
 // Destructor --------------------------------------
 template<class V, class M>
-ConcatenatedVectorRealizerClass<V,M>::~ConcatenatedVectorRealizerClass()
+ConcatenatedVectorRealizer<V,M>::~ConcatenatedVectorRealizer()
 {
 }
 // Realization-related methods----------------------
 template<class V, class M>
 void
-ConcatenatedVectorRealizerClass<V,M>::realization(V& nextValues) const
+ConcatenatedVectorRealizer<V,M>::realization(V& nextValues) const
 {
   std::vector<V*> vecs(m_realizers.size(),(V*)NULL);
   for (unsigned int i = 0; i < vecs.size(); ++i) {
     vecs[i] = new V(m_realizers[i]->unifiedImageSet().vectorSpace().zeroVector());
-    //std::cout << "In ConcatenatedVectorRealizerClass<V,M>::realization: v[i]->sizeLocal() = " << v[i]->sizeLocal() << std::endl;
+    //std::cout << "In ConcatenatedVectorRealizer<V,M>::realization: v[i]->sizeLocal() = " << v[i]->sizeLocal() << std::endl;
     m_realizers[i]->realization(*(vecs[i]));
   }
 
-  //std::cout << "In ConcatenatedVectorRealizerClass<V,M>::realization: nextValues.sizeLocal() = " << nextValues.sizeLocal() << std::endl;
+  //std::cout << "In ConcatenatedVectorRealizer<V,M>::realization: nextValues.sizeLocal() = " << nextValues.sizeLocal() << std::endl;
   std::vector<const V*> constVecs(m_realizers.size(),(V*)NULL);
   for (unsigned int i = 0; i < vecs.size(); ++i) {
     constVecs[i] = vecs[i];
   }
   nextValues.cwSetConcatenated(constVecs);
-  //std::cout << "In ConcatenatedVectorRealizerClass<V,M>::realization: succeeded" << std::endl;
+  //std::cout << "In ConcatenatedVectorRealizer<V,M>::realization: succeeded" << std::endl;
 
   for (unsigned int i = 0; i < vecs.size(); ++i) {
     delete vecs[i];

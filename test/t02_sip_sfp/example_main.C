@@ -39,11 +39,11 @@ int main(int argc, char* argv[])
                       QUESO::UQ_UNAVAILABLE_RANK,
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
-  QUESO::FullEnvironmentClass* env =
+  QUESO::FullEnvironment* env =
 #ifdef QUESO_HAS_MPI
-    new QUESO::FullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+    new QUESO::FullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
 #else
-    new QUESO::FullEnvironmentClass(0,argv[1],"",NULL);
+    new QUESO::FullEnvironment(0,argv[1],"",NULL);
 #endif
 
   // Compute

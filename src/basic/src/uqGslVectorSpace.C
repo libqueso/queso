@@ -32,38 +32,38 @@
 namespace QUESO {
 
 template <>
-MapClass*
-VectorSpaceClass<GslVectorClass, GslMatrixClass>::newMap()
+Map*
+VectorSpace<GslVector, GslMatrix>::newMap()
 {
-  return new MapClass(m_dimGlobal,0,m_env.selfComm());
+  return new Map(m_dimGlobal,0,m_env.selfComm());
 }
 
 template<>
-GslVectorClass*
-VectorSpaceClass<GslVectorClass,GslMatrixClass>::newVector() const
+GslVector*
+VectorSpace<GslVector,GslMatrix>::newVector() const
 {
-  return new GslVectorClass(m_env,*m_map);
+  return new GslVector(m_env,*m_map);
 }
 
 template<>
-GslVectorClass*
-VectorSpaceClass<GslVectorClass,GslMatrixClass>::newVector(double value) const
+GslVector*
+VectorSpace<GslVector,GslMatrix>::newVector(double value) const
 {
-  return new GslVectorClass(m_env,*m_map,value);
+  return new GslVector(m_env,*m_map,value);
 }
 
 template<>
-GslMatrixClass*
-VectorSpaceClass<GslVectorClass,GslMatrixClass>::newMatrix() const
+GslMatrix*
+VectorSpace<GslVector,GslMatrix>::newMatrix() const
 {
-  return new GslMatrixClass(m_env,*m_map,this->dimGlobal());
+  return new GslMatrix(m_env,*m_map,this->dimGlobal());
 }
 
 template<>
-GslMatrixClass*
-VectorSpaceClass<GslVectorClass,GslMatrixClass>::newDiagMatrix(double diagValue) const
+GslMatrix*
+VectorSpace<GslVector,GslMatrix>::newDiagMatrix(double diagValue) const
 {
-  return new GslMatrixClass(m_env,*m_map,diagValue);
+  return new GslMatrix(m_env,*m_map,diagValue);
 }
 
 }  // End namespace QUESO

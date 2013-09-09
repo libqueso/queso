@@ -36,30 +36,30 @@ namespace QUESO {
 /*!\file uqArrayOfOneDGrids.h
  * \brief Class to accommodate arrays of one-dimensional grid.
  * 
- * \class ArrayOfOneDGridsClass
+ * \class ArrayOfOneDGrids
  * \brief Class to accommodate arrays of one-dimensional grid.
  * 
  * Arrays of one-dimensional grids are necessary in the calculation, for instance, of CDFs
- * and MDF of vector functions (refer to BaseVectorCdfClass, BaseVectorMdfClass, and 
+ * and MDF of vector functions (refer to BaseVectorCdf, BaseVectorMdf, and 
  * derived classes).
  */
 template <class V, class M>
-class ArrayOfOneDGridsClass
+class ArrayOfOneDGrids
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  ArrayOfOneDGridsClass(const char* prefix, const VectorSpaceClass<V,M>& rowSpace);
+  ArrayOfOneDGrids(const char* prefix, const VectorSpace<V,M>& rowSpace);
   
   //! Destructor.
-  ~ArrayOfOneDGridsClass();
+  ~ArrayOfOneDGrids();
   //@}
   
   //! @name Property methods
   //@{
   //! Returns the (vector) space to which the row belongs to.
-  const VectorSpaceClass<V,M>&     rowSpace       () const;
+  const VectorSpace<V,M>&     rowSpace       () const;
   
   //! Returns an array with the sizes of the grids.
   const V&  sizes          () const;
@@ -74,7 +74,7 @@ public:
   //! @name Math methods
   //@{
 //  void      setGrid        (unsigned int                 rowId,
-//			    BaseOneDGridClass<double>& oneDGrid);
+//			    BaseOneDGrid<double>& oneDGrid);
   
   //! Sets an array of uniform grids.
   void      setUniformGrids(const V& sizesVec,
@@ -85,7 +85,7 @@ public:
   //! @name Accessor methods
   //@{
   //! Returns the grid stored in the <c>rowId</c>-th position of the array of grids. 
-  const BaseOneDGridClass<double>& grid           (unsigned int rowId) const;
+  const BaseOneDGrid<double>& grid           (unsigned int rowId) const;
   //@}
   
   //! @name I/O methods
@@ -95,10 +95,10 @@ public:
   //@}
   
 private:
-  const BaseEnvironmentClass&                  m_env;
+  const BaseEnvironment&                  m_env;
         std::string                              m_prefix;
-  const VectorSpaceClass<V,M>&                 m_rowSpace;
-  DistArrayClass<BaseOneDGridClass<double>*> m_oneDGrids;
+  const VectorSpace<V,M>&                 m_rowSpace;
+  DistArray<BaseOneDGrid<double>*> m_oneDGrids;
 
   V* m_sizes;
   V* m_minPositions;
@@ -107,9 +107,9 @@ private:
 };
 // Default constructor -------------------------------------------------
 template <class V, class M>
-ArrayOfOneDGridsClass<V,M>::ArrayOfOneDGridsClass(
+ArrayOfOneDGrids<V,M>::ArrayOfOneDGrids(
   const char*                    prefix,
-  const VectorSpaceClass<V,M>& rowSpace)
+  const VectorSpace<V,M>& rowSpace)
   :
   m_env         (rowSpace.env()    ),
   m_prefix      ((std::string)(prefix)+""),
@@ -125,7 +125,7 @@ ArrayOfOneDGridsClass<V,M>::ArrayOfOneDGridsClass(
 }
 // Destructor ----------------------------------------------------------
 template <class V, class M>
-ArrayOfOneDGridsClass<V,M>::~ArrayOfOneDGridsClass()
+ArrayOfOneDGrids<V,M>::~ArrayOfOneDGrids()
 {
   if (m_maxPositions) delete m_maxPositions;
   if (m_minPositions) delete m_minPositions;
@@ -137,19 +137,19 @@ ArrayOfOneDGridsClass<V,M>::~ArrayOfOneDGridsClass()
 }
 // Property methods-----------------------------------------------------
 template <class V, class M>
-const VectorSpaceClass<V,M>&
-ArrayOfOneDGridsClass<V,M>::rowSpace() const
+const VectorSpace<V,M>&
+ArrayOfOneDGrids<V,M>::rowSpace() const
 {
   return m_rowSpace;
 }
 //----------------------------------------------------------------------
 template <class V, class M>
 const V&
-ArrayOfOneDGridsClass<V,M>::sizes() const
+ArrayOfOneDGrids<V,M>::sizes() const
 {
   UQ_FATAL_TEST_MACRO(m_sizes == NULL,
                       m_env.worldRank(),
-                      "ArrayOfOneDGridsClass<T>::sizes()",
+                      "ArrayOfOneDGrids<T>::sizes()",
                       "sizes is still NULL");
 
   return *m_sizes;
@@ -157,11 +157,11 @@ ArrayOfOneDGridsClass<V,M>::sizes() const
 //----------------------------------------------------------------------
 template <class V, class M>
 const V&
-ArrayOfOneDGridsClass<V,M>::minPositions() const
+ArrayOfOneDGrids<V,M>::minPositions() const
 {
   UQ_FATAL_TEST_MACRO(m_minPositions == NULL,
                       m_env.worldRank(),
-                      "ArrayOfOneDGridsClass<T>::minPositions()",
+                      "ArrayOfOneDGrids<T>::minPositions()",
                       "minPositions is still NULL");
 
   return *m_minPositions;
@@ -169,11 +169,11 @@ ArrayOfOneDGridsClass<V,M>::minPositions() const
 //----------------------------------------------------------------------
 template <class V, class M>
 const V&
-ArrayOfOneDGridsClass<V,M>::maxPositions() const
+ArrayOfOneDGrids<V,M>::maxPositions() const
 {
   UQ_FATAL_TEST_MACRO(m_maxPositions == NULL,
                       m_env.worldRank(),
-                      "ArrayOfOneDGridsClass<T>::maxPositions()",
+                      "ArrayOfOneDGrids<T>::maxPositions()",
                       "maxPositions is still NULL");
 
   return *m_maxPositions;
@@ -181,7 +181,7 @@ ArrayOfOneDGridsClass<V,M>::maxPositions() const
 //----------------------------------------------------------------------
 template <class V, class M>
 void
-ArrayOfOneDGridsClass<V,M>::setUniformGrids(
+ArrayOfOneDGrids<V,M>::setUniformGrids(
   const V& sizesVec,
   const V& minPositionsVec,
   const V& maxPositionsVec)
@@ -198,7 +198,7 @@ ArrayOfOneDGridsClass<V,M>::setUniformGrids(
   char strI[65];
   for (unsigned int i = 0; i < (unsigned int) m_oneDGrids.MyLength(); ++i) {
     sprintf(strI,"%u_",i);
-    m_oneDGrids(i,0) = new UniformOneDGridClass<double>(m_env,
+    m_oneDGrids(i,0) = new UniformOneDGrid<double>(m_env,
                                                           (m_prefix+strI).c_str(),
                                                           (unsigned int) sizesVec[i],
                                                           minPositionsVec[i],
@@ -209,23 +209,23 @@ ArrayOfOneDGridsClass<V,M>::setUniformGrids(
 }
 //----------------------------------------------------------------------
 template <class V, class M>
-const BaseOneDGridClass<double>&
-ArrayOfOneDGridsClass<V,M>::grid(unsigned int rowId) const
+const BaseOneDGrid<double>&
+ArrayOfOneDGrids<V,M>::grid(unsigned int rowId) const
 {
   UQ_FATAL_TEST_MACRO(rowId >= m_rowSpace.dimLocal(),
                       m_env.worldRank(),
-                      "ArrayOfOneDUnformGridsClass<T>::grid()",
+                      "ArrayOfOneDUnformGrids<T>::grid()",
                       "rowId is out of range");
 
-  ArrayOfOneDGridsClass<V,M>* tmp = const_cast<ArrayOfOneDGridsClass<V,M>*>(this);
+  ArrayOfOneDGrids<V,M>* tmp = const_cast<ArrayOfOneDGrids<V,M>*>(this);
   return *(tmp->m_oneDGrids(rowId,0));
 }
 // I/O methods----------------------------------------------------------
 template <class V, class M>
 void
-ArrayOfOneDGridsClass<V,M>::print(std::ostream& os) const
+ArrayOfOneDGrids<V,M>::print(std::ostream& os) const
 {
-  ArrayOfOneDGridsClass<V,M>* tmp = const_cast<ArrayOfOneDGridsClass<V,M>*>(this);
+  ArrayOfOneDGrids<V,M>* tmp = const_cast<ArrayOfOneDGrids<V,M>*>(this);
   for (unsigned int i = 0; i < (unsigned int) m_oneDGrids.MyLength(); ++i) {
     os << *(tmp->m_oneDGrids(i,0))
        << std::endl;
@@ -235,7 +235,7 @@ ArrayOfOneDGridsClass<V,M>::print(std::ostream& os) const
 }
 //----------------------------------------------------------------------
 template <class V, class M>
-std::ostream& operator<< (std::ostream& os, const ArrayOfOneDGridsClass<V,M>& obj)
+std::ostream& operator<< (std::ostream& os, const ArrayOfOneDGrids<V,M>& obj)
 {
   obj.print(os);
   return os;

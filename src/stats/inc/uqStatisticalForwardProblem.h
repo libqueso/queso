@@ -41,7 +41,7 @@ namespace QUESO {
     \brief Class to solve a Statistical Forward Problem
 */
 
-/*! \class StatisticalForwardProblemClass
+/*! \class StatisticalForwardProblem
  *  \brief This templated class represents a Statistical Forward Problem.
  * 
  * This templated class represents a statistical forward problem. It is templated on the types
@@ -51,8 +51,8 @@ namespace QUESO {
  *
  * The input entities of a statistical forward problem are:
 <list type=number>
-<item> the input (parameter) RV, an instance of class 'BaseVectorRVClass<P_V,P_M>', and
-<item> the QoI function, an instance of class 'BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>'.
+<item> the input (parameter) RV, an instance of class 'BaseVectorRV<P_V,P_M>', and
+<item> the QoI function, an instance of class 'BaseVectorFunction<P_V,P_M,Q_V,Q_M>'.
 </list>
   * Let \f$ q() \f$  denote the mathematical QoI function and  \f$ x \f$  denote a vector of 
   * parameters. The QoI function object stores the routine that computes  \f$ q(x) \f$  and 
@@ -61,7 +61,7 @@ namespace QUESO {
   *
   * The output entity of a statistical forward problem is:
 <list type=number>
-<item> the QoI RV, another instance of class 'BaseVectorRVClass<P_V,P_M>'.
+<item> the QoI RV, another instance of class 'BaseVectorRV<P_V,P_M>'.
 </list>   
   * The QoI RV stores the solution according to the Bayesian approach. The solution of a SPF 
   * is computed by calling 'solveWithMonteCarlo()'. More operations, with different methods, 
@@ -73,11 +73,11 @@ namespace QUESO {
   * available through the operation 'qoiRv()'. Such QoI RV is able to provide:
 <list type=number>
 <item> a vector realizer through the operation 'qoiRv().realizer()', which returns an
-       instance of the class 'BaseVectorRealizerClass<Q_V,Q_M>'.
+       instance of the class 'BaseVectorRealizer<Q_V,Q_M>'.
 </list>*/
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-class StatisticalForwardProblemClass
+class StatisticalForwardProblem
 {
 public:
  //! @name Constructor/Destructor methods
@@ -88,16 +88,16 @@ public:
   * image set of the QoI function 'qoiFunction' and the image set of the vector random variable 
   * 'qoiRv' should belong to vector spaces of equal dimensions. If the requirements are satisfied, 
   * the constructor then reads input options that begin with the string '\<prefix\>fp_'. Options 
-  * reading is handled by class 'StatisticalForwardProblemOptionsClass'. If no options input file 
+  * reading is handled by class 'StatisticalForwardProblemOptions'. If no options input file 
   * is provided, the construction assigns \c alternativeOptionsValues to the options of the SFP.*/
-  StatisticalForwardProblemClass(const char*                                       prefix,
-                                   const SfpOptionsValuesClass*                    alternativeOptionsValues, // dakota
-                                   const BaseVectorRVClass      <P_V,P_M>&         paramRv,
-                                   const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
-                                   GenericVectorRVClass         <Q_V,Q_M>&         qoiRv);
+  StatisticalForwardProblem(const char*                                       prefix,
+                                   const SfpOptionsValues*                    alternativeOptionsValues, // dakota
+                                   const BaseVectorRV      <P_V,P_M>&         paramRv,
+                                   const BaseVectorFunction<P_V,P_M,Q_V,Q_M>& qoiFunction,
+                                   GenericVectorRV         <Q_V,Q_M>&         qoiRv);
  
   //! Destructor
-  ~StatisticalForwardProblemClass();
+  ~StatisticalForwardProblem();
   //@}
 
   //! @name Statistical methods
@@ -112,26 +112,26 @@ public:
    * If the flag is 'true', the operation sets the member variable 'm_qoiRv' accordingly. 
    * The operation:
 <list type=number>
-<item> instantiates 'SequenceOfVectorsClass<P_V,P_M>' (the input sequence of vectors),
-<item> instantiates 'SequenceOfVectorsClass<Q_V,Q_M>' (the output sequence of vectors),
-<item> instantiates 'MonteCarloSGClass<P_V,P_M,Q_V,Q_M>' (the Monte Carlo algorithm),
+<item> instantiates 'SequenceOfVectors<P_V,P_M>' (the input sequence of vectors),
+<item> instantiates 'SequenceOfVectors<Q_V,Q_M>' (the output sequence of vectors),
+<item> instantiates 'MonteCarloSG<P_V,P_M,Q_V,Q_M>' (the Monte Carlo algorithm),
 <item> populates the output sequence with the Monte Carlo algorithm,
 <item> sets the realizer of 'm_qoiRv' with the contents of the output sequence, and
 </list>*/
-//<item> computes the CDFs of the components of 'm_qoiRv' as instances of 'SampledVectorCdfClass<Q_V,Q_M>'
-  void                                   solveWithMonteCarlo(const McOptionsValuesClass* alternativeOptionsValues); // dakota
+//<item> computes the CDFs of the components of 'm_qoiRv' as instances of 'SampledVectorCdf<Q_V,Q_M>'
+  void                                   solveWithMonteCarlo(const McOptionsValues* alternativeOptionsValues); // dakota
   
   //! Returns the QoI RV; access to private attribute m_qoiRv.
-  const GenericVectorRVClass<Q_V,Q_M>& qoiRv              () const;
+  const GenericVectorRV<Q_V,Q_M>& qoiRv              () const;
 
   //! Returns the parameter chain; access to private attribute m_paramChain.
-  const BaseVectorSequenceClass<Q_V,Q_M>& getParamChain   () const;
+  const BaseVectorSequence<Q_V,Q_M>& getParamChain   () const;
   
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   
   //<item> CDFs of QoI components through the operation 'qoiRv().unifiedCdf()',
-  //     which returns an instance of the class 'BaseVectorCdfClass<Q_V,Q_M>'
-  const BaseVectorCdfClass  <Q_V,Q_M>& qoiRv_unifiedCdf   () const;
+  //     which returns an instance of the class 'BaseVectorCdf<Q_V,Q_M>'
+  const BaseVectorCdf  <Q_V,Q_M>& qoiRv_unifiedCdf   () const;
   
 #endif
   //@}
@@ -148,50 +148,50 @@ private:
   /*! \todo: implement me!*/
   void  commonConstructor();
 
-  const BaseEnvironmentClass&                     m_env;
+  const BaseEnvironment&                     m_env;
 
-  const BaseVectorRVClass      <P_V,P_M>&         m_paramRv;
-  const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& m_qoiFunction;
-        GenericVectorRVClass   <Q_V,Q_M>&         m_qoiRv; // FIX ME: Maybe not always generic ?
+  const BaseVectorRV      <P_V,P_M>&         m_paramRv;
+  const BaseVectorFunction<P_V,P_M,Q_V,Q_M>& m_qoiFunction;
+        GenericVectorRV   <Q_V,Q_M>&         m_qoiRv; // FIX ME: Maybe not always generic ?
 
-        BaseVectorSequenceClass<Q_V,Q_M>*         m_paramChain;
-        BaseVectorSequenceClass<Q_V,Q_M>*         m_qoiChain;
-        MonteCarloSGClass      <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
+        BaseVectorSequence<Q_V,Q_M>*         m_paramChain;
+        BaseVectorSequence<Q_V,Q_M>*         m_qoiChain;
+        MonteCarloSG      <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
 
-        BaseVectorRealizerClass<Q_V,Q_M>*         m_solutionRealizer;
+        BaseVectorRealizer<Q_V,Q_M>*         m_solutionRealizer;
  
-        BaseJointPdfClass      <Q_V,Q_M>*         m_solutionPdf;
+        BaseJointPdf      <Q_V,Q_M>*         m_solutionPdf;
 
-        SfpOptionsValuesClass                     m_alternativeOptionsValues;
-        StatisticalForwardProblemOptionsClass*    m_optionsObj;
+        SfpOptionsValues                     m_alternativeOptionsValues;
+        StatisticalForwardProblemOptions*    m_optionsObj;
 
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
-        ArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subMdfGrids;
-        ArrayOfOneDTablesClass <Q_V,Q_M>*         m_subMdfValues;
+        ArrayOfOneDGrids  <Q_V,Q_M>*         m_subMdfGrids;
+        ArrayOfOneDTables <Q_V,Q_M>*         m_subMdfValues;
 #endif
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
-        BaseVectorMdfClass     <Q_V,Q_M>*         m_subSolutionMdf;
-        ArrayOfOneDGridsClass  <Q_V,Q_M>*         m_subCdfGrids;
-        ArrayOfOneDTablesClass <Q_V,Q_M>*         m_subCdfValues;
-        BaseVectorCdfClass     <Q_V,Q_M>*         m_subSolutionCdf;
+        BaseVectorMdf     <Q_V,Q_M>*         m_subSolutionMdf;
+        ArrayOfOneDGrids  <Q_V,Q_M>*         m_subCdfGrids;
+        ArrayOfOneDTables <Q_V,Q_M>*         m_subCdfValues;
+        BaseVectorCdf     <Q_V,Q_M>*         m_subSolutionCdf;
 
-        ArrayOfOneDGridsClass  <Q_V,Q_M>*         m_unifiedCdfGrids;
-        ArrayOfOneDTablesClass <Q_V,Q_M>*         m_unifiedCdfValues;
-        BaseVectorCdfClass     <Q_V,Q_M>*         m_unifiedSolutionCdf;
+        ArrayOfOneDGrids  <Q_V,Q_M>*         m_unifiedCdfGrids;
+        ArrayOfOneDTables <Q_V,Q_M>*         m_unifiedCdfValues;
+        BaseVectorCdf     <Q_V,Q_M>*         m_unifiedSolutionCdf;
 #endif
 };
 //! Prints the object \c obj, overloading an operator.
 template<class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& obj);
+std::ostream& operator<<(std::ostream& os, const StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>& obj);
 
 // Default constructor -----------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::StatisticalForwardProblemClass(
+StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::StatisticalForwardProblem(
   /*! The prefix                 */ const char*                                       prefix,
-  /*! Options (if no input file) */ const SfpOptionsValuesClass*                    alternativeOptionsValues, // dakota
-  /*! The input RV               */ const BaseVectorRVClass      <P_V,P_M>&         paramRv,
-  /*! The QoI function           */ const BaseVectorFunctionClass<P_V,P_M,Q_V,Q_M>& qoiFunction,
-  /*! The QoI RV                 */       GenericVectorRVClass   <Q_V,Q_M>&         qoiRv)
+  /*! Options (if no input file) */ const SfpOptionsValues*                    alternativeOptionsValues, // dakota
+  /*! The input RV               */ const BaseVectorRV      <P_V,P_M>&         paramRv,
+  /*! The QoI function           */ const BaseVectorFunction<P_V,P_M,Q_V,Q_M>& qoiFunction,
+  /*! The QoI RV                 */       GenericVectorRV   <Q_V,Q_M>&         qoiRv)
   :
   m_env                     (paramRv.env()),
   m_paramRv                 (paramRv),
@@ -219,7 +219,7 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::StatisticalForwardProblemClass(
   m_optionsObj              (NULL)
 {
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = " << prefix
                             << ", alternativeOptionsValues = " << alternativeOptionsValues
                             << ", m_env.optionsInputFileName() = " << m_env.optionsInputFileName()
@@ -228,25 +228,25 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::StatisticalForwardProblemClass(
 
   if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
   if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new StatisticalForwardProblemOptionsClass(m_env,prefix,m_alternativeOptionsValues);
+    m_optionsObj = new StatisticalForwardProblemOptions(m_env,prefix,m_alternativeOptionsValues);
   }
   else {
-    m_optionsObj = new StatisticalForwardProblemOptionsClass(m_env,prefix);
+    m_optionsObj = new StatisticalForwardProblemOptions(m_env,prefix);
     m_optionsObj->scanOptionsValues();
   }
 
   UQ_FATAL_TEST_MACRO(paramRv.imageSet().vectorSpace().dimLocal() != qoiFunction.domainSet().vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "StatisticalForwardProblemClass<P_V,P_M>::constructor()",
+                      "StatisticalForwardProblem<P_V,P_M>::constructor()",
                       "'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions");
 
   UQ_FATAL_TEST_MACRO(qoiFunction.imageSet().vectorSpace().dimLocal() != qoiRv.imageSet().vectorSpace().dimLocal(),
                       m_env.worldRank(),
-                      "StatisticalForwardProblemClass<P_V,P_M>::constructor()",
+                      "StatisticalForwardProblem<P_V,P_M>::constructor()",
                       "'qoiFunction' and 'qoiRv' are related to vector spaces of different dimensions");
 
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Leaving StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = " << m_optionsObj->m_prefix
                             << std::endl;
   }
@@ -254,7 +254,7 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::StatisticalForwardProblemClass(
 
 // Destructor --------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~StatisticalForwardProblemClass()
+StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::~StatisticalForwardProblem()
 {
   if (m_solutionPdf       ) delete m_solutionPdf;
 
@@ -293,29 +293,29 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::~StatisticalForwardProblemClass
 // Statistical methods -----------------------------
 template <class P_V,class P_M, class Q_V, class Q_M>
 bool
-  StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::computeSolutionFlag() const
+  StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::computeSolutionFlag() const
 {
   return m_optionsObj->m_ov.m_computeSolution;
 }
 //--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
-  const McOptionsValuesClass* alternativeOptionsValues)
+StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
+  const McOptionsValues* alternativeOptionsValues)
 {
   m_env.fullComm().Barrier();
-  m_env.fullComm().syncPrintDebugMsg("Entering StatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",1,3000000);
+  m_env.fullComm().syncPrintDebugMsg("Entering StatisticalForwardProblem<P_V,P_M>::solveWithMonteCarlo()",1,3000000);
 
   if (m_optionsObj->m_ov.m_computeSolution == false) {
     if ((m_env.subDisplayFile())) {
-      *m_env.subDisplayFile() << "In StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+      *m_env.subDisplayFile() << "In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                               << ": avoiding solution, as requested by user"
                               << std::endl;
     }
     return;
   }
   if ((m_env.subDisplayFile())) {
-    *m_env.subDisplayFile() << "In StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+    *m_env.subDisplayFile() << "In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                             << ": computing solution, as requested by user"
                             << std::endl;
   }
@@ -355,28 +355,28 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
   numEvaluationPointsVec.cwSet(250.);
 
   // Compute output realizer: Monte Carlo approach
-  m_paramChain = new SequenceOfVectorsClass<P_V,P_M>(m_paramRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"paramChain");
-  m_qoiChain   = new SequenceOfVectorsClass<Q_V,Q_M>(m_qoiRv.imageSet().vectorSpace(),  0,m_optionsObj->m_prefix+"qoiChain"  );
-  m_mcSeqGenerator = new MonteCarloSGClass<P_V,P_M,Q_V,Q_M>(m_optionsObj->m_prefix.c_str(),
+  m_paramChain = new SequenceOfVectors<P_V,P_M>(m_paramRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"paramChain");
+  m_qoiChain   = new SequenceOfVectors<Q_V,Q_M>(m_qoiRv.imageSet().vectorSpace(),  0,m_optionsObj->m_prefix+"qoiChain"  );
+  m_mcSeqGenerator = new MonteCarloSG<P_V,P_M,Q_V,Q_M>(m_optionsObj->m_prefix.c_str(),
                                                               alternativeOptionsValues,
                                                               m_paramRv,
                                                               m_qoiFunction);
   //m_qoiRv);
   m_mcSeqGenerator->generateSequence(*m_paramChain,
                                      *m_qoiChain);
-  m_solutionRealizer = new SequentialVectorRealizerClass<Q_V,Q_M>((m_optionsObj->m_prefix+"Qoi").c_str(),
+  m_solutionRealizer = new SequentialVectorRealizer<Q_V,Q_M>((m_optionsObj->m_prefix+"Qoi").c_str(),
                                                                     *m_qoiChain);
   m_qoiRv.setRealizer(*m_solutionRealizer);
 
   // Compute output mdf: uniform sampling approach
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
-  m_subMdfGrids  = new ArrayOfOneDGridsClass <Q_V,Q_M>((m_optionsObj->m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
-  m_subMdfValues = new ArrayOfOneDTablesClass<Q_V,Q_M>((m_optionsObj->m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_subMdfGrids  = new ArrayOfOneDGrids <Q_V,Q_M>((m_optionsObj->m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_subMdfValues = new ArrayOfOneDTables<Q_V,Q_M>((m_optionsObj->m_prefix+"QoiMdf_").c_str(),m_qoiRv.imageSet().vectorSpace());
   m_qoiChain->subUniformlySampledMdf(numEvaluationPointsVec, // input
                                      *m_subMdfGrids,         // output
                                      *m_subMdfValues);       // output
 
-  m_subSolutionMdf = new SampledVectorMdfClass<Q_V,Q_M>((m_optionsObj->m_prefix+"Qoi").c_str(),
+  m_subSolutionMdf = new SampledVectorMdf<Q_V,Q_M>((m_optionsObj->m_prefix+"Qoi").c_str(),
                                                           *m_subMdfGrids,
                                                           *m_subMdfValues);
   m_qoiRv.setMdf(*m_subSolutionMdf);
@@ -392,13 +392,13 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
   std::string uniCoreName_solutionCdf(m_optionsObj->m_prefix+"unifQoi");
   if (m_env.numSubEnvironments() == 1) subCoreName_solutionCdf = uniCoreName_solutionCdf;
 
-  m_subCdfGrids  = new ArrayOfOneDGridsClass <Q_V,Q_M>(subCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
-  m_subCdfValues = new ArrayOfOneDTablesClass<Q_V,Q_M>(subCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_subCdfGrids  = new ArrayOfOneDGrids <Q_V,Q_M>(subCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
+  m_subCdfValues = new ArrayOfOneDTables<Q_V,Q_M>(subCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
   m_qoiChain->subUniformlySampledCdf(numEvaluationPointsVec, // input
                                      *m_subCdfGrids,         // output
                                      *m_subCdfValues);       // output
 
-  m_subSolutionCdf = new SampledVectorCdfClass<Q_V,Q_M>(subCoreName_solutionCdf.c_str(),
+  m_subSolutionCdf = new SampledVectorCdf<Q_V,Q_M>(subCoreName_solutionCdf.c_str(),
                                                           *m_subCdfGrids,
                                                           *m_subCdfValues);
   m_qoiRv.setSubCdf(*m_subSolutionCdf);
@@ -408,13 +408,13 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
     m_qoiRv.setUnifiedCdf(*m_subSolutionCdf);
   }
   else {
-    m_unifiedCdfGrids  = new ArrayOfOneDGridsClass <Q_V,Q_M>(uniCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
-    m_unifiedCdfValues = new ArrayOfOneDTablesClass<Q_V,Q_M>(uniCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
+    m_unifiedCdfGrids  = new ArrayOfOneDGrids <Q_V,Q_M>(uniCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
+    m_unifiedCdfValues = new ArrayOfOneDTables<Q_V,Q_M>(uniCoreName_qoiCdf.c_str(),m_qoiRv.imageSet().vectorSpace());
     m_qoiChain->unifiedUniformlySampledCdf(numEvaluationPointsVec, // input
                                            *m_unifiedCdfGrids,     // output
                                            *m_unifiedCdfValues);   // output
 
-    m_unifiedSolutionCdf = new SampledVectorCdfClass<Q_V,Q_M>(uniCoreName_solutionCdf.c_str(),
+    m_unifiedSolutionCdf = new SampledVectorCdf<Q_V,Q_M>(uniCoreName_solutionCdf.c_str(),
                                                                 *m_unifiedCdfGrids,
                                                                 *m_unifiedCdfValues);
     m_qoiRv.setUnifiedCdf(*m_unifiedSolutionCdf);
@@ -426,7 +426,7 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
   P_M* pqCorrelationMatrix = NULL;
   if (m_optionsObj->m_ov.m_computeCovariances || m_optionsObj->m_ov.m_computeCorrelations) {
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+      *m_env.subDisplayFile() << "In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                               << ", prefix = " << m_optionsObj->m_prefix
                               << ": instantiating cov and corr matrices"
                               << std::endl;
@@ -447,13 +447,13 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
   // Write data out
   if (m_env.subDisplayFile()) {
     if (pqCovarianceMatrix ) {
-      *m_env.subDisplayFile() << "In StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+      *m_env.subDisplayFile() << "In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                               << ", prefix = "                           << m_optionsObj->m_prefix
                               << ": contents of covariance matrix are\n" << *pqCovarianceMatrix
                               << std::endl;
     }
     if (pqCorrelationMatrix) {
-      *m_env.subDisplayFile() << "In StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+      *m_env.subDisplayFile() << "In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                               << ", prefix = "                            << m_optionsObj->m_prefix
                               << ": contents of correlation matrix are\n" << *pqCorrelationMatrix
                               << std::endl;
@@ -462,7 +462,7 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
 
   // Open data output file
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "In StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+    *m_env.subDisplayFile() << "In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                             << ", prefix = "                                        << m_optionsObj->m_prefix
                             << ": checking necessity of opening data output file '" << m_optionsObj->m_ov.m_dataOutputFileName
                             << "'"
@@ -503,7 +503,7 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
     // Close data output file
     m_env.closeFile(filePtrSet,UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
+      *m_env.subDisplayFile() << "In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo()"
                               << ", prefix = "                 << m_optionsObj->m_prefix
                               << ": closed data output file '" << m_optionsObj->m_ov.m_dataOutputFileName
                               << "'"
@@ -517,15 +517,15 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(
   if (pqCovarianceMatrix ) delete pqCovarianceMatrix;
   if (pqCorrelationMatrix) delete pqCorrelationMatrix;
 
-  m_env.fullComm().syncPrintDebugMsg("Leaving StatisticalForwardProblemClass<P_V,P_M>::solveWithMonteCarlo()",1,3000000);
+  m_env.fullComm().syncPrintDebugMsg("Leaving StatisticalForwardProblem<P_V,P_M>::solveWithMonteCarlo()",1,3000000);
   m_env.fullComm().Barrier();
 
   return;
 }
 //--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-const GenericVectorRVClass<Q_V,Q_M>& 
-StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv() const
+const GenericVectorRV<Q_V,Q_M>& 
+StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::qoiRv() const
 {
   return m_qoiRv;
 }
@@ -533,8 +533,8 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv() const
 
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
 template <class P_V,class P_M,class Q_V,class Q_M>
-const BaseVectorCdfClass<Q_V,Q_M>&
-StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf() const
+const BaseVectorCdf<Q_V,Q_M>&
+StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf() const
 {
   if (m_env.numSubEnvironments() == 1) {
     return m_qoiRv.subCdf();
@@ -553,15 +553,15 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::qoiRv_unifiedCdf() const
 #endif
 //--------------------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
-  const BaseVectorSequenceClass<Q_V,Q_M>&
-  StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::getParamChain() const
+  const BaseVectorSequence<Q_V,Q_M>&
+  StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::getParamChain() const
 {
 
   // Make sure this runs after the forward propagation
   // only then we obtain the actual realizations of the parameters
   UQ_FATAL_TEST_MACRO(m_paramChain == NULL,
                       m_env.worldRank(),
-                      (std::string)("StatisticalForwardProblemClass<V,M,V,M>::getParamChain()"),
+                      (std::string)("StatisticalForwardProblem<V,M,V,M>::getParamChain()"),
                       "m_paramChain is NULL");
 
   return *m_paramChain;
@@ -570,7 +570,7 @@ template <class P_V,class P_M,class Q_V,class Q_M>
 // I/O methods--------------------------------------
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
+StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
   return;
 }
@@ -578,7 +578,7 @@ StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 // Operator declared outside class definition ------
 //--------------------------------------------------
 template<class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const StatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>& obj)
+std::ostream& operator<<(std::ostream& os, const StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>& obj)
 {
   obj.print(os);
 

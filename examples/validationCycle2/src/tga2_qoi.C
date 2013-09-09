@@ -35,13 +35,13 @@
 #include <gsl/gsl_odeiv.h>
 
 // The actual (user defined) qoi routine
-void qoiRoutine(const QUESO::GslVectorClass&                    paramValues,
-                const QUESO::GslVectorClass*                    paramDirection,
+void qoiRoutine(const QUESO::GslVector&                    paramValues,
+                const QUESO::GslVector*                    paramDirection,
                 const void*                                functionDataPtr,
-                      QUESO::GslVectorClass&                    qoiValues,
-                      QUESO::DistArrayClass<QUESO::GslVectorClass*>* gradVectors,
-                      QUESO::DistArrayClass<QUESO::GslMatrixClass*>* hessianMatrices,
-                      QUESO::DistArrayClass<QUESO::GslVectorClass*>* hessianEffects)
+                      QUESO::GslVector&                    qoiValues,
+                      QUESO::DistArray<QUESO::GslVector*>* gradVectors,
+                      QUESO::DistArray<QUESO::GslMatrix*>* hessianMatrices,
+                      QUESO::DistArray<QUESO::GslVector*>* hessianEffects)
 {
   if (paramDirection  &&
       functionDataPtr && 
@@ -53,9 +53,9 @@ void qoiRoutine(const QUESO::GslVectorClass&                    paramValues,
 
   double A             = paramValues[0];
   double E             = paramValues[1];
-  double beta          = ((qoiRoutine_DataClass *) functionDataPtr)->m_beta;
-  double criticalMass  = ((qoiRoutine_DataClass *) functionDataPtr)->m_criticalMass;
-  double criticalTime  = ((qoiRoutine_DataClass *) functionDataPtr)->m_criticalTime;
+  double beta          = ((qoiRoutine_Data *) functionDataPtr)->m_beta;
+  double criticalMass  = ((qoiRoutine_Data *) functionDataPtr)->m_criticalMass;
+  double criticalTime  = ((qoiRoutine_Data *) functionDataPtr)->m_criticalTime;
 
   double params[]={A,E,beta};
       	

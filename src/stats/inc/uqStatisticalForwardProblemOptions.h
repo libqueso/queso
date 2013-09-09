@@ -52,33 +52,33 @@ namespace QUESO {
     \brief Classes to allow options to be passed to a Statistical Forward Problem.
 */
 
-/*! \class SfpOptionsValuesClass
+/*! \class SfpOptionsValues
  *  \brief This class provides options for a Statistical Forward Problem if no input file is available.
  * 
  * In order to solve a Statistical Forward Problem (SFP), QUESO expects some options for its methods to be 
  * fully defined. This class provides default values for such options if no input file is available. */
 
-class SfpOptionsValuesClass
+class SfpOptionsValues
 {
 public:
   //! Constructor/Destructor methods
   //@{
   //! Default constructor.
   /*! Assigns the default suite of options to the Statistical Forward Problem.*/
-  SfpOptionsValuesClass            ();
+  SfpOptionsValues            ();
   
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
-  SfpOptionsValuesClass            (const SfpOptionsValuesClass& src);
+  SfpOptionsValues            (const SfpOptionsValues& src);
   
   //! Destructor
-  ~SfpOptionsValuesClass            ();
+  ~SfpOptionsValues            ();
   //@}
   
   //! @name Set methods
   //@{ 
   //! Assignment operator; it copies \c rhs to \c this. 
-  SfpOptionsValuesClass& operator= (const SfpOptionsValuesClass& rhs);
+  SfpOptionsValues& operator= (const SfpOptionsValues& rhs);
   //@}
 
   bool                   m_computeSolution;
@@ -90,14 +90,14 @@ public:
   std::string            m_solverString;
 #endif
 
-  //McOptionsValuesClass m_mcOptionsValues;
+  //McOptionsValues m_mcOptionsValues;
 
 private:
   //! Copies the option values from \c src to \c this.
-  void copy(const SfpOptionsValuesClass& src);
+  void copy(const SfpOptionsValues& src);
 };
 
-/*! \class StatisticalForwardProblemOptionsClass
+/*! \class StatisticalForwardProblemOptions
  *  \brief This class reads option values for a Statistical Forward Problem from an input file.
  * 
  *  This class reads the option values for the Statistical Forward Problem (SFP) from an input file 
@@ -108,21 +108,21 @@ private:
  * which MATLAB variables are defined and set. The names of the variables are self explanatory.
 */
 
-class StatisticalForwardProblemOptionsClass
+class StatisticalForwardProblemOptions
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Constructor: reads options from the input file.
-  StatisticalForwardProblemOptionsClass(const BaseEnvironmentClass& env, const char* prefix);
+  StatisticalForwardProblemOptions(const BaseEnvironment& env, const char* prefix);
   
   //! Constructor: with alternative option values.
   /*! In this constructor, the input options are given by \c alternativeOptionsValues, rather than the 
    * options input file*/
-  StatisticalForwardProblemOptionsClass(const BaseEnvironmentClass& env, const char* prefix, const SfpOptionsValuesClass& alternativeOptionsValues);
+  StatisticalForwardProblemOptions(const BaseEnvironment& env, const char* prefix, const SfpOptionsValues& alternativeOptionsValues);
  
   //! Destructor
-  ~StatisticalForwardProblemOptionsClass();  
+  ~StatisticalForwardProblemOptions();  
   //@}
   
   //! @name I/O methods
@@ -134,7 +134,7 @@ public:
   void print            (std::ostream& os) const;
   //@}
   
-  SfpOptionsValuesClass       m_ov;
+  SfpOptionsValues       m_ov;
   std::string                   m_prefix;
 
 private:
@@ -144,7 +144,7 @@ private:
   //! Gets the option values of the SFP.
   void   getMyOptionValues(po::options_description& optionsDesc);
 
-  const BaseEnvironmentClass& m_env;
+  const BaseEnvironment& m_env;
 
   po::options_description*      m_optionsDesc;
   std::string                   m_option_help;
@@ -158,7 +158,7 @@ private:
 #endif
 };
 //! Prints the object \c obj, overloading an operator.
-std::ostream& operator<<(std::ostream& os, const StatisticalForwardProblemOptionsClass& obj);
+std::ostream& operator<<(std::ostream& os, const StatisticalForwardProblemOptions& obj);
 
 }  // End namespace QUESO
 

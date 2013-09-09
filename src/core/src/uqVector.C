@@ -33,158 +33,158 @@ namespace QUESO {
 
 // Default constructor ------------------------------
 
-VectorClass::VectorClass()
+Vector::Vector()
   :
-  m_env(*(new EmptyEnvironmentClass())                                               ),
-  m_map(*(new MapClass( 1,0,*(new MpiCommClass(m_env,RawValue_MPI_COMM_SELF)) ) )) // avoid using MPI_COMM_WORLD
+  m_env(*(new EmptyEnvironment())                                               ),
+  m_map(*(new Map( 1,0,*(new MpiComm(m_env,RawValue_MPI_COMM_SELF)) ) )) // avoid using MPI_COMM_WORLD
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
-                      "VectorClass::constructor(), default",
+                      "Vector::constructor(), default",
                       "should not be used by user");
 }
 
 // Shaped constructor --------------------------------
-VectorClass::VectorClass(const BaseEnvironmentClass& env, const MapClass& map)
+Vector::Vector(const BaseEnvironment& env, const Map& map)
   :
   m_env              (env),
   m_map              (map),
   m_printHorizontally(true),
   m_printScientific  (false) // for compatibility with previous regression tests
 {
-  //std::cout << "Entering VectorClass::constructor(env,map)" << std::endl;
+  //std::cout << "Entering Vector::constructor(env,map)" << std::endl;
 
-  //std::cout << "In VectorClass::constructor(env,map)" // mox
+  //std::cout << "In Vector::constructor(env,map)" // mox
   //          << ", m_map.NumMyElements() = " << m_map.NumMyElements()
   //          << std::endl;
 
-  //std::cout << "Leaving VectorClass::constructor(env,map)" << std::endl;
+  //std::cout << "Leaving Vector::constructor(env,map)" << std::endl;
 }
 
 // Copy constructor -----------------------------------
-VectorClass::VectorClass(const VectorClass& rhs)
+Vector::Vector(const Vector& rhs)
   :
   m_env(rhs.m_env),
   m_map(rhs.m_map)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       m_env.worldRank(),
-                      "VectorClass::constructor(), copy",
+                      "Vector::constructor(), copy",
                       "code should not execute through here");
 }
 
 // Destructor ---------------------------------------
-VectorClass::~VectorClass()
+Vector::~Vector()
 {
 }
 
 // Set methods --------------------------------------
-VectorClass&
-VectorClass::operator=(const VectorClass& rhs)
+Vector&
+Vector::operator=(const Vector& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       rhs.m_env.worldRank(),
-                      "VectorClass::operator=()",
+                      "Vector::operator=()",
                       "code should not execute through here");
   return *this;
 }
 
 // --------------------------------------------------
-VectorClass&
-VectorClass::operator*=(double a)
+Vector&
+Vector::operator*=(double a)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       m_env.worldRank(),
-                      "VectorClass::operator*=()",
+                      "Vector::operator*=()",
                       "code should not execute through here");
   double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
 // --------------------------------------------------
-VectorClass&
-VectorClass::operator/=(double a)
+Vector&
+Vector::operator/=(double a)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       m_env.worldRank(),
-                      "VectorClass::operator/=()",
+                      "Vector::operator/=()",
                       "code should not execute through here");
   double tmpA = a; tmpA += 1.; // Just to avoid icpc warnings
   return *this;
 }
 
 // --------------------------------------------------
-VectorClass&
-VectorClass::operator+=(const VectorClass& rhs)
+Vector&
+Vector::operator+=(const Vector& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       rhs.m_env.worldRank(),
-                      "VectorClass::operator+=()",
+                      "Vector::operator+=()",
                       "code should not execute through here");
   return *this;
 }
 
 // --------------------------------------------------
-VectorClass&
-VectorClass::operator-=(const VectorClass& rhs)
+Vector&
+Vector::operator-=(const Vector& rhs)
 {
   UQ_FATAL_TEST_MACRO(UQ_INVALID_INTERNAL_STATE_RC,
                       rhs.m_env.worldRank(),
-                      "VectorClass::operator-=()",
+                      "Vector::operator-=()",
                       "code should not execute through here");
   return *this;
 }
 
 // Environment and Map methods ----------------------
-const BaseEnvironmentClass&
-VectorClass::env() const
+const BaseEnvironment&
+Vector::env() const
 {
   return m_env;
 }
 
 // --------------------------------------------------
-const MapClass&
-VectorClass::map() const
+const Map&
+Vector::map() const
 {
   return m_map;
 }
 
 // --------------------------------------------------
 unsigned int
-VectorClass::numOfProcsForStorage() const
+Vector::numOfProcsForStorage() const
 {
   return m_map.Comm().NumProc();
 }
 
 // I/O and Miscellaneous methods --------------------
 void
-VectorClass::setPrintHorizontally(bool value) const
+Vector::setPrintHorizontally(bool value) const
 {
   m_printHorizontally = value;
   return;
 }
 // --------------------------------------------------
 bool
-VectorClass::getPrintHorizontally() const
+Vector::getPrintHorizontally() const
 {
   return m_printHorizontally;
 }
 // --------------------------------------------------
 void
-VectorClass::setPrintScientific(bool value) const
+Vector::setPrintScientific(bool value) const
 {
   m_printScientific = value;
   return;
 }
 // --------------------------------------------------
 bool
-VectorClass::getPrintScientific() const
+Vector::getPrintScientific() const
 {
   return m_printScientific;
 }
 // --------------------------------------------------
 void
-VectorClass::copy(const VectorClass& src)
+Vector::copy(const Vector& src)
 {
   //m_env               = src.env;
   //m_map               = src.map; // prudenci 2010-06-17

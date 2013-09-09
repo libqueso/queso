@@ -30,6 +30,6 @@
 #define __GET_SET_ROW_COLUMN_TESTS_H__
 
 #include <uqEnvironment.h>
-int actualChecking(const QUESO::FullEnvironmentClass* env);
+int actualChecking(const QUESO::FullEnvironment* env);
 
 #endif // __GET_SET_ROW_COLUMN_TESTS_H__

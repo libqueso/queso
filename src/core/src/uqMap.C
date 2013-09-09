@@ -35,21 +35,21 @@ namespace QUESO {
 // Constructor/Destructor methods -------------------
 
 // Default constructor ------------------------------
-MapClass::MapClass()
+Map::Map()
   :
-  m_MpiComm() // *(new MpiCommClass()) )
+  m_MpiComm() // *(new MpiComm()) )
 {
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
-                      "MapClass::constructor()",
+                      "Map::constructor()",
                       "should not be called");
 }
 
 // Usable constructor ------------------------------
-MapClass::MapClass(
+Map::Map(
   int                   numGlobalElements,
   int                   indexBase,
-  const MpiCommClass& comm)
+  const MpiComm& comm)
   :
   m_MpiComm        (comm),
 #ifdef QUESO_HAS_TRILINOS
@@ -63,7 +63,7 @@ MapClass::MapClass(
 }
 
 // Copy constructor ---------------------------------
-MapClass::MapClass(const MapClass& src)
+Map::Map(const Map& src)
   :
   m_MpiComm(src.m_MpiComm)
 #ifdef QUESO_HAS_TRILINOS
@@ -75,7 +75,7 @@ MapClass::MapClass(const MapClass& src)
 }
 
 // Destructor ---------------------------------------
-MapClass::~MapClass()
+Map::~Map()
 {
 #ifdef QUESO_HAS_TRILINOS
   delete m_epetraMap;
@@ -87,8 +87,8 @@ MapClass::~MapClass()
 
 // --------------------------------------------------
 // Set methodos -------------------------------------
-MapClass&
-MapClass::operator=(const MapClass& rhs)
+Map&
+Map::operator=(const Map& rhs)
 {
   this->copy(rhs);
   return *this;
@@ -97,7 +97,7 @@ MapClass::operator=(const MapClass& rhs)
 // --------------------------------------------------
 // Size, dimension and local ID accessor methods ----
 int
-MapClass::NumGlobalElements() const
+Map::NumGlobalElements() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMap->NumGlobalElements();
@@ -108,7 +108,7 @@ MapClass::NumGlobalElements() const
 
 // --------------------------------------------------
 int
-MapClass::IndexBase() const
+Map::IndexBase() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMap->IndexBase();
@@ -119,7 +119,7 @@ MapClass::IndexBase() const
 
 // --------------------------------------------------
 int
-MapClass::NumMyElements() const
+Map::NumMyElements() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMap->NumMyElements();
@@ -130,7 +130,7 @@ MapClass::NumMyElements() const
 
 // --------------------------------------------------
 int
-MapClass::MinMyGID() const
+Map::MinMyGID() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMap->MinMyGID();
@@ -142,15 +142,15 @@ MapClass::MinMyGID() const
 
 // --------------------------------------------------
 // Misc methods -------------------------------------
-const MpiCommClass&
-MapClass::Comm() const
+const MpiComm&
+Map::Comm() const
 {
   return m_MpiComm;
 }
 
 #ifdef QUESO_HAS_TRILINOS
 const Epetra_Map&
-MapClass::epetraMap() const
+Map::epetraMap() const
 {
   return *m_epetraMap;
 }
@@ -158,7 +158,7 @@ MapClass::epetraMap() const
 
 // --------------------------------------------------
 void
-MapClass::copy(const MapClass& src)
+Map::copy(const Map& src)
 {
   m_MpiComm         = src.m_MpiComm;
 #ifdef QUESO_HAS_TRILINOS

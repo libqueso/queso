@@ -32,14 +32,14 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClass(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   const char*                                               prefix,
-  const GcmOptionsValuesClass*                            alternativeOptionsValues, // dakota
-  const SimulationStorageClass <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationStorage,
-  const SimulationModelClass   <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationModel,
-  const ExperimentStorageClass <S_V,S_M,D_V,D_M>*         experimentStorage,
-  const ExperimentModelClass   <S_V,S_M,D_V,D_M>*         experimentModel,
-  const BaseVectorRVClass      <P_V,P_M>*                 thetaPriorRv)
+  const GcmOptionsValues*                            alternativeOptionsValues, // dakota
+  const SimulationStorage <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationStorage,
+  const SimulationModel   <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationModel,
+  const ExperimentStorage <S_V,S_M,D_V,D_M>*         experimentStorage,
+  const ExperimentModel   <S_V,S_M,D_V,D_M>*         experimentModel,
+  const BaseVectorRV      <P_V,P_M>*                 thetaPriorRv)
   // Handle case of no experiments, that is, experiment pointers == NULL? (todo)
   :
   m_env                     (simulationStorage.env()),
@@ -61,7 +61,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
   m_like_counter            (MiscUintDebugMessage(0,NULL))
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = "                       << prefix
                             << ", alternativeOptionsValues = "     << alternativeOptionsValues
                             << ", m_env.optionsInputFileName() = " << m_env.optionsInputFileName()
@@ -76,7 +76,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
     if (m_allOutputsAreScalar) {
       UQ_FATAL_TEST_MACRO((simulationModel.numBasis() != 1),
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                           "inconsistent numBasis (1)");
     }
   }
@@ -90,19 +90,19 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
     if (m_allOutputsAreScalar) {
       UQ_FATAL_TEST_MACRO((simulationModel.numBasis() != 1) || (experimentModel->numBasis() != 1),
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                           "inconsistent numBasis (2)");
     }
   }
   else {
     UQ_FATAL_TEST_MACRO(true,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                         "inconsistent experimental information");
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = "                << prefix
                             << ", m_allOutputsAreScalar = " << m_allOutputsAreScalar
                             << std::endl;
@@ -115,18 +115,18 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
   //********************************************************************************
   if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
   if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new GpmsaComputerModelOptionsClass(m_env,prefix,m_alternativeOptionsValues);
+    m_optionsObj = new GpmsaComputerModelOptions(m_env,prefix,m_alternativeOptionsValues);
   }
   else {
     //std::cout << "In GpmsaComputerModel constructor: scanning options from file..." << std::endl;
-    m_optionsObj = new GpmsaComputerModelOptionsClass(m_env,prefix);
+    m_optionsObj = new GpmsaComputerModelOptions(m_env,prefix);
     m_optionsObj->scanOptionsValues();
   }
 
   m_formCMatrix = m_formCMatrix && m_optionsObj->m_ov.m_formCMatrix;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = "        << prefix
                             << ", 'final' m_formCMatrix = " << m_formCMatrix
                             << std::endl;
@@ -144,7 +144,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
                          m_dataOutputFilePtrSet);
     UQ_FATAL_TEST_MACRO(m_dataOutputFilePtrSet.ofsVar == NULL,
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                         "data output file could not be created");
   }
 
@@ -182,12 +182,12 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
   // --> \Sigma_u,w_i = (1/\lambda_w_i).R(...) is n x m, i = 1,...,p_eta
   // --> \Sigma_u,w is (n.p_eta) x (m.p_eta) 
   //********************************************************************************
-  m_s = new GcmSimulationInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,
-                                                              m_allOutputsAreScalar, // csri (new GcmSimulationInfoClass)
+  m_s = new GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,
+                                                              m_allOutputsAreScalar, // csri (new GcmSimulationInfo)
                                                               simulationStorage,
                                                               simulationModel);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished instantiating m_s"
                             << ", experimentStorage = " << experimentStorage
                             << ", experimentModel = "   << experimentModel
@@ -198,88 +198,88 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
   if (m_thereIsExperimentalData) {
     UQ_FATAL_TEST_MACRO(simulationStorage.scenarioSpace().dimLocal() != experimentStorage->scenarioSpace().dimLocal(),
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                         "inconsistent dimension of scenario space");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": about to instantiate m_e"
                               << std::endl;
     }
 
-    m_e = new GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>(*m_optionsObj,
-                                                                m_allOutputsAreScalar, // csri (new GcmExperimentInfoClass)
+    m_e = new GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>(*m_optionsObj,
+                                                                m_allOutputsAreScalar, // csri (new GcmExperimentInfo)
                                                                 *experimentStorage,
                                                                 *experimentModel,
                                                                 *thetaPriorRv);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished instantiating m_e"
                               << std::endl;
     }
 
-    m_j = new GcmJointInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,
+    m_j = new GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,
                                                                    m_allOutputsAreScalar, // csri
                                                                    *m_s,
                                                                    *m_e);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished instantiating m_j"
                               << std::endl;
     }
 
     if (m_allOutputsAreScalar) {
-      m_z = new GcmZInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(m_allOutputsAreScalar, // csri ????
+      m_z = new GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(m_allOutputsAreScalar, // csri ????
                                                                  *m_s,
                                                                  *m_e);
     }
     else {
-      m_z = new GcmZInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(m_formCMatrix,
+      m_z = new GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(m_formCMatrix,
                                                                  m_allOutputsAreScalar,
                                                                  *m_s,
                                                                  *m_e,
                                                                  *m_j);
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished instantiating m_z"
                               << std::endl;
     }
 
-    m_t = new GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_s,
+    m_t = new GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_s,
                                                                    *m_e);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished instantiating m_t"
                               << std::endl;
     }
   }
   else {
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": about to instantiate m_z (no experiments)"
                               << std::endl;
     }
 
-    m_z = new GcmZInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(m_formCMatrix,
+    m_z = new GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(m_formCMatrix,
                                                                m_allOutputsAreScalar,
                                                                *m_s);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished instantiating m_z (no experiments)"
                               << std::endl;
     }
 
-    m_t = new GcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_s);
+    m_t = new GcmTotalInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_s);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished instantiating m_t (no experiments)"
                               << std::endl;
     }
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished instantiating non-tilde auxiliary structures"
                             << std::endl;
   }
@@ -293,7 +293,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
     if (m_z->m_Cmat_rank < m_z->m_Cmat->numCols()) m_cMatIsRankDefficient = true;
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": m_z->m_Cmat_rank = "       << m_z->m_Cmat_rank 
                               << ", m_z->m_Cmat = "            << m_z->m_Cmat
                               << ", m_z->m_Cmat->numCols() = " << m_z->m_Cmat->numCols()
@@ -315,24 +315,24 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
           // Tilde situation: form 'm_vu_tilde_space'
           // Tilde situation: form 'm_Lbmat'
           //******************************************************************************
-          m_jt = new GcmJointTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_e,*m_j);
+          m_jt = new GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_e,*m_j);
 
           //******************************************************************************
           // Tilde situation: form 'm_Kmat_tilde'
           // Tilde situation: form 'm_w_tilde_space'
           // Tilde situation: form 'm_Lkmat'
           //******************************************************************************
-           m_st = new GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_s);
+           m_st = new GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_s);
 
           //******************************************************************************
           // Tilde situation: form 'm_Cmat_tilde'
           //******************************************************************************
-          m_zt = new GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_j,*m_z,*m_st,*m_jt);
+          m_zt = new GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_j,*m_z,*m_st,*m_jt);
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_env.worldRank(),
-                              "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                              "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                               "incomplete code for the situation 'm_useTildeLogicForRankDefficientC == true' and 'm_thereIsExperimentalData == false'");
         }
       } // if (m_useTildeLogicForRankDefficientC)
@@ -344,12 +344,12 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
           //******************************************************************************
           // Naive formation of 'm_Cmat_tilde'
           //******************************************************************************
-          m_zt = new GcmZTildeInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_j,*m_z);
+          m_zt = new GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,*m_j,*m_z);
         }
         else {
           UQ_FATAL_TEST_MACRO(true,
                               m_env.worldRank(),
-                              "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                              "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
                               "incomplete code for the situation 'm_useTildeLogicForRankDefficientC == false' and 'm_thereIsExperimentalData == false'");
         }
       }
@@ -362,7 +362,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
     }
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished instantiating tilde auxiliary structures"
                               << std::endl;
     }
@@ -378,7 +378,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
       // Ok. No experimental data. There is nothing extra to be done // checar
       //UQ_FATAL_TEST_MACRO(true,
       //                    m_env.worldRank(),
-      //                    "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
+      //                    "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()",
       //                    "incomplete code for the situation 'm_thereIsExperimentalData == false'");
     }
   }
@@ -393,7 +393,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished generating prior sequence"
                             << std::endl;
   }
@@ -403,7 +403,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
   //********************************************************************************
   // Instantiate likelihood function object
   //********************************************************************************
-  m_likelihoodFunction = new GenericScalarFunctionClass<P_V,P_M>
+  m_likelihoodFunction = new GenericScalarFunction<P_V,P_M>
                            ("like_",
                             m_t->m_totalDomain,
                             &staticLikelihoodRoutine,
@@ -411,7 +411,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
                             true); // routine computes [ln(function)]
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished instantiating likelihood Function"
                             << std::endl;
   }
@@ -422,17 +422,17 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModelClas
   // Leave constructor
   //********************************************************************************
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = " << m_optionsObj->m_prefix
                             << std::endl;
   }
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~GpmsaComputerModelClass()
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~GpmsaComputerModel()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::destructor()..."
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::destructor()..."
                             << std::endl;
   }
 
@@ -449,15 +449,15 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~GpmsaComputerModelCla
   if (m_optionsObj) delete m_optionsObj;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::destructor()"
                             << std::endl;
   }
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings(
-  const MhOptionsValuesClass* alternativeOptionsValues, // dakota
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings(
+  const MhOptionsValues* alternativeOptionsValues, // dakota
   const P_V&                    totalInitialValues,
   const P_M*                    totalInitialProposalCovMatrix)
 {
@@ -465,7 +465,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetr
   gettimeofday(&timevalBegin, NULL);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()..."
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()..."
                             << ": m_optionsObj->m_prefix.c_str() = " << m_optionsObj->m_prefix.c_str()
                             << ", m_env.subComm().NumProc() = "      << m_env.subComm().NumProc()
                             << ", my subRank = "                     << m_env.subRank()
@@ -474,65 +474,65 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetr
   }
 
   m_env.fullComm().Barrier();
-  m_env.fullComm().syncPrintDebugMsg("Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",1,3000000);
+  m_env.fullComm().syncPrintDebugMsg("Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",1,3000000);
 
   UQ_FATAL_TEST_MACRO(m_t->m_totalPriorRv.imageSet().vectorSpace().dimLocal() != totalInitialValues.sizeLocal(),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",
                       "'m_totalPriorRv' and 'totalInitialValues' should have equal dimensions");
 
   if (totalInitialProposalCovMatrix) {
     UQ_FATAL_TEST_MACRO(m_t->m_totalPriorRv.imageSet().vectorSpace().dimLocal() != totalInitialProposalCovMatrix->numRowsLocal(),
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",
                         "'m_totalPriorRv' and 'totalInitialProposalCovMatrix' should have equal dimensions");
     UQ_FATAL_TEST_MACRO(totalInitialProposalCovMatrix->numCols() != totalInitialProposalCovMatrix->numRowsGlobal(),
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",
                         "'totalInitialProposalCovMatrix' should be a square matrix");
   }
 
-  //std::cout << "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //std::cout << "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
   //          << ": passing at point 002"
   //          << std::endl;
 
   // Compute output pdf up to a multiplicative constant: Bayesian approach
   m_t->m_solutionDomain = InstantiateIntersection(m_t->m_totalPriorRv.pdf().domainSet(),m_likelihoodFunction->domainSet());
 
-  //std::cout << "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //std::cout << "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
   //          << ": passing at point 003"
   //          << std::endl;
 
-  m_t->m_solutionPdf = new BayesianJointPdfClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_t->m_solutionPdf = new BayesianJointPdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                             m_t->m_totalPriorRv.pdf(),
                                                             *m_likelihoodFunction,
                                                             1.,
                                                             *(m_t->m_solutionDomain));
 
-  //std::cout << "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //std::cout << "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
   //          << ": passing at point 004"
   //          << std::endl;
 
   m_t->m_totalPostRv.setPdf(*(m_t->m_solutionPdf));
 
-  //std::cout << "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //std::cout << "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
   //          << ": passing at point 005"
   //          << std::endl;
 
   // Compute output realizer: Metropolis-Hastings approach
-  m_t->m_chain = new SequenceOfVectorsClass<P_V,P_M>(m_t->m_totalPostRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
+  m_t->m_chain = new SequenceOfVectors<P_V,P_M>(m_t->m_totalPostRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
 
-  //std::cout << "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //std::cout << "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
   //          << ": passing at point 006"
   //          << std::endl;
 
-  m_t->m_mhSeqGenerator = new MetropolisHastingsSGClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(), // dakota
+  m_t->m_mhSeqGenerator = new MetropolisHastingsSG<P_V,P_M>(m_optionsObj->m_prefix.c_str(), // dakota
                                                                    alternativeOptionsValues,
                                                                    m_t->m_totalPostRv,
                                                                    totalInitialValues,
                                                                    totalInitialProposalCovMatrix);
 
-  //std::cout << "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //std::cout << "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
   //          << ": passing at point 007"
   //          << std::endl;
 
@@ -546,19 +546,19 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetr
   // m_totalMLE
   // m_totalLikeMaxLnValue
 
-  m_t->m_solutionRealizer = new SequentialVectorRealizerClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_t->m_solutionRealizer = new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                                          *(m_t->m_chain));
 
   m_t->m_totalPostRv.setRealizer(*(m_t->m_solutionRealizer));
 
-  //m_env.fullComm().syncPrintDebugMsg("In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings(), code place 1",3,3000000);
+  //m_env.fullComm().syncPrintDebugMsg("In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings(), code place 1",3,3000000);
 
-  //m_env.fullComm().syncPrintDebugMsg("Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",1,3000000);
+  //m_env.fullComm().syncPrintDebugMsg("Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()",1,3000000);
   m_env.fullComm().Barrier();
 
   double totalTime = MiscGetEllapsedSeconds(&timevalBegin);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()..."
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()..."
                             << ": m_optionsObj->m_prefix.c_str() = " << m_optionsObj->m_prefix.c_str()
                             << ", m_env.subComm().NumProc() = "      << m_env.subComm().NumProc()
                             << ", my subRank = "                     << m_env.subRank()
@@ -572,8 +572,8 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetr
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc(
-  const MhOptionsValuesClass* alternativeOptionsValues, // dakota
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc(
+  const MhOptionsValues* alternativeOptionsValues, // dakota
   const P_V&                    totalInitialValues,
   const P_M*                    totalInitialProposalCovMatrix)
 {
@@ -581,7 +581,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc(
   gettimeofday(&timevalBegin, NULL);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc()..."
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc()..."
                             << ": m_optionsObj->m_prefix.c_str() = " << m_optionsObj->m_prefix.c_str()
                             << ", m_env.subComm().NumProc() = "      << m_env.subComm().NumProc()
                             << ", my subRank = "                     << m_env.subRank()
@@ -590,16 +590,16 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc(
   }
 
   m_env.fullComm().Barrier();
-  m_env.fullComm().syncPrintDebugMsg("Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc()",1,3000000);
+  m_env.fullComm().syncPrintDebugMsg("Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc()",1,3000000);
 
   // ppp
 
-  m_env.fullComm().syncPrintDebugMsg("Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc()",1,3000000);
+  m_env.fullComm().syncPrintDebugMsg("Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc()",1,3000000);
   m_env.fullComm().Barrier();
 
   double totalTime = MiscGetEllapsedSeconds(&timevalBegin);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc()..."
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc()..."
                             << ": m_optionsObj->m_prefix.c_str() = " << m_optionsObj->m_prefix.c_str()
                             << ", m_env.subComm().NumProc() = "      << m_env.subComm().NumProc()
                             << ", my subRank = "                     << m_env.subRank()
@@ -613,13 +613,13 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithLanlMcmc(
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()
 {
   struct timeval timevalBegin;
   gettimeofday(&timevalBegin, NULL);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()..."
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()..."
                             << ": m_optionsObj->m_prefix.c_str() = " << m_optionsObj->m_prefix.c_str()
                             << ", m_env.subComm().NumProc() = "      << m_env.subComm().NumProc()
                             << ", my subRank = "                     << m_env.subRank()
@@ -627,43 +627,43 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSa
   }
 
   m_env.fullComm().Barrier();
-  m_env.fullComm().syncPrintDebugMsg("Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()",1,3000000);
+  m_env.fullComm().syncPrintDebugMsg("Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()",1,3000000);
 
   // ppp
   m_t->m_solutionDomain = InstantiateIntersection(m_t->m_totalPriorRv.pdf().domainSet(),m_likelihoodFunction->domainSet());
 
-  //std::cout << "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //std::cout << "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
   //          << ": passing at point 003"
   //          << std::endl;
 
-  m_t->m_solutionPdf = new BayesianJointPdfClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_t->m_solutionPdf = new BayesianJointPdf<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                             m_t->m_totalPriorRv.pdf(),
                                                             *m_likelihoodFunction,
                                                             1.,
                                                             *(m_t->m_solutionDomain));
 
-  //std::cout << "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //std::cout << "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
   //          << ": passing at point 004"
   //          << std::endl;
 
   m_t->m_totalPostRv.setPdf(*(m_t->m_solutionPdf));
 
-  //std::cout << "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //std::cout << "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
   //          << ": passing at point 005"
   //          << std::endl;
 
   // Compute output realizer: Metropolis-Hastings approach
-  m_t->m_chain = new SequenceOfVectorsClass<P_V,P_M>(m_t->m_totalPostRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
+  m_t->m_chain = new SequenceOfVectors<P_V,P_M>(m_t->m_totalPostRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
 
-  //std::cout << "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //std::cout << "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
   //          << ": passing at point 006"
   //          << std::endl;
 
-  m_t->m_mlSampler = new MLSamplingClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_t->m_mlSampler = new MLSampling<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                     m_t->m_totalPriorRv,
                                                     *m_likelihoodFunction);
 
-  //std::cout << "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+  //std::cout << "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
   //          << ": passing at point 007"
   //          << std::endl;
 
@@ -677,17 +677,17 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSa
   // m_totalMLE
   // m_totalLikeMaxLnValue
 
-  m_t->m_solutionRealizer = new SequentialVectorRealizerClass<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+  m_t->m_solutionRealizer = new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                                          *(m_t->m_chain));
 
   m_t->m_totalPostRv.setRealizer(*(m_t->m_solutionRealizer));
 
-  m_env.fullComm().syncPrintDebugMsg("Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()",1,3000000);
+  m_env.fullComm().syncPrintDebugMsg("Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()",1,3000000);
   m_env.fullComm().Barrier();
 
   double totalTime = MiscGetEllapsedSeconds(&timevalBegin);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()..."
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSampling()..."
                             << ": m_optionsObj->m_prefix.c_str() = " << m_optionsObj->m_prefix.c_str()
                             << ", m_env.subComm().NumProc() = "      << m_env.subComm().NumProc()
                             << ", my subRank = "                     << m_env.subRank()
@@ -701,7 +701,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMLSa
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
   const S_V& newScenarioVec,
   const P_V& newParameterVec,
         P_V& vuMeanVec,
@@ -715,7 +715,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
   gettimeofday(&timevalBegin, NULL);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
                             << ", m_predVU_counter = " << m_j->m_predVU_counter
                             << ", newScenarioVec = "   << newScenarioVec
                             << ", newParameterVec = "  << newParameterVec
@@ -724,57 +724,57 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
 
   UQ_FATAL_TEST_MACRO(newScenarioVec.sizeLocal() != m_s->m_paper_p_x,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                       "invalid 'newScenarioVec'");
 
   UQ_FATAL_TEST_MACRO(newParameterVec.sizeLocal() != m_s->m_paper_p_t,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                       "invalid 'newParameterVec'");
 
   UQ_FATAL_TEST_MACRO(vuMeanVec.sizeLocal() != (m_e->m_paper_p_delta+m_s->m_paper_p_eta),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                       "invalid 'vuMeanVec'");
 
   UQ_FATAL_TEST_MACRO(vuCovMatrix.numRowsLocal() != (m_e->m_paper_p_delta + m_s->m_paper_p_eta),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                       "invalid 'vuCovMatrix.numRowsLocal()'");
 
   UQ_FATAL_TEST_MACRO(vuCovMatrix.numCols() != (m_e->m_paper_p_delta + m_s->m_paper_p_eta),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                       "invalid 'vuCovMatrix.numCols()'");
 
   UQ_FATAL_TEST_MACRO(vMeanVec.sizeLocal() != m_e->m_paper_p_delta,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                       "invalid 'vMeanVec'");
 
   UQ_FATAL_TEST_MACRO(vCovMatrix.numRowsLocal() != m_e->m_paper_p_delta,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                       "invalid 'vCovMatrix.numRowsLocal()'");
 
   UQ_FATAL_TEST_MACRO(vCovMatrix.numCols() != m_e->m_paper_p_delta,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                       "invalid 'vCovMatrix.numCols()'");
 
   UQ_FATAL_TEST_MACRO(uMeanVec.sizeLocal() != m_s->m_paper_p_eta,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                       "invalid 'uMeanVec'");
 
   UQ_FATAL_TEST_MACRO(uCovMatrix.numRowsLocal() != m_s->m_paper_p_eta,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                       "invalid 'uCovMatrix.numRowsLocal()'");
 
   UQ_FATAL_TEST_MACRO(uCovMatrix.numCols() != m_s->m_paper_p_eta,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                       "invalid 'uCovMatrix.numCols()'");
 
   if (m_optionsObj->m_ov.m_predVUsBySamplingRVs) {
@@ -783,13 +783,13 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
   if (m_optionsObj->m_ov.m_predVUsBySummingRVs) {
     unsigned int numSamples = (unsigned int) ((double) m_t->m_totalPostRv.realizer().subPeriod())/((double) m_optionsObj->m_ov.m_predLag);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
                               << ": m_t->m_totalPostRv.realizer().subPeriod() = " << m_t->m_totalPostRv.realizer().subPeriod()
                               << ", m_optionsObj->m_ov.m_predLag = "              << m_optionsObj->m_ov.m_predLag
                               << std::endl;
     }
 
-    SequenceOfVectorsClass<P_V,P_M> unique_vu_means(m_j->m_unique_vu_space,numSamples,m_optionsObj->m_prefix+"vu_means");
+    SequenceOfVectors<P_V,P_M> unique_vu_means(m_j->m_unique_vu_space,numSamples,m_optionsObj->m_prefix+"vu_means");
     P_M mean_of_unique_vu_covMatrices(m_j->m_unique_vu_space.zeroVector());
 
     P_V totalSample(m_t->m_totalSpace.zeroVector());
@@ -838,7 +838,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       currPosition += m_e->m_tmp_8thetaVec.sizeLocal();
       UQ_FATAL_TEST_MACRO(currPosition != totalSample.sizeLocal(),
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                           "'currPosition' and 'totalSample.sizeLocal()' should be equal");
 
       //********************************************************************************
@@ -866,7 +866,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       // Submatrix (2,1): Compute '\Sigma_z_hat_v_asterisk' transpose matrix
       //********************************************************************************
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-        *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
                                 << ", m_predVU_counter = " << m_j->m_predVU_counter
                                 << ": about to populate 'm_Smat_v_hat_v_asterisk'"
                                 << ", m_e->m_Smat_v_hat_v_asterisk_is.size() = " << m_e->m_Smat_v_hat_v_asterisk_is.size() // 13
@@ -876,7 +876,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       }
       UQ_FATAL_TEST_MACRO((m_e->m_Smat_v_hat_v_asterisk_is.size() * m_e->m_tmp_rho_v_vec.sizeLocal()) != m_e->m_tmp_7rhoVVec.sizeLocal(),
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                           "invalid size for 'v' variables");
       unsigned int initialPos = 0;
       for (unsigned int i = 0; i < m_e->m_Smat_v_hat_v_asterisk_is.size(); ++i) {
@@ -903,7 +903,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       here_Smat_z_hat_v_asterisk_t.fillWithTranspose(0,0,here_Smat_z_hat_v_asterisk,true,true);
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-        *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
                                 << ", m_predVU_counter = " << m_j->m_predVU_counter
                                 << ": finished instantiating 'm_Smat_v_hat_v_asterisk'"
                                 << std::endl;
@@ -956,7 +956,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       here_Smat_z_hat_u_asterisk_t.fillWithTranspose(0,0,here_Smat_z_hat_u_asterisk,true,true);
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-        *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
                                 << ", m_predVU_counter = " << m_j->m_predVU_counter
                                 << ": finished instantiating '>m_Smat_z_hat_u_asterisk'"
                                 << std::endl;
@@ -967,11 +967,11 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       //********************************************************************************
       UQ_FATAL_TEST_MACRO(m_e->m_Smat_v_asterisk_v_asterisk.numRowsLocal() != m_e->m_paper_p_delta,
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                           "invalid 'm_Smat_v_asterisk_v_asterisk.numRowsLocal()'");
       UQ_FATAL_TEST_MACRO(m_e->m_tmp_6lambdaVVec.sizeLocal() != m_e->m_paper_p_delta,
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                           "invalid 'm_tmp_6lambdaVVec.sizeLocal()'");
 
       m_e->m_Smat_v_asterisk_v_asterisk.cwSet(0.);
@@ -984,11 +984,11 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       //********************************************************************************
       UQ_FATAL_TEST_MACRO(m_j->m_Smat_u_asterisk_u_asterisk.numRowsLocal() != m_s->m_paper_p_eta,
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                           "invalid 'm_Smat_u_asterisk_u_asterisk.numRowsLocal()'");
       UQ_FATAL_TEST_MACRO(m_s->m_tmp_2lambdaWVec.sizeLocal() != m_s->m_paper_p_eta,
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)",
                           "invalid 'm_tmp_2lambdaWVec.sizeLocal()'");
 
       m_j->m_Smat_u_asterisk_u_asterisk.cwSet(0.);
@@ -1046,7 +1046,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
     vuCovMatrix.cwExtract(m_e->m_paper_p_delta,m_e->m_paper_p_delta,uCovMatrix); // checar
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
                               << ", m_predVU_counter = " << m_j->m_predVU_counter
                               << ": finished computing all means and covariances"
                               << "\n  vuMeanVec = "                                        << vuMeanVec
@@ -1065,7 +1065,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
 
   double totalTime = MiscGetEllapsedSeconds(&timevalBegin);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(1)"
                             << ", m_predVU_counter = " << m_j->m_predVU_counter
                             << ", newScenarioVec = "   << newScenarioVec
                             << ", after "              << totalTime
@@ -1078,7 +1078,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
   const S_V& newScenarioVec,
   const P_V& newParameterVec,
   const P_V* forcingSampleVecForDebug, // Usually NULL
@@ -1089,7 +1089,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
   gettimeofday(&timevalBegin, NULL);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
                             << ", m_predW_counter = " << m_s->m_predW_counter
                             << ", newScenarioVec = "  << newScenarioVec
                             << ", newParameterVec = " << newParameterVec
@@ -1098,27 +1098,27 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
 
   UQ_FATAL_TEST_MACRO(newScenarioVec.sizeLocal() != m_s->m_paper_p_x,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
                       "invalid 'newScenarioVec'");
 
   UQ_FATAL_TEST_MACRO(newParameterVec.sizeLocal() != m_s->m_paper_p_t,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
                       "invalid 'newParameterVec'");
 
   UQ_FATAL_TEST_MACRO(wMeanVec.sizeLocal() != m_s->m_paper_p_eta,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
                       "invalid 'wMeanVec'");
 
   UQ_FATAL_TEST_MACRO(wCovMatrix.numRowsLocal() != m_s->m_paper_p_eta,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
                       "invalid 'wCovMatrix.numRowsLocal()'");
 
   UQ_FATAL_TEST_MACRO(wCovMatrix.numCols() != m_s->m_paper_p_eta,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
                       "invalid 'wCovMatrix.numCols()'");
 
   if (m_optionsObj->m_ov.m_predWsBySamplingRVs) {
@@ -1130,14 +1130,14 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
       numSamples = 1;
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
                               << ": m_t->m_totalPostRv.realizer().subPeriod() = " << m_t->m_totalPostRv.realizer().subPeriod()
                               << ", m_optionsObj->m_ov.m_predLag = "              << m_optionsObj->m_ov.m_predLag
                               << ", numSamples = "                                << numSamples
                               << std::endl;
     }
 
-    SequenceOfVectorsClass<P_V,P_M> unique_w_means(m_s->m_unique_w_space,numSamples,m_optionsObj->m_prefix+"w_means");
+    SequenceOfVectors<P_V,P_M> unique_w_means(m_s->m_unique_w_space,numSamples,m_optionsObj->m_prefix+"w_means");
 
     P_V totalSample(m_t->m_totalSpace.zeroVector());
     P_V muVec1     (m_s->m_unique_w_space.zeroVector());
@@ -1178,7 +1178,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
       currPosition += m_e->m_tmp_8thetaVec.sizeLocal();
       UQ_FATAL_TEST_MACRO(currPosition != totalSample.sizeLocal(),
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
                           "'currPosition' and 'totalSample.sizeLocal()' should be equal");
 
       //********************************************************************************
@@ -1195,7 +1195,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
 
       if (forcingSampleVecForDebug) {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-          *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
+          *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
                                   << ": m_s->m_Smat_w_hat = " << m_s->m_Smat_w_hat
                                   << std::endl;
         }
@@ -1224,7 +1224,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
       m_s->m_Smat_w_hat_w_asterisk.fillWithBlocksDiagonally(0,0,m_s->m_Smat_w_hat_w_asterisk_is,true,true);
       m_s->m_Smat_w_hat_w_asterisk_t.fillWithTranspose(0,0,m_s->m_Smat_w_hat_w_asterisk,true,true);
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-        *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
                                 << ", m_predW_counter = " << m_s->m_predW_counter
                                 << ": finished instantiating 'm_Smat_w_hat_w_asterisk'"
                                 << std::endl;
@@ -1232,7 +1232,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
 
       if (forcingSampleVecForDebug) {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-          *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
+          *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
                                   << ": m_s->m_Smat_w_hat_w_asterisk = " << m_s->m_Smat_w_hat_w_asterisk
                                   << std::endl;
         }
@@ -1243,11 +1243,11 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
       //********************************************************************************
       UQ_FATAL_TEST_MACRO(m_s->m_Smat_w_asterisk_w_asterisk.numRowsLocal() != m_s->m_paper_p_eta,
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
                           "invalid 'm_Smat_w_asterisk_w_asterisk.numRowsLocal()'");
       UQ_FATAL_TEST_MACRO(m_s->m_tmp_2lambdaWVec.sizeLocal() != m_s->m_paper_p_eta,
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()",
                           "invalid 'm_tmp_2lambdaWVec.sizeLocal()'");
 
       m_s->m_Smat_w_asterisk_w_asterisk.cwSet(0.);
@@ -1257,7 +1257,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
 
       if (forcingSampleVecForDebug) {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-          *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
+          *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
                                   << ": m_s->m_Smat_w_asterisk_w_asterisk = " << m_s->m_Smat_w_asterisk_w_asterisk
                                   << std::endl;
         }
@@ -1270,7 +1270,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
       //********************************************************************************
       if (forcingSampleVecForDebug) {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-          *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
+          *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
                                   << ": muVec1 = "            << muVec1
                                   << ", muVec2 = "            << muVec2
                                   << ", m_s->m_Zvec_hat_w = " << m_s->m_Zvec_hat_w
@@ -1289,7 +1289,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
 
       if (forcingSampleVecForDebug) {
         if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-          *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
+          *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
                                   << ", unique_w_vec = " << unique_w_vec
                                   << ", unique_w_mat = " << unique_w_mat
                                   << std::endl;
@@ -1321,7 +1321,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
     wCovMatrix = m_s->m_predW_summingRVs_mean_of_unique_w_covMatrices + m_s->m_predW_summingRVs_covMatrix_of_unique_w_means;
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
                               << ", m_predW_counter = " << m_s->m_predW_counter
                               << ": finished computing all means and covariances"
                               << "\n  wMeanVec = "                                        << wMeanVec
@@ -1338,7 +1338,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
 
   double totalTime = MiscGetEllapsedSeconds(&timevalBegin);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint()"
                             << ", m_predW_counter = " << m_s->m_predW_counter
                             << ", newScenarioVec = "  << newScenarioVec
                             << ", newParameterVec = " << newParameterVec
@@ -1352,7 +1352,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictWsAtGridPoint(
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults(
   const S_V& newScenarioVec,
   const D_M& newKmat_interp,
   const D_M& newDmat,
@@ -1360,33 +1360,33 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResul
         D_V& discrepancyMeanVec)      // todo_rr: pass as pointer
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()"
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(newScenarioVec.sizeLocal() != m_s->m_paper_p_x,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
                       "invalid 'newScenarioVec'");
 
   UQ_FATAL_TEST_MACRO((newKmat_interp.numRowsLocal() != m_s->m_paper_n_eta) || (newKmat_interp.numCols() != m_s->m_paper_p_eta),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
                       "invalid 'newKmat_interp'");
 
   UQ_FATAL_TEST_MACRO((newDmat.numRowsLocal() != m_s->m_paper_n_eta) || (newDmat.numCols() != m_e->m_paper_p_delta),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
                       "invalid 'newDmat'");
 
   UQ_FATAL_TEST_MACRO(simulationOutputMeanVec.sizeLocal() != m_s->m_paper_n_eta,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
                       "invalid 'simulationOutputMeanVec'");
 
   UQ_FATAL_TEST_MACRO(discrepancyMeanVec.sizeLocal() != m_s->m_paper_n_eta,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()",
                       "invalid 'discrepancyMeanVec'");
 
   P_V vMeanVec  (m_e->m_unique_v_space.zeroVector());
@@ -1404,7 +1404,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResul
   discrepancyMeanVec = newDmat * vMeanVec;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults()"
                             << std::endl;
   }
 
@@ -1413,29 +1413,29 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResul
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs(
   const S_V& newScenarioVec,
   const P_V& newParameterVec,
         Q_V& simulationOutputMeanVec)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()"
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(newScenarioVec.sizeLocal() != m_s->m_paper_p_x,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()",
                       "invalid 'newScenarioVec'");
 
   UQ_FATAL_TEST_MACRO(newParameterVec.sizeLocal() != m_s->m_paper_p_t,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()",
                       "invalid 'newParameterVec'");
 
   UQ_FATAL_TEST_MACRO(simulationOutputMeanVec.sizeLocal() != m_s->m_paper_n_eta,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()",
                       "invalid 'simulationOutputMeanVec'");
 
   P_V wMeanVec  (m_s->m_unique_w_space.zeroVector());
@@ -1448,7 +1448,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutpu
   // todo_rr (Should one denormalize qoi here???
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs()"
                             << std::endl;
   }
 

@@ -37,7 +37,7 @@
 #include <fstream>
 
 // Construtor
-likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(const QUESO::BaseEnvironmentClass& env)
+likelihoodRoutine_Data::likelihoodRoutine_Data(const QUESO::BaseEnvironment& env)
   :
   m_heights(0),
   m_times  (0),
@@ -58,7 +58,7 @@ likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(const QUESO::BaseEnviro
 }
 
 // Destructor
-likelihoodRoutine_DataClass::~likelihoodRoutine_DataClass()
+likelihoodRoutine_Data::~likelihoodRoutine_Data()
 {
 }
 
@@ -66,14 +66,14 @@ likelihoodRoutine_DataClass::~likelihoodRoutine_DataClass()
 // The user defined likelihood routine
 //------------------------------------------------------
 double likelihoodRoutine(
-  const QUESO::GslVectorClass& paramValues,
-  const QUESO::GslVectorClass* paramDirection,
+  const QUESO::GslVector& paramValues,
+  const QUESO::GslVector* paramDirection,
   const void*             functionDataPtr,
-  QUESO::GslVectorClass*       gradVector,
-  QUESO::GslMatrixClass*       hessianMatrix,
-  QUESO::GslVectorClass*       hessianEffect)
+  QUESO::GslVector*       gradVector,
+  QUESO::GslMatrix*       hessianMatrix,
+  QUESO::GslVector*       hessianEffect)
 {
-  const QUESO::BaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass*) functionDataPtr)->m_env);
+  const QUESO::BaseEnvironment& env = *(((likelihoodRoutine_Data*) functionDataPtr)->m_env);
     
   if (paramDirection && functionDataPtr && gradVector && hessianMatrix && hessianEffect) 
   {
@@ -91,9 +91,9 @@ double likelihoodRoutine(
   
   // Compute likelihood 
   double g = paramValues[0];  
-  const std::vector<double>& heights=((likelihoodRoutine_DataClass*) functionDataPtr)->m_heights;
-  const std::vector<double>& times  =((likelihoodRoutine_DataClass*) functionDataPtr)->m_times;
-  const std::vector<double>& stdDevs=((likelihoodRoutine_DataClass*) functionDataPtr)->m_stdDevs;
+  const std::vector<double>& heights=((likelihoodRoutine_Data*) functionDataPtr)->m_heights;
+  const std::vector<double>& times  =((likelihoodRoutine_Data*) functionDataPtr)->m_times;
+  const std::vector<double>& stdDevs=((likelihoodRoutine_Data*) functionDataPtr)->m_stdDevs;
   
   double misfitValue = 0.;
   for (unsigned int i = 0; i < heights.size(); ++i) {

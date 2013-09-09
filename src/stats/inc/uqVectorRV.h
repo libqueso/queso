@@ -44,53 +44,53 @@ namespace QUESO {
 // Base class [RV-00]
 //*****************************************************
 
-/*! \file uqVectorRVClass.h
+/*! \file uqVectorRV.h
  * \brief A templated class for handling vector random variables (RV).
  * 
- * \class BaseVectorRVClass
+ * \class BaseVectorRV
  * \brief A templated base class for handling vector RV.
  *
  * This class allows two basic but quite crucial functionalities: to compute the value of the
  * PDF of a random variable (RV) at a point and to generate realizations (samples) from such PDF. */
 
 template<class V, class M>
-class BaseVectorRVClass {
+class BaseVectorRV {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor
-  /*! Constructs a new instance of BaseVectorRVClass, given a prefix and the image set of the
+  /*! Constructs a new instance of BaseVectorRV, given a prefix and the image set of the
    * vector RV.
    */
-  BaseVectorRVClass(const char*                  prefix,
-                      const VectorSetClass<V,M>& imageSet);
+  BaseVectorRV(const char*                  prefix,
+                      const VectorSet<V,M>& imageSet);
   
   //! Virtual destructor.
-  virtual ~BaseVectorRVClass();
+  virtual ~BaseVectorRV();
   //@}
   
   //! @name Random variable-handling methods
   //@{
   //! QUESO environment; access to private attribute m_env.
-  const   BaseEnvironmentClass&         env       () const;
+  const   BaseEnvironment&         env       () const;
   
   //! Image set of the vector RV; access to private attribute m_imageSet.
-  const   VectorSetClass         <V,M>& imageSet  () const;
+  const   VectorSet         <V,M>& imageSet  () const;
   
   //! Posterior Density Function of the vector RV; access to private attribute m_pdf.
-  const   BaseJointPdfClass      <V,M>& pdf       () const;
+  const   BaseJointPdf      <V,M>& pdf       () const;
   
   //! Finds a realization (sample) of the PDF of this vector RV; access to private attribute m_realizer.
-  const   BaseVectorRealizerClass<V,M>& realizer  () const;
+  const   BaseVectorRealizer<V,M>& realizer  () const;
   
   //! Finds the Cumulative Distribution Function of this vector RV, considering only the sub-sequence of data; access to private attribute m_subCdf.
-  const   BaseVectorCdfClass     <V,M>& subCdf    () const;
+  const   BaseVectorCdf     <V,M>& subCdf    () const;
   
   //! Finds the Cumulative Distribution Function of this vector RV, considering the unified sequence of data; access to private attribute m_unifiedCdf.
-  const   BaseVectorCdfClass     <V,M>& unifiedCdf() const;
+  const   BaseVectorCdf     <V,M>& unifiedCdf() const;
   
   //! Finds the Mass Density Function of this vector RV; access to private attribute m_mdf.
-  const   BaseVectorMdfClass     <V,M>& mdf       () const;
+  const   BaseVectorMdf     <V,M>& mdf       () const;
   //@}
   
   //! @name I/O methods
@@ -110,20 +110,20 @@ public:
 #endif // QUESO_HAS_ANN
   //@}
 protected:
-  const   BaseEnvironmentClass&         m_env;
+  const   BaseEnvironment&         m_env;
           std::string                     m_prefix;
-  const   VectorSetClass         <V,M>& m_imageSet;
-          BaseJointPdfClass      <V,M>* m_pdf;
-	  	  BaseVectorRealizerClass<V,M>* m_realizer;
-  const   BaseVectorCdfClass     <V,M>* m_subCdf;
-  const   BaseVectorCdfClass     <V,M>* m_unifiedCdf;
-  const   BaseVectorMdfClass     <V,M>* m_mdf;
+  const   VectorSet         <V,M>& m_imageSet;
+          BaseJointPdf      <V,M>* m_pdf;
+	  	  BaseVectorRealizer<V,M>* m_realizer;
+  const   BaseVectorCdf     <V,M>* m_subCdf;
+  const   BaseVectorCdf     <V,M>* m_unifiedCdf;
+  const   BaseVectorMdf     <V,M>* m_mdf;
 };
 // Default constructor -----------------------------
 template<class V, class M>
-BaseVectorRVClass<V,M>::BaseVectorRVClass(
+BaseVectorRV<V,M>::BaseVectorRV(
   const char*                  prefix,
-  const VectorSetClass<V,M>& imageSet)
+  const VectorSet<V,M>& imageSet)
   :
   m_env       (imageSet.env()),
   m_prefix    ((std::string)(prefix)+"rv_"),
@@ -135,20 +135,20 @@ BaseVectorRVClass<V,M>::BaseVectorRVClass(
   m_mdf       (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering BaseVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering BaseVectorRV<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving BaseVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving BaseVectorRV<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-BaseVectorRVClass<V,M>::~BaseVectorRVClass()
+BaseVectorRV<V,M>::~BaseVectorRV()
 {
   //if (m_mdf       ) delete m_mdf;
   //if (m_subCdf    ) delete m_subCdf;
@@ -159,74 +159,74 @@ BaseVectorRVClass<V,M>::~BaseVectorRVClass()
 // RV handling-methods ------------------------------
 
 template <class V, class M>
-const BaseEnvironmentClass&
-BaseVectorRVClass<V,M>::env() const
+const BaseEnvironment&
+BaseVectorRV<V,M>::env() const
 {
   return m_env;
 }
 //---------------------------------------------------
 template<class V, class M>
-const VectorSetClass<V,M>&
-BaseVectorRVClass<V,M>::imageSet() const
+const VectorSet<V,M>&
+BaseVectorRV<V,M>::imageSet() const
 {
   return m_imageSet;
 }
 //---------------------------------------------------
 template<class V, class M>
-const BaseJointPdfClass<V,M>&
-BaseVectorRVClass<V,M>::pdf() const
+const BaseJointPdf<V,M>&
+BaseVectorRV<V,M>::pdf() const
 {
   UQ_FATAL_TEST_MACRO(m_pdf == NULL,
                       m_env.worldRank(),
-                      "BaseVectorRVClass<V,M>::pdf()",
+                      "BaseVectorRV<V,M>::pdf()",
                       "m_pdf is NULL");
 
   return *m_pdf;
 }
 //---------------------------------------------------
 template<class V, class M>
-const BaseVectorRealizerClass<V,M>&
-BaseVectorRVClass<V,M>::realizer() const
+const BaseVectorRealizer<V,M>&
+BaseVectorRV<V,M>::realizer() const
 {
   UQ_FATAL_TEST_MACRO(m_realizer == NULL,
                       m_env.worldRank(),
-                      (std::string)("BaseVectorRVClass<V,M>::realizer(), prefix=")+m_prefix,
+                      (std::string)("BaseVectorRV<V,M>::realizer(), prefix=")+m_prefix,
                       "m_realizer is NULL");
 
   return *m_realizer;
 }
 //---------------------------------------------------
 template<class V, class M>
-const BaseVectorCdfClass<V,M>&
-BaseVectorRVClass<V,M>::subCdf() const
+const BaseVectorCdf<V,M>&
+BaseVectorRV<V,M>::subCdf() const
 {
   UQ_FATAL_TEST_MACRO(m_subCdf == NULL,
                       m_env.worldRank(),
-                      (std::string)("BaseVectorRVClass<V,M>::subCdf(), prefix=")+m_prefix,
+                      (std::string)("BaseVectorRV<V,M>::subCdf(), prefix=")+m_prefix,
                       "m_subCdf is NULL");
 
   return *m_subCdf;
 }
 //---------------------------------------------------
 template<class V, class M>
-const BaseVectorCdfClass<V,M>&
-BaseVectorRVClass<V,M>::unifiedCdf() const
+const BaseVectorCdf<V,M>&
+BaseVectorRV<V,M>::unifiedCdf() const
 {
   UQ_FATAL_TEST_MACRO(m_unifiedCdf == NULL,
                       m_env.worldRank(),
-                      (std::string)("BaseVectorRVClass<V,M>::unifiedCdf(), prefix=")+m_prefix,
+                      (std::string)("BaseVectorRV<V,M>::unifiedCdf(), prefix=")+m_prefix,
                       "m_unifiedCdf is NULL");
 
   return *m_unifiedCdf;
 }
 //---------------------------------------------------
 template<class V, class M>
-const BaseVectorMdfClass<V,M>&
-BaseVectorRVClass<V,M>::mdf() const
+const BaseVectorMdf<V,M>&
+BaseVectorRV<V,M>::mdf() const
 {
   UQ_FATAL_TEST_MACRO(m_mdf == NULL,
                       m_env.worldRank(),
-                      (std::string)("BaseVectorRVClass<V,M>::mdf(), prefix=")+m_prefix,
+                      (std::string)("BaseVectorRV<V,M>::mdf(), prefix=")+m_prefix,
                       "m_mdf is NULL");
 
   return *m_mdf;
@@ -236,7 +236,7 @@ BaseVectorRVClass<V,M>::mdf() const
 // Operator declared outside class definition -------
 //---------------------------------------------------
 template<class V, class M>
-std::ostream& operator<<(std::ostream& os, const BaseVectorRVClass<V,M>& obj)
+std::ostream& operator<<(std::ostream& os, const BaseVectorRV<V,M>& obj)
 {
   obj.print(os);
 
@@ -246,14 +246,14 @@ std::ostream& operator<<(std::ostream& os, const BaseVectorRVClass<V,M>& obj)
 #ifdef QUESO_HAS_ANN
 template <class V, class M>
 double 
-BaseVectorRVClass<V,M>::estimateENT_ANN() const
+BaseVectorRV<V,M>::estimateENT_ANN() const
 {
   ANNpointArray data;
   double* dists;
   double ENT_est;
 
   // FIXME: these default values should be stored in the
-  // QUESO input file ( create a InfoTheoryOptionsClass )
+  // QUESO input file ( create a InfoTheoryOptions )
   unsigned int k = UQ_INFTH_ANN_KNN;
   double eps = UQ_INFTH_ANN_EPS;
 
@@ -309,7 +309,7 @@ BaseVectorRVClass<V,M>::estimateENT_ANN() const
 //*****************************************************
 // Generic class [RV-01]
 //*****************************************************
- /*! \class GenericVectorRVClass
+ /*! \class GenericVectorRV
  * \brief A templated class for handling generic vector RVs.
  *
  * This class allows the user to compute the value of the PDF of a generic random variable (RV)
@@ -317,44 +317,44 @@ BaseVectorRVClass<V,M>::estimateENT_ANN() const
  * store the solution of an statistical inverse problem. */
  
 template<class V, class M>
-class GenericVectorRVClass : public BaseVectorRVClass<V,M> {
+class GenericVectorRV : public BaseVectorRV<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{
   //! Default constructor
   /*! Constructs a new instance, given a prefix and the image set of the vector RV.*/
-  GenericVectorRVClass(const char*                           prefix,
-                         const VectorSetClass         <V,M>& imageSet);
+  GenericVectorRV(const char*                           prefix,
+                         const VectorSet         <V,M>& imageSet);
   
   //! Constructor
   /*! Constructs a new instance, given all the attributes that characterize the vector RV: prefix, image set, pdf, etc.*/
-  GenericVectorRVClass(const char*                           prefix,
-                         const VectorSetClass         <V,M>& imageSet,
-                         const BaseJointPdfClass      <V,M>& pdf,
-                         const BaseVectorRealizerClass<V,M>& realizer,
-                         const BaseVectorCdfClass     <V,M>& subCdf,
-                         const BaseVectorCdfClass     <V,M>& unifiedCdf,
-                         const BaseVectorMdfClass     <V,M>& mdf);
+  GenericVectorRV(const char*                           prefix,
+                         const VectorSet         <V,M>& imageSet,
+                         const BaseJointPdf      <V,M>& pdf,
+                         const BaseVectorRealizer<V,M>& realizer,
+                         const BaseVectorCdf     <V,M>& subCdf,
+                         const BaseVectorCdf     <V,M>& unifiedCdf,
+                         const BaseVectorMdf     <V,M>& mdf);
   //! Virtual destructor
-  virtual ~GenericVectorRVClass();
+  virtual ~GenericVectorRV();
   //@}
   
     //! @name Random variable-handling methods
   //@{
   //! Sets the PDF of \c this vector RV  to \c pdf.  
-  void setPdf       (BaseJointPdfClass      <V,M>& pdf       );
+  void setPdf       (BaseJointPdf      <V,M>& pdf       );
   
   //! Sets the realizer of \c this vector RV  to \c realizer.  
-  void setRealizer  (BaseVectorRealizerClass<V,M>& realizer  );
+  void setRealizer  (BaseVectorRealizer<V,M>& realizer  );
   
   //! Sets the CDF of the sub-sequence of \c this vector RV  to \c subCdf.
-  void setSubCdf    (BaseVectorCdfClass     <V,M>& subCdf    );
+  void setSubCdf    (BaseVectorCdf     <V,M>& subCdf    );
   
   //! Sets the CDF of the unified sequence of \c this vector RV  to \c unifiedCdf.
-  void setUnifiedCdf(BaseVectorCdfClass     <V,M>& unifiedCdf);
+  void setUnifiedCdf(BaseVectorCdf     <V,M>& unifiedCdf);
   
   //! Sets the MDF of  \c this vector RV  to \c Mdf.
-  void setMdf       (BaseVectorMdfClass     <V,M>& mdf       );
+  void setMdf       (BaseVectorMdf     <V,M>& mdf       );
   //@}  
    
     //! @name I/O methods
@@ -365,50 +365,50 @@ public:
   //@}
 
 private:
-  using BaseVectorRVClass<V,M>::m_env;
-  using BaseVectorRVClass<V,M>::m_prefix;
-  using BaseVectorRVClass<V,M>::m_imageSet;
-  using BaseVectorRVClass<V,M>::m_pdf;
-  using BaseVectorRVClass<V,M>::m_realizer;
-  using BaseVectorRVClass<V,M>::m_subCdf;
-  using BaseVectorRVClass<V,M>::m_unifiedCdf;
-  using BaseVectorRVClass<V,M>::m_mdf;
+  using BaseVectorRV<V,M>::m_env;
+  using BaseVectorRV<V,M>::m_prefix;
+  using BaseVectorRV<V,M>::m_imageSet;
+  using BaseVectorRV<V,M>::m_pdf;
+  using BaseVectorRV<V,M>::m_realizer;
+  using BaseVectorRV<V,M>::m_subCdf;
+  using BaseVectorRV<V,M>::m_unifiedCdf;
+  using BaseVectorRV<V,M>::m_mdf;
 };
 // Default constructor -----------------------------
 template<class V, class M>
-GenericVectorRVClass<V,M>::GenericVectorRVClass(
+GenericVectorRV<V,M>::GenericVectorRV(
   const char*                     prefix,
-  const VectorSetClass <V,M>& imageSet)
+  const VectorSet <V,M>& imageSet)
   :
-  BaseVectorRVClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GenericVectorRVClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Entering GenericVectorRV<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GenericVectorRVClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Leaving GenericVectorRV<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Constructor -------------------------------------
 template<class V, class M>
-GenericVectorRVClass<V,M>::GenericVectorRVClass(
+GenericVectorRV<V,M>::GenericVectorRV(
   const char*                           prefix,
-  const VectorSetClass         <V,M>& imageSet,
-  const BaseJointPdfClass      <V,M>& pdf,
-  const BaseVectorRealizerClass<V,M>& realizer,
-  const BaseVectorCdfClass     <V,M>& subCdf,
-  const BaseVectorCdfClass     <V,M>& unifiedCdf,
-  const BaseVectorMdfClass     <V,M>& mdf)
+  const VectorSet         <V,M>& imageSet,
+  const BaseJointPdf      <V,M>& pdf,
+  const BaseVectorRealizer<V,M>& realizer,
+  const BaseVectorCdf     <V,M>& subCdf,
+  const BaseVectorCdf     <V,M>& unifiedCdf,
+  const BaseVectorMdf     <V,M>& mdf)
   :
-  BaseVectorRVClass<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"gen").c_str(),imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GenericVectorRVClass<V,M>::constructor() [2]"
+    *m_env.subDisplayFile() << "Entering GenericVectorRV<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -420,20 +420,20 @@ GenericVectorRVClass<V,M>::GenericVectorRVClass(
   m_mdf        = &mdf;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GenericVectorRVClass<V,M>::constructor() [2]"
+    *m_env.subDisplayFile() << "Leaving GenericVectorRV<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V, class M>
-GenericVectorRVClass<V,M>::~GenericVectorRVClass()
+GenericVectorRV<V,M>::~GenericVectorRV()
 {
 }
 // Random variable-handling methods ----------------
 template<class V, class M>
 void
-GenericVectorRVClass<V,M>::setPdf(BaseJointPdfClass<V,M>& pdf)
+GenericVectorRV<V,M>::setPdf(BaseJointPdf<V,M>& pdf)
 {
   m_pdf = &pdf;
   return;
@@ -441,7 +441,7 @@ GenericVectorRVClass<V,M>::setPdf(BaseJointPdfClass<V,M>& pdf)
 //--------------------------------------------------
 template<class V, class M>
 void
-GenericVectorRVClass<V,M>::setRealizer(BaseVectorRealizerClass<V,M>& realizer)
+GenericVectorRV<V,M>::setRealizer(BaseVectorRealizer<V,M>& realizer)
 {
   m_realizer = &realizer;
   return;
@@ -449,7 +449,7 @@ GenericVectorRVClass<V,M>::setRealizer(BaseVectorRealizerClass<V,M>& realizer)
 //--------------------------------------------------
 template<class V, class M>
 void
-GenericVectorRVClass<V,M>::setSubCdf(BaseVectorCdfClass<V,M>& subCdf)
+GenericVectorRV<V,M>::setSubCdf(BaseVectorCdf<V,M>& subCdf)
 {
   m_subCdf = &subCdf;
   return;
@@ -457,7 +457,7 @@ GenericVectorRVClass<V,M>::setSubCdf(BaseVectorCdfClass<V,M>& subCdf)
 //--------------------------------------------------
 template<class V, class M>
 void
-GenericVectorRVClass<V,M>::setUnifiedCdf(BaseVectorCdfClass<V,M>& unifiedCdf)
+GenericVectorRV<V,M>::setUnifiedCdf(BaseVectorCdf<V,M>& unifiedCdf)
 {
   m_unifiedCdf = &unifiedCdf;
   return;
@@ -465,7 +465,7 @@ GenericVectorRVClass<V,M>::setUnifiedCdf(BaseVectorCdfClass<V,M>& unifiedCdf)
 //--------------------------------------------------
 template<class V, class M>
 void
-GenericVectorRVClass<V,M>::setMdf(BaseVectorMdfClass<V,M>& mdf)
+GenericVectorRV<V,M>::setMdf(BaseVectorMdf<V,M>& mdf)
 {
   m_mdf = &mdf;
   return;
@@ -473,9 +473,9 @@ GenericVectorRVClass<V,M>::setMdf(BaseVectorMdfClass<V,M>& mdf)
 //--------------------------------------------------
 template <class V, class M>
 void
-GenericVectorRVClass<V,M>::print(std::ostream& os) const
+GenericVectorRV<V,M>::print(std::ostream& os) const
 {
-  os << "GenericVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  os << "GenericVectorRV<V,M>::print() says, 'Please implement me.'" << std::endl;
   return;
 }
 
@@ -484,7 +484,7 @@ GenericVectorRVClass<V,M>::print(std::ostream& os) const
 //*****************************************************
 
 /*!
- * \class GaussianVectorRVClass
+ * \class GaussianVectorRV
  * \brief A class representing a Gaussian vector RV.
  * 
  * This class allows the user to compute the value of a Gaussian PDF and to generate realizations
@@ -499,28 +499,28 @@ GenericVectorRVClass<V,M>::print(std::ostream& os) const
  * \f$ \sigma^2 \f$ . */
 
 template<class V, class M>
-class GaussianVectorRVClass : public BaseVectorRVClass<V,M> {
+class GaussianVectorRV : public BaseVectorRV<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor  
   /*! Construct a Gaussian vector RV with mean \c lawExpVector and diagonal covariance matrix
    * \c lawVarVector whose variates live in \c imageSet.*/
-  GaussianVectorRVClass(const char*                  prefix,
-                          const VectorSetClass<V,M>& imageSet,
+  GaussianVectorRV(const char*                  prefix,
+                          const VectorSet<V,M>& imageSet,
                           const V&                     lawExpVector,
                           const V&                     lawVarVector);
   
   //! Constructor  
   /*! Construct a Gaussian vector RV with mean \c lawExpVector and covariance matrix
    * \c lawCovMatrix whose variates live in \c imageSet.*/
-  GaussianVectorRVClass(const char*                  prefix,
-                          const VectorSetClass<V,M>& imageSet,
+  GaussianVectorRV(const char*                  prefix,
+                          const VectorSet<V,M>& imageSet,
                           const V&                     lawExpVector,
                           const M&                     lawCovMatrix);
   
   //! Virtual destructor
-  virtual ~GaussianVectorRVClass();
+  virtual ~GaussianVectorRV();
   //@}
 
   //! @name Statistical methods
@@ -542,37 +542,37 @@ public:
  //@}
   
 private:
-  using BaseVectorRVClass<V,M>::m_env;
-  using BaseVectorRVClass<V,M>::m_prefix;
-  using BaseVectorRVClass<V,M>::m_imageSet;
-  using BaseVectorRVClass<V,M>::m_pdf;
-  using BaseVectorRVClass<V,M>::m_realizer;
-  using BaseVectorRVClass<V,M>::m_subCdf;
-  using BaseVectorRVClass<V,M>::m_unifiedCdf;
-  using BaseVectorRVClass<V,M>::m_mdf;
+  using BaseVectorRV<V,M>::m_env;
+  using BaseVectorRV<V,M>::m_prefix;
+  using BaseVectorRV<V,M>::m_imageSet;
+  using BaseVectorRV<V,M>::m_pdf;
+  using BaseVectorRV<V,M>::m_realizer;
+  using BaseVectorRV<V,M>::m_subCdf;
+  using BaseVectorRV<V,M>::m_unifiedCdf;
+  using BaseVectorRV<V,M>::m_mdf;
 };
 // Constructor---------------------------------------
 template<class V, class M>
-GaussianVectorRVClass<V,M>::GaussianVectorRVClass(
+GaussianVectorRV<V,M>::GaussianVectorRV(
   const char*                  prefix,
-  const VectorSetClass<V,M>& imageSet,
+  const VectorSet<V,M>& imageSet,
   const V&                     lawExpVector,
   const V&                     lawVarVector)
   :
-  BaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GaussianVectorRVClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Entering GaussianVectorRV<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO((lawVarVector.getMinValue() <= 0.0),
                       m_env.worldRank(),
-                      "GaussianVectorRVClass<V,M>::constructor() [1]",
+                      "GaussianVectorRV<V,M>::constructor() [1]",
                       "Covariance matrix is not symmetric positive definite.");
 
-  m_pdf = new GaussianJointPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf = new GaussianJointPdf<V,M>(m_prefix.c_str(),
                                             m_imageSet,
                                             lawExpVector,
                                             lawVarVector);
@@ -582,7 +582,7 @@ GaussianVectorRVClass<V,M>::GaussianVectorRVClass(
   M lowerCholLawCovMatrix(cholDiag);
   lowerCholLawCovMatrix.zeroUpper(false);
 
-  m_realizer = new GaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+  m_realizer = new GaussianVectorRealizer<V,M>(m_prefix.c_str(),
                                                       m_imageSet,
                                                       lawExpVector,
                                                       lowerCholLawCovMatrix);
@@ -592,28 +592,28 @@ GaussianVectorRVClass<V,M>::GaussianVectorRVClass(
   m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GaussianVectorRVClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Leaving GaussianVectorRV<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Constructor---------------------------------------
 template<class V, class M>
-GaussianVectorRVClass<V,M>::GaussianVectorRVClass(
+GaussianVectorRV<V,M>::GaussianVectorRV(
   const char*                  prefix,
-  const VectorSetClass<V,M>& imageSet,
+  const VectorSet<V,M>& imageSet,
   const V&                     lawExpVector,
   const M&                     lawCovMatrix)
   :
-  BaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GaussianVectorRVClass<V,M>::constructor() [2]"
+    *m_env.subDisplayFile() << "Entering GaussianVectorRV<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
-  m_pdf = new GaussianJointPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf = new GaussianJointPdf<V,M>(m_prefix.c_str(),
                                            m_imageSet,
                                            lawExpVector,
                                            lawCovMatrix);
@@ -622,9 +622,9 @@ GaussianVectorRVClass<V,M>::GaussianVectorRVClass(
   int iRC = lowerCholLawCovMatrix.chol();
   lowerCholLawCovMatrix.zeroUpper(false);
   if (iRC) {
-    std::cerr << "In GaussianVectorRVClass<V,M>::constructor() [2]: chol failed, will use svd\n";
+    std::cerr << "In GaussianVectorRV<V,M>::constructor() [2]: chol failed, will use svd\n";
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GaussianVectorRVClass<V,M>::constructor() [2]: chol failed; will use svd; lawCovMatrix contents are\n";
+      *m_env.subDisplayFile() << "In GaussianVectorRV<V,M>::constructor() [2]: chol failed; will use svd; lawCovMatrix contents are\n";
       *m_env.subDisplayFile() << lawCovMatrix; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
@@ -634,11 +634,11 @@ GaussianVectorRVClass<V,M>::GaussianVectorRVClass(
     iRC = lawCovMatrix.svd(matU,vecS,matVt);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.worldRank(),
-                        "GaussianVectorRVClass<V,M>::constructor() [2]",
+                        "GaussianVectorRV<V,M>::constructor() [2]",
 		        "Cholesky decomposition of covariance matrix failed.");
 
     vecS.cwSqrt();
-    m_realizer = new GaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+    m_realizer = new GaussianVectorRealizer<V,M>(m_prefix.c_str(),
                                                         m_imageSet,
                                                         lawExpVector,
                                                         matU,
@@ -646,7 +646,7 @@ GaussianVectorRVClass<V,M>::GaussianVectorRVClass(
                                                         matVt);
   }
   else {
-    m_realizer = new GaussianVectorRealizerClass<V,M>(m_prefix.c_str(),
+    m_realizer = new GaussianVectorRealizer<V,M>(m_prefix.c_str(),
                                                         m_imageSet,
                                                         lawExpVector,
                                                         lowerCholLawCovMatrix);
@@ -657,14 +657,14 @@ GaussianVectorRVClass<V,M>::GaussianVectorRVClass(
   m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GaussianVectorRVClass<V,M>::constructor() [2]"
+    *m_env.subDisplayFile() << "Leaving GaussianVectorRV<V,M>::constructor() [2]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-GaussianVectorRVClass<V,M>::~GaussianVectorRVClass()
+GaussianVectorRV<V,M>::~GaussianVectorRV()
 {
   delete m_mdf;
   delete m_unifiedCdf;
@@ -675,28 +675,28 @@ GaussianVectorRVClass<V,M>::~GaussianVectorRVClass()
 // Statistical methods-------------------------------
 template<class V, class M>
 void
-GaussianVectorRVClass<V,M>::updateLawExpVector(const V& newLawExpVector)
+GaussianVectorRV<V,M>::updateLawExpVector(const V& newLawExpVector)
 {
   // We are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
-  ( dynamic_cast< GaussianJointPdfClass      <V,M>* >(m_pdf     ) )->updateLawExpVector(newLawExpVector);
-  ( dynamic_cast< GaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLawExpVector(newLawExpVector);
+  ( dynamic_cast< GaussianJointPdf      <V,M>* >(m_pdf     ) )->updateLawExpVector(newLawExpVector);
+  ( dynamic_cast< GaussianVectorRealizer<V,M>* >(m_realizer) )->updateLawExpVector(newLawExpVector);
   return;
 }
 //---------------------------------------------------
 template<class V, class M>
 void
-GaussianVectorRVClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
+GaussianVectorRV<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
 {
   // We are sure that m_pdf (and m_realizer, etc) point to associated Gaussian classes, so all is well
-  ( dynamic_cast< GaussianJointPdfClass<V,M>* >(m_pdf) )->updateLawCovMatrix(newLawCovMatrix);
+  ( dynamic_cast< GaussianJointPdf<V,M>* >(m_pdf) )->updateLawCovMatrix(newLawCovMatrix);
 
   M newLowerCholLawCovMatrix(newLawCovMatrix);
   int iRC = newLowerCholLawCovMatrix.chol();
   newLowerCholLawCovMatrix.zeroUpper(false);
   if (iRC) {
-    std::cerr << "In GaussianVectorRVClass<V,M>::updateLawCovMatrix(): chol failed, will use svd\n";
+    std::cerr << "In GaussianVectorRV<V,M>::updateLawCovMatrix(): chol failed, will use svd\n";
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GaussianVectorRVClass<V,M>::updateLawCovMatrix(): chol failed; will use svd; newLawCovMatrix contents are\n";
+      *m_env.subDisplayFile() << "In GaussianVectorRV<V,M>::updateLawCovMatrix(): chol failed; will use svd; newLawCovMatrix contents are\n";
       *m_env.subDisplayFile() << newLawCovMatrix; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
@@ -706,25 +706,25 @@ GaussianVectorRVClass<V,M>::updateLawCovMatrix(const M& newLawCovMatrix)
     iRC = newLawCovMatrix.svd(matU,vecS,matVt);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.worldRank(),
-                        "GaussianVectorRVClass<V,M>::updateLawCovMatrix()",
+                        "GaussianVectorRV<V,M>::updateLawCovMatrix()",
                         "Cholesky decomposition of covariance matrix failed.");
 
     vecS.cwSqrt();
-    ( dynamic_cast< GaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLowerCholLawCovMatrix(matU,
+    ( dynamic_cast< GaussianVectorRealizer<V,M>* >(m_realizer) )->updateLowerCholLawCovMatrix(matU,
                                                                                                      vecS, // already square rooted
                                                                                                      matVt);
   }
   else {
-    ( dynamic_cast< GaussianVectorRealizerClass<V,M>* >(m_realizer) )->updateLowerCholLawCovMatrix(newLowerCholLawCovMatrix);
+    ( dynamic_cast< GaussianVectorRealizer<V,M>* >(m_realizer) )->updateLowerCholLawCovMatrix(newLowerCholLawCovMatrix);
   }
   return;
 }
 // I/O methods---------------------------------------
 template <class V, class M>
 void
-GaussianVectorRVClass<V,M>::print(std::ostream& os) const
+GaussianVectorRV<V,M>::print(std::ostream& os) const
 {
-  os << "GaussianVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  os << "GaussianVectorRV<V,M>::print() says, 'Please implement me.'" << std::endl;
   return;
 }
 
@@ -745,7 +745,7 @@ ComputeConditionalGaussianVectorRV(
         V& muVec1_cond_on_2,
         M& sigmaMat11_cond_on_2)
 {
-  const BaseEnvironmentClass& env = muVec1.env();
+  const BaseEnvironment& env = muVec1.env();
   unsigned int dim1 = muVec1.sizeLocal();
   unsigned int dim2 = muVec2.sizeLocal();
 
@@ -811,24 +811,24 @@ ComputeConditionalGaussianVectorRV(
 // Uniform class [RV-04]
 //*****************************************************
 /*!
- * \class UniformVectorRVClass
+ * \class UniformVectorRV
  * \brief A class representing a uniform vector RV.
  * 
  * This class allows the user to compute the value of a uniform PDF and to generate realizations
  * (samples) from it. It is used, for instance, to create a uniform prior PDF. */
 
 template<class V, class M>
-class UniformVectorRVClass : public BaseVectorRVClass<V,M> {
+class UniformVectorRV : public BaseVectorRV<V,M> {
 public:
   
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor
   /*! Constructs a uniform vector RV, given a prefix and the image set of the vector RV.*/
-  UniformVectorRVClass(const char*                  prefix,
-                         const VectorSetClass<V,M>& imageSet);
+  UniformVectorRV(const char*                  prefix,
+                         const VectorSet<V,M>& imageSet);
   //! Virtual destructor
-  virtual ~UniformVectorRVClass();
+  virtual ~UniformVectorRV();
   //@}
   
   //! @name I/O methods
@@ -839,46 +839,46 @@ public:
   //@}
 
 private:
-  using BaseVectorRVClass<V,M>::m_env;
-  using BaseVectorRVClass<V,M>::m_prefix;
-  using BaseVectorRVClass<V,M>::m_imageSet;
-  using BaseVectorRVClass<V,M>::m_pdf;
-  using BaseVectorRVClass<V,M>::m_realizer;
-  using BaseVectorRVClass<V,M>::m_subCdf;
-  using BaseVectorRVClass<V,M>::m_unifiedCdf;
-  using BaseVectorRVClass<V,M>::m_mdf;
+  using BaseVectorRV<V,M>::m_env;
+  using BaseVectorRV<V,M>::m_prefix;
+  using BaseVectorRV<V,M>::m_imageSet;
+  using BaseVectorRV<V,M>::m_pdf;
+  using BaseVectorRV<V,M>::m_realizer;
+  using BaseVectorRV<V,M>::m_subCdf;
+  using BaseVectorRV<V,M>::m_unifiedCdf;
+  using BaseVectorRV<V,M>::m_mdf;
 };
 // Default constructor-------------------------------
 template<class V, class M>
-UniformVectorRVClass<V,M>::UniformVectorRVClass(
+UniformVectorRV<V,M>::UniformVectorRV(
   const char*                  prefix,
-  const VectorSetClass<V,M>& imageSet)
+  const VectorSet<V,M>& imageSet)
   :
-  BaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering UniformVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering UniformVectorRV<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
-  m_pdf        = new UniformJointPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf        = new UniformJointPdf<V,M>(m_prefix.c_str(),
                                                  m_imageSet);
-  m_realizer   = new UniformVectorRealizerClass<V,M>(m_prefix.c_str(),
+  m_realizer   = new UniformVectorRealizer<V,M>(m_prefix.c_str(),
                                                        m_imageSet);
   m_subCdf     = NULL; // FIX ME: complete code
   m_unifiedCdf = NULL; // FIX ME: complete code
   m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving UniformVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving UniformVectorRV<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-UniformVectorRVClass<V,M>::~UniformVectorRVClass()
+UniformVectorRV<V,M>::~UniformVectorRV()
 {
   delete m_mdf;
   delete m_unifiedCdf;
@@ -889,9 +889,9 @@ UniformVectorRVClass<V,M>::~UniformVectorRVClass()
 // I/O methods --------------------------------------
 template <class V, class M>
 void
-UniformVectorRVClass<V,M>::print(std::ostream& os) const
+UniformVectorRV<V,M>::print(std::ostream& os) const
 {
-  os << "UniformVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  os << "UniformVectorRV<V,M>::print() says, 'Please implement me.'" << std::endl;
   return;
 }
 
@@ -899,7 +899,7 @@ UniformVectorRVClass<V,M>::print(std::ostream& os) const
 // Beta class [RV-05]
 //*****************************************************
 /*!
- * \class BetaVectorRVClass
+ * \class BetaVectorRV
  * \brief A class representing a vector RV constructed via Beta distribution.
  * 
  * This class allows the user to compute the value of a Beta PDF and to generate realizations
@@ -916,7 +916,7 @@ UniformVectorRVClass<V,M>::print(std::ostream& os) const
 
 
 template<class V, class M>
-class BetaVectorRVClass : public BaseVectorRVClass<V,M> {
+class BetaVectorRV : public BaseVectorRV<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{
@@ -925,13 +925,13 @@ public:
    * The constructor will check whether or not the data provided via \c imageSet belongs to [0,1], which
    * is a requirement imposed by the Beta distribution. If this condition is not satisfied, an error 
    * message will be displayed and the program will exit. */
-  BetaVectorRVClass(const char*                  prefix,
-                      const VectorSetClass<V,M>& imageSet,
+  BetaVectorRV(const char*                  prefix,
+                      const VectorSet<V,M>& imageSet,
                       const V&                     alpha,
                       const V&                     beta);
   
   //! Virtual destructor
-  virtual ~BetaVectorRVClass();
+  virtual ~BetaVectorRV();
   //@}
   
   //! @name I/O methods
@@ -942,34 +942,34 @@ public:
   //@}
 
 private:
-  using BaseVectorRVClass<V,M>::m_env;
-  using BaseVectorRVClass<V,M>::m_prefix;
-  using BaseVectorRVClass<V,M>::m_imageSet;
-  using BaseVectorRVClass<V,M>::m_pdf;
-  using BaseVectorRVClass<V,M>::m_realizer;
-  using BaseVectorRVClass<V,M>::m_subCdf;
-  using BaseVectorRVClass<V,M>::m_unifiedCdf;
-  using BaseVectorRVClass<V,M>::m_mdf;
+  using BaseVectorRV<V,M>::m_env;
+  using BaseVectorRV<V,M>::m_prefix;
+  using BaseVectorRV<V,M>::m_imageSet;
+  using BaseVectorRV<V,M>::m_pdf;
+  using BaseVectorRV<V,M>::m_realizer;
+  using BaseVectorRV<V,M>::m_subCdf;
+  using BaseVectorRV<V,M>::m_unifiedCdf;
+  using BaseVectorRV<V,M>::m_mdf;
 };
 // Constructor---------------------------------------
 template<class V, class M>
-BetaVectorRVClass<V,M>::BetaVectorRVClass(
+BetaVectorRV<V,M>::BetaVectorRV(
   const char*                  prefix,
-  const VectorSetClass<V,M>& imageSet,
+  const VectorSet<V,M>& imageSet,
   const V&                     alpha,
   const V&                     beta)
   :
-  BaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering BetaVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering BetaVectorRV<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
 // begin kemelli 2013-April-22 : --------------------------
 
-  const BoxSubsetClass<V,M>* imageBox = dynamic_cast<const BoxSubsetClass<V,M>* >(&imageSet);
+  const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&imageSet);
 
   double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
   double biggerOfMaxValues = imageBox->maxValues().getMaxValue();	
@@ -979,7 +979,7 @@ BetaVectorRVClass<V,M>::BetaVectorRVClass(
  // Beta dist is defined only in [0,1]		
  if( (smallerOfMinValues < 0) || ( biggerOfMaxValues > 1 ) ) 
  {		
-   std::cerr << "In BetaVectorRVClass<V,M>::constructor()\n" 
+   std::cerr << "In BetaVectorRV<V,M>::constructor()\n" 
 			 << "Beta distribution is defined only in [0, 1].\n"
 			 << "The data provided is: \n"
 			 << *imageBox 
@@ -989,21 +989,21 @@ BetaVectorRVClass<V,M>::BetaVectorRVClass(
  // if at least one of the min values > 1 then exit
     UQ_FATAL_TEST_MACRO(biggerOfMinValues > 1,
                       m_env.worldRank(),
-                      "In BetaVectorRVClass<V,M>::constructor()",
+                      "In BetaVectorRV<V,M>::constructor()",
                       "invalid input: Beta distribution is only defined in [0, 1], and max(m_minValues)>1");  
  // if at least one of the max values < 0 then exit                      
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0, //biggerOfMaxValues
                       m_env.worldRank(),
-                      "In BetaVectorRVClass<V,M>::constructor()",
+                      "In BetaVectorRV<V,M>::constructor()",
                       "invalid input: Beta distribution is only defined in [0, 1], and min(m_maxValues)<0");                
  }	
   // end kemelli 2013-April-22 --------------------------
   
-  m_pdf        = new BetaJointPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf        = new BetaJointPdf<V,M>(m_prefix.c_str(),
                                               m_imageSet,
                                               alpha,
                                               beta);
-  m_realizer   = new BetaVectorRealizerClass<V,M>(m_prefix.c_str(),
+  m_realizer   = new BetaVectorRealizer<V,M>(m_prefix.c_str(),
                                                     m_imageSet,
                                                     alpha,
                                                     beta);
@@ -1012,14 +1012,14 @@ BetaVectorRVClass<V,M>::BetaVectorRVClass(
   m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving BetaVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving BetaVectorRV<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-BetaVectorRVClass<V,M>::~BetaVectorRVClass()
+BetaVectorRV<V,M>::~BetaVectorRV()
 {
   delete m_mdf;
   delete m_unifiedCdf;
@@ -1030,9 +1030,9 @@ BetaVectorRVClass<V,M>::~BetaVectorRVClass()
 // I/O methods---------------------------------------
 template <class V, class M>
 void
-BetaVectorRVClass<V,M>::print(std::ostream& os) const
+BetaVectorRV<V,M>::print(std::ostream& os) const
 {
-  os << "BetaVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  os << "BetaVectorRV<V,M>::print() says, 'Please implement me.'" << std::endl;
   return;
 }
 
@@ -1040,7 +1040,7 @@ BetaVectorRVClass<V,M>::print(std::ostream& os) const
 // Gamma class [RV-06]
 //*****************************************************
 /*!
- * \class GammaVectorRVClass
+ * \class GammaVectorRV
  * \brief A class representing a vector RV constructed via Gamma distribution.
  * 
  * This class allows the user to compute the value of a Gamma PDF and to generate realizations
@@ -1055,7 +1055,7 @@ BetaVectorRVClass<V,M>::print(std::ostream& os) const
  * interval \f$ (0, \infty)\f$. */
  	
 template<class V, class M>
-class GammaVectorRVClass : public BaseVectorRVClass<V,M> {
+class GammaVectorRV : public BaseVectorRV<V,M> {
 public:
   
       //! @name Constructor/Destructor methods
@@ -1065,12 +1065,12 @@ public:
    * The constructor will check whether or not the data provided via \c imageSet belongs to 
    * \f$ (0, \infty)\f$, which is a requirement imposed by the Gamma distribution. If this condition 
    * is not satisfied, an error  message will be displayed and the program will exit. */
-  GammaVectorRVClass(const char*                  prefix,
-                       const VectorSetClass<V,M>& imageSet,
+  GammaVectorRV(const char*                  prefix,
+                       const VectorSet<V,M>& imageSet,
                        const V&                     a,
                        const V&                     b);
   //! Virtual destructor
-  virtual ~GammaVectorRVClass();
+  virtual ~GammaVectorRV();
   //@}
   
   //! @name I/O methods
@@ -1081,44 +1081,44 @@ public:
   //@}
   
 private:
-  using BaseVectorRVClass<V,M>::m_env;
-  using BaseVectorRVClass<V,M>::m_prefix;
-  using BaseVectorRVClass<V,M>::m_imageSet;
-  using BaseVectorRVClass<V,M>::m_pdf;
-  using BaseVectorRVClass<V,M>::m_realizer;
-  using BaseVectorRVClass<V,M>::m_subCdf;
-  using BaseVectorRVClass<V,M>::m_unifiedCdf;
-  using BaseVectorRVClass<V,M>::m_mdf;
+  using BaseVectorRV<V,M>::m_env;
+  using BaseVectorRV<V,M>::m_prefix;
+  using BaseVectorRV<V,M>::m_imageSet;
+  using BaseVectorRV<V,M>::m_pdf;
+  using BaseVectorRV<V,M>::m_realizer;
+  using BaseVectorRV<V,M>::m_subCdf;
+  using BaseVectorRV<V,M>::m_unifiedCdf;
+  using BaseVectorRV<V,M>::m_mdf;
 };
 // Constructor---------------------------------------
 // TODO: Check: the constructor receives imageSet, but uses m_imageSet to assign m_pdf and m_realizer. (Kemelli 2013/4/22)
 template<class V, class M>
-GammaVectorRVClass<V,M>::GammaVectorRVClass(
+GammaVectorRV<V,M>::GammaVectorRV(
   const char*                  prefix,
-  const VectorSetClass<V,M>& imageSet,
+  const VectorSet<V,M>& imageSet,
   const V&                     a,
   const V&                     b)
   :
-  BaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering GammaVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering GammaVectorRV<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
  
 // begin kemelli 2013-April-22 -------------------------- 
 // better to check for the parameter values in the constructor, 
-// rather than in GammaVectorRealizerClass<V,M>::realization
+// rather than in GammaVectorRealizer<V,M>::realization
 
-  const BoxSubsetClass<V,M>* imageBox = dynamic_cast<const BoxSubsetClass<V,M>* >(&imageSet);
+  const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&imageSet);
   double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
   double smallerOfMinValues = imageBox->minValues().getMinValue();
 	
  // Gamma dist is defined only in (0,inf)		
  if( smallerOfMinValues < 0 ) 
  {		
-   std::cerr << "In GammaVectorRVClass<V,M>::constructor()\n" 
+   std::cerr << "In GammaVectorRV<V,M>::constructor()\n" 
 			 << "Gamma distribution is only defined in (0, infinity).\n"
 			 << "The data provided is: \n"
 			 << *imageBox 
@@ -1127,16 +1127,16 @@ GammaVectorRVClass<V,M>::GammaVectorRVClass(
 
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
                       m_env.worldRank(),
-                      "GammaVectorRealizerClass<V,M>::constructor()",
+                      "GammaVectorRealizer<V,M>::constructor()",
                       "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0");      
  }	
 // end kemelli 2013-April-22 --------------------------
 
-  m_pdf        = new GammaJointPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf        = new GammaJointPdf<V,M>(m_prefix.c_str(),
                                                m_imageSet,
                                                a,
                                                b);
-  m_realizer   = new GammaVectorRealizerClass<V,M>(m_prefix.c_str(),
+  m_realizer   = new GammaVectorRealizer<V,M>(m_prefix.c_str(),
                                                      m_imageSet,
                                                      a,
                                                      b);
@@ -1146,14 +1146,14 @@ GammaVectorRVClass<V,M>::GammaVectorRVClass(
   m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving GammaVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving GammaVectorRV<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-GammaVectorRVClass<V,M>::~GammaVectorRVClass()
+GammaVectorRV<V,M>::~GammaVectorRV()
 {
   delete m_mdf;
   delete m_unifiedCdf;
@@ -1164,9 +1164,9 @@ GammaVectorRVClass<V,M>::~GammaVectorRVClass()
 // I/O methods---------------------------------------
 template <class V, class M>
 void
-GammaVectorRVClass<V,M>::print(std::ostream& os) const
+GammaVectorRV<V,M>::print(std::ostream& os) const
 {
-  os << "GammaVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  os << "GammaVectorRV<V,M>::print() says, 'Please implement me.'" << std::endl;
   return;
 }
 
@@ -1174,7 +1174,7 @@ GammaVectorRVClass<V,M>::print(std::ostream& os) const
 // InverseGamma class [RV-07]
 //*****************************************************
 /*!
- * \class InverseGammaVectorRVClass
+ * \class InverseGammaVectorRV
  * \brief A class representing a vector RV constructed via Inverse Gamma distribution.
  * 
  * This class allows the user to compute the value of a Inverse Gamma PDF and to generate realizations
@@ -1188,7 +1188,7 @@ GammaVectorRVClass<V,M>::print(std::ostream& os) const
  * The parameters \b a and \b b must all be positive, and the values \c x  must lie on the 
  * interval \f$ (0, \infty)\f$. */
 template<class V, class M>
-class InverseGammaVectorRVClass : public BaseVectorRVClass<V,M> {
+class InverseGammaVectorRV : public BaseVectorRV<V,M> {
 public:
   
   //! @name Constructor/Destructor methods
@@ -1198,12 +1198,12 @@ public:
    * The constructor will check whether or not the data provided via \c imageSet belongs to 
    * \f$ (0, \infty)\f$, which is a requirement imposed by the Inverse Gamma distribution. If this 
    * condition is not satisfied, an error  message will be displayed and the program will exit. */
-  InverseGammaVectorRVClass(const char*                  prefix,
-                              const VectorSetClass<V,M>& imageSet,
+  InverseGammaVectorRV(const char*                  prefix,
+                              const VectorSet<V,M>& imageSet,
                               const V&                     alpha,
                               const V&                     beta);
   //! Virtual destructor
-  virtual ~InverseGammaVectorRVClass();
+  virtual ~InverseGammaVectorRV();
   //@}
     //! @name I/O methods
   //@{
@@ -1212,40 +1212,40 @@ public:
   void print(std::ostream& os) const;
   //@}
 private:
-  using BaseVectorRVClass<V,M>::m_env;
-  using BaseVectorRVClass<V,M>::m_prefix;
-  using BaseVectorRVClass<V,M>::m_imageSet;
-  using BaseVectorRVClass<V,M>::m_pdf;
-  using BaseVectorRVClass<V,M>::m_realizer;
-  using BaseVectorRVClass<V,M>::m_subCdf;
-  using BaseVectorRVClass<V,M>::m_unifiedCdf;
-  using BaseVectorRVClass<V,M>::m_mdf;
+  using BaseVectorRV<V,M>::m_env;
+  using BaseVectorRV<V,M>::m_prefix;
+  using BaseVectorRV<V,M>::m_imageSet;
+  using BaseVectorRV<V,M>::m_pdf;
+  using BaseVectorRV<V,M>::m_realizer;
+  using BaseVectorRV<V,M>::m_subCdf;
+  using BaseVectorRV<V,M>::m_unifiedCdf;
+  using BaseVectorRV<V,M>::m_mdf;
 };
 // Constructor---------------------------------------
 template<class V, class M>
-InverseGammaVectorRVClass<V,M>::InverseGammaVectorRVClass(
+InverseGammaVectorRV<V,M>::InverseGammaVectorRV(
   const char*                  prefix,
-  const VectorSetClass<V,M>& imageSet,
+  const VectorSet<V,M>& imageSet,
   const V&                     alpha,
   const V&                     beta)
   :
-  BaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering InverseGammaVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering InverseGammaVectorRV<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
 // begin kemelli 2013-April-22 -------------------------- 
 // InverseGamma dist is defined only in (0,inf)
-  const BoxSubsetClass<V,M>* imageBox = dynamic_cast<const BoxSubsetClass<V,M>* >(&imageSet);
+  const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&imageSet);
   double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
   double smallerOfMinValues = imageBox->minValues().getMinValue();
  		
  if( smallerOfMinValues < 0 ) 
  {		
-   std::cerr << "In InverseGammaVectorRVClass<V,M>::constructor()\n" 
+   std::cerr << "In InverseGammaVectorRV<V,M>::constructor()\n" 
 			 << "Inverse Gamma distribution is only defined in (0, infinity).\n"
 			 << "The data provided is: \n"
 			 << *imageBox 
@@ -1254,16 +1254,16 @@ InverseGammaVectorRVClass<V,M>::InverseGammaVectorRVClass(
 
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
                       m_env.worldRank(),
-                      "InverseGammaVectorRealizerClass<V,M>::constructor()",
+                      "InverseGammaVectorRealizer<V,M>::constructor()",
                       "invalid input: Inverse Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0");      
  }	
 // end kemelli 2013-April-22 --------------------------
   
-  m_pdf        = new InverseGammaJointPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf        = new InverseGammaJointPdf<V,M>(m_prefix.c_str(),
                                                       m_imageSet,
                                                       alpha,
                                                       beta);
-  m_realizer   = new InverseGammaVectorRealizerClass<V,M>(m_prefix.c_str(),
+  m_realizer   = new InverseGammaVectorRealizer<V,M>(m_prefix.c_str(),
                                                             m_imageSet,
                                                             alpha,
                                                             beta);
@@ -1272,14 +1272,14 @@ InverseGammaVectorRVClass<V,M>::InverseGammaVectorRVClass(
   m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving InverseGammaVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving InverseGammaVectorRV<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-InverseGammaVectorRVClass<V,M>::~InverseGammaVectorRVClass()
+InverseGammaVectorRV<V,M>::~InverseGammaVectorRV()
 {
   delete m_mdf;
   delete m_unifiedCdf;
@@ -1290,9 +1290,9 @@ InverseGammaVectorRVClass<V,M>::~InverseGammaVectorRVClass()
 // I/O methods---------------------------------------
 template <class V, class M>
 void
-InverseGammaVectorRVClass<V,M>::print(std::ostream& os) const
+InverseGammaVectorRV<V,M>::print(std::ostream& os) const
 {
-  os << "InverseGammaVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  os << "InverseGammaVectorRV<V,M>::print() says, 'Please implement me.'" << std::endl;
   return;
 }
 
@@ -1300,29 +1300,29 @@ InverseGammaVectorRVClass<V,M>::print(std::ostream& os) const
 // Wigner class [RV-09]
 //*****************************************************
 /*!
- * \class WignerVectorRVClass
+ * \class WignerVectorRV
  * \brief A class representing a vector RV constructed via Wigner distribution.
  * 
  * This class allows the user to compute the value of a Wigner PDF and to generate realizations
  * (samples) from it.\n
  * 
- * \todo: WignerVectorRealizerClass.realization() is not yet available, thus this class does 
+ * \todo: WignerVectorRealizer.realization() is not yet available, thus this class does 
  * nothing. */
  
 template<class V, class M>
-class WignerVectorRVClass : public BaseVectorRVClass<V,M> {
+class WignerVectorRV : public BaseVectorRV<V,M> {
 public:
   
     
   //! @name Constructor/Destructor methods
   //@{
   //! Default Constructor
-  WignerVectorRVClass(const char*                  prefix,
-                        const VectorSetClass<V,M>& imageSet,
+  WignerVectorRV(const char*                  prefix,
+                        const VectorSet<V,M>& imageSet,
                         const V&                     centerPos,
                         double                       radius);
   //! Virtual destructor
-  virtual ~WignerVectorRVClass();
+  virtual ~WignerVectorRV();
   //@}
   
   //! @name I/O methods
@@ -1333,41 +1333,41 @@ public:
   //@}
   
 private:
-  using BaseVectorRVClass<V,M>::m_env;
-  using BaseVectorRVClass<V,M>::m_prefix;
-  using BaseVectorRVClass<V,M>::m_imageSet;
-  using BaseVectorRVClass<V,M>::m_pdf;
-  using BaseVectorRVClass<V,M>::m_realizer;
-  using BaseVectorRVClass<V,M>::m_subCdf;
-  using BaseVectorRVClass<V,M>::m_unifiedCdf;
-  using BaseVectorRVClass<V,M>::m_mdf;
+  using BaseVectorRV<V,M>::m_env;
+  using BaseVectorRV<V,M>::m_prefix;
+  using BaseVectorRV<V,M>::m_imageSet;
+  using BaseVectorRV<V,M>::m_pdf;
+  using BaseVectorRV<V,M>::m_realizer;
+  using BaseVectorRV<V,M>::m_subCdf;
+  using BaseVectorRV<V,M>::m_unifiedCdf;
+  using BaseVectorRV<V,M>::m_mdf;
 };
 // Default constructor -----------------------------
 template<class V, class M>
-WignerVectorRVClass<V,M>::WignerVectorRVClass(
+WignerVectorRV<V,M>::WignerVectorRV(
   const char*                  prefix,
-  const VectorSetClass<V,M>& imageSet,
+  const VectorSet<V,M>& imageSet,
   const V&                     centerPos,
   double                       radius)
   :
-  BaseVectorRVClass<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering WignerVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering WignerVectorRV<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(radius <= 0.,
                       m_env.worldRank(),
-                      "WignerVectorRVClass<V,M>::constructor()",
+                      "WignerVectorRV<V,M>::constructor()",
                       "invalid radius");
 
-  m_pdf        = new WignerJointPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf        = new WignerJointPdf<V,M>(m_prefix.c_str(),
                                                 m_imageSet,
                                                 centerPos,
                                                 radius);
-  m_realizer   = new WignerVectorRealizerClass<V,M>(m_prefix.c_str(),
+  m_realizer   = new WignerVectorRealizer<V,M>(m_prefix.c_str(),
                                                       m_imageSet,
                                                       centerPos,
                                                       radius);
@@ -1376,14 +1376,14 @@ WignerVectorRVClass<V,M>::WignerVectorRVClass(
   m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving WignerVectorRVClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving WignerVectorRV<V,M>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Constructor -------------------------------------
 template<class V, class M>
-WignerVectorRVClass<V,M>::~WignerVectorRVClass()
+WignerVectorRV<V,M>::~WignerVectorRV()
 {
   delete m_mdf;
   delete m_unifiedCdf;
@@ -1394,9 +1394,9 @@ WignerVectorRVClass<V,M>::~WignerVectorRVClass()
 //--------------------------------------------------
 template <class V, class M>
 void
-WignerVectorRVClass<V,M>::print(std::ostream& os) const
+WignerVectorRV<V,M>::print(std::ostream& os) const
 {
-  os << "WignerVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  os << "WignerVectorRV<V,M>::print() says, 'Please implement me.'" << std::endl;
   return;
 }
 
@@ -1404,7 +1404,7 @@ WignerVectorRVClass<V,M>::print(std::ostream& os) const
 // LogNormal class [RV-10]
 //*****************************************************
 /*!
- * \class LogNormalVectorRVClass
+ * \class LogNormalVectorRV
  * \brief A class representing a LogNormal vector RV.
  * 
  * This class allows the user to compute the value of a LogNormal PDF and to generate realizations
@@ -1416,20 +1416,20 @@ WignerVectorRVClass<V,M>::print(std::ostream& os) const
  * deviation of the  variable's natural logarithm; and \c x>0.  */
 
 template<class V, class M>
-class LogNormalVectorRVClass : public BaseVectorRVClass<V,M> {
+class LogNormalVectorRV : public BaseVectorRV<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{
   //! Constructor  
   /*! Construct a LogNormal vector RV with mean \c lawExpVector and diagonal covariance matrix
    * \c lawVarVector whose variates live in \c imageSet.*/
-  LogNormalVectorRVClass(const char*                  prefix,
-                           const VectorSetClass<V,M>& imageSet,
+  LogNormalVectorRV(const char*                  prefix,
+                           const VectorSet<V,M>& imageSet,
                            const V&                     lawExpVector,
                            const V&                     lawVarVector);
   
   //! Virtual destructor
-  virtual ~LogNormalVectorRVClass();
+  virtual ~LogNormalVectorRV();
   //@}
  
   //! @name I/O methods
@@ -1440,27 +1440,27 @@ public:
   //@}
 
 private:
-  using BaseVectorRVClass<V,M>::m_env;
-  using BaseVectorRVClass<V,M>::m_prefix;
-  using BaseVectorRVClass<V,M>::m_imageSet;
-  using BaseVectorRVClass<V,M>::m_pdf;
-  using BaseVectorRVClass<V,M>::m_realizer;
-  using BaseVectorRVClass<V,M>::m_subCdf;
-  using BaseVectorRVClass<V,M>::m_unifiedCdf;
-  using BaseVectorRVClass<V,M>::m_mdf;
+  using BaseVectorRV<V,M>::m_env;
+  using BaseVectorRV<V,M>::m_prefix;
+  using BaseVectorRV<V,M>::m_imageSet;
+  using BaseVectorRV<V,M>::m_pdf;
+  using BaseVectorRV<V,M>::m_realizer;
+  using BaseVectorRV<V,M>::m_subCdf;
+  using BaseVectorRV<V,M>::m_unifiedCdf;
+  using BaseVectorRV<V,M>::m_mdf;
 };
 // Constructor---------------------------------------
 template<class V, class M>
-LogNormalVectorRVClass<V,M>::LogNormalVectorRVClass(
+LogNormalVectorRV<V,M>::LogNormalVectorRV(
   const char*                  prefix,
-  const VectorSetClass<V,M>& imageSet,
+  const VectorSet<V,M>& imageSet,
   const V&                     lawExpVector,
   const V&                     lawVarVector)
   :
-  BaseVectorRVClass<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"gau").c_str(),imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering LogNormalVectorRVClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Entering LogNormalVectorRV<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -1468,13 +1468,13 @@ LogNormalVectorRVClass<V,M>::LogNormalVectorRVClass(
 // begin kemelli 2013-April-23 -------------------------- 
 // LogNormal dist is defined only in (0,inf)
 
-  const BoxSubsetClass<V,M>* imageBox = dynamic_cast<const BoxSubsetClass<V,M>* >(&imageSet);
+  const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&imageSet);
   double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
   double smallerOfMinValues = imageBox->minValues().getMinValue();
  		
  if( smallerOfMinValues < 0 ) 
  {		
-   std::cerr << "In LogNormalVectorRVClass<V,M>::constructor()\n" 
+   std::cerr << "In LogNormalVectorRV<V,M>::constructor()\n" 
 			 << "LogNormal distribution is only defined in (0, infinity).\n"
 			 << "The data provided is: \n"
 			 << *imageBox 
@@ -1484,13 +1484,13 @@ LogNormalVectorRVClass<V,M>::LogNormalVectorRVClass(
 
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
                       m_env.worldRank(),
-                      "LogNormalVectorRealizerClass<V,M>::constructor()",
+                      "LogNormalVectorRealizer<V,M>::constructor()",
                       "invalid input: LogNormal distribution is only defined in (0, infinity), and min(m_maxValues)<0");      
               
  }	
 // end kemelli 2013-April-23 --------------------------
 
-  m_pdf = new LogNormalJointPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf = new LogNormalJointPdf<V,M>(m_prefix.c_str(),
                                             m_imageSet,
                                             lawExpVector,
                                             lawVarVector);
@@ -1499,9 +1499,9 @@ LogNormalVectorRVClass<V,M>::LogNormalVectorRVClass(
   int iRC = lowerCholLawCovMatrix.chol();
   lowerCholLawCovMatrix.zeroUpper(false);
   if (iRC) {
-    std::cerr << "In LogNormalVectorRVClass<V,M>::constructor() [1]: chol failed, will use svd\n";
+    std::cerr << "In LogNormalVectorRV<V,M>::constructor() [1]: chol failed, will use svd\n";
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In LogNormalVectorRVClass<V,M>::constructor() [1]: chol failed; will use svd; lawVarVector contents are\n";
+      *m_env.subDisplayFile() << "In LogNormalVectorRV<V,M>::constructor() [1]: chol failed; will use svd; lawVarVector contents are\n";
       *m_env.subDisplayFile() << lawVarVector; // FIX ME: might demand parallelism
       *m_env.subDisplayFile() << std::endl;
     }
@@ -1512,11 +1512,11 @@ LogNormalVectorRVClass<V,M>::LogNormalVectorRVClass(
     iRC = matLaw.svd(matU,vecS,matVt);
     UQ_FATAL_TEST_MACRO(iRC,
                         m_env.worldRank(),
-                        "LogNormalVectorRVClass<V,M>::constructor() [1]",
+                        "LogNormalVectorRV<V,M>::constructor() [1]",
                         "Cholesky decomposition of covariance matrix failed.");
 
     vecS.cwSqrt();
-    m_realizer = new LogNormalVectorRealizerClass<V,M>(m_prefix.c_str(),
+    m_realizer = new LogNormalVectorRealizer<V,M>(m_prefix.c_str(),
                                                          m_imageSet,
                                                          lawExpVector,
                                                          matU,
@@ -1524,7 +1524,7 @@ LogNormalVectorRVClass<V,M>::LogNormalVectorRVClass(
                                                          matVt);
   }
   else {
-    m_realizer = new LogNormalVectorRealizerClass<V,M>(m_prefix.c_str(),
+    m_realizer = new LogNormalVectorRealizer<V,M>(m_prefix.c_str(),
                                                         m_imageSet,
                                                         lawExpVector,
                                                         lowerCholLawCovMatrix);
@@ -1535,14 +1535,14 @@ LogNormalVectorRVClass<V,M>::LogNormalVectorRVClass(
   m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving LogNormalVectorRVClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Leaving LogNormalVectorRV<V,M>::constructor() [1]"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-LogNormalVectorRVClass<V,M>::~LogNormalVectorRVClass()
+LogNormalVectorRV<V,M>::~LogNormalVectorRV()
 {
   delete m_mdf;
   delete m_unifiedCdf;
@@ -1553,9 +1553,9 @@ LogNormalVectorRVClass<V,M>::~LogNormalVectorRVClass()
 // I/O methods---------------------------------------
 template <class V, class M>
 void
-LogNormalVectorRVClass<V,M>::print(std::ostream& os) const
+LogNormalVectorRV<V,M>::print(std::ostream& os) const
 {
-  os << "LogNormalVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  os << "LogNormalVectorRV<V,M>::print() says, 'Please implement me.'" << std::endl;
   return;
 }
 
@@ -1564,7 +1564,7 @@ LogNormalVectorRVClass<V,M>::print(std::ostream& os) const
 // Concatenated class [RV-11]
 //*****************************************************
 /*!
- * \class ConcatenatedVectorRVClass
+ * \class ConcatenatedVectorRV
  * \brief A class representing concatenated vector RVs.
  * 
  * This class allows the user to concatenate two vector RV of different types and to generate realizations
@@ -1572,26 +1572,26 @@ LogNormalVectorRVClass<V,M>::print(std::ostream& os) const
  * more RVs, where one of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. */
 
 template<class V, class M>
-class ConcatenatedVectorRVClass : public BaseVectorRVClass<V,M> {
+class ConcatenatedVectorRV : public BaseVectorRV<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor
   /*! Concatenates two RVs: \c rv1 and \c rv2 into one vector RV, given a prefix and the image set of the vector RV.*/
-  ConcatenatedVectorRVClass(const char*                     prefix,
-                              const BaseVectorRVClass<V,M>& rv1,
-                              const BaseVectorRVClass<V,M>& rv2,
-                              const VectorSetClass<V,M>&    imageSet);
+  ConcatenatedVectorRV(const char*                     prefix,
+                              const BaseVectorRV<V,M>& rv1,
+                              const BaseVectorRV<V,M>& rv2,
+                              const VectorSet<V,M>&    imageSet);
   
   //! Constructor
-  /*! Concatenates a sequence of RVs, given by: <c> std::vector<const BaseVectorRVClass<V,M>* >& rvs </c>
+  /*! Concatenates a sequence of RVs, given by: <c> std::vector<const BaseVectorRV<V,M>* >& rvs </c>
    * into one single vector RV, given a prefix and the image set of the resulting vector RV.*/
-  ConcatenatedVectorRVClass(const char*                                          prefix,
-                              const std::vector<const BaseVectorRVClass<V,M>* >& rvs,
-                              const VectorSetClass<V,M>&                         imageSet);
+  ConcatenatedVectorRV(const char*                                          prefix,
+                              const std::vector<const BaseVectorRV<V,M>* >& rvs,
+                              const VectorSet<V,M>&                         imageSet);
   
   //! Virtual destructor
-  virtual ~ConcatenatedVectorRVClass();
+  virtual ~ConcatenatedVectorRV();
   //@}
   
     //! @name I/O methods
@@ -1603,34 +1603,34 @@ public:
   
   
 private:
-  using BaseVectorRVClass<V,M>::m_env;
-  using BaseVectorRVClass<V,M>::m_prefix;
-  using BaseVectorRVClass<V,M>::m_imageSet;
-  using BaseVectorRVClass<V,M>::m_pdf;
-  using BaseVectorRVClass<V,M>::m_realizer;
-  using BaseVectorRVClass<V,M>::m_subCdf;
-  using BaseVectorRVClass<V,M>::m_unifiedCdf;
-  using BaseVectorRVClass<V,M>::m_mdf;
+  using BaseVectorRV<V,M>::m_env;
+  using BaseVectorRV<V,M>::m_prefix;
+  using BaseVectorRV<V,M>::m_imageSet;
+  using BaseVectorRV<V,M>::m_pdf;
+  using BaseVectorRV<V,M>::m_realizer;
+  using BaseVectorRV<V,M>::m_subCdf;
+  using BaseVectorRV<V,M>::m_unifiedCdf;
+  using BaseVectorRV<V,M>::m_mdf;
 
-  std::vector<const BaseVectorRVClass      <V,M>* > m_rvs;
-  std::vector<const BaseJointPdfClass      <V,M>* > m_pdfs;
-  std::vector<const BaseVectorRealizerClass<V,M>* > m_realizers;
+  std::vector<const BaseVectorRV      <V,M>* > m_rvs;
+  std::vector<const BaseJointPdf      <V,M>* > m_pdfs;
+  std::vector<const BaseVectorRealizer<V,M>* > m_realizers;
 };
 // Constructor -------------------------------------
 template<class V, class M>
-ConcatenatedVectorRVClass<V,M>::ConcatenatedVectorRVClass(
+ConcatenatedVectorRV<V,M>::ConcatenatedVectorRV(
   const char*                     prefix,
-  const BaseVectorRVClass<V,M>& rv1,
-  const BaseVectorRVClass<V,M>& rv2,
-  const VectorSetClass<V,M>&    imageSet)
+  const BaseVectorRV<V,M>& rv1,
+  const BaseVectorRV<V,M>& rv2,
+  const VectorSet<V,M>&    imageSet)
   :
-  BaseVectorRVClass<V,M>(((std::string)(prefix)+"concat").c_str(),imageSet),
-  m_rvs                   (2,(const BaseVectorRVClass      <V,M>*) NULL),
-  m_pdfs                  (2,(const BaseJointPdfClass      <V,M>*) NULL),
-  m_realizers             (2,(const BaseVectorRealizerClass<V,M>*) NULL)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"concat").c_str(),imageSet),
+  m_rvs                   (2,(const BaseVectorRV      <V,M>*) NULL),
+  m_pdfs                  (2,(const BaseJointPdf      <V,M>*) NULL),
+  m_realizers             (2,(const BaseVectorRealizer<V,M>*) NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering ConcatenatedVectorRVClass<V,M>::constructor(1)"
+    *m_env.subDisplayFile() << "Entering ConcatenatedVectorRV<V,M>::constructor(1)"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -1642,12 +1642,12 @@ ConcatenatedVectorRVClass<V,M>::ConcatenatedVectorRVClass(
   m_realizers[0] = &(m_rvs[0]->realizer());
   m_realizers[1] = &(m_rvs[1]->realizer());
 
-  m_pdf          = new ConcatenatedJointPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf          = new ConcatenatedJointPdf<V,M>(m_prefix.c_str(),
                                                         *(m_pdfs[0]),
                                                         *(m_pdfs[1]),
                                                         m_imageSet);
 
-  m_realizer     = new ConcatenatedVectorRealizerClass<V,M>(m_prefix.c_str(),
+  m_realizer     = new ConcatenatedVectorRealizer<V,M>(m_prefix.c_str(),
                                                               *(m_realizers[0]),
                                                               *(m_realizers[1]),
                                                               m_imageSet);
@@ -1656,25 +1656,25 @@ ConcatenatedVectorRVClass<V,M>::ConcatenatedVectorRVClass(
   m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving ConcatenatedVectorRVClass<V,M>::constructor(1)"
+    *m_env.subDisplayFile() << "Leaving ConcatenatedVectorRV<V,M>::constructor(1)"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Constructor -------------------------------------
 template<class V, class M>
-ConcatenatedVectorRVClass<V,M>::ConcatenatedVectorRVClass(
+ConcatenatedVectorRV<V,M>::ConcatenatedVectorRV(
   const char*                                          prefix,
-  const std::vector<const BaseVectorRVClass<V,M>* >& rvs,
-  const VectorSetClass<V,M>&                         imageSet)
+  const std::vector<const BaseVectorRV<V,M>* >& rvs,
+  const VectorSet<V,M>&                         imageSet)
   :
-  BaseVectorRVClass<V,M>(((std::string)(prefix)+"concat").c_str(),imageSet),
-  m_rvs                   (rvs.size(),(const BaseVectorRVClass      <V,M>*) NULL),
-  m_pdfs                  (rvs.size(),(const BaseJointPdfClass      <V,M>*) NULL),
-  m_realizers             (rvs.size(),(const BaseVectorRealizerClass<V,M>*) NULL)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"concat").c_str(),imageSet),
+  m_rvs                   (rvs.size(),(const BaseVectorRV      <V,M>*) NULL),
+  m_pdfs                  (rvs.size(),(const BaseJointPdf      <V,M>*) NULL),
+  m_realizers             (rvs.size(),(const BaseVectorRealizer<V,M>*) NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering ConcatenatedVectorRVClass<V,M>::constructor(2)"
+    *m_env.subDisplayFile() << "Entering ConcatenatedVectorRV<V,M>::constructor(2)"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -1685,7 +1685,7 @@ ConcatenatedVectorRVClass<V,M>::ConcatenatedVectorRVClass(
     m_realizers[i] = &(m_rvs[i]->realizer());
   }
 
-  m_pdf        = new ConcatenatedJointPdfClass<V,M>(m_prefix.c_str(),
+  m_pdf        = new ConcatenatedJointPdf<V,M>(m_prefix.c_str(),
                                                       m_pdfs,
                                                       m_imageSet);
 
@@ -1696,7 +1696,7 @@ ConcatenatedVectorRVClass<V,M>::ConcatenatedVectorRVClass(
     }
   }
 
-  m_realizer   = new ConcatenatedVectorRealizerClass<V,M>(m_prefix.c_str(),
+  m_realizer   = new ConcatenatedVectorRealizer<V,M>(m_prefix.c_str(),
                                                             m_realizers,
                                                             minPeriod,
                                                             m_imageSet);
@@ -1705,14 +1705,14 @@ ConcatenatedVectorRVClass<V,M>::ConcatenatedVectorRVClass(
   m_mdf        = NULL; // FIX ME: complete code
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving ConcatenatedVectorRVClass<V,M>::constructor(2)"
+    *m_env.subDisplayFile() << "Leaving ConcatenatedVectorRV<V,M>::constructor(2)"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor --------------------------------------
 template<class V, class M>
-ConcatenatedVectorRVClass<V,M>::~ConcatenatedVectorRVClass()
+ConcatenatedVectorRV<V,M>::~ConcatenatedVectorRV()
 {
   delete m_mdf;
   delete m_unifiedCdf;
@@ -1723,9 +1723,9 @@ ConcatenatedVectorRVClass<V,M>::~ConcatenatedVectorRVClass()
 //--------------------------------------------------
 template <class V, class M>
 void
-ConcatenatedVectorRVClass<V,M>::print(std::ostream& os) const
+ConcatenatedVectorRV<V,M>::print(std::ostream& os) const
 {
-  os << "ConcatenatedVectorRVClass<V,M>::print() says, 'Please implement me.'" << std::endl;
+  os << "ConcatenatedVectorRV<V,M>::print() says, 'Please implement me.'" << std::endl;
   return;
 }
 //---------------------------------------------------
@@ -1734,14 +1734,14 @@ ConcatenatedVectorRVClass<V,M>::print(std::ostream& os) const
 template <class P_V, class P_M, class Q_V, class Q_M>
 void
 ComputeCovCorrMatricesBetweenVectorRvs(
-  const BaseVectorRVClass<P_V,P_M>& paramRv,
-  const BaseVectorRVClass<Q_V,Q_M>& qoiRv,
+  const BaseVectorRV<P_V,P_M>& paramRv,
+  const BaseVectorRV<Q_V,Q_M>& qoiRv,
         unsigned int                  localNumSamples,
         P_M&                          pqCovMatrix,
         P_M&                          pqCorrMatrix)
 {
   // Check input data consistency
-  const BaseEnvironmentClass& env = paramRv.env();
+  const BaseEnvironment& env = paramRv.env();
 
   bool useOnlyInter0Comm = (paramRv.imageSet().vectorSpace().numOfProcsForStorage() == 1) &&
                            (qoiRv.imageSet().vectorSpace().numOfProcsForStorage()   == 1);
@@ -1773,10 +1773,10 @@ ComputeCovCorrMatricesBetweenVectorRvs(
   P_V tmpP(paramRv.imageSet().vectorSpace().zeroVector());
   Q_V tmpQ(qoiRv.imageSet().vectorSpace().zeroVector());
 
-  SequenceOfVectorsClass<P_V,P_M> localWorkingPSeq(paramRv.imageSet().vectorSpace(),
+  SequenceOfVectors<P_V,P_M> localWorkingPSeq(paramRv.imageSet().vectorSpace(),
                                                      localNumSamples,
                                                      "covTmpP");
-  SequenceOfVectorsClass<Q_V,Q_M> localWorkingQSeq(qoiRv.imageSet().vectorSpace(),
+  SequenceOfVectors<Q_V,Q_M> localWorkingQSeq(qoiRv.imageSet().vectorSpace(),
                                                      localNumSamples,
                                                      "covTmpQ");
   for (unsigned int k = 0; k < localNumSamples; ++k) {

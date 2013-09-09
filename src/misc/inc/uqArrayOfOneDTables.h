@@ -36,26 +36,26 @@ namespace QUESO {
 /*!\file uqArrayOfOneDTables
  * \brief Class to accommodate arrays of one-dimensional tables.
  * 
- * \class ArrayOfOneDTablesClass
+ * \class ArrayOfOneDTables
  * \brief Class to accommodate arrays of one-dimensional tables.
  *  
  * Arrays of one-dimensional tables are necessary in the calculation (storage), for 
- * instance, of CDFs and MDF of vector functions (refer to BaseVectorCdfClass, 
- * BaseVectorMdfClass, and derived classes) given the (array of) grid points 
- * (ArrayOfOneDGridsClass).
+ * instance, of CDFs and MDF of vector functions (refer to BaseVectorCdf, 
+ * BaseVectorMdf, and derived classes) given the (array of) grid points 
+ * (ArrayOfOneDGrids).
  */
 
 template <class V, class M>
-class ArrayOfOneDTablesClass
+class ArrayOfOneDTables
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  ArrayOfOneDTablesClass(const char* prefix, const VectorSpaceClass<V,M>& rowSpace);
+  ArrayOfOneDTables(const char* prefix, const VectorSpace<V,M>& rowSpace);
 
   //! Destructor.
-  ~ArrayOfOneDTablesClass();
+  ~ArrayOfOneDTables();
   //@}
   
   //! @name Math methods
@@ -75,16 +75,16 @@ public:
   void                       print       (std::ostream& os)   const;
   //@}
 private:
-  const BaseEnvironmentClass&          m_env;
+  const BaseEnvironment&          m_env;
         std::string                      m_prefix;
-  const VectorSpaceClass<V,M>&         m_rowSpace;
-  DistArrayClass<std::vector<double>*> m_oneDTables;
+  const VectorSpace<V,M>&         m_rowSpace;
+  DistArray<std::vector<double>*> m_oneDTables;
 };
 // Default constructor -------------------------------------------------
 template <class V, class M>
-ArrayOfOneDTablesClass<V,M>::ArrayOfOneDTablesClass(
+ArrayOfOneDTables<V,M>::ArrayOfOneDTables(
   const char* prefix, 
-  const VectorSpaceClass<V,M>& rowSpace)
+  const VectorSpace<V,M>& rowSpace)
   :
   m_env       (rowSpace.env()),
   m_prefix    ((std::string)(prefix)+""),
@@ -97,7 +97,7 @@ ArrayOfOneDTablesClass<V,M>::ArrayOfOneDTablesClass(
 }
 // Destructor ----------------------------------------------------------
 template <class V, class M>
-ArrayOfOneDTablesClass<V,M>::~ArrayOfOneDTablesClass()
+ArrayOfOneDTables<V,M>::~ArrayOfOneDTables()
 {
   for (unsigned int i = 0; i < (unsigned int) m_oneDTables.MyLength(); ++i) {
     if (m_oneDTables(i,0)) delete m_oneDTables(i,0);
@@ -106,11 +106,11 @@ ArrayOfOneDTablesClass<V,M>::~ArrayOfOneDTablesClass()
 // Math methods --------------------------------------------------------
 template <class V, class M>
 void
-ArrayOfOneDTablesClass<V,M>::setOneDTable(unsigned int rowId, const std::vector<double>& values)
+ArrayOfOneDTables<V,M>::setOneDTable(unsigned int rowId, const std::vector<double>& values)
 {
   UQ_FATAL_TEST_MACRO(rowId >= (unsigned int) m_oneDTables.MyLength(),
                       m_env.worldRank(),
-                      "ArrayOfOneDTablesClass<T>::setOneDTable()",
+                      "ArrayOfOneDTables<T>::setOneDTable()",
                       "rowId is out of range");
 
   if (m_oneDTables(rowId,0) == NULL) m_oneDTables(rowId,0) = new std::vector<double>(0);
@@ -127,18 +127,18 @@ ArrayOfOneDTablesClass<V,M>::setOneDTable(unsigned int rowId, const std::vector<
 //----------------------------------------------------------------------
 template <class V, class M>
 const std::vector<double>&
-ArrayOfOneDTablesClass<V,M>::oneDTable(unsigned int rowId) const
+ArrayOfOneDTables<V,M>::oneDTable(unsigned int rowId) const
 {
   UQ_FATAL_TEST_MACRO(rowId >= (unsigned int) m_oneDTables.MyLength(),
                       m_env.worldRank(),
-                      "ArrayOfOneDTablesClass<T>::oneDTable()",
+                      "ArrayOfOneDTables<T>::oneDTable()",
                       "rowId is out of range");
 
-  ArrayOfOneDTablesClass<V,M>* tmp = const_cast<ArrayOfOneDTablesClass<V,M>*>(this);
+  ArrayOfOneDTables<V,M>* tmp = const_cast<ArrayOfOneDTables<V,M>*>(this);
 
   UQ_FATAL_TEST_MACRO(tmp->m_oneDTables(rowId,0) == NULL,
                       m_env.worldRank(),
-                      "ArrayOfOneDTablesClass<T>::oneDTable()",
+                      "ArrayOfOneDTables<T>::oneDTable()",
                       "requested row is still NULL");
 
   return *(tmp->m_oneDTables(rowId,0));
@@ -146,9 +146,9 @@ ArrayOfOneDTablesClass<V,M>::oneDTable(unsigned int rowId) const
 // I/O methods----------------------------------------------------------
 template <class V, class M>
 void
-ArrayOfOneDTablesClass<V,M>::print(std::ostream& os) const
+ArrayOfOneDTables<V,M>::print(std::ostream& os) const
 {
-  ArrayOfOneDTablesClass<V,M>* tmp = const_cast<ArrayOfOneDTablesClass<V,M>*>(this);
+  ArrayOfOneDTables<V,M>* tmp = const_cast<ArrayOfOneDTables<V,M>*>(this);
   for (unsigned int i = 0; i < (unsigned int) m_oneDTables.MyLength(); ++i) {
     const std::vector<double>& tmpVec = *(tmp->m_oneDTables(i,0));
     os << m_prefix << i << "_values_sub" << m_env.subIdString() << " = zeros(" << tmpVec.size()
@@ -167,7 +167,7 @@ ArrayOfOneDTablesClass<V,M>::print(std::ostream& os) const
 }
 //----------------------------------------------------------------------
 template <class V, class M>
-std::ostream& operator<< (std::ostream& os, const ArrayOfOneDTablesClass<V,M>& obj)
+std::ostream& operator<< (std::ostream& os, const ArrayOfOneDTables<V,M>& obj)
 {
   obj.print(os);
   return os;

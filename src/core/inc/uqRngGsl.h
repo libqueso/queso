@@ -37,7 +37,7 @@
     \brief GSL Random Number Generation class.
 */
 
-/*! \class RngGslClass
+/*! \class RngGsl
     \brief Class for random number generation using GSL library. 
     
     This class is  class of random number generator, using GSL library. The GSL library 
@@ -50,14 +50,14 @@ extern unsigned long int gsl_rng_default_seed;
 
 namespace QUESO {
 
-class RngGslClass : public RngBaseClass
+class RngGsl : public RngBase
 {
 public:
   
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default Constructor: it should not be used.
-  RngGslClass();
+  RngGsl();
   
   //! Constructor with seed.
   /* Uses GSL with the generator of type: gsl_rng_ranlxd2. This is the second, of a total of three
@@ -65,10 +65,10 @@ public:
    Lüscher. The period of the generator is about 10^171. The algorithm has mathematically proven 
    properties and can provide truly decorrelated numbers at a known level of randomness. The higher 
    luxury levels provide increased decorrelation between samples as an additional safety margin.*/
-  RngGslClass(int seed, int worldRank);
+  RngGsl(int seed, int worldRank);
   
   //! Destructor
- ~RngGslClass();
+ ~RngGsl();
  //@}
 
    //! @name Sampling methods

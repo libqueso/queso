@@ -34,15 +34,15 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M>
-class ExperimentStorageClass
+class ExperimentStorage
 {
 public:
-  ExperimentStorageClass(const VectorSpaceClass<S_V,S_M>& scenarioSpace, unsigned int numExperiments);
- ~ExperimentStorageClass();
+  ExperimentStorage(const VectorSpace<S_V,S_M>& scenarioSpace, unsigned int numExperiments);
+ ~ExperimentStorage();
 
         void                         addExperiment         (const S_V& scenarioVec_standard, const D_V& dataVec_transformed, const D_M& Wmat_transformed);
         unsigned int                 numExperiments        () const;
-  const VectorSpaceClass<S_V,S_M>& scenarioSpace         () const;
+  const VectorSpace<S_V,S_M>& scenarioSpace         () const;
   const std::vector<const S_V* >&    xs_standard           () const;
   const std::vector<unsigned int>&   n_ys_transformed      () const;
         unsigned int                 n_y                   () const;
@@ -53,13 +53,13 @@ public:
   const D_M&                         Wmat_transformed_y    () const;
   const D_M&                         Wmat_transformed_y_inv() const;
 
-  const BaseEnvironmentClass&      env                   () const;
+  const BaseEnvironment&      env                   () const;
         void                         print                 (std::ostream& os) const;
 
 private:
   // Private variables
-  const BaseEnvironmentClass&      m_env;
-  const VectorSpaceClass<S_V,S_M>& m_scenarioSpace;
+  const BaseEnvironment&      m_env;
+  const VectorSpace<S_V,S_M>& m_scenarioSpace;
         unsigned int                 m_paper_n;
         std::vector<unsigned int>    m_paper_n_ys_transformed;
         unsigned int                 m_paper_n_y;
@@ -68,18 +68,18 @@ private:
         std::vector<const S_V* >     m_scenarioVecs_standard;
         std::vector<const D_V* >     m_dataVecs_transformed;
         std::vector<const D_M* >     m_Wmats_transformed;
-        VectorSpaceClass<D_V,D_M>* m_y_space;
+        VectorSpace<D_V,D_M>* m_y_space;
         D_V*                         m_yVec_transformed;
         D_M*                         m_Wmat_transformed_y;
         D_M*                         m_Wmat_transformed_y_inv;
 };
 
 template<class S_V,class S_M,class D_V,class D_M>
-std::ostream& operator<<(std::ostream& os, const ExperimentStorageClass<S_V,S_M,D_V,D_M>& obj);
+std::ostream& operator<<(std::ostream& os, const ExperimentStorage<S_V,S_M,D_V,D_M>& obj);
 
 template<class S_V,class S_M,class D_V,class D_M>
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::ExperimentStorageClass(
-  const VectorSpaceClass<S_V,S_M>& scenarioSpace,
+ExperimentStorage<S_V,S_M,D_V,D_M>::ExperimentStorage(
+  const VectorSpace<S_V,S_M>& scenarioSpace,
   unsigned int                       numExperiments)
   :
   m_env                   (scenarioSpace.env()),
@@ -97,22 +97,22 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::ExperimentStorageClass(
   m_Wmat_transformed_y_inv(NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering ExperimentStorageClass<S_V,S_M,D_V,D_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering ExperimentStorage<S_V,S_M,D_V,D_M>::constructor()"
                             << "\n  m_paper_n = " << m_paper_n
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving ExperimentStorageClass<S_V,S_M,D_V,D_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving ExperimentStorage<S_V,S_M,D_V,D_M>::constructor()"
                             << std::endl;
   }
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::~ExperimentStorageClass()
+ExperimentStorage<S_V,S_M,D_V,D_M>::~ExperimentStorage()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering ExperimentStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()..."
+    *m_env.subDisplayFile() << "Entering ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()..."
                             << std::endl;
   }
 
@@ -122,20 +122,20 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::~ExperimentStorageClass()
   delete m_y_space;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving ExperimentStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()"
                             << std::endl;
   }
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 void
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::addExperiment(
+ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment(
   const S_V& scenarioVec_standard,
   const D_V& dataVec_transformed,
   const D_M& Wmat_transformed)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering ExperimentStorageClass<S_V,S_M,D_V,D_M>::addExperiment()"
+    *m_env.subDisplayFile() << "Entering ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"
                             << ": m_addId = " << m_addId
                             << "\n  scenarioVec_standard = " << scenarioVec_standard
                             << "\n  dataVec_transformed = "  << dataVec_transformed
@@ -145,7 +145,7 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::addExperiment(
 
   UQ_FATAL_TEST_MACRO(m_addId >= m_paper_n,
                       m_env.worldRank(),
-                      "ExperimentStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::addExperiment()",
+                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::addExperiment()",
                       "too many adds...");
 
   m_scenarioVecs_standard [m_addId] = &scenarioVec_standard;
@@ -157,7 +157,7 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::addExperiment(
 
   if (m_addId == m_paper_n) {
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-      *m_env.subDisplayFile() << "KEY In ExperimentStorageClass<S_V,S_M,D_V,D_M>::addExperiment()"
+      *m_env.subDisplayFile() << "KEY In ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"
                               << ": m_addId = " << m_addId
                               << ", m_paper_n_y = " << m_paper_n_y
                               << std::endl;
@@ -166,12 +166,12 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::addExperiment(
     //***********************************************************************
     // Form 'yVec_transformed', 'Wmat_transformed_y' matrix, and compute its inverse
     //***********************************************************************
-    m_y_space = new VectorSpaceClass<D_V,D_M>(m_env, "m_y_exp_storage", m_paper_n_y, NULL),
+    m_y_space = new VectorSpace<D_V,D_M>(m_env, "m_y_exp_storage", m_paper_n_y, NULL),
     m_yVec_transformed = new D_V(m_y_space->zeroVector());
     m_yVec_transformed->cwSetConcatenated(m_dataVecs_transformed);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In ExperimentStorageClass<S_V,S_M,D_V,D_M>::addExperiment()"
+      *m_env.subDisplayFile() << "In ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"
                               << ": populated yVec_transformed of size = " << m_yVec_transformed->sizeLocal()
                               << "\n *m_yVec_transformed = " << *m_yVec_transformed
                               << std::endl;
@@ -182,7 +182,7 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::addExperiment(
     m_Wmat_transformed_y_inv = new D_M(m_Wmat_transformed_y->inverse()); // inversion savings
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In ExperimentStorageClass<S_V,S_M,D_V,D_M>::addExperiment()"
+      *m_env.subDisplayFile() << "In ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"
                               << ": m_Wmat_transformed_y->lnDeterminant() = "     << m_Wmat_transformed_y->lnDeterminant()
                               << ", m_Wmat_transformed_y_inv->lnDeterminant() = " << m_Wmat_transformed_y_inv->lnDeterminant()
                               << std::endl;
@@ -190,7 +190,7 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::addExperiment(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving ExperimentStorageClass<S_V,S_M,D_V,D_M>::addExperiment()"
+    *m_env.subDisplayFile() << "Leaving ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"
                             << ": m_addId = " << m_addId
                             << std::endl;
   }
@@ -200,51 +200,51 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::addExperiment(
 
 template<class S_V,class S_M,class D_V,class D_M>
 const std::vector<const S_V* >&
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::xs_standard() const
+ExperimentStorage<S_V,S_M,D_V,D_M>::xs_standard() const
 {
   return m_scenarioVecs_standard;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 unsigned int
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::numExperiments() const
+ExperimentStorage<S_V,S_M,D_V,D_M>::numExperiments() const
 {
   return m_paper_n;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
-const VectorSpaceClass<S_V,S_M>&
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::scenarioSpace() const
+const VectorSpace<S_V,S_M>&
+ExperimentStorage<S_V,S_M,D_V,D_M>::scenarioSpace() const
 {
   return m_scenarioSpace;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 const std::vector<unsigned int>&
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::n_ys_transformed() const
+ExperimentStorage<S_V,S_M,D_V,D_M>::n_ys_transformed() const
 {
   return m_paper_n_ys_transformed;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 unsigned int
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::n_y() const
+ExperimentStorage<S_V,S_M,D_V,D_M>::n_y() const
 {
   return m_paper_n_y;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 const S_V&
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::scenarioVec_standard(unsigned int experimentId) const
+ExperimentStorage<S_V,S_M,D_V,D_M>::scenarioVec_standard(unsigned int experimentId) const
 {
   UQ_FATAL_TEST_MACRO(experimentId >= m_scenarioVecs_standard.size(),
                       m_env.worldRank(),
-                      "ExperimentStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_standard()",
+                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_standard()",
                       "experimentId is too large");
 
   UQ_FATAL_TEST_MACRO(m_scenarioVecs_standard[experimentId] == NULL,
                       m_env.worldRank(),
-                      "ExperimentStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_standard()",
+                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_standard()",
                       "vector is NULL");
 
   return *(m_scenarioVecs_standard[experimentId]);
@@ -252,16 +252,16 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::scenarioVec_standard(unsigned int exper
 
 template<class S_V,class S_M,class D_V,class D_M>
 const D_V&
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::dataVec_transformed(unsigned int experimentId) const
+ExperimentStorage<S_V,S_M,D_V,D_M>::dataVec_transformed(unsigned int experimentId) const
 {
   UQ_FATAL_TEST_MACRO(experimentId >= m_dataVecs_transformed.size(),
                       m_env.worldRank(),
-                      "ExperimentStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::dataVec_transformed()",
+                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::dataVec_transformed()",
                       "experimentId is too large");
 
   UQ_FATAL_TEST_MACRO(m_dataVecs_transformed[experimentId] == NULL,
                       m_env.worldRank(),
-                      "ExperimentStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::dataVec_transformed()",
+                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::dataVec_transformed()",
                       "vector is NULL");
 
   return *(m_dataVecs_transformed[experimentId]);
@@ -269,11 +269,11 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::dataVec_transformed(unsigned int experi
 
 template<class S_V,class S_M,class D_V,class D_M>
 const D_V&
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::yVec_transformed() const
+ExperimentStorage<S_V,S_M,D_V,D_M>::yVec_transformed() const
 {
   UQ_FATAL_TEST_MACRO(m_yVec_transformed == NULL,
                       m_env.worldRank(),
-                      "ExprimentStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::yVec_transformed()",
+                      "ExprimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::yVec_transformed()",
                       "'m_yVec_transformed' is NULL");
 
   return *m_yVec_transformed;
@@ -281,16 +281,16 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::yVec_transformed() const
 
 template<class S_V,class S_M,class D_V,class D_M>
 const D_M&
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::Wmat_transformed(unsigned int experimentId) const
+ExperimentStorage<S_V,S_M,D_V,D_M>::Wmat_transformed(unsigned int experimentId) const
 {
   UQ_FATAL_TEST_MACRO(experimentId >= m_Wmats_transformed.size(),
                       m_env.worldRank(),
-                      "ExperimentStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wmat_transformed()",
+                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wmat_transformed()",
                       "experimentId is too large");
 
   UQ_FATAL_TEST_MACRO(m_Wmats_transformed[experimentId] == NULL,
                       m_env.worldRank(),
-                      "ExperimentStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wmat_transformed()",
+                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wmat_transformed()",
                       "matrix is NULL");
 
   return *(m_Wmats_transformed[experimentId]);
@@ -298,11 +298,11 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::Wmat_transformed(unsigned int experimen
 
 template<class S_V,class S_M,class D_V,class D_M>
 const D_M&
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::Wmat_transformed_y() const
+ExperimentStorage<S_V,S_M,D_V,D_M>::Wmat_transformed_y() const
 {
   UQ_FATAL_TEST_MACRO(m_Wmat_transformed_y == NULL,
                       m_env.worldRank(),
-                      "ExprimentStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wmat_transformed_y()",
+                      "ExprimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wmat_transformed_y()",
                       "'m_Wmat_transformed_y' is NULL");
 
   return *m_Wmat_transformed_y;
@@ -310,32 +310,32 @@ ExperimentStorageClass<S_V,S_M,D_V,D_M>::Wmat_transformed_y() const
 
 template<class S_V,class S_M,class D_V,class D_M>
 const D_M&
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::Wmat_transformed_y_inv() const
+ExperimentStorage<S_V,S_M,D_V,D_M>::Wmat_transformed_y_inv() const
 {
   UQ_FATAL_TEST_MACRO(m_Wmat_transformed_y_inv == NULL,
                       m_env.worldRank(),
-                      "ExprimentStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wmat_transformed_y_inv()",
+                      "ExprimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wmat_transformed_y_inv()",
                       "'m_Wmat_transformed_y_inv' is NULL");
 
   return *m_Wmat_transformed_y_inv;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
-const BaseEnvironmentClass&
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::env() const
+const BaseEnvironment&
+ExperimentStorage<S_V,S_M,D_V,D_M>::env() const
 {
   return m_env;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
 void
-ExperimentStorageClass<S_V,S_M,D_V,D_M>::print(std::ostream& os) const
+ExperimentStorage<S_V,S_M,D_V,D_M>::print(std::ostream& os) const
 {
   return;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
-std::ostream& operator<<(std::ostream& os, const ExperimentStorageClass<S_V,S_M,D_V,D_M>& obj)
+std::ostream& operator<<(std::ostream& os, const ExperimentStorage<S_V,S_M,D_V,D_M>& obj)
 {
   obj.print(os);
 

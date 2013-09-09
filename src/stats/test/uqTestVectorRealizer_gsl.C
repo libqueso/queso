@@ -8,12 +8,12 @@
 
 using namespace QUESO;
 
-BOOST_AUTO_TEST_CASE( test_uqGaussianVectorRealizerClass )
+BOOST_AUTO_TEST_CASE( test_uqGaussianVectorRealizer )
 {
   // Initialize
   MPI_Init(NULL, NULL);
-  uqFullEnvironmentClass env; // Puts random number generator in known state... will generate same sequence each run
-  uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> imageSpace(env, "test_space", 2, NULL);
+  uqFullEnvironment env; // Puts random number generator in known state... will generate same sequence each run
+  uqVectorSpace<uqGslVector, uqGslMatrix> imageSpace(env, "test_space", 2, NULL);
   uqMap eMap(2, 0, env.comm());
 
   double tol = 1e-16;
@@ -22,21 +22,21 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorRealizerClass )
   // Tests
 
   // Test 1: mean = 0, covMatrix = identity
-  uqGslVectorClass expectedValues(env, eMap, 0.0);
-  uqGslMatrixClass lowerCholCovMatrix(env, eMap, 1.0); // identity
+  uqGslVector expectedValues(env, eMap, 0.0);
+  uqGslMatrix lowerCholCovMatrix(env, eMap, 1.0); // identity
 
   int ierr = lowerCholCovMatrix.chol();
   BOOST_REQUIRE( ierr==0 ); // make sure cholesky succeeded
 
   lowerCholCovMatrix.zeroUpper(false); // zero upper triangular 
 
-  uqGaussianVectorRealizerClass<uqGslVectorClass, uqGslMatrixClass>* gaussianRealizer = 
-    new uqGaussianVectorRealizerClass<uqGslVectorClass, uqGslMatrixClass>("test_realizer", 
+  uqGaussianVectorRealizer<uqGslVector, uqGslMatrix>* gaussianRealizer = 
+    new uqGaussianVectorRealizer<uqGslVector, uqGslMatrix>("test_realizer", 
 									  imageSpace, 
 									  expectedValues, 
 									  lowerCholCovMatrix);
 
-  uqGslVectorClass myRealization(expectedValues);
+  uqGslVector myRealization(expectedValues);
 
   gaussianRealizer->realization(myRealization);
   //std::cout << "myRealization = " << std::setprecision(16) << std::scientific << myRealization << "\n";
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE( test_uqGaussianVectorRealizerClass )
 
   lowerCholCovMatrix.zeroUpper(false); // zero upper triangular 
 
-  gaussianRealizer = new uqGaussianVectorRealizerClass<uqGslVectorClass, uqGslMatrixClass>("test_realizer", 
+  gaussianRealizer = new uqGaussianVectorRealizer<uqGslVector, uqGslMatrix>("test_realizer", 
 											   imageSpace, 
 											   expectedValues, 
 											   lowerCholCovMatrix);

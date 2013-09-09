@@ -32,59 +32,59 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-const VectorSpaceClass<P_V,P_M>&
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalSpace() const
+const VectorSpace<P_V,P_M>&
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalSpace() const
 {
   UQ_FATAL_TEST_MACRO(m_t == NULL,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalSpace()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalSpace()",
                       "m_t is NULL");
   return m_t->m_totalSpace;
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-const VectorSpaceClass<P_V,P_M>&
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::unique_vu_space() const
+const VectorSpace<P_V,P_M>&
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::unique_vu_space() const
 {
   UQ_FATAL_TEST_MACRO(m_j == NULL,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::unique_vu_space()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::unique_vu_space()",
                       "m_j is NULL");
   return m_j->m_unique_vu_space;
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-const BaseVectorRVClass<P_V,P_M>& 
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPriorRv() const
+const BaseVectorRV<P_V,P_M>& 
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPriorRv() const
 {
   UQ_FATAL_TEST_MACRO(m_t == NULL,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPriorRv()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPriorRv()",
                       "m_t is NULL");
   return m_t->m_totalPriorRv;
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-const GenericVectorRVClass<P_V,P_M>& 
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPostRv() const
+const GenericVectorRV<P_V,P_M>& 
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPostRv() const
 {
   UQ_FATAL_TEST_MACRO(m_t == NULL,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPostRv()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPostRv()",
                       "m_t is NULL");
   return m_t->m_totalPostRv;
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
   return;
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::memoryCheck(unsigned int codePositionId)
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::memoryCheck(unsigned int codePositionId)
 {
 #if 0
   std::cout << "Entering memoryCheck(), m_like_counter = " << m_like_counter << ", codePositionId = " << codePositionId << std::endl;
@@ -141,16 +141,16 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::memoryCheck(unsigned i
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()..."
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()..."
                             << ": m_optionsObj->m_prefix.c_str() = "          << m_optionsObj->m_prefix.c_str()
                             << ", m_optionsObj->m_ov.m_priorSeqNumSamples = " << m_optionsObj->m_ov.m_priorSeqNumSamples
                             << std::endl;
   }
 
-  SequenceOfVectorsClass<P_V,P_M> priorSeq(m_t->m_totalSpace,m_optionsObj->m_ov.m_priorSeqNumSamples,m_optionsObj->m_prefix+"priorSeq");
+  SequenceOfVectors<P_V,P_M> priorSeq(m_t->m_totalSpace,m_optionsObj->m_ov.m_priorSeqNumSamples,m_optionsObj->m_prefix+"priorSeq");
   P_V totalSample(m_t->m_totalSpace.zeroVector());
   for (unsigned int sampleId = 0; sampleId < m_optionsObj->m_ov.m_priorSeqNumSamples; ++sampleId) {
     m_t->m_totalPriorRv.realizer().realization(totalSample);
@@ -160,7 +160,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()
                                 m_optionsObj->m_ov.m_priorSeqDataOutputFileType);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()..."
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()..."
                             << ": m_optionsObj->m_prefix.c_str() = " << m_optionsObj->m_prefix.c_str()
                             << std::endl;
   }
@@ -170,7 +170,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::generatePriorSeq()
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 double
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::staticLikelihoodRoutine(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::staticLikelihoodRoutine(
   const P_V&  totalValues,
   const P_V*  totalDirection,
   const void* functionDataPtr,
@@ -178,7 +178,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::staticLikelihoodRoutin
   P_M*        hessianMatrix,
   P_V*        hessianEffect)
 {
-  return ((GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>*) functionDataPtr)->likelihoodRoutine(totalValues,
+  return ((GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>*) functionDataPtr)->likelihoodRoutine(totalValues,
                                                                                                             totalDirection,
                                                                                                             functionDataPtr,
                                                                                                             gradVector,
@@ -188,7 +188,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::staticLikelihoodRoutin
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 double
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
   const P_V&  totalValues,
   const P_V*  totalDirection,
   const void* functionDataPtr,
@@ -200,9 +200,9 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
   gettimeofday(&timevalBegin, NULL);
 
   m_like_counter++;
-  //std::cout << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(), m_like_counter = " << m_like_counter << std::endl;
+  //std::cout << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(), m_like_counter = " << m_like_counter << std::endl;
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()..."
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()..."
                             << ": m_like_counter = "            << m_like_counter
                             << ", totalValues = "               << totalValues
                             << ", m_env.subComm().NumProc() = " << m_env.subComm().NumProc()
@@ -230,14 +230,14 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
                       (m_s->m_3rhoWSpace.dimLocal()      != (m_s->m_paper_p_eta*(m_s->m_paper_p_x+m_s->m_paper_p_t))) ||
                       (m_s->m_4lambdaSSpace.dimLocal()   != m_s->m_paper_p_eta                                      ),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()",
                       "inconsistent 'm_s' space dimensions");
   if (m_thereIsExperimentalData) {
     UQ_FATAL_TEST_MACRO((m_e->m_5lambdaYSpace.dimLocal() != 1                                ) ||
                         (m_e->m_6lambdaVSpace.dimLocal() != m_e->m_paper_F                   ) ||
                         (m_e->m_7rhoVSpace.dimLocal()    != (m_e->m_paper_F*m_s->m_paper_p_x)),
                         m_env.worldRank(),
-                        "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()",
+                        "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()",
                         "inconsistent 'm_e' space dimensions");
   }
 
@@ -265,11 +265,11 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
   }
   UQ_FATAL_TEST_MACRO(currPosition != totalValues.sizeLocal(),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()",
                       "'currPosition' and 'totalValues.sizeLocal()' should be equal");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
                             << ", m_like_counter = " << m_like_counter
                             << ": finished extracting components from 'totalValues'"
                             << ", m_tmp_1lambdaEtaVec = " << m_s->m_tmp_1lambdaEtaVec
@@ -309,7 +309,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
       here_8_repeats = (m_e->m_like_previous8 == m_e->m_tmp_8thetaVec);
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
                               << ", m_like_counter = "     << m_like_counter
                               << "\n  m_like_previous1 = " << m_s->m_like_previous1
                               << "\n  m_like_previous2 = " << m_s->m_like_previous2
@@ -339,7 +339,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
     // 'm_Cmat' is rank defficient
     //********************************************************************************
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3/*99*/)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)"
                               << ", m_like_counter = " << m_like_counter
                               << ": going through true 'm_cMatIsRankDefficient' case"
                               << std::endl;
@@ -369,7 +369,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
                                   m_like_counter);
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3/*99*/)) {
-        *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)"
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)"
                                 << ", m_like_counter = "                               << m_like_counter
                                 << ": finished computing 'm_tmp_Smat_z_tilde_hat' =\n" << m_zt->m_tmp_Smat_z_tilde_hat
                                 << std::endl;
@@ -383,7 +383,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
       double Smat_z_tilde_hat_lnDeterminant = m_zt->m_tmp_Smat_z_tilde_hat.lnDeterminant();
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-        *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)"
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)"
                                 << ", m_like_counter = "                                               << m_like_counter
                                 << ": finished computing 'm_tmp_Smat_z_tilde_hat->lnDeterminant()' = " << Smat_z_tilde_hat_lnDeterminant
                                 << std::endl;
@@ -397,7 +397,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
       //********************************************************************************
       double tmpValue1 = scalarProduct(m_zt->m_Zvec_tilde_hat,m_zt->m_tmp_Smat_z_tilde_hat.invertMultiply(m_zt->m_Zvec_tilde_hat)); // inversion savings
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3/*99*/)) {
-        *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)"
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)"
                                 << ", m_like_counter = "                << m_like_counter
                                 << ": finished computing 'tmpValue1 = " << tmpValue1
                                 << std::endl;
@@ -411,7 +411,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
       //********************************************************************************
       double tmpValue2 = m_st->m_a_eta_modifier_tilde*std::log(m_s->m_tmp_1lambdaEtaVec[0]) - m_st->m_b_eta_modifier_tilde*m_s->m_tmp_1lambdaEtaVec[0];
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3/*99*/)) {
-        *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)"
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)"
                                 << ", m_like_counter = "                << m_like_counter
                                 << ": finished computing 'tmpValue2 = " << tmpValue2
                                 << std::endl;
@@ -422,7 +422,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
 
       double tmpValue3 = m_jt->m_a_y_modifier_tilde*std::log(m_e->m_tmp_5lambdaYVec[0]) - m_jt->m_b_y_modifier_tilde*m_e->m_tmp_5lambdaYVec[0];
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3/*99*/)) {
-        *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)"
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)"
                                 << ", m_like_counter = "                << m_like_counter
                                 << ": finished computing 'tmpValue3 = " << tmpValue3
                                 << std::endl;
@@ -434,7 +434,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
     else { // if (m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC)
       UQ_FATAL_TEST_MACRO(true,
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(tilde)",
                           "incomplete code for situation 'm_useTildeLogicForRankDefficientC == false'");
     }
   }
@@ -443,7 +443,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
     // 'm_Cmat' (i) does not exist or (ii) is full rank
     //********************************************************************************
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
                               << ", m_like_counter = " << m_like_counter
                               << ": going through case where C matrix (i) does not exist or (ii) is full rank"
                               << ", m_thereIsExperimentalData = " << m_thereIsExperimentalData
@@ -477,7 +477,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
     else {
       UQ_FATAL_TEST_MACRO(true, // (m_thereIsExperimentalData == false)
                           m_env.worldRank(),
-                          "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)",
+                          "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)",
                           "incomplete code for situation 'm_thereIsExperimentalData == false'");
 
       this->formSigma_z_hat(m_s->m_tmp_1lambdaEtaVec,
@@ -488,7 +488,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
     }
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
                               << ", m_like_counter = "                     << m_like_counter
                               << ": finished computing 'm_tmp_Smat_z_hat' =\n" << m_z->m_tmp_Smat_z_hat
                               << std::endl;
@@ -502,7 +502,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
     double Smat_z_hat_lnDeterminant = m_z->m_tmp_Smat_z_hat.lnDeterminant();
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
                               << ", m_like_counter = "                                        << m_like_counter
                               << ": finished computing 'm_tmp_Smat_z_hat.lnDeterminant()' = " << Smat_z_hat_lnDeterminant
                               << std::endl;
@@ -516,7 +516,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
     //********************************************************************************
     double tmpValue1 = scalarProduct(m_z->m_Zvec_hat,m_z->m_tmp_Smat_z_hat.invertMultiply(m_z->m_Zvec_hat)); // inversion savings
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
                               << ", m_like_counter = "                << m_like_counter
                               << ": finished computing 'tmpValue1 = " << tmpValue1
                               << std::endl;
@@ -534,7 +534,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
       //********************************************************************************
       double tmpValue2 = m_s->m_a_eta_modifier*std::log(m_s->m_tmp_1lambdaEtaVec[0]) - m_s->m_b_eta_modifier*m_s->m_tmp_1lambdaEtaVec[0];
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-        *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
                                 << ", m_like_counter = "                << m_like_counter
                                 << ": finished computing 'tmpValue2 = " << tmpValue2
                                 << std::endl;
@@ -545,7 +545,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
 
       double tmpValue3 = m_j->m_a_y_modifier*std::log(m_e->m_tmp_5lambdaYVec[0]) - m_j->m_b_y_modifier*m_e->m_tmp_5lambdaYVec[0];
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-        *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
                                 << ", m_like_counter = "                << m_like_counter
                                 << ": finished computing 'tmpValue3 = " << tmpValue3
                                 << std::endl;
@@ -561,7 +561,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
     }
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3/*99*/)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
                             << ", m_like_counter = " << m_like_counter
                             << ": finished computing ln(likelihood)"
                             << ", lnLikelihoodValue = " << lnLikelihoodValue
@@ -574,7 +574,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
   // Prepare to return
   //******************************************************************************
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
                             << ", m_like_counter = " << m_like_counter
                             << ": starting saving current samples as previous"
                             << std::endl;
@@ -592,9 +592,9 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
 
   double totalTime = MiscGetEllapsedSeconds(&timevalBegin);
 
-  //std::cout << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(), m_like_counter = " << m_like_counter << std::endl;
+  //std::cout << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(), m_like_counter = " << m_like_counter << std::endl;
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
                             << ": m_like_counter = "    << m_like_counter
                             << ", totalValues = "       << totalValues
                             << ", lnLikelihoodValue = " << lnLikelihoodValue
@@ -605,7 +605,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
 
   if (m_env.subRank() == 0) {
 #if 0
-    std::cout << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
+    std::cout << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine()"
               << ", m_like_counter = "      << m_like_counter
               << ": totalValues = "         << totalValues
               << ", lnLikelihoodValue = "   << lnLikelihoodValue

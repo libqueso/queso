@@ -10,17 +10,17 @@ int main(int argc, char **argv) {
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
 #endif
-  QUESO::FullEnvironmentClass *env =
+  QUESO::FullEnvironment *env =
 #ifdef QUESO_HAS_MPI
-    new QUESO::FullEnvironmentClass(MPI_COMM_WORLD, "copy_env.inp", "", NULL);
+    new QUESO::FullEnvironment(MPI_COMM_WORLD, "copy_env.inp", "", NULL);
 #else
-    new QUESO::FullEnvironmentClass(0, "copy_env.inp", "", NULL);
+    new QUESO::FullEnvironment(0, "copy_env.inp", "", NULL);
 #endif
 
 #ifdef QUESO_HAS_MPI
-  QUESO::FullEnvironmentClass another_env(MPI_COMM_WORLD, "copy_env.inp", "", NULL);
+  QUESO::FullEnvironment another_env(MPI_COMM_WORLD, "copy_env.inp", "", NULL);
 #else
-  QUESO::FullEnvironmentClass another_env(0, "copy_env.inp", "", NULL);
+  QUESO::FullEnvironment another_env(0, "copy_env.inp", "", NULL);
 #endif
 
   another_env = *env;

@@ -255,7 +255,7 @@ double
 MiscGammar(
   double                a,
   double                b,
-  const RngBaseClass* rngObject)
+  const RngBase* rngObject)
 {
   double result = 0.;
   if (a < 1.) {

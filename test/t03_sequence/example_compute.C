@@ -30,37 +30,37 @@
 #include <uqGslMatrix.h>
 #include <uqVectorRV.h>
 
-void compute(const QUESO::FullEnvironmentClass& env) {
+void compute(const QUESO::FullEnvironment& env) {
   // Step 1 of 9: Instantiate the parameter space
-  QUESO::VectorSpaceClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::VectorSpace<QUESO::GslVector,QUESO::GslMatrix>
     paramSpace(env, "param_", 2, NULL);
 
   // Step 2 of 9: Instantiate the parameter domain
-  QUESO::GslVectorClass paramMins(paramSpace.zeroVector());
+  QUESO::GslVector paramMins(paramSpace.zeroVector());
   paramMins.cwSet(-INFINITY);
-  QUESO::GslVectorClass paramMaxs(paramSpace.zeroVector());
+  QUESO::GslVector paramMaxs(paramSpace.zeroVector());
   paramMaxs.cwSet( INFINITY);
-  QUESO::BoxSubsetClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::BoxSubset<QUESO::GslVector,QUESO::GslMatrix>
     paramDomain("param_",paramSpace,paramMins,paramMaxs);
 
   // Step 3 of 9: Instantiate the vector RV
-  QUESO::GslVectorClass meanVector(paramSpace.zeroVector());
+  QUESO::GslVector meanVector(paramSpace.zeroVector());
   meanVector[0] = -1;
   meanVector[1] =  2;
-  QUESO::GslMatrixClass covMatrix = QUESO::GslMatrixClass(paramSpace.zeroVector());
+  QUESO::GslMatrix covMatrix = QUESO::GslMatrix(paramSpace.zeroVector());
   covMatrix(0,0) = 4.; covMatrix(0,1) = 0.;
   covMatrix(1,0) = 0.; covMatrix(1,1) = 7.;
-  QUESO::GaussianVectorRVClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::GaussianVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     auxRv("", paramDomain,meanVector,covMatrix);
 
   // Step 4 of 9: Instantiate the vector sequence
   const unsigned int numSamples = 1000;
 
-  QUESO::SequenceOfVectorsClass<QUESO::GslVectorClass,QUESO::GslMatrixClass>
+  QUESO::SequenceOfVectors<QUESO::GslVector,QUESO::GslMatrix>
     auxSeq(paramSpace,numSamples,"aux_seq");
 
   // Step 5 of 9: Populate the vector sequence
-  QUESO::GslVectorClass auxVec(paramSpace.zeroVector());
+  QUESO::GslVector auxVec(paramSpace.zeroVector());
   for (unsigned int i = 0; i < auxSeq.subSequenceSize(); ++i) {
     auxRv.realizer().realization(auxVec);
     auxSeq.setPositionValues(i,auxVec);
@@ -103,15 +103,15 @@ void compute(const QUESO::FullEnvironmentClass& env) {
 #endif
   
   // Step 7 of 9: Compute min, max, mean, covariance and correlation matrices
-  QUESO::GslVectorClass minVec (paramSpace.zeroVector());
-  QUESO::GslVectorClass maxVec (paramSpace.zeroVector());
+  QUESO::GslVector minVec (paramSpace.zeroVector());
+  QUESO::GslVector maxVec (paramSpace.zeroVector());
   auxSeq.unifiedMinMaxExtra(0,auxSeq.subSequenceSize(),minVec,maxVec);
 
-  QUESO::GslVectorClass meanVec(paramSpace.zeroVector());
+  QUESO::GslVector meanVec(paramSpace.zeroVector());
   auxSeq.unifiedMeanExtra(0,auxSeq.subSequenceSize(),meanVec);
 
-  QUESO::GslMatrixClass covarianceMatrix  = QUESO::GslMatrixClass(paramSpace.zeroVector());
-  QUESO::GslMatrixClass correlationMatrix = QUESO::GslMatrixClass(paramSpace.zeroVector());
+  QUESO::GslMatrix covarianceMatrix  = QUESO::GslMatrix(paramSpace.zeroVector());
+  QUESO::GslMatrix correlationMatrix = QUESO::GslMatrix(paramSpace.zeroVector());
   QUESO::ComputeCovCorrMatricesBetweenVectorSequences(auxSeq,
                                                  auxSeq,
                                                  auxSeq.subSequenceSize(),
@@ -129,10 +129,10 @@ void compute(const QUESO::FullEnvironmentClass& env) {
   
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   // Step 8 of 9: Compute cdf accuracy
-  std::vector<QUESO::GslVectorClass*> cdfStaccVecs   (numSamples,NULL);
-  std::vector<QUESO::GslVectorClass*> cdfStaccVecsUp (numSamples,NULL);
-  std::vector<QUESO::GslVectorClass*> cdfStaccVecsLow(numSamples,NULL);
-  std::vector<QUESO::GslVectorClass*> sortedDataVecs (numSamples,NULL);
+  std::vector<QUESO::GslVector*> cdfStaccVecs   (numSamples,NULL);
+  std::vector<QUESO::GslVector*> cdfStaccVecsUp (numSamples,NULL);
+  std::vector<QUESO::GslVector*> cdfStaccVecsLow(numSamples,NULL);
+  std::vector<QUESO::GslVector*> sortedDataVecs (numSamples,NULL);
   std::cout << "Calling subCdfStacc()..."
             << std::endl;
   struct timeval timevalBegin;
@@ -181,11 +181,11 @@ void compute(const QUESO::FullEnvironmentClass& env) {
   }
 #endif
 #if 0
-  uqGslVectorClass deltaVec(maxVec-minVec);
+  uqGslVector deltaVec(maxVec-minVec);
   deltaVec *= (1./(double) (auxSize-1));
-  std::vector<uqGslVectorClass*> evalPositionsVecs(auxSize,NULL);
+  std::vector<uqGslVector*> evalPositionsVecs(auxSize,NULL);
   for (unsigned int i = 0; i < auxSize; ++i) {
-    evalPositionsVecs[i] = new uqGslVectorClass(paramSpace.zeroVector());
+    evalPositionsVecs[i] = new uqGslVector(paramSpace.zeroVector());
     *(evalPositionsVecs[i]) = minVec + ((double) i)*deltaVec;
   }
   for (unsigned int i = 0; i < auxSize; ++i) {

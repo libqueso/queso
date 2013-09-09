@@ -11,7 +11,7 @@
 
 using namespace std;
 
-int matrixIsDiag(const QUESO::GslMatrixClass &M, double diagValue) {
+int matrixIsDiag(const QUESO::GslMatrix &M, double diagValue) {
   // M is assumed to be square
   unsigned int i, j;
   unsigned int n;
@@ -37,7 +37,7 @@ int matrixIsDiag(const QUESO::GslMatrixClass &M, double diagValue) {
   return 1;
 }
 
-void fill2By2Matrix(QUESO::GslMatrixClass &M) {
+void fill2By2Matrix(QUESO::GslMatrix &M) {
   M(0, 0) = 2.0; M(0, 1) = 3.0;
   M(1, 0) = 2.0; M(1, 1) = 2.0;
 }
@@ -50,22 +50,22 @@ int main(int argc, char **argv) {
   MPI_Init(&argc, &argv);
 #endif
 
-  QUESO::EnvOptionsValuesClass options;
+  QUESO::EnvOptionsValues options;
   options.m_numSubEnvironments = 1;
 
-  QUESO::FullEnvironmentClass *env =
+  QUESO::FullEnvironment *env =
 #ifdef QUESO_HAS_MPI
-    new QUESO::FullEnvironmentClass(MPI_COMM_WORLD, "", "", &options);
+    new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", &options);
 #else
-    new QUESO::FullEnvironmentClass(0, "", "", &options);
+    new QUESO::FullEnvironment(0, "", "", &options);
 #endif
 
-  QUESO::VectorSpaceClass<QUESO::GslVectorClass, QUESO::GslMatrixClass> *param_space =
-    new QUESO::VectorSpaceClass<QUESO::GslVectorClass, QUESO::GslMatrixClass>(*env, "param_", 3, NULL);
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> *param_space =
+    new QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>(*env, "param_", 3, NULL);
 
-  QUESO::GslVectorClass v(param_space->zeroVector());
-  QUESO::GslMatrixClass M1(*env, v.map(), diagValue);
-  QUESO::GslMatrixClass M2(v, diagValue);
+  QUESO::GslVector v(param_space->zeroVector());
+  QUESO::GslMatrix M1(*env, v.map(), diagValue);
+  QUESO::GslMatrix M2(v, diagValue);
 
   if (!matrixIsDiag(M1, diagValue)) {
     std::cerr << "matrix not diagonal" << std::endl;
@@ -184,10 +184,10 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  QUESO::VectorSpaceClass<QUESO::GslVectorClass, QUESO::GslMatrixClass> space(*env, "", 2, NULL);
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> space(*env, "", 2, NULL);
 
-  QUESO::GslVectorClass v2(space.zeroVector());
-  QUESO::GslMatrixClass M3(v2, 0.0);
+  QUESO::GslVector v2(space.zeroVector());
+  QUESO::GslMatrix M3(v2, 0.0);
 
   fill2By2Matrix(M3);
   M3.filterSmallValues(2.5);
@@ -209,7 +209,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  QUESO::GslMatrixClass M4(v2, 0.0);
+  QUESO::GslMatrix M4(v2, 0.0);
   fill2By2Matrix(M3);
   M4 = M3.inverse();
   if (std::abs(M4(0, 0) + 1.0) > TOL ||
@@ -221,7 +221,7 @@ int main(int argc, char **argv) {
   }
 
   M4 = M3;
-  QUESO::GslMatrixClass I(M3.invertMultiply(M4));
+  QUESO::GslMatrix I(M3.invertMultiply(M4));
   if (!matrixIsDiag(I, 1.0)) {
     std::cerr << "invert multiply failed" << std::endl;
     return 1;

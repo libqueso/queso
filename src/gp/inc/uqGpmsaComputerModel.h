@@ -50,26 +50,26 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-class GpmsaComputerModelClass
+class GpmsaComputerModel
 {
 public:
   //*******************************************************************************
   // The following routines are in GpmsaComputerModel2.h
   //*******************************************************************************
 
-  GpmsaComputerModelClass(const char*                                              prefix,
-                            const GcmOptionsValuesClass*                           alternativeOptionsValues, // dakota
-                            const SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationStorage,
-                            const SimulationModelClass  <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationModel,
-                            const ExperimentStorageClass<S_V,S_M,D_V,D_M>*         experimentStorage,
-                            const ExperimentModelClass  <S_V,S_M,D_V,D_M>*         experimentModel,
-                            const BaseVectorRVClass     <P_V,P_M>*                 thetaPriorRv);
- ~GpmsaComputerModelClass();
+  GpmsaComputerModel(const char*                                              prefix,
+                            const GcmOptionsValues*                           alternativeOptionsValues, // dakota
+                            const SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationStorage,
+                            const SimulationModel  <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationModel,
+                            const ExperimentStorage<S_V,S_M,D_V,D_M>*         experimentStorage,
+                            const ExperimentModel  <S_V,S_M,D_V,D_M>*         experimentModel,
+                            const BaseVectorRV     <P_V,P_M>*                 thetaPriorRv);
+ ~GpmsaComputerModel();
 
-        void                             calibrateWithBayesMetropolisHastings     (const MhOptionsValuesClass* alternativeOptionsValues, // dakota
+        void                             calibrateWithBayesMetropolisHastings     (const MhOptionsValues* alternativeOptionsValues, // dakota
                                                                                    const P_V&                    totalInitialValues,
                                                                                    const P_M*                    totalInitialProposalCovMatrix);
-        void                             calibrateWithLanlMcmc                    (const MhOptionsValuesClass* alternativeOptionsValues, // dakota
+        void                             calibrateWithLanlMcmc                    (const MhOptionsValues* alternativeOptionsValues, // dakota
                                                                                    const P_V&                    totalInitialValues,
                                                                                    const P_M*                    totalInitialProposalCovMatrix);
         void                             calibrateWithBayesMLSampling             ();
@@ -108,10 +108,10 @@ public:
   // The following routines are in GpmsaComputerModel3.h
   //*******************************************************************************
 
-  const VectorSpaceClass    <P_V,P_M>& totalSpace                               () const;
-  const VectorSpaceClass    <P_V,P_M>& unique_vu_space                          () const;
-  const BaseVectorRVClass   <P_V,P_M>& totalPriorRv                             () const;
-  const GenericVectorRVClass<P_V,P_M>& totalPostRv                              () const;
+  const VectorSpace    <P_V,P_M>& totalSpace                               () const;
+  const VectorSpace    <P_V,P_M>& unique_vu_space                          () const;
+  const BaseVectorRV   <P_V,P_M>& totalPriorRv                             () const;
+  const GenericVectorRV<P_V,P_M>& totalPostRv                              () const;
 
         void                             print                                    (std::ostream& os) const;
 
@@ -252,33 +252,33 @@ private:
                                                                                          D_M&                      Rmat,
                                                                                          unsigned int              outerCounter);
 
-  const BaseEnvironmentClass&                                         m_env;
-        GcmOptionsValuesClass                                         m_alternativeOptionsValues;
-        GpmsaComputerModelOptionsClass*                               m_optionsObj;
+  const BaseEnvironment&                                         m_env;
+        GcmOptionsValues                                         m_alternativeOptionsValues;
+        GpmsaComputerModelOptions*                               m_optionsObj;
         FilePtrSetStruct                                              m_dataOutputFilePtrSet;
 
-        GcmSimulationInfoClass     <S_V,S_M,P_V,P_M,Q_V,Q_M        >* m_s;
-        GcmExperimentInfoClass     <S_V,S_M,D_V,D_M,P_V,P_M        >* m_e;
-        GcmJointInfoClass          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_j;
-        GcmZInfoClass              <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_z;
-        GcmTotalInfoClass          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_t;
-        GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M        >* m_st;
-        GcmJointTildeInfoClass     <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_jt;
-        GcmZTildeInfoClass         <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_zt;
+        GcmSimulationInfo     <S_V,S_M,P_V,P_M,Q_V,Q_M        >* m_s;
+        GcmExperimentInfo     <S_V,S_M,D_V,D_M,P_V,P_M        >* m_e;
+        GcmJointInfo          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_j;
+        GcmZInfo              <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_z;
+        GcmTotalInfo          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_t;
+        GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M        >* m_st;
+        GcmJointTildeInfo     <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_jt;
+        GcmZTildeInfo         <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_zt;
         bool                                                            m_thereIsExperimentalData;
         bool                                                            m_allOutputsAreScalar;
         bool                                                            m_formCMatrix;
         bool                                                            m_cMatIsRankDefficient;
-        BaseScalarFunctionClass    <P_V,P_M>*                         m_likelihoodFunction;
+        BaseScalarFunction    <P_V,P_M>*                         m_likelihoodFunction;
         unsigned int                                                    m_like_counter;
 
 };
 
 template<class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& obj);
+std::ostream& operator<<(std::ostream& os, const GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& obj);
 
 template<class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& obj)
+std::ostream& operator<<(std::ostream& os, const GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& obj)
 {
   obj.print(os);
 

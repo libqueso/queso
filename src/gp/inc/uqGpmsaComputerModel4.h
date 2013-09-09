@@ -33,7 +33,7 @@ namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
   const P_V&         input_1lambdaEtaVec,
   const P_V&         input_2lambdaWVec,
   const P_V&         input_3rhoWVec,
@@ -45,7 +45,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
         unsigned int outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
                             << ", outerCounter = " << outerCounter
                             << ": m_formCMatrix = "                                        << m_formCMatrix
                             << ", m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC
@@ -56,7 +56,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
 
   UQ_FATAL_TEST_MACRO((m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC == true),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)",
                       "'m_useTildeLogicForRankDefficientC' should be 'false'");
 
   //********************************************************************************
@@ -75,7 +75,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
                     outerCounter);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
                             << ", outerCounter = "           << outerCounter
                             << ": finished forming 'm_tmp_Smat_z'"
                             << "\n m_tmp_Smat_z contents = " << m_z->m_tmp_Smat_z
@@ -87,7 +87,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
     unsigned int sigmaZRank          = m_z->m_tmp_Smat_z.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int sigmaZRank14        = m_z->m_tmp_Smat_z.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
                               << ", outerCounter = "                 << outerCounter
                               << ", m_tmp_Smat_z.numRowsLocal() = "  << m_z->m_tmp_Smat_z.numRowsLocal()
                               << ", m_tmp_Smat_z.numCols() = "       << m_z->m_tmp_Smat_z.numCols()
@@ -112,7 +112,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
                             << ", outerCounter = "               << outerCounter
                             << ": finished forming 'm_tmp_Smat_extra'"
                             << ", input_5lambdaYVec[0] = "       << input_5lambdaYVec[0]
@@ -128,7 +128,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
     unsigned int extraRank          = m_z->m_tmp_Smat_extra.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int extraRank14        = m_z->m_tmp_Smat_extra.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
                               << ", outerCounter = "                     << outerCounter
                               << ", m_tmp_Smat_extra.numRowsLocal() = "  << m_z->m_tmp_Smat_extra.numRowsLocal()
                               << ", m_tmp_Smat_extra.numCols() = "       << m_z->m_tmp_Smat_extra.numCols()
@@ -149,7 +149,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
     unsigned int zHatRank          = m_z->m_tmp_Smat_z_hat.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int zHatRank14        = m_z->m_tmp_Smat_z_hat.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
                               << ", outerCounter = "                     << outerCounter
                               << ", m_tmp_Smat_z_hat.numRowsLocal() = "  << m_z->m_tmp_Smat_z_hat.numRowsLocal()
                               << ", m_tmp_Smat_z_hat.numCols() = "       << m_z->m_tmp_Smat_z_hat.numCols()
@@ -161,7 +161,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(1)"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -172,7 +172,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
 // Case with no experimental data // checar
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
   const P_V&         input_1lambdaEtaVec,
   const P_V&         input_2lambdaWVec,
   const P_V&         input_3rhoWVec,
@@ -180,7 +180,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
         unsigned int outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
                             << ", outerCounter = " << outerCounter
                             << ": m_formCMatrix = "                                        << m_formCMatrix
                             << ", m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC
@@ -191,7 +191,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
 
   UQ_FATAL_TEST_MACRO((m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC == true),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)",
                       "'m_useTildeLogicForRankDefficientC' should be 'false'");
 
   //********************************************************************************
@@ -207,7 +207,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
                     outerCounter);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
                             << ", outerCounter = "           << outerCounter
                             << ": finished forming 'm_tmp_Smat_z'"
                             << "\n m_tmp_Smat_z contents = " << m_z->m_tmp_Smat_z
@@ -219,7 +219,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
     unsigned int sigmaZRank          = m_z->m_tmp_Smat_z.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int sigmaZRank14        = m_z->m_tmp_Smat_z.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
                               << ", outerCounter = "                 << outerCounter
                               << ", m_tmp_Smat_z.numRowsLocal() = "  << m_z->m_tmp_Smat_z.numRowsLocal()
                               << ", m_tmp_Smat_z.numCols() = "       << m_z->m_tmp_Smat_z.numCols()
@@ -244,7 +244,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
                             << ", outerCounter = "               << outerCounter
                             << ": finished forming 'm_tmp_Smat_extra'"
                             << ", input_5lambdaYVec[0] = "       << input_5lambdaYVec[0]
@@ -260,7 +260,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
     unsigned int extraRank          = m_z->m_tmp_Smat_extra.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int extraRank14        = m_z->m_tmp_Smat_extra.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
                               << ", outerCounter = "                     << outerCounter
                               << ", m_tmp_Smat_extra.numRowsLocal() = "  << m_z->m_tmp_Smat_extra.numRowsLocal()
                               << ", m_tmp_Smat_extra.numCols() = "       << m_z->m_tmp_Smat_extra.numCols()
@@ -281,7 +281,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
     unsigned int zHatRank          = m_z->m_tmp_Smat_z_hat.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int zHatRank14        = m_z->m_tmp_Smat_z_hat.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
                               << ", outerCounter = "                     << outerCounter
                               << ", m_tmp_Smat_z_hat.numRowsLocal() = "  << m_z->m_tmp_Smat_z_hat.numRowsLocal()
                               << ", m_tmp_Smat_z_hat.numCols() = "       << m_z->m_tmp_Smat_z_hat.numCols()
@@ -293,7 +293,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
   }
 #endif
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(2)"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -303,7 +303,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
 									
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
   const P_V&         input_1lambdaEtaVec,
   const P_V&         input_2lambdaWVec,
   const P_V&         input_3rhoWVec,
@@ -315,7 +315,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
         unsigned int outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
                             << ", outerCounter = " << outerCounter
                             << ": m_formCMatrix = "                                        << m_formCMatrix
                             << ", m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC = " << m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC
@@ -326,22 +326,22 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
 
   UQ_FATAL_TEST_MACRO(m_formCMatrix == false,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()",
                       "'m_Cmat' should have been requested");
 
   UQ_FATAL_TEST_MACRO(m_z->m_Cmat == NULL,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()",
                       "'m_Cmat' should have been formed");
 
   UQ_FATAL_TEST_MACRO(m_cMatIsRankDefficient == false,
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()",
                       "'m_Cmat' should be rank defficient");
 
   UQ_FATAL_TEST_MACRO((m_optionsObj->m_ov.m_useTildeLogicForRankDefficientC == false),
                       m_env.worldRank(),
-                      "GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()",
+                      "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()",
                       "'m_useTildeLogicForRankDefficientC' should be 'true'");
 
   //********************************************************************************
@@ -360,7 +360,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
                     outerCounter);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
                             << ", outerCounter = "           << outerCounter
                             << ": finished forming 'm_tmp_Smat_z'"
                             << "\n m_tmp_Smat_z contents = " << m_z->m_tmp_Smat_z
@@ -372,7 +372,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
     unsigned int sigmaZRank          = m_z->m_tmp_Smat_z.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int sigmaZRank14        = m_z->m_tmp_Smat_z.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
                               << ", outerCounter = "                 << outerCounter
                               << ", m_tmp_Smat_z.numRowsLocal() = "  << m_z->m_tmp_Smat_z.numRowsLocal()
                               << ", m_tmp_Smat_z.numCols() = "       << m_z->m_tmp_Smat_z.numCols()
@@ -393,7 +393,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
     unsigned int sigmaZTildeRank          = m_zt->m_tmp_Smat_z_tilde.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int sigmaZTildeRank14        = m_zt->m_tmp_Smat_z_tilde.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
                               << ", outerCounter = "                        << outerCounter
                               << ", m_tmp_Smat_z_tilde->numRowsLocal() = "  << m_zt->m_tmp_Smat_z_tilde.numRowsLocal()
                               << ", m_tmp_Smat_z_tilde->numCols() = "       << m_zt->m_tmp_Smat_z_tilde.numCols()
@@ -412,7 +412,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
   m_zt->m_tmp_Smat_extra_tilde.cwSet(m_jt->m_Btildet_Wy_Btilde_inv.numRowsLocal(),m_jt->m_Btildet_Wy_Btilde_inv.numCols(),(1./input_1lambdaEtaVec[0]) * (m_st->m_Ktildet_Ktilde_inv)   );
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
                             << ", outerCounter = "                     << outerCounter
                             << ": finished forming 'm_tmp_Smat_extra_tilde'"
                             << ", input_5lambdaYVec[0] = "             << input_5lambdaYVec[0]
@@ -428,7 +428,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
     unsigned int extraTildeRank          = m_zt->m_tmp_Smat_extra_tilde.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int extraTildeRank14        = m_zt->m_tmp_Smat_extra_tilde.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
                               << ", outerCounter = "                           << outerCounter
                               << ", m_tmp_Smat_extra_tilde.numRowsLocal() = "  << m_zt->m_tmp_Smat_extra_tilde.numRowsLocal()
                               << ", m_tmp_Smat_extra_tilde.numCols() = "       << m_zt->m_tmp_Smat_extra_tilde.numCols()
@@ -449,7 +449,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
     unsigned int zTildeHatRank          = m_zt->m_tmp_Smat_z_tilde_hat.rank(0.,1.e-8 ); // todo: should be an option
     unsigned int zTildeHatRank14        = m_zt->m_tmp_Smat_z_tilde_hat.rank(0.,1.e-14);
     if (m_env.subDisplayFile()) {
-      *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
+      *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
                               << ", outerCounter = "                            << outerCounter
                               << ", m_tmp_Smat_z_tilde_hat->numRowsLocal() = "  << m_zt->m_tmp_Smat_z_tilde_hat.numRowsLocal()
                               << ", m_tmp_Smat_z_tilde_hat->numCols() = "       << m_zt->m_tmp_Smat_z_tilde_hat.numCols()
@@ -461,7 +461,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -471,7 +471,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
 									
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   const P_V&         input_2lambdaWVec,
   const P_V&         input_3rhoWVec,
   const P_V&         input_4lambdaSVec,
@@ -481,7 +481,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
         unsigned int outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -535,7 +535,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   m_e->m_Smat_v.cwSet(0.);
   m_e->m_Smat_v.fillWithBlocksDiagonally(0,0,m_e->m_Smat_v_is,true,true);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
                             << ", outerCounter = " << outerCounter
                             << ": finished instantiating 'm_Smat_v'"
                             << std::endl;
@@ -572,7 +572,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   m_j->m_Smat_u.cwSet(0.);
   m_j->m_Smat_u.fillWithBlocksDiagonally(0,0,m_j->m_Smat_u_is,true,true);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
                             << ", outerCounter = " << outerCounter
                             << ": finished instantiating 'm_Smat_u'"
                             << std::endl;
@@ -609,7 +609,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   m_s->m_Smat_w.cwSet(0.);
   m_s->m_Smat_w.fillWithBlocksDiagonally(0,0,m_s->m_Smat_w_is,true,true);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
                             << ", outerCounter = " << outerCounter
                             << ": finished instantiating 'm_Smat_w'"
                             << std::endl;
@@ -645,7 +645,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   m_j->m_Smat_uw.fillWithBlocksDiagonally(0,0,m_j->m_Smat_uw_is,true,true);
   m_j->m_Smat_uw_t.fillWithTranspose(0,0,m_j->m_Smat_uw,true,true);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
                             << ", outerCounter = " << outerCounter
                             << ": finished instantiating 'm_j->m_Smat_uw'"
                             << std::endl;
@@ -666,7 +666,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   // Form '\Sigma_z' matrix
   //********************************************************************************
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
                             << ", outerCounter = " << outerCounter
                             << ": m_tmp_Smat_z.numRowsLocal() = " << m_z->m_tmp_Smat_z.numRowsLocal()
                             << ", m_tmp_Smat_z.numCols() = "      << m_z->m_tmp_Smat_z.numCols()
@@ -699,7 +699,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -710,14 +710,14 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
 // Case with no experimental data // checar
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-  GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
+  GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   const P_V&         input_2lambdaWVec,
   const P_V&         input_3rhoWVec,
   const P_V&         input_4lambdaSVec,
         unsigned int outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -772,7 +772,7 @@ void
   m_e->m_Smat_v.cwSet(0.);
   m_e->m_Smat_v.fillWithBlocksDiagonally(0,0,m_e->m_Smat_v_is,true,true);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
                             << ", outerCounter = " << outerCounter
                             << ": finished instantiating 'm_Smat_v'"
                             << std::endl;
@@ -808,7 +808,7 @@ void
   m_j->m_Smat_u.cwSet(0.);
   m_j->m_Smat_u.fillWithBlocksDiagonally(0,0,m_j->m_Smat_u_is,true,true);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
                             << ", outerCounter = " << outerCounter
                             << ": finished instantiating 'm_Smat_u'"
                             << std::endl;
@@ -845,7 +845,7 @@ void
   m_s->m_Smat_w.cwSet(0.);
   m_s->m_Smat_w.fillWithBlocksDiagonally(0,0,m_s->m_Smat_w_is,true,true);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
                             << ", outerCounter = " << outerCounter
                             << ": finished instantiating 'm_Smat_w'"
                             << std::endl;
@@ -881,7 +881,7 @@ void
   m_j->m_Smat_uw.fillWithBlocksDiagonally(0,0,m_j->m_Smat_uw_is,true,true);
   m_j->m_Smat_uw_t.fillWithTranspose(0,0,m_j->m_Smat_uw,true,true);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
                             << ", outerCounter = " << outerCounter
                             << ": finished instantiating 'm_j->m_Smat_uw'"
                             << std::endl;
@@ -902,7 +902,7 @@ void
   // Form '\Sigma_z' matrix
   //********************************************************************************
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
                             << ", outerCounter = " << outerCounter
                             << ": m_tmp_Smat_z.numRowsLocal() = " << m_z->m_tmp_Smat_z.numRowsLocal()
                             << ", m_tmp_Smat_z.numCols() = "      << m_z->m_tmp_Smat_z.numCols()
@@ -935,7 +935,7 @@ void
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(2)"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -945,7 +945,7 @@ void
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_w_hat(
+GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_w_hat(
   const P_V&         input_1lambdaEtaVec,
   const P_V&         input_2lambdaWVec,
   const P_V&         input_3rhoWVec,
@@ -954,7 +954,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_w_hat(
         unsigned int outerCounter)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Entering GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_w_hat()"
+    *m_env.subDisplayFile() << "Entering GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_w_hat()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }
@@ -979,7 +979,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_w_hat(
   m_s->m_Smat_w.cwSet(0.);
   m_s->m_Smat_w.fillWithBlocksDiagonally(0,0,m_s->m_Smat_w_is,true,true);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "In GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_w_hat()"
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_w_hat()"
                             << ", outerCounter = " << outerCounter
                             << ": finished instantiating 'm_Smat_w'"
                             << std::endl;
@@ -993,7 +993,7 @@ GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_w_hat(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 4)) {
-    *m_env.subDisplayFile() << "Leaving GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_w_hat()"
+    *m_env.subDisplayFile() << "Leaving GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_w_hat()"
                             << ", outerCounter = " << outerCounter
                             << std::endl;
   }

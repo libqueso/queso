@@ -32,17 +32,17 @@
 namespace QUESO {
 
 // Default constructor ------------------------------
-MpiCommClass::MpiCommClass()
+MpiComm::MpiComm()
   :
-  m_env( *(new EmptyEnvironmentClass()) )
+  m_env( *(new EmptyEnvironment()) )
 {
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
-                      "MpiCommClass::constructor()",
+                      "MpiComm::constructor()",
                       "should not be called");
 }
 // QUESO MpiComm MPI Constructor ------------------
-MpiCommClass::MpiCommClass(const BaseEnvironmentClass& env, RawType_MPI_Comm inputRawComm)
+MpiComm::MpiComm(const BaseEnvironment& env, RawType_MPI_Comm inputRawComm)
   :
   m_env          (env),
 #ifdef QUESO_HAS_TRILINOS
@@ -57,19 +57,19 @@ MpiCommClass::MpiCommClass(const BaseEnvironmentClass& env, RawType_MPI_Comm inp
   int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       UQ_UNAVAILABLE_RANK,
-                      "MpiCommClass::constructor()",
+                      "MpiComm::constructor()",
                       "failed MPI_Comm_rank() on MPI_COMM_WORLD");
 
   mpiRC = MPI_Comm_rank(inputRawComm,&m_myPid);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "MpiCommClass::constructor()",
+                      "MpiComm::constructor()",
                       "failed MPI_Comm_rank() on inputRawComm");
 
   mpiRC = MPI_Comm_size(inputRawComm,&m_numProc);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "MpiCommClass::constructor()",
+                      "MpiComm::constructor()",
                       "failed MPI_Comm_size() on inputRawComm");
 #else
   m_worldRank = 0;
@@ -79,7 +79,7 @@ MpiCommClass::MpiCommClass(const BaseEnvironmentClass& env, RawType_MPI_Comm inp
 }
 
 // Copy constructor ---------------------------------
-MpiCommClass::MpiCommClass(const MpiCommClass& src)
+MpiComm::MpiComm(const MpiComm& src)
   :
   m_env          (src.m_env)
 #ifdef QUESO_HAS_TRILINOS
@@ -91,7 +91,7 @@ MpiCommClass::MpiCommClass(const MpiCommClass& src)
 }
 
 // Destructor ---------------------------------------
-MpiCommClass::~MpiCommClass()
+MpiComm::~MpiComm()
 {
 #ifdef QUESO_HAS_TRILINOS
   delete m_epetraMpiComm;
@@ -101,8 +101,8 @@ MpiCommClass::~MpiCommClass()
 
 // --------------------------------------------------
 // Set methodos -------------------------------------
-MpiCommClass&
-MpiCommClass::operator=(const MpiCommClass& rhs)
+MpiComm&
+MpiComm::operator=(const MpiComm& rhs)
 {
   this->copy(rhs);
   return *this;
@@ -110,7 +110,7 @@ MpiCommClass::operator=(const MpiCommClass& rhs)
 
 // Attribute access methods -------------------------
 RawType_MPI_Comm
-MpiCommClass::Comm() const
+MpiComm::Comm() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->Comm();
@@ -119,7 +119,7 @@ MpiCommClass::Comm() const
 }
 // --------------------------------------------------
 int
-MpiCommClass::MyPID() const
+MpiComm::MyPID() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->MyPID();
@@ -128,7 +128,7 @@ MpiCommClass::MyPID() const
 }
 // --------------------------------------------------
 int
-MpiCommClass::NumProc() const
+MpiComm::NumProc() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->NumProc();
@@ -138,7 +138,7 @@ MpiCommClass::NumProc() const
 // Methods overridden from Comm ---------------------
 
 void
-MpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, RawType_MPI_Datatype datatype, RawType_MPI_Op op, const char* whereMsg, const char* whatMsg) const
+MpiComm::Allreduce(void* sendbuf, void* recvbuf, int count, RawType_MPI_Datatype datatype, RawType_MPI_Op op, const char* whereMsg, const char* whatMsg) const
 {
 #ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Allreduce(sendbuf, recvbuf, count, datatype, op, m_rawComm);
@@ -156,7 +156,7 @@ MpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, RawType_MPI_Dat
 }
 //--------------------------------------------------
 void
-MpiCommClass::Barrier() const // const char* whereMsg, const char* whatMsg) const
+MpiComm::Barrier() const // const char* whereMsg, const char* whatMsg) const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->Barrier();
@@ -165,7 +165,7 @@ MpiCommClass::Barrier() const // const char* whereMsg, const char* whatMsg) cons
   int mpiRC = MPI_Barrier(m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "MPICommClass::Barrier()", // whereMsg,
+                      "MPIComm::Barrier()", // whereMsg,
                       "mpiRC indicates failure");  // whatMsg);
 #else
   // Nothing needs to be done
@@ -174,7 +174,7 @@ MpiCommClass::Barrier() const // const char* whereMsg, const char* whatMsg) cons
 }
 //--------------------------------------------------
 void
-MpiCommClass::Bcast(void* buffer, int count, RawType_MPI_Datatype datatype, int root, const char* whereMsg, const char* whatMsg) const
+MpiComm::Bcast(void* buffer, int count, RawType_MPI_Datatype datatype, int root, const char* whereMsg, const char* whatMsg) const
 {
 #ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Bcast(buffer, count, datatype, root, m_rawComm);
@@ -189,7 +189,7 @@ MpiCommClass::Bcast(void* buffer, int count, RawType_MPI_Datatype datatype, int 
 }
 //--------------------------------------------------
 void
-MpiCommClass::Gather(
+MpiComm::Gather(
   void* sendbuf, int sendcnt, RawType_MPI_Datatype sendtype, 
   void* recvbuf, int recvcount, RawType_MPI_Datatype recvtype, 
   int root,
@@ -212,7 +212,7 @@ MpiCommClass::Gather(
   size_t sendTotal = sendDataTypeSize*sendcnt;
   size_t recvTotal = recvDataTypeSize*recvcount;
   if (sendTotal != recvTotal) {
-    std::cerr << "MpiCommClass::Gather()"
+    std::cerr << "MpiComm::Gather()"
               << ": sendTotal != recvTotal"
               << std::endl;
   }
@@ -226,7 +226,7 @@ MpiCommClass::Gather(
 }
 //-------------------------------------------------- 
 void
-MpiCommClass::Gatherv(
+MpiComm::Gatherv(
   void* sendbuf, int sendcnt, RawType_MPI_Datatype sendtype, 
   void* recvbuf, int* recvcnts, int* displs, RawType_MPI_Datatype recvtype, 
   int root,
@@ -249,7 +249,7 @@ MpiCommClass::Gatherv(
   size_t sendTotal = sendDataTypeSize*sendcnt;
   size_t recvTotal = recvDataTypeSize*recvcnts[0];
   if (sendTotal != recvTotal) {
-    std::cerr << "MpiCommClass::Gatherv()"
+    std::cerr << "MpiComm::Gatherv()"
               << ": sendTotal != recvTotal"
               << std::endl;
   }
@@ -263,7 +263,7 @@ MpiCommClass::Gatherv(
 }
 //--------------------------------------------------
 void
-MpiCommClass::Recv(
+MpiComm::Recv(
   void* buf, int count, RawType_MPI_Datatype datatype, int source, int tag, RawType_MPI_Status* status,
   const char* whereMsg, const char* whatMsg) const
 {
@@ -274,7 +274,7 @@ MpiCommClass::Recv(
                       whereMsg,
                       whatMsg);
 #else
-  std::cerr << "MpiCommClass::Recv()"
+  std::cerr << "MpiComm::Recv()"
             << ": should note be used if there is no 'mpi'"
             << std::endl;
   UQ_FATAL_TEST_MACRO(true,
@@ -286,7 +286,7 @@ MpiCommClass::Recv(
 }
 //--------------------------------------------------
 void
-MpiCommClass::Send(
+MpiComm::Send(
   void* buf, int count, RawType_MPI_Datatype datatype, int dest, int tag,
   const char* whereMsg, const char* whatMsg) const
 {
@@ -297,7 +297,7 @@ MpiCommClass::Send(
                       whereMsg,
                       whatMsg);
 #else
-  std::cerr << "MpiCommClass::Send()"
+  std::cerr << "MpiComm::Send()"
             << ": should note be used if there is no 'mpi'"
             << std::endl;
   UQ_FATAL_TEST_MACRO(true,
@@ -309,7 +309,7 @@ MpiCommClass::Send(
 }
 // Misc methods ------------------------------------
 void
-MpiCommClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs) const
+MpiComm::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs) const
 {
   if (m_env.syncVerbosity() >= msgVerbosity) {
     this->Barrier();
@@ -336,7 +336,7 @@ MpiCommClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsi
 // -------------------------------------------------
 #ifdef QUESO_HAS_TRILINOS
 const Epetra_MpiComm&
-MpiCommClass::epetraMpiComm() const
+MpiComm::epetraMpiComm() const
 {
   return *m_epetraMpiComm;
 }
@@ -344,7 +344,7 @@ MpiCommClass::epetraMpiComm() const
 
 // Private methods----------------------------------
 void
-MpiCommClass::copy(const MpiCommClass& src)
+MpiComm::copy(const MpiComm& src)
 {
 #ifdef QUESO_HAS_TRILINOS
   delete m_epetraMpiComm;
@@ -361,7 +361,7 @@ MpiCommClass::copy(const MpiCommClass& src)
 #ifdef QUESO_HAS_MPI
 #else
 size_t 
-MpiCommClass::sizeOfDataType(RawType_MPI_Datatype datatype, const char* whereMsg, const char* whatMsg) const
+MpiComm::sizeOfDataType(RawType_MPI_Datatype datatype, const char* whereMsg, const char* whatMsg) const
 {
   size_t dataTypeSize = 0;
 
@@ -383,7 +383,7 @@ MpiCommClass::sizeOfDataType(RawType_MPI_Datatype datatype, const char* whereMsg
     break;
 
     default: 
-      std::cerr << "MpiCommClass::Allreduce()"
+      std::cerr << "MpiComm::Allreduce()"
                 << ": datatype not supported yet"
                 << std::endl;
       UQ_FATAL_TEST_MACRO(true,
