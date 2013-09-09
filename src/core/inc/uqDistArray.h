@@ -36,6 +36,7 @@
 #endif
 #include <ostream>
 
+namespace QUESO {
 
 /*! \file uqDistArray.h
     \brief A class to store row-oriented multi-vectors of type T.
@@ -293,4 +294,7 @@ std::ostream& operator<<(std::ostream& os, const uqDistArrayClass<T>& obj)
 
   return os;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_DIST_ARRAY_H__

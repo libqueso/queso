@@ -29,6 +29,8 @@
 #include <uqMatrix.h>
 #include <uqDefines.h>
 
+namespace QUESO {
+
 // Default constructor ------------------------------
 uqMatrixClass::uqMatrixClass()
   :
@@ -177,3 +179,4 @@ uqMatrixClass::copy(const uqMatrixClass& src)
   return;
 }
 
+}  // End namespace QUESO

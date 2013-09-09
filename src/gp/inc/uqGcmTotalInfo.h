@@ -35,6 +35,8 @@
 #include <uqMetropolisHastingsSG1.h>
 #include <uqMLSampling1.h>
 
+namespace QUESO {
+
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 class uqGcmTotalInfoClass
 {
@@ -244,5 +246,7 @@ uqGcmTotalInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor()
 
   return;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_GCM_TOTAL_INFO_H__

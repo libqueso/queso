@@ -41,6 +41,8 @@
 #include <fstream>
 #include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
 
+namespace QUESO {
+
 //--------------------------------------------------
 // uqMHRawChainInfoStruct --------------------------
 //--------------------------------------------------
@@ -273,9 +275,11 @@ private:
 //! Prints the object \c obj, overloading an operator.
 template<class P_V,class P_M>
 std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGClass<P_V,P_M>& obj);
+}  // End namespace QUESO
 
-#include <uqMetropolisHastingsSG2.h>
+#include <uqMetropolisHastingsSG2.h>  // We should probably do something about this
 
+namespace QUESO {
 // Default constructor -----------------------------
 template<class P_V,class P_M>
 uqMetropolisHastingsSGClass<P_V,P_M>::uqMetropolisHastingsSGClass(
@@ -944,4 +948,7 @@ std::ostream& operator<<(std::ostream& os, const uqMetropolisHastingsSGClass<P_V
 
   return os;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_MH_SG1_H__

@@ -34,6 +34,8 @@
 #include <uqSequenceOfVectors.h>
 #include <uqEnvironment.h>
 
+namespace QUESO {
+
 template <class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 class uqSimulationModelClass
 {
@@ -870,5 +872,7 @@ std::ostream& operator<<(std::ostream& os, const uqSimulationModelClass<S_V,S_M,
 
   return os;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_SIMULATION_MODEL_H__

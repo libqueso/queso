@@ -37,6 +37,8 @@
 #include <uqScalarFunction.h>
 //#include <grvy.h>
 
+namespace QUESO {
+
 /*! \file uqStatisticalInverseProblem.h
     \brief Class to solve a Statistical Inverse Problem
 */
@@ -550,5 +552,7 @@ std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemClas
 
   return os;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_SIP_H__

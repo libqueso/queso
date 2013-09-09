@@ -42,6 +42,8 @@
 #define SCALAR_SEQUENCE_SIZE_MPI_MSG 1
 #define SCALAR_SEQUENCE_DATA_MPI_MSG 1
 
+namespace QUESO {
+
 /*! \file uqScalarSequence.h
  * \brief A templated class for handling scalar samples.
  * 
@@ -4862,5 +4864,7 @@ uqComputeCovCorrBetweenScalarSequences(
 
   return;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_SCALAR_SEQUENCE_H__

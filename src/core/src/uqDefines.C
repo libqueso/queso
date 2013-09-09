@@ -31,6 +31,8 @@
 #include <mpi.h>
 #endif
 
+namespace QUESO {
+
 int uqMyWorldfullRank() {
   int result = 0;
 #ifdef QUESO_HAS_MPI
@@ -40,3 +42,5 @@ int uqMyWorldfullRank() {
 #endif
   return result;
 }
+
+}  // End namespace QUESO

@@ -105,4 +105,3 @@ char *f2c_char(char*input,int len)
   name[len]='\0';
   return(name);
 }
-

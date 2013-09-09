@@ -32,6 +32,8 @@
 #include <uqExperimentStorage.h>
 #include <uqExperimentModel.h>
 
+namespace QUESO {
+
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M>
 class uqGcmExperimentInfoClass
 {
@@ -505,5 +507,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::~uqGcmExperimentInfoClass()
   delete m_Dmat_BlockDiag_permut;
   delete m_PD;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_GCM_EXPERIMENT_INFO_H__

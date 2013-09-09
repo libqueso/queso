@@ -33,6 +33,8 @@
 #include <uqEnvironment.h>
 #include <cmath>
 
+namespace QUESO {
+
 //*****************************************************
 // Base class
 //*****************************************************
@@ -335,5 +337,7 @@ uqGenericScalarCovarianceFunctionClass<V,M>::value(const V& positionVector1, con
 
   return result;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_SCALAR_COVARIANCE_FUNCTION_H__ 

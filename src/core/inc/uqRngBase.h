@@ -32,8 +32,7 @@
 #include <uqDefines.h>
 #include <iostream>
 
-
-
+namespace QUESO {
 
 /*! \file uqRngBase.h
     \brief Random Number Generation class.
@@ -97,5 +96,7 @@ private:
   //! Reset seed.
           void privateResetSeed();
 };
+
+}  // End namespace QUESO
 
 #endif // __UQ_RNG_BASE_H__

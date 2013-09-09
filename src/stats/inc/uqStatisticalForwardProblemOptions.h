@@ -46,6 +46,8 @@
 #define UQ_SFP_SOLVER_ODV                  "mc" // Monte Carlo
 #endif
 
+namespace QUESO {
+
 /*! \file uqStatisticalForwardProblemOptions.h
     \brief Classes to allow options to be passed to a Statistical Forward Problem.
 */
@@ -157,4 +159,7 @@ private:
 };
 //! Prints the object \c obj, overloading an operator.
 std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemOptionsClass& obj);
+
+}  // End namespace QUESO
+
 #endif // __UQ_SFP_OPTIONS_H__

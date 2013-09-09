@@ -35,6 +35,8 @@
 #include <sys/stat.h>
 #include <cmath>
 
+namespace QUESO {
+
 void
 uqMiscReadDoublesFromString(
   const std::string&         inputString,
@@ -479,4 +481,4 @@ int uqGRVY_CheckDir(const char *dirname)
   return 0;
 }
 
-
+}  // End namespace QUESO

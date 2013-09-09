@@ -28,6 +28,8 @@
 
 #include <uqMetropolisHastingsSG1.h>
 
+namespace QUESO {
+
 // Default constructor -----------------------------
 uqMHRawChainInfoStruct::uqMHRawChainInfoStruct()
 {
@@ -121,3 +123,5 @@ uqMHRawChainInfoStruct::mpiSum(const uqMpiCommClass& comm, uqMHRawChainInfoStruc
 
   return;
 }
+
+}  // End namespace QUESO

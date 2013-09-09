@@ -31,7 +31,7 @@
 
 #include <uqVectorSpace.h>
 
-
+namespace QUESO {
 
 /*! \file uqVectorSubsetClass.h
  * \brief A templated class for handling subsets.
@@ -616,5 +616,7 @@ uqDiscreteSubsetClass<V,M>::print(std::ostream& os) const
 
   return;
 }
-#endif // __UQ_VECTOR_SUBSET_H__
 
+}  // End namespace QUESO
+
+#endif // __UQ_VECTOR_SUBSET_H__

@@ -29,6 +29,8 @@
 #include <uqMLSampling1.h>
 
 #ifdef QUESO_HAS_GLPK
+
+namespace QUESO {
 void BIP_routine(glp_tree *tree, void *info)
 {
   const uqBaseEnvironmentClass& env = *(((BIP_routine_struct *) info)->env);
@@ -83,4 +85,7 @@ void BIP_routine(glp_tree *tree, void *info)
 
   return;
 }
+
+}  // End namespace QUESO
+
 #endif // QUESO_HAS_GLPK

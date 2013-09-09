@@ -29,6 +29,8 @@
 #include <uqMap.h>
 #include <uqMpiComm.h>
 
+namespace QUESO {
+
 // --------------------------------------------------
 // Constructor/Destructor methods -------------------
 
@@ -171,3 +173,4 @@ uqMapClass::copy(const uqMapClass& src)
   return;
 }
 
+}  // End namespace QUESO

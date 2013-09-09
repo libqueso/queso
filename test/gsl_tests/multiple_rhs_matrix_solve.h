@@ -30,6 +30,6 @@
 #define __MULTIPLE_RHS_MATRIX_SOLVE_TESTS_H__
 
 #include <uqEnvironment.h>
-int actualChecking(const uqFullEnvironmentClass* env);
+int actualChecking(const QUESO::uqFullEnvironmentClass* env);
 
 #endif // __MULTIPLE_RHS_MATRIX_SOLVE_TESTS_H__

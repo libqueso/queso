@@ -32,6 +32,8 @@
 #include <uqEnvironment.h>
 #include <math.h>
 
+namespace QUESO {
+
 //*****************************************************
 // Classes to accommodate a one dimensional grid
 //*****************************************************
@@ -361,5 +363,7 @@ uqStdOneDGridClass<T>::findIntervalId(const T& paramValue) const
 
   return i;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_ONE_D_GRID_FUNCTION_H__

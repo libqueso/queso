@@ -53,6 +53,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+namespace QUESO {
+
 class uqSmOptionsValuesClass
 {
 public:
@@ -120,4 +122,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const uqSimulationModelOptionsClass& obj);
+
+}  // End namespace QUESO
+
 #endif // __UQ_SIMULATION_MODEL_OPTIONS_H__

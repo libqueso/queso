@@ -57,6 +57,8 @@
 #define UQ_GCM_PRED_WS_BY_SUMMING_RVS_ODV                1
 #define UQ_GCM_PRED_WS_AT_KEY_POINTS_ODV                 0
 
+namespace QUESO {
+
 class uqGcmOptionsValuesClass
 {
 public:
@@ -145,4 +147,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const uqGpmsaComputerModelOptionsClass& obj);
+
+}  // End namespace QUESO
+
 #endif // __UQ_GCM_OPTIONS_H__

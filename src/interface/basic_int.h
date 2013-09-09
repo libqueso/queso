@@ -43,6 +43,4 @@ namespace QUESO_Basic_API
   extern QUESO_Basic_Class *_QUESO_Basic;
 #endif
 
-
-
 }

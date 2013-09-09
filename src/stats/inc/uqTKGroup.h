@@ -32,6 +32,7 @@
 #include <uqVectorRV.h>
 #include <uqScalarFunctionSynchronizer.h>
 
+namespace QUESO {
 
 //*****************************************************
 // Base class
@@ -947,4 +948,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::print(std::ostream& os) const
   uqBaseTKGroupClass<V,M>::print(os);
   return;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_TRANSITION_KERNEL_GROUP_H__

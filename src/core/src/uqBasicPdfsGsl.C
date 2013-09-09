@@ -31,6 +31,8 @@
 #include <mpi.h>
 #include <math.h>
 
+namespace QUESO {
+
 // Default constructor ------------------------------
 uqBasicPdfsGslClass::uqBasicPdfsGslClass()
   :
@@ -77,3 +79,5 @@ uqBasicPdfsGslClass::gammaPdfActualValue(double x, double a, double b) const
 {
   return gsl_ran_gamma_pdf(x,a,b);
 }
+
+}  // End namespace QUESO

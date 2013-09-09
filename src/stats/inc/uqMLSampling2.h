@@ -29,6 +29,8 @@
 #ifndef __UQ_MULTI_LEVEL_SAMPLING2_H__
 #define __UQ_MULTI_LEVEL_SAMPLING2_H__
 
+namespace QUESO {
+
 template <class P_V,class P_M>
 void
 uqMLSamplingClass<P_V,P_M>::checkpointML(
@@ -1992,6 +1994,7 @@ uqMLSamplingClass<P_V,P_M>::generateSequence_Step11_inter0(
 
   return;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_MULTI_LEVEL_SAMPLING2_H__
-
-

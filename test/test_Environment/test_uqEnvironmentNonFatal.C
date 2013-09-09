@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
   MPI_Init(&argc, &argv);
 #endif
 
-  uqEnvOptionsValuesClass options;
+  QUESO::uqEnvOptionsValuesClass options;
   options.m_numSubEnvironments = 1;
   options.m_subDisplayFileName = "debug_output";
   options.m_seed = 1.0;
@@ -27,11 +27,11 @@ int main(int argc, char **argv) {
   /* options.m_subDisplayAllowedSet = subDisplayAllowed; */
   /* options.m_subDisplayAllowAll = 0; */
 
-  uqFullEnvironmentClass *env =
+  QUESO::uqFullEnvironmentClass *env =
 #ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD, "", "", &options);
+    new QUESO::uqFullEnvironmentClass(MPI_COMM_WORLD, "", "", &options);
 #else
-    new uqFullEnvironmentClass(0, "", "", &options);
+    new QUESO::uqFullEnvironmentClass(0, "", "", &options);
 #endif
 
   if (!env->fullEnvIsReady()) {

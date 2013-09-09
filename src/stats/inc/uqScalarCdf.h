@@ -33,6 +33,8 @@
 #include <uqEnvironment.h>
 #include <math.h>
 
+namespace QUESO {
+
 //*****************************************************
 // Classes to accommodate a cumulative distribution function
 //*****************************************************
@@ -713,4 +715,7 @@ horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
 
   return maxDistance;
 }
+
+}  // End namespace QUESO
+
 #endif // __UQ_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__

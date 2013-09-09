@@ -107,8 +107,6 @@ namespace QUESO {
     return(major_version*10000 + minor_version*100 + micro_version);
   }
 
-}
-
 uqFilePtrSetStruct::uqFilePtrSetStruct()
   :
   ofsVar(NULL),
@@ -1276,7 +1274,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
     /*iRC = */gettimeofday(&m_timevalBegin, NULL);
       
     if (m_fullRank == 0) {
-      QUESO::QUESO_version_print(std::cout);
+      QUESO_version_print(std::cout);
     }
       
     if (m_fullRank == 0) {
@@ -1411,7 +1409,7 @@ uqFullEnvironmentClass::uqFullEnvironmentClass(
                         "uqEnvironment::constructor()",
                         "failed to open sub screen file");
 
-    QUESO::QUESO_version_print(*m_subDisplayFile);
+    QUESO_version_print(*m_subDisplayFile);
 
     *m_subDisplayFile << "Beginning run at " << ctime(&m_timevalBegin.tv_sec)
                       << std::endl;
@@ -1531,3 +1529,5 @@ uqFullEnvironmentClass::readOptionsInputFile()
 
   return;
 }
+
+}  // End namespace QUESO

@@ -38,11 +38,11 @@ int main(int argc, char* argv[])
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
 #endif
-  uqFullEnvironmentClass* env =
+  QUESO::uqFullEnvironmentClass* env =
 #ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD,"input","",NULL);
+    new QUESO::uqFullEnvironmentClass(MPI_COMM_WORLD,"input","",NULL);
 #else
-    new uqFullEnvironmentClass(0,"input","",NULL);
+    new QUESO::uqFullEnvironmentClass(0,"input","",NULL);
 #endif
 
   return_flag = actualChecking(env);
@@ -59,23 +59,23 @@ int main(int argc, char* argv[])
 /* Separated this out into a function because we want
    the destructor for paramSpace to be called before
    we delete env in main. */
-int actualChecking(const uqFullEnvironmentClass* env)
+int actualChecking(const QUESO::uqFullEnvironmentClass* env)
 {
   int return_flag = 0;
 
   const double fp_tol = 1.0e-14;
 
   // Instantiate the parameter space
-  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::uqVectorSpaceClass<QUESO::uqGslVectorClass,QUESO::uqGslMatrixClass>
     paramSpace( (*env), "param_", 2, NULL);
 
   // Populate Matrix.
-  uqGslMatrixClass* Matrix = paramSpace.newMatrix();
+  QUESO::uqGslMatrixClass* Matrix = paramSpace.newMatrix();
   (*Matrix)(0,0) = 4.; (*Matrix)(0,1) = 3.;
   (*Matrix)(1,0) = 5.; (*Matrix)(1,1) = 7.;
 
   // Conduct test.
-  uqGslMatrixClass Result( (*Matrix) );
+  QUESO::uqGslMatrixClass Result( (*Matrix) );
 
   Matrix->invertMultiply( (*Matrix), Result );
 

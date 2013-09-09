@@ -34,6 +34,8 @@
 #include <uqEnvironment.h>
 #include <math.h>
 
+namespace QUESO {
+
 //*****************************************************
 // Classes to accommodate a marginal density function
 //*****************************************************
@@ -449,5 +451,7 @@ uqSampledVectorMdfClass<V,M>::print(std::ostream& os) const
 
   return;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_VECTOR_MARGINAL_DENSITY_FUNCTION_H__

@@ -50,6 +50,8 @@
 
 //---------------------------------------------------------
 
+namespace QUESO {
+
 // aqui 1
 #ifdef QUESO_HAS_GLPK
 struct BIP_routine_struct {
@@ -301,10 +303,12 @@ private:
 
 template<class P_V,class P_M>
 std::ostream& operator<<(std::ostream& os, const uqMLSamplingClass<P_V,P_M>& obj);
+}  // End namespace QUESO
 
-#include <uqMLSampling3.h>
-#include <uqMLSampling2.h>
+#include <uqMLSampling3.h>  // We should do something about this
+#include <uqMLSampling2.h>  // We should do something about this
 
+namespace QUESO {
 template<class P_V,class P_M>
 uqMLSamplingClass<P_V,P_M>::uqMLSamplingClass(
   const char*                               prefix,
@@ -1124,5 +1128,7 @@ double uqMLSamplingClass<P_V,P_M>::eig() const
 {
   return m_eig;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_MULTI_LEVEL_SAMPLING1_H__

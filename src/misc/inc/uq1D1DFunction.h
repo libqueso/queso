@@ -37,6 +37,8 @@
 #include <math.h>
 #include <fstream>
 
+namespace QUESO {
+
 /*! \file uqBase1D1DFunction.h
     \brief One-dimension function class.
 */
@@ -692,5 +694,7 @@ uqSubF1F2Gaussian2dKdeIntegral(const uqScalarSequenceClass<T>& scalarSeq1,
 
   return resultValue;
 }
-#endif // __UQ_1D_1D_FUNCTION_H__
 
+}  // End namespace QUESO
+
+#endif // __UQ_1D_1D_FUNCTION_H__

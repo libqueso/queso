@@ -40,6 +40,8 @@
 #include <sys/time.h>
 #include <fstream>
 
+namespace QUESO {
+
 /*! \file uqVectorSequence.h
  * \brief A templated class for handling vector and arrays samples
  * 
@@ -3272,5 +3274,7 @@ uqComputeCovCorrMatricesBetweenVectorSequences(
 
   return;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_VECTOR_SEQUENCE_H__

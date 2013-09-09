@@ -35,6 +35,7 @@
 #include <uqVectorRV.h>
 #include <uqSequenceOfVectors.h>
 
+namespace QUESO {
 
 /*! \file uqStatisticalForwardProblem.h
     \brief Class to solve a Statistical Forward Problem
@@ -583,5 +584,7 @@ std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemClas
 
   return os;
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_SFP_H__

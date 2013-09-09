@@ -35,6 +35,8 @@
 #include <vector>
 #include <complex>
 
+namespace QUESO {
+
 /*! \file uqFft.h
     \brief Matrix class.
 */
@@ -134,5 +136,7 @@ template <class T>
 uqFftClass<T>::~uqFftClass()
 {
 }
+
+}  // End namespace QUESO
 
 #endif // __UQ_FFT_H__
