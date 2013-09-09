@@ -3,6 +3,9 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
+Version 0.47.0 (In progress)
+  * Migrated library to github
+
 Version 0.46 (13 May 2013)
 
   * changed libGRVY linkage to be optional
