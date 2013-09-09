@@ -31,29 +31,29 @@
 namespace QUESO {
 
 // Default constructor -----------------------------
-uqMHRawChainInfoStruct::uqMHRawChainInfoStruct()
+MHRawChainInfoStruct::MHRawChainInfoStruct()
 {
   reset();
 }
 // Copy constructor----------------------------------
-uqMHRawChainInfoStruct::uqMHRawChainInfoStruct(const uqMHRawChainInfoStruct& rhs)
+MHRawChainInfoStruct::MHRawChainInfoStruct(const MHRawChainInfoStruct& rhs)
 {
   this->copy(rhs);
 }
 // Destructor ---------------------------------------
-uqMHRawChainInfoStruct::~uqMHRawChainInfoStruct()
+MHRawChainInfoStruct::~MHRawChainInfoStruct()
 {
 }
 // Set methods---------------------------------------
-uqMHRawChainInfoStruct&
-uqMHRawChainInfoStruct::operator=(const uqMHRawChainInfoStruct& rhs)
+MHRawChainInfoStruct&
+MHRawChainInfoStruct::operator=(const MHRawChainInfoStruct& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 //---------------------------------------------------
-uqMHRawChainInfoStruct&
-uqMHRawChainInfoStruct::operator+=(const uqMHRawChainInfoStruct& rhs)
+MHRawChainInfoStruct&
+MHRawChainInfoStruct::operator+=(const MHRawChainInfoStruct& rhs)
 {
   runTime          += rhs.runTime;
   candidateRunTime += rhs.candidateRunTime;
@@ -73,7 +73,7 @@ uqMHRawChainInfoStruct::operator+=(const uqMHRawChainInfoStruct& rhs)
 }
 // Misc methods--------------------------------------------------
 void
-uqMHRawChainInfoStruct::reset()
+MHRawChainInfoStruct::reset()
 {
   runTime          = 0.;
   candidateRunTime = 0.;
@@ -91,7 +91,7 @@ uqMHRawChainInfoStruct::reset()
 }
 //---------------------------------------------------
 void
-uqMHRawChainInfoStruct::copy(const uqMHRawChainInfoStruct& rhs)
+MHRawChainInfoStruct::copy(const MHRawChainInfoStruct& rhs)
 {
   runTime          = rhs.runTime;
   candidateRunTime = rhs.candidateRunTime;
@@ -111,14 +111,14 @@ uqMHRawChainInfoStruct::copy(const uqMHRawChainInfoStruct& rhs)
 }
 //---------------------------------------------------
 void
-uqMHRawChainInfoStruct::mpiSum(const uqMpiCommClass& comm, uqMHRawChainInfoStruct& sumInfo) const
+MHRawChainInfoStruct::mpiSum(const MpiCommClass& comm, MHRawChainInfoStruct& sumInfo) const
 {
-  comm.Allreduce((void *) &runTime, (void *) &sumInfo.runTime, (int) 7, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
-                 "uqMHRawChainInfoStruct::mpiSum()",
+  comm.Allreduce((void *) &runTime, (void *) &sumInfo.runTime, (int) 7, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
+                 "MHRawChainInfoStruct::mpiSum()",
                  "failed MPI.Allreduce() for sum of doubles");
 
-  comm.Allreduce((void *) &numTargetCalls, (void *) &sumInfo.numTargetCalls, (int) 5, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
-                 "uqMHRawChainInfoStruct::mpiSum()",
+  comm.Allreduce((void *) &numTargetCalls, (void *) &sumInfo.numTargetCalls, (int) 5, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
+                 "MHRawChainInfoStruct::mpiSum()",
                  "failed MPI.Allreduce() for sum of unsigned ints");
 
   return;

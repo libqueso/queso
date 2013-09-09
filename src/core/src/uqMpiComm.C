@@ -32,17 +32,17 @@
 namespace QUESO {
 
 // Default constructor ------------------------------
-uqMpiCommClass::uqMpiCommClass()
+MpiCommClass::MpiCommClass()
   :
-  m_env( *(new uqEmptyEnvironmentClass()) )
+  m_env( *(new EmptyEnvironmentClass()) )
 {
   UQ_FATAL_TEST_MACRO(true,
                       UQ_UNAVAILABLE_RANK,
-                      "uqMpiCommClass::constructor()",
+                      "MpiCommClass::constructor()",
                       "should not be called");
 }
-// QUESO uqMpiComm MPI Constructor ------------------
-uqMpiCommClass::uqMpiCommClass(const uqBaseEnvironmentClass& env, uqRawType_MPI_Comm inputRawComm)
+// QUESO MpiComm MPI Constructor ------------------
+MpiCommClass::MpiCommClass(const BaseEnvironmentClass& env, RawType_MPI_Comm inputRawComm)
   :
   m_env          (env),
 #ifdef QUESO_HAS_TRILINOS
@@ -57,19 +57,19 @@ uqMpiCommClass::uqMpiCommClass(const uqBaseEnvironmentClass& env, uqRawType_MPI_
   int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       UQ_UNAVAILABLE_RANK,
-                      "uqMpiCommClass::constructor()",
+                      "MpiCommClass::constructor()",
                       "failed MPI_Comm_rank() on MPI_COMM_WORLD");
 
   mpiRC = MPI_Comm_rank(inputRawComm,&m_myPid);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "uqMpiCommClass::constructor()",
+                      "MpiCommClass::constructor()",
                       "failed MPI_Comm_rank() on inputRawComm");
 
   mpiRC = MPI_Comm_size(inputRawComm,&m_numProc);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "uqMpiCommClass::constructor()",
+                      "MpiCommClass::constructor()",
                       "failed MPI_Comm_size() on inputRawComm");
 #else
   m_worldRank = 0;
@@ -79,7 +79,7 @@ uqMpiCommClass::uqMpiCommClass(const uqBaseEnvironmentClass& env, uqRawType_MPI_
 }
 
 // Copy constructor ---------------------------------
-uqMpiCommClass::uqMpiCommClass(const uqMpiCommClass& src)
+MpiCommClass::MpiCommClass(const MpiCommClass& src)
   :
   m_env          (src.m_env)
 #ifdef QUESO_HAS_TRILINOS
@@ -91,7 +91,7 @@ uqMpiCommClass::uqMpiCommClass(const uqMpiCommClass& src)
 }
 
 // Destructor ---------------------------------------
-uqMpiCommClass::~uqMpiCommClass()
+MpiCommClass::~MpiCommClass()
 {
 #ifdef QUESO_HAS_TRILINOS
   delete m_epetraMpiComm;
@@ -101,16 +101,16 @@ uqMpiCommClass::~uqMpiCommClass()
 
 // --------------------------------------------------
 // Set methodos -------------------------------------
-uqMpiCommClass&
-uqMpiCommClass::operator=(const uqMpiCommClass& rhs)
+MpiCommClass&
+MpiCommClass::operator=(const MpiCommClass& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 
 // Attribute access methods -------------------------
-uqRawType_MPI_Comm
-uqMpiCommClass::Comm() const
+RawType_MPI_Comm
+MpiCommClass::Comm() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->Comm();
@@ -119,7 +119,7 @@ uqMpiCommClass::Comm() const
 }
 // --------------------------------------------------
 int
-uqMpiCommClass::MyPID() const
+MpiCommClass::MyPID() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->MyPID();
@@ -128,7 +128,7 @@ uqMpiCommClass::MyPID() const
 }
 // --------------------------------------------------
 int
-uqMpiCommClass::NumProc() const
+MpiCommClass::NumProc() const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->NumProc();
@@ -138,7 +138,7 @@ uqMpiCommClass::NumProc() const
 // Methods overridden from Comm ---------------------
 
 void
-uqMpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, uqRawType_MPI_Datatype datatype, uqRawType_MPI_Op op, const char* whereMsg, const char* whatMsg) const
+MpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, RawType_MPI_Datatype datatype, RawType_MPI_Op op, const char* whereMsg, const char* whatMsg) const
 {
 #ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Allreduce(sendbuf, recvbuf, count, datatype, op, m_rawComm);
@@ -156,7 +156,7 @@ uqMpiCommClass::Allreduce(void* sendbuf, void* recvbuf, int count, uqRawType_MPI
 }
 //--------------------------------------------------
 void
-uqMpiCommClass::Barrier() const // const char* whereMsg, const char* whatMsg) const
+MpiCommClass::Barrier() const // const char* whereMsg, const char* whatMsg) const
 {
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->Barrier();
@@ -165,7 +165,7 @@ uqMpiCommClass::Barrier() const // const char* whereMsg, const char* whatMsg) co
   int mpiRC = MPI_Barrier(m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
-                      "uqMPICommClass::Barrier()", // whereMsg,
+                      "MPICommClass::Barrier()", // whereMsg,
                       "mpiRC indicates failure");  // whatMsg);
 #else
   // Nothing needs to be done
@@ -174,7 +174,7 @@ uqMpiCommClass::Barrier() const // const char* whereMsg, const char* whatMsg) co
 }
 //--------------------------------------------------
 void
-uqMpiCommClass::Bcast(void* buffer, int count, uqRawType_MPI_Datatype datatype, int root, const char* whereMsg, const char* whatMsg) const
+MpiCommClass::Bcast(void* buffer, int count, RawType_MPI_Datatype datatype, int root, const char* whereMsg, const char* whatMsg) const
 {
 #ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Bcast(buffer, count, datatype, root, m_rawComm);
@@ -189,9 +189,9 @@ uqMpiCommClass::Bcast(void* buffer, int count, uqRawType_MPI_Datatype datatype, 
 }
 //--------------------------------------------------
 void
-uqMpiCommClass::Gather(
-  void* sendbuf, int sendcnt, uqRawType_MPI_Datatype sendtype, 
-  void* recvbuf, int recvcount, uqRawType_MPI_Datatype recvtype, 
+MpiCommClass::Gather(
+  void* sendbuf, int sendcnt, RawType_MPI_Datatype sendtype, 
+  void* recvbuf, int recvcount, RawType_MPI_Datatype recvtype, 
   int root,
   const char* whereMsg, const char* whatMsg) const
 {
@@ -212,7 +212,7 @@ uqMpiCommClass::Gather(
   size_t sendTotal = sendDataTypeSize*sendcnt;
   size_t recvTotal = recvDataTypeSize*recvcount;
   if (sendTotal != recvTotal) {
-    std::cerr << "uqMpiCommClass::Gather()"
+    std::cerr << "MpiCommClass::Gather()"
               << ": sendTotal != recvTotal"
               << std::endl;
   }
@@ -226,9 +226,9 @@ uqMpiCommClass::Gather(
 }
 //-------------------------------------------------- 
 void
-uqMpiCommClass::Gatherv(
-  void* sendbuf, int sendcnt, uqRawType_MPI_Datatype sendtype, 
-  void* recvbuf, int* recvcnts, int* displs, uqRawType_MPI_Datatype recvtype, 
+MpiCommClass::Gatherv(
+  void* sendbuf, int sendcnt, RawType_MPI_Datatype sendtype, 
+  void* recvbuf, int* recvcnts, int* displs, RawType_MPI_Datatype recvtype, 
   int root,
   const char* whereMsg, const char* whatMsg) const
 {
@@ -249,7 +249,7 @@ uqMpiCommClass::Gatherv(
   size_t sendTotal = sendDataTypeSize*sendcnt;
   size_t recvTotal = recvDataTypeSize*recvcnts[0];
   if (sendTotal != recvTotal) {
-    std::cerr << "uqMpiCommClass::Gatherv()"
+    std::cerr << "MpiCommClass::Gatherv()"
               << ": sendTotal != recvTotal"
               << std::endl;
   }
@@ -263,8 +263,8 @@ uqMpiCommClass::Gatherv(
 }
 //--------------------------------------------------
 void
-uqMpiCommClass::Recv(
-  void* buf, int count, uqRawType_MPI_Datatype datatype, int source, int tag, uqRawType_MPI_Status* status,
+MpiCommClass::Recv(
+  void* buf, int count, RawType_MPI_Datatype datatype, int source, int tag, RawType_MPI_Status* status,
   const char* whereMsg, const char* whatMsg) const
 {
 #ifdef QUESO_HAS_MPI
@@ -274,7 +274,7 @@ uqMpiCommClass::Recv(
                       whereMsg,
                       whatMsg);
 #else
-  std::cerr << "uqMpiCommClass::Recv()"
+  std::cerr << "MpiCommClass::Recv()"
             << ": should note be used if there is no 'mpi'"
             << std::endl;
   UQ_FATAL_TEST_MACRO(true,
@@ -286,8 +286,8 @@ uqMpiCommClass::Recv(
 }
 //--------------------------------------------------
 void
-uqMpiCommClass::Send(
-  void* buf, int count, uqRawType_MPI_Datatype datatype, int dest, int tag,
+MpiCommClass::Send(
+  void* buf, int count, RawType_MPI_Datatype datatype, int dest, int tag,
   const char* whereMsg, const char* whatMsg) const
 {
 #ifdef QUESO_HAS_MPI
@@ -297,7 +297,7 @@ uqMpiCommClass::Send(
                       whereMsg,
                       whatMsg);
 #else
-  std::cerr << "uqMpiCommClass::Send()"
+  std::cerr << "MpiCommClass::Send()"
             << ": should note be used if there is no 'mpi'"
             << std::endl;
   UQ_FATAL_TEST_MACRO(true,
@@ -309,7 +309,7 @@ uqMpiCommClass::Send(
 }
 // Misc methods ------------------------------------
 void
-uqMpiCommClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs) const
+MpiCommClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, unsigned int numUSecs) const
 {
   if (m_env.syncVerbosity() >= msgVerbosity) {
     this->Barrier();
@@ -336,7 +336,7 @@ uqMpiCommClass::syncPrintDebugMsg(const char* msg, unsigned int msgVerbosity, un
 // -------------------------------------------------
 #ifdef QUESO_HAS_TRILINOS
 const Epetra_MpiComm&
-uqMpiCommClass::epetraMpiComm() const
+MpiCommClass::epetraMpiComm() const
 {
   return *m_epetraMpiComm;
 }
@@ -344,7 +344,7 @@ uqMpiCommClass::epetraMpiComm() const
 
 // Private methods----------------------------------
 void
-uqMpiCommClass::copy(const uqMpiCommClass& src)
+MpiCommClass::copy(const MpiCommClass& src)
 {
 #ifdef QUESO_HAS_TRILINOS
   delete m_epetraMpiComm;
@@ -361,29 +361,29 @@ uqMpiCommClass::copy(const uqMpiCommClass& src)
 #ifdef QUESO_HAS_MPI
 #else
 size_t 
-uqMpiCommClass::sizeOfDataType(uqRawType_MPI_Datatype datatype, const char* whereMsg, const char* whatMsg) const
+MpiCommClass::sizeOfDataType(RawType_MPI_Datatype datatype, const char* whereMsg, const char* whatMsg) const
 {
   size_t dataTypeSize = 0;
 
   switch (datatype) {
-    case uqRawValue_MPI_CHAR:
+    case RawValue_MPI_CHAR:
       dataTypeSize = sizeof(char);
     break;
 
-    case uqRawValue_MPI_INT:
+    case RawValue_MPI_INT:
       dataTypeSize = sizeof(int);
     break;
 
-    case uqRawValue_MPI_DOUBLE:
+    case RawValue_MPI_DOUBLE:
       dataTypeSize = sizeof(double);
     break;
 
-    case uqRawValue_MPI_UNSIGNED:
+    case RawValue_MPI_UNSIGNED:
       dataTypeSize = sizeof(unsigned int);
     break;
 
     default: 
-      std::cerr << "uqMpiCommClass::Allreduce()"
+      std::cerr << "MpiCommClass::Allreduce()"
                 << ": datatype not supported yet"
                 << std::endl;
       UQ_FATAL_TEST_MACRO(true,

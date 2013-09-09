@@ -43,22 +43,22 @@ namespace QUESO {
 //*****************************************************
 // Base 1D quadrature class
 //*****************************************************
-/*! \class uqBase1DQuadratureClass
+/*! \class Base1DQuadratureClass
     \brief Base class for one-dimensional quadrature rules (numerical integration of functions). 
     
     Base class for numerical integration via quadrature rules of one-dimensional functions. 
 */
 class
-uqBase1DQuadratureClass {
+Base1DQuadratureClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.  
-  uqBase1DQuadratureClass(double minDomainValue,
+  Base1DQuadratureClass(double minDomainValue,
 			  double maxDomainValue,
 			  unsigned int order);
   //! Virtual destructor.
-  virtual ~uqBase1DQuadratureClass();
+  virtual ~Base1DQuadratureClass();
   //@}
   
   //! @name Mathematical  methods
@@ -93,23 +93,23 @@ protected:
 //*****************************************************
 // Generic 1D quadrature class
 //*****************************************************
-/*! \class uqGeneric1DQuadratureClass
+/*! \class Generic1DQuadratureClass
     \brief Class for one-dimensional generic quadrature rules (numerical integration of functions). 
     
     Class for generic quadrature rules for numerical integration of one-dimensional functions. 
 */
-class uqGeneric1DQuadratureClass : public uqBase1DQuadratureClass {
+class Generic1DQuadratureClass : public Base1DQuadratureClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqGeneric1DQuadratureClass(double minDomainValue,
+  Generic1DQuadratureClass(double minDomainValue,
                              double maxDomainValue,
                              const std::vector<double>& positions,
                              const std::vector<double>& weights);
  
   //! Destructor.
-  ~uqGeneric1DQuadratureClass();
+  ~Generic1DQuadratureClass();
  //@}
   
   //! @name Mathematical  methods
@@ -118,17 +118,17 @@ public:
   void dumbRoutine() const;
   //@}
 protected:
-  using uqBase1DQuadratureClass::m_minDomainValue;
-  using uqBase1DQuadratureClass::m_maxDomainValue;
-  using uqBase1DQuadratureClass::m_order;
-  using uqBase1DQuadratureClass::m_positions;
-  using uqBase1DQuadratureClass::m_weights;
+  using Base1DQuadratureClass::m_minDomainValue;
+  using Base1DQuadratureClass::m_maxDomainValue;
+  using Base1DQuadratureClass::m_order;
+  using Base1DQuadratureClass::m_positions;
+  using Base1DQuadratureClass::m_weights;
 };
 
 //*****************************************************
 // Uniform/Legendre 1D quadrature class
 //*****************************************************
-/*! \class uqUniformLegendre1DQuadratureClass
+/*! \class UniformLegendre1DQuadratureClass
  *    \brief Class for Legendre-Gauss quadrature rule for one-dimensional functions.     
  * 
  * In a general Gaussian quadrature rule, an definite integral of \f$ f(x)\f$ is first 
@@ -163,7 +163,7 @@ protected:
  *
  * \see Weisstein, Eric W. "Legendre-Gauss Quadrature." From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/Legendre-GaussQuadrature.html.*/
 
-class uqUniformLegendre1DQuadratureClass : public uqBase1DQuadratureClass {
+class UniformLegendre1DQuadratureClass : public Base1DQuadratureClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
@@ -174,12 +174,12 @@ public:
    * of the quadrature from the interval [-1,1] to <c>[minDomainValue,maxDomainValue]</c>, 
    * and the parameter \c densityIsNormalized determines whether the weights should be 
    * scaled as well. */
-  uqUniformLegendre1DQuadratureClass(double       minDomainValue,
+  UniformLegendre1DQuadratureClass(double       minDomainValue,
                                      double       maxDomainValue,
                                      unsigned int order,
                                      bool         densityIsNormalized);
   //! Destructor.
-  ~uqUniformLegendre1DQuadratureClass();
+  ~UniformLegendre1DQuadratureClass();
   //@}
   
   //! @name Mathematical  methods
@@ -188,17 +188,17 @@ public:
   void dumbRoutine() const;
   //@}
 protected:
-  using uqBase1DQuadratureClass::m_minDomainValue;
-  using uqBase1DQuadratureClass::m_maxDomainValue;
-  using uqBase1DQuadratureClass::m_order;
-  using uqBase1DQuadratureClass::m_positions;
-  using uqBase1DQuadratureClass::m_weights;
+  using Base1DQuadratureClass::m_minDomainValue;
+  using Base1DQuadratureClass::m_maxDomainValue;
+  using Base1DQuadratureClass::m_order;
+  using Base1DQuadratureClass::m_positions;
+  using Base1DQuadratureClass::m_weights;
 };
 
 //*****************************************************
 // Gaussian/Hermite 1D quadrature class
 //*****************************************************
-/*! \class uqGaussianHermite1DQuadratureClass
+/*! \class GaussianHermite1DQuadratureClass
  *  \brief Class for Hermite-Gauss quadrature rule for one-dimensional functions.     
  * 
  * Hermite-Gauss quadrature, also called Hermite quadrature, is a Gaussian quadrature 
@@ -220,7 +220,7 @@ protected:
 </table>
  *  \see Weisstein, Eric W. "Hermite-Gauss Quadrature." From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/Hermite-GaussQuadrature.html.*/
 
-class uqGaussianHermite1DQuadratureClass : public uqBase1DQuadratureClass {
+class GaussianHermite1DQuadratureClass : public Base1DQuadratureClass {
 public:
    //! @name Constructor/Destructor methods
   //@{ 
@@ -228,11 +228,11 @@ public:
   /*! Constructs a Gaussian-Hermite quadrature of order \c order.
    * Valid values for the order of the  quadrature rule are: 1-9, 19.
    * \todo: Prepare the code to include both parameters \c mean and \c stddev. */
-  uqGaussianHermite1DQuadratureClass(double       mean,
+  GaussianHermite1DQuadratureClass(double       mean,
                                      double       stddev,
                                      unsigned int order);
   //! Destructor.
-  ~uqGaussianHermite1DQuadratureClass();
+  ~GaussianHermite1DQuadratureClass();
   //@}
   
   //! @name Mathematical  methods
@@ -241,11 +241,11 @@ public:
   void dumbRoutine() const;
   //@}
 protected:
-  using uqBase1DQuadratureClass::m_minDomainValue;
-  using uqBase1DQuadratureClass::m_maxDomainValue;
-  using uqBase1DQuadratureClass::m_order;
-  using uqBase1DQuadratureClass::m_positions;
-  using uqBase1DQuadratureClass::m_weights;
+  using Base1DQuadratureClass::m_minDomainValue;
+  using Base1DQuadratureClass::m_maxDomainValue;
+  using Base1DQuadratureClass::m_order;
+  using Base1DQuadratureClass::m_positions;
+  using Base1DQuadratureClass::m_weights;
 
   double m_mean;
   double m_stddev;
@@ -254,7 +254,7 @@ protected:
 //*****************************************************
 // Wigner/Chebyshev1st 1D quadrature class
 //*****************************************************
-/*! \class uqWignerInverseChebyshev1st1DQuadratureClass
+/*! \class WignerInverseChebyshev1st1DQuadratureClass
  *  \brief Class for first type Chebyshev-Gauss quadrature rule for one-dimensional functions.     
  * 
  * Chebyshev-Gauss quadrature, also called Chebyshev Type 1 quadrature, is a Gaussian 
@@ -268,7 +268,7 @@ protected:
  * \see Weisstein, Eric W. "Chebyshev-Gauss Quadrature." From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/Chebyshev-GaussQuadrature.html.
  * \see http://en.wikipedia.org/wiki/Chebyshev-Gauss_quadrature. */
 
-class uqWignerInverseChebyshev1st1DQuadratureClass : public uqBase1DQuadratureClass {
+class WignerInverseChebyshev1st1DQuadratureClass : public Base1DQuadratureClass {
 public:
    //! @name Constructor/Destructor methods
   //@{ 
@@ -277,11 +277,11 @@ public:
    * \c order, in the interval <c>[minDomainValue,maxDomainValue]</c>. This method 
    * scales the the abscissas (positions) of the quadrature from the interval [-1,1]
    * to <c>[minDomainValue,maxDomainValue]</c>. */ 
-  uqWignerInverseChebyshev1st1DQuadratureClass(double       minDomainValue,
+  WignerInverseChebyshev1st1DQuadratureClass(double       minDomainValue,
                                                double       maxDomainValue,
                                                unsigned int order);
   //! Destructor.
-  ~uqWignerInverseChebyshev1st1DQuadratureClass();
+  ~WignerInverseChebyshev1st1DQuadratureClass();
   //@}
   
   //! @name Mathematical  methods
@@ -290,17 +290,17 @@ public:
   void dumbRoutine() const;
   //@}
 protected:
-  using uqBase1DQuadratureClass::m_minDomainValue;
-  using uqBase1DQuadratureClass::m_maxDomainValue;
-  using uqBase1DQuadratureClass::m_order;
-  using uqBase1DQuadratureClass::m_positions;
-  using uqBase1DQuadratureClass::m_weights;
+  using Base1DQuadratureClass::m_minDomainValue;
+  using Base1DQuadratureClass::m_maxDomainValue;
+  using Base1DQuadratureClass::m_order;
+  using Base1DQuadratureClass::m_positions;
+  using Base1DQuadratureClass::m_weights;
 };
 
 //*****************************************************
 // Wigner/Chebyshev2nd 1D quadrature class
 //*****************************************************
-/*! \class uqWignerChebyshev2nd1DQuadratureClass
+/*! \class WignerChebyshev2nd1DQuadratureClass
  *  \brief Class for second type Chebyshev-Gauss quadrature rule for one-dimensional functions.     
  * 
  * Chebyshev-Gauss quadrature, also called Chebyshev Type 2 quadrature, is a Gaussian 
@@ -314,7 +314,7 @@ protected:
  * \see  Weisstein, Eric W. "Gaussian Quadrature." From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/GaussianQuadrature.html.
  * \see http://en.wikipedia.org/wiki/Chebyshev-Gauss_quadrature. */
 
-class uqWignerChebyshev2nd1DQuadratureClass : public uqBase1DQuadratureClass {
+class WignerChebyshev2nd1DQuadratureClass : public Base1DQuadratureClass {
 public:
     //! @name Constructor/Destructor methods
   //@{ 
@@ -324,11 +324,11 @@ public:
    * abscissas (positions) of the quadrature from the interval [-1,1] to 
    * <c>[minDomainValue,maxDomainValue]</c>.*/ 
     
-  uqWignerChebyshev2nd1DQuadratureClass(double       minDomainValue,
+  WignerChebyshev2nd1DQuadratureClass(double       minDomainValue,
                                         double       maxDomainValue,
                                         unsigned int order);
   //! Destructor.
-  ~uqWignerChebyshev2nd1DQuadratureClass();
+  ~WignerChebyshev2nd1DQuadratureClass();
   //@}
   
   //! @name Mathematical  methods
@@ -337,11 +337,11 @@ public:
   void dumbRoutine() const;
   //@}
 protected:
-  using uqBase1DQuadratureClass::m_minDomainValue;
-  using uqBase1DQuadratureClass::m_maxDomainValue;
-  using uqBase1DQuadratureClass::m_order;
-  using uqBase1DQuadratureClass::m_positions;
-  using uqBase1DQuadratureClass::m_weights;
+  using Base1DQuadratureClass::m_minDomainValue;
+  using Base1DQuadratureClass::m_maxDomainValue;
+  using Base1DQuadratureClass::m_order;
+  using Base1DQuadratureClass::m_positions;
+  using Base1DQuadratureClass::m_weights;
 };
 
 }  // End namespace QUESO

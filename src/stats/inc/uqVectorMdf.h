@@ -46,7 +46,7 @@ namespace QUESO {
 /*! \file uqVectorMdf.h
  * \brief Classes to accommodate a marginal density function of a vector RV.
  * 
- * \class uqBaseVectorMdfClass
+ * \class BaseVectorMdfClass
  * \brief A templated (base) class for handling MDFs of vector functions.
  * 
  * To obtain the marginal distribution over a subset of multivariate (vector) RVs, one only 
@@ -57,22 +57,22 @@ namespace QUESO {
  * This class handles MDFs of a vector RV.*/
 
 template<class V, class M>
-class uqBaseVectorMdfClass {
+class BaseVectorMdfClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class  given a prefix and domain set of the MDF.*/
-  uqBaseVectorMdfClass(const char*                  prefix,
-                                const uqVectorSetClass<V,M>& domainSet);
+  BaseVectorMdfClass(const char*                  prefix,
+                                const VectorSetClass<V,M>& domainSet);
   //! Virtual destructor.
-  virtual ~uqBaseVectorMdfClass();
+  virtual ~BaseVectorMdfClass();
   //@}
 
   //! @name Mathematical methods
   //@{ 
   //! Returns the domain set; access to protected attribute m_domainSet.
-  const   uqVectorSetClass<V,M>& domainSet() const;
+  const   VectorSetClass<V,M>& domainSet() const;
   
   //! Finds the value of the vector MDF at each element of \c paramValue, and saves it in \c mdfVec. See template specialization.  
   virtual void                   values   (const V& paramValues,
@@ -87,41 +87,41 @@ public:
 
 protected:
 
-  const   uqBaseEnvironmentClass& m_env;
+  const   BaseEnvironmentClass& m_env;
           std::string             m_prefix;
-  const   uqVectorSetClass<V,M>&  m_domainSet;
+  const   VectorSetClass<V,M>&  m_domainSet;
 };
 // Default constructor -----------------------------
 template<class V, class M>
-uqBaseVectorMdfClass<V,M>::uqBaseVectorMdfClass(
+BaseVectorMdfClass<V,M>::BaseVectorMdfClass(
   const char*                  prefix,
-  const uqVectorSetClass<V,M>& domainSet)
+  const VectorSetClass<V,M>& domainSet)
   :
   m_env      (domainSet.env()),
   m_prefix   ((std::string)(prefix)+"Mdf_"),
   m_domainSet(domainSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqBaseVectorMdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering BaseVectorMdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqBaseVectorMdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving BaseVectorMdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-uqBaseVectorMdfClass<V,M>::~uqBaseVectorMdfClass()
+BaseVectorMdfClass<V,M>::~BaseVectorMdfClass()
 {
 }
 // Math methods--------------------------------------
 template<class V, class M>
-const uqVectorSetClass<V,M>&
-uqBaseVectorMdfClass<V,M>::domainSet() const
+const VectorSetClass<V,M>&
+BaseVectorMdfClass<V,M>::domainSet() const
 {
   return m_domainSet;
 }
@@ -129,23 +129,23 @@ uqBaseVectorMdfClass<V,M>::domainSet() const
 //*****************************************************
 // Generic marginal density function
 //*****************************************************
-/*!\class uqGenericVectorMdfClass
+/*!\class GenericVectorMdfClass
  * \brief A class for handling generic MDFs of vector functions. */
 
 template<class V, class M>
-class uqGenericVectorMdfClass : public uqBaseVectorMdfClass<V,M> {
+class GenericVectorMdfClass : public BaseVectorMdfClass<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Constructor.
   /*! Instantiates an object of the class given a prefix, the domain set, and a routine 
    * (acting as a math function). */  
-  uqGenericVectorMdfClass(const char*                    prefix,
-                          const uqVectorSetClass<V,M>& domainSet,
+  GenericVectorMdfClass(const char*                    prefix,
+                          const VectorSetClass<V,M>& domainSet,
                           double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec),
                           const void* routineDataPtr);
   //! Destructor
- ~uqGenericVectorMdfClass();
+ ~GenericVectorMdfClass();
   //@}
 
     //! @name Mathematical method
@@ -165,32 +165,32 @@ protected:
   double (*m_routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec);
   const void* m_routineDataPtr;
 
-  using uqBaseVectorMdfClass<V,M>::m_env;
-  using uqBaseVectorMdfClass<V,M>::m_prefix;
-  using uqBaseVectorMdfClass<V,M>::m_domainSet;
+  using BaseVectorMdfClass<V,M>::m_env;
+  using BaseVectorMdfClass<V,M>::m_prefix;
+  using BaseVectorMdfClass<V,M>::m_domainSet;
 };
 // Default constructor -----------------------------
 template<class V, class M>
-uqGenericVectorMdfClass<V,M>::uqGenericVectorMdfClass(
+GenericVectorMdfClass<V,M>::GenericVectorMdfClass(
   const char*                    prefix,
-  const uqVectorSetClass<V,M>& domainSet,
+  const VectorSetClass<V,M>& domainSet,
   double (*routinePtr)(const V& paramValues, const void* routineDataPtr, V& mdfVec),
   const void* routineDataPtr)
   :
-  uqBaseVectorMdfClass<V,M>(prefix,domainSet),
+  BaseVectorMdfClass<V,M>(prefix,domainSet),
   m_routinePtr    (routinePtr),
   m_routineDataPtr(routineDataPtr)
 {
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-uqGenericVectorMdfClass<V,M>::~uqGenericVectorMdfClass()
+GenericVectorMdfClass<V,M>::~GenericVectorMdfClass()
 {
 }
 // Math methods--------------------------------------
 template<class V, class M>
 void
-uqGenericVectorMdfClass<V,M>::values(
+GenericVectorMdfClass<V,M>::values(
   const V& paramValues,
         V& mdfVec) const
 {
@@ -200,7 +200,7 @@ uqGenericVectorMdfClass<V,M>::values(
 // I/O methods---------------------------------------
 template <class V, class M>
 void
-uqGenericVectorMdfClass<V,M>::print(std::ostream& os) const
+GenericVectorMdfClass<V,M>::print(std::ostream& os) const
 {
   return;
 }
@@ -209,14 +209,14 @@ uqGenericVectorMdfClass<V,M>::print(std::ostream& os) const
 // Gaussian marginal density function class
 //*****************************************************
 /*! 
- * \class uqGaussianVectorMdfClass
+ * \class GaussianVectorMdfClass
  * \brief TODO: A class for handling Gaussian MDFs.
  *
  * This class \b will implement a Gaussian vector marginal density function function (MDF).
  * \todo: Implement me! */
 
 template<class V, class M>
-class uqGaussianVectorMdfClass : public uqBaseVectorMdfClass<V,M> {
+class GaussianVectorMdfClass : public BaseVectorMdfClass<V,M> {
 public:
     //! @name Constructor/Destructor methods
   //@{ 
@@ -224,20 +224,20 @@ public:
   /*! \todo: implement me! This method calls commonConstructor() which is not yet implemented.
    * Instantiates an object of the class given a prefix, the domain set, and the domain mean 
    * and expected values. */
-  uqGaussianVectorMdfClass(const char*                    prefix,
-                           const uqVectorSetClass<V,M>& domainSet,
+  GaussianVectorMdfClass(const char*                    prefix,
+                           const VectorSetClass<V,M>& domainSet,
                            const V&                       domainExpectedValues,
                            const V&                       domainVarianceValues);
   //! TODO: Constructor.
   /*! \todo: implement me! This method calls commonConstructor() which is not yet implemented.
    * Instantiates an object of the class given a prefix, the domain set, and the domain mean 
    * and covariance matrix. */
-  uqGaussianVectorMdfClass(const char*                    prefix,
-                           const uqVectorSetClass<V,M>& domainSet,
+  GaussianVectorMdfClass(const char*                    prefix,
+                           const VectorSetClass<V,M>& domainSet,
                            const V&                       domainExpectedValues,
                            const M&                       covMatrix);
   //! Destructor
-  ~uqGaussianVectorMdfClass();
+  ~GaussianVectorMdfClass();
   //@}
 
   //! @name Mathematical method
@@ -257,25 +257,25 @@ public:
 protected:
   const M*                         m_covMatrix;
 
-  using uqBaseVectorMdfClass<V,M>::m_env;
-  using uqBaseVectorMdfClass<V,M>::m_prefix;
-  using uqBaseVectorMdfClass<V,M>::m_domainSet;
+  using BaseVectorMdfClass<V,M>::m_env;
+  using BaseVectorMdfClass<V,M>::m_prefix;
+  using BaseVectorMdfClass<V,M>::m_domainSet;
 
   void commonConstructor();
 };
 // Constructor -------------------------------------
 template<class V,class M>
-uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
+GaussianVectorMdfClass<V,M>::GaussianVectorMdfClass(
   const char*                    prefix,
-  const uqVectorSetClass<V,M>& domainSet,
+  const VectorSetClass<V,M>& domainSet,
   const V&                       domainExpectedValues,
   const V&                       domainVarianceValues)
   :
-  uqBaseVectorMdfClass<V,M>(prefix,domainSet),
+  BaseVectorMdfClass<V,M>(prefix,domainSet),
   m_covMatrix              (m_domainSet.newDiagMatrix(domainVarianceValues*domainVarianceValues))
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Entering GaussianVectorMdfClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -283,24 +283,24 @@ uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
   commonConstructor();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [1]"
+    *m_env.subDisplayFile() << "Leaving GaussianVectorMdfClass<V,M>::constructor() [1]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 }
 // Constructor -------------------------------------
 template<class V,class M>
-uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
+GaussianVectorMdfClass<V,M>::GaussianVectorMdfClass(
   const char*                    prefix,
-  const uqVectorSetClass<V,M>& domainSet,
+  const VectorSetClass<V,M>& domainSet,
   const V&                       domainExpectedValues,
   const M&                       covMatrix)
   :
-  uqBaseVectorMdfClass<V,M>(prefix,domainSet),
+  BaseVectorMdfClass<V,M>(prefix,domainSet),
   m_covMatrix              (new M(covMatrix))
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqGaussianVectorMdfClass<V,M>::constructor() [2]"
+    *m_env.subDisplayFile() << "Entering GaussianVectorMdfClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
@@ -308,45 +308,45 @@ uqGaussianVectorMdfClass<V,M>::uqGaussianVectorMdfClass(
   commonConstructor();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqGaussianVectorMdfClass<V,M>::constructor() [2]"
+    *m_env.subDisplayFile() << "Leaving GaussianVectorMdfClass<V,M>::constructor() [2]"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 }
 // Destructor -------------------------------------
 template<class V,class M>
-uqGaussianVectorMdfClass<V,M>::~uqGaussianVectorMdfClass()
+GaussianVectorMdfClass<V,M>::~GaussianVectorMdfClass()
 {
   delete m_covMatrix;
 }
 // Math method -------------------------------------
 template<class V, class M>
 void
-uqGaussianVectorMdfClass<V,M>::values(
+GaussianVectorMdfClass<V,M>::values(
   const V& paramValues,
         V& mdfVec) const
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
-                      "uqGaussianVectorMdfClass<V,M>::mdfVec()",
+                      "GaussianVectorMdfClass<V,M>::mdfVec()",
                       "incomplete code");
   return;
 }
 // I/O method --------------------------------------
 template <class V, class M>
 void
-uqGaussianVectorMdfClass<V,M>::print(std::ostream& os) const
+GaussianVectorMdfClass<V,M>::print(std::ostream& os) const
 {
   return;
 }
 // Protected member function------------------------
 template<class V,class M>
 void
-uqGaussianVectorMdfClass<V,M>::commonConstructor()
+GaussianVectorMdfClass<V,M>::commonConstructor()
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
-                      "uqGaussianVectorMdfClass<V,M>::commonConstructor()",
+                      "GaussianVectorMdfClass<V,M>::commonConstructor()",
                       "incomplete code");
   return;
 }
@@ -355,25 +355,25 @@ uqGaussianVectorMdfClass<V,M>::commonConstructor()
 // Sampled marginal density function class
 //*****************************************************
 /*! 
- * \class uqSampledVectorMdfClass
+ * \class SampledVectorMdfClass
  * \brief A class for handling sampled vector MDFs.
  *
  * This class implements a sampled vector marginal density function (MDF), given 
  * the grid points where it will be sampled and it returns its values.*/
 
 template<class V, class M>
-class uqSampledVectorMdfClass : public uqBaseVectorMdfClass<V,M> {
+class SampledVectorMdfClass : public BaseVectorMdfClass<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class given a prefix and the grid points 
    * where it will be sampled/evaluated.*/
-  uqSampledVectorMdfClass(const char*                          prefix,
-                          const uqArrayOfOneDGridsClass <V,M>& oneDGrids,
-                          const uqArrayOfOneDTablesClass<V,M>& mdfValues);
+  SampledVectorMdfClass(const char*                          prefix,
+                          const ArrayOfOneDGridsClass <V,M>& oneDGrids,
+                          const ArrayOfOneDTablesClass<V,M>& mdfValues);
   //! Destructor
-  ~uqSampledVectorMdfClass();
+  ~SampledVectorMdfClass();
   //@}
   
   //! @name Mathematical methods
@@ -390,58 +390,58 @@ public:
   //@}
 
 protected:
-  using uqBaseVectorMdfClass<V,M>::m_env;
-  using uqBaseVectorMdfClass<V,M>::m_prefix;
-  using uqBaseVectorMdfClass<V,M>::m_domainSet;
+  using BaseVectorMdfClass<V,M>::m_env;
+  using BaseVectorMdfClass<V,M>::m_prefix;
+  using BaseVectorMdfClass<V,M>::m_domainSet;
 
-  const uqArrayOfOneDGridsClass <V,M>& m_oneDGrids;
-  const uqArrayOfOneDTablesClass<V,M>& m_mdfValues;
+  const ArrayOfOneDGridsClass <V,M>& m_oneDGrids;
+  const ArrayOfOneDTablesClass<V,M>& m_mdfValues;
 };
 // Default constructor -----------------------------
 template<class V,class M>
-uqSampledVectorMdfClass<V,M>::uqSampledVectorMdfClass(
+SampledVectorMdfClass<V,M>::SampledVectorMdfClass(
   const char*                          prefix,
-  const uqArrayOfOneDGridsClass <V,M>& oneDGrids,
-  const uqArrayOfOneDTablesClass<V,M>& mdfValues)
+  const ArrayOfOneDGridsClass <V,M>& oneDGrids,
+  const ArrayOfOneDTablesClass<V,M>& mdfValues)
   :
-  uqBaseVectorMdfClass<V,M>(prefix,oneDGrids.rowSpace()),
+  BaseVectorMdfClass<V,M>(prefix,oneDGrids.rowSpace()),
   m_oneDGrids(oneDGrids),
   m_mdfValues(mdfValues)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqSampledVectorMdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering SampledVectorMdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqSampledVectorMdfClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving SampledVectorMdfClass<V,M>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V,class M>
-uqSampledVectorMdfClass<V,M>::~uqSampledVectorMdfClass()
+SampledVectorMdfClass<V,M>::~SampledVectorMdfClass()
 {
 }
 // Math methods--------------------------------------
 template<class V, class M>
 void
-uqSampledVectorMdfClass<V,M>::values(
+SampledVectorMdfClass<V,M>::values(
   const V& paramValues,
         V& mdfVec) const
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
-                      "uqSampledVectorMdfClass<V,M>::mdfVec()",
+                      "SampledVectorMdfClass<V,M>::mdfVec()",
                       "incomplete code");
   return;
 }
 // I/O methods---------------------------------------
 template <class V, class M>
 void
-uqSampledVectorMdfClass<V,M>::print(std::ostream& os) const
+SampledVectorMdfClass<V,M>::print(std::ostream& os) const
 {
   // Print values *of* grid points
   os << m_oneDGrids;

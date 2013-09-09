@@ -31,7 +31,7 @@
 
 namespace QUESO {
 
-uqEmOptionsValuesClass::uqEmOptionsValuesClass()
+EmOptionsValuesClass::EmOptionsValuesClass()
   :
   m_Gvalues(0),
   m_a_v    (UQ_EXPERIMENT_MODEL_A_V_ODV    ),
@@ -43,24 +43,24 @@ uqEmOptionsValuesClass::uqEmOptionsValuesClass()
 {
 }
 
-uqEmOptionsValuesClass::~uqEmOptionsValuesClass()
+EmOptionsValuesClass::~EmOptionsValuesClass()
 {
 }
 
-uqEmOptionsValuesClass::uqEmOptionsValuesClass(const uqEmOptionsValuesClass& src)
+EmOptionsValuesClass::EmOptionsValuesClass(const EmOptionsValuesClass& src)
 {
   this->copy(src);
 }
 
-uqEmOptionsValuesClass&
-uqEmOptionsValuesClass::operator=(const uqEmOptionsValuesClass& rhs)
+EmOptionsValuesClass&
+EmOptionsValuesClass::operator=(const EmOptionsValuesClass& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 
 void
-uqEmOptionsValuesClass::copy(const uqEmOptionsValuesClass& src)
+EmOptionsValuesClass::copy(const EmOptionsValuesClass& src)
 {
   m_Gvalues = src.m_Gvalues;
   m_a_v     = src.m_a_v;
@@ -73,8 +73,8 @@ uqEmOptionsValuesClass::copy(const uqEmOptionsValuesClass& src)
   return;
 }
 
-uqExperimentModelOptionsClass::uqExperimentModelOptionsClass(
-  const uqBaseEnvironmentClass& env,
+ExperimentModelOptionsClass::ExperimentModelOptionsClass(
+  const BaseEnvironmentClass& env,
   const char*                   prefix)
   :
   m_ov            (),
@@ -92,14 +92,14 @@ uqExperimentModelOptionsClass::uqExperimentModelOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
-                      "uqExperimentModelOptionsClass::constructor(1)",
+                      "ExperimentModelOptionsClass::constructor(1)",
                       "this constructor is incompatible with the abscense of an options input file");
 }
 
-uqExperimentModelOptionsClass::uqExperimentModelOptionsClass(
-  const uqBaseEnvironmentClass&  env,
+ExperimentModelOptionsClass::ExperimentModelOptionsClass(
+  const BaseEnvironmentClass&  env,
   const char*                    prefix,
-  const uqEmOptionsValuesClass& alternativeOptionsValues)
+  const EmOptionsValuesClass& alternativeOptionsValues)
   :
   m_ov            (alternativeOptionsValues),
   m_prefix        ((std::string)(prefix) + "em_"),
@@ -116,11 +116,11 @@ uqExperimentModelOptionsClass::uqExperimentModelOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
-                      "uqExperimentModelOptionsClass::constructor(2)",
+                      "ExperimentModelOptionsClass::constructor(2)",
                       "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In uqExperimentModelOptionsClass::constructor(2)"
+    *m_env.subDisplayFile() << "In ExperimentModelOptionsClass::constructor(2)"
                             << ": after setting values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -128,17 +128,17 @@ uqExperimentModelOptionsClass::uqExperimentModelOptionsClass(
   }
 }
 
-uqExperimentModelOptionsClass::~uqExperimentModelOptionsClass()
+ExperimentModelOptionsClass::~ExperimentModelOptionsClass()
 {
   if (m_optionsDesc) delete m_optionsDesc;
 } 
 
 void
-uqExperimentModelOptionsClass::scanOptionsValues()
+ExperimentModelOptionsClass::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
-                      "uqExperimentModelOptionsClass::scanOptionsValues()",
+                      "ExperimentModelOptionsClass::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -146,7 +146,7 @@ uqExperimentModelOptionsClass::scanOptionsValues()
   getMyOptionValues              (*m_optionsDesc);
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In uqExperimentModelOptionsClass::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In ExperimentModelOptionsClass::scanOptionsValues()"
                             << ": after reading values of options with prefix '" << m_prefix
                             << "', state of  object is:"
                             << "\n" << *this
@@ -157,7 +157,7 @@ uqExperimentModelOptionsClass::scanOptionsValues()
 }
 
 void
-uqExperimentModelOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+ExperimentModelOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                "produce help message for experiment model options")
@@ -174,7 +174,7 @@ uqExperimentModelOptionsClass::defineMyOptions(po::options_description& optionsD
 }
 
 void
-uqExperimentModelOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+ExperimentModelOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
@@ -186,9 +186,9 @@ uqExperimentModelOptionsClass::getMyOptionValues(po::options_description& option
   std::vector<double> tmpValues(0,0.);
   if (m_env.allOptionsMap().count(m_option_Gvalues)) {
     std::string inputString = ((const po::variable_value&) m_env.allOptionsMap()[m_option_Gvalues]).as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpValues);
+    MiscReadDoublesFromString(inputString,tmpValues);
     //if (m_env.subDisplayFile()) {
-    //  *m_env.subDisplayFile() << "In uqExperimentModelOptionsClass::getMyOptionValues(): tmpValues =";
+    //  *m_env.subDisplayFile() << "In ExperimentModelOptionsClass::getMyOptionValues(): tmpValues =";
     //  for (unsigned int i = 0; i < tmpValues.size(); ++i) {
     //    *m_env.subDisplayFile() << " " << tmpValues[i];
     //  }
@@ -230,7 +230,7 @@ uqExperimentModelOptionsClass::getMyOptionValues(po::options_description& option
 }
 
 void
-uqExperimentModelOptionsClass::print(std::ostream& os) const
+ExperimentModelOptionsClass::print(std::ostream& os) const
 {
   os << "\n" << m_option_Gvalues << " = ";
   for (unsigned int i = 0; i < m_ov.m_Gvalues.size(); ++i) {
@@ -247,7 +247,7 @@ uqExperimentModelOptionsClass::print(std::ostream& os) const
   return;
 }
 
-std::ostream& operator<<(std::ostream& os, const uqExperimentModelOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const ExperimentModelOptionsClass& obj)
 {
   obj.print(os);
 

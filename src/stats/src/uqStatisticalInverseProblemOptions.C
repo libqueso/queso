@@ -30,13 +30,13 @@
 #include <uqMiscellaneous.h>
 
 // -------------------------------------------------
-// uqSipOptionsValuesClass--------------------------
+// SipOptionsValuesClass--------------------------
 // -------------------------------------------------
 
 namespace QUESO {
 
 // Default constructor -----------------------------
-uqSipOptionsValuesClass::uqSipOptionsValuesClass()
+SipOptionsValuesClass::SipOptionsValuesClass()
   :
   m_computeSolution     (UQ_SIP_COMPUTE_SOLUTION_ODV     ),
   m_dataOutputFileName  (UQ_SIP_DATA_OUTPUT_FILE_NAME_ODV)
@@ -47,25 +47,25 @@ uqSipOptionsValuesClass::uqSipOptionsValuesClass()
 {
 }
 // Copy constructor - -----------------------------
-uqSipOptionsValuesClass::uqSipOptionsValuesClass(const uqSipOptionsValuesClass& src)
+SipOptionsValuesClass::SipOptionsValuesClass(const SipOptionsValuesClass& src)
 {
   this->copy(src);
 }
 // Destructor ---------------------------------------
-uqSipOptionsValuesClass::~uqSipOptionsValuesClass()
+SipOptionsValuesClass::~SipOptionsValuesClass()
 {
 }
 
 // Set methods --------------------------------------
-uqSipOptionsValuesClass&
-uqSipOptionsValuesClass::operator=(const uqSipOptionsValuesClass& rhs)
+SipOptionsValuesClass&
+SipOptionsValuesClass::operator=(const SipOptionsValuesClass& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 // Private methods-----------------------------------
 void
-uqSipOptionsValuesClass::copy(const uqSipOptionsValuesClass& src)
+SipOptionsValuesClass::copy(const SipOptionsValuesClass& src)
 {
   m_computeSolution      = src.m_computeSolution;
   m_dataOutputFileName   = src.m_dataOutputFileName;
@@ -79,12 +79,12 @@ uqSipOptionsValuesClass::copy(const uqSipOptionsValuesClass& src)
 }
 
 // -------------------------------------------------
-// uqStatisticalInverseProblemOptionsClass----------
+// StatisticalInverseProblemOptionsClass----------
 // -------------------------------------------------
 
 // Default constructor -----------------------------
-uqStatisticalInverseProblemOptionsClass::uqStatisticalInverseProblemOptionsClass(
-  const uqBaseEnvironmentClass& env,
+StatisticalInverseProblemOptionsClass::StatisticalInverseProblemOptionsClass(
+  const BaseEnvironmentClass& env,
   const char*                   prefix)
   :
   m_ov                         (),
@@ -101,15 +101,15 @@ uqStatisticalInverseProblemOptionsClass::uqStatisticalInverseProblemOptionsClass
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
-                      "uqStatisticalInverseProblemOptionsClass::constructor(1)",
+                      "StatisticalInverseProblemOptionsClass::constructor(1)",
                       "this constructor is incompatible with the absence of an options input file");
 }
 
 // Constructor 2------------------------------------
-uqStatisticalInverseProblemOptionsClass::uqStatisticalInverseProblemOptionsClass(
-  const uqBaseEnvironmentClass&  env,
+StatisticalInverseProblemOptionsClass::StatisticalInverseProblemOptionsClass(
+  const BaseEnvironmentClass&  env,
   const char*                    prefix,
-  const uqSipOptionsValuesClass& alternativeOptionsValues)
+  const SipOptionsValuesClass& alternativeOptionsValues)
   :
   m_ov                         (alternativeOptionsValues),
   m_prefix                     ((std::string)(prefix) + "ip_"),
@@ -125,11 +125,11 @@ uqStatisticalInverseProblemOptionsClass::uqStatisticalInverseProblemOptionsClass
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
-                      "uqStatisticalInverseProblemOptionsClass::constructor(2)",
+                      "StatisticalInverseProblemOptionsClass::constructor(2)",
                       "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In uqStatisticalInverseProblemOptionsClass::constructor(2)"
+    *m_env.subDisplayFile() << "In StatisticalInverseProblemOptionsClass::constructor(2)"
                             << ": after setting values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -137,18 +137,18 @@ uqStatisticalInverseProblemOptionsClass::uqStatisticalInverseProblemOptionsClass
   }
 }
 // Destructor --------------------------------------
-uqStatisticalInverseProblemOptionsClass::~uqStatisticalInverseProblemOptionsClass()
+StatisticalInverseProblemOptionsClass::~StatisticalInverseProblemOptionsClass()
 {
   if (m_optionsDesc) delete m_optionsDesc;
 }
 
 // I/O methods --------------------------------------
 void
-uqStatisticalInverseProblemOptionsClass::scanOptionsValues()
+StatisticalInverseProblemOptionsClass::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
-                      "uqStatisticalInverseProblemOptionsClass::scanOptionsValues()",
+                      "StatisticalInverseProblemOptionsClass::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -160,7 +160,7 @@ uqStatisticalInverseProblemOptionsClass::scanOptionsValues()
   //          << std::endl;
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In uqStatisticalInverseProblemOptionsClass::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In StatisticalInverseProblemOptionsClass::scanOptionsValues()"
                             << ": after reading values of options with prefix '" << m_prefix
                             << "', state of  object is:"
                             << "\n" << *this
@@ -171,7 +171,7 @@ uqStatisticalInverseProblemOptionsClass::scanOptionsValues()
 }
 // --------------------------------------------------
 void
-uqStatisticalInverseProblemOptionsClass::print(std::ostream& os) const
+StatisticalInverseProblemOptionsClass::print(std::ostream& os) const
 {
   os << "\n" << m_option_computeSolution      << " = " << m_ov.m_computeSolution
      << "\n" << m_option_dataOutputFileName   << " = " << m_ov.m_dataOutputFileName;
@@ -188,7 +188,7 @@ uqStatisticalInverseProblemOptionsClass::print(std::ostream& os) const
 }
 // Private methods ---------------------------------
 void
-uqStatisticalInverseProblemOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+StatisticalInverseProblemOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                              "produce help message for statistical inverse problem")
@@ -204,7 +204,7 @@ uqStatisticalInverseProblemOptionsClass::defineMyOptions(po::options_description
 }
 //--------------------------------------------------
 void
-uqStatisticalInverseProblemOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+StatisticalInverseProblemOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
@@ -225,7 +225,7 @@ uqStatisticalInverseProblemOptionsClass::getMyOptionValues(po::options_descripti
     m_ov.m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpAllow);
+    MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
@@ -247,7 +247,7 @@ uqStatisticalInverseProblemOptionsClass::getMyOptionValues(po::options_descripti
 // Operator declared outside class definition ------
 // --------------------------------------------------
 
-std::ostream& operator<<(std::ostream& os, const uqStatisticalInverseProblemOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const StatisticalInverseProblemOptionsClass& obj)
 {
   obj.print(os);
 

@@ -56,9 +56,9 @@ qoiRoutine(
   const P_V*                    paramDirection,
   const void*                   functionDataPtr,
         Q_V&                    qoiValues,
-        QUESO::uqDistArrayClass<P_V*>* gradVectors,
-        QUESO::uqDistArrayClass<P_M*>* hessianMatrices,
-        QUESO::uqDistArrayClass<P_V*>* hessianEffects)
+        QUESO::DistArrayClass<P_V*>* gradVectors,
+        QUESO::DistArrayClass<P_M*>* hessianMatrices,
+        QUESO::DistArrayClass<P_V*>* hessianEffects)
 {
   //double a1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1MultiplicativeFactor;
   //double e1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1ExponentFactor;

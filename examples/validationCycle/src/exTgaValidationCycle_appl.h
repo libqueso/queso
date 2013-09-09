@@ -45,11 +45,11 @@
 //Just declaration: actual code is below
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl_LocalComparisonStage(QUESO::uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle);
+uqAppl_LocalComparisonStage(QUESO::ValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle);
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl_UnifiedComparisonStage(QUESO::uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle);
+uqAppl_UnifiedComparisonStage(QUESO::ValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle);
 
 //********************************************************
 // The driving routine "uqAppl()": called by main()
@@ -63,7 +63,7 @@ uqAppl_UnifiedComparisonStage(QUESO::uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cy
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl(const QUESO::uqBaseEnvironmentClass& env)
+uqAppl(const QUESO::BaseEnvironmentClass& env)
 {
   if (env.fullRank() == 0) {
     std::cout << "Beginning run of 'uqTgaExample' example\n"
@@ -82,7 +82,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   std::vector<std::string> paramNames(2,"");
   paramNames[0] = "A_param";
   paramNames[1] = "E_param";
-  QUESO::uqVectorSpaceClass<P_V,P_M> paramSpace(env,"param_",paramNames.size(),&paramNames);
+  QUESO::VectorSpaceClass<P_V,P_M> paramSpace(env,"param_",paramNames.size(),&paramNames);
 
   // Instantiate the parameter domain
   P_V paramMinValues(paramSpace.zeroVector());
@@ -91,7 +91,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   P_V paramMaxValues(paramSpace.zeroVector());
   paramMaxValues[0] = 2.80e+11;
   paramMaxValues[1] = 2.20e+05;
-  QUESO::uqBoxSubsetClass<P_V,P_M> paramDomain("param_",
+  QUESO::BoxSubsetClass<P_V,P_M> paramDomain("param_",
                                         paramSpace,
                                         paramMinValues,
                                         paramMaxValues);
@@ -99,10 +99,10 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   // Instantiate the qoi space
   std::vector<std::string> qoiNames(1,"");
   qoiNames[0] = "TimeFor25PercentOfMass";
-  QUESO::uqVectorSpaceClass<Q_V,Q_M> qoiSpace(env,"qoi_",qoiNames.size(),&qoiNames);
+  QUESO::VectorSpaceClass<Q_V,Q_M> qoiSpace(env,"qoi_",qoiNames.size(),&qoiNames);
 
   // Instantiate the validation cycle
-  QUESO::uqValidationCycleClass<P_V,P_M,Q_V,Q_M> cycle(env,
+  QUESO::ValidationCycleClass<P_V,P_M,Q_V,Q_M> cycle(env,
                                                 "", // No extra prefix
                                                 paramSpace,
                                                 qoiSpace);
@@ -119,7 +119,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   }
 
   // Inverse problem: instantiate the prior rv
-  QUESO::uqUniformVectorRVClass<P_V,P_M> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
+  QUESO::UniformVectorRVClass<P_V,P_M> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
                                              paramDomain);
 
   // Inverse problem: instantiate the likelihood function object (data + routine)
@@ -128,17 +128,17 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
                                                                  "inputData/scenario_25_K_min.dat",
                                                                  "inputData/scenario_50_K_min.dat");
 
-  QUESO::uqGenericScalarFunctionClass<P_V,P_M> calLikelihoodFunctionObj("cal_like_",
+  QUESO::GenericScalarFunctionClass<P_V,P_M> calLikelihoodFunctionObj("cal_like_",
                                                                  paramDomain,
                                                                  likelihoodRoutine<P_V,P_M>,
                                                                  (void *) &calLikelihoodRoutine_Data,
                                                                  true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
-  QUESO::uqSipOptionsValuesClass* calIpOptionsValues = NULL;
+  QUESO::SipOptionsValuesClass* calIpOptionsValues = NULL;
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  calIpOptionsValues = new QUESO::uqSipOptionsValuesClass();
+  calIpOptionsValues = new QUESO::SipOptionsValuesClass();
   calIpOptionsValues->m_computeSolution      = true;
   calIpOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
   calIpOptionsValues->m_dataOutputAllowedSet.insert(0);
@@ -159,12 +159,12 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
     calPriorRv.realizer().realization(paramInitialValues);
   }
 
-  QUESO::uqMhOptionsValuesClass* calIpMhOptionsValues = NULL;
+  QUESO::MhOptionsValuesClass* calIpMhOptionsValues = NULL;
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  QUESO::uqSsOptionsValuesClass ssOptionsValues1;
-  QUESO::uqSsOptionsValuesClass ssOptionsValues2;
+  QUESO::SsOptionsValuesClass ssOptionsValues1;
+  QUESO::SsOptionsValuesClass ssOptionsValues2;
 
   ssOptionsValues1.m_initialDiscardedPortions.resize(9);
   ssOptionsValues1.m_initialDiscardedPortions[0] = 0.;
@@ -226,7 +226,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   ssOptionsValues2.m_covMatrixCompute            = true;
   ssOptionsValues2.m_corrMatrixCompute           = true;
 
-  calIpMhOptionsValues = new QUESO::uqMhOptionsValuesClass(&ssOptionsValues1,&ssOptionsValues2);
+  calIpMhOptionsValues = new QUESO::MhOptionsValuesClass(&ssOptionsValues1,&ssOptionsValues2);
   calIpMhOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
   calIpMhOptionsValues->m_dataOutputAllowedSet.insert(0);
   calIpMhOptionsValues->m_dataOutputAllowedSet.insert(1);
@@ -277,10 +277,10 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   calQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   calQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
-  QUESO::uqSfpOptionsValuesClass* calFpOptionsValues = NULL;
+  QUESO::SfpOptionsValuesClass* calFpOptionsValues = NULL;
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  calFpOptionsValues = new QUESO::uqSfpOptionsValuesClass();
+  calFpOptionsValues = new QUESO::SfpOptionsValuesClass();
   calFpOptionsValues->m_computeSolution      = true;
   calFpOptionsValues->m_computeCovariances   = true;
   calFpOptionsValues->m_computeCorrelations  = true;
@@ -293,11 +293,11 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
                          (void *) &calQoiRoutine_Data);
 
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
-  QUESO::uqMcOptionsValuesClass* calFpMcOptionsValues = NULL;
+  QUESO::McOptionsValuesClass* calFpMcOptionsValues = NULL;
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  QUESO::uqSsOptionsValuesClass ssOptionsValues3;
-  QUESO::uqSsOptionsValuesClass ssOptionsValues4;
+  QUESO::SsOptionsValuesClass ssOptionsValues3;
+  QUESO::SsOptionsValuesClass ssOptionsValues4;
 
   ssOptionsValues3.m_initialDiscardedPortions.resize(1);
   ssOptionsValues3.m_initialDiscardedPortions[0] = 0.;
@@ -337,7 +337,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   ssOptionsValues4.m_covMatrixCompute            = true;
   ssOptionsValues4.m_corrMatrixCompute           = true;
 
-  calFpMcOptionsValues = new QUESO::uqMcOptionsValuesClass(&ssOptionsValues3,&ssOptionsValues4);
+  calFpMcOptionsValues = new QUESO::McOptionsValuesClass(&ssOptionsValues3,&ssOptionsValues4);
   calFpMcOptionsValues->m_dataOutputFileName   = "outputData/tgaCalOutput";
   calFpMcOptionsValues->m_dataOutputAllowedSet.insert(0);
   calFpMcOptionsValues->m_dataOutputAllowedSet.insert(1);
@@ -385,17 +385,17 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
                                                                  NULL,
                                                                  NULL);
 
-  QUESO::uqGenericScalarFunctionClass<P_V,P_M> valLikelihoodFunctionObj("val_like_",
+  QUESO::GenericScalarFunctionClass<P_V,P_M> valLikelihoodFunctionObj("val_like_",
                                                                  paramDomain,
                                                                  likelihoodRoutine<P_V,P_M>,
                                                                  (void *) &valLikelihoodRoutine_Data,
                                                                  true); // the routine computes [ln(function)]
 
   // Inverse problem: instantiate it (posterior rv is instantiated internally)
-  QUESO::uqSipOptionsValuesClass* valIpOptionsValues = NULL;
+  QUESO::SipOptionsValuesClass* valIpOptionsValues = NULL;
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  valIpOptionsValues = new QUESO::uqSipOptionsValuesClass();
+  valIpOptionsValues = new QUESO::SipOptionsValuesClass();
   valIpOptionsValues->m_computeSolution      = true;
   valIpOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
   valIpOptionsValues->m_dataOutputAllowedSet.insert(0);
@@ -405,15 +405,15 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
                          valLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
-  QUESO::uqMhOptionsValuesClass* valIpMhOptionsValues = NULL;
+  QUESO::MhOptionsValuesClass* valIpMhOptionsValues = NULL;
 
-  const QUESO::uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const QUESO::uqSequentialVectorRealizerClass<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
+  const QUESO::SequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const QUESO::SequentialVectorRealizerClass<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
   P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the post. rv was computed with Metr. Hast.
                                                                                                 &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  QUESO::uqSsOptionsValuesClass ssOptionsValues5;
-  QUESO::uqSsOptionsValuesClass ssOptionsValues6;
+  QUESO::SsOptionsValuesClass ssOptionsValues5;
+  QUESO::SsOptionsValuesClass ssOptionsValues6;
 
   ssOptionsValues5.m_initialDiscardedPortions.resize(9);
   ssOptionsValues5.m_initialDiscardedPortions[0] = 0.;
@@ -475,7 +475,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   ssOptionsValues6.m_covMatrixCompute            = true;
   ssOptionsValues6.m_corrMatrixCompute           = true;
 
-  valIpMhOptionsValues = new QUESO::uqMhOptionsValuesClass(&ssOptionsValues5,&ssOptionsValues6);
+  valIpMhOptionsValues = new QUESO::MhOptionsValuesClass(&ssOptionsValues5,&ssOptionsValues6);
   valIpMhOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
   valIpMhOptionsValues->m_dataOutputAllowedSet.insert(0);
   valIpMhOptionsValues->m_dataOutputAllowedSet.insert(1);
@@ -522,10 +522,10 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   valQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   valQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
 
-  QUESO::uqSfpOptionsValuesClass* valFpOptionsValues = NULL;
+  QUESO::SfpOptionsValuesClass* valFpOptionsValues = NULL;
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  valFpOptionsValues = new QUESO::uqSfpOptionsValuesClass();
+  valFpOptionsValues = new QUESO::SfpOptionsValuesClass();
   valFpOptionsValues->m_computeSolution      = true;
   valFpOptionsValues->m_computeCovariances   = true;
   valFpOptionsValues->m_computeCorrelations  = true;
@@ -538,11 +538,11 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
                          (void *) &valQoiRoutine_Data);
 
   // Forward problem: solve it, that is, set 'realizer' and 'cdf' of the qoi rv
-  QUESO::uqMcOptionsValuesClass* valFpMcOptionsValues = NULL;
+  QUESO::McOptionsValuesClass* valFpMcOptionsValues = NULL;
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
-  QUESO::uqSsOptionsValuesClass ssOptionsValues7;
-  QUESO::uqSsOptionsValuesClass ssOptionsValues8;
+  QUESO::SsOptionsValuesClass ssOptionsValues7;
+  QUESO::SsOptionsValuesClass ssOptionsValues8;
 
   ssOptionsValues7.m_initialDiscardedPortions.resize(1);
   ssOptionsValues7.m_initialDiscardedPortions[0] = 0.;
@@ -582,7 +582,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   ssOptionsValues8.m_covMatrixCompute            = true;
   ssOptionsValues8.m_corrMatrixCompute           = true;
 
-  valFpMcOptionsValues = new QUESO::uqMcOptionsValuesClass(&ssOptionsValues7,&ssOptionsValues8);
+  valFpMcOptionsValues = new QUESO::McOptionsValuesClass(&ssOptionsValues7,&ssOptionsValues8);
   valFpMcOptionsValues->m_dataOutputFileName   = "outputData/tgaValOutput";
   valFpMcOptionsValues->m_dataOutputAllowedSet.insert(0);
   valFpMcOptionsValues->m_dataOutputAllowedSet.insert(1);
@@ -657,7 +657,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl_LocalComparisonStage(QUESO::uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
+uqAppl_LocalComparisonStage(QUESO::ValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
@@ -746,7 +746,7 @@ uqAppl_LocalComparisonStage(QUESO::uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycl
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl_UnifiedComparisonStage(QUESO::uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
+uqAppl_UnifiedComparisonStage(QUESO::ValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {

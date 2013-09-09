@@ -36,7 +36,7 @@ namespace QUESO {
 /*! \file uqMarkovChainPositionData.h
  * \brief A templated class that represents a Markov Chain.
  *
- * \class uqMarkovChainPositionDataClass
+ * \class MarkovChainPositionDataClass
  * \brief A templated class that represents a Markov Chain.
  *
  * This class implements a Markov Chain. It contains important information about a position such as 
@@ -45,10 +45,10 @@ namespace QUESO {
  * {X_t}, where the index t runs through 0, 1, ..., having the property that, given the present, 
  * the future is conditionally independent of the past. For instance, a Markov chain is passed to 
  * the Metropolis-Hastings algorithm and on it is calculated the acceptance ration 
- * uqMetropolisHastingsSGClass::alpha(). */
+ * MetropolisHastingsSGClass::alpha(). */
 
 template <class V>
-class uqMarkovChainPositionDataClass
+class MarkovChainPositionDataClass
 {
 public:
     //! @name Constructor/Destructor methods
@@ -56,28 +56,28 @@ public:
   //! Constructor 1.
   /*! It allocates a new Markov chain, given the environment. All the other private attributes are either
    * NULL, false or zero.*/
-  uqMarkovChainPositionDataClass(const uqBaseEnvironmentClass& env);
+  MarkovChainPositionDataClass(const BaseEnvironmentClass& env);
   
   //! Constructor 2.
  /*! It allocates a new Markov chain, and the vector \c vecValues, given the environment, the likelihood and 
   * target values and sets whether or not it is out of target support.*/
-  uqMarkovChainPositionDataClass(const uqBaseEnvironmentClass& env,
+  MarkovChainPositionDataClass(const BaseEnvironmentClass& env,
                                  const V& vecValues,
                                  bool     outOfTargetSupport,
                                  double   logLikelihood,
                                  double   logTarget);
   //! Constructor 3: copy.
   /*! The new Markov chain is a copy of \c rhs.*/
-  uqMarkovChainPositionDataClass(const uqMarkovChainPositionDataClass<V>& rhs);
+  MarkovChainPositionDataClass(const MarkovChainPositionDataClass<V>& rhs);
   
   //! Destructor
-  ~uqMarkovChainPositionDataClass();
+  ~MarkovChainPositionDataClass();
   //@}
 
   //! @name Set methods
   //@{
   //! Assignment operator.
-  uqMarkovChainPositionDataClass<V>& operator= (const uqMarkovChainPositionDataClass<V>& rhs);
+  MarkovChainPositionDataClass<V>& operator= (const MarkovChainPositionDataClass<V>& rhs);
   //@}
   
   //! @name Statistical/Mathematical methods
@@ -108,7 +108,7 @@ public:
   //@}
   
 private:
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
   V*     m_vecValues;
   bool   m_outOfTargetSupport;
   double m_logLikelihood;
@@ -117,7 +117,7 @@ private:
 
 // Constructor 1 -----------------------------------
 template <class V>
-uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(const uqBaseEnvironmentClass& env)
+MarkovChainPositionDataClass<V>::MarkovChainPositionDataClass(const BaseEnvironmentClass& env)
   :
   m_env               (env),
   m_vecValues         (NULL),
@@ -128,8 +128,8 @@ uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(const uqBaseEn
 }
 // Constructor 2 -----------------------------------
 template <class V>
-uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(
-  const uqBaseEnvironmentClass& env,
+MarkovChainPositionDataClass<V>::MarkovChainPositionDataClass(
+  const BaseEnvironmentClass& env,
   const V& vecValues,
   bool     outOfTargetSupport,
   double   logLikelihood,
@@ -144,7 +144,7 @@ uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(
 }
 // Copy constructor---------------------------------
 template <class V>
-uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(const uqMarkovChainPositionDataClass<V>& rhs)
+MarkovChainPositionDataClass<V>::MarkovChainPositionDataClass(const MarkovChainPositionDataClass<V>& rhs)
   :
   m_env               (rhs.m_env               ),
   m_vecValues         (new V(*rhs.m_vecValues )),
@@ -155,14 +155,14 @@ uqMarkovChainPositionDataClass<V>::uqMarkovChainPositionDataClass(const uqMarkov
 }
 // Destructor---------------------------------------
 template <class V>
-uqMarkovChainPositionDataClass<V>::~uqMarkovChainPositionDataClass()
+MarkovChainPositionDataClass<V>::~MarkovChainPositionDataClass()
 {
   if (m_vecValues) delete m_vecValues;
 }
 // Set methods--------------------------------------
 template <class V>
-uqMarkovChainPositionDataClass<V>&
-uqMarkovChainPositionDataClass<V>::operator=(const uqMarkovChainPositionDataClass<V>& rhs)
+MarkovChainPositionDataClass<V>&
+MarkovChainPositionDataClass<V>::operator=(const MarkovChainPositionDataClass<V>& rhs)
 {
   if (m_vecValues == NULL) m_vecValues = new V(*rhs.m_vecValues);
   else                    *m_vecValues = *rhs.m_vecValues;
@@ -176,11 +176,11 @@ uqMarkovChainPositionDataClass<V>::operator=(const uqMarkovChainPositionDataClas
 // Statistical methods-------------------------------
 template <class V>
 const V&
-uqMarkovChainPositionDataClass<V>::vecValues() const
+MarkovChainPositionDataClass<V>::vecValues() const
 {
   UQ_FATAL_TEST_MACRO((m_vecValues == NULL),
                       m_env.worldRank(),
-                      "uqMarkovChainPositionDataClass<V>::vecValues()",
+                      "MarkovChainPositionDataClass<V>::vecValues()",
                       "m_vecValues is NULL");
   return *m_vecValues;
 }
@@ -188,7 +188,7 @@ uqMarkovChainPositionDataClass<V>::vecValues() const
 //--------------------------------------------------
 template <class V>
 bool
-uqMarkovChainPositionDataClass<V>::outOfTargetSupport() const
+MarkovChainPositionDataClass<V>::outOfTargetSupport() const
 {
   return m_outOfTargetSupport;
 }
@@ -196,7 +196,7 @@ uqMarkovChainPositionDataClass<V>::outOfTargetSupport() const
 //--------------------------------------------------
 template <class V>
 double
-uqMarkovChainPositionDataClass<V>::logLikelihood() const
+MarkovChainPositionDataClass<V>::logLikelihood() const
 {
   return m_logLikelihood;
 }
@@ -204,14 +204,14 @@ uqMarkovChainPositionDataClass<V>::logLikelihood() const
 //--------------------------------------------------
 template <class V>
 double
-uqMarkovChainPositionDataClass<V>::logTarget() const
+MarkovChainPositionDataClass<V>::logTarget() const
 {
   return m_logTarget;
 }
 //--------------------------------------------------
 template <class V>
 void
-uqMarkovChainPositionDataClass<V>::set(
+MarkovChainPositionDataClass<V>::set(
   const V& vecValues,
   bool     outOfTargetSupport,
   double   logLikelihood,
@@ -229,7 +229,7 @@ uqMarkovChainPositionDataClass<V>::set(
 // Operator declared outside class definition-------
 //--------------------------------------------------
 template <class V>
-std::ostream& operator<<(std::ostream& os, const uqMarkovChainPositionDataClass<V>& obj)
+std::ostream& operator<<(std::ostream& os, const MarkovChainPositionDataClass<V>& obj)
 {
   obj.print(os);
 

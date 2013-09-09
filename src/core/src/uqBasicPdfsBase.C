@@ -31,23 +31,23 @@
 
 namespace QUESO {
 
-uqBasicPdfsBaseClass::uqBasicPdfsBaseClass()
+BasicPdfsBaseClass::BasicPdfsBaseClass()
   :
   m_worldRank(UQ_UNAVAILABLE_RANK)
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_worldRank,
-                      "uqBasicPdfsBaseClass::constructor(), default",
+                      "BasicPdfsBaseClass::constructor(), default",
                       "should not be used by user");
 }
 
-uqBasicPdfsBaseClass::uqBasicPdfsBaseClass(int worldRank)
+BasicPdfsBaseClass::BasicPdfsBaseClass(int worldRank)
   :
   m_worldRank(worldRank)
 {
 }
 
-uqBasicPdfsBaseClass::~uqBasicPdfsBaseClass()
+BasicPdfsBaseClass::~BasicPdfsBaseClass()
 {
 }
 

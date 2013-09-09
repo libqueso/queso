@@ -30,16 +30,16 @@
 #include <uqMiscellaneous.h>
 
 // -------------------------------------------------
-// uqMcOptionsValuesClass --------------------------
+// McOptionsValuesClass --------------------------
 // -------------------------------------------------
 
 namespace QUESO {
 
 // Default constructor -----------------------------
-uqMcOptionsValuesClass::uqMcOptionsValuesClass(
+McOptionsValuesClass::McOptionsValuesClass(
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  const uqSsOptionsValuesClass* alternativePSsOptionsValues,
-  const uqSsOptionsValuesClass* alternativeQSsOptionsValues
+  const SsOptionsValuesClass* alternativePSsOptionsValues,
+  const SsOptionsValuesClass* alternativeQSsOptionsValues
 #endif
   )
   :
@@ -74,24 +74,24 @@ uqMcOptionsValuesClass::uqMcOptionsValuesClass(
 #endif
 }
 // Copy constructor --------------------------------
-uqMcOptionsValuesClass::uqMcOptionsValuesClass(const uqMcOptionsValuesClass& src)
+McOptionsValuesClass::McOptionsValuesClass(const McOptionsValuesClass& src)
 {
   this->copy(src);
 }
 // Destructor ---------------------------------------
-uqMcOptionsValuesClass::~uqMcOptionsValuesClass()
+McOptionsValuesClass::~McOptionsValuesClass()
 {
 }
 // Set methods --------------------------------------
-uqMcOptionsValuesClass&
-uqMcOptionsValuesClass::operator=(const uqMcOptionsValuesClass& rhs)
+McOptionsValuesClass&
+McOptionsValuesClass::operator=(const McOptionsValuesClass& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 // Private methods-----------------------------------
 void
-uqMcOptionsValuesClass::copy(const uqMcOptionsValuesClass& src)
+McOptionsValuesClass::copy(const McOptionsValuesClass& src)
 {
   m_dataOutputFileName          = src.m_dataOutputFileName;
   m_dataOutputAllowedSet        = src.m_dataOutputAllowedSet;
@@ -124,12 +124,12 @@ uqMcOptionsValuesClass::copy(const uqMcOptionsValuesClass& src)
 }
 
 // --------------------------------------------------
-//uqMonteCarloSGOptionsClass ------------------------
+//MonteCarloSGOptionsClass ------------------------
 // --------------------------------------------------
 
 // Default constructor -----------------------------
-uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
-  const uqBaseEnvironmentClass& env, 
+MonteCarloSGOptionsClass::MonteCarloSGOptionsClass(
+  const BaseEnvironmentClass& env, 
   const char*                   prefix)
   :
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -168,14 +168,14 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
-                      "uqMonteCarloSGOptionsClass::constructor(1)",
+                      "MonteCarloSGOptionsClass::constructor(1)",
                       "this constructor is incompatible with the absence of an options input file");
 }
 // Constructor 2 -----------------------------------
-uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
-  const uqBaseEnvironmentClass& env, 
+MonteCarloSGOptionsClass::MonteCarloSGOptionsClass(
+  const BaseEnvironmentClass& env, 
   const char*                   prefix,
-  const uqMcOptionsValuesClass& alternativeOptionsValues)
+  const McOptionsValuesClass& alternativeOptionsValues)
   :
   m_ov                              (alternativeOptionsValues),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -211,11 +211,11 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
-                      "uqMonteCarloSGOptionsClass::constructor(2)",
+                      "MonteCarloSGOptionsClass::constructor(2)",
                       "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In uqMonteCarloSGOptionsClass::constructor(2)"
+    *m_env.subDisplayFile() << "In MonteCarloSGOptionsClass::constructor(2)"
                             << ": after setting values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -225,13 +225,13 @@ uqMonteCarloSGOptionsClass::uqMonteCarloSGOptionsClass(
   // dakota
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_ov.m_pseqComputeStats) m_pseqStatisticalOptionsObj =
-    new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "pseq_",m_ov.m_alternativePSsOptionsValues);
+    new SequenceStatisticalOptionsClass(m_env,m_prefix + "pseq_",m_ov.m_alternativePSsOptionsValues);
   if (m_ov.m_qseqComputeStats) m_qseqStatisticalOptionsObj =
-    new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "qseq_",m_ov.m_alternativeQSsOptionsValues);
+    new SequenceStatisticalOptionsClass(m_env,m_prefix + "qseq_",m_ov.m_alternativeQSsOptionsValues);
 #endif
 }
 // Destructor --------------------------------------
-uqMonteCarloSGOptionsClass::~uqMonteCarloSGOptionsClass()
+MonteCarloSGOptionsClass::~MonteCarloSGOptionsClass()
 {
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_pseqStatisticalOptionsObj) delete m_pseqStatisticalOptionsObj; // dakota
@@ -241,11 +241,11 @@ uqMonteCarloSGOptionsClass::~uqMonteCarloSGOptionsClass()
 } 
 // I/O methods -------------------------------------
 void
-uqMonteCarloSGOptionsClass::scanOptionsValues()
+MonteCarloSGOptionsClass::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
-                      "uqMonteCarloSGOptionsClass::scanOptionsValues()",
+                      "MonteCarloSGOptionsClass::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -253,7 +253,7 @@ uqMonteCarloSGOptionsClass::scanOptionsValues()
   getMyOptionValues              (*m_optionsDesc);
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In uqMonteCarloSGOptionsClass::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In MonteCarloSGOptionsClass::scanOptionsValues()"
                             << ": after reading values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -263,15 +263,15 @@ uqMonteCarloSGOptionsClass::scanOptionsValues()
   // dakota
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   if (m_ov.m_pseqComputeStats) m_pseqStatisticalOptionsObj =
-    new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "pseq_");
+    new SequenceStatisticalOptionsClass(m_env,m_prefix + "pseq_");
   if (m_ov.m_qseqComputeStats) m_qseqStatisticalOptionsObj =
-    new uqSequenceStatisticalOptionsClass(m_env,m_prefix + "qseq_");
+    new SequenceStatisticalOptionsClass(m_env,m_prefix + "qseq_");
 #endif
   return;
 }
 // Private methods ---------------------------------
 void
-uqMonteCarloSGOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+MonteCarloSGOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                                            "produce help message for Monte Carlo distribution calculator")
@@ -302,7 +302,7 @@ uqMonteCarloSGOptionsClass::defineMyOptions(po::options_description& optionsDesc
 }
 
 void
-uqMonteCarloSGOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+MonteCarloSGOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
@@ -319,7 +319,7 @@ uqMonteCarloSGOptionsClass::getMyOptionValues(po::options_description& optionsDe
     m_ov.m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpAllow);
+    MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
@@ -344,7 +344,7 @@ uqMonteCarloSGOptionsClass::getMyOptionValues(po::options_description& optionsDe
     m_ov.m_pseqDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_pseq_dataOutputAllowedSet].as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpAllow);
+    MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
@@ -394,7 +394,7 @@ uqMonteCarloSGOptionsClass::getMyOptionValues(po::options_description& optionsDe
     m_ov.m_qseqDataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_qseq_dataOutputAllowedSet].as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpAllow);
+    MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
@@ -412,7 +412,7 @@ uqMonteCarloSGOptionsClass::getMyOptionValues(po::options_description& optionsDe
 }
 
 void
-uqMonteCarloSGOptionsClass::print(std::ostream& os) const
+MonteCarloSGOptionsClass::print(std::ostream& os) const
 {
   os <<         m_option_dataOutputFileName   << " = " << m_ov.m_dataOutputFileName
      << "\n" << m_option_dataOutputAllowedSet << " = ";
@@ -449,7 +449,7 @@ uqMonteCarloSGOptionsClass::print(std::ostream& os) const
   return;
 }
 
-std::ostream& operator<<(std::ostream& os, const uqMonteCarloSGOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const MonteCarloSGOptionsClass& obj)
 {
   obj.print(os);
 

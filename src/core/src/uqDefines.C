@@ -33,7 +33,7 @@
 
 namespace QUESO {
 
-int uqMyWorldfullRank() {
+int MyWorldfullRank() {
   int result = 0;
 #ifdef QUESO_HAS_MPI
   int iRC;

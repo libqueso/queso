@@ -67,7 +67,7 @@ Incompatible combination of defines in QUESO 'uqDefines.h': QUESO_HAS_TRILINOS i
 namespace QUESO {
 
 //! Returns the rank of the calling process in the communicator.
-int uqMyWorldfullRank();
+int MyWorldfullRank();
 
 #define ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #undef  QUESO_MEMORY_DEBUGGING
@@ -102,33 +102,33 @@ const int UQ_MATRIX_SVD_FAILED_RC          = -11;
     \brief Definitions and a class to provide default options to  pass to a QUESO environment.
 */
 
-/*! \class uqEnvOptionsValuesClass
+/*! \class EnvOptionsValuesClass
  *  \brief This class provides a suite options one can pass to a QUESO environment.
  * 
  *  QUESO expects the user to provide an input file with environment options for the library variables.
  *  If no input file, a collection of default values is assigned to some of the variables. The class
- *  uqEnvOptionsValuesClass is responsible for this task.
+ *  EnvOptionsValuesClass is responsible for this task.
  */
 
-class uqEnvOptionsValuesClass
+class EnvOptionsValuesClass
 {
 public:
     //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor
-  uqEnvOptionsValuesClass            ();
+  EnvOptionsValuesClass            ();
   
   //! Copy constructor
-  uqEnvOptionsValuesClass            (const uqEnvOptionsValuesClass& src);
+  EnvOptionsValuesClass            (const EnvOptionsValuesClass& src);
  
   //! Destructor
-  ~uqEnvOptionsValuesClass            ();
+  ~EnvOptionsValuesClass            ();
   //@}
   
    //! @name Set methods
   //@{    
   //! Operator for copying the options of an environment.
-  uqEnvOptionsValuesClass& operator= (const uqEnvOptionsValuesClass& rhs);
+  EnvOptionsValuesClass& operator= (const EnvOptionsValuesClass& rhs);
  //@}
 
   //! @name Attributes
@@ -178,8 +178,8 @@ public:
   //@}
   
 private:
-  //! Makes an exact copy of an existing uqEnvOptionsValues instance.
-  void copy(const uqEnvOptionsValuesClass& src);
+  //! Makes an exact copy of an existing EnvOptionsValues instance.
+  void copy(const EnvOptionsValuesClass& src);
 };
 
 //! Macros
@@ -187,7 +187,7 @@ private:
   if (macroIRc) {                                           \
     int macroRank = givenRank;                              \
     if (macroRank < 0) {                                    \
-      macroRank = QUESO::uqMyWorldfullRank();                      \
+      macroRank = QUESO::MyWorldfullRank();                      \
     }                                                       \
     std::cerr << "UQ RC ERROR"                              \
               << ", rank "  << macroRank                    \
@@ -202,7 +202,7 @@ private:
   if (test) {                                             \
     int macroRank = givenRank;                            \
     if (macroRank < 0) {                                  \
-      macroRank = QUESO::uqMyWorldfullRank();                    \
+      macroRank = QUESO::MyWorldfullRank();                    \
     }                                                     \
     std::cerr << "UQ TEST ERROR"                          \
               << ", rank " << macroRank                   \
@@ -216,7 +216,7 @@ private:
   if (macroIRc) {                                        \
     int macroRank = givenRank;                           \
     if (macroRank < 0) {                                 \
-      macroRank = QUESO::uqMyWorldfullRank();                   \
+      macroRank = QUESO::MyWorldfullRank();                   \
     }                                                    \
     std::cerr << "UQ RC FATAL ERROR"                     \
               << ", rank "  << macroRank                 \
@@ -233,7 +233,7 @@ private:
   if (test) {                                          \
     int macroRank = givenRank;                         \
     if (macroRank < 0) {                               \
-      macroRank = QUESO::uqMyWorldfullRank();                 \
+      macroRank = QUESO::MyWorldfullRank();                 \
     }                                                  \
     std::cerr << "UQ TEST FATAL ERROR"                 \
               << ", rank "  << macroRank               \
@@ -250,7 +250,7 @@ private:
   if (test) {                                          \
     int macroRank = givenRank;                         \
     if (macroRank < 0) {                               \
-      macroRank = QUESO::uqMyWorldfullRank();                 \
+      macroRank = QUESO::MyWorldfullRank();                 \
     }                                                  \
     std::cerr << "UQ TEST FATAL ERROR"                 \
               << ", rank "  << macroRank               \

@@ -56,26 +56,26 @@ namespace QUESO {
     \brief Class to allow options to be passed to a QUESO environment.
 */
 
-/*! \class uqEnvironmentOptionsClass
+/*! \class EnvironmentOptionsClass
  *  \brief This class reads options one can pass to a QUESO environment through an input file.
  * 
  *  QUESO expects the user to provide an input file with environment options for the library variables. 
  *  This class reads the input options for QUESO environment variables. */
  
-class uqEnvironmentOptionsClass
+class EnvironmentOptionsClass
 {
 public:
       //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor
   /*! Assigns the default suite of options to the environment.*/
-  uqEnvironmentOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+  EnvironmentOptionsClass(const BaseEnvironmentClass& env, const char* prefix);
   
   //! Constructor with alternative options values.
-  uqEnvironmentOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqEnvOptionsValuesClass& alternativeOptionsValues);
+  EnvironmentOptionsClass(const BaseEnvironmentClass& env, const char* prefix, const EnvOptionsValuesClass& alternativeOptionsValues);
   
   //! Destructor
- ~uqEnvironmentOptionsClass();
+ ~EnvironmentOptionsClass();
  //@}
 
  //! @name I/O methods
@@ -88,8 +88,8 @@ public:
   //@}
   
   
-  //! Instance of uqEnvOptionsValuesClass, a class with default values for QUESO environment.
-  uqEnvOptionsValuesClass  m_ov;
+  //! Instance of EnvOptionsValuesClass, a class with default values for QUESO environment.
+  EnvOptionsValuesClass  m_ov;
 
 private:
   //! Define my environment options as the default options
@@ -99,7 +99,7 @@ private:
   void   getMyOptionValues(po::options_description& optionsDesc);
 
   //! Environment.
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
   
   //! Options prefix.
   std::string              m_prefix;
@@ -152,7 +152,7 @@ private:
 };
 
 //! Print values of the options chosen.
-std::ostream& operator<<(std::ostream& os, const uqEnvironmentOptionsClass& obj);
+std::ostream& operator<<(std::ostream& os, const EnvironmentOptionsClass& obj);
 
 }  // End namespace QUESO
 

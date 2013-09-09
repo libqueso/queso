@@ -45,7 +45,7 @@ namespace QUESO {
 /*! \file uqScalarCdf.h
  * \brief Classes to accommodate a cumulative distribution function.
  * 
- * \class uqBaseScalarCdfClass
+ * \class BaseScalarCdfClass
  * \brief A templated (base) class for handling CDFs.
  *
  * This class allows the mathematical definition of a cumulative distribution function (CDF), 
@@ -57,22 +57,22 @@ namespace QUESO {
  * under the probability density function (PDF) from minus infinity to x.*/
 
 template<class T>
-class uqBaseScalarCdfClass {
+class BaseScalarCdfClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class  given a prefix and the environment.*/
-  uqBaseScalarCdfClass(const uqBaseEnvironmentClass& env, const char* prefix);
+  BaseScalarCdfClass(const BaseEnvironmentClass& env, const char* prefix);
   
   //! Virtual destructor.
-  virtual ~uqBaseScalarCdfClass();
+  virtual ~BaseScalarCdfClass();
   //@}
 
   //! @name Environment methods
   //@{
   //! Environment.  Access to private attribute m_env.
-  const uqBaseEnvironmentClass&  env             () const;
+  const BaseEnvironmentClass&  env             () const;
   
   //! Access to private attribute m_prefix.
   const std::string&             prefix          () const;
@@ -102,15 +102,15 @@ public:
                                                    const std::set<unsigned int>& allowedSubEnvIds) const;
   //@}
 protected:
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
         std::string             m_prefix;
   mutable T                     m_minHorizontal;
   mutable T                     m_maxHorizontal;
 };
 // Default constructor -----------------------------
 template<class T>
-uqBaseScalarCdfClass<T>::uqBaseScalarCdfClass(
-  const uqBaseEnvironmentClass& env,
+BaseScalarCdfClass<T>::BaseScalarCdfClass(
+  const BaseEnvironmentClass& env,
   const char*                   prefix)
   :
   m_env          (env),
@@ -119,46 +119,46 @@ uqBaseScalarCdfClass<T>::uqBaseScalarCdfClass(
   m_maxHorizontal( INFINITY)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqBaseScalarCdfClass<T>::constructor()"
+    *m_env.subDisplayFile() << "Entering BaseScalarCdfClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqBaseScalarCdfClass<T>::constructor()"
+    *m_env.subDisplayFile() << "Leaving BaseScalarCdfClass<T>::constructor()"
                            << ": prefix = " << m_prefix
                            << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class T>
-uqBaseScalarCdfClass<T>::~uqBaseScalarCdfClass()
+BaseScalarCdfClass<T>::~BaseScalarCdfClass()
 {
 }
 // Environment methods ------------------------------
 template <class T>
-const uqBaseEnvironmentClass&
-uqBaseScalarCdfClass<T>::env() const
+const BaseEnvironmentClass&
+BaseScalarCdfClass<T>::env() const
 {
   return m_env;
 }
 // --------------------------------------------------
 template <class T>
 const std::string&
-uqBaseScalarCdfClass<T>::prefix() const
+BaseScalarCdfClass<T>::prefix() const
 {
   return m_prefix;
 }
 // I/O methods---------------------------------------
 template<class T>
 void
-uqBaseScalarCdfClass<T>::subWriteContents(
+BaseScalarCdfClass<T>::subWriteContents(
   const std::string&            varNamePrefix,
   const std::string&            fileName,
   const std::string&            fileType,
   const std::set<unsigned int>& allowedSubEnvIds) const
 {
-  std::cerr << "WARNING: uqBaseScalarCdfClass<T>::subWriteContents() being used..."
+  std::cerr << "WARNING: BaseScalarCdfClass<T>::subWriteContents() being used..."
             << std::endl;
   return;
 }
@@ -168,7 +168,7 @@ uqBaseScalarCdfClass<T>::subWriteContents(
 // --------------------------------------------------
 //! Operator to be used with print().
 template <class T>
-std::ostream& operator<< (std::ostream& os, const uqBaseScalarCdfClass<T>& obj)
+std::ostream& operator<< (std::ostream& os, const BaseScalarCdfClass<T>& obj)
 {
   obj.print(os);
   return os;
@@ -178,26 +178,26 @@ std::ostream& operator<< (std::ostream& os, const uqBaseScalarCdfClass<T>& obj)
 // Sampled cumulative distribution function class
 //*****************************************************
 /*! 
- * \class uqSampledScalarCdfClass
+ * \class SampledScalarCdfClass
  * \brief A class for handling sampled CDFs.
  *
  * This class implements a sampled cumulative distribution function (CDF), given 
  * the grid points where it will be sampled and its resulting values.*/
 
 template<class T>
-class uqSampledScalarCdfClass : public uqBaseScalarCdfClass<T> {
+class SampledScalarCdfClass : public BaseScalarCdfClass<T> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class given a prefix, the environment, the grid points 
    * where it will be sampled/evaluated and its resulting values.*/
-  uqSampledScalarCdfClass(const uqBaseEnvironmentClass& env,
+  SampledScalarCdfClass(const BaseEnvironmentClass& env,
                           const char*                   prefix,
-                          const uqBaseOneDGridClass<T>& cdfGrid,
+                          const BaseOneDGridClass<T>& cdfGrid,
                           const std::vector<double>&    cdfValues);
   //! Destructor.
- ~uqSampledScalarCdfClass();
+ ~SampledScalarCdfClass();
   //@}
 
   //! @name Mathematical methods
@@ -226,29 +226,29 @@ public:
                           const std::set<unsigned int>& allowedSubEnvIds) const;
  //@}
 protected:
-  using uqBaseScalarCdfClass<T>::m_env;
-  using uqBaseScalarCdfClass<T>::m_prefix;
-  using uqBaseScalarCdfClass<T>::m_minHorizontal;
-  using uqBaseScalarCdfClass<T>::m_maxHorizontal;
+  using BaseScalarCdfClass<T>::m_env;
+  using BaseScalarCdfClass<T>::m_prefix;
+  using BaseScalarCdfClass<T>::m_minHorizontal;
+  using BaseScalarCdfClass<T>::m_maxHorizontal;
 
-  const uqBaseOneDGridClass<T>& m_cdfGrid;
+  const BaseOneDGridClass<T>& m_cdfGrid;
   const std::vector<double>&    m_cdfValues;
 //std::vector<double>&          m_sortedCdfValues;
 };
 // Default constructor -----------------------------
 template<class T>
-uqSampledScalarCdfClass<T>::uqSampledScalarCdfClass(
-  const uqBaseEnvironmentClass& env,
+SampledScalarCdfClass<T>::SampledScalarCdfClass(
+  const BaseEnvironmentClass& env,
   const char*                   prefix,
-  const uqBaseOneDGridClass<T>& cdfGrid,
+  const BaseOneDGridClass<T>& cdfGrid,
   const std::vector<double>&    cdfValues)
   :
-  uqBaseScalarCdfClass<T>(env,((std::string)(prefix)+"").c_str()),
+  BaseScalarCdfClass<T>(env,((std::string)(prefix)+"").c_str()),
   m_cdfGrid              (cdfGrid  ),
   m_cdfValues            (cdfValues)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqSampledScalarCdfClass<T>::constructor()"
+    *m_env.subDisplayFile() << "Entering SampledScalarCdfClass<T>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
@@ -259,20 +259,20 @@ uqSampledScalarCdfClass<T>::uqSampledScalarCdfClass(
   //std::sort(m_sortedCdfValues.begin(), m_sortedCdfValues.end());
  
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqSampledScalarCdfClass<T>::constructor()"
+    *m_env.subDisplayFile() << "Leaving SampledScalarCdfClass<T>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class T>
-uqSampledScalarCdfClass<T>::~uqSampledScalarCdfClass()
+SampledScalarCdfClass<T>::~SampledScalarCdfClass()
 {
 }
 // Math methods--------------------------------------
 template<class T>
 double
-uqSampledScalarCdfClass<T>::value(T paramValue) const
+SampledScalarCdfClass<T>::value(T paramValue) const
 {
   double result = 0.;
   if (paramValue <= m_cdfGrid[0]) {
@@ -285,13 +285,13 @@ uqSampledScalarCdfClass<T>::value(T paramValue) const
     unsigned int intervalId = m_cdfGrid.findIntervalId(paramValue);
     UQ_FATAL_TEST_MACRO(intervalId >= (m_cdfGrid.size()-1),
                         m_env.worldRank(),
-                        "uqSampledScalarCdfClass<T>::value()",
+                        "SampledScalarCdfClass<T>::value()",
                         "invalid intervalId");
 
     double intervalLen = m_cdfGrid[intervalId+1] - m_cdfGrid[intervalId];
     double ratio = (paramValue - m_cdfGrid[intervalId])/intervalLen;
 #if 0
-    *m_env.subDisplayFile() << "In uqSampledScalarCdf::value()"
+    *m_env.subDisplayFile() << "In SampledScalarCdf::value()"
                             << ": paramValue = "              << paramValue
                             << ", intervalId = "              << intervalId
                             << ", cdfGrid.size() = "          << m_cdfGrid.size()
@@ -303,7 +303,7 @@ uqSampledScalarCdfClass<T>::value(T paramValue) const
 #endif
     UQ_FATAL_TEST_MACRO(ratio < 0.,
                         m_env.worldRank(),
-                        "uqSampledScalarCdfClass<T>::value()",
+                        "SampledScalarCdfClass<T>::value()",
                         "invalid ratio");
 
     result = (1.-ratio)*m_cdfValues[intervalId] + ratio*m_cdfValues[intervalId+1];
@@ -314,13 +314,13 @@ uqSampledScalarCdfClass<T>::value(T paramValue) const
 //---------------------------------------------------
 template<class T>
 T
-uqSampledScalarCdfClass<T>::inverse(double cdfValue) const
+SampledScalarCdfClass<T>::inverse(double cdfValue) const
 {
-  //*m_env.subDisplayFile() << "In uqSampledScalarCdf::inverse(): cdfValue = " << cdfValue
+  //*m_env.subDisplayFile() << "In SampledScalarCdf::inverse(): cdfValue = " << cdfValue
   //                       << std::endl;
   UQ_FATAL_TEST_MACRO((cdfValue < 0.) || (1. < cdfValue),
                       m_env.worldRank(),
-                      "uqSampledScalarCdfClass<T>::inverse()",
+                      "SampledScalarCdfClass<T>::inverse()",
                       "invalid cdfValue");
   double result = 0.;
   unsigned int i = 0;
@@ -342,7 +342,7 @@ uqSampledScalarCdfClass<T>::inverse(double cdfValue) const
     if ((j-i) <= 0) {
       UQ_FATAL_TEST_MACRO(true,
                           m_env.worldRank(),
-                          "uqSampledScalarCdfClass<T>::inverse()",
+                          "SampledScalarCdfClass<T>::inverse()",
                           "invalid pair of values 'i' and 'j'");
     }
     else if ((j-i) == 1) {
@@ -371,13 +371,13 @@ uqSampledScalarCdfClass<T>::inverse(double cdfValue) const
 //---------------------------------------------------
 template<class T>
 void
-uqSampledScalarCdfClass<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
+SampledScalarCdfClass<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
 {
   if ((m_minHorizontal == -INFINITY) ||
       (m_maxHorizontal ==  INFINITY)) {
     UQ_FATAL_TEST_MACRO((m_minHorizontal != -INFINITY) || (m_maxHorizontal != INFINITY),
                         m_env.worldRank(),
-                        "uqSampledScalarCdfClass<T>::getSupport()",
+                        "SampledScalarCdfClass<T>::getSupport()",
                         "unexpected values of m_minHorizontal and/or m_maxHorizontal");
 
     unsigned int iMax = m_cdfGrid.size();
@@ -392,13 +392,13 @@ uqSampledScalarCdfClass<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
 
     UQ_FATAL_TEST_MACRO(m_minHorizontal == -INFINITY,
                         m_env.worldRank(),
-                        "uqSampledScalarCdfClass<T>::getSupport()",
+                        "SampledScalarCdfClass<T>::getSupport()",
                         "unexpected value for m_minHorizontal");
 
     if (iMax == 1) {
       UQ_FATAL_TEST_MACRO(m_cdfValues[iMax - 1] != 1.,
                           m_env.worldRank(),
-                          "uqSampledScalarCdfClass<T>::getSupport()",
+                          "SampledScalarCdfClass<T>::getSupport()",
                           "unexpected value for case 'iMax = 1'");
       m_maxHorizontal = m_cdfGrid[iMax-1];
     }
@@ -412,7 +412,7 @@ uqSampledScalarCdfClass<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
 
     UQ_FATAL_TEST_MACRO(m_maxHorizontal == INFINITY,
                         m_env.worldRank(),
-                        "uqSampledScalarCdfClass<T>::getSupport()",
+                        "SampledScalarCdfClass<T>::getSupport()",
                         "unexpected value for m_maxHorizontal");
   }
 
@@ -424,7 +424,7 @@ uqSampledScalarCdfClass<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
 // I/O methods---------------------------------------
 template <class T>
 void
-uqSampledScalarCdfClass<T>::print(std::ostream& os) const
+SampledScalarCdfClass<T>::print(std::ostream& os) const
 {
   // Print values *of* grid points
   os << m_cdfGrid;
@@ -446,7 +446,7 @@ uqSampledScalarCdfClass<T>::print(std::ostream& os) const
 //---------------------------------------------------
 template<class T>
 void
-uqSampledScalarCdfClass<T>::subWriteContents(
+SampledScalarCdfClass<T>::subWriteContents(
   const std::string&            varNamePrefix,
   const std::string&            fileName,
   const std::string&            fileType,
@@ -454,10 +454,10 @@ uqSampledScalarCdfClass<T>::subWriteContents(
 {
   UQ_FATAL_TEST_MACRO(m_env.subRank() < 0,
                       m_env.worldRank(),
-                      "uqSampledScalarCdfClass<T>::subWriteContents()",
+                      "SampledScalarCdfClass<T>::subWriteContents()",
                       "unexpected subRank");
 
-  uqFilePtrSetStruct filePtrSet;
+  FilePtrSetStruct filePtrSet;
   if (m_env.openOutputFile(fileName,
                            fileType, // "m or hdf"
                            allowedSubEnvIds,
@@ -507,27 +507,27 @@ uqSampledScalarCdfClass<T>::subWriteContents(
 // Std cumulative distribution function class
 //*****************************************************
 /*! 
- * \class uqStdScalarCdfClass
+ * \class StdScalarCdfClass
  * \brief A class for handling standard CDFs.
  *
  * This class implements a standard cumulative distribution function (CDF). Its protected attribute
- * m_sampledCdfGrid is an object of the class uqSampledScalarCdfClass<T>, so all members of this
- * class are implemented using the members of uqSampledScalarCdfClass<T>.*/
+ * m_sampledCdfGrid is an object of the class SampledScalarCdfClass<T>, so all members of this
+ * class are implemented using the members of SampledScalarCdfClass<T>.*/
 
 template<class T>
-class uqStdScalarCdfClass : public uqBaseScalarCdfClass<T> {
+class StdScalarCdfClass : public BaseScalarCdfClass<T> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
   /*! Instantiates an object of the class given a prefix, the environment, the grid points 
    * where it will be evaluated and its resulting values.*/
-  uqStdScalarCdfClass(const uqBaseEnvironmentClass& env,
+  StdScalarCdfClass(const BaseEnvironmentClass& env,
                       const char*                   prefix,
                       const std::vector<T>&         cdfGrid,
                       const std::vector<double>&    cdfValues);
   //! Destructor
-  ~uqStdScalarCdfClass();
+  ~StdScalarCdfClass();
   //@}
  
   //! @name Mathematical methods
@@ -555,73 +555,73 @@ public:
                           const std::set<unsigned int>& allowedSubEnvIds) const;
   //@}
 protected:
-  using uqBaseScalarCdfClass<T>::m_env;
-  using uqBaseScalarCdfClass<T>::m_prefix;
-  using uqBaseScalarCdfClass<T>::m_minHorizontal;
-  using uqBaseScalarCdfClass<T>::m_maxHorizontal;
+  using BaseScalarCdfClass<T>::m_env;
+  using BaseScalarCdfClass<T>::m_prefix;
+  using BaseScalarCdfClass<T>::m_minHorizontal;
+  using BaseScalarCdfClass<T>::m_maxHorizontal;
 
-  const uqStdOneDGridClass<T> m_cdfGrid;
+  const StdOneDGridClass<T> m_cdfGrid;
   const std::vector<double>   m_cdfValues;
-  uqSampledScalarCdfClass<T>* m_sampledCdfGrid;
+  SampledScalarCdfClass<T>* m_sampledCdfGrid;
 };
 // Default constructor -----------------------------
 template<class T>
-uqStdScalarCdfClass<T>::uqStdScalarCdfClass(
-  const uqBaseEnvironmentClass& env,
+StdScalarCdfClass<T>::StdScalarCdfClass(
+  const BaseEnvironmentClass& env,
   const char*                   prefix,
   const std::vector<T>&         cdfGrid,
   const std::vector<double>&    cdfValues)
   :
-  uqBaseScalarCdfClass<T>(env,((std::string)(prefix)+"").c_str()),
+  BaseScalarCdfClass<T>(env,((std::string)(prefix)+"").c_str()),
   m_cdfGrid              (env,prefix,cdfGrid),
   m_cdfValues            (cdfValues),
   m_sampledCdfGrid       (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqStdScalarCdfClass<T>::constructor()"
+    *m_env.subDisplayFile() << "Entering StdScalarCdfClass<T>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 
-  m_sampledCdfGrid = new uqSampledScalarCdfClass<T>(env,prefix,m_cdfGrid,m_cdfValues);
+  m_sampledCdfGrid = new SampledScalarCdfClass<T>(env,prefix,m_cdfGrid,m_cdfValues);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqStdScalarCdfClass<T>::constructor()"
+    *m_env.subDisplayFile() << "Leaving StdScalarCdfClass<T>::constructor()"
                             << ": prefix = " << m_prefix
                             << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class T>
-uqStdScalarCdfClass<T>::~uqStdScalarCdfClass()
+StdScalarCdfClass<T>::~StdScalarCdfClass()
 {
   delete m_sampledCdfGrid;
 }
 // Math methods--------------------------------------
 template<class T>
 double
-uqStdScalarCdfClass<T>::value(T paramValue) const
+StdScalarCdfClass<T>::value(T paramValue) const
 {
   return m_sampledCdfGrid->value(paramValue);
 }
 //---------------------------------------------------
 template<class T>
 T
-uqStdScalarCdfClass<T>::inverse(double cdfValue) const
+StdScalarCdfClass<T>::inverse(double cdfValue) const
 {
   return m_sampledCdfGrid->inverse(cdfValue);
 }
 //---------------------------------------------------
 template<class T>
 void
-uqStdScalarCdfClass<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
+StdScalarCdfClass<T>::getSupport(T& minHorizontal, T& maxHorizontal) const
 {
   return m_sampledCdfGrid->getSupport(minHorizontal,maxHorizontal);
 }
 // I/O methods---------------------------------------
 template <class T>
 void
-uqStdScalarCdfClass<T>::print(std::ostream& os) const
+StdScalarCdfClass<T>::print(std::ostream& os) const
 {
   m_sampledCdfGrid->print(os);
   return;
@@ -629,7 +629,7 @@ uqStdScalarCdfClass<T>::print(std::ostream& os) const
 //---------------------------------------------------
 template<class T>
 void
-uqStdScalarCdfClass<T>::subWriteContents(
+StdScalarCdfClass<T>::subWriteContents(
   const std::string&            varNamePrefix,
   const std::string&            fileName,
   const std::string&            fileType,
@@ -649,8 +649,8 @@ uqStdScalarCdfClass<T>::subWriteContents(
 //! It calculated the maximum horizontal distance between two CDFs.
 template <class T>
 double
-horizontalDistance(const uqBaseScalarCdfClass<T>& cdf1,
-                   const uqBaseScalarCdfClass<T>& cdf2,
+horizontalDistance(const BaseScalarCdfClass<T>& cdf1,
+                   const BaseScalarCdfClass<T>& cdf2,
                    double epsilon)
 {
   double maxDistance     = 0.;

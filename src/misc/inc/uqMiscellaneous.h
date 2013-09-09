@@ -37,47 +37,47 @@
 
 namespace QUESO {
 
-void         uqMiscReadDoublesFromString      (const std::string&        inputString,
+void         MiscReadDoublesFromString      (const std::string&        inputString,
                                                std::vector<double>&      outputDoubles);
-void         uqMiscReadWordsFromString        (const std::string&        inputString,
+void         MiscReadWordsFromString        (const std::string&        inputString,
                                                std::vector<std::string>& outputWords);
 #if 0
-void         uqMiscExtractDoubleFromString    (std::string&              inputString,
+void         MiscExtractDoubleFromString    (std::string&              inputString,
                                                double&                   outputDouble);
-void         uqMiscExtractWordFromString      (std::string&              inputString,
+void         MiscExtractWordFromString      (std::string&              inputString,
                                                std::string&              outputWord);
 #endif
-int          uqMiscReadStringAndDoubleFromFile(std::ifstream&            ifs,
+int          MiscReadStringAndDoubleFromFile(std::ifstream&            ifs,
                                                std::string&              termString,
                                                double*                   termValue);
-int          uqMiscReadCharsAndDoubleFromFile (std::ifstream&            ifs,
+int          MiscReadCharsAndDoubleFromFile (std::ifstream&            ifs,
                                                std::string&              termString,
                                                double*                   termValue,
                                                bool&                     endOfLineAchieved);
-double       uqMiscGammar                     (double                    a,
+double       MiscGammar                     (double                    a,
                                                double                    b,
-                                               const uqRngBaseClass*     rngObject);
-double       uqMiscGetEllapsedSeconds         (struct timeval*           timeval0);
-double       uqMiscHammingWindow              (unsigned int              N,
+                                               const RngBaseClass*     rngObject);
+double       MiscGetEllapsedSeconds         (struct timeval*           timeval0);
+double       MiscHammingWindow              (unsigned int              N,
                                                unsigned int              j);
-double       uqMiscGaussianDensity            (double                    x,
+double       MiscGaussianDensity            (double                    x,
                                                double                    mu,
                                                double                    sigma);
-unsigned int uqMiscUintDebugMessage           (unsigned int              value,
+unsigned int MiscUintDebugMessage           (unsigned int              value,
                                                const char*               message);
-int          uqMiscIntDebugMessage            (int                       value,
+int          MiscIntDebugMessage            (int                       value,
                                                const char*               message);
-double       uqMiscDoubleDebugMessage         (double                    value,
+double       MiscDoubleDebugMessage         (double                    value,
                                                const char*               message);
 
-int          uqCheckFilePath                  (const char*               path);
-int          uqGRVY_CheckDir                  (const char*               dirname);
+int          CheckFilePath                  (const char*               path);
+int          GRVY_CheckDir                  (const char*               dirname);
 
 template <class T>
 bool
-uqMiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not' const
+MiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not' const
                                   double                acceptableTreshold,
-                                  const uqMpiCommClass& comm,
+                                  const MpiCommClass& comm,
                                   const char*           whereString)
 {
   // Filter out those nodes that should not participate
@@ -85,9 +85,9 @@ uqMiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not
 
   double localValue = (double) inputValue;
   double sumValue = 0.;
-  comm.Allreduce((void *) &localValue, (void *) &sumValue, (int) 1, uqRawValue_MPI_DOUBLE, uqRawValue_MPI_SUM,
+  comm.Allreduce((void *) &localValue, (void *) &sumValue, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
                  whereString,
-                 "failed MPI on 'sumValue' inside uqMiscCheckForSameValueInAllNodes()");
+                 "failed MPI on 'sumValue' inside MiscCheckForSameValueInAllNodes()");
 
   double totalNumNodes = (double) comm.NumProc();
   double testValue = fabs(1. - localValue/(sumValue/totalNumNodes));
@@ -95,9 +95,9 @@ uqMiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not
 #if 1
   unsigned int boolResult = 0;
   if (testValue > acceptableTreshold) boolResult = 1;
-  comm.Allreduce((void *) &boolResult, (void *) &boolSum, (int) 1, uqRawValue_MPI_UNSIGNED, uqRawValue_MPI_SUM,
+  comm.Allreduce((void *) &boolResult, (void *) &boolSum, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
                  whereString,
-                 "failed MPI on 'boolSum' inside uqMiscCheckForSameValueInAllNodes()");
+                 "failed MPI on 'boolSum' inside MiscCheckForSameValueInAllNodes()");
 
   if (boolSum > 0) { 
     comm.Barrier();
@@ -105,7 +105,7 @@ uqMiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not
       if (i == comm.MyPID()) {
         std::cerr << "WARNING, "
                   << whereString
-                  << ", inside uqMiscCheckForSameValueInAllNodes()"
+                  << ", inside MiscCheckForSameValueInAllNodes()"
                   << ", rank (in this communicator) = " << i
                   << ": boolSum = "       << boolSum
                   << ", localValue = "    << localValue
@@ -119,16 +119,16 @@ uqMiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not
     }
     comm.Barrier();
 
-    comm.Bcast((void *) &localValue, (int) 1, uqRawValue_MPI_DOUBLE, 0,
+    comm.Bcast((void *) &localValue, (int) 1, RawValue_MPI_DOUBLE, 0,
                whereString,
-               "failed MPI on 'boolSum' inside uqMiscCheckForSameValueInAllNodes()");
+               "failed MPI on 'boolSum' inside MiscCheckForSameValueInAllNodes()");
     inputValue = localValue; // IMPORTANT
   }
 #else
   UQ_FATAL_TEST_MACRO(testValue > acceptableTreshold,
                       UQ_UNAVAILABLE_RANK,
                       whereString,
-                      "not all nodes have the same value inside uqMiscCheckForSameValueInAllNodes()");
+                      "not all nodes have the same value inside MiscCheckForSameValueInAllNodes()");
 #endif
 
   return (boolSum == 0);
@@ -136,7 +136,7 @@ uqMiscCheckForSameValueInAllNodes(T&                    inputValue, // Yes, 'not
 
 template <class V>
 void
-uqMiscComputePositionsBetweenMinMax(V                minValues,
+MiscComputePositionsBetweenMinMax(V                minValues,
                                     V                maxValues,
                                     std::vector<V*>& positions)
 {
@@ -163,30 +163,30 @@ uqMiscComputePositionsBetweenMinMax(V                minValues,
 
 template <class V1,class V2>
 void
-uqMiscCheckTheParallelEnvironment(const V1& vec1, const V2& vec2)
+MiscCheckTheParallelEnvironment(const V1& vec1, const V2& vec2)
 {
-  const uqBaseEnvironmentClass& env = vec1.env();
+  const BaseEnvironmentClass& env = vec1.env();
 
   if (env.numSubEnvironments() == (unsigned int) env.fullComm().NumProc()) {
     UQ_FATAL_TEST_MACRO(env.subRank() != 0,
                         env.worldRank(),
-                        "uqMiscCheckTheParallelEnvironment<V1,V2>()",
+                        "MiscCheckTheParallelEnvironment<V1,V2>()",
                         "there should exist only one processor per sub environment");
     UQ_FATAL_TEST_MACRO((vec1.numOfProcsForStorage() != 1) ||
                         (vec2.numOfProcsForStorage() != 1),
                         env.worldRank(),
-                        "uqMiscCheckTheParallelEnvironment<V1,V2>()",
+                        "MiscCheckTheParallelEnvironment<V1,V2>()",
                         "only 1 processor (per sub environment) should be necessary for the storage of a parameter vector");
   }
   else if (env.numSubEnvironments() < (unsigned int) env.fullComm().NumProc()) {
     UQ_FATAL_TEST_MACRO(env.fullComm().NumProc()%env.numSubEnvironments() != 0,
                         env.worldRank(),
-                        "uqMiscCheckTheParallelEnvironment<V1,V2>()",
+                        "MiscCheckTheParallelEnvironment<V1,V2>()",
                         "total number of processors should be a multiple of the number of sub environments");
     unsigned int numProcsPerSubEnvironment = env.fullComm().NumProc()/env.numSubEnvironments();
     UQ_FATAL_TEST_MACRO(env.subComm().NumProc() != (int) numProcsPerSubEnvironment,
                         env.worldRank(),
-                        "uqMiscCheckTheParallelEnvironment<V1,V2>()",
+                        "MiscCheckTheParallelEnvironment<V1,V2>()",
                         "inconsistent number of processors per sub environment");
     if ((vec1.numOfProcsForStorage() == 1) &&
         (vec2.numOfProcsForStorage() == 1)) {
@@ -196,20 +196,20 @@ uqMiscCheckTheParallelEnvironment(const V1& vec1, const V2& vec2)
              (vec2.numOfProcsForStorage() == numProcsPerSubEnvironment)) {
       UQ_FATAL_TEST_MACRO(true,
                           env.worldRank(),
-                          "uqMiscCheckTheParallelEnvironment<V1,V2>()",
+                          "MiscCheckTheParallelEnvironment<V1,V2>()",
                           "parallel vectors are not supported yet");
     }
     else {
       UQ_FATAL_TEST_MACRO(true,
                           env.worldRank(),
-                          "uqMiscCheckTheParallelEnvironment<V1,V2>()",
+                          "MiscCheckTheParallelEnvironment<V1,V2>()",
                           "number of processors required for a vector storage should be equal to either 1 or to the number of processors in the sub environment");
     }
   }
   else {
     UQ_FATAL_TEST_MACRO(true,
                         env.worldRank(),
-                        "uqMiscCheckTheParallelEnvironment<V1,V2>()",
+                        "MiscCheckTheParallelEnvironment<V1,V2>()",
                         "number of processors per sub environment is less than 1!");
   }
 

@@ -50,26 +50,26 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-class uqGpmsaComputerModelClass
+class GpmsaComputerModelClass
 {
 public:
   //*******************************************************************************
-  // The following routines are in uqGpmsaComputerModel2.h
+  // The following routines are in GpmsaComputerModel2.h
   //*******************************************************************************
 
-  uqGpmsaComputerModelClass(const char*                                              prefix,
-                            const uqGcmOptionsValuesClass*                           alternativeOptionsValues, // dakota
-                            const uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationStorage,
-                            const uqSimulationModelClass  <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationModel,
-                            const uqExperimentStorageClass<S_V,S_M,D_V,D_M>*         experimentStorage,
-                            const uqExperimentModelClass  <S_V,S_M,D_V,D_M>*         experimentModel,
-                            const uqBaseVectorRVClass     <P_V,P_M>*                 thetaPriorRv);
- ~uqGpmsaComputerModelClass();
+  GpmsaComputerModelClass(const char*                                              prefix,
+                            const GcmOptionsValuesClass*                           alternativeOptionsValues, // dakota
+                            const SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationStorage,
+                            const SimulationModelClass  <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationModel,
+                            const ExperimentStorageClass<S_V,S_M,D_V,D_M>*         experimentStorage,
+                            const ExperimentModelClass  <S_V,S_M,D_V,D_M>*         experimentModel,
+                            const BaseVectorRVClass     <P_V,P_M>*                 thetaPriorRv);
+ ~GpmsaComputerModelClass();
 
-        void                             calibrateWithBayesMetropolisHastings     (const uqMhOptionsValuesClass* alternativeOptionsValues, // dakota
+        void                             calibrateWithBayesMetropolisHastings     (const MhOptionsValuesClass* alternativeOptionsValues, // dakota
                                                                                    const P_V&                    totalInitialValues,
                                                                                    const P_M*                    totalInitialProposalCovMatrix);
-        void                             calibrateWithLanlMcmc                    (const uqMhOptionsValuesClass* alternativeOptionsValues, // dakota
+        void                             calibrateWithLanlMcmc                    (const MhOptionsValuesClass* alternativeOptionsValues, // dakota
                                                                                    const P_V&                    totalInitialValues,
                                                                                    const P_M*                    totalInitialProposalCovMatrix);
         void                             calibrateWithBayesMLSampling             ();
@@ -105,13 +105,13 @@ public:
                                                                                          Q_V& simulationOutputMeanVec);
 
   //*******************************************************************************
-  // The following routines are in uqGpmsaComputerModel3.h
+  // The following routines are in GpmsaComputerModel3.h
   //*******************************************************************************
 
-  const uqVectorSpaceClass    <P_V,P_M>& totalSpace                               () const;
-  const uqVectorSpaceClass    <P_V,P_M>& unique_vu_space                          () const;
-  const uqBaseVectorRVClass   <P_V,P_M>& totalPriorRv                             () const;
-  const uqGenericVectorRVClass<P_V,P_M>& totalPostRv                              () const;
+  const VectorSpaceClass    <P_V,P_M>& totalSpace                               () const;
+  const VectorSpaceClass    <P_V,P_M>& unique_vu_space                          () const;
+  const BaseVectorRVClass   <P_V,P_M>& totalPriorRv                             () const;
+  const GenericVectorRVClass<P_V,P_M>& totalPostRv                              () const;
 
         void                             print                                    (std::ostream& os) const;
 
@@ -135,7 +135,7 @@ private:
                                                                                          P_V*  hessianEffect);
 
   //*******************************************************************************
-  // The following routines are in uqGpmsaComputerModel4.h
+  // The following routines are in GpmsaComputerModel4.h
   //*******************************************************************************
 
         // This routine is called by likelihoodRoutine()
@@ -196,7 +196,7 @@ private:
                                                                                          unsigned int              outerCounter);
 
   //*******************************************************************************
-  // The following routines are in uqGpmsaComputerModel5.h
+  // The following routines are in GpmsaComputerModel5.h
   //*******************************************************************************
         void                             fillR_formula2_for_Sigma_v               (const std::vector<const S_V* >& xVecs, // ppp: does multiple Gs affect this routine?
                                                                                    const P_V&                      rho_v_vec,
@@ -252,33 +252,33 @@ private:
                                                                                          D_M&                      Rmat,
                                                                                          unsigned int              outerCounter);
 
-  const uqBaseEnvironmentClass&                                         m_env;
-        uqGcmOptionsValuesClass                                         m_alternativeOptionsValues;
-        uqGpmsaComputerModelOptionsClass*                               m_optionsObj;
-        uqFilePtrSetStruct                                              m_dataOutputFilePtrSet;
+  const BaseEnvironmentClass&                                         m_env;
+        GcmOptionsValuesClass                                         m_alternativeOptionsValues;
+        GpmsaComputerModelOptionsClass*                               m_optionsObj;
+        FilePtrSetStruct                                              m_dataOutputFilePtrSet;
 
-        uqGcmSimulationInfoClass     <S_V,S_M,P_V,P_M,Q_V,Q_M        >* m_s;
-        uqGcmExperimentInfoClass     <S_V,S_M,D_V,D_M,P_V,P_M        >* m_e;
-        uqGcmJointInfoClass          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_j;
-        uqGcmZInfoClass              <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_z;
-        uqGcmTotalInfoClass          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_t;
-        uqGcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M        >* m_st;
-        uqGcmJointTildeInfoClass     <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_jt;
-        uqGcmZTildeInfoClass         <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_zt;
+        GcmSimulationInfoClass     <S_V,S_M,P_V,P_M,Q_V,Q_M        >* m_s;
+        GcmExperimentInfoClass     <S_V,S_M,D_V,D_M,P_V,P_M        >* m_e;
+        GcmJointInfoClass          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_j;
+        GcmZInfoClass              <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_z;
+        GcmTotalInfoClass          <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_t;
+        GcmSimulationTildeInfoClass<S_V,S_M,P_V,P_M,Q_V,Q_M        >* m_st;
+        GcmJointTildeInfoClass     <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_jt;
+        GcmZTildeInfoClass         <S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>* m_zt;
         bool                                                            m_thereIsExperimentalData;
         bool                                                            m_allOutputsAreScalar;
         bool                                                            m_formCMatrix;
         bool                                                            m_cMatIsRankDefficient;
-        uqBaseScalarFunctionClass    <P_V,P_M>*                         m_likelihoodFunction;
+        BaseScalarFunctionClass    <P_V,P_M>*                         m_likelihoodFunction;
         unsigned int                                                    m_like_counter;
 
 };
 
 template<class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& obj);
+std::ostream& operator<<(std::ostream& os, const GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& obj);
 
 template<class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqGpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& obj)
+std::ostream& operator<<(std::ostream& os, const GpmsaComputerModelClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& obj)
 {
   obj.print(os);
 

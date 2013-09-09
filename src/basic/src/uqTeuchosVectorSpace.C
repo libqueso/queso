@@ -35,38 +35,38 @@
 namespace QUESO {
 
 template <>
-uqMapClass*
-uqVectorSpaceClass<uqTeuchosVectorClass, uqTeuchosMatrixClass>::newMap()
+MapClass*
+VectorSpaceClass<TeuchosVectorClass, TeuchosMatrixClass>::newMap()
 {
-  return new uqMapClass(m_dimGlobal,0,m_env.selfComm());
+  return new MapClass(m_dimGlobal,0,m_env.selfComm());
 }
 
 template<>
-uqTeuchosVectorClass*
-uqVectorSpaceClass<uqTeuchosVectorClass,uqTeuchosMatrixClass>::newVector() const
+TeuchosVectorClass*
+VectorSpaceClass<TeuchosVectorClass,TeuchosMatrixClass>::newVector() const
 {
-  return new uqTeuchosVectorClass(m_env,*m_map);
+  return new TeuchosVectorClass(m_env,*m_map);
 }
 
 template<>
-uqTeuchosVectorClass*
-uqVectorSpaceClass<uqTeuchosVectorClass,uqTeuchosMatrixClass>::newVector(double value) const
+TeuchosVectorClass*
+VectorSpaceClass<TeuchosVectorClass,TeuchosMatrixClass>::newVector(double value) const
 {
-  return new uqTeuchosVectorClass(m_env,*m_map,value);
+  return new TeuchosVectorClass(m_env,*m_map,value);
 }
 
 template<>
-uqTeuchosMatrixClass*
-uqVectorSpaceClass<uqTeuchosVectorClass,uqTeuchosMatrixClass>::newMatrix() const
+TeuchosMatrixClass*
+VectorSpaceClass<TeuchosVectorClass,TeuchosMatrixClass>::newMatrix() const
 {
-  return new uqTeuchosMatrixClass(m_env,*m_map,this->dimGlobal());
+  return new TeuchosMatrixClass(m_env,*m_map,this->dimGlobal());
 }
 
 template<>
-uqTeuchosMatrixClass*
-uqVectorSpaceClass<uqTeuchosVectorClass,uqTeuchosMatrixClass>::newDiagMatrix(double diagValue) const
+TeuchosMatrixClass*
+VectorSpaceClass<TeuchosVectorClass,TeuchosMatrixClass>::newDiagMatrix(double diagValue) const
 {
-  return new uqTeuchosMatrixClass(m_env,*m_map,diagValue);
+  return new TeuchosMatrixClass(m_env,*m_map,diagValue);
 }
 
 }  // End namespace QUESO

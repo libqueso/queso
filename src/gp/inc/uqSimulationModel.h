@@ -37,13 +37,13 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-class uqSimulationModelClass
+class SimulationModelClass
 {
 public:
-  uqSimulationModelClass(const char*                                              prefix,
-                         const uqSmOptionsValuesClass*                            alternativeOptionsValues, // dakota
-                         const uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulStorage);
- ~uqSimulationModelClass();
+  SimulationModelClass(const char*                                              prefix,
+                         const SmOptionsValuesClass*                            alternativeOptionsValues, // dakota
+                         const SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulStorage);
+ ~SimulationModelClass();
 
         unsigned int                   numBasis             () const;
   const std::vector<const S_V* >&      xs_asterisks_standard() const;
@@ -57,59 +57,59 @@ public:
   const Q_M&                           Kmat_eta             () const;
   const Q_M&                           Kmat                 () const;
 
-  const uqSimulationModelOptionsClass& optionsObj           () const;
+  const SimulationModelOptionsClass& optionsObj           () const;
         void                           print                (std::ostream& os) const;
 
 private:
         unsigned int                   computePEta          (const Q_V& svdS_vec);
   // Private variables
-  const uqBaseEnvironmentClass&           m_env;
-        uqSmOptionsValuesClass            m_alternativeOptionsValues;
-        uqSimulationModelOptionsClass*    m_optionsObj;
+  const BaseEnvironmentClass&           m_env;
+        SmOptionsValuesClass            m_alternativeOptionsValues;
+        SimulationModelOptionsClass*    m_optionsObj;
 
         unsigned int                      m_paper_p_x;
         unsigned int                      m_paper_p_t;
         unsigned int                      m_paper_m;
         unsigned int                      m_paper_n_eta;
 
-        uqVectorSpaceClass<S_V,S_M>       m_p_x_space;
-        uqSequenceOfVectorsClass<S_V,S_M> m_xSeq_original;
+        VectorSpaceClass<S_V,S_M>       m_p_x_space;
+        SequenceOfVectorsClass<S_V,S_M> m_xSeq_original;
         S_V                               m_xSeq_original_mins;
         S_V                               m_xSeq_original_maxs;
         S_V                               m_xSeq_original_ranges;
-        uqSequenceOfVectorsClass<S_V,S_M> m_xSeq_standard;
+        SequenceOfVectorsClass<S_V,S_M> m_xSeq_standard;
         S_V                               m_xSeq_standard_mins;
         S_V                               m_xSeq_standard_maxs;
         S_V                               m_xSeq_standard_ranges;
         std::vector<const S_V* >          m_xs_asterisks_standard; // to be deleted on destructor
 
-        uqVectorSpaceClass<P_V,P_M>       m_p_t_space;
-        uqSequenceOfVectorsClass<P_V,P_M> m_tSeq_original;
+        VectorSpaceClass<P_V,P_M>       m_p_t_space;
+        SequenceOfVectorsClass<P_V,P_M> m_tSeq_original;
         P_V                               m_tSeq_mins;
         P_V                               m_tSeq_maxs;
         P_V                               m_tSeq_ranges;
-        uqSequenceOfVectorsClass<P_V,P_M> m_tSeq_standard;
+        SequenceOfVectorsClass<P_V,P_M> m_tSeq_standard;
         std::vector<const P_V* >          m_ts_asterisks_standard; // to be deleted on destructor
 
-        uqVectorSpaceClass<Q_V,Q_M>       m_n_eta_space;
-        uqSequenceOfVectorsClass<Q_V,Q_M> m_etaSeq_original;
+        VectorSpaceClass<Q_V,Q_M>       m_n_eta_space;
+        SequenceOfVectorsClass<Q_V,Q_M> m_etaSeq_original;
         Q_V                               m_etaSeq_original_mean;
         Q_V                               m_etaSeq_original_std;
         double                            m_etaSeq_allMean;
         double                            m_etaSeq_allStd;
-        uqSequenceOfVectorsClass<Q_V,Q_M> m_etaSeq_transformed;
+        SequenceOfVectorsClass<Q_V,Q_M> m_etaSeq_transformed;
         Q_V                               m_etaSeq_transformed_mean;
         Q_V                               m_etaSeq_transformed_std;
-        uqVectorSpaceClass<Q_V,Q_M>       m_eta_space;
+        VectorSpaceClass<Q_V,Q_M>       m_eta_space;
         Q_V                               m_etaVec_transformed;
         Q_M                               m_etaMat_transformed;
 
-        uqVectorSpaceClass<Q_V,Q_M>       m_m_space;
+        VectorSpaceClass<Q_V,Q_M>       m_m_space;
         Q_V                               m_m_unitVec;
         Q_M                               m_m_Imat;
 
         unsigned int                      m_paper_p_eta;
-        uqVectorSpaceClass<Q_V,Q_M>*      m_p_eta_space; // to be deleted on destructor
+        VectorSpaceClass<Q_V,Q_M>*      m_p_eta_space; // to be deleted on destructor
         Q_M*                              m_Kmat_eta;    // to be deleted on destructor
         std::vector<Q_V* >                m_kvec_is;     // to be deleted on destructor
         std::vector<Q_M* >                m_Kmat_is;     // to be deleted on destructor
@@ -117,13 +117,13 @@ private:
 };
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& obj);
+std::ostream& operator<<(std::ostream& os, const SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& obj);
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModelClass(
   const char*                                              prefix,
-  const uqSmOptionsValuesClass*                            alternativeOptionsValues, // dakota
-  const uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulStorage)
+  const SmOptionsValuesClass*                            alternativeOptionsValues, // dakota
+  const SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulStorage)
   :
   m_env                     (simulStorage.env()),
   m_alternativeOptionsValues(),
@@ -172,7 +172,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   m_Kmat                    (NULL)                        // to be deleted on destructor
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = " << prefix
                             << ", alternativeOptionsValues = "     << alternativeOptionsValues
                             << ", m_env.optionsInputFileName() = " << m_env.optionsInputFileName()
@@ -187,31 +187,31 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
 
   if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
   if (m_env.optionsInputFileName() == "") {
-    m_optionsObj = new uqSimulationModelOptionsClass(m_env,prefix,m_alternativeOptionsValues);
+    m_optionsObj = new SimulationModelOptionsClass(m_env,prefix,m_alternativeOptionsValues);
   }
   else {
-    m_optionsObj = new uqSimulationModelOptionsClass(m_env,prefix);
+    m_optionsObj = new SimulationModelOptionsClass(m_env,prefix);
     m_optionsObj->scanOptionsValues();
   }
 
   UQ_FATAL_TEST_MACRO(m_paper_p_eta > m_paper_m,
                       m_env.worldRank(),
-                      "uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'m_paper_p_eta' cannot be bigger than 'm_paper_m'");
 
   UQ_FATAL_TEST_MACRO(m_paper_p_eta > m_paper_n_eta,
                       m_env.worldRank(),
-                      "uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "'m_paper_p_eta' cannot be bigger than 'm_paper_n_eta'");
 
   UQ_FATAL_TEST_MACRO(m_paper_m != simulStorage.xs_asterisks_original().size(),
                       m_env.worldRank(),
-                      "uqSimulationModelClass<S_V,S_M,D_V,D_M>::constructor()",
+                      "SimulationModelClass<S_V,S_M,D_V,D_M>::constructor()",
                       "invalid m_paper_m (1)");
 
   UQ_FATAL_TEST_MACRO(m_paper_m != simulStorage.ts_asterisks_original().size(),
                       m_env.worldRank(),
-                      "uqSimulationModelClass<S_V,S_M,D_V,D_M>::constructor()",
+                      "SimulationModelClass<S_V,S_M,D_V,D_M>::constructor()",
                       "invalid m_paper_m (2)");
 
   //***********************************************************************
@@ -240,7 +240,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished setting 'm_xSeq_original'"
                             << ", computing mins of 'm_xSeq_original'"
                             << ", computing ranges of 'm_xSeq_original'"
@@ -254,7 +254,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()";
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()";
     for (unsigned int i = 0; i < m_paper_m; ++i) {
       m_xSeq_original.getPositionValues(i,tmpXVec);
       *m_env.subDisplayFile() << "\n  m_xSeq_original[" << i << "] = " << tmpXVec;
@@ -277,7 +277,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished forming 'm_xs_asterisks_standard'"
                             << std::endl;
   }
@@ -308,7 +308,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished setting 'm_tSeq_original'"
                             << ", computing mins of 'm_tSeq_original'"
                             << ", computing ranges of 'm_tSeq_original'"
@@ -322,7 +322,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor():";
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor():";
     for (unsigned int i = 0; i < m_paper_m; ++i) {
       m_tSeq_original.getPositionValues(i,tmpTVec);
       *m_env.subDisplayFile() << "\n  m_tSeq_original[" << i << "] = " << tmpTVec;
@@ -345,7 +345,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished forming 'm_ts_asterisks_standard'"
                             << std::endl;
   }
@@ -396,7 +396,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished setting 'm_etaSeq_original'"
                             << ", computing means of 'm_etaSeq_original'"
                             << ", computing sample stds of 'm_etaSeq_original'"
@@ -408,7 +408,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
 
   // Form 'etaVec_transformed' and 'etaMat_transformed' matrix
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": before forming 'm_etaVec_transformed' and 'm_etaMat_transformed"
                             << "\n  m_paper_p_eta = "                          << m_paper_p_eta
                             << "\n  m_paper_m = "                              << m_paper_m
@@ -428,11 +428,11 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   }
   UQ_FATAL_TEST_MACRO(cumulativeEtaVecPosition != m_etaVec_transformed.sizeLocal(),
                       m_env.worldRank(),
-                      "uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
                       "inconsistenvy in the assemble of 'm_etaVec_transformed'");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()";
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()";
     for (unsigned int i = 0; i < m_paper_m; ++i) {
       m_etaSeq_original.getPositionValues(i,tmpEtaVec);
       *m_env.subDisplayFile() << "\n  m_etaSeq_original[" << i << "] = " << tmpEtaVec;
@@ -453,7 +453,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
     m_etaMat_transformed.setPrintHorizontally(false);
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished forming 'm_etaVec_transformed' and 'm_etaMat_transformed'"
                             << "\n (key-debug) m_etaMat_transformed =\n" << m_etaMat_transformed
                             << std::endl;
@@ -469,25 +469,25 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
     Q_M svdU_mat (m_env, m_n_eta_space.map(), m_paper_m);
     Q_V svdS_vec (m_m_space.zeroVector());
     Q_M svdVt_mat(m_m_space.zeroVector());
-    //std::cout << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    //std::cout << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
     //          << ": before m_etaMat_transformed.svd()"
     //          << std::endl;
     int iRC = m_etaMat_transformed.svd(svdU_mat, svdS_vec, svdVt_mat);
-    //std::cout << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    //std::cout << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
     //          << ": after m_etaMat_transformed.svd(), iRC = " << iRC
     //          << std::endl;
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << "\n iRC from m_etaMat_transformed.svd(1) = " << iRC
                               << std::endl;
     }
     UQ_FATAL_TEST_MACRO(iRC != 0,
                         m_env.worldRank(),
-                        "uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                        "SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
                         "svd(1) failed");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished performing svd(1) on 'm_etaMat_transformed'"
                               << "\n svdU_mat  =\n" << svdU_mat
                               << "\n svdS_vec  =\n" << svdS_vec
@@ -505,14 +505,14 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
     //***********************************************************************
     m_paper_p_eta = computePEta(svdS_vec);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ", m_optionsObj->m_ov.m_cdfThresholdForPEta = "       << m_optionsObj->m_ov.m_cdfThresholdForPEta
                               << ", m_optionsObj->m_ov.m_zeroRelativeSingularValue = " << m_optionsObj->m_ov.m_zeroRelativeSingularValue
                               << ": m_paper_p_eta(1) = "                               << m_paper_p_eta
                               << std::endl;
     }
 
-    m_p_eta_space = new uqVectorSpaceClass<Q_V,Q_M>(m_env, "p_eta_", m_paper_p_eta, NULL);      // to be deleted on destructor
+    m_p_eta_space = new VectorSpaceClass<Q_V,Q_M>(m_env, "p_eta_", m_paper_p_eta, NULL);      // to be deleted on destructor
     m_Kmat_eta    = new Q_M                        (m_env, m_n_eta_space.map(), m_paper_p_eta); // to be deleted on destructor
 
     //***********************************************************************
@@ -544,17 +544,17 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
     int iRC = etaMat_transfored_transpose.svd(svdU_mat, svdS_vec, svdVt_mat);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << "\n iRC from m_etaMat_transformed.svd(2) = " << iRC
                               << std::endl;
     }
     UQ_FATAL_TEST_MACRO(iRC != 0,
                         m_env.worldRank(),
-                        "uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                        "SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
                         "svd(2) failed");
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished performing svd(2) on 'm_etaMat_transformed'"
                               << "\n svdU_mat  =\n" << svdU_mat
                               << "\n svdS_vec  =\n" << svdS_vec
@@ -572,14 +572,14 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
     //***********************************************************************
     m_paper_p_eta = computePEta(svdS_vec);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ", m_optionsObj->m_ov.m_cdfThresholdForPEta = "       << m_optionsObj->m_ov.m_cdfThresholdForPEta
                               << ", m_optionsObj->m_ov.m_zeroRelativeSingularValue = " << m_optionsObj->m_ov.m_zeroRelativeSingularValue
                               << ": m_paper_p_eta(2) = "                               << m_paper_p_eta
                               << std::endl;
     }
 
-    m_p_eta_space = new uqVectorSpaceClass<Q_V,Q_M>(m_env, "p_eta_", m_paper_p_eta, NULL);      // to be deleted on destructor
+    m_p_eta_space = new VectorSpaceClass<Q_V,Q_M>(m_env, "p_eta_", m_paper_p_eta, NULL);      // to be deleted on destructor
     m_Kmat_eta    = new Q_M                        (m_env, m_n_eta_space.map(), m_paper_p_eta); // to be deleted on destructor
 
     //***********************************************************************
@@ -603,7 +603,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
     if (m_env.identifyingString() == "towerExampleToMatchGPMSA") { 
       // IMPORTANT: temporary, just to match with tower example of the Matlab version of GPMSA
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-        *m_env.subDisplayFile() << "IMPORTANT In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "IMPORTANT In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ": multiplying first column of 'm_Kmat_eta' by '-1' in order to match the results of Matlab GPMSA"
                                 << std::endl;
       }
@@ -616,7 +616,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
     m_Kmat_eta->setPrintHorizontally(false);
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished forming 'm_Kmat_eta'"
                             << "\n (key-debug) *m_Kmat_eta =\n" << *m_Kmat_eta
                             << std::endl;
@@ -636,7 +636,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   m_Kmat_is.resize(m_paper_p_eta, (Q_M*) NULL);                        // to be deleted on destructor
   m_Kmat = new Q_M(m_env, m_eta_space.map(), m_paper_m*m_paper_p_eta); // to be deleted on destructor
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << "\n  m_Kmat->numRowsLocal = " << m_Kmat->numRowsLocal()
                             << "\n  m_Kmat->numCols = "      << m_Kmat->numCols()
                             << std::endl;
@@ -651,7 +651,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished computing 'm_kvec_is'"
                             << std::endl;
   }
@@ -662,7 +662,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   for (unsigned int i = 0; i < m_paper_p_eta; ++i) {
     m_Kmat_is[i] = new Q_M(m_env, m_eta_space.map(), m_paper_m);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+      *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": before 'm_Kmat_is[i]->fillWithTensorProduct()"
                               << "\n  m_Kmat_is[" << i << "]->numRowsLocal() = " << m_Kmat_is[i]->numRowsLocal()
                               << "\n  m_Kmat_is[" << i << "]->numCols() = "      << m_Kmat_is[i]->numCols()
@@ -675,7 +675,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished computing 'm_Kmat_is'"
                             << std::endl;
   }
@@ -684,7 +684,7 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   // Form 'Kmat' matrix
   //***********************************************************************
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": before 'm_Kmat->fillWithBlocksDiagonal()"
                             << "\n  m_Kmat->numRowsLocal() = " << m_Kmat->numRowsLocal()
                             << "\n  m_Kmat->numCols() = "      << m_Kmat->numCols()
@@ -693,17 +693,17 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationModelClass(
   m_Kmat->fillWithBlocksHorizontally(0,0,m_Kmat_is,true,true);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": prefix = " << m_optionsObj->m_prefix
                             << std::endl;
   }
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::~uqSimulationModelClass()
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::~SimulationModelClass()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()..."
+    *m_env.subDisplayFile() << "Entering SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()..."
                             << std::endl;
   }
 
@@ -721,14 +721,14 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::~uqSimulationModelClass()
   if (m_optionsObj) delete m_optionsObj;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()"
                             << std::endl;
   }
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 unsigned int
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::computePEta(const Q_V& svdS_vec)
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::computePEta(const Q_V& svdS_vec)
 {
   unsigned int result = 0;
   if (m_optionsObj->m_ov.m_cdfThresholdForPEta <= 0.) {
@@ -770,59 +770,59 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::computePEta(const Q_V& svdS_vec
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 unsigned int
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::numBasis() const
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::numBasis() const
 {
   return m_paper_p_eta;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const std::vector<const S_V* >&
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::xs_asterisks_standard() const
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::xs_asterisks_standard() const
 {
   return m_xs_asterisks_standard;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const S_V&
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::xSeq_original_mins() const
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::xSeq_original_mins() const
 {
   return m_xSeq_original_mins;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const S_V&
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::xSeq_original_ranges() const
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::xSeq_original_ranges() const
 {
   return m_xSeq_original_ranges;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const std::vector<const P_V* >&
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::ts_asterisks_standard() const
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::ts_asterisks_standard() const
 {
   return m_ts_asterisks_standard;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const Q_V&
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaSeq_original_mean() const
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaSeq_original_mean() const
 {
   return m_etaSeq_original_mean;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 double
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaSeq_allStd() const
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaSeq_allStd() const
 {
   return m_etaSeq_allStd;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const Q_V&
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_transformed(const std::string& debugString) const
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_transformed(const std::string& debugString) const
 {
   //if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-  //  *m_env.subDisplayFile() << "Entering uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_transformed()"
+  //  *m_env.subDisplayFile() << "Entering SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_transformed()"
   //                          << ": debugString = " << debugString
   //                          << ", m_etaVec_transformed = " << m_etaVec_transformed
   //                          << std::endl;
@@ -832,41 +832,41 @@ uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_transformed(const std::s
 }
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const Q_V&
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::basisVec(unsigned int basisId) const
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::basisVec(unsigned int basisId) const
 {
   return *(m_kvec_is[basisId]);
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const Q_M&
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::Kmat_eta() const
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::Kmat_eta() const
 {
   return *m_Kmat_eta;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const Q_M&
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::Kmat() const
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::Kmat() const
 {
   return *m_Kmat;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-const uqSimulationModelOptionsClass&
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::optionsObj() const
+const SimulationModelOptionsClass&
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::optionsObj() const
 {
   return *m_optionsObj;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
+SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
   return;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& obj)
+std::ostream& operator<<(std::ostream& os, const SimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& obj)
 {
   obj.print(os);
 

@@ -37,7 +37,7 @@ namespace QUESO {
 /*! \file uqVectorSetClass.h
  * \brief A templated class for handling sets.
  * 
- * \class uqVectorSetClass
+ * \class VectorSetClass
  * \brief A templated class for handling sets.
  *
  * This class allows the mathematical definition of a scalar function such as:
@@ -47,30 +47,30 @@ namespace QUESO {
 
 
 template <class V, class M>
-class uqVectorSpaceClass;
+class VectorSpaceClass;
 
 template <class V, class M>
-class uqVectorSetClass
+class VectorSetClass
 {
 public:
   //! @name Constructor/Destructor methods.
   //@{ 
   //! Default Constructor
   /*! It should not be used by the user.*/
-  uqVectorSetClass();
+  VectorSetClass();
   
   //! Shaped constructor.
   /*! Creates a vector set given an environment, a identifying prefix and a volume.*/
-  uqVectorSetClass(const uqBaseEnvironmentClass& env, const char* prefix, double volume);
+  VectorSetClass(const BaseEnvironmentClass& env, const char* prefix, double volume);
   
   //! Virtual destructor.
-  virtual ~uqVectorSetClass();
+  virtual ~VectorSetClass();
   //@}
   
   //! @name Environment methods
   //@{
   //! Environment.  Access to private attribute m_env.
-  const uqBaseEnvironmentClass&  env        ()                 const;
+  const BaseEnvironmentClass&  env        ()                 const;
   
   //! Access to private attribute m_prefix.
   const std::string&             prefix     ()                 const;
@@ -82,7 +82,7 @@ public:
   double                   volume     ()                 const;
   
   //! Vector space to which \c this set belongs to. See template specialization.
-  virtual const uqVectorSpaceClass<V,M>& vectorSpace()                 const = 0;
+  virtual const VectorSpaceClass<V,M>& vectorSpace()                 const = 0;
   
   //! Checks whether a set contains vector \c vec. See template specialization.
   virtual       bool                     contains   (const V& vec)     const = 0;
@@ -95,7 +95,7 @@ public:
   //@}
   
 protected:
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
         std::string             m_prefix;
         double                  m_volume;
 };
@@ -104,19 +104,19 @@ protected:
 // Constructor/Destructor methods -------------------
 // Default constructor-------------------------------
 template <class V, class M>
-uqVectorSetClass<V,M>::uqVectorSetClass()
+VectorSetClass<V,M>::VectorSetClass()
   :
-  m_env(*(new uqEmptyEnvironmentClass()))
+  m_env(*(new EmptyEnvironmentClass()))
 {
   UQ_FATAL_TEST_MACRO(true,
                       m_env.worldRank(),
-                      "uqVectorSetClass<V,M>::constructor(), default",
+                      "VectorSetClass<V,M>::constructor(), default",
                       "should not be used by user");
 }
 // Shaped constructor--------------------------------
 template <class V, class M>
-uqVectorSetClass<V,M>::uqVectorSetClass(
-  const uqBaseEnvironmentClass& env,
+VectorSetClass<V,M>::VectorSetClass(
+  const BaseEnvironmentClass& env,
   const char*                   prefix,
         double                  volume)
   :
@@ -125,26 +125,26 @@ uqVectorSetClass<V,M>::uqVectorSetClass(
   m_volume(volume)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering uqVectorSetClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering VectorSetClass<V,M>::constructor()"
                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving uqVectorSetClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving VectorSetClass<V,M>::constructor()"
                            << std::endl;
   }
 }
 // Destructor --------------------------------------------
 template <class V, class M>
-uqVectorSetClass<V,M>::~uqVectorSetClass()
+VectorSetClass<V,M>::~VectorSetClass()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering uqVectorSetClass<V,M>::destructor()"
+    *m_env.subDisplayFile() << "Entering VectorSetClass<V,M>::destructor()"
                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving uqVectorSetClass<V,M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving VectorSetClass<V,M>::destructor()"
                            << std::endl;
   }
 }
@@ -152,38 +152,38 @@ uqVectorSetClass<V,M>::~uqVectorSetClass()
 // Environment methods------------------------------------
 // -------------------------------------------------------
 template <class V, class M>
-const uqBaseEnvironmentClass&
-uqVectorSetClass<V,M>::env() const
+const BaseEnvironmentClass&
+VectorSetClass<V,M>::env() const
 {
   return m_env;
 }
 // -------------------------------------------------------
 template <class V, class M>
 const std::string&
-uqVectorSetClass<V,M>::prefix() const
+VectorSetClass<V,M>::prefix() const
 {
   return m_prefix;
 }
 // Mathematical methods-----------------------------------
 template <class V, class M>
 double
-uqVectorSetClass<V,M>::volume() const
+VectorSetClass<V,M>::volume() const
 {
   return m_volume;
 }
 // I/O methods--------------------------------------------
 template <class V, class M>
 void
-uqVectorSetClass<V,M>::print(std::ostream& os) const
+VectorSetClass<V,M>::print(std::ostream& os) const
 {
-  os << "In uqVectorSetClass<V,M>::print()"
+  os << "In VectorSetClass<V,M>::print()"
      << ": nothing to be printed" << std::endl;
   return;
 }
 // --------------------------------------------------
 template<class V, class M>
 std::ostream&
-operator<<(std::ostream& os, const uqVectorSetClass<V,M>& obj)
+operator<<(std::ostream& os, const VectorSetClass<V,M>& obj)
 {
   obj.print(os);
 

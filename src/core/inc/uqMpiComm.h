@@ -42,21 +42,21 @@
 
 namespace QUESO {
 
-typedef MPI_Comm     uqRawType_MPI_Comm ;
-typedef MPI_Group    uqRawType_MPI_Group ;
-typedef MPI_Datatype uqRawType_MPI_Datatype ;
-typedef MPI_Op       uqRawType_MPI_Op ;
-typedef MPI_Status   uqRawType_MPI_Status ;
-#define uqRawValue_MPI_COMM_SELF  MPI_COMM_SELF 
-#define uqRawValue_MPI_IN_PLACE   MPI_IN_PLACE
-#define uqRawValue_MPI_ANY_SOURCE MPI_ANY_SOURCE
-#define uqRawValue_MPI_CHAR       MPI_CHAR
-#define uqRawValue_MPI_INT        MPI_INT
-#define uqRawValue_MPI_DOUBLE     MPI_DOUBLE
-#define uqRawValue_MPI_UNSIGNED   MPI_UNSIGNED
-#define uqRawValue_MPI_MIN        MPI_MIN
-#define uqRawValue_MPI_MAX        MPI_MAX
-#define uqRawValue_MPI_SUM        MPI_SUM
+typedef MPI_Comm     RawType_MPI_Comm ;
+typedef MPI_Group    RawType_MPI_Group ;
+typedef MPI_Datatype RawType_MPI_Datatype ;
+typedef MPI_Op       RawType_MPI_Op ;
+typedef MPI_Status   RawType_MPI_Status ;
+#define RawValue_MPI_COMM_SELF  MPI_COMM_SELF 
+#define RawValue_MPI_IN_PLACE   MPI_IN_PLACE
+#define RawValue_MPI_ANY_SOURCE MPI_ANY_SOURCE
+#define RawValue_MPI_CHAR       MPI_CHAR
+#define RawValue_MPI_INT        MPI_INT
+#define RawValue_MPI_DOUBLE     MPI_DOUBLE
+#define RawValue_MPI_UNSIGNED   MPI_UNSIGNED
+#define RawValue_MPI_MIN        MPI_MIN
+#define RawValue_MPI_MAX        MPI_MAX
+#define RawValue_MPI_SUM        MPI_SUM
 
 }  // End namespace QUESO
 
@@ -64,21 +64,21 @@ typedef MPI_Status   uqRawType_MPI_Status ;
 
 namespace QUESO {
 
-typedef int uqRawType_MPI_Comm ;
-typedef int uqRawType_MPI_Group ;
-typedef int uqRawType_MPI_Datatype ;
-typedef int uqRawType_MPI_Op ;
-typedef int uqRawType_MPI_Status ;
-#define uqRawValue_MPI_COMM_SELF  0
-#define uqRawValue_MPI_IN_PLACE   0
-#define uqRawValue_MPI_ANY_SOURCE -1
-#define uqRawValue_MPI_CHAR       0
-#define uqRawValue_MPI_INT        1
-#define uqRawValue_MPI_DOUBLE     2
-#define uqRawValue_MPI_UNSIGNED   3
-#define uqRawValue_MPI_MIN        0
-#define uqRawValue_MPI_MAX        1
-#define uqRawValue_MPI_SUM        2
+typedef int RawType_MPI_Comm ;
+typedef int RawType_MPI_Group ;
+typedef int RawType_MPI_Datatype ;
+typedef int RawType_MPI_Op ;
+typedef int RawType_MPI_Status ;
+#define RawValue_MPI_COMM_SELF  0
+#define RawValue_MPI_IN_PLACE   0
+#define RawValue_MPI_ANY_SOURCE -1
+#define RawValue_MPI_CHAR       0
+#define RawValue_MPI_INT        1
+#define RawValue_MPI_DOUBLE     2
+#define RawValue_MPI_UNSIGNED   3
+#define RawValue_MPI_MIN        0
+#define RawValue_MPI_MAX        1
+#define RawValue_MPI_SUM        2
 
 }  // End namespace QUESO
 
@@ -90,7 +90,7 @@ namespace QUESO {
     \brief MPI Communicator Class.
 */
 
-/*! \class uqMpiCommClass
+/*! \class MpiCommClass
     \brief The QUESO MPI Communicator Class.
     
     This class uses MPI (the Message Passing Interface) for distributed-memory 
@@ -100,9 +100,9 @@ namespace QUESO {
 */
 
 
-class uqBaseEnvironmentClass;
+class BaseEnvironmentClass;
 
-class uqMpiCommClass
+class MpiCommClass
 {
 public:
    //! @name Constructor/Destructor methods
@@ -110,32 +110,32 @@ public:
 
   //! Default Constructor
   /*! It should not be used by user.*/
-  uqMpiCommClass();
+  MpiCommClass();
   
-  //! QUESO uqMpiComm MPI Constructor.
+  //! QUESO MpiComm MPI Constructor.
   /*! This constructs an MpiComm that uses the given "raw" MPI communicator underneath. 
    * The MPI_Comm must be valid for the lifetime of this MpiComm.*/
-  uqMpiCommClass(const uqBaseEnvironmentClass& env, uqRawType_MPI_Comm inputRawComm);
+  MpiCommClass(const BaseEnvironmentClass& env, RawType_MPI_Comm inputRawComm);
   
   //! Copy Constructor.
-  /** Makes an exact copy of an existing uqMpiComm instance.*/
-  uqMpiCommClass(const uqMpiCommClass& src);
+  /** Makes an exact copy of an existing MpiComm instance.*/
+  MpiCommClass(const MpiCommClass& src);
   
   //! Destructor
- ~uqMpiCommClass();
+ ~MpiCommClass();
   //@}
  
   //! @name Set methods
   //@{
   //! Assignment operator. 
-  uqMpiCommClass& operator= (const uqMpiCommClass& rhs);
+  MpiCommClass& operator= (const MpiCommClass& rhs);
   //@}
   
   
   //! @name Attribute Accessor Methods
   //@{
-  //! Extract MPI Communicator from a uqMpiComm object.  
-  uqRawType_MPI_Comm Comm     () const;
+  //! Extract MPI Communicator from a MpiComm object.  
+  RawType_MPI_Comm Comm     () const;
   
   //! Return my process ID. 
   int                MyPID    () const;
@@ -152,8 +152,8 @@ public:
    * \param datatype data type of elements of send buffer
    * \param op operation
    * \param recvbuf (output) starting address of receive buffer*/
-  void               Allreduce(void* sendbuf, void* recvbuf, int count, uqRawType_MPI_Datatype datatype, 
-			       uqRawType_MPI_Op op, const char* whereMsg, const char* whatMsg) const;
+  void               Allreduce(void* sendbuf, void* recvbuf, int count, RawType_MPI_Datatype datatype, 
+			       RawType_MPI_Op op, const char* whereMsg, const char* whatMsg) const;
 			       
   //! Pause every process in *this communicator until all the processes reach this point. 
   /*! Blocks the caller until all processes in the communicator have called it; that is, 
@@ -166,7 +166,7 @@ public:
    * \param count number of entries in buffer
    * \param datatype data type of buffer
    * \param root rank of broadcast root */
-  void               Bcast    (void* buffer, int count, uqRawType_MPI_Datatype datatype, int root,
+  void               Bcast    (void* buffer, int count, RawType_MPI_Datatype datatype, int root,
                                const char* whereMsg, const char* whatMsg) const;
 			       
   //! Gather values from each process to collect on all processes. 
@@ -177,8 +177,8 @@ public:
    * \param recvtype data type of recv buffer elements 
    * \param root rank of receiving process 
    * \param recvbuf (output) address of receive buffer */			       
-  void               Gather   (void *sendbuf, int sendcnt, uqRawType_MPI_Datatype sendtype, 
-                               void *recvbuf, int recvcount, uqRawType_MPI_Datatype recvtype, 
+  void               Gather   (void *sendbuf, int sendcnt, RawType_MPI_Datatype sendtype, 
+                               void *recvbuf, int recvcount, RawType_MPI_Datatype recvtype, 
                                int root,
                                const char* whereMsg, const char* whatMsg) const;
 			       
@@ -192,8 +192,8 @@ public:
   * relative to recvbuf at which to place the incoming data from process i 
   * \param recvtype data type of recv buffer elements 
   * \param root rank of receiving process*/			       
-  void               Gatherv  (void *sendbuf, int sendcnt, uqRawType_MPI_Datatype sendtype, 
-                               void *recvbuf, int *recvcnts, int *displs, uqRawType_MPI_Datatype recvtype, 
+  void               Gatherv  (void *sendbuf, int sendcnt, RawType_MPI_Datatype sendtype, 
+                               void *recvbuf, int *recvcnts, int *displs, RawType_MPI_Datatype recvtype, 
                                int root,
                                const char* whereMsg, const char* whatMsg) const;
 			       
@@ -204,7 +204,7 @@ public:
    * \param datatype datatype of each receive buffer element
    * \param source rank of source
    * \param tag message tag */			       
-  void               Recv     (void *buf, int count, uqRawType_MPI_Datatype datatype, int source, int tag, uqRawType_MPI_Status *status,
+  void               Recv     (void *buf, int count, RawType_MPI_Datatype datatype, int source, int tag, RawType_MPI_Status *status,
                                const char* whereMsg, const char* whatMsg) const;
 			       
   //! Possibly blocking send of data from this process to another process. 	
@@ -213,7 +213,7 @@ public:
    * \param datatype datatype of each send buffer element
    * \param dest rank of destination
    * \param tag message tag*/		       
-  void               Send     (void *buf, int count, uqRawType_MPI_Datatype datatype, int dest, int tag,
+  void               Send     (void *buf, int count, RawType_MPI_Datatype datatype, int dest, int tag,
                                const char* whereMsg, const char* whatMsg) const;
  //@}
 			       
@@ -229,24 +229,24 @@ public:
   
  //@}
 private:
-  //! Copies from an existing uqMpiComm instance.
-  void               copy          (const uqMpiCommClass& src);
+  //! Copies from an existing MpiComm instance.
+  void               copy          (const MpiCommClass& src);
 #ifdef QUESO_HAS_MPI
 #else
   
   //! Calculates the size of each data type.
-  size_t             sizeOfDataType(uqRawType_MPI_Datatype datatype, const char* whereMsg, const char* whatMsg) const;
+  size_t             sizeOfDataType(RawType_MPI_Datatype datatype, const char* whereMsg, const char* whatMsg) const;
 #endif
 
   // QUESO environment 
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
 #ifdef QUESO_HAS_TRILINOS
   
   // Epetra MPI communicator
   Epetra_MpiComm*               m_epetraMpiComm;
 #endif
   //! Embedded wrapped opaque MPI_Comm object.
-  uqRawType_MPI_Comm            m_rawComm;
+  RawType_MPI_Comm            m_rawComm;
   
   //! World rank
   int                           m_worldRank;

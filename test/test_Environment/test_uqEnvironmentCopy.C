@@ -7,14 +7,14 @@ int main(int argc, char **argv) {
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
 #endif
-  QUESO::uqFullEnvironmentClass *env =
+  QUESO::FullEnvironmentClass *env =
 #ifdef QUESO_HAS_MPI
-    new QUESO::uqFullEnvironmentClass(MPI_COMM_WORLD, "copy_env.inp", "", NULL);
+    new QUESO::FullEnvironmentClass(MPI_COMM_WORLD, "copy_env.inp", "", NULL);
 #else
-    new QUESO::uqFullEnvironmentClass(0, "copy_env.inp", "", NULL);
+    new QUESO::FullEnvironmentClass(0, "copy_env.inp", "", NULL);
 #endif
 
-  QUESO::uqFullEnvironmentClass another_env(*env);
+  QUESO::FullEnvironmentClass another_env(*env);
 
   delete env;
 #ifdef QUESO_HAS_MPI

@@ -37,7 +37,7 @@
 
 struct likelihoodRoutine_DataClass // user defined class
 {
-  likelihoodRoutine_DataClass(const QUESO::uqBaseEnvironmentClass& env);
+  likelihoodRoutine_DataClass(const QUESO::BaseEnvironmentClass& env);
  ~likelihoodRoutine_DataClass();
 
   std::vector<double> m_heights; // heights
@@ -45,15 +45,15 @@ struct likelihoodRoutine_DataClass // user defined class
   std::vector<double> m_stdDevs; // account for uncertainties in 
 				 // time measurement: sigmas
 
-  const QUESO::uqBaseEnvironmentClass* m_env;
+  const QUESO::BaseEnvironmentClass* m_env;
 };
 
 double likelihoodRoutine( // user defined routine
-  const QUESO::uqGslVectorClass& paramValues,
-  const QUESO::uqGslVectorClass* paramDirection,
+  const QUESO::GslVectorClass& paramValues,
+  const QUESO::GslVectorClass* paramDirection,
   const void*             functionDataPtr,
-  QUESO::uqGslVectorClass*       gradVector,
-  QUESO::uqGslMatrixClass*       hessianMatrix,
-  QUESO::uqGslVectorClass*       hessianEffect);
+  QUESO::GslVectorClass*       gradVector,
+  QUESO::GslMatrixClass*       hessianMatrix,
+  QUESO::GslVectorClass*       hessianEffect);
 
 #endif

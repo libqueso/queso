@@ -39,7 +39,7 @@ namespace QUESO {
     \brief Matrix class.
 */
 
-/*! \class uqMatrixClass
+/*! \class MatrixClass
     \brief Class for matrix operations (virtual). 
     
     Base matrix class. The matrix class is an abstract class designed to be used as a base class 
@@ -47,43 +47,43 @@ namespace QUESO {
 */
 
 
-class uqMatrixClass
+class MatrixClass
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqMatrixClass();
+  MatrixClass();
 	   
   //! Shaped constructor.
-  uqMatrixClass(const uqBaseEnvironmentClass& env, const uqMapClass& map);
+  MatrixClass(const BaseEnvironmentClass& env, const MapClass& map);
 	   
   //! Copy constructor.
-  uqMatrixClass(const uqMatrixClass& rhs);
+  MatrixClass(const MatrixClass& rhs);
 	   
   //! Virtual Destructor
-  virtual ~uqMatrixClass();
+  virtual ~MatrixClass();
   //@}
 
   //! @name Set methods
   //@{    
   //! Operator for copying a matrix.
-  uqMatrixClass& operator= (const uqMatrixClass& rhs);
+  MatrixClass& operator= (const MatrixClass& rhs);
   
   //! Operator for multiplication of the matrix by a scalar.
-  uqMatrixClass& operator*=(double a);
+  MatrixClass& operator*=(double a);
   
   //! Operator for addition (element-wise) of two matrices.
-  uqMatrixClass& operator+=(const uqMatrixClass& rhs);
+  MatrixClass& operator+=(const MatrixClass& rhs);
   
   //! Operator for subtraction (element-wise) of two matrices.
-  uqMatrixClass& operator-=(const uqMatrixClass& rhs);
+  MatrixClass& operator-=(const MatrixClass& rhs);
   //@}
 
   //! @name Environment and Map methods
   //@{ 
-  const uqBaseEnvironmentClass& env                 ()           const;
-  const uqMapClass&             map                 ()           const;
+  const BaseEnvironmentClass& env                 ()           const;
+  const MapClass&             map                 ()           const;
         unsigned int            numOfProcsForStorage()           const;
   //@}       
   
@@ -135,20 +135,20 @@ public:
   
 protected:
   //! Copies matrix \c src to \c this matrix.
-  virtual void                    copy                (const uqMatrixClass& src);
+  virtual void                    copy                (const MatrixClass& src);
 
   //! QUESO environment variable.
-  const   uqBaseEnvironmentClass& m_env;
+  const   BaseEnvironmentClass& m_env;
   
 #ifdef QUESO_CLASSES_INSTANTIATE_NEW_MAPS
 
   //! Mapping variable.
-  const   uqMapClass              m_map;
+  const   MapClass              m_map;
 
 #else
 
   //! Mapping variable.
-  const   uqMapClass&             m_map;
+  const   MapClass&             m_map;
 
 #endif
 

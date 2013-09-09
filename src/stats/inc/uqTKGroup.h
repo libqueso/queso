@@ -40,7 +40,7 @@ namespace QUESO {
 /*! \file uqTKGroup.h
  *  \brief Class to set up a Transition Kernel.
  * 
- *  \class uqBaseTKGroupClass
+ *  \class BaseTKGroupClass
  *  \brief This base class allows the representation of a transition kernel.
  * 
  * The transition kernel is a conditional distribution function that represents the probability of 
@@ -49,19 +49,19 @@ namespace QUESO {
  * is permitted that the chain can make a transition from the point \f$ x \f$ to \f$ x \f$, that is 
  * \f$ P(x, {x}) \f$ is not necessarily zero. */
 template<class V, class M>
-class uqBaseTKGroupClass {
+class BaseTKGroupClass {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqBaseTKGroupClass();
+  BaseTKGroupClass();
   
   //! Constructor.
-  uqBaseTKGroupClass(const char*                    prefix,
-                     const uqVectorSpaceClass<V,M>& vectorSpace,
+  BaseTKGroupClass(const char*                    prefix,
+                     const VectorSpaceClass<V,M>& vectorSpace,
                      const std::vector<double>&     scales);
   //! Destructor.
-  virtual ~uqBaseTKGroupClass();
+  virtual ~BaseTKGroupClass();
   //@}
 
   //! @name Statistical/Mathematical methods
@@ -70,16 +70,16 @@ public:
   virtual       bool                          symmetric                 () const = 0;
   
   //! Gaussian increment property to construct a transition kernel. See template specialization.
-  virtual const uqGaussianVectorRVClass<V,M>& rv                        (unsigned int                     stageId ) = 0;
+  virtual const GaussianVectorRVClass<V,M>& rv                        (unsigned int                     stageId ) = 0;
   
   //! Gaussian increment property to construct a transition kernel. See template specialization.
-  virtual const uqGaussianVectorRVClass<V,M>& rv                        (const std::vector<unsigned int>& stageIds) = 0;
+  virtual const GaussianVectorRVClass<V,M>& rv                        (const std::vector<unsigned int>& stageIds) = 0;
   //@}
 
   //! @name Misc methods
   //@{
   //! QUESO's environment.
-  const uqBaseEnvironmentClass& env() const;
+  const BaseEnvironmentClass& env() const;
 
   //! Pre-computing position; access to protected attribute *m_preComputingPositions[stageId]. 
   const V&                                    preComputingPosition      (unsigned int stageId) const;
@@ -98,19 +98,19 @@ public:
   virtual       void                          print                     (std::ostream& os) const;
   //@}
 protected:
-  const   uqEmptyEnvironmentClass*                    m_emptyEnv;
-  const   uqBaseEnvironmentClass&                     m_env;
+  const   EmptyEnvironmentClass*                    m_emptyEnv;
+  const   BaseEnvironmentClass&                     m_env;
           std::string                                 m_prefix;
-  const   uqVectorSpaceClass<V,M>*                    m_vectorSpace;
+  const   VectorSpaceClass<V,M>*                    m_vectorSpace;
           std::vector<double>                         m_scales;
           std::vector<const V*>                       m_preComputingPositions;
-          std::vector<uqGaussianVectorRVClass<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
+          std::vector<GaussianVectorRVClass<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
 };
 // Default constructor ------------------------------
 template<class V, class M>
-uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass()
+BaseTKGroupClass<V,M>::BaseTKGroupClass()
   :
-  m_emptyEnv             (new uqEmptyEnvironmentClass()),
+  m_emptyEnv             (new EmptyEnvironmentClass()),
   m_env                  (*m_emptyEnv),
   m_prefix               (""),
   m_vectorSpace          (NULL),
@@ -121,9 +121,9 @@ uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass()
 }
 // Constructor with values---------------------------
 template<class V, class M>
-uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass(
+BaseTKGroupClass<V,M>::BaseTKGroupClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& vectorSpace,
+  const VectorSpaceClass<V,M>& vectorSpace,
   const std::vector<double>&     scales)
   :
   m_emptyEnv             (NULL),
@@ -140,7 +140,7 @@ uqBaseTKGroupClass<V,M>::uqBaseTKGroupClass(
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-uqBaseTKGroupClass<V,M>::~uqBaseTKGroupClass()
+BaseTKGroupClass<V,M>::~BaseTKGroupClass()
 {
   for (unsigned int i = 0; i < m_rvs.size(); ++i) {
     if (m_rvs[i]) delete m_rvs[i];
@@ -152,24 +152,24 @@ uqBaseTKGroupClass<V,M>::~uqBaseTKGroupClass()
 }
 // Misc methods--------------------------------------
 template<class V, class M>
-const uqBaseEnvironmentClass&
-uqBaseTKGroupClass<V,M>::env() const
+const BaseEnvironmentClass&
+BaseTKGroupClass<V,M>::env() const
 {
   return m_env;
 }
 //---------------------------------------------------
 template<class V, class M>
 const V&
-uqBaseTKGroupClass<V,M>::preComputingPosition(unsigned int stageId) const
+BaseTKGroupClass<V,M>::preComputingPosition(unsigned int stageId) const
 {
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
                       m_env.worldRank(),
-                      "uqBaseTKGroupClass<V,M>::preComputingPosition()",
+                      "BaseTKGroupClass<V,M>::preComputingPosition()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
                       m_env.worldRank(),
-                      "uqBaseTKGroupClass<V,M>::preComputingPosition()",
+                      "BaseTKGroupClass<V,M>::preComputingPosition()",
                       "m_preComputingPositions[stageId] == NULL");
 
   return *m_preComputingPositions[stageId];
@@ -177,16 +177,16 @@ uqBaseTKGroupClass<V,M>::preComputingPosition(unsigned int stageId) const
 //---------------------------------------------------
 template<class V, class M>
 bool
-uqBaseTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
+BaseTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
                       m_env.worldRank(),
-                      "uqBaseTKGroupClass<V,M>::setPreComputingPosition()",
+                      "BaseTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] != NULL,
                       m_env.worldRank(),
-                      "uqBaseTKGroupClass<V,M>::setPreComputingPosition()",
+                      "BaseTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions[stageId] != NULL");
 
   m_preComputingPositions[stageId] = new V(position);
@@ -196,7 +196,7 @@ uqBaseTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int
 //---------------------------------------------------
 template<class V, class M>
 void
-uqBaseTKGroupClass<V,M>::clearPreComputingPositions()
+BaseTKGroupClass<V,M>::clearPreComputingPositions()
 {
   for (unsigned int i = 0; i < m_preComputingPositions.size(); ++i) {
     if (m_preComputingPositions[i]) {
@@ -210,9 +210,9 @@ uqBaseTKGroupClass<V,M>::clearPreComputingPositions()
 // I/O methods---------------------------------------
 template<class V, class M>
 void
-uqBaseTKGroupClass<V,M>::print(std::ostream& os) const
+BaseTKGroupClass<V,M>::print(std::ostream& os) const
 {
-  os << "In uqBaseTKGroupClass<V,M>::print()"
+  os << "In BaseTKGroupClass<V,M>::print()"
      << ": nothing to be printed" << std::endl;
   return;
 }
@@ -220,21 +220,21 @@ uqBaseTKGroupClass<V,M>::print(std::ostream& os) const
 //*****************************************************
 // TK with scaled cov matrix
 //*****************************************************
-/*! \class uqScaledCovMatrixTKGroupClass
+/*! \class ScaledCovMatrixTKGroupClass
  *  \brief This class allows the representation of a transition kernel with a scaled covariance matrix. */
  
 template<class V, class M>
-class uqScaledCovMatrixTKGroupClass : public uqBaseTKGroupClass<V,M> {
+class ScaledCovMatrixTKGroupClass : public BaseTKGroupClass<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqScaledCovMatrixTKGroupClass(const char*                    prefix,
-                                const uqVectorSpaceClass<V,M>& vectorSpace,
+  ScaledCovMatrixTKGroupClass(const char*                    prefix,
+                                const VectorSpaceClass<V,M>& vectorSpace,
                                 const std::vector<double>&     scales,
                                 const M&                       covMatrix);
   //! Destructor.
-  ~uqScaledCovMatrixTKGroupClass();
+  ~ScaledCovMatrixTKGroupClass();
   //@}
   
   //! @name Statistical/Mathematical methods
@@ -244,10 +244,10 @@ public:
   bool                          symmetric                 () const;
   
   //! Gaussian increment property to construct a transition kernel.
-  const uqGaussianVectorRVClass<V,M>& rv                        (unsigned int                     stageId );
+  const GaussianVectorRVClass<V,M>& rv                        (unsigned int                     stageId );
   
   //! Gaussian increment property to construct a transition kernel.
-  const uqGaussianVectorRVClass<V,M>& rv                        (const std::vector<unsigned int>& stageIds);
+  const GaussianVectorRVClass<V,M>& rv                        (const std::vector<unsigned int>& stageIds);
   
   //! Scales the covariance matrix.
   /*! The covariance matrix is scaled by a factor of \f$ 1/scales^2 \f$.*/
@@ -272,33 +272,33 @@ public:
 private:
   //! Sets the mean of the RVs to zero.
   void                          setRVsWithZeroMean        ();
-  using uqBaseTKGroupClass<V,M>::m_env;
-  using uqBaseTKGroupClass<V,M>::m_prefix;
-  using uqBaseTKGroupClass<V,M>::m_vectorSpace;
-  using uqBaseTKGroupClass<V,M>::m_scales;
-  using uqBaseTKGroupClass<V,M>::m_preComputingPositions;
-  using uqBaseTKGroupClass<V,M>::m_rvs;
+  using BaseTKGroupClass<V,M>::m_env;
+  using BaseTKGroupClass<V,M>::m_prefix;
+  using BaseTKGroupClass<V,M>::m_vectorSpace;
+  using BaseTKGroupClass<V,M>::m_scales;
+  using BaseTKGroupClass<V,M>::m_preComputingPositions;
+  using BaseTKGroupClass<V,M>::m_rvs;
 
   M m_originalCovMatrix;
 };
 // Default constructor ------------------------------
 template<class V, class M>
-uqScaledCovMatrixTKGroupClass<V,M>::uqScaledCovMatrixTKGroupClass(
+ScaledCovMatrixTKGroupClass<V,M>::ScaledCovMatrixTKGroupClass(
   const char*                    prefix,
-  const uqVectorSpaceClass<V,M>& vectorSpace, // FIX ME: vectorSubset ???
+  const VectorSpaceClass<V,M>& vectorSpace, // FIX ME: vectorSubset ???
   const std::vector<double>&     scales,
   const M&                       covMatrix)
   :
-  uqBaseTKGroupClass<V,M>(prefix,vectorSpace,scales),
+  BaseTKGroupClass<V,M>(prefix,vectorSpace,scales),
   m_originalCovMatrix    (covMatrix)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqScaledCovMatrixTKGroupClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering ScaledCovMatrixTKGroupClass<V,M>::constructor()"
                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "In uqScaledCovMatrixTKGroupClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "In ScaledCovMatrixTKGroupClass<V,M>::constructor()"
                            << ": m_scales.size() = "                << m_scales.size()
                            << ", m_preComputingPositions.size() = " << m_preComputingPositions.size()
                            << ", m_rvs.size() = "                   << m_rvs.size()
@@ -309,50 +309,50 @@ uqScaledCovMatrixTKGroupClass<V,M>::uqScaledCovMatrixTKGroupClass(
   setRVsWithZeroMean();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqScaledCovMatrixTKGroupClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving ScaledCovMatrixTKGroupClass<V,M>::constructor()"
                            << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-uqScaledCovMatrixTKGroupClass<V,M>::~uqScaledCovMatrixTKGroupClass()
+ScaledCovMatrixTKGroupClass<V,M>::~ScaledCovMatrixTKGroupClass()
 {
 }
 // Math/Stats methods--------------------------------
 template<class V, class M>
 bool
-uqScaledCovMatrixTKGroupClass<V,M>::symmetric() const
+ScaledCovMatrixTKGroupClass<V,M>::symmetric() const
 {
   return true;
 }
 //---------------------------------------------------
 template<class V, class M>
-const uqGaussianVectorRVClass<V,M>&
-uqScaledCovMatrixTKGroupClass<V,M>::rv(unsigned int stageId)
+const GaussianVectorRVClass<V,M>&
+ScaledCovMatrixTKGroupClass<V,M>::rv(unsigned int stageId)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
                       m_env.worldRank(),
-                      "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
+                      "ScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_rvs.size() = 0");
 
   UQ_FATAL_TEST_MACRO(m_rvs[0] == NULL, // Yes, '0', because that is the id used below
                       m_env.worldRank(),
-                      "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
+                      "ScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_rvs[0] == NULL");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
                       m_env.worldRank(),
-                      "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
+                      "ScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
                       m_env.worldRank(),
-                      "uqScaledCovMatrixTKGroupClass<V,M>::rv1()",
+                      "ScaledCovMatrixTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions[stageId] == NULL");
 
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
-    *m_env.subDisplayFile() << "In uqScaledCovMatrixTKGroupClass<V,M>::rv1()"
+    *m_env.subDisplayFile() << "In ScaledCovMatrixTKGroupClass<V,M>::rv1()"
                             << ", stageId = " << stageId
                             << ": about to call m_rvs[0]->updateLawExpVector()"
                             << ", vector = " << *m_preComputingPositions[stageId] // FIX ME: might demand parallelism
@@ -364,32 +364,32 @@ uqScaledCovMatrixTKGroupClass<V,M>::rv(unsigned int stageId)
 }
 //---------------------------------------------------
 template<class V, class M>
-const uqGaussianVectorRVClass<V,M>&
-uqScaledCovMatrixTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stageIds)
+const GaussianVectorRVClass<V,M>&
+ScaledCovMatrixTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stageIds)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() < stageIds.size(),
                       m_env.worldRank(),
-                      "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
+                      "ScaledCovMatrixTKGroupClass<V,M>::rv2()",
                       "m_rvs.size() < stageIds.size()");
 
   UQ_FATAL_TEST_MACRO(m_rvs[stageIds.size()-1] == NULL,
                       m_env.worldRank(),
-                      "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
+                      "ScaledCovMatrixTKGroupClass<V,M>::rv2()",
                       "m_rvs[stageIds.size()-1] == NULL");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageIds[0],
                       m_env.worldRank(),
-                      "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
+                      "ScaledCovMatrixTKGroupClass<V,M>::rv2()",
                       "m_preComputingPositions.size() <= stageIds[0]");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageIds[0]] == NULL,
                       m_env.worldRank(),
-                      "uqScaledCovMatrixTKGroupClass<V,M>::rv2()",
+                      "ScaledCovMatrixTKGroupClass<V,M>::rv2()",
                       "m_preComputingPositions[stageIds[0]] == NULL");
 
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
-    *m_env.subDisplayFile() << "In uqScaledCovMatrixTKGroupClass<V,M>::rv2()"
+    *m_env.subDisplayFile() << "In ScaledCovMatrixTKGroupClass<V,M>::rv2()"
                             << ", stageIds.size() = " << stageIds.size()
                             << ", stageIds[0] = "     << stageIds[0]
                             << ": about to call m_rvs[stageIds.size()-1]->updateLawExpVector()"
@@ -403,13 +403,13 @@ uqScaledCovMatrixTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stageIds
 //---------------------------------------------------
 template<class V, class M>
 void
-uqScaledCovMatrixTKGroupClass<V,M>::updateLawCovMatrix(const M& covMatrix)
+ScaledCovMatrixTKGroupClass<V,M>::updateLawCovMatrix(const M& covMatrix)
 {
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     double factor = 1./m_scales[i]/m_scales[i];
     if ((m_env.subDisplayFile()        ) &&
         (m_env.displayVerbosity() >= 10)) {
-      *m_env.subDisplayFile() << "In uqScaledCovMatrixTKGroupClass<V,M>::updateLawCovMatrix()"
+      *m_env.subDisplayFile() << "In ScaledCovMatrixTKGroupClass<V,M>::updateLawCovMatrix()"
                               << ", m_scales.size() = " << m_scales.size()
                               << ", i = "               << i
                               << ", m_scales[i] = "     << m_scales[i]
@@ -427,20 +427,20 @@ uqScaledCovMatrixTKGroupClass<V,M>::updateLawCovMatrix(const M& covMatrix)
 // Misc methods -------------------------------------
 template<class V, class M>
 bool
-uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
+ScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition()"
+    *m_env.subDisplayFile() << "Entering ScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition()"
                            << ": position = " << position
                            << ", stageId = "  << stageId
                            << std::endl;
   }
 
-  uqBaseTKGroupClass<V,M>::setPreComputingPosition(position,stageId);
+  BaseTKGroupClass<V,M>::setPreComputingPosition(position,stageId);
   //setRVsWithZeroMean();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "In uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition()"
+    *m_env.subDisplayFile() << "In ScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition()"
                            << ", position = "        << position
                            << ", stageId = "         << stageId
                            << ": preComputingPos = " << *m_preComputingPositions[stageId];
@@ -448,14 +448,14 @@ uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition(const V& position, u
       *m_env.subDisplayFile() << ", factor = " << 1./m_scales[stageId]/m_scales[stageId];
     }
     if (stageId < m_rvs.size()) {
-      const uqGaussianJointPdfClass<V,M>* pdfPtr = dynamic_cast< const uqGaussianJointPdfClass<V,M>* >(&(m_rvs[stageId]->pdf()));
+      const GaussianJointPdfClass<V,M>* pdfPtr = dynamic_cast< const GaussianJointPdfClass<V,M>* >(&(m_rvs[stageId]->pdf()));
       *m_env.subDisplayFile() << ", rvCov = " << pdfPtr->lawCovMatrix(); // FIX ME: might demand parallelism
     }
     *m_env.subDisplayFile() << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition()"
+    *m_env.subDisplayFile() << "Leaving ScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition()"
                            << ": position = " << position
                            << ", stageId = "  << stageId
                            << std::endl;
@@ -466,9 +466,9 @@ uqScaledCovMatrixTKGroupClass<V,M>::setPreComputingPosition(const V& position, u
 //---------------------------------------------------
 template<class V, class M>
 void
-uqScaledCovMatrixTKGroupClass<V,M>::clearPreComputingPositions()
+ScaledCovMatrixTKGroupClass<V,M>::clearPreComputingPositions()
 {
-  uqBaseTKGroupClass<V,M>::clearPreComputingPositions();
+  BaseTKGroupClass<V,M>::clearPreComputingPositions();
   return;
 }
 
@@ -476,25 +476,25 @@ uqScaledCovMatrixTKGroupClass<V,M>::clearPreComputingPositions()
 // Private methods------------------------------------
 template<class V, class M>
 void
-uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()
+ScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
                       m_env.worldRank(),
-                      "uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()",
+                      "ScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()",
                       "m_rvs.size() = 0");
 
   UQ_FATAL_TEST_MACRO(m_rvs.size() != m_scales.size(),
                       m_env.worldRank(),
-                      "uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()",
+                      "ScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()",
                       "m_rvs.size() != m_scales.size()");
 
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     double factor = 1./m_scales[i]/m_scales[i];
     UQ_FATAL_TEST_MACRO(m_rvs[i] != NULL,
                         m_env.worldRank(),
-                        "uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()",
+                        "ScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()",
                         "m_rvs[i] != NULL");
-    m_rvs[i] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
+    m_rvs[i] = new GaussianVectorRVClass<V,M>(m_prefix.c_str(),
                                                 *m_vectorSpace,
                                                 m_vectorSpace->zeroVector(),
                                                 factor*m_originalCovMatrix);
@@ -505,31 +505,31 @@ uqScaledCovMatrixTKGroupClass<V,M>::setRVsWithZeroMean()
 // I/O methods---------------------------------------
 template<class V, class M>
 void
-uqScaledCovMatrixTKGroupClass<V,M>::print(std::ostream& os) const
+ScaledCovMatrixTKGroupClass<V,M>::print(std::ostream& os) const
 {
-  uqBaseTKGroupClass<V,M>::print(os);
+  BaseTKGroupClass<V,M>::print(os);
   return;
 }
 
 //*****************************************************
 // TK with Hessians
 //*****************************************************
-/*! \class uqHessianCovMatricesTKGroupClass
+/*! \class HessianCovMatricesTKGroupClass
  *  \brief This class allows the representation of a transition kernel with Hessians. */
 
 template<class V, class M>
-class uqHessianCovMatricesTKGroupClass : public uqBaseTKGroupClass<V,M> {
+class HessianCovMatricesTKGroupClass : public BaseTKGroupClass<V,M> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqHessianCovMatricesTKGroupClass(const char*                                   prefix,
-                                   const uqVectorSpaceClass<V,M>&                vectorSpace,
+  HessianCovMatricesTKGroupClass(const char*                                   prefix,
+                                   const VectorSpaceClass<V,M>&                vectorSpace,
                                    const std::vector<double>&                    scales,
-                                   const uqScalarFunctionSynchronizerClass<V,M>& targetPdfSynchronizer);
+                                   const ScalarFunctionSynchronizerClass<V,M>& targetPdfSynchronizer);
  
    //! Destructor.
-  ~uqHessianCovMatricesTKGroupClass();
+  ~HessianCovMatricesTKGroupClass();
   //@}
   
   //! @name Statistical/Mathematical methods
@@ -539,10 +539,10 @@ public:
   bool                          symmetric                 () const;
   
   //! Gaussian increment property to construct a transition kernel.
-  const uqGaussianVectorRVClass<V,M>& rv                        (unsigned int                     stageId );
+  const GaussianVectorRVClass<V,M>& rv                        (unsigned int                     stageId );
   
   //! Gaussian increment property to construct a transition kernel.
-  const uqGaussianVectorRVClass<V,M>& rv                        (const std::vector<unsigned int>& stageIds);
+  const GaussianVectorRVClass<V,M>& rv                        (const std::vector<unsigned int>& stageIds);
    //@}
   
   //! @name Misc methods
@@ -561,39 +561,39 @@ public:
   void                          print                     (std::ostream& os) const;
   //@}
 private:
-  using uqBaseTKGroupClass<V,M>::m_env;
-  using uqBaseTKGroupClass<V,M>::m_prefix;
-  using uqBaseTKGroupClass<V,M>::m_vectorSpace;
-  using uqBaseTKGroupClass<V,M>::m_scales;
-  using uqBaseTKGroupClass<V,M>::m_preComputingPositions;
-  using uqBaseTKGroupClass<V,M>::m_rvs;
+  using BaseTKGroupClass<V,M>::m_env;
+  using BaseTKGroupClass<V,M>::m_prefix;
+  using BaseTKGroupClass<V,M>::m_vectorSpace;
+  using BaseTKGroupClass<V,M>::m_scales;
+  using BaseTKGroupClass<V,M>::m_preComputingPositions;
+  using BaseTKGroupClass<V,M>::m_rvs;
 
-  const uqScalarFunctionSynchronizerClass<V,M>& m_targetPdfSynchronizer;
+  const ScalarFunctionSynchronizerClass<V,M>& m_targetPdfSynchronizer;
   std::vector<V*>                               m_originalNewtonSteps;
   std::vector<M*>                               m_originalCovMatrices;
 };
 // Default constructor ------------------------------
 template<class V, class M>
-uqHessianCovMatricesTKGroupClass<V,M>::uqHessianCovMatricesTKGroupClass(
+HessianCovMatricesTKGroupClass<V,M>::HessianCovMatricesTKGroupClass(
   const char*                                   prefix,
-  const uqVectorSpaceClass<V,M>&                vectorSpace,
+  const VectorSpaceClass<V,M>&                vectorSpace,
   const std::vector<double>&                    scales,
-  const uqScalarFunctionSynchronizerClass<V,M>& targetPdfSynchronizer)
+  const ScalarFunctionSynchronizerClass<V,M>& targetPdfSynchronizer)
   :
-  uqBaseTKGroupClass<V,M>(prefix,vectorSpace,scales),
+  BaseTKGroupClass<V,M>(prefix,vectorSpace,scales),
   m_targetPdfSynchronizer(targetPdfSynchronizer),
   m_originalNewtonSteps  (scales.size()+1,NULL), // Yes, +1
   m_originalCovMatrices  (scales.size()+1,NULL)  // Yes, +1
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering HessianCovMatricesTKGroupClass<V,M>::constructor()"
                            << std::endl;
   }
 
-  m_rvs.resize(scales.size()+1,NULL); // Yes, +1 (IMPORTANT: overwrite initialization done by uqBaseTKGroupClass<V,M>)
+  m_rvs.resize(scales.size()+1,NULL); // Yes, +1 (IMPORTANT: overwrite initialization done by BaseTKGroupClass<V,M>)
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "In HessianCovMatricesTKGroupClass<V,M>::constructor()"
                            << ": m_scales.size() = "                   << m_scales.size()
                            << ", m_preComputingPositions.size() = "    << m_preComputingPositions.size()
                            << ", m_rvs.size() = "                      << m_rvs.size()
@@ -603,51 +603,51 @@ uqHessianCovMatricesTKGroupClass<V,M>::uqHessianCovMatricesTKGroupClass(
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqHessianCovMatricesTKGroupClass<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving HessianCovMatricesTKGroupClass<V,M>::constructor()"
                            << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-uqHessianCovMatricesTKGroupClass<V,M>::~uqHessianCovMatricesTKGroupClass()
+HessianCovMatricesTKGroupClass<V,M>::~HessianCovMatricesTKGroupClass()
 {
 }
 // Math/Stats methods--------------------------------
 template<class V, class M>
 bool
-uqHessianCovMatricesTKGroupClass<V,M>::symmetric() const
+HessianCovMatricesTKGroupClass<V,M>::symmetric() const
 {
   return false;
 }
 //---------------------------------------------------
 template<class V, class M>
-const uqGaussianVectorRVClass<V,M>&
-uqHessianCovMatricesTKGroupClass<V,M>::rv(unsigned int stageId)
+const GaussianVectorRVClass<V,M>&
+HessianCovMatricesTKGroupClass<V,M>::rv(unsigned int stageId)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() <= stageId,
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
+                      "HessianCovMatricesTKGroupClass<V,M>::rv1()",
                       "m_rvs.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_rvs[stageId] == NULL,
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
+                      "HessianCovMatricesTKGroupClass<V,M>::rv1()",
                       "m_rvs[stageId] == NULL");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
+                      "HessianCovMatricesTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::rv1()",
+                      "HessianCovMatricesTKGroupClass<V,M>::rv1()",
                       "m_preComputingPositions[stageId] == NULL");
 
   m_rvs[stageId]->updateLawExpVector(*m_preComputingPositions[stageId] + *m_originalNewtonSteps[stageId]);
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
-    *m_env.subDisplayFile() << "In uqHessianCovMatrixTKGroupClass<V,M>::rv1()"
+    *m_env.subDisplayFile() << "In HessianCovMatrixTKGroupClass<V,M>::rv1()"
                             << ", stageId = " << stageId
                             << ": about to call m_rvs[stageId]->updateLawCovMatrix()"
                             << ", covMatrix = \n" << *m_originalCovMatrices[stageId] // FIX ME: might demand parallelism
@@ -659,27 +659,27 @@ uqHessianCovMatricesTKGroupClass<V,M>::rv(unsigned int stageId)
 }
 //---------------------------------------------------
 template<class V, class M>
-const uqGaussianVectorRVClass<V,M>&
-uqHessianCovMatricesTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stageIds)
+const GaussianVectorRVClass<V,M>&
+HessianCovMatricesTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stageIds)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() <= stageIds[0],
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::rv2()",
+                      "HessianCovMatricesTKGroupClass<V,M>::rv2()",
                       "m_rvs.size() <= stageIds[0]");
 
   UQ_FATAL_TEST_MACRO(m_rvs[stageIds[0]] == NULL,
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::rv2()",
+                      "HessianCovMatricesTKGroupClass<V,M>::rv2()",
                       "m_rvs[stageIds[0]] == NULL");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageIds[0],
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::rv2()",
+                      "HessianCovMatricesTKGroupClass<V,M>::rv2()",
                       "m_preComputingPositions.size() <= stageIds[0]");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageIds[0]] == NULL,
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::rv2()",
+                      "HessianCovMatricesTKGroupClass<V,M>::rv2()",
                       "m_preComputingPositions[stageIds[0]] == NULL");
 
   double factor = 1./m_scales[stageIds.size()-1]/m_scales[stageIds.size()-1];
@@ -687,7 +687,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stage
   m_rvs[stageIds[0]]->updateLawExpVector(*m_preComputingPositions[stageIds[0]] + factor*(*m_originalNewtonSteps[stageIds[0]]));
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
-    *m_env.subDisplayFile() << "In uqHessianCovMatrixTKGroupClass<V,M>::rv2()"
+    *m_env.subDisplayFile() << "In HessianCovMatrixTKGroupClass<V,M>::rv2()"
                             << ", stageIds.size() = " << stageIds.size()
                             << ", stageIds[0] = "     << stageIds[0]
                             << ", factor = "          << factor
@@ -702,10 +702,10 @@ uqHessianCovMatricesTKGroupClass<V,M>::rv(const std::vector<unsigned int>& stage
 // Misc methods--------------------------------------
 template<class V, class M>
 bool
-uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
+HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+    *m_env.subDisplayFile() << "Entering HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                            << ": position = " << position
                            << ", stageId = "  << stageId
                            << std::endl;
@@ -716,49 +716,49 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
   // Verify consistency of sizes
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_rvs.size(),
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions.size() != m_rvs.size()");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_originalNewtonSteps.size(),
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions.size() != m_originalNewtonSteps.size()");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_originalCovMatrices.size(),
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions.size() != m_originalCovMatrices.size()");
 
   // Verify data is not null
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] != NULL,
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_preComputingPositions[stageId] != NULL");
 
   UQ_FATAL_TEST_MACRO(m_rvs[stageId] != NULL,
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_rvs[stageId] != NULL");
 
   UQ_FATAL_TEST_MACRO(m_originalNewtonSteps[stageId] != NULL,
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_originalNewtonSteps[stageId] != NULL");
 
   UQ_FATAL_TEST_MACRO(m_originalCovMatrices[stageId] != NULL,
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+                      "HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
                       "m_originalCovMatrices[stageId] != NULL");
 
-  uqBaseTKGroupClass<V,M>::setPreComputingPosition(position,stageId);
+  BaseTKGroupClass<V,M>::setPreComputingPosition(position,stageId);
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+    *m_env.subDisplayFile() << "In HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                            << ", position = "                          << position
                            << ", stageId = "                           << stageId
                            << ": m_originalNewtonSteps.size() = "      << m_originalNewtonSteps.size()
@@ -797,7 +797,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
       }
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-      *m_env.subDisplayFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+      *m_env.subDisplayFile() << "In HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                              << ", position = "  << position
                              << ", stageId = "   << stageId
                              << ":\n H = "       << *tmpHessian
@@ -814,7 +814,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
     M lowerChol(*tmpCovMat);
     if ((m_env.subDisplayFile()        ) &&
         (m_env.displayVerbosity() >= 10)) {
-      *m_env.subDisplayFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+      *m_env.subDisplayFile() << "In HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                               << ", position = "  << position
                               << ", stageId = "   << stageId
                               << ": calling lowerChol.chol()"
@@ -823,11 +823,11 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
     }
     int iRC = lowerChol.chol();
     if (iRC) {
-      std::cerr << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(): chol failed\n";
+      std::cerr << "In HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(): chol failed\n";
     }
     if ((m_env.subDisplayFile()        ) &&
         (m_env.displayVerbosity() >= 10)) {
-      *m_env.subDisplayFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+      *m_env.subDisplayFile() << "In HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                               << ", position = "  << position
                               << ", stageId = "   << stageId
                               << ": got lowerChol.chol() with iRC = " << iRC
@@ -839,7 +839,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
     if (covIsPositiveDefinite) {
       //UQ_FATAL_TEST_MACRO(stageId >= m_scales.size(),
       //                    m_env.worldRank(),
-      //                    "uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
+      //                    "HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()",
       //                    "stageId is too large for m_scales");
       //double factor = 1./m_scales[stageId]/m_scales[stageId];
       //*tmpCovMat *= factor;
@@ -848,7 +848,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
       m_originalCovMatrices[stageId] = new M(*tmpCovMat);
 
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-        *m_env.subDisplayFile() << "In uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+        *m_env.subDisplayFile() << "In HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                                << ", position = "        << position
                                << ", stageId = "         << stageId
                                << ", about to instantiate a Gaussian RV"
@@ -861,7 +861,7 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
                              //<< ", rvCov = "           << factor*(*tmpCovMat)
                                << std::endl;
       }
-      m_rvs[stageId] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
+      m_rvs[stageId] = new GaussianVectorRVClass<V,M>(m_prefix.c_str(),
                                                         *m_vectorSpace,
                                                         *m_preComputingPositions[stageId] + *m_originalNewtonSteps[stageId],
                                                         *m_originalCovMatrices[stageId]);
@@ -884,14 +884,14 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
     M tmpCovMat(tmpGrad,1.); // = identity matrix
     m_originalNewtonSteps[stageId] = new V(-1.*tmpCovMat*tmpGrad);
     m_originalCovMatrices[stageId] = new M(tmpCovMat);
-    m_rvs[stageId] = new uqGaussianVectorRVClass<V,M>(m_prefix.c_str(),
+    m_rvs[stageId] = new GaussianVectorRVClass<V,M>(m_prefix.c_str(),
                                                       *m_vectorSpace,
                                                       *m_preComputingPositions[stageId],
                                                       tmpCovMat);
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
+    *m_env.subDisplayFile() << "Leaving HessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition()"
                            << ": position = " << position
                            << ", stageId = "  << stageId
                            << std::endl;
@@ -902,19 +902,19 @@ uqHessianCovMatricesTKGroupClass<V,M>::setPreComputingPosition(const V& position
 //---------------------------------------------------
 template<class V, class M>
 void
-uqHessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()
+HessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()
 {
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_originalNewtonSteps.size(),
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()",
+                      "HessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()",
                       "m_preComputingPositions.size() != m_originalNewtonSteps.size()");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() != m_originalCovMatrices.size(),
                       m_env.worldRank(),
-                      "uqHessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()",
+                      "HessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()",
                       "m_preComputingPositions.size() != m_originalCovMatrices.size()");
 
-  uqBaseTKGroupClass<V,M>::clearPreComputingPositions();
+  BaseTKGroupClass<V,M>::clearPreComputingPositions();
 
   // RVs are not deleted in base class because the cov matrices are constant in the case of scaledTK class
   for (unsigned int i = 0; i < m_rvs.size(); ++i) {
@@ -943,9 +943,9 @@ uqHessianCovMatricesTKGroupClass<V,M>::clearPreComputingPositions()
 // I/O methods---------------------------------------
 template<class V, class M>
 void
-uqHessianCovMatricesTKGroupClass<V,M>::print(std::ostream& os) const
+HessianCovMatricesTKGroupClass<V,M>::print(std::ostream& os) const
 {
-  uqBaseTKGroupClass<V,M>::print(os);
+  BaseTKGroupClass<V,M>::print(os);
   return;
 }
 

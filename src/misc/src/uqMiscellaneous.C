@@ -38,11 +38,11 @@
 namespace QUESO {
 
 void
-uqMiscReadDoublesFromString(
+MiscReadDoublesFromString(
   const std::string&         inputString,
         std::vector<double>& outputDoubles)
 {
-  //std::cout << "In uqMiscReadDoublesFromString()"
+  //std::cout << "In MiscReadDoublesFromString()"
   //          << ": inputString = " << inputString
   //          << std::endl;
   outputDoubles.clear();
@@ -52,7 +52,7 @@ uqMiscReadDoublesFromString(
   for (std::string::size_type i = 0; i < inputString.size(); ++i) {
     UQ_FATAL_TEST_MACRO((inputString[i] == '\0'),
                         UQ_UNAVAILABLE_RANK,
-                        "uqMiscReadDoublesFromString()",
+                        "MiscReadDoublesFromString()",
                         "character '\0' should not be found!");
     if (inputString[i] == ' ') {
       if (aDoubleIsBeingRead == true) {
@@ -93,11 +93,11 @@ uqMiscReadDoublesFromString(
 }
 
 void
-uqMiscReadWordsFromString(
+MiscReadWordsFromString(
   const std::string&        inputString,
   std::vector<std::string>& outputWords)
 {
-  //std::cout << "In uqMiscReadWordsFromString()"
+  //std::cout << "In MiscReadWordsFromString()"
   //          << ": inputString = " << inputString
   //          << std::endl;
   outputWords.clear();
@@ -107,7 +107,7 @@ uqMiscReadWordsFromString(
   for (std::string::size_type i = 0; i < inputString.size(); ++i) {
     UQ_FATAL_TEST_MACRO((inputString[i] == '\0'),
                         UQ_UNAVAILABLE_RANK,
-                        "uqMiscReadWordsFromString()",
+                        "MiscReadWordsFromString()",
                         "character '\0' should not be found!");
     if (inputString[i] == ' ') {
       if (aWordIsBeingRead == true) {
@@ -148,7 +148,7 @@ uqMiscReadWordsFromString(
 }
 
 //void
-//uqMiscExtractDoubleFromString(
+//MiscExtractDoubleFromString(
 //  std::string& inputString,
 //  double&      outputDouble)
 //{
@@ -156,7 +156,7 @@ uqMiscReadWordsFromString(
 //}
 
 //void
-//uqMiscExtractWordFromString(
+//MiscExtractWordFromString(
 //  std::string& inputString,
 //  std::string& outputWord)
 //{
@@ -164,7 +164,7 @@ uqMiscReadWordsFromString(
 //}
 
 int
-uqMiscReadStringAndDoubleFromFile(
+MiscReadStringAndDoubleFromFile(
   std::ifstream& ifs,
   std::string&   termString,
   double*        termValue)
@@ -195,7 +195,7 @@ uqMiscReadStringAndDoubleFromFile(
 }
 
 int
-uqMiscReadCharsAndDoubleFromFile(
+MiscReadCharsAndDoubleFromFile(
   std::ifstream& ifs,
   std::string&   termString,
   double*        termValue,
@@ -252,14 +252,14 @@ uqMiscReadCharsAndDoubleFromFile(
 }
 
 double
-uqMiscGammar(
+MiscGammar(
   double                a,
   double                b,
-  const uqRngBaseClass* rngObject)
+  const RngBaseClass* rngObject)
 {
   double result = 0.;
   if (a < 1.) {
-    result = uqMiscGammar(1.+a,b,rngObject)*std::pow( rngObject->uniformSample(),1./a );
+    result = MiscGammar(1.+a,b,rngObject)*std::pow( rngObject->uniformSample(),1./a );
   }
   else {
     double d = a-1./3.;
@@ -286,7 +286,7 @@ uqMiscGammar(
 }
 
 double
-uqMiscGetEllapsedSeconds(struct timeval *timeval0)
+MiscGetEllapsedSeconds(struct timeval *timeval0)
 {
   double result = 0.;
 
@@ -302,7 +302,7 @@ uqMiscGetEllapsedSeconds(struct timeval *timeval0)
   return result;
 }
 
-double uqMiscHammingWindow(unsigned int N, unsigned int j)
+double MiscHammingWindow(unsigned int N, unsigned int j)
 {
   double angle = 2.*M_PI*((double) j)/((double) N);
   double result = 0.53836 - 0.46164*cos(angle);
@@ -310,7 +310,7 @@ double uqMiscHammingWindow(unsigned int N, unsigned int j)
   return result;
 }
 
-double uqMiscGaussianDensity(double x, double mu, double sigma)
+double MiscGaussianDensity(double x, double mu, double sigma)
 {
   double sigma2 = sigma*sigma;
   double diff   = x-mu;
@@ -318,37 +318,37 @@ double uqMiscGaussianDensity(double x, double mu, double sigma)
   return (1./std::sqrt(2*M_PI*sigma2))*std::exp(-.5*diff*diff/sigma2);
 }
 
-unsigned int uqMiscUintDebugMessage(
+unsigned int MiscUintDebugMessage(
   unsigned int value,
   const char*  message)
 {
   if (message) {
-    std::cout << "Passing in uqMiscUintDebugMessage(), value = " << value << ", message = " << message << std::endl;
+    std::cout << "Passing in MiscUintDebugMessage(), value = " << value << ", message = " << message << std::endl;
   }
   return value;
 }
 
-int uqMiscIntDebugMessage(
+int MiscIntDebugMessage(
   int         value,
   const char* message)
 {
   if (message) {
-    std::cout << "Passing in uqMiscIntDebugMessage(), value = " << value << ", message = " << message << std::endl;
+    std::cout << "Passing in MiscIntDebugMessage(), value = " << value << ", message = " << message << std::endl;
   }
   return value;
 }
 
-double uqMiscDoubleDebugMessage(
+double MiscDoubleDebugMessage(
   double     value,
   const char* message)
 {
   if (message) {
-    std::cout << "Passing in uqMiscDoubleDebugMessage(), value = " << value << ", message = " << message << std::endl;
+    std::cout << "Passing in MiscDoubleDebugMessage(), value = " << value << ", message = " << message << std::endl;
   }
   return value;
 }
 
-///int uqCheckFilePath(const char *path) 
+///int CheckFilePath(const char *path) 
 ///{
 ///
 ///  // verify parent directories in path exist (and create if not).
@@ -366,7 +366,7 @@ double uqMiscDoubleDebugMessage(
 // Following routines borrowed from libGRVY
 // ------------------------------------------
 
-int uqCheckFilePath(const char *pathname)
+int CheckFilePath(const char *pathname)
   {
 
     // verify parent directories in path exist (and create if not).
@@ -415,7 +415,7 @@ int uqCheckFilePath(const char *pathname)
       {
 	path_to_check += leading_char + token;
 
-	if ( uqGRVY_CheckDir(path_to_check.c_str()) )
+	if ( GRVY_CheckDir(path_to_check.c_str()) )
 	  {
 	    free(pathlocal);
 	    free(dirstring);
@@ -433,7 +433,7 @@ int uqCheckFilePath(const char *pathname)
 	  {
 	    dirstring = strcat(dirstring,"/");
 
-	    if(uqGRVY_CheckDir(strcat(dirstring,token)))
+	    if(GRVY_CheckDir(strcat(dirstring,token)))
 	      {
 		free(pathlocal);
 		free(dirstring);
@@ -460,7 +460,7 @@ int uqCheckFilePath(const char *pathname)
   }
 
 
-int uqGRVY_CheckDir(const char *dirname)
+int GRVY_CheckDir(const char *dirname)
 {
   struct stat st;
 

@@ -42,7 +42,7 @@
 //********************************************************
 template<class P_V,class P_M>
 void 
-uqAppl(const QUESO::uqBaseEnvironmentClass& env)
+uqAppl(const QUESO::BaseEnvironmentClass& env)
 {
   if (env.fullRank() == 0) {
     std::cout << "Beginning run of 'exStatisticalInverseProblem_example'\n"
@@ -58,7 +58,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
-  QUESO::uqVectorSpaceClass<P_V,P_M> paramSpace(env,"param_",4,NULL);
+  QUESO::VectorSpaceClass<P_V,P_M> paramSpace(env,"param_",4,NULL);
 
   //******************************************************
   // Step 2 of 5: Instantiate the parameter domain
@@ -72,7 +72,7 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   paramMins.cwSet(-INFINITY);
   P_V paramMaxs(paramSpace.zeroVector());
   paramMaxs.cwSet( INFINITY);
-  QUESO::uqBoxSubsetClass<P_V,P_M> paramDomain("param_",paramSpace,paramMins,paramMaxs);
+  QUESO::BoxSubsetClass<P_V,P_M> paramDomain("param_",paramSpace,paramMins,paramMaxs);
 
   //******************************************************
   // Step 3 of 5: Instantiate the likelihood function object (data + routine), to be used by QUESO.
@@ -89,14 +89,14 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   direction.cwSet(1.);
   P_M* covMatrixInverse = paramSpace.newMatrix();
   P_M* covMatrix        = paramSpace.newMatrix();
-  QUESO::uqCovCond(condNumber,direction,*covMatrix,*covMatrixInverse);
+  QUESO::CovCond(condNumber,direction,*covMatrix,*covMatrixInverse);
 
   likelihoodRoutine_DataType<P_V,P_M> likelihoodRoutine_Data;
   likelihoodRoutine_Data.paramMeans        = &paramMeans;
   likelihoodRoutine_Data.matrix            = covMatrixInverse;
   likelihoodRoutine_Data.applyMatrixInvert = false;
 
-  QUESO::uqGenericScalarFunctionClass<P_V,P_M> likelihoodFunctionObj("like_",
+  QUESO::GenericScalarFunctionClass<P_V,P_M> likelihoodFunctionObj("like_",
                                                               paramDomain,
                                                               likelihoodRoutine<P_V,P_M>,
                                                               (void *) &likelihoodRoutine_Data,
@@ -110,13 +110,13 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
-  QUESO::uqUniformVectorRVClass<P_V,P_M> priorRv("prior_", // Extra prefix before the default "rv_" prefix
+  QUESO::UniformVectorRVClass<P_V,P_M> priorRv("prior_", // Extra prefix before the default "rv_" prefix
                                           paramDomain);
 
-  QUESO::uqGenericVectorRVClass<P_V,P_M> postRv("post_", // Extra prefix before the default "rv_" prefix
+  QUESO::GenericVectorRVClass<P_V,P_M> postRv("post_", // Extra prefix before the default "rv_" prefix
                                          paramSpace);
 
-  QUESO::uqStatisticalInverseProblemClass<P_V,P_M> ip("", // No extra prefix before the default "ip_" prefix
+  QUESO::StatisticalInverseProblemClass<P_V,P_M> ip("", // No extra prefix before the default "ip_" prefix
                                                NULL,
                                                priorRv,
                                                likelihoodFunctionObj,
@@ -180,8 +180,8 @@ uqAppl(const QUESO::uqBaseEnvironmentClass& env)
   // Write weighted squared norm to disk, to be used by 'sip_plot.m' afterwards
   //******************************************************
   // Define auxVec
-  const QUESO::uqBaseVectorRealizerClass<P_V,P_M>& postRealizer = postRv.realizer();
-  QUESO::uqVectorSpaceClass<P_V,P_M> auxSpace(env,"",postRealizer.subPeriod(),NULL);
+  const QUESO::BaseVectorRealizerClass<P_V,P_M>& postRealizer = postRv.realizer();
+  QUESO::VectorSpaceClass<P_V,P_M> auxSpace(env,"",postRealizer.subPeriod(),NULL);
   P_V auxVec(auxSpace.zeroVector());
 
   // Populate auxVec

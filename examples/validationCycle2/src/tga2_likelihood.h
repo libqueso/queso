@@ -42,7 +42,7 @@
 struct
 likelihoodRoutine_DataClass
 {
-  likelihoodRoutine_DataClass(const QUESO::uqBaseEnvironmentClass& env,
+  likelihoodRoutine_DataClass(const QUESO::BaseEnvironmentClass& env,
                               const char* inpName1,
                               const char* inpName2,
                               const char* inpName3);
@@ -63,16 +63,16 @@ likelihoodRoutine_DataClass
   std::vector<double> m_Te3; // temperatures
   std::vector<double> m_Me3; // relative masses
 
-  const QUESO::uqBaseEnvironmentClass* m_env;
+  const QUESO::BaseEnvironmentClass* m_env;
 };
 
 double
 likelihoodRoutine(
-  const QUESO::uqGslVectorClass&  paramValues,
-  const QUESO::uqGslVectorClass*  paramDirection,
+  const QUESO::GslVectorClass&  paramValues,
+  const QUESO::GslVectorClass*  paramDirection,
   const void*              functionDataPtr,
-  QUESO::uqGslVectorClass*        gradVector,
-  QUESO::uqGslMatrixClass*        hessianMatrix,
-  QUESO::uqGslVectorClass*        hessianEffect);
+  QUESO::GslVectorClass*        gradVector,
+  QUESO::GslMatrixClass*        hessianMatrix,
+  QUESO::GslVectorClass*        hessianEffect);
 
 #endif // __TGA2_LIKELIHOOD_H__

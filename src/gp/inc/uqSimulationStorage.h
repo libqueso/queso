@@ -34,36 +34,36 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-class uqSimulationStorageClass
+class SimulationStorageClass
 {
 public:
-  uqSimulationStorageClass(const uqVectorSpaceClass<S_V,S_M>& scenarioSpace,
-                           const uqVectorSpaceClass<P_V,P_M>& parameterSpace,
-                           const uqVectorSpaceClass<Q_V,Q_M>& outputSpace,
+  SimulationStorageClass(const VectorSpaceClass<S_V,S_M>& scenarioSpace,
+                           const VectorSpaceClass<P_V,P_M>& parameterSpace,
+                           const VectorSpaceClass<Q_V,Q_M>& outputSpace,
                                  unsigned int                 numSimulations);
- ~uqSimulationStorageClass();
+ ~SimulationStorageClass();
 
         void                         addSimulation        (const S_V& scenarioVec, const P_V& parameterVec, const Q_V& outputVec);
         unsigned int                 numSimulations       () const;
   const std::vector<const S_V* >&    xs_asterisks_original() const;
   const std::vector<const P_V* >&    ts_asterisks_original() const;
-  const uqVectorSpaceClass<S_V,S_M>& scenarioSpace        () const;
-  const uqVectorSpaceClass<P_V,P_M>& parameterSpace       () const;
-  const uqVectorSpaceClass<Q_V,Q_M>& outputSpace          () const;
+  const VectorSpaceClass<S_V,S_M>& scenarioSpace        () const;
+  const VectorSpaceClass<P_V,P_M>& parameterSpace       () const;
+  const VectorSpaceClass<Q_V,Q_M>& outputSpace          () const;
   const S_V&                         scenarioVec_original (unsigned int simulationId) const;
   const P_V&                         parameterVec_original(unsigned int simulationId) const;
   const Q_V&                         outputVec_original   (unsigned int simulationId) const;
   const Q_V&                         etaVec_original      () const;
 
-  const uqBaseEnvironmentClass&      env                  () const;
+  const BaseEnvironmentClass&      env                  () const;
         void                         print                (std::ostream& os) const;
 
 private:
   // Private variables
-  const uqBaseEnvironmentClass&      m_env;
-  const uqVectorSpaceClass<S_V,S_M>& m_scenarioSpace;
-  const uqVectorSpaceClass<P_V,P_M>& m_parameterSpace;
-  const uqVectorSpaceClass<Q_V,Q_M>& m_outputSpace;
+  const BaseEnvironmentClass&      m_env;
+  const VectorSpaceClass<S_V,S_M>& m_scenarioSpace;
+  const VectorSpaceClass<P_V,P_M>& m_parameterSpace;
+  const VectorSpaceClass<Q_V,Q_M>& m_outputSpace;
 
         unsigned int                 m_paper_m;
         unsigned int                 m_paper_n_eta;
@@ -73,18 +73,18 @@ private:
         std::vector<const P_V* >     m_parameterVecs_original;
         std::vector<const Q_V* >     m_outputVecs_original;
 
-        uqVectorSpaceClass<Q_V,Q_M>* m_eta_space;
+        VectorSpaceClass<Q_V,Q_M>* m_eta_space;
         Q_V*                         m_etaVec_original;
 };
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& obj);
+std::ostream& operator<<(std::ostream& os, const SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& obj);
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationStorageClass(
-  const uqVectorSpaceClass<S_V,S_M>& scenarioSpace,
-  const uqVectorSpaceClass<P_V,P_M>& parameterSpace,
-  const uqVectorSpaceClass<Q_V,Q_M>& outputSpace,
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationStorageClass(
+  const VectorSpaceClass<S_V,S_M>& scenarioSpace,
+  const VectorSpaceClass<P_V,P_M>& parameterSpace,
+  const VectorSpaceClass<Q_V,Q_M>& outputSpace,
   unsigned int                       numSimulations)
   :
   m_env                   (scenarioSpace.env()),
@@ -101,23 +101,23 @@ uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::uqSimulationStorageClass(
   m_etaVec_original       (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << "\n  m_paper_m = "     << m_paper_m
                             << "\n  m_paper_n_eta = " << m_paper_n_eta
                             << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << std::endl;
   }
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::~uqSimulationStorageClass()
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::~SimulationStorageClass()
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()..."
+    *m_env.subDisplayFile() << "Entering SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()..."
                             << std::endl;
   }
 
@@ -125,24 +125,24 @@ uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::~uqSimulationStorageClass()
   delete m_eta_space;
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()"
+    *m_env.subDisplayFile() << "Leaving SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::destructor()"
                             << std::endl;
   }
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation(const S_V& scenarioVec, const P_V& parameterVec, const Q_V& outputVec)
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation(const S_V& scenarioVec, const P_V& parameterVec, const Q_V& outputVec)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation()"
+    *m_env.subDisplayFile() << "Entering SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation()"
                             << ": m_addId = " << m_addId
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(m_addId >= m_paper_m,
                       m_env.worldRank(),
-                      "uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation()",
+                      "SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation()",
                       "too many adds...");
 
   m_scenarioVecs_original [m_addId] = &scenarioVec;
@@ -154,12 +154,12 @@ uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation(const S_V& scen
     //***********************************************************************
     // Form 'etaVec_original'
     //***********************************************************************
-    m_eta_space = new uqVectorSpaceClass<Q_V,Q_M>(m_env, "m_eta_simul_storage", m_paper_m * m_paper_n_eta, NULL),
+    m_eta_space = new VectorSpaceClass<Q_V,Q_M>(m_env, "m_eta_simul_storage", m_paper_m * m_paper_n_eta, NULL),
     m_etaVec_original = new Q_V(m_eta_space->zeroVector());
     m_etaVec_original->cwSetConcatenated(m_outputVecs_original);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-      *m_env.subDisplayFile() << "KEY In uqSimulationStorageClass<S_V,S_M,D_V,D_M>::addSimulation()"
+      *m_env.subDisplayFile() << "KEY In SimulationStorageClass<S_V,S_M,D_V,D_M>::addSimulation()"
                               << ": m_addId = " << m_addId
                               << ", populated etaVec_original of size " << m_etaVec_original->sizeLocal()
 	//<< ", m_etaVec_original = "  << m_etaVec_original
@@ -169,7 +169,7 @@ uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation(const S_V& scen
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation()"
+    *m_env.subDisplayFile() << "Leaving SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation()"
                             << ": m_addId = " << m_addId
                             << std::endl;
   }
@@ -179,58 +179,58 @@ uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::addSimulation(const S_V& scen
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 unsigned int
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::numSimulations() const
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::numSimulations() const
 {
   return m_paper_m;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const std::vector<const S_V* >&
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::xs_asterisks_original() const
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::xs_asterisks_original() const
 {
   return m_scenarioVecs_original;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const std::vector<const P_V* >&
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::ts_asterisks_original() const
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::ts_asterisks_original() const
 {
   return m_parameterVecs_original;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-const uqVectorSpaceClass<S_V,S_M>&
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioSpace() const
+const VectorSpaceClass<S_V,S_M>&
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioSpace() const
 {
   return m_scenarioSpace;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-const uqVectorSpaceClass<P_V,P_M>&
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterSpace() const
+const VectorSpaceClass<P_V,P_M>&
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterSpace() const
 {
   return m_parameterSpace;
 }
  
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-const uqVectorSpaceClass<Q_V,Q_M>&
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputSpace() const
+const VectorSpaceClass<Q_V,Q_M>&
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputSpace() const
 {
   return m_outputSpace;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const S_V&
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_original(unsigned int simulationId) const
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_original(unsigned int simulationId) const
 {
   UQ_FATAL_TEST_MACRO(simulationId >= m_scenarioVecs_original.size(),
                       m_env.worldRank(),
-                      "uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_original()",
+                      "SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_original()",
                       "simulationId is too large");
 
   UQ_FATAL_TEST_MACRO(m_scenarioVecs_original[simulationId] == NULL,
                       m_env.worldRank(),
-                      "uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_original()",
+                      "SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_original()",
                       "vector is NULL");
 
   return *(m_scenarioVecs_original[simulationId]);
@@ -238,16 +238,16 @@ uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::scenarioVec_original(unsigned
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const P_V&
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterVec_original(unsigned int simulationId) const
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterVec_original(unsigned int simulationId) const
 {
   UQ_FATAL_TEST_MACRO(simulationId >= m_parameterVecs_original.size(),
                       m_env.worldRank(),
-                      "uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterVec_original()",
+                      "SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterVec_original()",
                       "simulationId is too large");
 
   UQ_FATAL_TEST_MACRO(m_parameterVecs_original[simulationId] == NULL,
                       m_env.worldRank(),
-                      "uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterVec_original()",
+                      "SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterVec_original()",
                       "vector is NULL");
 
   return *(m_parameterVecs_original[simulationId]);
@@ -255,16 +255,16 @@ uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::parameterVec_original(unsigne
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const Q_V&
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputVec_original(unsigned int simulationId) const
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputVec_original(unsigned int simulationId) const
 {
   UQ_FATAL_TEST_MACRO(simulationId >= m_outputVecs_original.size(),
                       m_env.worldRank(),
-                      "uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputVec_original()",
+                      "SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputVec_original()",
                       "simulationId is too large");
 
   UQ_FATAL_TEST_MACRO(m_outputVecs_original[simulationId] == NULL,
                       m_env.worldRank(),
-                      "uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputVec_original()",
+                      "SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputVec_original()",
                       "vector is NULL");
 
   return *(m_outputVecs_original[simulationId]);
@@ -272,21 +272,21 @@ uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::outputVec_original(unsigned i
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const Q_V&
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_original() const
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_original() const
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "Entering uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_original()"
+    *m_env.subDisplayFile() << "Entering SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_original()"
                             << ": m_etaVec_original = " << m_etaVec_original
                             << std::endl;
   }
 
   UQ_FATAL_TEST_MACRO(m_etaVec_original == NULL,
                       m_env.worldRank(),
-                      "uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_original()",
+                      "SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_original()",
                       "'m_etaVec_original' is NULL");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-    *m_env.subDisplayFile() << "In uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_original()"
+    *m_env.subDisplayFile() << "In SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_original()"
                             << ": *m_etaVec_original = " << *m_etaVec_original
                             << std::endl;
   }
@@ -295,21 +295,21 @@ uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaVec_original() const
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-const uqBaseEnvironmentClass&
-  uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::env() const
+const BaseEnvironmentClass&
+  SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::env() const
 {
   return m_env;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 void
-uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
+SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 {
   return;
 }
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const uqSimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& obj)
+std::ostream& operator<<(std::ostream& os, const SimulationStorageClass<S_V,S_M,P_V,P_M,Q_V,Q_M>& obj)
 {
   obj.print(os);
 

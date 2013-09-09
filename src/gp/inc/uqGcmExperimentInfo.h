@@ -35,19 +35,19 @@
 namespace QUESO {
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M>
-class uqGcmExperimentInfoClass
+class GcmExperimentInfoClass
 {
 public:
-  uqGcmExperimentInfoClass(const uqGpmsaComputerModelOptionsClass&          gcmOptionsObj,
+  GcmExperimentInfoClass(const GpmsaComputerModelOptionsClass&          gcmOptionsObj,
                                  bool                                       allOutputsAreScalar,
-                           const uqExperimentStorageClass<S_V,S_M,D_V,D_M>& experimentStorage,
-                           const uqExperimentModelClass  <S_V,S_M,D_V,D_M>& experimentModel,
-                           const uqBaseVectorRVClass     <P_V,P_M>&         thetaPriorRv);
- ~uqGcmExperimentInfoClass();
+                           const ExperimentStorageClass<S_V,S_M,D_V,D_M>& experimentStorage,
+                           const ExperimentModelClass  <S_V,S_M,D_V,D_M>& experimentModel,
+                           const BaseVectorRVClass     <P_V,P_M>&         thetaPriorRv);
+ ~GcmExperimentInfoClass();
 
-  const uqBaseEnvironmentClass&                           m_env;
-  const uqExperimentStorageClass<S_V,S_M,D_V,D_M>&        m_experimentStorage;
-  const uqExperimentModelClass  <S_V,S_M,D_V,D_M>&        m_experimentModel;
+  const BaseEnvironmentClass&                           m_env;
+  const ExperimentStorageClass<S_V,S_M,D_V,D_M>&        m_experimentStorage;
+  const ExperimentModelClass  <S_V,S_M,D_V,D_M>&        m_experimentModel;
 
         unsigned int                                      m_paper_p_x;
         unsigned int                                      m_paper_n;
@@ -57,61 +57,61 @@ public:
         unsigned int                                      m_paper_p_delta;
         unsigned int                                      m_paper_F;
         std::vector<unsigned int>                         m_paper_Gs;
-        uqVectorSpaceClass         <P_V,P_M>              m_paper_n_space;
+        VectorSpaceClass         <P_V,P_M>              m_paper_n_space;
 
         unsigned int                                      m_5lambdaYDim; // '1' in paper
-        uqVectorSpaceClass         <P_V,P_M>              m_5lambdaYSpace;
+        VectorSpaceClass         <P_V,P_M>              m_5lambdaYSpace;
         P_V                                               m_5lambdaYMins;
         P_V                                               m_5lambdaYMaxs;
-        uqBoxSubsetClass           <P_V,P_M>              m_5lambdaYDomain;
+        BoxSubsetClass           <P_V,P_M>              m_5lambdaYDomain;
         P_V                                               m_5lambdaYGammaAVec;
         P_V                                               m_5lambdaYGammaBVec;
-        uqGammaVectorRVClass       <P_V,P_M>              m_5lambdaYPriorRv;
+        GammaVectorRVClass       <P_V,P_M>              m_5lambdaYPriorRv;
         P_V                                               m_like_previous5;
         P_V                                               m_tmp_5lambdaYVec;
 
         unsigned int                                      m_6lambdaVDim; // 'F' in paper
-        uqVectorSpaceClass         <P_V,P_M>              m_6lambdaVSpace;
+        VectorSpaceClass         <P_V,P_M>              m_6lambdaVSpace;
         P_V                                               m_6lambdaVMins;
         P_V                                               m_6lambdaVMaxs;
-        uqBoxSubsetClass           <P_V,P_M>              m_6lambdaVDomain;
+        BoxSubsetClass           <P_V,P_M>              m_6lambdaVDomain;
         P_V                                               m_6lambdaVGammaAVec;
         P_V                                               m_6lambdaVGammaBVec;
-        uqGammaVectorRVClass       <P_V,P_M>              m_6lambdaVPriorRv;
+        GammaVectorRVClass       <P_V,P_M>              m_6lambdaVPriorRv;
         P_V                                               m_like_previous6;
         P_V                                               m_tmp_6lambdaVVec;
 
         unsigned int                                      m_7rhoVDim; // 'F * p_x' in paper
-        uqVectorSpaceClass         <P_V,P_M>              m_7rhoVSpace;
+        VectorSpaceClass         <P_V,P_M>              m_7rhoVSpace;
         P_V                                               m_7rhoVMins;
         P_V                                               m_7rhoVMaxs;
-        uqBoxSubsetClass           <P_V,P_M>              m_7rhoVDomain;
+        BoxSubsetClass           <P_V,P_M>              m_7rhoVDomain;
         P_V                                               m_7rhoVBetaAVec;
         P_V                                               m_7rhoVBetaBVec;
-        uqBetaVectorRVClass        <P_V,P_M>              m_7rhoVPriorRv;
+        BetaVectorRVClass        <P_V,P_M>              m_7rhoVPriorRv;
         P_V                                               m_like_previous7;
         P_V                                               m_tmp_7rhoVVec;
 
         unsigned int                                      m_8thetaDim;
-        uqVectorSpaceClass         <P_V,P_M>              m_8thetaSpace;
-  const uqBaseVectorRVClass        <P_V,P_M>&             m_8thetaPriorRv;
+        VectorSpaceClass         <P_V,P_M>              m_8thetaSpace;
+  const BaseVectorRVClass        <P_V,P_M>&             m_8thetaPriorRv;
         P_V                                               m_like_previous8;
         P_V                                               m_tmp_8thetaVec;
 
         unsigned int                                      m_v_size;
-        uqVectorSpaceClass<D_V,D_M>                       m_v_space;
-        uqVectorSpaceClass<D_V,D_M>                       m_unique_v_space;
-        uqVectorSpaceClass<P_V,P_M>                       m_rho_v_space;
-        uqVectorSpaceClass<D_V,D_M>                       m_y_space;
+        VectorSpaceClass<D_V,D_M>                       m_v_space;
+        VectorSpaceClass<D_V,D_M>                       m_unique_v_space;
+        VectorSpaceClass<P_V,P_M>                       m_rho_v_space;
+        VectorSpaceClass<D_V,D_M>                       m_y_space;
 
         P_V                                               m_tmp_rho_v_vec;
-	std::vector<uqVectorSpaceClass<D_V,D_M>* >        m_Imat_v_i_spaces; // to be deleted on destructor
+	std::vector<VectorSpaceClass<D_V,D_M>* >        m_Imat_v_i_spaces; // to be deleted on destructor
 	std::vector<D_M* >                                m_Imat_v_is;       // to be deleted on destructor
 
-	std::vector<uqVectorSpaceClass<D_V,D_M>* >        m_Rmat_v_i_spaces; // to be deleted on destructor
+	std::vector<VectorSpaceClass<D_V,D_M>* >        m_Rmat_v_i_spaces; // to be deleted on destructor
 	std::vector<D_M* >                                m_Rmat_v_is;       // to be deleted on destructor
 
-	std::vector<uqVectorSpaceClass<D_V,D_M>* >        m_Smat_v_i_spaces; // to be deleted on destructor
+	std::vector<VectorSpaceClass<D_V,D_M>* >        m_Smat_v_i_spaces; // to be deleted on destructor
 	std::vector<D_M* >                                m_Smat_v_is;       // to be deleted on destructor
         D_M                                               m_Smat_v; // Computed with 'experimentModel'
 
@@ -129,12 +129,12 @@ public:
 };
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M>
-uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
-  const uqGpmsaComputerModelOptionsClass&          gcmOptionsObj,
+GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::GcmExperimentInfoClass(
+  const GpmsaComputerModelOptionsClass&          gcmOptionsObj,
         bool                                       allOutputsAreScalar,
-  const uqExperimentStorageClass<S_V,S_M,D_V,D_M>& experimentStorage,
-  const uqExperimentModelClass  <S_V,S_M,D_V,D_M>& experimentModel,
-  const uqBaseVectorRVClass     <P_V,P_M>&         thetaPriorRv)
+  const ExperimentStorageClass<S_V,S_M,D_V,D_M>& experimentStorage,
+  const ExperimentModelClass  <S_V,S_M,D_V,D_M>& experimentModel,
+  const BaseVectorRVClass     <P_V,P_M>&         thetaPriorRv)
   :
   m_env                       (experimentStorage.env()),
   m_experimentStorage         (experimentStorage),
@@ -148,7 +148,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
   m_paper_F                   (experimentModel.numBasisGroups()),
   m_paper_Gs                  (experimentModel.Gs()),
   m_paper_n_space             (m_env, "paper_n_", m_paper_n, NULL),
-  m_5lambdaYDim               (uqMiscUintDebugMessage(1,NULL)), // "uqGcmExperimentInfoClass::consctructor(), m_5lambdaYDim")), // '1' in paper
+  m_5lambdaYDim               (MiscUintDebugMessage(1,NULL)), // "GcmExperimentInfoClass::consctructor(), m_5lambdaYDim")), // '1' in paper
   m_5lambdaYSpace             (m_env, "5lambdaY_", m_5lambdaYDim, NULL),
   m_5lambdaYMins              (m_env,m_5lambdaYSpace.map(),0.),
   m_5lambdaYMaxs              (m_env,m_5lambdaYSpace.map(),+INFINITY),
@@ -158,7 +158,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
   m_5lambdaYPriorRv           ("5lambdaY_",m_5lambdaYDomain,m_5lambdaYGammaAVec,m_5lambdaYGammaBVec),
   m_like_previous5            (m_5lambdaYSpace.zeroVector()),
   m_tmp_5lambdaYVec           (m_5lambdaYSpace.zeroVector()),
-  m_6lambdaVDim               (uqMiscUintDebugMessage(m_paper_F,NULL)), // "uqGcmExperimentInfoClass::consctructor(), m_6lambdaVDim")), // 'F' in paper
+  m_6lambdaVDim               (MiscUintDebugMessage(m_paper_F,NULL)), // "GcmExperimentInfoClass::consctructor(), m_6lambdaVDim")), // 'F' in paper
   m_6lambdaVSpace             (m_env, "6lambdaV_", m_6lambdaVDim, NULL),
   m_6lambdaVMins              (m_env,m_6lambdaVSpace.map(),0.),
   m_6lambdaVMaxs              (m_env,m_6lambdaVSpace.map(),+INFINITY),
@@ -168,7 +168,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
   m_6lambdaVPriorRv           ("6lambdaV_",m_6lambdaVDomain,m_6lambdaVGammaAVec,m_6lambdaVGammaBVec),
   m_like_previous6            (m_6lambdaVSpace.zeroVector()),
   m_tmp_6lambdaVVec           (m_6lambdaVSpace.zeroVector()),
-  m_7rhoVDim                  (uqMiscUintDebugMessage(m_paper_F * m_paper_p_x,NULL)), // "uqGcmExperimentInfoClass::consctructor(), m_7lrhoVDim")), // 'F * p_x' in paper
+  m_7rhoVDim                  (MiscUintDebugMessage(m_paper_F * m_paper_p_x,NULL)), // "GcmExperimentInfoClass::consctructor(), m_7lrhoVDim")), // 'F * p_x' in paper
   m_7rhoVSpace                (m_env, "7rhoV_", m_7rhoVDim, NULL),
   m_7rhoVMins                 (m_env,m_7rhoVSpace.map(),0.),
   m_7rhoVMaxs                 (m_env,m_7rhoVSpace.map(),1.),
@@ -178,7 +178,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
   m_7rhoVPriorRv              ("7rhoV_",m_7rhoVDomain,m_7rhoVBetaAVec,m_7rhoVBetaBVec),
   m_like_previous7            (m_7rhoVSpace.zeroVector()),
   m_tmp_7rhoVVec              (m_7rhoVSpace.zeroVector()),
-  m_8thetaDim                 (uqMiscUintDebugMessage(thetaPriorRv.imageSet().vectorSpace().dimLocal(),NULL)), // "uqGcmExperimentInfoClass::consctructor(), m_8thetaDim")),
+  m_8thetaDim                 (MiscUintDebugMessage(thetaPriorRv.imageSet().vectorSpace().dimLocal(),NULL)), // "GcmExperimentInfoClass::consctructor(), m_8thetaDim")),
   m_8thetaSpace               (m_env, "8theta_", m_8thetaDim, NULL),
   m_8thetaPriorRv             (thetaPriorRv),
   m_like_previous8            (m_8thetaSpace.zeroVector()),
@@ -189,11 +189,11 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
   m_rho_v_space               (m_env, "rho_v_", m_paper_p_x, NULL),
   m_y_space                   (m_env, "n_y_", m_paper_n_y, NULL),
   m_tmp_rho_v_vec             (m_rho_v_space.zeroVector()),
-  m_Imat_v_i_spaces           (m_paper_F, (uqVectorSpaceClass<D_V,D_M>*) NULL), // to be deleted on destructor
+  m_Imat_v_i_spaces           (m_paper_F, (VectorSpaceClass<D_V,D_M>*) NULL), // to be deleted on destructor
   m_Imat_v_is                 (m_paper_F, (D_M*) NULL),                         // to be deleted on destructor
-  m_Rmat_v_i_spaces           (m_paper_F, (uqVectorSpaceClass<D_V,D_M>*) NULL), // to be deleted on destructor
+  m_Rmat_v_i_spaces           (m_paper_F, (VectorSpaceClass<D_V,D_M>*) NULL), // to be deleted on destructor
   m_Rmat_v_is                 (m_paper_F, (D_M*) NULL),                         // to be deleted on destructor
-  m_Smat_v_i_spaces           (m_paper_F, (uqVectorSpaceClass<D_V,D_M>*) NULL), // to be deleted on destructor
+  m_Smat_v_i_spaces           (m_paper_F, (VectorSpaceClass<D_V,D_M>*) NULL), // to be deleted on destructor
   m_Smat_v_is                 (m_paper_F, (D_M*) NULL),                         // to be deleted on destructor
   m_Smat_v                    (m_v_space.zeroVector()),
   m_Rmat_v_hat_v_asterisk_is  (m_paper_p_delta, (D_M*) NULL),                   // to be deleted on destructor
@@ -207,7 +207,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
   m_Smat_v_asterisk_v_asterisk(m_unique_v_space.zeroVector())
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                             << std::endl;
   }
 
@@ -236,7 +236,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
       D_M Wmat_transformed_y_filtered(*m_Wmat_transformed_y);
       Wmat_transformed_y_filtered.setPrintHorizontally(false);
       Wmat_transformed_y_filtered.filterSmallValues(1.e-6);
-      *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                               << ": Wmat_transformed_y_filtered.numRowsLocal() = " << Wmat_transformed_y_filtered.numRowsLocal()
                               << ", Wmat_transformed_y_filtered.numCols() = "      << Wmat_transformed_y_filtered.numCols()
                               << ", Wmat_transformed_y_filtered contents =\n"      << Wmat_transformed_y_filtered
@@ -258,7 +258,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
       // Check transpose operation
       D_M PDt(m_PD->transpose());
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ", tests on m_PD"
                                 << ": m_PD->numRowsLocal() = " << m_PD->numRowsLocal()
                                 << ", m_PD->numCols() = "      << m_PD->numCols()
@@ -284,7 +284,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
       double auxNorm2 = matShouldBeI2.normFrob();
 
       if (m_env.subDisplayFile()) {
-        *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+        *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                                 << ", tests on m_PD"
                                 << ": matShouldBeI1.numRowsLocal() = "  << matShouldBeI1.numRowsLocal()
                                 << ", ||matI1||_2^2 = "                 << matI1.normFrob() * matI1.normFrob()
@@ -297,7 +297,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
     }
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                               << ": finished forming 'P_D'"
                               << std::endl;
     }
@@ -306,7 +306,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
     // Compute 'Dmat_BlockDiag_permut' matrix
     //********************************************************************************
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                               << ": m_Dmat_BlockDiag->numRowsLocal() = " << m_Dmat_BlockDiag->numRowsLocal()
                               << ", m_Dmat_BlockDiag->numCols() = "      << m_Dmat_BlockDiag->numCols()
                               << ", m_PD->numRowsLocal() = "             << m_PD->numRowsLocal()
@@ -317,7 +317,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
     *m_Dmat_BlockDiag_permut = *m_Dmat_BlockDiag * (m_PD->transpose());
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                               << ": finished computing 'm_Dmat_BlockDiag_permut'"
                               << std::endl;
     }
@@ -328,42 +328,42 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
   //********************************************************************************
   for (unsigned int i = 0; i < m_Imat_v_i_spaces.size(); ++i) {
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                               << ": before instantiating a m_Imat_v_i space"
                               << ", m_paper_Gs[" << i << "] = " << m_paper_Gs[i]
                               << std::endl;
     }
-    m_Imat_v_i_spaces[i] = new uqVectorSpaceClass<D_V,D_M>(m_env, "Imat_v_i_spaces_", m_paper_Gs[i], NULL); // to be deleted on destructor
+    m_Imat_v_i_spaces[i] = new VectorSpaceClass<D_V,D_M>(m_env, "Imat_v_i_spaces_", m_paper_Gs[i], NULL); // to be deleted on destructor
     D_V unitVec(m_Imat_v_i_spaces[i]->zeroVector());
     unitVec.cwSet(1.);
     m_Imat_v_is[i] = new D_M(unitVec); // to be deleted on destructor
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                             << ": before instantiating the m_Rmat_v_i spaces"
                             << ", m_paper_n = " << m_paper_n
                             << std::endl;
   }
   for (unsigned int i = 0; i < m_Rmat_v_i_spaces.size(); ++i) {
-    m_Rmat_v_i_spaces[i] = new uqVectorSpaceClass<D_V,D_M>(m_env, "Smat_v_i_spaces_", m_paper_n, NULL); // to be deleted on destructor
+    m_Rmat_v_i_spaces[i] = new VectorSpaceClass<D_V,D_M>(m_env, "Smat_v_i_spaces_", m_paper_n, NULL); // to be deleted on destructor
     m_Rmat_v_is[i] = new D_M(m_Rmat_v_i_spaces[i]->zeroVector()); // to be deleted on destructor
   }
 
   unsigned int sumDims = 0;
   for (unsigned int i = 0; i < m_Smat_v_i_spaces.size(); ++i) {
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-      *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+      *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                               << ": before instantiating a m_Smat_v_i space"
                               << ", m_paper_Gs[" << i << "] = " << m_paper_Gs[i]
                               << std::endl;
     }
-    m_Smat_v_i_spaces[i] = new uqVectorSpaceClass<D_V,D_M>(m_env, "Smat_v_i_spaces_", m_paper_n*m_paper_Gs[i], NULL); // to be deleted on destructor
+    m_Smat_v_i_spaces[i] = new VectorSpaceClass<D_V,D_M>(m_env, "Smat_v_i_spaces_", m_paper_n*m_paper_Gs[i], NULL); // to be deleted on destructor
     sumDims += m_paper_n*m_paper_Gs[i];
     m_Smat_v_is[i] = new D_M(m_Smat_v_i_spaces[i]->zeroVector()); // to be deleted on destructor
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                             << ": finished instantiating the m_Smat_v_i spaces"
                             << ", m_paper_n = "       << m_paper_n
                             << ", m_paper_p_delta = " << m_paper_p_delta
@@ -372,7 +372,7 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
   }
   UQ_FATAL_TEST_MACRO(sumDims != m_v_size,
                       m_env.worldRank(),
-                      "uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
+                      "GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
                       "'sumDims' and 'm_v_size' should be equal");
 
   //********************************************************************************
@@ -387,24 +387,24 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
     sumNumCols += 1;
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                             << ": finished instantiating the m_Smat_v_hat_v_asterisk_i matrices"
                             << std::endl;
   }
   UQ_FATAL_TEST_MACRO(sumNumRows != m_v_size,
                       m_env.worldRank(),
-                      "uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
+                      "GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
                       "'sumNumRows' and 'm_v_size' should be equal");
   UQ_FATAL_TEST_MACRO(sumNumCols != m_paper_p_delta,
                       m_env.worldRank(),
-                      "uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
+                      "GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
                       "'sumNumCols' and 'm_paper_p_delta' should be equal");
 
   //********************************************************************************
   // Display information
   //********************************************************************************
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "KEY In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+    *m_env.subDisplayFile() << "KEY In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                             << "\n KEY  m_paper_p_x = "                     << m_paper_p_x
                             << "\n KEY  m_paper_n = "                       << m_paper_n
                             << "\n KEY  m_paper_n_ys_transformed.size() = " << m_paper_n_ys_transformed.size()
@@ -439,46 +439,46 @@ uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::uqGcmExperimentInfoClass(
   //********************************************************************************
   UQ_FATAL_TEST_MACRO(experimentStorage.yVec_transformed().sizeLocal() != m_paper_n_y,
                       m_env.worldRank(),
-                      "uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
+                      "GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
                       "incompatible calculations for 'y' vector size");
 
   UQ_FATAL_TEST_MACRO(m_paper_n != m_paper_n_ys_transformed.size(),
                       m_env.worldRank(),
-                      "uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
+                      "GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
                       "'m_paper_n' and 'm_paper_n_ys_transformed.size()' should be equal");
 
   UQ_FATAL_TEST_MACRO(m_paper_F != m_paper_Gs.size(),
                       m_env.worldRank(),
-                      "uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
+                      "GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
                       "'m_paper_F' and 'm_paper_Gs.size()' should be equal");
 
   unsigned int sumGs = 0;
   for (unsigned int i = 0; i < m_paper_F; ++i) {
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-       *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+       *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                                << ": m_paper_Gs[" << i << "] = " << m_paper_Gs[i]
                                << std::endl;
     }
     sumGs += m_paper_Gs[i];
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                             << ": sumGs = " << sumGs
                             << std::endl;
   }
   UQ_FATAL_TEST_MACRO(m_paper_p_delta != sumGs,
                       m_env.worldRank(),
-                      "uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
+                      "GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()",
                       "'m_paper_p_delta' and 'sumGs' should be equal");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
                             << std::endl;
   }
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M>
-uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::~uqGcmExperimentInfoClass()
+GcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::~GcmExperimentInfoClass()
 {
   for (unsigned int i = 0; i < m_Smat_v_hat_v_asterisk_is.size(); ++i) {
     delete m_Smat_v_hat_v_asterisk_is[i]; // to be deleted on destructor

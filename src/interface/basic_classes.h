@@ -37,8 +37,8 @@ using namespace std;
 
 namespace QUESO_Basic_API {
 
-#define basicV uqGslVectorClass
-#define basicM uqGslMatrixClass
+#define basicV GslVectorClass
+#define basicM GslMatrixClass
 
   void   QUESO_fatal        (const char *message);
   double Likelihood_Wrapper (const basicV &,const basicV *,const void *,basicV *,basicM *,basicV *);
@@ -55,22 +55,22 @@ namespace QUESO_Basic_API {
     //------------------------				           
 
     string *m_inputfile;                                               // QUESO ascii input file
-    uqBaseEnvironmentClass *m_env;                                     // QUESO environment
+    BaseEnvironmentClass *m_env;                                     // QUESO environment
     int     m_num_params;	                                       // number of defined UQ parameter variables
     basicV *m_queso_var_min;                                           // min UQ paramater values
     basicV *m_queso_var_max;                                           // max UQ paramater values
     basicV *m_queso_var_ini;                                           // initial UQ paramater values
-    uqVectorSpaceClass <basicV,basicM> *m_paramSpace;                  // QUESO parameter space
+    VectorSpaceClass <basicV,basicM> *m_paramSpace;                  // QUESO parameter space
     
     //--------------------------------------
     // Inverse/calibration related variables
     //--------------------------------------
     
-    uqBoxSubsetClass                 <basicV,basicM> *m_paramDomain;   // QUESO parameter domain
-    uqUniformVectorRVClass           <basicV,basicM> *m_priorRV;       // QUESO prior vector
-    uqGenericVectorRVClass           <basicV,basicM> *m_postRV;        // QUESO post vector
-    uqStatisticalInverseProblemClass <basicV,basicM> *m_ip;            // QUESO inverse problem
-    uqGenericScalarFunctionClass     <basicV,basicM> *m_likelihoodObj; // QUESO likelihood object
+    BoxSubsetClass                 <basicV,basicM> *m_paramDomain;   // QUESO parameter domain
+    UniformVectorRVClass           <basicV,basicM> *m_priorRV;       // QUESO prior vector
+    GenericVectorRVClass           <basicV,basicM> *m_postRV;        // QUESO post vector
+    StatisticalInverseProblemClass <basicV,basicM> *m_ip;            // QUESO inverse problem
+    GenericScalarFunctionClass     <basicV,basicM> *m_likelihoodObj; // QUESO likelihood object
     basicM *m_CovMatrix;                                               // QUESO covariance matrix
     double (*m_user_likelihood_func) (double *);	               // User supplied likelihood function 
     

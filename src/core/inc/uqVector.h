@@ -40,7 +40,7 @@ namespace QUESO {
     \brief Vector class.
 */
 
-/*! \class uqVectorClass
+/*! \class VectorClass
     \brief Class for vector operations (virtual). 
     
     Base vector class. The vector class is an abstract class designed to be used as a base class 
@@ -48,48 +48,48 @@ namespace QUESO {
 */
 
 
-class uqVectorClass
+class VectorClass
 {
 public:
      
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default Constructor
-  uqVectorClass();
+  VectorClass();
 	   
   //! Shaped Constructor
-  uqVectorClass(const uqBaseEnvironmentClass& env, const uqMapClass& map);
+  VectorClass(const BaseEnvironmentClass& env, const MapClass& map);
           	   
   //! Copy Constructor 
-  uqVectorClass(const uqVectorClass& rhs);
+  VectorClass(const VectorClass& rhs);
 	   
   //! Virtual Destructor
-  virtual ~uqVectorClass();
+  virtual ~VectorClass();
   //@}
   
   //! @name Set methods
   //@{ 
     
   //! Operator for copying a vector.
-  uqVectorClass& operator=(const uqVectorClass& rhs);
+  VectorClass& operator=(const VectorClass& rhs);
   
   //! Operator for multiplication of the vector by a scalar.
-  uqVectorClass& operator*=(double a);
+  VectorClass& operator*=(double a);
   
   //! Operator for division of the vector by a scalar.
-  uqVectorClass& operator/=(double a);
+  VectorClass& operator/=(double a);
   
   //! Operator for addition (element-wise) of two vectors.
-  uqVectorClass& operator+=(const uqVectorClass& rhs);
+  VectorClass& operator+=(const VectorClass& rhs);
   
   //! Operator for subtraction (element-wise) of two vectors.
-  uqVectorClass& operator-=(const uqVectorClass& rhs);
+  VectorClass& operator-=(const VectorClass& rhs);
   //@}
   
   //! @name Environment and Map methods
   //@{ 
-    const uqBaseEnvironmentClass& env                 ()           const;
-    const uqMapClass&             map                 ()           const;
+    const BaseEnvironmentClass& env                 ()           const;
+    const MapClass&             map                 ()           const;
           unsigned int            numOfProcsForStorage()           const;
   //@}
   
@@ -140,19 +140,19 @@ public:
 protected:
   
   //! Copies vector \c src to \c this matrix.
-  virtual void                    copy                (const uqVectorClass& src);
+  virtual void                    copy                (const VectorClass& src);
 
   //! Environment variable.
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
   
 #ifdef QUESO_CLASSES_INSTANTIATE_NEW_MAPS
   
    //! Mapping variable.
-  const uqMapClass              m_map;
+  const MapClass              m_map;
 #else
   
   //! Mapping variable.
-  const uqMapClass&             m_map;
+  const MapClass&             m_map;
 #endif
   
   //! Flag for either or not print this matrix horizontally.

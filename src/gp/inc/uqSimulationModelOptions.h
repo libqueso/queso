@@ -55,13 +55,13 @@
 
 namespace QUESO {
 
-class uqSmOptionsValuesClass
+class SmOptionsValuesClass
 {
 public:
-  uqSmOptionsValuesClass            ();
-  uqSmOptionsValuesClass            (const uqSmOptionsValuesClass& src);
-  uqSmOptionsValuesClass& operator= (const uqSmOptionsValuesClass& rhs);
- ~uqSmOptionsValuesClass            ();
+  SmOptionsValuesClass            ();
+  SmOptionsValuesClass            (const SmOptionsValuesClass& src);
+  SmOptionsValuesClass& operator= (const SmOptionsValuesClass& rhs);
+ ~SmOptionsValuesClass            ();
 
   std::string            m_dataOutputFileName;
   bool                   m_dataOutputAllowAll;
@@ -79,29 +79,29 @@ public:
   double                 m_b_s;
 
 private:
-  void copy(const uqSmOptionsValuesClass& src);
+  void copy(const SmOptionsValuesClass& src);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-class uqSimulationModelOptionsClass
+class SimulationModelOptionsClass
 {
 public:
-  uqSimulationModelOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
-  uqSimulationModelOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqSmOptionsValuesClass& alternativeOptionsValues);
- ~uqSimulationModelOptionsClass();
+  SimulationModelOptionsClass(const BaseEnvironmentClass& env, const char* prefix);
+  SimulationModelOptionsClass(const BaseEnvironmentClass& env, const char* prefix, const SmOptionsValuesClass& alternativeOptionsValues);
+ ~SimulationModelOptionsClass();
 
   void scanOptionsValues();
   void print            (std::ostream& os) const;
 
-  uqSmOptionsValuesClass        m_ov;
+  SmOptionsValuesClass        m_ov;
   std::string                   m_prefix;
 
 private:
   void   defineMyOptions  (po::options_description& optionsDesc) const;
   void   getMyOptionValues(po::options_description& optionsDesc);
 
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
 
   po::options_description*      m_optionsDesc;
   std::string                   m_option_help;
@@ -121,7 +121,7 @@ private:
   std::string                   m_option_b_s;
 };
 
-std::ostream& operator<<(std::ostream& os, const uqSimulationModelOptionsClass& obj);
+std::ostream& operator<<(std::ostream& os, const SimulationModelOptionsClass& obj);
 
 }  // End namespace QUESO
 

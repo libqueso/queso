@@ -32,12 +32,12 @@
 static unsigned int likelihoodCounter = 0;
 
 double likelihoodRoutine(
-  const QUESO::uqGslVectorClass& paramValues,
-  const QUESO::uqGslVectorClass* paramDirection,
+  const QUESO::GslVectorClass& paramValues,
+  const QUESO::GslVectorClass* paramDirection,
   const void*             functionDataPtr,
-  QUESO::uqGslVectorClass*       gradVector,
-  QUESO::uqGslMatrixClass*       hessianMatrix,
-  QUESO::uqGslVectorClass*       hessianEffect)
+  QUESO::GslVectorClass*       gradVector,
+  QUESO::GslMatrixClass*       hessianMatrix,
+  QUESO::GslVectorClass*       hessianEffect)
 {
   //const uqGslVectorClass& meanVector =
   //  *((likelihoodRoutine_DataType *) functionDataPtr)->meanVector;

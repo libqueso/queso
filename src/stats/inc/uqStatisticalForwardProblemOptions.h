@@ -52,33 +52,33 @@ namespace QUESO {
     \brief Classes to allow options to be passed to a Statistical Forward Problem.
 */
 
-/*! \class uqSfpOptionsValuesClass
+/*! \class SfpOptionsValuesClass
  *  \brief This class provides options for a Statistical Forward Problem if no input file is available.
  * 
  * In order to solve a Statistical Forward Problem (SFP), QUESO expects some options for its methods to be 
  * fully defined. This class provides default values for such options if no input file is available. */
 
-class uqSfpOptionsValuesClass
+class SfpOptionsValuesClass
 {
 public:
   //! Constructor/Destructor methods
   //@{
   //! Default constructor.
   /*! Assigns the default suite of options to the Statistical Forward Problem.*/
-  uqSfpOptionsValuesClass            ();
+  SfpOptionsValuesClass            ();
   
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
-  uqSfpOptionsValuesClass            (const uqSfpOptionsValuesClass& src);
+  SfpOptionsValuesClass            (const SfpOptionsValuesClass& src);
   
   //! Destructor
-  ~uqSfpOptionsValuesClass            ();
+  ~SfpOptionsValuesClass            ();
   //@}
   
   //! @name Set methods
   //@{ 
   //! Assignment operator; it copies \c rhs to \c this. 
-  uqSfpOptionsValuesClass& operator= (const uqSfpOptionsValuesClass& rhs);
+  SfpOptionsValuesClass& operator= (const SfpOptionsValuesClass& rhs);
   //@}
 
   bool                   m_computeSolution;
@@ -90,14 +90,14 @@ public:
   std::string            m_solverString;
 #endif
 
-  //uqMcOptionsValuesClass m_mcOptionsValues;
+  //McOptionsValuesClass m_mcOptionsValues;
 
 private:
   //! Copies the option values from \c src to \c this.
-  void copy(const uqSfpOptionsValuesClass& src);
+  void copy(const SfpOptionsValuesClass& src);
 };
 
-/*! \class uqStatisticalForwardProblemOptionsClass
+/*! \class StatisticalForwardProblemOptionsClass
  *  \brief This class reads option values for a Statistical Forward Problem from an input file.
  * 
  *  This class reads the option values for the Statistical Forward Problem (SFP) from an input file 
@@ -108,21 +108,21 @@ private:
  * which MATLAB variables are defined and set. The names of the variables are self explanatory.
 */
 
-class uqStatisticalForwardProblemOptionsClass
+class StatisticalForwardProblemOptionsClass
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Constructor: reads options from the input file.
-  uqStatisticalForwardProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix);
+  StatisticalForwardProblemOptionsClass(const BaseEnvironmentClass& env, const char* prefix);
   
   //! Constructor: with alternative option values.
   /*! In this constructor, the input options are given by \c alternativeOptionsValues, rather than the 
    * options input file*/
-  uqStatisticalForwardProblemOptionsClass(const uqBaseEnvironmentClass& env, const char* prefix, const uqSfpOptionsValuesClass& alternativeOptionsValues);
+  StatisticalForwardProblemOptionsClass(const BaseEnvironmentClass& env, const char* prefix, const SfpOptionsValuesClass& alternativeOptionsValues);
  
   //! Destructor
-  ~uqStatisticalForwardProblemOptionsClass();  
+  ~StatisticalForwardProblemOptionsClass();  
   //@}
   
   //! @name I/O methods
@@ -134,7 +134,7 @@ public:
   void print            (std::ostream& os) const;
   //@}
   
-  uqSfpOptionsValuesClass       m_ov;
+  SfpOptionsValuesClass       m_ov;
   std::string                   m_prefix;
 
 private:
@@ -144,7 +144,7 @@ private:
   //! Gets the option values of the SFP.
   void   getMyOptionValues(po::options_description& optionsDesc);
 
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
 
   po::options_description*      m_optionsDesc;
   std::string                   m_option_help;
@@ -158,7 +158,7 @@ private:
 #endif
 };
 //! Prints the object \c obj, overloading an operator.
-std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemOptionsClass& obj);
+std::ostream& operator<<(std::ostream& os, const StatisticalForwardProblemOptionsClass& obj);
 
 }  // End namespace QUESO
 

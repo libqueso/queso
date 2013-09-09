@@ -39,26 +39,26 @@ namespace QUESO {
     \brief Class for Basic PDFs using Boost library.
 */
 
-/*! \class uqBasicPdfsBoostClass
+/*! \class BasicPdfsBoostClass
     \brief TODO: Base class for basic PDFs using Boost library. 
     
     \todo This class \b will acommodate the definition of a Joint PDF using distributions
-    available in the Boost library. It will ultimately be called by uqBaseJointPdfClass and/or its
+    available in the Boost library. It will ultimately be called by BaseJointPdfClass and/or its
     derived classes (via m_env.basicPdfs()) during the construction of Joint PDFs.
 */
-class uqBasicPdfsBoostClass : public uqBasicPdfsBaseClass
+class BasicPdfsBoostClass : public BasicPdfsBaseClass
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  uqBasicPdfsBoostClass();
+  BasicPdfsBoostClass();
   
   //! Constructor.
-  uqBasicPdfsBoostClass(int worldRank);
+  BasicPdfsBoostClass(int worldRank);
   
   //! Destructor.
- ~uqBasicPdfsBoostClass();
+ ~BasicPdfsBoostClass();
   //@}
 
   //! @name Mathematical methods

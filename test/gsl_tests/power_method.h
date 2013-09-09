@@ -30,6 +30,6 @@
 #define __POWER_METHOD_TESTS_H__
 
 #include <uqEnvironment.h>
-int actualChecking(const QUESO::uqFullEnvironmentClass* env);
+int actualChecking(const QUESO::FullEnvironmentClass* env);
 
 #endif // __POWER_METHOD_TESTS_H__

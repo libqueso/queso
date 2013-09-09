@@ -30,21 +30,21 @@
 
 void
 qoiRoutine(
-  const QUESO::uqGslVectorClass&                    paramValues,
-  const QUESO::uqGslVectorClass*                    paramDirection,
+  const QUESO::GslVectorClass&                    paramValues,
+  const QUESO::GslVectorClass*                    paramDirection,
   const void*                                functionDataPtr,
-        QUESO::uqGslVectorClass&                    qoiValues,
-        QUESO::uqDistArrayClass<QUESO::uqGslVectorClass*>* gradVectors,
-        QUESO::uqDistArrayClass<QUESO::uqGslMatrixClass*>* hessianMatrices,
-        QUESO::uqDistArrayClass<QUESO::uqGslVectorClass*>* hessianEffects)
+        QUESO::GslVectorClass&                    qoiValues,
+        QUESO::DistArrayClass<QUESO::GslVectorClass*>* gradVectors,
+        QUESO::DistArrayClass<QUESO::GslMatrixClass*>* hessianMatrices,
+        QUESO::DistArrayClass<QUESO::GslVectorClass*>* hessianEffects)
 {
   // Logic just to avoid warnings from INTEL compiler
-  const QUESO::uqGslVectorClass* aux1 = paramDirection;
+  const QUESO::GslVectorClass* aux1 = paramDirection;
   if (aux1) {};
-  QUESO::uqDistArrayClass<QUESO::uqGslVectorClass*>* aux2 = gradVectors;
+  QUESO::DistArrayClass<QUESO::GslVectorClass*>* aux2 = gradVectors;
   if (aux2) {};
   aux2 = hessianEffects;
-  QUESO::uqDistArrayClass<QUESO::uqGslMatrixClass*>* aux3 = hessianMatrices;
+  QUESO::DistArrayClass<QUESO::GslMatrixClass*>* aux3 = hessianMatrices;
   if (aux3) {};
 
   // Just checking: the user, at the application level, expects
@@ -74,7 +74,7 @@ qoiRoutine(
   //
   // Here we use 'env.subRank()' only. A realistic application might want to use
   // 'env.subComm()' or 'env.subComm().Comm()'
-  const QUESO::uqBaseEnvironmentClass& env = paramValues.env();
+  const QUESO::BaseEnvironmentClass& env = paramValues.env();
   if (env.subRank() == 0) {
     double coef1 = ((qoiRoutine_DataType *) functionDataPtr)->coef1;
     double coef2 = ((qoiRoutine_DataType *) functionDataPtr)->coef2;

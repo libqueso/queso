@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
   MPI_Init(&argc, &argv);
 #endif
 
-  QUESO::uqGslVectorClass vector;
+  QUESO::GslVectorClass vector;
 
 #ifdef QUESO_HAS_MPI
   MPI_Finalize();

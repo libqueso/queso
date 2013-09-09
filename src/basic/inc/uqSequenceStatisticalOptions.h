@@ -84,33 +84,33 @@
 /*!\file uqSequenceStatisticalOptions.h
  * \brief A templated class that stores default statistical options
  * 
- * \class uqSsOptionsValuesClass
+ * \class SsOptionsValuesClass
  * \brief A templated class that stores default statistical options for a sequence of vectors, e.g.
  *    a Markov chain, a Monte Carlo input sequence, or a Monte Carlo output sequence. 
  */
 
 
-class uqSsOptionsValuesClass
+class SsOptionsValuesClass
 {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor. 
   /*! It assigns to the variables the pre-defined options for a sequence of data (scalars; vectors).*/
-  uqSsOptionsValuesClass            ();
+  SsOptionsValuesClass            ();
   
   //! Copy  constructor. 
   /*! It assigns to \c this' variables, the same values of the variable of \c src.*/  
-  uqSsOptionsValuesClass            (const uqSsOptionsValuesClass& src);
+  SsOptionsValuesClass            (const SsOptionsValuesClass& src);
  
   //! Destructor.
-  ~uqSsOptionsValuesClass            ();
+  ~SsOptionsValuesClass            ();
   //@}
   
   //! @name Set methods
   //@{ 
   //! Assignment operator; it copies \c rhs to \c this.  
-  uqSsOptionsValuesClass& operator= (const uqSsOptionsValuesClass& rhs);
+  SsOptionsValuesClass& operator= (const SsOptionsValuesClass& rhs);
   //@}
 
   //! @name Public attributes
@@ -196,12 +196,12 @@ public:
   // end public attributes
 private:
   //! Copies the option values from \c src to \c this.
-  void copy(const uqSsOptionsValuesClass& src);
+  void copy(const SsOptionsValuesClass& src);
 };
 
 //------------------------------------------------------------------------------------------------
 
-/*!\class uqSequenceStatisticalOptionsClass
+/*!\class SequenceStatisticalOptionsClass
  * \brief  A templated class that stores statistical options (optionally read from an input file)
  *
  *  A templated class that stores statistical options for a sequence of vectors, e.g.
@@ -209,7 +209,7 @@ private:
  */
 
 
-class uqSequenceStatisticalOptionsClass
+class SequenceStatisticalOptionsClass
 {
 public:
   //! @name Constructor/Destructor methods
@@ -217,17 +217,17 @@ public:
   //! Constructor: reads options from the input file.
   /*! It assigns to the variables the identifying strings (prefixes) for a sequence of data 
    * (scalars; vectors) which had been read from an input file.*/
-  uqSequenceStatisticalOptionsClass(const uqBaseEnvironmentClass& env,
+  SequenceStatisticalOptionsClass(const BaseEnvironmentClass& env,
                                     const std::string&            prefix);
   
   //! Constructor: with alternative option values.
   /*! In this constructor, the input options are given by \c alternativeOptionsValues, thus, they
    * are not read from an input file.*/
-  uqSequenceStatisticalOptionsClass(const uqBaseEnvironmentClass& env,
+  SequenceStatisticalOptionsClass(const BaseEnvironmentClass& env,
                                     const std::string&            prefix,
-                                    const uqSsOptionsValuesClass& alternativeOptionsValues);
+                                    const SsOptionsValuesClass& alternativeOptionsValues);
   //! Destructor
-  ~uqSequenceStatisticalOptionsClass();
+  ~SequenceStatisticalOptionsClass();
   //@}
 
   //! @name Statistical methods
@@ -278,7 +278,7 @@ public:
   
   //! @name Public attribute
   //@{ 
-  uqSsOptionsValuesClass     m_ov;
+  SsOptionsValuesClass     m_ov;
   //@}
   
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
@@ -331,7 +331,7 @@ private:
   void   getMyOptionValues(po::options_description& optionsDesc);
 
   std::string                   m_prefix;
-  const uqBaseEnvironmentClass& m_env;
+  const BaseEnvironmentClass& m_env;
   po::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
@@ -384,7 +384,7 @@ private:
   
 };
 
-std::ostream& operator<<(std::ostream& os, const uqSequenceStatisticalOptionsClass& obj);
+std::ostream& operator<<(std::ostream& os, const SequenceStatisticalOptionsClass& obj);
 
 #endif // ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 

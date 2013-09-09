@@ -32,11 +32,11 @@
 namespace QUESO {
 
 // --------------------------------------------------
-// uqSfpOptionsValuesClass---------------------------
+// SfpOptionsValuesClass---------------------------
 // --------------------------------------------------
 
 // Default constructor -----------------------------
-uqSfpOptionsValuesClass::uqSfpOptionsValuesClass()
+SfpOptionsValuesClass::SfpOptionsValuesClass()
   :
   m_computeSolution     (UQ_SFP_COMPUTE_SOLUTION_ODV     ),
   m_computeCovariances  (UQ_SFP_COMPUTE_COVARIANCES_ODV  ),
@@ -49,24 +49,24 @@ uqSfpOptionsValuesClass::uqSfpOptionsValuesClass()
 {
 }
 // Copy constructor----------------------------------
-uqSfpOptionsValuesClass::uqSfpOptionsValuesClass(const uqSfpOptionsValuesClass& src)
+SfpOptionsValuesClass::SfpOptionsValuesClass(const SfpOptionsValuesClass& src)
 {
   this->copy(src);
 }
 // Destructor ---------------------------------------
-uqSfpOptionsValuesClass::~uqSfpOptionsValuesClass()
+SfpOptionsValuesClass::~SfpOptionsValuesClass()
 {
 }
 // Set methods --------------------------------------
-uqSfpOptionsValuesClass&
-uqSfpOptionsValuesClass::operator=(const uqSfpOptionsValuesClass& rhs)
+SfpOptionsValuesClass&
+SfpOptionsValuesClass::operator=(const SfpOptionsValuesClass& rhs)
 {
   this->copy(rhs);
   return *this;
 }
 // Private methods-----------------------------------
 void
-uqSfpOptionsValuesClass::copy(const uqSfpOptionsValuesClass& src)
+SfpOptionsValuesClass::copy(const SfpOptionsValuesClass& src)
 {
   m_computeSolution      = src.m_computeSolution;
   m_computeCovariances   = src.m_computeCovariances;
@@ -84,12 +84,12 @@ uqSfpOptionsValuesClass::copy(const uqSfpOptionsValuesClass& src)
 
 
 // --------------------------------------------------
-// uqStatisticalForwardProblemOptionsClass-----------
+// StatisticalForwardProblemOptionsClass-----------
 // --------------------------------------------------
 
 // Default constructor -----------------------------
-uqStatisticalForwardProblemOptionsClass::uqStatisticalForwardProblemOptionsClass(
-  const uqBaseEnvironmentClass& env,
+StatisticalForwardProblemOptionsClass::StatisticalForwardProblemOptionsClass(
+  const BaseEnvironmentClass& env,
   const char*                   prefix)
   :
   m_ov                         (),
@@ -108,14 +108,14 @@ uqStatisticalForwardProblemOptionsClass::uqStatisticalForwardProblemOptionsClass
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
-                      "uqStatisticalForwardProblemOptionsClass::constructor(1)",
+                      "StatisticalForwardProblemOptionsClass::constructor(1)",
                       "this constructor is incompatible with the absence of an options input file");
 }
 
-uqStatisticalForwardProblemOptionsClass::uqStatisticalForwardProblemOptionsClass(
-  const uqBaseEnvironmentClass& env, 
+StatisticalForwardProblemOptionsClass::StatisticalForwardProblemOptionsClass(
+  const BaseEnvironmentClass& env, 
   const char*                   prefix,
-  const uqSfpOptionsValuesClass& alternativeOptionsValues)
+  const SfpOptionsValuesClass& alternativeOptionsValues)
   :
   m_ov                         (alternativeOptionsValues         ),
   m_prefix                     ((std::string)(prefix) + "fp_"    ),
@@ -133,11 +133,11 @@ uqStatisticalForwardProblemOptionsClass::uqStatisticalForwardProblemOptionsClass
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
-                      "uqStatisticalForwardProblemOptionsClass::constructor(2)",
+                      "StatisticalForwardProblemOptionsClass::constructor(2)",
                       "this constructor is incompatible with the existence of an options input file");
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In uqStatisticalForwardProblemOptionsClass::constructor(2)"
+    *m_env.subDisplayFile() << "In StatisticalForwardProblemOptionsClass::constructor(2)"
                             << ": after setting values of options with prefix '" << m_prefix
                             << "', state of object is:"
                             << "\n" << *this
@@ -145,18 +145,18 @@ uqStatisticalForwardProblemOptionsClass::uqStatisticalForwardProblemOptionsClass
   }
 }
 // Destructor --------------------------------------
-uqStatisticalForwardProblemOptionsClass::~uqStatisticalForwardProblemOptionsClass()
+StatisticalForwardProblemOptionsClass::~StatisticalForwardProblemOptionsClass()
 {
   if (m_optionsDesc) delete m_optionsDesc;
 } 
 
 // I/O methods -------------------------------------
 void
-uqStatisticalForwardProblemOptionsClass::scanOptionsValues()
+StatisticalForwardProblemOptionsClass::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
-                      "uqStatisticalForwardProblemOptionsClass::scanOptionsValues()",
+                      "StatisticalForwardProblemOptionsClass::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
 
   defineMyOptions                (*m_optionsDesc);
@@ -164,7 +164,7 @@ uqStatisticalForwardProblemOptionsClass::scanOptionsValues()
   getMyOptionValues              (*m_optionsDesc);
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In uqStatisticalForwardProblemOptionsClass::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In StatisticalForwardProblemOptionsClass::scanOptionsValues()"
                             << ": after reading values of options with prefix '" << m_prefix
                             << "', state of  object is:"
                             << "\n" << *this
@@ -175,7 +175,7 @@ uqStatisticalForwardProblemOptionsClass::scanOptionsValues()
 }
 //--------------------------------------------------
 void
-uqStatisticalForwardProblemOptionsClass::print(std::ostream& os) const
+StatisticalForwardProblemOptionsClass::print(std::ostream& os) const
 {
   os <<         m_option_computeSolution      << " = " << m_ov.m_computeSolution
      << "\n" << m_option_computeCovariances   << " = " << m_ov.m_computeCovariances
@@ -195,7 +195,7 @@ uqStatisticalForwardProblemOptionsClass::print(std::ostream& os) const
 
 // Private methods ---------------------------------
 void
-uqStatisticalForwardProblemOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
+StatisticalForwardProblemOptionsClass::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()     
     (m_option_help.c_str(),                                                                                              "produce help message for statistical forward problem")
@@ -213,7 +213,7 @@ uqStatisticalForwardProblemOptionsClass::defineMyOptions(po::options_description
 }
 //--------------------------------------------------
 void
-uqStatisticalForwardProblemOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
+StatisticalForwardProblemOptionsClass::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
@@ -242,7 +242,7 @@ uqStatisticalForwardProblemOptionsClass::getMyOptionValues(po::options_descripti
     m_ov.m_dataOutputAllowedSet.clear();
     std::vector<double> tmpAllow(0,0.);
     std::string inputString = m_env.allOptionsMap()[m_option_dataOutputAllowedSet].as<std::string>();
-    uqMiscReadDoublesFromString(inputString,tmpAllow);
+    MiscReadDoublesFromString(inputString,tmpAllow);
 
     if (tmpAllow.size() > 0) {
       for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
@@ -264,7 +264,7 @@ uqStatisticalForwardProblemOptionsClass::getMyOptionValues(po::options_descripti
 // Operator declared outside class definition ------
 // --------------------------------------------------
 
-std::ostream& operator<<(std::ostream& os, const uqStatisticalForwardProblemOptionsClass& obj)
+std::ostream& operator<<(std::ostream& os, const StatisticalForwardProblemOptionsClass& obj)
 {
   obj.print(os);
 
