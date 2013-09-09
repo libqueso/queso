@@ -10,7 +10,8 @@
 // nick (nicholas.malaya) providing a direct port of the antioch assertions
 // to queso (see: https://github.com/libantioch/antioch/blob/master/src/utilities/include/antioch/antioch_asserts.h)
 //
-
+// adding MPI-friendly exits
+//
 #ifndef QUESO_ASSERTS_H
 #define QUESO_ASSERTS_H
 
