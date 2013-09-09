@@ -4,7 +4,9 @@ Simulation, and Optimization.
 -----------------------------------------------------
 
 Version 0.47.0 (In progress)
+
   * Migrated library to github
+  * Replace exit() calls with a macro exception handler
 
 Version 0.46 (13 May 2013)
 
