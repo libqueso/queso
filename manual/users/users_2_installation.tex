@@ -18,7 +18,7 @@ using an ordinary account which does not have the ability to make system-wide ch
 (ab)use of superuser privileges).
 
 Thus, suppose you want to install QUESO and its dependencies on the following directory:
-\begin{lstlisting}
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 $HOME/LIBRARIES/
 \end{lstlisting}
 %
@@ -34,7 +34,7 @@ There are two main steps to prepare your LINUX computing system  for QUESO libra
 \Queso{} dependencies are:
 \begin{enumerate}%{itemize}
 
-  \item A C and C++ compiler. Either \texttt{gcc} or \texttt{icc} are recommended \cite{GCC,ICC}.
+  \item C and C++ compilers. Either \texttt{gcc} or \texttt{icc} are recommended \cite{GCC,ICC}.
   
   \item \textbf{Autotools}: The GNU build system, also known as the Autotools, is a suite of programming tools (Automake, Autoconf, Libtool) designed to assist in making source-code packages portable to many Unix-like systems~\cite{Autotools}.
   
@@ -49,7 +49,7 @@ There are two main steps to prepare your LINUX computing system  for QUESO libra
 \end{enumerate}%{itemize}
 
 % 
-% In this report, we suppose that the dependencies listed in items 1-3 and 6 (C/C++, Autotoolsm STL and MPI) are already existent within your 
+% In this report, we suppose that the dependencies listed in items 1-3 and 6 (C/C++, Autotools STL and MPI) are already existent within your 
 % computer system. 
 
 
@@ -88,15 +88,15 @@ There are two main steps to prepare your LINUX computing system  for QUESO libra
 % Step one may differ whether your installation will performed in a stand-alone machine or in a network system which comprises Environment Modules\footnote{\url{http://www.modules.sourceforge.net}}~\footnote{\url{http://www.ices.utexas.edu/sysdocs/linux/modules.html}} to provide easy access to software, such as the one employed in ICES.
 
 This section presents the steps to prepared the environment
-considering the user LINUX environment runs a BASH-shell. For other types of shell, such as C-shell, some adptations may be required.
+considering the user LINUX environment runs a BASH-shell. For other types of shell, such as C-shell, some adaptations may be required.
 
 Before using QUESO, the user must first set a number of environmental variables, and indicate the full path
 of the QUESO's dependencies (GSL and Boost) and optional libraries. 
 
 For example, supposing the user wants to install QUESO with two additional libraries: HDF5 and Trilinos. 
-Add the following lines to append the location of QUESO's dependencies and optional libraries to the \verb+LD_LIBRARY_PATH+ environmen variable:
+Add the following lines to append the location of QUESO's dependencies and optional libraries to the \verb+LD_LIBRARY_PATH+ environment variable:
 %
-\begin{lstlisting}
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
   $HOME/LIBRARIES/gsl-1.15/lib/:\
   $HOME/LIBRARIES/boost-1.53.0/lib/:\
@@ -107,7 +107,7 @@ which can be placed in the user's \verb+.bashrc+ or other startup file.
 
 In addition, the user must set the following environmental
 variables:
-\begin{lstlisting}
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 $ export CC=gcc
 $ export CXX=g++
 $ export MPICC=mpicc
@@ -121,14 +121,14 @@ $ export FC=gfortran
 
 \section{Obtaining a Copy of \Queso{}}
 
-The latest supported public release of \Queso{} is available in the form of a tarball (tar format compressed with gzip) from \Quesoweb{}.
+The latest supported public release of \Queso{} is available in the form of a tarball (tar format compressed with gzip) from \Queso{} Home Page: \Quesoweb.
 
-Suppose you have copied the file `\verb+queso-0.46.0.tar.gz+' into \texttt{\$HOME/queso\_download/}.
+Suppose you have copied the file `\verb+queso-0.47.1.tar.gz+' into \texttt{\$HOME/queso\_download/}.
 Then just follow these commands to expand the tarball:
-\begin{lstlisting}
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 $ cd $HOME/queso_download/
-$ tar xvf queso-0.46.0.tar.gz
-$ cd queso-0.46.0   	#enter the directory 
+$ tar xvf queso-0.47.1.tar.gz
+$ cd queso-0.47.1   	#enter the directory 
 \end{lstlisting}
 
 Naturally, for versions of \Queso{} other than \QUESOversion, the file names in the above commands must be adjusted.
@@ -161,11 +161,11 @@ can be maintained from the same source tree~\cite{Trilinos}.
 \Queso{} uses the GNU Autoconf system for configuration, which detects various features of the host system and creates Makefiles. 
 The configuration process can be controlled through environment variables, command-line switches, and host configuration files.
 For a complete list of switches type:
-\begin{lstlisting}
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 $ ./configure  --help  
 \end{lstlisting}
 %
-from the top level of the source tree (exemplified as \verb+$HOME/queso_download/queso-0.46.0+ in this report). 
+from the top level of the source tree (exemplified as \verb+$HOME/queso_download/queso-0.47.1+ in this report). 
 
 This command will also display the help page for \Queso{} options.  Many of the \Queso{} configure options are used to describe 
 the details of the build. For instance, to include HDF5, a package that is not currently built by default, append \texttt{--with-hdf5=DIR}, 
@@ -177,22 +177,22 @@ where \texttt{DIR} is the root directory of HDF5 installation,  to the configure
 
 
 
-Therefore, the basic steps to configure QUESO using Boost, GSL (required), HDF5 and Trilinos (optional) for installation at `\verb+$HOME/LIBRARIES/QUESO-0.46.0+' are:
-\begin{lstlisting}
-$  ./configure --prefix=$HOME/LIBRARIES/QUESO-0.46.0 \
+Therefore, the basic steps to configure QUESO using Boost, GSL (required), HDF5 and Trilinos (optional) for installation at `\verb+$HOME/LIBRARIES/QUESO-0.47.1+' are:
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
+$  ./configure --prefix=$HOME/LIBRARIES/QUESO-0.47.1 \
   --with-boost=$HOME/LIBRARIES/boost-1.53.0 \
   --with-gsl=$HOME/LIBRARIES/gsl-1.15 \
   --with-hdf5=$HOME/LIBRARIES/hdf5-1.8.10 \
   --with-trilinos=$HOME/LIBRARIES/trilinos-11.2.4
   \end{lstlisting}
 
-Note: the directory `\verb+$HOME/LIBRARIES/QUESO-0.46.0+' does not need to exist in advance, since it will be created by the command \verb+make install+ described in Section \ref{sec:install_Queso_make}.
+Note: the directory `\verb+$HOME/LIBRARIES/QUESO-0.47.1+' does not need to exist in advance, since it will be created by the command \verb+make install+ described in Section \ref{sec:install_Queso_make}.
 
 
 \section{Compile, Check and Install \Queso{}}\label{sec:install_Queso_make}
 %
 In order to build, check and install the library, the user must enter the following three commands sequentially:
-\begin{lstlisting}
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 $ make
 $ make check       # optional
 $ make install 
@@ -203,17 +203,17 @@ Here, \verb+make+ builds the library, confidence tests, and programs;  \verb+ ma
 The files are installed under the installation tree (refer to Section \ref{sec:Queso_tree}), e.g. the directory specified with `\texttt{--prefix=DIR}' in Section \ref{sec:Queso_configure}. The directory, if not existing, will be created automatically.%, provided the mkdir command supports the -p  option.
 
 % The library, confidence tests, and programs can be built by entering:
-% \begin{lstlisting}
+% \begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 % $ make
 % \end{lstlisting}
 % 
 % \Queso{} comes with various test suites in order to check the compiled source. To run the tests, do:
-% \begin{lstlisting}
+% \begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 % $ make check
 % \end{lstlisting}
 % 
 % Finally, the \Queso{} library, include files, and support programs can be installed by (more comments in Section \ref{sc-installed-dir-structure}):
-% \begin{lstlisting}
+% \begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 % $ make install 
 % \end{lstlisting}
 % 
@@ -223,13 +223,13 @@ The files are installed under the installation tree (refer to Section \ref{sec:Q
 %\subsection{Checking the compiled source} \label{sc-checks}
 
 By running \texttt{make check}, several printouts appear in the screen and you should see messages such as:
-\begin{lstlisting}
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 --------------------------------------------------------------------
 (rtest): PASSED: Test 1 (TGA Validation Cycle)
 --------------------------------------------------------------------
 \end{lstlisting}
 
-The tests printed in  the screen are tests under your QUESO build tree, i.e., they are located at the  directory \verb+$HOME/queso_download/queso-0.46.0/test+ (see Section \ref{sc-source-dir-structure} for the complete list of the directories under QUESO build tree).    
+The tests printed in  the screen are tests under your QUESO build tree, i.e., they are located at the  directory \verb+$HOME/queso_download/queso-0.47.1/test+ (see Section \ref{sc-source-dir-structure} for the complete list of the directories under QUESO build tree).    
 These tests are used as part of the periodic QUESO regression tests, conducted to ensure that more recent program/code changes have not adversely affected existing features of the library.
 
 
@@ -239,11 +239,11 @@ These tests are used as part of the periodic QUESO regression tests, conducted t
 
 
 \Queso{} code documentation is written using Doxygen~\cite{Doxygen}, and can be generated by typing in the build tree:
-\begin{lstlisting}
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 $ make docs
 \end{lstlisting}
 
-A directory named \verb+docs+ will be created in \verb+$HOME/queso_download/queso-0.46.0+ (the build tree; your current path) and you may access the code documentation in two different ways:
+A directory named \verb+docs+ will be created in \verb+$HOME/queso_download/queso-0.47.1+ (the build tree; your current path) and you may access the code documentation in two different ways:
 \begin{enumerate}
  \item HyperText Markup Language (HTML)  format: \verb+docs/html/index.html+, and the browser of your choice can be used to walk through the HTML documentation.
 % \begin{verbatim}
@@ -263,12 +263,12 @@ A directory named \verb+docs+ will be created in \verb+$HOME/queso_download/ques
 \section{Summary of Installation Steps}\label{sec:summary}
 
 
-Supposing you have downloaded the file `queso-0.46.0.tar.gz' into \texttt{\$HOME/queso\_download/}.
+Supposing you have downloaded the file `queso-0.47.1.tar.gz' into \texttt{\$HOME/queso\_download/}.
 %
 In a BASH shell, the basic steps to configure QUESO using GRVY, Boost and GSL for installation at 
-`\verb+$HOME/LIBRARIES/QUESO-0.46.0+'  are:
+`\verb+$HOME/LIBRARIES/QUESO-0.47.1+'  are:
 
-\begin{lstlisting}
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
   $HOME/LIBRARIES/gsl-1.15/lib/:\
   $HOME/LIBRARIES/boost-1.53.0/lib/:\
@@ -281,9 +281,9 @@ $ export MPICXX=mpic++
 $ export F77=fort77
 $ export FC=gfortran
 $ cd $HOME/queso_download/               #enter source dir
-$ gunzip < queso-0.46.0.tar.gz  | tar xf -
-$ cd $HOME/queso_download/queso-0.46.0   #enter the build dir
-$ ./configure --prefix=$HOME/LIBRARIES/QUESO-0.46.0 \
+$ gunzip < queso-0.47.1.tar.gz  | tar xf -
+$ cd $HOME/queso_download/queso-0.47.1   #enter the build dir
+$ ./configure --prefix=$HOME/LIBRARIES/QUESO-0.47.1 \
   --with-boost=$HOME/LIBRARIES/boost-1.53.0 \
   --with-gsl=$HOME/LIBRARIES/gsl-1.15 \
   --with-hdf5=$HOME/LIBRARIES/hdf5-1.8.10 \
@@ -292,13 +292,13 @@ $ make
 $ make check
 $ make install 
 $ make docs
-$ ls $HOME/LIBRARIES/QUESO-0.46.0 #listing QUESO installation dir
+$ ls $HOME/LIBRARIES/QUESO-0.47.1 #listing QUESO installation dir
 >>  bin  include  lib  examples
 \end{lstlisting}
 
 % 
-% \paragraph*{Note:} According to  Section \ref{sec:Queso_tree}, \texttt{\$HOME/queso\_download/} is the source tree, \\ \verb+$HOME/queso_download/queso-0.46.0+ is the build tree, and \newline
-% \verb+$HOME/LIBRARIES/QUESO-0.46.0+ is the installation tree.
+% \paragraph*{Note:} According to  Section \ref{sec:Queso_tree}, \texttt{\$HOME/queso\_download/} is the source tree, \\ \verb+$HOME/queso_download/queso-0.47.1+ is the build tree, and \newline
+% \verb+$HOME/LIBRARIES/QUESO-0.47.1+ is the installation tree.
 % 
 
 
@@ -310,29 +310,32 @@ information about them can be obtained with the Developer's documentation from S
 \item \texttt{src}: this directory contains the QUESO library itself, and its main subdirectories are:
   \begin{enumerate}
   \item \texttt{basic/}: contain classes for dealing with vector sets, subsets and spaces, scalar and vector functions and scalar and vector sequences
-  \item \texttt{core/}: contain classes that handle \Queso{} enviroment, and vector/matrix operations
+  \item \texttt{core/}: contain classes that handle \Queso{} environment, and vector/matrix operations
   \item \texttt{stats/}: contain classes that implement vector realizers, vector random variables, statistical inverse and forward problems; and the Monte Carlo and the Metropolis-Hasting solvers
   \end{enumerate}
   
 Details of \Queso{}  classes are presented in Chapter \ref{ch-classes}.
 
-\item \texttt{examples}:  examples of different applications using \Queso{}. 
+\item \texttt{examples}:  examples of different applications, with distinct levels of difficulty, using \Queso{}. The following examples have been thoroughly documented and are included in Chapter \ref{chap:Queso-examples}:
 \begin{enumerate}
-\item \texttt{gravity/}: inference of the acceleration of gravity via experiments and a solition of a SIP; and forward propagation of incertainty in the calculation of the distrance traveled by a projectile.
-\item \texttt{infoTheoryProblem/}
-\item \texttt{statisticalForwardProblem/}
-\item \texttt{statisticalInverseProblem/}
-\item \texttt{validationCycle/} 
-\item \texttt{validationCycle2/}
+\item \texttt{gravity/}: inference of the acceleration of gravity via experiments and a solution of a SIP; and forward propagation of uncertainty in the calculation of the distance traveled by a projectile. It is presented in detail in Section~\ref{sec:example_gravity}.
+
+%\item \texttt{infoTheoryProblem/}
+
+\item \texttt{simpleStatisticalForwardProblem/}: simplest example of how to use \Queso{} to solve a SFP, described in detail in Section \ref{sec:example_sfp}.
+
+\item \texttt{simpleStatisticalInverseProblem/}: simplest example of how to use \Queso{} to solve a SIP, thoroughly described in Section \ref{sec:example_sip}.
+
+\item \texttt{validationCycle/}: presents a combination of SIP and SFP to solve a thermogravimetric analysis problem; this problem has the majority of its code in \verb+*.h+ files, with templated routines. This example is described in Section \ref{sec:example_tga}.
+
+\item \texttt{validationCycle2/}: also presents a combination of SIP and SFP to solve a thermogravimetric analysis problem; but the majority of its code is in \verb+*.C+ files. 
 \end{enumerate}
-The simplest examples under this directory are: \verb+statisticalInverseProblem+ and \verb+statisticalForwardProblem+, which solve a SIP and a SFP, respectively (see Section \ref{sc-running-execs}). The examples \verb+validationCycle+ and \verb+validationCycle2+ present a combination of SIP and SFP to solve the same problem; however, the first has the majority of its code in \verb+*.h+ files, with templated routines, whereas the latter has the majority of its code in \verb+*.C+ files. The \verb+gravity+ example is also a combination of a SIP and a SFP, and it is presented in detail in Chapter~\ref{ch-appl-example}.
 
+All the examples presented in Chapter \ref{chap:Queso-examples} come with the mathematical formulation, their translation into code, the options input file required by \Queso{} and auxiliary Matlab (GNU Octave compatible) files for data visualization.
 
+The build directory contains only the source files. The executables are available under the QUESO installation directory, together with example of Makefiles that may be used to re-build the examples without the need of re-building the library.
 
-\todo{
-The build directory contains only the source codes. The executables are available under the QUESO installation directory, together with some Matlab files for visualization of the results.}
-
-\item  \texttt{test}: a set of tests used as part of the periodic QUESO regression tests, conduct to ensure that more recent program/code changes have not adversely affected existing features of the library, as described in Section \ref{sec:install_Queso_make}. They can optionally be called during QUESO installation steps by entering the instruction: \verb+make check+.
+\item  \texttt{test}: a set of tests used as part of the periodic QUESO regression tests, conduct to ensure that more recent program/code changes have not adversely affected existing features of the library, as described in Section \ref{sec:install_Queso_make}. 
 \begin{enumerate}
 \item \texttt{gsl\_tests}
 \item \texttt{t01\_valid\_cycle/}
@@ -346,19 +349,21 @@ The build directory contains only the source codes. The executables are availabl
 \item \texttt{test\_uqEnvironmentOptions/}
 \end{enumerate}
 
+These tests can optionally be called during QUESO installation steps by entering the instruction: \verb+make check+.
+
 \end{enumerate}
 
 
 \section{The Installed Directory Structure} \label{sc-installed-dir-structure}
 
-After having successfully executed steps described in \textsection{}\ref{sec:Pre_Queso} through \textsection{}\ref{sec:install_Queso_make}, the QUESO installed directory will contain four subdirectories:
+After having successfully executed steps described in Sections \ref{sec:Pre_Queso}--\ref{sec:install_Queso_make}, the QUESO installed directory will contain four subdirectories:
 \begin{enumerate}
- \item \verb+bin+: contains the executable \verb+queso_version+, which provides information about the installed library. The code bellow presents the output of it:
+ \item \verb+bin+: contains the executable \verb+queso_version+, which provides information about the installed library. The code bellow presents a sample output:
 
-\begin{lstlisting}[label={},caption={}]
-kemelli@margarida:~/LIBRARIES/QUESO-0.46.0/bin$ ./queso_version 
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
+kemelli@margarida:~/LIBRARIES/QUESO-0.47.1/bin$ ./queso_version 
 ---------------------------------------------------------------
-QUESO Library: Version = 0.46.0 (4600)
+QUESO Library: Version = 0.47.1 (47.1)
 
 Development Build
 
@@ -376,13 +381,13 @@ GRVY DIR     =
 GLPK DIR     = 
 HDF5 DIR     = 
 ---------------------------------------------------------------
-kemelli@margarida:~/LIBRARIES/QUESO-0.46.0/bin$ 
+kemelli@margarida:~/LIBRARIES/QUESO-0.47.1/bin$ 
 \end{lstlisting}
 
- \item \verb+lib+: contains the static and dynamic versions of the library. The full to path to this directory, e.g., \verb+$HOME/LIBRARIES/QUESO-0.46.0/lib+ should be added to the user's \verb+LD_LIBRARY_PATH+ environmental variable in order to use QUESO library with his/her application code:
-\begin{lstlisting}[label={},caption={}]
+ \item \verb+lib+: contains the static and dynamic versions of the library. The full to path to this directory, e.g., \verb+$HOME/LIBRARIES/QUESO-0.47.1/lib+ should be added to the user's \verb+LD_LIBRARY_PATH+ environmental variable in order to use QUESO library with his/her application code:
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
- $HOME/LIBRARIES/QUESO-0.46.0/lib
+ $HOME/LIBRARIES/QUESO-0.47.1/lib
 \end{lstlisting}
 
 
@@ -391,99 +396,28 @@ Note that due to \Queso{} being compiled/built with other libraries (GSL, Boost,
 
  \item \verb+include+: contains the library \verb+.h+ files.
 
- \item \verb+examples+: contains the same examples of QUESO build directory, and listed in Section~\ref{sc-source-dir-structure}, together with their executables and Matlab files that may be used for visualization purposes. The user is invited understand their formulation, to run them and understand their purpose (the codes are well documented and self-explanatory). 
+ \item \verb+examples+: contains the same examples of QUESO build directory, and listed in Section~\ref{sc-source-dir-structure}, together with their executables and Matlab files that may be used for visualization purposes. A selection of examples are described in details in Chapter \ref{chap:Queso-examples}; the user is invited understand their formulation, to run them and understand their purpose. 
 
 
 \end{enumerate}
 
-
-\subsection{Running QUESO Examples} \label{sc-running-execs}
-%Assuming that steps described in Sections \ref{sec:Pre_Queso}~--~\ref{sec:Queso_docs} have sucessfully been executed,
-
-This section illustrates the steps the user needs to follow in order to simply \underline{run} the executables provided under the \verb+examples/+ directory of \Queso{} installation tree. Such examples will be revisited in Chapter \ref{}, when their mathematical formulation will be properly introduced and the user will be more familiarized with the library, and it options for solving SIP and SFP.
-
-
-%
-The two following subsections illustrate how to run the executables provided in the examples \verb+statisticalInverseProblem/+ and
-\verb+statisticalForwardProblem/+. For the remaining three examples,
-the steps should be analogous, except for \verb+infoTheoryProblem+, which
-requires QUESO to be compiled with the ANN library \cite{ANN}. 
-
-It is worth noting presence of an argument passed to the executable in the
-examples. The argument is a input file to be provided to QUESO with options for
-the solution of the SIP and/or SFP; and it is always required. Each option in
-the input file is related to one (or more) of the QUESO classes, and is
-presented throughout Chapter~\ref{ch-classes}. 
-
-% A complete example of an application that uses QUESO to solve a combination of a
-% SIP and a SFP is in presented in Chapter \ref{ch-appl-example}. The chapter
-% presents the mathematical models for both the SIP and SFP, the application code,
-% the options input file and the Makefile to link the code  with QUESO library.
-
-
-\subsection{A Simple Statistical Inverse Problem}\label{sec:executable_sip}
-
-This example is located at \verb+examples/statisticalInverseProblem+ and
-consists of a set  of three files to illustrate the use of QUESO library to
-solve a simple inverse problem with four parameters.
-
-To run the executable provided, enter the following commands:
-\begin{lstlisting}[label={},caption={}]
-$ cd $HOME/LIBRARIES/QUESO-0.46.0/
-$ cd examples/statisticalInverseProblem
-$ rm outputData/*
-$ ./exStatisticalInverseProblem_gsl sip.inp    
-$ matlab
-   $ sip_plot	           # inside matlab
-   # press the left button of the mouse at each picture displayed 
-   # by 'sip_plot.m', in order to display the next picture
-   $ exit	               # inside matlab
-$ ls -l outputData/*.png
->>  parameters_samples_plane.png  parameters_PDF.png
-\end{lstlisting}
-
-As a result, the user should have created a couple of PNG plots for both
-marginal posterior PDFs of all four parameters and samples of first two
-parameters on the plane.
-
-\subsection{A Simple Statistical Forward Problem}
-
-This example consists of a set of three files to illustrate the use of QUESO
-library to solve a simple forward problem and it is located at
-`\texttt{examples/statisticalForwardProblem/}'. %Some details about the files
-structure are presented in Section \ref{sec:Examples_sfp}.
-
-To run the executable provided, enter the following commands:
-\begin{lstlisting}[label={},caption={}]
-$ cd $HOME/LIBRARIES/QUESO-0.46.0/
-$ cd examples/statisticalForwardProblem/
-$ rm outputData/*
-$ ./exStatisticalForwardProblem_gsl sfp.inp  
-$ matlab
-   $ sfp_plot       # inside matlab
-   # press the left button of the mouse at a picture displayed 
-   # by 'sfp_plot.m', in order to display the next picture
-   $ exit           # inside matlab
-$ ls -l outputData/*.png
->>  QoI_autocorrelation.png  QoI_CDF.png  QoI_PDF.png  
-\end{lstlisting}
-
-
-In this case, the user should have created a few PNG plots for the QoI kernel
-density estimation, cumulative distribution function and autocorrelation.
 
 
 
 \section{Create your Application with the Installed QUESO} \label{sc-use-queso}
 
 Prepare your environment by either running or saving the following command in
-your \verb+.cshrc+ file (or \verb+.bashrc+ file depending whether you have a C
-or a bash shell):
-
-\begin{lstlisting}[label={},caption={}]
-setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
-       $HOME/LIBRARIES/QUESO-0.46.0/lib
+your \verb+.bashrc+ (supposing you have a BASH-shell):
+\begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
+$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
+ $HOME/LIBRARIES/QUESO-0.47.1/lib
 \end{lstlisting}
+
+% or into your \verb+.cshrc+ file (supposing you have a C-shell):
+% \begin{lstlisting}[label={},caption={}]
+% setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
+%        $HOME/LIBRARIES/QUESO-0.47.1/lib
+% \end{lstlisting}
 
 
 Suppose your application code consists of the files:  \verb+example_main.C+,
@@ -491,28 +425,28 @@ Suppose your application code consists of the files:  \verb+example_main.C+,
 respective \verb+.h+ files. Your application code may be linked with QUESO
 library through a Makefile such as the one displayed as follows:
 
-\begin{lstlisting}[label={},caption={},deletekeywords={export,rm}]
-QUESO_DIR = $HOME/LIBRARIES/QUESO-0.46.0/
+\begin{lstlisting}[basicstyle={\footnotesize\ttfamily},deletekeywords={export,rm}]
+QUESO_DIR = $HOME/LIBRARIES/QUESO-0.47.1/
 BOOST_DIR = $HOME/LIBRARIES/boost-1.53.0/
 GSL_DIR = $HOME/LIBRARIES/gsl-1.15/
 GRVY_DIR = $HOME/LIBRARIES/grvy-0.32.0
+TRILINOS_DIR = $HOME/LIBRARIES/trilinos-11.2.4/
 
 INC_PATHS = \
 	-I. \
 	-I$(QUESO_DIR)/include \
 	-I$(BOOST_DIR)/include/boost-1.53.0 \
 	-I$(GSL_DIR)/include \
-	-I$(GRVY_DIR)/include 
+	-I$(GRVY_DIR)/include \
+	-I$(TRILINOS_DIR)/include \
 
 LIBS = \
-	-L$(QUESO_DIR)/lib \
-	-lqueso \
-	-L$(BOOST_DIR)/lib \
-	-lboost_program_options \
-	-L$(GSL_DIR)/lib \
-	-lgsl \
-	-L$(GRVY_DIR)/lib \
-	-lgrvy 
+	-L$(QUESO_DIR)/lib -lqueso \
+	-L$(BOOST_DIR)/lib -lboost_program_options \
+	-L$(GSL_DIR)/lib -lgsl \
+	-L$(GRVY_DIR)/lib -lgrvy \
+	-L$(TRILINOS_DIR)/lib -lteuchoscore -lteuchoscomm -lteuchosnumerics \
+	-lteuchosparameterlist -lteuchosremainder -lepetra
 
 CXX = mpic++
 CXXFLAGS += -O3 -Wall -c
@@ -536,4 +470,4 @@ ex_gsl: example_main.o example_likelihood.o example_qoi.o example_compute.o
 	$(CXX) $(INC_PATHS) $(CXXFLAGS) $<
 \end{lstlisting}
 % 
-% More documentation is provided in Chapter \ref{ch-appl-example}.
+% More documentation is provided in Chapter \ref{sec:example_gravity}.
