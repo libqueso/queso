@@ -33,7 +33,7 @@
 #include <tga2_appl.h>
 #include <tga2_likelihood.h>
 #include <tga2_qoi.h>
-#include <uqVectorSubset.h>
+#include <queso/VectorSubset.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 

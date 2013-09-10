@@ -27,8 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <get_min_max_vec.h>
-#include <uqGslMatrix.h>
-#include <uqVectorRV.h>
+#include <queso/GslMatrix.h>
+#include <queso/VectorRV.h>
 
 int main(int argc, char* argv[]) 
 {

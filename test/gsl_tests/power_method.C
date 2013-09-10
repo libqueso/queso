@@ -29,8 +29,8 @@
 #include <cmath>
 
 #include <power_method.h>
-#include <uqGslMatrix.h>
-#include <uqVectorRV.h>
+#include <queso/GslMatrix.h>
+#include <queso/VectorRV.h>
 
 using std::fabs;
 

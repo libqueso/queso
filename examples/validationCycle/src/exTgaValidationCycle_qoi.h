@@ -33,8 +33,8 @@
 #ifndef __EX_TGA_VALIDATION_CYCLE_QOI_H__
 #define __EX_TGA_VALIDATION_CYCLE_QOI_H__
 
-#include <uqDefines.h>
-#include <uqDistArray.h>
+#include <queso/Defines.h>
+#include <queso/DistArray.h>
 #include <gsl/gsl_odeiv.h>
 
 //********************************************************

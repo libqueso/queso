@@ -33,7 +33,7 @@
 #ifndef __GRAVITY_LIKELIHOOD_H__
 #define __GRAVITY_LIKELIHOOD_H__
 
-#include <uqGslMatrix.h>
+#include <queso/GslMatrix.h>
 
 struct likelihoodRoutine_Data // user defined class
 {

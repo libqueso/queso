@@ -43,9 +43,9 @@
 #include <gravity_compute.h>
 #include <gravity_likelihood.h>
 #include <gravity_qoi.h>
-#include <uqGslMatrix.h>
-#include <uqStatisticalInverseProblem.h>
-#include <uqStatisticalForwardProblem.h>
+#include <queso/GslMatrix.h>
+#include <queso/StatisticalInverseProblem.h>
+#include <queso/StatisticalForwardProblem.h>
 #include <sys/time.h>
 #include <cmath>
 
