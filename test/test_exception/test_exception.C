@@ -20,11 +20,16 @@ int main(int argc, char **argv)
 {
   MPI_Init(&argc, &argv);
 
-  //QUESO_THROW('error');
-  queso_error();
+  // hit with exception
+  try
+    {
+      queso_error();
+    }
+  catch(int e)
+    {
+      MPI_Finalize();
+      return 0;
+    }
 
-  MPI_Finalize();
-
-
-  return 0;
+  return 1;
 }
