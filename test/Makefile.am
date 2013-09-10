@@ -93,7 +93,8 @@ EXTRA_DIST = common/compare.pl \
 						 test_GslVector/test_uqGslVectorConstructorFatal.sh \
              test_GslMatrix/test_uqGslMatrixConstructorFatal.sh \
 						 test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh \
-						 test_uqEnvironmentOptions/test.inp
+						 test_uqEnvironmentOptions/test.inp \
+						 test_exception/copy_env.inp
 
 CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt \
 						 $(top_srcdir)/test/gslvector_out_sub0.m
