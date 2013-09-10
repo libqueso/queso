@@ -31,6 +31,24 @@ After successfully running `configure`, type `make` to build the
 Then type `make install` to install it in the directory previously
 specified by the `--prefix` option of the `configure` script.
 
+Dependencies
+------------
+
+`QUESO` has three required dependencies:
+
+- [boost](http://www.boost.org/)
+- mpi (either [mpich](http://www.mpich.org/) or
+  [openmpi](http://www.open-mpi.org/))
+- [gsl](https://www.gnu.org/software/gsl/)
+
+`QUESO` also has several optional dependencies:
+
+- [teuchos](http://trilinos.sandia.gov/packages/docs/r7.0/packages/teuchos/doc/html/index.html)
+- [grvy](https://red.ices.utexas.edu/projects/hpct/files)
+- [hdf5](http://www.hdfgroup.org/HDF5/)
+- [glpk](https://www.gnu.org/software/glpk/)
+- [petsc](http://www.mcs.anl.gov/petsc/)
+
 License
 -------
 
