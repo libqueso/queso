@@ -23,10 +23,12 @@ int main(int argc, char **argv)
   // hit with exception
   try
     {
+      printf("Executing error\n");
       queso_error();
     }
-  catch(int e)
+  catch(...)
     {
+      printf("Caught QUESO exception!\n");
       MPI_Finalize();
       return 0;
     }
