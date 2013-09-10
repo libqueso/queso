@@ -43,3 +43,14 @@ Contributions are very welcome.  If you wish to contribute, please take a few
 moments to review the [branching
 model](http://nvie.com/posts/a-successful-git-branching-model/) `QUESO`
 utilises.
+
+Support
+-------
+
+If you have questions or need help with using or contributing to `QUESO`,
+feel free to ask questions on one of the mailing lists:
+
+- [queso-users](https://groups.google.com/forum/#!forum/queso-users) mailing
+  list for questions regarding usage and reporting bugs
+- [queso-dev](https://groups.google.com/forum/#!forum/queso-dev) mailing list
+  for discussion regarding development of `QUESO`
