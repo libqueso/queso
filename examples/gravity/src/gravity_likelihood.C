@@ -25,8 +25,6 @@
  * $Id$
  */
  /*------------------------------------------------------------------
- * Brief description of this file: 
- * 
  * This file contains the code for the user defined likelihood data 
  * class and the user defined likelihood routine.
  *-----------------------------------------------------------------*/
@@ -73,7 +71,8 @@ double likelihoodRoutine(
   uqGslMatrixClass*       hessianMatrix,
   uqGslVectorClass*       hessianEffect)
 {
-  const uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass*) functionDataPtr)->m_env);
+  const uqBaseEnvironmentClass& 
+  		env = *(((likelihoodRoutine_DataClass*) functionDataPtr)->m_env);
     
   if (paramDirection && functionDataPtr && gradVector && hessianMatrix && hessianEffect) 
   {

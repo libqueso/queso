@@ -1,8 +1,8 @@
 ##########################################################
-# Using installed QUESO 0.46.0, from tarball, in 'margarida'
+# Using installed QUESO 0.47.1, from tarball, in 'margarida'
 ##########################################################
 
-QUESO_DIR = /home/kemelli/LIBRARIES/QUESO-0.46.0
+QUESO_DIR = /home/kemelli/LIBRARIES/QUESO-0.47.1
 BOOST_DIR = /home/kemelli/LIBRARIES/boost-1.53.0
 GSL_DIR  =  /home/kemelli/LIBRARIES/gsl-1.15
 HDF5_DIR  = /home/kemelli/LIBRARIES/hdf5-1.8.10
@@ -15,14 +15,10 @@ INC_PATHS = \
 	-I$(HDF5_DIR)/include
 
 LIBS = \
-	-L$(QUESO_DIR)/lib \
-	-lqueso \
-	-L$(BOOST_DIR)/lib \
-	-lboost_program_options \
-	-L$(GSL_DIR)/lib \
-	-lgsl \
-	-L$(HDF5_DIR)/lib \
-	-lhdf5 
+	-L$(QUESO_DIR)/lib -lqueso \
+	-L$(BOOST_DIR)/lib -lboost_program_options \
+	-L$(GSL_DIR)/lib -lgsl \
+	-L$(HDF5_DIR)/lib -lhdf5 
 
 CXX = mpic++
 CXXFLAGS += -g -Wall -c

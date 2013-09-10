@@ -176,6 +176,20 @@ uqAppl(const uqBaseEnvironmentClass& env)
   ssOptionsValues1.m_initialDiscardedPortions[6] = 0.30;
   ssOptionsValues1.m_initialDiscardedPortions[7] = 0.35;
   ssOptionsValues1.m_initialDiscardedPortions[8] = 0.40;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+  ssOptionsValues1.m_bmmRun                      = false;
+  ssOptionsValues1.m_fftCompute                  = false;
+  ssOptionsValues1.m_psdCompute                  = false;
+  ssOptionsValues1.m_psdAtZeroCompute            = false;
+  ssOptionsValues1.m_gewekeCompute               = true;
+  ssOptionsValues1.m_gewekeNaRatio               = .1;
+  ssOptionsValues1.m_gewekeNbRatio               = .5;
+  ssOptionsValues1.m_gewekeDisplay               = true;
+  ssOptionsValues1.m_gewekeWrite                 = true;
+  ssOptionsValues1.m_meanStaccCompute            = false;
+  ssOptionsValues1.m_histCompute                 = false;
+  ssOptionsValues1.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues1.m_autoCorrComputeViaDef       = false;
   ssOptionsValues1.m_autoCorrComputeViaFft       = true;
   ssOptionsValues1.m_autoCorrSecondLag           = 2;
@@ -189,6 +203,17 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   ssOptionsValues2.m_initialDiscardedPortions.resize(1);
   ssOptionsValues2.m_initialDiscardedPortions[0] = 0.;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+  ssOptionsValues2.m_bmmRun                      = false;
+  ssOptionsValues2.m_fftCompute                  = false;
+  ssOptionsValues2.m_psdCompute                  = false;
+  ssOptionsValues2.m_psdAtZeroCompute            = false;
+  ssOptionsValues2.m_gewekeCompute               = false;
+  ssOptionsValues2.m_meanStaccCompute            = false;
+  ssOptionsValues2.m_histCompute                 = true;
+  ssOptionsValues2.m_histNumInternalBins         = 250;
+  ssOptionsValues2.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues2.m_autoCorrComputeViaDef       = false;
   ssOptionsValues2.m_autoCorrComputeViaFft       = true;
   ssOptionsValues2.m_autoCorrSecondLag           = 2;
@@ -276,7 +301,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   ssOptionsValues3.m_initialDiscardedPortions.resize(1);
   ssOptionsValues3.m_initialDiscardedPortions[0] = 0.;
-  
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+  ssOptionsValues3.m_meanStaccCompute            = false;
+  ssOptionsValues3.m_histCompute                 = true;
+  ssOptionsValues3.m_histNumInternalBins         = 250;
+  ssOptionsValues3.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues3.m_kdeCompute                  = true;
   ssOptionsValues3.m_kdeNumEvalPositions         = 250;
   ssOptionsValues3.m_covMatrixCompute            = true;
@@ -284,8 +314,17 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   ssOptionsValues4.m_initialDiscardedPortions.resize(1);
   ssOptionsValues4.m_initialDiscardedPortions[0] = 0.;
-
-
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+  ssOptionsValues4.m_bmmRun                      = false;
+  ssOptionsValues4.m_fftCompute                  = false;
+  ssOptionsValues4.m_psdCompute                  = false;
+  ssOptionsValues4.m_psdAtZeroCompute            = false;
+  ssOptionsValues4.m_gewekeCompute               = false;
+  ssOptionsValues4.m_meanStaccCompute            = false;
+  ssOptionsValues4.m_histCompute                 = true;
+  ssOptionsValues4.m_histNumInternalBins         = 250;
+  ssOptionsValues4.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues4.m_autoCorrComputeViaDef       = false;
   ssOptionsValues4.m_autoCorrComputeViaFft       = true;
   ssOptionsValues4.m_autoCorrSecondLag           = 2;
@@ -369,12 +408,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   uqMhOptionsValuesClass* valIpMhOptionsValues = NULL;
 
   const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
-  
-  // Use 'realizer()' because the post. rv was computed with Metr. Hast.
-  P_M* valProposalCovMatrix = 
-    cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(
-      &tmpRealizer->unifiedSampleVarVector(),&tmpRealizer->unifiedSampleExpVector()); 
-    
+  P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the post. rv was computed with Metr. Hast.
+                                                                                                &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
 #ifdef UQ_EXAMPLES_USES_QUESO_INPUT_FILE
 #else
   uqSsOptionsValuesClass ssOptionsValues5;
@@ -390,6 +425,20 @@ uqAppl(const uqBaseEnvironmentClass& env)
   ssOptionsValues5.m_initialDiscardedPortions[6] = 0.30;
   ssOptionsValues5.m_initialDiscardedPortions[7] = 0.35;
   ssOptionsValues5.m_initialDiscardedPortions[8] = 0.40;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+  ssOptionsValues5.m_bmmRun                      = false;
+  ssOptionsValues5.m_fftCompute                  = false;
+  ssOptionsValues5.m_psdCompute                  = false;
+  ssOptionsValues5.m_psdAtZeroCompute            = false;
+  ssOptionsValues5.m_gewekeCompute               = true;
+  ssOptionsValues5.m_gewekeNaRatio               = .1;
+  ssOptionsValues5.m_gewekeNbRatio               = .5;
+  ssOptionsValues5.m_gewekeDisplay               = true;
+  ssOptionsValues5.m_gewekeWrite                 = true;
+  ssOptionsValues5.m_meanStaccCompute            = false;
+  ssOptionsValues5.m_histCompute                 = false;
+  ssOptionsValues5.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues5.m_autoCorrComputeViaDef       = false;
   ssOptionsValues5.m_autoCorrComputeViaFft       = true;
   ssOptionsValues5.m_autoCorrSecondLag           = 2;
@@ -403,6 +452,17 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   ssOptionsValues6.m_initialDiscardedPortions.resize(1);
   ssOptionsValues6.m_initialDiscardedPortions[0] = 0.;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+  ssOptionsValues6.m_bmmRun                      = false;
+  ssOptionsValues6.m_fftCompute                  = false;
+  ssOptionsValues6.m_psdCompute                  = false;
+  ssOptionsValues6.m_psdAtZeroCompute            = false;
+  ssOptionsValues6.m_gewekeCompute               = false;
+  ssOptionsValues6.m_meanStaccCompute            = false;
+  ssOptionsValues6.m_histCompute                 = true;
+  ssOptionsValues6.m_histNumInternalBins         = 250;
+  ssOptionsValues6.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues6.m_autoCorrComputeViaDef       = false;
   ssOptionsValues6.m_autoCorrComputeViaFft       = true;
   ssOptionsValues6.m_autoCorrSecondLag           = 2;
@@ -486,6 +546,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   ssOptionsValues7.m_initialDiscardedPortions.resize(1);
   ssOptionsValues7.m_initialDiscardedPortions[0] = 0.;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+  ssOptionsValues7.m_meanStaccCompute            = false;
+  ssOptionsValues7.m_histCompute                 = true;
+  ssOptionsValues7.m_histNumInternalBins         = 250;
+  ssOptionsValues7.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues7.m_kdeCompute                  = true;
   ssOptionsValues7.m_kdeNumEvalPositions         = 250;
   ssOptionsValues7.m_covMatrixCompute            = true;
@@ -493,6 +559,17 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   ssOptionsValues8.m_initialDiscardedPortions.resize(1);
   ssOptionsValues8.m_initialDiscardedPortions[0] = 0.;
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+  ssOptionsValues8.m_bmmRun                      = false;
+  ssOptionsValues8.m_fftCompute                  = false;
+  ssOptionsValues8.m_psdCompute                  = false;
+  ssOptionsValues8.m_psdAtZeroCompute            = false;
+  ssOptionsValues8.m_gewekeCompute               = false;
+  ssOptionsValues8.m_meanStaccCompute            = false;
+  ssOptionsValues8.m_histCompute                 = true;
+  ssOptionsValues8.m_histNumInternalBins         = 250;
+  ssOptionsValues8.m_cdfStaccCompute             = false;
+#endif
   ssOptionsValues8.m_autoCorrComputeViaDef       = false;
   ssOptionsValues8.m_autoCorrComputeViaFft       = true;
   ssOptionsValues8.m_autoCorrSecondLag           = 2;
@@ -584,6 +661,81 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+    Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
+    Q_V epsilonVec     (cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
+
+    // Epsilon = 0.02
+    epsilonVec.cwSet(0.02);
+    horizontalDistances(cycle.calFP().qoiRv().unifiedCdf(),
+                        cycle.valFP().qoiRv().unifiedCdf(),
+                        epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().subDisplayFile()) {
+      *cycle.env().subDisplayFile() << "For epsilonVec = "    << epsilonVec
+                                    << ", cdfDistancesVec = " << cdfDistancesVec
+                                    << std::endl;
+    }
+
+    // Test independence of 'distance' w.r.t. order of cdfs
+    horizontalDistances(cycle.valFP().qoiRv().unifiedCdf(),
+                        cycle.calFP().qoiRv().unifiedCdf(),
+                        epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().subDisplayFile()) {
+      *cycle.env().subDisplayFile() << "For epsilonVec = "                             << epsilonVec
+                                    << ", cdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
+                                    << std::endl;
+    }
+
+    // Epsilon = 0.04
+    epsilonVec.cwSet(0.04);
+    horizontalDistances(cycle.calFP().qoiRv().unifiedCdf(),
+                        cycle.valFP().qoiRv().unifiedCdf(),
+                        epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().subDisplayFile()) {
+      *cycle.env().subDisplayFile() << "For epsilonVec = "    << epsilonVec
+                                    << ", cdfDistancesVec = " << cdfDistancesVec
+                                    << std::endl;
+    }
+
+    // Epsilon = 0.06
+    epsilonVec.cwSet(0.06);
+    horizontalDistances(cycle.calFP().qoiRv().unifiedCdf(),
+                        cycle.valFP().qoiRv().unifiedCdf(),
+                        epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().subDisplayFile()) {
+      *cycle.env().subDisplayFile() << "For epsilonVec = "    << epsilonVec
+                                    << ", cdfDistancesVec = " << cdfDistancesVec
+                                    << std::endl;
+    }
+
+    // Epsilon = 0.08
+    epsilonVec.cwSet(0.08);
+    horizontalDistances(cycle.calFP().qoiRv().unifiedCdf(),
+                        cycle.valFP().qoiRv().unifiedCdf(),
+                        epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().subDisplayFile()) {
+      *cycle.env().subDisplayFile() << "For epsilonVec = "    << epsilonVec
+                                    << ", cdfDistancesVec = " << cdfDistancesVec
+                                    << std::endl;
+    }
+
+    // Epsilon = 0.10
+    epsilonVec.cwSet(0.10);
+    horizontalDistances(cycle.calFP().qoiRv().unifiedCdf(),
+                        cycle.valFP().qoiRv().unifiedCdf(),
+                        epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().subDisplayFile()) {
+      *cycle.env().subDisplayFile() << "For epsilonVec = "    << epsilonVec
+                                    << ", cdfDistancesVec = " << cdfDistancesVec
+                                    << std::endl;
+    }
+#endif
   }
 
   return;
@@ -598,6 +750,81 @@ uqAppl_UnifiedComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
+#ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
+    Q_V cdfDistancesVec(cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
+    Q_V epsilonVec     (cycle.calFP().qoiRv().imageSet().vectorSpace().zeroVector());
+
+    // Epsilon = 0.02
+    epsilonVec.cwSet(0.02);
+    horizontalDistances(cycle.calFP().qoiRv_unifiedCdf(),
+                        cycle.valFP().qoiRv_unifiedCdf(),
+                        epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().fullRank() == 0) {
+      std::cout << "For epsilonVec = "           << epsilonVec
+                << ", unifiedCdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Test independence of 'distance' w.r.t. order of cdfs
+    horizontalDistances(cycle.valFP().qoiRv_unifiedCdf(),
+                        cycle.calFP().qoiRv_unifiedCdf(),
+                        epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().fullRank() == 0) {
+      std::cout << "For epsilonVec = "                                    << epsilonVec
+                << ", unifiedCdfDistancesVec (switched order of cdfs) = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.04
+    epsilonVec.cwSet(0.04);
+    horizontalDistances(cycle.calFP().qoiRv_unifiedCdf(),
+                        cycle.valFP().qoiRv_unifiedCdf(),
+                        epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().fullRank() == 0) {
+      std::cout << "For epsilonVec = "           << epsilonVec
+                << ", unifiedCdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.06
+    epsilonVec.cwSet(0.06);
+    horizontalDistances(cycle.calFP().qoiRv_unifiedCdf(),
+                        cycle.valFP().qoiRv_unifiedCdf(),
+                        epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().fullRank() == 0) {
+      std::cout << "For epsilonVec = "           << epsilonVec
+                << ", unifiedCdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.08
+    epsilonVec.cwSet(0.08);
+    horizontalDistances(cycle.calFP().qoiRv_unifiedCdf(),
+                        cycle.valFP().qoiRv_unifiedCdf(),
+                        epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().fullRank() == 0) {
+      std::cout << "For epsilonVec = "           << epsilonVec
+                << ", unifiedCdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+
+    // Epsilon = 0.10
+    epsilonVec.cwSet(0.10);
+    horizontalDistances(cycle.calFP().qoiRv_unifiedCdf(),
+                        cycle.valFP().qoiRv_unifiedCdf(),
+                        epsilonVec,
+                        cdfDistancesVec);
+    if (cycle.env().fullRank() == 0) {
+      std::cout << "For epsilonVec = "           << epsilonVec
+                << ", unifiedCdfDistancesVec = " << cdfDistancesVec
+                << std::endl;
+    }
+#endif
   }
 
   return;
