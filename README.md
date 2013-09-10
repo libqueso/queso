@@ -15,8 +15,6 @@ easiness of extension. Its software design follows an object-oriented
 approach and its code is written on C++ and over MPI. It can run over
 uniprocessor or multiprocessor environments.
 
-The project homepage is [here](http://pecos.ices.utexas.edu).
-
 Installation
 ------------
 
