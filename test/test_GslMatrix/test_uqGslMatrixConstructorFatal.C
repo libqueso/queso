@@ -1,4 +1,4 @@
-#include <uqGslMatrix.h>
+#include <queso/GslMatrix.h>
 
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>
@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
   MPI_Init(&argc, &argv);
 #endif
 
-  uqGslMatrixClass matrix;
+  QUESO::GslMatrix matrix;
 
 #ifdef QUESO_HAS_MPI
   MPI_Finalize();

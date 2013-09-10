@@ -1,15 +1,12 @@
 # Build in these directories:
 # DIST_SUBDIRS = basic stats
 
-AM_CPPFLAGS = -I$(top_srcdir)/src/core/inc \
-	      -I$(top_srcdir)/src/misc/inc  \
-	      -I$(top_srcdir)/src/basic/inc \
-	      -I$(top_srcdir)/src/stats/inc \
-	      -I$(top_srcdir)/src/gp/inc \
-	      -I$(top_builddir)/src/core/inc \
-	        $(BOOST_CPPFLAGS) \
-	        $(GSL_CFLAGS) \
-	        $(ANN_CFLAGS)
+AM_CPPFLAGS =
+AM_CPPFLAGS += -I$(top_builddir)/inc
+AM_CPPFLAGS += -I$(top_builddir)/src/core/inc  # For queso.h
+AM_CPPFLAGS += $(BOOST_CPPFLAGS)
+AM_CPPFLAGS += $(GSL_CFLAGS)
+AM_CPPFLAGS += $(ANN_CFLAGS)
 
 ###	      -I$(top_srcdir)/src/interface 
 
@@ -33,7 +30,7 @@ endif
 # make it easier for the user.
 
 lib_LTLIBRARIES      = libqueso.la
-libqueso_includedir  = $(prefix)/include
+libqueso_includedir  = $(prefix)/include/queso
 libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
 libqueso_la_LDFLAGS += $(GSL_LIBS) 
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
@@ -64,78 +61,78 @@ endif
 # Sources from core/src
 
 libqueso_la_SOURCES = \
-	$(top_srcdir)/src/core/src/uqDefines.C \
-	$(top_srcdir)/src/core/src/uqEnvironment.C \
-	$(top_srcdir)/src/core/src/uqEnvironmentOptions.C \
-	$(top_srcdir)/src/core/src/uqRngBase.C \
-	$(top_srcdir)/src/core/src/uqRngGsl.C \
-	$(top_srcdir)/src/core/src/uqRngBoost.C \
-	$(top_srcdir)/src/core/src/uqBasicPdfsBase.C \
-	$(top_srcdir)/src/core/src/uqBasicPdfsGsl.C \
-	$(top_srcdir)/src/core/src/uqBasicPdfsBoost.C \
-	$(top_srcdir)/src/core/src/uqVector.C \
-	$(top_srcdir)/src/core/src/uqMatrix.C \
-	$(top_srcdir)/src/core/src/uqTeuchosVector.C \
-	$(top_srcdir)/src/core/src/uqTeuchosMatrix.C \
-	$(top_srcdir)/src/core/src/uqMpiComm.C \
-	$(top_srcdir)/src/core/src/uqMap.C
+	$(top_srcdir)/src/core/src/Defines.C \
+	$(top_srcdir)/src/core/src/Environment.C \
+	$(top_srcdir)/src/core/src/EnvironmentOptions.C \
+	$(top_srcdir)/src/core/src/RngBase.C \
+	$(top_srcdir)/src/core/src/RngGsl.C \
+	$(top_srcdir)/src/core/src/RngBoost.C \
+	$(top_srcdir)/src/core/src/BasicPdfsBase.C \
+	$(top_srcdir)/src/core/src/BasicPdfsGsl.C \
+	$(top_srcdir)/src/core/src/BasicPdfsBoost.C \
+	$(top_srcdir)/src/core/src/Vector.C \
+	$(top_srcdir)/src/core/src/Matrix.C \
+	$(top_srcdir)/src/core/src/TeuchosVector.C \
+	$(top_srcdir)/src/core/src/TeuchosMatrix.C \
+	$(top_srcdir)/src/core/src/MpiComm.C \
+	$(top_srcdir)/src/core/src/Map.C
 
 # Sources from core/src with gsl conditional 
 
 if UQBT_GSL
 libqueso_la_SOURCES += \
-	$(top_srcdir)/src/core/src/uqGslVector.C \
-	$(top_srcdir)/src/core/src/uqGslMatrix.C
+	$(top_srcdir)/src/core/src/GslVector.C \
+	$(top_srcdir)/src/core/src/GslMatrix.C
 endif
 
 # Sources from misc/src
 
 libqueso_la_SOURCES += \
-	$(top_srcdir)/src/misc/src/uq1D1DFunction.C \
-	$(top_srcdir)/src/misc/src/uq1DQuadrature.C \
-	$(top_srcdir)/src/misc/src/uqComplexFft.C \
-	$(top_srcdir)/src/misc/src/uqMiscellaneous.C \
-	$(top_srcdir)/src/misc/src/uqRealFft.C
+	$(top_srcdir)/src/misc/src/1D1DFunction.C \
+	$(top_srcdir)/src/misc/src/1DQuadrature.C \
+	$(top_srcdir)/src/misc/src/ComplexFft.C \
+	$(top_srcdir)/src/misc/src/Miscellaneous.C \
+	$(top_srcdir)/src/misc/src/RealFft.C
 
 # Sources from misc/src withn gsl conditional
 
 if UQBT_GSL
-  libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/uqGslAsciiTable.C
+  libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/GslAsciiTable.C
 endif
 
 # Sources from basic/src
 
 libqueso_la_SOURCES += \
-	$(top_srcdir)/src/basic/src/uqTeuchosVectorSpace.C \
-	$(top_srcdir)/src/basic/src/uqSequenceStatisticalOptions.C
+	$(top_srcdir)/src/basic/src/TeuchosVectorSpace.C \
+	$(top_srcdir)/src/basic/src/SequenceStatisticalOptions.C
 
 
 # Sources from basic/src with gsl conditional
 
 if UQBT_GSL
-  libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/uqGslVectorSpace.C
+  libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/GslVectorSpace.C
 endif
 
 # Sources from stats/src
 
 libqueso_la_SOURCES += \
-	$(top_srcdir)/src/stats/src/uqFiniteDistribution.C \
-	$(top_srcdir)/src/stats/src/uqMetropolisHastingsSG.C \
-	$(top_srcdir)/src/stats/src/uqMetropolisHastingsSGOptions.C \
-	$(top_srcdir)/src/stats/src/uqMLSampling.C \
-	$(top_srcdir)/src/stats/src/uqMLSamplingOptions.C \
-	$(top_srcdir)/src/stats/src/uqMLSamplingLevelOptions.C \
-	$(top_srcdir)/src/stats/src/uqMonteCarloSGOptions.C \
-	$(top_srcdir)/src/stats/src/uqStatisticalInverseProblemOptions.C \
-	$(top_srcdir)/src/stats/src/uqStatisticalForwardProblemOptions.C \
-	$(top_srcdir)/src/stats/src/uqInfoTheory.C
+	$(top_srcdir)/src/stats/src/FiniteDistribution.C \
+	$(top_srcdir)/src/stats/src/MetropolisHastingsSG.C \
+	$(top_srcdir)/src/stats/src/MetropolisHastingsSGOptions.C \
+	$(top_srcdir)/src/stats/src/MLSampling.C \
+	$(top_srcdir)/src/stats/src/MLSamplingOptions.C \
+	$(top_srcdir)/src/stats/src/MLSamplingLevelOptions.C \
+	$(top_srcdir)/src/stats/src/MonteCarloSGOptions.C \
+	$(top_srcdir)/src/stats/src/StatisticalInverseProblemOptions.C \
+	$(top_srcdir)/src/stats/src/StatisticalForwardProblemOptions.C \
+	$(top_srcdir)/src/stats/src/InfoTheory.C
 
 # Sources from gp/src
 
 libqueso_la_SOURCES += \
-	$(top_srcdir)/src/gp/src/uqExperimentModelOptions.C \
-	$(top_srcdir)/src/gp/src/uqGpmsaComputerModelOptions.C \
-	$(top_srcdir)/src/gp/src/uqSimulationModelOptions.C
+	$(top_srcdir)/src/gp/src/ExperimentModelOptions.C \
+	$(top_srcdir)/src/gp/src/GpmsaComputerModelOptions.C \
+	$(top_srcdir)/src/gp/src/SimulationModelOptions.C
 
 # Sources from interface 
 
@@ -147,115 +144,115 @@ libqueso_la_SOURCES += \
 
 libqueso_include_HEADERS = \
 	$(top_builddir)/src/core/inc/queso.h \
-	$(top_srcdir)/src/core/inc/uqDefines.h \
-	$(top_srcdir)/src/core/inc/uqEnvironment.h \
-	$(top_srcdir)/src/core/inc/uqEnvironmentOptions.h \
-	$(top_srcdir)/src/core/inc/uqRngBase.h \
-	$(top_srcdir)/src/core/inc/uqRngGsl.h \
-	$(top_srcdir)/src/core/inc/uqRngBoost.h \
-	$(top_srcdir)/src/core/inc/uqBasicPdfsBase.h \
-	$(top_srcdir)/src/core/inc/uqBasicPdfsGsl.h \
-	$(top_srcdir)/src/core/inc/uqBasicPdfsBoost.h \
-	$(top_srcdir)/src/core/inc/uqGslMatrix.h \
-	$(top_srcdir)/src/core/inc/uqGslVector.h \
-	$(top_srcdir)/src/core/inc/uqTeuchosMatrix.h \
-	$(top_srcdir)/src/core/inc/uqTeuchosVector.h \
-	$(top_srcdir)/src/core/inc/uqMatrix.h \
-	$(top_srcdir)/src/core/inc/uqMpiComm.h \
-	$(top_srcdir)/src/core/inc/uqMap.h \
-	$(top_srcdir)/src/core/inc/uqDistArray.h \
+	$(top_srcdir)/src/core/inc/Defines.h \
+	$(top_srcdir)/src/core/inc/Environment.h \
+	$(top_srcdir)/src/core/inc/EnvironmentOptions.h \
+	$(top_srcdir)/src/core/inc/RngBase.h \
+	$(top_srcdir)/src/core/inc/RngGsl.h \
+	$(top_srcdir)/src/core/inc/RngBoost.h \
+	$(top_srcdir)/src/core/inc/BasicPdfsBase.h \
+	$(top_srcdir)/src/core/inc/BasicPdfsGsl.h \
+	$(top_srcdir)/src/core/inc/BasicPdfsBoost.h \
+	$(top_srcdir)/src/core/inc/GslMatrix.h \
+	$(top_srcdir)/src/core/inc/GslVector.h \
+	$(top_srcdir)/src/core/inc/TeuchosMatrix.h \
+	$(top_srcdir)/src/core/inc/TeuchosVector.h \
+	$(top_srcdir)/src/core/inc/Matrix.h \
+	$(top_srcdir)/src/core/inc/MpiComm.h \
+	$(top_srcdir)/src/core/inc/Map.h \
+	$(top_srcdir)/src/core/inc/DistArray.h \
 	$(top_srcdir)/src/core/inc/uq_asserts.h \
 	$(top_srcdir)/src/core/inc/uq_exceptions.h \
-	$(top_srcdir)/src/core/inc/uqVector.h
+	$(top_srcdir)/src/core/inc/Vector.h
 
 # Headers to install from misc/inc
 
 libqueso_include_HEADERS += \
-	$(top_srcdir)/src/misc/inc/uq1D1DFunction.h \
-	$(top_srcdir)/src/misc/inc/uq1DQuadrature.h \
-	$(top_srcdir)/src/misc/inc/uq2dArrayOfStuff.h \
-	$(top_srcdir)/src/misc/inc/uqArrayOfOneDGrids.h \
-	$(top_srcdir)/src/misc/inc/uqArrayOfOneDTables.h \
-	$(top_srcdir)/src/misc/inc/uqAsciiTable.h \
-	$(top_srcdir)/src/misc/inc/uqCovCond.h \
-	$(top_srcdir)/src/misc/inc/uqFft.h \
-	$(top_srcdir)/src/misc/inc/uqMiscellaneous.h \
-	$(top_srcdir)/src/misc/inc/uqOneDGrid.h
+	$(top_srcdir)/src/misc/inc/1D1DFunction.h \
+	$(top_srcdir)/src/misc/inc/1DQuadrature.h \
+	$(top_srcdir)/src/misc/inc/2dArrayOfStuff.h \
+	$(top_srcdir)/src/misc/inc/ArrayOfOneDGrids.h \
+	$(top_srcdir)/src/misc/inc/ArrayOfOneDTables.h \
+	$(top_srcdir)/src/misc/inc/AsciiTable.h \
+	$(top_srcdir)/src/misc/inc/CovCond.h \
+	$(top_srcdir)/src/misc/inc/Fft.h \
+	$(top_srcdir)/src/misc/inc/Miscellaneous.h \
+	$(top_srcdir)/src/misc/inc/OneDGrid.h
 
 # Headers to install from basic/inc
 
 libqueso_include_HEADERS += \
-	$(top_srcdir)/src/basic/inc/uqArrayOfSequences.h \
-	$(top_srcdir)/src/basic/inc/uqInstantiateIntersection.h \
-	$(top_srcdir)/src/basic/inc/uqScalarFunction.h \
-	$(top_srcdir)/src/basic/inc/uqScalarFunctionSynchronizer.h \
-	$(top_srcdir)/src/basic/inc/uqScalarSequence.h \
-	$(top_srcdir)/src/basic/inc/uqSequenceOfVectors.h \
-	$(top_srcdir)/src/basic/inc/uqSequenceStatisticalOptions.h \
-	$(top_srcdir)/src/basic/inc/uqVectorFunction.h \
-	$(top_srcdir)/src/basic/inc/uqVectorFunctionSynchronizer.h \
-	$(top_srcdir)/src/basic/inc/uqVectorSequence.h \
-	$(top_srcdir)/src/basic/inc/uqVectorSet.h \
-	$(top_srcdir)/src/basic/inc/uqVectorSpace.h \
-	$(top_srcdir)/src/basic/inc/uqVectorSubset.h
+	$(top_srcdir)/src/basic/inc/ArrayOfSequences.h \
+	$(top_srcdir)/src/basic/inc/InstantiateIntersection.h \
+	$(top_srcdir)/src/basic/inc/ScalarFunction.h \
+	$(top_srcdir)/src/basic/inc/ScalarFunctionSynchronizer.h \
+	$(top_srcdir)/src/basic/inc/ScalarSequence.h \
+	$(top_srcdir)/src/basic/inc/SequenceOfVectors.h \
+	$(top_srcdir)/src/basic/inc/SequenceStatisticalOptions.h \
+	$(top_srcdir)/src/basic/inc/VectorFunction.h \
+	$(top_srcdir)/src/basic/inc/VectorFunctionSynchronizer.h \
+	$(top_srcdir)/src/basic/inc/VectorSequence.h \
+	$(top_srcdir)/src/basic/inc/VectorSet.h \
+	$(top_srcdir)/src/basic/inc/VectorSpace.h \
+	$(top_srcdir)/src/basic/inc/VectorSubset.h
 
 # Headers to install from stats/inc 
 
 libqueso_include_HEADERS += \
-	$(top_srcdir)/src/stats/inc/uqFiniteDistribution.h \
-	$(top_srcdir)/src/stats/inc/uqJointPdf.h \
-	$(top_srcdir)/src/stats/inc/uqMarkovChainPositionData.h \
-	$(top_srcdir)/src/stats/inc/uqMetropolisHastingsSG1.h \
-	$(top_srcdir)/src/stats/inc/uqMetropolisHastingsSG2.h \
-	$(top_srcdir)/src/stats/inc/uqMetropolisHastingsSGOptions.h \
-	$(top_srcdir)/src/stats/inc/uqMLSampling1.h \
-	$(top_srcdir)/src/stats/inc/uqMLSampling2.h \
-	$(top_srcdir)/src/stats/inc/uqMLSampling3.h \
-	$(top_srcdir)/src/stats/inc/uqMLSamplingOptions.h \
-	$(top_srcdir)/src/stats/inc/uqMLSamplingLevelOptions.h \
-	$(top_srcdir)/src/stats/inc/uqModelValidation.h \
-	$(top_srcdir)/src/stats/inc/uqMonteCarloSG.h \
-	$(top_srcdir)/src/stats/inc/uqMonteCarloSGOptions.h \
-	$(top_srcdir)/src/stats/inc/uqScalarCdf.h \
-	$(top_srcdir)/src/stats/inc/uqStatisticalForwardProblem.h \
-	$(top_srcdir)/src/stats/inc/uqStatisticalForwardProblemOptions.h \
-	$(top_srcdir)/src/stats/inc/uqStatisticalInverseProblem.h \
-	$(top_srcdir)/src/stats/inc/uqStatisticalInverseProblemOptions.h \
-	$(top_srcdir)/src/stats/inc/uqTKGroup.h \
-	$(top_srcdir)/src/stats/inc/uqValidationCycle.h \
-	$(top_srcdir)/src/stats/inc/uqVectorCdf.h \
-	$(top_srcdir)/src/stats/inc/uqVectorMdf.h \
-	$(top_srcdir)/src/stats/inc/uqVectorRealizer.h \
-	$(top_srcdir)/src/stats/inc/uqVectorRV.h \
-	$(top_srcdir)/src/stats/inc/uqInfoTheory.h \
-	$(top_srcdir)/src/stats/inc/uqScalarCovarianceFunction.h \
-	$(top_srcdir)/src/stats/inc/uqMatrixCovarianceFunction.h \
-	$(top_srcdir)/src/stats/inc/uqScalarGaussianRandomField.h \
-	$(top_srcdir)/src/stats/inc/uqVectorGaussianRandomField.h
+	$(top_srcdir)/src/stats/inc/FiniteDistribution.h \
+	$(top_srcdir)/src/stats/inc/JointPdf.h \
+	$(top_srcdir)/src/stats/inc/MarkovChainPositionData.h \
+	$(top_srcdir)/src/stats/inc/MetropolisHastingsSG1.h \
+	$(top_srcdir)/src/stats/inc/MetropolisHastingsSG2.h \
+	$(top_srcdir)/src/stats/inc/MetropolisHastingsSGOptions.h \
+	$(top_srcdir)/src/stats/inc/MLSampling1.h \
+	$(top_srcdir)/src/stats/inc/MLSampling2.h \
+	$(top_srcdir)/src/stats/inc/MLSampling3.h \
+	$(top_srcdir)/src/stats/inc/MLSamplingOptions.h \
+	$(top_srcdir)/src/stats/inc/MLSamplingLevelOptions.h \
+	$(top_srcdir)/src/stats/inc/ModelValidation.h \
+	$(top_srcdir)/src/stats/inc/MonteCarloSG.h \
+	$(top_srcdir)/src/stats/inc/MonteCarloSGOptions.h \
+	$(top_srcdir)/src/stats/inc/ScalarCdf.h \
+	$(top_srcdir)/src/stats/inc/StatisticalForwardProblem.h \
+	$(top_srcdir)/src/stats/inc/StatisticalForwardProblemOptions.h \
+	$(top_srcdir)/src/stats/inc/StatisticalInverseProblem.h \
+	$(top_srcdir)/src/stats/inc/StatisticalInverseProblemOptions.h \
+	$(top_srcdir)/src/stats/inc/TKGroup.h \
+	$(top_srcdir)/src/stats/inc/ValidationCycle.h \
+	$(top_srcdir)/src/stats/inc/VectorCdf.h \
+	$(top_srcdir)/src/stats/inc/VectorMdf.h \
+	$(top_srcdir)/src/stats/inc/VectorRealizer.h \
+	$(top_srcdir)/src/stats/inc/VectorRV.h \
+	$(top_srcdir)/src/stats/inc/InfoTheory.h \
+	$(top_srcdir)/src/stats/inc/ScalarCovarianceFunction.h \
+	$(top_srcdir)/src/stats/inc/MatrixCovarianceFunction.h \
+	$(top_srcdir)/src/stats/inc/ScalarGaussianRandomField.h \
+	$(top_srcdir)/src/stats/inc/VectorGaussianRandomField.h
 
 # Headers to install from gp/inc 
 
 libqueso_include_HEADERS += \
-	$(top_srcdir)/src/gp/inc/uqExperimentModel.h \
-	$(top_srcdir)/src/gp/inc/uqExperimentModelOptions.h \
-	$(top_srcdir)/src/gp/inc/uqExperimentStorage.h \
-	$(top_srcdir)/src/gp/inc/uqGcmExperimentInfo.h \
-	$(top_srcdir)/src/gp/inc/uqGcmJointInfo.h \
-	$(top_srcdir)/src/gp/inc/uqGcmJointTildeInfo.h \
-	$(top_srcdir)/src/gp/inc/uqGcmSimulationInfo.h \
-	$(top_srcdir)/src/gp/inc/uqGcmSimulationTildeInfo.h \
-	$(top_srcdir)/src/gp/inc/uqGcmTotalInfo.h \
-	$(top_srcdir)/src/gp/inc/uqGcmZInfo.h \
-	$(top_srcdir)/src/gp/inc/uqGcmZTildeInfo.h \
-	$(top_srcdir)/src/gp/inc/uqGpmsaComputerModel.h \
-	$(top_srcdir)/src/gp/inc/uqGpmsaComputerModel2.h \
-	$(top_srcdir)/src/gp/inc/uqGpmsaComputerModel3.h \
-	$(top_srcdir)/src/gp/inc/uqGpmsaComputerModel4.h \
-	$(top_srcdir)/src/gp/inc/uqGpmsaComputerModel5.h \
-	$(top_srcdir)/src/gp/inc/uqGpmsaComputerModelOptions.h \
-	$(top_srcdir)/src/gp/inc/uqSimulationModel.h \
-	$(top_srcdir)/src/gp/inc/uqSimulationModelOptions.h \
-	$(top_srcdir)/src/gp/inc/uqSimulationStorage.h
+	$(top_srcdir)/src/gp/inc/ExperimentModel.h \
+	$(top_srcdir)/src/gp/inc/ExperimentModelOptions.h \
+	$(top_srcdir)/src/gp/inc/ExperimentStorage.h \
+	$(top_srcdir)/src/gp/inc/GcmExperimentInfo.h \
+	$(top_srcdir)/src/gp/inc/GcmJointInfo.h \
+	$(top_srcdir)/src/gp/inc/GcmJointTildeInfo.h \
+	$(top_srcdir)/src/gp/inc/GcmSimulationInfo.h \
+	$(top_srcdir)/src/gp/inc/GcmSimulationTildeInfo.h \
+	$(top_srcdir)/src/gp/inc/GcmTotalInfo.h \
+	$(top_srcdir)/src/gp/inc/GcmZInfo.h \
+	$(top_srcdir)/src/gp/inc/GcmZTildeInfo.h \
+	$(top_srcdir)/src/gp/inc/GpmsaComputerModel.h \
+	$(top_srcdir)/src/gp/inc/GpmsaComputerModel2.h \
+	$(top_srcdir)/src/gp/inc/GpmsaComputerModel3.h \
+	$(top_srcdir)/src/gp/inc/GpmsaComputerModel4.h \
+	$(top_srcdir)/src/gp/inc/GpmsaComputerModel5.h \
+	$(top_srcdir)/src/gp/inc/GpmsaComputerModelOptions.h \
+	$(top_srcdir)/src/gp/inc/SimulationModel.h \
+	$(top_srcdir)/src/gp/inc/SimulationModelOptions.h \
+	$(top_srcdir)/src/gp/inc/SimulationStorage.h
 
 # Headers to install, but not part of dist
 

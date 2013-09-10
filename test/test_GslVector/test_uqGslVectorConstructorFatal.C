@@ -1,4 +1,4 @@
-#include <uqGslVector.h>
+#include <queso/GslVector.h>
 
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>
@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
   MPI_Init(&argc, &argv);
 #endif
 
-  uqGslVectorClass vector;
+  QUESO::GslVector vector;
 
 #ifdef QUESO_HAS_MPI
   MPI_Finalize();

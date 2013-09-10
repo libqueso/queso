@@ -29,7 +29,7 @@
 #ifndef __EX_TGA_VALIDATION_CYCLE_QOI_H__
 #define __EX_TGA_VALIDATION_CYCLE_QOI_H__
 
-#include <uqDistArray.h>
+#include <queso/DistArray.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 
@@ -39,7 +39,7 @@
 //********************************************************
 template<class P_V,class P_M,class Q_V, class Q_M>
 struct
-qoiRoutine_DataClass
+qoiRoutine_Data
 {
   double m_beta;
   double m_criticalMass;
@@ -52,15 +52,15 @@ void qoiRoutine(const P_V&                    paramValues,
                 const P_V*                    paramDirection,
                 const void*                   functionDataPtr,
                       Q_V&                    qoiValues,
-                      uqDistArrayClass<P_V*>* gradVectors,
-                      uqDistArrayClass<P_M*>* hessianMatrices,
-                      uqDistArrayClass<P_V*>* hessianEffects)
+                      QUESO::DistArray<P_V*>* gradVectors,
+                      QUESO::DistArray<P_M*>* hessianMatrices,
+                      QUESO::DistArray<P_V*>* hessianEffects)
 {
   double A             = paramValues[0];
   double E             = paramValues[1];
-  double beta          = ((qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_beta;
-  double criticalMass  = ((qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalMass;
-  double criticalTime  = ((qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalTime;
+  double beta          = ((qoiRoutine_Data<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_beta;
+  double criticalMass  = ((qoiRoutine_Data<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalMass;
+  double criticalTime  = ((qoiRoutine_Data<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->m_criticalTime;
 
   double params[]={A,E,beta};
       	

@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <cmath>
-#include <uqEnvironment.h>
-#include <uqGslVector.h>
-#include <uqGslMatrix.h>
-#include <uqVectorSpace.h>
-#include <uqVectorSubset.h>
-#include <uqVectorRV.h>
+#include <queso/Environment.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
+#include <queso/VectorSpace.h>
+#include <queso/VectorSubset.h>
+#include <queso/VectorRV.h>
 
 using namespace std;
 
@@ -14,11 +14,11 @@ int main(int argc, char **argv) {
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
 #endif
-  uqFullEnvironmentClass *env =
+  QUESO::FullEnvironment *env =
 #ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD, "", "", NULL);
+    new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", NULL);
 #else
-    new uqFullEnvironmentClass(0, "", "", NULL);
+    new QUESO::FullEnvironment(0, "", "", NULL);
 #endif
 
   delete env;

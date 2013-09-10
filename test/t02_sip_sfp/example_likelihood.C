@@ -29,25 +29,25 @@
 #include <example_likelihood.h>
 
 double likelihoodRoutine(
-  const uqGslVectorClass& paramValues,
-  const uqGslVectorClass* paramDirection,
+  const QUESO::GslVector& paramValues,
+  const QUESO::GslVector* paramDirection,
   const void*             functionDataPtr,
-  uqGslVectorClass*       gradVector,
-  uqGslMatrixClass*       hessianMatrix,
-  uqGslVectorClass*       hessianEffect)
+  QUESO::GslVector*       gradVector,
+  QUESO::GslMatrix*       hessianMatrix,
+  QUESO::GslVector*       hessianEffect)
 {
   // Logic just to avoid warnings from INTEL compiler
-  const uqGslVectorClass* aux1 = paramDirection;
+  const QUESO::GslVector* aux1 = paramDirection;
   if (aux1) {};
   aux1 = gradVector;
   aux1 = hessianEffect;
-  uqGslMatrixClass* aux2 = hessianMatrix;
+  QUESO::GslMatrix* aux2 = hessianMatrix;
   if (aux2) {};
 
   // Just checking: the user, at the application level, expects
   // vector 'paramValues' to have size 2.
   UQ_FATAL_TEST_MACRO(paramValues.sizeGlobal() != 2,
-                      UQ_UNAVAILABLE_RANK,
+                      QUESO::UQ_UNAVAILABLE_RANK,
                       "likelihoodRoutine()",
                       "paramValues vector does not have size 2");
 
@@ -66,14 +66,14 @@ double likelihoodRoutine(
   // Here we use 'env.subRank()' only. A realistic application might want to use
   // 'env.subComm()' or 'env.subComm().Comm()'
   double result = 0.;
-  const uqBaseEnvironmentClass& env = paramValues.env();
+  const QUESO::BaseEnvironment& env = paramValues.env();
   if (env.subRank() == 0) {
-    const uqGslVectorClass& meanVector =
+    const QUESO::GslVector& meanVector =
       *((likelihoodRoutine_DataType *) functionDataPtr)->meanVector;
-    const uqGslMatrixClass& covMatrix  =
+    const QUESO::GslMatrix& covMatrix  =
       *((likelihoodRoutine_DataType *) functionDataPtr)->covMatrix;
 
-    uqGslVectorClass diffVec(paramValues - meanVector);
+    QUESO::GslVector diffVec(paramValues - meanVector);
 
     result = scalarProduct(diffVec, covMatrix.invertMultiply(diffVec));
   }

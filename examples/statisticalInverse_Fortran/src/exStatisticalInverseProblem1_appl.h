@@ -42,7 +42,7 @@
 //********************************************************
 template<class P_V,class P_M>
 void 
-uqAppl(const uqBaseEnvironmentClass& env)
+uqAppl(const uqBaseEnvironment& env)
 {
   if (env.fullRank() == 0) {
     std::cout << "Beginning run of 'exStatisticalInverseProblem1_example'\n"
@@ -58,7 +58,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
-  uqVectorSpaceClass<P_V,P_M> paramSpace(env,"param_",4,NULL);
+  uqVectorSpace<P_V,P_M> paramSpace(env,"param_",4,NULL);
 
   //******************************************************
   // Step 2 of 5: Instantiate the parameter domain
@@ -72,7 +72,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   paramMins.cwSet(-INFINITY);
   P_V paramMaxs(paramSpace.zeroVector());
   paramMaxs.cwSet( INFINITY);
-  uqBoxSubsetClass<P_V,P_M> paramDomain("param_",paramSpace,paramMins,paramMaxs);
+  uqBoxSubset<P_V,P_M> paramDomain("param_",paramSpace,paramMins,paramMaxs);
 
   //******************************************************
   // Step 3 of 5: Instantiate the likelihood function object (data + routine), to be used by QUESO.
@@ -96,7 +96,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   likelihoodRoutine_Data.matrix            = covMatrixInverse;
   likelihoodRoutine_Data.applyMatrixInvert = false;
 
-  uqGenericScalarFunctionClass<P_V,P_M> likelihoodFunctionObj("like_",
+  uqGenericScalarFunction<P_V,P_M> likelihoodFunctionObj("like_",
                                                               paramDomain,
                                                               likelihoodRoutine<P_V,P_M>,
                                                               (void *) &likelihoodRoutine_Data,
@@ -110,13 +110,13 @@ uqAppl(const uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
-  uqUniformVectorRVClass<P_V,P_M> priorRv("prior_", // Extra prefix before the default "rv_" prefix
+  uqUniformVectorRV<P_V,P_M> priorRv("prior_", // Extra prefix before the default "rv_" prefix
                                           paramDomain);
 
-  uqGenericVectorRVClass<P_V,P_M> postRv("post_", // Extra prefix before the default "rv_" prefix
+  uqGenericVectorRV<P_V,P_M> postRv("post_", // Extra prefix before the default "rv_" prefix
                                          paramSpace);
 
-  uqStatisticalInverseProblemClass<P_V,P_M> ip("", // No extra prefix before the default "ip_" prefix
+  uqStatisticalInverseProblem<P_V,P_M> ip("", // No extra prefix before the default "ip_" prefix
                                                NULL,
                                                priorRv,
                                                likelihoodFunctionObj,
@@ -180,8 +180,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Write weighted squared norm to disk, to be used by 'sip_plot.m' afterwards
   //******************************************************
   // Define auxVec
-  const uqBaseVectorRealizerClass<P_V,P_M>& postRealizer = postRv.realizer();
-  uqVectorSpaceClass<P_V,P_M> auxSpace(env,"",postRealizer.subPeriod(),NULL);
+  const uqBaseVectorRealizer<P_V,P_M>& postRealizer = postRv.realizer();
+  uqVectorSpace<P_V,P_M> auxSpace(env,"",postRealizer.subPeriod(),NULL);
   P_V auxVec(auxSpace.zeroVector());
 
   // Populate auxVec

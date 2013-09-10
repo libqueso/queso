@@ -42,16 +42,16 @@ template<class P_V,class P_M>
 struct
 exPhysics1LikelihoodInfoStruct
 {
-  exPhysics1LikelihoodInfoStruct(const uqVectorSpaceClass<P_V,P_M>& paramSpace,
+  exPhysics1LikelihoodInfoStruct(const uqVectorSpace<P_V,P_M>& paramSpace,
                                  const std::string&                 inpName);
  ~exPhysics1LikelihoodInfoStruct();
 
-  const uqVectorSpaceClass <P_V,P_M>& m_paramSpace;
+  const uqVectorSpace <P_V,P_M>& m_paramSpace;
 };
 
 template<class P_V,class P_M>
 exPhysics1LikelihoodInfoStruct<P_V,P_M>::exPhysics1LikelihoodInfoStruct(
-  const uqVectorSpaceClass<P_V,P_M>& paramSpace,
+  const uqVectorSpace<P_V,P_M>& paramSpace,
   const std::string&                 inpName)
   :
   m_paramSpace(paramSpace)

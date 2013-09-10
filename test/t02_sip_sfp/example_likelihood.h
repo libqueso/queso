@@ -28,21 +28,21 @@
 #ifndef __EX_LIKELIHOOD_H__
 #define __EX_LIKELIHOOD_H__
 
-#include <uqGslMatrix.h>
+#include <queso/GslMatrix.h>
 
 struct
 likelihoodRoutine_DataType
 {
-  const uqGslVectorClass* meanVector;
-  const uqGslMatrixClass* covMatrix;
+  const QUESO::GslVector* meanVector;
+  const QUESO::GslMatrix* covMatrix;
 };
 
 double likelihoodRoutine(
-  const uqGslVectorClass& paramValues,
-  const uqGslVectorClass* paramDirection,
+  const QUESO::GslVector& paramValues,
+  const QUESO::GslVector* paramDirection,
   const void*             functionDataPtr,
-  uqGslVectorClass*       gradVector,
-  uqGslMatrixClass*       hessianMatrix,
-  uqGslVectorClass*       hessianEffect);
+  QUESO::GslVector*       gradVector,
+  QUESO::GslMatrix*       hessianMatrix,
+  QUESO::GslVector*       hessianEffect);
 
 #endif

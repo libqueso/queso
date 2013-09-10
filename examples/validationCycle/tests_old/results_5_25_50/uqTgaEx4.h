@@ -20,9 +20,9 @@
 #ifndef __UQ_TGA_EX4_H__
 #define __UQ_TGA_EX4_H__
 
-#include <uqCalibProblem.h>
-#include <uqPropagProblem.h>
-#include <uqAsciiTable.h>
+#include <queso/CalibProblem.h>
+#include <queso/PropagProblem.h>
+#include <queso/AsciiTable.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 
@@ -357,7 +357,7 @@ void propagQoiRoutine(const P_V& paramValues, const void* functionDataPtr, Q_V& 
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl(const uqEnvironmentClass& env)
+uqAppl(const uqEnvironment& env)
 {
   if (env.rank() == 0) {
     std::cout << "Beginning run of 'uqTgaEx4' example\n"
@@ -372,7 +372,7 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Read Ascii file with important information on both calibration problems.
   //******************************************************
-  uqAsciiTableClass<P_V,P_M> paramsTable(env,
+  uqAsciiTable<P_V,P_M> paramsTable(env,
                                          2,    // # of rows
                                          3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
                                          NULL, // All extra columns are of 'double' type
@@ -386,7 +386,7 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
   // Read Ascii file with important information on both propagation problems.
   //******************************************************
-  uqAsciiTableClass<P_V,P_M> qoisTable(env,
+  uqAsciiTable<P_V,P_M> qoisTable(env,
                                        1,    // # of rows
                                        0,    // # of cols after 'parameter name': none
                                        NULL, // All extra columns are of 'double' type
@@ -519,11 +519,11 @@ uqAppl(const uqEnvironmentClass& env)
   // Usually, spaces are the same throughout different problems.
   // If this is the case, we can instantiate them here, just once.
   //******************************************************
-  uqVectorSpaceClass<P_V,P_M> paramSpace(env,
+  uqVectorSpace<P_V,P_M> paramSpace(env,
                                          "param_", // Extra prefix before the default "space_" prefix
                                          paramsTable.numRows(),
                                          &paramNames);
-  uqVectorSpaceClass<Q_V,Q_M> qoiSpace  (env,
+  uqVectorSpace<Q_V,Q_M> qoiSpace  (env,
                                          "qoi_",   // Extra prefix before the default "space_" prefix
                                          qoisTable.numRows(),
                                          &qoiNames);
@@ -533,7 +533,7 @@ uqAppl(const uqEnvironmentClass& env)
   //******************************************************
 
   // Stage I (s1): Prior vector rv
-  uqUniformVectorRVClass<P_V,P_M> s1_calibPriorRv("s1_cal_prior_", // Extra prefix before the default "rv_" prefix
+  uqUniformVectorRV<P_V,P_M> s1_calibPriorRv("s1_cal_prior_", // Extra prefix before the default "rv_" prefix
                                                    paramSpace,
                                                    s1_minValues,
                                                    s1_maxValues);
@@ -552,18 +552,18 @@ uqAppl(const uqEnvironmentClass& env)
   s1_calibLikelihoodRoutine_Data.variance3 = variance_cal3;
   s1_calibLikelihoodRoutine_Data.Te3       = &Te_cal3; // temperatures
   s1_calibLikelihoodRoutine_Data.Me3       = &Me_cal3; // relative masses
-  uqGenericVectorPdfClass<P_V,P_M> s1_calibLikelihoodFunctionObj("s1_cal_prior_like_", // Extra prefix before the default "genpd_" prefix
+  uqGenericVectorPdf<P_V,P_M> s1_calibLikelihoodFunctionObj("s1_cal_prior_like_", // Extra prefix before the default "genpd_" prefix
                                                                  paramSpace,
                                                                  calibLikelihoodRoutine<P_V,P_M>,
                                                                  (void *) &s1_calibLikelihoodRoutine_Data,
                                                                  true); // the routine computes [-2.*ln(Likelihood)]
 
   // Stage I (s1): Posterior vector rv
-  uqGenericVectorRVClass<P_V,P_M> s1_calibPostRv("s1_cal_post_", // Extra prefix before the default "rv_" prefix
+  uqGenericVectorRV<P_V,P_M> s1_calibPostRv("s1_cal_post_", // Extra prefix before the default "rv_" prefix
                                                  paramSpace);
 
   // Stage I (s1): Calibration problem
-  uqCalibProblemClass<P_V,P_M> s1_calibProblem("s1_", // No extra prefix before the default "cal_" prefix
+  uqCalibProblem<P_V,P_M> s1_calibProblem("s1_", // No extra prefix before the default "cal_" prefix
                                                s1_calibPriorRv,
                                                s1_calibLikelihoodFunctionObj,
                                                s1_calibPostRv);
@@ -586,18 +586,18 @@ uqAppl(const uqEnvironmentClass& env)
   s1_propagQoiRoutine_Data.beta         = beta_prediction;
   s1_propagQoiRoutine_Data.criticalMass = criticalMass_prediction;
   s1_propagQoiRoutine_Data.criticalTime = criticalTime_prediction;
-  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> s1_propagQoiFunctionObj("s1_pro_qoi_", // Extra prefix before the default "func_" prefix
+  uqGenericVectorFunction<P_V,P_M,Q_V,Q_M> s1_propagQoiFunctionObj("s1_pro_qoi_", // Extra prefix before the default "func_" prefix
                                                                         paramSpace,
                                                                         qoiSpace,
                                                                         propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
                                                                         (void *) &s1_propagQoiRoutine_Data);
 
   // Stage I (s1): Qoi vector rv
-  uqGenericVectorRVClass<Q_V,Q_M> s1_propagQoiRv("s1_pro_qoi_", // Extra prefix before the default "rv_" prefix
+  uqGenericVectorRV<Q_V,Q_M> s1_propagQoiRv("s1_pro_qoi_", // Extra prefix before the default "rv_" prefix
                                                  qoiSpace);
 
   // Stage I (s1): Propagation problem
-  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> s1_propagProblem("s1_",          // No extra prefix before the default "pro_" prefix
+  uqPropagProblem<P_V,P_M,Q_V,Q_M> s1_propagProblem("s1_",          // No extra prefix before the default "pro_" prefix
                                                          s1_calibPostRv, // propagation input = calibration output
                                                          s1_propagQoiFunctionObj,
                                                          s1_propagQoiRv);
@@ -678,18 +678,18 @@ uqAppl(const uqEnvironmentClass& env)
   s2_calibLikelihoodRoutine_Data.variance3 = 0.;
   s2_calibLikelihoodRoutine_Data.Te3       = NULL; // temperatures
   s2_calibLikelihoodRoutine_Data.Me3       = NULL; // relative masses
-  uqGenericVectorPdfClass<P_V,P_M> s2_calibLikelihoodFunctionObj("s2_cal_prior_like_", // Extra prefix before the default "genpd_" prefix
+  uqGenericVectorPdf<P_V,P_M> s2_calibLikelihoodFunctionObj("s2_cal_prior_like_", // Extra prefix before the default "genpd_" prefix
                                                                  paramSpace,
                                                                  calibLikelihoodRoutine<P_V,P_M>,
                                                                  (void *) &s2_calibLikelihoodRoutine_Data,
                                                                  true); // the routine computes [-2.*ln(Likelihood)]
 
   // Stage II (s2): Posterior vector rv
-  uqGenericVectorRVClass<P_V,P_M> s2_calibPostRv("s2_cal_post_", // Extra prefix before the default "rv_" prefix
+  uqGenericVectorRV<P_V,P_M> s2_calibPostRv("s2_cal_post_", // Extra prefix before the default "rv_" prefix
                                                  paramSpace);
 
   // Stage II (s2): Calibration problem
-  uqCalibProblemClass<P_V,P_M> s2_calibProblem("s2_", // No extra prefix before the default "cal_" prefix
+  uqCalibProblem<P_V,P_M> s2_calibProblem("s2_", // No extra prefix before the default "cal_" prefix
                                                s1_calibPostRv, // s2 calibration input = s1 calibration output
                                                s2_calibLikelihoodFunctionObj,
                                                s2_calibPostRv);
@@ -712,18 +712,18 @@ uqAppl(const uqEnvironmentClass& env)
   s2_propagQoiRoutine_Data.beta          = beta_prediction;
   s2_propagQoiRoutine_Data.criticalMass  = criticalMass_prediction;
   s2_propagQoiRoutine_Data.criticalTime  = criticalTime_prediction;
-  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> s2_propagQoiFunctionObj("s2_pro_qoi_", // Extra prefix before the default "func_" prefix
+  uqGenericVectorFunction<P_V,P_M,Q_V,Q_M> s2_propagQoiFunctionObj("s2_pro_qoi_", // Extra prefix before the default "func_" prefix
                                                                         paramSpace,
                                                                         qoiSpace,
                                                                         propagQoiRoutine<P_V,P_M,Q_V,Q_M>,
                                                                         (void *) &s2_propagQoiRoutine_Data);
 
   // Stage II (s2): Qoi vector rv: set 'realizer' and 'cdf' of 's2_propagQoiRv'
-  uqGenericVectorRVClass<Q_V,Q_M> s2_propagQoiRv("s2_pro_qoi_", // Extra prefix before the default "rv_" prefix
+  uqGenericVectorRV<Q_V,Q_M> s2_propagQoiRv("s2_pro_qoi_", // Extra prefix before the default "rv_" prefix
                                                  qoiSpace);
 
   // Stage II (s2): Propagation problem
-  uqPropagProblemClass<P_V,P_M,Q_V,Q_M> s2_propagProblem("s2_",          // No extra prefix before the default "pro_" prefix
+  uqPropagProblem<P_V,P_M,Q_V,Q_M> s2_propagProblem("s2_",          // No extra prefix before the default "pro_" prefix
                                                          s2_calibPostRv, // propagation input = calibration output
                                                          s2_propagQoiFunctionObj,
                                                          s2_propagQoiRv);

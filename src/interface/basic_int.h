@@ -38,11 +38,9 @@ namespace QUESO_Basic_API
 #endif
 
 #ifdef _QUESO_Basic_API_DEF
-  QUESO_Basic_Class *_QUESO_Basic = NULL; 
+  QUESO_Basic_ *_QUESO_Basic = NULL; 
 #else
-  extern QUESO_Basic_Class *_QUESO_Basic;
+  extern QUESO_Basic_ *_QUESO_Basic;
 #endif
-
-
 
 }

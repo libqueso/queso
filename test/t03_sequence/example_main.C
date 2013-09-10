@@ -27,8 +27,8 @@
 // Brief description of this file: 
 // 
 // This is an example of how to define and use some basic classes and
-// algorithms of QUESO, mainly 'uqGaussianVectorRVClass',
-// 'uqVectorSequenceClass', realizations and statistical computations.
+// algorithms of QUESO, mainly 'uqGaussianVectorRV',
+// 'uqVectorSequence', realizations and statistical computations.
 // The code itself is in the routine 'compute(*env)'. This routine is
 // called right after the initialization of the MPI environment and of
 // the QUESO environment and is available in file 'example_compute.C'.
@@ -44,11 +44,11 @@ int main(int argc, char* argv[])
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
 #endif
-  uqFullEnvironmentClass* env =
+  QUESO::FullEnvironment* env =
 #ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+    new QUESO::FullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
 #else
-    new uqFullEnvironmentClass(0,argv[1],"",NULL);
+    new QUESO::FullEnvironment(0,argv[1],"",NULL);
 #endif
 
   // Compute

@@ -1,4 +1,4 @@
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 #include <mpi.h>
 
 using namespace std;
@@ -7,14 +7,14 @@ int main(int argc, char **argv) {
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
 #endif
-  uqFullEnvironmentClass *env =
+  QUESO::FullEnvironment *env =
 #ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD, "copy_env.inp", "", NULL);
+    new QUESO::FullEnvironment(MPI_COMM_WORLD, "copy_env.inp", "", NULL);
 #else
-    new uqFullEnvironmentClass(0, "copy_env.inp", "", NULL);
+    new QUESO::FullEnvironment(0, "copy_env.inp", "", NULL);
 #endif
 
-  uqFullEnvironmentClass another_env(*env);
+  QUESO::FullEnvironment another_env(*env);
 
   delete env;
 #ifdef QUESO_HAS_MPI

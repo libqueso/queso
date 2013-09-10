@@ -33,20 +33,20 @@
 #ifndef __TGA2_LIKELIHOOD_H__
 #define __TGA2_LIKELIHOOD_H__
 
-#include <uqGslMatrix.h>
+#include <queso/GslMatrix.h>
 
 //********************************************************
 // The (user defined) data class that carries the data
 // needed by the (user defined) likelihood routine
 //********************************************************
 struct
-likelihoodRoutine_DataClass
+likelihoodRoutine_Data
 {
-  likelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
+  likelihoodRoutine_Data(const QUESO::BaseEnvironment& env,
                               const char* inpName1,
                               const char* inpName2,
                               const char* inpName3);
- ~likelihoodRoutine_DataClass();
+ ~likelihoodRoutine_Data();
 
   double              m_beta1;
   double              m_variance1;
@@ -63,16 +63,16 @@ likelihoodRoutine_DataClass
   std::vector<double> m_Te3; // temperatures
   std::vector<double> m_Me3; // relative masses
 
-  const uqBaseEnvironmentClass* m_env;
+  const QUESO::BaseEnvironment* m_env;
 };
 
 double
 likelihoodRoutine(
-  const uqGslVectorClass&  paramValues,
-  const uqGslVectorClass*  paramDirection,
+  const QUESO::GslVector&  paramValues,
+  const QUESO::GslVector*  paramDirection,
   const void*              functionDataPtr,
-  uqGslVectorClass*        gradVector,
-  uqGslMatrixClass*        hessianMatrix,
-  uqGslVectorClass*        hessianEffect);
+  QUESO::GslVector*        gradVector,
+  QUESO::GslMatrix*        hessianMatrix,
+  QUESO::GslVector*        hessianEffect);
 
 #endif // __TGA2_LIKELIHOOD_H__

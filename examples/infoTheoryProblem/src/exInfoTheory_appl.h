@@ -33,11 +33,11 @@
 #ifndef __EX_INFO_THEORY_APPL_H__
 #define __EX_INFO_THEORY_APPL_H__
 
-#include <uqDefines.h>
+#include <queso/Defines.h>
 #ifdef QUESO_HAS_ANN
 
-#include <uqStatisticalForwardProblem.h>
-#include <uqInfoTheory.h>
+#include <queso/StatisticalForwardProblem.h>
+#include <queso/InfoTheory.h>
 #include <gsl/gsl_linalg.h>
 //#include <exInfoTheory_qoi.h>
 
@@ -50,7 +50,7 @@ static const double Pi = 3.1415926535897932;
 //********************************************************
 template<class P_V,class P_M, class Q_V, class Q_M>
 void 
-uqAppl(const uqBaseEnvironmentClass& env)
+uqAppl(const uqBaseEnvironment& env)
 {
   if (env.fullRank() == 0) {
     std::cout << "Beginning run of 'exInfoTheory_example'\n"
@@ -79,7 +79,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
 
 
-      uqVectorSpaceClass<P_V,P_M> paramSpace(env,"param_",dim,NULL);
+      uqVectorSpace<P_V,P_M> paramSpace(env,"param_",dim,NULL);
       
       // mean vector
       P_V meanVector( paramSpace.zeroVector() );
@@ -93,7 +93,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
       }
 
       // create a Gaussian RV
-      uqGaussianVectorRVClass<P_V,P_M> gaussRV( "gaussRV_", paramSpace, meanVector, varVector );
+      uqGaussianVectorRV<P_V,P_M> gaussRV( "gaussRV_", paramSpace, meanVector, varVector );
 
       // plot results
       double exact_entropy = log( sqrt( pow( 2.0*Pi, (double)dim ) * prodDiag ) ) + (double)dim / 2.0;
@@ -126,7 +126,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   unsigned int k = 1;
   double eps = UQ_INFTH_ANN_EPS;
 
-  uqVectorSpaceClass<P_V,P_M> paramSpace(env, "param_", 1, NULL);
+  uqVectorSpace<P_V,P_M> paramSpace(env, "param_", 1, NULL);
 
   // means
   double muX = 2.0;
@@ -145,8 +145,8 @@ uqAppl(const uqBaseEnvironmentClass& env)
   (*covMatrixY)(0,0) = varY;
 
   // create Gaussian RV
-  uqGaussianVectorRVClass<P_V,P_M> xRV( "xRV_", paramSpace, meanVectorX, *covMatrixX );
-  uqGaussianVectorRVClass<P_V,P_M> yRV( "yRV_", paramSpace, meanVectorY, *covMatrixY );
+  uqGaussianVectorRV<P_V,P_M> xRV( "xRV_", paramSpace, meanVectorX, *covMatrixX );
+  uqGaussianVectorRV<P_V,P_M> yRV( "yRV_", paramSpace, meanVectorY, *covMatrixY );
 
   double exact_kl = 0.5 * ( log(varY/varX) + varX/varY + pow(muY-muX,2.0)/varY - 1.0 );
   
@@ -214,7 +214,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   eps = UQ_INFTH_ANN_EPS;
 
   unsigned int dim = 2;
-  uqVectorSpaceClass<P_V,P_M> paramSpace_MI(env, "param_", dim, NULL);
+  uqVectorSpace<P_V,P_M> paramSpace_MI(env, "param_", dim, NULL);
 
   // means
   P_V meanVector( paramSpace_MI.zeroVector() );
@@ -230,7 +230,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   (*covMatrix)(1,0) = rho*std1*std2; (*covMatrix)(1,1) = std2*std2;
 
   // create a Gaussian RV
-  uqGaussianVectorRVClass<P_V,P_M> gaussRV( "gaussRV_", paramSpace_MI, meanVector, *covMatrix );
+  uqGaussianVectorRV<P_V,P_M> gaussRV( "gaussRV_", paramSpace_MI, meanVector, *covMatrix );
 
   // get the determinant of the matrix
   int signum;

@@ -27,8 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <get_min_max_vec.h>
-#include <uqGslMatrix.h>
-#include <uqVectorRV.h>
+#include <queso/GslMatrix.h>
+#include <queso/VectorRV.h>
 
 int main(int argc, char* argv[]) 
 {
@@ -38,11 +38,11 @@ int main(int argc, char* argv[])
 #ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
 #endif
-  uqFullEnvironmentClass* env =
+  QUESO::FullEnvironment* env =
 #ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD,"input","",NULL);
+    new QUESO::FullEnvironment(MPI_COMM_WORLD,"input","",NULL);
 #else
-    new uqFullEnvironmentClass(0,"input","",NULL);
+    new QUESO::FullEnvironment(0,"input","",NULL);
 #endif
 
   return_flag = actualChecking(env);
@@ -60,17 +60,17 @@ int main(int argc, char* argv[])
 /* Separated this out into a function because we want
    the destructor for paramSpace to be called before
    we delete env in main. */
-int actualChecking(const uqFullEnvironmentClass* env)
+int actualChecking(const QUESO::FullEnvironment* env)
 {
 
   int return_flag = 0;
 
   // Instantiate the parameter space
-  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::VectorSpace<QUESO::GslVector,QUESO::GslMatrix>
     paramSpace( (*env), "param_", 2, NULL);
 
   // Instantiate the parameter domain
-  uqGslVectorClass Vector( paramSpace.zeroVector() );
+  QUESO::GslVector Vector( paramSpace.zeroVector() );
 
   Vector[0] = -4.;
   Vector[1] =  3.;

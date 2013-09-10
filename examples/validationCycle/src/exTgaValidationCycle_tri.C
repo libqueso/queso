@@ -31,7 +31,7 @@
  *-------------------------------------------------------------------------- */
 
 #include <exTgaValidationCycle_appl.h>
-#include <uqTrilinosMatrix.h>
+#include <queso/TrilinosMatrix.h>
 
 int main(int argc, char* argv[])
 {
@@ -39,15 +39,15 @@ int main(int argc, char* argv[])
   // Initialize environment
   //************************************************
   MPI_Init(&argc,&argv);
-  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(argc,argv,MPI_COMM_WORLD,"");
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(argc,argv,MPI_COMM_WORLD,"");
 
   //************************************************
   // Run application
   //************************************************
-  uqAppl<uqTrilinosVectorClass, // type for parameter vectors
-         uqTrilinosMatrixClass, // type for parameter matrices
-         uqTrilinosVectorClass, // type for qoi vectors
-         uqTrilinosMatrixClass  // type for qoi matrices
+  uqAppl<QUESO::TrilinosVector, // type for parameter vectors
+         QUESO::TrilinosMatrix, // type for parameter matrices
+         QUESO::TrilinosVector, // type for qoi vectors
+         QUESO::TrilinosMatrix  // type for qoi matrices
         >(*env);
 
   //************************************************
