@@ -164,8 +164,8 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/uqMpiComm.h \
 	$(top_srcdir)/src/core/inc/uqMap.h \
 	$(top_srcdir)/src/core/inc/uqDistArray.h \
-	$(top_srcdir)/src/core/inc/uq_asserts.h
-	$(top_srcdir)/src/core/inc/uq_exceptions.h
+	$(top_srcdir)/src/core/inc/uq_asserts.h \
+	$(top_srcdir)/src/core/inc/uq_exceptions.h \
 	$(top_srcdir)/src/core/inc/uqVector.h
 
 # Headers to install from misc/inc
