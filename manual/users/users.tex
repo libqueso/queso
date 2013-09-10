@@ -48,7 +48,7 @@
    pdftitle = {QUESO user's manual},
    pdfsubject = {The QUESO Library -- Quantification of Uncertainty for Estimation, Simulation, and Optimization},
    pdfkeywords = {research, uncertainty quantification, statistical inverse and statistical forward problems, validation.},
-   pdfauthor = {Kemelli C. Estacio-Hiroms, Ernesto E. Prudencio}
+   pdfauthor = {Kemelli C. Estacio-Hiroms}
    }
 
 
@@ -72,7 +72,7 @@
 \newcommand{\bv}[1]{\ensuremath{\mbox{\boldmath$ #1 $}}}
 
 \newcommand{\myverb}[1]{ \indent{ \begin{verbatim} #1 \end{verbatim} } }
-\newcommand{\QUESOversion}{0.46.0}
+\newcommand{\QUESOversion}{0.47.1}
 
 \usepackage{color}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -82,7 +82,7 @@
 \usepackage{listings} % to include codes using \lstinputlisting
 \lstset{ %
 language=sh,                      % choose the language of the code
-basicstyle=\footnotesize\ttfamily,       % the size of the fonts that are used for the code
+basicstyle=\scriptsize\ttfamily,       % the size of the fonts that are used for the code
 %stringstyle=\ttfamily,
 %commentstyle=\scriptsize\sffamily,
 %keywordstyle=\bfseries,        % so funciona com basicstyle=\footnotesize,\ttfamily se eu adicionar \usepackage{bold-extra}
@@ -143,21 +143,24 @@ aboveskip =10pt,
 
 \include{users_1_introduction}
 
- \include{users_2_installation}
+\include{users_2_installation}
 
 \include{users_3_classes} 
 
 \include{users_4_remarks} 
 
-\include{users_5_appl_example}
+\include{users_5a_example_sip}
 
+\input{users_5b_example_sfp}
+
+\input{users_5c_example_gravity}
+
+\input{users_5d_example_tga}
 
 
 \addcontentsline{toc}{chapter}{References}
 
-\bibliography{../../../bibs/uq.bib}
-%\bibliography{uq.bib}
-
+\bibliography{uq.bib}
 
 \begin{appendix}
 
@@ -169,5 +172,4 @@ aboveskip =10pt,
    
 \end{appendix}    
  
-
 \end{document}
