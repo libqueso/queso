@@ -1,7 +1,7 @@
 ###############################################
 # UQ Environment
 ###############################################
-env_numSubEnvironments   = 1 #or 8, if 8 processors can be used in a parallel run;  see Section 5.5.1
+env_numSubEnvironments   = 1 
 env_subDisplayFileName   = outputData/display_env
 env_subDisplayAllowAll   = 0
 env_subDisplayAllowedSet = 0 1 2 3 4 5 6 7

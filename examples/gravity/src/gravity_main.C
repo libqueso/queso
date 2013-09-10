@@ -27,19 +27,14 @@
  /*------------------------------------------------------------------
  * Brief description of this file: 
  * 
- * This is an example of how to use QUESO classes and algorithms in
- * order to define and solve a statistical inverse problem (SIP) and/
- * or a statistical forward problem (SFP).
- * 
- * The SIP consists on calibrating the magnitude 'g' of acceleration
- * gravity using measurements of the time that it takes for an object
- * in free fall to reach the ground from a given height and zero 
- * initial velocity. The solution of the SIP is the posterior 
+ * This is an example of how to use QUESO classes and algorithms in order to define and solve
+ * a statistical inverse problem (SIP) and/or a statistical forward problem (SFP).
+ * The SIP consists on calibrating the magnitude 'g' of acceleration gravity using 
+ * measurements of the time that it takes for an object in free fall to reach the ground from
+ * a given height and zero initial velocity. The solution of the SIP is the posterior 
  * probability density function (PDF) of 'g'.
- * 
- * The SFP consists of calculating the maximum distance traveled by
- * an object in projectile motion. The posterior PDF of 'g' from the 
- * SIP might be used as input to the SFP.
+ * The SFP consists of calculating the maximum distance traveled by an object in projectile 
+ * motion. The posterior PDF of 'g' from the SIP might be used as input to the SFP.
  * 
  * The code consists of 7 files:
  * - 'gravity_main.C' (this file)

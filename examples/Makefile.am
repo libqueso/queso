@@ -27,12 +27,14 @@ if HDF5_ENABLED
   LIBS += $(HDF5_LIBS)
 endif
 
-#############################
+###################################
 # simpleStatisticalInverseProblem #
-#############################
+###################################
 exSimpleStatisticalInverseProblem_gsldir = $(prefix)/examples/simpleStatisticalInverseProblem
 
 exSimpleStatisticalInverseProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/example.inp
+exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/simple_ip_plots.m
+exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/src/Makefile_sip_example_margarida 
 
 exSimpleStatisticalInverseProblem_gsl_PROGRAMS = exSimpleStatisticalInverseProblem_gsl
 
@@ -52,79 +54,80 @@ dist_exSimpleStatisticalInverseProblem_gsl_DATA = ${exSimpleStatisticalInversePr
 																						${exSimpleStatisticalInverseProblem_gsl_HEADERS} \
 																						${exSimpleStatisticalInverseProblem_gsl_SOURCES}
 		
-#############################
+###################################
 # simpleStatisticalForwardProblem #
-#############################
-# exSimpleStatisticalForwardProblem_gsldir = $(prefix)/examples/simpleStatisticalForwardProblem
-#
-# exSimpleStatisticalForwardProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalForwardProblem/tests/test_2013_08_27/simple_sfp_example.inp
-# exSimpleStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/Makefile_sfp_example_margarida
-#
-# exSimpleStatisticalForwardProblem_gsl_PROGRAMS = exSimpleStatisticalForwardProblem_gsl
-#
-# exSimpleStatisticalForwardProblem_gsl_SOURCES = $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_main.C
-# exSimpleStatisticalForwardProblem_gsl_SOURCES += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.C
-# exSimpleStatisticalForwardProblem_gsl_SOURCES += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.C
-#
-# exSimpleStatisticalForwardProblem_gsl_HEADERS = $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.h
-# exSimpleStatisticalForwardProblem_gsl_HEADERS += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.h
-#
-# exSimpleStatisticalForwardProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
-#
-# exSimpleStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalForwardProblem/src $(QUESO_CPPFLAGS)
-#
-# dist_exSimpleStatisticalForwardProblem_gsl_DATA = ${exSimpleStatisticalForwardProblem_gsl_DATA} \
-# 																						${exSimpleStatisticalForwardProblem_gsl_HEADERS} \
-# 																						${exSimpleStatisticalForwardProblem_gsl_SOURCES}
+###################################
+exSimpleStatisticalForwardProblem_gsldir = $(prefix)/examples/simpleStatisticalForwardProblem
+
+exSimpleStatisticalForwardProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalForwardProblem/tests/test_2013_08_27/simple_sfp_example.inp
+exSimpleStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalForwardProblem/tests/test_2013_08_27/simple_fp_plots.m
+exSimpleStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/Makefile_sfp_example_margarida
+
+exSimpleStatisticalForwardProblem_gsl_PROGRAMS = exSimpleStatisticalForwardProblem_gsl
+
+exSimpleStatisticalForwardProblem_gsl_SOURCES = $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_main.C
+exSimpleStatisticalForwardProblem_gsl_SOURCES += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.C
+exSimpleStatisticalForwardProblem_gsl_SOURCES += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.C
+
+exSimpleStatisticalForwardProblem_gsl_HEADERS = $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.h
+exSimpleStatisticalForwardProblem_gsl_HEADERS += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.h
+
+exSimpleStatisticalForwardProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
+
+exSimpleStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalForwardProblem/src $(QUESO_CPPFLAGS)
+
+dist_exSimpleStatisticalForwardProblem_gsl_DATA = ${exSimpleStatisticalForwardProblem_gsl_DATA} \
+																						${exSimpleStatisticalForwardProblem_gsl_HEADERS} \
+																						${exSimpleStatisticalForwardProblem_gsl_SOURCES}
 																						
 ####################################
 # statisticalForwardProblemExample # 
 ####################################
-exStatisticalForwardProblem_gsldir = $(prefix)/examples/statisticalForwardProblem
-
-exStatisticalForwardProblem_gsl_DATA = $(top_srcdir)/examples/statisticalForwardProblem/tests/test_2012_11_13/sfp.inp
-exStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/statisticalForwardProblem/tests/test_2012_11_13/sfp_plot.m
-
-exStatisticalForwardProblem_gsl_PROGRAMS = exStatisticalForwardProblem_gsl
-
-exStatisticalForwardProblem_gsl_SOURCES = $(top_srcdir)/examples/statisticalForwardProblem/src/exStatisticalForwardProblem_gsl.C
-
-exStatisticalForwardProblem_gsl_HEADERS = $(top_srcdir)/examples/statisticalForwardProblem/src/exStatisticalForwardProblem_appl.h
-exStatisticalForwardProblem_gsl_HEADERS += $(top_srcdir)/examples/statisticalForwardProblem/src/exStatisticalForwardProblem_qoi.h
-
-exStatisticalForwardProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
-
-exStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalForwardProblem/src $(QUESO_CPPFLAGS)
-
 # Kemelli, 8/26/13: removing this example from the distro
-#dist_exStatisticalForwardProblem_gsl_DATA = ${exStatisticalForwardProblem_gsl_DATA}
+# exStatisticalForwardProblem_gsldir = $(prefix)/examples/statisticalForwardProblem
+# 
+# exStatisticalForwardProblem_gsl_DATA = $(top_srcdir)/examples/statisticalForwardProblem/tests/test_2012_11_13/sfp.inp
+# exStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/statisticalForwardProblem/tests/test_2012_11_13/sfp_plot.m
+# 
+# exStatisticalForwardProblem_gsl_PROGRAMS = exStatisticalForwardProblem_gsl
+# 
+# exStatisticalForwardProblem_gsl_SOURCES = $(top_srcdir)/examples/statisticalForwardProblem/src/exStatisticalForwardProblem_gsl.C
+# 
+# exStatisticalForwardProblem_gsl_HEADERS = $(top_srcdir)/examples/statisticalForwardProblem/src/exStatisticalForwardProblem_appl.h
+# exStatisticalForwardProblem_gsl_HEADERS += $(top_srcdir)/examples/statisticalForwardProblem/src/exStatisticalForwardProblem_qoi.h
+# 
+# exStatisticalForwardProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
+# 
+# exStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalForwardProblem/src $(QUESO_CPPFLAGS)
+# 
+# dist_exStatisticalForwardProblem_gsl_DATA = ${exStatisticalForwardProblem_gsl_DATA}
 #																		
-#${exStatisticalForwardProblem_gsl_SOURCES} \
-#																						#${exStatisticalForwardProblem_gsl_HEADERS}
+# ${exStatisticalForwardProblem_gsl_SOURCES} \
+#																						# ${exStatisticalForwardProblem_gsl_HEADERS}
 
 #############################
 # statisticalInverseProblem #
 #############################
-exStatisticalInverseProblem_gsldir = $(prefix)/examples/statisticalInverseProblem
-
-exStatisticalInverseProblem_gsl_DATA = $(top_srcdir)/examples/statisticalInverseProblem/tests/test_2012_11_15/sip.inp
-exStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/statisticalInverseProblem/tests/test_2012_11_15/sip_plot.m
-
-exStatisticalInverseProblem_gsl_PROGRAMS = exStatisticalInverseProblem_gsl
-
-exStatisticalInverseProblem_gsl_SOURCES = $(top_srcdir)/examples/statisticalInverseProblem/src/exStatisticalInverseProblem_gsl.C
-
-exStatisticalInverseProblem_gsl_HEADERS = $(top_srcdir)/examples/statisticalInverseProblem/src/exStatisticalInverseProblem_appl.h
-exStatisticalInverseProblem_gsl_HEADERS += $(top_srcdir)/examples/statisticalInverseProblem/src/exStatisticalInverseProblem_likelihood.h
-
-exStatisticalInverseProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
-
-exStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalInverseProblem/src $(QUESO_CPPFLAGS)
-
 # Kemelli, 8/26/13: removing this example from the distro
-#dist_exStatisticalInverseProblem_gsl_DATA = ${exStatisticalInverseProblem_gsl_DATA} \
-#																						#${exStatisticalInverseProblem_gsl_HEADERS} \
-#																						#${exStatisticalInverseProblem_gsl_SOURCES}
+# exStatisticalInverseProblem_gsldir = $(prefix)/examples/statisticalInverseProblem
+# 
+# exStatisticalInverseProblem_gsl_DATA = $(top_srcdir)/examples/statisticalInverseProblem/tests/test_2012_11_15/sip.inp
+# exStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/statisticalInverseProblem/tests/test_2012_11_15/sip_plot.m
+# 
+# exStatisticalInverseProblem_gsl_PROGRAMS = exStatisticalInverseProblem_gsl
+# 
+# exStatisticalInverseProblem_gsl_SOURCES = $(top_srcdir)/examples/statisticalInverseProblem/src/exStatisticalInverseProblem_gsl.C
+# 
+# exStatisticalInverseProblem_gsl_HEADERS = $(top_srcdir)/examples/statisticalInverseProblem/src/exStatisticalInverseProblem_appl.h
+# exStatisticalInverseProblem_gsl_HEADERS += $(top_srcdir)/examples/statisticalInverseProblem/src/exStatisticalInverseProblem_likelihood.h
+# 
+# exStatisticalInverseProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
+# 
+# exStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/statisticalInverseProblem/src $(QUESO_CPPFLAGS)
+# 
+# dist_exStatisticalInverseProblem_gsl_DATA = ${exStatisticalInverseProblem_gsl_DATA} \
+#																						# ${exStatisticalInverseProblem_gsl_HEADERS} \
+#																						# ${exStatisticalInverseProblem_gsl_SOURCES}
 
 ###################
 # validationCycle #

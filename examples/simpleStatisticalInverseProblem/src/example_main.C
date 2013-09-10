@@ -45,7 +45,6 @@ int main(int argc, char* argv[])
 
   // Finalize environment
   delete env;
-
   MPI_Finalize();
 
   return 0;
