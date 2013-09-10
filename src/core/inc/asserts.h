@@ -16,7 +16,7 @@
 #define QUESO_ASSERTS_H
 
 // Queso
-#include "uq_exceptions.h"
+#include "exceptions.h"
 #include "config_queso.h" // for QUESO_HAVE_CXX11
 
 // C++
