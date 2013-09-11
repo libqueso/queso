@@ -21,11 +21,11 @@ namespace QUESO
   class LogicError : public std::logic_error
   {
   public:
-    LogicError() : std::logic_error( "Error in Queso internal logic" ) {}
+    LogicError() : std::logic_error( "Error in QUESO internal logic" ) {}
   };
 
   /*!
-   * A class to stub for features that should be in Queso, but
+   * A class to stub for features that should be in QUESO, but
    * haven't been written yet, to be thrown by
    * "queso_not_implemented();"
    */
@@ -48,7 +48,7 @@ namespace QUESO
     FileError(const std::string& filename) : std::runtime_error( "Error accessing file: " + filename ) {}
   };
 
-} // end namespace Queso
+} // end namespace QUESO
 
 #define QUESO_THROW(e) do { throw e; } while (0)
 

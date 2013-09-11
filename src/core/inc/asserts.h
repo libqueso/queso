@@ -15,7 +15,6 @@
 #ifndef QUESO_ASSERTS_H
 #define QUESO_ASSERTS_H
 
-// Queso
 #include "exceptions.h"
 #include "config_queso.h" // for QUESO_HAVE_CXX11
 
@@ -68,8 +67,8 @@
 #endif // NDEBUG
 
 
-#define queso_error()    do { queso_here(); QUESO_THROW(Queso::LogicError()); } while(0)
-#define queso_not_implemented()    do { queso_here(); QUESO_THROW(Queso::NotImplemented()); } while(0)
-#define queso_file_error(filename)    do { queso_here(); QUESO_THROW(Queso::FileError(filename)); } while(0)
+#define queso_error()    do { queso_here(); QUESO_THROW(QUESO::LogicError()); } while(0)
+#define queso_not_implemented()    do { queso_here(); QUESO_THROW(QUESO::NotImplemented()); } while(0)
+#define queso_file_error(filename)    do { queso_here(); QUESO_THROW(QUESO::FileError(filename)); } while(0)
 
 #endif // QUESO_ASSERTS_H
