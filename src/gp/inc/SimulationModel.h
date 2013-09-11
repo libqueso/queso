@@ -974,4 +974,6 @@ std::ostream& operator<<(std::ostream& os, const SimulationModel<S_V,S_M,P_V,P_M
   return os;
 }
 
+}  // End namespace QUESO
+
 #endif // ___SIMULATION_MODEL_H__
