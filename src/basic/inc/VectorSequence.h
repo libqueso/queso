@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_VECTOR_SEQUENCE_H__
-#define __UQ_VECTOR_SEQUENCE_H__
+#ifndef UQ_VECTOR_SEQUENCE_H
+#define UQ_VECTOR_SEQUENCE_H
 
 #undef UQ_CODE_HAS_MONITORS
 
@@ -3277,4 +3277,4 @@ ComputeCovCorrMatricesBetweenVectorSequences(
 
 }  // End namespace QUESO
 
-#endif // __UQ_VECTOR_SEQUENCE_H__
+#endif // UQ_VECTOR_SEQUENCE_H

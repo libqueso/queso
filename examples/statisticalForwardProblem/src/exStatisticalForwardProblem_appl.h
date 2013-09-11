@@ -30,8 +30,8 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_STATISTICAL_FORWARD_PROBLEM_APPL_H__
-#define __EX_STATISTICAL_FORWARD_PROBLEM_APPL_H__
+#ifndef EX_STATISTICAL_FORWARD_PROBLEM_APPL_H
+#define EX_STATISTICAL_FORWARD_PROBLEM_APPL_H
 
 #include <exStatisticalForwardProblem_qoi.h>
 #include <queso/StatisticalForwardProblem.h>
@@ -148,4 +148,4 @@ uqAppl(const QUESO::BaseEnvironment& env)
 
   return;
 }
-#endif // __EX_STATISTICAL_FORWARD_PROBLEM_APPL_H__
+#endif // EX_STATISTICAL_FORWARD_PROBLEM_APPL_H

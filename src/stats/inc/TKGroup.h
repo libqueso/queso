@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_TRANSITION_KERNEL_GROUP_H__
-#define __UQ_TRANSITION_KERNEL_GROUP_H__
+#ifndef UQ_TRANSITION_KERNEL_GROUP_H
+#define UQ_TRANSITION_KERNEL_GROUP_H
 
 #include <queso/VectorRV.h>
 #include <queso/ScalarFunctionSynchronizer.h>
@@ -951,4 +951,4 @@ HessianCovMatricesTKGroup<V,M>::print(std::ostream& os) const
 
 }  // End namespace QUESO
 
-#endif // __UQ_TRANSITION_KERNEL_GROUP_H__
+#endif // UQ_TRANSITION_KERNEL_GROUP_H

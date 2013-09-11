@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SCALAR_GAUSSIAN_RANDOM_FIELD_H__
-#define __UQ_SCALAR_GAUSSIAN_RANDOM_FIELD_H__
+#ifndef UQ_SCALAR_GAUSSIAN_RANDOM_FIELD_H
+#define UQ_SCALAR_GAUSSIAN_RANDOM_FIELD_H
 
 #include <queso/ScalarCovarianceFunction.h>
 #include <queso/ScalarFunction.h>
@@ -316,4 +316,4 @@ ScalarGaussianRandomField<V,M>::sampleFunction(const std::vector<V*>& fieldPosit
 
 }  // End namespace QUESO
 
-#endif // __UQ_SCALAR_GAUSSIAN_RANDOM_FIELD_H__ 
+#endif // UQ_SCALAR_GAUSSIAN_RANDOM_FIELD_H

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_REALIZER_H__
-#define __UQ_REALIZER_H__
+#ifndef UQ_REALIZER_H
+#define UQ_REALIZER_H
 
 #include <queso/VectorSequence.h>
 #include <queso/Environment.h>
@@ -1329,4 +1329,4 @@ ConcatenatedVectorRealizer<V,M>::realization(V& nextValues) const
 
 }  // End namespace QUESO
 
-#endif // __UQ_REALIZER_H__
+#endif // UQ_REALIZER_H

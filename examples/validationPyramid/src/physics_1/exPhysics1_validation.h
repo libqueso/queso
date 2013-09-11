@@ -30,8 +30,8 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_PHYSICS_1_VALIDATION_H__
-#define __EX_PHYSICS_1_VALIDATION_H__
+#ifndef EX_PHYSICS_1_VALIDATION_H
+#define EX_PHYSICS_1_VALIDATION_H
 
 #include <uq1D1DFunction.h>
 #include <exPhysics1_likelihood.h>
@@ -462,4 +462,4 @@ exPhysics1Validation<P_V,P_M,Q_V,Q_M>::runComparisonStage()
   return;
 }
 
-#endif // __EX_PHYSICS_1_VALIDATION_H__
+#endif // EX_PHYSICS_1_VALIDATION_H

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_BASIC_PDFS_BOOST_H__
-#define __UQ_BASIC_PDFS_BOOST_H__
+#ifndef UQ_BASIC_PDFS_BOOST_H
+#define UQ_BASIC_PDFS_BOOST_H
 
 #include <queso/BasicPdfsBase.h>
 #include <boost/random.hpp>
@@ -75,4 +75,4 @@ private:
 
 }  // End namespace QUESO
 
-#endif // __UQ_BASIC_PDFS_BOOST_H__
+#endif // UQ_BASIC_PDFS_BOOST_H

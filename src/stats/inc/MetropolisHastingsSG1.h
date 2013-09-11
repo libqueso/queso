@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MH_SG1_H__
-#define __UQ_MH_SG1_H__
+#ifndef UQ_MH_SG1_H
+#define UQ_MH_SG1_H
 
 #include <queso/MetropolisHastingsSGOptions.h>
 #include <queso/TKGroup.h>
@@ -951,4 +951,4 @@ std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSG<P_V,P_M>& 
 
 }  // End namespace QUESO
 
-#endif // __UQ_MH_SG1_H__
+#endif // UQ_MH_SG1_H

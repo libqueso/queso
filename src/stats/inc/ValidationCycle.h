@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_VALIDATION_CYCLE_H__
-#define __UQ_VALIDATION_CYCLE_H__
+#ifndef UQ_VALIDATION_CYCLE_H
+#define UQ_VALIDATION_CYCLE_H
 
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/StatisticalForwardProblem.h>
@@ -428,4 +428,4 @@ ValidationCycle<P_V,P_M,Q_V,Q_M>::valFP()
 
 }  // End namespace QUESO
 
-#endif // __UQ_VALIDATION_CYCLE_H__
+#endif // UQ_VALIDATION_CYCLE_H

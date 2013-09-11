@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_GCM_JOINT_INFO_H__
-#define __UQ_GCM_JOINT_INFO_H__
+#ifndef UQ_GCM_JOINT_INFO_H
+#define UQ_GCM_JOINT_INFO_H
 
 #include <queso/GcmSimulationInfo.h>
 #include <queso/GcmExperimentInfo.h>
@@ -873,4 +873,4 @@ GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::~GcmJointInfo()
 
 }  // End namespace QUESO
 
-#endif // __UQ_GCM_JOINT_INFO_H__
+#endif // UQ_GCM_JOINT_INFO_H

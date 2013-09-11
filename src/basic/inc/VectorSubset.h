@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_VECTOR_SUBSET_H__
-#define __UQ_VECTOR_SUBSET_H__
+#ifndef UQ_VECTOR_SUBSET_H
+#define UQ_VECTOR_SUBSET_H
 
 #include <queso/VectorSpace.h>
 
@@ -619,4 +619,4 @@ DiscreteSubset<V,M>::print(std::ostream& os) const
 
 }  // End namespace QUESO
 
-#endif // __UQ_VECTOR_SUBSET_H__
+#endif // UQ_VECTOR_SUBSET_H

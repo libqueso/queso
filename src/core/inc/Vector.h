@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_VECTOR_H__
-#define __UQ_VECTOR_H__
+#ifndef UQ_VECTOR_H
+#define UQ_VECTOR_H
 
 #include <queso/Environment.h>
 #include <queso/Map.h>
@@ -164,4 +164,4 @@ protected:
 
 }  // End namespace QUESO
 
-#endif // __UQ_VECTOR_H__
+#endif // UQ_VECTOR_H

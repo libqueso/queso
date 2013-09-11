@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SEQUENCE_OF_VECTORS_H__
-#define __UQ_SEQUENCE_OF_VECTORS_H__
+#ifndef UQ_SEQUENCE_OF_VECTORS_H
+#define UQ_SEQUENCE_OF_VECTORS_H
 
 #include <queso/VectorSequence.h>
 #define UQ_SEQ_VEC_USES_SCALAR_SEQ_CODE
@@ -3529,5 +3529,5 @@ SequenceOfVectors<V,M>::unifiedMeanMonitorFree()
 
 }  // End namespace QUESO
 
-#endif // __UQ_SEQUENCE_OF_VECTORS_H__
+#endif // UQ_SEQUENCE_OF_VECTORS_H
 

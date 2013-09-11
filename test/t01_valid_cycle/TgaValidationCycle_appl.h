@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __EX_TGA_VALIDATION_CYCLE_APPL_H__
-#define __EX_TGA_VALIDATION_CYCLE_APPL_H__
+#ifndef EX_TGA_VALIDATION_CYCLE_APPL_H
+#define EX_TGA_VALIDATION_CYCLE_APPL_H
 
 #include <TgaValidationCycle_likelihood.h>
 #include <TgaValidationCycle_qoi.h>
@@ -453,4 +453,4 @@ uqAppl_UnifiedComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle)
 
   return;
 }
-#endif // __EX_TGA_VALIDATION_CYCLE_APPL_H__
+#endif // EX_TGA_VALIDATION_CYCLE_APPL_H

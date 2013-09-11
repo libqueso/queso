@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_DEFINES_H__
-#define __UQ_DEFINES_H__
+#ifndef UQ_DEFINES_H
+#define UQ_DEFINES_H
 
 #include <config_queso.h>
 
@@ -264,4 +264,4 @@ private:
 
 }  // End namespace QUESO
 
-#endif // __UQ_DEFINES_H__
+#endif // UQ_DEFINES_H

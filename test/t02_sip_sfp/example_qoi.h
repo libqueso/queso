@@ -25,8 +25,8 @@
 // $Id$
 //
 //--------------------------------------------------------------------------
-#ifndef __EX_QOI_H__
-#define __EX_QOI_H__
+#ifndef EX_QOI_H
+#define EX_QOI_H
 
 #include <queso/GslMatrix.h>
 #include <queso/DistArray.h>

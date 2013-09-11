@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_INSTANTIATE_INTERSECTION_H__
-#define __UQ_INSTANTIATE_INTERSECTION_H__
+#ifndef UQ_INSTANTIATE_INTERSECTION_H
+#define UQ_INSTANTIATE_INTERSECTION_H
 
 #include <queso/VectorSpace.h>
 #include <queso/VectorSubset.h>
@@ -188,5 +188,5 @@ InstantiateIntersection(const VectorSet<V,M>& domain1, const VectorSet<V,M>& dom
 
 }  // End namespace QUESO
 
-#endif // __UQ_INSTANTIATE_INTERSECTION_H__
+#endif // UQ_INSTANTIATE_INTERSECTION_H
 

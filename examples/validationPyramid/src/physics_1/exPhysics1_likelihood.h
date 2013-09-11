@@ -30,8 +30,8 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_PHYSICS_1_LIKELIHOOD_H__
-#define __EX_PHYSICS_1_LIKELIHOOD_H__
+#ifndef EX_PHYSICS_1_LIKELIHOOD_H
+#define EX_PHYSICS_1_LIKELIHOOD_H
 
 #include <uqVectorSpace.h>
 #include <uqDefines.h>
@@ -161,4 +161,4 @@ exPhysics1LikelihoodRoutine(
   return resultValue;
 }
 
-#endif // __EX_PHYSICS_1_LIKELIHOOD_H__
+#endif // EX_PHYSICS_1_LIKELIHOOD_H

@@ -25,8 +25,8 @@
 // $Id:$
 //
 //--------------------------------------------------------------------------
-#ifndef __EX_LIKELIHOOD_H__
-#define __EX_LIKELIHOOD_H__
+#ifndef EX_LIKELIHOOD_H
+#define EX_LIKELIHOOD_H
 
 #include <queso/GslMatrix.h>
 

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_RNG_GSL_H__
-#define __UQ_RNG_GSL_H__
+#ifndef UQ_RNG_GSL_H
+#define UQ_RNG_GSL_H
 
 #include <queso/RngBase.h>
 #include <gsl/gsl_rng.h>
@@ -117,4 +117,4 @@ protected:
 
 }  // End namespace QUESO
 
-#endif // __UQ_RNG_GSL_H__
+#endif // UQ_RNG_GSL_H

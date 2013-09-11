@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MOC_SG_H__
-#define __UQ_MOC_SG_H__
+#ifndef UQ_MOC_SG_H
+#define UQ_MOC_SG_H
 
 #include <queso/VectorRV.h>
 #include <queso/VectorFunction.h>
@@ -615,4 +615,4 @@ std::ostream& operator<<(std::ostream& os, const MonteCarloSG<P_V,P_M,Q_V,Q_M>& 
 
 }  // End namespace QUESO
 
-#endif // __UQ_MOC_SG_H__
+#endif // UQ_MOC_SG_H

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H__
-#define __EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H__
+#ifndef EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H
+#define EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H
 
 #include <queso/Environment.h>
 #include <gsl/gsl_errno.h>
@@ -431,4 +431,4 @@ likelihoodRoutine(
 #endif
 }
 
-#endif // __EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H__
+#endif // EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H

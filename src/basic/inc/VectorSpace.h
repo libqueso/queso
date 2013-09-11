@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_VECTOR_SPACE_H__
-#define __UQ_VECTOR_SPACE_H__
+#ifndef UQ_VECTOR_SPACE_H
+#define UQ_VECTOR_SPACE_H
 
 #include <queso/DistArray.h>
 #include <queso/Map.h>
@@ -502,4 +502,4 @@ VectorSpace<V,M>::print(std::ostream& os) const
 
 }  // End namespace QUESO
 
-#endif // __UQ_VECTOR_SPACE_H__
+#endif // UQ_VECTOR_SPACE_H

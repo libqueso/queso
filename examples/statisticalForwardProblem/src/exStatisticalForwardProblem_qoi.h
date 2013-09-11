@@ -30,8 +30,8 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
-#define __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
+#ifndef EX_STATISTICAL_FORWARD_PROBLEM_QOI_H
+#define EX_STATISTICAL_FORWARD_PROBLEM_QOI_H
 
 #include <queso/Environment.h>
 #include <queso/DistArray.h>
@@ -84,4 +84,4 @@ qoiRoutine(
   return;
 }
 
-#endif // __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
+#endif // EX_STATISTICAL_FORWARD_PROBLEM_QOI_H

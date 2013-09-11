@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_TEUCHOS_MATRIX_H__
-#define __UQ_TEUCHOS_MATRIX_H__
+#ifndef UQ_TEUCHOS_MATRIX_H
+#define UQ_TEUCHOS_MATRIX_H
 
 #ifdef QUESO_HAS_TRILINOS
 #include <queso/TeuchosVector.h>
@@ -409,4 +409,4 @@ std::ostream&        operator<<      (std::ostream& os,            const Teuchos
 
 #endif // ifdef QUESO_HAS_TRILINOS
 
-#endif // __UQ_TEUCHOS_MATRIX_H__
+#endif // UQ_TEUCHOS_MATRIX_H

@@ -27,8 +27,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H__
-#define __EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H__
+#ifndef EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H
+#define EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H
 
 #include<cstdio>
 #include<stdlib.h>
@@ -141,4 +141,4 @@ likelihoodRoutine(
 #endif
 
 }
-#endif // __EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H__
+#endif // EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H

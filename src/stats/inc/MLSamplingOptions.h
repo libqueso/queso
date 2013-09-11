@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H__
-#define __UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H__
+#ifndef UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H
+#define UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H
 
 #include <queso/Environment.h>
 #include <queso/MLSamplingLevelOptions.h>
@@ -112,4 +112,4 @@ std::ostream& operator<<(std::ostream& os, const MLSamplingOptions& obj);
 
 }  // End namespace QUESO
 
-#endif // __UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H__
+#endif // UQ_MULTI_LEVEL_SAMPLING_OPTIONS_H

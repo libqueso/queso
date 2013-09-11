@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MAP_H__
-#define __UQ_MAP_H__
+#ifndef UQ_MAP_H
+#define UQ_MAP_H
 
 #include <queso/Defines.h>
 #ifdef QUESO_HAS_TRILINOS
@@ -129,4 +129,4 @@ private:
 
 }  // End namespace QUESO
 
-#endif // __UQ_MAP_H__
+#endif // UQ_MAP_H
