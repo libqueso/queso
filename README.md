@@ -5,7 +5,7 @@ The `QUESO` Library
 Simulation and Optimization.
 
 `QUESO` is a collection of algorithms and other functionalities aimed
-for the solution of statiscal inverse problems, for the solution of
+for the solution of statistical inverse problems, for the solution of
 statistical forward problems, for the validation of a model and for
 the prediction of quantities of interest from such model along with
 the quantification of their uncertainties.
@@ -34,20 +34,19 @@ specified by the `--prefix` option of the `configure` script.
 Dependencies
 ------------
 
-`QUESO` has three required dependencies:
+At a minimum, `QUESO` compilation requires MPI and linkage against two
+external libraries:
 
-- [boost](http://www.boost.org/)
-- mpi (either [mpich](http://www.mpich.org/) or
-  [openmpi](http://www.open-mpi.org/))
-- [gsl](https://www.gnu.org/software/gsl/)
+- [Boost](http://www.boost.org/)
+- [GSL](https://www.gnu.org/software/gsl/)
 
-`QUESO` also has several optional dependencies:
+`QUESO` also has several optional dependencies that enable additional functionality:
 
-- [teuchos](http://trilinos.sandia.gov/packages/docs/r7.0/packages/teuchos/doc/html/index.html)
-- [grvy](https://red.ices.utexas.edu/projects/hpct/files)
-- [hdf5](http://www.hdfgroup.org/HDF5/)
-- [glpk](https://www.gnu.org/software/glpk/)
-- [petsc](http://www.mcs.anl.gov/petsc/)
+- [Teuchos](http://trilinos.sandia.gov/packages/docs/r7.0/packages/teuchos/doc/html/index.html)
+- [GRVY](https://red.ices.utexas.edu/projects/hpct/files)
+- [HDF5](http://www.hdfgroup.org/HDF5/)
+- [GLPK](https://www.gnu.org/software/glpk/)
+- [PETSc](http://www.mcs.anl.gov/petsc/)
 
 License
 -------
@@ -57,10 +56,10 @@ See `LICENSE` file distributed with `QUESO` for more information.
 Contributing
 ------------
 
-Contributions are very welcome.  If you wish to contribute, please take a few
-moments to review the [branching
-model](http://nvie.com/posts/a-successful-git-branching-model/) `QUESO`
-utilises.
+Contributions are very welcome.  If you wish to contribute, please
+take a few moments to review the [branching
+model](http://nvie.com/posts/a-successful-git-branching-model/)
+`QUESO` utilizes.
 
 Support
 -------
