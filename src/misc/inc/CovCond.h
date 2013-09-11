@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_COV_COND_H__
-#define __UQ_COV_COND_H__
+#ifndef UQ_COV_COND_H
+#define UQ_COV_COND_H
 
 #include <iostream>
 
@@ -80,4 +80,4 @@ CovCond(
 
 }  // End namespace QUESO
 
-#endif // __UQ_COV_COND_H__
+#endif // UQ_COV_COND_H

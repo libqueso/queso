@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_FFT_H__
-#define __UQ_FFT_H__
+#ifndef UQ_FFT_H
+#define UQ_FFT_H
 
 #include <queso/Environment.h>
 //#include <gsl/gsl_fft_real.h>
@@ -139,4 +139,4 @@ Fft<T>::~Fft()
 
 }  // End namespace QUESO
 
-#endif // __UQ_FFT_H__
+#endif // UQ_FFT_H

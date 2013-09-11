@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_ASCII_TABLE_H__
-#define __UQ_ASCII_TABLE_H__
+#ifndef UQ_ASCII_TABLE_H
+#define UQ_ASCII_TABLE_H
 
 #include <queso/Environment.h>
 #include <queso/DistArray.h>
@@ -422,4 +422,4 @@ std::ostream& operator<<(std::ostream& os, const AsciiTable<V,M>& obj)
 
 }  // End namespace QUESO
 
-#endif // __UQ_ASCII_TABLE_H__
+#endif // UQ_ASCII_TABLE_H
