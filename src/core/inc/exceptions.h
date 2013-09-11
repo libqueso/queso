@@ -12,7 +12,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace Queso
+namespace QUESO
 {
   /*!
    * A class to represent the internal "this should never happen"
