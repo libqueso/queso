@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_VECTOR_GAUSSIAN_RANDOM_FIELD_H__
-#define __UQ_VECTOR_GAUSSIAN_RANDOM_FIELD_H__
+#ifndef UQ_VECTOR_GAUSSIAN_RANDOM_FIELD_H
+#define UQ_VECTOR_GAUSSIAN_RANDOM_FIELD_H
 
 #include <queso/MatrixCovarianceFunction.h>
 #include <queso/VectorFunction.h>
@@ -376,4 +376,4 @@ VectorGaussianRandomField<P_V,P_M,Q_V,Q_M>::sampleFunction(const std::vector<P_V
 
 }  // End namespace QUESO
 
-#endif // __UQ_VECTOR_GAUSSIAN_RANDOM_FIELD_H__ 
+#endif // UQ_VECTOR_GAUSSIAN_RANDOM_FIELD_H

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MULTI_LEVEL_SAMPLING1_H__
-#define __UQ_MULTI_LEVEL_SAMPLING1_H__
+#ifndef UQ_MULTI_LEVEL_SAMPLING1_H
+#define UQ_MULTI_LEVEL_SAMPLING1_H
 
 #define ML_NEW_CODE_2009_12_29
 
@@ -1131,4 +1131,4 @@ double MLSampling<P_V,P_M>::eig() const
 
 }  // End namespace QUESO
 
-#endif // __UQ_MULTI_LEVEL_SAMPLING1_H__
+#endif // UQ_MULTI_LEVEL_SAMPLING1_H

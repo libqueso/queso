@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MATRIX_COVARIANCE_FUNCTION_H__
-#define __UQ_MATRIX_COVARIANCE_FUNCTION_H__
+#ifndef UQ_MATRIX_COVARIANCE_FUNCTION_H
+#define UQ_MATRIX_COVARIANCE_FUNCTION_H
 
 #include <queso/VectorSet.h>
 #include <queso/Environment.h>
@@ -404,4 +404,4 @@ GenericMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::covMatrix(const P_V& positionV
 
 }  // End namespace QUESO
 
-#endif // __UQ_MATRIX_COVARIANCE_FUNCTION_H__ 
+#endif // UQ_MATRIX_COVARIANCE_FUNCTION_H

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SFP_OPTIONS_H__
-#define __UQ_SFP_OPTIONS_H__
+#ifndef UQ_SFP_OPTIONS_H
+#define UQ_SFP_OPTIONS_H
 
 #include <queso/Environment.h>
 //#include <queso/MonteCarloSGOptions.h>
@@ -162,4 +162,4 @@ std::ostream& operator<<(std::ostream& os, const StatisticalForwardProblemOption
 
 }  // End namespace QUESO
 
-#endif // __UQ_SFP_OPTIONS_H__
+#endif // UQ_SFP_OPTIONS_H
