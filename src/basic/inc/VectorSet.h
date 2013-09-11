@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_VECTOR_SET_H__
-#define __UQ_VECTOR_SET_H__
+#ifndef UQ_VECTOR_SET_H
+#define UQ_VECTOR_SET_H
 
 #include <queso/Environment.h>
 #include <queso/Defines.h>
@@ -192,4 +192,4 @@ operator<<(std::ostream& os, const VectorSet<V,M>& obj)
 
 }  // End namespace QUESO
 
-#endif // __UQ_VECTOR_SET_H__
+#endif // UQ_VECTOR_SET_H

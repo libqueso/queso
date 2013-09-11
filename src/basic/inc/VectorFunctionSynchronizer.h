@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_VECTOR_FUNCTION_SYNCHRONIZER_H__
-#define __UQ_VECTOR_FUNCTION_SYNCHRONIZER_H__
+#ifndef UQ_VECTOR_FUNCTION_SYNCHRONIZER_H
+#define UQ_VECTOR_FUNCTION_SYNCHRONIZER_H
 
 namespace QUESO {
 
@@ -280,4 +280,4 @@ VectorFunctionSynchronizer<P_V,P_M,Q_V,Q_M>::callFunction(
 
 }  // End namespace QUESO
 
-#endif // __UQ_VECTOR_FUNCTION_SYNCHRONIZER_H__
+#endif // UQ_VECTOR_FUNCTION_SYNCHRONIZER_H

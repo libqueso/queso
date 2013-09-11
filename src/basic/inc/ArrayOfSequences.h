@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_ARRAY_OF_SEQUENCES_H__
-#define __UQ_ARRAY_OF_SEQUENCES_H__
+#ifndef UQ_ARRAY_OF_SEQUENCES_H
+#define UQ_ARRAY_OF_SEQUENCES_H
 
 #include <queso/VectorSequence.h>
 
@@ -1217,4 +1217,4 @@ ArrayOfSequences<V,M>::geweke(
 
 }  // End namespace QUESO
 
-#endif // __UQ_ARRAY_OF_SEQUENCES_H__
+#endif // UQ_ARRAY_OF_SEQUENCES_H
