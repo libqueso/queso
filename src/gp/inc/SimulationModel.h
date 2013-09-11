@@ -51,7 +51,11 @@ public:
   const S_V&                           xSeq_original_ranges () const;
   const std::vector<const P_V* >&      ts_asterisks_standard() const;
   const Q_V&                           etaSeq_original_mean () const;
+#ifdef _GPMSA_CODE_TREATS_SIMULATION_VECTORS_IN_CHUNKS
+        double                         etaSeq_chunkStd      (unsigned int chunkId) const;
+#else
         double                         etaSeq_allStd        () const;
+#endif
   const Q_V&                           etaVec_transformed   (const std::string& debugString) const;
   const Q_V&                           basisVec             (unsigned int basisId) const;
   const Q_M&                           Kmat_eta             () const;
@@ -95,8 +99,13 @@ private:
         SequenceOfVectors<Q_V,Q_M> m_etaSeq_original;
         Q_V                               m_etaSeq_original_mean;
         Q_V                               m_etaSeq_original_std;
+#ifdef _GPMSA_CODE_TREATS_SIMULATION_VECTORS_IN_CHUNKS
+        std::vector<double>               m_etaSeq_chunkMeans;
+        std::vector<double>               m_etaSeq_chunkStds;
+#else
         double                            m_etaSeq_allMean;
         double                            m_etaSeq_allStd;
+#endif
         SequenceOfVectors<Q_V,Q_M> m_etaSeq_transformed;
         Q_V                               m_etaSeq_transformed_mean;
         Q_V                               m_etaSeq_transformed_std;
@@ -153,8 +162,13 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
   m_etaSeq_original         (m_n_eta_space, m_paper_m, "simul_etaSeq_original"),
   m_etaSeq_original_mean    (m_n_eta_space.zeroVector()),
   m_etaSeq_original_std     (m_n_eta_space.zeroVector()),
+#ifdef _GPMSA_CODE_TREATS_SIMULATION_VECTORS_IN_CHUNKS
+  m_etaSeq_chunkMeans       (simulStorage.chunkSizes().size(),0.),
+  m_etaSeq_chunkStds        (simulStorage.chunkSizes().size(),0.),
+#else
   m_etaSeq_allMean          (0.),
   m_etaSeq_allStd           (0.),
+#endif
   m_etaSeq_transformed      (m_n_eta_space, m_paper_m, "simul_etaSeq_transformed"),
   m_etaSeq_transformed_mean (m_n_eta_space.zeroVector()),
   m_etaSeq_transformed_std  (m_n_eta_space.zeroVector()),
@@ -369,6 +383,58 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     m_etaSeq_transformed.setPositionValues(i,tmpEtaVec);
   }
 
+#ifdef _GPMSA_CODE_TREATS_SIMULATION_VECTORS_IN_CHUNKS
+  unsigned int cumulativeSize = 0;
+  for (unsigned int chunkId = 0; chunkId < m_etaSeq_chunkStds.size(); ++chunkId) {
+    m_etaSeq_chunkMeans[chunkId] = 0.;
+    for (unsigned int i = 0; i < m_paper_m; ++i) {
+      m_etaSeq_transformed.getPositionValues(i,tmpEtaVec);
+      for (unsigned int j = cumulativeSize; j < (cumulativeSize + simulStorage.chunkSizes()[chunkId]); ++j) {
+        m_etaSeq_chunkMeans[chunkId] += tmpEtaVec[j];
+      }
+    }
+    m_etaSeq_chunkMeans[chunkId] /= ((double) (m_paper_m * simulStorage.chunkSizes()[chunkId]));
+    cumulativeSize += simulStorage.chunkSizes()[chunkId];
+  }
+  UQ_FATAL_TEST_MACRO(cumulativeSize != m_paper_n_eta,
+                      m_env.worldRank(),
+                      "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "inconsistency in 'cumulativeSize' (1)");
+
+  cumulativeSize = 0;
+  for (unsigned int chunkId = 0; chunkId < m_etaSeq_chunkStds.size(); ++chunkId) {
+    m_etaSeq_chunkStds[chunkId] = 0.;
+    for (unsigned int i = 0; i < m_paper_m; ++i) {
+      m_etaSeq_transformed.getPositionValues(i,tmpEtaVec);
+      for (unsigned int j = cumulativeSize; j < (cumulativeSize + simulStorage.chunkSizes()[chunkId]); ++j) {
+        double diff = tmpEtaVec[j] - m_etaSeq_chunkMeans[chunkId];
+        m_etaSeq_chunkStds[chunkId] += diff * diff;
+      }
+    }
+    m_etaSeq_chunkStds[chunkId] = sqrt( m_etaSeq_chunkStds[chunkId] / ((double) (m_paper_m * simulStorage.chunkSizes()[chunkId] - 1)) );
+    cumulativeSize += simulStorage.chunkSizes()[chunkId];
+  }
+  UQ_FATAL_TEST_MACRO(cumulativeSize != m_paper_n_eta,
+                      m_env.worldRank(),
+                      "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                      "inconsistency in 'cumulativeSize' (2)");
+
+  for (unsigned int i = 0; i < m_paper_m; ++i) {
+    m_etaSeq_transformed.getPositionValues(i,tmpEtaVec);
+    cumulativeSize = 0;
+    for (unsigned int chunkId = 0; chunkId < m_etaSeq_chunkStds.size(); ++chunkId) {
+      for (unsigned int j = cumulativeSize; j < (cumulativeSize + simulStorage.chunkSizes()[chunkId]); ++j) {
+        tmpEtaVec[j] /= m_etaSeq_chunkStds[chunkId];
+      }
+      cumulativeSize += simulStorage.chunkSizes()[chunkId];
+    }
+    UQ_FATAL_TEST_MACRO(cumulativeSize != m_paper_n_eta,
+                        m_env.worldRank(),
+                        "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
+                        "inconsistency in 'cumulativeSize' (3)");
+    m_etaSeq_transformed.setPositionValues(i,tmpEtaVec);
+  }
+#else
   m_etaSeq_allMean = 0.;
   for (unsigned int i = 0; i < m_paper_m; ++i) {
     m_etaSeq_transformed.getPositionValues(i,tmpEtaVec);
@@ -378,12 +444,11 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
   }
   m_etaSeq_allMean /= ((double) (m_paper_m * m_paper_n_eta));
 
-  double diff = 0.;
   m_etaSeq_allStd = 0.;
   for (unsigned int i = 0; i < m_paper_m; ++i) {
     m_etaSeq_transformed.getPositionValues(i,tmpEtaVec);
     for (unsigned int j = 0; j < m_paper_n_eta; ++j) {
-      diff = tmpEtaVec[j] - m_etaSeq_allMean;
+      double diff = tmpEtaVec[j] - m_etaSeq_allMean;
       m_etaSeq_allStd += diff * diff;
     }
   }
@@ -394,17 +459,39 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     tmpEtaVec /= m_etaSeq_allStd;
     m_etaSeq_transformed.setPositionValues(i,tmpEtaVec);
   }
+#endif
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
     *m_env.subDisplayFile() << "In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": finished setting 'm_etaSeq_original'"
                             << ", computing means of 'm_etaSeq_original'"
                             << ", computing sample stds of 'm_etaSeq_original'"
+#ifdef _GPMSA_CODE_TREATS_SIMULATION_VECTORS_IN_CHUNKS
+                            << ", computing 'm_etaSeq_chunkMeans'"
+                            << ", computing 'm_etaSeq_chunkStds'"
+#else
                             << ", computing 'm_etaSeq_allmean' = " << m_etaSeq_allMean
                             << ", computing 'm_etaSeq_allStd' = "  << m_etaSeq_allStd
+#endif
                             << ", computing 'm_etaSeq_transformed'"
                             << std::endl;
   }
+
+#ifdef _GPMSA_CODE_TREATS_SIMULATION_VECTORS_IN_CHUNKS
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
+    *m_env.subDisplayFile() << "In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+                            << ": 'm_etaSeq_chunkMeans' =";
+    for (unsigned int chunkId = 0; chunkId < m_etaSeq_chunkStds.size(); ++chunkId) {
+      *m_env.subDisplayFile() << " " << m_etaSeq_chunkMeans[chunkId];
+    }
+    *m_env.subDisplayFile() << std::endl
+                            << ": 'm_etaSeq_chunkStds' =";
+    for (unsigned int chunkId = 0; chunkId < m_etaSeq_chunkStds.size(); ++chunkId) {
+      *m_env.subDisplayFile() << " " << m_etaSeq_chunkStds[chunkId];
+    }
+    *m_env.subDisplayFile() << std::endl;
+  }
+#endif
 
   // Form 'etaVec_transformed' and 'etaMat_transformed' matrix
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
@@ -429,7 +516,7 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
   UQ_FATAL_TEST_MACRO(cumulativeEtaVecPosition != m_etaVec_transformed.sizeLocal(),
                       m_env.worldRank(),
                       "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()",
-                      "inconsistenvy in the assemble of 'm_etaVec_transformed'");
+                      "inconsistency in the assemble of 'm_etaVec_transformed'");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
     *m_env.subDisplayFile() << "In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()";
@@ -810,12 +897,26 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaSeq_original_mean() const
   return m_etaSeq_original_mean;
 }
 
+#ifdef _GPMSA_CODE_TREATS_SIMULATION_VECTORS_IN_CHUNKS
+template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
+double
+SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaSeq_chunkStd(unsigned int chunkId) const
+{
+  UQ_FATAL_TEST_MACRO(chunkId > m_etaSeq_chunkStds.size(),
+                      m_env.worldRank(),
+                      "SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaSeq_chunkStd()",
+                      "'chunkId' is too big");
+
+  return m_etaSeq_chunkStds[chunkId];
+}
+#else
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 double
 SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaSeq_allStd() const
 {
   return m_etaSeq_allStd;
 }
+#endif
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
 const Q_V&
@@ -873,6 +974,4 @@ std::ostream& operator<<(std::ostream& os, const SimulationModel<S_V,S_M,P_V,P_M
   return os;
 }
 
-}  // End namespace QUESO
-
-#endif // UQ_SIMULATION_MODEL_H
+#endif // ___SIMULATION_MODEL_H__
