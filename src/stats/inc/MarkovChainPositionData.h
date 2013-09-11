@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_CHAIN_POSITION_DATA_H__
-#define __UQ_CHAIN_POSITION_DATA_H__
+#ifndef UQ_CHAIN_POSITION_DATA_H
+#define UQ_CHAIN_POSITION_DATA_H
 
 #include <queso/Environment.h>
 
@@ -238,4 +238,4 @@ std::ostream& operator<<(std::ostream& os, const MarkovChainPositionData<V>& obj
 
 }  // End namespace QUESO
 
-#endif // __UQ_CHAIN_POSITION_DATA_H__
+#endif // UQ_CHAIN_POSITION_DATA_H

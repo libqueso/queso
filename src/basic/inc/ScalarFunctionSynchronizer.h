@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SCALAR_FUNCTION_SYNCHRONIZER_H__
-#define __UQ_SCALAR_FUNCTION_SYNCHRONIZER_H__
+#ifndef UQ_SCALAR_FUNCTION_SYNCHRONIZER_H
+#define UQ_SCALAR_FUNCTION_SYNCHRONIZER_H
 
 #include <queso/Environment.h>
 
@@ -319,4 +319,4 @@ ScalarFunctionSynchronizer<V,M>::callFunction(
 
 }  // End namespace QUESO
 
-#endif // __UQ_SCALAR_FUNCTION_SYNCHRONIZER_H__
+#endif // UQ_SCALAR_FUNCTION_SYNCHRONIZER_H

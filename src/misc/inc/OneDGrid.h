@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_ONE_D_GRID_FUNCTION_H__
-#define __UQ_ONE_D_GRID_FUNCTION_H__
+#ifndef UQ_ONE_D_GRID_FUNCTION_H
+#define UQ_ONE_D_GRID_FUNCTION_H
 
 #include <queso/Environment.h>
 #include <math.h>
@@ -366,4 +366,4 @@ StdOneDGrid<T>::findIntervalId(const T& paramValue) const
 
 }  // End namespace QUESO
 
-#endif // __UQ_ONE_D_GRID_FUNCTION_H__
+#endif // UQ_ONE_D_GRID_FUNCTION_H

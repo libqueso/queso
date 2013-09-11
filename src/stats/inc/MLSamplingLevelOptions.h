@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MULTI_LEVEL_SAMPLING_LEVEL_OPTIONS_H__
-#define __UQ_MULTI_LEVEL_SAMPLING_LEVEL_OPTIONS_H__
+#ifndef UQ_MULTI_LEVEL_SAMPLING_LEVEL_OPTIONS_H
+#define UQ_MULTI_LEVEL_SAMPLING_LEVEL_OPTIONS_H
 
 #define LEVEL_REF_ID 0
 
@@ -272,4 +272,4 @@ std::ostream& operator<<(std::ostream& os, const MLSamplingLevelOptions& obj);
 
 }  // End namespace QUESO
 
-#endif // __UQ_MULTI_LEVEL_SAMPLING_LEVEL_OPTIONS_H__
+#endif // UQ_MULTI_LEVEL_SAMPLING_LEVEL_OPTIONS_H

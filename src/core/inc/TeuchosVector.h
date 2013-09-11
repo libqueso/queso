@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_TEUCHOS_VECTOR_H__
-#define __UQ_TEUCHOS_VECTOR_H__
+#ifndef UQ_TEUCHOS_VECTOR_H
+#define UQ_TEUCHOS_VECTOR_H
 
 #ifdef QUESO_HAS_TRILINOS
 #include <Teuchos_SerialDenseVector.hpp>
@@ -308,4 +308,4 @@ std::ostream&        operator<<   (std::ostream& os,                const Teucho
 
 #endif // ifdef QUESO_HAS_TRILINOS
 
-#endif //__UQ_TEUCHOS_VECTOR_H__
+#endif //UQ_TEUCHOS_VECTOR_H

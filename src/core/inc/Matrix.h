@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MATRIX_H__
-#define __UQ_MATRIX_H__
+#ifndef UQ_MATRIX_H
+#define UQ_MATRIX_H
 
 #include <queso/Environment.h>
 #include <queso/Vector.h>
@@ -161,4 +161,4 @@ protected:
 
 }  // End namespace QUESO
 
-#endif // __UQ_MATRIX_H__
+#endif // UQ_MATRIX_H

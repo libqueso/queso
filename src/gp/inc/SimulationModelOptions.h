@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SIMULATION_MODEL_OPTIONS_H__
-#define __UQ_SIMULATION_MODEL_OPTIONS_H__
+#ifndef UQ_SIMULATION_MODEL_OPTIONS_H
+#define UQ_SIMULATION_MODEL_OPTIONS_H
 
 #include <queso/Environment.h>
 
@@ -125,4 +125,4 @@ std::ostream& operator<<(std::ostream& os, const SimulationModelOptions& obj);
 
 }  // End namespace QUESO
 
-#endif // __UQ_SIMULATION_MODEL_OPTIONS_H__
+#endif // UQ_SIMULATION_MODEL_OPTIONS_H

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_GCM_H__
-#define __UQ_GCM_H__
+#ifndef UQ_GCM_H
+#define UQ_GCM_H
 
 #include <queso/GpmsaComputerModelOptions.h>
 #include <queso/ExperimentStorage.h>
@@ -292,4 +292,4 @@ std::ostream& operator<<(std::ostream& os, const GpmsaComputerModel<S_V,S_M,D_V,
 #include <queso/GpmsaComputerModel4.h>
 #include <queso/GpmsaComputerModel5.h>
 
-#endif // __UQ_GCM_H__
+#endif // UQ_GCM_H

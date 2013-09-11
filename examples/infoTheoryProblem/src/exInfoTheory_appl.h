@@ -30,8 +30,8 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_INFO_THEORY_APPL_H__
-#define __EX_INFO_THEORY_APPL_H__
+#ifndef EX_INFO_THEORY_APPL_H
+#define EX_INFO_THEORY_APPL_H
 
 #include <queso/Defines.h>
 #ifdef QUESO_HAS_ANN
@@ -261,4 +261,4 @@ uqAppl(const uqBaseEnvironment& env)
 
 #endif // QUESO_HAS_ANN
 
-#endif // __EX_INFO_THEORY_APPL_H__
+#endif // EX_INFO_THEORY_APPL_H

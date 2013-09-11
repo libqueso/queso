@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MH_SG2_H__
-#define __UQ_MH_SG2_H__
+#ifndef UQ_MH_SG2_H
+#define UQ_MH_SG2_H
 
 namespace QUESO {
 
@@ -1463,4 +1463,4 @@ MetropolisHastingsSG<P_V,P_M>::updateAdaptedCovMatrix(
 
 }  // End namespace QUESO
 
-#endif // __UQ_MH_SG2_H__
+#endif // UQ_MH_SG2_H

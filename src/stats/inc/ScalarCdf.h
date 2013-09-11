@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__
-#define __UQ_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__
+#ifndef UQ_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H
+#define UQ_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H
 
 #include <queso/OneDGrid.h>
 #include <queso/Environment.h>
@@ -718,4 +718,4 @@ horizontalDistance(const BaseScalarCdf<T>& cdf1,
 
 }  // End namespace QUESO
 
-#endif // __UQ_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H__
+#endif // UQ_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H

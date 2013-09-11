@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SCALAR_FUNCTION_H__
-#define __UQ_SCALAR_FUNCTION_H__
+#ifndef UQ_SCALAR_FUNCTION_H
+#define UQ_SCALAR_FUNCTION_H
 
 #include <queso/VectorSet.h>
 #include <queso/VectorSubset.h>
@@ -305,4 +305,4 @@ ConstantScalarFunction<V,M>::lnValue(const V& domainVector, const V* domainDirec
 
 }  // End namespace QUESO
 
-#endif // __UQ_SCALAR_FUNCTION_H__
+#endif // UQ_SCALAR_FUNCTION_H

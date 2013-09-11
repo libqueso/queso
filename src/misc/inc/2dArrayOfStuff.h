@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_2D_ARRAY_OF_STUFF_H__
-#define __UQ_2D_ARRAY_OF_STUFF_H__
+#ifndef UQ_2D_ARRAY_OF_STUFF_H
+#define UQ_2D_ARRAY_OF_STUFF_H
 
 namespace QUESO {
 
@@ -160,4 +160,4 @@ TwoDArray<T>::operator()(unsigned int i, unsigned int j) const
 
 }  // End namespace QUESO
 
-#endif // __UQ_2D_ARRAY_OF_STUFF_H__
+#endif // UQ_2D_ARRAY_OF_STUFF_H

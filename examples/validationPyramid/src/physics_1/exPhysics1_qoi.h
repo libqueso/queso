@@ -30,8 +30,8 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_TGA_QOI_H__
-#define __EX_TGA_QOI_H__
+#ifndef EX_TGA_QOI_H
+#define EX_TGA_QOI_H
 
 #include <uqDistArray.h>
 #include <gsl/gsl_odeiv.h>
@@ -93,4 +93,4 @@ void exPhysics1QoiRoutine(const P_V&                    paramValues,
   return;
 }
 
-#endif // __EX_TGA_QOI_H__
+#endif // EX_TGA_QOI_H

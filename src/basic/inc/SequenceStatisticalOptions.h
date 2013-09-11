@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SEQUENCE_STATISTICAL_OPTIONS_H__
-#define __UQ_SEQUENCE_STATISTICAL_OPTIONS_H__
+#ifndef UQ_SEQUENCE_STATISTICAL_OPTIONS_H
+#define UQ_SEQUENCE_STATISTICAL_OPTIONS_H
 
 #include <queso/Defines.h>
 
@@ -388,5 +388,5 @@ std::ostream& operator<<(std::ostream& os, const SequenceStatisticalOptions& obj
 
 #endif // ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 
-#endif // __UQ_SEQUENCE_STATISTICAL_OPTIONS_H__
+#endif // UQ_SEQUENCE_STATISTICAL_OPTIONS_H
 

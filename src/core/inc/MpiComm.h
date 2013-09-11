@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MPI_COMM_H__
-#define __UQ_MPI_COMM_H__
+#ifndef UQ_MPI_COMM_H
+#define UQ_MPI_COMM_H
 
 #include <queso/Defines.h>
 
@@ -260,4 +260,4 @@ private:
 
 }  // End namespace QUESO
 
-#endif // __UQ_MPI_COMM_H__
+#endif // UQ_MPI_COMM_H

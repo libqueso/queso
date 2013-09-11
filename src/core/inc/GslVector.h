@@ -27,8 +27,8 @@
 // Doxygen comments added by kemelli @ violeta Thu Nov  1 16:25:13 PDT 2012
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_GSL_VECTOR_H__
-#define __UQ_GSL_VECTOR_H__
+#ifndef UQ_GSL_VECTOR_H
+#define UQ_GSL_VECTOR_H
 
 /*! \file uqGslVector.h
     \brief Vector class using GSL
@@ -263,4 +263,4 @@ std::ostream&    operator<<   (std::ostream& os,            const GslVector& obj
 
 }  // End namespace QUESO
 
-#endif // __UQ_GSL_VECTOR_H__
+#endif // UQ_GSL_VECTOR_H

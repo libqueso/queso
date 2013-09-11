@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_ENVIRONMENT_H__
-#define __UQ_ENVIRONMENT_H__
+#ifndef UQ_ENVIRONMENT_H
+#define UQ_ENVIRONMENT_H
 
 #include <queso/Defines.h>
 namespace QUESO {
@@ -439,4 +439,4 @@ std::ostream& operator<<(std::ostream& os, const BaseEnvironment& obj);
 
 }  // End namespace QUESO
 
-#endif // __UQ_ENVIRONMENT_H__
+#endif // UQ_ENVIRONMENT_H

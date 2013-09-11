@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SIP_OPTIONS_H__
-#define __UQ_SIP_OPTIONS_H__
+#ifndef UQ_SIP_OPTIONS_H
+#define UQ_SIP_OPTIONS_H
 
 #include <queso/Environment.h>
 //#include <queso/MetropolisHastingsSGOptions.h>
@@ -160,4 +160,4 @@ std::ostream& operator<<(std::ostream& os, const StatisticalInverseProblemOption
 
 }  // End namespace QUESO
 
-#endif // __UQ_SIP_OPTIONS_H__
+#endif // UQ_SIP_OPTIONS_H

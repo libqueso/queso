@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_GCM_SIMULATION_INFO_H__
-#define __UQ_GCM_SIMULATION_INFO_H__
+#ifndef UQ_GCM_SIMULATION_INFO_H
+#define UQ_GCM_SIMULATION_INFO_H
 
 #include <queso/SimulationStorage.h>
 #include <queso/SimulationModel.h>
@@ -513,4 +513,4 @@ GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::~GcmSimulationInfo()
 
 }  // End namespace QUESO
 
-#endif // __UQ_GCM_SIMULATION_INFO_H__
+#endif // UQ_GCM_SIMULATION_INFO_H

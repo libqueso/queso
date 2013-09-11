@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SFP_H__
-#define __UQ_SFP_H__
+#ifndef UQ_SFP_H
+#define UQ_SFP_H
 
 #include <queso/StatisticalForwardProblemOptions.h>
 #include <queso/VectorFunction.h>
@@ -587,4 +587,4 @@ std::ostream& operator<<(std::ostream& os, const StatisticalForwardProblem<P_V,P
 
 }  // End namespace QUESO
 
-#endif // __UQ_SFP_H__
+#endif // UQ_SFP_H

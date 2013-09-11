@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __BASIC_CLASSES_H__
-#define __BASIC_CLASSES_H__
+#ifndef BASIC_CLASSES_H
+#define BASIC_CLASSES_H
 
 using namespace std;
 
@@ -93,4 +93,4 @@ namespace QUESO_Basic_API {
   
 }
 
-#endif //  __BASIC_CLASSES_H__
+#endif //  BASIC_CLASSES_H

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_EXPERIMENT_MODEL_OPTIONS_H__
-#define __UQ_EXPERIMENT_MODEL_OPTIONS_H__
+#ifndef UQ_EXPERIMENT_MODEL_OPTIONS_H
+#define UQ_EXPERIMENT_MODEL_OPTIONS_H
 
 #include <queso/Environment.h>
 
@@ -102,4 +102,4 @@ std::ostream& operator<<(std::ostream& os, const ExperimentModelOptions& obj);
 
 }  // End namespace QUESO
 
-#endif // __UQ_EXPERIMENT_MODEL_OPTIONS_H__
+#endif // UQ_EXPERIMENT_MODEL_OPTIONS_H

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_VECTOR_RV_H__
-#define __UQ_VECTOR_RV_H__
+#ifndef UQ_VECTOR_RV_H
+#define UQ_VECTOR_RV_H
 
 #include <queso/VectorSpace.h>
 #include <queso/JointPdf.h>
@@ -1798,4 +1798,4 @@ ComputeCovCorrMatricesBetweenVectorRvs(
 
 }  // End namespace QUESO
 
-#endif // __UQ_VECTOR_RV_H__
+#endif // UQ_VECTOR_RV_H

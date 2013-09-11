@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MULTI_LEVEL_SAMPLING3_H__
-#define __UQ_MULTI_LEVEL_SAMPLING3_H__
+#ifndef UQ_MULTI_LEVEL_SAMPLING3_H
+#define UQ_MULTI_LEVEL_SAMPLING3_H
 
 namespace QUESO {
 
@@ -1972,4 +1972,4 @@ MLSampling<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
 
 }  // End namespace QUESO
 
-#endif // __UQ_MULTI_LEVEL_SAMPLING3_H__
+#endif // UQ_MULTI_LEVEL_SAMPLING3_H

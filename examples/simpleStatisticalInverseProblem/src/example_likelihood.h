@@ -25,8 +25,8 @@
 // $Id: example_likelihood.h 37704 2013-03-08 21:10:36Z karl $
 //
 //--------------------------------------------------------------------------
-#ifndef __EX_LIKELIHOOD_H__
-#define __EX_LIKELIHOOD_H__
+#ifndef EX_LIKELIHOOD_H
+#define EX_LIKELIHOOD_H
 
 #include <queso/GslMatrix.h>
 
