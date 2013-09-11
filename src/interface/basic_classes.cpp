@@ -216,10 +216,12 @@ namespace QUESO_Basic_API {
   void QUESO_fatal(const char *message)
   {
     printf("%s\n",message);
-    exit(1);
+    
+    queso_error();
 
     // koomie note: likely need mpi_abort and better exception handling aqui.
     // koomie TODO: switch to queso error macro
+    // nick: done, koomster. 
   }
 
   //---------------------------------------------------------------------

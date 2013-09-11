@@ -757,7 +757,8 @@ void compute(const uqFullEnvironmentClass& env, bool useExperiments, bool useML)
   }
   env.fullComm().Barrier();
   sleep(1);
-  exit(1);
+  queso_error();
+  // exit(1);
 #endif
 
   std::vector<uqGslMatrixClass* > predictionGridWMats(paper_p_eta,NULL);

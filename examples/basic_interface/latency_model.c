@@ -83,8 +83,8 @@ double latency_likelihood(double *params)
 
       if(data == NULL)
 	{
-	  printf("** Error: unable to alloc space for data array\n");
-	  exit(1);
+	  printf("** Error: unable to alloc space for data array\n");	  
+	  queso_error();
 	}
 
       read_data("latency-all-nodes.txt",data);  
@@ -118,7 +118,7 @@ void read_data(char *ifile,double *data)
   if(fp == NULL)
     {
       printf("** Error: unable to open file %s",ifile);
-      exit(1);
+      queso_file_error(ifile);
     }
 
    for(i=0;i<num_data_pts;i++)
