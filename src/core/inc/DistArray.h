@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_DIST_ARRAY_H__
-#define __UQ_DIST_ARRAY_H__
+#ifndef UQ_DIST_ARRAY_H
+#define UQ_DIST_ARRAY_H
 
 #include <queso/Defines.h>
 #include <queso/Map.h>
@@ -297,4 +297,4 @@ std::ostream& operator<<(std::ostream& os, const DistArray<T>& obj)
 
 }  // End namespace QUESO
 
-#endif // __UQ_DIST_ARRAY_H__
+#endif // UQ_DIST_ARRAY_H

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_GSL_MATRIX_H__
-#define __UQ_GSL_MATRIX_H__
+#ifndef UQ_GSL_MATRIX_H
+#define UQ_GSL_MATRIX_H
 
 /*! \file uqGslMatrix.h
     \brief QUESO matrix class using GSL.
@@ -461,4 +461,4 @@ std::ostream&    operator<<      (std::ostream& os,            const GslMatrix& 
 
 }  // End namespace QUESO
 
-#endif // __UQ_GSL_MATRIX_H__
+#endif // UQ_GSL_MATRIX_H
