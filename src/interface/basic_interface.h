@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __BASIC_INTERFACE_H__
-#define __BASIC_INTERFACE_H__
+#ifndef BASIC_INTERFACE_H
+#define BASIC_INTERFACE_H
 
 #include <basic_classes.h>
 
@@ -36,4 +36,4 @@ namespace QUESO_Basic_API {
   //void QUESO_init(const char *inputfile);
 }
 
-#endif //  __BASIC_INTERFACE_H__
+#endif //  BASIC_INTERFACE_H
