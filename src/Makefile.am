@@ -260,14 +260,6 @@ nodist_libqueso_include_HEADERS    =       \
 	$(top_builddir)/config_queso.h       \
 	$(top_builddir)/src/core/inc/queso.h
 
-# Headers to install from interface
-
-###libqueso_include_HEADERS += \
-###	$(top_srcdir)/src/interface/queso_basic.h     \
-###	$(top_srcdir)/src/interface/basic_classes.h   \
-###	$(top_srcdir)/src/interface/basic_interface.h \
-###	$(top_srcdir)/src/interface/basic_int.h
-
 # Standalone binaries
 
 bin_PROGRAMS               = queso_version
