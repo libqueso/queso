@@ -16,6 +16,7 @@ check_PROGRAMS += test_uqGaussianVectorRVClass
 check_PROGRAMS += test_uqGslMatrixConstructorFatal
 check_PROGRAMS += test_uqGslMatrix
 check_PROGRAMS += test_uqTeuchosVector
+check_PROGRAMS += test_uqexception
 
 LIBS         = -L$(top_builddir)/src/ -lqueso
 
@@ -52,6 +53,7 @@ test_uqGaussianVectorRVClass_SOURCES = $(top_srcdir)/test/test_GaussianVectorRVC
 test_uqGslMatrixConstructorFatal_SOURCES = $(top_srcdir)/test/test_GslMatrix/test_uqGslMatrixConstructorFatal.C
 test_uqGslMatrix_SOURCES = $(top_srcdir)/test/test_GslMatrix/test_uqGslMatrix.C
 test_uqTeuchosVector_SOURCES = $(top_srcdir)/test/test_TeuchosVector/test_uqTeuchosVector.C
+test_uqexception_SOURCES = $(top_srcdir)/test/test_exception/test_exception.C
 
 # Files to freedom stamp
 srcstamp = $(test_uqEnvironment_SOURCES) \
@@ -76,7 +78,8 @@ TESTS = $(top_builddir)/test/test_Environment/test_uqEnvironment.sh \
         $(top_builddir)/test/test_uqGaussianVectorRVClass \
 				$(top_builddir)/test/test_GslMatrix/test_uqGslMatrixConstructorFatal.sh \
 				$(top_builddir)/test/test_uqGslMatrix \
-				$(top_builddir)/test/test_uqTeuchosVector
+				$(top_builddir)/test/test_uqTeuchosVector \
+				$(top_builddir)/test/test_uqexception
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
@@ -86,7 +89,8 @@ EXTRA_DIST = common/compare.pl \
 						 test_GslVector/test_uqGslVectorConstructorFatal.sh \
              test_GslMatrix/test_uqGslMatrixConstructorFatal.sh \
 						 test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh \
-						 test_uqEnvironmentOptions/test.inp
+						 test_uqEnvironmentOptions/test.inp \
+						 test_exception/copy_env.inp
 
 CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt \
 						 $(top_srcdir)/test/gslvector_out_sub0.m
