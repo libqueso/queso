@@ -4,6 +4,7 @@
 .libs
 *.gcda
 *.gcno
+*~
 
 Makefile.in
 Makefile
