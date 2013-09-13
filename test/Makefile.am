@@ -82,7 +82,7 @@ TESTS = $(top_builddir)/test/test_Environment/test_uqEnvironment.sh \
 				$(top_builddir)/test/test_uqGslMatrix \
 				$(top_builddir)/test/test_uqTeuchosVector \
 				$(top_builddir)/test/test_uqexception \
-				$(top_builddir)/test/test_DistArrayCtor
+				$(top_builddir)/test/test_DistArray/test_DistArrayCtor.sh \
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
@@ -93,7 +93,8 @@ EXTRA_DIST = common/compare.pl \
              test_GslMatrix/test_uqGslMatrixConstructorFatal.sh \
 						 test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh \
 						 test_uqEnvironmentOptions/test.inp \
-						 test_exception/copy_env.inp
+						 test_exception/copy_env.inp \
+						 test_DistArray/test_DistArrayCtor.sh
 
 CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt \
 						 $(top_srcdir)/test/gslvector_out_sub0.m
