@@ -350,4 +350,6 @@ void VectorSpace<V,M>::print(std::ostream& os) const
 }  // End namespace QUESO
 
 template class QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>;
+#ifdef QUESO_HAS_TRILINOS
 template class QUESO::VectorSpace<QUESO::TeuchosVector, QUESO::TeuchosMatrix>;
+#endif
