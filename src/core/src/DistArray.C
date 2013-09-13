@@ -26,6 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
+#include <queso/asserts.h>
 #include <queso/DistArray.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -164,6 +165,14 @@ DistArray<T>::RowSize() const
 #else
   return m_rowSize;
 #endif
+}
+
+// For some reason, we need to implement copy() otherwise the link stage during
+// `make distcheck` fails.  Building manually from the tarball works fine even
+// without copy() implemented.  Weirdness++.  -- Damon
+template<typename T> void DistArray<T>::copy(const DistArray<T>& src)
+{
+  queso_not_implemented();
 }
 
 // I/O methods
