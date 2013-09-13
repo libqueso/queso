@@ -191,14 +191,6 @@ DistArray<T>::print(std::ostream& os) const
   return;
 }
 
-template<typename T>
-std::ostream& operator<<(std::ostream& os, const DistArray<T>& obj)
-{
-  obj.print(os);
-
-  return os;
-}
-
 }  // End namespace QUESO
 
 // Class prototypes with all the types that QUESO needs

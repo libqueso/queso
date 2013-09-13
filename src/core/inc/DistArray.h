@@ -107,6 +107,12 @@ public:
   //! @name I/O methods
   //@{	
   void print       (std::ostream& os) const;
+  friend std::ostream & operator<<(std::ostream& os, const DistArray<T>& obj)
+  {
+    obj.print(os);
+
+    return os;
+  }
   //@}
 
 private:

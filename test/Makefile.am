@@ -20,6 +20,7 @@ check_PROGRAMS += test_uqexception
 check_PROGRAMS += test_DistArrayCtor
 check_PROGRAMS += test_DistArrayCopy
 check_PROGRAMS += test_DistArrayEquals
+check_PROGRAMS += test_DistArrayMisc
 
 LIBS         = -L$(top_builddir)/src/ -lqueso
 
@@ -60,6 +61,7 @@ test_uqexception_SOURCES = $(top_srcdir)/test/test_exception/test_exception.C
 test_DistArrayCtor_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayCtor.C
 test_DistArrayCopy_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayCopy.C
 test_DistArrayEquals_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayEquals.C
+test_DistArrayMisc_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayMisc.C
 
 # Files to freedom stamp
 srcstamp = $(test_uqEnvironment_SOURCES) \
@@ -88,7 +90,8 @@ TESTS = $(top_builddir)/test/test_Environment/test_uqEnvironment.sh \
 				$(top_builddir)/test/test_uqexception \
 				$(top_builddir)/test/test_DistArray/test_DistArrayCtor.sh \
 				$(top_builddir)/test/test_DistArrayCopy \
-				$(top_builddir)/test/test_DistArrayEquals
+				$(top_builddir)/test/test_DistArrayEquals \
+				$(top_builddir)/test/test_DistArrayMisc
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
