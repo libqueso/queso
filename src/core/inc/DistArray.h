@@ -123,4 +123,6 @@ private:
 #endif
 };
 
+}  // End namespace QUESO
+
 #endif // UQ_DIST_ARRAY_H
