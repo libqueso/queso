@@ -26,6 +26,9 @@
 //
 //--------------------------------------------------------------------------
 
+#include <queso/Defines.h>
+#include <queso/2dArrayOfStuff.h>
+
 namespace QUESO {
 
 // Default constructor -------------------------------------------------
