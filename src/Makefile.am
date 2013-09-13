@@ -92,7 +92,8 @@ libqueso_la_SOURCES += \
 	$(top_srcdir)/src/misc/src/1DQuadrature.C \
 	$(top_srcdir)/src/misc/src/ComplexFft.C \
 	$(top_srcdir)/src/misc/src/Miscellaneous.C \
-	$(top_srcdir)/src/misc/src/RealFft.C
+	$(top_srcdir)/src/misc/src/RealFft.C \
+	$(top_srcdir)/src/misc/src/2dArrayOfStuff.C
 
 # Sources from misc/src withn gsl conditional
 
