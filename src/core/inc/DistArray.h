@@ -129,9 +129,6 @@ private:
 #endif
 };
 
-template<typename T>
-std::ostream& operator<<(std::ostream& os, const DistArray<T>& obj);
-
 }  // End namespace QUESO
 
 #endif // UQ_DIST_ARRAY_H
