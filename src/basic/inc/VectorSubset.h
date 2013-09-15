@@ -44,9 +44,6 @@ namespace QUESO {
  * \f$ B \f$ is a subset of the set \f$ R^n \f$, which is also a vector space. */
 
 
-//*****************************************************
-// Base class
-//*****************************************************
 template <class V, class M>
 class VectorSubset : public VectorSet<V,M>
 {
