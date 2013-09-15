@@ -92,6 +92,11 @@ public:
   //@{
   //! Prints nothing.
   virtual       void                     print      (std::ostream& os) const; 
+  friend std::ostream & operator<<(std::ostream & os,
+      const VectorSet<V, M> & obj) {
+    obj.print(os);
+    return os;
+  }
   //@}
   
 protected:
