@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <set>
 #include <queso/Environment.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -11,7 +12,9 @@ int main(int argc, char **argv) {
 
   QUESO::EnvOptionsValues options;
   options.m_numSubEnvironments = 1;
-  options.m_subDisplayFileName = "debug_output";
+  options.m_subDisplayFileName = "outputData/debug_output";
+  options.m_subDisplayAllowAll = 0;
+  options.m_subDisplayAllowedSet.insert(0);
   options.m_seed = 1.0;
   options.m_checkingLevel = 1;
   options.m_displayVerbosity = 20;
@@ -61,7 +64,6 @@ int main(int argc, char **argv) {
   std::cout << std::endl;
 
   delete diag_matrix;
-  delete env;
   MPI_Finalize();
 
   return 0;
