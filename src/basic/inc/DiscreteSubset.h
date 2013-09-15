@@ -77,53 +77,6 @@ protected:
   std::vector<V*> m_elements;
 };
 
-// --------------------------------------------------
-// Constructor/Destructor methods -------------------
-// Default constructor-------------------------------
-template<class V, class M>
-DiscreteSubset<V,M>::DiscreteSubset(
-  const char*                    prefix,
-  const VectorSpace<V,M>& vectorSpace,
-  const std::vector<V*>&         elements)
-  :
-  VectorSubset<V,M>(prefix,vectorSpace,0.),
-  m_elements(elements.size(),NULL)
-{
-  m_volume = 0.;
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "DiscreteSubset<V,M>::contains()",
-                      "incomplete code");
-}
-// Destructor --------------------------------------------
-template<class V, class M>
-DiscreteSubset<V,M>::~DiscreteSubset()
-{
-}
-// Mathematical methods-----------------------------------
-template<class V, class M>
-bool
-DiscreteSubset<V,M>::contains(const V& vec) const
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "DiscreteSubset<V,M>::contains()",
-                      "incomplete code");
-
-  return false;
-}
-// I/O methods--------------------------------------------
-template <class V, class M>
-void
-DiscreteSubset<V,M>::print(std::ostream& os) const
-{
-  os << "In DiscreteSubset<V,M>::print()"
-     << ": nothing to print"
-     << std::endl;
-
-  return;
-}
-
 }  // End namespace QUESO
 
 #endif // UQ_DISCRETE_SUBSET_H
