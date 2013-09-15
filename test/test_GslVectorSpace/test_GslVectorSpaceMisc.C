@@ -35,9 +35,20 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-
   if (vec_space.globalIdOfFirstComponent() != 0) {
     std::cerr << "failed globalIdOfFirstComponent test" << std::endl;
+    return 1;
+  }
+
+  // Create a vector
+  QUESO::GslVector v1(vec_space.zeroVector());
+  v1.cwSet(2.0);
+
+  // Now create a new vector
+  QUESO::GslVector * v2 = vec_space.newVector(v1);
+
+  if ((*v2)[0] != v1[0]) {
+    std::cerr << "newVector test failed" << std::endl;
     return 1;
   }
 
