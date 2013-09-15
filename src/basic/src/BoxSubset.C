@@ -28,6 +28,8 @@
 
 #include <queso/VectorSpace.h>
 #include <queso/BoxSubset.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -106,3 +108,5 @@ void BoxSubset<V,M>::print(std::ostream& os) const
 }
 
 }  // End namespace QUESO
+
+template class QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix>;
