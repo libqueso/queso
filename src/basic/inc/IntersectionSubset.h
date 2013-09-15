@@ -84,46 +84,6 @@ protected:
   //! Vector set: m_set2.
   const VectorSet<V,M>& m_set2;
 };
-// --------------------------------------------------
-// Constructor/Destructor methods -------------------
-// Default, shaped constructor ----------------------
-template<class V, class M>
-IntersectionSubset<V,M>::IntersectionSubset(
-  const char*                    prefix,
-  const VectorSpace<V,M>& vectorSpace,
-        double                   volume,
-  const VectorSet<V,M>&   set1,
-  const VectorSet<V,M>&   set2)
-  :
-  VectorSubset<V,M>(prefix,vectorSpace,volume),
-  m_set1                  (set1),
-  m_set2                  (set2)
-{
-}
-// Destructor --------------------------------------------
-template<class V, class M>
-IntersectionSubset<V,M>::~IntersectionSubset()
-{
-}
-// Mathematical methods-----------------------------------
-template<class V, class M>
-bool
-IntersectionSubset<V,M>::contains(const V& vec) const
-{
-  return (m_set1.contains(vec) && m_set2.contains(vec));
-}
-// I/O methods--------------------------------------------
-template <class V, class M>
-void
-IntersectionSubset<V,M>::print(std::ostream& os) const
-{
-  os << "In IntersectionSubset<V,M>::print()"
-     << ": m_set1 = " << m_set1
-     << ", m_set2 = " << m_set2
-     << std::endl;
-
-  return;
-}
 
 }  // End namespace QUESO
 
