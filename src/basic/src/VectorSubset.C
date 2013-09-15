@@ -29,6 +29,8 @@
 #include <queso/VectorSet.h>
 #include <queso/VectorSpace.h>
 #include <queso/VectorSubset.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -95,3 +97,5 @@ void VectorSubset<V,M>::print(std::ostream& os) const
 }
 
 }  // End namespace QUESO
+
+template class QUESO::VectorSubset<QUESO::GslVector, QUESO::GslMatrix>;
