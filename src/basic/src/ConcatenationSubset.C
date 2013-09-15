@@ -26,7 +26,9 @@
 //
 //--------------------------------------------------------------------------
 
+#include <queso/VectorSet.h>
 #include <queso/VectorSpace.h>
+#include <queso/ConcatenationSubset.h>
 
 namespace QUESO {
 

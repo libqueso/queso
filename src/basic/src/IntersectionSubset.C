@@ -27,6 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <queso/VectorSpace.h>
+#include <queso/VectorSet.h>
+#include <queso/IntersectionSubset.h>
 
 namespace QUESO {
 

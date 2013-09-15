@@ -31,10 +31,11 @@
 
 #include <queso/VectorSpace.h>
 #include <queso/VectorSubset.h>
+#include <queso/IntersectionSubset.h>
 
 namespace QUESO {
 
-/*!\file uqInstantiateIntersection.h
+/*!\file InstantiateIntersection.h
  * \brief A templated method to calculate intersection of two domains (vector spaces).
  */
 

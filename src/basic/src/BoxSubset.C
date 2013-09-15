@@ -27,6 +27,7 @@
 //--------------------------------------------------------------------------
 
 #include <queso/VectorSpace.h>
+#include <queso/BoxSubset.h>
 
 namespace QUESO {
 

@@ -30,6 +30,7 @@
 #define UQ_CONCATENATION_SUBSET_H
 
 #include <queso/VectorSpace.h>
+#include <queso/VectorSubset.h>
 
 namespace QUESO {
 
