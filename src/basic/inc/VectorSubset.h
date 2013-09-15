@@ -86,69 +86,6 @@ protected:
   const VectorSpace<V,M>* m_vectorSpace;
 };
 
-// Default constructor-------------------------------
-template <class V, class M>
-VectorSubset<V,M>::VectorSubset()
-  :
-  VectorSet<V,M>(),
-  m_vectorSpace        (NULL)
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "VectorSubset<V,M>::constructor(), default",
-                      "should not be used by user");
-}
-// Shaped constructor--------------------------------
-template <class V, class M>
-VectorSubset<V,M>::VectorSubset(
-  const char*                    prefix,
-  const VectorSpace<V,M>& vectorSpace,
-  double                         volume)
-  :
-  VectorSet<V,M>(vectorSpace.env(),prefix,volume),
-  m_vectorSpace        (&vectorSpace)
-{
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering VectorSubset<V,M>::constructor()"
-              << std::endl;
-  }
-
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving VectorSubset<V,M>::constructor()"
-              << std::endl;
-  }
-}
-// Destructor ---------------------------------------
-template <class V, class M>
-VectorSubset<V,M>::~VectorSubset()
-{
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Entering VectorSubset<V,M>::destructor()"
-                            << std::endl;
-  }
-
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
-    *m_env.subDisplayFile() << "Leaving VectorSubset<V,M>::destructor()"
-                            << std::endl;
-  }
-}
-// Math methods -------------------------------------
-template <class V, class M>
-const VectorSpace<V,M>&
-VectorSubset<V,M>::vectorSpace() const
-{
-  return *m_vectorSpace;
-}
-// I/O methods---------------------------------------
-template <class V, class M>
-void
-VectorSubset<V,M>::print(std::ostream& os) const
-{
-  os << "In VectorSubset<V,M>::print()"
-     << ": nothing to be printed" << std::endl;
-  return;
-}
-
 //*****************************************************
 // Box class
 //*****************************************************
