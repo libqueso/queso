@@ -68,15 +68,15 @@ srcstamp = $(test_uqEnvironment_SOURCES) \
 					 $(test_uqGslMatrix_SOURCES)
 
 
-TESTS = $(top_builddir)/test/test_Environment/test_uqEnvironment.sh \
-				$(top_builddir)/test/test_Environment/test_uqEnvironmentCopy.sh \
-				$(top_builddir)/test/test_Environment/test_uqEnvironmentEquals.sh \
+TESTS = $(top_srcdir)/test/test_Environment/test_uqEnvironment.sh \
+				$(top_srcdir)/test/test_Environment/test_uqEnvironmentCopy.sh \
+				$(top_srcdir)/test/test_Environment/test_uqEnvironmentEquals.sh \
 				$(top_builddir)/test/test_uqEnvironmentNonFatal \
-        $(top_builddir)/test/test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh \
-				$(top_builddir)/test/test_GslVector/test_uqGslVectorConstructorFatal.sh \
+        $(top_srcdir)/test/test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh \
+				$(top_srcdir)/test/test_GslVector/test_uqGslVectorConstructorFatal.sh \
 				$(top_builddir)/test/test_uqGslVector \
         $(top_builddir)/test/test_uqGaussianVectorRVClass \
-				$(top_builddir)/test/test_GslMatrix/test_uqGslMatrixConstructorFatal.sh \
+				$(top_srcdir)/test/test_GslMatrix/test_uqGslMatrixConstructorFatal.sh \
 				$(top_builddir)/test/test_uqGslMatrix \
 				$(top_builddir)/test/test_uqTeuchosVector \
 				$(top_builddir)/test/test_uqexception
