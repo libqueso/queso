@@ -3,7 +3,7 @@
 #include <queso/DistArray.h>
 
 int main(int argc, char **argv) {
-  QUESO::DistArray<std::string> d();
+  QUESO::DistArray<std::string> d;
 
   /*
    * This code should never get here. If it does, the bash script that wraps
