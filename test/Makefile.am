@@ -21,6 +21,8 @@ check_PROGRAMS += test_DistArrayCtor
 check_PROGRAMS += test_DistArrayCopy
 check_PROGRAMS += test_DistArrayEquals
 check_PROGRAMS += test_DistArrayMisc
+check_PROGRAMS += test_GslVectorSpaceCtor
+check_PROGRAMS += test_GslVectorSpaceMisc
 
 LIBS         = -L$(top_builddir)/src/ -lqueso
 
@@ -62,6 +64,8 @@ test_DistArrayCtor_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayCto
 test_DistArrayCopy_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayCopy.C
 test_DistArrayEquals_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayEquals.C
 test_DistArrayMisc_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayMisc.C
+test_GslVectorSpaceCtor_SOURCES = $(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceCtor.C
+test_GslVectorSpaceMisc_SOURCES = $(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceMisc.C
 
 # Files to freedom stamp
 srcstamp = $(test_uqEnvironment_SOURCES) \
@@ -91,7 +95,9 @@ TESTS = $(top_srcdir)/test/test_Environment/test_uqEnvironment.sh \
 				$(top_builddir)/test/test_DistArray/test_DistArrayCtor.sh \
 				$(top_builddir)/test/test_DistArrayCopy \
 				$(top_builddir)/test/test_DistArrayEquals \
-				$(top_builddir)/test/test_DistArrayMisc
+				$(top_builddir)/test/test_DistArrayMisc \
+				$(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceCtor.sh \
+				$(top_builddir)/test/test_GslVectorSpaceMisc
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
@@ -103,7 +109,8 @@ EXTRA_DIST = common/compare.pl \
 						 test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh \
 						 test_uqEnvironmentOptions/test.inp \
 						 test_exception/copy_env.inp \
-						 test_DistArray/test_DistArrayCtor.sh
+						 test_DistArray/test_DistArrayCtor.sh \
+						test_GslVectorSpace/test_GslVectorSpaceCtor.sh
 
 CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt \
 						 $(top_srcdir)/test/gslvector_out_sub0.m

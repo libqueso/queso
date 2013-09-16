@@ -107,7 +107,8 @@ endif
 libqueso_la_SOURCES += \
 	$(top_srcdir)/src/basic/src/TeuchosVectorSpace.C \
 	$(top_srcdir)/src/basic/src/SequenceStatisticalOptions.C \
-	$(top_srcdir)/src/basic/src/ArrayOfSequences.C
+	$(top_srcdir)/src/basic/src/ArrayOfSequences.C \
+	$(top_srcdir)/src/basic/src/VectorSpace.C
 
 
 # Sources from basic/src with gsl conditional
