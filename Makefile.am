@@ -135,6 +135,7 @@ DISTCLEANFILES = _configs.sed \
 	test/t02_sip_sfp/outputData/fp_q_seq_sub0.m \
 	test/t02_sip_sfp/outputData/ip_filt_chain.m \
 	test/t02_sip_sfp/outputData/fp_p_seq_sub0.m \
+	test/outputData/* \
 	aminclude.am \
 	config_queso.h
 

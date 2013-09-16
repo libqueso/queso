@@ -5,7 +5,7 @@
 # include the magic script!
 EXTRA_DIST = rebuild_makefile.sh
 
-BUILT_SOURCES =  ArrayOfSequences.h InstantiateIntersection.h ScalarFunction.h ScalarFunctionSynchronizer.h ScalarSequence.h SequenceOfVectors.h SequenceStatisticalOptions.h VectorFunction.h VectorFunctionSynchronizer.h VectorSequence.h VectorSet.h VectorSpace.h VectorSubset.h BasicPdfsBase.h BasicPdfsBoost.h BasicPdfsGsl.h Defines.h DistArray.h Environment.h EnvironmentOptions.h GslMatrix.h GslVector.h Map.h Matrix.h MpiComm.h RngBase.h RngBoost.h RngGsl.h TeuchosMatrix.h TeuchosVector.h Vector.h asserts.h exceptions.h ExperimentModel.h ExperimentModelOptions.h ExperimentStorage.h GcmExperimentInfo.h GcmJointInfo.h GcmJointTildeInfo.h GcmSimulationInfo.h GcmSimulationTildeInfo.h GcmTotalInfo.h GcmZInfo.h GcmZTildeInfo.h GpmsaComputerModel.h GpmsaComputerModel2.h GpmsaComputerModel3.h GpmsaComputerModel4.h GpmsaComputerModel5.h GpmsaComputerModelOptions.h SimulationModel.h SimulationModelOptions.h SimulationStorage.h 1D1DFunction.h 1DQuadrature.h 2dArrayOfStuff.h ArrayOfOneDGrids.h ArrayOfOneDTables.h AsciiTable.h CovCond.h Fft.h Miscellaneous.h OneDGrid.h FiniteDistribution.h InfoTheory.h JointPdf.h MLSampling1.h MLSampling2.h MLSampling3.h MLSamplingLevelOptions.h MLSamplingOptions.h MarkovChainPositionData.h MatrixCovarianceFunction.h MetropolisHastingsSG1.h MetropolisHastingsSG2.h MetropolisHastingsSGOptions.h ModelValidation.h MonteCarloSG.h MonteCarloSGOptions.h ScalarCdf.h ScalarCovarianceFunction.h ScalarGaussianRandomField.h StatisticalForwardProblem.h StatisticalForwardProblemOptions.h StatisticalInverseProblem.h StatisticalInverseProblemOptions.h TKGroup.h ValidationCycle.h VectorCdf.h VectorGaussianRandomField.h VectorMdf.h VectorRV.h VectorRealizer.h
+BUILT_SOURCES =  ArrayOfSequences.h BoxSubset.h ConcatenationSubset.h DiscreteSubset.h InstantiateIntersection.h IntersectionSubset.h ScalarFunction.h ScalarFunctionSynchronizer.h ScalarSequence.h SequenceOfVectors.h SequenceStatisticalOptions.h VectorFunction.h VectorFunctionSynchronizer.h VectorSequence.h VectorSet.h VectorSpace.h VectorSubset.h BasicPdfsBase.h BasicPdfsBoost.h BasicPdfsGsl.h Defines.h DistArray.h Environment.h EnvironmentOptions.h GslMatrix.h GslVector.h Map.h Matrix.h MpiComm.h RngBase.h RngBoost.h RngGsl.h TeuchosMatrix.h TeuchosVector.h Vector.h asserts.h exceptions.h ExperimentModel.h ExperimentModelOptions.h ExperimentStorage.h GcmExperimentInfo.h GcmJointInfo.h GcmJointTildeInfo.h GcmSimulationInfo.h GcmSimulationTildeInfo.h GcmTotalInfo.h GcmZInfo.h GcmZTildeInfo.h GpmsaComputerModel.h GpmsaComputerModel2.h GpmsaComputerModel3.h GpmsaComputerModel4.h GpmsaComputerModel5.h GpmsaComputerModelOptions.h SimulationModel.h SimulationModelOptions.h SimulationStorage.h 1D1DFunction.h 1DQuadrature.h 2dArrayOfStuff.h ArrayOfOneDGrids.h ArrayOfOneDTables.h AsciiTable.h CovCond.h Fft.h Miscellaneous.h OneDGrid.h FiniteDistribution.h InfoTheory.h JointPdf.h MLSampling1.h MLSampling2.h MLSampling3.h MLSamplingLevelOptions.h MLSamplingOptions.h MarkovChainPositionData.h MatrixCovarianceFunction.h MetropolisHastingsSG1.h MetropolisHastingsSG2.h MetropolisHastingsSGOptions.h ModelValidation.h MonteCarloSG.h MonteCarloSGOptions.h ScalarCdf.h ScalarCovarianceFunction.h ScalarGaussianRandomField.h StatisticalForwardProblem.h StatisticalForwardProblemOptions.h StatisticalInverseProblem.h StatisticalInverseProblemOptions.h TKGroup.h ValidationCycle.h VectorCdf.h VectorGaussianRandomField.h VectorMdf.h VectorRV.h VectorRealizer.h
 
 DISTCLEANFILES = $(BUILT_SOURCES)
 
@@ -13,7 +13,15 @@ DISTCLEANFILES = $(BUILT_SOURCES)
 # queso header rules
 ArrayOfSequences.h: $(top_srcdir)/src/basic/inc/ArrayOfSequences.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+BoxSubset.h: $(top_srcdir)/src/basic/inc/BoxSubset.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ConcatenationSubset.h: $(top_srcdir)/src/basic/inc/ConcatenationSubset.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+DiscreteSubset.h: $(top_srcdir)/src/basic/inc/DiscreteSubset.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InstantiateIntersection.h: $(top_srcdir)/src/basic/inc/InstantiateIntersection.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+IntersectionSubset.h: $(top_srcdir)/src/basic/inc/IntersectionSubset.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ScalarFunction.h: $(top_srcdir)/src/basic/inc/ScalarFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

@@ -104,7 +104,12 @@ endif
 
 libqueso_la_SOURCES += \
 	$(top_srcdir)/src/basic/src/TeuchosVectorSpace.C \
-	$(top_srcdir)/src/basic/src/SequenceStatisticalOptions.C
+	$(top_srcdir)/src/basic/src/SequenceStatisticalOptions.C \
+	$(top_srcdir)/src/basic/src/BoxSubset.C \
+	$(top_srcdir)/src/basic/src/ConcatenationSubset.C \
+	$(top_srcdir)/src/basic/src/DiscreteSubset.C \
+	$(top_srcdir)/src/basic/src/IntersectionSubset.C \
+	$(top_srcdir)/src/basic/src/VectorSubset.C
 
 
 # Sources from basic/src with gsl conditional
@@ -194,7 +199,11 @@ libqueso_include_HEADERS += \
 	$(top_srcdir)/src/basic/inc/VectorSequence.h \
 	$(top_srcdir)/src/basic/inc/VectorSet.h \
 	$(top_srcdir)/src/basic/inc/VectorSpace.h \
-	$(top_srcdir)/src/basic/inc/VectorSubset.h
+	$(top_srcdir)/src/basic/inc/VectorSubset.h \
+	$(top_srcdir)/src/basic/inc/BoxSubset.h \
+	$(top_srcdir)/src/basic/inc/ConcatenationSubset.h \
+	$(top_srcdir)/src/basic/inc/DiscreteSubset.h \
+	$(top_srcdir)/src/basic/inc/IntersectionSubset.h
 
 # Headers to install from stats/inc 
 
