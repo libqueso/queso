@@ -107,6 +107,12 @@ public:
   //! @name I/O methods
   //@{	
   void print       (std::ostream& os) const;
+  friend std::ostream & operator<<(std::ostream& os, const DistArray<T>& obj)
+  {
+    obj.print(os);
+
+    return os;
+  }
   //@}
 
 private:
@@ -122,178 +128,6 @@ private:
   std::vector<std::vector<T> > m_elements;
 #endif
 };
-
-
-// --------------------------------------------------
-// Constructor/Destructor methods -------------------
-
-// Default constructor ------------------------------
-template<typename T>
-DistArray<T>::DistArray()
-  :
-  m_Map()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      UQ_UNAVAILABLE_RANK,
-                      "DistArray<T>::constructor()",
-                      "should not be called");
-}
-// Constructor for a given inputMap and inputRowSize. 
-template<typename T>
-DistArray<T>::DistArray(
-  const Map& inputMap,
-  const int         inputRowSize)
-  :
-  m_Map  (inputMap),
-#ifdef QUESO_HAS_TRILINOS
-  m_epetraDistArray(new EpetraExt::DistArray<T>(inputMap.epetraMap(),inputRowSize))
-#else
-  m_rowSize(inputRowSize)
-#endif
-{
-  //std::cout << "Entering DistArray<T>::constructor(1)" << std::endl;
-#ifdef QUESO_HAS_TRILINOS
-#else
-  m_elements.resize(m_Map.NumGlobalElements());
-  for (int i = 0; i < m_Map.NumGlobalElements(); ++i) {
-    m_elements[i].resize(m_rowSize);
-  }
-#endif
-  //std::cout << "Leaving DistArray<T>::constructor(1)" << std::endl;
-}
-// Copy constructor ---------------------------------
-template<typename T>
-DistArray<T>::DistArray(const DistArray<T>& src)
-  :
-  m_Map(src.m_Map)
-#ifdef QUESO_HAS_TRILINOS
-  ,
-  m_epetraDistArray(NULL)
-#endif
-{
-  //std::cout << "Entering DistArray<T>::constructor(2)" << std::endl;
-#ifdef QUESO_HAS_TRILINOS
-#else
-  m_elements.clear();
-#endif
-  this->copy(src);
-  //std::cout << "Leaving DistArray<T>::constructor(2)" << std::endl;
-}
-
-// Destructor ---------------------------------------
-template<typename T>
-DistArray<T>::~DistArray()
-{
-  //std::cout << "Entering DistArray<T>::destructor()" << std::endl;
-#ifdef QUESO_HAS_TRILINOS
-  delete m_epetraDistArray;
-  m_epetraDistArray = NULL;
-#else
-  for (int i = 0; i < m_Map.NumGlobalElements(); ++i) {
-    m_elements[i].clear();
-  }
-  m_elements.clear();
-#endif
-  //std::cout << "Leaving DistArray<T>::destructor()" << std::endl;
-}
-
-// ---------------------------------------------------
-// Set methods----------------------------------------
-template<typename T>
-DistArray<T>&
-DistArray<T>::operator=(const DistArray<T>& rhs)
-{
-#ifdef QUESO_HAS_TRILINOS
-#else
-  for (int i = 0; i < m_Map.NumGlobalElements(); ++i) {
-    m_elements[i].clear();
-  }
-  m_elements.clear();
-#endif
-  this->copy(rhs);
-  return *this;
-}
-
-// ---------------------------------------------------
-// Query methods -------------------------------------
-template<typename T>
-T&
-DistArray<T>::operator()(int localElementId, int colId)
-{
-#ifdef QUESO_HAS_TRILINOS
-  return (*m_epetraDistArray)(localElementId,colId);
-#else
-  return m_elements[localElementId][colId];
-#endif
-}
-// ---------------------------------------------------
-template<typename T>
-const T&
-DistArray<T>::operator()(int localElementId, int colId) const
-{
-#ifdef QUESO_HAS_TRILINOS
-  return (*m_epetraDistArray)(localElementId,colId);
-#else
-  return m_elements[localElementId][colId];
-#endif
-}
-// ---------------------------------------------------
-template<typename T>
-int
-DistArray<T>::GlobalLength() const
-{
-#ifdef QUESO_HAS_TRILINOS
-  return m_epetraDistArray->GlobalLength();
-#else
-  return m_Map.NumGlobalElements();
-#endif
-}
-// ---------------------------------------------------
-template<typename T>
-int
-DistArray<T>::MyLength() const
-{
-#ifdef QUESO_HAS_TRILINOS
-  return m_epetraDistArray->MyLength();
-#else
-  return m_Map.NumMyElements();
-#endif
-}
-// ---------------------------------------------------
-template<typename T>
-int
-DistArray<T>::RowSize() const
-{
-#ifdef QUESO_HAS_TRILINOS
-  return m_epetraDistArray->RowSize();
-#else
-  return m_rowSize;
-#endif
-}
-// ---------------------------------------------------
-// I/O methods----------------------------------------
-template<typename T>
-void
-DistArray<T>::print(std::ostream& os) const
-{
-#ifdef QUESO_HAS_TRILINOS
-  os << *m_epetraDistArray;
-#else
-  os << "m_rowSize = "           << m_rowSize
-     << ", m_elements.size() = " << m_elements.size()
-     << std::endl;
-#endif
-
-  return;
-}
-// ---------------------------------------------------
-template<typename T>
-std::ostream& operator<<(std::ostream& os, const DistArray<T>& obj)
-{
-  obj.print(os);
-
-  return os;
-}
 
 }  // End namespace QUESO
 

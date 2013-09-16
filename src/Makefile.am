@@ -75,7 +75,8 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/TeuchosVector.C \
 	$(top_srcdir)/src/core/src/TeuchosMatrix.C \
 	$(top_srcdir)/src/core/src/MpiComm.C \
-	$(top_srcdir)/src/core/src/Map.C
+	$(top_srcdir)/src/core/src/Map.C \
+	$(top_srcdir)/src/core/src/DistArray.C
 
 # Sources from core/src with gsl conditional 
 
