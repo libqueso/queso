@@ -63,6 +63,7 @@ Incompatible combination of defines in QUESO 'uqDefines.h': QUESO_HAS_TRILINOS i
 #include <stdlib.h> // For exit()
 #include <set>
 #include <vector>
+#include <mpi.h>
 
 namespace QUESO {
 
