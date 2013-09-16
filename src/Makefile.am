@@ -134,12 +134,6 @@ libqueso_la_SOURCES += \
 	$(top_srcdir)/src/gp/src/GpmsaComputerModelOptions.C \
 	$(top_srcdir)/src/gp/src/SimulationModelOptions.C
 
-# Sources from interface 
-
-###libqueso_la_SOURCES += \
-###	$(top_srcdir)/src/interface/basic_classes.cpp \
-###	$(top_srcdir)/src/interface/basic_interface.cpp
-
 # Headers to install from core/inc
 
 libqueso_include_HEADERS = \
