@@ -134,12 +134,6 @@ libqueso_la_SOURCES += \
 	$(top_srcdir)/src/gp/src/GpmsaComputerModelOptions.C \
 	$(top_srcdir)/src/gp/src/SimulationModelOptions.C
 
-# Sources from interface 
-
-###libqueso_la_SOURCES += \
-###	$(top_srcdir)/src/interface/basic_classes.cpp \
-###	$(top_srcdir)/src/interface/basic_interface.cpp
-
 # Headers to install from core/inc
 
 libqueso_include_HEADERS = \
@@ -259,14 +253,6 @@ libqueso_include_HEADERS += \
 nodist_libqueso_include_HEADERS    =       \
 	$(top_builddir)/config_queso.h       \
 	$(top_builddir)/src/core/inc/queso.h
-
-# Headers to install from interface
-
-###libqueso_include_HEADERS += \
-###	$(top_srcdir)/src/interface/queso_basic.h     \
-###	$(top_srcdir)/src/interface/basic_classes.h   \
-###	$(top_srcdir)/src/interface/basic_interface.h \
-###	$(top_srcdir)/src/interface/basic_int.h
 
 # Standalone binaries
 
