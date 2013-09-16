@@ -26,63 +26,58 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef UQ_VECTOR_SUBSET_H
-#define UQ_VECTOR_SUBSET_H
+#ifndef UQ_DISCRETE_SUBSET_H
+#define UQ_DISCRETE_SUBSET_H
 
 #include <queso/VectorSpace.h>
+#include <queso/VectorSubset.h>
 
 namespace QUESO {
 
-/*! \file uqVectorSubset.h
- * \brief A templated class for handling subsets.
- * 
- * \class VectorSubset
- * \brief A templated class for handling subsets.
+/*! \class DiscreteSubset
+ * \brief A templated class representing the discrete vector subsets.
  *
- * This class specifies a subset. The most common example of a subset is a subset of a vector space,
- * present, for instance, in the definition of a scalar function: \f$ \pi: B \subset R^n \rightarrow R \f$.
- * \f$ B \f$ is a subset of the set \f$ R^n \f$, which is also a vector space. */
+ * This class is used to represent the a discrete vector subset. Here the 
+ * notion of volume does not apply, instead there is the total number of 
+ * elements (vectors) that belongs to the subset.
+ */
 
-
-template <class V, class M>
-class VectorSubset : public VectorSet<V,M>
-{
+template<class V, class M>
+class DiscreteSubset : public VectorSubset<V,M> {
 public:
   //! @name Constructor/Destructor methods.
   //@{ 
   //! Default Constructor
-  /*! It should not be used by the user.*/
-  VectorSubset();
-  
-  //! Shaped constructor (with volume).
-  VectorSubset(const char* prefix, const VectorSpace<V,M>& vectorSpace, double volume);
-  
-  //! Destructor.
-  virtual ~VectorSubset();
+  /*! It constructs a class object given the prefix, vector space to which it
+   * belongs  and its number of elements.*/
+  DiscreteSubset(const char*                    prefix,
+                        const VectorSpace<V,M>& vectorSpace,
+                        const std::vector<V*>&         elements);
+  //! Destructor
+  ~DiscreteSubset();
   //@}
   
-    //! @name Mathematical methods.
-  //@{
-  //!  Vector space to which \c this set belongs to. See template specialization.
-  const VectorSpace<V,M>& vectorSpace()                 const;
-  
-  //! Returns whether \c this contains vector \c vec. See template specialization.
-  virtual        bool                     contains   (const V& vec)     const = 0;
+  //! @name Mathematical methods.
+  //@{ 
+  //! Checks whether this discrete subset contains vector \c vec. TODO: incomplete code.
+  bool contains (const V& vec)     const;
   //@}
   
   //! @name I/O methods.
-  //@{
-  //! Prints nothing.
-  virtual        void                     print      (std::ostream& os) const;
+  //@{ 
+  //! Prints nothing.  
+  void print    (std::ostream& os) const;
   //@}
-  
 protected:
-  using VectorSet<V,M>::m_env;
-  using VectorSet<V,M>::m_prefix;
-
-  const VectorSpace<V,M>* m_vectorSpace;
+  using VectorSet   <V,M>::m_env;
+  using VectorSet   <V,M>::m_prefix;
+  using VectorSet   <V,M>::m_volume;
+  using VectorSubset<V,M>::m_vectorSpace;
+ 
+  //! Number of elements in the discrete vector subset.
+  std::vector<V*> m_elements;
 };
 
 }  // End namespace QUESO
 
-#endif // UQ_VECTOR_SUBSET_H
+#endif // UQ_DISCRETE_SUBSET_H

@@ -31,7 +31,8 @@
 
 #undef UQ_CODE_HAS_MONITORS
 
-#include <queso/VectorSubset.h>
+#include <queso/VectorSpace.h>
+#include <queso/BoxSubset.h>
 #include <queso/ScalarSequence.h>
 #include <queso/SequenceStatisticalOptions.h>
 #include <queso/ArrayOfOneDGrids.h>
@@ -42,7 +43,7 @@
 
 namespace QUESO {
 
-/*! \file uqVectorSequence.h
+/*! \file VectorSequence.h
  * \brief A templated class for handling vector and arrays samples
  * 
  * \class BaseVectorSequence

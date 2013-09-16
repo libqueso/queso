@@ -32,6 +32,7 @@
 #include <queso/Environment.h>
 #include <math.h>
 #include <queso/ScalarFunction.h>
+#include <queso/BoxSubset.h>
 #include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
 //#include <gsl/gsl_randist.h>
 

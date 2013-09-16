@@ -23,6 +23,7 @@ check_PROGRAMS += test_DistArrayEquals
 check_PROGRAMS += test_DistArrayMisc
 check_PROGRAMS += test_GslVectorSpaceCtor
 check_PROGRAMS += test_GslVectorSpaceMisc
+check_PROGRAMS += test_IntersectionSubsetContains
 
 LIBS         = -L$(top_builddir)/src/ -lqueso
 
@@ -66,6 +67,7 @@ test_DistArrayEquals_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayE
 test_DistArrayMisc_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayMisc.C
 test_GslVectorSpaceCtor_SOURCES = $(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceCtor.C
 test_GslVectorSpaceMisc_SOURCES = $(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceMisc.C
+test_IntersectionSubsetContains_SOURCES = $(top_srcdir)/test/test_IntersectionSubset/test_IntersectionSubsetContains.C
 
 # Files to freedom stamp
 srcstamp = $(test_uqEnvironment_SOURCES) \
@@ -97,7 +99,8 @@ TESTS = $(top_srcdir)/test/test_Environment/test_uqEnvironment.sh \
 				$(top_builddir)/test/test_DistArrayEquals \
 				$(top_builddir)/test/test_DistArrayMisc \
 				$(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceCtor.sh \
-				$(top_builddir)/test/test_GslVectorSpaceMisc
+				$(top_builddir)/test/test_GslVectorSpaceMisc \
+				$(top_builddir)/test/test_IntersectionSubsetContains
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
