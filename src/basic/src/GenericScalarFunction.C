@@ -30,7 +30,9 @@
 #include <queso/VectorSet.h>
 #include <queso/VectorSubset.h>
 #include <queso/Environment.h>
-#include <queso/GenericFunction.h>
+#include <queso/GenericScalarFunction.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -117,3 +119,5 @@ double GenericScalarFunction<V,M>::lnValue(const V& domainVector,
 }
 
 }  // End namespace QUESO
+
+template class QUESO::GenericScalarFunction<QUESO::GslVector, QUESO::GslMatrix>;

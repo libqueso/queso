@@ -29,6 +29,7 @@
 #ifndef UQ_CONSTANT_SCALAR_FUNCTION_H
 #define UQ_CONSTANT_SCALAR_FUNCTION_H
 
+#include <queso/ScalarFunction.h>
 #include <queso/VectorSet.h>
 #include <queso/VectorSubset.h>
 #include <queso/Environment.h>

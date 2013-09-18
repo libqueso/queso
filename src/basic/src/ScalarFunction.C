@@ -28,6 +28,8 @@
 
 #include <queso/VectorSet.h>
 #include <queso/ScalarFunction.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -55,3 +57,5 @@ const VectorSet<V,M>& BaseScalarFunction<V,M>::domainSet() const
 }
 
 }  // End namespace QUESO
+
+template class QUESO::BaseScalarFunction<QUESO::GslVector, QUESO::GslMatrix>;
