@@ -31,6 +31,7 @@
 #include <queso/GslMatrix.h>
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/1D1DFunction.h>
+#include <queso/GenericScalarFunction.h>
 
 void compute(const QUESO::FullEnvironment& env) {
 #if 0

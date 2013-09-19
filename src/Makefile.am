@@ -114,7 +114,10 @@ libqueso_la_SOURCES += \
 	$(top_srcdir)/src/basic/src/ConcatenationSubset.C \
 	$(top_srcdir)/src/basic/src/DiscreteSubset.C \
 	$(top_srcdir)/src/basic/src/IntersectionSubset.C \
-	$(top_srcdir)/src/basic/src/VectorSubset.C
+	$(top_srcdir)/src/basic/src/VectorSubset.C \
+	$(top_srcdir)/src/basic/src/ScalarFunction.C \
+	$(top_srcdir)/src/basic/src/GenericScalarFunction.C \
+	$(top_srcdir)/src/basic/src/ConstantScalarFunction.C
 
 
 # Sources from basic/src with gsl conditional
@@ -189,6 +192,8 @@ libqueso_include_HEADERS += \
 	$(top_srcdir)/src/basic/inc/ArrayOfSequences.h \
 	$(top_srcdir)/src/basic/inc/InstantiateIntersection.h \
 	$(top_srcdir)/src/basic/inc/ScalarFunction.h \
+	$(top_srcdir)/src/basic/inc/GenericScalarFunction.h \
+	$(top_srcdir)/src/basic/inc/ConstantScalarFunction.h \
 	$(top_srcdir)/src/basic/inc/ScalarFunctionSynchronizer.h \
 	$(top_srcdir)/src/basic/inc/ScalarSequence.h \
 	$(top_srcdir)/src/basic/inc/SequenceOfVectors.h \

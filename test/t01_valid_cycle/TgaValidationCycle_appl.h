@@ -34,6 +34,7 @@
 #include <queso/ValidationCycle.h>
 #include <queso/VectorSubset.h>
 #include <queso/AsciiTable.h>
+#include <queso/GenericScalarFunction.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 
