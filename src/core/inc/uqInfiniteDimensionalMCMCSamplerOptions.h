@@ -30,6 +30,8 @@
 
 #include <queso/Environment.h>
 
+namespace QUESO {
+
 class uqInfiniteDimensionalMCMCSamplerOptions
 {
 public:
@@ -90,4 +92,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const uqInfiniteDimensionalMCMCSamplerOptions & opts);
+
+}  // End namespace QUESO
+
 #endif // __UQ_INFMCMC_OPTIONS_H__

@@ -42,6 +42,8 @@ namespace libMesh {
   class EquationSystems;
 }
 
+namespace QUESO {
+
 class uqFunctionOperatorBuilder;
 
 /*!
@@ -114,5 +116,7 @@ protected:
   //! The number of converged eigenpairs
   unsigned int nconv;
 };
+
+}  // End namespace QUESO
 
 #endif // __QUESO_LIBMESHOPERATOR_BASE__

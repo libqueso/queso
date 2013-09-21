@@ -39,6 +39,8 @@
 
 using namespace std;
 
+namespace QUESO {
+
 uqInfiniteDimensionalGaussian::uqInfiniteDimensionalGaussian(
     const uqFullEnvironmentClass & env,
     const uqFunctionBase & mean,
@@ -78,3 +80,5 @@ double uqInfiniteDimensionalGaussian::get_kl_coefficient(unsigned int i) const
   // in the operator class, because it's useful in the measure
   return (*this->coeffs)[i] / pow(this->precision.get_eigenvalue(i), this->alpha / 2.0);
 }
+
+}  // End namespace QUESO

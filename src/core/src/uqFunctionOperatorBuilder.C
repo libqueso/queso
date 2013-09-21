@@ -29,6 +29,8 @@
 #include <string>
 #include <queso/uqFunctionOperatorBuilder.h>
 
+namespace QUESO {
+
 uqFunctionOperatorBuilder::uqFunctionOperatorBuilder()
   : family("LAGRANGE"),
     order("FIRST"),
@@ -39,3 +41,5 @@ uqFunctionOperatorBuilder::uqFunctionOperatorBuilder()
 uqFunctionOperatorBuilder::~uqFunctionOperatorBuilder()
 {
 }
+
+}  // End namespace QUESO

@@ -30,6 +30,8 @@
 
 // #include <libmesh/system.h>
 
+namespace QUESO {
+
 class uqFunctionBase;
 
 // namespace libMesh {
@@ -73,5 +75,7 @@ public:
 private:
   double _obs_stddev;
 };
+
+}  // End namespace QUESO
 
 #endif // __QUESO_INFINITE_LIKELIHOOD_H

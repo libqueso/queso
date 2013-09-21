@@ -62,6 +62,8 @@
 
 using namespace libMesh;
 
+namespace QUESO {
+
 uqLibMeshFunction::uqLibMeshFunction(
     const uqFunctionOperatorBuilder & builder, MeshBase & m)
   : uqFunctionBase(builder),
@@ -141,3 +143,5 @@ boost::shared_ptr<uqFunctionBase> uqLibMeshFunction::zero_clone() const
   boost::shared_ptr<uqFunctionBase> ptr(clone);
   return ptr;
 }
+
+}  // End namespace QUESO

@@ -45,6 +45,8 @@
 using namespace std;
 using namespace libMesh;
 
+namespace QUESO {
+
 uqLibMeshOperatorBase::uqLibMeshOperatorBase(
     const uqFunctionOperatorBuilder & builder, MeshBase & m)
   : uqOperatorBase(builder),
@@ -165,3 +167,5 @@ uqLibMeshOperatorBase::inverse_kl_transform(vector<double> & xi,
   boost::shared_ptr<uqFunctionBase> ap(kl);
   return ap;
 }
+
+}  // End namespace QUESO

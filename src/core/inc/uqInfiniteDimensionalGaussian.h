@@ -41,6 +41,7 @@
 
 class uqFullEnvironmentClass;
 class uqOperatorBase;
+namespace QUESO {
 
 /*!
  * \file uqInfiniteDimensionalGaussian.h
@@ -101,5 +102,7 @@ private:
   // (not multiplied by the evals)
   std::vector<double> * coeffs;
 };
+
+}  // End namespace QUESO
 
 #endif // __QUESO_INFINITEDIMENSIONALGAUSSIAN__

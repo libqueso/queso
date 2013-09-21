@@ -37,6 +37,8 @@
  * \brief Abstract base class for infinite dimensional measures
  */
 
+namespace QUESO {
+
 class uqFunctionBase;
 
 class uqInfiniteDimensionalMeasureBase {
@@ -60,5 +62,7 @@ public:
    */
   virtual double get_kl_coefficient(unsigned int i) const = 0;
 };
+
+}  // End namespace QUESO
 
 #endif // __QUESO_INFINITEDIMENSIONALMEASURE_BASE__

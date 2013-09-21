@@ -32,6 +32,8 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 
+namespace QUESO {
+
 class uqFunctionOperatorBuilder;
 
 /*!
@@ -81,5 +83,7 @@ protected:
   //! Builder object
   const uqFunctionOperatorBuilder & builder;
 };
+
+}  // End namespace QUESO
 
 #endif // __QUESO_FUNCTION_BASE__

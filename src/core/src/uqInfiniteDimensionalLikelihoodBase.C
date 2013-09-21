@@ -27,6 +27,8 @@
 
 #include <queso/uqInfiniteDimensionalLikelihoodBase.h>
 
+namespace QUESO {
+
 uqInfiniteDimensionalLikelihoodBase::uqInfiniteDimensionalLikelihoodBase(
     double obs_stddev)
   : _obs_stddev(obs_stddev)
@@ -46,3 +48,5 @@ double uqInfiniteDimensionalLikelihoodBase::obs_stddev() const
 {
   return this->_obs_stddev;
 }
+
+}  // End namespace QUESO

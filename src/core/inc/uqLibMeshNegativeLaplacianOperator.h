@@ -37,6 +37,9 @@ namespace libMesh {
   class EquationSystems;
 }
 
+
+namespace QUESO {
+
 class uqFunctionOperatorBuilder;
 
 /*!
@@ -61,5 +64,7 @@ public:
   //! Print libmesh related foo
   virtual void print_info() const;
 };
+
+}  // End namespace QUESO
 
 #endif // __QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H__

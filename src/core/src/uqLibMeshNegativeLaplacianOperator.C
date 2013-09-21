@@ -52,6 +52,8 @@
 using namespace std;
 using namespace libMesh;
 
+namespace QUESO {
+
 uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(
     const uqFunctionOperatorBuilder & builder, MeshBase & m)
   : uqLibMeshOperatorBase(builder, m)
@@ -270,3 +272,5 @@ void uqLibMeshNegativeLaplacianOperator::print_info() const
   this->equation_systems->get_mesh().print_info();
   this->equation_systems->print_info();
 }
+
+}  // End namespace QUESO

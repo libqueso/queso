@@ -46,6 +46,7 @@ class BaseEnvironmentClass;
 class uqInfiniteDimensionalMeasureBase;
 class uqInfiniteDimensionalLikelihoodBase;
 class uqInfiniteDimensionalMCMCSamplerOptions;
+namespace QUESO {
 
 class uqInfiniteDimensionalMCMCSampler
 {
@@ -166,5 +167,7 @@ private:
   // Appends to a scalar dataset in the hdf5 file
   void _append_scalar_dataset(const std::string & name, double data);
 };
+
+}  // End namespace QUESO
 
 #endif // __QUESO_INFINITE_SAMPLER__

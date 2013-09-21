@@ -41,6 +41,8 @@
 #include <boost/shared_ptr.hpp>
 #include <queso/uqFunctionBase.h>
 
+namespace QUESO {
+
 class uqFunctionOperatorBuilder;
 
 class uqOperatorBase {
@@ -87,5 +89,7 @@ protected:
   //! A reference to the builder object
   const uqFunctionOperatorBuilder & builder;
 };
+
+}  // End namespace QUESO
 
 #endif // __QUESO_OPERATOR_BASE__

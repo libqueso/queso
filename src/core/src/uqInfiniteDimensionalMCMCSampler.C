@@ -42,6 +42,8 @@
 // #include <libmesh/equation_systems.h>
 // #include <libmesh/linear_implicit_system.h>
 
+namespace QUESO {
+
 uqInfiniteDimensionalMCMCSampler::uqInfiniteDimensionalMCMCSampler(
     const uqBaseEnvironmentClass & env,
     const uqInfiniteDimensionalMeasureBase & prior,
@@ -336,3 +338,5 @@ unsigned int uqInfiniteDimensionalMCMCSampler::iteration() const
 {
   return this->_iteration;
 }
+
+}  // End namespace QUESO

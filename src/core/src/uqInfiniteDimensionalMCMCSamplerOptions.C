@@ -33,6 +33,8 @@
 #define UQ_INF_SAVE_FREQ_ODV 1
 #define UQ_INF_RWMH_STEP_ODV 1e-2
 
+namespace QUESO {
+
 uqInfiniteDimensionalMCMCSamplerOptions::uqInfiniteDimensionalMCMCSamplerOptions(
     const uqBaseEnvironmentClass & env,
     const char * prefix)
@@ -142,3 +144,5 @@ uqInfiniteDimensionalMCMCSamplerOptions::env() const
 {
   return this->m_env;
 }
+
+}  // End namespace QUESO

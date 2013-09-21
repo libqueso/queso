@@ -38,6 +38,8 @@
 
 #include <string>
 
+namespace QUESO {
+
 class uqFunctionOperatorBuilder {
 public:
   //! @name Constructor/Destructor methods
@@ -58,5 +60,7 @@ public:
   //! Number of eigenpairs to request when building an operator. Default is 0.
   unsigned int num_req_eigenpairs;
 };
+
+}  // End namespace QUESO
 
 #endif // __QUESO_FUNCTIONOPERATORBUILDER_BASE__

@@ -29,6 +29,8 @@
 #include <queso/uqFunctionOperatorBuilder.h>
 #include <queso/uqFunctionBase.h>
 
+namespace QUESO {
+
 uqFunctionBase::uqFunctionBase(const uqFunctionOperatorBuilder & builder)
   : builder(builder)
 {
@@ -38,3 +40,5 @@ uqFunctionBase::~uqFunctionBase()
 {
   // Empty
 }
+
+}  // End namespace QUESO

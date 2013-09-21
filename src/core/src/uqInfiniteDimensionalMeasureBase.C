@@ -28,6 +28,8 @@
 
 #include <queso/uqInfiniteDimensionalMeasureBase.h>
 
+namespace QUESO {
+
 uqInfiniteDimensionalMeasureBase::uqInfiniteDimensionalMeasureBase()
 {
   return;
@@ -36,3 +38,5 @@ uqInfiniteDimensionalMeasureBase::uqInfiniteDimensionalMeasureBase()
 uqInfiniteDimensionalMeasureBase::~uqInfiniteDimensionalMeasureBase()
 {
 }
+
+}  // End namespace QUESO
