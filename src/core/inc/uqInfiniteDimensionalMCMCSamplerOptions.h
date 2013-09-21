@@ -38,7 +38,7 @@ public:
   /*!
    * Given prefix, read the input file for parameters named prefix_*
    */
-  uqInfiniteDimensionalMCMCSamplerOptions(const uqBaseEnvironmentClass& env, const char* prefix);
+  uqInfiniteDimensionalMCMCSamplerOptions(const BaseEnvironment& env, const char* prefix);
 
   /*
    * Destructor
@@ -75,13 +75,13 @@ public:
   /*!
    * Returns the QUESO environment
    */
-  const uqBaseEnvironmentClass & env() const;
+  const BaseEnvironment& env() const;
 
 private:
   void defineMyOptions(po::options_description& optionsDesc) const;
   void getMyOptionValues(po::options_description& optionsDesc);
 
-  const uqBaseEnvironmentClass & m_env;
+  const BaseEnvironment& m_env;
 
   po::options_description* m_optionsDesc;
   std::string m_option_help;

@@ -20,10 +20,10 @@ int main(int argc, char **argv)
   Mesh mesh;
   MeshTools::Generation::build_square(mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
 
-  uqFunctionOperatorBuilder fobuilder;
+  QUESO::uqFunctionOperatorBuilder fobuilder;
   fobuilder.num_req_eigenpairs = 5;
 
-  uqLibMeshNegativeLaplacianOperator C(fobuilder, mesh);
+  QUESO::uqLibMeshNegativeLaplacianOperator C(fobuilder, mesh);
   C.print_info();
   C.save_converged_evals("evals.txt");
 

@@ -18,7 +18,7 @@ using namespace libMesh;
 int main(int argc, char **argv)
 {
   unsigned int i;
-  uqEnvOptionsValuesClass opts;
+  QUESO::EnvOptionsValues opts;
   opts.m_seed = -1;
 
 #ifdef QUESO_HAS_MPI
@@ -26,9 +26,9 @@ int main(int argc, char **argv)
 #endif
 
 #ifdef QUESO_HAS_MPI
-  uqFullEnvironmentClass env(MPI_COMM_WORLD, "", "", &opts);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, "", "", &opts);
 #else
-  uqFullEnvironmentClass env(0, "", "", &opts);
+  QUESO::FullEnvironment env(0, "", "", &opts);
 #endif
 
 
@@ -41,19 +41,19 @@ int main(int argc, char **argv)
   MeshTools::Generation::build_square(mesh,
       20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
 
-  uqFunctionOperatorBuilder fobuilder;
+  QUESO::uqFunctionOperatorBuilder fobuilder;
 
   fobuilder.order = "FIRST";
   fobuilder.family = "LAGRANGE";
   fobuilder.num_req_eigenpairs = 360;
 
-  uqLibMeshFunction mean(fobuilder, mesh);
-  uqLibMeshNegativeLaplacianOperator precision(fobuilder, mesh);
+  QUESO::uqLibMeshFunction mean(fobuilder, mesh);
+  QUESO::uqLibMeshNegativeLaplacianOperator precision(fobuilder, mesh);
 
   precision.print_info();
   precision.save_converged_evals("evals.txt");
 
-  uqInfiniteDimensionalGaussian mu(env, mean, precision, 3.0, 1.0);
+  QUESO::uqInfiniteDimensionalGaussian mu(env, mean, precision, 3.0, 1.0);
 
   for (i = 0; i < 5; i++) {
     std::ostringstream number;

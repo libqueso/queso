@@ -62,7 +62,7 @@ public:
    *
    * It is expected that \c mean and \c precision will live longer than \c this
    */
-  uqInfiniteDimensionalGaussian(const uqFullEnvironmentClass & env,
+  uqInfiniteDimensionalGaussian(const FullEnvironment& env,
       const uqFunctionBase &mean, const uqOperatorBase &precision,
       double alpha, double beta);
 
@@ -90,7 +90,7 @@ private:
   const uqOperatorBase & precision;
 
   // QUESO environment
-  const uqFullEnvironmentClass & env;
+  const FullEnvironment& env;
 
   // Fractional power
   double alpha;

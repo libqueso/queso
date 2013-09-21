@@ -55,7 +55,7 @@ public:
    * Constructor
    */
   uqInfiniteDimensionalMCMCSampler(
-      const BaseEnvironmentClass & env,
+      const BaseEnvironment& env,
       const uqInfiniteDimensionalMeasureBase & prior,
       uqInfiniteDimensionalLikelihoodBase & llhd,
       uqInfiniteDimensionalMCMCSamplerOptions * ov);
@@ -119,7 +119,7 @@ private:
   uqInfiniteDimensionalMCMCSamplerOptions * m_ov;
 
   // The QUESO environment
-  const BaseEnvironmentClass & m_env;
+  const BaseEnvironment& m_env;
 
   // Pointer to the current physical state
   boost::shared_ptr<uqFunctionBase> current_physical_state;

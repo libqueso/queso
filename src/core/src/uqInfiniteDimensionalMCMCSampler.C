@@ -45,7 +45,7 @@
 namespace QUESO {
 
 uqInfiniteDimensionalMCMCSampler::uqInfiniteDimensionalMCMCSampler(
-    const uqBaseEnvironmentClass & env,
+    const BaseEnvironment& env,
     const uqInfiniteDimensionalMeasureBase & prior,
     uqInfiniteDimensionalLikelihoodBase & llhd,
     uqInfiniteDimensionalMCMCSamplerOptions * ov)

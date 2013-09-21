@@ -42,7 +42,7 @@ using namespace std;
 namespace QUESO {
 
 uqInfiniteDimensionalGaussian::uqInfiniteDimensionalGaussian(
-    const uqFullEnvironmentClass & env,
+    const FullEnvironment& env,
     const uqFunctionBase & mean,
     const uqOperatorBase & precision,
     double alpha,

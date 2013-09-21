@@ -36,7 +36,7 @@
 namespace QUESO {
 
 uqInfiniteDimensionalMCMCSamplerOptions::uqInfiniteDimensionalMCMCSamplerOptions(
-    const uqBaseEnvironmentClass & env,
+    const BaseEnvironment& env,
     const char * prefix)
   : m_prefix((std::string)(prefix) + "infmcmc_"),
     m_env(env),
@@ -139,7 +139,7 @@ std::ostream & operator<<(std::ostream & os,
   return os;
 }
 
-const uqBaseEnvironmentClass &
+const BaseEnvironment&
 uqInfiniteDimensionalMCMCSamplerOptions::env() const
 {
   return this->m_env;
