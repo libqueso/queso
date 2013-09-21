@@ -33,8 +33,8 @@
 #include <set>
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include <uqFunctionBase.h>
-#include <uqOperatorBase.h>
+#include <queso/uqFunctionBase.h>
+#include <queso/uqOperatorBase.h>
 #include <libmesh/system.h>
 
 namespace libMesh {

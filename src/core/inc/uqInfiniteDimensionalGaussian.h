@@ -31,13 +31,13 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <uqGslVector.h>
-#include <uqGslMatrix.h>
-#include <uqVectorSpace.h>
-#include <uqVectorSubset.h>
-#include <uqVectorRV.h>
-#include <uqInfiniteDimensionalMeasureBase.h>
-#include <uqFunctionBase.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
+#include <queso/VectorSpace.h>
+#include <queso/VectorSubset.h>
+#include <queso/VectorRV.h>
+#include <queso/uqInfiniteDimensionalMeasureBase.h>
+#include <queso/uqFunctionBase.h>
 
 class uqFullEnvironmentClass;
 class uqOperatorBase;

@@ -1,6 +1,6 @@
 #include <memory>
 #include <sstream>
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 #ifdef QUESO_HAVE_LIBMESH
 #include <libmesh/libmesh.h>
@@ -22,6 +22,7 @@ using namespace libMesh;
 
 int main(int argc, char **argv)
 {
+#ifdef QUESO_HAVE_LIBMESH
   unsigned int i;
   unsigned int j;
   const unsigned int num_pairs = 5;
@@ -121,4 +122,7 @@ int main(int argc, char **argv)
 
   MPI_Finalize();
   return 0;
+#else
+  return 77;
+#endif
 }

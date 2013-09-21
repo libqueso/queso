@@ -5,7 +5,7 @@
 # include the magic script!
 EXTRA_DIST = rebuild_makefile.sh
 
-BUILT_SOURCES =  ArrayOfSequences.h BoxSubset.h ConcatenationSubset.h DiscreteSubset.h InstantiateIntersection.h IntersectionSubset.h ScalarFunction.h ScalarFunctionSynchronizer.h ScalarSequence.h SequenceOfVectors.h SequenceStatisticalOptions.h VectorFunction.h VectorFunctionSynchronizer.h VectorSequence.h VectorSet.h VectorSpace.h VectorSubset.h BasicPdfsBase.h BasicPdfsBoost.h BasicPdfsGsl.h Defines.h DistArray.h Environment.h EnvironmentOptions.h GslMatrix.h GslVector.h Map.h Matrix.h MpiComm.h RngBase.h RngBoost.h RngGsl.h TeuchosMatrix.h TeuchosVector.h Vector.h asserts.h exceptions.h ExperimentModel.h ExperimentModelOptions.h ExperimentStorage.h GcmExperimentInfo.h GcmJointInfo.h GcmJointTildeInfo.h GcmSimulationInfo.h GcmSimulationTildeInfo.h GcmTotalInfo.h GcmZInfo.h GcmZTildeInfo.h GpmsaComputerModel.h GpmsaComputerModel2.h GpmsaComputerModel3.h GpmsaComputerModel4.h GpmsaComputerModel5.h GpmsaComputerModelOptions.h SimulationModel.h SimulationModelOptions.h SimulationStorage.h 1D1DFunction.h 1DQuadrature.h 2dArrayOfStuff.h ArrayOfOneDGrids.h ArrayOfOneDTables.h AsciiTable.h CovCond.h Fft.h Miscellaneous.h OneDGrid.h FiniteDistribution.h InfoTheory.h JointPdf.h MLSampling1.h MLSampling2.h MLSampling3.h MLSamplingLevelOptions.h MLSamplingOptions.h MarkovChainPositionData.h MatrixCovarianceFunction.h MetropolisHastingsSG1.h MetropolisHastingsSG2.h MetropolisHastingsSGOptions.h ModelValidation.h MonteCarloSG.h MonteCarloSGOptions.h ScalarCdf.h ScalarCovarianceFunction.h ScalarGaussianRandomField.h StatisticalForwardProblem.h StatisticalForwardProblemOptions.h StatisticalInverseProblem.h StatisticalInverseProblemOptions.h TKGroup.h ValidationCycle.h VectorCdf.h VectorGaussianRandomField.h VectorMdf.h VectorRV.h VectorRealizer.h
+BUILT_SOURCES =  ArrayOfSequences.h BoxSubset.h ConcatenationSubset.h DiscreteSubset.h InstantiateIntersection.h IntersectionSubset.h ScalarFunction.h ScalarFunctionSynchronizer.h ScalarSequence.h SequenceOfVectors.h SequenceStatisticalOptions.h VectorFunction.h VectorFunctionSynchronizer.h VectorSequence.h VectorSet.h VectorSpace.h VectorSubset.h BasicPdfsBase.h BasicPdfsBoost.h BasicPdfsGsl.h Defines.h DistArray.h Environment.h EnvironmentOptions.h GslMatrix.h GslVector.h Map.h Matrix.h MpiComm.h RngBase.h RngBoost.h RngGsl.h TeuchosMatrix.h TeuchosVector.h Vector.h asserts.h exceptions.h uqFunctionBase.h uqFunctionOperatorBuilder.h uqInfiniteDimensionalGaussian.h uqInfiniteDimensionalLikelihoodBase.h uqInfiniteDimensionalMCMCSampler.h uqInfiniteDimensionalMCMCSamplerOptions.h uqInfiniteDimensionalMeasureBase.h uqLibMeshFunction.h uqLibMeshNegativeLaplacianOperator.h uqLibMeshOperatorBase.h uqOperatorBase.h ExperimentModel.h ExperimentModelOptions.h ExperimentStorage.h GcmExperimentInfo.h GcmJointInfo.h GcmJointTildeInfo.h GcmSimulationInfo.h GcmSimulationTildeInfo.h GcmTotalInfo.h GcmZInfo.h GcmZTildeInfo.h GpmsaComputerModel.h GpmsaComputerModel2.h GpmsaComputerModel3.h GpmsaComputerModel4.h GpmsaComputerModel5.h GpmsaComputerModelOptions.h SimulationModel.h SimulationModelOptions.h SimulationStorage.h 1D1DFunction.h 1DQuadrature.h 2dArrayOfStuff.h ArrayOfOneDGrids.h ArrayOfOneDTables.h AsciiTable.h CovCond.h Fft.h Miscellaneous.h OneDGrid.h FiniteDistribution.h InfoTheory.h JointPdf.h MLSampling1.h MLSampling2.h MLSampling3.h MLSamplingLevelOptions.h MLSamplingOptions.h MarkovChainPositionData.h MatrixCovarianceFunction.h MetropolisHastingsSG1.h MetropolisHastingsSG2.h MetropolisHastingsSGOptions.h ModelValidation.h MonteCarloSG.h MonteCarloSGOptions.h ScalarCdf.h ScalarCovarianceFunction.h ScalarGaussianRandomField.h StatisticalForwardProblem.h StatisticalForwardProblemOptions.h StatisticalInverseProblem.h StatisticalInverseProblemOptions.h TKGroup.h ValidationCycle.h VectorCdf.h VectorGaussianRandomField.h VectorMdf.h VectorRV.h VectorRealizer.h
 
 DISTCLEANFILES = $(BUILT_SOURCES)
 
@@ -84,6 +84,28 @@ Vector.h: $(top_srcdir)/src/core/inc/Vector.h
 asserts.h: $(top_srcdir)/src/core/inc/asserts.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 exceptions.h: $(top_srcdir)/src/core/inc/exceptions.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+uqFunctionBase.h: $(top_srcdir)/src/core/inc/uqFunctionBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+uqFunctionOperatorBuilder.h: $(top_srcdir)/src/core/inc/uqFunctionOperatorBuilder.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+uqInfiniteDimensionalGaussian.h: $(top_srcdir)/src/core/inc/uqInfiniteDimensionalGaussian.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+uqInfiniteDimensionalLikelihoodBase.h: $(top_srcdir)/src/core/inc/uqInfiniteDimensionalLikelihoodBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+uqInfiniteDimensionalMCMCSampler.h: $(top_srcdir)/src/core/inc/uqInfiniteDimensionalMCMCSampler.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+uqInfiniteDimensionalMCMCSamplerOptions.h: $(top_srcdir)/src/core/inc/uqInfiniteDimensionalMCMCSamplerOptions.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+uqInfiniteDimensionalMeasureBase.h: $(top_srcdir)/src/core/inc/uqInfiniteDimensionalMeasureBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+uqLibMeshFunction.h: $(top_srcdir)/src/core/inc/uqLibMeshFunction.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+uqLibMeshNegativeLaplacianOperator.h: $(top_srcdir)/src/core/inc/uqLibMeshNegativeLaplacianOperator.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+uqLibMeshOperatorBase.h: $(top_srcdir)/src/core/inc/uqLibMeshOperatorBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+uqOperatorBase.h: $(top_srcdir)/src/core/inc/uqOperatorBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ExperimentModel.h: $(top_srcdir)/src/gp/inc/ExperimentModel.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

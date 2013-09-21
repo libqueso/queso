@@ -25,7 +25,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqInfiniteDimensionalLikelihoodBase.h>
+#include <queso/uqInfiniteDimensionalLikelihoodBase.h>
 
 uqInfiniteDimensionalLikelihoodBase::uqInfiniteDimensionalLikelihoodBase(
     double obs_stddev)

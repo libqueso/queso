@@ -27,7 +27,7 @@
 //--------------------------------------------------------------------------
 
 #include <string>
-#include <uqFunctionOperatorBuilder.h>
+#include <queso/uqFunctionOperatorBuilder.h>
 
 uqFunctionOperatorBuilder::uqFunctionOperatorBuilder()
   : family("LAGRANGE"),

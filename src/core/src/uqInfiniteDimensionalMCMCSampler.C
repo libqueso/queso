@@ -31,12 +31,12 @@
 
 // QUESO includes
 // #include <uqLibMeshFunction.h>
-#include <uqInfiniteDimensionalMeasureBase.h>
+#include <queso/uqInfiniteDimensionalMeasureBase.h>
 
-#include <uqInfiniteDimensionalLikelihoodBase.h>
+#include <queso/uqInfiniteDimensionalLikelihoodBase.h>
 // #include <forward_solver/forward_solver.h>
-#include <uqInfiniteDimensionalMCMCSampler.h>
-#include <uqInfiniteDimensionalMCMCSamplerOptions.h>
+#include <queso/uqInfiniteDimensionalMCMCSampler.h>
+#include <queso/uqInfiniteDimensionalMCMCSamplerOptions.h>
 
 // libmesh includes
 // #include <libmesh/equation_systems.h>

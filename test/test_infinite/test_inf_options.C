@@ -1,6 +1,6 @@
 #include <memory>
 #include <sstream>
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 #ifdef QUESO_HAVE_LIBMESH
 #include <libmesh/libmesh.h>
@@ -21,7 +21,6 @@
 
 #ifdef QUESO_HAVE_LIBMESH
 using namespace libMesh;
-#endif
 
 class Likelihood : public uqInfiniteDimensionalLikelihoodBase {
 public:
@@ -41,9 +40,11 @@ double Likelihood::evaluate(uqFunctionBase &flow)
 {
   return 1.0;
 }
+#endif
 
 int main(int argc, char **argv)
 {
+#ifdef QUESO_HAVE_LIBMESH
   const char * in_file_name = "test_infinite/inf_options_in.txt";
   const char * prefix = "";
   const unsigned int num_pairs = 5;
@@ -105,4 +106,7 @@ int main(int argc, char **argv)
 
   MPI_Finalize();
   return 0;
+#else
+  return 77;
+#endif
 }

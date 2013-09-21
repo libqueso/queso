@@ -25,7 +25,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqInfiniteDimensionalMCMCSamplerOptions.h>
+#include <queso/uqInfiniteDimensionalMCMCSamplerOptions.h>
 
 // ODV = option default value
 #define UQ_INF_DATA_OUTPUT_FILE_NAME_ODV "out.h5"

@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqInfiniteDimensionalMeasureBase.h>
+#include <queso/uqInfiniteDimensionalMeasureBase.h>
 
 uqInfiniteDimensionalMeasureBase::uqInfiniteDimensionalMeasureBase()
 {

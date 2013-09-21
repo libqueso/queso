@@ -2,7 +2,7 @@
 #include <vector>
 #include <cmath>
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 #ifdef QUESO_HAVE_LIBMESH
 #include <libmesh/libmesh.h>
@@ -15,10 +15,10 @@
 #include <libmesh/numeric_vector.h>
 #include <libmesh/elem.h>
 #include <libmesh/dof_map.h>
-#include <uqFunctionOperatorBuilder.h>
-#include <uqLibMeshFunction.h>
-#include <uqLibMeshNegativeLaplacianOperator.h>
-#include <uqInfiniteDimensionalGaussian.h>
+#include <queso/uqFunctionOperatorBuilder.h>
+#include <queso/uqLibMeshFunction.h>
+#include <queso/uqLibMeshNegativeLaplacianOperator.h>
+#include <queso/uqInfiniteDimensionalGaussian.h>
 #endif
 
 #ifdef QUESO_HAS_MPI
@@ -28,11 +28,15 @@
 #define TEST_TOL 1e-8
 #define INTEGRATE_TOL 1e-2
 
+#if QUESO_HAVE_LIBMESH
 using namespace libMesh;
+#endif
+
 using namespace std;
 
 int main(int argc, char **argv)
 {
+#ifdef QUESO_HAVE_LIBMESH
   unsigned int i, j;
   uqEnvOptionsValuesClass opts;
   opts.m_seed = -1;
@@ -130,4 +134,7 @@ int main(int argc, char **argv)
 #endif  // LIBMESH_HAVE_SLEPC
   MPI_Finalize();
   return 0;
+#else
+  return 77;
+#endif
 }

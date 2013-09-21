@@ -31,7 +31,7 @@
 
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include <uqFunctionBase.h>
+#include <queso/uqFunctionBase.h>
 
 namespace libMesh {
   class MeshBase;

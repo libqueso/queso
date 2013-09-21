@@ -24,6 +24,7 @@ if HDF5_ENABLED
   LIBS += $(HDF5_LIBS)
 endif
 
+if LIBMESH_ENABLED
 ##################################
 # inifinite dimensional examples #
 ##################################
@@ -47,6 +48,7 @@ gaussian_random_field_genmesh_PROGRAMS = gaussian_random_field_genmesh
 gaussian_random_field_genmesh_SOURCES = $(top_srcdir)/examples/infinite_dim/gaussian_random_field/gaussian_random_field_genmesh.C
 gaussian_random_field_genmesh_LDADD = $(top_srcdir)/src/libqueso.la
 gaussian_random_field_genmesh_CPPFLAGS = $(QUESO_CPPFLAGS) $(LIBMESH_CPPFLAGS)
+endif
 
 #############################
 # simpleStatisticalInverseProblem #

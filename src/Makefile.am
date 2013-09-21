@@ -81,7 +81,12 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/TeuchosMatrix.C \
 	$(top_srcdir)/src/core/src/MpiComm.C \
 	$(top_srcdir)/src/core/src/Map.C \
-	$(top_srcdir)/src/core/src/DistArray.C \
+	$(top_srcdir)/src/core/src/DistArray.C
+
+
+# Sources that need libmesh
+if LIBMESH_ENABLED
+libqueso_la_SOURCES += \
 	$(top_srcdir)/src/core/src/uqFunctionBase.C \
 	$(top_srcdir)/src/core/src/uqLibMeshFunction.C \
 	$(top_srcdir)/src/core/src/uqOperatorBase.C \
@@ -93,6 +98,7 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/uqInfiniteDimensionalMCMCSamplerOptions.C \
 	$(top_srcdir)/src/core/src/uqInfiniteDimensionalLikelihoodBase.C \
 	$(top_srcdir)/src/core/src/uqFunctionOperatorBuilder.C
+endif
 
 
 # Sources from core/src with gsl conditional 
@@ -184,7 +190,11 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/DistArray.h \
 	$(top_srcdir)/src/core/inc/asserts.h \
 	$(top_srcdir)/src/core/inc/exceptions.h \
-	$(top_srcdir)/src/core/inc/Vector.h \
+	$(top_srcdir)/src/core/inc/Vector.h
+
+# Headers that need libmesh
+if LIBMESH_ENABLED
+libqueso_include_HEADERS += \
 	$(top_srcdir)/src/core/inc/uqFunctionBase.h \
 	$(top_srcdir)/src/core/inc/uqLibMeshFunction.h \
 	$(top_srcdir)/src/core/inc/uqOperatorBase.h \
@@ -196,6 +206,7 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalMCMCSamplerOptions.h \
 	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalLikelihoodBase.h \
 	$(top_srcdir)/src/core/inc/uqFunctionOperatorBuilder.h
+endif
 
 # Headers to install from misc/inc
 

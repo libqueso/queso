@@ -31,11 +31,11 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <uqInfiniteDimensionalMeasureBase.h>
-#include <uqInfiniteDimensionalGaussian.h>
-#include <uqEnvironment.h>
-#include <uqFunctionBase.h>
-#include <uqOperatorBase.h>
+#include <queso/uqInfiniteDimensionalMeasureBase.h>
+#include <queso/uqInfiniteDimensionalGaussian.h>
+#include <queso/uqEnvironment.h>
+#include <queso/uqFunctionBase.h>
+#include <queso/uqOperatorBase.h>
 
 using namespace std;
 

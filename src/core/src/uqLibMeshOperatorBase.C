@@ -27,9 +27,9 @@
 //--------------------------------------------------------------------------
 
 #include <iostream>
-#include <uqFunctionOperatorBuilder.h>
-#include <uqLibMeshFunction.h>
-#include <uqLibMeshOperatorBase.h>
+#include <queso/uqFunctionOperatorBuilder.h>
+#include <queso/uqLibMeshFunction.h>
+#include <queso/uqLibMeshOperatorBase.h>
 
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>

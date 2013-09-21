@@ -39,7 +39,7 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include <uqFunctionBase.h>
+#include <queso/uqFunctionBase.h>
 
 class uqFunctionOperatorBuilder;
 

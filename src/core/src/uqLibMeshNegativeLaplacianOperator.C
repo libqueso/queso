@@ -28,8 +28,8 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <uqFunctionOperatorBuilder.h>
-#include <uqLibMeshNegativeLaplacianOperator.h>
+#include <queso/uqFunctionOperatorBuilder.h>
+#include <queso/uqLibMeshNegativeLaplacianOperator.h>
 #include <libmesh/libmesh_common.h>
 #include <libmesh/mesh.h>
 #include <libmesh/equation_systems.h>

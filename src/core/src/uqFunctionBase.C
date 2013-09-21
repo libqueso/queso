@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#include <uqFunctionOperatorBuilder.h>
-#include <uqFunctionBase.h>
+#include <queso/uqFunctionOperatorBuilder.h>
+#include <queso/uqFunctionBase.h>
 
 uqFunctionBase::uqFunctionBase(const uqFunctionOperatorBuilder & builder)
   : builder(builder)

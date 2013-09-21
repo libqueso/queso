@@ -28,7 +28,7 @@
 #ifndef __UQ_INFMCMC_OPTIONS_H__
 #define __UQ_INFMCMC_OPTIONS_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
 class uqInfiniteDimensionalMCMCSamplerOptions
 {

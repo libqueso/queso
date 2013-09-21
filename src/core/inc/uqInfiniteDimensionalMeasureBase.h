@@ -30,7 +30,7 @@
 #define __QUESO_INFINITEDIMENSIONALMEASURE_BASE__
 
 #include <boost/shared_ptr.hpp>
-#include <uqFunctionBase.h>
+#include <queso/uqFunctionBase.h>
 
 /*!
  * \file uqInfiniteDimensionalMeasureBase.h

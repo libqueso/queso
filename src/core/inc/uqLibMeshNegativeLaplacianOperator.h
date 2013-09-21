@@ -30,7 +30,7 @@
 #define __QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H__
 
 #include <string>
-#include <uqLibMeshOperatorBase.h>
+#include <queso/uqLibMeshOperatorBase.h>
 
 namespace libMesh {
   class MeshBase;

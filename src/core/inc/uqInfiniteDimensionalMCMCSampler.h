@@ -34,7 +34,7 @@
 #include <boost/shared_ptr.hpp>
 
 // Queso includes
-#include <uqLibMeshFunction.h>
+#include <queso/uqLibMeshFunction.h>
 
 // GSL includes
 #include <gsl/gsl_rng.h>
@@ -42,7 +42,7 @@
 // HDF5 includes
 #include <H5Cpp.h>
 
-class uqBaseEnvironmentClass;
+class BaseEnvironmentClass;
 class uqInfiniteDimensionalMeasureBase;
 class uqInfiniteDimensionalLikelihoodBase;
 class uqInfiniteDimensionalMCMCSamplerOptions;
@@ -54,7 +54,7 @@ public:
    * Constructor
    */
   uqInfiniteDimensionalMCMCSampler(
-      const uqBaseEnvironmentClass & env,
+      const BaseEnvironmentClass & env,
       const uqInfiniteDimensionalMeasureBase & prior,
       uqInfiniteDimensionalLikelihoodBase & llhd,
       uqInfiniteDimensionalMCMCSamplerOptions * ov);
@@ -118,7 +118,7 @@ private:
   uqInfiniteDimensionalMCMCSamplerOptions * m_ov;
 
   // The QUESO environment
-  const uqBaseEnvironmentClass & m_env;
+  const BaseEnvironmentClass & m_env;
 
   // Pointer to the current physical state
   boost::shared_ptr<uqFunctionBase> current_physical_state;
