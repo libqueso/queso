@@ -33,7 +33,7 @@
 
 #include <queso/uqInfiniteDimensionalMeasureBase.h>
 #include <queso/uqInfiniteDimensionalGaussian.h>
-#include <queso/uqEnvironment.h>
+#include <queso/Environment.h>
 #include <queso/uqFunctionBase.h>
 #include <queso/uqOperatorBase.h>
 

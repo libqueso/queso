@@ -31,6 +31,8 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <queso/Environment.h>
+#include <queso/uqOperatorBase.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/VectorSpace.h>
@@ -39,8 +41,6 @@
 #include <queso/uqInfiniteDimensionalMeasureBase.h>
 #include <queso/uqFunctionBase.h>
 
-class uqFullEnvironmentClass;
-class uqOperatorBase;
 namespace QUESO {
 
 /*!

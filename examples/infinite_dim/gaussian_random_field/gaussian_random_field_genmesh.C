@@ -3,11 +3,11 @@
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
-#include <uqEnvironment.h>
-#include <uqFunctionOperatorBuilder.h>
-#include <uqLibMeshFunction.h>
-#include <uqLibMeshNegativeLaplacianOperator.h>
-#include <uqInfiniteDimensionalGaussian.h>
+#include <queso/Environment.h>
+#include <queso/uqFunctionOperatorBuilder.h>
+#include <queso/uqLibMeshFunction.h>
+#include <queso/uqLibMeshNegativeLaplacianOperator.h>
+#include <queso/uqInfiniteDimensionalGaussian.h>
 
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>

@@ -2,8 +2,8 @@
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
-#include <uqFunctionOperatorBuilder.h>
-#include <uqLibMeshNegativeLaplacianOperator.h>
+#include <queso/uqFunctionOperatorBuilder.h>
+#include <queso/uqLibMeshNegativeLaplacianOperator.h>
 #include <mpi.h>
 
 using namespace libMesh;

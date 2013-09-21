@@ -34,7 +34,11 @@
 #include <boost/shared_ptr.hpp>
 
 // Queso includes
+#include <queso/Environment.h>
 #include <queso/uqLibMeshFunction.h>
+#include <queso/uqInfiniteDimensionalMeasureBase.h>
+#include <queso/uqInfiniteDimensionalLikelihoodBase.h>
+#include <queso/uqInfiniteDimensionalMCMCSamplerOptions.h>
 
 // GSL includes
 #include <gsl/gsl_rng.h>
@@ -42,10 +46,6 @@
 // HDF5 includes
 #include <H5Cpp.h>
 
-class BaseEnvironmentClass;
-class uqInfiniteDimensionalMeasureBase;
-class uqInfiniteDimensionalLikelihoodBase;
-class uqInfiniteDimensionalMCMCSamplerOptions;
 namespace QUESO {
 
 class uqInfiniteDimensionalMCMCSampler
