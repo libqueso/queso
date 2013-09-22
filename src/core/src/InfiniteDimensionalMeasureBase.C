@@ -26,16 +26,16 @@
 //
 //--------------------------------------------------------------------------
 
-#include <queso/uqInfiniteDimensionalMeasureBase.h>
+#include <queso/InfiniteDimensionalMeasureBase.h>
 
 namespace QUESO {
 
-uqInfiniteDimensionalMeasureBase::uqInfiniteDimensionalMeasureBase()
+InfiniteDimensionalMeasureBase::InfiniteDimensionalMeasureBase()
 {
   return;
 }
 
-uqInfiniteDimensionalMeasureBase::~uqInfiniteDimensionalMeasureBase()
+InfiniteDimensionalMeasureBase::~InfiniteDimensionalMeasureBase()
 {
 }
 

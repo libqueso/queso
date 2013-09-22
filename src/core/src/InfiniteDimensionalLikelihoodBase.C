@@ -25,26 +25,26 @@
 //
 //--------------------------------------------------------------------------
 
-#include <queso/uqInfiniteDimensionalLikelihoodBase.h>
+#include <queso/InfiniteDimensionalLikelihoodBase.h>
 
 namespace QUESO {
 
-uqInfiniteDimensionalLikelihoodBase::uqInfiniteDimensionalLikelihoodBase(
+InfiniteDimensionalLikelihoodBase::InfiniteDimensionalLikelihoodBase(
     double obs_stddev)
   : _obs_stddev(obs_stddev)
 {
 }
 
-uqInfiniteDimensionalLikelihoodBase::~uqInfiniteDimensionalLikelihoodBase()
+InfiniteDimensionalLikelihoodBase::~InfiniteDimensionalLikelihoodBase()
 {
 }
 
-void uqInfiniteDimensionalLikelihoodBase::set_obs_stddev(double stddev)
+void InfiniteDimensionalLikelihoodBase::set_obs_stddev(double stddev)
 {
   this->_obs_stddev = stddev;
 }
 
-double uqInfiniteDimensionalLikelihoodBase::obs_stddev() const
+double InfiniteDimensionalLikelihoodBase::obs_stddev() const
 {
   return this->_obs_stddev;
 }

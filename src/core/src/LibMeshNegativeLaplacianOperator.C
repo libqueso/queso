@@ -31,8 +31,8 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <queso/uqFunctionOperatorBuilder.h>
-#include <queso/uqLibMeshNegativeLaplacianOperator.h>
+#include <queso/FunctionOperatorBuilder.h>
+#include <queso/LibMeshNegativeLaplacianOperator.h>
 #include <libmesh/libmesh_common.h>
 #include <libmesh/mesh.h>
 #include <libmesh/equation_systems.h>
@@ -54,9 +54,9 @@
 
 namespace QUESO {
 
-uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(
-    const uqFunctionOperatorBuilder & builder, libMesh::MeshBase & m)
-  : uqLibMeshOperatorBase(builder, m)
+LibMeshNegativeLaplacianOperator::LibMeshNegativeLaplacianOperator(
+    const FunctionOperatorBuilder & builder, libMesh::MeshBase & m)
+  : LibMeshOperatorBase(builder, m)
 {
   boost::shared_ptr<libMesh::EquationSystems> es(this->equation_systems);
 
@@ -133,11 +133,11 @@ uqLibMeshNegativeLaplacianOperator::uqLibMeshNegativeLaplacianOperator(
   this->nconv = eigen_system.get_n_converged();
 }
 
-uqLibMeshNegativeLaplacianOperator::~uqLibMeshNegativeLaplacianOperator()
+LibMeshNegativeLaplacianOperator::~LibMeshNegativeLaplacianOperator()
 {
 }
 
-void uqLibMeshNegativeLaplacianOperator::assemble()
+void LibMeshNegativeLaplacianOperator::assemble()
 {
 #ifdef LIBMESH_HAVE_SLEPC
 
@@ -266,7 +266,7 @@ void uqLibMeshNegativeLaplacianOperator::assemble()
 #endif // LIBMESH_HAVE_SLEPC
 }
 
-void uqLibMeshNegativeLaplacianOperator::print_info() const
+void LibMeshNegativeLaplacianOperator::print_info() const
 {
   // Prints information about the system to the screen.
   this->equation_systems->get_mesh().print_info();

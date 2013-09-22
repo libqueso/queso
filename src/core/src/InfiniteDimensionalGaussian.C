@@ -31,21 +31,21 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <queso/uqInfiniteDimensionalMeasureBase.h>
-#include <queso/uqInfiniteDimensionalGaussian.h>
+#include <queso/InfiniteDimensionalMeasureBase.h>
+#include <queso/InfiniteDimensionalGaussian.h>
 #include <queso/Environment.h>
-#include <queso/uqFunctionBase.h>
-#include <queso/uqOperatorBase.h>
+#include <queso/FunctionBase.h>
+#include <queso/OperatorBase.h>
 
 namespace QUESO {
 
-uqInfiniteDimensionalGaussian::uqInfiniteDimensionalGaussian(
+InfiniteDimensionalGaussian::InfiniteDimensionalGaussian(
     const FullEnvironment& env,
-    const uqFunctionBase & mean,
-    const uqOperatorBase & precision,
+    const FunctionBase & mean,
+    const OperatorBase & precision,
     double alpha,
     double beta)
-  : uqInfiniteDimensionalMeasureBase(),
+  : InfiniteDimensionalMeasureBase(),
     mean(mean),
     precision(precision),
     env(env),
@@ -55,12 +55,12 @@ uqInfiniteDimensionalGaussian::uqInfiniteDimensionalGaussian(
   this->coeffs = new std::vector<double>(this->precision.get_num_converged(), 0.0);
 }
 
-uqInfiniteDimensionalGaussian::~uqInfiniteDimensionalGaussian()
+InfiniteDimensionalGaussian::~InfiniteDimensionalGaussian()
 {
   delete this->coeffs;
 }
 
-boost::shared_ptr<uqFunctionBase> uqInfiniteDimensionalGaussian::draw() const
+boost::shared_ptr<FunctionBase> InfiniteDimensionalGaussian::draw() const
 {
   unsigned int i;
 
@@ -68,11 +68,11 @@ boost::shared_ptr<uqFunctionBase> uqInfiniteDimensionalGaussian::draw() const
     (*this->coeffs)[i] = env.rngObject()->gaussianSample(this->beta);
   }
 
-  boost::shared_ptr<uqFunctionBase> f(this->precision.inverse_kl_transform(*this->coeffs, this->alpha));
+  boost::shared_ptr<FunctionBase> f(this->precision.inverse_kl_transform(*this->coeffs, this->alpha));
   return f;
 }
 
-double uqInfiniteDimensionalGaussian::get_kl_coefficient(unsigned int i) const
+double InfiniteDimensionalGaussian::get_kl_coefficient(unsigned int i) const
 {
   // This is code repetition, but I'm not quite sure this belongs
   // in the operator class, because it's useful in the measure

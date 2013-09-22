@@ -27,8 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <iostream>
-#include <queso/uqLibMeshFunction.h>
-#include <queso/uqFunctionOperatorBuilder.h>
+#include <queso/LibMeshFunction.h>
+#include <queso/FunctionOperatorBuilder.h>
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
@@ -62,9 +62,9 @@
 
 namespace QUESO {
 
-uqLibMeshFunction::uqLibMeshFunction(
-    const uqFunctionOperatorBuilder & builder, libMesh::MeshBase & m)
-  : uqFunctionBase(builder),
+LibMeshFunction::LibMeshFunction(
+    const FunctionOperatorBuilder & builder, libMesh::MeshBase & m)
+  : FunctionBase(builder),
     equation_systems(new libMesh::EquationSystems(m))
 {
   this->equation_systems->add_system<libMesh::ExplicitSystem>("Function");
@@ -74,56 +74,56 @@ uqLibMeshFunction::uqLibMeshFunction(
   this->equation_systems->init();
 }
 
-uqLibMeshFunction::~uqLibMeshFunction()
+LibMeshFunction::~LibMeshFunction()
 {
 }
 
-void uqLibMeshFunction::print_info() const
+void LibMeshFunction::print_info() const
 {
   // Print information about the mesh to the screen.
   this->equation_systems->get_mesh().print_info(std::cerr);
 }
 
-void uqLibMeshFunction::save_function(const std::string & filename) const
+void LibMeshFunction::save_function(const std::string & filename) const
 {
   libMesh::VTKIO(this->equation_systems->get_mesh()).write_equation_systems(
       filename, *this->equation_systems);
 }
 
-void uqLibMeshFunction::add(double scale, const uqFunctionBase & rhs) {
+void LibMeshFunction::add(double scale, const FunctionBase & rhs) {
   // We know we're dealing with a derived class type, so cast
-  const uqLibMeshFunction & rhs_derived = dynamic_cast<
-    const uqLibMeshFunction &>(rhs);
+  const LibMeshFunction & rhs_derived = dynamic_cast<
+    const LibMeshFunction &>(rhs);
 
   this->equation_systems->get_system<libMesh::ExplicitSystem>("Function").solution->add(
       scale, *(rhs_derived.equation_systems->get_system<libMesh::ExplicitSystem>(
           "Function").solution));
 }
 
-void uqLibMeshFunction::pointwise_mult(const uqFunctionBase & f1,
-    const uqFunctionBase & f2)
+void LibMeshFunction::pointwise_mult(const FunctionBase & f1,
+    const FunctionBase & f2)
 {
-  const uqLibMeshFunction & f1_derived = static_cast<
-    const uqLibMeshFunction &>(f1);
-  const uqLibMeshFunction & f2_derived = static_cast<
-    const uqLibMeshFunction &>(f2);
+  const LibMeshFunction & f1_derived = static_cast<
+    const LibMeshFunction &>(f1);
+  const LibMeshFunction & f2_derived = static_cast<
+    const LibMeshFunction &>(f2);
 
   this->equation_systems->get_system<libMesh::ExplicitSystem>("Function").solution->pointwise_mult(
       *(f1_derived.equation_systems->get_system<libMesh::ExplicitSystem>("Function").solution),
       *(f2_derived.equation_systems->get_system<libMesh::ExplicitSystem>("Function").solution));
 }
 
-void uqLibMeshFunction::scale(double scale) {
+void LibMeshFunction::scale(double scale) {
   this->equation_systems->get_system<libMesh::ExplicitSystem>(
       "Function").solution->scale(scale);
 }
 
-void uqLibMeshFunction::zero() {
+void LibMeshFunction::zero() {
   this->equation_systems->get_system<libMesh::ExplicitSystem>(
       "Function").solution->zero();
 }
 
-double uqLibMeshFunction::L2_norm() const {
+double LibMeshFunction::L2_norm() const {
   libMesh::ExplicitSystem & system =
     this->equation_systems->get_system<libMesh::ExplicitSystem>("Function");
 
@@ -131,14 +131,14 @@ double uqLibMeshFunction::L2_norm() const {
   return norm;
 }
 
-boost::shared_ptr<uqFunctionBase> uqLibMeshFunction::zero_clone() const
+boost::shared_ptr<FunctionBase> LibMeshFunction::zero_clone() const
 {
-  uqLibMeshFunction * clone = new uqLibMeshFunction(this->builder,
+  LibMeshFunction * clone = new LibMeshFunction(this->builder,
       this->equation_systems->get_mesh());
   clone->equation_systems->get_system<libMesh::ExplicitSystem>(
       "Function").solution->zero();
 
-  boost::shared_ptr<uqFunctionBase> ptr(clone);
+  boost::shared_ptr<FunctionBase> ptr(clone);
   return ptr;
 }
 

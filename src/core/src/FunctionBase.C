@@ -26,17 +26,17 @@
 //
 //--------------------------------------------------------------------------
 
-#include <queso/uqFunctionOperatorBuilder.h>
-#include <queso/uqFunctionBase.h>
+#include <queso/FunctionOperatorBuilder.h>
+#include <queso/FunctionBase.h>
 
 namespace QUESO {
 
-uqFunctionBase::uqFunctionBase(const uqFunctionOperatorBuilder & builder)
+FunctionBase::FunctionBase(const FunctionOperatorBuilder & builder)
   : builder(builder)
 {
 }
 
-uqFunctionBase::~uqFunctionBase()
+FunctionBase::~FunctionBase()
 {
   // Empty
 }

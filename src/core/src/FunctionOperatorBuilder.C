@@ -27,18 +27,18 @@
 //--------------------------------------------------------------------------
 
 #include <string>
-#include <queso/uqFunctionOperatorBuilder.h>
+#include <queso/FunctionOperatorBuilder.h>
 
 namespace QUESO {
 
-uqFunctionOperatorBuilder::uqFunctionOperatorBuilder()
+FunctionOperatorBuilder::FunctionOperatorBuilder()
   : family("LAGRANGE"),
     order("FIRST"),
     num_req_eigenpairs(0)
 {
 }
 
-uqFunctionOperatorBuilder::~uqFunctionOperatorBuilder()
+FunctionOperatorBuilder::~FunctionOperatorBuilder()
 {
 }
 

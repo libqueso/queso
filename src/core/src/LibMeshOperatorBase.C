@@ -28,9 +28,9 @@
 
 #include <iostream>
 #include <vector>
-#include <queso/uqFunctionOperatorBuilder.h>
-#include <queso/uqLibMeshFunction.h>
-#include <queso/uqLibMeshOperatorBase.h>
+#include <queso/FunctionOperatorBuilder.h>
+#include <queso/LibMeshFunction.h>
+#include <queso/LibMeshOperatorBase.h>
 
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
@@ -45,9 +45,9 @@
 
 namespace QUESO {
 
-uqLibMeshOperatorBase::uqLibMeshOperatorBase(
-    const uqFunctionOperatorBuilder & builder, libMesh::MeshBase & m)
-  : uqOperatorBase(builder),
+LibMeshOperatorBase::LibMeshOperatorBase(
+    const FunctionOperatorBuilder & builder, libMesh::MeshBase & m)
+  : OperatorBase(builder),
     equation_systems(new libMesh::EquationSystems(m))
 {
 #ifndef LIBMESH_HAVE_SLEPC
@@ -75,11 +75,11 @@ uqLibMeshOperatorBase::uqLibMeshOperatorBase(
 #endif // LIBMESH_HAVE_SLEPC
 }
 
-uqLibMeshOperatorBase::~uqLibMeshOperatorBase()
+LibMeshOperatorBase::~LibMeshOperatorBase()
 {
 }
 
-void uqLibMeshOperatorBase::save_converged_evals(const std::string & filename) const
+void LibMeshOperatorBase::save_converged_evals(const std::string & filename) const
 {
   unsigned int i;
   std::ofstream evals_file(filename.c_str());
@@ -97,7 +97,7 @@ void uqLibMeshOperatorBase::save_converged_evals(const std::string & filename) c
   }
 }
 
-void uqLibMeshOperatorBase::save_converged_evec(const std::string & filename,
+void LibMeshOperatorBase::save_converged_evec(const std::string & filename,
     unsigned int i) const
 {
   if (i < this->nconv) {
@@ -112,11 +112,11 @@ void uqLibMeshOperatorBase::save_converged_evec(const std::string & filename,
   }
 }
 
-unsigned int uqLibMeshOperatorBase::get_num_converged() const {
+unsigned int LibMeshOperatorBase::get_num_converged() const {
   return this->nconv;
 }
 
-double uqLibMeshOperatorBase::get_eigenvalue(unsigned int i) const
+double LibMeshOperatorBase::get_eigenvalue(unsigned int i) const
 {
   if (i < this->nconv) {
     std::pair<libMesh::Real, libMesh::Real> eval;
@@ -129,23 +129,23 @@ double uqLibMeshOperatorBase::get_eigenvalue(unsigned int i) const
   }
 }
 
-double uqLibMeshOperatorBase::get_inverted_eigenvalue(unsigned int i) const
+double LibMeshOperatorBase::get_inverted_eigenvalue(unsigned int i) const
 {
   return 1.0 / this->get_eigenvalue(i);
 }
 
-libMesh::EquationSystems & uqLibMeshOperatorBase::get_equation_systems() const
+libMesh::EquationSystems & LibMeshOperatorBase::get_equation_systems() const
 {
   return *this->equation_systems;
 }
 
-boost::shared_ptr<uqFunctionBase>
-uqLibMeshOperatorBase::inverse_kl_transform(std::vector<double> & xi,
+boost::shared_ptr<FunctionBase>
+LibMeshOperatorBase::inverse_kl_transform(std::vector<double> & xi,
     double alpha) const
 {
   unsigned int i;
   boost::shared_ptr<libMesh::EquationSystems> es(this->equation_systems);
-  uqLibMeshFunction *kl = new uqLibMeshFunction(this->builder, es->get_mesh());
+  LibMeshFunction *kl = new LibMeshFunction(this->builder, es->get_mesh());
 
   // Make sure all procs in libmesh mpi communicator all have the same xi.  No,
   // I can't set the seed in QUESO.  That would mess with the QUESO
@@ -162,7 +162,7 @@ uqLibMeshOperatorBase::inverse_kl_transform(std::vector<double> & xi,
         *es->get_system<libMesh::EigenSystem>("Eigensystem").solution);
   }
 
-  boost::shared_ptr<uqFunctionBase> ap(kl);
+  boost::shared_ptr<FunctionBase> ap(kl);
   return ap;
 }
 

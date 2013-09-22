@@ -27,16 +27,16 @@
 //--------------------------------------------------------------------------
 
 #include <string>
-#include <queso/uqOperatorBase.h>
+#include <queso/OperatorBase.h>
 
 namespace QUESO {
 
-uqOperatorBase::uqOperatorBase(const uqFunctionOperatorBuilder & builder)
+OperatorBase::OperatorBase(const FunctionOperatorBuilder & builder)
   : builder(builder)
 {
 }
 
-uqOperatorBase::~uqOperatorBase()
+OperatorBase::~OperatorBase()
 {
 }
 

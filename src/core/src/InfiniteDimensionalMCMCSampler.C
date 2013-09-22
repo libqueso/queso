@@ -30,13 +30,13 @@
 #include <boost/math/constants/constants.hpp>
 
 // QUESO includes
-// #include <uqLibMeshFunction.h>
-#include <queso/uqInfiniteDimensionalMeasureBase.h>
+// #include <LibMeshFunction.h>
+#include <queso/InfiniteDimensionalMeasureBase.h>
 
-#include <queso/uqInfiniteDimensionalLikelihoodBase.h>
+#include <queso/InfiniteDimensionalLikelihoodBase.h>
 // #include <forward_solver/forward_solver.h>
-#include <queso/uqInfiniteDimensionalMCMCSampler.h>
-#include <queso/uqInfiniteDimensionalMCMCSamplerOptions.h>
+#include <queso/InfiniteDimensionalMCMCSampler.h>
+#include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
 
 // libmesh includes
 // #include <libmesh/equation_systems.h>
@@ -44,11 +44,11 @@
 
 namespace QUESO {
 
-uqInfiniteDimensionalMCMCSampler::uqInfiniteDimensionalMCMCSampler(
+InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
     const BaseEnvironment& env,
-    const uqInfiniteDimensionalMeasureBase & prior,
-    uqInfiniteDimensionalLikelihoodBase & llhd,
-    uqInfiniteDimensionalMCMCSamplerOptions * ov)
+    const InfiniteDimensionalMeasureBase & prior,
+    InfiniteDimensionalLikelihoodBase & llhd,
+    InfiniteDimensionalMCMCSamplerOptions * ov)
   : prior(prior),
     llhd(llhd),
     m_env(env),
@@ -64,10 +64,10 @@ uqInfiniteDimensionalMCMCSampler::uqInfiniteDimensionalMCMCSampler(
   }
 
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "Entering uqInfiniteDimensionalMCMCSampler class" << std::endl;
+  std::cout << "Entering InfiniteDimensionalMCMCSampler class" << std::endl;
 #endif
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering uqInfiniteDimensionalMCMCSampler::constructor()"
+    *m_env.subDisplayFile() << "Entering InfiniteDimensionalMCMCSampler::constructor()"
                             << ": prefix = " << this->m_ov->m_prefix
                             << ", m_env.optionsInputFileName() = " << this->m_env.optionsInputFileName()
                             << std::endl;
@@ -78,7 +78,7 @@ uqInfiniteDimensionalMCMCSampler::uqInfiniteDimensionalMCMCSampler(
   }
 
 #ifdef QUESO_MEMORY_DEBUGGING
-  std::cout << "In uqInfiniteDimensionalMCMCSamplerOptions,"
+  std::cout << "In InfiniteDimensionalMCMCSamplerOptions,"
             << " finished scanning options" << std::endl;
 #endif
 
@@ -98,7 +98,7 @@ uqInfiniteDimensionalMCMCSampler::uqInfiniteDimensionalMCMCSampler(
   this->current_physical_mean->zero();
   this->current_physical_var->zero();
 
-  // uqLibMeshFunction & p = libmesh_cast_ref<uqLibMeshFunction &>(*(this->current_physical_state)); 
+  // LibMeshFunction & p = libmesh_cast_ref<LibMeshFunction &>(*(this->current_physical_state)); 
 
   // Seed the sampler at the truth
   // for (unsigned int ii = 0; ii < 513; ii++) {
@@ -116,28 +116,28 @@ uqInfiniteDimensionalMCMCSampler::uqInfiniteDimensionalMCMCSampler(
   std::cout.precision(15);
 }
 
-uqInfiniteDimensionalMCMCSampler::~uqInfiniteDimensionalMCMCSampler()
+InfiniteDimensionalMCMCSampler::~InfiniteDimensionalMCMCSampler()
 {
   std::cout << "got to sampler dtor" << std::endl;
 }
 
-void uqInfiniteDimensionalMCMCSampler::_propose()
+void InfiniteDimensionalMCMCSampler::_propose()
 {
   const double rwmh_step_sq = (this->m_ov->m_rwmh_step * this->m_ov->m_rwmh_step);
   const double coeff = std::sqrt(1.0 - rwmh_step_sq);
 
-  boost::shared_ptr<uqFunctionBase> p(prior.draw());
+  boost::shared_ptr<FunctionBase> p(prior.draw());
 
   this->proposed_physical_state->zero();
   this->proposed_physical_state->add(coeff, *(this->current_physical_state));
   this->proposed_physical_state->add(this->m_ov->m_rwmh_step, *p);
 }
 
-void uqInfiniteDimensionalMCMCSampler::_metropolis_hastings()
+void InfiniteDimensionalMCMCSampler::_metropolis_hastings()
 {
   // Downcast since we know we're dealing with a libmesh function
-  // uqLibMeshFunction & p = static_cast<uqLibMeshFunction &>(*(this->proposed_physical_state));
-  // uqLibMeshFunction & q = static_cast<uqLibMeshFunction &>(*(this->current_physical_state));
+  // LibMeshFunction & p = static_cast<LibMeshFunction &>(*(this->proposed_physical_state));
+  // LibMeshFunction & q = static_cast<LibMeshFunction &>(*(this->current_physical_state));
   // Evaluate the likelihood at the proposed state
   double proposed_llhd = this->llhd.evaluate(*(this->proposed_physical_state));
   // double current_llhd = this->llhd.evaluate(q);
@@ -161,7 +161,7 @@ void uqInfiniteDimensionalMCMCSampler::_metropolis_hastings()
   }
 }
 
-void uqInfiniteDimensionalMCMCSampler::_update_moments()
+void InfiniteDimensionalMCMCSampler::_update_moments()
 {
   // Increment the current iteration number and update the running mean and
   // variance.
@@ -176,8 +176,8 @@ void uqInfiniteDimensionalMCMCSampler::_update_moments()
   this->current_physical_mean->add(1.0 / this->iteration(), *(this->_delta));
 
   // Update running sum-of-squares
-  boost::shared_ptr<uqFunctionBase> temp_ptr(this->_delta->zero_clone());
-  // uqLibMeshFunction & temp = static_cast<uqLibMeshFunction &>(*temp_ptr); 
+  boost::shared_ptr<FunctionBase> temp_ptr(this->_delta->zero_clone());
+  // LibMeshFunction & temp = static_cast<LibMeshFunction &>(*temp_ptr); 
 
   temp_ptr->pointwise_mult(*(this->_delta), *(this->current_physical_state));
   this->_M2->add(1.0, *temp_ptr);
@@ -194,7 +194,7 @@ void uqInfiniteDimensionalMCMCSampler::_update_moments()
   this->_avg_acc_prob += delta_acc / this->iteration();
 }
 
-void uqInfiniteDimensionalMCMCSampler::step()
+void InfiniteDimensionalMCMCSampler::step()
 {
   this->_propose();
   this->_metropolis_hastings();
@@ -205,7 +205,7 @@ void uqInfiniteDimensionalMCMCSampler::step()
   }
 }
 
-void uqInfiniteDimensionalMCMCSampler::_create_scalar_dataset(const std::string & name)
+void InfiniteDimensionalMCMCSampler::_create_scalar_dataset(const std::string & name)
 {
   hsize_t      dims[1]  = {1};  // dataset dimensions at creation
   hsize_t      maxdims[1];
@@ -225,7 +225,7 @@ void uqInfiniteDimensionalMCMCSampler::_create_scalar_dataset(const std::string 
   H5::DataSet dataset2 = this->_outfile->createDataSet(DATASET_NAME, H5::PredType::NATIVE_DOUBLE, mspace1, cparms);
 }
 
-void uqInfiniteDimensionalMCMCSampler::_append_scalar_dataset(const std::string & name, double data)
+void InfiniteDimensionalMCMCSampler::_append_scalar_dataset(const std::string & name, double data)
 {
   const H5std_string DATASET_NAME(name);
   H5::DataSet dataset = this->_outfile->openDataSet(DATASET_NAME);
@@ -249,7 +249,7 @@ void uqInfiniteDimensionalMCMCSampler::_append_scalar_dataset(const std::string 
   dataset.write(&data, H5::PredType::NATIVE_DOUBLE, mspace1, fspace1);
 }
 
-void uqInfiniteDimensionalMCMCSampler::_write_state()
+void InfiniteDimensionalMCMCSampler::_write_state()
 {
   if (!this->_outfile_open) {
     // std::cout << "opening new file" << std::endl;
@@ -304,10 +304,10 @@ void uqInfiniteDimensionalMCMCSampler::_write_state()
   // this->llhd.get_qoi().save_function(qoi_name);
 }
 
-boost::shared_ptr<uqInfiniteDimensionalMCMCSampler> uqInfiniteDimensionalMCMCSampler::clone_and_reset() const
+boost::shared_ptr<InfiniteDimensionalMCMCSampler> InfiniteDimensionalMCMCSampler::clone_and_reset() const
 {
   // Set up a clone
-  boost::shared_ptr<uqInfiniteDimensionalMCMCSampler> clone(new uqInfiniteDimensionalMCMCSampler(this->m_env, this->prior, this->llhd, this->m_ov));
+  boost::shared_ptr<InfiniteDimensionalMCMCSampler> clone(new InfiniteDimensionalMCMCSampler(this->m_env, this->prior, this->llhd, this->m_ov));
 
   // Copy the state.
   clone->current_physical_state = this->current_physical_state;
@@ -319,22 +319,22 @@ boost::shared_ptr<uqInfiniteDimensionalMCMCSampler> uqInfiniteDimensionalMCMCSam
   return clone;
 }
 
-double uqInfiniteDimensionalMCMCSampler::acc_prob()
+double InfiniteDimensionalMCMCSampler::acc_prob()
 {
   return this->_acc_prob;
 }
 
-double uqInfiniteDimensionalMCMCSampler::avg_acc_prob()
+double InfiniteDimensionalMCMCSampler::avg_acc_prob()
 {
   return this->_avg_acc_prob;
 }
 
-double uqInfiniteDimensionalMCMCSampler::llhd_val() const
+double InfiniteDimensionalMCMCSampler::llhd_val() const
 {
   return this->_llhd_val;
 }
 
-unsigned int uqInfiniteDimensionalMCMCSampler::iteration() const
+unsigned int InfiniteDimensionalMCMCSampler::iteration() const
 {
   return this->_iteration;
 }

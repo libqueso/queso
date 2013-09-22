@@ -25,7 +25,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <queso/uqInfiniteDimensionalMCMCSamplerOptions.h>
+#include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
 
 // ODV = option default value
 #define UQ_INF_DATA_OUTPUT_FILE_NAME_ODV "out.h5"
@@ -35,7 +35,7 @@
 
 namespace QUESO {
 
-uqInfiniteDimensionalMCMCSamplerOptions::uqInfiniteDimensionalMCMCSamplerOptions(
+InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
     const BaseEnvironment& env,
     const char * prefix)
   : m_prefix((std::string)(prefix) + "infmcmc_"),
@@ -49,22 +49,22 @@ uqInfiniteDimensionalMCMCSamplerOptions::uqInfiniteDimensionalMCMCSamplerOptions
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
       m_env.worldRank(),
-      "uqInfiniteDimensionalMCMCSamplerOptions::constructor(1)",
+      "InfiniteDimensionalMCMCSamplerOptions::constructor(1)",
       "this constructor is incompatible with the abscense of an options input file");
 }
 
-uqInfiniteDimensionalMCMCSamplerOptions::~uqInfiniteDimensionalMCMCSamplerOptions()
+InfiniteDimensionalMCMCSamplerOptions::~InfiniteDimensionalMCMCSamplerOptions()
 {
   if (m_optionsDesc) {
     delete m_optionsDesc;
   }
 } 
 
-void uqInfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()
+void InfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()
 {
   UQ_FATAL_TEST_MACRO(m_optionsDesc == NULL,
                       m_env.worldRank(),
-                      "uqInfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()",
+                      "InfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()",
                       "m_optionsDesc variable is NULL");
 
   this->defineMyOptions(*m_optionsDesc);
@@ -72,7 +72,7 @@ void uqInfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()
   this->getMyOptionValues(*m_optionsDesc);
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In uqInfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In InfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()"
                             << ": after reading values of options with prefix '" << m_prefix
                             << "', state of  object is:"
                             << "\n" << *this
@@ -81,7 +81,7 @@ void uqInfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()
   return;
 }
 
-void uqInfiniteDimensionalMCMCSamplerOptions::defineMyOptions(
+void InfiniteDimensionalMCMCSamplerOptions::defineMyOptions(
     po::options_description & optionsDesc) const
 {
   optionsDesc.add_options()
@@ -93,7 +93,7 @@ void uqInfiniteDimensionalMCMCSamplerOptions::defineMyOptions(
   return;
 }
 
-void uqInfiniteDimensionalMCMCSamplerOptions::getMyOptionValues(
+void InfiniteDimensionalMCMCSamplerOptions::getMyOptionValues(
     po::options_description & optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
@@ -122,7 +122,7 @@ void uqInfiniteDimensionalMCMCSamplerOptions::getMyOptionValues(
   return;
 }
 
-void uqInfiniteDimensionalMCMCSamplerOptions::print(std::ostream & os) const
+void InfiniteDimensionalMCMCSamplerOptions::print(std::ostream & os) const
 {
   os << "\n" << this->m_option_dataOutputFileName << " = " << this->m_dataOutputFileName;
   os << "\n" << this->m_option_num_iters << " = " << this->m_num_iters;
@@ -133,14 +133,14 @@ void uqInfiniteDimensionalMCMCSamplerOptions::print(std::ostream & os) const
 }
 
 std::ostream & operator<<(std::ostream & os,
-    const uqInfiniteDimensionalMCMCSamplerOptions & obj)
+    const InfiniteDimensionalMCMCSamplerOptions & obj)
 {
   obj.print(os);
   return os;
 }
 
 const BaseEnvironment&
-uqInfiniteDimensionalMCMCSamplerOptions::env() const
+InfiniteDimensionalMCMCSamplerOptions::env() const
 {
   return this->m_env;
 }
