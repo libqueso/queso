@@ -35,10 +35,10 @@
 
 // Queso includes
 #include <queso/Environment.h>
-#include <queso/uqLibMeshFunction.h>
-#include <queso/uqInfiniteDimensionalMeasureBase.h>
-#include <queso/uqInfiniteDimensionalLikelihoodBase.h>
-#include <queso/uqInfiniteDimensionalMCMCSamplerOptions.h>
+#include <queso/LibMeshFunction.h>
+#include <queso/InfiniteDimensionalMeasureBase.h>
+#include <queso/InfiniteDimensionalLikelihoodBase.h>
+#include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
 
 // GSL includes
 #include <gsl/gsl_rng.h>
@@ -48,22 +48,22 @@
 
 namespace QUESO {
 
-class uqInfiniteDimensionalMCMCSampler
+class InfiniteDimensionalMCMCSampler
 {
 public:
   /*!
    * Constructor
    */
-  uqInfiniteDimensionalMCMCSampler(
+  InfiniteDimensionalMCMCSampler(
       const BaseEnvironment& env,
-      const uqInfiniteDimensionalMeasureBase & prior,
-      uqInfiniteDimensionalLikelihoodBase & llhd,
-      uqInfiniteDimensionalMCMCSamplerOptions * ov);
+      const InfiniteDimensionalMeasureBase & prior,
+      InfiniteDimensionalLikelihoodBase & llhd,
+      InfiniteDimensionalMCMCSamplerOptions * ov);
 
   /*!
    * Destructor
    */
-  ~uqInfiniteDimensionalMCMCSampler();
+  ~InfiniteDimensionalMCMCSampler();
 
   /*!
    * Do one iteration of the Markov chain
@@ -93,7 +93,7 @@ public:
   /*!
    * Returns a pointer to new sampler, with all the moments reset.
    */
-  boost::shared_ptr<uqInfiniteDimensionalMCMCSampler> clone_and_reset() const;
+  boost::shared_ptr<InfiniteDimensionalMCMCSampler> clone_and_reset() const;
 
 private:
   // Current iteration
@@ -109,35 +109,35 @@ private:
   double _avg_acc_prob;
 
   // The prior measure from which to draw
-  const uqInfiniteDimensionalMeasureBase & prior;
+  const InfiniteDimensionalMeasureBase & prior;
 
   // The negative log-likelihood functional.  Operates on functions.
   // Should be const?
-  uqInfiniteDimensionalLikelihoodBase & llhd;
+  InfiniteDimensionalLikelihoodBase & llhd;
 
   // Aggregate options object
-  uqInfiniteDimensionalMCMCSamplerOptions * m_ov;
+  InfiniteDimensionalMCMCSamplerOptions * m_ov;
 
   // The QUESO environment
   const BaseEnvironment& m_env;
 
   // Pointer to the current physical state
-  boost::shared_ptr<uqFunctionBase> current_physical_state;
+  boost::shared_ptr<FunctionBase> current_physical_state;
 
   // Pointer to the current proposed state
-  boost::shared_ptr<uqFunctionBase> proposed_physical_state;
+  boost::shared_ptr<FunctionBase> proposed_physical_state;
 
   // Pointer to the current physical mean
-  boost::shared_ptr<uqFunctionBase> current_physical_mean;
+  boost::shared_ptr<FunctionBase> current_physical_mean;
 
   // Pointer to the current physical variance
-  boost::shared_ptr<uqFunctionBase> current_physical_var;
+  boost::shared_ptr<FunctionBase> current_physical_var;
 
   // Stores the differences from the mean
-  boost::shared_ptr<uqFunctionBase> _delta;
+  boost::shared_ptr<FunctionBase> _delta;
 
   // Stores a running sum-of-squares (kinda)
-  boost::shared_ptr<uqFunctionBase> _M2;
+  boost::shared_ptr<FunctionBase> _M2;
 
   // A pointer to the random number generator to use.
   // Should probably use the one in the queso environment.

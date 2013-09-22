@@ -30,7 +30,7 @@
 #define __QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H__
 
 #include <string>
-#include <queso/uqLibMeshOperatorBase.h>
+#include <queso/LibMeshOperatorBase.h>
 
 namespace libMesh {
   class MeshBase;
@@ -40,23 +40,23 @@ namespace libMesh {
 
 namespace QUESO {
 
-class uqFunctionOperatorBuilder;
+class FunctionOperatorBuilder;
 
 /*!
- * \file uqLibMeshNegativeLaplacianOperator.h
+ * \file LibMeshNegativeLaplacianOperator.h
  * \brief Class describing negative Laplacian operator using libmesh backend
  */
 
-class uqLibMeshNegativeLaplacianOperator : public uqLibMeshOperatorBase {
+class LibMeshNegativeLaplacianOperator : public LibMeshOperatorBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Construct the negative Laplacian operator on the libmesh mesh \c m
-  uqLibMeshNegativeLaplacianOperator(const uqFunctionOperatorBuilder & builder,
+  LibMeshNegativeLaplacianOperator(const FunctionOperatorBuilder & builder,
       libMesh::MeshBase & m);
 
   //! Destructor
-  ~uqLibMeshNegativeLaplacianOperator();
+  ~LibMeshNegativeLaplacianOperator();
 
   //! Method to assemble the mass and stiffness matrices
   virtual void assemble();

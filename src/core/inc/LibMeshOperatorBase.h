@@ -33,8 +33,8 @@
 #include <set>
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include <queso/uqFunctionBase.h>
-#include <queso/uqOperatorBase.h>
+#include <queso/FunctionBase.h>
+#include <queso/OperatorBase.h>
 #include <libmesh/system.h>
 
 namespace libMesh {
@@ -44,24 +44,24 @@ namespace libMesh {
 
 namespace QUESO {
 
-class uqFunctionOperatorBuilder;
+class FunctionOperatorBuilder;
 
 /*!
- * \file uqLibMeshOperatorBase.h
+ * \file LibMeshOperatorBase.h
  * \brief Abstract base class for operator objects using libmesh in the backend
  */
 
-class uqLibMeshOperatorBase : public uqOperatorBase,
+class LibMeshOperatorBase : public OperatorBase,
                               public libMesh::System::Assembly {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constuct an operator on the mesh \c m
-  uqLibMeshOperatorBase(const uqFunctionOperatorBuilder & builder,
+  LibMeshOperatorBase(const FunctionOperatorBuilder & builder,
       libMesh::MeshBase & m);
 
   //! Destructor
-  ~uqLibMeshOperatorBase();
+  ~LibMeshOperatorBase();
   //@}
 
   //! Must implement this for the solve to work
@@ -86,7 +86,7 @@ public:
   //! Return eigenvalue \c i.
   /*!
    * You can store them however you want, but having some kind of order to them
-   * is useful for \c uqInfiniteDimensionalMeasure
+   * is useful for \c InfiniteDimensionalMeasure
    */
   virtual double get_eigenvalue(unsigned int i) const;
 
@@ -104,7 +104,7 @@ public:
    *  where the lambda are eigenvalues of the precision operator, \c this, and
    *  the \phi(x) are eigenfunctions of the precision operator, \c this
    */
-  virtual boost::shared_ptr<uqFunctionBase>
+  virtual boost::shared_ptr<FunctionBase>
   inverse_kl_transform(std::vector<double> & xi, double alpha) const;
 
 protected:

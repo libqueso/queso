@@ -30,7 +30,7 @@
 #define __QUESO_FUNCTIONOPERATORBUILDER_BASE__
 
 /*!
- * \file uqFunctionOperatorBuilder.h
+ * \file FunctionOperatorBuilder.h
  * \brief Helper class for function and operator objects. This class is meant
  *        to hold common FEM library backend options in a library-agnostic
  *        fashion
@@ -40,15 +40,15 @@
 
 namespace QUESO {
 
-class uqFunctionOperatorBuilder {
+class FunctionOperatorBuilder {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor
-  uqFunctionOperatorBuilder();
+  FunctionOperatorBuilder();
 
   //! Destructor
-  ~uqFunctionOperatorBuilder();
+  ~FunctionOperatorBuilder();
   //@}
 
   //! String to store the polynomial family to use. Default is "LAGRANGE".

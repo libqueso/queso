@@ -32,18 +32,18 @@
 
 namespace QUESO {
 
-class uqInfiniteDimensionalMCMCSamplerOptions
+class InfiniteDimensionalMCMCSamplerOptions
 {
 public:
   /*!
    * Given prefix, read the input file for parameters named prefix_*
    */
-  uqInfiniteDimensionalMCMCSamplerOptions(const BaseEnvironment& env, const char* prefix);
+  InfiniteDimensionalMCMCSamplerOptions(const BaseEnvironment& env, const char* prefix);
 
   /*
    * Destructor
    */
- ~uqInfiniteDimensionalMCMCSamplerOptions();
+ ~InfiniteDimensionalMCMCSamplerOptions();
 
   /*
    * Scans the input file for options prefixed with \c prefix
@@ -91,7 +91,7 @@ private:
   std::string m_option_rwmh_step;
 };
 
-std::ostream& operator<<(std::ostream& os, const uqInfiniteDimensionalMCMCSamplerOptions & opts);
+std::ostream& operator<<(std::ostream& os, const InfiniteDimensionalMCMCSamplerOptions & opts);
 
 }  // End namespace QUESO
 

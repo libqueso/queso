@@ -34,30 +34,30 @@
 
 namespace QUESO {
 
-class uqFunctionOperatorBuilder;
+class FunctionOperatorBuilder;
 
 /*!
- * \file uqFunctionBase.h
+ * \file FunctionBase.h
  * \brief Abstract base class for function objects
  */
 
-class uqFunctionBase {
+class FunctionBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Construct with a builder object
-  uqFunctionBase(const uqFunctionOperatorBuilder & builder);
+  FunctionBase(const FunctionOperatorBuilder & builder);
 
   //! Destructor
-  virtual ~uqFunctionBase();
+  virtual ~FunctionBase();
   //@}
 
   //! Execute \c this += \c scale * \c rhs
-  virtual void add(double scale, const uqFunctionBase & rhs) = 0;
+  virtual void add(double scale, const FunctionBase & rhs) = 0;
 
   //! Pointwise multiply \c f1 and \c f2 and store the result in \c *this
-  virtual void pointwise_mult(const uqFunctionBase & f1,
-      const uqFunctionBase & f2) = 0;
+  virtual void pointwise_mult(const FunctionBase & f1,
+      const FunctionBase & f2) = 0;
 
   //! Execute \c this *= \c scale
   virtual void scale(double scale) = 0;
@@ -68,8 +68,8 @@ public:
   //! Return the L2-norm of \c this
   virtual double L2_norm() const = 0;
 
-  //! Return a boost shared pointer to a uqLibMeshFunction
-  virtual boost::shared_ptr<uqFunctionBase> zero_clone() const = 0;
+  //! Return a boost shared pointer to a LibMeshFunction
+  virtual boost::shared_ptr<FunctionBase> zero_clone() const = 0;
 
   //! 
 
@@ -81,7 +81,7 @@ public:
 
 protected:
   //! Builder object
-  const uqFunctionOperatorBuilder & builder;
+  const FunctionOperatorBuilder & builder;
 };
 
 }  // End namespace QUESO

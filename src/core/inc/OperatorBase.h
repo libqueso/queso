@@ -30,7 +30,7 @@
 #define __QUESO_OPERATOR_BASE__
 
 /*!
- * \file uqOperatorBase.h
+ * \file OperatorBase.h
  * \brief Abstract base class for operator objects. Operators are assumed to
  *        be symmetric and positive-definite, so the eigenvalues are real and
  *        positive.
@@ -39,13 +39,13 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include <queso/uqFunctionBase.h>
+#include <queso/FunctionBase.h>
 
 namespace QUESO {
 
-class uqFunctionOperatorBuilder;
+class FunctionOperatorBuilder;
 
-class uqOperatorBase {
+class OperatorBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
@@ -55,16 +55,16 @@ public:
    * up various options. Polynomial type, polynomial order, and the number of
    * eigenpairs to request are good examples.
    */
-  uqOperatorBase(const uqFunctionOperatorBuilder & builder);
+  OperatorBase(const FunctionOperatorBuilder & builder);
 
   //! Destructor
-  virtual ~uqOperatorBase();
+  virtual ~OperatorBase();
   //@}
 
   //! Return eigenvalue \c i.
   /*!
    * You can store them however you want, but having some kind of order to them
-   * is useful for \c uqInfiniteDimensionalMeasure
+   * is useful for \c InfiniteDimensionalMeasure
    */
   virtual double get_eigenvalue(unsigned int i) const = 0;
 
@@ -82,12 +82,12 @@ public:
    *  where the lambda are eigenvalues of the precision operator, \c this, and
    *  the \phi(x) are eigenfunctions of the precision operator, \c this
    */
-  virtual boost::shared_ptr<uqFunctionBase>
+  virtual boost::shared_ptr<FunctionBase>
   inverse_kl_transform(std::vector<double>& xi, double alpha) const = 0;
 
 protected:
   //! A reference to the builder object
-  const uqFunctionOperatorBuilder & builder;
+  const FunctionOperatorBuilder & builder;
 };
 
 }  // End namespace QUESO

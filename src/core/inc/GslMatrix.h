@@ -29,7 +29,7 @@
 #ifndef UQ_GSL_MATRIX_H
 #define UQ_GSL_MATRIX_H
 
-/*! \file uqGslMatrix.h
+/*! \file GslMatrix.h
     \brief QUESO matrix class using GSL.
 */
 

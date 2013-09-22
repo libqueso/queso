@@ -32,7 +32,7 @@
 
 namespace QUESO {
 
-class uqFunctionBase;
+class FunctionBase;
 
 // namespace libMesh {
 //   class EquationSystems;
@@ -43,18 +43,18 @@ class uqFunctionBase;
 /*!
  * \brief Abstract class representing the likelihood
  */
-class uqInfiniteDimensionalLikelihoodBase
+class InfiniteDimensionalLikelihoodBase
 {
 public:
   /*!
    * Constructor
    */
-  uqInfiniteDimensionalLikelihoodBase(double obs_stddev);
+  InfiniteDimensionalLikelihoodBase(double obs_stddev);
 
   /*!
    * Destructor
    */
-  virtual ~uqInfiniteDimensionalLikelihoodBase();
+  virtual ~InfiniteDimensionalLikelihoodBase();
 
   /*!
    * Set the observation standard deviation.  Default is 1.
@@ -66,7 +66,7 @@ public:
    */
   virtual double obs_stddev() const;
 
-  virtual double evaluate(uqFunctionBase & flow) = 0;
+  virtual double evaluate(FunctionBase & flow) = 0;
 
 // protected:
 //   ForwardSolver & fwd_solver;

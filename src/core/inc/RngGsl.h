@@ -33,7 +33,7 @@
 #include <gsl/gsl_rng.h>
 
 
-/*! \file uqRngGsl.h
+/*! \file RngGsl.h
     \brief GSL Random Number Generation class.
 */
 

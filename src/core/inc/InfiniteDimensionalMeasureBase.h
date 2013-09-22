@@ -30,31 +30,31 @@
 #define __QUESO_INFINITEDIMENSIONALMEASURE_BASE__
 
 #include <boost/shared_ptr.hpp>
-#include <queso/uqFunctionBase.h>
+#include <queso/FunctionBase.h>
 
 /*!
- * \file uqInfiniteDimensionalMeasureBase.h
+ * \file InfiniteDimensionalMeasureBase.h
  * \brief Abstract base class for infinite dimensional measures
  */
 
 namespace QUESO {
 
-class uqFunctionBase;
+class FunctionBase;
 
-class uqInfiniteDimensionalMeasureBase {
+class InfiniteDimensionalMeasureBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor
-  uqInfiniteDimensionalMeasureBase();
+  InfiniteDimensionalMeasureBase();
 
   //! Destructor
-  virtual ~uqInfiniteDimensionalMeasureBase();
+  virtual ~InfiniteDimensionalMeasureBase();
   //@}
 
   //! Draw from the measure, and store the result in the public member varaible. This
   //! updates the public memeber variable current draw
-  virtual boost::shared_ptr<uqFunctionBase> draw() const = 0;
+  virtual boost::shared_ptr<FunctionBase> draw() const = 0;
 
   //! Return the coefficient \c i of the KL expansion of the current draw
   /*!

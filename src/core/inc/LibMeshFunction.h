@@ -31,7 +31,7 @@
 
 #include <string>
 #include <boost/shared_ptr.hpp>
-#include <queso/uqFunctionBase.h>
+#include <queso/FunctionBase.h>
 
 namespace libMesh {
   class MeshBase;
@@ -40,14 +40,14 @@ namespace libMesh {
 
 namespace QUESO {
 
-class uqFunctionOperatorBuilder;
+class FunctionOperatorBuilder;
 
 /*!
- * \file uqLibMeshFunction.h
+ * \file LibMeshFunction.h
  * \brief Function objects using libMesh for the backend
  */
 
-class uqLibMeshFunction : public uqFunctionBase {
+class LibMeshFunction : public FunctionBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
@@ -56,11 +56,11 @@ public:
   /*!
    * It is expected the lifetime of \c m will outlive \c this
    */
-  uqLibMeshFunction(const uqFunctionOperatorBuilder & builder,
+  LibMeshFunction(const FunctionOperatorBuilder & builder,
       libMesh::MeshBase & m);
 
   //! Destructor
-  ~uqLibMeshFunction();
+  ~LibMeshFunction();
   //@}
 
   //! Will print mesh-related libMesh foo to \c std::cerr
@@ -69,10 +69,10 @@ public:
   //! Save the current function to an Exodus file called \c filename
   virtual void save_function(const std::string & filename) const;
 
-  virtual void add(double scale, const uqFunctionBase & rhs);
+  virtual void add(double scale, const FunctionBase & rhs);
 
-  virtual void pointwise_mult(const uqFunctionBase & f1,
-      const uqFunctionBase & f2);
+  virtual void pointwise_mult(const FunctionBase & f1,
+      const FunctionBase & f2);
 
   virtual void scale(double scale);
 
@@ -80,7 +80,7 @@ public:
 
   virtual double L2_norm() const;
 
-  virtual boost::shared_ptr<uqFunctionBase> zero_clone() const;
+  virtual boost::shared_ptr<FunctionBase> zero_clone() const;
 
   //! This is public for now, but it should be encapsulated. Don't touch it.
   boost::shared_ptr<libMesh::EquationSystems> equation_systems;

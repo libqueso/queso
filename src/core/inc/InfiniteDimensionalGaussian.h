@@ -32,23 +32,23 @@
 #include <boost/shared_ptr.hpp>
 
 #include <queso/Environment.h>
-#include <queso/uqOperatorBase.h>
+#include <queso/OperatorBase.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/VectorSpace.h>
 #include <queso/VectorSubset.h>
 #include <queso/VectorRV.h>
-#include <queso/uqInfiniteDimensionalMeasureBase.h>
-#include <queso/uqFunctionBase.h>
+#include <queso/InfiniteDimensionalMeasureBase.h>
+#include <queso/FunctionBase.h>
 
 namespace QUESO {
 
 /*!
- * \file uqInfiniteDimensionalGaussian.h
+ * \file InfiniteDimensionalGaussian.h
  * \brief Class defining infinite dimensional Gaussian measures
  */
 
-class uqInfiniteDimensionalGaussian : public uqInfiniteDimensionalMeasureBase {
+class InfiniteDimensionalGaussian : public InfiniteDimensionalMeasureBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
@@ -62,19 +62,19 @@ public:
    *
    * It is expected that \c mean and \c precision will live longer than \c this
    */
-  uqInfiniteDimensionalGaussian(const FullEnvironment& env,
-      const uqFunctionBase &mean, const uqOperatorBase &precision,
+  InfiniteDimensionalGaussian(const FullEnvironment& env,
+      const FunctionBase &mean, const OperatorBase &precision,
       double alpha, double beta);
 
   //! Destructor
-  ~uqInfiniteDimensionalGaussian();
+  ~InfiniteDimensionalGaussian();
   //@}
 
   //! Draw from the measure, and store the result in the public member variable
   /*!
    * This updates the public memeber variable current draw
    */
-  virtual boost::shared_ptr<uqFunctionBase> draw() const;
+  virtual boost::shared_ptr<FunctionBase> draw() const;
 
   //! Return coefficient \c i of the KL expansion of the current draw
   /*!
@@ -84,10 +84,10 @@ public:
 
 private:
   // Mean
-  const uqFunctionBase & mean;
+  const FunctionBase & mean;
 
   // Precision -- I suppose you saw that one coming.
-  const uqOperatorBase & precision;
+  const OperatorBase & precision;
 
   // QUESO environment
   const FullEnvironment& env;
