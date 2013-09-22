@@ -6,18 +6,14 @@
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
-#include <uqFunctionOperatorBuilder.h>
-#include <uqLibMeshFunction.h>
-#include <uqLibMeshNegativeLaplacianOperator.h>
-#include <uqInfiniteDimensionalGaussian.h>
+#include <queso/uqFunctionOperatorBuilder.h>
+#include <queso/uqLibMeshFunction.h>
+#include <queso/uqLibMeshNegativeLaplacianOperator.h>
+#include <queso/uqInfiniteDimensionalGaussian.h>
 #endif
 
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>
-#endif
-
-#ifdef QUESO_HAVE_LIBMESH
-using namespace libMesh;
 #endif
 
 int main(int argc, char **argv)
@@ -29,7 +25,7 @@ int main(int argc, char **argv)
   const unsigned int num_samples = 1e4;
   const double alpha = 3.0;
   const double beta = 1.0;
-  uqEnvOptionsValuesClass opts;
+  QUESO::EnvOptionsValues opts;
   opts.m_seed = -1;
 
 #ifdef QUESO_HAS_MPI
@@ -37,9 +33,9 @@ int main(int argc, char **argv)
 #endif
 
 #ifdef QUESO_HAS_MPI
-  uqFullEnvironmentClass env(MPI_COMM_WORLD, "", "", &opts);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, "", "", &opts);
 #else
-  uqFullEnvironmentClass env(0, "", "", &opts);
+  QUESO::FullEnvironment env(0, "", "", &opts);
 #endif
 
 #ifdef LIBMESH_DEFAULT_SINGLE_PRECISION
@@ -52,21 +48,21 @@ int main(int argc, char **argv)
 // call PetscFinalize before we call MPI_Finalize
 #ifdef LIBMESH_HAVE_SLEPC
 {
-  LibMeshInit init(argc, argv);
+  libMesh::LibMeshInit init(argc, argv);
 
-  Mesh mesh;
-  MeshTools::Generation::build_square(mesh,
+  libMesh::Mesh mesh;
+  libMesh::MeshTools::Generation::build_square(mesh,
       20, 20, 0.0, 1.0, 0.0, 1.0, QUAD4);
 
-  uqFunctionOperatorBuilder fobuilder;
+  QUESO::uqFunctionOperatorBuilder fobuilder;
 
   fobuilder.order = "FIRST";
   fobuilder.family = "LAGRANGE";
   fobuilder.num_req_eigenpairs = num_pairs;
 
-  uqLibMeshFunction mean(fobuilder, mesh);
-  uqLibMeshNegativeLaplacianOperator precision(fobuilder, mesh);
-  uqInfiniteDimensionalGaussian mu(env, mean, precision, alpha, beta);
+  QUESO::uqLibMeshFunction mean(fobuilder, mesh);
+  QUESO::uqLibMeshNegativeLaplacianOperator precision(fobuilder, mesh);
+  QUESO::uqInfiniteDimensionalGaussian mu(env, mean, precision, alpha, beta);
 
   // Vector to hold all KL coeffs
   std::vector<double> means(num_pairs, 0.0);

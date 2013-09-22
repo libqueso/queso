@@ -6,13 +6,13 @@
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
-#include <uqFunctionOperatorBuilder.h>
-#include <uqLibMeshFunction.h>
-#include <uqLibMeshNegativeLaplacianOperator.h>
-#include <uqInfiniteDimensionalGaussian.h>
-#include <uqInfiniteDimensionalLikelihoodBase.h>
-#include <uqInfiniteDimensionalMCMCSampler.h>
-#include <uqInfiniteDimensionalMCMCSamplerOptions.h>
+#include <queso/uqFunctionOperatorBuilder.h>
+#include <queso/uqLibMeshFunction.h>
+#include <queso/uqLibMeshNegativeLaplacianOperator.h>
+#include <queso/uqInfiniteDimensionalGaussian.h>
+#include <queso/uqInfiniteDimensionalLikelihoodBase.h>
+#include <queso/uqInfiniteDimensionalMCMCSampler.h>
+#include <queso/uqInfiniteDimensionalMCMCSamplerOptions.h>
 #endif
 
 #ifdef QUESO_HAS_MPI
@@ -20,23 +20,21 @@
 #endif
 
 #ifdef QUESO_HAVE_LIBMESH
-using namespace libMesh;
-
-class Likelihood : public uqInfiniteDimensionalLikelihoodBase {
+class Likelihood : public QUESO::uqInfiniteDimensionalLikelihoodBase {
 public:
   Likelihood();
   ~Likelihood();
-  virtual double evaluate(uqFunctionBase &flow);
+  virtual double evaluate(QUESO::uqFunctionBase &flow);
 };
 
 Likelihood::Likelihood()
-  : uqInfiniteDimensionalLikelihoodBase(1.0)
+  : QUESO::uqInfiniteDimensionalLikelihoodBase(1.0)
 {
 }
 
 Likelihood::~Likelihood() {}
 
-double Likelihood::evaluate(uqFunctionBase &flow)
+double Likelihood::evaluate(QUESO::uqFunctionBase &flow)
 {
   return 1.0;
 }
@@ -58,9 +56,9 @@ int main(int argc, char **argv)
 #endif
 
 #ifdef QUESO_HAS_MPI
-  uqFullEnvironmentClass env(MPI_COMM_WORLD, in_file_name, prefix, NULL);
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, in_file_name, prefix, NULL);
 #else
-  uqFullEnvironmentClass env(0, in_file_name, prefix, NULL);
+  QUESO::FullEnvironment env(0, in_file_name, prefix, NULL);
 #endif
 
 #ifdef LIBMESH_DEFAULT_SINGLE_PRECISION
@@ -73,26 +71,26 @@ int main(int argc, char **argv)
 // call PetscFinalize before we call MPI_Finalize
 #ifdef LIBMESH_HAVE_SLEPC
 {
-  LibMeshInit init(argc, argv);
+  libMesh::LibMeshInit init(argc, argv);
 
-  Mesh mesh;
-  MeshTools::Generation::build_square(mesh,
+  libMesh::Mesh mesh;
+  libMesh::MeshTools::Generation::build_square(mesh,
       20, 20, 0.0, 1.0, 0.0, 1.0, QUAD4);
 
-  uqFunctionOperatorBuilder fobuilder;
+  QUESO::uqFunctionOperatorBuilder fobuilder;
 
   fobuilder.order = "FIRST";
   fobuilder.family = "LAGRANGE";
   fobuilder.num_req_eigenpairs = num_pairs;
 
-  uqLibMeshFunction mean(fobuilder, mesh);
-  uqLibMeshNegativeLaplacianOperator precision(fobuilder, mesh);
-  uqInfiniteDimensionalGaussian mu(env, mean, precision, alpha, beta);
+  QUESO::uqLibMeshFunction mean(fobuilder, mesh);
+  QUESO::uqLibMeshNegativeLaplacianOperator precision(fobuilder, mesh);
+  QUESO::uqInfiniteDimensionalGaussian mu(env, mean, precision, alpha, beta);
 
   Likelihood llhd;
 
-  uqInfiniteDimensionalMCMCSamplerOptions opts(env, "");
-  uqInfiniteDimensionalMCMCSampler sampler(env, mu, llhd, &opts);
+  QUESO::uqInfiniteDimensionalMCMCSamplerOptions opts(env, "");
+  QUESO::uqInfiniteDimensionalMCMCSampler sampler(env, mu, llhd, &opts);
 
   if (opts.m_num_iters != 10 ||  // Input file value is 10
       opts.m_save_freq != 5 ||  // Ditto 5
