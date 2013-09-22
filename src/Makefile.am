@@ -87,17 +87,17 @@ libqueso_la_SOURCES = \
 # Sources that need libmesh
 if LIBMESH_ENABLED
 libqueso_la_SOURCES += \
-	$(top_srcdir)/src/core/src/uqFunctionBase.C \
-	$(top_srcdir)/src/core/src/uqLibMeshFunction.C \
-	$(top_srcdir)/src/core/src/uqOperatorBase.C \
-	$(top_srcdir)/src/core/src/uqLibMeshOperatorBase.C \
-	$(top_srcdir)/src/core/src/uqLibMeshNegativeLaplacianOperator.C \
-	$(top_srcdir)/src/core/src/uqInfiniteDimensionalGaussian.C \
-	$(top_srcdir)/src/core/src/uqInfiniteDimensionalMeasureBase.C \
-	$(top_srcdir)/src/core/src/uqInfiniteDimensionalMCMCSampler.C \
-	$(top_srcdir)/src/core/src/uqInfiniteDimensionalMCMCSamplerOptions.C \
-	$(top_srcdir)/src/core/src/uqInfiniteDimensionalLikelihoodBase.C \
-	$(top_srcdir)/src/core/src/uqFunctionOperatorBuilder.C
+	$(top_srcdir)/src/core/src/FunctionBase.C \
+	$(top_srcdir)/src/core/src/LibMeshFunction.C \
+	$(top_srcdir)/src/core/src/OperatorBase.C \
+	$(top_srcdir)/src/core/src/LibMeshOperatorBase.C \
+	$(top_srcdir)/src/core/src/LibMeshNegativeLaplacianOperator.C \
+	$(top_srcdir)/src/core/src/InfiniteDimensionalGaussian.C \
+	$(top_srcdir)/src/core/src/InfiniteDimensionalMeasureBase.C \
+	$(top_srcdir)/src/core/src/InfiniteDimensionalMCMCSampler.C \
+	$(top_srcdir)/src/core/src/InfiniteDimensionalMCMCSamplerOptions.C \
+	$(top_srcdir)/src/core/src/InfiniteDimensionalLikelihoodBase.C \
+	$(top_srcdir)/src/core/src/FunctionOperatorBuilder.C
 endif
 
 
@@ -195,17 +195,17 @@ libqueso_include_HEADERS = \
 # Headers that need libmesh
 if LIBMESH_ENABLED
 libqueso_include_HEADERS += \
-	$(top_srcdir)/src/core/inc/uqFunctionBase.h \
-	$(top_srcdir)/src/core/inc/uqLibMeshFunction.h \
-	$(top_srcdir)/src/core/inc/uqOperatorBase.h \
-	$(top_srcdir)/src/core/inc/uqLibMeshOperatorBase.h \
-	$(top_srcdir)/src/core/inc/uqLibMeshNegativeLaplacianOperator.h \
-	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalMeasureBase.h \
-	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalGaussian.h \
-	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalMCMCSampler.h \
-	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalMCMCSamplerOptions.h \
-	$(top_srcdir)/src/core/inc/uqInfiniteDimensionalLikelihoodBase.h \
-	$(top_srcdir)/src/core/inc/uqFunctionOperatorBuilder.h
+	$(top_srcdir)/src/core/inc/FunctionBase.h \
+	$(top_srcdir)/src/core/inc/LibMeshFunction.h \
+	$(top_srcdir)/src/core/inc/OperatorBase.h \
+	$(top_srcdir)/src/core/inc/LibMeshOperatorBase.h \
+	$(top_srcdir)/src/core/inc/LibMeshNegativeLaplacianOperator.h \
+	$(top_srcdir)/src/core/inc/InfiniteDimensionalMeasureBase.h \
+	$(top_srcdir)/src/core/inc/InfiniteDimensionalGaussian.h \
+	$(top_srcdir)/src/core/inc/InfiniteDimensionalMCMCSampler.h \
+	$(top_srcdir)/src/core/inc/InfiniteDimensionalMCMCSamplerOptions.h \
+	$(top_srcdir)/src/core/inc/InfiniteDimensionalLikelihoodBase.h \
+	$(top_srcdir)/src/core/inc/FunctionOperatorBuilder.h
 endif
 
 # Headers to install from misc/inc
