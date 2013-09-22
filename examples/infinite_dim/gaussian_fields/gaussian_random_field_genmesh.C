@@ -4,10 +4,10 @@
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
 #include <queso/Environment.h>
-#include <queso/uqFunctionOperatorBuilder.h>
-#include <queso/uqLibMeshFunction.h>
-#include <queso/uqLibMeshNegativeLaplacianOperator.h>
-#include <queso/uqInfiniteDimensionalGaussian.h>
+#include <queso/FunctionOperatorBuilder.h>
+#include <queso/LibMeshFunction.h>
+#include <queso/LibMeshNegativeLaplacianOperator.h>
+#include <queso/InfiniteDimensionalGaussian.h>
 
 #ifdef QUESO_HAS_MPI
 #include <mpi.h>
@@ -40,19 +40,19 @@ int main(int argc, char **argv)
   Mesh mesh;
   mesh.read("mesh.e");
 
-  QUESO::uqFunctionOperatorBuilder fobuilder;
+  QUESO::FunctionOperatorBuilder fobuilder;
 
   fobuilder.order = "FIRST";
   fobuilder.family = "LAGRANGE";
   fobuilder.num_req_eigenpairs = 360;
 
-  QUESO::uqLibMeshFunction mean(fobuilder, mesh);
-  QUESO::uqLibMeshNegativeLaplacianOperator precision(fobuilder, mesh);
+  QUESO::LibMeshFunction mean(fobuilder, mesh);
+  QUESO::LibMeshNegativeLaplacianOperator precision(fobuilder, mesh);
 
   precision.print_info();
   precision.save_converged_evals("evals.txt");
 
-  QUESO::uqInfiniteDimensionalGaussian mu(env, mean, precision, 3.0, 1.0);
+  QUESO::InfiniteDimensionalGaussian mu(env, mean, precision, 3.0, 1.0);
 
   for (i = 0; i < 5; i++) {
     std::ostringstream number;

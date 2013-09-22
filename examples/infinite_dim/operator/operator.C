@@ -2,8 +2,8 @@
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
-#include <queso/uqFunctionOperatorBuilder.h>
-#include <queso/uqLibMeshNegativeLaplacianOperator.h>
+#include <queso/FunctionOperatorBuilder.h>
+#include <queso/LibMeshNegativeLaplacianOperator.h>
 #include <mpi.h>
 
 using namespace libMesh;
@@ -20,10 +20,10 @@ int main(int argc, char **argv)
   Mesh mesh;
   MeshTools::Generation::build_square(mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
 
-  QUESO::uqFunctionOperatorBuilder fobuilder;
+  QUESO::FunctionOperatorBuilder fobuilder;
   fobuilder.num_req_eigenpairs = 5;
 
-  QUESO::uqLibMeshNegativeLaplacianOperator C(fobuilder, mesh);
+  QUESO::LibMeshNegativeLaplacianOperator C(fobuilder, mesh);
   C.print_info();
   C.save_converged_evals("evals.txt");
 
