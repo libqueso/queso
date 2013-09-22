@@ -37,8 +37,6 @@
 #include <queso/uqFunctionBase.h>
 #include <queso/uqOperatorBase.h>
 
-using namespace std;
-
 namespace QUESO {
 
 uqInfiniteDimensionalGaussian::uqInfiniteDimensionalGaussian(
@@ -54,7 +52,7 @@ uqInfiniteDimensionalGaussian::uqInfiniteDimensionalGaussian(
     alpha(alpha),
     beta(beta)
 {
-  this->coeffs = new vector<double>(this->precision.get_num_converged(), 0.0);
+  this->coeffs = new std::vector<double>(this->precision.get_num_converged(), 0.0);
 }
 
 uqInfiniteDimensionalGaussian::~uqInfiniteDimensionalGaussian()

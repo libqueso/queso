@@ -60,19 +60,17 @@
 #include <libmesh/enum_order.h>
 #include <libmesh/enum_fe_family.h>
 
-using namespace libMesh;
-
 namespace QUESO {
 
 uqLibMeshFunction::uqLibMeshFunction(
-    const uqFunctionOperatorBuilder & builder, MeshBase & m)
+    const uqFunctionOperatorBuilder & builder, libMesh::MeshBase & m)
   : uqFunctionBase(builder),
-    equation_systems(new EquationSystems(m))
+    equation_systems(new libMesh::EquationSystems(m))
 {
-  this->equation_systems->add_system<ExplicitSystem>("Function");
+  this->equation_systems->add_system<libMesh::ExplicitSystem>("Function");
   this->equation_systems->get_system("Function").add_variable("u",
-      Utility::string_to_enum<libMeshEnums::Order>(this->builder.order),
-      Utility::string_to_enum<libMeshEnums::FEFamily>(this->builder.family));
+      libMesh::Utility::string_to_enum<libMeshEnums::Order>(this->builder.order),
+      libMesh::Utility::string_to_enum<libMeshEnums::FEFamily>(this->builder.family));
   this->equation_systems->init();
 }
 
@@ -88,7 +86,7 @@ void uqLibMeshFunction::print_info() const
 
 void uqLibMeshFunction::save_function(const std::string & filename) const
 {
-  VTKIO(this->equation_systems->get_mesh()).write_equation_systems(
+  libMesh::VTKIO(this->equation_systems->get_mesh()).write_equation_systems(
       filename, *this->equation_systems);
 }
 
@@ -97,8 +95,8 @@ void uqLibMeshFunction::add(double scale, const uqFunctionBase & rhs) {
   const uqLibMeshFunction & rhs_derived = dynamic_cast<
     const uqLibMeshFunction &>(rhs);
 
-  this->equation_systems->get_system<ExplicitSystem>("Function").solution->add(
-      scale, *(rhs_derived.equation_systems->get_system<ExplicitSystem>(
+  this->equation_systems->get_system<libMesh::ExplicitSystem>("Function").solution->add(
+      scale, *(rhs_derived.equation_systems->get_system<libMesh::ExplicitSystem>(
           "Function").solution));
 }
 
@@ -110,26 +108,26 @@ void uqLibMeshFunction::pointwise_mult(const uqFunctionBase & f1,
   const uqLibMeshFunction & f2_derived = static_cast<
     const uqLibMeshFunction &>(f2);
 
-  this->equation_systems->get_system<ExplicitSystem>("Function").solution->pointwise_mult(
-      *(f1_derived.equation_systems->get_system<ExplicitSystem>("Function").solution),
-      *(f2_derived.equation_systems->get_system<ExplicitSystem>("Function").solution));
+  this->equation_systems->get_system<libMesh::ExplicitSystem>("Function").solution->pointwise_mult(
+      *(f1_derived.equation_systems->get_system<libMesh::ExplicitSystem>("Function").solution),
+      *(f2_derived.equation_systems->get_system<libMesh::ExplicitSystem>("Function").solution));
 }
 
 void uqLibMeshFunction::scale(double scale) {
-  this->equation_systems->get_system<ExplicitSystem>(
+  this->equation_systems->get_system<libMesh::ExplicitSystem>(
       "Function").solution->scale(scale);
 }
 
 void uqLibMeshFunction::zero() {
-  this->equation_systems->get_system<ExplicitSystem>(
+  this->equation_systems->get_system<libMesh::ExplicitSystem>(
       "Function").solution->zero();
 }
 
 double uqLibMeshFunction::L2_norm() const {
-  ExplicitSystem & system =
-    this->equation_systems->get_system<ExplicitSystem>("Function");
+  libMesh::ExplicitSystem & system =
+    this->equation_systems->get_system<libMesh::ExplicitSystem>("Function");
 
-  double norm = system.calculate_norm(*system.solution, SystemNorm(L2));
+  double norm = system.calculate_norm(*system.solution, libMesh::SystemNorm(L2));
   return norm;
 }
 
@@ -137,7 +135,7 @@ boost::shared_ptr<uqFunctionBase> uqLibMeshFunction::zero_clone() const
 {
   uqLibMeshFunction * clone = new uqLibMeshFunction(this->builder,
       this->equation_systems->get_mesh());
-  clone->equation_systems->get_system<ExplicitSystem>(
+  clone->equation_systems->get_system<libMesh::ExplicitSystem>(
       "Function").solution->zero();
 
   boost::shared_ptr<uqFunctionBase> ptr(clone);
