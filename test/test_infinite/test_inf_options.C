@@ -45,7 +45,7 @@ double Likelihood::evaluate(uqFunctionBase &flow)
 int main(int argc, char **argv)
 {
 #ifdef QUESO_HAVE_LIBMESH
-  const char * in_file_name = "test_infinite/inf_options_in.txt";
+  const char * in_file_name = "test_infinite/inf_options";
   const char * prefix = "";
   const unsigned int num_pairs = 5;
   const double alpha = 3.0;

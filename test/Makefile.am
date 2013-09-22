@@ -130,7 +130,7 @@ EXTRA_DIST = common/compare.pl \
 						 test_exception/copy_env.inp \
 						 test_DistArray/test_DistArrayCtor.sh \
 						test_GslVectorSpace/test_GslVectorSpaceCtor.sh \
-						test_infinite/inf_options_in.txt
+						test_infinite/inf_options
 
 CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt \
 						 $(top_srcdir)/test/gslvector_out_sub0.m
