@@ -15,10 +15,10 @@
 #include <libmesh/numeric_vector.h>
 #include <libmesh/elem.h>
 #include <libmesh/dof_map.h>
-#include <queso/uqFunctionOperatorBuilder.h>
-#include <queso/uqLibMeshFunction.h>
-#include <queso/uqLibMeshNegativeLaplacianOperator.h>
-#include <queso/uqInfiniteDimensionalGaussian.h>
+#include <queso/FunctionOperatorBuilder.h>
+#include <queso/LibMeshFunction.h>
+#include <queso/LibMeshNegativeLaplacianOperator.h>
+#include <queso/InfiniteDimensionalGaussian.h>
 #endif
 
 #ifdef QUESO_HAS_MPI
@@ -60,13 +60,13 @@ int main(int argc, char **argv)
   libMesh::MeshTools::Generation::build_square(mesh,
       20, 20, 0.0, 1.0, 0.0, 1.0, QUAD4);
 
-  QUESO::uqFunctionOperatorBuilder builder;
+  QUESO::FunctionOperatorBuilder builder;
 
   builder.order = "FIRST";
   builder.family = "LAGRANGE";
   builder.num_req_eigenpairs = 10;
 
-  QUESO::uqLibMeshNegativeLaplacianOperator precision(builder, mesh);
+  QUESO::LibMeshNegativeLaplacianOperator precision(builder, mesh);
 
   libMesh::EquationSystems & es = precision.get_equation_systems();
   libMesh::CondensedEigenSystem & eig_sys = es.get_system<libMesh::CondensedEigenSystem>(

@@ -6,13 +6,13 @@
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
-#include <queso/uqFunctionOperatorBuilder.h>
-#include <queso/uqLibMeshFunction.h>
-#include <queso/uqLibMeshNegativeLaplacianOperator.h>
-#include <queso/uqInfiniteDimensionalGaussian.h>
-#include <queso/uqInfiniteDimensionalLikelihoodBase.h>
-#include <queso/uqInfiniteDimensionalMCMCSampler.h>
-#include <queso/uqInfiniteDimensionalMCMCSamplerOptions.h>
+#include <queso/FunctionOperatorBuilder.h>
+#include <queso/LibMeshFunction.h>
+#include <queso/LibMeshNegativeLaplacianOperator.h>
+#include <queso/InfiniteDimensionalGaussian.h>
+#include <queso/InfiniteDimensionalLikelihoodBase.h>
+#include <queso/InfiniteDimensionalMCMCSampler.h>
+#include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
 #endif
 
 #ifdef QUESO_HAS_MPI
@@ -20,21 +20,21 @@
 #endif
 
 #ifdef QUESO_HAVE_LIBMESH
-class Likelihood : public QUESO::uqInfiniteDimensionalLikelihoodBase {
+class Likelihood : public QUESO::InfiniteDimensionalLikelihoodBase {
 public:
   Likelihood();
   ~Likelihood();
-  virtual double evaluate(QUESO::uqFunctionBase &flow);
+  virtual double evaluate(QUESO::FunctionBase &flow);
 };
 
 Likelihood::Likelihood()
-  : QUESO::uqInfiniteDimensionalLikelihoodBase(1.0)
+  : QUESO::InfiniteDimensionalLikelihoodBase(1.0)
 {
 }
 
 Likelihood::~Likelihood() {}
 
-double Likelihood::evaluate(QUESO::uqFunctionBase &flow)
+double Likelihood::evaluate(QUESO::FunctionBase &flow)
 {
   return 1.0;
 }
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
   const unsigned int num_pairs = 5;
   const double alpha = 3.0;
   const double beta = 1.0;
-  // uqEnvOptionsValuesClass opts;
+  // EnvOptionsValuesClass opts;
   // opts.m_seed = -1;
 
 #ifdef QUESO_HAS_MPI
@@ -77,20 +77,20 @@ int main(int argc, char **argv)
   libMesh::MeshTools::Generation::build_square(mesh,
       20, 20, 0.0, 1.0, 0.0, 1.0, QUAD4);
 
-  QUESO::uqFunctionOperatorBuilder fobuilder;
+  QUESO::FunctionOperatorBuilder fobuilder;
 
   fobuilder.order = "FIRST";
   fobuilder.family = "LAGRANGE";
   fobuilder.num_req_eigenpairs = num_pairs;
 
-  QUESO::uqLibMeshFunction mean(fobuilder, mesh);
-  QUESO::uqLibMeshNegativeLaplacianOperator precision(fobuilder, mesh);
-  QUESO::uqInfiniteDimensionalGaussian mu(env, mean, precision, alpha, beta);
+  QUESO::LibMeshFunction mean(fobuilder, mesh);
+  QUESO::LibMeshNegativeLaplacianOperator precision(fobuilder, mesh);
+  QUESO::InfiniteDimensionalGaussian mu(env, mean, precision, alpha, beta);
 
   Likelihood llhd;
 
-  QUESO::uqInfiniteDimensionalMCMCSamplerOptions opts(env, "");
-  QUESO::uqInfiniteDimensionalMCMCSampler sampler(env, mu, llhd, &opts);
+  QUESO::InfiniteDimensionalMCMCSamplerOptions opts(env, "");
+  QUESO::InfiniteDimensionalMCMCSampler sampler(env, mu, llhd, &opts);
 
   if (opts.m_num_iters != 10 ||  // Input file value is 10
       opts.m_save_freq != 5 ||  // Ditto 5

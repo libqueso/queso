@@ -6,10 +6,10 @@
 #include <libmesh/libmesh.h>
 #include <libmesh/mesh.h>
 #include <libmesh/mesh_generation.h>
-#include <queso/uqFunctionOperatorBuilder.h>
-#include <queso/uqLibMeshFunction.h>
-#include <queso/uqLibMeshNegativeLaplacianOperator.h>
-#include <queso/uqInfiniteDimensionalGaussian.h>
+#include <queso/FunctionOperatorBuilder.h>
+#include <queso/LibMeshFunction.h>
+#include <queso/LibMeshNegativeLaplacianOperator.h>
+#include <queso/InfiniteDimensionalGaussian.h>
 #endif
 
 #ifdef QUESO_HAS_MPI
@@ -54,15 +54,15 @@ int main(int argc, char **argv)
   libMesh::MeshTools::Generation::build_square(mesh,
       20, 20, 0.0, 1.0, 0.0, 1.0, QUAD4);
 
-  QUESO::uqFunctionOperatorBuilder fobuilder;
+  QUESO::FunctionOperatorBuilder fobuilder;
 
   fobuilder.order = "FIRST";
   fobuilder.family = "LAGRANGE";
   fobuilder.num_req_eigenpairs = num_pairs;
 
-  QUESO::uqLibMeshFunction mean(fobuilder, mesh);
-  QUESO::uqLibMeshNegativeLaplacianOperator precision(fobuilder, mesh);
-  QUESO::uqInfiniteDimensionalGaussian mu(env, mean, precision, alpha, beta);
+  QUESO::LibMeshFunction mean(fobuilder, mesh);
+  QUESO::LibMeshNegativeLaplacianOperator precision(fobuilder, mesh);
+  QUESO::InfiniteDimensionalGaussian mu(env, mean, precision, alpha, beta);
 
   // Vector to hold all KL coeffs
   std::vector<double> means(num_pairs, 0.0);
