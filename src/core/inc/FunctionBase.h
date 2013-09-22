@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __QUESO_FUNCTION_BASE__
-#define __QUESO_FUNCTION_BASE__
+#ifndef QUESO_FUNCTION_BASE_H
+#define QUESO_FUNCTION_BASE_H
 
 #include <string>
 #include <boost/shared_ptr.hpp>
@@ -86,4 +86,4 @@ protected:
 
 }  // End namespace QUESO
 
-#endif // __QUESO_FUNCTION_BASE__
+#endif // QUESO_FUNCTION_BASE_H

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __QUESO_FUNCTIONOPERATORBUILDER_BASE__
-#define __QUESO_FUNCTIONOPERATORBUILDER_BASE__
+#ifndef QUESO_FUNCTIONOPERATORBUILDER_BASE_H
+#define QUESO_FUNCTIONOPERATORBUILDER_BASE_H
 
 /*!
  * \file FunctionOperatorBuilder.h
@@ -63,4 +63,4 @@ public:
 
 }  // End namespace QUESO
 
-#endif // __QUESO_FUNCTIONOPERATORBUILDER_BASE__
+#endif // QUESO_FUNCTIONOPERATORBUILDER_BASE_H

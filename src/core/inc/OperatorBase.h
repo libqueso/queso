@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __QUESO_OPERATOR_BASE__
-#define __QUESO_OPERATOR_BASE__
+#ifndef QUESO_OPERATOR_BASE_H
+#define QUESO_OPERATOR_BASE_H
 
 /*!
  * \file OperatorBase.h
@@ -92,4 +92,4 @@ protected:
 
 }  // End namespace QUESO
 
-#endif // __QUESO_OPERATOR_BASE__
+#endif // QUESO_OPERATOR_BASE_H

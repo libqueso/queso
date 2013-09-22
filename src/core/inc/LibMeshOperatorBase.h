@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __QUESO_LIBMESHOPERATOR_BASE__
-#define __QUESO_LIBMESHOPERATOR_BASE__
+#ifndef QUESO_LIBMESHOPERATOR_BASE_H
+#define QUESO_LIBMESHOPERATOR_BASE_H
 
 #include <string>
 #include <set>
@@ -119,4 +119,4 @@ protected:
 
 }  // End namespace QUESO
 
-#endif // __QUESO_LIBMESHOPERATOR_BASE__
+#endif // QUESO_LIBMESHOPERATOR_BASE_H

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __QUESO_INFINITEDIMENSIONALMEASURE_BASE__
-#define __QUESO_INFINITEDIMENSIONALMEASURE_BASE__
+#ifndef QUESO_INFINITEDIMENSIONALMEASURE_BASE_H
+#define QUESO_INFINITEDIMENSIONALMEASURE_BASE_H
 
 #include <boost/shared_ptr.hpp>
 #include <queso/FunctionBase.h>
@@ -65,4 +65,4 @@ public:
 
 }  // End namespace QUESO
 
-#endif // __QUESO_INFINITEDIMENSIONALMEASURE_BASE__
+#endif // QUESO_INFINITEDIMENSIONALMEASURE_BASE_H

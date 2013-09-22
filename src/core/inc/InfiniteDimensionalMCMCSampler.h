@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __QUESO_INFINITE_SAMPLER__
-#define __QUESO_INFINITE_SAMPLER__
+#ifndef QUESO_INFINITE_SAMPLER_H
+#define QUESO_INFINITE_SAMPLER_H
 
 // Boost includes
 #include <boost/scoped_ptr.hpp>
@@ -170,4 +170,4 @@ private:
 
 }  // End namespace QUESO
 
-#endif // __QUESO_INFINITE_SAMPLER__
+#endif // QUESO_INFINITE_SAMPLER_H

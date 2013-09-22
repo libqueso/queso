@@ -25,8 +25,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __QUESO_INFINITE_LIKELIHOOD_H
-#define __QUESO_INFINITE_LIKELIHOOD_H
+#ifndef QUESO_INFINITE_LIKELIHOOD_H
+#define QUESO_INFINITE_LIKELIHOOD_H
 
 // #include <libmesh/system.h>
 
@@ -78,4 +78,4 @@ private:
 
 }  // End namespace QUESO
 
-#endif // __QUESO_INFINITE_LIKELIHOOD_H
+#endif // QUESO_INFINITE_LIKELIHOOD_H

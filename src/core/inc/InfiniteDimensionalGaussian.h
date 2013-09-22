@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __QUESO_INFINITEDIMENSIONALGAUSSIAN__
-#define __QUESO_INFINITEDIMENSIONALGAUSSIAN__
+#ifndef QUESO_INFINITEDIMENSIONALGAUSSIAN_H
+#define QUESO_INFINITEDIMENSIONALGAUSSIAN_H
 
 #include <boost/shared_ptr.hpp>
 
@@ -105,4 +105,4 @@ private:
 
 }  // End namespace QUESO
 
-#endif // __QUESO_INFINITEDIMENSIONALGAUSSIAN__
+#endif // QUESO_INFINITEDIMENSIONALGAUSSIAN_H

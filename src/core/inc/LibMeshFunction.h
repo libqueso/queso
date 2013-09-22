@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __QUESO_LIBMESHFUNCTION__
-#define __QUESO_LIBMESHFUNCTION__
+#ifndef QUESO_LIBMESHFUNCTION_H
+#define QUESO_LIBMESHFUNCTION_H
 
 #include <string>
 #include <boost/shared_ptr.hpp>
@@ -88,4 +88,4 @@ public:
 
 }  // End namespace QUESO
 
-#endif // __QUESO_LIBMESHFUNCTION__
+#endif // QUESO_LIBMESHFUNCTION_H

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H__
-#define __QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H__
+#ifndef QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H
+#define QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H
 
 #include <string>
 #include <queso/LibMeshOperatorBase.h>
@@ -67,4 +67,4 @@ public:
 
 }  // End namespace QUESO
 
-#endif // __QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H__
+#endif // QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H

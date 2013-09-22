@@ -25,8 +25,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_INFMCMC_OPTIONS_H__
-#define __UQ_INFMCMC_OPTIONS_H__
+#ifndef UQ_INFMCMC_OPTIONS_H
+#define UQ_INFMCMC_OPTIONS_H
 
 #include <queso/Environment.h>
 
@@ -95,4 +95,4 @@ std::ostream& operator<<(std::ostream& os, const InfiniteDimensionalMCMCSamplerO
 
 }  // End namespace QUESO
 
-#endif // __UQ_INFMCMC_OPTIONS_H__
+#endif // UQ_INFMCMC_OPTIONS_H
