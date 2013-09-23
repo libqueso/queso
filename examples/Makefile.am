@@ -53,6 +53,13 @@ gaussian_random_field_genmesh_PROGRAMS = gaussian_random_field_genmesh
 gaussian_random_field_genmesh_SOURCES = $(top_srcdir)/examples/infinite_dim/gaussian_fields/gaussian_random_field_genmesh.C
 gaussian_random_field_genmesh_LDADD = $(top_builddir)/src/libqueso.la
 gaussian_random_field_genmesh_CPPFLAGS = $(QUESO_CPPFLAGS)
+
+invprobdir = $(prefix)/examples/infinite_dim
+invprob_DATA = $(top_srcdir)/examples/infinite_dim/inverse_options.in
+invprob_PROGRAMS = inverse_problem
+inverse_problem_SOURCES = $(top_srcdir)/examples/infinite_dim/inverse_problem.C
+inverse_problem_LDADD = $(top_builddir)/src/libqueso.la
+inverse_problem_CPPFLAGS = $(QUESO_CPPFLAGS)
 endif
 
 #############################
