@@ -1,5 +1,5 @@
 ##########################################################
-# Using installed QUESO 0.47.1, from tarball, in 'violeta'
+# Using installed QUESO 0.47.1, from tarball, in 'margarida'
 ##########################################################
 
 QUESO_DIR = /home/kemelli/LIBRARIES/QUESO-0.47.1
@@ -27,19 +27,18 @@ default: all
 
 .SUFFIXES: .o .C
 
-all:	example_gravity_gsl
+all:	example_sip
 
 clean:
 	rm -f *~
 	rm -f *.o
-	rm -f gravity_gsl
+	rm -f simple_sip_example
 
-example_gravity_gsl: gravity_main.o gravity_likelihood.o gravity_compute.o gravity_qoi.o
-	$(CXX) gravity_main.o \
-	       gravity_likelihood.o \
-	       gravity_compute.o \
-	       gravity_qoi.o \
-	       -o gravity_gsl $(LIBS)
+example_sip: example_main.o example_likelihood.o example_compute.o
+	$(CXX) example_main.o \
+	       example_likelihood.o \
+	       example_compute.o \
+	       -o simple_sip_example $(LIBS)
 
 %.o: %.C
 	$(CXX) $(INC_PATHS) $(CXXFLAGS) $<

@@ -24,7 +24,7 @@ Finally, \texttt{ip\_mh\_am\_epsilon} is the covariance regularization factor us
 
 For a SFP, the variable assignment \verb+fp_computeSolution = 1+ tells QUESO to compute the solution process; the assignment \verb+fp_computeCovariances = 1+,  instructs QUESO to compute parameter--QoI covariances, and analogously, \verb+fp_computeCorrelations = 1+ inform QUESO to compute  parameter--QoI correlations. The name of the data output file can be set with variable \verb+fp_dataOutputFileName arg+;  and \verb+fp_dataOutputAllowedSet+ defines which subenvironments will write to data output file.
 
-An example a complete input file used by QUESO to solve a SIP--SFP is presented in Section \ref{sec:application_input_file}; however every application example included in \Queso{} build and installation directories \verb+examples+ has an options input file and the user is invited to familiarize him/herself with them.
+An example a complete input file used by QUESO to solve a SIP--SFP is presented in Section \ref{sec:gravity-input-file}; however every application example included in \Queso{} build and installation directories \verb+examples+ has an options input file and the user is invited to familiarize him/herself with them.
 
 
 
@@ -74,6 +74,6 @@ The user, however, must keep in mind the possible occurrence of race condition, 
 \new{
 Besides setting up the variables related to the DRAM algorithm in the input file, as described in Section \ref{sec:revisiting_input} above, the user must also provide an initialized \underline{covariance matrix} before calling the DRAM solver, \texttt{solveWithBayesMetropolisHastings(...)}, in his/her application code. 
 
-It is worth to note that this is rather a DRAM requirement~\cite{Laine08}, not a QUESO limitation. An example of the instantiation and initialization of a proposal covariance matrix and its subsequent use is presented in lines 145-147 of Listings \ref{code:gravity_compute_C}, Section \ref{sec:application_code}.
+It is worth to note that this is rather a DRAM requirement~\cite{Laine08}, not a QUESO limitation. An example of the instantiation and initialization of a proposal covariance matrix and its subsequent use is presented in lines 145-147 of Listings \ref{code:gravity_compute_C}, Section \ref{sec:gravity_code}.
 
 }

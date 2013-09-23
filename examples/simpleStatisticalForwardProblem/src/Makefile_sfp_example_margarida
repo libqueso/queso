@@ -1,8 +1,8 @@
 ##########################################################
-# Using installed QUESO 0.46.0, from tarball, in 'margarida'
+# Using installed QUESO 0.47.1, from tarball, in 'margarida'
 ##########################################################
 
-QUESO_DIR = /home/kemelli/LIBRARIES/QUESO-0.46.0
+QUESO_DIR = /home/kemelli/LIBRARIES/QUESO-0.47.1
 BOOST_DIR = /home/kemelli/LIBRARIES/boost-1.53.0
 GSL_DIR  =  /home/kemelli/LIBRARIES/gsl-1.15
 HDF5_DIR  = /home/kemelli/LIBRARIES/hdf5-1.8.10
@@ -15,14 +15,10 @@ INC_PATHS = \
 	-I$(HDF5_DIR)/include
 
 LIBS = \
-	-L$(QUESO_DIR)/lib \
-	-lqueso \
-	-L$(BOOST_DIR)/lib \
-	-lboost_program_options \
-	-L$(GSL_DIR)/lib \
-	-lgsl \
-	-L$(HDF5_DIR)/lib \
-	-lhdf5 
+	-L$(QUESO_DIR)/lib -lqueso \
+	-L$(BOOST_DIR)/lib -lboost_program_options \
+	-L$(GSL_DIR)/lib -lgsl \
+	-L$(HDF5_DIR)/lib -lhdf5 
 
 CXX = mpic++
 CXXFLAGS += -g -Wall -c
@@ -31,18 +27,18 @@ default: all
 
 .SUFFIXES: .o .C
 
-all:	example_sip
+all:	example_sfp
 
 clean:
 	rm -f *~
 	rm -f *.o
-	rm -f simple_sip_example
+	rm -f simple_sfp_example
 
-example_sip: example_main.o example_likelihood.o example_compute.o
-	$(CXX) example_main.o \
-	       example_likelihood.o \
-	       example_compute.o \
-	       -o simple_sip_example $(LIBS)
+example_sfp: simple_sfp_example_main.o simple_sfp_example_qoi.o simple_sfp_example_compute.o
+	$(CXX) simple_sfp_example_main.o \
+	       simple_sfp_example_qoi.o \
+	       simple_sfp_example_compute.o \
+	       -o simple_sfp_example $(LIBS)
 
 %.o: %.C
 	$(CXX) $(INC_PATHS) $(CXXFLAGS) $<
