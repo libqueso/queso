@@ -60,6 +60,14 @@ invprob_PROGRAMS = inverse_problem
 inverse_problem_SOURCES = $(top_srcdir)/examples/infinite_dim/inverse_problem.C
 inverse_problem_LDADD = $(top_builddir)/src/libqueso.la
 inverse_problem_CPPFLAGS = $(QUESO_CPPFLAGS)
+
+# Parallel inverse problem example
+parinvprobdir = $(prefix)/examples/infinite_dim
+parinvprob_DATA = $(top_srcdir)/examples/infinite_dim/parallel_inverse_options.in
+parinvprob_PROGRAMS = parallel_inverse_problem
+parallel_inverse_problem_SOURCES = $(top_srcdir)/examples/infinite_dim/parallel_inverse_problem.C
+parallel_inverse_problem_LDADD = $(top_builddir)/src/libqueso.la
+parallel_inverse_problem_CPPFLAGS = $(QUESO_CPPFLAGS)
 endif
 
 #############################

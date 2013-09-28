@@ -180,6 +180,7 @@ AC_CONFIG_FILES([
   src/core/inc/queso.h
   examples/Makefile        
   examples/infinite_dim/inverse_options
+  examples/infinite_dim/parallel_inverse_options
   test/Makefile
   test/t01_valid_cycle/Makefile
   test/t02_sip_sfp/Makefile
