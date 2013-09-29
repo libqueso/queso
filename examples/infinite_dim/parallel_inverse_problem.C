@@ -74,6 +74,7 @@ int main(int argc, char **argv) {
   QUESO::FullEnvironment env(MPI_COMM_WORLD, "infinite_dim/parallel_inverse_options", "", NULL);
 
   // Set up the right communicator for libMesh to use for the forward problem
+  // Should update this to use the communicator QUESO creates for us
   int ierr, my_rank, colour;
   MPI_Comm libMeshComm;
 

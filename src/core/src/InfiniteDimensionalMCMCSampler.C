@@ -99,6 +99,8 @@ InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
   this->_iteration = 0;
   this->_acc_prob = 0.0;
   this->_avg_acc_prob = 0.0;
+
+  // FIXME: Should use the QUESO rng here instead
   r = gsl_rng_alloc(gsl_rng_taus2);
 
   // Outfile is not yet open
