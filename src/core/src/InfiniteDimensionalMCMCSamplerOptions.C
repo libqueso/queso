@@ -28,6 +28,7 @@
 #include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
 
 // ODV = option default value
+#define UQ_INF_DATA_OUTPUT_DIR_NAME_ODV "chain"
 #define UQ_INF_DATA_OUTPUT_FILE_NAME_ODV "out.h5"
 #define UQ_INF_NUM_ITERS_ODV 1000
 #define UQ_INF_SAVE_FREQ_ODV 1
@@ -42,7 +43,8 @@ InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions(
     m_env(env),
     m_optionsDesc(new po::options_description("Infinite Dimensional MCMC Sampler options")),
     m_option_help(m_prefix + "help"),
-    m_option_dataOutputFileName(m_prefix + "dataOutputFilename"),
+    m_option_dataOutputDirName(m_prefix + "dataOutputDirName"),
+    m_option_dataOutputFileName(m_prefix + "dataOutputFileName"),
     m_option_num_iters(m_prefix + "num_iters"),
     m_option_save_freq(m_prefix + "save_freq"),
     m_option_rwmh_step(m_prefix + "rwmh_step")
@@ -86,6 +88,7 @@ void InfiniteDimensionalMCMCSamplerOptions::defineMyOptions(
 {
   optionsDesc.add_options()
     (m_option_help.c_str(), "produce help message for infinite dimensional sampler")
+    (m_option_dataOutputDirName.c_str(), po::value<std::string>()->default_value(UQ_INF_DATA_OUTPUT_DIR_NAME_ODV), "name of data output dir")
     (m_option_dataOutputFileName.c_str(), po::value<std::string>()->default_value(UQ_INF_DATA_OUTPUT_FILE_NAME_ODV), "name of data output file (HDF5)")
     (m_option_num_iters.c_str(), po::value<int>()->default_value(UQ_INF_NUM_ITERS_ODV), "number of mcmc iterations to do")
     (m_option_save_freq.c_str(), po::value<int>()->default_value(UQ_INF_SAVE_FREQ_ODV), "the frequency at which to save the chain state")
@@ -101,6 +104,10 @@ void InfiniteDimensionalMCMCSamplerOptions::getMyOptionValues(
       *m_env.subDisplayFile() << optionsDesc
                               << std::endl;
     }
+  }
+
+  if (m_env.allOptionsMap().count(m_option_dataOutputDirName)) {
+    this->m_dataOutputDirName = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dataOutputDirName]).as<std::string>();
   }
 
   if (m_env.allOptionsMap().count(m_option_dataOutputFileName)) {
@@ -124,6 +131,7 @@ void InfiniteDimensionalMCMCSamplerOptions::getMyOptionValues(
 
 void InfiniteDimensionalMCMCSamplerOptions::print(std::ostream & os) const
 {
+  os << "\n" << this->m_option_dataOutputDirName << " = " << this->m_dataOutputDirName;
   os << "\n" << this->m_option_dataOutputFileName << " = " << this->m_dataOutputFileName;
   os << "\n" << this->m_option_num_iters << " = " << this->m_num_iters;
   os << "\n" << this->m_option_save_freq << " = " << this->m_save_freq;

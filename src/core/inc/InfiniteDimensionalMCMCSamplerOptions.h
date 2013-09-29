@@ -60,6 +60,9 @@ public:
    */
   std::string m_prefix;
 
+  // Name of the output dir
+  std::string m_dataOutputDirName;
+
   // Name of the output file
   std::string m_dataOutputFileName;
 
@@ -85,6 +88,7 @@ private:
 
   po::options_description* m_optionsDesc;
   std::string m_option_help;
+  std::string m_option_dataOutputDirName;
   std::string m_option_dataOutputFileName;
   std::string m_option_num_iters;
   std::string m_option_save_freq;
