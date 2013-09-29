@@ -31,6 +31,7 @@
 
 // QUESO includes
 // #include <LibMeshFunction.h>
+#include <queso/Miscellaneous.h>
 #include <queso/InfiniteDimensionalMeasureBase.h>
 
 #include <queso/InfiniteDimensionalLikelihoodBase.h>
@@ -81,6 +82,19 @@ InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
   std::cout << "In InfiniteDimensionalMCMCSamplerOptions,"
             << " finished scanning options" << std::endl;
 #endif
+
+  // Verify parent directory exists (for cases when a user specifies a
+  // relative path for the desired output file).
+  int irtrn = CheckFilePath((this->m_ov->m_dataOutputDirName +
+                             (this->m_env).subIdString() +
+                             "/test.txt").c_str());
+  UQ_FATAL_TEST_MACRO(irtrn < 0,
+                      (this->m_env).subId(),
+                      "Environment::constructor()",
+                      "unable to verify output path");
+
+  // Ensure that we created the path
+  ((this->m_env).fullComm()).Barrier();
 
   this->_iteration = 0;
   this->_acc_prob = 0.0;
@@ -280,20 +294,25 @@ void InfiniteDimensionalMCMCSampler::_write_state()
   // method to spit this out to HDF5 format.  Also, this won't scale to
   // non-uniform finite element meshes.  Therefore, I'm going to spit out an
   // ExodusII file for each sample, average and variance.  Got disk space?
+  std::stringstream basename;
+  basename << this->m_ov->m_dataOutputDirName;
+  basename << (this->m_env).subIdString();
+  basename << "/";  // Sigh
+
   std::ostringstream curr_iter;
   curr_iter << this->iteration();
 
-  std::string sample_name("sample_");
+  std::string sample_name(basename.str() + "sample_");
   sample_name += curr_iter.str();
   sample_name += ".vtk";
   this->current_physical_state->save_function(sample_name);
 
-  std::string mean_name("mean_");
+  std::string mean_name(basename.str() + "mean_");
   mean_name += curr_iter.str();
   mean_name += ".vtk";
   this->current_physical_mean->save_function(mean_name);
 
-  std::string var_name("var_");
+  std::string var_name(basename.str() + "var_");
   var_name += curr_iter.str();
   var_name += ".vtk";
   this->current_physical_var->save_function(var_name);
