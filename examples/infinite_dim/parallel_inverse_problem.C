@@ -91,6 +91,9 @@ int main(int argc, char **argv) {
      << std::endl;
   std::cout << ss.str();
 
+  // Need an artifical block here because libMesh needs to call PetscFinalize
+  // before we call MPI_Finalize
+{
   libMesh::LibMeshInit init(argc, argv, libMeshComm);
 
   // Generate the mesh on which the samples live.
@@ -140,6 +143,9 @@ int main(int argc, char **argv) {
       std::cout << "l2 norm is: " << s.llhd_val() << std::endl;
     }
   }
+}
+
+  MPI_Finalize();
 
   return 0;
 }
