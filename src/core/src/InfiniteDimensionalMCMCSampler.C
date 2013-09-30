@@ -85,15 +85,33 @@ InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
 
   // Verify parent directory exists (for cases when a user specifies a
   // relative path for the desired output file).
-  int irtrn = CheckFilePath((this->m_ov->m_dataOutputDirName +
-                             (this->m_env).subIdString() +
-                             "/test.txt").c_str());
-  UQ_FATAL_TEST_MACRO(irtrn < 0,
-                      (this->m_env).subId(),
-                      "Environment::constructor()",
-                      "unable to verify output path");
+  // Only subprocess of subrank 0 creates the output file
+  if ((this->m_env).subRank() == 0) {
+    int irtrn = CheckFilePath((this->m_ov->m_dataOutputDirName +
+                               (this->m_env).subIdString() +
+                               "/test.txt").c_str());
+    UQ_FATAL_TEST_MACRO(irtrn < 0,
+                        (this->m_env).subId(),
+                        "Environment::constructor()",
+                        "unable to verify output path");
+  }
 
-  // Ensure that we created the path
+  // Only subprocess of subrank 0 creates the output file
+  if ((this->m_env).subRank() == 0) {
+    this->_outfile = H5Fcreate((this->m_ov->m_dataOutputDirName +
+          (this->m_env).subIdString() + "/" +
+          this->m_ov->m_dataOutputFileName).c_str(),
+        H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+  }
+
+  this->_acc_dset = this->_create_scalar_dataset("acc");
+  this->_avg_acc_dset = this->_create_scalar_dataset("avg_acc");
+  this->_neg_log_llhd_dset = this->_create_scalar_dataset("neg_log_llhd");
+  this->_L2_norm_samples_dset = this->_create_scalar_dataset("L2_norm_samples");
+  this->_L2_norm_mean_dset = this->_create_scalar_dataset("L2_norm_mean");
+  this->_L2_norm_var_dset = this->_create_scalar_dataset("L2_norm_var");
+
+  // Ensure that we created the path and the output files
   ((this->m_env).fullComm()).Barrier();
 
   this->_iteration = 0;
@@ -102,9 +120,6 @@ InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
 
   // FIXME: Should use the QUESO rng here instead
   r = gsl_rng_alloc(gsl_rng_taus2);
-
-  // Outfile is not yet open
-  this->_outfile_open = false;
 
   // Zero out these guys.  There's probably a better way of doing this than
   // calling prior.draw() at the start, but creation of a Sampler object
@@ -216,81 +231,87 @@ void InfiniteDimensionalMCMCSampler::step()
   this->_metropolis_hastings();
   this->_update_moments();
   
+  // We never save the 0th iteration
   if (this->_iteration % this->m_ov->m_save_freq == 0) {
     this->_write_state();
   }
 }
 
-void InfiniteDimensionalMCMCSampler::_create_scalar_dataset(const std::string & name)
+hid_t InfiniteDimensionalMCMCSampler::_create_scalar_dataset(const std::string & name)
 {
-  hsize_t      dims[1]  = {1};  // dataset dimensions at creation
-  hsize_t      maxdims[1];
-  maxdims[0] = this->m_ov->m_num_iters / this->m_ov->m_save_freq;
-  const int rank = 1;
-  H5::DataSpace mspace1(rank, dims, maxdims);
+  // Only subprocess with rank 0 manipulates the output file
+  if ((this->m_env).subRank() == 0) {
+    // Create a 1D dataspace.  Unlimited size.  Initially set to 0.  We will
+    // extend it later
+    const int ndims = 1;
+    hsize_t dims[ndims] = {0};  // dataset dimensions at creation
+    hsize_t maxdims[ndims] = {H5S_UNLIMITED};
 
-  H5::DSetCreatPropList cparms;
+    hid_t file_space = H5Screate_simple(ndims, dims, maxdims);
 
-  hsize_t      chunk_dims[1] ={1};
-  cparms.setChunk( rank, chunk_dims );
+    // Create dataset creation property list.  Unlimited datasets must be
+    // chunked.  Choosing the chunk size is an issue, here we set it to 1
+    hsize_t chunk_dims[ndims] = {1};
+    hid_t plist = H5Pcreate(H5P_DATASET_CREATE);
 
-  double fill_val = 0.0;
-  cparms.setFillValue(H5::PredType::NATIVE_DOUBLE, &fill_val);
+    H5Pset_layout(plist, H5D_CHUNKED);
+    H5Pset_chunk(plist, ndims, chunk_dims);
 
-  const H5std_string DATASET_NAME(name);
-  H5::DataSet dataset2 = this->_outfile->createDataSet(DATASET_NAME, H5::PredType::NATIVE_DOUBLE, mspace1, cparms);
+    // Create the dataset
+    hid_t dset = H5Dcreate(this->_outfile, name.c_str(), H5T_NATIVE_DOUBLE,
+        file_space, H5P_DEFAULT, plist, H5P_DEFAULT);
+
+    // We don't need the property list anymore.  We also don't need the file
+    // dataspace anymore because we'll extend it later, making this one
+    // invalild anyway.
+    H5Pclose(plist);
+    H5Sclose(file_space);
+
+    return dset;
+  }
 }
 
-void InfiniteDimensionalMCMCSampler::_append_scalar_dataset(const std::string & name, double data)
+void InfiniteDimensionalMCMCSampler::_append_scalar_dataset(hid_t dset, double data)
 {
-  const H5std_string DATASET_NAME(name);
-  H5::DataSet dataset = this->_outfile->openDataSet(DATASET_NAME);
+  // Only subprocess with rank 0 manipulates the output file
+  if ((this->m_env).subRank() == 0) {
+    int err;
+    // Create a memory dataspace for data to append
+    const int ndims = 1;
+    hsize_t dims[ndims] = { 1 };  // Only writing one double
+    hid_t mem_space = H5Screate_simple(ndims, dims, NULL);
 
-  hsize_t      dims[1]  = {1};  // dataset dimensions at creation
-  hsize_t      maxdims[1];
-  maxdims[0] = this->m_ov->m_num_iters / this->m_ov->m_save_freq;
-  const int rank = 1;
-  H5::DataSpace mspace1(rank, dims, maxdims);
+    // Extend the dataset
+    // Set dims to be the *new* dimension of the extended dataset
+    dims[0] = { this->_iteration / this->m_ov->m_save_freq };
+    err = H5Dset_extent(dset, dims);
 
-  hsize_t      size[1];
-  size[0]   = this->_iteration / this->m_ov->m_save_freq;
-  dataset.extend(size);
+    // Select hyperslab on file dataset
+    hid_t file_space = H5Dget_space(dset);
+    hsize_t start[1] = {(this->_iteration / this->m_ov->m_save_freq) - 1};
+    hsize_t count[1] = {1};
 
-  H5::DataSpace fspace1 = dataset.getSpace();
-  hsize_t     offset[1];
-  offset[0] = (this->_iteration / this->m_ov->m_save_freq) - 1;
-  hsize_t      dims1[1] = {1};            /* data1 dimensions */
-  fspace1.selectHyperslab(H5S_SELECT_SET, dims1, offset);
+    err = H5Sselect_hyperslab(file_space, H5S_SELECT_SET, start, NULL, count, NULL);
 
-  dataset.write(&data, H5::PredType::NATIVE_DOUBLE, mspace1, fspace1);
+    // hsize_t      size[1];
+    // size[0]   = this->_iteration / this->m_ov->m_save_freq;
+
+    // Write the data
+    H5Dwrite(dset, H5T_NATIVE_DOUBLE, mem_space, file_space, H5P_DEFAULT, &data);
+
+    // Close the file dataspace
+    H5Sclose(file_space);
+  }
 }
 
 void InfiniteDimensionalMCMCSampler::_write_state()
 {
-  if (!this->_outfile_open) {
-    // std::cout << "opening new file" << std::endl;
-    const H5std_string file_name(this->m_ov->m_dataOutputFileName.c_str());
-    this->_outfile.reset(new H5::H5File(file_name, H5F_ACC_TRUNC));
-    // std::cout << "opened new file" << std::endl;
-    this->_outfile_open = true;
-    
-    this->_create_scalar_dataset("acc");
-    this->_create_scalar_dataset("avg_acc");
-    this->_create_scalar_dataset("neg_log_llhd");
-    this->_create_scalar_dataset("L2_norm_samples");
-    this->_create_scalar_dataset("L2_norm_mean");
-    this->_create_scalar_dataset("L2_norm_var");
-  }
-  // else {
-  //   std::cout << "file already open" << std::endl;
-  // }
-
-  this->_append_scalar_dataset("acc", this->acc_prob());
-  this->_append_scalar_dataset("avg_acc", this->avg_acc_prob());
-  this->_append_scalar_dataset("neg_log_llhd", this->_llhd_val);
-  this->_append_scalar_dataset("L2_norm_samples", this->current_physical_state->L2_norm());
-  this->_append_scalar_dataset("L2_norm_mean", this->current_physical_mean->L2_norm());
-  this->_append_scalar_dataset("L2_norm_var", this->current_physical_var->L2_norm());
+  this->_append_scalar_dataset(this->_acc_dset, this->acc_prob());
+  this->_append_scalar_dataset(this->_avg_acc_dset, this->avg_acc_prob());
+  this->_append_scalar_dataset(this->_neg_log_llhd_dset, this->_llhd_val);
+  this->_append_scalar_dataset(this->_L2_norm_samples_dset, this->current_physical_state->L2_norm());
+  this->_append_scalar_dataset(this->_L2_norm_mean_dset, this->current_physical_mean->L2_norm());
+  this->_append_scalar_dataset(this->_L2_norm_var_dset, this->current_physical_var->L2_norm());
 
   // Now to write the fields.  It appears to be a pain in the arse to write a
   // method to spit this out to HDF5 format.  Also, this won't scale to

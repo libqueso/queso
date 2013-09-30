@@ -44,7 +44,7 @@
 #include <gsl/gsl_rng.h>
 
 // HDF5 includes
-#include <H5Cpp.h>
+#include <hdf5.h>
 
 namespace QUESO {
 
@@ -143,9 +143,16 @@ private:
   // Should probably use the one in the queso environment.
   gsl_rng *r;
 
-  // Is the output file open?
-  bool _outfile_open;
-  boost::scoped_ptr<H5::H5File> _outfile;
+  // HDF5 file identifier
+  hid_t _outfile;
+
+  // HDF5 datasets
+  hid_t _acc_dset;
+  hid_t _avg_acc_dset;
+  hid_t _neg_log_llhd_dset;
+  hid_t _L2_norm_samples_dset;
+  hid_t _L2_norm_mean_dset;
+  hid_t _L2_norm_var_dset;
 
   /*!
    * Make a proposal from the prior using a standard random walk
@@ -161,11 +168,11 @@ private:
   // Write the current state of the chain to disk
   void _write_state();
 
-  // Creates a scalar dataset to the hdf5 file
-  void _create_scalar_dataset(const std::string & name);
+  // Creates a scalar dataset called \c name in \c _outfile file and returns it
+  hid_t _create_scalar_dataset(const std::string & name);
 
   // Appends to a scalar dataset in the hdf5 file
-  void _append_scalar_dataset(const std::string & name, double data);
+  void _append_scalar_dataset(hid_t dset, double data);
 };
 
 }  // End namespace QUESO
