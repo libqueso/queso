@@ -115,12 +115,6 @@ int main(int argc, char **argv) {
   // Create likelihood object
   Likelihood llhd(obs_stddev);
 
-  // The worst hack in the world ever
-  // boost::shared_ptr<LibMeshFunction> lm_draw(boost::static_pointer_cast<LibMeshFunction>(mu.draw()));
-  // std::cout << "before zero" << std::endl;
-  // lm_draw->equation_systems->get_system<ExplicitSystem>("Function").solution->zero();
-  // std::cout << "after zero" << std::endl;
-
   // Create the options helper object that determines what options to pass to
   // the sampler
   QUESO::InfiniteDimensionalMCMCSamplerOptions opts(env, "");
