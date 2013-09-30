@@ -142,14 +142,19 @@ InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
   // Initialise cost function
   this->_llhd_val = this->llhd.evaluate(*(this->current_physical_state));
 
-  std::cout << "got to sampler ctor" << std::endl;
   std::cout.setf(std::ios::fixed, std::ios::floatfield);
   std::cout.precision(15);
 }
 
 InfiniteDimensionalMCMCSampler::~InfiniteDimensionalMCMCSampler()
 {
-  std::cout << "got to sampler dtor" << std::endl;
+  H5Dclose(this->_acc_dset);
+  H5Dclose(this->_avg_acc_dset);
+  H5Dclose(this->_neg_log_llhd_dset);
+  H5Dclose(this->_L2_norm_samples_dset);
+  H5Dclose(this->_L2_norm_mean_dset);
+  H5Dclose(this->_L2_norm_var_dset);
+  H5Fclose(this->_outfile);
 }
 
 void InfiniteDimensionalMCMCSampler::_propose()
@@ -299,8 +304,9 @@ void InfiniteDimensionalMCMCSampler::_append_scalar_dataset(hid_t dset, double d
     // Write the data
     H5Dwrite(dset, H5T_NATIVE_DOUBLE, mem_space, file_space, H5P_DEFAULT, &data);
 
-    // Close the file dataspace
+    // Close a bunch of stuff
     H5Sclose(file_space);
+    H5Sclose(mem_space);
   }
 }
 
@@ -339,11 +345,6 @@ void InfiniteDimensionalMCMCSampler::_write_state()
   var_name += curr_iter.str();
   var_name += ".vtk";
   this->current_physical_var->save_function(var_name);
-
-  // std::string qoi_name("qoi_");
-  // qoi_name += curr_iter.str();
-  // qoi_name += ".vtk";
-  // this->llhd.get_qoi().save_function(qoi_name);
 }
 
 boost::shared_ptr<InfiniteDimensionalMCMCSampler> InfiniteDimensionalMCMCSampler::clone_and_reset() const
