@@ -28,6 +28,7 @@
 
 #include <example_compute.h>
 #include <example_likelihood.h>
+#include <queso/GenericScalarFunction.h>
 #include <queso/GslMatrix.h>
 #include <queso/StatisticalInverseProblem.h>
 
