@@ -68,25 +68,32 @@ int main(int argc, char **argv) {
   const double alpha = 3.0;
   const double beta = 10.0;
   const double obs_stddev = 1e-3;
+  int ierr, my_rank, my_sub_rank;
 
   MPI_Init(&argc, &argv);
 
   QUESO::FullEnvironment env(MPI_COMM_WORLD, "infinite_dim/parallel_inverse_options", "", NULL);
 
-  // Set up the right communicator for libMesh to use for the forward problem
-  // Should update this to use the communicator QUESO creates for us
-  int ierr, my_rank, colour;
-  MPI_Comm libMeshComm;
+  // When the number of processes passed to `mpirun` is different from the
+  // number of subenvironments asked for in the input file, QUESO creates a
+  // subcommunicator that 'does the right thing'.
+  //
+  // For example, let's say you execute `mpirun -np 6`, but only asked for 3
+  // QUESO subenvironments, QUESO creates a subcommunicator containing two
+  // processes for each of the three subenvironments.  This subcommunicator is
+  // the one returned by env.subComm().  To get a raw MPI communicator, call
+  // Comm() on a QUESO communicator.
+  MPI_Comm libMeshComm = env.subComm().Comm();
 
+  // Get full rank
   ierr = MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
-  colour = my_rank / 2;
 
-  // Split into chunks of two
-  ierr = MPI_Comm_split(MPI_COMM_WORLD, colour, my_rank, &libMeshComm);
+  // Get subrank
+  ierr = MPI_Comm_rank(libMeshComm, &my_sub_rank);
 
   std::stringstream ss;
   ss << "Hello from processor " << my_rank
-     << " with colour " << colour
+     << " with sub rank " << my_sub_rank
      << " in subenvironment " << env.subIdString()
      << std::endl;
   std::cout << ss.str();
