@@ -129,15 +129,6 @@ int main(int argc, char **argv) {
   // the sampler
   QUESO::InfiniteDimensionalMCMCSamplerOptions opts(env, "");
 
-  // Set the number of iterations to do
-  opts.m_num_iters = 1000;
-
-  // Set the frequency with which we save samples
-  opts.m_save_freq = 10;
-
-  // Set the RWMH step size
-  opts.m_rwmh_step = 0.1;
-
   // Construct the sampler, and set the name of the output file (will only
   // write HDF5 files)
   QUESO::InfiniteDimensionalMCMCSampler s(env, mu, llhd, &opts);
