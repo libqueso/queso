@@ -35,7 +35,7 @@
 
 namespace QUESO {
 
-/*! \file uqMatrix.h
+/*! \file Matrix.h
     \brief Matrix class.
 */
 

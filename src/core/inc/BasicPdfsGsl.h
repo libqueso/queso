@@ -33,7 +33,7 @@
 
 namespace QUESO {
 
-/*! \file uqBasicPdfsGsl.h
+/*! \file BasicPdfsGsl.h
     \brief Class for Basic PDFs using Gsl library.
 */
 

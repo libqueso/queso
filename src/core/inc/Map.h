@@ -38,7 +38,7 @@
 
 namespace QUESO {
 
-/*! \file uqMap.h
+/*! \file Map.h
     \brief A class for partitioning vectors and matrices.
 */
 

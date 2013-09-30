@@ -30,7 +30,7 @@
 #ifndef UQ_GSL_VECTOR_H
 #define UQ_GSL_VECTOR_H
 
-/*! \file uqGslVector.h
+/*! \file GslVector.h
     \brief Vector class using GSL
 */
 

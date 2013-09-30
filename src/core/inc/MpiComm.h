@@ -86,7 +86,7 @@ typedef int RawType_MPI_Status ;
 
 namespace QUESO {
 
-/*! \file uqMpiComm.h
+/*! \file MpiComm.h
     \brief MPI Communicator Class.
 */
 

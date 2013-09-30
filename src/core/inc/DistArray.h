@@ -38,7 +38,7 @@
 
 namespace QUESO {
 
-/*! \file uqDistArray.h
+/*! \file DistArray.h
     \brief A class to store row-oriented multi-vectors of type T.
 */
 

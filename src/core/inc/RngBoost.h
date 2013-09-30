@@ -34,7 +34,7 @@
 #include <boost/math/distributions.hpp> 
 
 
-/*! \file uqRngBoost.h
+/*! \file RngBoost.h
     \brief Boost Random Number Generation class.
 */
 

@@ -55,7 +55,7 @@
 #ifdef QUESO_HAS_MPI
 // Ok
 #else
-Incompatible combination of defines in QUESO 'uqDefines.h': QUESO_HAS_TRILINOS is defined but QUESO_HAS_MPI is undefined
+Incompatible combination of defines in QUESO 'Defines.h': QUESO_HAS_TRILINOS is defined but QUESO_HAS_MPI is undefined
 #endif
 #endif
 
@@ -99,7 +99,7 @@ const int UQ_MATRIX_SVD_FAILED_RC          = -11;
 #define UQ_FILE_EXTENSION_FOR_HDF_FORMAT    "h5"
 
 
-/*! \file uqDefines.h
+/*! \file Defines.h
     \brief Definitions and a class to provide default options to  pass to a QUESO environment.
 */
 

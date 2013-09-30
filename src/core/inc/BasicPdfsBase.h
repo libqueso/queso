@@ -34,7 +34,7 @@
 
 namespace QUESO {
 
-/*! \file uqBasicPdfsBase.h
+/*! \file BasicPdfsBase.h
     \brief Class for Basic PDFs.
 */
 

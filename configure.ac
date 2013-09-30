@@ -10,6 +10,7 @@ dnl Prefixes everything in the temporary file with QUESO_
 AX_PREFIX_CONFIG_H(config_queso.h,QUESO,config_queso.h.tmp)
 
 AC_CONFIG_AUX_DIR([build-aux])
+AC_CANONICAL_TARGET()
 AM_INIT_AUTOMAKE
 
 # Release versioning
@@ -28,7 +29,7 @@ AC_SUBST(GENERIC_MAJOR_VERSION)
 AC_SUBST(GENERIC_MINOR_VERSION)
 AC_SUBST(GENERIC_MICRO_VERSION)
 
-AC_PROG_LIBTOOL
+LT_INIT
 
 # Set default CFLAGS & CXXFLAGS IF the user hasn't specified anything
 
@@ -101,6 +102,10 @@ AM_CONDITIONAL(TRILINOS_ENABLED,test x$HAVE_TRILINOS = x1)
 
 AC_CACHE_SAVE
 
+# Check for libmesh (optional)
+AX_PATH_LIBMESH_NEW(0.8.0,no)
+AC_CACHE_SAVE
+
 # Check for GSL (required)
 
 AC_LANG([C])
@@ -132,6 +137,9 @@ AX_ENABLE_ANN
 # Check for libGRVY (optional as of QUESO version 0.46.0)
 
 AX_PATH_GRVY_NEW([0.29],[no])
+
+# Check for slepc
+#AX_PATH_SLEPC_NEW([3.3],[no])
 
 AC_CACHE_SAVE
 
@@ -171,6 +179,8 @@ AC_CONFIG_FILES([
   src/contrib/ANN/test/Makefile
   src/core/inc/queso.h
   examples/Makefile        
+  examples/infinite_dim/inverse_options
+  examples/infinite_dim/parallel_inverse_options
   test/Makefile
   test/t01_valid_cycle/Makefile
   test/t02_sip_sfp/Makefile
@@ -178,6 +188,7 @@ AC_CONFIG_FILES([
   test/t04_bimodal/Makefile
   test/gsl_tests/Makefile
   test/gsl_tests/input
+  test/test_infinite/inf_options
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page

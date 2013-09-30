@@ -43,7 +43,7 @@
 
 namespace QUESO {
 
-/*! \file uqTeuchosVector.h
+/*! \file TeuchosVector.h
     \brief Vector class using Trilinos Teuchos
 */
 

@@ -35,7 +35,7 @@
 
 namespace QUESO {
 
-/*! \file uqBasicPdfsBoost.h
+/*! \file BasicPdfsBoost.h
     \brief Class for Basic PDFs using Boost library.
 */
 

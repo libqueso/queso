@@ -52,7 +52,7 @@
 
 namespace QUESO {
 
-/*! \file uqEnvironmentOptions.h
+/*! \file EnvironmentOptions.h
     \brief Class to allow options to be passed to a QUESO environment.
 */
 
