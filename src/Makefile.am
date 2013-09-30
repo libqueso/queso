@@ -117,7 +117,8 @@ libqueso_la_SOURCES += \
 	$(top_srcdir)/src/basic/src/VectorSubset.C \
 	$(top_srcdir)/src/basic/src/ScalarFunction.C \
 	$(top_srcdir)/src/basic/src/GenericScalarFunction.C \
-	$(top_srcdir)/src/basic/src/ConstantScalarFunction.C
+	$(top_srcdir)/src/basic/src/ConstantScalarFunction.C \
+	$(top_srcdir)/src/basic/src/ScalarFunctionSynchronizer.C
 
 
 # Sources from basic/src with gsl conditional
