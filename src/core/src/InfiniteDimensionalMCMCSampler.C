@@ -148,13 +148,15 @@ InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
 
 InfiniteDimensionalMCMCSampler::~InfiniteDimensionalMCMCSampler()
 {
-  H5Dclose(this->_acc_dset);
-  H5Dclose(this->_avg_acc_dset);
-  H5Dclose(this->_neg_log_llhd_dset);
-  H5Dclose(this->_L2_norm_samples_dset);
-  H5Dclose(this->_L2_norm_mean_dset);
-  H5Dclose(this->_L2_norm_var_dset);
-  H5Fclose(this->_outfile);
+  if ((this->m_env).subRank() == 0) {
+    H5Dclose(this->_acc_dset);
+    H5Dclose(this->_avg_acc_dset);
+    H5Dclose(this->_neg_log_llhd_dset);
+    H5Dclose(this->_L2_norm_samples_dset);
+    H5Dclose(this->_L2_norm_mean_dset);
+    H5Dclose(this->_L2_norm_var_dset);
+    H5Fclose(this->_outfile);
+  }
 }
 
 void InfiniteDimensionalMCMCSampler::_propose()
