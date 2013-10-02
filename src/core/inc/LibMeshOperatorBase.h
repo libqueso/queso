@@ -118,6 +118,8 @@ public:
 protected:
   boost::shared_ptr<libMesh::EquationSystems> equation_systems;
 
+  const FunctionOperatorBuilder & builder;
+
   //! The number of requested eigenpairs
   unsigned int num_req_pairs;
 

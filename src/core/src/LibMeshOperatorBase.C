@@ -47,8 +47,9 @@ namespace QUESO {
 
 LibMeshOperatorBase::LibMeshOperatorBase(
     const FunctionOperatorBuilder & builder, libMesh::MeshBase & m)
-  : OperatorBase(builder),
-    equation_systems(new libMesh::EquationSystems(m))
+  : OperatorBase(),
+    equation_systems(new libMesh::EquationSystems(m)),
+    builder(builder)
 {
 #ifndef LIBMESH_HAVE_SLEPC
   if (processor_id() == 0)

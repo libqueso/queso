@@ -50,13 +50,8 @@ class OperatorBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Construct with a \c builder
-  /*!
-   * A \c builder object is just one that a FEM library backend can use to set
-   * up various options. Polynomial type, polynomial order, and the number of
-   * eigenpairs to request are good examples.
-   */
-  OperatorBase(const FunctionOperatorBuilder & builder);
+  //! Constructor
+  OperatorBase();
 
   //! Destructor
   virtual ~OperatorBase();
@@ -85,10 +80,6 @@ public:
    */
   virtual boost::shared_ptr<FunctionBase>
   inverse_kl_transform(std::vector<double>& xi, double alpha) const = 0;
-
-protected:
-  //! A reference to the builder object
-  const FunctionOperatorBuilder & builder;
 };
 
 }  // End namespace QUESO

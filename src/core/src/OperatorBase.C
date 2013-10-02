@@ -31,8 +31,7 @@
 
 namespace QUESO {
 
-OperatorBase::OperatorBase(const FunctionOperatorBuilder & builder)
-  : builder(builder)
+OperatorBase::OperatorBase()
 {
 }
 
