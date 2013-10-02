@@ -32,52 +32,55 @@
 
 namespace QUESO {
 
+/*!
+ * \file InfiniteDimensionalMCMCSamplerOptions.h
+ * \brief This class defines the options that specify the behaviour of the MCMC sampler
+ *
+ * \class InfiniteDimensionalMCMCSamplerOptions
+ * \brief This class defines the options that specify the behaviour of the MCMC sampler
+ */
+
 class InfiniteDimensionalMCMCSamplerOptions
 {
 public:
-  /*!
-   * Given prefix, read the input file for parameters named prefix_*
-   */
+  //! Given prefix, read the input file for parameters named prefix_*
   InfiniteDimensionalMCMCSamplerOptions(const BaseEnvironment& env, const char* prefix);
 
-  /*
-   * Destructor
-   */
+  //! Destructor
  ~InfiniteDimensionalMCMCSamplerOptions();
 
-  /*
-   * Scans the input file for options prefixed with \c prefix
-   */
+  //! Scans the input file for options prefixed with \c prefix
   void scanOptionsValues();
 
-  /*
-   * Prints \c this to \c os
-   */
+  //! Prints \c this to \c os
   void print(std::ostream& os) const;
 
-  /*
-   * The prefix to look for in the input file
-   */
+  //! The prefix to look for in the input file
   std::string m_prefix;
 
-  // Name of the output dir
+  //! Name of the output dir to save infinite dimensional output files to.
+  /*!
+   * For example, if \c m_dataOutputDirName is set to 'outputData/chain' then
+   * a series of folders will be created, one for each QUESO subenvironment,
+   * called 'outputData/chain0', 'outputData/chain1', etc.  Inside these
+   * folders, output data from the infinite dimensional chain will be saved as
+   * an HDF5 file.
+   */
   std::string m_dataOutputDirName;
 
-  // Name of the output file
+  //! Name of the HDF5 output file to store chain statistics.
   std::string m_dataOutputFileName;
 
-  // The total number of iterations to do
+  //! The total number of iterations to do
   unsigned int m_num_iters;
 
-  // The frequency at which to save the state of the chain
+  //! The frequency at which to save the state of the chain
   unsigned int m_save_freq;
 
-  // The proposal step size
+  //! The proposal step size
   double m_rwmh_step;
 
-  /*!
-   * Returns the QUESO environment
-   */
+  //! Returns the QUESO environment
   const BaseEnvironment& env() const;
 
 private:

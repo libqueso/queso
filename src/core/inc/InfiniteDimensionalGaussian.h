@@ -46,19 +46,22 @@ namespace QUESO {
 /*!
  * \file InfiniteDimensionalGaussian.h
  * \brief Class defining infinite dimensional Gaussian measures
+ *
+ * \class InfiniteDimensionalGaussian
+ * \brief Class defining infinite dimensional Gaussian measures
  */
 
 class InfiniteDimensionalGaussian : public InfiniteDimensionalMeasureBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Construct a Gaussian with mean \c mean, precision operator \c precision.
+  //! Construct a Gaussian with mean \c mean, precision operator \c precision.  \c alpha controls regularity of draws and \c beta^2 is a multiplicative coefficient of \c precision.
   /*!
    * The argument \c alpha refers to the power to which the \c precision
    * will be taken. And \c beta is the multiplicative coefficient of
    * \c preicision. The complete measure is therefore:
    *
-   * N(\c mean, \c beta^2 * pow(\c precision, - \c alpha))
+   * N(\c mean, \c beta^2 * \c pow(\c precision, \c alpha))
    *
    * It is expected that \c mean and \c precision will live longer than \c this
    */
@@ -70,16 +73,10 @@ public:
   ~InfiniteDimensionalGaussian();
   //@}
 
-  //! Draw from the measure, and store the result in the public member variable
-  /*!
-   * This updates the public memeber variable current draw
-   */
+  //! Draw from the measure, and then return a shared pointer to the draw
   virtual boost::shared_ptr<FunctionBase> draw() const;
 
-  //! Return coefficient \c i of the KL expansion of the current draw
-  /*!
-   * You need to make a draw before you call this
-   */
+  //! Return coefficient \c i of the KL expansion of the current draw.  Must be called after draw()
   virtual double get_kl_coefficient(unsigned int i) const;
 
 private:

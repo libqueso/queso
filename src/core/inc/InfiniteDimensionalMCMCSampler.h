@@ -48,51 +48,42 @@
 
 namespace QUESO {
 
+/*!
+ * \file InfiniteDimensionalMCMCSampler.h
+ * \brief Class representing the infinite dimensional Markov chain Monte Carlo sampler
+ * \class InfiniteDimensionalMCMCSampler
+ * \brief Class representing the infinite dimensional Markov chain Monte Carlo sampler
+ */
+
 class InfiniteDimensionalMCMCSampler
 {
 public:
-  /*!
-   * Constructor
-   */
+  //! Construct an infinite dimensional MCMC chain with given \c prior, likelihood \c llhd, and options \c ov.
   InfiniteDimensionalMCMCSampler(
       const BaseEnvironment& env,
       const InfiniteDimensionalMeasureBase & prior,
       InfiniteDimensionalLikelihoodBase & llhd,
       InfiniteDimensionalMCMCSamplerOptions * ov);
 
-  /*!
-   * Destructor
-   */
+  //! Destructor
   ~InfiniteDimensionalMCMCSampler();
 
-  /*!
-   * Do one iteration of the Markov chain
-   */
+  //! Do one iteration of the Markov chain
   void step();
 
-  /*! 
-   * Get the current value of the llhd
-   */
+  //! Get the current value of the llhd
   double llhd_val() const;
 
-  /*!
-   * Returns current acceptance probability
-   */
+  //! Returns current acceptance probability
   double acc_prob();
 
-  /*!
-   * Returns current average acceptance probability
-   */
+  //! Returns current average acceptance probability
   double avg_acc_prob();
 
-  /*!
-   * Returns the current iteration number
-   */
+  //! Returns the current iteration number
   unsigned int iteration() const;
 
-  /*!
-   * Returns a pointer to new sampler, with all the moments reset.
-   */
+  //! Returns a pointer to new sampler, with all the moments reset.
   boost::shared_ptr<InfiniteDimensionalMCMCSampler> clone_and_reset() const;
 
 private:

@@ -28,49 +28,38 @@
 #ifndef QUESO_INFINITE_LIKELIHOOD_H
 #define QUESO_INFINITE_LIKELIHOOD_H
 
-// #include <libmesh/system.h>
-
 namespace QUESO {
 
 class FunctionBase;
 
-// namespace libMesh {
-//   class EquationSystems;
-// }
-
-// class ForwardSolver;
-
 /*!
+ * \file InfiniteDimensionalLikelihoodBase.h
  * \brief Abstract class representing the likelihood
+ *
+ * \class InfiniteDimensionalLikelihoodBase
+ * \brief Abstract class representing the likelihood.  Users must subclass this.
+ *
+ * This is the class you must subclass to evaluate your forward problem.  The
+ * evaluation should be implemented in the evaluate() method.
  */
+
 class InfiniteDimensionalLikelihoodBase
 {
 public:
-  /*!
-   * Constructor
-   */
+  //! Construct a likelihood functional with \c obs_stddev as the observational error standard deviation
   InfiniteDimensionalLikelihoodBase(double obs_stddev);
 
-  /*!
-   * Destructor
-   */
+  //! Destructor
   virtual ~InfiniteDimensionalLikelihoodBase();
 
-  /*!
-   * Set the observation standard deviation.  Default is 1.
-   */
+  //! Set the observation standard deviation.
   virtual void set_obs_stddev(double stddev);
 
-  /*!
-   * Get the observation standard deviation.
-   */
+  //! Return the observation standard deviation.
   virtual double obs_stddev() const;
 
+  //! Evaluate the likelihood functional at \c flow.  Subclasses must implement this method.
   virtual double evaluate(FunctionBase & flow) = 0;
-
-// protected:
-//   ForwardSolver & fwd_solver;
-//   libMesh::EquationSystems * equation_systems;
 
 private:
   double _obs_stddev;

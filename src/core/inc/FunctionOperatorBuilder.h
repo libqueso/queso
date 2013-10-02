@@ -29,6 +29,10 @@
 #ifndef QUESO_FUNCTIONOPERATORBUILDER_BASE_H
 #define QUESO_FUNCTIONOPERATORBUILDER_BASE_H
 
+#include <string>
+
+namespace QUESO {
+
 /*!
  * \file FunctionOperatorBuilder.h
  * \brief Helper class for function and operator objects. This class is meant
@@ -36,18 +40,14 @@
  *        fashion
  */
 
-#include <string>
-
-namespace QUESO {
-
 class FunctionOperatorBuilder {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor
+  //! Default constructor.  Does nothing.
   FunctionOperatorBuilder();
 
-  //! Destructor
+  //! Destructor.  Does nothing.
   ~FunctionOperatorBuilder();
   //@}
 

@@ -39,6 +39,12 @@ class FunctionOperatorBuilder;
 /*!
  * \file FunctionBase.h
  * \brief Abstract base class for function objects
+ * \class FunctionBase
+ * \brief Abstract base class for function objects
+ *
+ * One needs to sublclass this abstract class to implement their own functions
+ * using a backend not supported by QUESO.  If QUESO is linked against libMesh
+ * (and libMesh was compiled with SLEPc), you may use LibMeshFunction.
  */
 
 class FunctionBase {
@@ -68,15 +74,15 @@ public:
   //! Return the L2-norm of \c this
   virtual double L2_norm() const = 0;
 
-  //! Return a boost shared pointer to a LibMeshFunction
+  //! Create a zero function copy of \c this and return pointer to it
+  /*!
+   * Create a new instance of FunctionBase representing the function that is
+   * identically zero (by copying \c this) everywhere and return a boost shared
+   * pointer to it
+   */
   virtual boost::shared_ptr<FunctionBase> zero_clone() const = 0;
 
-  //! 
-
   //! Save the current function to a file \c filename
-  /*!
-   * Derived classes must implement this
-   */
   virtual void save_function(const std::string & filename) const = 0;
 
 protected:

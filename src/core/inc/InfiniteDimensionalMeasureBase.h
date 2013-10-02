@@ -32,12 +32,15 @@
 #include <boost/shared_ptr.hpp>
 #include <queso/FunctionBase.h>
 
+namespace QUESO {
+
 /*!
  * \file InfiniteDimensionalMeasureBase.h
  * \brief Abstract base class for infinite dimensional measures
+ *
+ * \class InfiniteDimensionalMeasureBase
+ * \brief Abstract base class for infinite dimensional measures
  */
-
-namespace QUESO {
 
 class FunctionBase;
 
@@ -52,14 +55,10 @@ public:
   virtual ~InfiniteDimensionalMeasureBase();
   //@}
 
-  //! Draw from the measure, and store the result in the public member varaible. This
-  //! updates the public memeber variable current draw
+  //! Draw from the measure, and then return a shared pointer to the draw
   virtual boost::shared_ptr<FunctionBase> draw() const = 0;
 
-  //! Return the coefficient \c i of the KL expansion of the current draw
-  /*!
-   * You need to make a draw before you call this
-   */
+  //! Return coefficient \c i of the KL expansion of the current draw.  Must be called after draw()
   virtual double get_kl_coefficient(unsigned int i) const = 0;
 };
 

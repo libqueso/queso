@@ -49,6 +49,9 @@ class FunctionOperatorBuilder;
 /*!
  * \file LibMeshOperatorBase.h
  * \brief Abstract base class for operator objects using libmesh in the backend
+ *
+ * \class LibMeshOperatorBase
+ * \brief Abstract base class for operator objects using libmesh in the backend
  */
 
 class LibMeshOperatorBase : public OperatorBase,
@@ -56,7 +59,12 @@ class LibMeshOperatorBase : public OperatorBase,
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Constuct an operator on the mesh \c m
+  //! Constuct an operator on the mesh \c m using a builder \c builder
+  /*!
+   * A FunctionOperatorBuilder object is just one that a FEM library backend can use to set
+   * up various options. Polynomial type, polynomial order, and the number of
+   * eigenpairs to request are good examples.
+   */
   LibMeshOperatorBase(const FunctionOperatorBuilder & builder,
       libMesh::MeshBase & m);
 

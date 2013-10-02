@@ -45,6 +45,9 @@ class FunctionOperatorBuilder;
 /*!
  * \file LibMeshFunction.h
  * \brief Function objects using libMesh for the backend
+ *
+ * \class LibMeshFunction
+ * \brief Function objects using libMesh for the backend
  */
 
 class LibMeshFunction : public FunctionBase {
@@ -55,6 +58,10 @@ public:
   //! Construct a function with a user-provided mesh \c m and builder
   /*!
    * It is expected the lifetime of \c m will outlive \c this
+   *
+   * A \c builder object is just one that a FEM library backend can use to set
+   * up various options. Polynomial type, polynomial order, and the number of
+   * eigenpairs to request are good examples.
    */
   LibMeshFunction(const FunctionOperatorBuilder & builder,
       libMesh::MeshBase & m);
@@ -69,17 +76,28 @@ public:
   //! Save the current function to an Exodus file called \c filename
   virtual void save_function(const std::string & filename) const;
 
+  //! Execute \c this += \c scale * \c rhs
   virtual void add(double scale, const FunctionBase & rhs);
 
+  //! Pointwise multiply \c f1 and \c f2 and store the result in \c *this
   virtual void pointwise_mult(const FunctionBase & f1,
       const FunctionBase & f2);
 
+  //! Execute \c this *= \c scale
   virtual void scale(double scale);
 
+  //! Set \c this to zero everywhere
   virtual void zero();
 
+  //! Return the L2-norm of \c this
   virtual double L2_norm() const;
 
+  //! Create a zero function copy of \c this and return pointer to it
+  /*!
+   * Create a new instance of FunctionBase representing the function that is
+   * identically zero (by copying \c this) everywhere and return a boost shared
+   * pointer to it
+   */
   virtual boost::shared_ptr<FunctionBase> zero_clone() const;
 
   //! This is public for now, but it should be encapsulated. Don't touch it.

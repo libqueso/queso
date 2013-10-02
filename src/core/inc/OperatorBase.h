@@ -29,19 +29,20 @@
 #ifndef QUESO_OPERATOR_BASE_H
 #define QUESO_OPERATOR_BASE_H
 
-/*!
- * \file OperatorBase.h
- * \brief Abstract base class for operator objects. Operators are assumed to
- *        be symmetric and positive-definite, so the eigenvalues are real and
- *        positive.
- */
-
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <queso/FunctionBase.h>
 
 namespace QUESO {
+
+/*!
+ * \file OperatorBase.h
+ * \brief Abstract base class for operator objects
+ *
+ * \class OperatorBase
+ * \brief Abstract base class for operator objects.  Operators are assumed to be symmetric and positive-definite.
+ */
 
 class FunctionOperatorBuilder;
 

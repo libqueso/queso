@@ -45,13 +45,23 @@ class FunctionOperatorBuilder;
 /*!
  * \file LibMeshNegativeLaplacianOperator.h
  * \brief Class describing negative Laplacian operator using libmesh backend
+ *
+ * \class LibMeshNegativeLaplacianOperator
+ * \brief Class describing negative Laplacian operator using libmesh backend
  */
 
 class LibMeshNegativeLaplacianOperator : public LibMeshOperatorBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Construct the negative Laplacian operator on the libmesh mesh \c m
+  //! Construct the negative Laplacian operator on the libmesh mesh \c m with builder \c builder
+  /*!
+   * The negative Laplacian operator is ( - \Delta )
+   *
+   * A \c builder object is just one that a FEM library backend can use to set
+   * up various options. Polynomial type, polynomial order, and the number of
+   * eigenpairs to request are good examples.
+   */
   LibMeshNegativeLaplacianOperator(const FunctionOperatorBuilder & builder,
       libMesh::MeshBase & m);
 
