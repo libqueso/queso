@@ -102,6 +102,9 @@ public:
 
   //! This is public for now, but it should be encapsulated. Don't touch it.
   boost::shared_ptr<libMesh::EquationSystems> equation_systems;
+
+private:
+  const FunctionOperatorBuilder & builder;
 };
 
 }  // End namespace QUESO

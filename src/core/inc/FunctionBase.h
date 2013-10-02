@@ -51,8 +51,8 @@ class FunctionBase {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Construct with a builder object
-  FunctionBase(const FunctionOperatorBuilder & builder);
+  //! Constructor
+  FunctionBase();
 
   //! Destructor
   virtual ~FunctionBase();
@@ -84,10 +84,6 @@ public:
 
   //! Save the current function to a file \c filename
   virtual void save_function(const std::string & filename) const = 0;
-
-protected:
-  //! Builder object
-  const FunctionOperatorBuilder & builder;
 };
 
 }  // End namespace QUESO

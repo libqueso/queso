@@ -64,8 +64,9 @@ namespace QUESO {
 
 LibMeshFunction::LibMeshFunction(
     const FunctionOperatorBuilder & builder, libMesh::MeshBase & m)
-  : FunctionBase(builder),
-    equation_systems(new libMesh::EquationSystems(m))
+  : FunctionBase(),
+    equation_systems(new libMesh::EquationSystems(m)),
+    builder(builder)
 {
   this->equation_systems->add_system<libMesh::ExplicitSystem>("Function");
   this->equation_systems->get_system("Function").add_variable("u",

@@ -31,14 +31,12 @@
 
 namespace QUESO {
 
-FunctionBase::FunctionBase(const FunctionOperatorBuilder & builder)
-  : builder(builder)
+FunctionBase::FunctionBase()
 {
 }
 
 FunctionBase::~FunctionBase()
 {
-  // Empty
 }
 
 }  // End namespace QUESO
