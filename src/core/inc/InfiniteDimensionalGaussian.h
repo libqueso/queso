@@ -74,7 +74,7 @@ public:
   //@}
 
   //! Draw from the measure, and then return a shared pointer to the draw
-  virtual boost::shared_ptr<FunctionBase> draw() const;
+  virtual boost::shared_ptr<FunctionBase> draw();
 
   //! Return coefficient \c i of the KL expansion of the current draw.  Must be called after draw()
   virtual double get_kl_coefficient(unsigned int i) const;
@@ -97,7 +97,7 @@ private:
 
   // The coefficients for the KL expansion
   // (not multiplied by the evals)
-  std::vector<double> * coeffs;
+  std::vector<double> coeffs;
 };
 
 }  // End namespace QUESO

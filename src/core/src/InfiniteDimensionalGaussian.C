@@ -52,23 +52,22 @@ InfiniteDimensionalGaussian::InfiniteDimensionalGaussian(
     alpha(alpha),
     beta(beta)
 {
-  this->coeffs = new std::vector<double>(this->precision.get_num_converged(), 0.0);
+  this->coeffs.resize(this->precision.get_num_converged(), 0.0);
 }
 
 InfiniteDimensionalGaussian::~InfiniteDimensionalGaussian()
 {
-  delete this->coeffs;
 }
 
-boost::shared_ptr<FunctionBase> InfiniteDimensionalGaussian::draw() const
+boost::shared_ptr<FunctionBase> InfiniteDimensionalGaussian::draw()
 {
   unsigned int i;
 
   for (i = 0; i < this->precision.get_num_converged(); i++) {
-    (*this->coeffs)[i] = env.rngObject()->gaussianSample(this->beta);
+    (this->coeffs)[i] = env.rngObject()->gaussianSample(this->beta);
   }
 
-  boost::shared_ptr<FunctionBase> f(this->precision.inverse_kl_transform(*this->coeffs, this->alpha));
+  boost::shared_ptr<FunctionBase> f(this->precision.inverse_kl_transform(this->coeffs, this->alpha));
   return f;
 }
 
@@ -76,7 +75,7 @@ double InfiniteDimensionalGaussian::get_kl_coefficient(unsigned int i) const
 {
   // This is code repetition, but I'm not quite sure this belongs
   // in the operator class, because it's useful in the measure
-  return (*this->coeffs)[i] / pow(this->precision.get_eigenvalue(i), this->alpha / 2.0);
+  return (this->coeffs)[i] / pow(this->precision.get_eigenvalue(i), this->alpha / 2.0);
 }
 
 }  // End namespace QUESO

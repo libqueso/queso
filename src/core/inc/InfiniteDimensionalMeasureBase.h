@@ -56,7 +56,7 @@ public:
   //@}
 
   //! Draw from the measure, and then return a shared pointer to the draw
-  virtual boost::shared_ptr<FunctionBase> draw() const = 0;
+  virtual boost::shared_ptr<FunctionBase> draw() = 0;
 
   //! Return coefficient \c i of the KL expansion of the current draw.  Must be called after draw()
   virtual double get_kl_coefficient(unsigned int i) const = 0;

@@ -61,7 +61,7 @@ public:
   //! Construct an infinite dimensional MCMC chain with given \c prior, likelihood \c llhd, and options \c ov.
   InfiniteDimensionalMCMCSampler(
       const BaseEnvironment& env,
-      const InfiniteDimensionalMeasureBase & prior,
+      InfiniteDimensionalMeasureBase & prior,
       InfiniteDimensionalLikelihoodBase & llhd,
       InfiniteDimensionalMCMCSamplerOptions * ov);
 
@@ -100,7 +100,7 @@ private:
   double _avg_acc_prob;
 
   // The prior measure from which to draw
-  const InfiniteDimensionalMeasureBase & prior;
+  InfiniteDimensionalMeasureBase & prior;
 
   // The negative log-likelihood functional.  Operates on functions.
   // Should be const?

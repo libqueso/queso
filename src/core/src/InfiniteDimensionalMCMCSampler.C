@@ -47,7 +47,7 @@ namespace QUESO {
 
 InfiniteDimensionalMCMCSampler::InfiniteDimensionalMCMCSampler(
     const BaseEnvironment& env,
-    const InfiniteDimensionalMeasureBase & prior,
+    InfiniteDimensionalMeasureBase & prior,
     InfiniteDimensionalLikelihoodBase & llhd,
     InfiniteDimensionalMCMCSamplerOptions * ov)
   : prior(prior),
