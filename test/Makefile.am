@@ -135,6 +135,10 @@ EXTRA_DIST = common/compare.pl \
 CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt \
 						 $(top_srcdir)/test/gslvector_out_sub0.m
 
+clean-local:
+	rm -rf $(top_builddir)/test/chain0
+	rm -rf $(top_builddir)/test/outputData
+
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
 endif

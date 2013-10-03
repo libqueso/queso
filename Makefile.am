@@ -78,6 +78,13 @@ MAINTAINERCLEANFILES =     \
 	src/gp/Makefile.in \
 	src/gp/src/Makefile.in \
 	src/gp/inc/Makefile.in \
+	inc/queso/Makefile.in \
+	test/Makefile.in \
+	test/gsl_tests/Makefile.in \
+	test/t01_valid_cycle/Makefile.in \
+	test/t02_sip_sfp/Makefile.in \
+	test/t03_sequence/Makefile.in \
+	test/t04_bimodal/Makefile.in \
 	examples/Makefile.in \
 	examples/markovChain1/Makefile.in \
 	examples/markovChain1/src/Makefile.in \
