@@ -48,6 +48,12 @@ external libraries:
 - [GLPK](https://www.gnu.org/software/glpk/)
 - [PETSc](http://www.mcs.anl.gov/petsc/)
 
+Should you be interested in using the optional infinite dimensional
+capabilities of `QUESO`, then you also need the following dependencies:
+
+- [libMesh](http://libmesh.sourceforge.net) compiled with [SLEPc](http://www.grycap.upv.es/slepc/)
+- [HDF5](http://www.hdfgroup.org/HDF5/)
+
 License
 -------
 
