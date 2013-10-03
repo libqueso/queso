@@ -153,7 +153,7 @@ LibMeshOperatorBase::inverse_kl_transform(std::vector<double> & xi,
   // communicator.
   libMesh::CommWorld.broadcast(xi);
 
-  boost::shared_ptr<libMesh::EquationSystems> kl_eq_sys(kl->equation_systems);
+  boost::shared_ptr<libMesh::EquationSystems> kl_eq_sys(kl->get_equation_systems());
 
   std::pair<libMesh::Real, libMesh::Real> eval;
   for (i = 0; i < this->get_num_converged(); i++) {

@@ -143,4 +143,9 @@ boost::shared_ptr<FunctionBase> LibMeshFunction::zero_clone() const
   return ptr;
 }
 
+boost::shared_ptr<libMesh::EquationSystems>
+LibMeshFunction::get_equation_systems() const {
+  return this->equation_systems;
+}
+
 }  // End namespace QUESO

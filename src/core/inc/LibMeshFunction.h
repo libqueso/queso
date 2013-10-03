@@ -100,11 +100,13 @@ public:
    */
   virtual boost::shared_ptr<FunctionBase> zero_clone() const;
 
-  //! This is public for now, but it should be encapsulated. Don't touch it.
-  boost::shared_ptr<libMesh::EquationSystems> equation_systems;
+  //! Return the internal libmesh equation systems object
+  virtual boost::shared_ptr<libMesh::EquationSystems> get_equation_systems() const;
 
 private:
   const FunctionOperatorBuilder & builder;
+
+  boost::shared_ptr<libMesh::EquationSystems> equation_systems;
 };
 
 }  // End namespace QUESO
