@@ -39,6 +39,7 @@ operator_PROGRAMS = operator
 operator_SOURCES = $(top_srcdir)/examples/infinite_dim/operator/operator.C
 operator_LDADD = $(top_builddir)/src/libqueso.la
 operator_CPPFLAGS = $(QUESO_CPPFLAGS)
+dist_operator_DATA = $(operator_SOURCES) $(operator_DATA)
 
 gaussian_random_fielddir = $(prefix)/examples/infinite_dim/gaussian_fields
 gaussian_random_field_DATA = $(top_srcdir)/examples/infinite_dim/gaussian_fields/mesh.e
@@ -46,6 +47,7 @@ gaussian_random_field_PROGRAMS = gaussian_random_field
 gaussian_random_field_SOURCES = $(top_srcdir)/examples/infinite_dim/gaussian_fields/gaussian_random_field.C
 gaussian_random_field_LDADD = $(top_builddir)/src/libqueso.la
 gaussian_random_field_CPPFLAGS = $(QUESO_CPPFLAGS)
+dist_gaussian_random_field_DATA = $(gaussian_random_field_SOURCES) $(gaussian_random_field_DATA)
 
 gaussian_random_field_genmeshdir = $(prefix)/examples/infinite_dim/gaussian_fields
 gaussian_random_field_genmesh_DATA = $(top_srcdir)/examples/infinite_dim/gaussian_fields/mesh.e
@@ -53,6 +55,7 @@ gaussian_random_field_genmesh_PROGRAMS = gaussian_random_field_genmesh
 gaussian_random_field_genmesh_SOURCES = $(top_srcdir)/examples/infinite_dim/gaussian_fields/gaussian_random_field_genmesh.C
 gaussian_random_field_genmesh_LDADD = $(top_builddir)/src/libqueso.la
 gaussian_random_field_genmesh_CPPFLAGS = $(QUESO_CPPFLAGS)
+dist_gaussian_random_field_genmesh_DATA = $(gaussian_random_field_genmesh_SOURCES) $(gaussian_random_field_genmesh_DATA)
 
 invprobdir = $(prefix)/examples/infinite_dim
 invprob_DATA = $(top_srcdir)/examples/infinite_dim/inverse_options.in
@@ -60,6 +63,7 @@ invprob_PROGRAMS = inverse_problem
 inverse_problem_SOURCES = $(top_srcdir)/examples/infinite_dim/inverse_problem.C
 inverse_problem_LDADD = $(top_builddir)/src/libqueso.la
 inverse_problem_CPPFLAGS = $(QUESO_CPPFLAGS)
+dist_invprob_DATA = $(inverse_problem_SOURCES) $(invprob_DATA)
 
 # Parallel inverse problem example
 parinvprobdir = $(prefix)/examples/infinite_dim
@@ -68,6 +72,7 @@ parinvprob_PROGRAMS = parallel_inverse_problem
 parallel_inverse_problem_SOURCES = $(top_srcdir)/examples/infinite_dim/parallel_inverse_problem.C
 parallel_inverse_problem_LDADD = $(top_builddir)/src/libqueso.la
 parallel_inverse_problem_CPPFLAGS = $(QUESO_CPPFLAGS)
+dist_parinvprob_DATA = $(parallel_inverse_problem_SOURCES) $(parinvprob_DATA)
 endif
 
 #############################
