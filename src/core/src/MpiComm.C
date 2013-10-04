@@ -54,11 +54,11 @@ MpiComm::MpiComm(const BaseEnvironment& env, RawType_MPI_Comm inputRawComm)
   m_numProc      (-1)
 {
 #ifdef QUESO_HAS_MPI
-  int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
+  int mpiRC = MPI_Comm_rank(inputRawComm,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       UQ_UNAVAILABLE_RANK,
                       "MpiComm::constructor()",
-                      "failed MPI_Comm_rank() on MPI_COMM_WORLD");
+                      "failed MPI_Comm_rank() on full rank");
 
   mpiRC = MPI_Comm_rank(inputRawComm,&m_myPid);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
