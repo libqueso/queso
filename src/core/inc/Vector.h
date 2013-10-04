@@ -36,7 +36,7 @@
 
 namespace QUESO {
 
-/*! \file uqVector.h
+/*! \file Vector.h
     \brief Vector class.
 */
 

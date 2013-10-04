@@ -24,6 +24,9 @@ check_PROGRAMS += test_DistArrayMisc
 check_PROGRAMS += test_GslVectorSpaceCtor
 check_PROGRAMS += test_GslVectorSpaceMisc
 check_PROGRAMS += test_IntersectionSubsetContains
+check_PROGRAMS += test_operator
+check_PROGRAMS += test_inf_gaussian
+check_PROGRAMS += test_inf_options
 
 LIBS         = -L$(top_builddir)/src/ -lqueso
 
@@ -49,6 +52,10 @@ if HDF5_ENABLED
   AM_CPPFLAGS += $(HDF5_CFLAGS) 
 endif
 
+if LIBMESH_ENABLED
+  AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
+endif
+
 test_uqEnvironment_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironment.C
 test_uqEnvironmentCopy_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentCopy.C
 test_uqEnvironmentEquals_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentEquals.C
@@ -68,6 +75,9 @@ test_DistArrayMisc_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayMis
 test_GslVectorSpaceCtor_SOURCES = $(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceCtor.C
 test_GslVectorSpaceMisc_SOURCES = $(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceMisc.C
 test_IntersectionSubsetContains_SOURCES = $(top_srcdir)/test/test_IntersectionSubset/test_IntersectionSubsetContains.C
+test_operator_SOURCES = $(top_srcdir)/test/test_infinite/test_operator.C
+test_inf_gaussian_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_gaussian.C
+test_inf_options_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_options.C
 
 # Files to freedom stamp
 srcstamp = $(test_uqEnvironment_SOURCES) \
@@ -79,7 +89,10 @@ srcstamp = $(test_uqEnvironment_SOURCES) \
 					 $(test_uqGslVector_SOURCES) \
 					 $(test_uqGaussianVectorRVClass_SOURCES) \
            $(test_uqGslMatrixConstructorFatal_SOURCES) \
-					 $(test_uqGslMatrix_SOURCES)
+					 $(test_uqGslMatrix_SOURCES) \
+					 $(test_operator_SOURCES) \
+					 $(test_inf_gaussian_SOURCES) \
+					 $(test_inf_options_SOURCES)
 
 
 TESTS = $(top_srcdir)/test/test_Environment/test_uqEnvironment.sh \
@@ -100,7 +113,10 @@ TESTS = $(top_srcdir)/test/test_Environment/test_uqEnvironment.sh \
 				$(top_builddir)/test/test_DistArrayMisc \
 				$(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceCtor.sh \
 				$(top_builddir)/test/test_GslVectorSpaceMisc \
-				$(top_builddir)/test/test_IntersectionSubsetContains
+				$(top_builddir)/test/test_IntersectionSubsetContains \
+				$(top_builddir)/test/test_operator \
+				$(top_builddir)/test/test_inf_gaussian \
+				$(top_builddir)/test/test_inf_options
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
@@ -113,10 +129,15 @@ EXTRA_DIST = common/compare.pl \
 						 test_uqEnvironmentOptions/test.inp \
 						 test_exception/copy_env.inp \
 						 test_DistArray/test_DistArrayCtor.sh \
-						test_GslVectorSpace/test_GslVectorSpaceCtor.sh
+						test_GslVectorSpace/test_GslVectorSpaceCtor.sh \
+						test_infinite/inf_options
 
 CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt \
 						 $(top_srcdir)/test/gslvector_out_sub0.m
+
+clean-local:
+	rm -rf $(top_builddir)/test/chain0
+	rm -rf $(top_builddir)/test/outputData
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno

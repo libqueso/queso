@@ -88,7 +88,7 @@ struct FilePtrSetStruct {
 //*****************************************************
 // Base class
 //*****************************************************
-/*! \file uqEnvironment.h
+/*! \file Environment.h
  *  \brief Class to set up a QUESO environment.
  *  \class BaseEnvironment
  *  \brief This (virtual) class sets up the environment underlying the use of the QUESO library by an executable.

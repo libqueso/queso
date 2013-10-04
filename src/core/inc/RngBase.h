@@ -34,7 +34,7 @@
 
 namespace QUESO {
 
-/*! \file uqRngBase.h
+/*! \file RngBase.h
     \brief Random Number Generation class.
 */
 

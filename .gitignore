@@ -37,6 +37,13 @@ examples/exStatisticalInverseProblem_gsl
 examples/exTgaValidationCycle_gsl
 examples/gravity_gsl
 examples/tga2_gsl
+examples/gaussian_random_field
+examples/gaussian_random_field_genmesh
+examples/infinite_dim/inverse_options
+examples/infinite_dim/parallel_inverse_options
+examples/inverse_problem
+examples/operator
+examples/parallel_inverse_problem
 
 src/core/inc/queso.h
 src/libqueso.la
@@ -70,3 +77,17 @@ test/test_uqGslMatrixConstructorFatal
 test/test_uqGslVector
 test/test_uqGslVectorConstructorFatal
 test/test_uqTeuchosVector
+test/chain0
+test/outputData
+test/test_DistArrayCopy
+test/test_DistArrayCtor
+test/test_DistArrayEquals
+test/test_DistArrayMisc
+test/test_GslVectorSpaceCtor
+test/test_GslVectorSpaceMisc
+test/test_IntersectionSubsetContains
+test/test_inf_gaussian
+test/test_inf_options
+test/test_infinite/inf_options
+test/test_operator
+test/test_uqexception

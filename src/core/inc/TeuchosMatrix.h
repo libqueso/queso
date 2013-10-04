@@ -42,7 +42,7 @@
 
 namespace QUESO {
 
-/*! \file uqTeuchosMatrix.h
+/*! \file TeuchosMatrix.h
     \brief Matrix class using Trilinos Teuchos
 */
 

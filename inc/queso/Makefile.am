@@ -5,7 +5,7 @@
 # include the magic script!
 EXTRA_DIST = rebuild_makefile.sh
 
-BUILT_SOURCES =  ArrayOfSequences.h BoxSubset.h ConcatenationSubset.h ConstantScalarFunction.h DiscreteSubset.h GenericScalarFunction.h InstantiateIntersection.h IntersectionSubset.h ScalarFunction.h ScalarFunctionSynchronizer.h ScalarSequence.h SequenceOfVectors.h SequenceStatisticalOptions.h VectorFunction.h VectorFunctionSynchronizer.h VectorSequence.h VectorSet.h VectorSpace.h VectorSubset.h BasicPdfsBase.h BasicPdfsBoost.h BasicPdfsGsl.h Defines.h DistArray.h Environment.h EnvironmentOptions.h GslMatrix.h GslVector.h Map.h Matrix.h MpiComm.h RngBase.h RngBoost.h RngGsl.h TeuchosMatrix.h TeuchosVector.h Vector.h asserts.h exceptions.h ExperimentModel.h ExperimentModelOptions.h ExperimentStorage.h GcmExperimentInfo.h GcmJointInfo.h GcmJointTildeInfo.h GcmSimulationInfo.h GcmSimulationTildeInfo.h GcmTotalInfo.h GcmZInfo.h GcmZTildeInfo.h GpmsaComputerModel.h GpmsaComputerModel2.h GpmsaComputerModel3.h GpmsaComputerModel4.h GpmsaComputerModel5.h GpmsaComputerModelOptions.h SimulationModel.h SimulationModelOptions.h SimulationStorage.h 1D1DFunction.h 1DQuadrature.h 2dArrayOfStuff.h ArrayOfOneDGrids.h ArrayOfOneDTables.h AsciiTable.h CovCond.h Fft.h Miscellaneous.h OneDGrid.h FiniteDistribution.h InfoTheory.h JointPdf.h MLSampling1.h MLSampling2.h MLSampling3.h MLSamplingLevelOptions.h MLSamplingOptions.h MarkovChainPositionData.h MatrixCovarianceFunction.h MetropolisHastingsSG1.h MetropolisHastingsSG2.h MetropolisHastingsSGOptions.h ModelValidation.h MonteCarloSG.h MonteCarloSGOptions.h ScalarCdf.h ScalarCovarianceFunction.h ScalarGaussianRandomField.h StatisticalForwardProblem.h StatisticalForwardProblemOptions.h StatisticalInverseProblem.h StatisticalInverseProblemOptions.h TKGroup.h ValidationCycle.h VectorCdf.h VectorGaussianRandomField.h VectorMdf.h VectorRV.h VectorRealizer.h
+BUILT_SOURCES =  ArrayOfSequences.h BoxSubset.h ConcatenationSubset.h ConstantScalarFunction.h DiscreteSubset.h GenericScalarFunction.h InstantiateIntersection.h IntersectionSubset.h ScalarFunction.h ScalarFunctionSynchronizer.h ScalarSequence.h SequenceOfVectors.h SequenceStatisticalOptions.h VectorFunction.h VectorFunctionSynchronizer.h VectorSequence.h VectorSet.h VectorSpace.h VectorSubset.h BasicPdfsBase.h BasicPdfsBoost.h BasicPdfsGsl.h Defines.h DistArray.h Environment.h EnvironmentOptions.h FunctionBase.h FunctionOperatorBuilder.h GslMatrix.h GslVector.h InfiniteDimensionalGaussian.h InfiniteDimensionalLikelihoodBase.h InfiniteDimensionalMCMCSampler.h InfiniteDimensionalMCMCSamplerOptions.h InfiniteDimensionalMeasureBase.h LibMeshFunction.h LibMeshNegativeLaplacianOperator.h LibMeshOperatorBase.h Map.h Matrix.h MpiComm.h OperatorBase.h RngBase.h RngBoost.h RngGsl.h TeuchosMatrix.h TeuchosVector.h Vector.h asserts.h exceptions.h ExperimentModel.h ExperimentModelOptions.h ExperimentStorage.h GcmExperimentInfo.h GcmJointInfo.h GcmJointTildeInfo.h GcmSimulationInfo.h GcmSimulationTildeInfo.h GcmTotalInfo.h GcmZInfo.h GcmZTildeInfo.h GpmsaComputerModel.h GpmsaComputerModel2.h GpmsaComputerModel3.h GpmsaComputerModel4.h GpmsaComputerModel5.h GpmsaComputerModelOptions.h SimulationModel.h SimulationModelOptions.h SimulationStorage.h 1D1DFunction.h 1DQuadrature.h 2dArrayOfStuff.h ArrayOfOneDGrids.h ArrayOfOneDTables.h AsciiTable.h CovCond.h Fft.h Miscellaneous.h OneDGrid.h FiniteDistribution.h InfoTheory.h JointPdf.h MLSampling1.h MLSampling2.h MLSampling3.h MLSamplingLevelOptions.h MLSamplingOptions.h MarkovChainPositionData.h MatrixCovarianceFunction.h MetropolisHastingsSG1.h MetropolisHastingsSG2.h MetropolisHastingsSGOptions.h ModelValidation.h MonteCarloSG.h MonteCarloSGOptions.h ScalarCdf.h ScalarCovarianceFunction.h ScalarGaussianRandomField.h StatisticalForwardProblem.h StatisticalForwardProblemOptions.h StatisticalInverseProblem.h StatisticalInverseProblemOptions.h TKGroup.h ValidationCycle.h VectorCdf.h VectorGaussianRandomField.h VectorMdf.h VectorRV.h VectorRealizer.h
 
 DISTCLEANFILES = $(BUILT_SOURCES)
 
@@ -63,15 +63,37 @@ Environment.h: $(top_srcdir)/src/core/inc/Environment.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 EnvironmentOptions.h: $(top_srcdir)/src/core/inc/EnvironmentOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+FunctionBase.h: $(top_srcdir)/src/core/inc/FunctionBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+FunctionOperatorBuilder.h: $(top_srcdir)/src/core/inc/FunctionOperatorBuilder.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GslMatrix.h: $(top_srcdir)/src/core/inc/GslMatrix.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GslVector.h: $(top_srcdir)/src/core/inc/GslVector.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InfiniteDimensionalGaussian.h: $(top_srcdir)/src/core/inc/InfiniteDimensionalGaussian.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InfiniteDimensionalLikelihoodBase.h: $(top_srcdir)/src/core/inc/InfiniteDimensionalLikelihoodBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InfiniteDimensionalMCMCSampler.h: $(top_srcdir)/src/core/inc/InfiniteDimensionalMCMCSampler.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InfiniteDimensionalMCMCSamplerOptions.h: $(top_srcdir)/src/core/inc/InfiniteDimensionalMCMCSamplerOptions.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InfiniteDimensionalMeasureBase.h: $(top_srcdir)/src/core/inc/InfiniteDimensionalMeasureBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+LibMeshFunction.h: $(top_srcdir)/src/core/inc/LibMeshFunction.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+LibMeshNegativeLaplacianOperator.h: $(top_srcdir)/src/core/inc/LibMeshNegativeLaplacianOperator.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+LibMeshOperatorBase.h: $(top_srcdir)/src/core/inc/LibMeshOperatorBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Map.h: $(top_srcdir)/src/core/inc/Map.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Matrix.h: $(top_srcdir)/src/core/inc/Matrix.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 MpiComm.h: $(top_srcdir)/src/core/inc/MpiComm.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+OperatorBase.h: $(top_srcdir)/src/core/inc/OperatorBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngBase.h: $(top_srcdir)/src/core/inc/RngBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
