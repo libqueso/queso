@@ -39,6 +39,9 @@
 #include <grvy.h>
 #endif
 
+// queso error handling 
+#include <queso/asserts.h>
+
 //-----------------------------
 // Library versioning routines
 //-----------------------------
@@ -1524,7 +1527,7 @@ FullEnvironment::readOptionsInputFile()
     /*int mpiRC = 0;*/
     /*mpiRC = */MPI_Abort(m_fullComm->Comm(),-999);
 #endif
-    exit(1);
+    queso_error();
   }
 
   return;
