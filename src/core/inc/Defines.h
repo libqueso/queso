@@ -190,7 +190,7 @@ private:
   if (macroIRc) {                                           \
     int macroRank = givenRank;                              \
     if (macroRank < 0) {                                    \
-      macroRank = QUESO::MyWorldfullRank();                      \
+      macroRank = QUESO::MyWorldfullRank();                 \
     }                                                       \
     std::cerr << "UQ RC ERROR"                              \
               << ", rank "  << macroRank                    \
@@ -205,7 +205,7 @@ private:
   if (test) {                                             \
     int macroRank = givenRank;                            \
     if (macroRank < 0) {                                  \
-      macroRank = QUESO::MyWorldfullRank();                    \
+      macroRank = QUESO::MyWorldfullRank();               \
     }                                                     \
     std::cerr << "UQ TEST ERROR"                          \
               << ", rank " << macroRank                   \
@@ -219,7 +219,7 @@ private:
   if (macroIRc) {                                        \
     int macroRank = givenRank;                           \
     if (macroRank < 0) {                                 \
-      macroRank = QUESO::MyWorldfullRank();                   \
+      macroRank = QUESO::MyWorldfullRank();              \
     }                                                    \
     std::cerr << "UQ RC FATAL ERROR"                     \
               << ", rank "  << macroRank                 \
