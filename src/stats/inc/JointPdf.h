@@ -26,12 +26,13 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_JOINT_PROB_DENSITY_H__
-#define __UQ_JOINT_PROB_DENSITY_H__
+#ifndef UQ_JOINT_PROB_DENSITY_H
+#define UQ_JOINT_PROB_DENSITY_H
 
 #include <queso/Environment.h>
 #include <math.h>
 #include <queso/ScalarFunction.h>
+#include <queso/BoxSubset.h>
 #include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
 //#include <gsl/gsl_randist.h>
 
@@ -2454,4 +2455,4 @@ ConcatenatedJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSampl
 
 }  // End namespace QUESO
 
-#endif // __UQ_JOINT_PROB_DENSITY_H__
+#endif // UQ_JOINT_PROB_DENSITY_H

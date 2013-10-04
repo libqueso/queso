@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_ENVIRONMENT_OPTIONS_H__
-#define __UQ_ENVIRONMENT_OPTIONS_H__
+#ifndef UQ_ENVIRONMENT_OPTIONS_H
+#define UQ_ENVIRONMENT_OPTIONS_H
 
 #include <queso/Environment.h>
 
@@ -52,7 +52,7 @@
 
 namespace QUESO {
 
-/*! \file uqEnvironmentOptions.h
+/*! \file EnvironmentOptions.h
     \brief Class to allow options to be passed to a QUESO environment.
 */
 
@@ -156,4 +156,4 @@ std::ostream& operator<<(std::ostream& os, const EnvironmentOptions& obj);
 
 }  // End namespace QUESO
 
-#endif // __UQ_ENVIRONMENT_CLASS_H__
+#endif // UQ_ENVIRONMENT_CLASS_H

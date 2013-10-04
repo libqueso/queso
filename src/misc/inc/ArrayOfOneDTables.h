@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_ARRAY_OF_ONE_D_TABLES_H__
-#define __UQ_ARRAY_OF_ONE_D_TABLES_H__
+#ifndef UQ_ARRAY_OF_ONE_D_TABLES_H
+#define UQ_ARRAY_OF_ONE_D_TABLES_H
 
 #include <queso/Environment.h>
 
@@ -175,4 +175,4 @@ std::ostream& operator<< (std::ostream& os, const ArrayOfOneDTables<V,M>& obj)
 
 }  // End namespace QUESO
 
-#endif // __UQ_ARRAY_OF_ONE_D_TABLES_H__
+#endif // UQ_ARRAY_OF_ONE_D_TABLES_H

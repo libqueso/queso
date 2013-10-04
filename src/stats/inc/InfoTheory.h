@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_INFO_THEORY_H__
-#define __UQ_INFO_THEORY_H__
+#ifndef UQ_INFO_THEORY_H
+#define UQ_INFO_THEORY_H
 
 #include <queso/Defines.h>
 #ifdef QUESO_HAS_ANN
@@ -309,4 +309,4 @@ double estimateCE_ANN( RV_1<P_V,P_M>& xRV,
 
 #endif // QUESO_HAS_ANN
 
-#endif // __UQ_INFO_THEORY_H__
+#endif // UQ_INFO_THEORY_H

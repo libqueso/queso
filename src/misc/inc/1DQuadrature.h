@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_1D_1D_QUADRATURE_H__
-#define __UQ_1D_1D_QUADRATURE_H__
+#ifndef UQ_1D_1D_QUADRATURE_H
+#define UQ_1D_1D_QUADRATURE_H
 
 #include <queso/Environment.h>
 #include <queso/Defines.h>
@@ -346,4 +346,4 @@ protected:
 
 }  // End namespace QUESO
 
-#endif // __UQ_1D_1D_QUADRATURE_H__
+#endif // UQ_1D_1D_QUADRATURE_H

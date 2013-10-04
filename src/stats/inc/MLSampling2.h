@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MULTI_LEVEL_SAMPLING2_H__
-#define __UQ_MULTI_LEVEL_SAMPLING2_H__
+#ifndef UQ_MULTI_LEVEL_SAMPLING2_H
+#define UQ_MULTI_LEVEL_SAMPLING2_H
 
 namespace QUESO {
 
@@ -1997,4 +1997,4 @@ MLSampling<P_V,P_M>::generateSequence_Step11_inter0(
 
 }  // End namespace QUESO
 
-#endif // __UQ_MULTI_LEVEL_SAMPLING2_H__
+#endif // UQ_MULTI_LEVEL_SAMPLING2_H

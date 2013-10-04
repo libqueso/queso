@@ -30,8 +30,8 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_STATISTICAL_INVERSE_PROBLEM_1_APPL_H__
-#define __EX_STATISTICAL_INVERSE_PROBLEM_1_APPL_H__
+#ifndef EX_STATISTICAL_INVERSE_PROBLEM_1_APPL_H
+#define EX_STATISTICAL_INVERSE_PROBLEM_1_APPL_H
 
 #include <exStatisticalInverseProblem1_likelihood.h>
 #include <uqStatisticalInverseProblem.h>
@@ -213,4 +213,4 @@ uqAppl(const uqBaseEnvironment& env)
 
   return;
 }
-#endif // __EX_STATISTICAL_INVERSE_PROBLEM_1_APPL_H__
+#endif // EX_STATISTICAL_INVERSE_PROBLEM_1_APPL_H

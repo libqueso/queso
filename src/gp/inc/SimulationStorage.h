@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SIMULATION_STORAGE_H__
-#define __UQ_SIMULATION_STORAGE_H__
+#ifndef UQ_SIMULATION_STORAGE_H
+#define UQ_SIMULATION_STORAGE_H
 
 #include <queso/Environment.h>
 
@@ -318,4 +318,4 @@ std::ostream& operator<<(std::ostream& os, const SimulationStorage<S_V,S_M,P_V,P
 
 }  // End namespace QUESO
 
-#endif // __UQ_SIMULATION_STORAGE_H__
+#endif // UQ_SIMULATION_STORAGE_H

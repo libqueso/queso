@@ -26,15 +26,15 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_BASIC_PDFS_BASE_H__
-#define __UQ_BASIC_PDFS_BASE_H__
+#ifndef UQ_BASIC_PDFS_BASE_H
+#define UQ_BASIC_PDFS_BASE_H
 
 #include <queso/Defines.h>
 #include <iostream>
 
 namespace QUESO {
 
-/*! \file uqBasicPdfsBase.h
+/*! \file BasicPdfsBase.h
     \brief Class for Basic PDFs.
 */
 
@@ -74,4 +74,4 @@ protected:
 
 }  // End namespace QUESO
 
-#endif // __UQ_BASIC_PDFS_BASE_H__
+#endif // UQ_BASIC_PDFS_BASE_H

@@ -26,15 +26,15 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_RNG_BASE_H__
-#define __UQ_RNG_BASE_H__
+#ifndef UQ_RNG_BASE_H
+#define UQ_RNG_BASE_H
 
 #include <queso/Defines.h>
 #include <iostream>
 
 namespace QUESO {
 
-/*! \file uqRngBase.h
+/*! \file RngBase.h
     \brief Random Number Generation class.
 */
 
@@ -99,4 +99,4 @@ private:
 
 }  // End namespace QUESO
 
-#endif // __UQ_RNG_BASE_H__
+#endif // UQ_RNG_BASE_H

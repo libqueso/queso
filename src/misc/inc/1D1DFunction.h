@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_1D_1D_FUNCTION_H__
-#define __UQ_1D_1D_FUNCTION_H__
+#ifndef UQ_1D_1D_FUNCTION_H
+#define UQ_1D_1D_FUNCTION_H
 
 #include <queso/ScalarSequence.h>
 #include <queso/1DQuadrature.h>
@@ -697,4 +697,4 @@ SubF1F2Gaussian2dKdeIntegral(const ScalarSequence<T>& scalarSeq1,
 
 }  // End namespace QUESO
 
-#endif // __UQ_1D_1D_FUNCTION_H__
+#endif // UQ_1D_1D_FUNCTION_H

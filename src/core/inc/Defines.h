@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_DEFINES_H__
-#define __UQ_DEFINES_H__
+#ifndef UQ_DEFINES_H
+#define UQ_DEFINES_H
 
 #include <config_queso.h>
 
@@ -55,7 +55,7 @@
 #ifdef QUESO_HAS_MPI
 // Ok
 #else
-Incompatible combination of defines in QUESO 'uqDefines.h': QUESO_HAS_TRILINOS is defined but QUESO_HAS_MPI is undefined
+Incompatible combination of defines in QUESO 'Defines.h': QUESO_HAS_TRILINOS is defined but QUESO_HAS_MPI is undefined
 #endif
 #endif
 
@@ -64,6 +64,7 @@ Incompatible combination of defines in QUESO 'uqDefines.h': QUESO_HAS_TRILINOS i
 #include <set>
 #include <vector>
 #include <queso/asserts.h> // for queso_error handler
+#include <mpi.h>
 
 namespace QUESO {
 
@@ -99,7 +100,7 @@ const int UQ_MATRIX_SVD_FAILED_RC          = -11;
 #define UQ_FILE_EXTENSION_FOR_HDF_FORMAT    "h5"
 
 
-/*! \file uqDefines.h
+/*! \file Defines.h
     \brief Definitions and a class to provide default options to  pass to a QUESO environment.
 */
 
@@ -263,4 +264,4 @@ private:
 
 }  // End namespace QUESO
 
-#endif // __UQ_DEFINES_H__
+#endif // UQ_DEFINES_H

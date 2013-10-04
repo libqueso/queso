@@ -25,8 +25,8 @@
 // $Id$
 //
 //--------------------------------------------------------------------------
-#ifndef __EX_COMPUTE_H__
-#define __EX_COMPUTE_H__
+#ifndef EX_COMPUTE_H
+#define EX_COMPUTE_H
 
 #include <queso/Environment.h>
 

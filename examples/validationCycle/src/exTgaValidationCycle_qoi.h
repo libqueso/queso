@@ -30,8 +30,8 @@
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_TGA_VALIDATION_CYCLE_QOI_H__
-#define __EX_TGA_VALIDATION_CYCLE_QOI_H__
+#ifndef EX_TGA_VALIDATION_CYCLE_QOI_H
+#define EX_TGA_VALIDATION_CYCLE_QOI_H
 
 #include <queso/Defines.h>
 #include <queso/DistArray.h>
@@ -119,4 +119,4 @@ void qoiRoutine(const P_V&                    paramValues,
   return;
 }
 
-#endif // __EX_TGA_VALIDATION_CYCLE_QOI_H__
+#endif // EX_TGA_VALIDATION_CYCLE_QOI_H

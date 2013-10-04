@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SCALAR_SEQUENCE_H__
-#define __UQ_SCALAR_SEQUENCE_H__
+#ifndef UQ_SCALAR_SEQUENCE_H
+#define UQ_SCALAR_SEQUENCE_H
 
 #include <queso/Fft.h>
 #include <queso/OneDGrid.h>
@@ -4867,4 +4867,4 @@ ComputeCovCorrBetweenScalarSequences(
 
 }  // End namespace QUESO
 
-#endif // __UQ_SCALAR_SEQUENCE_H__
+#endif // UQ_SCALAR_SEQUENCE_H

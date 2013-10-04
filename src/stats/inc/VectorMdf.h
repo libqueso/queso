@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_VECTOR_MARGINAL_DENSITY_FUNCTION_H__
-#define __UQ_VECTOR_MARGINAL_DENSITY_FUNCTION_H__
+#ifndef UQ_VECTOR_MARGINAL_DENSITY_FUNCTION_H
+#define UQ_VECTOR_MARGINAL_DENSITY_FUNCTION_H
 
 #include <queso/ArrayOfOneDGrids.h>
 #include <queso/ArrayOfOneDTables.h>
@@ -454,4 +454,4 @@ SampledVectorMdf<V,M>::print(std::ostream& os) const
 
 }  // End namespace QUESO
 
-#endif // __UQ_VECTOR_MARGINAL_DENSITY_FUNCTION_H__
+#endif // UQ_VECTOR_MARGINAL_DENSITY_FUNCTION_H

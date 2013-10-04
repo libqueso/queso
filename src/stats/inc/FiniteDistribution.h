@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_FINITE_DISTRIBUTION_H__
-#define __UQ_FINITE_DISTRIBUTION_H__
+#ifndef UQ_FINITE_DISTRIBUTION_H
+#define UQ_FINITE_DISTRIBUTION_H
 
 #include <queso/Environment.h>
 
@@ -81,4 +81,4 @@ protected:
 
 }  // End namespace QUESO
 
-#endif // __UQ_FINITE_DISTRIBUTION_H__
+#endif // UQ_FINITE_DISTRIBUTION_H

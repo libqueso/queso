@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_GCM_OPTIONS_H__
-#define __UQ_GCM_OPTIONS_H__
+#ifndef UQ_GCM_OPTIONS_H
+#define UQ_GCM_OPTIONS_H
 
 #include <queso/Environment.h>
 #include <queso/SequenceStatisticalOptions.h>
@@ -150,4 +150,4 @@ std::ostream& operator<<(std::ostream& os, const GpmsaComputerModelOptions& obj)
 
 }  // End namespace QUESO
 
-#endif // __UQ_GCM_OPTIONS_H__
+#endif // UQ_GCM_OPTIONS_H

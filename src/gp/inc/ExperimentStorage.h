@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_EXPERIMENT_STORAGE_H__
-#define __UQ_EXPERIMENT_STORAGE_H__
+#ifndef UQ_EXPERIMENT_STORAGE_H
+#define UQ_EXPERIMENT_STORAGE_H
 
 #include <queso/VectorSpace.h>
 
@@ -344,4 +344,4 @@ std::ostream& operator<<(std::ostream& os, const ExperimentStorage<S_V,S_M,D_V,D
 
 }  // End namespace QUESO
 
-#endif // __UQ_EXPERIMENT_STORAGE_H__
+#endif // UQ_EXPERIMENT_STORAGE_H

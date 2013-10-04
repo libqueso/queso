@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_ENVIRONMENT_H__
-#define __UQ_ENVIRONMENT_H__
+#ifndef UQ_ENVIRONMENT_H
+#define UQ_ENVIRONMENT_H
 
 #include <queso/Defines.h>
 namespace QUESO {
@@ -88,7 +88,7 @@ struct FilePtrSetStruct {
 //*****************************************************
 // Base class
 //*****************************************************
-/*! \file uqEnvironment.h
+/*! \file Environment.h
  *  \brief Class to set up a QUESO environment.
  *  \class BaseEnvironment
  *  \brief This (virtual) class sets up the environment underlying the use of the QUESO library by an executable.
@@ -439,4 +439,4 @@ std::ostream& operator<<(std::ostream& os, const BaseEnvironment& obj);
 
 }  // End namespace QUESO
 
-#endif // __UQ_ENVIRONMENT_H__
+#endif // UQ_ENVIRONMENT_H

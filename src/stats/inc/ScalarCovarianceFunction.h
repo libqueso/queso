@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_SCALAR_COVARIANCE_FUNCTION_H__
-#define __UQ_SCALAR_COVARIANCE_FUNCTION_H__
+#ifndef UQ_SCALAR_COVARIANCE_FUNCTION_H
+#define UQ_SCALAR_COVARIANCE_FUNCTION_H
 
 #include <queso/VectorSet.h>
 #include <queso/Environment.h>
@@ -340,4 +340,4 @@ GenericScalarCovarianceFunction<V,M>::value(const V& positionVector1, const V& p
 
 }  // End namespace QUESO
 
-#endif // __UQ_SCALAR_COVARIANCE_FUNCTION_H__ 
+#endif // UQ_SCALAR_COVARIANCE_FUNCTION_H

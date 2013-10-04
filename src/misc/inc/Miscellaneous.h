@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MISCELLANEOUS_H__
-#define __UQ_MISCELLANEOUS_H__
+#ifndef UQ_MISCELLANEOUS_H
+#define UQ_MISCELLANEOUS_H
 
 #include <queso/Environment.h>
 #include <queso/RngBase.h>
@@ -218,4 +218,4 @@ MiscCheckTheParallelEnvironment(const V1& vec1, const V2& vec2)
 
 }  // End namespace QUESO
 
-#endif // __UQ_MISCELLANEOUS_H__
+#endif // UQ_MISCELLANEOUS_H

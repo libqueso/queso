@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_ARRAY_OF_ONE_D_GRIDS_H__
-#define __UQ_ARRAY_OF_ONE_D_GRIDS_H__
+#ifndef UQ_ARRAY_OF_ONE_D_GRIDS_H
+#define UQ_ARRAY_OF_ONE_D_GRIDS_H
 
 #include <queso/OneDGrid.h>
 
@@ -243,4 +243,4 @@ std::ostream& operator<< (std::ostream& os, const ArrayOfOneDGrids<V,M>& obj)
 
 }  // End namespace QUESO
 
-#endif // __UQ_ARRAY_OF_ONE_D_GRIDS_H__
+#endif // UQ_ARRAY_OF_ONE_D_GRIDS_H

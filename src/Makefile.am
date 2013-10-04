@@ -22,6 +22,10 @@ if HDF5_ENABLED
   AM_CPPFLAGS += $(HDF5_CFLAGS) 
 endif
 
+if LIBMESH_ENABLED
+  AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)# $(LIBMESH_INCLUDE)
+endif
+
 if SVN_CHECKOUT
 BUILT_SOURCES = .license.stamp
 endif
@@ -35,6 +39,7 @@ libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
 libqueso_la_LDFLAGS += $(GSL_LIBS) 
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
 libqueso_la_LDFLAGS += $(ANN_LIBS)
+libqueso_la_LDFLAGS += $(HDF5_LIBS) $(HDF5_CXXLIBS)
 
 if GRVY_ENABLED	
   libqueso_la_LDFLAGS += $(GRVY_LIBS)
@@ -44,16 +49,16 @@ if GLPK_ENABLED
   libqueso_la_LDFLAGS += $(GLPK_LIBS)
 endif
 
-if HDF5_ENABLED	
-  libqueso_la_LDFLAGS += $(HDF5_LIBS)
-endif
-
 # TODO: cleanup way epetra is handled; it looks like it is being put
 # in LDFLAGS directly. Would like to have a EPETRA_LIBS or some such
 # variable later.
 
 if TRILINOS_ENABLED
   libqueso_la_LDFLAGS += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
+endif
+
+if LIBMESH_ENABLED
+  libqueso_la_LDFLAGS += $(LIBMESH_LIBS)
 endif
 
 #libqueso_la_LDFLAGS += -Wl,-rpath,$(TRILINOS_HOME)/lib -lepetra
@@ -75,7 +80,26 @@ libqueso_la_SOURCES = \
 	$(top_srcdir)/src/core/src/TeuchosVector.C \
 	$(top_srcdir)/src/core/src/TeuchosMatrix.C \
 	$(top_srcdir)/src/core/src/MpiComm.C \
-	$(top_srcdir)/src/core/src/Map.C
+	$(top_srcdir)/src/core/src/Map.C \
+	$(top_srcdir)/src/core/src/DistArray.C
+
+
+# Sources that need libmesh
+if LIBMESH_ENABLED
+libqueso_la_SOURCES += \
+	$(top_srcdir)/src/core/src/FunctionBase.C \
+	$(top_srcdir)/src/core/src/LibMeshFunction.C \
+	$(top_srcdir)/src/core/src/OperatorBase.C \
+	$(top_srcdir)/src/core/src/LibMeshOperatorBase.C \
+	$(top_srcdir)/src/core/src/LibMeshNegativeLaplacianOperator.C \
+	$(top_srcdir)/src/core/src/InfiniteDimensionalGaussian.C \
+	$(top_srcdir)/src/core/src/InfiniteDimensionalMeasureBase.C \
+	$(top_srcdir)/src/core/src/InfiniteDimensionalMCMCSampler.C \
+	$(top_srcdir)/src/core/src/InfiniteDimensionalMCMCSamplerOptions.C \
+	$(top_srcdir)/src/core/src/InfiniteDimensionalLikelihoodBase.C \
+	$(top_srcdir)/src/core/src/FunctionOperatorBuilder.C
+endif
+
 
 # Sources from core/src with gsl conditional 
 
@@ -92,7 +116,8 @@ libqueso_la_SOURCES += \
 	$(top_srcdir)/src/misc/src/1DQuadrature.C \
 	$(top_srcdir)/src/misc/src/ComplexFft.C \
 	$(top_srcdir)/src/misc/src/Miscellaneous.C \
-	$(top_srcdir)/src/misc/src/RealFft.C
+	$(top_srcdir)/src/misc/src/RealFft.C \
+	$(top_srcdir)/src/misc/src/2dArrayOfStuff.C
 
 # Sources from misc/src withn gsl conditional
 
@@ -104,7 +129,21 @@ endif
 
 libqueso_la_SOURCES += \
 	$(top_srcdir)/src/basic/src/TeuchosVectorSpace.C \
-	$(top_srcdir)/src/basic/src/SequenceStatisticalOptions.C
+	$(top_srcdir)/src/basic/src/SequenceStatisticalOptions.C \
+	$(top_srcdir)/src/basic/src/ArrayOfSequences.C \
+	$(top_srcdir)/src/basic/src/VectorSpace.C \
+	$(top_srcdir)/src/basic/src/VectorSet.C \
+	$(top_srcdir)/src/basic/src/BoxSubset.C \
+	$(top_srcdir)/src/basic/src/ConcatenationSubset.C \
+	$(top_srcdir)/src/basic/src/DiscreteSubset.C \
+	$(top_srcdir)/src/basic/src/IntersectionSubset.C \
+	$(top_srcdir)/src/basic/src/VectorSubset.C \
+	$(top_srcdir)/src/basic/src/ScalarFunction.C \
+	$(top_srcdir)/src/basic/src/GenericScalarFunction.C \
+	$(top_srcdir)/src/basic/src/ConstantScalarFunction.C \
+	$(top_srcdir)/src/basic/src/ScalarFunctionSynchronizer.C \
+	$(top_srcdir)/src/basic/src/VectorSubset.C \
+	$(top_srcdir)/src/basic/src/InstantiateIntersection.C
 
 
 # Sources from basic/src with gsl conditional
@@ -134,12 +173,6 @@ libqueso_la_SOURCES += \
 	$(top_srcdir)/src/gp/src/GpmsaComputerModelOptions.C \
 	$(top_srcdir)/src/gp/src/SimulationModelOptions.C
 
-# Sources from interface 
-
-###libqueso_la_SOURCES += \
-###	$(top_srcdir)/src/interface/basic_classes.cpp \
-###	$(top_srcdir)/src/interface/basic_interface.cpp
-
 # Headers to install from core/inc
 
 libqueso_include_HEADERS = \
@@ -165,6 +198,22 @@ libqueso_include_HEADERS = \
 	$(top_srcdir)/src/core/inc/exceptions.h \
 	$(top_srcdir)/src/core/inc/Vector.h
 
+# Headers that need libmesh
+if LIBMESH_ENABLED
+libqueso_include_HEADERS += \
+	$(top_srcdir)/src/core/inc/FunctionBase.h \
+	$(top_srcdir)/src/core/inc/LibMeshFunction.h \
+	$(top_srcdir)/src/core/inc/OperatorBase.h \
+	$(top_srcdir)/src/core/inc/LibMeshOperatorBase.h \
+	$(top_srcdir)/src/core/inc/LibMeshNegativeLaplacianOperator.h \
+	$(top_srcdir)/src/core/inc/InfiniteDimensionalMeasureBase.h \
+	$(top_srcdir)/src/core/inc/InfiniteDimensionalGaussian.h \
+	$(top_srcdir)/src/core/inc/InfiniteDimensionalMCMCSampler.h \
+	$(top_srcdir)/src/core/inc/InfiniteDimensionalMCMCSamplerOptions.h \
+	$(top_srcdir)/src/core/inc/InfiniteDimensionalLikelihoodBase.h \
+	$(top_srcdir)/src/core/inc/FunctionOperatorBuilder.h
+endif
+
 # Headers to install from misc/inc
 
 libqueso_include_HEADERS += \
@@ -185,6 +234,8 @@ libqueso_include_HEADERS += \
 	$(top_srcdir)/src/basic/inc/ArrayOfSequences.h \
 	$(top_srcdir)/src/basic/inc/InstantiateIntersection.h \
 	$(top_srcdir)/src/basic/inc/ScalarFunction.h \
+	$(top_srcdir)/src/basic/inc/GenericScalarFunction.h \
+	$(top_srcdir)/src/basic/inc/ConstantScalarFunction.h \
 	$(top_srcdir)/src/basic/inc/ScalarFunctionSynchronizer.h \
 	$(top_srcdir)/src/basic/inc/ScalarSequence.h \
 	$(top_srcdir)/src/basic/inc/SequenceOfVectors.h \
@@ -194,7 +245,11 @@ libqueso_include_HEADERS += \
 	$(top_srcdir)/src/basic/inc/VectorSequence.h \
 	$(top_srcdir)/src/basic/inc/VectorSet.h \
 	$(top_srcdir)/src/basic/inc/VectorSpace.h \
-	$(top_srcdir)/src/basic/inc/VectorSubset.h
+	$(top_srcdir)/src/basic/inc/VectorSubset.h \
+	$(top_srcdir)/src/basic/inc/BoxSubset.h \
+	$(top_srcdir)/src/basic/inc/ConcatenationSubset.h \
+	$(top_srcdir)/src/basic/inc/DiscreteSubset.h \
+	$(top_srcdir)/src/basic/inc/IntersectionSubset.h
 
 # Headers to install from stats/inc 
 
@@ -260,19 +315,12 @@ nodist_libqueso_include_HEADERS    =       \
 	$(top_builddir)/config_queso.h       \
 	$(top_builddir)/src/core/inc/queso.h
 
-# Headers to install from interface
-
-###libqueso_include_HEADERS += \
-###	$(top_srcdir)/src/interface/queso_basic.h     \
-###	$(top_srcdir)/src/interface/basic_classes.h   \
-###	$(top_srcdir)/src/interface/basic_interface.h \
-###	$(top_srcdir)/src/interface/basic_int.h
-
 # Standalone binaries
 
 bin_PROGRAMS               = queso_version
 queso_version_SOURCES      = $(top_srcdir)/src/core/src/version.C
-queso_version_LDADD        = -L$(top_builddir)/src -lqueso $(HDF5_LIBS) 
+#queso_version_LDADD        = -L$(top_builddir)/src -lqueso $(HDF5_LIBS) $(HDF5_LIB)/libhdf5_cpp.la 
+queso_version_LDADD = libqueso.la
 if TRILINOS_ENABLED
   queso_version_LDADD     += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
 endif

@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef __UQ_MODEL_VALIDATION_H__
-#define __UQ_MODEL_VALIDATION_H__
+#ifndef UQ_MODEL_VALIDATION_H
+#define UQ_MODEL_VALIDATION_H
 
 #include <queso/ValidationCycle.h>
 
@@ -133,4 +133,4 @@ ModelValidation<P_V,P_M,Q_V,Q_M>::cycle() const
 
 }  // End namespace QUESO
 
-#endif // __UQ_MODEL_VALIDATION_H__
+#endif // UQ_MODEL_VALIDATION_H
