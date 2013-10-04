@@ -1214,11 +1214,11 @@ FullEnvironment::FullEnvironment(
   std::cout << "Entering FullEnv" << std::endl;
 #endif
 
-  //////////////////////////////////////////////////
-  // Initialize "full" communicator
-  //////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////
+  // Initialize "full" communicator -- Not necessarily MPI_COMM_WORLD
+  ///////////////////////////////////////////////////////////////////////
 #ifdef QUESO_HAS_MPI
-  int mpiRC = MPI_Comm_rank(MPI_COMM_WORLD,&m_worldRank);
+  int mpiRC = MPI_Comm_rank(inputComm,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       UQ_UNAVAILABLE_RANK,
                       "FullEnvironment::commonConstructor()",
