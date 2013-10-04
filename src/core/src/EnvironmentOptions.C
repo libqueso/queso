@@ -29,6 +29,8 @@
 #include <queso/EnvironmentOptions.h>
 #include <queso/Miscellaneous.h>
 
+#include <queso/asserts.h>
+
 namespace QUESO {
 
 // --------------------------------------------------

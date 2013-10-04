@@ -636,7 +636,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
   if (m_like_counter == 0) {
     std::cout << "Exiting in likelihoodRoutine(), on purpose..." << std::endl;
     sleep(1);
-    exit(1);
+    queso_error();
   }
 
   return lnLikelihoodValue;

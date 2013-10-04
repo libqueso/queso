@@ -30,6 +30,7 @@
 #define UQ_DEFINES_H
 
 #include <config_queso.h>
+#include <queso/asserts.h>
 
 //! Defines available optional libraries (GLPK, HDF5, Trilinos)
 
@@ -227,7 +228,7 @@ private:
               << ", iRC = " << macroIRc                  \
               << ". Exiting..."                          \
               << std::endl;                              \
-    exit(1);                                             \
+    queso_error(); \
   }
 
 #ifdef QUESO_HAS_MPI
@@ -258,7 +259,7 @@ private:
               << ": "       << what                    \
               << ". Exiting..."                        \
               << std::endl;                            \
-    exit(1);                                           \
+    queso_error();                                     \
   }
 #endif
 
