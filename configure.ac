@@ -188,6 +188,7 @@ AC_CONFIG_FILES([
   test/t04_bimodal/Makefile
   test/gsl_tests/Makefile
   test/gsl_tests/input
+  test/test_Environment/copy_env
   test/test_infinite/inf_options
   doxygen/Makefile
   doxygen/queso.dox
