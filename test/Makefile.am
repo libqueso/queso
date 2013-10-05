@@ -5,7 +5,6 @@ BUILT_SOURCES = .license.stamp
 endif
 
 check_PROGRAMS = # Append below
-check_PROGRAMS += test_uqEnvironment
 check_PROGRAMS += test_uqEnvironmentCopy
 check_PROGRAMS += test_uqEnvironmentEquals
 check_PROGRAMS += test_uqEnvironmentNonFatal
@@ -56,7 +55,6 @@ if LIBMESH_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
 endif
 
-test_uqEnvironment_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironment.C
 test_uqEnvironmentCopy_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentCopy.C
 test_uqEnvironmentEquals_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentEquals.C
 test_uqEnvironmentNonFatal_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentNonFatal.C
@@ -80,8 +78,7 @@ test_inf_gaussian_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_gaussian.C
 test_inf_options_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_options.C
 
 # Files to freedom stamp
-srcstamp = $(test_uqEnvironment_SOURCES) \
-					 $(test_uqEnvironmentCopy_SOURCES) \
+srcstamp = $(test_uqEnvironmentCopy_SOURCES) \
 					 $(test_uqEnvironmentEquals_SOURCES) \
 					 $(test_uqEnvironmentNonFatal_SOURCES) \
 					 $(test_uqEnvironmentOptionsPrint_SOURCES) \
@@ -95,9 +92,8 @@ srcstamp = $(test_uqEnvironment_SOURCES) \
 					 $(test_inf_options_SOURCES)
 
 
-TESTS = $(top_srcdir)/test/test_Environment/test_uqEnvironment.sh \
-				$(top_srcdir)/test/test_Environment/test_uqEnvironmentCopy.sh \
-				$(top_srcdir)/test/test_Environment/test_uqEnvironmentEquals.sh \
+TESTS = $(top_builddir)/test/test_uqEnvironmentCopy \
+				$(top_builddir)/test/test_uqEnvironmentEquals \
 				$(top_builddir)/test/test_uqEnvironmentNonFatal \
         $(top_srcdir)/test/test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh \
 				$(top_srcdir)/test/test_GslVector/test_uqGslVectorConstructorFatal.sh \
@@ -120,7 +116,6 @@ TESTS = $(top_srcdir)/test/test_Environment/test_uqEnvironment.sh \
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
-             test_Environment/test_uqEnvironment.sh \
              test_Environment/test_uqEnvironmentCopy.sh \
              test_Environment/test_uqEnvironmentEquals.sh \
 						 test_GslVector/test_uqGslVectorConstructorFatal.sh \
