@@ -117,7 +117,7 @@ TESTS = $(top_builddir)/test/test_uqEnvironmentCopy \
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
 						 test_uqEnvironmentOptions/test.inp \
-						 test_exception/copy_env \
+						test_Environment/copy_env \
 						 test_infinite/inf_options
 
 CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt \
