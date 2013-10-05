@@ -244,8 +244,8 @@ private:
               << ". Exiting..."                        \
               << std::endl;                            \
     /*int macroMpiRC = 0;*/                            \
-    /*macroMpiRC = */MPI_Abort(MPI_COMM_WORLD,-999);   \
     queso_error(); \
+    /*macroMpiRC = */MPI_Abort(MPI_COMM_WORLD,-999);   \
   }
 #else
 #define UQ_FATAL_TEST_MACRO(test,givenRank,where,what) \
