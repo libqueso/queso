@@ -480,4 +480,3 @@ private:
 }  // End namespace QUESO
 
 #endif // UQ_SEQUENCE_OF_VECTORS_H
-
