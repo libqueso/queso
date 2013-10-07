@@ -26,6 +26,7 @@ check_PROGRAMS += test_IntersectionSubsetContains
 check_PROGRAMS += test_operator
 check_PROGRAMS += test_inf_gaussian
 check_PROGRAMS += test_inf_options
+check_PROGRAMS += test_SequenceOfVectorsErase
 
 LIBS         = -L$(top_builddir)/src/ -lqueso
 
@@ -76,6 +77,7 @@ test_IntersectionSubsetContains_SOURCES = $(top_srcdir)/test/test_IntersectionSu
 test_operator_SOURCES = $(top_srcdir)/test/test_infinite/test_operator.C
 test_inf_gaussian_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_gaussian.C
 test_inf_options_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_options.C
+test_SequenceOfVectorsErase_SOURCES = $(top_srcdir)/test/test_SequenceOfVectors/test_SequenceOfVectorsErase.C
 
 # Files to freedom stamp
 srcstamp = $(test_uqEnvironmentCopy_SOURCES) \
@@ -112,7 +114,8 @@ TESTS = $(top_builddir)/test/test_uqEnvironmentCopy \
 				$(top_builddir)/test/test_IntersectionSubsetContains \
 				$(top_builddir)/test/test_operator \
 				$(top_builddir)/test/test_inf_gaussian \
-				$(top_builddir)/test/test_inf_options
+				$(top_builddir)/test/test_inf_options \
+				$(top_builddir)/test/test_SequenceOfVectorsErase
 
 EXTRA_DIST = common/compare.pl \
 						 common/verify.sh \
