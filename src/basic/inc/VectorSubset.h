@@ -29,7 +29,7 @@
 #ifndef UQ_VECTOR_SUBSET_H
 #define UQ_VECTOR_SUBSET_H
 
-#include <queso/VectorSpace.h>
+#include <queso/VectorSet.h>
 
 namespace QUESO {
 
