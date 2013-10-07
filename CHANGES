@@ -8,6 +8,7 @@ Version 0.50.0 (In progress)
   * Implemented MCMC sampling on function spaces
   * Added function space MCMC unit tests
   * Added serial and parallel function space MCMC examples
+  * Replace exit() calls with a macro exception handler
 
 Version 0.47.1 (23 Sep 2013)
 

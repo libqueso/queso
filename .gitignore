@@ -79,6 +79,7 @@ test/test_uqGslVectorConstructorFatal
 test/test_uqTeuchosVector
 test/chain0
 test/outputData
+test/test_Environment/copy_env
 test/test_DistArrayCopy
 test/test_DistArrayCtor
 test/test_DistArrayEquals
