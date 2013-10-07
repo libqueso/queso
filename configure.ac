@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script. 
 
 AC_PREREQ(2.65)
-AC_INIT([queso], [0.47.0], [pecos_dev@ices.utexas.edu])
+AC_INIT([queso], [0.50.0], [pecos_dev@ices.utexas.edu])
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_CONFIG_HEADERS(config_queso.h.tmp)
@@ -188,6 +188,7 @@ AC_CONFIG_FILES([
   test/t04_bimodal/Makefile
   test/gsl_tests/Makefile
   test/gsl_tests/input
+  test/test_Environment/copy_env
   test/test_infinite/inf_options
   doxygen/Makefile
   doxygen/queso.dox

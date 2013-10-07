@@ -1,12 +1,7 @@
-#include <stdio.h>
-#include <string.h>
-#include <cmath>
 #include <queso/Environment.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/VectorSpace.h>
-#include <queso/VectorSubset.h>
-#include <queso/VectorRV.h>
 
 int main(int argc, char **argv) {
   MPI_Init(&argc, &argv);
@@ -17,14 +12,16 @@ int main(int argc, char **argv) {
   QUESO::FullEnvironment *env = new QUESO::FullEnvironment(MPI_COMM_WORLD, "",
       "", &options);
 
-  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> vec_space;
+  try {
+    QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> vec_space;
+  }
+  catch (...) {
+    std::cerr << "Caught QUESO exception" << std::endl;
+    return 0;
+  }
+  std::cerr << "Did not catch QUESO exception" << std::endl;
 
   delete env;
   MPI_Finalize();
-
-  /*
-   * This code should never get here. If it does, the bash script that wraps
-   * around it negates the return value, making this a failure
-   */
-  return 0;
+  return 1;
 }
