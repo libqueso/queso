@@ -140,6 +140,9 @@ libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/ConstantScalarFunction.C
 libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/ScalarFunctionSynchronizer.C
 libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/InstantiateIntersection.C
 libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/SequenceOfVectors.C
+libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/VectorFunction.C
+libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/GenericVectorFunction.C
+libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/ConstantVectorFunction.C
 
 
 # Sources from basic/src with gsl conditional
@@ -241,6 +244,8 @@ libqueso_include_HEADERS += $(top_srcdir)/src/basic/inc/BoxSubset.h
 libqueso_include_HEADERS += $(top_srcdir)/src/basic/inc/ConcatenationSubset.h
 libqueso_include_HEADERS += $(top_srcdir)/src/basic/inc/DiscreteSubset.h
 libqueso_include_HEADERS += $(top_srcdir)/src/basic/inc/IntersectionSubset.h
+libqueso_include_HEADERS += $(top_srcdir)/src/basic/inc/GenericVectorFunction.h
+libqueso_include_HEADERS += $(top_srcdir)/src/basic/inc/ConstantVectorFunction.h
 
 # Headers to install from stats/inc 
 

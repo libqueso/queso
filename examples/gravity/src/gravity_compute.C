@@ -45,6 +45,7 @@
 #include <gravity_qoi.h>
 #include <queso/GslMatrix.h>
 #include <queso/GenericScalarFunction.h>
+#include <queso/GenericVectorFunction.h>
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/StatisticalForwardProblem.h>
 #include <sys/time.h>
