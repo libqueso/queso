@@ -96,9 +96,10 @@ exSimpleStatisticalInverseProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
 exSimpleStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalInverseProblem/src $(QUESO_CPPFLAGS)
 
 # Make sure everything relevant gets added when doing 'make dist'
-dist_exSimpleStatisticalInverseProblem_gsl_DATA = ${exSimpleStatisticalInverseProblem_gsl_DATA} \
-																						${exSimpleStatisticalInverseProblem_gsl_HEADERS} \
-																						${exSimpleStatisticalInverseProblem_gsl_SOURCES}
+dist_exSimpleStatisticalInverseProblem_gsl_DATA =	
+dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseProblem_gsl_DATA}
+dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseProblem_gsl_HEADERS}
+dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseProblem_gsl_SOURCES}
 		
 #############################
 # simpleStatisticalForwardProblem #
@@ -199,9 +200,10 @@ exTgaValidationCycle_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
 exTgaValidationCycle_gsl_CPPFLAGS = -I$(top_srcdir)/examples/validationCycle/src $(QUESO_CPPFLAGS)
 
-dist_exTgaValidationCycle_gsl_DATA = $(exTgaValidationCycle_gsl_DATA) \
-																		 ${exTgaValidationCycle_gsl_HEADERS} \
-																		 ${exTgaValidationCycle_gsl_SOURCES}
+dist_exTgaValidationCycle_gsl_DATA =
+dist_exTgaValidationCycle_gsl_DATA += $(exTgaValidationCycle_gsl_DATA)
+dist_exTgaValidationCycle_gsl_DATA +=	${exTgaValidationCycle_gsl_HEADERS}
+dist_exTgaValidationCycle_gsl_DATA +=	${exTgaValidationCycle_gsl_SOURCES}
 
 ####################
 # validationCycle2 #
@@ -232,9 +234,10 @@ tga2_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
 tga2_gsl_CPPFLAGS = -I$(top_srcdir)/examples/validationCycle2/src $(QUESO_CPPFLAGS)
 
-dist_tga2_gsl_DATA = $(tga2_gsl_DATA) \
-										 ${tga2_gsl_HEADERS} \
-										 ${tga2_gsl_SOURCES}
+dist_tga2_gsl_DATA =
+dist_tga2_gsl_DATA += $(tga2_gsl_DATA)
+dist_tga2_gsl_DATA +=	${tga2_gsl_HEADERS}
+dist_tga2_gsl_DATA +=	${tga2_gsl_SOURCES}
 
 #####################
 # infoTheoryProblem #
@@ -253,9 +256,10 @@ exInfoTheory_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
 exInfoTheory_gsl_CPPFLAGS = -I$(top_srcdir)/examples/infoTheoryProblem/src $(QUESO_CPPFLAGS)
 
-dist_exInfoTheory_gsl_DATA = ${exInfoTheory_gsl_DATA} \
-														 ${exInfoTheory_gsl_HEADERS} \
-														 ${exInfoTheory_gsl_SOURCES}
+dist_exInfoTheory_gsl_DATA =
+dist_exInfoTheory_gsl_DATA += ${exInfoTheory_gsl_DATA}
+dist_exInfoTheory_gsl_DATA +=	${exInfoTheory_gsl_HEADERS}
+dist_exInfoTheory_gsl_DATA +=	${exInfoTheory_gsl_SOURCES}
 
 
 ####################
@@ -284,9 +288,10 @@ gravity_gsl_LDADD = $(top_builddir)/src/libqueso.la
 
 gravity_gsl_CPPFLAGS = -I$(top_srcdir)/examples/gravity/src $(QUESO_CPPFLAGS)
 
-dist_gravity_gsl_DATA = $(gravity_gsl_DATA) \
-										 ${gravity_gsl_HEADERS} \
-										 ${gravity_gsl_SOURCES}
+dist_gravity_gsl_DATA =
+dist_gravity_gsl_DATA += $(gravity_gsl_DATA)
+dist_gravity_gsl_DATA += ${gravity_gsl_HEADERS}
+dist_gravity_gsl_DATA += ${gravity_gsl_SOURCES}
 										 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno

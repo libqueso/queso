@@ -32,9 +32,10 @@ EXTRA_DIST     = inputData regression rtest01.sh
 TESTS          = rtest01.sh 
 check_PROGRAMS = TgaValidationCycle_gsl
 
-TgaValidationCycle_gsl_SOURCES = TgaValidationCycle_gsl.C TgaValidationCycle_appl.h \
-				TgaValidationCycle_likelihood.h TgaValidationCycle_qoi.h \
-				tgaCycle.inp
+TgaValidationCycle_gsl_SOURCES =
+TgaValidationCycle_gsl_SOURCES += TgaValidationCycle_gsl.C TgaValidationCycle_appl.h 
+TgaValidationCycle_gsl_SOURCES += TgaValidationCycle_likelihood.h TgaValidationCycle_qoi.h
+TgaValidationCycle_gsl_SOURCES += tgaCycle.inp
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
@@ -52,6 +53,3 @@ dist-hook:
 
 # Required for AX_AM_MACROS
 @INC_AMINCLUDE@
-
-
-

@@ -1,5 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-noinst_HEADERS = exPhysics1_likelihood.h	\
-	exPhysics1_qoi.h \
-	exPhysics1_validation.h
+noinst_HEADERS =
+noinst_HEADERS += exPhysics1_likelihood.h
+noinst_HEADERS += exPhysics1_qoi.h
+noinst_HEADERS += exPhysics1_validation.h
