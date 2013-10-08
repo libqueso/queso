@@ -139,6 +139,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/GenericScalarFunction.C
 libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/ConstantScalarFunction.C
 libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/ScalarFunctionSynchronizer.C
 libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/InstantiateIntersection.C
+libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/VectorFunctionSynchronizer.C
 
 
 # Sources from basic/src with gsl conditional
