@@ -29,6 +29,8 @@
 #ifndef UQ_VALIDATION_CYCLE_H
 #define UQ_VALIDATION_CYCLE_H
 
+#include <queso/VectorFunction.h>
+#include <queso/GenericVectorFunction.h>
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/StatisticalForwardProblem.h>
 
