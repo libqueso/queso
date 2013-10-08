@@ -32,9 +32,10 @@ EXTRA_DIST     = regression rtest04.sh
 check_PROGRAMS = BimodalExample_gsl
 TESTS          = rtest04.sh 
 
-BimodalExample_gsl_SOURCES = example_main.C example_compute.C example_likelihood.C \
-			example_compute.h example_likelihood.h \
-			example_1chain.inp
+BimodalExample_gsl_SOURCES =
+BimodalExample_gsl_SOURCES += example_main.C example_compute.C example_likelihood.C
+BimodalExample_gsl_SOURCES += example_compute.h example_likelihood.h
+BimodalExample_gsl_SOURCES += example_1chain.inp
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
@@ -49,4 +50,3 @@ endif
 dist-hook:
 	rm -rf `find $(distdir)/ -name .svn`
 	rm -rf `find $(distdir)/ -name .deps`
-
