@@ -141,6 +141,9 @@ libqueso_la_SOURCES += \
 	$(top_srcdir)/src/basic/src/ScalarFunction.C \
 	$(top_srcdir)/src/basic/src/GenericScalarFunction.C \
 	$(top_srcdir)/src/basic/src/ConstantScalarFunction.C \
+	$(top_srcdir)/src/basic/src/VectorFunction.C \
+	$(top_srcdir)/src/basic/src/GenericVectorFunction.C \
+	$(top_srcdir)/src/basic/src/ConstantVectorFunction.C \
 	$(top_srcdir)/src/basic/src/ScalarFunctionSynchronizer.C \
 	$(top_srcdir)/src/basic/src/InstantiateIntersection.C
 
@@ -240,6 +243,8 @@ libqueso_include_HEADERS += \
 	$(top_srcdir)/src/basic/inc/SequenceOfVectors.h \
 	$(top_srcdir)/src/basic/inc/SequenceStatisticalOptions.h \
 	$(top_srcdir)/src/basic/inc/VectorFunction.h \
+	$(top_srcdir)/src/basic/inc/GenericVectorFunction.h \
+	$(top_srcdir)/src/basic/inc/ConstantVectorFunction.h \
 	$(top_srcdir)/src/basic/inc/VectorFunctionSynchronizer.h \
 	$(top_srcdir)/src/basic/inc/VectorSequence.h \
 	$(top_srcdir)/src/basic/inc/VectorSet.h \
