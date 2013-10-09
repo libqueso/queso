@@ -53,7 +53,6 @@ MpiComm::MpiComm(const BaseEnvironment& env, RawType_MPI_Comm inputRawComm)
   m_myPid        (-1),
   m_numProc      (-1)
 {
-#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Comm_rank(inputRawComm,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       UQ_UNAVAILABLE_RANK,
@@ -71,11 +70,6 @@ MpiComm::MpiComm(const BaseEnvironment& env, RawType_MPI_Comm inputRawComm)
                       m_worldRank,
                       "MpiComm::constructor()",
                       "failed MPI_Comm_size() on inputRawComm");
-#else
-  m_worldRank = 0;
-  m_myPid     = 0;
-  m_numProc   = 1;
-#endif
 }
 
 // Copy constructor ---------------------------------
@@ -140,17 +134,11 @@ MpiComm::NumProc() const
 void
 MpiComm::Allreduce(void* sendbuf, void* recvbuf, int count, RawType_MPI_Datatype datatype, RawType_MPI_Op op, const char* whereMsg, const char* whatMsg) const
 {
-#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Allreduce(sendbuf, recvbuf, count, datatype, op, m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       whereMsg,
                       whatMsg);
-#else
-  size_t dataTypeSize = sizeOfDataType(datatype, whereMsg, whatMsg);
-  size_t dataTotal = dataTypeSize*count;
-  memcpy(recvbuf, sendbuf, dataTotal);
-#endif
 
   return;
 }
@@ -161,30 +149,22 @@ MpiComm::Barrier() const // const char* whereMsg, const char* whatMsg) const
 #ifdef QUESO_HAS_TRILINOS
   return m_epetraMpiComm->Barrier();
 #endif
-#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Barrier(m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       "MPIComm::Barrier()", // whereMsg,
                       "mpiRC indicates failure");  // whatMsg);
-#else
-  // Nothing needs to be done
-#endif
   return;
 }
 //--------------------------------------------------
 void
 MpiComm::Bcast(void* buffer, int count, RawType_MPI_Datatype datatype, int root, const char* whereMsg, const char* whatMsg) const
 {
-#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Bcast(buffer, count, datatype, root, m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       whereMsg,
                       whatMsg);
-#else
-  // Nothing needs to be done
-#endif
   return;
 }
 //--------------------------------------------------
@@ -198,7 +178,6 @@ MpiComm::Gather(
   //int MPI_Gather (void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
   //                void *recvbuf, int recvcount, MPI_Datatype recvtype, 
   //                int root, MPI_Comm comm )
-#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Gather(sendbuf, sendcnt, sendtype,
                          recvbuf, recvcount, recvtype,
                          root, m_rawComm);
@@ -206,22 +185,6 @@ MpiComm::Gather(
                       m_worldRank,
                       whereMsg,
                       whatMsg);
-#else
-  size_t sendDataTypeSize = sizeOfDataType(sendtype, whereMsg, whatMsg);
-  size_t recvDataTypeSize = sizeOfDataType(recvtype, whereMsg, whatMsg);
-  size_t sendTotal = sendDataTypeSize*sendcnt;
-  size_t recvTotal = recvDataTypeSize*recvcount;
-  if (sendTotal != recvTotal) {
-    std::cerr << "MpiComm::Gather()"
-              << ": sendTotal != recvTotal"
-              << std::endl;
-  }
-  UQ_FATAL_TEST_MACRO(sendTotal != recvTotal,
-                      m_worldRank,
-                      whereMsg,
-                      whatMsg);
-  memcpy(recvbuf, sendbuf, sendTotal);
-#endif
   return;
 }
 //-------------------------------------------------- 
@@ -235,7 +198,6 @@ MpiComm::Gatherv(
   //int MPI_Gatherv(void *sendbuf, int sendcnt, MPI_Datatype sendtype, 
   //                void *recvbuf, int *recvcnts, int *displs, MPI_Datatype recvtype, 
   //                int root, MPI_Comm comm )
-#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Gatherv(sendbuf, sendcnt, sendtype,
                           recvbuf, recvcnts, displs, recvtype,
                           root, m_rawComm);
@@ -243,22 +205,6 @@ MpiComm::Gatherv(
                       m_worldRank,
                       whereMsg,
                       whatMsg);
-#else
-  size_t sendDataTypeSize = sizeOfDataType(sendtype, whereMsg, whatMsg);
-  size_t recvDataTypeSize = sizeOfDataType(recvtype, whereMsg, whatMsg);
-  size_t sendTotal = sendDataTypeSize*sendcnt;
-  size_t recvTotal = recvDataTypeSize*recvcnts[0];
-  if (sendTotal != recvTotal) {
-    std::cerr << "MpiComm::Gatherv()"
-              << ": sendTotal != recvTotal"
-              << std::endl;
-  }
-  UQ_FATAL_TEST_MACRO(sendTotal != recvTotal,
-                      m_worldRank,
-                      whereMsg,
-                      whatMsg);
-  memcpy(recvbuf, sendbuf, sendTotal);
-#endif
   return;
 }
 //--------------------------------------------------
@@ -267,21 +213,11 @@ MpiComm::Recv(
   void* buf, int count, RawType_MPI_Datatype datatype, int source, int tag, RawType_MPI_Status* status,
   const char* whereMsg, const char* whatMsg) const
 {
-#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Recv(buf, count, datatype, source, tag, m_rawComm, status);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       whereMsg,
                       whatMsg);
-#else
-  std::cerr << "MpiComm::Recv()"
-            << ": should note be used if there is no 'mpi'"
-            << std::endl;
-  UQ_FATAL_TEST_MACRO(true,
-                      m_worldRank,
-                      whereMsg,
-                      whatMsg);
-#endif
   return;
 }
 //--------------------------------------------------
@@ -290,21 +226,11 @@ MpiComm::Send(
   void* buf, int count, RawType_MPI_Datatype datatype, int dest, int tag,
   const char* whereMsg, const char* whatMsg) const
 {
-#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Send(buf, count, datatype, dest, tag, m_rawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       whereMsg,
                       whatMsg);
-#else
-  std::cerr << "MpiComm::Send()"
-            << ": should note be used if there is no 'mpi'"
-            << std::endl;
-  UQ_FATAL_TEST_MACRO(true,
-                      m_worldRank,
-                      whereMsg,
-                      whatMsg);
-#endif
   return;
 }
 // Misc methods ------------------------------------
@@ -358,43 +284,5 @@ MpiComm::copy(const MpiComm& src)
   return;
 }
 // -------------------------------------------------
-#ifdef QUESO_HAS_MPI
-#else
-size_t 
-MpiComm::sizeOfDataType(RawType_MPI_Datatype datatype, const char* whereMsg, const char* whatMsg) const
-{
-  size_t dataTypeSize = 0;
-
-  switch (datatype) {
-    case RawValue_MPI_CHAR:
-      dataTypeSize = sizeof(char);
-    break;
-
-    case RawValue_MPI_INT:
-      dataTypeSize = sizeof(int);
-    break;
-
-    case RawValue_MPI_DOUBLE:
-      dataTypeSize = sizeof(double);
-    break;
-
-    case RawValue_MPI_UNSIGNED:
-      dataTypeSize = sizeof(unsigned int);
-    break;
-
-    default: 
-      std::cerr << "MpiComm::Allreduce()"
-                << ": datatype not supported yet"
-                << std::endl;
-      UQ_FATAL_TEST_MACRO(true,
-                          m_worldRank,
-                          whereMsg,
-                          whatMsg);
-    break;
-  }
-
-  return dataTypeSize;
-}
-#endif
 
 }  // End namespace QUESO

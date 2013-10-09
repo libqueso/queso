@@ -27,19 +27,15 @@
 //--------------------------------------------------------------------------
 
 #include <queso/Defines.h>
-#ifdef QUESO_HAS_MPI
 #include <mpi.h>
-#endif
 
 namespace QUESO {
 
 int MyWorldfullRank() {
   int result = 0;
-#ifdef QUESO_HAS_MPI
   int iRC;
   iRC = MPI_Comm_rank(MPI_COMM_WORLD,&result);
   if (iRC) {}; // just to remove compiler warning
-#endif
   return result;
 }
 
