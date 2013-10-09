@@ -2,6 +2,14 @@
 QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
+Version 0.47.1
+  * created two simple statistical examples, simpleStatisticalForwardProblem and simpleStatisticalInverseProblem
+  * included description of the new examples on QUESO user's manual, including how to run and to process the generated data
+  * updated QUESO user's manual to include description of validationCycle example
+  * updated links for how to obtain QUESO and contact information (github/git)
+   
+Version 0.47.0
+  * removed example statisticalInverseProblem as it has a bug - it fails to recreate the problem described in the Normal test from Laine's MCMC tool: http://helios.fmi.fi/~lainema/mcmc/ex/normalex.html.
 
 Version 0.50.0 (In progress)
 

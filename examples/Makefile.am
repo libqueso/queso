@@ -77,10 +77,12 @@ endif
 
 #############################
 # simpleStatisticalInverseProblem #
-#############################
+###################################
 exSimpleStatisticalInverseProblem_gsldir = $(prefix)/examples/simpleStatisticalInverseProblem
 
 exSimpleStatisticalInverseProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/example.inp
+exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/simple_ip_plots.m
+exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/src/Makefile_sip_example_margarida 
 
 exSimpleStatisticalInverseProblem_gsl_PROGRAMS = exSimpleStatisticalInverseProblem_gsl
 
@@ -101,7 +103,7 @@ dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseP
 dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseProblem_gsl_HEADERS}
 dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseProblem_gsl_SOURCES}
 		
-#############################
+###################################
 # simpleStatisticalForwardProblem #
 #############################
 # exSimpleStatisticalForwardProblem_gsldir = $(prefix)/examples/simpleStatisticalForwardProblem

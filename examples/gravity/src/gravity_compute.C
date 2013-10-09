@@ -25,19 +25,15 @@
  * $Id$
  */
  /*------------------------------------------------------------------
- * Brief description of this file: 
- * 
  * This file is divided in two parts:
- * - the first one handles the statistical inverse problem (SIP) 
- * for estimating the magnitude 'g' of gravity acceleration; and
- * - the second part handles the statistical forward problem (SFP) 
- * for predicting the maximum distance traveled by a projectile.
+ * - the first one handles the statistical inverse problem (SIP) for estimating the magnitude 
+ * 'g' of gravity acceleration; and 
+ * - the second part handles the statistical forward problem (SFP) for predicting the maximum 
+ * distance traveled by a projectile.
  *
- * The SIP definition requires a user defined likelihood function. 
- * See files 'gravity_likelihood.h' and 'gravity_likelihood.C'.
- *
- * The SFP definition requires a user defined qoi function. 
- * See files 'gravity_qoi.h' and 'gravity_qoi.C'.
+ * The SIP definition requires a user defined likelihood function; refer to files 
+ * 'gravity_likelihood.h' and 'gravity_likelihood.C'. The SFP definition requires a user 
+ * defined qoi function; refer to files 'gravity_qoi.h' and 'gravity_qoi.C'.
  *-----------------------------------------------------------------*/
 
 #include <gravity_compute.h>

@@ -25,8 +25,6 @@
  * $Id$
  */
  /*------------------------------------------------------------------
- * Brief description of this file: 
- * 
  * This file contains the code for the user defined likelihood data 
  * class and the user defined likelihood routine.
  *-----------------------------------------------------------------*/

@@ -53,16 +53,13 @@ double likelihoodRoutine(
 
   // Actual code
   //
-  // This code exemplifies multiple Metropolis-Hastings solvers, each 
-  // calling this likelihood routine.
-  // In this simple example, only node 0 in each subenvironment does 
-  // the job even though there might be more than one node per 
-  // sub-environment.
-  // In a more realistic situation, if the user is asking for 
-  // multiple nodes per subenvironment, then the model code in the 
-  // likelihood routines might really demand more than one node.
-  // Here we use 'env.subRank()' only. A realistic application might 
-  // want to use 'env.subComm()' or 'env.subComm().Comm()'
+  // This code exemplifies multiple Metropolis-Hastings solvers, each calling this likelihood 
+  // routine. In this simple example, only node 0 in each subenvironment does the job even 
+  // though there might be more than one node per sub-environment. In a more realistic 
+  // situation, if the user is asking for multiple nodes per subenvironment, then the model 
+  // code in the likelihood routines might really demand more than one node. Here we use 
+  // 'env.subRank()' only. A realistic application might want to use either 'env.subComm()'
+  // or 'env.subComm().Comm()'.
   
   double result = 0.;
   const QUESO::BaseEnvironment& env = paramValues.env();

@@ -22,30 +22,30 @@
 //
 //-----------------------------------------------------------------------el-
 // 
-// $Id: example_main.C 37704 2013-03-08 21:10:36Z karl $
+// $Id: example_qoi.h 37704 2013-03-08 21:10:36Z karl $
 //
 //--------------------------------------------------------------------------
+#ifndef __EX_QOI_H__
+#define __EX_QOI_H__
 
-#include <example_compute.h>
+#include <uqGslMatrix.h>
+#include <uqDistArray.h>
 
-int main(int argc, char* argv[])
+struct
+qoiRoutine_DataType
 {
-  // Initialize environment
-  MPI_Init(&argc,&argv);
+  double coef1;
+  double coef2;
+};
 
-  UQ_FATAL_TEST_MACRO(argc != 2,
-                      QUESO::UQ_UNAVAILABLE_RANK,
-                      "main()",
-                      "input file must be specified in command line as argv[1], just after executable argv[0]");
-                      
-  QUESO::FullEnvironment* env =  new QUESO::FullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
+void
+qoiRoutine(
+  const uqGslVectorClass&                    paramValues,
+  const uqGslVectorClass*                    paramDirection,
+  const void*                                functionDataPtr,
+        uqGslVectorClass&                    qoiValues,
+        uqDistArrayClass<uqGslVectorClass*>* gradVectors,
+        uqDistArrayClass<uqGslMatrixClass*>* hessianMatrices,
+        uqDistArrayClass<uqGslVectorClass*>* hessianEffects);
 
-  // Compute
-  compute(*env);
-
-  // Finalize environment
-  delete env;
-  MPI_Finalize();
-
-  return 0;
-}
+#endif

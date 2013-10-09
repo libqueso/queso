@@ -9,7 +9,7 @@
 \begin{flushright}
 \sf
 User's Manual\\
-Version 0.46.0\\
+Version 0.47.1\\
 %October 30, 2012\\
 \end{flushright}
 
@@ -181,13 +181,16 @@ See http://www.gnu.org/licenses/gpl.html for more information on the GPL softwar
 % Ernesto E. Prudencio,
 % Karl W. Schulz, and
 % Rhys Ulerich.\\
-
+\noindent
 {\bf Contact Information:}\\
-Ernesto E. Prudencio\\
+Paul T. Bauman,
+Kemelli C. Estacio-Hiroms or
+Damon McDougall,
+\\
 Institute for Computational and Engineering Sciences\\
 1 University Station C0200\\
 Austin, Texas 78712\\
-email: prudenci@ices.utexas.edu\\
+email: pecos-dev@ices.utexas.edu\\
 web: http://pecos.ices.utexas.edu\\
 $~$\\
 
@@ -220,14 +223,17 @@ When referencing the QUESO library in a publication, please cite the following:
    Note        = {in preparation},
    Year        = {2013}
 }
+
+
+@Misc{queso-web-page,
+  Author = {{QUESO} Development Team},
+  Title  = {{T}he {QUESO} {L}ibrary: {Q}uantification of {U}ncertainty
+            for {E}stimation, {S}imulation and {O}ptimization},
+  Note   = \url{https://github.com/libqueso/},
+  Year   = {2008-2013}
+}
+
 \end{verbatim}
-%@Misc{queso-web-page,
-%   Author = {{QUESO} Development Team},
-%   Title  = {{T}he {QUESO} {L}ibrary: {Q}uantification of {U}ncertainty
-%             for {E}stimation, {S}imulation and {O}ptimization},
-%   Note   = {https://red.ices.utexas.edu/projects/software},
-%   Year   = {2008-2013}
-%}
 % $~$\\
 % $~$\\
 % 
@@ -239,11 +245,13 @@ The QUESO development team currently consists of
 Paul T. Bauman,
 Sai Hung Cheung,
 Kemelli C. Estacio-Hiroms,
+Nicholas Malaya,
 Damon McDougall,
 Kenji Miki,
 Todd A. Oliver,
-Ernesto E. Prudencio (lead developer),
-Karl W. Schulz, and
+Ernesto E. Prudencio,
+Karl W. Schulz, 
+Chris Simmons, and
 Rhys Ulerich.
 
 % $~$\\
@@ -294,7 +302,7 @@ analyze computational results, and eventually reiterate;
 predict QoI(s) with uncertainty.
 
 The purpose of this manual is \underline{not} to teach UQ and its methods, but rather to introduce QUESO library so it can be used as a tool to assist and facilitate the uncertainty quantification of the user's application.
-
+%
 Thus, the target audience of this manual is researchers who have solid background in Bayesian methods, are  comfortable with UNIX concepts and the command line, and have  knowledge of a programming language, preferably
 C/C++. Bellow we suggest some useful literature:
 \vspace{-4pt}
