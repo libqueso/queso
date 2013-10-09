@@ -39,19 +39,14 @@ int main(int argc, char* argv[])
   //************************************************
   // Initialize environment
   //************************************************
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
-#endif
 
   UQ_FATAL_TEST_MACRO(argc != 2,
                       UQ_UNAVAILABLE_RANK,
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
-#ifdef QUESO_HAS_MPI
+
   uqFullEnvironment* env = new uqFullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
-#else
-  uqFullEnvironment* env = new uqFullEnvironment(0,argv[1],"",NULL);
-#endif
 
   //************************************************
   // Check for the invalidation of model(s): either 'invalid' or 'not invalid'
@@ -83,9 +78,6 @@ int main(int argc, char* argv[])
   // Finalize environment
   //************************************************
   delete env;
-#ifdef QUESO_HAS_MPI
   MPI_Finalize();
-#endif
-
   return 0;
 }
