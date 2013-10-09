@@ -30,7 +30,7 @@
 #define UQ_SCALAR_SEQUENCE_H
 
 #include <queso/Fft.h>
-#include <queso/OneDGrid.h>
+#include <queso/UniformOneDGrid.h>
 #include <queso/Environment.h>
 #include <queso/Miscellaneous.h>
 #include <queso/Defines.h>

@@ -29,7 +29,7 @@
 #ifndef UQ_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H
 #define UQ_SCALAR_CUMULATIVE_DISTRIBUTION_FUNCTION_H
 
-#include <queso/OneDGrid.h>
+#include <queso/StdOneDGrid.h>
 #include <queso/Environment.h>
 #include <math.h>
 
