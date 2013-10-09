@@ -433,6 +433,7 @@ public:
 private:
   //! Checks the options input file and reads the options.
   void	readOptionsInputFile();
+  void	queso_terminate_handler();
   
   //
   // queso terminate handler will be invoked for unhandled exceptions 

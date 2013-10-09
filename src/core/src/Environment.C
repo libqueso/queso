@@ -1506,7 +1506,7 @@ FullEnvironment::print(std::ostream& os) const
   return;
 }
 
-void queso_terminate_handler()
+void FullEnvironment::queso_terminate_handler()
 {
   int mpi_initialized;
   MPI_Initialized (&mpi_initialized);
