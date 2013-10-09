@@ -39,23 +39,14 @@ int main(int argc, char* argv[])
   int return_flag = 0;
 
    // Initialize environment
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
-#endif
-  QUESO::FullEnvironment* env =
-#ifdef QUESO_HAS_MPI
-    new QUESO::FullEnvironment(MPI_COMM_WORLD,"input","",NULL);
-#else
-    new QUESO::FullEnvironment(0,"input","",NULL);
-#endif
+
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(MPI_COMM_WORLD,"input","",NULL);
 
   return_flag = actualChecking(env);
 
   delete env;
-#ifdef QUESO_HAS_MPI
   MPI_Finalize();
-#endif
-
   // Fin.
   return return_flag;
 }
