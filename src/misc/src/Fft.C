@@ -44,3 +44,5 @@ Fft<T>::~Fft()
 }
 
 }  // End namespace QUESO
+
+template class QUESO::Fft<double>;
