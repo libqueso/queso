@@ -1521,12 +1521,11 @@ void queso_terminate_handler()
     //MPI_Abort(m_fullComm->Comm(), 1);
     MPI_Abort(MPI_COMM_WORLD, 1);
   else
+      // The system terminate_handler may do useful things like printing
+    // uncaught exception information, or the user may have created
+    // their own terminate handler that we want to call.
+    old_terminate_handler();
     exit(1);
-    
-  // The system terminate_handler may do useful things like printing
-  // uncaught exception information, or the user may have created
-  // their own terminate handler that we want to call.
-  old_terminate_handler();
 }
 
 
