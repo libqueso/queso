@@ -432,7 +432,14 @@ public:
 
 private:
   //! Checks the options input file and reads the options.
-void	readOptionsInputFile();
+  void	readOptionsInputFile();
+  
+  //
+  // queso terminate handler will be invoked for unhandled exceptions 
+  // needs to be invoked in queso_init() 
+  // 
+  std::terminate_handler old_terminate_handler;
+
 };
 
 std::ostream& operator<<(std::ostream& os, const BaseEnvironment& obj);

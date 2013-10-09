@@ -1240,6 +1240,9 @@ FullEnvironment::FullEnvironment(
   m_fullGroup = 0;
 #endif
 
+  // saving old uncaught exception handler, invoking queso_terminate
+  old_terminate_handler = std::set_terminate(queso_terminate_handler);
+
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In FullEnv, finished dealing with MPI initially" << std::endl;
 #endif
@@ -1502,6 +1505,23 @@ FullEnvironment::print(std::ostream& os) const
   os.flush(); // just to avoid icpc warnings
   return;
 }
+
+void queso_terminate_handler()
+{
+  int mpi_initialized;
+  MPI_Initialized (&mpi_initialized);
+    
+  if (mpi_initialized)
+    MPI_Abort(m_fullComm->Comm(), 1);
+  else
+    exit(1);
+    
+  // The system terminate_handler may do useful things like printing
+  // uncaught exception information, or the user may have created
+  // their own terminate handler that we want to call.
+  old_terminate_handler();
+}
+
 
 //-------------------------------------------------------
 void
