@@ -65,6 +65,7 @@ Incompatible combination of defines in QUESO 'Defines.h': QUESO_HAS_TRILINOS is 
 #include <set>
 #include <vector>
 #include <mpi.h>
+#include <queso/asserts.h> // for queso_error handler
 
 namespace QUESO {
 
@@ -189,7 +190,7 @@ private:
   if (macroIRc) {                                           \
     int macroRank = givenRank;                              \
     if (macroRank < 0) {                                    \
-      macroRank = QUESO::MyWorldfullRank();                      \
+      macroRank = QUESO::MyWorldfullRank();                 \
     }                                                       \
     std::cerr << "UQ RC ERROR"                              \
               << ", rank "  << macroRank                    \
@@ -204,7 +205,7 @@ private:
   if (test) {                                             \
     int macroRank = givenRank;                            \
     if (macroRank < 0) {                                  \
-      macroRank = QUESO::MyWorldfullRank();                    \
+      macroRank = QUESO::MyWorldfullRank();               \
     }                                                     \
     std::cerr << "UQ TEST ERROR"                          \
               << ", rank " << macroRank                   \
@@ -218,7 +219,7 @@ private:
   if (macroIRc) {                                        \
     int macroRank = givenRank;                           \
     if (macroRank < 0) {                                 \
-      macroRank = QUESO::MyWorldfullRank();                   \
+      macroRank = QUESO::MyWorldfullRank();              \
     }                                                    \
     std::cerr << "UQ RC FATAL ERROR"                     \
               << ", rank "  << macroRank                 \
@@ -231,28 +232,26 @@ private:
   }
 
 #ifdef QUESO_HAS_MPI
-#define UQ_FATAL_TEST_MACRO(test,givenRank,where,what) \
-  if (test) {                                          \
-    int macroRank = givenRank;                         \
-    if (macroRank < 0) {                               \
-      macroRank = QUESO::MyWorldfullRank();                 \
-    }                                                  \
-    std::cerr << "UQ TEST FATAL ERROR"                 \
-              << ", rank "  << macroRank               \
-              << ", in "    << where                   \
-              << ": "       << what                    \
-              << ". Exiting..."                        \
-              << std::endl;                            \
-    /*int macroMpiRC = 0;*/                            \
-    queso_error(); \
-    /*macroMpiRC = */MPI_Abort(MPI_COMM_WORLD,-999);   \
+#define UQ_FATAL_TEST_MACRO(test,givenRank,where,what)  \
+  if (test) {                                           \
+    int macroRank = givenRank;                          \
+    if (macroRank < 0) {                                \
+      macroRank = QUESO::MyWorldfullRank();             \
+    }                                                   \
+    std::cerr << "UQ TEST FATAL ERROR"                  \
+              << ", rank "  << macroRank                \
+              << ", in "    << where                    \
+              << ": "       << what                     \
+              << ". Exiting..."                         \
+              << std::endl;                             \
+    queso_error();	                   		\
   }
 #else
 #define UQ_FATAL_TEST_MACRO(test,givenRank,where,what) \
   if (test) {                                          \
     int macroRank = givenRank;                         \
     if (macroRank < 0) {                               \
-      macroRank = QUESO::MyWorldfullRank();                 \
+      macroRank = QUESO::MyWorldfullRank();            \
     }                                                  \
     std::cerr << "UQ TEST FATAL ERROR"                 \
               << ", rank "  << macroRank               \
