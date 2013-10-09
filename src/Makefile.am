@@ -115,6 +115,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/ComplexFft.C
 libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/Miscellaneous.C
 libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/RealFft.C
 libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/2dArrayOfStuff.C
+libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/CovCond.C
 
 # Sources from misc/src withn gsl conditional
 
