@@ -30,14 +30,12 @@
 #define UQ_FFT_H
 
 #include <queso/Environment.h>
-//#include <gsl/gsl_fft_real.h>
-//#include <gsl/gsl_fft_complex.h>
 #include <vector>
 #include <complex>
 
 namespace QUESO {
 
-/*! \file uqFft.h
+/*! \file Fft.h
     \brief Matrix class.
 */
 
@@ -124,18 +122,6 @@ private:
   //gsl_fft_complex_workspace* m_complexWkSpace;
   //gsl_fft_complex_wavetable* m_complexWvTable;
 };
-// Constructor-------------------------------------------
-template <class T>
-Fft<T>::Fft(const BaseEnvironment& env)
-  :
-  m_env(env)
-{
-}
-// Destructor--------------------------------------------
-template <class T>
-Fft<T>::~Fft()
-{
-}
 
 }  // End namespace QUESO
 
