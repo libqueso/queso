@@ -33,7 +33,6 @@
 #include <queso/TeuchosMatrix.h>
 #include <queso/DistArray.h>
 #include <queso/Map.h>
-#include <queso/VectorSet.h>
 #include <cmath>
 
 namespace QUESO {

@@ -1,13 +1,18 @@
-#include <stdio.h>
-#include <string.h>
+#include <string>
 #include <queso/DistArray.h>
 
 int main(int argc, char **argv) {
-  QUESO::DistArray<std::string> d;
+  MPI_Init(&argc, &argv);
 
-  /*
-   * This code should never get here. If it does, the bash script that wraps
-   * around it negates the return value, making this a failure
-   */
-  return 0;
+  try {
+    QUESO::DistArray<std::string> d;
+  }
+  catch (...) {
+    std::cerr << "Caught QUESO exception!" << std::endl;
+    return 0;
+  }
+  std::cerr << "Did not catch QUESO exception!" << std::endl;
+
+  MPI_Finalize();
+  return 1;
 }

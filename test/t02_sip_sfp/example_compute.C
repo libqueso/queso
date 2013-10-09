@@ -33,6 +33,7 @@
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/StatisticalForwardProblem.h>
 #include <queso/GenericScalarFunction.h>
+#include <queso/GenericVectorFunction.h>
 
 void compute(const QUESO::FullEnvironment& env) {
   // Step 1 of 9: Instantiate the parameter space

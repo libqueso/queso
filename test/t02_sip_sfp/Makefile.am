@@ -32,9 +32,10 @@ EXTRA_DIST     = regression rtest02.sh
 check_PROGRAMS = SipSfpExample_gsl
 TESTS          = rtest02.sh 
 
-SipSfpExample_gsl_SOURCES = example_main.C example_compute.C example_likelihood.C example_qoi.C \
-			example_compute.h example_likelihood.h example_qoi.h \
-			example.inp
+SipSfpExample_gsl_SOURCES =
+SipSfpExample_gsl_SOURCES += example_main.C example_compute.C example_likelihood.C example_qoi.C
+SipSfpExample_gsl_SOURCES += example_compute.h example_likelihood.h example_qoi.h
+SipSfpExample_gsl_SOURCES += example.inp
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
@@ -52,4 +53,3 @@ dist-hook:
 
 # Required for AX_AM_MACROS
 @INC_AMINCLUDE@
-

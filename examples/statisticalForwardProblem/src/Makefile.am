@@ -25,10 +25,10 @@ LIBS   = -L$(top_builddir)/src/ -lqueso
 
 noinst_PROGRAMS = exStatisticalForwardProblem_gsl
 
-exStatisticalForwardProblem_gsl_SOURCES = \
-	exStatisticalForwardProblem_gsl.C \
-	exStatisticalForwardProblem_appl.h \
-	exStatisticalForwardProblem_qoi.h
+exStatisticalForwardProblem_gsl_SOURCES =
+exStatisticalForwardProblem_gsl_SOURCES += exStatisticalForwardProblem_gsl.C
+exStatisticalForwardProblem_gsl_SOURCES += exStatisticalForwardProblem_appl.h
+exStatisticalForwardProblem_gsl_SOURCES += exStatisticalForwardProblem_qoi.h
 
 # Required for AX_AM_MACROS
 @INC_AMINCLUDE@

@@ -66,6 +66,7 @@ Incompatible combination of defines in QUESO 'Defines.h': QUESO_HAS_TRILINOS is 
 #include <vector>
 #include <queso/asserts.h> // for queso_error handler
 #include <mpi.h>
+#include <queso/asserts.h> // for queso_error handler
 
 namespace QUESO {
 

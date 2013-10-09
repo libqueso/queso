@@ -14,10 +14,10 @@ LIBS        = -L$(top_builddir)/src/ -lqueso
 
 noinst_PROGRAMS = exStatisticalInverseProblem1_gsl
 
-exStatisticalInverseProblem1_gsl_SOURCES = \
-	exStatisticalInverseProblem1_gsl.C \
-	exStatisticalInverseProblem1_appl.h \
-	exStatisticalInverseProblem1_likelihood.h
+exStatisticalInverseProblem1_gsl_SOURCES =
+exStatisticalInverseProblem1_gsl_SOURCES += exStatisticalInverseProblem1_gsl.C
+exStatisticalInverseProblem1_gsl_SOURCES += exStatisticalInverseProblem1_appl.h
+exStatisticalInverseProblem1_gsl_SOURCES += exStatisticalInverseProblem1_likelihood.h
 
 # Required for AX_AM_MACROS
 @INC_AMINCLUDE@

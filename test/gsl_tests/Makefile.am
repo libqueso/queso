@@ -3,11 +3,11 @@ BUILT_SOURCES = .license.stamp
 endif
 
 check_PROGRAMS = # Append below
-check_PROGRAMS += get_set_row_column \
-                  get_min_max_vec \
-	          multiple_rhs_matrix_solve \
-                  power_method \
-                  inverse_power_method
+check_PROGRAMS += get_set_row_column
+check_PROGRAMS += get_min_max_vec
+check_PROGRAMS += multiple_rhs_matrix_solve
+check_PROGRAMS += power_method
+check_PROGRAMS += inverse_power_method
 
 AM_CPPFLAGS =
 AM_CPPFLAGS += -I.
@@ -45,13 +45,14 @@ inverse_power_method_SOURCES = inverse_power_method.C inverse_power_method.h
 
 # Fortran Tests
 
-TESTS             = init.sh \
-                    get_set_row_column \
-                    get_min_max_vec \
-	            multiple_rhs_matrix_solve \
-                    power_method \
-                    inverse_power_method \
-		    finalize.sh
+TESTS =
+TESTS += init.sh
+TESTS += get_set_row_column
+TESTS += get_min_max_vec
+TESTS += multiple_rhs_matrix_solve
+TESTS += power_method
+TESTS += inverse_power_method
+TESTS += finalize.sh
 
 EXTRA_DIST = init.sh finalize.sh input
 

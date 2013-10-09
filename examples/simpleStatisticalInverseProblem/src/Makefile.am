@@ -24,12 +24,12 @@ LIBS        = -L$(top_builddir)/src/ -lqueso $(HDF5_LIBS)
 
 noinst_PROGRAMS = exSimpleStatisticalInverseProblem_gsl
 
-exStatisticalInverseProblem_gsl_SOURCES = \
-	example_main.C \
-	example_compute.C \
-	example_likelihood.C \
-	example_compute.h \
-	example_likelihood.h
+exStatisticalInverseProblem_gsl_SOURCES =
+exStatisticalInverseProblem_gsl_SOURCES += example_main.C
+exStatisticalInverseProblem_gsl_SOURCES += example_compute.C
+exStatisticalInverseProblem_gsl_SOURCES += example_likelihood.C
+exStatisticalInverseProblem_gsl_SOURCES += example_compute.h
+exStatisticalInverseProblem_gsl_SOURCES += example_likelihood.h
 	       
 # Required for AX_AM_MACROS
 @INC_AMINCLUDE@

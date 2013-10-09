@@ -32,6 +32,7 @@
 #include <queso/GslMatrix.h>
 #include <queso/ScalarSequence.h>
 #include <queso/ScalarCdf.h>
+#include <queso/OneDGrid.h>
 
 namespace QUESO {
 
@@ -198,5 +199,6 @@ template class QUESO::DistArray<QUESO::GslVector*>;
 template class QUESO::DistArray<QUESO::GslMatrix*>;
 template class QUESO::DistArray<QUESO::ScalarSequence<double>*>;
 template class QUESO::DistArray<QUESO::SampledScalarCdf<double>*>;
+template class QUESO::DistArray<QUESO::BaseOneDGrid<double>*>;
 template class QUESO::DistArray<std::string>;
 template class QUESO::DistArray<std::vector<double>*>;
