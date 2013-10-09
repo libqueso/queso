@@ -120,6 +120,12 @@ FilePtrSetStruct::FilePtrSetStruct()
 FilePtrSetStruct::~FilePtrSetStruct()
 {
 }
+  
+  //
+  // queso terminate handler will be invoked for unhandled exceptions 
+  // needs to be invoked in FullEnvironment constructor  
+  // 
+  std::terminate_handler old_terminate_handler;
 
 //*****************************************************
 // Base class
@@ -1506,13 +1512,14 @@ FullEnvironment::print(std::ostream& os) const
   return;
 }
 
-void FullEnvironment::queso_terminate_handler()
+void queso_terminate_handler()
 {
   int mpi_initialized;
   MPI_Initialized (&mpi_initialized);
     
   if (mpi_initialized)
-    MPI_Abort(m_fullComm->Comm(), 1);
+    //MPI_Abort(m_fullComm->Comm(), 1);
+    MPI_Abort(MPI_COMM_WORLD, 1);
   else
     exit(1);
     
