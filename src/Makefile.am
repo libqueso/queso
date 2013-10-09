@@ -115,6 +115,9 @@ libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/ComplexFft.C
 libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/Miscellaneous.C
 libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/RealFft.C
 libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/2dArrayOfStuff.C
+libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/OneDGrid.C
+libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/UniformOneDGrid.C
+libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/StdOneDGrid.C
 
 # Sources from misc/src withn gsl conditional
 
@@ -225,6 +228,8 @@ libqueso_include_HEADERS += $(top_srcdir)/src/misc/inc/CovCond.h
 libqueso_include_HEADERS += $(top_srcdir)/src/misc/inc/Fft.h
 libqueso_include_HEADERS += $(top_srcdir)/src/misc/inc/Miscellaneous.h
 libqueso_include_HEADERS += $(top_srcdir)/src/misc/inc/OneDGrid.h
+libqueso_include_HEADERS += $(top_srcdir)/src/misc/inc/UniformOneDGrid.h
+libqueso_include_HEADERS += $(top_srcdir)/src/misc/inc/StdOneDGrid.h
 
 # Headers to install from basic/inc
 
