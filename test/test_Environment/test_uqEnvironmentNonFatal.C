@@ -2,16 +2,12 @@
 #include <queso/Environment.h>
 #include <queso/Defines.h>
 
-#ifdef QUESO_HAS_MPI
 #include <mpi.h>
-#endif
 
 using namespace std;
 
 int main(int argc, char **argv) {
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-#endif
 
   QUESO::EnvOptionsValues options;
   options.m_numSubEnvironments = 1;
@@ -27,12 +23,7 @@ int main(int argc, char **argv) {
   /* options.m_subDisplayAllowedSet = subDisplayAllowed; */
   /* options.m_subDisplayAllowAll = 0; */
 
-  QUESO::FullEnvironment *env =
-#ifdef QUESO_HAS_MPI
-    new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", &options);
-#else
-    new QUESO::FullEnvironment(0, "", "", &options);
-#endif
+  QUESO::FullEnvironment *env = new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", &options);
 
   if (!env->fullEnvIsReady()) {
     std::cerr << "Full env ready test failed" << std::endl;
@@ -110,9 +101,7 @@ int main(int argc, char **argv) {
   }
 
   delete env;
-#ifdef QUESO_HAS_MPI
   MPI_Finalize();
-#endif
 
   /*
    * This code should never get here. If it does, the bash script that wraps
