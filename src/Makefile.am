@@ -143,6 +143,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/SequenceOfVectors.C
 libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/VectorFunction.C
 libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/GenericVectorFunction.C
 libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/ConstantVectorFunction.C
+libqueso_la_SOURCES += $(top_srcdir)/src/basic/src/ScalarSequence.C
 
 
 # Sources from basic/src with gsl conditional
