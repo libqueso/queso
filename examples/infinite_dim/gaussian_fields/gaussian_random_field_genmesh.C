@@ -9,9 +9,7 @@
 #include <queso/LibMeshNegativeLaplacianOperator.h>
 #include <queso/InfiniteDimensionalGaussian.h>
 
-#ifdef QUESO_HAS_MPI
 #include <mpi.h>
-#endif
 
 using namespace libMesh;
 
@@ -21,16 +19,9 @@ int main(int argc, char **argv)
   QUESO::EnvOptionsValues opts;
   opts.m_seed = -1;
 
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-#endif
 
-#ifdef QUESO_HAS_MPI
   QUESO::FullEnvironment env(MPI_COMM_WORLD, "", "", &opts);
-#else
-  QUESO::FullEnvironment env(0, "", "", &opts);
-#endif
-
 
 // Need an artificial block here because libmesh needs to
 // call PetscFinalize before we call MPI_Finalize
