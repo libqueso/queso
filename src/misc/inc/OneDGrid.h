@@ -74,6 +74,12 @@ public:
   //@{
   //! Prints the values of the grid points.  
   void         print         (std::ostream& ofsvar) const;
+  friend std::ostream& operator<< (std::ostream& os,
+      const BaseOneDGrid<T>& obj)
+  {
+    obj.print(os);
+    return os;
+  }
   //@}
 
 protected:

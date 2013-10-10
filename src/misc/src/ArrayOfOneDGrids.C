@@ -27,7 +27,10 @@
 //--------------------------------------------------------------------------
 
 #include <queso/OneDGrid.h>
+#include <queso/UniformOneDGrid.h>
 #include <queso/ArrayOfOneDGrids.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -163,11 +166,6 @@ ArrayOfOneDGrids<V,M>::print(std::ostream& os) const
   return;
 }
 
-template <class V, class M>
-std::ostream& operator<< (std::ostream& os, const ArrayOfOneDGrids<V,M>& obj)
-{
-  obj.print(os);
-  return os;
-}
-
 }  // End namespace QUESO
+
+template class QUESO::ArrayOfOneDGrids<QUESO::GslVector, QUESO::GslMatrix>;
