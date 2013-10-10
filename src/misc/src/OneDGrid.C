@@ -75,11 +75,6 @@ BaseOneDGrid<T>::print(std::ostream& os) const
   return;
 }
 
-template <class T>
-std::ostream& operator<< (std::ostream& os, const BaseOneDGrid<T>& obj)
-{
-  obj.print(os);
-  return os;
-}
-
 }  // End namespace QUESO
+
+template class QUESO::BaseOneDGrid<double>;

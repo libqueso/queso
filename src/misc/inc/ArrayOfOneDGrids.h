@@ -93,6 +93,12 @@ public:
   //@{
   //! Prints the values of the array of grids (points). 
   void      print          (std::ostream& os) const;
+  friend std::ostream& operator<< (std::ostream& os,
+      const ArrayOfOneDGrids<V,M>& obj)
+  {
+    obj.print(os);
+    return os;
+  }
   //@}
   
 private:
