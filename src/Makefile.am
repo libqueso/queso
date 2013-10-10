@@ -118,6 +118,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/2dArrayOfStuff.C
 libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/OneDGrid.C
 libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/UniformOneDGrid.C
 libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/StdOneDGrid.C
+libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/Fft.C
 
 # Sources from misc/src withn gsl conditional
 
