@@ -15,9 +15,7 @@
 #include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
 #endif
 
-#ifdef QUESO_HAS_MPI
 #include <mpi.h>
-#endif
 
 #ifdef QUESO_HAVE_LIBMESH
 class Likelihood : public QUESO::InfiniteDimensionalLikelihoodBase {
@@ -51,15 +49,9 @@ int main(int argc, char **argv)
   // EnvOptionsValuesClass opts;
   // opts.m_seed = -1;
 
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-#endif
 
-#ifdef QUESO_HAS_MPI
   QUESO::FullEnvironment env(MPI_COMM_WORLD, in_file_name, prefix, NULL);
-#else
-  QUESO::FullEnvironment env(0, in_file_name, prefix, NULL);
-#endif
 
 #ifdef LIBMESH_DEFAULT_SINGLE_PRECISION
   // SLEPc farts with libMesh::Real==float

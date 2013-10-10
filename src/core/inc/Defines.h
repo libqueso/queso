@@ -52,14 +52,6 @@
 
 #define QUESO_HAS_MPI
 
-#ifdef QUESO_HAS_TRILINOS
-#ifdef QUESO_HAS_MPI
-// Ok
-#else
-Incompatible combination of defines in QUESO 'Defines.h': QUESO_HAS_TRILINOS is defined but QUESO_HAS_MPI is undefined
-#endif
-#endif
-
 #include <iostream>
 #include <stdlib.h> // For exit()
 #include <set>
@@ -231,7 +223,6 @@ private:
     queso_error(); \
   }
 
-#ifdef QUESO_HAS_MPI
 #define UQ_FATAL_TEST_MACRO(test,givenRank,where,what)  \
   if (test) {                                           \
     int macroRank = givenRank;                          \
@@ -246,22 +237,6 @@ private:
               << std::endl;                             \
     queso_error();	                   		\
   }
-#else
-#define UQ_FATAL_TEST_MACRO(test,givenRank,where,what) \
-  if (test) {                                          \
-    int macroRank = givenRank;                         \
-    if (macroRank < 0) {                               \
-      macroRank = QUESO::MyWorldfullRank();            \
-    }                                                  \
-    std::cerr << "UQ TEST FATAL ERROR"                 \
-              << ", rank "  << macroRank               \
-              << ", in "    << where                   \
-              << ": "       << what                    \
-              << ". Exiting..."                        \
-              << std::endl;                            \
-    queso_error(); \
-  }
-#endif
 
 }  // End namespace QUESO
 

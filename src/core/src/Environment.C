@@ -1217,28 +1217,21 @@ FullEnvironment::FullEnvironment(
   ///////////////////////////////////////////////////////////////////////
   // Initialize "full" communicator -- Not necessarily MPI_COMM_WORLD
   ///////////////////////////////////////////////////////////////////////
-#ifdef QUESO_HAS_MPI
   int mpiRC = MPI_Comm_rank(inputComm,&m_worldRank);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       UQ_UNAVAILABLE_RANK,
                       "FullEnvironment::commonConstructor()",
                       "failed to get world fullRank()");
-#else
-  m_worldRank = 0;
-#endif
 
   m_fullComm = new MpiComm(*this,inputComm);
   m_fullRank     = m_fullComm->MyPID();
   m_fullCommSize = m_fullComm->NumProc();
-#ifdef QUESO_HAS_MPI
+
   mpiRC = MPI_Comm_group(m_fullComm->Comm(), &m_fullGroup);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       "FullEnvironment::commonConstructor()",
                       "failed MPI_Comm_group()");
-#else
-  m_fullGroup = 0;
-#endif
 
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In FullEnv, finished dealing with MPI initially" << std::endl;
@@ -1304,25 +1297,19 @@ FullEnvironment::FullEnvironment(
   for (unsigned int i = 0; i < numRanksPerSubEnvironment; ++i) {
     fullRanksOfMySubEnvironment[i] = m_subId * numRanksPerSubEnvironment + i;
   }
-#ifdef QUESO_HAS_MPI
+
   mpiRC = MPI_Group_incl(m_fullGroup, (int) numRanksPerSubEnvironment, &fullRanksOfMySubEnvironment[0], &m_subGroup);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       "FullEnvironment::commonConstructor()",
                       "failed MPI_Group_incl() for a subEnvironment");
-#else
-  m_subGroup = 0;
-#endif
+
   RawType_MPI_Comm subRawComm;
-#ifdef QUESO_HAS_MPI
   mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_subGroup, &subRawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       "FullEnvironment::commonConstructor()",
                       "failed MPI_Comm_group() for a subEnvironment");
-#else
-  subRawComm = 0;
-#endif
   m_subComm = new MpiComm(*this,subRawComm);
   m_subRank     = m_subComm->MyPID();
   m_subCommSize = m_subComm->NumProc();
@@ -1339,25 +1326,17 @@ FullEnvironment::FullEnvironment(
   for (unsigned int i = 0; i < m_optionsObj->m_ov.m_numSubEnvironments; ++i) {
     fullRanksOfInter0[i] = i * numRanksPerSubEnvironment;
   }
-#ifdef QUESO_HAS_MPI
   mpiRC = MPI_Group_incl(m_fullGroup, (int) m_optionsObj->m_ov.m_numSubEnvironments, &fullRanksOfInter0[0], &m_inter0Group);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       "FullEnvironment::commonConstructor()",
                       "failed MPI_Group_incl() for inter0");
-#else
-  m_inter0Group = 0;
-#endif
   RawType_MPI_Comm inter0RawComm;
-#ifdef QUESO_HAS_MPI
   mpiRC = MPI_Comm_create(m_fullComm->Comm(), m_inter0Group, &inter0RawComm);
   UQ_FATAL_TEST_MACRO(mpiRC != MPI_SUCCESS,
                       m_worldRank,
                       "FullEnvironment::commonConstructor()",
                       "failed MPI_Comm_group() for inter0");
-#else
-  inter0RawComm = 0;
-#endif
   if (m_fullRank%numRanksPerSubEnvironment == 0) {
     m_inter0Comm = new MpiComm(*this,inter0RawComm);
     m_inter0Rank     = m_inter0Comm->MyPID();
@@ -1523,10 +1502,6 @@ FullEnvironment::readOptionsInputFile()
                                    << "\nin the command line."
                                    << "\n"
                                    << std::endl;
-#ifdef QUESO_HAS_MPI
-    /*int mpiRC = 0;*/
-    /*mpiRC = */MPI_Abort(m_fullComm->Comm(),-999);
-#endif
     queso_error();
   }
 
