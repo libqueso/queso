@@ -122,6 +122,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/Fft.C
 libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/CovCond.C
 libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/AsciiTable.C
 libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/ArrayOfOneDTables.C
+libqueso_la_SOURCES += $(top_srcdir)/src/misc/src/ArrayOfOneDGrids.C
 
 # Sources from misc/src withn gsl conditional
 
