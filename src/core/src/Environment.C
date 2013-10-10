@@ -120,6 +120,12 @@ FilePtrSetStruct::FilePtrSetStruct()
 FilePtrSetStruct::~FilePtrSetStruct()
 {
 }
+  
+  //
+  // queso terminate handler will be invoked for unhandled exceptions 
+  // needs to be invoked in FullEnvironment constructor  
+  // 
+  std::terminate_handler old_terminate_handler;
 
 //*****************************************************
 // Base class
@@ -1233,6 +1239,9 @@ FullEnvironment::FullEnvironment(
                       "FullEnvironment::commonConstructor()",
                       "failed MPI_Comm_group()");
 
+  // saving old uncaught exception handler, invoking queso_terminate
+  old_terminate_handler = std::set_terminate(queso_terminate_handler);
+
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "In FullEnv, finished dealing with MPI initially" << std::endl;
 #endif
@@ -1481,6 +1490,27 @@ FullEnvironment::print(std::ostream& os) const
   os.flush(); // just to avoid icpc warnings
   return;
 }
+
+void queso_terminate_handler()
+{
+  int mpi_initialized;
+  MPI_Initialized (&mpi_initialized);
+    
+  if (mpi_initialized)
+    {
+      //MPI_Abort(m_fullComm->Comm(), 1);
+      MPI_Abort(MPI_COMM_WORLD, 1);
+    }
+  else
+    {
+      // The system terminate_handler may do useful things like printing
+      // uncaught exception information, or the user may have created
+      // their own terminate handler that we want to call.
+      old_terminate_handler();
+    }
+  exit(1);
+}
+
 
 //-------------------------------------------------------
 void
