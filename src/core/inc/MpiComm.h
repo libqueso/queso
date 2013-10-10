@@ -35,9 +35,6 @@
 #include <Epetra_MpiComm.h>
 #endif
 
-
-#ifdef QUESO_HAS_MPI
-
 #include <mpi.h>
 
 namespace QUESO {
@@ -60,29 +57,6 @@ typedef MPI_Status   RawType_MPI_Status ;
 
 }  // End namespace QUESO
 
-#else // QUESO_HAS_MPI
-
-namespace QUESO {
-
-typedef int RawType_MPI_Comm ;
-typedef int RawType_MPI_Group ;
-typedef int RawType_MPI_Datatype ;
-typedef int RawType_MPI_Op ;
-typedef int RawType_MPI_Status ;
-#define RawValue_MPI_COMM_SELF  0
-#define RawValue_MPI_IN_PLACE   0
-#define RawValue_MPI_ANY_SOURCE -1
-#define RawValue_MPI_CHAR       0
-#define RawValue_MPI_INT        1
-#define RawValue_MPI_DOUBLE     2
-#define RawValue_MPI_UNSIGNED   3
-#define RawValue_MPI_MIN        0
-#define RawValue_MPI_MAX        1
-#define RawValue_MPI_SUM        2
-
-}  // End namespace QUESO
-
-#endif // QUESO_HAS_MPI
 
 namespace QUESO {
 
@@ -231,12 +205,6 @@ public:
 private:
   //! Copies from an existing MpiComm instance.
   void               copy          (const MpiComm& src);
-#ifdef QUESO_HAS_MPI
-#else
-  
-  //! Calculates the size of each data type.
-  size_t             sizeOfDataType(RawType_MPI_Datatype datatype, const char* whereMsg, const char* whatMsg) const;
-#endif
 
   // QUESO environment 
   const BaseEnvironment& m_env;

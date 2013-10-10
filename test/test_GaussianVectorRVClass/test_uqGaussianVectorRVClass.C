@@ -25,15 +25,8 @@ int main(int argc, char **argv) {
   QUESO::EnvOptionsValues *opts = new QUESO::EnvOptionsValues();
   opts->m_seed = seed;
 
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-#endif
-  QUESO::FullEnvironment *env =
-#ifdef QUESO_HAS_MPI
-    new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", opts);
-#else
-    new QUESO::FullEnvironment(0, "", "", opts);
-#endif
+  QUESO::FullEnvironment *env = new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", opts);
 
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> *param_space;
   param_space = new QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>(
@@ -114,9 +107,6 @@ int main(int argc, char **argv) {
   delete param_space;
   delete param_domain;
   delete prior;
-#ifdef QUESO_HAS_MPI
   MPI_Finalize();
-#endif
-
   return return_val;
 }

@@ -3,10 +3,7 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
-#ifdef QUESO_HAS_MPI
 #include <mpi.h>
-#endif
-
 #define TOL 1e-10
 
 using namespace std;
@@ -46,19 +43,12 @@ int main(int argc, char **argv) {
   unsigned int i, j;
   double diagValue = 1.5;
 
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-#endif
-
   QUESO::EnvOptionsValues options;
   options.m_numSubEnvironments = 1;
 
   QUESO::FullEnvironment *env =
-#ifdef QUESO_HAS_MPI
     new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", &options);
-#else
-    new QUESO::FullEnvironment(0, "", "", &options);
-#endif
 
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> *param_space =
     new QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>(*env, "param_", 3, NULL);
@@ -246,9 +236,6 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-#ifdef QUESO_HAS_MPI
   MPI_Finalize();
-#endif
-
   return 0;
 }

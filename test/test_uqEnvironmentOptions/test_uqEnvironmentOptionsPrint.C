@@ -3,16 +3,12 @@
 #include <queso/Defines.h>
 #include <queso/EnvironmentOptions.h>
 
-#ifdef QUESO_HAS_MPI
 #include <mpi.h>
-#endif
 
 using namespace std;
 
 int main(int argc, char **argv) {
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-#endif
 
   QUESO::EnvOptionsValues options;
   options.m_numSubEnvironments = 1;
@@ -29,21 +25,13 @@ int main(int argc, char **argv) {
   options.m_subDisplayAllowedSet = subDisplayAllowed;
   options.m_subDisplayAllowAll = 0;
 
-  QUESO::FullEnvironment *env =
-#ifdef QUESO_HAS_MPI
-    new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", &options);
-#else
-    new QUESO::FullEnvironment(0, "", "", &options);
-#endif
+  QUESO::FullEnvironment *env = new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", &options);
 
   QUESO::EnvironmentOptions env_options(*env, "", options);
   std::cout << env_options;
 
   delete env;
-#ifdef QUESO_HAS_MPI
   MPI_Finalize();
-#endif
-
   /*
    * This code should never get here. If it does, the bash script that wraps
    * around it negates the return value, making this a failure
