@@ -88,6 +88,8 @@ BUILT_SOURCES += CovCond.h
 BUILT_SOURCES += Fft.h
 BUILT_SOURCES += Miscellaneous.h
 BUILT_SOURCES += OneDGrid.h
+BUILT_SOURCES += StdOneDGrid.h
+BUILT_SOURCES += UniformOneDGrid.h
 BUILT_SOURCES += FiniteDistribution.h
 BUILT_SOURCES += InfoTheory.h
 BUILT_SOURCES += JointPdf.h
@@ -286,6 +288,10 @@ Fft.h: $(top_srcdir)/src/misc/inc/Fft.h
 Miscellaneous.h: $(top_srcdir)/src/misc/inc/Miscellaneous.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 OneDGrid.h: $(top_srcdir)/src/misc/inc/OneDGrid.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+StdOneDGrid.h: $(top_srcdir)/src/misc/inc/StdOneDGrid.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+UniformOneDGrid.h: $(top_srcdir)/src/misc/inc/UniformOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 FiniteDistribution.h: $(top_srcdir)/src/stats/inc/FiniteDistribution.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

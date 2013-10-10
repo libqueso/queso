@@ -26,61 +26,60 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef UQ_ONE_D_GRID_FUNCTION_H
-#define UQ_ONE_D_GRID_FUNCTION_H
+#ifndef UQ_STD_ONE_D_GRID_FUNCTION_H
+#define UQ_STD_ONE_D_GRID_FUNCTION_H
 
 #include <queso/Environment.h>
+#include <queso/OneDGrid.h>
 #include <math.h>
 
 namespace QUESO {
 
 //*****************************************************
-// Classes to accommodate a one dimensional grid
+// Std grid class
 //*****************************************************
-/*!\file OneDGrid.h
- * \brief Classes to accommodate a one dimensional grid.
+/*!\class StdOneDGrid
+ * \brief Class for accommodating standard one-dimensional grids.
  * 
- * \class BaseOneDGrid
- * \brief Base class for accommodating one-dimensional grids.*/
+ * This class implements a standard one-dimensional grid, which is required, for instance,
+ * in the evaluation of the cumulative distribution function (CDF) of a random variable. 
+ */
 
-//*****************************************************
-// Base class
-//*****************************************************
 template<class T>
-class BaseOneDGrid {
+class StdOneDGrid : public BaseOneDGrid<T> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  BaseOneDGrid(const BaseEnvironment& env,
-		      const char* prefix);
-  //! Virtual destructor.
-  virtual ~BaseOneDGrid();
+  StdOneDGrid(const BaseEnvironment& env,
+                     const char*                   prefix,
+                     const std::vector<T>&         points);
+ //! Destructor.
+  ~StdOneDGrid();
   //@}
+  
   //! @name Accessor methods
   //@{
-  //! Returns the position of the i-th point in the grid. See template specialization.
-  virtual T            operator[]    (unsigned int i)       const = 0;
+  //! Returns the position of the i-th point in the grid.
+  T            operator[]    (unsigned int i)      const;
   //@}
+  
   //! @name Mathematical methods
   //@{
-  //! Grid size; the amount of points which defines the grid. See template specialization. 
-  virtual unsigned int size          ()                     const = 0;
+  //! Grid size; the amount of points which defines the grid.
+  unsigned int size          ()                    const;
   
   //! Finds the ID of an interval. See template specialization.
-  virtual unsigned int findIntervalId(const T& paramValue)  const = 0; 
-  //@}
-  //! @name I/O methods
-  //@{
-  //! Prints the values of the grid points.  
-  void         print         (std::ostream& ofsvar) const;
+  unsigned int findIntervalId(const T& paramValue) const; 
   //@}
 
 protected:
-  const BaseEnvironment& m_env;
-        std::string             m_prefix;
+  using BaseOneDGrid<T>::m_env;
+  using BaseOneDGrid<T>::m_prefix;
+
+  std::vector<T> m_points;
 };
 
 }  // End namespace QUESO
 
-#endif // UQ_ONE_D_GRID_FUNCTION_H
+#endif // UQ_STD_ONE_D_GRID_FUNCTION_H

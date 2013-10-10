@@ -26,61 +26,62 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef UQ_ONE_D_GRID_FUNCTION_H
-#define UQ_ONE_D_GRID_FUNCTION_H
+#ifndef UQ_UNIFORM_ONE_D_GRID_FUNCTION_H
+#define UQ_UNIFORM_ONE_D_GRID_FUNCTION_H
 
 #include <queso/Environment.h>
+#include <queso/OneDGrid.h>
 #include <math.h>
 
 namespace QUESO {
 
 //*****************************************************
-// Classes to accommodate a one dimensional grid
+// Uniform grid class
 //*****************************************************
-/*!\file OneDGrid.h
- * \brief Classes to accommodate a one dimensional grid.
- * 
- * \class BaseOneDGrid
- * \brief Base class for accommodating one-dimensional grids.*/
-
-//*****************************************************
-// Base class
-//*****************************************************
+/*!\class UniformOneDGrid
+ * \brief Class for accommodating uniform one-dimensional grids.*/
+ 
 template<class T>
-class BaseOneDGrid {
+class UniformOneDGrid : public BaseOneDGrid<T> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  BaseOneDGrid(const BaseEnvironment& env,
-		      const char* prefix);
-  //! Virtual destructor.
-  virtual ~BaseOneDGrid();
+  /*! Constructs a uniform 1D grid between \c minPosition and \c maxPosition, with \c size points.*/
+  UniformOneDGrid(const BaseEnvironment& env,
+                         const char*               prefix,
+                               unsigned int        size,
+                               T                   minPosition,
+                               T                   maxPosition);
+ //! Destructor
+  ~UniformOneDGrid();
   //@}
+  
   //! @name Accessor methods
   //@{
-  //! Returns the position of the i-th point in the grid. See template specialization.
-  virtual T            operator[]    (unsigned int i)       const = 0;
+  //! Returns the position of the i-th point in the grid.  
+  T    operator[]    (unsigned int i)      const;
   //@}
+  
   //! @name Mathematical methods
   //@{
-  //! Grid size; the amount of points which defines the grid. See template specialization. 
-  virtual unsigned int size          ()                     const = 0;
+  //! Grid size; the amount of points that defines the grid.    
+  unsigned int size          ()                    const;
   
   //! Finds the ID of an interval. See template specialization.
-  virtual unsigned int findIntervalId(const T& paramValue)  const = 0; 
-  //@}
-  //! @name I/O methods
-  //@{
-  //! Prints the values of the grid points.  
-  void         print         (std::ostream& ofsvar) const;
+  /*! This function finds to which interval the parameter value belongs to.*/
+  unsigned int findIntervalId(const T& paramValue) const; 
   //@}
 
 protected:
-  const BaseEnvironment& m_env;
-        std::string             m_prefix;
+  using BaseOneDGrid<T>::m_env;
+  using BaseOneDGrid<T>::m_prefix;
+
+  unsigned int m_size;
+  T            m_minPosition;
+  T            m_maxPosition;
 };
 
 }  // End namespace QUESO
 
-#endif // UQ_ONE_D_GRID_FUNCTION_H
+#endif // UQ_UNIFORM_ONE_D_GRID_FUNCTION_H
