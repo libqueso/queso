@@ -30,10 +30,11 @@
 #define UQ_ARRAY_OF_ONE_D_TABLES_H
 
 #include <queso/Environment.h>
+#include <queso/VectorSpace.h>
 
 namespace QUESO {
 
-/*!\file uqArrayOfOneDTables
+/*!\file ArrayOfOneDTables
  * \brief Class to accommodate arrays of one-dimensional tables.
  * 
  * \class ArrayOfOneDTables
@@ -80,98 +81,6 @@ private:
   const VectorSpace<V,M>&         m_rowSpace;
   DistArray<std::vector<double>*> m_oneDTables;
 };
-// Default constructor -------------------------------------------------
-template <class V, class M>
-ArrayOfOneDTables<V,M>::ArrayOfOneDTables(
-  const char* prefix, 
-  const VectorSpace<V,M>& rowSpace)
-  :
-  m_env       (rowSpace.env()),
-  m_prefix    ((std::string)(prefix)+""),
-  m_rowSpace  (rowSpace      ),
-  m_oneDTables(m_rowSpace.map(),1)
-{
-  for (unsigned int i = 0; i < (unsigned int) m_oneDTables.MyLength(); ++i) {
-    m_oneDTables(i,0) = NULL;
-  }
-}
-// Destructor ----------------------------------------------------------
-template <class V, class M>
-ArrayOfOneDTables<V,M>::~ArrayOfOneDTables()
-{
-  for (unsigned int i = 0; i < (unsigned int) m_oneDTables.MyLength(); ++i) {
-    if (m_oneDTables(i,0)) delete m_oneDTables(i,0);
-  }
-}
-// Math methods --------------------------------------------------------
-template <class V, class M>
-void
-ArrayOfOneDTables<V,M>::setOneDTable(unsigned int rowId, const std::vector<double>& values)
-{
-  UQ_FATAL_TEST_MACRO(rowId >= (unsigned int) m_oneDTables.MyLength(),
-                      m_env.worldRank(),
-                      "ArrayOfOneDTables<T>::setOneDTable()",
-                      "rowId is out of range");
-
-  if (m_oneDTables(rowId,0) == NULL) m_oneDTables(rowId,0) = new std::vector<double>(0);
-  else                               m_oneDTables(rowId,0)->clear();
-
-  std::vector<double>& vec = *(m_oneDTables(rowId,0));
-  vec.resize(values.size(),0.);
-  for (unsigned int j = 0; j < values.size(); ++j) {
-    vec[j] = values[j];
-  }
-
-  return;
-}
-//----------------------------------------------------------------------
-template <class V, class M>
-const std::vector<double>&
-ArrayOfOneDTables<V,M>::oneDTable(unsigned int rowId) const
-{
-  UQ_FATAL_TEST_MACRO(rowId >= (unsigned int) m_oneDTables.MyLength(),
-                      m_env.worldRank(),
-                      "ArrayOfOneDTables<T>::oneDTable()",
-                      "rowId is out of range");
-
-  ArrayOfOneDTables<V,M>* tmp = const_cast<ArrayOfOneDTables<V,M>*>(this);
-
-  UQ_FATAL_TEST_MACRO(tmp->m_oneDTables(rowId,0) == NULL,
-                      m_env.worldRank(),
-                      "ArrayOfOneDTables<T>::oneDTable()",
-                      "requested row is still NULL");
-
-  return *(tmp->m_oneDTables(rowId,0));
-}
-// I/O methods----------------------------------------------------------
-template <class V, class M>
-void
-ArrayOfOneDTables<V,M>::print(std::ostream& os) const
-{
-  ArrayOfOneDTables<V,M>* tmp = const_cast<ArrayOfOneDTables<V,M>*>(this);
-  for (unsigned int i = 0; i < (unsigned int) m_oneDTables.MyLength(); ++i) {
-    const std::vector<double>& tmpVec = *(tmp->m_oneDTables(i,0));
-    os << m_prefix << i << "_values_sub" << m_env.subIdString() << " = zeros(" << tmpVec.size()
-       << ","                                                                  << 1
-       << ");"
-       << std::endl;
-    os << m_prefix << i << "_values_sub" << m_env.subIdString() << " = [";
-    for (unsigned int j = 0; j < tmpVec.size(); ++j) {
-      os << tmpVec[j] << " ";
-    }
-    os << "];"
-       << std::endl;
-  }
-
-  return;
-}
-//----------------------------------------------------------------------
-template <class V, class M>
-std::ostream& operator<< (std::ostream& os, const ArrayOfOneDTables<V,M>& obj)
-{
-  obj.print(os);
-  return os;
-}
 
 }  // End namespace QUESO
 
