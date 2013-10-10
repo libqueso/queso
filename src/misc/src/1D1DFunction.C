@@ -976,4 +976,52 @@ LagrangeBasis1D1DFunction::deriv(double domainValue) const
   return value;
 }
 
+template <class T>
+double
+SubF1F2Gaussian2dKdeIntegral(const ScalarSequence<T>& scalarSeq1,
+                               const ScalarSequence<T>& scalarSeq2,
+                               unsigned int                    initialPos,
+                               double                          scaleValue1,
+                               double                          scaleValue2,
+                               const Base1D1DFunction&  func1,
+                               const Base1D1DFunction&  func2,
+                               unsigned int                    quadratureOrder)
+{
+  double resultValue = 0.;
+
+  UQ_FATAL_TEST_MACRO(initialPos != 0,
+                      scalarSeq1.env().worldRank(),
+                      "SubF1F2Gaussian2dKdeIntegral()",
+                      "not implemented yet for initialPos != 0");
+  UQ_FATAL_TEST_MACRO(scalarSeq1.subSequenceSize() != scalarSeq2.subSequenceSize(),
+                      scalarSeq1.env().worldRank(),
+                      "SubF1F2Gaussian2dKdeIntegral()",
+                      "different sizes");
+
+  GaussianHermite1DQuadrature quadObj(0.,1.,quadratureOrder);
+  const std::vector<double>& quadPositions = quadObj.positions();
+  const std::vector<double>& quadWeights   = quadObj.weights  ();
+  UQ_FATAL_TEST_MACRO(quadPositions.size() != quadWeights.size(),
+                      UQ_UNAVAILABLE_RANK,
+                      "SubF1F2Gaussian2dKdeIntegral()",
+                      "quadObj has invalid state");
+
+  unsigned int numQuadraturePositions = quadPositions.size();
+  unsigned int dataSize = scalarSeq1.subSequenceSize();
+  for (unsigned int k = 0; k < dataSize; ++k) {
+    double value1 = 0.;
+    double value2 = 0.;
+    double x1k = scalarSeq1[k];
+    double x2k = scalarSeq2[k];
+    for (unsigned int j = 0; j < numQuadraturePositions; ++j) {
+      value1 += func1.value(scaleValue1*quadPositions[j]+x1k)*quadWeights[j];
+      value2 += func2.value(scaleValue2*quadPositions[j]+x2k)*quadWeights[j];
+    }
+    resultValue += value1*value2;
+  }
+  resultValue *= 1./(2.*M_PI)/((double) dataSize);
+
+  return resultValue;
+}
+
 }  // End namespace QUESO
