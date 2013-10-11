@@ -50,10 +50,20 @@ namespace po = boost::program_options;
 
 namespace QUESO {
 
+
+  /*! queso_terminate_handler
+   *  \brief Function for unhandled exceptions in Queso
+   *
+   *  This function deals with unhandled exceptions encountered in Queso. 
+   *  It provides a call to MPI_abort using the global communicator. 
+   */
+  void queso_terminate_handler();
+
 /*! \struct FilePtrSetStruct
  *  \brief Struct for handling data input and output from files.
  *
- *  This struct deals with data input and output from files. It encapsulates the input/output stream class std:: fstream.
+ *  This struct deals with data input and output from files. 
+ *  It encapsulates the input/output stream class std:: fstream.
  */
 
 //!
@@ -432,7 +442,9 @@ public:
 
 private:
   //! Checks the options input file and reads the options.
-void	readOptionsInputFile();
+  void	readOptionsInputFile();
+  //void	queso_terminate_handler();
+
 };
 
 std::ostream& operator<<(std::ostream& os, const BaseEnvironment& obj);

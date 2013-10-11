@@ -11,6 +11,9 @@
 // C++
 #include <stdexcept>
 #include <string>
+#include <exception>    // std::set_terminate
+#include <mpi.h>        // for MPI_ABORT in uncaught exceptions
+#include <stdlib.h>     // exit(1)
 
 namespace QUESO
 {
@@ -47,6 +50,7 @@ namespace QUESO
   public:
     FileError(const std::string& filename) : std::runtime_error( "Error accessing file: " + filename ) {}
   };
+
 
 } // end namespace QUESO
 
