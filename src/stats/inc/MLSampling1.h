@@ -21,7 +21,7 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
+//
 // $Id$
 //
 //--------------------------------------------------------------------------
@@ -340,7 +340,7 @@ MLSampling<P_V,P_M>::sampleIndexes_proc0(
                             << std::endl;
   }
 #endif
- 
+
   if (m_env.inter0Rank() == 0) {
     unsigned int resizeSize = unifiedWeightStdVectorAtProc0Only.size();
     unifiedIndexCountersAtProc0Only.resize(resizeSize,0);
@@ -457,7 +457,7 @@ MLSampling<P_V,P_M>::decideOnBalancedChains_all(
         else {
           r++;
           if ((r < (int) Np           ) &&
-              (allFirstIndexes[r] <= i) && 
+              (allFirstIndexes[r] <= i) &&
               (i <= allLastIndexes[r] )) {
             // Ok
           }
@@ -949,7 +949,7 @@ MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
 
     // 2013-02-23: print sizes, and expected final size
   }
-  if ((m_debugExponent == 1.) && 
+  if ((m_debugExponent == 1.) &&
       (m_currStep      == 10)) {
     //m_env.setExceptionalCircumstance(true);
   }
@@ -1020,7 +1020,7 @@ MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
           for (unsigned int i = 0; i < tmpLogLikelihoodValues.subSequenceSize(); ++i) {
             tmpChain.getPositionValues(i,tmpVec);
             *m_env.subDisplayFile() << "DEBUG finalChain[" << cumulativeNumPositions+i << "] "
-                                    << "= tmpChain["               << i << "] = " << tmpVec 
+                                    << "= tmpChain["               << i << "] = " << tmpVec
                                     << ", tmpLogLikelihoodValues[" << i << "] = " << tmpLogLikelihoodValues[i]
                                     << ", tmpLogTargetValues["     << i << "] = " << tmpLogTargetValues[i]
                                     << std::endl;
@@ -1030,7 +1030,7 @@ MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
 
       cumulativeNumPositions += tmpChainSize;
       if (cumulativeNumPositions > 100) m_env.setExceptionalCircumstance(false);
-        
+
       if ((m_env.subDisplayFile()       ) &&
           (m_env.displayVerbosity() >= 3)) {
         *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateBalLinkedChains_all()"
@@ -1184,7 +1184,7 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
                               << std::endl;
     }
   }
-  if ((m_debugExponent == 1.) && 
+  if ((m_debugExponent == 1.) &&
       (m_currStep      == 10)) {
     //m_env.setExceptionalCircumstance(true);
   }
@@ -1255,17 +1255,17 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
           for (unsigned int i = 0; i < tmpLogLikelihoodValues.subSequenceSize(); ++i) {
             tmpChain.getPositionValues(i,tmpVec);
             *m_env.subDisplayFile() << "DEBUG finalChain[" << cumulativeNumPositions+i << "] "
-                                    << "= tmpChain["               << i << "] = " << tmpVec 
+                                    << "= tmpChain["               << i << "] = " << tmpVec
                                     << ", tmpLogLikelihoodValues[" << i << "] = " << tmpLogLikelihoodValues[i]
                                     << ", tmpLogTargetValues["     << i << "] = " << tmpLogTargetValues[i]
                                     << std::endl;
           }
         }
       } // exceptional
-    
+
       cumulativeNumPositions += tmpChainSize;
       if (cumulativeNumPositions > 100) m_env.setExceptionalCircumstance(false);
-        
+
       if ((m_env.subDisplayFile()       ) &&
           (m_env.displayVerbosity() >= 3)) {
         *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateUnbLinkedChains_all()"
@@ -1336,7 +1336,7 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
 #ifdef QUESO_HAS_GLPK
 template <class P_V,class P_M>
 void
-MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE 
+MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   std::vector<ExchangeInfoStruct>& exchangeStdVec) // input/output
 {
   if (m_env.inter0Rank() != 0) return;
@@ -1361,9 +1361,9 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   //////////////////////////////////////////////////////////////////////////
   // Instantiate BIP
   //////////////////////////////////////////////////////////////////////////
-  glp_prob *lp; 
-  lp = glp_create_prob(); 
-  glp_set_prob_name(lp, "sample"); 
+  glp_prob *lp;
+  lp = glp_create_prob();
+  glp_set_prob_name(lp, "sample");
 
   //////////////////////////////////////////////////////////////////////////
   // Set rows and colums of BIP constraint matrix
@@ -1374,25 +1374,25 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
 
   glp_add_rows(lp, m); // Not 'm+1'
   for (int i = 1; i <= (int) Nc; ++i) {
-    glp_set_row_bnds(lp, i, GLP_FX, 1.0, 1.0); 
-    glp_set_row_name(lp, i, ""); 
+    glp_set_row_bnds(lp, i, GLP_FX, 1.0, 1.0);
+    glp_set_row_name(lp, i, "");
   }
   for (int i = (Nc+1); i <= (int) (Nc+Np-1); ++i) {
-    glp_set_row_bnds(lp, i, GLP_UP, 0.0, 0.0); 
-    glp_set_row_name(lp, i, ""); 
+    glp_set_row_bnds(lp, i, GLP_UP, 0.0, 0.0);
+    glp_set_row_name(lp, i, "");
   }
- 
+
   glp_add_cols(lp, n); // Not 'n+1'
   for (int j = 1; j <= (int) n; ++j) {
     //glp_set_col_kind(lp, j, GLP_BV);
     glp_set_col_kind(lp, j, GLP_IV);
-    glp_set_col_bnds(lp, j, GLP_DB, 0.0, 1.0); 
-    glp_set_col_name(lp, j, ""); 
+    glp_set_col_bnds(lp, j, GLP_DB, 0.0, 1.0);
+    glp_set_col_name(lp, j, "");
   }
 
-  glp_set_obj_dir(lp, GLP_MIN); 
+  glp_set_obj_dir(lp, GLP_MIN);
   for (int chainId = 0; chainId <= (int) (Nc-1); ++chainId) {
-    glp_set_obj_coef(lp, (chainId*Np)+1, exchangeStdVec[chainId].numberOfPositions); 
+    glp_set_obj_coef(lp, (chainId*Np)+1, exchangeStdVec[chainId].numberOfPositions);
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -1527,10 +1527,10 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   }
 #endif
   for (int i = 1; i <= (int) Nc; ++i) {
-    glp_set_row_stat(lp, i, GLP_NS); 
+    glp_set_row_stat(lp, i, GLP_NS);
   }
   for (int i = (Nc+1); i <= (int) (Nc+Np-1); ++i) {
-    glp_set_row_stat(lp, i, GLP_BS); 
+    glp_set_row_stat(lp, i, GLP_BS);
   }
 
   //glp_write_mps(lp, GLP_MPS_DECK, NULL, "nada.fixed_mps");
@@ -1549,7 +1549,7 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
   BIP_params.presolve = GLP_ON;
   // aqui 2
   //BIP_params.binarize = GLP_ON;
-  //BIP_params.cb_func = BIP_routine; 
+  //BIP_params.cb_func = BIP_routine;
   //BIP_params.cb_info = (void *) (&BIP_routine_info);
   int BIP_rc = glp_intopt(lp, &BIP_params);
 
@@ -1581,7 +1581,7 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
 
   switch (BIP_Status) {
     case GLP_OPT:
-      // Ok 
+      // Ok
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::solveBIP_proc0()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
@@ -1592,7 +1592,7 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
     break;
 
     case GLP_FEAS:
-      // Ok 
+      // Ok
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::solveBIP_proc0()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
@@ -1710,11 +1710,11 @@ MLSampling<P_V,P_M>::solveBIP_proc0( // EXTRA FOR LOAD BALANCE
                         "MLSampling<P_V,P_M>::solveBIP_proc0()",
                         "wrong state");
   }
-    
+
   //////////////////////////////////////////////////////////////////////////
   // Free memory and return
   //////////////////////////////////////////////////////////////////////////
-  glp_delete_prob(lp); 
+  glp_delete_prob(lp);
 
   double bipRunTime = MiscGetEllapsedSeconds(&timevalBIP);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
@@ -1813,7 +1813,7 @@ MLSampling<P_V,P_M>::justBalance_proc0(
                           "MLSampling<P_V,P_M>::justBalance_proc0()",
                           "inconsistent number of chains in node");
     }
-   
+
     //////////////////////////////////////////////////////////////////////////
     // Find [node with most postions], [node with least positions] and [number of positions to move]
     //////////////////////////////////////////////////////////////////////////
@@ -2279,7 +2279,7 @@ MLSampling<P_V,P_M>::checkpointML(
   }
 
   if (m_env.fullRank() == 0) {
-    std::ofstream* ofsVar = new std::ofstream((m_options.m_restartOutput_baseNameForFiles + "Control.txt").c_str(), 
+    std::ofstream* ofsVar = new std::ofstream((m_options.m_restartOutput_baseNameForFiles + "Control.txt").c_str(),
                                               std::ofstream::out | std::ofstream::trunc);
     *ofsVar << m_currLevel               << std::endl  // 1
             << m_vectorSpace.dimGlobal() << std::endl  // 2
@@ -2332,7 +2332,7 @@ MLSampling<P_V,P_M>::checkpointML(
   // Write 'control' file *with* 'level' spefication in name
   //******************************************************************************
   if (m_env.fullRank() == 0) {
-    std::ofstream* ofsVar = new std::ofstream((m_options.m_restartOutput_baseNameForFiles + "Control_l" + levelSufix + ".txt").c_str(), 
+    std::ofstream* ofsVar = new std::ofstream((m_options.m_restartOutput_baseNameForFiles + "Control_l" + levelSufix + ".txt").c_str(),
                                               std::ofstream::out | std::ofstream::trunc);
     *ofsVar << m_currLevel               << std::endl  // 1
             << m_vectorSpace.dimGlobal() << std::endl  // 2
@@ -2380,7 +2380,7 @@ MLSampling<P_V,P_M>::restartML(
   unsigned int quantity1       = 0;
   std::string  checkingString("");
   if (m_env.fullRank() == 0) {
-    std::ifstream* ifsVar = new std::ifstream((m_options.m_restartInput_baseNameForFiles + "Control.txt").c_str(), 
+    std::ifstream* ifsVar = new std::ifstream((m_options.m_restartInput_baseNameForFiles + "Control.txt").c_str(),
                                               std::ifstream::in);
 
     //******************************************************************************
@@ -2605,7 +2605,7 @@ MLSampling<P_V,P_M>::generateSequence_Level0_all(
 
         outOfSupport = !(m_targetDomain->contains(auxVec));
       } while (outOfSupport); // prudenci 2011-Oct-04
-      
+
       currChain.setPositionValues(i,auxVec);
       // KAUST: all nodes should call likelihood
 #if 1 // prudencio 2010-08-01
@@ -3782,7 +3782,7 @@ MLSampling<P_V,P_M>::generateSequence_Step09_all(
                                       nowCovMatrix,       // input
                                       currRv,             // input
                                       nowBalLinkControl,  // input // Round Rock
-                                      nowChain,           // output 
+                                      nowChain,           // output
                                       nowRunTime,         // output
                                       nowRejections,      // output
                                       NULL,               // output
@@ -3795,7 +3795,7 @@ MLSampling<P_V,P_M>::generateSequence_Step09_all(
                                       nowUnbLinkControl,  // input // Round Rock
                                       indexOfFirstWeight, // input // Round Rock
                                       prevChain,          // input // Round Rock
-                                      nowChain,           // output 
+                                      nowChain,           // output
                                       nowRunTime,         // output
                                       nowRejections,      // output
                                       NULL,               // output
@@ -4210,7 +4210,7 @@ MLSampling<P_V,P_M>::generateSequence_Step11_inter0(
 template<class P_V,class P_M>
 MLSampling<P_V,P_M>::MLSampling(
   const char*                               prefix,
-  const BaseVectorRV      <P_V,P_M>& priorRv,            
+  const BaseVectorRV      <P_V,P_M>& priorRv,
   const BaseScalarFunction<P_V,P_M>& likelihoodFunction)
   :
   m_env               (priorRv.env()),
