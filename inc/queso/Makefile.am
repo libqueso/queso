@@ -93,7 +93,7 @@ BUILT_SOURCES += UniformOneDGrid.h
 BUILT_SOURCES += FiniteDistribution.h
 BUILT_SOURCES += InfoTheory.h
 BUILT_SOURCES += JointPdf.h
-BUILT_SOURCES += MLSampling1.h
+BUILT_SOURCES += MLSampling.h
 BUILT_SOURCES += MLSamplingLevelOptions.h
 BUILT_SOURCES += MLSamplingOptions.h
 BUILT_SOURCES += MarkovChainPositionData.h
@@ -297,7 +297,7 @@ InfoTheory.h: $(top_srcdir)/src/stats/inc/InfoTheory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 JointPdf.h: $(top_srcdir)/src/stats/inc/JointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-MLSampling1.h: $(top_srcdir)/src/stats/inc/MLSampling1.h
+MLSampling.h: $(top_srcdir)/src/stats/inc/MLSampling.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 MLSamplingLevelOptions.h: $(top_srcdir)/src/stats/inc/MLSamplingLevelOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

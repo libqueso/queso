@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <queso/MLSampling1.h>
+#include <queso/MLSampling.h>
 #include <queso/InstantiateIntersection.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
