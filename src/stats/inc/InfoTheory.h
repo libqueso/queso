@@ -69,41 +69,7 @@ template<template <class P_V, class P_M> class RV, class P_V, class P_M>
 double estimateMI_ANN( const RV<P_V,P_M>& jointRV, 
 		       const unsigned int xDimSel[], unsigned int dimX,
 		       const unsigned int yDimSel[], unsigned int dimY,
-		       unsigned int k, unsigned int N, double eps )
-{
-  ANNpointArray dataXY;
-  double MI_est;
-
-  unsigned int dimXY = dimX + dimY;
-
-  // Allocate memory
-  dataXY = annAllocPts(N,dimXY);
-
-  // Copy samples in ANN data structure
-  P_V smpRV( jointRV.imageSet().vectorSpace().zeroVector() );
-  for( unsigned int i = 0; i < N; i++ ) {
-    // get a sample from the distribution
-    jointRV.realizer().realization( smpRV );
-
-    // copy the vector values in the ANN data structure
-    for( unsigned int j = 0; j < dimX; j++ ) {
-      dataXY[ i ][ j ] = smpRV[ xDimSel[j] ];
-    }
-    for( unsigned int j = 0; j < dimY; j++ ) {
-      dataXY[ i ][ dimX + j ] = smpRV[ yDimSel[j] ];
-    }
-    // annPrintPt( dataXY[i], dimXY, std::cout ); std::cout << std::endl;
-  }
-
-  MI_est = computeMI_ANN( dataXY,
-			  dimX, dimY,
-			  k, N, eps );
-
-  // Deallocate memory
-  annDeallocPts( dataXY );
-
-  return MI_est;
-}
+		       unsigned int k, unsigned int N, double eps );
 
 //*****************************************************
 // Function: estimateMI_ANN (using two seperate RVs)
@@ -116,44 +82,7 @@ double estimateMI_ANN( const RV_1<P_V,P_M>& xRV,
 		       const RV_2<P_V,P_M>& yRV, 
 		       const unsigned int xDimSel[], unsigned int dimX,
 		       const unsigned int yDimSel[], unsigned int dimY,
-		       unsigned int k, unsigned int N, double eps )
-{
-  ANNpointArray dataXY;
-  double MI_est;
-
-  unsigned int dimXY = dimX + dimY;
-
-  // Allocate memory
-  dataXY = annAllocPts(N,dimXY);
-
-  // Copy samples in ANN data structure
-  P_V smpRV_x( xRV.imageSet().vectorSpace().zeroVector() );
-  P_V smpRV_y( yRV.imageSet().vectorSpace().zeroVector() );
-
-  for( unsigned int i = 0; i < N; i++ ) {
-    // get a sample from the distribution
-    xRV.realizer().realization( smpRV_x );
-    yRV.realizer().realization( smpRV_y );
-
-    // copy the vector values in the ANN data structure
-    for( unsigned int j = 0; j < dimX; j++ ) {
-      dataXY[ i ][ j ] = smpRV_x[ xDimSel[j] ];
-    }
-    for( unsigned int j = 0; j < dimY; j++ ) {
-      dataXY[ i ][ dimX + j ] = smpRV_y[ yDimSel[j] ];
-    }
-    // annPrintPt( dataXY[i], dimXY, std::cout ); std::cout << std::endl;
-  }
-
-  MI_est = computeMI_ANN( dataXY,
-			  dimX, dimY,
-			  k, N, eps );
-
-  // Deallocate memory
-  annDeallocPts( dataXY );
-
-  return MI_est;
-}
+		       unsigned int k, unsigned int N, double eps );
 
 //*****************************************************
 // Function: estimateKL_ANN
@@ -167,69 +96,7 @@ double estimateKL_ANN( RV_1<P_V,P_M>& xRV,
 		       unsigned int xDimSel[], unsigned int dimX,
 		       unsigned int yDimSel[], unsigned int dimY,
 		       unsigned int xN, unsigned int yN,
-		       unsigned int k, double eps )
-{
-  ANNpointArray dataX;
-  ANNpointArray dataY;
-  double* distsX;
-  double* distsXY;
-  double KL_est;
-
-  // sanity check
-  if( dimX != dimY ) {
-    std::cout << "Error-KL: the dimensions should agree" << std::endl;
-    queso_error();
-  }
-
-  // Allocate memory
-  dataX = annAllocPts( xN, dimX );
-  dataY = annAllocPts( yN, dimY );
-  distsX = new double[xN];
-  distsXY = new double[xN];
-  
-  // Copy X samples in ANN data structure
-  P_V xSmpRV( xRV.imageSet().vectorSpace().zeroVector() );
-  for( unsigned int i = 0; i < xN; i++ ) {
-    // get a sample from the distribution
-    xRV.realizer().realization( xSmpRV );
-    // copy the vector values in the ANN data structure
-    for( unsigned int j = 0; j < dimX; j++ ) {
-      dataX[ i ][ j ] = xSmpRV[ xDimSel[j] ];
-    }
-  }
-
-  // Copy Y samples in ANN data structure
-  P_V ySmpRV( yRV.imageSet().vectorSpace().zeroVector() );
-  for( unsigned int i = 0; i < yN; i++ ) {
-    // get a sample from the distribution
-    yRV.realizer().realization( ySmpRV );
-    // copy the vector values in the ANN data structure
-    for( unsigned int j = 0; j < dimY; j++ ) {
-      dataY[ i ][ j ] = ySmpRV[ yDimSel[j] ];
-    }
-  }
-
-  // Get distance to knn for each point
-  distANN_XY( dataX, dataX, distsX, dimX, dimX, xN, xN, k+1, eps ); // k+1 because the 1st nn is itself
-  distANN_XY( dataX, dataY, distsXY, dimX, dimY, xN, yN, k, eps );
-  
-  // Compute KL-divergence estimate
-  double sum_log_ratio = 0.0;
-  for( unsigned int i = 0; i < xN; i++ ) 
-    {
-      sum_log_ratio += log( distsXY[i] / distsX[i] );
-    }
-  KL_est = (double)dimX/(double)xN * sum_log_ratio + log( (double)yN / ((double)xN-1.0 ) );
-
-  // Deallocate memory
-  annDeallocPts( dataX );
-  annDeallocPts( dataY );
-  delete [] distsX;
-  delete [] distsXY;
-
-  return KL_est;
-}
-
+		       unsigned int k, double eps );
 
 //*****************************************************
 // Function: estimateCE_ANN
@@ -243,67 +110,7 @@ double estimateCE_ANN( RV_1<P_V,P_M>& xRV,
 		       unsigned int xDimSel[], unsigned int dimX,
 		       unsigned int yDimSel[], unsigned int dimY,
 		       unsigned int xN, unsigned int yN,
-		       unsigned int k, double eps )
-{
-  ANNpointArray dataX;
-  ANNpointArray dataY;
-  double* distsXY;
-  double CE_est;
-  ANNkd_tree* kdTree;
-
-  // sanity check
-  if( dimX != dimY ) {
-    std::cout << "Error-CE: the dimensions should agree" << std::endl;
-    queso_error();
-  }
-
-  // Allocate memory
-  dataX = annAllocPts( xN, dimX );
-  dataY = annAllocPts( yN, dimY );
-  distsXY = new double[xN];
-  kdTree = new ANNkd_tree( dataY, yN, dimY );
-  
-  // Copy X samples in ANN data structure
-  P_V xSmpRV( xRV.imageSet().vectorSpace().zeroVector() );
-  for( unsigned int i = 0; i < xN; i++ ) {
-    // get a sample from the distribution
-    xRV.realizer().realization( xSmpRV );
-    // copy the vector values in the ANN data structure
-    for( unsigned int j = 0; j < dimX; j++ ) {
-      dataX[ i ][ j ] = xSmpRV[ xDimSel[j] ];
-    }
-  }
-
-  // Copy Y samples in ANN data structure
-  P_V ySmpRV( yRV.imageSet().vectorSpace().zeroVector() );
-  for( unsigned int i = 0; i < yN; i++ ) {
-    // get a sample from the distribution
-    yRV.realizer().realization( ySmpRV );
-    // copy the vector values in the ANN data structure
-    for( unsigned int j = 0; j < dimY; j++ ) {
-      dataY[ i ][ j ] = ySmpRV[ yDimSel[j] ];
-    }
-  }
-
-  // Get distance to knn for each point
-  distANN_XY( dataX, dataY, distsXY, dimX, dimY, xN, yN, k, eps );
-  kdTree = new ANNkd_tree( dataY, yN, dimY );
-
-  // Compute cross entropy estimate
-  double sum_log = 0.0;
-  for( unsigned int i = 0; i < xN; i++ ) 
-    {
-      sum_log += log( distsXY[i] );
-    }
-  CE_est = (double)dimX/(double)xN * sum_log + log( (double)yN ) - gsl_sf_psi_int( k );
-
-  // Deallocate memory
-  annDeallocPts( dataX );
-  annDeallocPts( dataY );
-  delete [] distsXY;
-
-  return CE_est;
-}
+		       unsigned int k, double eps );
 
 }  // End namespace QUESO
 
