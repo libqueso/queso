@@ -31,6 +31,14 @@
 
 #include <queso/VectorSpace.h>
 #include <queso/JointPdf.h>
+#include <queso/GaussianJointPdf.h>
+#include <queso/BetaJointPdf.h>
+#include <queso/GammaJointPdf.h>
+#include <queso/UniformJointPdf.h>
+#include <queso/InverseGammaJointPdf.h>
+#include <queso/WignerJointPdf.h>
+#include <queso/LogNormalJointPdf.h>
+#include <queso/ConcatenatedJointPdf.h>
 #include <queso/VectorRealizer.h>
 #include <queso/VectorCdf.h>
 #include <queso/VectorMdf.h>

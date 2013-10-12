@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <GenericJointPdf.h>
+#include <queso/GenericJointPdf.h>
 
 namespace QUESO {
 

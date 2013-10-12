@@ -27,6 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <queso/BayesianJointPdf.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -278,3 +280,5 @@ BayesianJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, 
 }
 
 }  // End namespace QUESO
+
+template class QUESO::BayesianJointPdf<QUESO::GslVector, QUESO::GslMatrix>;

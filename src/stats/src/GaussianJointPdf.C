@@ -27,6 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <queso/GaussianJointPdf.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -288,3 +290,5 @@ GaussianJointPdf<V,M>::lawCovMatrix() const
 }
 
 }  // End namespace QUESO
+
+template class QUESO::GaussianJointPdf<QUESO::GslVector, QUESO::GslMatrix>;

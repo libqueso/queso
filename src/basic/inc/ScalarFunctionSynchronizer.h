@@ -30,7 +30,7 @@
 #define UQ_SCALAR_FUNCTION_SYNCHRONIZER_H
 
 #include <queso/Environment.h>
-#include <queso/JointPdf.h>
+#include <queso/BayesianJointPdf.h>
 
 namespace QUESO {
 
