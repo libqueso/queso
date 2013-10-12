@@ -174,6 +174,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MonteCarloSGOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StatisticalInverseProblemOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StatisticalForwardProblemOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/InfoTheory.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MarkovChainPositionData.C
 
 # Sources from gp/src
 
