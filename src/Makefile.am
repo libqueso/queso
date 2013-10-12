@@ -343,6 +343,7 @@ endif
 #---------------------------------
 
 if GIT_CLONE
+EXTRA_DIST = $(top_srcdir)/src/common/lic_utils/update_license.pl
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE \
 	$(libqueso_include_HEADERS) $(libqueso_la_SOURCES) $(top_srcdir)/src/core/inc/queso.h
