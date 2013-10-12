@@ -46,7 +46,7 @@ namespace QUESO {
 //--------------------------------------------------
 // MHRawChainInfoStruct --------------------------
 //--------------------------------------------------
- /*! \file MetropolisHastingsSG1.h
+ /*! \file MetropolisHastingsSG.h
  * \brief A templated class that represents a Metropolis-Hastings generator of samples and a struct which stores its info.
  *
  * \struct  MHRawChainInfoStruct

@@ -26,7 +26,7 @@
 //
 //--------------------------------------------------------------------------
 
-#include <queso/MetropolisHastingsSG1.h>
+#include <queso/MetropolisHastingsSG.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 

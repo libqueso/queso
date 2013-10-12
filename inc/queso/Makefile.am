@@ -100,7 +100,7 @@ BUILT_SOURCES += MLSamplingLevelOptions.h
 BUILT_SOURCES += MLSamplingOptions.h
 BUILT_SOURCES += MarkovChainPositionData.h
 BUILT_SOURCES += MatrixCovarianceFunction.h
-BUILT_SOURCES += MetropolisHastingsSG1.h
+BUILT_SOURCES += MetropolisHastingsSG.h
 BUILT_SOURCES += MetropolisHastingsSGOptions.h
 BUILT_SOURCES += ModelValidation.h
 BUILT_SOURCES += MonteCarloSG.h
@@ -312,7 +312,7 @@ MarkovChainPositionData.h: $(top_srcdir)/src/stats/inc/MarkovChainPositionData.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 MatrixCovarianceFunction.h: $(top_srcdir)/src/stats/inc/MatrixCovarianceFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-MetropolisHastingsSG1.h: $(top_srcdir)/src/stats/inc/MetropolisHastingsSG1.h
+MetropolisHastingsSG.h: $(top_srcdir)/src/stats/inc/MetropolisHastingsSG.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 MetropolisHastingsSGOptions.h: $(top_srcdir)/src/stats/inc/MetropolisHastingsSGOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
