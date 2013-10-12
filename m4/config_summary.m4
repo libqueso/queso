@@ -37,7 +37,7 @@ echo Build user.................... : $USER
 echo Build host.................... : $BUILD_HOST
 echo Configure date................ : $BUILD_DATE
 echo Build architecture............ : $BUILD_ARCH
-echo SVN revision number........... : $BUILD_VERSION
+echo Source control revision....... : $BUILD_VERSION
 echo
 echo Optional Features:
 

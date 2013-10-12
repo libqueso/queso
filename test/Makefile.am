@@ -1,6 +1,6 @@
 SUBDIRS    = t01_valid_cycle t02_sip_sfp t03_sequence t04_bimodal
 
-if SVN_CHECKOUT
+if GIT_CLONE
 BUILT_SOURCES = .license.stamp
 endif
 
@@ -139,7 +139,7 @@ if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
 endif
 
-if SVN_CHECKOUT
+if GIT_CLONE
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(srcstamp)
 	echo 'updated source license headers' >$@
