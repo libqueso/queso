@@ -266,7 +266,6 @@ libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/FiniteDistribution.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/JointPdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MarkovChainPositionData.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MetropolisHastingsSG1.h
-libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MetropolisHastingsSG2.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MetropolisHastingsSGOptions.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MLSampling1.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MLSampling2.h
