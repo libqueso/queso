@@ -147,5 +147,16 @@ DISTCLEANFILES += test/outputData/*
 DISTCLEANFILES += aminclude.am
 DISTCLEANFILES += config_queso.h
 
+CLEANFILES =
+if GIT_CLONE
+CLEANFILES += src/.license.stamp
+CLEANFILES += test/.license.stamp
+CLEANFILES += test/gsl_tests/.license.stamp
+CLEANFILES += test/t01_valid_cycle/.license.stamp
+CLEANFILES += test/t02_sip_sfp/.license.stamp
+CLEANFILES += test/t03_sequence/.license.stamp
+CLEANFILES += test/t04_bimodal/.license.stamp
+endif
+
 # Required for AX_AM_MACROS
 #@INC_AMINCLUDE@

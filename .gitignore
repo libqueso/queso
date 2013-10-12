@@ -16,6 +16,7 @@ aclocal.m4
 aminclude.am
 autom4te.cache
 build-aux
+.license.stamp
 
 _configs.sed
 config.log
@@ -92,3 +93,4 @@ test/test_inf_options
 test/test_infinite/inf_options
 test/test_operator
 test/test_uqexception
+test/test_SequenceOfVectorsErase

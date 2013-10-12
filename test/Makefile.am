@@ -1,6 +1,6 @@
 SUBDIRS    = t01_valid_cycle t02_sip_sfp t03_sequence t04_bimodal
 
-if SVN_CHECKOUT
+if GIT_CLONE
 BUILT_SOURCES = .license.stamp
 endif
 
@@ -90,6 +90,15 @@ srcstamp += $(test_uqGslVector_SOURCES)
 srcstamp += $(test_uqGaussianVectorRVClass_SOURCES)
 srcstamp += $(test_uqGslMatrixConstructorFatal_SOURCES)
 srcstamp += $(test_uqGslMatrix_SOURCES)
+srcstamp += $(test_uqTeuchosVector_SOURCES)
+srcstamp += $(test_uqexception_SOURCES)
+srcstamp += $(test_DistArrayCtor_SOURCES)
+srcstamp += $(test_DistArrayCopy_SOURCES)
+srcstamp += $(test_DistArrayEquals_SOURCES)
+srcstamp += $(test_DistArrayMisc_SOURCES)
+srcstamp += $(test_GslVectorSpaceCtor_SOURCES)
+srcstamp += $(test_GslVectorSpaceMisc_SOURCES)
+srcstamp += $(test_IntersectionSubsetContains_SOURCES)
 srcstamp += $(test_operator_SOURCES)
 srcstamp += $(test_inf_gaussian_SOURCES)
 srcstamp += $(test_inf_options_SOURCES)
@@ -139,7 +148,7 @@ if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
 endif
 
-if SVN_CHECKOUT
+if GIT_CLONE
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(srcstamp)
 	echo 'updated source license headers' >$@
