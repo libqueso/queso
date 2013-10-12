@@ -26,8 +26,8 @@
 //
 //--------------------------------------------------------------------------
 
-#ifndef UQ_MULTI_LEVEL_SAMPLING1_H
-#define UQ_MULTI_LEVEL_SAMPLING1_H
+#ifndef UQ_MULTI_LEVEL_SAMPLING_H
+#define UQ_MULTI_LEVEL_SAMPLING_H
 
 #define ML_NEW_CODE_2009_12_29
 
@@ -126,7 +126,6 @@ public:
   void   print           (std::ostream& os) const;
 
 private:
-  // Methods available at uqMLSampling2.h
   void   checkpointML                  (double                                          currExponent,                       // input
                                         double                                          currEta,                            // input
                                         const SequenceOfVectors<P_V,P_M>&        currChain,                          // input
@@ -227,7 +226,6 @@ private:
                                         ScalarSequence<double>&                  currLogTargetValues,                // input/output
                                         unsigned int&                                   unifiedNumberOfRejections);         // output
 
-  // Methods available at uqMLSampling3.h
   void   sampleIndexes_proc0           (unsigned int                                    unifiedRequestedNumSamples,         // input
                                         const std::vector<double>&                      unifiedWeightStdVectorAtProc0Only,  // input
                                         std::vector<unsigned int>&                      unifiedIndexCountersAtProc0Only);   // output
@@ -303,4 +301,4 @@ private:
 
 }  // End namespace QUESO
 
-#endif // UQ_MULTI_LEVEL_SAMPLING1_H
+#endif // UQ_MULTI_LEVEL_SAMPLING_H
