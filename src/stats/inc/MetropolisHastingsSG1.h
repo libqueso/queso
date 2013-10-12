@@ -21,7 +21,7 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
+//
 // $Id$
 //
 //--------------------------------------------------------------------------
@@ -48,24 +48,24 @@ namespace QUESO {
 //--------------------------------------------------
  /*! \file uqMetropolisHastingsSG1.h
  * \brief A templated class that represents a Metropolis-Hastings generator of samples and a struct which stores its info.
- * 
+ *
  * \struct  MHRawChainInfoStruct
  * \brief A struct that represents a Metropolis-Hastings sample.
- * 
+ *
  * Some of the information about the  Metropolis-Hastings sample generator includes the allowed number
- * of delayed rejections, number of rejections, number of positions in or out of target support, and 
+ * of delayed rejections, number of rejections, number of positions in or out of target support, and
  * so on. This struct is responsible for the storage of such info. */
 
 struct MHRawChainInfoStruct
 {
  //! @name Constructor/Destructor methods
  //@{
- //! Constructor. 
+ //! Constructor.
   MHRawChainInfoStruct();
-  
-  //! Copy constructor. 
+
+  //! Copy constructor.
   MHRawChainInfoStruct(const MHRawChainInfoStruct& rhs);
-  
+
   //! Destructor
   ~MHRawChainInfoStruct();
   //@}
@@ -74,23 +74,23 @@ struct MHRawChainInfoStruct
   //@{
   //! Assignment operator.
   MHRawChainInfoStruct& operator= (const MHRawChainInfoStruct& rhs);
-  
+
   //! Addition assignment operator.
   MHRawChainInfoStruct& operator+=(const MHRawChainInfoStruct& rhs);
   //@}
-  
+
    //! @name Misc methods
   //@{
   //! Copies Metropolis-Hastings chain info from \c src to \c this.
   void copy  (const MHRawChainInfoStruct& src);
-  
+
   //! Resets Metropolis-Hastings chain info.
   void reset ();
-  
+
   //! Calculates the MPI sum of \c this.
   void mpiSum(const MpiComm& comm, MHRawChainInfoStruct& sumInfo) const;
   //@}
-  
+
   double       runTime;
   double       candidateRunTime;
   double       targetRunTime;
@@ -115,9 +115,9 @@ struct MHRawChainInfoStruct
  * \brief A templated class that represents a Metropolis-Hastings generator of samples.
  *
  * This class implements a Metropolis-Hastings generator of samples. 'SG' stands for 'Sequence Generator'.
- * Options reading is handled by class 'MetropolisHastingsOptions'. If options request data to be 
- * written in the output file (MATLAB .m format only, for now), the user can check which MATLAB variables 
- * are defined and set by running 'grep zeros <OUTPUT FILE NAME>' after the solution procedures ends. 
+ * Options reading is handled by class 'MetropolisHastingsOptions'. If options request data to be
+ * written in the output file (MATLAB .m format only, for now), the user can check which MATLAB variables
+ * are defined and set by running 'grep zeros <OUTPUT FILE NAME>' after the solution procedures ends.
  * The names of the variables are self explanatory. */
 
 template <class P_V,class P_M>
@@ -128,11 +128,11 @@ public:
   //@{
   //! Constructor.
   /*! This method reads the options from the options input file. It calls commonConstructor().
-   * Requirements: 1) the image set of the vector random variable 'sourceRv' should belong to a 
-   * vector space of dimension equal to the size of the vector 'initialPosition' and 2) if 
+   * Requirements: 1) the image set of the vector random variable 'sourceRv' should belong to a
+   * vector space of dimension equal to the size of the vector 'initialPosition' and 2) if
    * 'inputProposalCovMatrix' is not NULL, is should be square and its size should be equal to the
-   * size of 'initialPosition'. If the requirements are satisfied, the constructor then reads input 
-   * options that begin with the string '\<prefix\>_mh_'. For instance, if 'prefix' is 
+   * size of 'initialPosition'. If the requirements are satisfied, the constructor then reads input
+   * options that begin with the string '\<prefix\>_mh_'. For instance, if 'prefix' is
    * 'pROblem_775_ip_', then the constructor will read all options that begin with 'pROblem_775_ip_mh_'.
     Options reading is handled by class 'MetropolisHastingsOptions'.*/
   MetropolisHastingsSG(const char*                         prefix,
@@ -140,48 +140,48 @@ public:
                               const BaseVectorRV<P_V,P_M>& sourceRv,
                               const P_V&                          initialPosition,
                               const P_M*                          inputProposalCovMatrix);
-  
+
   //! Constructor.
   MetropolisHastingsSG(const MLSamplingLevelOptions& mlOptions,
                               const BaseVectorRV<P_V,P_M>&  sourceRv,
                               const P_V&                           initialPosition,
                               const P_M*                           inputProposalCovMatrix);
- 
+
   //! Destructor
   ~MetropolisHastingsSG();
   //@}
- 
+
   //! @name Statistical methods
   //@{
- //! Method to generate the chain. 
+ //! Method to generate the chain.
  /*! Requirement: the vector space 'm_vectorSpace' should have dimension equal to the size of a
-  * vector in 'workingChain'. If the requirement is satisfied, this operation sets the size and 
+  * vector in 'workingChain'. If the requirement is satisfied, this operation sets the size and
   * the contents of 'workingChain' using the algorithm options set in the constructor. If not NULL,
-  * 'workingLogLikelihoodValues' and 'workingLogTargetValues' are set accordingly. This operation 
+  * 'workingLogLikelihoodValues' and 'workingLogTargetValues' are set accordingly. This operation
   * currently implements the DRAM algorithm (Heikki Haario, Marko Laine, Antonietta Mira and
-  * Eero Saksman, "DRAM: Efficient Adaptive MCMC", Statistics and Computing (2006), 16:339-354), 
-  * as a translation of the core routine at the MCMC toolbox for MATLAB, available at 
-  *  \htmlonly helios.fmi.fi/~lainema/mcmc/‎ \endhtmlonly (accessed in July 3rd, 2013). Indeed, 
-  * the example available in examples/statisticalInverseProblem is closely related to the 
+  * Eero Saksman, "DRAM: Efficient Adaptive MCMC", Statistics and Computing (2006), 16:339-354),
+  * as a translation of the core routine at the MCMC toolbox for MATLAB, available at
+  *  \htmlonly helios.fmi.fi/~lainema/mcmc/‎ \endhtmlonly (accessed in July 3rd, 2013). Indeed,
+  * the example available in examples/statisticalInverseProblem is closely related to the
   * 'normal example' in the toolbox. Over time, though:
   <list type=number>
-  <item> the whole set of QUESO classes took shape, focusing not only on Markov Chains, but on 
+  <item> the whole set of QUESO classes took shape, focusing not only on Markov Chains, but on
   statistical forward problems and model validation as well;
   <item> the interfaces to this Metropolis-Hastings class changed;
   <item> QUESO has parallel capabilities;
-  <item> TK (transition kernel) class has been added in order to have both DRAM with Stochastic 
+  <item> TK (transition kernel) class has been added in order to have both DRAM with Stochastic
   Newton capabilities.
   </list>
   */
   void         generateSequence   (BaseVectorSequence<P_V,P_M>& workingChain,
                                    ScalarSequence<double>*      workingLogLikelihoodValues,
                                    ScalarSequence<double>*      workingLogTargetValues);
-  
+
   //! Gets information from the raw chain.
   void         getRawChainInfo    (MHRawChainInfoStruct& info) const;
 
    //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the sequence.
@@ -192,31 +192,31 @@ public:
 private:
   //! Reads the options values from the options input file.
   /*!  This method \b actually reads the options input file, such as the value for the Delayed Rejection
-   * scales, the presence of Hessian covariance matrices and reads the user-provided initial proposal 
+   * scales, the presence of Hessian covariance matrices and reads the user-provided initial proposal
    * covariance matrix (alternative to local Hessians).*/
   void   commonConstructor        ();
 
   //!  This method generates the chain.
   /*! Given the size of the chain, the values of the first position in the chain. It checks if the position
-   * is out of target pdf support, otherwise it calculates the value of both its likelihood and prior and 
-   * adds the position to the chain. For the next positions, once they are generated, some tests are 
+   * is out of target pdf support, otherwise it calculates the value of both its likelihood and prior and
+   * adds the position to the chain. For the next positions, once they are generated, some tests are
    * performed (such as unicity and the value of alpha) and the steps for the first position are repeated,
-   * including the optional Delayed Rejection and the adaptive Metropolis (adaptation of covariance matrix) 
+   * including the optional Delayed Rejection and the adaptive Metropolis (adaptation of covariance matrix)
    * steps.*/
   void   generateFullChain        (const P_V&                          valuesOf1stPosition,
                                    unsigned int                        chainSize,
                                    BaseVectorSequence<P_V,P_M>& workingChain,
                                    ScalarSequence<double>*      workingLogLikelihoodValues,
                                    ScalarSequence<double>*      workingLogTargetValues);
-  
+
   //! This method reads the chain contents.
   void   readFullChain            (const std::string&                  inputFileName,
                                    const std::string&                  inputFileType,
                                    unsigned int                        chainSize,
                                    BaseVectorSequence<P_V,P_M>& workingChain);
-  
+
   //! This method updates the adapted covariance matrix
-  /*! This function is called is the option to used adaptive Metropolis was chosen by the user 
+  /*! This function is called is the option to used adaptive Metropolis was chosen by the user
    * (via options input file). It performs an adaptation of covariance matrix. */
   void   updateAdaptedCovMatrix   (const BaseVectorSequence<P_V,P_M>&  subChain,
                                    unsigned int                               idOfFirstPositionInSubChain,
@@ -232,12 +232,12 @@ private:
                                    unsigned int                               xStageId,
                                    unsigned int                               yStageId,
                                    double*                                    alphaQuotientPtr = NULL);
-  
+
   //! Calculates acceptance ration.
   /*! The acceptance ratio is used to decide whether to accept or reject a candidate. */
   double alpha                    (const std::vector<MarkovChainPositionData<P_V>*>& inputPositions,
                                    const std::vector<unsigned int                        >& inputTKStageIds);
-  
+
   //! Decides whether or not to accept alpha.
   /*! If either alpha is negative or greater than one, its value will not be accepted.*/
   bool   acceptAlpha              (double                                     alpha);
@@ -278,11 +278,11 @@ std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSG<P_V,P_M>& 
 
 // Statistical methods -----------------------------
 /* This operation currently implements the DRAM algorithm (Heikki Haario, Marko
- * Laine, Antonietta Mira and Eero Saksman, "DRAM: Efficient Adaptive MCMC", 
- * Statistics and Computing (2006), 16:339-354). It also provides support for 
+ * Laine, Antonietta Mira and Eero Saksman, "DRAM: Efficient Adaptive MCMC",
+ * Statistics and Computing (2006), 16:339-354). It also provides support for
  * Stochastic Newton algorithm through the TK (transition kernel) class. Stochastic
  * Newton is not totally implemented yet though, since it is being researched by
- * James Martin and Omar Ghattas at ICES at the University of Texas at Austin.*/    
+ * James Martin and Omar Ghattas at ICES at the University of Texas at Austin.*/
 template <class P_V,class P_M>
 void
 MetropolisHastingsSG<P_V,P_M>::generateSequence(
@@ -839,11 +839,11 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
   //****************************************************
   // Set chain position with positionId = 0
   //****************************************************
-  workingChain.resizeSequence(chainSize); 
+  workingChain.resizeSequence(chainSize);
   m_numPositionsNotSubWritten = 0;
   if (workingLogLikelihoodValues) workingLogLikelihoodValues->resizeSequence(chainSize);
   if (workingLogTargetValues    ) workingLogTargetValues->resizeSequence    (chainSize);
-  if (true/*m_uniqueChainGenerate*/) m_idsOfUniquePositions.resize(chainSize,0); 
+  if (true/*m_uniqueChainGenerate*/) m_idsOfUniquePositions.resize(chainSize,0);
   if (m_optionsObj->m_ov.m_rawChainGenerateExtra) {
     m_logTargets.resize    (chainSize,0.);
     m_alphaQuotients.resize(chainSize,0.);
@@ -852,11 +852,11 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
   unsigned int uniquePos = 0;
   workingChain.setPositionValues(0,currentPositionData.vecValues());
   m_numPositionsNotSubWritten++;
-  if ((m_optionsObj->m_ov.m_rawChainDataOutputPeriod           >  0  ) && 
+  if ((m_optionsObj->m_ov.m_rawChainDataOutputPeriod           >  0  ) &&
       (((0+1) % m_optionsObj->m_ov.m_rawChainDataOutputPeriod) == 0  ) &&
       (m_optionsObj->m_ov.m_rawChainDataOutputFileName         != ".")) {
     workingChain.subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                  m_optionsObj->m_ov.m_rawChainDataOutputPeriod, 
+                                  m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                   m_optionsObj->m_ov.m_rawChainDataOutputFileName,
                                   m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                   m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
@@ -870,7 +870,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
 
     if (workingLogLikelihoodValues) {
       workingLogLikelihoodValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                                   m_optionsObj->m_ov.m_rawChainDataOutputPeriod, 
+                                                   m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                    m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
                                                    m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                                    m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
@@ -878,7 +878,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
 
     if (workingLogTargetValues) {
       workingLogTargetValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                               m_optionsObj->m_ov.m_rawChainDataOutputPeriod, 
+                                               m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
                                                m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                                m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
@@ -1138,7 +1138,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         tkStageIds[0] = 0;
         tkStageIds[1] = 1;
 
-        while ((validPreComputingPosition == true                 ) && 
+        while ((validPreComputingPosition == true                 ) &&
                (accept                    == false                ) &&
                (stageId < m_optionsObj->m_ov.m_drMaxNumExtraStages)) {
           if ((m_env.subDisplayFile()                   ) &&
@@ -1172,7 +1172,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
             if (m_optionsObj->m_ov.m_putOutOfBoundsInChain) keepGeneratingCandidates = false;
             else                                            keepGeneratingCandidates = outOfTargetSupport;
           }
-  
+
           if ((m_env.subDisplayFile()                   ) &&
               (m_env.displayVerbosity() >= 5            ) &&
               (m_optionsObj->m_ov.m_totallyMute == false)) {
@@ -1274,7 +1274,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
       m_rawChainInfo.numRejections++;
     }
     m_numPositionsNotSubWritten++;
-    if ((m_optionsObj->m_ov.m_rawChainDataOutputPeriod                    >  0  ) && 
+    if ((m_optionsObj->m_ov.m_rawChainDataOutputPeriod                    >  0  ) &&
         (((positionId+1) % m_optionsObj->m_ov.m_rawChainDataOutputPeriod) == 0  ) &&
         (m_optionsObj->m_ov.m_rawChainDataOutputFileName                  != ".")) {
       if ((m_env.subDisplayFile()                   ) &&
@@ -1287,7 +1287,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
                                 << std::endl;
       }
       workingChain.subWriteContents(positionId + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                    m_optionsObj->m_ov.m_rawChainDataOutputPeriod, 
+                                    m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                     m_optionsObj->m_ov.m_rawChainDataOutputFileName,
                                     m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                     m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
@@ -1302,7 +1302,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
 
       if (workingLogLikelihoodValues) {
         workingLogLikelihoodValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                                     m_optionsObj->m_ov.m_rawChainDataOutputPeriod, 
+                                                     m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                      m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
                                                      m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                                      m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
@@ -1310,7 +1310,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
 
       if (workingLogTargetValues) {
         workingLogTargetValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                                 m_optionsObj->m_ov.m_rawChainDataOutputPeriod, 
+                                                 m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                  m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
                                                  m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                                  m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
@@ -1330,18 +1330,18 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     if( m_optionsObj->m_ov.m_enableBrooksGelmanConvMonitor > 0 ) {
       if( positionId%m_optionsObj->m_ov.m_enableBrooksGelmanConvMonitor == 0 &&
     positionId > m_optionsObj->m_ov.m_BrooksGelmanLag+1 ) { //+1 to help ensure there are at least 2 samples to use
-  
+
   double conv_est = workingChain.estimateConvBrooksGelman( m_optionsObj->m_ov.m_BrooksGelmanLag,
                  positionId - m_optionsObj->m_ov.m_BrooksGelmanLag );
 
   if ( m_env.subDisplayFile() ) {
-      *m_env.subDisplayFile() << "positionId = " << positionId 
+      *m_env.subDisplayFile() << "positionId = " << positionId
             << ", conv_est = " << conv_est << std::endl;
       (*m_env.subDisplayFile()).flush();
   }
       }
     }
-      
+
     //****************************************************
     // Point 5/6 of logic for new position
     // Loop: adaptive Metropolis (adaptation of covariance matrix)
@@ -1552,7 +1552,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
                               << std::endl;
     }
 
-    if ((m_optionsObj->m_ov.m_rawChainDisplayPeriod                     > 0) && 
+    if ((m_optionsObj->m_ov.m_rawChainDisplayPeriod                     > 0) &&
         (((positionId+1) % m_optionsObj->m_ov.m_rawChainDisplayPeriod) == 0)) {
       if ((m_env.subDisplayFile()                   ) &&
           (m_optionsObj->m_ov.m_totallyMute == false)) {
@@ -1699,7 +1699,7 @@ MetropolisHastingsSG<P_V,P_M>::updateAdaptedCovMatrix(
       double ratio2         = (1./(1.+doubleCurrentId));
       lastAdaptedCovMatrix  = ratio1 * lastAdaptedCovMatrix + ratio2 * matrixProduct(diffVec,diffVec);
       lastMean             += ratio2 * diffVec;
-    } 
+    }
   }
   lastChainSize += doubleSubChainSize;
 
