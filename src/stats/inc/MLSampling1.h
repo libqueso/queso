@@ -32,7 +32,7 @@
 #define ML_NEW_CODE_2009_12_29
 
 #include <queso/MLSamplingOptions.h>
-#include <queso/MetropolisHastingsSG1.h>
+#include <queso/MetropolisHastingsSG.h>
 #include <queso/FiniteDistribution.h>
 #include <queso/VectorRV.h>
 #include <queso/VectorSpace.h>
