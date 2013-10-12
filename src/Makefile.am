@@ -174,6 +174,9 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MonteCarloSGOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StatisticalInverseProblemOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StatisticalForwardProblemOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/InfoTheory.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MatrixCovarianceFunction.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ExponentialMatrixCovarianceFunction.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GenericMatrixCovarianceFunction.C
 
 # Sources from gp/src
 
@@ -290,6 +293,8 @@ libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorRV.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/InfoTheory.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ScalarCovarianceFunction.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MatrixCovarianceFunction.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ExponentialMatrixCovarianceFunction.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GenericMatrixCovarianceFunction.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ScalarGaussianRandomField.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorGaussianRandomField.h
 

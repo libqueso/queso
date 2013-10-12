@@ -90,7 +90,9 @@ BUILT_SOURCES += Miscellaneous.h
 BUILT_SOURCES += OneDGrid.h
 BUILT_SOURCES += StdOneDGrid.h
 BUILT_SOURCES += UniformOneDGrid.h
+BUILT_SOURCES += ExponentialMatrixCovarianceFunction.h
 BUILT_SOURCES += FiniteDistribution.h
+BUILT_SOURCES += GenericMatrixCovarianceFunction.h
 BUILT_SOURCES += InfoTheory.h
 BUILT_SOURCES += JointPdf.h
 BUILT_SOURCES += MLSampling1.h
@@ -293,7 +295,11 @@ StdOneDGrid.h: $(top_srcdir)/src/misc/inc/StdOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 UniformOneDGrid.h: $(top_srcdir)/src/misc/inc/UniformOneDGrid.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ExponentialMatrixCovarianceFunction.h: $(top_srcdir)/src/stats/inc/ExponentialMatrixCovarianceFunction.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 FiniteDistribution.h: $(top_srcdir)/src/stats/inc/FiniteDistribution.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GenericMatrixCovarianceFunction.h: $(top_srcdir)/src/stats/inc/GenericMatrixCovarianceFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InfoTheory.h: $(top_srcdir)/src/stats/inc/InfoTheory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
