@@ -33,7 +33,7 @@
 
 namespace QUESO {
 
-/*! \file uqMarkovChainPositionData.h
+/*! \file MarkovChainPositionData.h
  * \brief A templated class that represents a Markov Chain.
  *
  * \class MarkovChainPositionData
@@ -105,6 +105,13 @@ public:
   //! TODO: Prints the Markov chain.
   /*! \todo: implement me!*/
   void     print             (std::ostream& os) const;
+  friend std::ostream& operator<<(std::ostream& os,
+      const MarkovChainPositionData<V>& obj)
+  {
+    obj.print(os);
+
+    return os;
+  }
   //@}
   
 private:
@@ -114,127 +121,6 @@ private:
   double m_logLikelihood;
   double m_logTarget;
 };
-
-// Constructor 1 -----------------------------------
-template <class V>
-MarkovChainPositionData<V>::MarkovChainPositionData(const BaseEnvironment& env)
-  :
-  m_env               (env),
-  m_vecValues         (NULL),
-  m_outOfTargetSupport(false),
-  m_logLikelihood     (0.),
-  m_logTarget         (0.)
-{
-}
-// Constructor 2 -----------------------------------
-template <class V>
-MarkovChainPositionData<V>::MarkovChainPositionData(
-  const BaseEnvironment& env,
-  const V& vecValues,
-  bool     outOfTargetSupport,
-  double   logLikelihood,
-  double   logTarget)
-  :
-  m_env               (env),
-  m_vecValues         (new V(vecValues)),
-  m_outOfTargetSupport(outOfTargetSupport),
-  m_logLikelihood     (logLikelihood),
-  m_logTarget         (logTarget)
-{
-}
-// Copy constructor---------------------------------
-template <class V>
-MarkovChainPositionData<V>::MarkovChainPositionData(const MarkovChainPositionData<V>& rhs)
-  :
-  m_env               (rhs.m_env               ),
-  m_vecValues         (new V(*rhs.m_vecValues )),
-  m_outOfTargetSupport(rhs.m_outOfTargetSupport),
-  m_logLikelihood     (rhs.m_logLikelihood     ),
-  m_logTarget         (rhs.m_logTarget         )
-{
-}
-// Destructor---------------------------------------
-template <class V>
-MarkovChainPositionData<V>::~MarkovChainPositionData()
-{
-  if (m_vecValues) delete m_vecValues;
-}
-// Set methods--------------------------------------
-template <class V>
-MarkovChainPositionData<V>&
-MarkovChainPositionData<V>::operator=(const MarkovChainPositionData<V>& rhs)
-{
-  if (m_vecValues == NULL) m_vecValues = new V(*rhs.m_vecValues);
-  else                    *m_vecValues = *rhs.m_vecValues;
-  m_outOfTargetSupport = rhs.m_outOfTargetSupport;
-  m_logLikelihood      = rhs.m_logLikelihood;
-  m_logTarget          = rhs.m_logTarget;
-
-  return *this;
-}
-
-// Statistical methods-------------------------------
-template <class V>
-const V&
-MarkovChainPositionData<V>::vecValues() const
-{
-  UQ_FATAL_TEST_MACRO((m_vecValues == NULL),
-                      m_env.worldRank(),
-                      "MarkovChainPositionData<V>::vecValues()",
-                      "m_vecValues is NULL");
-  return *m_vecValues;
-}
-
-//--------------------------------------------------
-template <class V>
-bool
-MarkovChainPositionData<V>::outOfTargetSupport() const
-{
-  return m_outOfTargetSupport;
-}
-
-//--------------------------------------------------
-template <class V>
-double
-MarkovChainPositionData<V>::logLikelihood() const
-{
-  return m_logLikelihood;
-}
-
-//--------------------------------------------------
-template <class V>
-double
-MarkovChainPositionData<V>::logTarget() const
-{
-  return m_logTarget;
-}
-//--------------------------------------------------
-template <class V>
-void
-MarkovChainPositionData<V>::set(
-  const V& vecValues,
-  bool     outOfTargetSupport,
-  double   logLikelihood,
-  double   logTarget)
-{
-  if (m_vecValues == NULL) m_vecValues = new V(vecValues);
-  else                    *m_vecValues = vecValues;
-  m_outOfTargetSupport = outOfTargetSupport;
-  m_logLikelihood      = logLikelihood;
-  m_logTarget          = logTarget;
-
-  return;
-}
-//--------------------------------------------------
-// Operator declared outside class definition-------
-//--------------------------------------------------
-template <class V>
-std::ostream& operator<<(std::ostream& os, const MarkovChainPositionData<V>& obj)
-{
-  obj.print(os);
-
-  return os;
-}
 
 }  // End namespace QUESO
 
