@@ -99,10 +99,12 @@ BUILT_SOURCES += FiniteDistribution.h
 BUILT_SOURCES += GammaJointPdf.h
 BUILT_SOURCES += GaussianJointPdf.h
 BUILT_SOURCES += GaussianVectorCdf.h
+BUILT_SOURCES += GaussianVectorMdf.h
 BUILT_SOURCES += GenericJointPdf.h
 BUILT_SOURCES += GenericMatrixCovarianceFunction.h
 BUILT_SOURCES += GenericScalarCovarianceFunction.h
 BUILT_SOURCES += GenericVectorCdf.h
+BUILT_SOURCES += GenericVectorMdf.h
 BUILT_SOURCES += HessianCovMatricesTKGroup.h
 BUILT_SOURCES += InfoTheory.h
 BUILT_SOURCES += InverseGammaJointPdf.h
@@ -121,6 +123,7 @@ BUILT_SOURCES += MonteCarloSGOptions.h
 BUILT_SOURCES += PoweredJointPdf.h
 BUILT_SOURCES += SampledScalarCdf.h
 BUILT_SOURCES += SampledVectorCdf.h
+BUILT_SOURCES += SampledVectorMdf.h
 BUILT_SOURCES += ScalarCdf.h
 BUILT_SOURCES += ScalarCovarianceFunction.h
 BUILT_SOURCES += ScalarGaussianRandomField.h
@@ -330,6 +333,8 @@ GaussianJointPdf.h: $(top_srcdir)/src/stats/inc/GaussianJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianVectorCdf.h: $(top_srcdir)/src/stats/inc/GaussianVectorCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianVectorMdf.h: $(top_srcdir)/src/stats/inc/GaussianVectorMdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GenericJointPdf.h: $(top_srcdir)/src/stats/inc/GenericJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GenericMatrixCovarianceFunction.h: $(top_srcdir)/src/stats/inc/GenericMatrixCovarianceFunction.h
@@ -337,6 +342,8 @@ GenericMatrixCovarianceFunction.h: $(top_srcdir)/src/stats/inc/GenericMatrixCova
 GenericScalarCovarianceFunction.h: $(top_srcdir)/src/stats/inc/GenericScalarCovarianceFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GenericVectorCdf.h: $(top_srcdir)/src/stats/inc/GenericVectorCdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GenericVectorMdf.h: $(top_srcdir)/src/stats/inc/GenericVectorMdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 HessianCovMatricesTKGroup.h: $(top_srcdir)/src/stats/inc/HessianCovMatricesTKGroup.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -373,6 +380,8 @@ PoweredJointPdf.h: $(top_srcdir)/src/stats/inc/PoweredJointPdf.h
 SampledScalarCdf.h: $(top_srcdir)/src/stats/inc/SampledScalarCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 SampledVectorCdf.h: $(top_srcdir)/src/stats/inc/SampledVectorCdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+SampledVectorMdf.h: $(top_srcdir)/src/stats/inc/SampledVectorMdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ScalarCdf.h: $(top_srcdir)/src/stats/inc/ScalarCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
