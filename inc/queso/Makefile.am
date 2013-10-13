@@ -101,6 +101,7 @@ BUILT_SOURCES += GaussianJointPdf.h
 BUILT_SOURCES += GenericJointPdf.h
 BUILT_SOURCES += GenericMatrixCovarianceFunction.h
 BUILT_SOURCES += GenericScalarCovarianceFunction.h
+BUILT_SOURCES += HessianCovMatricesTKGroup.h
 BUILT_SOURCES += InfoTheory.h
 BUILT_SOURCES += InverseGammaJointPdf.h
 BUILT_SOURCES += JointPdf.h
@@ -120,6 +121,7 @@ BUILT_SOURCES += SampledScalarCdf.h
 BUILT_SOURCES += ScalarCdf.h
 BUILT_SOURCES += ScalarCovarianceFunction.h
 BUILT_SOURCES += ScalarGaussianRandomField.h
+BUILT_SOURCES += ScaledCovMatrixTKGroup.h
 BUILT_SOURCES += StatisticalForwardProblem.h
 BUILT_SOURCES += StatisticalForwardProblemOptions.h
 BUILT_SOURCES += StatisticalInverseProblem.h
@@ -329,6 +331,8 @@ GenericMatrixCovarianceFunction.h: $(top_srcdir)/src/stats/inc/GenericMatrixCova
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GenericScalarCovarianceFunction.h: $(top_srcdir)/src/stats/inc/GenericScalarCovarianceFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+HessianCovMatricesTKGroup.h: $(top_srcdir)/src/stats/inc/HessianCovMatricesTKGroup.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InfoTheory.h: $(top_srcdir)/src/stats/inc/InfoTheory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InverseGammaJointPdf.h: $(top_srcdir)/src/stats/inc/InverseGammaJointPdf.h
@@ -366,6 +370,8 @@ ScalarCdf.h: $(top_srcdir)/src/stats/inc/ScalarCdf.h
 ScalarCovarianceFunction.h: $(top_srcdir)/src/stats/inc/ScalarCovarianceFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ScalarGaussianRandomField.h: $(top_srcdir)/src/stats/inc/ScalarGaussianRandomField.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ScaledCovMatrixTKGroup.h: $(top_srcdir)/src/stats/inc/ScaledCovMatrixTKGroup.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 StatisticalForwardProblem.h: $(top_srcdir)/src/stats/inc/StatisticalForwardProblem.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
