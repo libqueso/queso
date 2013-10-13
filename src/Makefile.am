@@ -202,6 +202,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ExponentialScalarCovarianceFu
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GenericScalarCovarianceFunction.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ScalarGaussianRandomField.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ValidationCycle.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/VectorGaussianRandomField.C
 
 # Sources from gp/src
 
