@@ -114,6 +114,7 @@ BUILT_SOURCES += ModelValidation.h
 BUILT_SOURCES += MonteCarloSG.h
 BUILT_SOURCES += MonteCarloSGOptions.h
 BUILT_SOURCES += PoweredJointPdf.h
+BUILT_SOURCES += SampledScalarCdf.h
 BUILT_SOURCES += ScalarCdf.h
 BUILT_SOURCES += ScalarCovarianceFunction.h
 BUILT_SOURCES += ScalarGaussianRandomField.h
@@ -121,6 +122,7 @@ BUILT_SOURCES += StatisticalForwardProblem.h
 BUILT_SOURCES += StatisticalForwardProblemOptions.h
 BUILT_SOURCES += StatisticalInverseProblem.h
 BUILT_SOURCES += StatisticalInverseProblemOptions.h
+BUILT_SOURCES += StdScalarCdf.h
 BUILT_SOURCES += TKGroup.h
 BUILT_SOURCES += UniformJointPdf.h
 BUILT_SOURCES += ValidationCycle.h
@@ -351,6 +353,8 @@ MonteCarloSGOptions.h: $(top_srcdir)/src/stats/inc/MonteCarloSGOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 PoweredJointPdf.h: $(top_srcdir)/src/stats/inc/PoweredJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+SampledScalarCdf.h: $(top_srcdir)/src/stats/inc/SampledScalarCdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ScalarCdf.h: $(top_srcdir)/src/stats/inc/ScalarCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ScalarCovarianceFunction.h: $(top_srcdir)/src/stats/inc/ScalarCovarianceFunction.h
@@ -364,6 +368,8 @@ StatisticalForwardProblemOptions.h: $(top_srcdir)/src/stats/inc/StatisticalForwa
 StatisticalInverseProblem.h: $(top_srcdir)/src/stats/inc/StatisticalInverseProblem.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 StatisticalInverseProblemOptions.h: $(top_srcdir)/src/stats/inc/StatisticalInverseProblemOptions.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+StdScalarCdf.h: $(top_srcdir)/src/stats/inc/StdScalarCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TKGroup.h: $(top_srcdir)/src/stats/inc/TKGroup.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
