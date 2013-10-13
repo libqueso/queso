@@ -31,7 +31,7 @@
 
 #include <queso/StatisticalInverseProblemOptions.h>
 #include <queso/MetropolisHastingsSG1.h>
-#include <queso/MLSampling1.h>
+#include <queso/MLSampling.h>
 #include <queso/InstantiateIntersection.h>
 #include <queso/VectorRV.h>
 #include <queso/ScalarFunction.h>
