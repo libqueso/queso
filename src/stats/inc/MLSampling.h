@@ -124,6 +124,11 @@ public:
   double eig              () const;
 
   void   print           (std::ostream& os) const;
+  friend std::ostream& operator<<(std::ostream& os,
+      const MLSampling<P_V,P_M>& obj) {
+    obj.print(os);
+    return os;
+  }
 
 private:
   void   checkpointML                  (double                                          currExponent,                       // input
