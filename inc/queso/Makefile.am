@@ -92,30 +92,37 @@ BUILT_SOURCES += StdOneDGrid.h
 BUILT_SOURCES += UniformOneDGrid.h
 BUILT_SOURCES += BayesianJointPdf.h
 BUILT_SOURCES += BetaJointPdf.h
+BUILT_SOURCES += BetaVectorRV.h
 BUILT_SOURCES += BetaVectorRealizer.h
 BUILT_SOURCES += ConcatenatedJointPdf.h
+BUILT_SOURCES += ConcatenatedVectorRV.h
 BUILT_SOURCES += ConcatenatedVectorRealizer.h
 BUILT_SOURCES += ExponentialMatrixCovarianceFunction.h
 BUILT_SOURCES += ExponentialScalarCovarianceFunction.h
 BUILT_SOURCES += FiniteDistribution.h
 BUILT_SOURCES += GammaJointPdf.h
+BUILT_SOURCES += GammaVectorRV.h
 BUILT_SOURCES += GammaVectorRealizer.h
 BUILT_SOURCES += GaussianJointPdf.h
 BUILT_SOURCES += GaussianVectorCdf.h
 BUILT_SOURCES += GaussianVectorMdf.h
+BUILT_SOURCES += GaussianVectorRV.h
 BUILT_SOURCES += GaussianVectorRealizer.h
 BUILT_SOURCES += GenericJointPdf.h
 BUILT_SOURCES += GenericMatrixCovarianceFunction.h
 BUILT_SOURCES += GenericScalarCovarianceFunction.h
 BUILT_SOURCES += GenericVectorCdf.h
 BUILT_SOURCES += GenericVectorMdf.h
+BUILT_SOURCES += GenericVectorRV.h
 BUILT_SOURCES += GenericVectorRealizer.h
 BUILT_SOURCES += HessianCovMatricesTKGroup.h
 BUILT_SOURCES += InfoTheory.h
 BUILT_SOURCES += InverseGammaJointPdf.h
+BUILT_SOURCES += InverseGammaVectorRV.h
 BUILT_SOURCES += InverseGammaVectorRealizer.h
 BUILT_SOURCES += JointPdf.h
 BUILT_SOURCES += LogNormalJointPdf.h
+BUILT_SOURCES += LogNormalVectorRV.h
 BUILT_SOURCES += LogNormalVectorRealizer.h
 BUILT_SOURCES += MLSampling.h
 BUILT_SOURCES += MLSamplingLevelOptions.h
@@ -143,6 +150,7 @@ BUILT_SOURCES += StatisticalInverseProblemOptions.h
 BUILT_SOURCES += StdScalarCdf.h
 BUILT_SOURCES += TKGroup.h
 BUILT_SOURCES += UniformJointPdf.h
+BUILT_SOURCES += UniformVectorRV.h
 BUILT_SOURCES += UniformVectorRealizer.h
 BUILT_SOURCES += ValidationCycle.h
 BUILT_SOURCES += VectorCdf.h
@@ -151,6 +159,7 @@ BUILT_SOURCES += VectorMdf.h
 BUILT_SOURCES += VectorRV.h
 BUILT_SOURCES += VectorRealizer.h
 BUILT_SOURCES += WignerJointPdf.h
+BUILT_SOURCES += WignerVectorRV.h
 BUILT_SOURCES += WignerVectorRealizer.h
 
 DISTCLEANFILES = $(BUILT_SOURCES)
@@ -329,9 +338,13 @@ BayesianJointPdf.h: $(top_srcdir)/src/stats/inc/BayesianJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BetaJointPdf.h: $(top_srcdir)/src/stats/inc/BetaJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+BetaVectorRV.h: $(top_srcdir)/src/stats/inc/BetaVectorRV.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BetaVectorRealizer.h: $(top_srcdir)/src/stats/inc/BetaVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ConcatenatedJointPdf.h: $(top_srcdir)/src/stats/inc/ConcatenatedJointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ConcatenatedVectorRV.h: $(top_srcdir)/src/stats/inc/ConcatenatedVectorRV.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ConcatenatedVectorRealizer.h: $(top_srcdir)/src/stats/inc/ConcatenatedVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -343,6 +356,8 @@ FiniteDistribution.h: $(top_srcdir)/src/stats/inc/FiniteDistribution.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GammaJointPdf.h: $(top_srcdir)/src/stats/inc/GammaJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GammaVectorRV.h: $(top_srcdir)/src/stats/inc/GammaVectorRV.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GammaVectorRealizer.h: $(top_srcdir)/src/stats/inc/GammaVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianJointPdf.h: $(top_srcdir)/src/stats/inc/GaussianJointPdf.h
@@ -350,6 +365,8 @@ GaussianJointPdf.h: $(top_srcdir)/src/stats/inc/GaussianJointPdf.h
 GaussianVectorCdf.h: $(top_srcdir)/src/stats/inc/GaussianVectorCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianVectorMdf.h: $(top_srcdir)/src/stats/inc/GaussianVectorMdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianVectorRV.h: $(top_srcdir)/src/stats/inc/GaussianVectorRV.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianVectorRealizer.h: $(top_srcdir)/src/stats/inc/GaussianVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -363,6 +380,8 @@ GenericVectorCdf.h: $(top_srcdir)/src/stats/inc/GenericVectorCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GenericVectorMdf.h: $(top_srcdir)/src/stats/inc/GenericVectorMdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GenericVectorRV.h: $(top_srcdir)/src/stats/inc/GenericVectorRV.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GenericVectorRealizer.h: $(top_srcdir)/src/stats/inc/GenericVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 HessianCovMatricesTKGroup.h: $(top_srcdir)/src/stats/inc/HessianCovMatricesTKGroup.h
@@ -371,11 +390,15 @@ InfoTheory.h: $(top_srcdir)/src/stats/inc/InfoTheory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InverseGammaJointPdf.h: $(top_srcdir)/src/stats/inc/InverseGammaJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InverseGammaVectorRV.h: $(top_srcdir)/src/stats/inc/InverseGammaVectorRV.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InverseGammaVectorRealizer.h: $(top_srcdir)/src/stats/inc/InverseGammaVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 JointPdf.h: $(top_srcdir)/src/stats/inc/JointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 LogNormalJointPdf.h: $(top_srcdir)/src/stats/inc/LogNormalJointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+LogNormalVectorRV.h: $(top_srcdir)/src/stats/inc/LogNormalVectorRV.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 LogNormalVectorRealizer.h: $(top_srcdir)/src/stats/inc/LogNormalVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -431,6 +454,8 @@ TKGroup.h: $(top_srcdir)/src/stats/inc/TKGroup.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 UniformJointPdf.h: $(top_srcdir)/src/stats/inc/UniformJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+UniformVectorRV.h: $(top_srcdir)/src/stats/inc/UniformVectorRV.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 UniformVectorRealizer.h: $(top_srcdir)/src/stats/inc/UniformVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ValidationCycle.h: $(top_srcdir)/src/stats/inc/ValidationCycle.h
@@ -446,6 +471,8 @@ VectorRV.h: $(top_srcdir)/src/stats/inc/VectorRV.h
 VectorRealizer.h: $(top_srcdir)/src/stats/inc/VectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 WignerJointPdf.h: $(top_srcdir)/src/stats/inc/WignerJointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+WignerVectorRV.h: $(top_srcdir)/src/stats/inc/WignerVectorRV.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 WignerVectorRealizer.h: $(top_srcdir)/src/stats/inc/WignerVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
