@@ -93,10 +93,12 @@ BUILT_SOURCES += UniformOneDGrid.h
 BUILT_SOURCES += BayesianJointPdf.h
 BUILT_SOURCES += BetaJointPdf.h
 BUILT_SOURCES += ConcatenatedJointPdf.h
+BUILT_SOURCES += ExponentialMatrixCovarianceFunction.h
 BUILT_SOURCES += FiniteDistribution.h
 BUILT_SOURCES += GammaJointPdf.h
 BUILT_SOURCES += GaussianJointPdf.h
 BUILT_SOURCES += GenericJointPdf.h
+BUILT_SOURCES += GenericMatrixCovarianceFunction.h
 BUILT_SOURCES += InfoTheory.h
 BUILT_SOURCES += InverseGammaJointPdf.h
 BUILT_SOURCES += JointPdf.h
@@ -310,6 +312,8 @@ BetaJointPdf.h: $(top_srcdir)/src/stats/inc/BetaJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ConcatenatedJointPdf.h: $(top_srcdir)/src/stats/inc/ConcatenatedJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+ExponentialMatrixCovarianceFunction.h: $(top_srcdir)/src/stats/inc/ExponentialMatrixCovarianceFunction.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 FiniteDistribution.h: $(top_srcdir)/src/stats/inc/FiniteDistribution.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GammaJointPdf.h: $(top_srcdir)/src/stats/inc/GammaJointPdf.h
@@ -317,6 +321,8 @@ GammaJointPdf.h: $(top_srcdir)/src/stats/inc/GammaJointPdf.h
 GaussianJointPdf.h: $(top_srcdir)/src/stats/inc/GaussianJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GenericJointPdf.h: $(top_srcdir)/src/stats/inc/GenericJointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GenericMatrixCovarianceFunction.h: $(top_srcdir)/src/stats/inc/GenericMatrixCovarianceFunction.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InfoTheory.h: $(top_srcdir)/src/stats/inc/InfoTheory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
