@@ -186,6 +186,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/LogNormalJointPdf.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/PoweredJointPdf.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/UniformJointPdf.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/WignerJointPdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MarkovChainPositionData.C
 
 # Sources from gp/src
 
