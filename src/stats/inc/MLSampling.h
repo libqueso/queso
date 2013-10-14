@@ -35,6 +35,7 @@
 #include <queso/MetropolisHastingsSG.h>
 #include <queso/FiniteDistribution.h>
 #include <queso/VectorRV.h>
+#include <queso/GenericVectorRV.h>
 #include <queso/VectorSpace.h>
 #include <queso/MarkovChainPositionData.h>
 #include <queso/ScalarFunctionSynchronizer.h>

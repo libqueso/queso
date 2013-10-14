@@ -30,6 +30,7 @@
 #include <example_likelihood.h>
 #include <example_qoi.h>
 #include <queso/GslMatrix.h>
+#include <queso/UniformVectorRV.h>
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/StatisticalForwardProblem.h>
 #include <queso/GenericScalarFunction.h>
