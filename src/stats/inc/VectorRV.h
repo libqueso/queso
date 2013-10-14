@@ -40,6 +40,14 @@
 #include <queso/LogNormalJointPdf.h>
 #include <queso/ConcatenatedJointPdf.h>
 #include <queso/VectorRealizer.h>
+#include <queso/GaussianVectorRealizer.h>
+#include <queso/UniformVectorRealizer.h>
+#include <queso/BetaVectorRealizer.h>
+#include <queso/GammaVectorRealizer.h>
+#include <queso/InverseGammaVectorRealizer.h>
+#include <queso/WignerVectorRealizer.h>
+#include <queso/LogNormalVectorRealizer.h>
+#include <queso/ConcatenatedVectorRealizer.h>
 #include <queso/VectorCdf.h>
 #include <queso/VectorMdf.h>
 #include <queso/SequenceOfVectors.h>
