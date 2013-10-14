@@ -174,6 +174,18 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MonteCarloSGOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StatisticalInverseProblemOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StatisticalForwardProblemOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/InfoTheory.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/JointPdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/BayesianJointPdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/BetaJointPdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ConcatenatedJointPdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GammaJointPdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GaussianJointPdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GenericJointPdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/InverseGammaJointPdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/LogNormalJointPdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/PoweredJointPdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/UniformJointPdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/WignerJointPdf.C
 
 # Sources from gp/src
 
@@ -264,6 +276,17 @@ libqueso_include_HEADERS += $(top_srcdir)/src/basic/inc/ConstantVectorFunction.h
 
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/FiniteDistribution.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/JointPdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/BayesianJointPdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/BetaJointPdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ConcatenatedJointPdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GammaJointPdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GaussianJointPdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GenericJointPdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/InverseGammaJointPdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/LogNormalJointPdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/PoweredJointPdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/UniformJointPdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/WignerJointPdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MarkovChainPositionData.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MetropolisHastingsSG1.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MetropolisHastingsSG2.h
