@@ -210,6 +210,10 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/VectorCdf.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GenericVectorCdf.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/SampledVectorCdf.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GaussianVectorCdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/VectorMdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GenericVectorMdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GaussianVectorMdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/SampledVectorMdf.C
 
 # Sources from gp/src
 
@@ -336,6 +340,9 @@ libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GenericVectorCdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/SampledVectorCdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GaussianVectorCdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorMdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GenericVectorMdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GaussianVectorMdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/SampledVectorMdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorRV.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/InfoTheory.h
