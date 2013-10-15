@@ -30,7 +30,7 @@
 #define UQ_SIP_H
 
 #include <queso/StatisticalInverseProblemOptions.h>
-#include <queso/MetropolisHastingsSG1.h>
+#include <queso/MetropolisHastingsSG.h>
 #include <queso/MLSampling1.h>
 #include <queso/InstantiateIntersection.h>
 #include <queso/VectorRV.h>
