@@ -228,6 +228,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/WignerVectorRealizer.C
 
 # Sources from gp/src
 
+libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/ExperimentModel.C
 libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/ExperimentModelOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GpmsaComputerModelOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/SimulationModelOptions.C
