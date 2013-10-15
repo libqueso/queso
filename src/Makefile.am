@@ -225,6 +225,16 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/SequentialVectorRealizer.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/UniformVectorRealizer.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/VectorRealizer.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/WignerVectorRealizer.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/VectorRV.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/BetaVectorRV.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ConcatenatedVectorRV.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GammaVectorRV.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GaussianVectorRV.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GenericVectorRV.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/InverseGammaVectorRV.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/LogNormalVectorRV.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/UniformVectorRV.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/WignerVectorRV.C
 
 # Sources from gp/src
 
@@ -366,6 +376,15 @@ libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/UniformVectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/WignerVectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorRV.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/BetaVectorRV.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ConcatenatedVectorRV.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GammaVectorRV.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GaussianVectorRV.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GenericVectorRV.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/InverseGammaVectorRV.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/LogNormalVectorRV.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/UniformVectorRV.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/WignerVectorRV.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/InfoTheory.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ScalarCovarianceFunction.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ExponentialScalarCovarianceFunction.h

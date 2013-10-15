@@ -27,6 +27,7 @@
 //--------------------------------------------------------------------------
 
 #include <queso/ScalarGaussianRandomField.h>
+#include <queso/GaussianVectorRV.h>
 
 namespace QUESO {
 

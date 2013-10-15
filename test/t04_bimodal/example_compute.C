@@ -32,6 +32,8 @@
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/1D1DFunction.h>
 #include <queso/GenericScalarFunction.h>
+#include <queso/GenericVectorRV.h>
+#include <queso/UniformVectorRV.h>
 
 void compute(const QUESO::FullEnvironment& env) {
 #if 0

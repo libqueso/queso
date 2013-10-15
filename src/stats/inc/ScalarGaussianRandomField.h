@@ -31,7 +31,7 @@
 
 #include <queso/ScalarCovarianceFunction.h>
 #include <queso/ScalarFunction.h>
-#include <queso/VectorRV.h>
+#include <queso/GaussianVectorRV.h>
 
 namespace QUESO {
 

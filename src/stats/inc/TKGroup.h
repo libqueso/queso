@@ -29,7 +29,7 @@
 #ifndef UQ_TRANSITION_KERNEL_GROUP_H
 #define UQ_TRANSITION_KERNEL_GROUP_H
 
-#include <queso/VectorRV.h>
+#include <queso/GaussianVectorRV.h>
 #include <queso/ScalarFunctionSynchronizer.h>
 
 namespace QUESO {

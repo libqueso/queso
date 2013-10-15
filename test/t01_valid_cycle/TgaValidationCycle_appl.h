@@ -35,6 +35,7 @@
 #include <queso/VectorSubset.h>
 #include <queso/AsciiTable.h>
 #include <queso/GenericScalarFunction.h>
+#include <queso/UniformVectorRV.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 

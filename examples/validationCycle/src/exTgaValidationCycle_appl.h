@@ -39,6 +39,7 @@
 #include <exTgaValidationCycle_qoi.h>
 #include <queso/ValidationCycle.h>
 #include <queso/VectorSubset.h>
+#include <queso/UniformVectorRV.h>
 #include <queso/GenericScalarFunction.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>

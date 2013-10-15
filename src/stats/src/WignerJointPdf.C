@@ -27,6 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <queso/WignerJointPdf.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -133,3 +135,5 @@ WignerJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bo
 }
 
 }  // End namespace QUESO
+
+template class QUESO::WignerJointPdf<QUESO::GslVector,QUESO::GslMatrix>;

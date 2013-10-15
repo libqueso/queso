@@ -28,7 +28,7 @@
 
 #include <example_compute.h>
 #include <queso/GslMatrix.h>
-#include <queso/VectorRV.h>
+#include <queso/GaussianVectorRV.h>
 
 void compute(const QUESO::FullEnvironment& env) {
   // Step 1 of 9: Instantiate the parameter space

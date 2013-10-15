@@ -27,6 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <queso/GenericJointPdf.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -91,3 +93,5 @@ GenericJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, b
 }
 
 }  // End namespace QUESO
+
+template class QUESO::GenericJointPdf<QUESO::GslVector, QUESO::GslMatrix>;

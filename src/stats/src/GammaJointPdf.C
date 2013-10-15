@@ -27,6 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <queso/GammaJointPdf.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -144,3 +146,5 @@ GammaJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, boo
 }
 
 }  // End namespace QUESO
+
+template class QUESO::GammaJointPdf<QUESO::GslVector, QUESO::GslMatrix>;
