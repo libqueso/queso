@@ -30,6 +30,9 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
+#include <queso/HessianCovMatricesTKGroup.h>
+#include <queso/ScaledCovMatrixTKGroup.h>
+
 namespace QUESO {
 
 // Default constructor -----------------------------
