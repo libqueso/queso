@@ -195,6 +195,9 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ModelValidation.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ScalarCdf.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/SampledScalarCdf.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StdScalarCdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ScalarCovarianceFunction.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ExponentialScalarCovarianceFunction.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GenericScalarCovarianceFunction.C
 
 # Sources from gp/src
 
@@ -320,6 +323,8 @@ libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorRV.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/InfoTheory.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ScalarCovarianceFunction.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ExponentialScalarCovarianceFunction.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GenericScalarCovarianceFunction.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MatrixCovarianceFunction.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ExponentialMatrixCovarianceFunction.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GenericMatrixCovarianceFunction.h
