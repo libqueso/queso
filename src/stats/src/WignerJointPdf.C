@@ -135,3 +135,5 @@ WignerJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bo
 }
 
 }  // End namespace QUESO
+
+template class QUESO::WignerJointPdf<QUESO::GslVector,QUESO::GslMatrix>;

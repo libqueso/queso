@@ -133,3 +133,5 @@ InverseGammaJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSampl
 }
 
 }  // End namespace QUESO
+
+template class QUESO::InverseGammaJointPdf<QUESO::GslVector, QUESO::GslMatrix>;

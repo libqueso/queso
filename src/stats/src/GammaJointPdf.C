@@ -146,3 +146,5 @@ GammaJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, boo
 }
 
 }  // End namespace QUESO
+
+template class QUESO::GammaJointPdf<QUESO::GslVector, QUESO::GslMatrix>;

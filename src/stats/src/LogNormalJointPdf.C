@@ -229,3 +229,5 @@ LogNormalJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples,
 }
 
 }  // End namespace QUESO
+
+template class QUESO::LogNormalJointPdf<QUESO::GslVector, QUESO::GslMatrix>;
