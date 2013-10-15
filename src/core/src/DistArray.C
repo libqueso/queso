@@ -31,7 +31,7 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/ScalarSequence.h>
-#include <queso/ScalarCdf.h>
+#include <queso/SampledScalarCdf.h>
 #include <queso/OneDGrid.h>
 
 namespace QUESO {

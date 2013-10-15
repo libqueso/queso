@@ -32,6 +32,7 @@
 #include <queso/ArrayOfOneDGrids.h>
 #include <queso/ArrayOfOneDTables.h>
 #include <queso/ScalarCdf.h>
+#include <queso/SampledScalarCdf.h>
 #include <queso/Environment.h>
 #include <math.h>
 
