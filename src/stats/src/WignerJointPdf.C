@@ -27,6 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <queso/WignerJointPdf.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 

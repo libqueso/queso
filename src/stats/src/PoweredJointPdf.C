@@ -27,6 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <queso/PoweredJointPdf.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 

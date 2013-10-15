@@ -6,7 +6,7 @@
 #include <queso/GslMatrix.h>
 #include <queso/VectorSpace.h>
 #include <queso/VectorSubset.h>
-#include <queso/VectorRV.h>
+#include <queso/GaussianVectorRV.h>
 
 using namespace std;
 
