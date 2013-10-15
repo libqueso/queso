@@ -170,6 +170,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MetropolisHastingsSGOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MLSampling.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MLSamplingOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MLSamplingLevelOptions.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MonteCarloSG.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MonteCarloSGOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StatisticalInverseProblemOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StatisticalForwardProblemOptions.C
