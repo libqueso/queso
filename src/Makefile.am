@@ -351,11 +351,9 @@ libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GenericVectorCdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/SampledVectorCdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GaussianVectorCdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorMdf.h
-<<<<<<< HEAD
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GenericVectorMdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GaussianVectorMdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/SampledVectorMdf.h
-=======
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/BetaVectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ConcatenatedVectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GammaVectorRealizer.h
@@ -365,7 +363,6 @@ libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/InverseGammaVectorRealiz
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/LogNormalVectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/SequentialVectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/UniformVectorRealizer.h
->>>>>>> Add make rules for new VectorRealizer files
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/WignerVectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorRV.h
