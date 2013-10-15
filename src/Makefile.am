@@ -192,6 +192,9 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MatrixCovarianceFunction.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ExponentialMatrixCovarianceFunction.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GenericMatrixCovarianceFunction.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ModelValidation.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ScalarCdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/SampledScalarCdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StdScalarCdf.C
 
 # Sources from gp/src
 
@@ -303,6 +306,8 @@ libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ModelValidation.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MonteCarloSG.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/MonteCarloSGOptions.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ScalarCdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/SampledScalarCdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/StdScalarCdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/StatisticalForwardProblem.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/StatisticalForwardProblemOptions.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/StatisticalInverseProblem.h
