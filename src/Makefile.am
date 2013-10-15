@@ -214,6 +214,17 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/VectorMdf.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GenericVectorMdf.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GaussianVectorMdf.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/SampledVectorMdf.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/BetaVectorRealizer.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ConcatenatedVectorRealizer.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GammaVectorRealizer.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GaussianVectorRealizer.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GenericVectorRealizer.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/InverseGammaVectorRealizer.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/LogNormalVectorRealizer.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/SequentialVectorRealizer.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/UniformVectorRealizer.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/VectorRealizer.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/WignerVectorRealizer.C
 
 # Sources from gp/src
 
@@ -343,7 +354,17 @@ libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorMdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GenericVectorMdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GaussianVectorMdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/SampledVectorMdf.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/BetaVectorRealizer.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ConcatenatedVectorRealizer.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GammaVectorRealizer.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GaussianVectorRealizer.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/GenericVectorRealizer.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/InverseGammaVectorRealizer.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/LogNormalVectorRealizer.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/SequentialVectorRealizer.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/UniformVectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorRealizer.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/WignerVectorRealizer.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorRV.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/InfoTheory.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ScalarCovarianceFunction.h
