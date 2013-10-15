@@ -33,6 +33,8 @@
 #include <queso/MetropolisHastingsSG.h>
 #include <queso/MLSampling.h>
 #include <queso/InstantiateIntersection.h>
+#include <queso/VectorRealizer.h>
+#include <queso/SequentialVectorRealizer.h>
 #include <queso/VectorRV.h>
 #include <queso/ScalarFunction.h>
 
