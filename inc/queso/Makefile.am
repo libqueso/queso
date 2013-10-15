@@ -103,9 +103,7 @@ BUILT_SOURCES += InfoTheory.h
 BUILT_SOURCES += InverseGammaJointPdf.h
 BUILT_SOURCES += JointPdf.h
 BUILT_SOURCES += LogNormalJointPdf.h
-BUILT_SOURCES += MLSampling1.h
-BUILT_SOURCES += MLSampling2.h
-BUILT_SOURCES += MLSampling3.h
+BUILT_SOURCES += MLSampling.h
 BUILT_SOURCES += MLSamplingLevelOptions.h
 BUILT_SOURCES += MLSamplingOptions.h
 BUILT_SOURCES += MarkovChainPositionData.h
@@ -331,11 +329,7 @@ JointPdf.h: $(top_srcdir)/src/stats/inc/JointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 LogNormalJointPdf.h: $(top_srcdir)/src/stats/inc/LogNormalJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-MLSampling1.h: $(top_srcdir)/src/stats/inc/MLSampling1.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-MLSampling2.h: $(top_srcdir)/src/stats/inc/MLSampling2.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-MLSampling3.h: $(top_srcdir)/src/stats/inc/MLSampling3.h
+MLSampling.h: $(top_srcdir)/src/stats/inc/MLSampling.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 MLSamplingLevelOptions.h: $(top_srcdir)/src/stats/inc/MLSamplingLevelOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

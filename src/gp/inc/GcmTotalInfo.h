@@ -33,7 +33,7 @@
 #include <queso/GcmExperimentInfo.h>
 #include <queso/GcmJointInfo.h>
 #include <queso/MetropolisHastingsSG.h>
-#include <queso/MLSampling1.h>
+#include <queso/MLSampling.h>
 
 namespace QUESO {
 

@@ -31,7 +31,7 @@
 
 #include <queso/StatisticalInverseProblemOptions.h>
 #include <queso/MetropolisHastingsSG.h>
-#include <queso/MLSampling1.h>
+#include <queso/MLSampling.h>
 #include <queso/InstantiateIntersection.h>
 #include <queso/VectorRV.h>
 #include <queso/ScalarFunction.h>
@@ -39,7 +39,7 @@
 
 namespace QUESO {
 
-/*! \file uqStatisticalInverseProblem.h
+/*! \file StatisticalInverseProblem.h
     \brief Class to solve a Statistical Inverse Problem
 */
 
