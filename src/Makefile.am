@@ -173,6 +173,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MLSamplingLevelOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MonteCarloSG.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MonteCarloSGOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StatisticalInverseProblemOptions.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StatisticalForwardProblem.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/StatisticalForwardProblemOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/InfoTheory.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/JointPdf.C
