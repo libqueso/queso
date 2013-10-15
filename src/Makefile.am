@@ -203,6 +203,9 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GenericScalarCovarianceFuncti
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ScalarGaussianRandomField.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ValidationCycle.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/VectorGaussianRandomField.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/TKGroup.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ScaledCovMatrixTKGroup.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/HessianCovMatricesTKGroup.C
 
 # Sources from gp/src
 
@@ -321,6 +324,8 @@ libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/StatisticalForwardProble
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/StatisticalInverseProblem.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/StatisticalInverseProblemOptions.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/TKGroup.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ScaledCovMatrixTKGroup.h
+libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/HessianCovMatricesTKGroup.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/ValidationCycle.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorCdf.h
 libqueso_include_HEADERS += $(top_srcdir)/src/stats/inc/VectorMdf.h
