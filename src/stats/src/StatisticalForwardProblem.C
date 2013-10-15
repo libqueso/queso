@@ -27,6 +27,7 @@
 //--------------------------------------------------------------------------
 
 #include <queso/StatisticalForwardProblem.h>
+#include <queso/SequentialVectorRealizer.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
