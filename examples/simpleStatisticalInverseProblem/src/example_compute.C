@@ -30,6 +30,7 @@
 #include <example_likelihood.h>
 #include <queso/GenericScalarFunction.h>
 #include <queso/GslMatrix.h>
+#include <queso/UniformVectorRV.h>
 #include <queso/StatisticalInverseProblem.h>
 
 void compute(const QUESO::FullEnvironment& env) {

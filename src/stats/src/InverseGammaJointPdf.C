@@ -27,6 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <queso/InverseGammaJointPdf.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -131,3 +133,5 @@ InverseGammaJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSampl
 }
 
 }  // End namespace QUESO
+
+template class QUESO::InverseGammaJointPdf<QUESO::GslVector, QUESO::GslMatrix>;

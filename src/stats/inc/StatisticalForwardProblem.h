@@ -33,6 +33,7 @@
 #include <queso/VectorFunction.h>
 #include <queso/MonteCarloSG.h>
 #include <queso/VectorRV.h>
+#include <queso/GenericVectorRV.h>
 #include <queso/SequenceOfVectors.h>
 
 namespace QUESO {

@@ -31,7 +31,7 @@
 
 #include <queso/MatrixCovarianceFunction.h>
 #include <queso/VectorFunction.h>
-#include <queso/VectorRV.h>
+#include <queso/GaussianVectorRV.h>
 
 namespace QUESO {
 

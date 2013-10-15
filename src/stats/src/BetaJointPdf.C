@@ -27,6 +27,8 @@
 //--------------------------------------------------------------------------
 
 #include <queso/BetaJointPdf.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -144,3 +146,5 @@ BetaJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool
 }
 
 }  // End namespace QUESO
+
+template class QUESO::BetaJointPdf<QUESO::GslVector, QUESO::GslMatrix>;

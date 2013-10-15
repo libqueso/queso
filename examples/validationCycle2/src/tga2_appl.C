@@ -35,6 +35,7 @@
 #include <tga2_qoi.h>
 #include <queso/VectorSubset.h>
 #include <queso/GenericScalarFunction.h>
+#include <queso/UniformVectorRV.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 
