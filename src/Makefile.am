@@ -190,6 +190,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MarkovChainPositionData.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/MatrixCovarianceFunction.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ExponentialMatrixCovarianceFunction.C
 libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/GenericMatrixCovarianceFunction.C
+libqueso_la_SOURCES += $(top_srcdir)/src/stats/src/ModelValidation.C
 
 # Sources from gp/src
 

@@ -33,7 +33,7 @@
 
 namespace QUESO {
 
-/*! \file uqModelValidation.h
+/*! \file ModelValidation.h
  * \brief A templated class for model validation of the example validationPyramid.
  *
  * \class ModelValidation
@@ -74,62 +74,6 @@ protected:
 
   ValidationCycle<P_V,P_M,Q_V,Q_M>* m_cycle;
 };
-// Constructor -------------------------------------
-template <class P_V,class P_M,class Q_V,class Q_M>
-ModelValidation<P_V,P_M,Q_V,Q_M>::ModelValidation(
-  const BaseEnvironment& env,
-  const char*                   prefix)
-  :
-  m_env   (env),
-  m_prefix((std::string)(prefix) + ""),
-  m_cycle (NULL)
-{
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering ModelValidation<P_V,P_M,Q_V,Q_M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
-  }
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Leaving ModelValidation<P_V,P_M,Q_V,Q_M>::constructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
-  }
-
-  return;
-}
-// Destructor---------------------------------------
-template <class P_V,class P_M,class Q_V,class Q_M>
-ModelValidation<P_V,P_M,Q_V,Q_M>::~ModelValidation()
-{
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Entering ModeValidation::destructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
-  }
-
-  if (m_cycle) delete m_cycle;
-
-  if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Leaving ModeValidation::destructor()"
-                           << ": prefix = " << m_prefix
-                           << std::endl;
-  }
-}
-// Misc methods-------------------------------------
-template <class P_V,class P_M,class Q_V,class Q_M>
-const BaseEnvironment&
-ModelValidation<P_V,P_M,Q_V,Q_M>::env() const
-{
-  return m_env;
-}
-//--------------------------------------------------
-template <class P_V,class P_M,class Q_V,class Q_M>
-const ValidationCycle<P_V,P_M,Q_V,Q_M>&
-ModelValidation<P_V,P_M,Q_V,Q_M>::cycle() const
-{
-  return *m_cycle;
-}
 
 }  // End namespace QUESO
 
