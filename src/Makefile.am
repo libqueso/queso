@@ -249,6 +249,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GcmJointTildeInfo.C
 libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GcmSimulationInfo.C
 libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GcmSimulationTildeInfo.C
 libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GcmTotalInfo.C
+libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GcmZInfo.C
 
 # Headers to install from core/inc
 
