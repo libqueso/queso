@@ -32,6 +32,9 @@
 #include <queso/SimulationStorage.h>
 #include <queso/SimulationModel.h>
 #include <queso/VectorRV.h>
+#include <queso/GammaVectorRV.h>
+#include <queso/BetaVectorRV.h>
+#include <queso/GpmsaComputerModelOptions.h>
 
 namespace QUESO {
 

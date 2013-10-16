@@ -30,6 +30,7 @@
 #define UQ_SIMULATION_STORAGE_H
 
 #include <queso/Environment.h>
+#include <queso/VectorSpace.h>
 
 namespace QUESO {
 
