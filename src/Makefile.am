@@ -243,6 +243,7 @@ libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/ExperimentModelOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/ExperimentStorage.C
 libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GpmsaComputerModelOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/SimulationModelOptions.C
+libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GcmExperimentInfo.C
 
 # Headers to install from core/inc
 
