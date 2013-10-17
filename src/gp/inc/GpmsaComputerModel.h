@@ -114,6 +114,12 @@ public:
   const GenericVectorRV<P_V,P_M>& totalPostRv                              () const;
 
         void                             print                                    (std::ostream& os) const;
+  friend std::ostream& operator<<(std::ostream& os,
+      const GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& obj) {
+    obj.print(os);
+    return os;
+  }
+
 
 private:
         void                             memoryCheck                              (unsigned int codePositionId);
@@ -274,22 +280,6 @@ private:
 
 };
 
-template<class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& obj);
-
-template<class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-std::ostream& operator<<(std::ostream& os, const GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>& obj)
-{
-  obj.print(os);
-
-  return os;
-}
-
 }  // End namespace QUESO
-
-#include <queso/GpmsaComputerModel2.h>
-#include <queso/GpmsaComputerModel3.h>
-#include <queso/GpmsaComputerModel4.h>
-#include <queso/GpmsaComputerModel5.h>
 
 #endif // UQ_GCM_H
