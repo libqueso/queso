@@ -70,10 +70,6 @@ BUILT_SOURCES += GcmTotalInfo.h
 BUILT_SOURCES += GcmZInfo.h
 BUILT_SOURCES += GcmZTildeInfo.h
 BUILT_SOURCES += GpmsaComputerModel.h
-BUILT_SOURCES += GpmsaComputerModel2.h
-BUILT_SOURCES += GpmsaComputerModel3.h
-BUILT_SOURCES += GpmsaComputerModel4.h
-BUILT_SOURCES += GpmsaComputerModel5.h
 BUILT_SOURCES += GpmsaComputerModelOptions.h
 BUILT_SOURCES += SimulationModel.h
 BUILT_SOURCES += SimulationModelOptions.h
@@ -293,14 +289,6 @@ GcmZInfo.h: $(top_srcdir)/src/gp/inc/GcmZInfo.h
 GcmZTildeInfo.h: $(top_srcdir)/src/gp/inc/GcmZTildeInfo.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GpmsaComputerModel.h: $(top_srcdir)/src/gp/inc/GpmsaComputerModel.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GpmsaComputerModel2.h: $(top_srcdir)/src/gp/inc/GpmsaComputerModel2.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GpmsaComputerModel3.h: $(top_srcdir)/src/gp/inc/GpmsaComputerModel3.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GpmsaComputerModel4.h: $(top_srcdir)/src/gp/inc/GpmsaComputerModel4.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-GpmsaComputerModel5.h: $(top_srcdir)/src/gp/inc/GpmsaComputerModel5.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GpmsaComputerModelOptions.h: $(top_srcdir)/src/gp/inc/GpmsaComputerModelOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
