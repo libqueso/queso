@@ -56,5 +56,8 @@
 #define QUESO_GRVY_DIR      "@GRVY_PREFIX@"
 #define QUESO_GLPK_DIR      "@GLPK_PREFIX@"
 #define QUESO_HDF5_DIR      "@HDF5_PREFIX@"
+
+// Insert magic header foo
+// End magic header foo
   
 #endif
