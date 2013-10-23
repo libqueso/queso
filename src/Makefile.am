@@ -435,10 +435,10 @@ nodist_libqueso_include_HEADERS += $(top_builddir)/src/core/inc/queso.h
 
 # Standalone binaries
 
-bin_PROGRAMS               = queso_version
-queso_version_SOURCES      = $(top_srcdir)/src/core/src/version.C
-#queso_version_LDADD        = -L$(top_builddir)/src -lqueso $(HDF5_LIBS) $(HDF5_LIB)/libhdf5_cpp.la 
-queso_version_LDADD = libqueso.la
+bin_PROGRAMS          = queso_version
+queso_version_SOURCES = $(top_srcdir)/src/core/src/version.C
+queso_version_LDADD   = libqueso.la
+
 if TRILINOS_ENABLED
   queso_version_LDADD     += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
 endif
