@@ -493,6 +493,67 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropoli
                         "'totalInitialProposalCovMatrix' should be a square matrix");
   }
 
+#if 0
+  P_V currPosition (totalInitialValues);
+  currPosition.cwSet(0.);
+  P_V epsilonVector             (currPosition);
+  P_V plusVectorOfLnLikelihoods (currPosition);
+  P_V minusVectorOfLnLikelihoods(currPosition);
+  P_V deltaVectorOfLnLikelihoods(currPosition);
+  P_V vectorOfLnAbsGrads        (currPosition);
+
+  currPosition = totalInitialValues;
+  double referenceValue = staticLikelihoodRoutine(currPosition,
+                                                  NULL,
+                                                  (void *) this,
+                                                  NULL,
+                                                  NULL,
+                                                  NULL);
+
+  for (unsigned int paramId = 0; paramId < totalInitialValues.sizeLocal(); ++paramId) {
+    currPosition = totalInitialValues;
+    epsilonVector[paramId] = 1.e-8 * totalInitialValues[paramId];
+    if (epsilonVector[paramId] == 0.) epsilonVector[paramId] = 1.e-8;
+
+    currPosition[paramId] = totalInitialValues[paramId] + epsilonVector[paramId];
+    plusVectorOfLnLikelihoods[paramId] = staticLikelihoodRoutine(currPosition,
+                                                                 NULL,
+                                                                 (void *) this,
+                                                                 NULL,
+                                                                 NULL,
+                                                                 NULL);
+
+    currPosition[paramId] = totalInitialValues[paramId] - epsilonVector[paramId];
+    minusVectorOfLnLikelihoods[paramId] = staticLikelihoodRoutine(currPosition,
+                                                                  NULL,
+                                                                  (void *) this,
+                                                                  NULL,
+                                                                  NULL,
+                                                                  NULL);
+
+    deltaVectorOfLnLikelihoods[paramId] = plusVectorOfLnLikelihoods[paramId] - minusVectorOfLnLikelihoods[paramId];
+    if (deltaVectorOfLnLikelihoods[paramId] > 0.) {
+      vectorOfLnAbsGrads[paramId] =  minusVectorOfLnLikelihoods[paramId] + std::log( std::exp( deltaVectorOfLnLikelihoods[paramId]) - 1. ) - std::log(2.*epsilonVector[paramId]);
+    }
+    else if (deltaVectorOfLnLikelihoods[paramId] == 0.) {
+      vectorOfLnAbsGrads[paramId] = -INFINITY;
+    }
+    else {
+      vectorOfLnAbsGrads[paramId] =  plusVectorOfLnLikelihoods [paramId] + std::log( std::exp(-deltaVectorOfLnLikelihoods[paramId]) - 1. ) - std::log(2.*epsilonVector[paramId]);
+    }
+  }
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
+                            << ": referenceValue = "              << referenceValue
+                            << "\n epsilonVector              = " << epsilonVector
+                            << "\n plusVectorOfLnLikelihoods  = " << plusVectorOfLnLikelihoods
+                            << "\n minusVectorOfLnLikelihoods = " << minusVectorOfLnLikelihoods
+                            << "\n deltaVectorOfLnLikelihoods = " << deltaVectorOfLnLikelihoods
+                            << "\n vectorOfLnAbsGrads         = " << vectorOfLnAbsGrads
+                            << std::endl;
+  }
+#endif
+
   //std::cout << "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::calibrateWithBayesMetropolisHastings()"
   //          << ": passing at point 002"
   //          << std::endl;
