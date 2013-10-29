@@ -222,18 +222,21 @@ GaussianJointPdf<V,M>::lnValue(
       }
     }
     if (m_normalizationStyle == 0) {
-      returnValue += log(2*M_PI);   // normalization of pdf
+      returnValue += ((double) this->lawVarVector().sizeLocal()) * log(2*M_PI);   // normalization of pdf
       returnValue += lnDeterminant; // normalization of pdf
     }
     returnValue *= -0.5;
   }
   returnValue += m_logOfNormalizationFactor; // [PDF-03]
 
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 55)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
     *m_env.subDisplayFile() << "Leaving GaussianJointPdf<V,M>::lnValue()"
                             << ", m_normalizationStyle = " << m_normalizationStyle
+                            << ", m_diagonalCovMatrix = " << m_diagonalCovMatrix
+                            << ", m_logOfNormalizationFactor = " << m_logOfNormalizationFactor
+                            << ", lnDeterminant = " << lnDeterminant
                             << ", meanVector = "           << *m_lawExpVector
-                      << ", lawCovMatrix = "         << *m_lawCovMatrix
+                            << ", lawCovMatrix = "         << *m_lawCovMatrix
                             << ": domainVector = "         << domainVector
                             << ", returnValue = "          << returnValue
                             << std::endl;
