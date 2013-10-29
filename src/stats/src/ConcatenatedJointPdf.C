@@ -179,7 +179,7 @@ ConcatenatedJointPdf<V,M>::lnValue(
     domainVector.cwExtract(cummulativeSize,*(vecs[i]));
     values[i] = m_densities[i]->lnValue(*(vecs[i]),NULL,NULL,NULL,NULL);
     returnValue += values[i];
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {  // gpmsa
       *m_env.subDisplayFile() << "In ConcatenatedJointPdf<V,M>::lnValue()"
                               << ", *(vecs[" << i << "]) = "       << *(vecs[i])
                               << ": values[" << i << "] = "        << values[i]
