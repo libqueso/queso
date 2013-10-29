@@ -53,12 +53,14 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
   m_minRejectionRate                         (UQ_ML_SAMPLING_L_MIN_REJECTION_RATE_ODV),
   m_maxRejectionRate                         (UQ_ML_SAMPLING_L_MAX_REJECTION_RATE_ODV),
   m_covRejectionRate                         (UQ_ML_SAMPLING_L_COV_REJECTION_RATE_ODV),
-  m_minAcceptableEta                         (UQ_ML_SAMPLING_L_MIN_ACCEPTABLE_ETA_ODV), // gpmsa
+  m_minAcceptableEta                         (UQ_ML_SAMPLING_L_MIN_ACCEPTABLE_ETA_ODV), // gpmsa1
   m_totallyMute                              (UQ_ML_SAMPLING_L_TOTALLY_MUTE_ODV),
   m_initialPositionDataInputFileName         (UQ_ML_SAMPLING_L_INITIAL_POSITION_DATA_INPUT_FILE_NAME_ODV),
   m_initialPositionDataInputFileType         (UQ_ML_SAMPLING_L_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV),
   m_initialProposalCovMatrixDataInputFileName(UQ_ML_SAMPLING_L_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV),
   m_initialProposalCovMatrixDataInputFileType(UQ_ML_SAMPLING_L_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV),
+//m_parameterDisabledSet                     (), // gpmsa2
+  m_str2                                     (""),
   m_rawChainDataInputFileName                (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
   m_rawChainDataInputFileType                (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV),
   m_rawChainSize                             (UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV),
@@ -70,7 +72,7 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
   m_rawChainDataOutputFileType               (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
   m_rawChainDataOutputAllowAll               (UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV),
 //m_rawChainDataOutputAllowedSet             (),
-  m_str2                                     (""),
+  m_str3                                     (""),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_rawChainComputeStats                     (UQ_ML_SAMPLING_L_RAW_CHAIN_COMPUTE_STATS_ODV),
   m_rawChainStatisticalOptionsObj            (NULL),
@@ -83,7 +85,7 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
   m_filteredChainDataOutputFileType          (UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_FILE_TYPE_ODV),
   m_filteredChainDataOutputAllowAll          (UQ_ML_SAMPLING_L_FILTERED_CHAIN_DATA_OUTPUT_ALLOW_ALL_ODV),
 //m_filteredChainDataOutputAllowedSet        (),
-  m_str3                                     (""),
+  m_str4                                     (""),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_filteredChainComputeStats                (UQ_ML_SAMPLING_L_FILTERED_CHAIN_COMPUTE_STATS_ODV),
   m_filteredChainStatisticalOptionsObj       (NULL),
@@ -95,7 +97,7 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
   m_tkUseNewtonComponent                     (UQ_ML_SAMPLING_L_TK_USE_NEWTON_COMPONENT_ODV),
   m_drMaxNumExtraStages                      (UQ_ML_SAMPLING_L_DR_MAX_NUM_EXTRA_STAGES_ODV),
   m_drScalesForExtraStages                   (0),
-  m_str4                                     ("1. "),
+  m_str5                                     ("1. "),
   m_drDuringAmNonAdaptiveInt                 (UQ_ML_SAMPLING_L_DR_DURING_AM_NON_ADAPTIVE_INT_ODV),
   m_amKeepInitialMatrix                      (UQ_ML_SAMPLING_L_AM_KEEP_INITIAL_MATRIX_ODV),
   m_amInitialNonAdaptInterval                (UQ_ML_SAMPLING_L_AM_INIT_NON_ADAPT_INT_ODV),
@@ -105,7 +107,7 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
   m_amAdaptedMatricesDataOutputFileType      (UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV),
   m_amAdaptedMatricesDataOutputAllowAll      (UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV),
 //m_amAdaptedMatricesDataOutputAllowedSet    (),
-  m_str5                                     (""),
+  m_str6                                     (""),
   m_amEta                                    (UQ_ML_SAMPLING_L_AM_ETA_ODV),
   m_amEpsilon                                (UQ_ML_SAMPLING_L_AM_EPSILON_ODV),
   m_env                                      (env),
@@ -127,12 +129,13 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
   m_option_minRejectionRate                          (m_prefix + "minRejectionRate"                          ),
   m_option_maxRejectionRate                          (m_prefix + "maxRejectionRate"                          ),
   m_option_covRejectionRate                          (m_prefix + "covRejectionRate"                          ),
-  m_option_minAcceptableEta                          (m_prefix + "minAcceptableEta"                          ), // gpmsa
+  m_option_minAcceptableEta                          (m_prefix + "minAcceptableEta"                          ), // gpmsa1
   m_option_totallyMute                               (m_prefix + "totallyMute"                               ),
   m_option_initialPosition_dataInputFileName         (m_prefix + "initialPosition_dataInputFileName"         ),
   m_option_initialPosition_dataInputFileType         (m_prefix + "initialPosition_dataInputFileType"         ),
   m_option_initialProposalCovMatrix_dataInputFileName(m_prefix + "initialProposalCovMatrix_dataInputFileName"),
   m_option_initialProposalCovMatrix_dataInputFileType(m_prefix + "initialProposalCovMatrix_dataInputFileType"),
+  m_option_listOfDisabledParameters                  (m_prefix + "listOfDisabledParameters"                  ), // gpmsa2
   m_option_rawChain_dataInputFileName                (m_prefix + "rawChain_dataInputFileName"                ),
   m_option_rawChain_dataInputFileType                (m_prefix + "rawChain_dataInputFileType"                ),
   m_option_rawChain_size                             (m_prefix + "rawChain_size"                             ),
@@ -197,12 +200,14 @@ MLSamplingLevelOptions::copyOptionsValues(const MLSamplingLevelOptions& srcOptio
   m_minRejectionRate                          = srcOptions.m_minRejectionRate;
   m_maxRejectionRate                          = srcOptions.m_maxRejectionRate;
   m_covRejectionRate                          = srcOptions.m_covRejectionRate;
-  m_minAcceptableEta                          = srcOptions.m_minAcceptableEta; // gpmsa
+  m_minAcceptableEta                          = srcOptions.m_minAcceptableEta; // gpmsa1
   m_totallyMute                               = srcOptions.m_totallyMute;
   m_initialPositionDataInputFileName          = srcOptions.m_initialPositionDataInputFileName;
   m_initialPositionDataInputFileType          = srcOptions.m_initialPositionDataInputFileType;
   m_initialProposalCovMatrixDataInputFileName = srcOptions.m_initialProposalCovMatrixDataInputFileName;
   m_initialProposalCovMatrixDataInputFileType = srcOptions.m_initialProposalCovMatrixDataInputFileType;
+  m_parameterDisabledSet                      = srcOptions.m_parameterDisabledSet; // gpmsa2
+  m_str2                                      = srcOptions.m_str2; // gpmsa2
   m_rawChainDataInputFileName                 = srcOptions.m_rawChainDataInputFileName;
   m_rawChainDataInputFileType                 = srcOptions.m_rawChainDataInputFileType;
   m_rawChainSize                              = srcOptions.m_rawChainSize;
@@ -215,7 +220,7 @@ MLSamplingLevelOptions::copyOptionsValues(const MLSamplingLevelOptions& srcOptio
   m_rawChainDataOutputFileType                = srcOptions.m_rawChainDataOutputFileType;
   m_rawChainDataOutputAllowAll                = srcOptions.m_rawChainDataOutputAllowAll;
   m_rawChainDataOutputAllowedSet              = srcOptions.m_rawChainDataOutputAllowedSet;
-  m_str2                                      = srcOptions.m_str2;
+  m_str3                                      = srcOptions.m_str3;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_rawChainComputeStats                      = srcOptions.m_rawChainComputeStats;
   m_rawChainStatisticalOptionsObj             = NULL; // Yes, 'NULL'
@@ -228,7 +233,7 @@ MLSamplingLevelOptions::copyOptionsValues(const MLSamplingLevelOptions& srcOptio
   m_filteredChainDataOutputFileType           = srcOptions.m_filteredChainDataOutputFileType;
   m_filteredChainDataOutputAllowAll           = srcOptions.m_filteredChainDataOutputAllowAll;
   m_filteredChainDataOutputAllowedSet         = srcOptions.m_filteredChainDataOutputAllowedSet;
-  m_str3                                      = srcOptions.m_str3;
+  m_str4                                      = srcOptions.m_str4;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_filteredChainComputeStats                 = srcOptions.m_filteredChainComputeStats;
   m_filteredChainStatisticalOptionsObj        = NULL; // Yes, 'NULL'
@@ -240,7 +245,7 @@ MLSamplingLevelOptions::copyOptionsValues(const MLSamplingLevelOptions& srcOptio
   m_tkUseNewtonComponent                      = srcOptions.m_tkUseNewtonComponent;
   m_drMaxNumExtraStages                       = srcOptions.m_drMaxNumExtraStages;
   m_drScalesForExtraStages                    = srcOptions.m_drScalesForExtraStages;
-  m_str4                                      = srcOptions.m_str4;
+  m_str5                                      = srcOptions.m_str5;
   m_drDuringAmNonAdaptiveInt                  = srcOptions.m_drDuringAmNonAdaptiveInt;
   m_amKeepInitialMatrix                       = srcOptions.m_amKeepInitialMatrix;
   m_amInitialNonAdaptInterval                 = srcOptions.m_amInitialNonAdaptInterval;
@@ -250,7 +255,7 @@ MLSamplingLevelOptions::copyOptionsValues(const MLSamplingLevelOptions& srcOptio
   m_amAdaptedMatricesDataOutputFileType       = srcOptions.m_amAdaptedMatricesDataOutputFileType;
   m_amAdaptedMatricesDataOutputAllowAll       = srcOptions.m_amAdaptedMatricesDataOutputAllowAll;
   m_amAdaptedMatricesDataOutputAllowedSet     = srcOptions.m_amAdaptedMatricesDataOutputAllowedSet;
-  m_str5                                      = srcOptions.m_str5;
+  m_str6                                      = srcOptions.m_str6;
   m_amEta                                     = srcOptions.m_amEta;
   m_amEpsilon                                 = srcOptions.m_amEpsilon;
 
@@ -330,6 +335,7 @@ MLSamplingLevelOptions::defineMyOptions(po::options_description& optionsDesc) co
     (m_option_initialPosition_dataInputFileType.c_str(),          po::value<std::string >()->default_value(m_initialPositionDataInputFileType         ), "type of input file for initial position"                         )
     (m_option_initialProposalCovMatrix_dataInputFileName.c_str(), po::value<std::string >()->default_value(m_initialProposalCovMatrixDataInputFileName), "name of input file for initial proposal covariance matrix"       )
     (m_option_initialProposalCovMatrix_dataInputFileType.c_str(), po::value<std::string >()->default_value(m_initialProposalCovMatrixDataInputFileType), "type of input file for initial proposal covariance matrix"       )
+    (m_option_listOfDisabledParameters.c_str(),                   po::value<std::string >()->default_value(m_str2                                     ), "list of disabled parameters"                                     ) // gpmsa2
     (m_option_rawChain_dataInputFileName.c_str(),                 po::value<std::string >()->default_value(m_rawChainDataInputFileName                ), "name of input file for raw chain "                               )
     (m_option_rawChain_dataInputFileType.c_str(),                 po::value<std::string >()->default_value(m_rawChainDataInputFileType                ), "type of input file for raw chain "                               )
     (m_option_rawChain_size.c_str(),                              po::value<unsigned int>()->default_value(m_rawChainSize                             ), "size of raw chain"                                               )
@@ -340,7 +346,7 @@ MLSamplingLevelOptions::defineMyOptions(po::options_description& optionsDesc) co
     (m_option_rawChain_dataOutputFileName.c_str(),                po::value<std::string >()->default_value(m_rawChainDataOutputFileName               ), "name of output file for raw chain "                              )
     (m_option_rawChain_dataOutputFileType.c_str(),                po::value<std::string >()->default_value(m_rawChainDataOutputFileType               ), "type of output file for raw chain "                              )
     (m_option_rawChain_dataOutputAllowAll.c_str(),                po::value<bool        >()->default_value(m_rawChainDataOutputAllowAll               ), "subEnvs that will write to output file for raw chain"            )
-    (m_option_rawChain_dataOutputAllowedSet.c_str(),              po::value<std::string >()->default_value(m_str2                                     ), "subEnvs that will write to output file for raw chain"            )
+    (m_option_rawChain_dataOutputAllowedSet.c_str(),              po::value<std::string >()->default_value(m_str3                                     ), "subEnvs that will write to output file for raw chain"            )
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     (m_option_rawChain_computeStats.c_str(),                      po::value<bool        >()->default_value(m_rawChainComputeStats                     ), "compute statistics on raw chain"                                 )
 #endif
@@ -350,7 +356,7 @@ MLSamplingLevelOptions::defineMyOptions(po::options_description& optionsDesc) co
     (m_option_filteredChain_dataOutputFileName.c_str(),           po::value<std::string >()->default_value(m_filteredChainDataOutputFileName          ), "name of output file for filtered chain"                          )
     (m_option_filteredChain_dataOutputFileType.c_str(),           po::value<std::string >()->default_value(m_filteredChainDataOutputFileType          ), "type of output file for filtered chain"                          )
     (m_option_filteredChain_dataOutputAllowAll.c_str(),           po::value<bool        >()->default_value(m_filteredChainDataOutputAllowAll          ), "subEnvs that will write to output file for filtered chain"       )
-    (m_option_filteredChain_dataOutputAllowedSet.c_str(),         po::value<std::string >()->default_value(m_str3                                     ), "subEnvs that will write to output file for filtered chain"       )
+    (m_option_filteredChain_dataOutputAllowedSet.c_str(),         po::value<std::string >()->default_value(m_str4                                     ), "subEnvs that will write to output file for filtered chain"       )
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
     (m_option_filteredChain_computeStats.c_str(),                 po::value<bool        >()->default_value(m_filteredChainComputeStats                ), "compute statistics on filtered chain"                            )
 #endif
@@ -359,7 +365,7 @@ MLSamplingLevelOptions::defineMyOptions(po::options_description& optionsDesc) co
     (m_option_tk_useLocalHessian.c_str(),                         po::value<bool        >()->default_value(m_tkUseLocalHessian                        ), "'proposal' use local Hessian"                                    )
     (m_option_tk_useNewtonComponent.c_str(),                      po::value<bool        >()->default_value(m_tkUseNewtonComponent                     ), "'proposal' use Newton component"                                 )
     (m_option_dr_maxNumExtraStages.c_str(),                       po::value<unsigned int>()->default_value(m_drMaxNumExtraStages                      ), "'dr' maximum number of extra stages"                             )
-    (m_option_dr_listOfScalesForExtraStages.c_str(),              po::value<std::string >()->default_value(m_str4                                     ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
+    (m_option_dr_listOfScalesForExtraStages.c_str(),              po::value<std::string >()->default_value(m_str5                                     ), "'dr' list of scales for proposal cov matrices from 2nd stage on" )
     (m_option_dr_duringAmNonAdaptiveInt.c_str(),                  po::value<bool        >()->default_value(m_drDuringAmNonAdaptiveInt                 ), "'dr' used during 'am' non adaptive interval"                     )
     (m_option_am_keepInitialMatrix.c_str(),                       po::value<bool        >()->default_value(m_amKeepInitialMatrix                      ), "'am' keep initial (given) matrix"                                )
     (m_option_am_initialNonAdaptInterval.c_str(),                 po::value<unsigned int>()->default_value(m_amInitialNonAdaptInterval                ), "'am' initial non adaptation interval"                            )
@@ -368,7 +374,7 @@ MLSamplingLevelOptions::defineMyOptions(po::options_description& optionsDesc) co
     (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),      po::value<std::string >()->default_value(m_amAdaptedMatricesDataOutputFileName      ), "name of output file for 'am' adapted matrices"                   )
     (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),      po::value<std::string >()->default_value(m_amAdaptedMatricesDataOutputFileType      ), "type of output file for 'am' adapted matrices"                   )
     (m_option_am_adaptedMatrices_dataOutputAllowAll.c_str(),      po::value<bool        >()->default_value(m_amAdaptedMatricesDataOutputAllowAll      ), "type of output file for 'am' adapted matrices"                   )
-    (m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str(),    po::value<std::string >()->default_value(m_str5                                     ), "type of output file for 'am' adapted matrices"                   )
+    (m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str(),    po::value<std::string >()->default_value(m_str6                                     ), "type of output file for 'am' adapted matrices"                   )
     (m_option_am_eta.c_str(),                                     po::value<double      >()->default_value(m_amEta                                    ), "'am' eta"                                                        )
     (m_option_am_epsilon.c_str(),                                 po::value<double      >()->default_value(m_amEpsilon                                ), "'am' epsilon"                                                    )
   ;
@@ -526,7 +532,7 @@ MLSamplingLevelOptions::getMyOptionValues(po::options_description& optionsDesc)
     m_covRejectionRate = .5;
   }
 
-  if (m_env.allOptionsMap().count(m_option_minAcceptableEta.c_str())) { // gpmsa
+  if (m_env.allOptionsMap().count(m_option_minAcceptableEta.c_str())) { // gpmsa1
     m_minAcceptableEta = ((const po::variable_value&) m_env.allOptionsMap()[m_option_minAcceptableEta.c_str()]).as<double>();
   }
 
@@ -548,6 +554,24 @@ MLSamplingLevelOptions::getMyOptionValues(po::options_description& optionsDesc)
 
   if (m_env.allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileType.c_str())) {
     m_initialProposalCovMatrixDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileType.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_listOfDisabledParameters)) { // gpmsa2
+    m_parameterDisabledSet.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env.allOptionsMap()[m_option_listOfDisabledParameters].as<std::string>();
+    MiscReadDoublesFromString(inputString,tmpAllow);
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_parameterDisabledSet.insert((unsigned int) tmpAllow[i]);
+      }
+    }
+  }
+  m_str2.clear();
+  for (std::set<unsigned int>::iterator setIt = m_parameterDisabledSet.begin(); setIt != m_parameterDisabledSet.end(); ++setIt) { // gpmsa2
+    sprintf(tmpStr,"%d",(int)(*setIt));
+    m_str2 += tmpStr;
+    m_str2 += " ";
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName.c_str())) {
@@ -603,11 +627,11 @@ MLSamplingLevelOptions::getMyOptionValues(po::options_description& optionsDesc)
       }
     }
   }
-  m_str2.clear();
+  m_str3.clear();
   for (std::set<unsigned int>::iterator setIt = m_rawChainDataOutputAllowedSet.begin(); setIt != m_rawChainDataOutputAllowedSet.end(); ++setIt) {
     sprintf(tmpStr,"%d",(int)(*setIt));
-    m_str2 += tmpStr;
-    m_str2 += " ";
+    m_str3 += tmpStr;
+    m_str3 += " ";
   }
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -672,11 +696,11 @@ MLSamplingLevelOptions::getMyOptionValues(po::options_description& optionsDesc)
       }
     }
   }
-  m_str3.clear();
+  m_str4.clear();
   for (std::set<unsigned int>::iterator setIt = m_filteredChainDataOutputAllowedSet.begin(); setIt != m_filteredChainDataOutputAllowedSet.end(); ++setIt) {
     sprintf(tmpStr,"%d",(int)(*setIt));
-    m_str3 += tmpStr;
-    m_str3 += " ";
+    m_str4 += tmpStr;
+    m_str4 += " ";
   }
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
@@ -732,13 +756,13 @@ MLSamplingLevelOptions::getMyOptionValues(po::options_description& optionsDesc)
     //updateTK();
   }
 
-  m_str4.clear();
+  m_str5.clear();
   for (unsigned int i = 0; i < m_drScalesForExtraStages.size(); ++i) {
     sprintf(tmpStr,"%e",m_drScalesForExtraStages[i]);
-    m_str4 += tmpStr;
-    m_str4 += " ";
+    m_str5 += tmpStr;
+    m_str5 += " ";
   }
-//std::cout << "m_str4 = " << m_str4 << std::endl;
+//std::cout << "m_str5 = " << m_str4 << std::endl;
 
   if (m_env.allOptionsMap().count(m_option_dr_duringAmNonAdaptiveInt)) {
     m_drDuringAmNonAdaptiveInt = ((const po::variable_value&) m_env.allOptionsMap()[m_option_dr_duringAmNonAdaptiveInt]).as<bool>();
@@ -787,11 +811,11 @@ MLSamplingLevelOptions::getMyOptionValues(po::options_description& optionsDesc)
       }
     }
   }
-  m_str5.clear();
+  m_str6.clear();
   for (std::set<unsigned int>::iterator setIt = m_amAdaptedMatricesDataOutputAllowedSet.begin(); setIt != m_amAdaptedMatricesDataOutputAllowedSet.end(); ++setIt) {
     sprintf(tmpStr,"%d",(int)(*setIt));
-    m_str5 += tmpStr;
-    m_str5 += " ";
+    m_str6 += tmpStr;
+    m_str6 += " ";
   }
 
   if (m_env.allOptionsMap().count(m_option_am_eta.c_str())) {
@@ -828,13 +852,17 @@ MLSamplingLevelOptions::print(std::ostream& os) const
      << "\n" << m_option_minRejectionRate                           << " = " << m_minRejectionRate
      << "\n" << m_option_maxRejectionRate                           << " = " << m_maxRejectionRate
      << "\n" << m_option_covRejectionRate                           << " = " << m_covRejectionRate
-     << "\n" << m_option_minAcceptableEta                           << " = " << m_minAcceptableEta // gpmsa
+     << "\n" << m_option_minAcceptableEta                           << " = " << m_minAcceptableEta // gpmsa1
      << "\n" << m_option_totallyMute                                << " = " << m_totallyMute
      << "\n" << m_option_initialPosition_dataInputFileName          << " = " << m_initialPositionDataInputFileName
      << "\n" << m_option_initialPosition_dataInputFileType          << " = " << m_initialPositionDataInputFileType
      << "\n" << m_option_initialProposalCovMatrix_dataInputFileName << " = " << m_initialProposalCovMatrixDataInputFileName
      << "\n" << m_option_initialProposalCovMatrix_dataInputFileType << " = " << m_initialProposalCovMatrixDataInputFileType
-     << "\n" << m_option_rawChain_dataInputFileName                 << " = " << m_rawChainDataInputFileName
+     << "\n" << m_option_listOfDisabledParameters                   << " = "; // gpmsa2
+  for (std::set<unsigned int>::iterator setIt = m_parameterDisabledSet.begin(); setIt != m_parameterDisabledSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+  os << "\n" << m_option_rawChain_dataInputFileName                 << " = " << m_rawChainDataInputFileName
      << "\n" << m_option_rawChain_dataInputFileType                 << " = " << m_rawChainDataInputFileType
      << "\n" << m_option_rawChain_size                              << " = " << m_rawChainSize
      << "\n" << m_option_rawChain_generateExtra                     << " = " << m_rawChainGenerateExtra

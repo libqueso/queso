@@ -48,6 +48,7 @@
 #define UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV            UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 #define UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV UQ_MH_SG_FILENAME_FOR_NO_FILE
 #define UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_MH_SG_LIST_OF_DISABLED_PARAMETERS_ODV                      ""
 #define UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV                   UQ_MH_SG_FILENAME_FOR_NO_FILE
 #define UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV                   UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 #define UQ_MH_SG_RAW_CHAIN_SIZE_ODV                                   100
@@ -144,6 +145,7 @@ public:
   std::string                        m_initialPositionDataInputFileType;
   std::string                        m_initialProposalCovMatrixDataInputFileName;
   std::string                        m_initialProposalCovMatrixDataInputFileType;
+  std::set<unsigned int>             m_parameterDisabledSet;
   std::string                        m_rawChainDataInputFileName;
   std::string                        m_rawChainDataInputFileType;
   unsigned int                       m_rawChainSize;
@@ -274,6 +276,7 @@ private:
   std::string                   m_option_initialPosition_dataInputFileType;
   std::string                   m_option_initialProposalCovMatrix_dataInputFileName;
   std::string                   m_option_initialProposalCovMatrix_dataInputFileType;
+  std::string                   m_option_listOfDisabledParameters;
   std::string                   m_option_rawChain_dataInputFileName;
   std::string                   m_option_rawChain_dataInputFileType;
   std::string                   m_option_rawChain_size;
