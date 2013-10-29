@@ -119,7 +119,12 @@ GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfo(
   m_predW_summingRVs_corrMatrix_of_unique_w_means  (m_unique_w_space.zeroVector())
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Entering GcmJointInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Entering GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+                            << ": key-debug"
+                            << ", some entities just created (not yet populated)"
+                            << ", m_Zvec_hat_w.sizeLocal() = " << m_Zvec_hat_w.sizeLocal()
+                            << ", m_Smat_w.numRowsLocal() = "  << m_Smat_w.numRowsLocal()
+                            << ", m_Smat_w.numCols() = "       << m_Smat_w.numCols()
                             << std::endl;
   }
 
@@ -132,7 +137,7 @@ GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfo(
   unsigned int m_Kmat_rank = m_Kmat.rank(0.,1.e-8 ); // todo: should be an option
   unsigned int kRank14     = m_Kmat.rank(0.,1.e-14);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
-    *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": m_Kmat.numRowsLocal() = "  << m_Kmat.numRowsLocal()
                             << ", m_Kmat.numCols() = "       << m_Kmat.numCols()
                             << ", m_Kmat.rank(0.,1.e-8) = "  << m_Kmat_rank
@@ -174,7 +179,23 @@ GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfo(
     // Compute 'K^T K' matrix, and its inverse
     //********************************************************************************
     m_Kt_K     = new Q_M(m_w_space.zeroVector()); // to be deleted on destructor
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+                              << ": key-debug"
+                              << ", m_Kt_K just created (not yet populated)"
+                              << ", numRowsLocal() = " << m_Kt_K->numRowsLocal()
+                              << ", numCols() = "      << m_Kt_K->numCols()
+                              << std::endl;
+    }
     m_Kt_K_inv = new Q_M(m_w_space.zeroVector()); // to be deleted on destructor
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "In GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+                              << ": key-debug"
+                              << ", m_Kt_K_inv just created (not yet populated)"
+                              << ", numRowsLocal() = " << m_Kt_K_inv->numRowsLocal()
+                              << ", numCols() = "      << m_Kt_K_inv->numCols()
+                              << std::endl;
+    }
 
     *m_Kt_K = Kt * m_Kmat;
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
@@ -354,7 +375,7 @@ GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfo(
                       "'m_paper_p_x' and 'simulationStorage.scenarioSpace().dimLocal()' should be equal");
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
-    *m_env.subDisplayFile() << "Leaving GcmJointInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << std::endl;
   }
 }

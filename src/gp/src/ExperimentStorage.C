@@ -131,8 +131,25 @@ ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment(
     }
 
     m_Wmat_transformed_y = new D_M(m_y_space->zeroVector());
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "In ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"
+                              << ": key-debug"
+                              << ", m_Wmat_transformed_y just created (not yet populated)"
+                              << ", numRowsLocal = " << m_Wmat_transformed_y->numRowsLocal()
+                              << ", numCols = "      << m_Wmat_transformed_y->numCols()
+                              << std::endl;
+    }
+
     m_Wmat_transformed_y->fillWithBlocksDiagonally(0,0,m_Wmats_transformed,true,true);
     m_Wmat_transformed_y_inv = new D_M(m_Wmat_transformed_y->inverse()); // inversion savings
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "In ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"
+                              << ": key-debug"
+                              << ", m_Wmat_transformed_y_inv just created (and populated at the same time)"
+                              << ", numRowsLocal = " << m_Wmat_transformed_y_inv->numRowsLocal()
+                              << ", numCols = "      << m_Wmat_transformed_y_inv->numCols()
+                              << std::endl;
+    }
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"

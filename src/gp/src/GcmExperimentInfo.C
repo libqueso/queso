@@ -110,6 +110,10 @@ GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::GcmExperimentInfo(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Entering GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+                            << ": key-debug"
+                            << ", some entities just created (not yet populated)"
+                            << ", m_Smat_v.numRowsLocal() = " << m_Smat_v.numRowsLocal()
+                            << ", m_Smat_v.numCols() = "      << m_Smat_v.numCols()
                             << std::endl;
   }
 
@@ -121,8 +125,24 @@ GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::GcmExperimentInfo(
   }
   else {
     m_PD                    = new D_M(m_v_space.zeroVector()); // to be deleted on destructor
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "In GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+                              << ": key-debug"
+                              << ", m_PD just created (not yet populated)"
+                              << ", numRowsLocal() = " << m_PD->numRowsLocal()
+                              << ", numCols() = "      << m_PD->numCols()
+                              << std::endl;
+    }
     m_Dmat_BlockDiag        = &experimentModel.Dmat_BlockDiag();
     m_Dmat_BlockDiag_permut = new D_M(m_env,m_y_space.map(),m_v_size); // to be deleted on destructor
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "In GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+                              << ": key-debug"
+                              << ", m_Dmat_BlockDiag just created (not yet populated)"
+                              << ", numRowsLocal() = " << m_Dmat_BlockDiag->numRowsLocal()
+                              << ", numCols() = "      << m_Dmat_BlockDiag->numCols()
+                              << std::endl;
+    }
     m_Wmat_transformed_y    = &experimentStorage.Wmat_transformed_y();
 
     //********************************************************************************
