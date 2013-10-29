@@ -1914,7 +1914,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
-                              << ", m_like_counter = "                     << m_like_counter
+                              << ", m_like_counter = "                         << m_like_counter
                               << ": finished computing 'm_tmp_Smat_z_hat' =\n" << m_z->m_tmp_Smat_z_hat
                               << std::endl;
     }
@@ -1940,7 +1940,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
     // Compute Gaussian contribution
     //********************************************************************************
     double tmpValue1 = scalarProduct(m_z->m_Zvec_hat,m_z->m_tmp_Smat_z_hat.invertMultiply(m_z->m_Zvec_hat)); // inversion savings
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
                               << ", m_like_counter = "                << m_like_counter
                               << ": finished computing 'tmpValue1 = " << tmpValue1
@@ -1958,7 +1958,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
       // Include effect of exponent modifiers
       //********************************************************************************
       double tmpValue2 = m_s->m_a_eta_modifier*std::log(m_s->m_tmp_1lambdaEtaVec[0]) - m_s->m_b_eta_modifier*m_s->m_tmp_1lambdaEtaVec[0];
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
         *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
                                 << ", m_like_counter = "                << m_like_counter
                                 << ": finished computing 'tmpValue2 = " << tmpValue2
@@ -1969,7 +1969,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
       this->memoryCheck(55);
 
       double tmpValue3 = m_j->m_a_y_modifier*std::log(m_e->m_tmp_5lambdaYVec[0]) - m_j->m_b_y_modifier*m_e->m_tmp_5lambdaYVec[0];
-      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
         *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(non-tilde)"
                                 << ", m_like_counter = "                << m_like_counter
                                 << ": finished computing 'tmpValue3 = " << tmpValue3
@@ -2134,6 +2134,16 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
     }
   }
 
+  std::set<unsigned int> tmpSet;
+  tmpSet.insert(m_env.subId());
+  if (outerCounter == 1) {
+    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+      m_z->m_tmp_Smat_z.subWriteContents("Sigma_z",
+          "mat_Sigma_z",
+          "m",
+          tmpSet);
+    }
+  }
 
   //********************************************************************************
   // Form '\Sigma_{extra}' matrix
@@ -2175,6 +2185,15 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
     }
   }
 
+  if (outerCounter == 1) {
+    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+      m_z->m_tmp_Smat_extra.subWriteContents("Sigma_extra",
+          "mat_Sigma_extra",
+          "m",
+          tmpSet);
+    }
+  }
+
   //********************************************************************************
   // Compute '\Sigma_z_hat' matrix
   //********************************************************************************
@@ -2193,6 +2212,15 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
                               << ", m_tmp_Smat_z_hat.rank(0.,1.e-8) = "  << zHatRank
                               << ", m_tmp_Smat_z_hat.rank(0.,1.e-14) = " << zHatRank14
                               << std::endl;
+    }
+  }
+
+  if (outerCounter == 1) {
+    if (m_optionsObj->m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != m_optionsObj->m_ov.m_dataOutputAllowedSet.end()) {
+      m_z->m_tmp_Smat_z_hat.subWriteContents("Sigma_z_hat",
+          "mat_Sigma_z_hat",
+          "m",
+          tmpSet);
     }
   }
 
