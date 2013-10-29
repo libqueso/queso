@@ -144,6 +144,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_initialPosition           (initialPosition),
   m_initialProposalCovMatrix  (m_vectorSpace.zeroVector()),
   m_nullInputProposalCovMatrix(inputProposalCovMatrix == NULL),
+  m_numDisabledParameters     (0), // gpmsa2
+  m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
   m_tk                        (NULL),
   m_positionIdForDebugging    (0),
@@ -222,6 +224,8 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
   m_initialPosition           (initialPosition),
   m_initialProposalCovMatrix  (m_vectorSpace.zeroVector()),
   m_nullInputProposalCovMatrix(inputProposalCovMatrix == NULL),
+  m_numDisabledParameters     (0), // gpmsa2
+  m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
   m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
   m_tk                        (NULL),
   m_positionIdForDebugging    (0),
@@ -277,6 +281,8 @@ MetropolisHastingsSG<P_V,P_M>::~MetropolisHastingsSG()
   m_rawChainInfo.reset();
   m_alphaQuotients.clear();
   m_logTargets.clear();
+  m_numDisabledParameters  = 0; // gpmsa2
+  m_parameterEnabledStatus.clear(); // gpmsa2
   m_positionIdForDebugging = 0;
   m_stageIdForDebugging    = 0;
   m_idsOfUniquePositions.clear();
@@ -316,6 +322,16 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
                               << ": just read initial position contents = " << m_initialPosition
                               << std::endl;
+    }
+  }
+
+  if (m_optionsObj->m_ov.m_parameterDisabledSet.size() > 0) { // gpmsa2
+    for (std::set<unsigned int>::iterator setIt = m_optionsObj->m_ov.m_parameterDisabledSet.begin(); setIt != m_optionsObj->m_ov.m_parameterDisabledSet.end(); ++setIt) {
+      unsigned int paramId = *setIt;
+      if (paramId < m_vectorSpace.dimLocal()) {
+        m_numDisabledParameters++;
+        m_parameterEnabledStatus[paramId] = false;
+      }
     }
   }
 
@@ -1492,6 +1508,13 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     while (keepGeneratingCandidates) {
       if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
       m_tk->rv(0).realizer().realization(tmpVecValues);
+      if (m_numDisabledParameters > 0) { // gpmsa2
+        for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+          if (m_parameterEnabledStatus[paramId] == false) {
+            tmpVecValues[paramId] = m_initialPosition[paramId];
+          }
+        }
+      }
       if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) m_rawChainInfo.candidateRunTime += MiscGetEllapsedSeconds(&timevalCandidate);
 
       outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
@@ -1676,6 +1699,13 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
           while (keepGeneratingCandidates) {
             if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
             m_tk->rv(tkStageIds).realizer().realization(tmpVecValues);
+            if (m_numDisabledParameters > 0) { // gpmsa2
+              for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+                if (m_parameterEnabledStatus[paramId] == false) {
+                  tmpVecValues[paramId] = m_initialPosition[paramId];
+                }
+              }
+            }
             if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) m_rawChainInfo.candidateRunTime += MiscGetEllapsedSeconds(&timevalCandidate);
 
             outOfTargetSupport = !m_targetPdf.domainSet().contains(tmpVecValues);
@@ -1903,8 +1933,8 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         updateAdaptedCovMatrix(partialChain,
                                idOfFirstPositionInSubChain,
                                m_lastChainSize,
-                              *m_lastMean,
-                              *m_lastAdaptedCovMatrix);
+                               *m_lastMean,
+                               *m_lastAdaptedCovMatrix);
 
         if ((printAdaptedMatrix                                       == true) &&
             (m_optionsObj->m_ov.m_amAdaptedMatricesDataOutputFileName != "." )) { // palms
@@ -1979,6 +2009,13 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
                               "invalid iRC returned from first chol()");
           // Matrix is not positive definite
           P_M* tmpDiag = m_vectorSpace.newDiagMatrix(m_optionsObj->m_ov.m_amEpsilon);
+          if (m_numDisabledParameters > 0) { // gpmsa2
+            for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+              if (m_parameterEnabledStatus[paramId] == false) {
+                (*tmpDiag)(paramId,paramId) = 0.;
+              }
+            }
+          }
           tmpChol = *m_lastAdaptedCovMatrix + *tmpDiag;
           attemptedMatrix = tmpChol;
           delete tmpDiag;
@@ -2030,7 +2067,21 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         }
         if (tmpCholIsPositiveDefinite) {
           ScaledCovMatrixTKGroup<P_V,P_M>* tempTK = dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk);
-          tempTK->updateLawCovMatrix(m_optionsObj->m_ov.m_amEta*attemptedMatrix);
+          P_M tmpMatrix(m_optionsObj->m_ov.m_amEta*attemptedMatrix);
+          if (m_numDisabledParameters > 0) { // gpmsa2
+            for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+              if (m_parameterEnabledStatus[paramId] == false) {
+                for (unsigned int i = 0; i < m_vectorSpace.dimLocal(); ++i) {
+                  tmpMatrix(i,paramId) = 0.;
+                }
+                for (unsigned int j = 0; j < m_vectorSpace.dimLocal(); ++j) {
+                  tmpMatrix(paramId,j) = 0.;
+                }
+                tmpMatrix(paramId,paramId) = 1.;
+              }
+            }
+          }
+          tempTK->updateLawCovMatrix(tmpMatrix);
 
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
           UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
@@ -2215,6 +2266,20 @@ MetropolisHastingsSG<P_V,P_M>::updateAdaptedCovMatrix(
     }
   }
   lastChainSize += doubleSubChainSize;
+
+  if (m_numDisabledParameters > 0) { // gpmsa2
+    for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+      if (m_parameterEnabledStatus[paramId] == false) {
+        for (unsigned int i = 0; i < m_vectorSpace.dimLocal(); ++i) {
+          lastAdaptedCovMatrix(i,paramId) = 0.;
+        }
+        for (unsigned int j = 0; j < m_vectorSpace.dimLocal(); ++j) {
+          lastAdaptedCovMatrix(paramId,j) = 0.;
+        }
+        lastAdaptedCovMatrix(paramId,paramId) = 1.;
+      }
+    }
+  }
 
   return;
 }

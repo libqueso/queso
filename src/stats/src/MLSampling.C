@@ -2388,7 +2388,7 @@ MLSampling<P_V,P_M>::generateSequence_Level0_all(
       bool outOfSupport = true;
       do {
 
-        m_priorRv.realizer().realization(auxVec);
+        m_priorRv.realizer().realization(auxVec);  // gpmsa2
         auxVec.mpiBcast(0, m_env.subComm()); // prudencio 2010-08-01
 
         outOfSupport = !(m_targetDomain->contains(auxVec));
@@ -2673,7 +2673,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
   const MLSamplingLevelOptions* currOptions,             // input
   const ScalarSequence<double>& prevLogLikelihoodValues, // input
   double                               prevExponent,            // input
-  double                               failedExponent,          // input // gpmsa
+  double                               failedExponent,          // input // gpmsa1
   double&                              currExponent,            // output
   ScalarSequence<double>&       weightSequence)          // output
 {
@@ -2686,7 +2686,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
         *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateSequence()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
                                 << ", step "  << m_currStep
-                                << ", failedExponent = " << failedExponent // gpmsa
+                                << ", failedExponent = " << failedExponent // gpmsa1
                                 << ": beginning step 3 of 11"
                                 << std::endl;
       }
@@ -2709,13 +2709,13 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
           *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateSequence()"
                                   << ", level " << m_currLevel+LEVEL_REF_ID
                                   << ", step "  << m_currStep
-                                  << ", failedExponent = " << failedExponent // gpmsa
+                                  << ", failedExponent = " << failedExponent // gpmsa1
                                   << ": entering loop for computing next exponent"
                                   << ", with nowAttempt = " << nowAttempt
                                   << std::endl;
         }
 
-        if (failedExponent > 0.) { // gpmsa
+        if (failedExponent > 0.) { // gpmsa1
           nowExponent = .5*(prevExponent+failedExponent);
         }
         else {
@@ -2846,7 +2846,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
         //                    "MLSampling<P_V,P_M>::generateSequence()",
         //                    "effective sample size ratio cannot be < 1");
 
-        if (failedExponent > 0.) { // gpmsa
+        if (failedExponent > 0.) { // gpmsa1
           testResult = true;
         }
         else {
@@ -2866,7 +2866,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
                                   << ", step "                    << m_currStep
                                   << ": nowAttempt = "            << nowAttempt
                                   << ", prevExponent = "          << prevExponent
-                                  << ", failedExponent = "        << failedExponent // gpmsa
+                                  << ", failedExponent = "        << failedExponent // gpmsa1
                                   << ", exponents[0] = "          << exponents[0]
                                   << ", nowExponent = "           << nowExponent
                                   << ", exponents[1] = "          << exponents[1]
@@ -2913,7 +2913,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
         }
       } while (testResult == false);
       currExponent = nowExponent;
-      if (failedExponent > 0.) { // gpmsa
+      if (failedExponent > 0.) { // gpmsa1
         m_logEvidenceFactors[m_logEvidenceFactors.size()-1] = nowUnifiedEvidenceLnFactor;
       }
       else {
@@ -2927,7 +2927,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
                                 << ", step "                                   << m_currStep
                                 << ": weightSequence.subSequenceSize() = "     << weightSequence.subSequenceSize()
                                 << ", weightSequence.unifiedSequenceSize() = " << quantity1
-                                << ", failedExponent = "                       << failedExponent // gpmsa
+                                << ", failedExponent = "                       << failedExponent // gpmsa1
                                 << ", currExponent = "                         << currExponent
                                 << ", effective ratio = "                      << nowEffectiveSizeRatio
                                 << ", log(evidence factor) = "                 << m_logEvidenceFactors[m_logEvidenceFactors.size()-1]
@@ -2954,7 +2954,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
           *m_env.subDisplayFile() << "WARNING, In MLSampling<P_V,P_M>::generateSequence()"
                                   << ", level "        << m_currLevel+LEVEL_REF_ID
                                   << ", step "         << m_currStep
-                                  << ", failedExponent = " << failedExponent // gpmsa
+                                  << ", failedExponent = " << failedExponent // gpmsa1
                                   << ": nowAttempt = " << nowAttempt
                                   << ", MiscCheck for 'logEvidenceFactor' detected a problem"
                                   << std::endl;
@@ -2979,7 +2979,7 @@ void
 MLSampling<P_V,P_M>::generateSequence_Step04_inter0(
   const SequenceOfVectors<P_V,P_M>& prevChain,        // input
   const ScalarSequence<double>&     weightSequence,   // input
-  P_M&                                     unifiedCovMatrix) // output
+  P_M&                                     unifiedCovMatrix) // output // gpmsa2
 {
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
@@ -3030,7 +3030,7 @@ MLSampling<P_V,P_M>::generateSequence_Step04_inter0(
           else {
             sumValue = localValue;
           }
-          unifiedCovMatrix(i,j) = sumValue;
+          unifiedCovMatrix(i,j) = sumValue;  // gpmsa2
         }
       }
 
@@ -4247,9 +4247,9 @@ MLSampling<P_V,P_M>::generateSequence(
     double       cumulativeRawChainRunTime    = 0.;
     unsigned int cumulativeRawChainRejections = 0;
 
-    bool   tryExponentEta = true; // gpmsa
-    double failedExponent = 0.;   // gpmsa
-    double failedEta      = 0.;   // gpmsa
+    bool   tryExponentEta = true; // gpmsa1
+    double failedExponent = 0.;   // gpmsa1
+    double failedEta      = 0.;   // gpmsa1
 
     MLSamplingLevelOptions*            currOptions           = NULL;  // step 1
     SequenceOfVectors<P_V,P_M>*        prevChain             = NULL;  // step 2
@@ -4263,7 +4263,7 @@ MLSampling<P_V,P_M>::generateSequence(
     GenericVectorRV<P_V,P_M>*          currRv                = NULL;  // step 8
 
     unsigned int exponentEtaTriedAmount = 0;
-    while (tryExponentEta) { // gpmsa
+    while (tryExponentEta) { // gpmsa1
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In IMLSampling<P_V,P_M>::generateSequence()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
@@ -4325,7 +4325,7 @@ MLSampling<P_V,P_M>::generateSequence(
       generateSequence_Step03_inter0(currOptions,             // input
                                      prevLogLikelihoodValues, // input
                                      prevExponent,            // input
-                                     failedExponent,          // input // gpmsa
+                                     failedExponent,          // input // gpmsa1
                                      currExponent,            // output
                                      weightSequence);         // output
     }
@@ -4467,8 +4467,8 @@ MLSampling<P_V,P_M>::generateSequence(
                                 *unifiedCovMatrix,                 // input/output
                                 currEta);                          // output
 
-    tryExponentEta = false; // gpmsa
-    if ((currOptions->m_minAcceptableEta > 0.     ) && // gpmsa
+    tryExponentEta = false; // gpmsa1
+    if ((currOptions->m_minAcceptableEta > 0.     ) && // gpmsa1
         (currEta < currOptions->m_minAcceptableEta)) {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateSequence()"
@@ -4509,9 +4509,9 @@ MLSampling<P_V,P_M>::generateSequence(
       currLogLikelihoodValues        = prevLogLikelihoodValues;
       currLogTargetValues            = prevLogTargetValues;
     }
-    } // while (tryExponentEta) // gpmsa
+    } // while (tryExponentEta) // gpmsa1
 
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) { // gpmsa
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) { // gpmsa1
       *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateSequence()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", exited 'do-while(tryExponentEta)"

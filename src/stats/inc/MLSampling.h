@@ -166,7 +166,7 @@ private:
   void   generateSequence_Step03_inter0(const MLSamplingLevelOptions*            currOptions,                        // input
                                         const ScalarSequence<double>&            prevLogLikelihoodValues,            // input
                                         double                                          prevExponent,                       // input
-                                        double                                          failedExponent,                     // input // gpmsa
+                                        double                                          failedExponent,                     // input // gpmsa1
                                         double&                                         currExponent,                       // output
                                         ScalarSequence<double>&                  weightSequence);                    // output
 
