@@ -127,7 +127,7 @@ public:
         D_M*                                              m_PD;                    // to be deleted on destructor
         const D_M*                                        m_Dmat_BlockDiag;        // Equal to '&experimentModel.Dmat_BlockDiag()'
         D_M*                                              m_Dmat_BlockDiag_permut; // to be deleted on destructor
-        const D_M*                                        m_Wmat_transformed_y;    // Equal to '&experimentStorage.Wmat_transformed_y()'
+        const D_M*                                        m_Wy;                    // Equal to '&experimentStorage.Wy()'
 
         D_M                                               m_Smat_v_asterisk_v_asterisk;
 };

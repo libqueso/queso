@@ -325,13 +325,13 @@ GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfo(
                               << "\n  m_Bwp_t__Wy__Bwp->numCols() = "          << m_Bwp_t__Wy__Bwp->numCols()
                               << "\n  Bwp_t.numRowsLocal() = "                 << Bwp_t.numRowsLocal()
                               << "\n  Bwp_t.numCols() = "                      << Bwp_t.numCols()
-                              << "\n  m_Wmat_transformed_y->numRowsLocal() = " << e.m_Wmat_transformed_y->numRowsLocal()
-                              << "\n  m_Wmat_transformed_y->numCols() = "      << e.m_Wmat_transformed_y->numCols()
+                              << "\n  m_Wy->numRowsLocal() = "                 << e.m_Wy->numRowsLocal()
+                              << "\n  m_Wy->numCols() = "                      << e.m_Wy->numCols()
                               << "\n  m_Bmat_with_permut->numRowsLocal() = "   << m_Bmat_with_permut->numRowsLocal()
                               << "\n  m_Bmat_with_permut->numCols() = "        << m_Bmat_with_permut->numCols()
                               << std::endl;
     }
-    *m_Bwp_t__Wy__Bwp = Bwp_t * (*e.m_Wmat_transformed_y * *m_Bmat_with_permut);
+    *m_Bwp_t__Wy__Bwp = Bwp_t * (*e.m_Wy * *m_Bmat_with_permut);
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
@@ -435,14 +435,14 @@ GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfo(
                               << "\n  m_Bop_t__Wy__Bop->numCols() = "          << m_Bop_t__Wy__Bop->numCols()
                               << "\n  Bop_t.numRowsLocal() = "                 << Bop_t.numRowsLocal()
                               << "\n  Bop_t.numCols() = "                      << Bop_t.numCols()
-                              << "\n  m_Wmat_transformed_y->numRowsLocal() = " << e.m_Wmat_transformed_y->numRowsLocal()
-                              << "\n  m_Wmat_transformed_y->numCols() = "      << e.m_Wmat_transformed_y->numCols()
+                              << "\n  m_Wy->numRowsLocal() = "                 << e.m_Wy->numRowsLocal()
+                              << "\n  m_Wy->numCols() = "                      << e.m_Wy->numCols()
                               << "\n  m_Bmat_with_permut->numRowsLocal() = "   << m_Bmat_with_permut->numRowsLocal()
                               << "\n  m_Bmat_with_permut->numCols() = "        << m_Bmat_with_permut->numCols()
                               << std::endl;
     }
 
-    *m_Bop_t__Wy__Bop = Bop_t * (*e.m_Wmat_transformed_y * *m_Bmat_without_permut);
+    *m_Bop_t__Wy__Bop = Bop_t * (*e.m_Wy * *m_Bmat_without_permut);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'm_Bop_t__Wy__Bop before nugget'"
@@ -642,12 +642,12 @@ GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfo(
                               << ", m_Bop_t__Wy__Bop__inv->numCols() = "      << m_Bop_t__Wy__Bop__inv->numCols()
                               << ", Bop_t.numRowsLocal() = "                  << Bop_t.numRowsLocal()
                               << ", Bop_t.numCols() = "                       << Bop_t.numCols()
-                              << ", m_Wmat_transformed_y->numRowsLocal() = "  << e.m_Wmat_transformed_y->numRowsLocal()
-                              << ", m_Wmat_transformed_y->numCols() = "       << e.m_Wmat_transformed_y->numCols()
+                              << ", m_Wy->numRowsLocal() = "                  << e.m_Wy->numRowsLocal()
+                              << ", m_Wy->numCols() = "                       << e.m_Wy->numCols()
                               << ", yVec_transformed.sizeLocal() = "          << yVec_transformed.sizeLocal()
                               << std::endl;
     }
-    m_Zvec_hat_vu = *m_Bop_t__Wy__Bop__inv * (Bwp_t * (*e.m_Wmat_transformed_y * yVec_transformed)); // aqui
+    m_Zvec_hat_vu = *m_Bop_t__Wy__Bop__inv * (Bwp_t * (*e.m_Wy * yVec_transformed)); // aqui
     if (gcmOptionsObj.m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != gcmOptionsObj.m_ov.m_dataOutputAllowedSet.end()) {
       m_Zvec_hat_vu.subWriteContents("Zvec_hat_vu",
                                      "vec_Zvec_hat_vu",
@@ -663,7 +663,7 @@ GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfo(
                               << std::endl;
     }
 
-    tmpVec2 = *e.m_Wmat_transformed_y * tmpVec2;
+    tmpVec2 = *e.m_Wy * tmpVec2;
     m_b_y_modifier = scalarProduct(yVec_transformed,tmpVec2) / 2.;
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
