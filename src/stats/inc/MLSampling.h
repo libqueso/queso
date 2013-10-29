@@ -293,6 +293,8 @@ private:
   const BaseScalarFunction<P_V,P_M>& m_likelihoodFunction;
   const VectorSpace       <P_V,P_M>& m_vectorSpace;
         VectorSet         <P_V,P_M>* m_targetDomain;
+        unsigned int                        m_numDisabledParameters; // gpmsa2
+        std::vector<bool>                   m_parameterEnabledStatus; // gpmsa2
 
         MLSamplingOptions            m_options;
 

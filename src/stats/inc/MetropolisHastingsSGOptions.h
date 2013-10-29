@@ -145,7 +145,7 @@ public:
   std::string                        m_initialPositionDataInputFileType;
   std::string                        m_initialProposalCovMatrixDataInputFileName;
   std::string                        m_initialProposalCovMatrixDataInputFileType;
-  std::set<unsigned int>             m_parameterDisabledSet;
+  std::set<unsigned int>             m_parameterDisabledSet;  // gpmsa2
   std::string                        m_rawChainDataInputFileName;
   std::string                        m_rawChainDataInputFileType;
   unsigned int                       m_rawChainSize;
@@ -276,7 +276,7 @@ private:
   std::string                   m_option_initialPosition_dataInputFileType;
   std::string                   m_option_initialProposalCovMatrix_dataInputFileName;
   std::string                   m_option_initialProposalCovMatrix_dataInputFileType;
-  std::string                   m_option_listOfDisabledParameters;
+  std::string                   m_option_listOfDisabledParameters;  // gpmsa2
   std::string                   m_option_rawChain_dataInputFileName;
   std::string                   m_option_rawChain_dataInputFileType;
   std::string                   m_option_rawChain_size;
