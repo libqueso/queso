@@ -520,6 +520,21 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     }
 
     (*m_Kmat_eta) = matU_tmp * matS_tmp;
+
+     if (m_env.identifyingString() == "CASLexample") {
+       // IMPORTANT: temporary, just to match with CASL example of the Matlab version of GPMSA
+       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
+         *m_env.subDisplayFile() << "IMPORTANT In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+                                 << ": multiplying first and third columns of 'm_Kmat_eta' by '-1' in order to match the results of Matlab GPMSA"
+                                 << std::endl;
+       }
+       for (unsigned int i = 0; i < m_Kmat_eta->numRowsLocal(); ++i) {
+         (*m_Kmat_eta)(i,0) *= -1.;
+       }
+       for (unsigned int i = 0; i < m_Kmat_eta->numRowsLocal(); ++i) {
+         (*m_Kmat_eta)(i,2) *= -1.;
+       }
+     }
   }
   else {
     //***********************************************************************
