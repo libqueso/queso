@@ -33,21 +33,20 @@ namespace QUESO {
 template<class S_V,class S_M,class D_V,class D_M>
 ExperimentStorage<S_V,S_M,D_V,D_M>::ExperimentStorage(
   const VectorSpace<S_V,S_M>& scenarioSpace,
-  unsigned int                       numExperiments)
+  unsigned int                numExperiments)
   :
-  m_env                   (scenarioSpace.env()),
-  m_scenarioSpace         (scenarioSpace),
-  m_paper_n               (numExperiments),
-  m_paper_n_ys_transformed(m_paper_n,0),
-  m_paper_n_y             (0),
-  m_addId                 (0),
-  m_scenarioVecs_standard (m_paper_n, (S_V*) NULL),
-  m_dataVecs_transformed  (m_paper_n, (D_V*) NULL),
-  m_Wmats_transformed     (m_paper_n, (D_M*) NULL),
-  m_y_space               (NULL),
-  m_yVec_transformed      (NULL),
-  m_Wmat_transformed_y    (NULL),
-  m_Wmat_transformed_y_inv(NULL)
+  m_env                    (scenarioSpace.env()),
+  m_scenarioSpace          (scenarioSpace),
+  m_paper_n                (numExperiments),
+  m_paper_n_ys_transformed (m_paper_n,0),
+  m_paper_n_y              (0),
+  m_addId                  (0),
+  m_scenarioVecs_standard  (m_paper_n, (S_V*) NULL),
+  m_dataVecs_transformed   (m_paper_n, (D_V*) NULL),
+  m_covMats_transformed_inv(m_paper_n, (D_M*) NULL),
+  m_y_space                (NULL),
+  m_yVec_transformed       (NULL),
+  m_Wy                     (NULL)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Entering ExperimentStorage<S_V,S_M,D_V,D_M>::constructor()"
@@ -69,8 +68,7 @@ ExperimentStorage<S_V,S_M,D_V,D_M>::~ExperimentStorage()
                             << std::endl;
   }
 
-  delete m_Wmat_transformed_y_inv;
-  delete m_Wmat_transformed_y;
+  delete m_Wy;
   delete m_yVec_transformed;
   delete m_y_space;
 
@@ -85,14 +83,14 @@ void
 ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment(
   const S_V& scenarioVec_standard,
   const D_V& dataVec_transformed,
-  const D_M& Wmat_transformed)
+  const D_M& covMat_transformed_inv)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Entering ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"
                             << ": m_addId = " << m_addId
-                            << "\n  scenarioVec_standard = " << scenarioVec_standard
-                            << "\n  dataVec_transformed = "  << dataVec_transformed
-                            << "\n  WmatVec_transformed = "  << Wmat_transformed
+                            << "\n  scenarioVec_standard = "   << scenarioVec_standard
+                            << "\n  dataVec_transformed = "    << dataVec_transformed
+                            << "\n  covMat_transformed_inv = " << covMat_transformed_inv
                             << std::endl;
   }
 
@@ -101,9 +99,9 @@ ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment(
                       "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::addExperiment()",
                       "too many adds...");
 
-  m_scenarioVecs_standard [m_addId] = &scenarioVec_standard;
-  m_dataVecs_transformed  [m_addId] = &dataVec_transformed;
-  m_Wmats_transformed     [m_addId] = &Wmat_transformed;
+  m_scenarioVecs_standard  [m_addId] = &scenarioVec_standard;
+  m_dataVecs_transformed   [m_addId] = &dataVec_transformed;
+  m_covMats_transformed_inv[m_addId] = &covMat_transformed_inv;
   m_paper_n_ys_transformed[m_addId] = dataVec_transformed.sizeLocal();
   m_paper_n_y += m_paper_n_ys_transformed[m_addId];
   m_addId++;
@@ -117,7 +115,7 @@ ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment(
     }
 
     //***********************************************************************
-    // Form 'yVec_transformed', 'Wmat_transformed_y' matrix, and compute its inverse
+    // Form 'yVec_transformed', 'Wy' matrix, and compute its inverse
     //***********************************************************************
     m_y_space = new VectorSpace<D_V,D_M>(m_env, "m_y_exp_storage", m_paper_n_y, NULL),
     m_yVec_transformed = new D_V(m_y_space->zeroVector());
@@ -130,31 +128,27 @@ ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment(
                               << std::endl;
     }
 
-    m_Wmat_transformed_y = new D_M(m_y_space->zeroVector());
+    m_Wy = new D_M(m_y_space->zeroVector());
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
       *m_env.subDisplayFile() << "In ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"
                               << ": key-debug"
-                              << ", m_Wmat_transformed_y just created (not yet populated)"
-                              << ", numRowsLocal = " << m_Wmat_transformed_y->numRowsLocal()
-                              << ", numCols = "      << m_Wmat_transformed_y->numCols()
+                              << ", m_Wy just created (not yet populated)"
+                              << ", numRowsLocal = " << m_Wy->numRowsLocal()
+                              << ", numCols = "      << m_Wy->numCols()
                               << std::endl;
     }
 
-    m_Wmat_transformed_y->fillWithBlocksDiagonally(0,0,m_Wmats_transformed,true,true);
-    m_Wmat_transformed_y_inv = new D_M(m_Wmat_transformed_y->inverse()); // inversion savings
+    m_Wy->fillWithBlocksDiagonally(0,0,m_Wmats_transformed,true,true);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
       *m_env.subDisplayFile() << "In ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"
                               << ": key-debug"
-                              << ", m_Wmat_transformed_y_inv just created (and populated at the same time)"
-                              << ", numRowsLocal = " << m_Wmat_transformed_y_inv->numRowsLocal()
-                              << ", numCols = "      << m_Wmat_transformed_y_inv->numCols()
+                              << ", m_Wy just populated"
                               << std::endl;
     }
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"
-                              << ": m_Wmat_transformed_y->lnDeterminant() = "     << m_Wmat_transformed_y->lnDeterminant()
-                              << ", m_Wmat_transformed_y_inv->lnDeterminant() = " << m_Wmat_transformed_y_inv->lnDeterminant()
+                              << ": m_Wy->lnDeterminant() = " << m_Wy->lnDeterminant()
                               << std::endl;
     }
   }
@@ -251,43 +245,14 @@ ExperimentStorage<S_V,S_M,D_V,D_M>::yVec_transformed() const
 
 template<class S_V,class S_M,class D_V,class D_M>
 const D_M&
-ExperimentStorage<S_V,S_M,D_V,D_M>::Wmat_transformed(unsigned int experimentId) const
+ExperimentStorage<S_V,S_M,D_V,D_M>::Wy() const
 {
-  UQ_FATAL_TEST_MACRO(experimentId >= m_Wmats_transformed.size(),
+  UQ_FATAL_TEST_MACRO(m_Wy == NULL,
                       m_env.worldRank(),
-                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wmat_transformed()",
-                      "experimentId is too large");
+                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wy()",
+                      "'m_Wy' is NULL");
 
-  UQ_FATAL_TEST_MACRO(m_Wmats_transformed[experimentId] == NULL,
-                      m_env.worldRank(),
-                      "ExperimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wmat_transformed()",
-                      "matrix is NULL");
-
-  return *(m_Wmats_transformed[experimentId]);
-}
-
-template<class S_V,class S_M,class D_V,class D_M>
-const D_M&
-ExperimentStorage<S_V,S_M,D_V,D_M>::Wmat_transformed_y() const
-{
-  UQ_FATAL_TEST_MACRO(m_Wmat_transformed_y == NULL,
-                      m_env.worldRank(),
-                      "ExprimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wmat_transformed_y()",
-                      "'m_Wmat_transformed_y' is NULL");
-
-  return *m_Wmat_transformed_y;
-}
-
-template<class S_V,class S_M,class D_V,class D_M>
-const D_M&
-ExperimentStorage<S_V,S_M,D_V,D_M>::Wmat_transformed_y_inv() const
-{
-  UQ_FATAL_TEST_MACRO(m_Wmat_transformed_y_inv == NULL,
-                      m_env.worldRank(),
-                      "ExprimentStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>::Wmat_transformed_y_inv()",
-                      "'m_Wmat_transformed_y_inv' is NULL");
-
-  return *m_Wmat_transformed_y_inv;
+  return *m_Wy;
 }
 
 template<class S_V,class S_M,class D_V,class D_M>
