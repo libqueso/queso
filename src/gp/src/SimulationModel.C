@@ -504,6 +504,15 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     m_p_eta_space = new VectorSpace<Q_V,Q_M>(m_env, "p_eta_", m_paper_p_eta, NULL);      // to be deleted on destructor
     m_Kmat_eta    = new Q_M                        (m_env, m_n_eta_space.map(), m_paper_p_eta); // to be deleted on destructor
 
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+                              << ": key-debug"
+                              << ", m_Kmat_eta just created (situation 1; not yet populated)"
+                              << ", numRowsLocal = " << m_Kmat_eta->numRowsLocal()
+                              << ", numCols = "      << m_Kmat_eta->numCols()
+                              << std::endl;
+    }
+
     //***********************************************************************
     // Case 'etaMat.numRows >= etaMat.numCols': form 'Kmat_eta' matrix
     //***********************************************************************
@@ -520,6 +529,21 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
     }
 
     (*m_Kmat_eta) = matU_tmp * matS_tmp;
+
+     if (m_env.identifyingString() == "CASLexample") {
+       // IMPORTANT: temporary, just to match with CASL example of the Matlab version of GPMSA
+       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
+         *m_env.subDisplayFile() << "IMPORTANT In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+                                 << ": multiplying first and third columns of 'm_Kmat_eta' by '-1' in order to match the results of Matlab GPMSA"
+                                 << std::endl;
+       }
+       for (unsigned int i = 0; i < m_Kmat_eta->numRowsLocal(); ++i) {
+         (*m_Kmat_eta)(i,0) *= -1.;
+       }
+       for (unsigned int i = 0; i < m_Kmat_eta->numRowsLocal(); ++i) {
+         (*m_Kmat_eta)(i,2) *= -1.;
+       }
+     }
   }
   else {
     //***********************************************************************
@@ -570,6 +594,15 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
 
     m_p_eta_space = new VectorSpace<Q_V,Q_M>(m_env, "p_eta_", m_paper_p_eta, NULL);      // to be deleted on destructor
     m_Kmat_eta    = new Q_M                        (m_env, m_n_eta_space.map(), m_paper_p_eta); // to be deleted on destructor
+
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "In uqSimulationModelClass<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
+                              << ": key-debug"
+                              << ", m_Kmat_eta just created (situation 2; not yet populated)"
+                              << ", numRowsLocal = " << m_Kmat_eta->numRowsLocal()
+                              << ", numCols = "      << m_Kmat_eta->numCols()
+                              << std::endl;
+    }
 
     //***********************************************************************
     // Case 'etaMat.numRows < etaMat.numCols': form 'Kmat_eta' matrix
@@ -624,10 +657,12 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
   m_kvec_is.resize(m_paper_p_eta, (Q_V*) NULL);                        // to be deleted on destructor
   m_Kmat_is.resize(m_paper_p_eta, (Q_M*) NULL);                        // to be deleted on destructor
   m_Kmat = new Q_M(m_env, m_eta_space.map(), m_paper_m*m_paper_p_eta); // to be deleted on destructor
-  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
-                            << "\n  m_Kmat->numRowsLocal = " << m_Kmat->numRowsLocal()
-                            << "\n  m_Kmat->numCols = "      << m_Kmat->numCols()
+                            << ": key-debug"
+                            << ", m_Kmat just created (not yet populated)"
+                            << ", numRowsLocal = " << m_Kmat->numRowsLocal()
+                            << ", numCols = "      << m_Kmat->numCols()
                             << std::endl;
   }
 
@@ -650,14 +685,15 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::SimulationModel(
   //***********************************************************************
   for (unsigned int i = 0; i < m_paper_p_eta; ++i) {
     m_Kmat_is[i] = new Q_M(m_env, m_eta_space.map(), m_paper_m);
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
       *m_env.subDisplayFile() << "In SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::constructor()"
-                              << ": before 'm_Kmat_is[i]->fillWithTensorProduct()"
-                              << "\n  m_Kmat_is[" << i << "]->numRowsLocal() = " << m_Kmat_is[i]->numRowsLocal()
-                              << "\n  m_Kmat_is[" << i << "]->numCols() = "      << m_Kmat_is[i]->numCols()
-                              << "\n  m_m_Imat.numRowsLocal() = "                << m_m_Imat.numRowsLocal()
-                              << "\n  m_m_Imat.numCols() = "                     << m_m_Imat.numCols()
-                              << "\n  m_kvec_is[" << i << "]->sizeLocal() = "    << m_kvec_is[i]->sizeLocal()
+                              << ": key-debug"
+                              << ", before 'm_Kmat_is[i]->fillWithTensorProduct()"
+                              << ", m_Kmat_is[" << i << "]->numRowsLocal() = " << m_Kmat_is[i]->numRowsLocal()
+                              << ", m_Kmat_is[" << i << "]->numCols() = "      << m_Kmat_is[i]->numCols()
+                              << ", m_m_Imat.numRowsLocal() = "                << m_m_Imat.numRowsLocal()
+                              << ", m_m_Imat.numCols() = "                     << m_m_Imat.numCols()
+                              << ", m_kvec_is[" << i << "]->sizeLocal() = "    << m_kvec_is[i]->sizeLocal()
                               << std::endl;
     }
     m_Kmat_is[i]->fillWithTensorProduct(0,0,m_m_Imat,*(m_kvec_is[i]),true,true);

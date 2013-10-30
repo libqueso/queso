@@ -105,11 +105,15 @@ GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::GcmExperimentInfo(
   m_PD                        (NULL), // to be deleted on destructor
   m_Dmat_BlockDiag            (NULL),
   m_Dmat_BlockDiag_permut     (NULL), // to be deleted on destructor
-  m_Wmat_transformed_y        (NULL),
+  m_Wy        (NULL),
   m_Smat_v_asterisk_v_asterisk(m_unique_v_space.zeroVector())
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Entering GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+                            << ": key-debug"
+                            << ", some entities just created (not yet populated)"
+                            << ", m_Smat_v.numRowsLocal() = " << m_Smat_v.numRowsLocal()
+                            << ", m_Smat_v.numCols() = "      << m_Smat_v.numCols()
                             << std::endl;
   }
 
@@ -121,27 +125,43 @@ GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::GcmExperimentInfo(
   }
   else {
     m_PD                    = new D_M(m_v_space.zeroVector()); // to be deleted on destructor
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+                              << ": key-debug"
+                              << ", m_PD just created (not yet populated)"
+                              << ", numRowsLocal() = " << m_PD->numRowsLocal()
+                              << ", numCols() = "      << m_PD->numCols()
+                              << std::endl;
+    }
     m_Dmat_BlockDiag        = &experimentModel.Dmat_BlockDiag();
     m_Dmat_BlockDiag_permut = new D_M(m_env,m_y_space.map(),m_v_size); // to be deleted on destructor
-    m_Wmat_transformed_y    = &experimentStorage.Wmat_transformed_y();
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "In uqGcmExperimentInfoClass<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
+                              << ": key-debug"
+                              << ", m_Dmat_BlockDiag just created (not yet populated)"
+                              << ", numRowsLocal() = " << m_Dmat_BlockDiag->numRowsLocal()
+                              << ", numCols() = "      << m_Dmat_BlockDiag->numCols()
+                              << std::endl;
+    }
+    m_Wy    = &experimentStorage.Wy();
 
     //********************************************************************************
     // Print information
     //********************************************************************************
     if (gcmOptionsObj.m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != gcmOptionsObj.m_ov.m_dataOutputAllowedSet.end()) {
-      m_Wmat_transformed_y->subWriteContents("Wy",
-                                             "mat_Wy",
-                                             "m",
-                                             tmpSet);
+      m_Wy->subWriteContents("Wy",
+                             "mat_Wy",
+                             "m",
+                             tmpSet);
     }
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
-      D_M Wmat_transformed_y_filtered(*m_Wmat_transformed_y);
-      Wmat_transformed_y_filtered.setPrintHorizontally(false);
-      Wmat_transformed_y_filtered.filterSmallValues(1.e-6);
+      D_M Wy_filtered(*m_Wy);
+      Wy_filtered.setPrintHorizontally(false);
+      Wy_filtered.filterSmallValues(1.e-6);
       *m_env.subDisplayFile() << "In GcmExperimentInfo<S_V,S_M,D_V,D_M,P_V,P_M>::constructor()"
-                              << ": Wmat_transformed_y_filtered.numRowsLocal() = " << Wmat_transformed_y_filtered.numRowsLocal()
-                              << ", Wmat_transformed_y_filtered.numCols() = "      << Wmat_transformed_y_filtered.numCols()
-                              << ", Wmat_transformed_y_filtered contents =\n"      << Wmat_transformed_y_filtered
+                              << ": Wy_filtered.numRowsLocal() = " << Wy_filtered.numRowsLocal()
+                              << ", Wy_filtered.numCols() = "      << Wy_filtered.numCols()
+                              << ", Wy_filtered contents =\n"      << Wy_filtered
                               << std::endl;
     }
 

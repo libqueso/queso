@@ -40,21 +40,19 @@ public:
   ExperimentStorage(const VectorSpace<S_V,S_M>& scenarioSpace, unsigned int numExperiments);
  ~ExperimentStorage();
 
-        void                         addExperiment         (const S_V& scenarioVec_standard, const D_V& dataVec_transformed, const D_M& Wmat_transformed);
-        unsigned int                 numExperiments        () const;
-  const VectorSpace<S_V,S_M>& scenarioSpace         () const;
-  const std::vector<const S_V* >&    xs_standard           () const;
-  const std::vector<unsigned int>&   n_ys_transformed      () const;
-        unsigned int                 n_y                   () const;
-  const S_V&                         scenarioVec_standard  (unsigned int experimentId) const;
-  const D_V&                         dataVec_transformed   (unsigned int experimentId) const;
-  const D_V&                         yVec_transformed      () const;
-  const D_M&                         Wmat_transformed      (unsigned int experimentId) const;
-  const D_M&                         Wmat_transformed_y    () const;
-  const D_M&                         Wmat_transformed_y_inv() const;
+        void                         addExperiment       (const S_V& scenarioVec_standard, const D_V& dataVec_transformed, const D_M& covMat_transformed_inv);
+        unsigned int                 numExperiments      () const;
+  const VectorSpace<S_V,S_M>& scenarioSpace              () const;
+  const std::vector<const S_V* >&    xs_standard         () const;
+  const std::vector<unsigned int>&   n_ys_transformed    () const;
+        unsigned int                 n_y                 () const;
+  const S_V&                         scenarioVec_standard(unsigned int experimentId) const;
+  const D_V&                         dataVec_transformed (unsigned int experimentId) const;
+  const D_V&                         yVec_transformed    () const;
+  const D_M&                         Wy                  () const;
 
-  const BaseEnvironment&      env                   () const;
-        void                         print                 (std::ostream& os) const;
+  const BaseEnvironment&             env                 () const;
+        void                         print               (std::ostream& os) const;
   friend std::ostream& operator<<(std::ostream& os,
       const ExperimentStorage<S_V,S_M,D_V,D_M>& obj) {
     obj.print(os);
@@ -73,11 +71,10 @@ private:
         unsigned int                 m_addId;
         std::vector<const S_V* >     m_scenarioVecs_standard;
         std::vector<const D_V* >     m_dataVecs_transformed;
-        std::vector<const D_M* >     m_Wmats_transformed;
+        std::vector<const D_M* >     m_covMats_transformed_inv;  // = W_i's
         VectorSpace<D_V,D_M>* m_y_space;
         D_V*                         m_yVec_transformed;
-        D_M*                         m_Wmat_transformed_y;
-        D_M*                         m_Wmat_transformed_y_inv;
+        D_M*                         m_Wy;
 };
 
 }  // End namespace QUESO

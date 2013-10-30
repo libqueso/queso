@@ -166,7 +166,7 @@ private:
   void   generateSequence_Step03_inter0(const MLSamplingLevelOptions*            currOptions,                        // input
                                         const ScalarSequence<double>&            prevLogLikelihoodValues,            // input
                                         double                                          prevExponent,                       // input
-                                        double                                          failedExponent,                     // input // gpmsa
+                                        double                                          failedExponent,                     // input // gpmsa1
                                         double&                                         currExponent,                       // output
                                         ScalarSequence<double>&                  weightSequence);                    // output
 
@@ -293,6 +293,8 @@ private:
   const BaseScalarFunction<P_V,P_M>& m_likelihoodFunction;
   const VectorSpace       <P_V,P_M>& m_vectorSpace;
         VectorSet         <P_V,P_M>* m_targetDomain;
+        unsigned int                        m_numDisabledParameters; // gpmsa2
+        std::vector<bool>                   m_parameterEnabledStatus; // gpmsa2
 
         MLSamplingOptions            m_options;
 

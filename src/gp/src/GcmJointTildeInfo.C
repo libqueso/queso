@@ -245,7 +245,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
     //******************************************************************************
     // Tilde situation: compute 'Btilde^T W_y Btilde' matrix, and its inverse
     //******************************************************************************
-    m_Btildet_Wy_Btilde = Btildet * (*e.m_Wmat_transformed_y * m_Bmat_tilde); // todo: add 1.e-4 to diagonal
+    m_Btildet_Wy_Btilde = Btildet * (*e.m_Wy * m_Bmat_tilde); // todo: add 1.e-4 to diagonal
     if (m_env.subDisplayFile()) {
       *m_env.subDisplayFile() << "In GcmJointTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                               << ": finished computing 'm_Btildet_Wy_Btilde'"
@@ -326,14 +326,14 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
                               << ", m_Btildet_Wy_Btilde_inv.numCols() = "      << m_Btildet_Wy_Btilde_inv.numCols()
                               << ", Btildet.numRowsLocal() = "                 << Btildet.numRowsLocal()
                               << ", Btildet.numCols() = "                      << Btildet.numCols()
-                              << ", m_Wmat_transformed_y->numRowsLocal() = "   << e.m_Wmat_transformed_y->numRowsLocal()
-                              << ", m_Wmat_transformed_y->numCols() = "        << e.m_Wmat_transformed_y->numCols()
+                              << ", m_Wy->numRowsLocal() = "                   << e.m_Wy->numRowsLocal()
+                              << ", m_Wy->numCols() = "                        << e.m_Wy->numCols()
                               << ", yVec_transformed.sizeLocal() = "           << yVec_transformed.sizeLocal()
                               << std::endl;
     }
-    m_Zvec_tilde_hat_vu = m_Btildet_Wy_Btilde_inv * (Btildet * (*e.m_Wmat_transformed_y * yVec_transformed)); 
+    m_Zvec_tilde_hat_vu = m_Btildet_Wy_Btilde_inv * (Btildet * (*e.m_Wy * yVec_transformed)); 
     D_V tmpVec2(yVec_transformed - (m_Bmat_tilde * m_Zvec_tilde_hat_vu));
-    tmpVec2 = *e.m_Wmat_transformed_y * tmpVec2;
+    tmpVec2 = *e.m_Wy * tmpVec2;
     m_b_y_modifier_tilde = scalarProduct(yVec_transformed,tmpVec2) / 2.;
 
     if (m_env.subDisplayFile()) {

@@ -2388,7 +2388,16 @@ MLSampling<P_V,P_M>::generateSequence_Level0_all(
       bool outOfSupport = true;
       do {
 
-        m_priorRv.realizer().realization(auxVec);
+        m_priorRv.realizer().realization(auxVec);  // gpmsa2
+        if (m_numDisabledParameters > 0) { // gpmsa2
+          unsigned int disabledCounter = 0;
+          for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+            if (m_parameterEnabledStatus[paramId] == false) {
+              auxVec[paramId] = currOptions.m_initialValuesOfDisabledParameters[disabledCounter];
+              disabledCounter++;
+            }
+          }
+        }
         auxVec.mpiBcast(0, m_env.subComm()); // prudencio 2010-08-01
 
         outOfSupport = !(m_targetDomain->contains(auxVec));
@@ -2673,7 +2682,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
   const MLSamplingLevelOptions* currOptions,             // input
   const ScalarSequence<double>& prevLogLikelihoodValues, // input
   double                               prevExponent,            // input
-  double                               failedExponent,          // input // gpmsa
+  double                               failedExponent,          // input // gpmsa1
   double&                              currExponent,            // output
   ScalarSequence<double>&       weightSequence)          // output
 {
@@ -2686,7 +2695,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
         *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateSequence()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
                                 << ", step "  << m_currStep
-                                << ", failedExponent = " << failedExponent // gpmsa
+                                << ", failedExponent = " << failedExponent // gpmsa1
                                 << ": beginning step 3 of 11"
                                 << std::endl;
       }
@@ -2709,13 +2718,13 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
           *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateSequence()"
                                   << ", level " << m_currLevel+LEVEL_REF_ID
                                   << ", step "  << m_currStep
-                                  << ", failedExponent = " << failedExponent // gpmsa
+                                  << ", failedExponent = " << failedExponent // gpmsa1
                                   << ": entering loop for computing next exponent"
                                   << ", with nowAttempt = " << nowAttempt
                                   << std::endl;
         }
 
-        if (failedExponent > 0.) { // gpmsa
+        if (failedExponent > 0.) { // gpmsa1
           nowExponent = .5*(prevExponent+failedExponent);
         }
         else {
@@ -2846,7 +2855,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
         //                    "MLSampling<P_V,P_M>::generateSequence()",
         //                    "effective sample size ratio cannot be < 1");
 
-        if (failedExponent > 0.) { // gpmsa
+        if (failedExponent > 0.) { // gpmsa1
           testResult = true;
         }
         else {
@@ -2866,7 +2875,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
                                   << ", step "                    << m_currStep
                                   << ": nowAttempt = "            << nowAttempt
                                   << ", prevExponent = "          << prevExponent
-                                  << ", failedExponent = "        << failedExponent // gpmsa
+                                  << ", failedExponent = "        << failedExponent // gpmsa1
                                   << ", exponents[0] = "          << exponents[0]
                                   << ", nowExponent = "           << nowExponent
                                   << ", exponents[1] = "          << exponents[1]
@@ -2913,7 +2922,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
         }
       } while (testResult == false);
       currExponent = nowExponent;
-      if (failedExponent > 0.) { // gpmsa
+      if (failedExponent > 0.) { // gpmsa1
         m_logEvidenceFactors[m_logEvidenceFactors.size()-1] = nowUnifiedEvidenceLnFactor;
       }
       else {
@@ -2927,7 +2936,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
                                 << ", step "                                   << m_currStep
                                 << ": weightSequence.subSequenceSize() = "     << weightSequence.subSequenceSize()
                                 << ", weightSequence.unifiedSequenceSize() = " << quantity1
-                                << ", failedExponent = "                       << failedExponent // gpmsa
+                                << ", failedExponent = "                       << failedExponent // gpmsa1
                                 << ", currExponent = "                         << currExponent
                                 << ", effective ratio = "                      << nowEffectiveSizeRatio
                                 << ", log(evidence factor) = "                 << m_logEvidenceFactors[m_logEvidenceFactors.size()-1]
@@ -2954,7 +2963,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
           *m_env.subDisplayFile() << "WARNING, In MLSampling<P_V,P_M>::generateSequence()"
                                   << ", level "        << m_currLevel+LEVEL_REF_ID
                                   << ", step "         << m_currStep
-                                  << ", failedExponent = " << failedExponent // gpmsa
+                                  << ", failedExponent = " << failedExponent // gpmsa1
                                   << ": nowAttempt = " << nowAttempt
                                   << ", MiscCheck for 'logEvidenceFactor' detected a problem"
                                   << std::endl;
@@ -3031,6 +3040,20 @@ MLSampling<P_V,P_M>::generateSequence_Step04_inter0(
             sumValue = localValue;
           }
           unifiedCovMatrix(i,j) = sumValue;
+        }
+      }
+
+      if (m_numDisabledParameters > 0) { // gpmsa2
+        for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+          if (m_parameterEnabledStatus[paramId] == false) {
+            for (unsigned int i = 0; i < m_vectorSpace.dimLocal(); ++i) {
+              unifiedCovMatrix(i,paramId) = 0.;
+            }
+            for (unsigned int j = 0; j < m_vectorSpace.dimLocal(); ++j) {
+              unifiedCovMatrix(paramId,j) = 0.;
+            }
+            unifiedCovMatrix(paramId,paramId) = 1.;
+          }
         }
       }
 
@@ -3693,6 +3716,19 @@ MLSampling<P_V,P_M>::generateSequence_Step09_all(
       currEta = nowEta;
       if (currEta != 1.) {
         unifiedCovMatrix *= currEta;
+        if (m_numDisabledParameters > 0) { // gpmsa2
+          for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+            if (m_parameterEnabledStatus[paramId] == false) {
+              for (unsigned int i = 0; i < m_vectorSpace.dimLocal(); ++i) {
+                unifiedCovMatrix(i,paramId) = 0.;
+              }
+              for (unsigned int j = 0; j < m_vectorSpace.dimLocal(); ++j) {
+                unifiedCovMatrix(paramId,j) = 0.;
+              }
+              unifiedCovMatrix(paramId,paramId) = 1.;
+            }
+          }
+        }
       }
 
       unsigned int quantity1 = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
@@ -4006,6 +4042,8 @@ MLSampling<P_V,P_M>::MLSampling(
   m_likelihoodFunction(likelihoodFunction),
   m_vectorSpace       (m_priorRv.imageSet().vectorSpace()),
   m_targetDomain      (InstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet())),
+  m_numDisabledParameters (0), // gpmsa2
+  m_parameterEnabledStatus(m_vectorSpace.dimLocal(),true), // gpmsa2
   m_options           (m_env,prefix),
   m_currLevel         (0),
   m_currStep          (0),
@@ -4031,6 +4069,8 @@ MLSampling<P_V,P_M>::MLSampling(
 template<class P_V,class P_M>
 MLSampling<P_V,P_M>::~MLSampling()
 {
+  m_numDisabledParameters = 0; // gpmsa2
+  m_parameterEnabledStatus.clear(); // gpmsa2
   if (m_targetDomain) delete m_targetDomain;
 }
 
@@ -4090,6 +4130,16 @@ MLSampling<P_V,P_M>::generateSequence(
               currLogTargetValues);    // output
 
     if (currExponent == 1.) {
+      if (lastLevelOptions.m_parameterDisabledSet.size() > 0) { // gpmsa2
+        for (std::set<unsigned int>::iterator setIt = lastLevelOptions.m_parameterDisabledSet.begin(); setIt != lastLevelOptions.m_parameterDisabledSet.end(); ++setIt) {
+          unsigned int paramId = *setIt;
+          if (paramId < m_vectorSpace.dimLocal()) {
+            m_numDisabledParameters++;
+            m_parameterEnabledStatus[paramId] = false;
+          }
+        }
+      }
+
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
       if (lastLevelOptions.m_rawChainComputeStats) {
         FilePtrSetStruct filePtrSet;
@@ -4165,6 +4215,16 @@ MLSampling<P_V,P_M>::generateSequence(
     sprintf(levelPrefix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
     MLSamplingLevelOptions currOptions(m_env,(m_options.m_prefix + levelPrefix).c_str());
     currOptions.scanOptionsValues(&defaultLevelOptions);
+
+    if (currOptions.m_parameterDisabledSet.size() > 0) { // gpmsa2
+      for (std::set<unsigned int>::iterator setIt = currOptions.m_parameterDisabledSet.begin(); setIt != currOptions.m_parameterDisabledSet.end(); ++setIt) {
+        unsigned int paramId = *setIt;
+        if (paramId < m_vectorSpace.dimLocal()) {
+          m_numDisabledParameters++;
+          m_parameterEnabledStatus[paramId] = false;
+        }
+      }
+    }
 
     generateSequence_Level0_all(currOptions,                    // input
                                 currUnifiedRequestedNumSamples, // output
@@ -4247,9 +4307,9 @@ MLSampling<P_V,P_M>::generateSequence(
     double       cumulativeRawChainRunTime    = 0.;
     unsigned int cumulativeRawChainRejections = 0;
 
-    bool   tryExponentEta = true; // gpmsa
-    double failedExponent = 0.;   // gpmsa
-    double failedEta      = 0.;   // gpmsa
+    bool   tryExponentEta = true; // gpmsa1
+    double failedExponent = 0.;   // gpmsa1
+    double failedEta      = 0.;   // gpmsa1
 
     MLSamplingLevelOptions*            currOptions           = NULL;  // step 1
     SequenceOfVectors<P_V,P_M>*        prevChain             = NULL;  // step 2
@@ -4263,7 +4323,7 @@ MLSampling<P_V,P_M>::generateSequence(
     GenericVectorRV<P_V,P_M>*          currRv                = NULL;  // step 8
 
     unsigned int exponentEtaTriedAmount = 0;
-    while (tryExponentEta) { // gpmsa
+    while (tryExponentEta) { // gpmsa1
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In IMLSampling<P_V,P_M>::generateSequence()"
                                 << ", level " << m_currLevel+LEVEL_REF_ID
@@ -4280,6 +4340,16 @@ MLSampling<P_V,P_M>::generateSequence(
     sprintf(levelPrefix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
     currOptions = new MLSamplingLevelOptions(m_env,(m_options.m_prefix + levelPrefix).c_str());
     currOptions->scanOptionsValues(&defaultLevelOptions);
+
+    if (currOptions->m_parameterDisabledSet.size() > 0) { // gpmsa2
+      for (std::set<unsigned int>::iterator setIt = currOptions->m_parameterDisabledSet.begin(); setIt != currOptions->m_parameterDisabledSet.end(); ++setIt) {
+        unsigned int paramId = *setIt;
+        if (paramId < m_vectorSpace.dimLocal()) {
+          m_numDisabledParameters++;
+          m_parameterEnabledStatus[paramId] = false;
+        }
+      }
+    }
 
     if (m_env.inter0Rank() >= 0) {
       generateSequence_Step01_inter0(currOptions,                     // input
@@ -4325,7 +4395,7 @@ MLSampling<P_V,P_M>::generateSequence(
       generateSequence_Step03_inter0(currOptions,             // input
                                      prevLogLikelihoodValues, // input
                                      prevExponent,            // input
-                                     failedExponent,          // input // gpmsa
+                                     failedExponent,          // input // gpmsa1
                                      currExponent,            // output
                                      weightSequence);         // output
     }
@@ -4467,8 +4537,8 @@ MLSampling<P_V,P_M>::generateSequence(
                                 *unifiedCovMatrix,                 // input/output
                                 currEta);                          // output
 
-    tryExponentEta = false; // gpmsa
-    if ((currOptions->m_minAcceptableEta > 0.     ) && // gpmsa
+    tryExponentEta = false; // gpmsa1
+    if ((currOptions->m_minAcceptableEta > 0.     ) && // gpmsa1
         (currEta < currOptions->m_minAcceptableEta)) {
       if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
         *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateSequence()"
@@ -4509,9 +4579,9 @@ MLSampling<P_V,P_M>::generateSequence(
       currLogLikelihoodValues        = prevLogLikelihoodValues;
       currLogTargetValues            = prevLogTargetValues;
     }
-    } // while (tryExponentEta) // gpmsa
+    } // while (tryExponentEta) // gpmsa1
 
-    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) { // gpmsa
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) { // gpmsa1
       *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateSequence()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
                               << ", exited 'do-while(tryExponentEta)"

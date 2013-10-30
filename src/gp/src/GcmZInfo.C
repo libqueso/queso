@@ -93,6 +93,7 @@ GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmZInfo(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Entering GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(2)"
+                            << ": formCMatrix = " << formCMatrix
                             << std::endl;
   }
 
@@ -185,6 +186,9 @@ GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmZInfo(
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Entering GcmZInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor(3)"
+                            << ": key-debug"
+                            << ", some entities just created (not yet populated)"
+                            << ", m_Zvec_hat.sizeLocal() = " << m_Zvec_hat.sizeLocal()
                             << std::endl;
   }
 
