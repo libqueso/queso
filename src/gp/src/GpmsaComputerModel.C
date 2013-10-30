@@ -2638,8 +2638,47 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
 
     m_s->m_Smat_w_is[i]->cwSet(0.);
     *(m_s->m_Smat_w_is[i]) = (1./input_2lambdaWVec[i]) * *(m_s->m_Rmat_w_is[i]);
+
+    if ((outerCounter == 1) &&
+        (i            == 0)) {
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
+                                << ", outerCounter = " << outerCounter
+                                << ": during the calculation of 'm_Smat_w'"
+                                << "\n  m_s->m_paper_xs_asterisks_standard.size() = " << m_s->m_paper_xs_asterisks_standard.size();
+        for (unsigned int tmpId = 0; tmpId < m_s->m_paper_xs_asterisks_standard.size(); ++tmpId) {
+          *m_env.subDisplayFile() << "\n  m_s->m_paper_xs_asterisks_standard[" << tmpId << "] = "
+                                  << *(m_s->m_paper_xs_asterisks_standard[tmpId])
+                                  << std::endl;
+        }
+        *m_env.subDisplayFile() << "\n  m_s->m_paper_ts_asterisks_standard.size() = " << m_s->m_paper_ts_asterisks_standard.size();
+        for (unsigned int tmpId = 0; tmpId < m_s->m_paper_ts_asterisks_standard.size(); ++tmpId) {
+          *m_env.subDisplayFile() << "\n  m_s->m_paper_ts_asterisks_standard[" << tmpId << "] = "
+                                  << *(m_s->m_paper_ts_asterisks_standard[tmpId])
+                                  << std::endl;
+        }
+        *m_env.subDisplayFile() << "\n  m_s->m_tmp_rho_w_vec                      = " << m_s->m_tmp_rho_w_vec
+                                << "\n  (*(m_s->m_Rmat_w_is[i=0]))(0,0)           = " << (*(m_s->m_Rmat_w_is[i]))(0,0)
+                                << "\n  input_2lambdaWVec[i=0]                    = " << input_2lambdaWVec[i]
+                                << "\n  (*(m_s->m_Smat_w_is[i=0]))(0,0)           = " << (*(m_s->m_Smat_w_is[i]))(0,0)
+                                << "\n  m_s->m_tmp_4lambdaSVec[i=0]               = " << m_s->m_tmp_4lambdaSVec[i]
+                                << std::endl;
+      }
+    }
+
     for (unsigned int j = 0; j < m_s->m_Smat_w_is[i]->numRowsLocal(); ++j) {
       (*(m_s->m_Smat_w_is[i]))(j,j) +=  1/m_s->m_tmp_4lambdaSVec[i]; // lambda_s
+    }
+
+    if ((outerCounter == 1) &&
+        (i            == 0)) {
+      if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+        *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(1)"
+                                << ", outerCounter = " << outerCounter
+                                << ": during the calculation of 'm_Smat_w'"
+                                << "\n  (*(m_s->m_Smat_w_is[i=0]))(0,0) = " << (*(m_s->m_Smat_w_is[i]))(0,0)
+                                << std::endl;
+      }
     }
   }
   m_s->m_Smat_w.cwSet(0.);
