@@ -108,6 +108,14 @@ ExperimentModel<S_V,S_M,D_V,D_M>::ExperimentModel(
   }
   m_n_y_space = new VectorSpace<D_V,D_M>(m_env, "n_y_", m_paper_n_y, NULL),
   m_Dmat_BlockDiag = new D_M(m_env,m_n_y_space->map(),m_paper_n*m_paper_p_delta);
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "In ExperimentModel<S_V,S_M,D_V,D_M>::constructor()"
+                            << ": key-debug"
+                            << ", m_Dmat_BlockDiag just created (not yet populated)"
+                            << ", numRowsLocal = " << m_Dmat_BlockDiag->numRowsLocal()
+                            << ", numCols = "      << m_Dmat_BlockDiag->numCols()
+                            << std::endl;
+  }
   m_Dmat_BlockDiag->fillWithBlocksDiagonally(0,0,m_Dmats,true,true);
 
   std::set<unsigned int> tmpSet;

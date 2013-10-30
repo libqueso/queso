@@ -81,6 +81,15 @@ GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfo(
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
     *m_env.subDisplayFile() << "Entering GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
                             << ": allOutputsAreScalar = " << allOutputsAreScalar
+                            << ": key-debug"
+                            << ", some entities just created (not yet populated)"
+                            << ", m_Smat_uw.numRowsLocal() = "   << m_Smat_uw.numRowsLocal()
+                            << ", m_Smat_uw.numCols() = "        << m_Smat_uw.numCols()
+                            << ", m_Smat_uw_t.numRowsLocal() = " << m_Smat_uw_t.numRowsLocal()
+                            << ", m_Smat_uw_t.numCols() = "      << m_Smat_uw_t.numCols()
+                            << ", m_Zvec_hat_vu.sizeLocal() = "  << m_Zvec_hat_vu.sizeLocal()
+                            << ", m_Smat_u.numRowsLocal() = "    << m_Smat_u.numRowsLocal()
+                            << ", m_Smat_u.numCols() = "         << m_Smat_u.numCols()
                             << std::endl;
   }
 
@@ -195,9 +204,25 @@ GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GcmJointInfo(
     // Form 'B' matrix
     //********************************************************************************
     m_Bmat_with_permut    = new D_M(m_env,e.m_y_space.map(),m_vu_size); // to be deleted on destructor
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+                              << ": key-debug"
+                              << ", m_Bmat_with_permut just created (not yet populated)"
+                              << ", numRowsLocal() = " << m_Bmat_with_permut->numRowsLocal()
+                              << ", numCols() = "      << m_Bmat_with_permut->numCols()
+                              << std::endl;
+    }
     m_Bmat_without_permut = new D_M(m_env,e.m_y_space.map(),m_vu_size); // to be deleted on destructor
     m_Bmat_rank           = std::min(m_Bmat_with_permut->numRowsGlobal(),m_Bmat_with_permut->numCols()); // Might be smaller
     m_Bwp_t__Wy__Bwp      = new D_M(m_vu_space.zeroVector()); // to be deleted on destructor
+    if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+      *m_env.subDisplayFile() << "In GcmJointInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
+                              << ": key-debug"
+                              << ", m_Bwp_t__Wy__Bwp just created (not yet populated)"
+                              << ", numRowsLocal() = " << m_Bwp_t__Wy__Bwp->numRowsLocal()
+                              << ", numCols() = "      << m_Bwp_t__Wy__Bwp->numCols()
+                              << std::endl;
+    }
     m_Bop_t__Wy__Bop      = new D_M(m_vu_space.zeroVector()); // to be deleted on destructor
     m_Bwp_t__Wy__Bwp__inv = new D_M(m_vu_space.zeroVector()); // to be deleted on destructor
     m_Bop_t__Wy__Bop__inv = new D_M(m_vu_space.zeroVector()); // to be deleted on destructor
