@@ -592,11 +592,11 @@ MLSamplingLevelOptions::getMyOptionValues(po::options_description& optionsDesc)
     //}
 
   }
-  m_str6.clear();
+  m_str3.clear();
   for (unsigned int i = 0; i < m_initialValuesOfDisabledParameters.size(); ++i) {
     sprintf(tmpStr,"%e",m_initialValuesOfDisabledParameters[i]);
-    m_str6 += tmpStr;
-    m_str6 += " ";
+    m_str3 += tmpStr;
+    m_str3 += " ";
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName.c_str())) {
