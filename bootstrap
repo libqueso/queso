@@ -1,8 +1,6 @@
 #! /bin/sh
 # --------------------------------------------------------------------------
 # bootstrapping utility for autotools -> now just uses autreconf
-#
-# $Id: bootstrap 30091 2012-05-17 17:06:19Z karl $
 # -------------------------------------------------------------------------- 
 
 cmd="autoreconf -f -i"

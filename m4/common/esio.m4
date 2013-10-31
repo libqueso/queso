@@ -13,10 +13,6 @@
 #   Fortran) and #defines HAVE_ESIO.  Assumes package is optional
 #   unless overridden with $2=yes
 #
-# LAST MODIFICATION
-#
-#   $Id: 
-#
 # COPYLEFT
 #
 #   Copyright (c) 2010 Nicholas Malaya   <nick@ices.utexas.edu>

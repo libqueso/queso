@@ -13,10 +13,6 @@
 #   On success, sets HDF5_CFLAGS, HDF5_LIBS, and #defines HAVE_HDF5.
 #   Assumes package is optional unless overridden with $2=yes.
 #
-# LAST MODIFICATION
-#
-#   $Id: hdf5_new.m4 40163 2013-06-20 02:37:32Z kemelli $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2010 Karl W. Schulz <karl@ices.utexas.edu>

@@ -22,12 +22,6 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *--------------------------------------------------------------------------
- *
- * $Id: exStatisticalForwardProblem_qoi.h 3867 2009-07-22 14:55:25Z prudenci $
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
 #ifndef EX_STATISTICAL_FORWARD_PROBLEM_QOI_H

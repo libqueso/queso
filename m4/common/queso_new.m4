@@ -13,10 +13,6 @@
 #   Also defines automake conditional GRVY_ENABLED.  Assumes package
 #   is optional unless overridden with $2=yes.
 #
-# LAST MODIFICATION
-#
-#   $Id: queso_new.m4 38835 2013-04-23 19:59:25Z pbauman $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2011 Karl W. Schulz <karl@ices.utexas.edu>

@@ -21,10 +21,6 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id: $
-//
-//--------------------------------------------------------------------------
 
 #ifndef QUESO_INFINITEDIMENSIONALMEASURE_BASE_H
 #define QUESO_INFINITEDIMENSIONALMEASURE_BASE_H

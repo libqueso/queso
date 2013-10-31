@@ -13,10 +13,6 @@
 #   Fortran) and #defines HAVE_MASA.  Assumes package is optional
 #   unless overridden with $2=yes
 #
-# LAST MODIFICATION
-#
-#   $Id: masa.m4 38825 2013-04-23 17:53:45Z benkirk $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2010 Karl W. Schulz <karl@ices.utexas.edu>

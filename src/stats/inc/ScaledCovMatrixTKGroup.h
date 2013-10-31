@@ -21,10 +21,6 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id$
-//
-//--------------------------------------------------------------------------
 
 #ifndef UQ_SCALEDCOV_TRANSITION_KERNEL_GROUP_H
 #define UQ_SCALEDCOV_TRANSITION_KERNEL_GROUP_H

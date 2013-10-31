@@ -21,10 +21,6 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id$
-//
-//--------------------------------------------------------------------------
 
 #ifndef UQ_GAUSSIAN_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H
 #define UQ_GAUSSIAN_VECTOR_CUMULATIVE_DISTRIBUTION_FUNCTION_H

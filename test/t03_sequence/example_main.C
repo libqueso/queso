@@ -22,8 +22,6 @@
 //
 //-----------------------------------------------------------------------el-
 // 
-// $Id$
-//
 // Brief description of this file: 
 // 
 // This is an example of how to define and use some basic classes and

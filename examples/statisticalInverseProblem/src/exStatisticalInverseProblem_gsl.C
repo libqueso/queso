@@ -23,8 +23,6 @@
  *
  *--------------------------------------------------------------------------
  *
- * $Id: exStatisticalInverseProblem_gsl.C 17566 2011-02-12 18:21:56Z prudenci $
- *
  * Brief description of this file: 
  * 
  * This is an example of how to define and solve a statistical inverse problem 

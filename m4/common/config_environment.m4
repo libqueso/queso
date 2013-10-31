@@ -9,10 +9,6 @@
 #   Queries compile environment and SVN revision for use in configure summary 
 #   and pre-processing macros.
 #
-# LAST MODIFICATION
-#
-#   $Id: config_environment.m4 34934 2012-11-28 18:15:04Z benkirk $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2010 Karl W. Schulz <karl@ices.utexas.edu>

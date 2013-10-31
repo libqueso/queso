@@ -22,12 +22,6 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *--------------------------------------------------------------------------
- *
- * $Id: exStatisticalInverseProblem_appl.h 14596 2010-10-03 15:10:42Z karl $
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
 #ifndef EX_STATISTICAL_INVERSE_PROBLEM_APPL_H

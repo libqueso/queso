@@ -14,10 +14,6 @@
 #   #defines HAVE_HDF5.  When ACTION-IF-NOT-FOUND is not specified,
 #   the default behavior is for configure to fail.
 #
-# LAST MODIFICATION
-#
-#   $Id: hdf5.m4 13222 2010-09-11 14:33:26Z karl $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2010 Karl W. Schulz <karl@ices.utexas.edu>
