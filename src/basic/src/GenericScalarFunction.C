@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <cmath>
+
 #include <queso/Defines.h>
 #include <queso/VectorSet.h>
 #include <queso/VectorSubset.h>
