@@ -2,7 +2,7 @@
 set -e
 
 # Find all teh headers
-headers=`find src -name "*.h" -a -not -name queso.h -type f | grep -v 'ANN' | grep -v 'interface'`
+headers=`find src -name "*.h" -a -not -name queso.h -type f | grep -v 'ANN'`
 
 # Find the thing we want to conduct wizardry on
 quesoh=`find src -name "queso.h.in"`
