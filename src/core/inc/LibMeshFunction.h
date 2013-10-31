@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifdef QUESO_HAVE_LIBMESH
+
 #ifndef QUESO_LIBMESHFUNCTION_H
 #define QUESO_LIBMESHFUNCTION_H
 
@@ -108,3 +110,5 @@ private:
 }  // End namespace QUESO
 
 #endif // QUESO_LIBMESHFUNCTION_H
+
+#endif  // QUESO_HAVE_LIBMESH

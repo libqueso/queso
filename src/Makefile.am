@@ -85,7 +85,6 @@ libqueso_la_SOURCES += $(top_srcdir)/src/core/src/DistArray.C
 
 
 # Sources that need libmesh
-if LIBMESH_ENABLED
 libqueso_la_SOURCES += $(top_srcdir)/src/core/src/FunctionBase.C
 libqueso_la_SOURCES += $(top_srcdir)/src/core/src/LibMeshFunction.C
 libqueso_la_SOURCES += $(top_srcdir)/src/core/src/OperatorBase.C
@@ -97,7 +96,6 @@ libqueso_la_SOURCES += $(top_srcdir)/src/core/src/InfiniteDimensionalMCMCSampler
 libqueso_la_SOURCES += $(top_srcdir)/src/core/src/InfiniteDimensionalMCMCSamplerOptions.C
 libqueso_la_SOURCES += $(top_srcdir)/src/core/src/InfiniteDimensionalLikelihoodBase.C
 libqueso_la_SOURCES += $(top_srcdir)/src/core/src/FunctionOperatorBuilder.C
-endif
 
 
 # Sources from core/src with gsl conditional 
@@ -281,7 +279,6 @@ libqueso_include_HEADERS += $(top_srcdir)/src/core/inc/exceptions.h
 libqueso_include_HEADERS += $(top_srcdir)/src/core/inc/Vector.h
 
 # Headers that need libmesh
-if LIBMESH_ENABLED
 libqueso_include_HEADERS += $(top_srcdir)/src/core/inc/FunctionBase.h
 libqueso_include_HEADERS += $(top_srcdir)/src/core/inc/LibMeshFunction.h
 libqueso_include_HEADERS += $(top_srcdir)/src/core/inc/OperatorBase.h
@@ -293,7 +290,6 @@ libqueso_include_HEADERS += $(top_srcdir)/src/core/inc/InfiniteDimensionalMCMCSa
 libqueso_include_HEADERS += $(top_srcdir)/src/core/inc/InfiniteDimensionalMCMCSamplerOptions.h
 libqueso_include_HEADERS += $(top_srcdir)/src/core/inc/InfiniteDimensionalLikelihoodBase.h
 libqueso_include_HEADERS += $(top_srcdir)/src/core/inc/FunctionOperatorBuilder.h
-endif
 
 # Headers to install from misc/inc
 

@@ -13,7 +13,7 @@
 #include <queso/InfiniteDimensionalLikelihoodBase.h>
 #include <queso/InfiniteDimensionalMCMCSampler.h>
 #include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
-#endif
+#endif  // QUESO_HAVE_LIBMESH
 
 #include <mpi.h>
 

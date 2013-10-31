@@ -31,7 +31,6 @@
 
 // Queso includes
 #include <queso/Environment.h>
-#include <queso/LibMeshFunction.h>
 #include <queso/InfiniteDimensionalMeasureBase.h>
 #include <queso/InfiniteDimensionalLikelihoodBase.h>
 #include <queso/InfiniteDimensionalMCMCSamplerOptions.h>

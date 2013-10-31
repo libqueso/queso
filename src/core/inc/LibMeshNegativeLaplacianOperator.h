@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifdef QUESO_HAVE_LIBMESH
+
 #ifndef QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H
 #define QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H
 
@@ -74,3 +76,5 @@ public:
 }  // End namespace QUESO
 
 #endif // QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H
+
+#endif  // QUESO_HAVE_LIBMESH

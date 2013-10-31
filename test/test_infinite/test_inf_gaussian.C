@@ -10,7 +10,7 @@
 #include <queso/LibMeshFunction.h>
 #include <queso/LibMeshNegativeLaplacianOperator.h>
 #include <queso/InfiniteDimensionalGaussian.h>
-#endif
+#endif  // QUESO_HAVE_LIBMESH
 
 #include <mpi.h>
 

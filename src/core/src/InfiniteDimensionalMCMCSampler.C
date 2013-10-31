@@ -26,18 +26,12 @@
 #include <boost/math/constants/constants.hpp>
 
 // QUESO includes
-// #include <LibMeshFunction.h>
 #include <queso/Miscellaneous.h>
 #include <queso/InfiniteDimensionalMeasureBase.h>
 
 #include <queso/InfiniteDimensionalLikelihoodBase.h>
-// #include <forward_solver/forward_solver.h>
 #include <queso/InfiniteDimensionalMCMCSampler.h>
 #include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
-
-// libmesh includes
-// #include <libmesh/equation_systems.h>
-// #include <libmesh/linear_implicit_system.h>
 
 namespace QUESO {
 
