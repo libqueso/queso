@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Find all teh headers
 headers=`find src -name "*.h" -a -not -name queso.h -type f | grep -v 'ANN' | grep -v 'interface'`
@@ -6,9 +7,13 @@ headers=`find src -name "*.h" -a -not -name queso.h -type f | grep -v 'ANN' | gr
 # Find the thing we want to conduct wizardry on
 quesoh=`find src -name "queso.h.in"`
 
+# Create temporary file to hold output of sed
+tmp=`mktemp "${TMPDIR-/tmp}/tmp.XXXXXXXXXX"`
+trap "rm -f $tmp" EXIT
+
 # Nuke all previous includes
-sed "/#include/d" $quesoh > tmpheader
-mv tmpheader $quesoh
+sed "/#include/d" $quesoh > $tmp
+mv $tmp $quesoh
 
 for header_with_path in $headers; do
   header=`basename $header_with_path`;
