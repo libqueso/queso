@@ -61,6 +61,7 @@
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV                   UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV                   UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 #define UQ_ML_SAMPLING_L_LIST_OF_DISABLED_PARAMETERS_ODV                      ""
+#define UQ_ML_SAMPLING_L_INITIAL_VALUES_OF_DISABLED_PARAMETERS_ODV            ""
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_SIZE_ODV                                   100
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_GENERATE_EXTRA_ODV                         0
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DISPLAY_PERIOD_ODV                         500
@@ -142,6 +143,8 @@ public:
   std::string                        m_initialProposalCovMatrixDataInputFileType;
   std::set<unsigned int>             m_parameterDisabledSet; // gpmsa2
   std::string                        m_str2; // gpmsa2
+  std::vector<double>                m_initialValuesOfDisabledParameters; // gpmsa2
+  std::string                        m_str3; // gpmsa2
   std::string                        m_rawChainDataInputFileName;
   std::string                        m_rawChainDataInputFileType;
   unsigned int                       m_rawChainSize;
@@ -153,7 +156,7 @@ public:
   std::string                        m_rawChainDataOutputFileType;
   bool                               m_rawChainDataOutputAllowAll;
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
-  std::string                        m_str3;
+  std::string                        m_str4;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   bool                               m_rawChainComputeStats;
   SequenceStatisticalOptions* m_rawChainStatisticalOptionsObj;
@@ -167,7 +170,7 @@ public:
   std::string                        m_filteredChainDataOutputFileType;
   bool                               m_filteredChainDataOutputAllowAll;
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
-  std::string                        m_str4;
+  std::string                        m_str5;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   bool                               m_filteredChainComputeStats;
   SequenceStatisticalOptions* m_filteredChainStatisticalOptionsObj;
@@ -180,7 +183,7 @@ public:
   bool                               m_tkUseNewtonComponent;
   unsigned int                       m_drMaxNumExtraStages;
   std::vector<double>                m_drScalesForExtraStages;
-  std::string                        m_str5;
+  std::string                        m_str6;
   bool                               m_drDuringAmNonAdaptiveInt;
   bool                               m_amKeepInitialMatrix;
   unsigned int                       m_amInitialNonAdaptInterval;
@@ -190,7 +193,7 @@ public:
   std::string                        m_amAdaptedMatricesDataOutputFileType;
   bool                               m_amAdaptedMatricesDataOutputAllowAll;
   std::set<unsigned int>             m_amAdaptedMatricesDataOutputAllowedSet;
-  std::string                        m_str6;
+  std::string                        m_str7;
   double                             m_amEta;
   double                             m_amEpsilon;
 
@@ -227,6 +230,7 @@ private:
   std::string                   m_option_initialProposalCovMatrix_dataInputFileName;
   std::string                   m_option_initialProposalCovMatrix_dataInputFileType;
   std::string                   m_option_listOfDisabledParameters; // gpmsa2
+  std::string                   m_option_initialValuesOfDisabledParameters; // gpmsa2
   std::string                   m_option_rawChain_dataInputFileName;
   std::string                   m_option_rawChain_dataInputFileType;
   std::string                   m_option_rawChain_size;

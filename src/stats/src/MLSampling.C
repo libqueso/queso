@@ -2389,6 +2389,15 @@ MLSampling<P_V,P_M>::generateSequence_Level0_all(
       do {
 
         m_priorRv.realizer().realization(auxVec);  // gpmsa2
+        if (m_numDisabledParameters > 0) { // gpmsa2
+          unsigned int disabledCounter = 0;
+          for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+            if (m_parameterEnabledStatus[paramId] == false) {
+              auxVec[paramId] = currOptions.m_initialValuesOfDisabledParameters[disabledCounter];
+              disabledCounter++;
+            }
+          }
+        }
         auxVec.mpiBcast(0, m_env.subComm()); // prudencio 2010-08-01
 
         outOfSupport = !(m_targetDomain->contains(auxVec));
@@ -2979,7 +2988,7 @@ void
 MLSampling<P_V,P_M>::generateSequence_Step04_inter0(
   const SequenceOfVectors<P_V,P_M>& prevChain,        // input
   const ScalarSequence<double>&     weightSequence,   // input
-  P_M&                                     unifiedCovMatrix) // output // gpmsa2
+  P_M&                                     unifiedCovMatrix) // output
 {
   int iRC = UQ_OK_RC;
   struct timeval timevalStep;
@@ -3030,7 +3039,21 @@ MLSampling<P_V,P_M>::generateSequence_Step04_inter0(
           else {
             sumValue = localValue;
           }
-          unifiedCovMatrix(i,j) = sumValue;  // gpmsa2
+          unifiedCovMatrix(i,j) = sumValue;
+        }
+      }
+
+      if (m_numDisabledParameters > 0) { // gpmsa2
+        for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+          if (m_parameterEnabledStatus[paramId] == false) {
+            for (unsigned int i = 0; i < m_vectorSpace.dimLocal(); ++i) {
+              unifiedCovMatrix(i,paramId) = 0.;
+            }
+            for (unsigned int j = 0; j < m_vectorSpace.dimLocal(); ++j) {
+              unifiedCovMatrix(paramId,j) = 0.;
+            }
+            unifiedCovMatrix(paramId,paramId) = 1.;
+          }
         }
       }
 
@@ -3693,6 +3716,19 @@ MLSampling<P_V,P_M>::generateSequence_Step09_all(
       currEta = nowEta;
       if (currEta != 1.) {
         unifiedCovMatrix *= currEta;
+        if (m_numDisabledParameters > 0) { // gpmsa2
+          for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
+            if (m_parameterEnabledStatus[paramId] == false) {
+              for (unsigned int i = 0; i < m_vectorSpace.dimLocal(); ++i) {
+                unifiedCovMatrix(i,paramId) = 0.;
+              }
+              for (unsigned int j = 0; j < m_vectorSpace.dimLocal(); ++j) {
+                unifiedCovMatrix(paramId,j) = 0.;
+              }
+              unifiedCovMatrix(paramId,paramId) = 1.;
+            }
+          }
+        }
       }
 
       unsigned int quantity1 = weightSequence.unifiedSequenceSize(m_vectorSpace.numOfProcsForStorage() == 1);
@@ -4006,6 +4042,8 @@ MLSampling<P_V,P_M>::MLSampling(
   m_likelihoodFunction(likelihoodFunction),
   m_vectorSpace       (m_priorRv.imageSet().vectorSpace()),
   m_targetDomain      (InstantiateIntersection(m_priorRv.pdf().domainSet(),m_likelihoodFunction.domainSet())),
+  m_numDisabledParameters (0), // gpmsa2
+  m_parameterEnabledStatus(m_vectorSpace.dimLocal(),true), // gpmsa2
   m_options           (m_env,prefix),
   m_currLevel         (0),
   m_currStep          (0),
@@ -4031,6 +4069,8 @@ MLSampling<P_V,P_M>::MLSampling(
 template<class P_V,class P_M>
 MLSampling<P_V,P_M>::~MLSampling()
 {
+  m_numDisabledParameters = 0; // gpmsa2
+  m_parameterEnabledStatus.clear(); // gpmsa2
   if (m_targetDomain) delete m_targetDomain;
 }
 
@@ -4090,6 +4130,16 @@ MLSampling<P_V,P_M>::generateSequence(
               currLogTargetValues);    // output
 
     if (currExponent == 1.) {
+      if (lastLevelOptions.m_parameterDisabledSet.size() > 0) { // gpmsa2
+        for (std::set<unsigned int>::iterator setIt = lastLevelOptions.m_parameterDisabledSet.begin(); setIt != lastLevelOptions.m_parameterDisabledSet.end(); ++setIt) {
+          unsigned int paramId = *setIt;
+          if (paramId < m_vectorSpace.dimLocal()) {
+            m_numDisabledParameters++;
+            m_parameterEnabledStatus[paramId] = false;
+          }
+        }
+      }
+
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
       if (lastLevelOptions.m_rawChainComputeStats) {
         FilePtrSetStruct filePtrSet;
@@ -4165,6 +4215,16 @@ MLSampling<P_V,P_M>::generateSequence(
     sprintf(levelPrefix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
     MLSamplingLevelOptions currOptions(m_env,(m_options.m_prefix + levelPrefix).c_str());
     currOptions.scanOptionsValues(&defaultLevelOptions);
+
+    if (currOptions.m_parameterDisabledSet.size() > 0) { // gpmsa2
+      for (std::set<unsigned int>::iterator setIt = currOptions.m_parameterDisabledSet.begin(); setIt != currOptions.m_parameterDisabledSet.end(); ++setIt) {
+        unsigned int paramId = *setIt;
+        if (paramId < m_vectorSpace.dimLocal()) {
+          m_numDisabledParameters++;
+          m_parameterEnabledStatus[paramId] = false;
+        }
+      }
+    }
 
     generateSequence_Level0_all(currOptions,                    // input
                                 currUnifiedRequestedNumSamples, // output
@@ -4280,6 +4340,16 @@ MLSampling<P_V,P_M>::generateSequence(
     sprintf(levelPrefix,"%d_",m_currLevel+LEVEL_REF_ID); // Yes, '+0'
     currOptions = new MLSamplingLevelOptions(m_env,(m_options.m_prefix + levelPrefix).c_str());
     currOptions->scanOptionsValues(&defaultLevelOptions);
+
+    if (currOptions->m_parameterDisabledSet.size() > 0) { // gpmsa2
+      for (std::set<unsigned int>::iterator setIt = currOptions->m_parameterDisabledSet.begin(); setIt != currOptions->m_parameterDisabledSet.end(); ++setIt) {
+        unsigned int paramId = *setIt;
+        if (paramId < m_vectorSpace.dimLocal()) {
+          m_numDisabledParameters++;
+          m_parameterEnabledStatus[paramId] = false;
+        }
+      }
+    }
 
     if (m_env.inter0Rank() >= 0) {
       generateSequence_Step01_inter0(currOptions,                     // input
