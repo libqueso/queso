@@ -1,0 +1,8 @@
+language: cpp
+compiler:
+  - gcc
+  - clang
+before_script:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libgsl0-dev libmpich2-dev libboost-all-dev
+script: ./bootstrap && ./configure && make && make check
