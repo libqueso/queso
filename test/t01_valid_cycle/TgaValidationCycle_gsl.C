@@ -21,10 +21,6 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id$
-//
-// This is an example very similar to
 // examples/validationCycle/src/exTgaValidationCycle_gsl.C.  It just
 // generates smaller chains and so is faster and more suitable to
 // serve as an automatic regression test. Indeed, it was set by Karl

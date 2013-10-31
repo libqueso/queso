@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE $Id: uqExampleTest.C $
+#define BOOST_TEST_MODULE
 #include <boost/test/included/unit_test.hpp>
 
 int add( int i, int j ) { return i+j; }

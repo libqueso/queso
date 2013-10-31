@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE $Id: uqTestVectorRV_gsl.C $
+#define BOOST_TEST_MODULE
 #include <boost/test/included/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 

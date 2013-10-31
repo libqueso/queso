@@ -22,12 +22,6 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *--------------------------------------------------------------------------
- *
- * $Id: exStatisticalInverseProblem1_likelihood.h 6059 2009-10-28 12:51:54Z karl $
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
 #ifndef EX_STATISTICAL_INVERSE_PROBLEM_LIKELIHOOD_H

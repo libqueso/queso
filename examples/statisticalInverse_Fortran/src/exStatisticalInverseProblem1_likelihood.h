@@ -22,10 +22,6 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-//
-// $Id$
-//
-//--------------------------------------------------------------------------
 
 #ifndef EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H
 #define EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H

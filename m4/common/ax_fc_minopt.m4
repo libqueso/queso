@@ -12,10 +12,6 @@
 #
 #   Requires macro(s): AX_COMPILER_VENDOR
 #
-# LAST MODIFICATION
-#
-#   $Id: ax_fc_minopt.m4 28022 2012-02-16 20:23:18Z karl $
-#
 # LICENSE
 #
 #   Copyright (c) 2012 Karl W. Schulz    <karl@ices.utexas.edu>

@@ -5,8 +5,6 @@
 # 1. Validation cycle using TGA example.
 #
 # Originally: 5-19-09
-# 
-# $Id: rtest.sh 2445 2009-04-21 08:19:13Z karl $
 #----------------------------------------------------------
 
 TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)

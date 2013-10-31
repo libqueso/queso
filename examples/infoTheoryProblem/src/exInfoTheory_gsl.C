@@ -23,8 +23,6 @@
  *
  *--------------------------------------------------------------------------
  *
- * $Id: exInfoTheory_gsl.C 14596 2011-02-03 15:10:42Z gabriel $
- *
  * Brief description of this file: 
  * 
  * This is an example of how to use the information theoretic measures such as

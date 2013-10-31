@@ -23,8 +23,6 @@
  *
  *--------------------------------------------------------------------------
  *
- * $Id$
- *
  * Brief description of this file: 
  * 
  * This is an example of how to define and solve a statistical inverse problem 

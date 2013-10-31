@@ -21,10 +21,6 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id$
-//
-//--------------------------------------------------------------------------
 
 #ifndef UQ_SAMPLED_VECTOR_MARGINAL_DENSITY_FUNCTION_H
 #define UQ_SAMPLED_VECTOR_MARGINAL_DENSITY_FUNCTION_H

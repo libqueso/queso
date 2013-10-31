@@ -21,10 +21,6 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id$
-//
-//--------------------------------------------------------------------------
 
 #ifndef EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H
 #define EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H

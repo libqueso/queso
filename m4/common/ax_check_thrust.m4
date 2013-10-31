@@ -30,10 +30,6 @@
 # LICENCE
 #   Public domain
 #
-# LAST MODIFICATION
-#
-#   $Id: ax_check_thrust.m4 $
-#
 # AUTHOR
 #   2010-2012 wili <wili@wili.cc> 
 #   2013      Roy Stogner <roystgnr@ices.utexas.edu>

@@ -13,10 +13,6 @@
 #   Also defines automake conditional ANTIOCH_ENABLED.  Assumes package
 #   is optional unless overridden with $2=yes.
 #
-# LAST MODIFICATION
-#
-#   $Id: antioch.m4 37037 2013-02-16 01:03:09Z pbauman $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2013 Roy H. Stogner <roystgnr@ices.utexas.edu>

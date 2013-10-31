@@ -15,10 +15,6 @@
 #
 #   Assumes package is optional unless overridden with $2=yes
 #
-# LAST MODIFICATION
-#
-#   $Id: pecos_ablation_new.m4 32126 2012-07-26 18:38:36Z benkirk $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2010 Karl W. Schulz <karl@ices.utexas.edu>

@@ -13,10 +13,6 @@
 #   Also defines automake conditional GSL_ENABLED.  Assumes package
 #   is optional unless overridden with $2=yes.
 #
-# LAST MODIFICATION
-#
-#   $Id: gsl_new.m4 37680 2013-03-08 01:29:27Z roystgnr $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2012 Paul T. Bauman <pbauman@ices.utexas.edu>

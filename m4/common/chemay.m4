@@ -13,10 +13,6 @@
 #   Also defines automake conditional CHEMAY_ENABLED.  Assumes package
 #   is optional unless overridden with $2=yes.
 #
-# LAST MODIFICATION
-#
-#   $Id: chemay.m4 18587 2011-03-14 23:29:42Z roystgnr $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2010 Roy H. Stogner <roystgnr@ices.utexas.edu>
