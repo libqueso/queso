@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifdef QUESO_HAVE_HDF5
+
 #ifndef QUESO_INFINITE_SAMPLER_H
 #define QUESO_INFINITE_SAMPLER_H
 
@@ -164,3 +166,5 @@ private:
 }  // End namespace QUESO
 
 #endif // QUESO_INFINITE_SAMPLER_H
+
+#endif  // QUESO_HAVE_HDF5

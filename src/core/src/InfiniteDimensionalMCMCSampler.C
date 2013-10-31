@@ -21,6 +21,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifdef QUESO_HAVE_HDF5
+
 #include <cmath>
 #include <algorithm>
 #include <boost/math/constants/constants.hpp>
@@ -375,3 +377,5 @@ unsigned int InfiniteDimensionalMCMCSampler::iteration() const
 }
 
 }  // End namespace QUESO
+
+#endif  // QUESO_HAVE_HDF5
