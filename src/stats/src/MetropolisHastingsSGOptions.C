@@ -51,6 +51,7 @@ MhOptionsValues::MhOptionsValues(
   m_initialPositionDataInputFileType         (UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV),
   m_initialProposalCovMatrixDataInputFileName(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV),
   m_initialProposalCovMatrixDataInputFileType(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV),
+//m_parameterDisabledSet                     (),
   m_rawChainDataInputFileName                (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV),
   m_rawChainDataInputFileType                (UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV),
   m_rawChainSize                             (UQ_MH_SG_RAW_CHAIN_SIZE_ODV),
@@ -133,6 +134,7 @@ MhOptionsValues::copy(const MhOptionsValues& src)
   m_initialPositionDataInputFileType          = src.m_initialPositionDataInputFileType;
   m_initialProposalCovMatrixDataInputFileName = src.m_initialProposalCovMatrixDataInputFileName;
   m_initialProposalCovMatrixDataInputFileType = src.m_initialProposalCovMatrixDataInputFileType;
+  m_parameterDisabledSet                      = src.m_parameterDisabledSet;
   m_rawChainDataInputFileName                 = src.m_rawChainDataInputFileName;
   m_rawChainDataInputFileType                 = src.m_rawChainDataInputFileType;
   m_rawChainSize                              = src.m_rawChainSize;
@@ -209,58 +211,59 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_prefix                                           ((std::string)(prefix) + "mh_"),
   m_env                                              (env),
   m_optionsDesc                                      (new po::options_description("Bayesian Metropolis-Hastings options")),
-  m_option_help                                      (m_prefix + "help"                                       ),
-  m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                         ),
-  m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                         ),
-  m_option_dataOutputAllowedSet                      (m_prefix + "dataOutputAllowedSet"                       ),
-  m_option_totallyMute                               (m_prefix + "totallyMute"                                ),
-  m_option_initialPosition_dataInputFileName         (m_prefix + "initialPosition_dataInputFileName"          ),
-  m_option_initialPosition_dataInputFileType         (m_prefix + "initialPosition_dataInputFileType"          ),
-  m_option_initialProposalCovMatrix_dataInputFileName(m_prefix + "initialProposalCovMatrix_dataInputFileName" ),
-  m_option_initialProposalCovMatrix_dataInputFileType(m_prefix + "initialProposalCovMatrix_dataInputFileType" ),
-  m_option_rawChain_dataInputFileName                (m_prefix + "rawChain_dataInputFileName"                 ),
-  m_option_rawChain_dataInputFileType                (m_prefix + "rawChain_dataInputFileType"                 ),
-  m_option_rawChain_size                             (m_prefix + "rawChain_size"                              ),
-  m_option_rawChain_generateExtra                    (m_prefix + "rawChain_generateExtra"                     ),
-  m_option_rawChain_displayPeriod                    (m_prefix + "rawChain_displayPeriod"                     ),
-  m_option_rawChain_measureRunTimes                  (m_prefix + "rawChain_measureRunTimes"                   ),
-  m_option_rawChain_dataOutputPeriod                 (m_prefix + "rawChain_dataOutputPeriod"                  ),
-  m_option_rawChain_dataOutputFileName               (m_prefix + "rawChain_dataOutputFileName"                ),
-  m_option_rawChain_dataOutputFileType               (m_prefix + "rawChain_dataOutputFileType"                ),
-  m_option_rawChain_dataOutputAllowAll               (m_prefix + "rawChain_dataOutputAllowAll"                ),
-  m_option_rawChain_dataOutputAllowedSet             (m_prefix + "rawChain_dataOutputAllowedSet"              ),
+  m_option_help                                      (m_prefix + "help"                                      ),
+  m_option_dataOutputFileName                        (m_prefix + "dataOutputFileName"                        ),
+  m_option_dataOutputAllowAll                        (m_prefix + "dataOutputAllowAll"                        ),
+  m_option_dataOutputAllowedSet                      (m_prefix + "dataOutputAllowedSet"                      ),
+  m_option_totallyMute                               (m_prefix + "totallyMute"                               ),
+  m_option_initialPosition_dataInputFileName         (m_prefix + "initialPosition_dataInputFileName"         ),
+  m_option_initialPosition_dataInputFileType         (m_prefix + "initialPosition_dataInputFileType"         ),
+  m_option_initialProposalCovMatrix_dataInputFileName(m_prefix + "initialProposalCovMatrix_dataInputFileName"),
+  m_option_initialProposalCovMatrix_dataInputFileType(m_prefix + "initialProposalCovMatrix_dataInputFileType"),
+  m_option_listOfDisabledParameters                  (m_prefix + "listOfDisabledParameters"                  ),
+  m_option_rawChain_dataInputFileName                (m_prefix + "rawChain_dataInputFileName"                ),
+  m_option_rawChain_dataInputFileType                (m_prefix + "rawChain_dataInputFileType"                ),
+  m_option_rawChain_size                             (m_prefix + "rawChain_size"                             ),
+  m_option_rawChain_generateExtra                    (m_prefix + "rawChain_generateExtra"                    ),
+  m_option_rawChain_displayPeriod                    (m_prefix + "rawChain_displayPeriod"                    ),
+  m_option_rawChain_measureRunTimes                  (m_prefix + "rawChain_measureRunTimes"                  ),
+  m_option_rawChain_dataOutputPeriod                 (m_prefix + "rawChain_dataOutputPeriod"                 ),
+  m_option_rawChain_dataOutputFileName               (m_prefix + "rawChain_dataOutputFileName"               ),
+  m_option_rawChain_dataOutputFileType               (m_prefix + "rawChain_dataOutputFileType"               ),
+  m_option_rawChain_dataOutputAllowAll               (m_prefix + "rawChain_dataOutputAllowAll"               ),
+  m_option_rawChain_dataOutputAllowedSet             (m_prefix + "rawChain_dataOutputAllowedSet"             ),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  m_option_rawChain_computeStats                     (m_prefix + "rawChain_computeStats"                      ),
+  m_option_rawChain_computeStats                     (m_prefix + "rawChain_computeStats"                     ),
 #endif
-  m_option_filteredChain_generate                    (m_prefix + "filteredChain_generate"                     ),
-  m_option_filteredChain_discardedPortion            (m_prefix + "filteredChain_discardedPortion"             ),
-  m_option_filteredChain_lag                         (m_prefix + "filteredChain_lag"                          ),
-  m_option_filteredChain_dataOutputFileName          (m_prefix + "filteredChain_dataOutputFileName"           ),
-  m_option_filteredChain_dataOutputFileType          (m_prefix + "filteredChain_dataOutputFileType"           ),
-  m_option_filteredChain_dataOutputAllowAll          (m_prefix + "filteredChain_dataOutputAllowAll"           ),
-  m_option_filteredChain_dataOutputAllowedSet        (m_prefix + "filteredChain_dataOutputAllowedSet"         ),
+  m_option_filteredChain_generate                    (m_prefix + "filteredChain_generate"                    ),
+  m_option_filteredChain_discardedPortion            (m_prefix + "filteredChain_discardedPortion"            ),
+  m_option_filteredChain_lag                         (m_prefix + "filteredChain_lag"                         ),
+  m_option_filteredChain_dataOutputFileName          (m_prefix + "filteredChain_dataOutputFileName"          ),
+  m_option_filteredChain_dataOutputFileType          (m_prefix + "filteredChain_dataOutputFileType"          ),
+  m_option_filteredChain_dataOutputAllowAll          (m_prefix + "filteredChain_dataOutputAllowAll"          ),
+  m_option_filteredChain_dataOutputAllowedSet        (m_prefix + "filteredChain_dataOutputAllowedSet"        ),
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
-  m_option_filteredChain_computeStats                (m_prefix + "filteredChain_computeStats"                 ),
+  m_option_filteredChain_computeStats                (m_prefix + "filteredChain_computeStats"                ),
 #endif
-  m_option_displayCandidates                         (m_prefix + "displayCandidates"                          ),
-  m_option_putOutOfBoundsInChain                     (m_prefix + "putOutOfBoundsInChain"                      ),
-  m_option_tk_useLocalHessian                        (m_prefix + "tk_useLocalHessian"                         ),
-  m_option_tk_useNewtonComponent                     (m_prefix + "tk_useNewtonComponent"                      ),
-  m_option_dr_maxNumExtraStages                      (m_prefix + "dr_maxNumExtraStages"                       ),
-  m_option_dr_listOfScalesForExtraStages             (m_prefix + "dr_listOfScalesForExtraStages"              ),
-  m_option_dr_duringAmNonAdaptiveInt                 (m_prefix + "dr_duringAmNonAdaptiveInt"                  ),
-  m_option_am_keepInitialMatrix                      (m_prefix + "am_keepInitialMatrix"                       ),
-  m_option_am_initialNonAdaptInterval                (m_prefix + "am_initialNonAdaptInterval"                 ),
-  m_option_am_adaptInterval                          (m_prefix + "am_adaptInterval"                           ),
-  m_option_am_adaptedMatrices_dataOutputPeriod       (m_prefix + "am_adaptedMatrices_dataOutputPeriod"        ),
-  m_option_am_adaptedMatrices_dataOutputFileName     (m_prefix + "am_adaptedMatrices_dataOutputFileName"      ),
-  m_option_am_adaptedMatrices_dataOutputFileType     (m_prefix + "am_adaptedMatrices_dataOutputFileType"      ),
-  m_option_am_adaptedMatrices_dataOutputAllowAll     (m_prefix + "am_adaptedMatrices_dataOutputAllowAll"      ),
-  m_option_am_adaptedMatrices_dataOutputAllowedSet   (m_prefix + "am_adaptedMatrices_dataOutputAllowedSet"    ),
-  m_option_am_eta                                    (m_prefix + "am_eta"                                     ),
-  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                 ),
-  m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"              ),
-  m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                            )
+  m_option_displayCandidates                         (m_prefix + "displayCandidates"                         ),
+  m_option_putOutOfBoundsInChain                     (m_prefix + "putOutOfBoundsInChain"                     ),
+  m_option_tk_useLocalHessian                        (m_prefix + "tk_useLocalHessian"                        ),
+  m_option_tk_useNewtonComponent                     (m_prefix + "tk_useNewtonComponent"                     ),
+  m_option_dr_maxNumExtraStages                      (m_prefix + "dr_maxNumExtraStages"                      ),
+  m_option_dr_listOfScalesForExtraStages             (m_prefix + "dr_listOfScalesForExtraStages"             ),
+  m_option_dr_duringAmNonAdaptiveInt                 (m_prefix + "dr_duringAmNonAdaptiveInt"                 ),
+  m_option_am_keepInitialMatrix                      (m_prefix + "am_keepInitialMatrix"                      ),
+  m_option_am_initialNonAdaptInterval                (m_prefix + "am_initialNonAdaptInterval"                ),
+  m_option_am_adaptInterval                          (m_prefix + "am_adaptInterval"                          ),
+  m_option_am_adaptedMatrices_dataOutputPeriod       (m_prefix + "am_adaptedMatrices_dataOutputPeriod"       ),
+  m_option_am_adaptedMatrices_dataOutputFileName     (m_prefix + "am_adaptedMatrices_dataOutputFileName"     ),
+  m_option_am_adaptedMatrices_dataOutputFileType     (m_prefix + "am_adaptedMatrices_dataOutputFileType"     ),
+  m_option_am_adaptedMatrices_dataOutputAllowAll     (m_prefix + "am_adaptedMatrices_dataOutputAllowAll"     ),
+  m_option_am_adaptedMatrices_dataOutputAllowedSet   (m_prefix + "am_adaptedMatrices_dataOutputAllowedSet"   ),
+  m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
+  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
+  m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"             ),
+  m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           )
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
@@ -292,6 +295,7 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_initialPosition_dataInputFileType         (m_prefix + "initialPosition_dataInputFileType"         ),
   m_option_initialProposalCovMatrix_dataInputFileName(m_prefix + "initialProposalCovMatrix_dataInputFileName"),
   m_option_initialProposalCovMatrix_dataInputFileType(m_prefix + "initialProposalCovMatrix_dataInputFileType"),
+  m_option_listOfDisabledParameters                  (m_prefix + "listOfDisabledParameters"                  ),
   m_option_rawChain_dataInputFileName                (m_prefix + "rawChain_dataInputFileName"                ),
   m_option_rawChain_dataInputFileType                (m_prefix + "rawChain_dataInputFileType"                ),
   m_option_rawChain_size                             (m_prefix + "rawChain_size"                             ),
@@ -386,6 +390,7 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_initialPosition_dataInputFileType         (m_prefix + "initialPosition_dataInputFileType"         ),
   m_option_initialProposalCovMatrix_dataInputFileName(m_prefix + "initialProposalCovMatrix_dataInputFileName"),
   m_option_initialProposalCovMatrix_dataInputFileType(m_prefix + "initialProposalCovMatrix_dataInputFileType"),
+  m_option_listOfDisabledParameters                  (m_prefix + "listOfDisabledParameters"                  ),
   m_option_rawChain_dataInputFileName                (m_prefix + "rawChain_dataInputFileName"                ),
   m_option_rawChain_dataInputFileType                (m_prefix + "rawChain_dataInputFileType"                ),
   m_option_rawChain_size                             (m_prefix + "rawChain_size"                             ),
@@ -438,6 +443,7 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_ov.m_initialPositionDataInputFileType          = mlOptions.m_initialPositionDataInputFileType;
   m_ov.m_initialProposalCovMatrixDataInputFileName = mlOptions.m_initialProposalCovMatrixDataInputFileName;
   m_ov.m_initialProposalCovMatrixDataInputFileType = mlOptions.m_initialProposalCovMatrixDataInputFileType;
+  m_ov.m_parameterDisabledSet                      = mlOptions.m_parameterDisabledSet;
   m_ov.m_rawChainDataInputFileName                 = mlOptions.m_rawChainDataInputFileName;
   m_ov.m_rawChainDataInputFileType                 = mlOptions.m_rawChainDataInputFileType;
   m_ov.m_rawChainSize                              = mlOptions.m_rawChainSize;
@@ -493,8 +499,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_filteredChainStatisticalOptionsObj             = mlOptions.m_filteredChainStatisticalOptionsObj; // dakota
   m_filteredChainStatOptsInstantiated              = false;
 #endif
-  if ((m_env.subDisplayFile()        != NULL ) &&
-      (m_ov.m_totallyMute == false)) {
+  if ((m_env.subDisplayFile() != NULL ) &&
+      (m_ov.m_totallyMute     == false)) {
     *m_env.subDisplayFile() << "In MetropolisHastingsSGOptions::constructor(3)"
                             << ": after copying values of options with prefix '" << m_prefix
                             << "', state of object is:"
@@ -562,7 +568,11 @@ MetropolisHastingsSGOptions::print(std::ostream& os) const
      << "\n" << m_option_initialPosition_dataInputFileType          << " = " << m_ov.m_initialPositionDataInputFileType
      << "\n" << m_option_initialProposalCovMatrix_dataInputFileName << " = " << m_ov.m_initialProposalCovMatrixDataInputFileName
      << "\n" << m_option_initialProposalCovMatrix_dataInputFileType << " = " << m_ov.m_initialProposalCovMatrixDataInputFileType
-     << "\n" << m_option_rawChain_dataInputFileName                 << " = " << m_ov.m_rawChainDataInputFileName
+     << "\n" << m_option_listOfDisabledParameters                   << " = ";
+  for (std::set<unsigned int>::iterator setIt = m_ov.m_parameterDisabledSet.begin(); setIt != m_ov.m_parameterDisabledSet.end(); ++setIt) {
+    os << *setIt << " ";
+  }
+  os << "\n" << m_option_rawChain_dataInputFileName                 << " = " << m_ov.m_rawChainDataInputFileName
      << "\n" << m_option_rawChain_dataInputFileType                 << " = " << m_ov.m_rawChainDataInputFileType
      << "\n" << m_option_rawChain_size                              << " = " << m_ov.m_rawChainSize
      << "\n" << m_option_rawChain_generateExtra                     << " = " << m_ov.m_rawChainGenerateExtra
@@ -638,6 +648,7 @@ MetropolisHastingsSGOptions::defineMyOptions(po::options_description& optionsDes
     (m_option_initialPosition_dataInputFileType.c_str(),          po::value<std::string >()->default_value(UQ_MH_SG_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV           ), "type of input file for raw chain "                          )
     (m_option_initialProposalCovMatrix_dataInputFileName.c_str(), po::value<std::string >()->default_value(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV), "name of input file for raw chain "                          )
     (m_option_initialProposalCovMatrix_dataInputFileType.c_str(), po::value<std::string >()->default_value(UQ_MH_SG_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV), "type of input file for raw chain "                          )
+    (m_option_listOfDisabledParameters.c_str(),                   po::value<std::string >()->default_value(UQ_MH_SG_LIST_OF_DISABLED_PARAMETERS_ODV                     ), "list of disabled parameters"                                )
     (m_option_rawChain_dataInputFileName.c_str(),                 po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV                  ), "name of input file for raw chain "                          )
     (m_option_rawChain_dataInputFileType.c_str(),                 po::value<std::string >()->default_value(UQ_MH_SG_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV                  ), "type of input file for raw chain "                          )
     (m_option_rawChain_size.c_str(),                              po::value<unsigned int>()->default_value(UQ_MH_SG_RAW_CHAIN_SIZE_ODV                                  ), "size of raw chain"                                          )
@@ -739,6 +750,18 @@ MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsD
 
   if (m_env.allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileType)) {
     m_ov.m_initialProposalCovMatrixDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileType]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_listOfDisabledParameters)) {
+    m_ov.m_parameterDisabledSet.clear();
+    std::vector<double> tmpAllow(0,0.);
+    std::string inputString = m_env.allOptionsMap()[m_option_listOfDisabledParameters].as<std::string>();
+    MiscReadDoublesFromString(inputString,tmpAllow);
+    if (tmpAllow.size() > 0) {
+      for (unsigned int i = 0; i < tmpAllow.size(); ++i) {
+        m_ov.m_parameterDisabledSet.insert((unsigned int) tmpAllow[i]);
+      }
+    }
   }
 
   if (m_env.allOptionsMap().count(m_option_rawChain_dataInputFileName)) {
