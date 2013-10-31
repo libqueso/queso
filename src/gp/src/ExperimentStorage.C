@@ -138,7 +138,7 @@ ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment(
                               << std::endl;
     }
 
-    m_Wy->fillWithBlocksDiagonally(0,0,m_Wmats_transformed,true,true);
+    m_Wy->fillWithBlocksDiagonally(0,0,m_covMats_transformed_inv,true,true);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
       *m_env.subDisplayFile() << "In ExperimentStorage<S_V,S_M,D_V,D_M>::addExperiment()"
                               << ": key-debug"
