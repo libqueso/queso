@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifdef QUESO_HAVE_LIBMESH
+
 #include <set>
 #include <vector>
 
@@ -270,3 +272,5 @@ void LibMeshNegativeLaplacianOperator::print_info() const
 }
 
 }  // End namespace QUESO
+
+#endif  // QUESO_HAVE_LIBMESH

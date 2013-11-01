@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifdef QUESO_HAVE_HDF5
+
 #ifndef QUESO_INFINITE_SAMPLER_H
 #define QUESO_INFINITE_SAMPLER_H
 
@@ -31,7 +33,6 @@
 
 // Queso includes
 #include <queso/Environment.h>
-#include <queso/LibMeshFunction.h>
 #include <queso/InfiniteDimensionalMeasureBase.h>
 #include <queso/InfiniteDimensionalLikelihoodBase.h>
 #include <queso/InfiniteDimensionalMCMCSamplerOptions.h>
@@ -165,3 +166,5 @@ private:
 }  // End namespace QUESO
 
 #endif // QUESO_INFINITE_SAMPLER_H
+
+#endif  // QUESO_HAVE_HDF5

@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifdef QUESO_HAVE_LIBMESH
+
 #ifndef QUESO_LIBMESHOPERATOR_BASE_H
 #define QUESO_LIBMESHOPERATOR_BASE_H
 
@@ -126,3 +128,5 @@ protected:
 }  // End namespace QUESO
 
 #endif // QUESO_LIBMESHOPERATOR_BASE_H
+
+#endif  // QUESO_HAVE_LIBMESH

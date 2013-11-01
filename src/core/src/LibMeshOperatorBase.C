@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifdef QUESO_HAVE_LIBMESH
+
 #include <iostream>
 #include <vector>
 #include <queso/FunctionOperatorBuilder.h>
@@ -164,3 +166,5 @@ LibMeshOperatorBase::inverse_kl_transform(std::vector<double> & xi,
 }
 
 }  // End namespace QUESO
+
+#endif  // QUESO_HAVE_LIBMESH

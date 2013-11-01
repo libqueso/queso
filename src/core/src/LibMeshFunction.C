@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#ifdef QUESO_HAVE_LIBMESH
+
 #include <iostream>
 #include <queso/LibMeshFunction.h>
 #include <queso/FunctionOperatorBuilder.h>
@@ -145,3 +147,5 @@ LibMeshFunction::get_equation_systems() const {
 }
 
 }  // End namespace QUESO
+
+#endif  // QUESO_HAVE_LIBMESH
