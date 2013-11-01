@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Defines.h>
+
 #ifdef QUESO_HAVE_HDF5
 
 #ifndef QUESO_INFINITE_SAMPLER_H

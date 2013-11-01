@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Defines.h>
+
 #ifdef QUESO_HAVE_LIBMESH
 
 #ifndef QUESO_LIBMESHNEGATIVELAPLACIANOPERATOR_H
