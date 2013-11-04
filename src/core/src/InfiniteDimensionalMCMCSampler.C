@@ -21,6 +21,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Defines.h>
+
 #ifdef QUESO_HAVE_HDF5
 
 #include <cmath>
