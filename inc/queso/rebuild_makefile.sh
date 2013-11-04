@@ -23,6 +23,12 @@ BUILT_SOURCES += $header
 EOF
 done
 
+# Manually handle the auto-generated headers
+cat <<EOF >> Makefile.am
+BUILT_SOURCES += config_queso.h
+BUILT_SOURCES += queso.h
+EOF
+
 cat <<EOF >> Makefile.am
 
 DISTCLEANFILES = \$(BUILT_SOURCES)
@@ -45,3 +51,11 @@ $header: $source
 	\$(AM_V_GEN)rm -f \$@ && \$(LN_S) \$< \$@
 EOF
 done
+
+# Manually handle the auto-generated headers
+cat <<EOF >> Makefile.am
+config_queso.h: \$(top_builddir)/config_queso.h
+	\$(AM_V_GEN)rm -f \$@ && \$(LN_S) \$< \$@
+queso.h: \$(top_builddir)/src/core/inc/queso.h
+	\$(AM_V_GEN)rm -f \$@ && \$(LN_S) \$< \$@
+EOF

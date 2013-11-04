@@ -25,7 +25,7 @@
 #ifndef UQ_DEFINES_H
 #define UQ_DEFINES_H
 
-#include <config_queso.h>
+#include <queso/config_queso.h>
 #include <queso/asserts.h>
 
 //! Defines available optional libraries (GLPK, HDF5, Trilinos)
