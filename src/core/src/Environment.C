@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso.h>
+#include <queso/queso.h>
 #include <queso/Environment.h>
 #include <queso/EnvironmentOptions.h>
 #include <queso/RngGsl.h>
