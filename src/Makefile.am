@@ -423,6 +423,9 @@ libqueso_include_HEADERS += $(top_srcdir)/src/gp/inc/SimulationModel.h
 libqueso_include_HEADERS += $(top_srcdir)/src/gp/inc/SimulationModelOptions.h
 libqueso_include_HEADERS += $(top_srcdir)/src/gp/inc/SimulationStorage.h
 
+# Install the magic header
+libqueso_include_HEADERS += $(top_srcdir)/src/contrib/inc/all.h
+
 # Headers to install, but not part of dist
 
 nodist_libqueso_include_HEADERS =
