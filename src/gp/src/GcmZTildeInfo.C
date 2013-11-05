@@ -23,6 +23,8 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/GcmZTildeInfo.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -236,3 +238,5 @@ GcmZTildeInfo<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::commonConstructor(const GcmZInfo
 }
 
 }  // End namespace QUESO
+
+template class QUESO::GcmZTildeInfo<QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix>;

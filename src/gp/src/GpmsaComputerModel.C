@@ -25,6 +25,8 @@
 #include <queso/GpmsaComputerModel.h>
 #include <queso/GenericScalarFunction.h>
 #include <queso/SequentialVectorRealizer.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -3837,3 +3839,5 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_
 }
 
 }  // End namespace QUESO
+
+template class QUESO::GpmsaComputerModel<QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix>;
