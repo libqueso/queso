@@ -33,7 +33,7 @@
 #define QUESO_ASSERTS_H
 
 #include "exceptions.h"
-#include "config_queso.h" // for QUESO_HAVE_CXX11
+#include "queso/config_queso.h" // for QUESO_HAVE_CXX11
 
 // C++
 #include <iostream>
