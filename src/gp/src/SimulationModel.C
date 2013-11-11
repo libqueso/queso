@@ -23,6 +23,8 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/SimulationModel.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -901,3 +903,5 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::print(std::ostream& os) const
 }
 
 }  // End namespace QUESO
+
+template class QUESO::SimulationModel<QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix>;

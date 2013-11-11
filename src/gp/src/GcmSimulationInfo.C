@@ -23,6 +23,8 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/GcmSimulationInfo.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -398,3 +400,5 @@ GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::~GcmSimulationInfo()
 }
 
 }  // End namespace QUESO
+
+template class QUESO::GcmSimulationInfo<QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix>;

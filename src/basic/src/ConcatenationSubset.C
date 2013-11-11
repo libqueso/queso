@@ -25,6 +25,8 @@
 #include <queso/VectorSet.h>
 #include <queso/VectorSpace.h>
 #include <queso/ConcatenationSubset.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -112,3 +114,5 @@ void ConcatenationSubset<V,M>::print(std::ostream& os) const
 }
 
 }  // End namespace QUESO
+
+template class QUESO::ConcatenationSubset<QUESO::GslVector, QUESO::GslMatrix>;

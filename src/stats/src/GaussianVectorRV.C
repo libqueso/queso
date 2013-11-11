@@ -287,3 +287,5 @@ ComputeConditionalGaussianVectorRV(
 }  // End namespace QUESO
 
 template class QUESO::GaussianVectorRV<QUESO::GslVector,QUESO::GslMatrix>;
+
+template void QUESO::ComputeConditionalGaussianVectorRV<QUESO::GslVector, QUESO::GslMatrix>(QUESO::GslVector const&, QUESO::GslVector const&, QUESO::GslMatrix const&, QUESO::GslMatrix const&, QUESO::GslMatrix const&, QUESO::GslMatrix const&, QUESO::GslVector const&, QUESO::GslVector&, QUESO::GslMatrix&);

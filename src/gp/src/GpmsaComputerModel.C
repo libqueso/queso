@@ -25,6 +25,8 @@
 #include <queso/GpmsaComputerModel.h>
 #include <queso/GenericScalarFunction.h>
 #include <queso/SequentialVectorRealizer.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
 namespace QUESO {
 
@@ -1449,8 +1451,11 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictExperimentResults(
 
   P_V vMeanVec  (m_e->m_unique_v_space.zeroVector());
   P_M vCovMatrix(m_e->m_unique_v_space.zeroVector());
-  P_V uMeanVec  (m_s->m_unique_u_space.zeroVector());
-  P_M uCovMatrix(m_s->m_unique_u_space.zeroVector());
+
+  // Damon: Had to change m_unique_u_space to m_unique_w_space below.  I hope
+  // it's right.  m_s doesn't have a m_unique_u_space
+  P_V uMeanVec  (m_s->m_unique_w_space.zeroVector());
+  P_M uCovMatrix(m_s->m_unique_w_space.zeroVector());
 #if 0
   this->predictVUsAtGridPoint(newScenarioVec,
                               vMeanVec,
@@ -1500,6 +1505,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictSimulationOutputs(
   P_M wCovMatrix(m_s->m_unique_w_space.zeroVector());
   this->predictWsAtGridPoint(newScenarioVec,
                              newParameterVec,
+                             NULL,  // Damon: Adding NULL here; Ernesto left this out
                              wMeanVec,
                              wCovMatrix);
 
@@ -3837,3 +3843,5 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula1_for_Sigma_w_
 }
 
 }  // End namespace QUESO
+
+template class QUESO::GpmsaComputerModel<QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector, QUESO::GslMatrix>;
