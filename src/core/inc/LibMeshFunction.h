@@ -73,8 +73,8 @@ public:
   //! Will print mesh-related libMesh foo to \c std::cerr
   void print_info() const;
 
-  //! Save the current function to an Exodus file called \c filename
-  virtual void save_function(const std::string & filename) const;
+  //! Save the current function to an Exodus file called \c filename.  \c time is the time to attach to the function and is usually the iteration number
+  virtual void save_function(const std::string & filename, double time) const;
 
   //! Execute \c this += \c scale * \c rhs
   virtual void add(double scale, const FunctionBase & rhs);

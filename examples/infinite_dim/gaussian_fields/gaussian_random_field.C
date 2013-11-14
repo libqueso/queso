@@ -49,7 +49,7 @@ int main(int argc, char **argv)
   for (i = 0; i < 5; i++) {
     std::ostringstream number;
     number << i;
-    mu.draw()->save_function("rand_draw" + number.str() + ".e");
+    mu.draw()->save_function("rand_draw" + number.str() + ".e", 0);
   }
 }
 
