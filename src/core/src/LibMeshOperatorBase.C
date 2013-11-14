@@ -27,6 +27,7 @@
 #ifdef QUESO_HAVE_LIBMESH
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <queso/FunctionOperatorBuilder.h>
 #include <queso/LibMeshFunction.h>
