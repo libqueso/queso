@@ -11,14 +11,17 @@
 \usepackage{color}
 \usepackage{url}
 \usepackage{fancyvrb}
-\usepackage{subfigure}
+\usepackage{subfig}
 \usepackage{wrapfig} 
 \usepackage{framed}    % left bar at the left of the new text added 
 \usepackage{booktabs}  %nice tables
 \usepackage{array} %set fixed length in table columns
-\usepackage{geometry,subfigure}
+\usepackage{textcomp} %textangle
+\usepackage{geometry}
 \geometry{top=1.00in, bottom=1.00in, left=1.00in, right=1.00in}
 \usepackage{enumerate}
+\usepackage[algoruled,vlined,linesnumbered,english]{algorithm2e}
+\SetAlFnt{\footnotesize}
 
 \usepackage{titlesec} 
 \titleformat{\section}{\LARGE\sffamily}{\thesection}{1em}{}
@@ -70,9 +73,12 @@
 \newcommand{\Queso}{QUESO}
 \newcommand{\todo}[1]{ {\color{red} To do: #1} }
 \newcommand{\bv}[1]{\ensuremath{\mbox{\boldmath$ #1 $}}}
+\newcommand{\post}{\text{posterior}}
+\newcommand{\prior}{\text{prior}}
+\newcommand{\D}{ {\bf D}}
 
 \newcommand{\myverb}[1]{ \indent{ \begin{verbatim} #1 \end{verbatim} } }
-\newcommand{\QUESOversion}{0.47.1}
+\newcommand{\QUESOversion}{0.50.0}
 
 \usepackage{color}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -122,7 +128,7 @@ aboveskip =10pt,
 %\newcommand{\new}[1]{{\marginpar{\color{red}\small\raggedright\textsf{\hspace{0pt} NEW}}} #1}
 
 
-% \newcommand{\new}[1]{\reversemarginpar{\color{red}\tiny\raggedright\textsf{\hspace{-30pt}\vspace{-25pt} NEW}} \begin{leftbar} #1 \end{leftbar}}
+%\newcommand{\new}[1]{\reversemarginpar{\color{red}\tiny\raggedright\textsf{\hspace{-30pt}\vspace{-25pt} NEW}} \begin{leftbar} #1 \end{leftbar}}
 \newcommand{\new}[1]{#1}
 
 \begin{document}
@@ -156,7 +162,6 @@ aboveskip =10pt,
 \input{users_5c_example_gravity}
 
 \input{users_5d_example_tga}
-
 
 \addcontentsline{toc}{chapter}{References}
 
