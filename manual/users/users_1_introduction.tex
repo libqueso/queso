@@ -607,7 +607,7 @@ The requirements for the DRAM algorithm are:
 % 
 
 Recalling that a sample is defined as:
-\begin{equation*} % tirei o gamma_i de ser umbutido na covariance matrix
+\begin{equation*} % Gamma_i may or may not be embedded in the covariance matrix
 % \text{a sample } = \mathbf{a}+\frac{1}{\gamma_i}\mathbf{C}^{1/2}\mathcal{N}(0,I).
 \text{a sample } = \mathbf{a}+\mathbf{C}^{1/2}\mathcal{N}(0,I).
 \end{equation*}
@@ -756,7 +756,7 @@ For that, recall that
   &= c_L c_{L-1} \cdots c_2 c_1.
 \end{split}
 \end{equation}
-Assuming that the prior PDF is normalized (it integrates to one) and if $\tau_{\ell}$ is small enough, then Monte Carlo method can be efficiently applied ti calculate $c_{\ell}$ in Equation \eqref{eq:cl}. Due to numerical (in)stability, it is more appropriate to calculate the estimators:
+Assuming that the prior PDF is normalized (it integrates to one) and if $\tau_{\ell}$ is small enough, then Monte Carlo method can be efficiently applied to calculate $c_{\ell}$ in Equation \eqref{eq:cl}. Due to numerical (in)stability, it is more appropriate to calculate the estimators:
 \begin{equation}
  \label{eq:log-cl}
  \tilde{c_i} = \ln c_i, \quad i=1,\ldots, L.
@@ -768,7 +768,7 @@ Combining Equations \eqref{eq:cl} and \eqref{eq:log-cl}, we have:
 \end{equation*}
 
 
-The ability to compute the log of the evidence instead of calculating the evidence directly is attractive because the evidence
+Computing the log of the evidence instead of calculating the evidence directly is attractive because the evidence
 is often too large or too small relative to the computer precision.
 %
 The posterior probability can be calculated readily in terms of the
@@ -838,7 +838,7 @@ so we can define the discrete distribution:
 The ML algorithm consists of a series of resampling stages, with each stage doing the following: given $n_\text{total}^{(\ell)}$ samples from $\pi_\text{int}^{(\ell)} (\bv{\theta}|\D)$, denoted by $\bv{\theta}^{(\ell)[k]}, k=1...n_\text{total}^{(\ell)}$ obtain samples from $\pi_\text{int}^{(\ell+1)} (\bv{\theta}|\D)$, denoted by
 $\bv{\theta}^{(\ell+1)[k]}, k=1...n_\text{total}^{(\ell+1)}$. 
 
-This is accomplished by: given the samples  $\bv{\theta}^{(\ell)[k]}, k=1...n_\text{total}^{(\ell)}$, in Equation \eqref{eq:samples}, from $\pi_\text{int}^{(\ell)} (\bv{\theta}|\D)$, we compute the plausibility weights $w^{(\ell) [k]}$ given in Equation \eqref{eq:w} with respect to $\pi_\text{int}^{(\ell+1)} (\bv{\theta}|\D)$. Then we re-sample the uncertain parameters according to the normalized weights $\tilde{w}^{(\ell) [k]}$, given in Equation \eqref{eq:w-tilde}, through the distribution in Equation \eqref{eq:distribution}. This is possible due the fact that for large $n_\text{total}^{(\ell)}$ and $n_\text{total}^{(\ell+1)}$, then   $\bv{\theta}^{(\ell+1)[k]}, k=1...n_\text{total}^{(\ell+1)}$ will be distributed as $\pi_\text{int}^{(\ell+1)} (\bv{\theta}|\D)$~\cite{ChingChen2007}.
+This is accomplished by: given the samples  $\bv{\theta}^{(\ell)[k]}, k=1...n_\text{total}^{(\ell)}$, in Equation \eqref{eq:samples}, from $\pi_\text{int}^{(\ell)} (\bv{\theta}|\D)$, we compute the plausibility weights $w^{(\ell) [k]}$ given in Equation \eqref{eq:w} with respect to $\pi_\text{int}^{(\ell+1)} (\bv{\theta}|\D)$. Then we re-sample the uncertain parameters according to the normalized weights $\tilde{w}^{(\ell) [k]}$, given in Equation \eqref{eq:w-tilde}, through the distribution in Equation \eqref{eq:distribution}. This is possible due to the fact that for large $n_\text{total}^{(\ell)}$ and $n_\text{total}^{(\ell+1)}$, then   $\bv{\theta}^{(\ell+1)[k]}, k=1...n_\text{total}^{(\ell+1)}$ will be distributed as $\pi_\text{int}^{(\ell+1)} (\bv{\theta}|\D)$~\cite{ChingChen2007}.
 
 The choice of $\tau_\ell, \ell=1,\ldots,L-1$ is essential. It is desirable to increase the $\tau$ values slowly so that the transition between adjacent PDFs is smooth, but if the increase of the $\tau$ values is too slow, the required number of intermediate stages ($L$ value) will be too large~\cite{ChingChen2007}. More intermediate stages mean more computational cost.  In the ML method proposed by \cite{CheungPrudencio2012} and implemented in QUESO, $\tau_\ell$ is computed through a bissection method so that:
 \begin{equation}\label{eq:tau}
@@ -957,7 +957,7 @@ At each level $\ell$, many computing nodes can be used to sample the parameter s
 The process (a)--(b)--(c) continues until the final posterior distribution is sampled.  As $\ell$ increases, the selection process tends to value samples that are located in the regions of high probability content, which gradually ``appear''as  $\tau_\ell$ increases. So, as $\ell$ increases, if the``good'' samples selected from the  $\ell$-th level to the ($\ell$+1)-th level are not redistributed among computing nodes before the Markov chains for the ( $\ell$+1)-th level are generated, the ``lucky'' computing nodes (that is, the ones that had, already at the initial levels, samples in the final posterior regions of high probability content) will tend to accumulate increasingly more samples in the next levels. This possible issue is avoided maintaining a balanced computational load among all computing
 nodes, which is handled in the ML by the step in Line \ref{alg:ML:redist}. 
 
-Running step in Line \ref{alg:ML:redist} of Algorithm \ref{alg:ML} is then equivalent of solving the following problem: given the number of processors $N_p$, the total number of runs $n_\text{total}$ and the number of runs $n_j$ (to be) handled by the $j$-th processor; distribute $N_t$ tasks among the $N_p$ processors so that each processor gets its total number $n_j$ of program runs, $j = 1, \ldots, N_p$, the closest possible to the mean $\bar{n}=n_\text{total}/N_p$. The such parallel implementation of the algorithm is proposed in \cite{CheungPrudencio2012}, and it has been implemented in QUESO by the same authors/researchers.
+Running the step in Line \ref{alg:ML:redist} of Algorithm \ref{alg:ML} is then equivalent of solving the following problem: given the number of processors $N_p$, the total number of runs $n_\text{total}$ and the number of runs $n_j$ (to be) handled by the $j$-th processor; distribute $N_t$ tasks among the $N_p$ processors so that each processor gets its total number $n_j$ of program runs, $j = 1, \ldots, N_p$, the closest possible to the mean $\bar{n}=n_\text{total}/N_p$. This parallel implementation of the algorithm is proposed in \cite{CheungPrudencio2012}, and it has been implemented in QUESO by the same authors/researchers.
 
 % 
 % There are several approaches in how to paralellize the multilevel algorithm~\cite{BeckAu2002,ChingChen2007,Angelikopoulos2012}. 

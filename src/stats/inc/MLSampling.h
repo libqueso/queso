@@ -100,7 +100,7 @@ struct UnbalancedLinkedChainsPerNodeStruct
 //---------------------------------------------------------
 
 //---------------------------------------------------------
- /*! \file uqMLSampling1.h
+ /*! \file MLSampling.h
  * \class MLSampling
  * \brief A templated class that represents a Multilevel generator of samples.
  * 
