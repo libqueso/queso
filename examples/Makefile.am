@@ -82,6 +82,7 @@ exSimpleStatisticalInverseProblem_gsldir = $(prefix)/examples/simpleStatisticalI
 
 exSimpleStatisticalInverseProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/example.inp
 exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/simple_ip_plots.m
+exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/histyy.m
 exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/src/Makefile_sip_example_margarida 
 
 exSimpleStatisticalInverseProblem_gsl_PROGRAMS = exSimpleStatisticalInverseProblem_gsl
@@ -109,6 +110,7 @@ dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseP
 exSimpleStatisticalForwardProblem_gsldir = $(prefix)/examples/simpleStatisticalForwardProblem
 
 exSimpleStatisticalForwardProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalForwardProblem/tests/test_2013_08_27/simple_sfp_example.inp
+exSimpleStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalForwardProblem/tests/test_2013_08_27/simple_fp_plots.m
 exSimpleStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/Makefile_sfp_example_margarida
 
 exSimpleStatisticalForwardProblem_gsl_PROGRAMS = exSimpleStatisticalForwardProblem_gsl
