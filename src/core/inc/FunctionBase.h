@@ -78,8 +78,8 @@ public:
    */
   virtual boost::shared_ptr<FunctionBase> zero_clone() const = 0;
 
-  //! Save the current function to a file \c filename
-  virtual void save_function(const std::string & filename) const = 0;
+  //! Save the current function to an Exodus file called \c filename.  \c time is the time to attach to the function and is usually the iteration number
+  virtual void save_function(const std::string & filename, double time) const = 0;
 };
 
 }  // End namespace QUESO

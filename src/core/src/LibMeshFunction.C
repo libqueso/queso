@@ -36,7 +36,6 @@
 #include <libmesh/explicit_system.h>
 #include <libmesh/system_norm.h>
 #include <libmesh/exodusII_io.h>
-#include <libmesh/vtk_io.h>
 
 // Define the Finite Element object.
 #include <libmesh/fe.h>
@@ -85,10 +84,13 @@ void LibMeshFunction::print_info() const
   this->equation_systems->get_mesh().print_info(std::cerr);
 }
 
-void LibMeshFunction::save_function(const std::string & filename) const
+void LibMeshFunction::save_function(const std::string & filename, double time) const
 {
-  libMesh::VTKIO(this->equation_systems->get_mesh()).write_equation_systems(
-      filename, *this->equation_systems);
+  // The "1" is hardcoded for the number of time steps because the ExodusII
+  // manual states that it should be the number of timesteps within the file.
+  // Here, we are explicitly only doing one timestep per file.
+  libMesh::ExodusII_IO(this->equation_systems->get_mesh()).write_timestep(
+      filename, *this->equation_systems, 1, time);
 }
 
 void LibMeshFunction::add(double scale, const FunctionBase & rhs) {

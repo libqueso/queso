@@ -327,20 +327,17 @@ void InfiniteDimensionalMCMCSampler::_write_state()
   std::ostringstream curr_iter;
   curr_iter << this->iteration();
 
-  std::string sample_name(basename.str() + "sample_");
+  std::string sample_name(basename.str() + "sample.e-s.");
   sample_name += curr_iter.str();
-  sample_name += ".vtk";
-  this->current_physical_state->save_function(sample_name);
+  this->current_physical_state->save_function(sample_name, this->iteration());
 
-  std::string mean_name(basename.str() + "mean_");
+  std::string mean_name(basename.str() + "mean.e-s.");
   mean_name += curr_iter.str();
-  mean_name += ".vtk";
-  this->current_physical_mean->save_function(mean_name);
+  this->current_physical_mean->save_function(mean_name, this->iteration());
 
-  std::string var_name(basename.str() + "var_");
+  std::string var_name(basename.str() + "var.e-s.");
   var_name += curr_iter.str();
-  var_name += ".vtk";
-  this->current_physical_var->save_function(var_name);
+  this->current_physical_var->save_function(var_name, this->iteration());
 }
 
 boost::shared_ptr<InfiniteDimensionalMCMCSampler> InfiniteDimensionalMCMCSampler::clone_and_reset() const
