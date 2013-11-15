@@ -2027,6 +2027,7 @@ MLSampling<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
   return;
 }
 
+// Statistical/private methods-----------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::checkpointML(
@@ -2142,7 +2143,7 @@ MLSampling<P_V,P_M>::checkpointML(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::restartML(
@@ -2337,7 +2338,7 @@ MLSampling<P_V,P_M>::restartML(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Level0_all(
@@ -2487,7 +2488,7 @@ MLSampling<P_V,P_M>::generateSequence_Level0_all(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Step01_inter0(
@@ -2533,7 +2534,7 @@ MLSampling<P_V,P_M>::generateSequence_Step01_inter0(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Step02_inter0(
@@ -2671,7 +2672,7 @@ MLSampling<P_V,P_M>::generateSequence_Step02_inter0(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
@@ -2978,7 +2979,7 @@ MLSampling<P_V,P_M>::generateSequence_Step03_inter0(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Step04_inter0(
@@ -3072,7 +3073,7 @@ MLSampling<P_V,P_M>::generateSequence_Step04_inter0(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Step05_inter0(
@@ -3155,7 +3156,7 @@ MLSampling<P_V,P_M>::generateSequence_Step05_inter0(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Step06_all(
@@ -3188,7 +3189,7 @@ MLSampling<P_V,P_M>::generateSequence_Step06_all(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Step07_inter0(
@@ -3248,7 +3249,7 @@ MLSampling<P_V,P_M>::generateSequence_Step07_inter0(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Step08_all(
@@ -3281,7 +3282,7 @@ MLSampling<P_V,P_M>::generateSequence_Step08_all(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Step09_all(
@@ -3751,7 +3752,7 @@ MLSampling<P_V,P_M>::generateSequence_Step09_all(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Step10_all(
@@ -3857,7 +3858,7 @@ MLSampling<P_V,P_M>::generateSequence_Step10_all(
 
   return;
 }
-
+//---------------------------------------------------
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Step11_inter0(
@@ -4027,9 +4028,10 @@ MLSampling<P_V,P_M>::generateSequence_Step11_inter0(
   return;
 }
 
+// Default constructor -----------------------------  
 template<class P_V,class P_M>
 MLSampling<P_V,P_M>::MLSampling(
-  const char*                               prefix,
+  const char*                        prefix,
   const BaseVectorRV      <P_V,P_M>& priorRv,
   const BaseScalarFunction<P_V,P_M>& likelihoodFunction)
   :
@@ -4061,7 +4063,7 @@ MLSampling<P_V,P_M>::MLSampling(
                             << std::endl;
   }
 }
-
+// Destructor ---------------------------------------
 template<class P_V,class P_M>
 MLSampling<P_V,P_M>::~MLSampling()
 {
@@ -4069,7 +4071,10 @@ MLSampling<P_V,P_M>::~MLSampling()
   m_parameterEnabledStatus.clear(); // gpmsa2
   if (m_targetDomain) delete m_targetDomain;
 }
-
+// Statistical methods-------------------------------
+/* This operation currently implements the PAMSSA algorithm (S. H. Cheung and E. E. Prudencio. Parallel adaptive multilevel 
+ * sampling algorithms for the Bayesian analysis of mathematical models. International Journal 
+ * for Uncertainty Quantification, 2(3):215237, 2012.)*/
 template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence(
