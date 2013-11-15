@@ -275,25 +275,25 @@ As a result, the user should have created several of PNG figures containing marg
 
 
 
-\subsection{Gravity Example Code}\label{sec:gravity_code}
+\subsection{Example Code}\label{sec:gravity_code}
 
 The source code for the SIP and the SFP is composed of 7 files.
 Three of them are common for both problems: \texttt{gravity\_main.C, gravity\_compute.h} and \texttt{gravity\_compute.C}; they combine both problems and use the solution of the SIP (the posterior PDF for the gravity) as an input for the SFP and are presented, respectively, in Listings \ref{code:gravity_main}, \ref{code:gravity_compute_h} and \ref{code:gravity_compute_C}.
 Two of files specifically  handle the SIP: \texttt{gravity\_likelihood.h}, and \texttt{gravity\_likelihood.C}, and are displayed in Listings \ref{code:gravity_like_h} and \ref{code:gravity_like_C}. Finally, the files specific for the SFP are \texttt{gravity\_qoi.h} and \texttt{gravity\_qoi.C}, and they are presented in Listings \ref{code:gravity_qoi_h} and \ref{code:gravity_qoi_C}.
 
-\lstinputlisting[caption=File \texttt{gravity\_main.C.}, label=code:gravity_main, linerange={27-1000}]{../../examples/gravity/src/gravity_main.C}
+\lstinputlisting[caption=File \texttt{gravity\_main.C.}, label=code:gravity_main, linerange={25-1000}]{../../examples/gravity/src/gravity_main.C}
  
-\lstinputlisting[caption=File \texttt{gravity\_compute.h.}, label=code:gravity_compute_h, linerange={33-1000}]{../../examples/gravity/src/gravity_compute.h}
+\lstinputlisting[caption=File \texttt{gravity\_compute.h.}, label=code:gravity_compute_h, linerange={32-1000}]{../../examples/gravity/src/gravity_compute.h}
 
-\lstinputlisting[caption={File \texttt{gravity\_compute.C}. The first part of the code (lines 37--113) handles the statistical forward problem, whereas the second part of the code (lines 115--163) handles the statistical forward problem.\\}, label=code:gravity_compute_C, linerange={27-1000},numbers=left]{../../examples/gravity/src/gravity_compute.C}
+\lstinputlisting[caption={File \texttt{gravity\_compute.C}. The first part of the code (lines 60--150) handles the statistical forward problem, whereas the second part of the code (lines 151--216) handles the statistical forward problem.\\}, label=code:gravity_compute_C, linerange={26-1000},numbers=left]{../../examples/gravity/src/gravity_compute.C}
 
-\lstinputlisting[caption=File \texttt{gravity\_likelihood.h}., label=code:gravity_like_h, linerange={33-1000}]{../../examples/gravity/src/gravity_likelihood.h}
+\lstinputlisting[caption=File \texttt{gravity\_likelihood.h}., label=code:gravity_like_h, linerange={32-1000}]{../../examples/gravity/src/gravity_likelihood.h}
 
-\lstinputlisting[caption=File \texttt{gravity\_likelihood.C}., label=code:gravity_like_C, linerange={27-1000}]{../../examples/gravity/src/gravity_likelihood.C}
+\lstinputlisting[caption=File \texttt{gravity\_likelihood.C}., label=code:gravity_like_C, linerange={31-1000}]{../../examples/gravity/src/gravity_likelihood.C}
 
-\lstinputlisting[caption=File \texttt{gravity\_qoi.h}., label=code:gravity_qoi_h, linerange={33-1000}]{../../examples/gravity/src/gravity_qoi.h}
+\lstinputlisting[caption=File \texttt{gravity\_qoi.h}., label=code:gravity_qoi_h, linerange={32-1000}]{../../examples/gravity/src/gravity_qoi.h}
 
-\lstinputlisting[caption=File \texttt{gravity\_qoi.C}., label=code:gravity_qoi_C, linerange={33-96}]{../../examples/gravity/src/gravity_qoi.C}
+\lstinputlisting[caption=File \texttt{gravity\_qoi.C}., label=code:gravity_qoi_C, linerange={32-96}]{../../examples/gravity/src/gravity_qoi.C}
 
 \subsection{Input File}\label{sec:gravity-input-file}
 
@@ -390,10 +390,10 @@ Figure~\ref{fig:sip_gravity_chain_pos_filtered} is obtained analogously. % by lo
 >> title('DRAM Chain Positions (raw)','fontsize',20);
 \end{lstlisting}
 
-\begin{figure}[htb]
+\begin{figure}[p]
 \centering 
-\subfigure[Raw chain]{\includegraphics[scale=0.35]{figs/sip_gravity_chain_pos_raw.png}\label{fig:sip_gravity_chain_pos_raw}}
-\subfigure[Filtered chain]{\includegraphics[scale=0.35]{figs/sip_gravity_chain_pos_filt.png}\label{fig:sip_gravity_chain_pos_filtered}}
+\subfloat[Raw chain]{\includegraphics[scale=0.35]{figs/sip_gravity_chain_pos_raw.png}\label{fig:sip_gravity_chain_pos_raw}}
+\subfloat[Filtered chain]{\includegraphics[scale=0.35]{figs/sip_gravity_chain_pos_filt.png}\label{fig:sip_gravity_chain_pos_filtered}}
 \vspace*{-10pt}
 \caption{MCMC raw chain with \chainsizeresults{} positions and a filtered chain with lag of 20 positions.}
 \end{figure}
@@ -415,10 +415,10 @@ In order to plot histograms of the parameter using either the raw chain or the f
 >> grid on;
 \end{lstlisting}
 
-\begin{figure}[htb]
+\begin{figure}[p]
 \centering 
-\subfigure[Raw chain]{\includegraphics[scale=0.35]{figs/sip_gravity_hist_raw.png}\label{fig:sip_gravity_hist_raw}}
-\subfigure[Filtered chain]{\includegraphics[scale=0.35]{figs/sip_gravity_hist_filt.png}\label{fig:sip_gravity_hist_filtered}}
+\subfloat[Raw chain]{\includegraphics[scale=0.35]{figs/sip_gravity_hist_raw.png}\label{fig:sip_gravity_hist_raw}}
+\subfloat[Filtered chain]{\includegraphics[scale=0.35]{figs/sip_gravity_hist_filt.png}\label{fig:sip_gravity_hist_filtered}}
 \vspace*{-10pt}
 \caption{Histograms of parameter $\theta=g$. }
 \end{figure}
@@ -438,10 +438,10 @@ Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together wi
 \end{lstlisting}
 
 %Figure \ref{fig:sip_gravity_kde_raw} is created by using Matlab commands presented in Listing \ref{matlab:kde} above.
-\begin{figure}[htpb]
+\begin{figure}[p]
 \centering 
-\subfigure[Raw chain]{\includegraphics[scale=0.35]{figs/sip_gravity_kde_raw.png}\label{fig:sip_gravity_kde_raw}}
-\subfigure[Filtered chain]{\includegraphics[scale=0.35]{figs/sip_gravity_kde_filt.png}\label{fig:sip_gravity_kde_filtered}}
+\subfloat[Raw chain]{\includegraphics[scale=0.35]{figs/sip_gravity_kde_raw.png}\label{fig:sip_gravity_kde_raw}}
+\subfloat[Filtered chain]{\includegraphics[scale=0.35]{figs/sip_gravity_kde_filt.png}\label{fig:sip_gravity_kde_filtered}}
 \vspace*{-10pt}
 \caption{Kernel Density Estimation. }
 \end{figure}
@@ -455,9 +455,9 @@ Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together wi
 % 
 % \begin{figure}[htpb]
 % \centering 
-% %\subfigure[Unnormalized]{\includegraphics[scale=0.35]{figs/gravity_likelihood_brute_force_compare_post_pdf_0.png}\label{fig:sip_gravity_compare_brute_force_unnormal}}
-% %\subfigure[Normalized]{\includegraphics[scale=0.35]{figs/gravity_likelihood_brute_force_compare_post_pdf_normalized0.png}\label{fig:sip_gravity_compare_brute_force_normal}}
-% \subfigure{\includegraphics[scale=0.35]{figs/gravity_likelihood_brute_force_compare_post_pdf_0.png}\label{fig:sip_gravity_compare_brute_force_unnormal}}
+% %\subfloat[Unnormalized]{\includegraphics[scale=0.35]{figs/gravity_likelihood_brute_force_compare_post_pdf_0.png}\label{fig:sip_gravity_compare_brute_force_unnormal}}
+% %\subfloat[Normalized]{\includegraphics[scale=0.35]{figs/gravity_likelihood_brute_force_compare_post_pdf_normalized0.png}\label{fig:sip_gravity_compare_brute_force_normal}}
+% \subfloat{\includegraphics[scale=0.35]{figs/gravity_likelihood_brute_force_compare_post_pdf_0.png}\label{fig:sip_gravity_compare_brute_force_unnormal}}
 % \vspace*{-10pt}
 % \caption{Comparison of the posterior KDE for $g$ against the brute force calculation of the likelihood on a regular grid on $g$.
 % }
@@ -507,10 +507,10 @@ Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) with \verb+
 \end{lstlisting}
 
 %Similarly, Figure \ref{fig:sip_gravity_cdf_raw} is created by using above Matlab commands.
-\begin{figure}[ht]
+\begin{figure}[p]
 \centering 
-\subfigure[Raw chain]{\includegraphics[scale=0.35]{figs/sip_gravity_cdf_raw.png}\label{fig:sip_gravity_cdf_raw}}
-\subfigure[Filtered chain]{\includegraphics[scale=0.35]{figs/sip_gravity_cdf_filt.png}\label{fig:sip_gravity_cdf_filtered}}
+\subfloat[Raw chain]{\includegraphics[scale=0.35]{figs/sip_gravity_cdf_raw.png}\label{fig:sip_gravity_cdf_raw}}
+\subfloat[Filtered chain]{\includegraphics[scale=0.35]{figs/sip_gravity_cdf_filt.png}\label{fig:sip_gravity_cdf_filtered}}
 \vspace*{-10pt}
 \caption{Cumulative Distribution Function. }
 \end{figure}
@@ -536,7 +536,7 @@ which presents the autocorrelation of the parameter $g$ in both cases: raw and f
 >> set(h,'fontsize',16);
 \end{lstlisting}
 
-\begin{figure}[htpb]
+\begin{figure}[p]
 \centering
 \includegraphics[scale=0.35]{figs/sip_gravity_autocorrelation_raw_filt.png}
 \vspace{-8pt}
@@ -566,6 +566,7 @@ corr_matrix_g =
 >>
 \end{lstlisting}
 
+\newpage
 
 \subsubsection{Statistical Forward Problem}
 
@@ -584,7 +585,7 @@ It is quite simple to plot, using Matlab, the chain of positions generated by th
 >> title('MC Chain Positions','fontsize',20);
 \end{lstlisting}
 
-\begin{figure}[htb]
+\begin{figure}[p]
 \centering 
 \includegraphics[scale=0.35]{figs/sfp_gravity_chain_pos.png}
 \vspace*{-10pt}
@@ -607,7 +608,7 @@ In order to plot a histogram of the QoI, you may use the pre-defined Matlab func
 >> grid on;
 \end{lstlisting}
 
-\begin{figure}[htb]
+\begin{figure}[p]
 \centering 
 \includegraphics[scale=0.35]{figs/sfp_gravity_hist.png}
 \vspace{-10pt}
@@ -636,6 +637,8 @@ Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together wi
 \caption{Kernel Density Estimation.}
 \label{fig:sfp_gravity_kde}
 \end{figure}
+
+\newpage
 
 \paragraph{CDF Plots} \
 
