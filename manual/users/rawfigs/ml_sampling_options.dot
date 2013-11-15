@@ -1,0 +1,8 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{QUESO::MLSamplingOptions\n|+ m_prefix\l+ m_restartInputFileName\l+ m_restartInputFileType\l+ m_restartChainSize\l+ m_dataOutputFileName\l+ m_dataOutputAllowAll\l+ m_dataOutputAllowedSet\l- m_env\l- m_optionsDesc\l- m_option_help\l- m_option_restartInputFileName\l- m_option_restartInputFileType\l- m_option_restartChainSize\l- m_option_dataOutputFileName\l- m_option_dataOutputAllowAll\l- m_option_dataOutputAllowedSet\l|+ MLSamplingOptions()\l+ ~MLSamplingOptions()\l+ scanOptionsValues()\l+ print()\l- defineMyOptions()\l- getMyOptionValues()\l}",height=0.2,width=0.4,color="black",  fontcolor="black"];
+ 
+}

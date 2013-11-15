@@ -1,0 +1,11 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="{QUESO::BaseVectorSequence\< V, M \>\n|# m_env\l# m_vectorSpace\l# m_name\l# m_fftObj\l# m_subMinPlain\l# m_unifiedMinPlain\l# m_subMaxPlain\l# m_unifiedMaxPlain\l# m_subMeanPlain\l# m_unifiedMeanPlain \l and 5 more...|+ BaseVectorSequence()\l+ ~BaseVectorSequence()\l+ subSequenceSize()\l+ unifiedSequenceSize()\l+ vectorSizeLocal()\l+ vectorSizeGlobal()\l+ vectorSpace()\l+ name()\l+ setName()\l+ clear()\l+ subMinPlain()\l+ unifiedMinPlain()\l and 51 more...\l# copy()\l# extractRawData()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
+  Node2 [label="{QUESO::ArrayOfSequences\< V, M \>\n|- m_scalarSequences\l|+ ArrayOfSequences()\l+ ~ArrayOfSequences()\l+ subSequenceSize()\l+ resizeSequence()\l+ resetValues()\l+ erasePositions()\l+ getPositionValues()\l+ setPositionValues()\l+ setGaussian()\l+ setUniform()\l+ mean()\l+ unifiedMean()\l and 19 more...\l- extractRawData()\l}",height=0.2,width=0.4,color="black",URL="$class_q_u_e_s_o_1_1_array_of_sequences.html",tooltip="Class for handling array samples (arrays of scalar sequences)."];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="FreeSans"];
+  Node3 [label="{QUESO::SequenceOfVectors\< V, M \>\n|- m_seq\l|+ SequenceOfVectors()\l+ ~SequenceOfVectors()\l+ operator=()\l+ subSequenceSize()\l+ resizeSequence()\l+ resetValues()\l+ erasePositions()\l+ getPositionValues()\l+ setPositionValues()\l+ subUniformlySampledCdf()\l+ unifiedUniformlySampledCdf()\l+ subMeanExtra()\l+ unifiedMeanExtra()\land 30 more...\l- copy()\l- extractRawData()\l}",height=0.2,width=0.4,color="black",URL="$class_q_u_e_s_o_1_1_sequence_of_vectors.html",tooltip="Class for handling vector samples (sequence of vectors)."];
+}

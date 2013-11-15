@@ -99,106 +99,253 @@
 #define UQ_ML_SAMPLING_L_AM_EPSILON_ODV                                       1.e-5
 
 namespace QUESO {
+  
+/*!\file MLSamplingLevelOptions.h
+   \brief Classes to allow options to be passed to the Multilevel algorithm, per level.*/
+
+/*!\class MLSamplingLevelOptions
+ * \brief This class provides options for each level of the Multilevel sequence generator if no input file is available.
+ * 
+ * Multilevel sequence generator expects options for its methods to operate in each level 
+ * of the sequece generated. This class provides default values for such options if no 
+ * input file is available. */
 
 class MLSamplingLevelOptions
 {
 public:
+  //! @name Constructor/Destructor methods
+  //@{ 
+  //! Constructor: reads options from the input file.
   MLSamplingLevelOptions(const BaseEnvironment& env, const char* prefix);
-//MLSamplingLevelOptions(const MLSamplingLevelOptions& inputOptions);
+  
+  //MLSamplingLevelOptions(const MLSamplingLevelOptions& inputOptions);
+  
+  //! Destructor  
  ~MLSamplingLevelOptions();
-
+  //@}
+ 
+ //! @name Misc method
+  //@{
+  //! Access to the environment.  
   const BaseEnvironment& env() const;
-//void changePrefix     (const char* prefix);
+  
+  //void changePrefix     (const char* prefix);
+  //@}
+  
+  //! @name I/O methods
+  //@{
+  //! It scans the option values from the options input file.
   void scanOptionsValues(const MLSamplingLevelOptions* defaultOptions);
+  
+  //!  It prints the option values.
   void print            (std::ostream& os) const;
-
+  //@}
   std::string                        m_prefix;
 
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
+  //! Name of checkpoint output file
   std::string                        m_checkpointOutputFileName;
 #endif
+  //! Stop at end of such level.
   bool                               m_stopAtEnd;
+  
+  //! Name of generic output file.
   std::string                        m_dataOutputFileName;
+  
+  //! subEnvs that will write to generic output file.
   bool                               m_dataOutputAllowAll;
+  
+  //! subEnvs that will write to generic output file. 
   std::set<unsigned int>             m_dataOutputAllowedSet;
+  
+  //! subEnvs that will write to generic output file.
   std::string                        m_str1;
+  
+  //! Perform load balancing with chosen algorithm (0 = no balancing).
   unsigned int                       m_loadBalanceAlgorithmId;
+  
+  //! Perform load balancing if load unbalancing ratio > threshold.
   double                             m_loadBalanceTreshold;
+  
+  //! Minimum allowed effective size ratio wrt previous level.
   double                             m_minEffectiveSizeRatio;
+  
+  //! Maximum allowed effective size ratio wrt previous level.
   double                             m_maxEffectiveSizeRatio;
+  
+  //! Whether or not scale proposal covariance matrix.
   bool                               m_scaleCovMatrix;
+  
+  //! minimum allowed attempted rejection rate at current level
   double                             m_minRejectionRate;
+  
+  //! maximum allowed attempted rejection rate at current level.
   double                             m_maxRejectionRate;
+  
+  //! c.o.v. for judging attempted rejection rate at current level.
   double                             m_covRejectionRate;
+  
+  //! minimum acceptable eta,
+  /*! Used in the GPMSA code.*/
   double                             m_minAcceptableEta; // gpmsa1
+  
+  //! Whether or not to be totally mute (no printout message).
   bool                               m_totallyMute;
+  
+  //! Name of input file for initial position.
   std::string                        m_initialPositionDataInputFileName;
+  
+  //! Type of input file for initial position.
   std::string                        m_initialPositionDataInputFileType;
+  
+  //! Name of input file for initial proposal covariance matrix.
   std::string                        m_initialProposalCovMatrixDataInputFileName;
+  
+  //! Type of input file for initial proposal covariance matrix.
   std::string                        m_initialProposalCovMatrixDataInputFileType;
+  
+  
   std::set<unsigned int>             m_parameterDisabledSet; // gpmsa2
   std::string                        m_str2; // gpmsa2
   std::vector<double>                m_initialValuesOfDisabledParameters; // gpmsa2
   std::string                        m_str3; // gpmsa2
+  
+  //! Name of input file for raw chain.
   std::string                        m_rawChainDataInputFileName;
+  
+  
+  //! Type of input file for raw chain
   std::string                        m_rawChainDataInputFileType;
+  
+  //! Size of raw chain
   unsigned int                       m_rawChainSize;
+  
+  //! Generate extra information about raw chain.
   bool                               m_rawChainGenerateExtra;
+  
+  //! Period of message display during raw chain generation.
   unsigned int                       m_rawChainDisplayPeriod;
+  
+  //!  Whether or not to measure run times.
   bool                               m_rawChainMeasureRunTimes;
+  
+  //! Period of message display during raw chain generation.
   unsigned int                       m_rawChainDataOutputPeriod;
+  
+  //! Name of output file for raw chain.
   std::string                        m_rawChainDataOutputFileName;
+  
+  //! Type of output file for raw chain.
   std::string                        m_rawChainDataOutputFileType;
+  
+  //! Whether or not subEnvs will write to output file for raw chain.
   bool                               m_rawChainDataOutputAllowAll;
+  
+  //! subEnvs that will write to output file for raw chain.
   std::set<unsigned int>             m_rawChainDataOutputAllowedSet;
+  
   std::string                        m_str4;
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  //! Compute statistics on raw chain.
   bool                               m_rawChainComputeStats;
-  SequenceStatisticalOptions* m_rawChainStatisticalOptionsObj;
+  SequenceStatisticalOptions*        m_rawChainStatisticalOptionsObj;
   bool                               m_rawChainStatOptsInstantiated;
 #endif
-
+  //! Whether or not to generate filtered chain.
   bool                               m_filteredChainGenerate;
+  
+  //! Initial discarded portion for chain filtering.
   double                             m_filteredChainDiscardedPortion; // input or set during run time
+  
+  //! Spacing for chain filtering.
   unsigned int                       m_filteredChainLag;              // input or set during run time
+  
+  //! Name of output file for filtered chain.
   std::string                        m_filteredChainDataOutputFileName;
+  
+  //! Type of output file for filtered chain.
   std::string                        m_filteredChainDataOutputFileType;
+  
+  //! Whether or not subEnvs will write to output file for filtered chain.
   bool                               m_filteredChainDataOutputAllowAll;
+  
+  //! subEnvs that will write to output file for filtered chain.
   std::set<unsigned int>             m_filteredChainDataOutputAllowedSet;
   std::string                        m_str5;
+  
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  //! Compute statistics on filtered chain.
   bool                               m_filteredChainComputeStats;
-  SequenceStatisticalOptions* m_filteredChainStatisticalOptionsObj;
+  SequenceStatisticalOptions*        m_filteredChainStatisticalOptionsObj;
   bool                               m_filteredChainStatOptsInstantiated;
 #endif
-
+  //! Display candidates generated in the core MH algorithm.
   bool                               m_displayCandidates;
+  
+  //! Put 'out of bound' candidates in chain as well.
   bool                               m_putOutOfBoundsInChain;
+  
+  //! Whether or not 'proposal' uses local Hessian.
   bool                               m_tkUseLocalHessian;
+  
+  //! Whether or not 'proposal' uses Newton component.
   bool                               m_tkUseNewtonComponent;
+  
+  //! 'dr' maximum number of extra stages.
   unsigned int                       m_drMaxNumExtraStages;
+  
+  //! 'dr' list of scales for proposal covariance matrices from 2nd stage on.
   std::vector<double>                m_drScalesForExtraStages;
   std::string                        m_str6;
+  
+  //! Whether or not 'dr' is used during 'am' non adaptive interval.
   bool                               m_drDuringAmNonAdaptiveInt;
+  
+  //! Whether or not 'am' will keep initial (given) matrix.
   bool                               m_amKeepInitialMatrix;
+  
+  //! 'am' initial non adaptation interval
   unsigned int                       m_amInitialNonAdaptInterval;
+  
+  //! 'am' adaptation interval.
   unsigned int                       m_amAdaptInterval;
+  
+  //! Period for outputing 'am' adapted matrices.
   unsigned int                       m_amAdaptedMatricesDataOutputPeriod;
+  
+  //! Name of output file for 'am' adapted matrices.
   std::string                        m_amAdaptedMatricesDataOutputFileName;
+  
+  //! Type of output file for 'am' adapted matrices.
   std::string                        m_amAdaptedMatricesDataOutputFileType;
+  
+  //! Whether or not subEnvs will write to output file for 'am' adapted matrices.
   bool                               m_amAdaptedMatricesDataOutputAllowAll;
+  
+  //! subEnvs that will write to output file for 'am' adapted matrices.
   std::set<unsigned int>             m_amAdaptedMatricesDataOutputAllowedSet;
+  
+  
   std::string                        m_str7;
+  
+  //! 'am' eta.
   double                             m_amEta;
+  
+  //! 'am' epsilon.
   double                             m_amEpsilon;
 
 private:
+  //! Copies the option values from \c srcOptions to \c this.
   void   copyOptionsValues(const MLSamplingLevelOptions& srcOptions);
+  
+  //! Defines the options for the Multilevel generator of samples as the default options.
   void   defineMyOptions  (po::options_description& optionsDesc) const;
+  
+  //! Gets the sequence options defined to the Multilevel algorithm.
   void   getMyOptionValues(po::options_description& optionsDesc);
 
-  const BaseEnvironment& m_env;
+  const BaseEnvironment&        m_env;
   po::options_description*      m_optionsDesc;
 
   std::string                   m_option_help;
