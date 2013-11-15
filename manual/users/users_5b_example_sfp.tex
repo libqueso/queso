@@ -1,4 +1,3 @@
-
 \section{\texttt{simpleStatisticalForwardProblem}}\label{sec:example_sfp}
 
 In this simple statistical forward problem (SFP), suppose that the quantity of interest $\mathbf{q}$ is a function of a random variable $\bv{\theta}$ of two parameters, namely $\bf{q}:\mathbb{R}^2\rightarrow\mathbb{R}$ such as:
@@ -25,13 +24,15 @@ Suppose also that the parameters in $\theta$ have Gaussian distribution with mea
 
 
 Notice that since the solution $\mathbf{Q}$ of this SFP is the sum of two random variables $\boldsymbol{\Theta}_1$ and $\boldsymbol{\Theta}_2$, and since these two random variables independent Gaussian by assumption, should have:
-\begin{equation}\label{eq-example-E}
-E[\mathbf{Q}] = E[\boldsymbol{\Theta}_1] + E[\boldsymbol{\Theta}_2] = -1 + 2 = 1
-\end{equation}
-and
-\begin{equation}\label{eq-example-V}
+\begin{equation}\label{eq-example-E-V}
+E[\mathbf{Q}] = E[\boldsymbol{\Theta}_1] + E[\boldsymbol{\Theta}_2] = -1 + 2 = 1 \quad \text{and} \quad
+%
 V[\mathbf{Q}] = V[\boldsymbol{\Theta}_1] + V[\boldsymbol{\Theta}_2] = 4 + 1 = 5
 \end{equation}
+% and
+% \begin{equation}\label{eq-example-V}
+% V[\mathbf{Q}] = V[\boldsymbol{\Theta}_1] + V[\boldsymbol{\Theta}_2] = 4 + 1 = 5
+% \end{equation}
 where $E$ and $V$ indicate expectation and variance, respectively. Thus the analytical expression for the solution $\bf{Q}$ is this SFP is the one-dimensional Gaussian distribution of mean 1 and variance 5:
 \begin{equation}\label{eq-example-sfp-analytical}
 {\bf Q}(x)=   \frac{1}{ \sqrt{10\pi}} \exp\left(-\frac{1}{10}(x-1)^2 \right)
@@ -74,15 +75,15 @@ The source code for the SFP example is composed of 5 files:
 \texttt{simple\_sfp\_example\_compute.h}  and \texttt{simple\_sfp\_example\_compute.C} (Listings \ref{code:sfp-compute-h} and \ref{code:sfp-compute-c}).
 
 
-\lstinputlisting[caption=File \texttt{simple\_sfp\_example\_main.C.}, label={code:sfp-main-c}, linerange={29-1000}]{../../examples/simpleStatisticalForwardProblem/src/simple_sfp_example_main.C}
+\lstinputlisting[caption=File \texttt{simple\_sfp\_example\_main.C.}, label={code:sfp-main-c}, linerange={25-1000}]{../../examples/simpleStatisticalForwardProblem/src/simple_sfp_example_main.C}
 
-\lstinputlisting[caption=File \texttt{simple\_sfp\_example\_qoi.h}., label={code:sfp-qoi-h}, linerange={28-1000}]{../../examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.h}
+\lstinputlisting[caption=File \texttt{simple\_sfp\_example\_qoi.h}., label={code:sfp-qoi-h}, linerange={25-1000}]{../../examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.h}
 
-\lstinputlisting[caption=File \texttt{simple\_sfp\_example\_qoi.C}., label={code:sfp-qoi-c}, linerange={29-1000}]{../../examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.C}
+\lstinputlisting[caption=File \texttt{simple\_sfp\_example\_qoi.C}., label={code:sfp-qoi-c}, linerange={25-1000}]{../../examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.C}
 
-\lstinputlisting[caption=File \texttt{simple\_sfp\_example\_compute.h.}, label={code:sfp-compute-h}, linerange={28-1000}]{../../examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.h}
+\lstinputlisting[caption=File \texttt{simple\_sfp\_example\_compute.h.}, label={code:sfp-compute-h}, linerange={25-1000}]{../../examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.h}
 
-\lstinputlisting[caption={File \texttt{simple\_sfp\_example\_compute.C}.}, label={code:sfp-compute-c}, linerange={29-1000},numbers=left]{../../examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.C}
+\lstinputlisting[caption={File \texttt{simple\_sfp\_example\_compute.C}.}, label={code:sfp-compute-c}, linerange={25-1000},numbers=left]{../../examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.C}
  
 
 
@@ -172,7 +173,7 @@ The Matlab code presented in Listing \ref{matlab:fp_hist_qoi} below shows how to
 >> ylabel('Frequency','fontsize',20);
 \end{lstlisting}
 
-\begin{figure}[htb]
+\begin{figure}[p]
 \centering 
 \includegraphics[scale=0.35]{figs/simple_fp_hist_qoi.png}
 \vspace{-10pt}
@@ -200,7 +201,7 @@ Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together wi
 
 
 %Figure \ref{fig:sip_gravity_kde_raw} is created by using Matlab commands presented in Listing \ref{matlab:kde} above.
-\begin{figure}[htpb]
+\begin{figure}[p]
 \centering 
 \includegraphics[scale=0.35]{figs/simple_fp_kde_qoi.png}
 \vspace{-10pt}
@@ -220,7 +221,7 @@ Matlab function \verb+ksdensity+ with \verb+'cdf'+ option may also be used for p
 >> plot(xi,f,'-m','linewidth',3)
 \end{lstlisting}
 
-\begin{figure}[htpb]
+\begin{figure}[p]
 \centering 
 \includegraphics[scale=0.35]{figs/simple_fp_cdf_qoi.png}
 \vspace*{-10pt}

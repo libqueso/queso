@@ -267,13 +267,13 @@ The source code for the example is composed of 5 files:
 
 
 
-\lstinputlisting[caption=File \texttt{exTgaValidationCycle\_gsl.C}., label={code:tga-main-c}, linerange={30-1000}]{../../examples/validationCycle/src/exTgaValidationCycle_gsl.C}
+\lstinputlisting[caption=File \texttt{exTgaValidationCycle\_gsl.C}., label={code:tga-main-c}, linerange={28-1000}]{../../examples/validationCycle/src/exTgaValidationCycle_gsl.C}
 
-\lstinputlisting[caption=File \texttt{exTgaValidationCycle\_appl.h}., label={code:tga-appl-h}, linerange={33-1000}]{../../examples/validationCycle/src/exTgaValidationCycle_appl.h}
+\lstinputlisting[caption=File \texttt{exTgaValidationCycle\_appl.h}., label={code:tga-appl-h}, linerange={27-1000}]{../../examples/validationCycle/src/exTgaValidationCycle_appl.h}
 
-\lstinputlisting[caption=File \texttt{exTgaValidationCycle\_likelihood.h.}, label={code:tga-like-h}, linerange={33-1000}]{../../examples/validationCycle/src/exTgaValidationCycle_likelihood.h}
+\lstinputlisting[caption=File \texttt{exTgaValidationCycle\_likelihood.h.}, label={code:tga-like-h}, linerange={27-1000}]{../../examples/validationCycle/src/exTgaValidationCycle_likelihood.h}
 
-\lstinputlisting[caption=File \texttt{exTgaValidationCycle\_qoi.h}., label={code:tga-qoi-h}, linerange={33-1000}]{../../examples/validationCycle/src/exTgaValidationCycle_qoi.h}
+\lstinputlisting[caption=File \texttt{exTgaValidationCycle\_qoi.h}., label={code:tga-qoi-h}, linerange={27-1000}]{../../examples/validationCycle/src/exTgaValidationCycle_qoi.h}
 
 
 
@@ -325,8 +325,8 @@ as illustrated in Figure \ref{fig:tga_ip_pdf}.
 %
 \begin{figure}[htpb]
 \centering 
-\subfloat{\includegraphics[scale=0.35]{figs/cal_val_parameter1_PDF.png}}
-\subfloat{\includegraphics[scale=0.35]{figs/cal_val_parameter2_PDF.png}}
+\subfloat{\includegraphics[scale=0.3]{figs/cal_val_parameter1_PDF.png}}
+\subfloat{\includegraphics[scale=0.3]{figs/cal_val_parameter2_PDF.png}}
 \vspace*{-10pt}
 \caption{Posterior distributions of parameters $A$ and $E$.}
 \label{fig:tga_ip_pdf}
@@ -340,8 +340,8 @@ Matlab function \verb+ksdensity+ with \verb+'cdf'+ option may also be used for p
 %
 \begin{figure}[htpb]
 \centering 
-\subfloat{\includegraphics[scale=0.35]{figs/cal_val_parameter1_CDF.png}}
-\subfloat{\includegraphics[scale=0.35]{figs/cal_val_parameter2_CDF.png}}
+\subfloat{\includegraphics[scale=0.3]{figs/cal_val_parameter1_CDF.png}}
+\subfloat{\includegraphics[scale=0.3]{figs/cal_val_parameter2_CDF.png}}
 \vspace*{-10pt}
 \caption{Cumulative density functions of parameters $A$ and $E$.}
 \label{fig:tga_ip_cdf}
@@ -353,10 +353,10 @@ Matlab function \verb+ksdensity+ with \verb+'cdf'+ option may also be used for p
 
 Figure \ref{fig:tga_ip_autocorrelation_param} presents the autocorrelation of the parameters $A$ and $E$ in both cases: calibration and validation stages.
 
-\begin{figure}[htpb]
+\begin{figure}[p]
 \centering 
-\subfloat{\includegraphics[scale=0.35]{figs/cal_val_parameter1_autocorrelation.png}}
-\subfloat{\includegraphics[scale=0.35]{figs/cal_val_parameter2_autocorrelation.png}}
+\subfloat{\includegraphics[scale=0.3]{figs/cal_val_parameter1_autocorrelation.png}}
+\subfloat{\includegraphics[scale=0.3]{figs/cal_val_parameter2_autocorrelation.png}}
 \vspace*{-10pt}
 \caption{Autocorrelation of parameters $A$ and $E$ (filtered chain).}
 \label{fig:tga_ip_autocorrelation_param}
@@ -367,27 +367,27 @@ Figure \ref{fig:tga_ip_autocorrelation_param} presents the autocorrelation of th
 Figures \ref{fig:tga_pdf_qoi}  and \ref{fig:tga_cdf_qoi} present PDF and CDF of QoI, respectively and Figure \ref{fig:tga_autocorrelation_qoi} presents its autocorrelation.
 
 
-\begin{figure}[htb]
+\begin{figure}[p]
 \centering 
-\includegraphics[scale=0.35]{figs/cal_val_QoI_PDF.png}
+\subfloat[QoI PDF]{\includegraphics[scale=0.3]{figs/cal_val_QoI_PDF.png}\label{fig:tga_pdf_qoi}}
+\subfloat[QoI CDF]{\includegraphics[scale=0.3]{figs/cal_val_QoI_CDF.png}\label{fig:tga_cdf_qoi}}
 \vspace*{-10pt}
-\caption{QoI PDF, during calibration and validation stages.}
-\label{fig:tga_pdf_qoi}
+\caption{QoI PDF and CDF, during calibration and validation stages.}
 \end{figure}
 
 
+%
+% \begin{figure}[htb]
+% \centering
+% \includegraphics[scale=0.35]{figs/cal_val_QoI_CDF.png}
+% \vspace*{-10pt}
+% \caption{QoI CDF, during calibration and validation stages.}
+% \label{fig:tga_cdf_qoi}
+% \end{figure}
 
-\begin{figure}[htb]
+\begin{figure}[p]
 \centering 
-\includegraphics[scale=0.35]{figs/cal_val_QoI_CDF.png}
-\vspace*{-10pt}
-\caption{QoI CDF, during calibration and validation stages.}
-\label{fig:tga_cdf_qoi}
-\end{figure}
-
-\begin{figure}[htb]
-\centering 
-\includegraphics[scale=0.35]{figs/cal_val_QoI_autocorrelation}
+\includegraphics[scale=0.3]{figs/cal_val_QoI_autocorrelation}
 \vspace*{-10pt}
 \caption{QoI autocorrelation.}
 \label{fig:tga_autocorrelation_qoi}
