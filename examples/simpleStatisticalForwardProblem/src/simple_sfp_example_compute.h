@@ -25,8 +25,8 @@
 #ifndef __EX_COMPUTE_H__
 #define __EX_COMPUTE_H__
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
-void compute(const uqFullEnvironmentClass& env);
+void compute(const QUESO::FullEnvironment& env);
 
 #endif
