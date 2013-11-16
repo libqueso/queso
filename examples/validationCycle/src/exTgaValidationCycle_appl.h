@@ -120,9 +120,9 @@ uqAppl(const QUESO::BaseEnvironment& env)
 
   // Inverse problem: instantiate the likelihood function object (data + routine)
   likelihoodRoutine_Data<P_V,P_M> calLikelihoodRoutine_Data(env,
-                                                                 "inputData/scenario_5_K_min.dat",
-                                                                 "inputData/scenario_25_K_min.dat",
-                                                                 "inputData/scenario_50_K_min.dat");
+                                                                 "scenario_5_K_min.dat",
+                                                                 "scenario_25_K_min.dat",
+                                                                 "scenario_50_K_min.dat");
 
   QUESO::GenericScalarFunction<P_V,P_M> calLikelihoodFunctionObj("cal_like_",
                                                                  paramDomain,
@@ -338,7 +338,7 @@ uqAppl(const QUESO::BaseEnvironment& env)
 
   // Inverse problem: instantiate the likelihood function object (data + routine)
   likelihoodRoutine_Data<P_V,P_M> valLikelihoodRoutine_Data(env,
-                                                                 "inputData/scenario_100_K_min.dat",
+                                                                 "scenario_100_K_min.dat",
                                                                  NULL,
                                                                  NULL);
 
