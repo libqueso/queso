@@ -60,14 +60,19 @@ and matrix operations. They are described in the following sections.
 \subsection{Environment Class (and Options)}\label{sec:environment_class}
 
 %
-The \texttt{Environment} class sets up the environment underlying the use of the QUESO library by an executable.
-This class is virtual. It is inherited by \verb+EmptyEnvironment+ and \verb+FullEnvironment+.
+The \texttt{Environment} class sets up the environment underlying the use of
+the QUESO library by an executable.  This class is virtual. It is inherited by
+\verb+EmptyEnvironment+ and \verb+FullEnvironment+.
 
-The QUESO environment class is instantiated at the application level, right after \linebreak\verb+MPI_Init(&argc,&argv)+. 
-The QUESO environment is required by reference by many constructors in the QUESO library, and is available by reference from many classes as well.
+The QUESO environment class is instantiated at the application level, right
+after \linebreak\verb+MPI_Init(&argc,&argv)+.  The QUESO environment is
+required by reference by many constructors in the QUESO library, and is
+available by reference from many classes as well.
 
-The constructor of the environment class requires a communicator, the name of an options input file,
-and the eventual prefix of the environment in order for the proper options to be read (multiple environments can coexist, as explained further below).
+The constructor of the environment class requires a communicator, the name of
+an options input file, and the eventual prefix of the environment in order for
+the proper options to be read (multiple environments can coexist, as explained
+further below).
 
 The environment class has four primary tasks:
 \begin{enumerate}
@@ -102,11 +107,19 @@ The QUESO environment class manages five types of communicators, referred to as:
 \end{enumerate}
 
 
-A {\it subenvironment} in QUESO is the smallest collection of processors necessary for the proper run of the model code.
-An {\it environment} in QUESO is the collection of all subenvironments, if there is more than one subenvironment. %In other words, one might refer to a QUESO ``full'' environment composed of $S$ QUESO ``sub'' environments.  Each sub environment is assigned a ``sub'' id varying from 0 (zero) to $S-1$.
-    Each subenvironment is able to generate a statistical inverse problem and/or a statistical forward problem; that is, each subenvironment is able to handle a ``sub'' Markov chain (a sequence) of vectors and/or a ``sub'' Monte Carlo sequence of output vectors.
-    The ``sub'' sequences can be seen as forming a ``unified'' sequence in a distributed way.
-    Indeed, the virtual class \verb+VectorSequence+ provides ``sub'' and ``unified'' statistical operations. 
+A {\it subenvironment} in QUESO is the smallest collection of processors
+necessary for the proper run of the model code.  An {\it environment} in QUESO
+is the collection of all subenvironments, if there is more than one
+subenvironment.
+
+%In other words, one might refer to a QUESO ``full'' environment composed of $S$ QUESO ``sub'' environments.  Each sub environment is assigned a ``sub'' id varying from 0 (zero) to $S-1$.
+
+Each subenvironment is able to generate a statistical inverse problem and/or a
+statistical forward problem; that is, each subenvironment is able to handle a
+``sub'' Markov chain (a sequence) of vectors and/or a ``sub'' Monte Carlo
+sequence of output vectors.  The ``sub'' sequences can be seen as forming a
+``unified'' sequence in a distributed way.  Indeed, the virtual class
+\verb+VectorSequence+ provides ``sub'' and ``unified'' statistical operations. 
 
 Thus, if the model code requires 16 processors to run and the user decides to run 64 Markov chains in parallel,
 then the environment will consist of a total of $F=1024$ processors and $S=64$ subenvironments, each subenvironment with $F/S=16$ processors.

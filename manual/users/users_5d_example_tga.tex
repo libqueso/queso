@@ -3,18 +3,22 @@
 This is the last and more complex of all \Queso{} examples. 
 In this example, we numerically solve a statistical inverse problem related to a thermogravimetric experiment, where a material sample has its mass measured while loosing it through a controlled heating process. 
 
-Given a simple mass evolution model that has a temperature profile and material properties as input parameters, and given thermogravimetric measurements with prescribed variances, the statistical inverse problems ask for the specification of the random variables that represent the unknown material properties. We compute probability density functions with the Bayesian approach and
-compute sets of realizations through the Metropolis-Hastings algorithm with delayed rejection.
+Given a simple mass evolution model that has a temperature profile and material
+properties as input parameters, and given thermogravimetric measurements with
+prescribed variances, the statistical inverse problems ask for the
+specification of the random variables that represent the unknown material
+properties. We compute probability density functions with the Bayesian approach
+and compute sets of realizations through the Metropolis-Hastings algorithm with
+delayed rejection.
 % DRAM Markov chain algorithm.
 %Once the random variables are computed, they become input parameters on statistical forward problems,
 %which ask for the statistical prediction of the sample mass evolution under a specified temperature profile.
 %We solve the statistical forward problems with the Monte Carlo algorithm.
 
-We qualitatively analyze the sensitivity of the solutions
-with respect to problem characteristics,
-namely ``amount'' of data and ``quality'' of data, and also
-with respect to algorithm options,
-namely chain initial position, number of delayed rejections
+We qualitatively analyze the sensitivity of the solutions with respect to
+problem characteristics, namely ``amount'' of data and ``quality'' of data, and
+also with respect to algorithm options, namely chain initial position, number
+of delayed rejections
 %, covariance matrix adaptivity
 and chain size.
 
@@ -39,9 +43,12 @@ Let $w(T)~=~m(T)/m_0$ denote the mass fraction.
 \end{figure}
 
 
-It is convenient to transform the kinetic equation to a \emph{per unit temperature} form by dividing through by
-$\beta$. Thus, a simple approach to the simulation of a thermogravimetric phenomenon consists on modeling the sample as a
-homogeneous material of scalar properties $A>0$ and $E>0$ whose relative mass $w$ obeys the following initial value ordinal differential equation problem:
+It is convenient to transform the kinetic equation to a \emph{per unit temperature}
+form by dividing through by $\beta$. Thus, a simple approach to
+the simulation of a thermogravimetric phenomenon consists on modeling the
+sample as a homogeneous material of scalar properties $A>0$ and $E>0$ whose
+relative mass $w$ obeys the following initial value ordinal differential
+equation problem:
 \begin{equation}\label{eq:tga-model}
 \left\{
 \begin{array}{rcll}
@@ -133,7 +140,9 @@ the calculation of their best values according to a given criteria, usually leas
 \underset{\mathbf{m}\in M}{\text{min}}~\mathcal{F}(\mathbf{m}).
 \end{equation}
 
-In \underline{statistical} inverse problems, the unknown parameters are treated as random variables (RVs) and the goal is the specification of their probability density functions (PDFs)~\cite{KaSo05}.
+In \underline{statistical} inverse problems, the unknown parameters are treated
+as random variables (RVs) and the goal is the specification of their
+probability density functions (PDFs)~\cite{KaSo05}.
 
 
 
@@ -150,7 +159,8 @@ we have that for the TGA SIP, the prior distribution and the likelihood are, res
 \end{equation*}
 
 
-Thus, we chose parameters $(A,E)$ to have joint uniform prior PDF over the open square domain, i.e.:
+Thus, we chose parameters $(A,E)$ to have joint uniform prior PDF over the open
+square domain, i.e.:
 $$\pi_{\text{prior}}=\mathcal{U}((1.0\times 10^{10},5.0\times 10^{11})\times (4.0\times 10^{5},6.0\times 10^{5})).$$
 
 
@@ -189,7 +199,12 @@ index ``$i$'' & $T_i$ (K)       & $m^*_{\text{obs},i}$ (\%) & $V_i$    \\
 
 In spacecraft design, ablation is used to both cool and protect mechanical parts and/or payloads that would otherwise be damaged by extremely high temperatures. Two principal applications are heat shields for spacecraft entering a planetary atmosphere from space and cooling of rocket engine nozzles~\cite{wiki:ablation}. 
 
-Suppose that a object about to re-enter the Earth atmosphere has a thermal protection layer (shield) of composition of the same sample material described in Section \ref{sec:tga-sip}. Also, as the object re-enters the atmosphere, its shield loses mass according to Equation \eqref{eq:tga-model}.  The initial sample temperature is $T_0=0.1$ K and it is then heated with constant rate $\beta=5$ K/m.
+Suppose that an object about to re-enter the Earth atmosphere has a thermal
+protection layer (shield) of composition of the same sample material described
+in Section \ref{sec:tga-sip}. Also, as the object re-enters the atmosphere, its
+shield loses mass according to Equation \eqref{eq:tga-model}.  The initial
+sample temperature is $T_0=0.1$ K and it is then heated with constant rate
+$\beta=5$ K/m.
 % We are interested in answering a few questions:
 % \begin{enumerate}
 %  \item At scenario $\beta=250$ K/min, what is the remaining mass fraction at time $t=3.9$ s, i.e. $$w(t=3.9s)?$$
@@ -197,7 +212,9 @@ Suppose that a object about to re-enter the Earth atmosphere has a thermal prote
 %  \item  Supposing that the probability of failure is $\leq 5\%$, what is the margin in the prediction of the probability of failure?
 % \end{enumerate}
 
-We are interested in answering the following question: at scenario $\beta=250$ K/min, what is the remaining mass fraction at time $t=3.9$ s? In other words, the quantity of interest is $w(t=3.9s)$.
+We are interested in answering the following question: at scenario $\beta=250$
+K/min, what is the remaining mass fraction at time $t=3.9$ s? In other words,
+the quantity of interest is $w(t=3.9s)$.
 
 
 
@@ -263,7 +280,9 @@ The source code for the example is composed of 5 files:
 
 \subsection{Input File}\label{sec:tga-input-file}
 
-The input file used with this TGA SIP--SFP QUESO provides QUESO with options for its environments, and for both  MCMC and Monte-Carlo algorithms. It is displayed in Listing~\ref{code:tga-input-file}.
+The input file used with this TGA SIP--SFP QUESO provides QUESO with options
+for its environments, and for both  MCMC and Monte-Carlo algorithms. It is
+displayed in Listing~\ref{code:tga-input-file}.
 
 
 \lstinputlisting[caption={File name \texttt{tgaCycle.inp} with options for QUESO library used in application code (Listings \ref{code:tga-main-c}-\ref{code:tga-like-h}})., 
@@ -285,12 +304,17 @@ display_sub0.txt
 \end{verbatim}
 
 
-The sequence of Matlab commands is identical to the ones presented in Sections \ref{sec:sip-results}, \ref{sec:sfp-results} and \ref{sec:gravity-results}; therefore, are omitted here. The reader is invited to explore the Matlab file \texttt{tga\_cycle\_plot.m}  
+The sequence of Matlab commands is identical to the ones presented in Sections
+\ref{sec:sip-results}, \ref{sec:sfp-results} and \ref{sec:gravity-results};
+therefore, are omitted here. The reader is invited to explore the Matlab file
+\texttt{tga\_cycle\_plot.m}  
 %\texttt{validationCycle/tests/test\_2012\_11\_15/tga\_cycle\_plot.m} 
 for details of how the figures have been generated.
 
 \subsubsection{KDE Plots of Parameters}
-Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together with the option `\verb+pdf+' may be used to estimate the KDE of the parameters, as illustrated in Figure \ref{fig:tga_ip_pdf}.
+Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together
+with the option `\verb+pdf+' may be used to estimate the KDE of the parameters,
+as illustrated in Figure \ref{fig:tga_ip_pdf}.
 % \begin{figure}[htb]
 % \centering 
 % \subfloat{\includegraphics[scale=0.40]{figs/cal_parameter1_prior.png}}
