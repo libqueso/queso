@@ -19,19 +19,19 @@ HDF5 DIR     = /Users/ernesto/Installations/hdf5_1_8_5
 --------------------------------------------------------------------------------------------------------------
 Beginning run at Mon Sep  3 20:23:42 2012
 
-In uqFullEnvironmentClass::commonConstructor():
+In uqFullEnvironment::commonConstructor():
   m_seed = 0
   internal seed = 0
-Entering uqStatisticalInverseProblemClass<P_V,P_M>::constructor(): prefix = , alternativeOptionsValues = 0, m_env.optionsInputFileName() = example.inp
-In uqStatisticalInverseProblemOptionsClass::scanOptionsValues(): after reading values of options with prefix 'ip_', state of  object is:
+Entering uqStatisticalInverseProblem<P_V,P_M>::constructor(): prefix = , alternativeOptionsValues = 0, m_env.optionsInputFileName() = example.inp
+In uqStatisticalInverseProblemOptions::scanOptionsValues(): after reading values of options with prefix 'ip_', state of  object is:
 
 ip_computeSolution = 1
 ip_dataOutputFileName = outputData/sipOutput
 ip_dataOutputAllowedSet = 0 
 
-Leaving uqStatisticalInverseProblemClass<P_V,P_M>::constructor(): prefix = ip_
-In uqStatisticalInverseProblemClass<P_V,P_M>::solveWithBayesMetropolisHastings(): computing solution, as requested by user
-In uqMetropolisHastingsSGOptionsClass::scanOptionsValues(): after reading values of options with prefix 'ip_mh_', state of object is:
+Leaving uqStatisticalInverseProblem<P_V,P_M>::constructor(): prefix = ip_
+In uqStatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(): computing solution, as requested by user
+In uqMetropolisHastingsSGOptions::scanOptionsValues(): after reading values of options with prefix 'ip_mh_', state of object is:
 ip_mh_dataOutputFileName = outputData/sipOutput
 ip_mh_dataOutputAllowedSet = 0 1 
 ip_mh_totallyMute = 0
@@ -72,15 +72,15 @@ ip_mh_am_epsilon = 1e-05
 ip_mh_enableBrooksGelmanConvMonitor = 0
 ip_mh_BrooksGelmanLag = 100
 
-Entering uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1): prefix = ip_, alternativeOptionsValues = 0, m_env.optionsInputFileName() = example.inp, m_initialProposalCovMatrix = 8 4 ; 4 16 
-Entering uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
-In uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor(): just instantiated a 'ScaledCovMatrix' TK class
-Leaving uqMetropolisHastingsSGClass<P_V,P_M>::commonConstructor()
-Leaving uqMetropolisHastingsSGClass<P_V,P_M>::constructor(1)
+Entering uqMetropolisHastingsSG<P_V,P_M>::constructor(1): prefix = ip_, alternativeOptionsValues = 0, m_env.optionsInputFileName() = example.inp, m_initialProposalCovMatrix = 8 4 ; 4 16 
+Entering uqMetropolisHastingsSG<P_V,P_M>::commonConstructor()
+In uqMetropolisHastingsSG<P_V,P_M>::commonConstructor(): just instantiated a 'ScaledCovMatrix' TK class
+Leaving uqMetropolisHastingsSG<P_V,P_M>::commonConstructor()
+Leaving uqMetropolisHastingsSG<P_V,P_M>::constructor(1)
 Starting the generation of Markov chain ip_mh_rawChain, with 32768 positions...
 
-In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): contents of initial position are:0.1 -1.4 
-In uqMetropolisHastingsSGClass<P_V,P_M>::generateFullChain(): targetPdf.domaintSet() info is:In uqBoxSubsetClass<V,M>::print(): m_minValues = -inf -inf , m_maxValues = inf inf , m_volume = inf
+In uqMetropolisHastingsSG<P_V,P_M>::generateFullChain(): contents of initial position are:0.1 -1.4 
+In uqMetropolisHastingsSG<P_V,P_M>::generateFullChain(): targetPdf.domaintSet() info is:In uqBoxSubset<V,M>::print(): m_minValues = -inf -inf , m_maxValues = inf inf , m_volume = inf
 
 Finished the generation of Markov chain ip_mh_rawChain, with sub 32768 positions
 Some information about this chain:
@@ -104,12 +104,12 @@ Some information about this chain:
   Out of target support in DR = 0
   Rejection percentage = 23.8525 %
   Out of target support percentage = 0 %
-In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, chain name = ip_mh_rawChain: about to try to open generic output file 'outputData/sipOutput.m', subId = 0, subenv is allowed to write (1/true or 0/false) = 1...
-In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: returned from opening generic output file 'outputData/sipOutput.m', subId = 0
-In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: about to try to write sub raw chain output file 'outputData/ip_raw_chain.m', subId = 0, subenv is allowed to write  1/true or 0/false) = 1...
-In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: returned from writing sub raw chain output file 'outputData/ip_raw_chain.m', subId = 0
-In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: about to try to write unified raw chain output file 'outputData/ip_raw_chain.m', subId = 0...
-In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: returned from writing unified raw chain output file 'outputData/ip_raw_chain.m', subId = 0
+In uqMetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_, chain name = ip_mh_rawChain: about to try to open generic output file 'outputData/sipOutput.m', subId = 0, subenv is allowed to write (1/true or 0/false) = 1...
+In uqMetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: returned from opening generic output file 'outputData/sipOutput.m', subId = 0
+In uqMetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: about to try to write sub raw chain output file 'outputData/ip_raw_chain.m', subId = 0, subenv is allowed to write  1/true or 0/false) = 1...
+In uqMetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: returned from writing sub raw chain output file 'outputData/ip_raw_chain.m', subId = 0
+In uqMetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: about to try to write unified raw chain output file 'outputData/ip_raw_chain.m', subId = 0...
+In uqMetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: returned from writing unified raw chain output file 'outputData/ip_raw_chain.m', subId = 0
 
 
 -----------------------------------------------------
@@ -121,27 +121,27 @@ In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_, ra
  Finished writing more information about the Markov chain ip_mh_rawChain
 -----------------------------------------------------
 
-Entering uqSequenceOfVectorsClass<V,M>::filter(): initialPos = 0, spacing = 16, subSequenceSize = 32768
-Leaving uqSequenceOfVectorsClass<V,M>::filter(): initialPos = 0, spacing = 16, subSequenceSize = 2048
-In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_: checking necessity of opening output files for filtered chain ip_mh_filtChain...
-In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_: closed sub output file 'outputData/ip_filt_chain' for filtered chain ip_mh_filtChain
-In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_: closed unified output file 'outputData/ip_filt_chain' for filtered chain ip_mh_filtChain
-In uqMetropolisHastingsSGClass<P_V,P_M>::generateSequence(), prefix = ip_mh_: closed generic output file 'outputData/sipOutput' (chain name is ip_mh_filtChain)
+Entering uqSequenceOfVectors<V,M>::filter(): initialPos = 0, spacing = 16, subSequenceSize = 32768
+Leaving uqSequenceOfVectors<V,M>::filter(): initialPos = 0, spacing = 16, subSequenceSize = 2048
+In uqMetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_: checking necessity of opening output files for filtered chain ip_mh_filtChain...
+In uqMetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_: closed sub output file 'outputData/ip_filt_chain' for filtered chain ip_mh_filtChain
+In uqMetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_: closed unified output file 'outputData/ip_filt_chain' for filtered chain ip_mh_filtChain
+In uqMetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_: closed generic output file 'outputData/sipOutput' (chain name is ip_mh_filtChain)
 
-In uqSequentialVectorRealizerClass<V,M>::constructor(): m_chain.subSequenceSize() = 2048
+In uqSequentialVectorRealizer<V,M>::constructor(): m_chain.subSequenceSize() = 2048
 
-Entering uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor(): prefix = , alternativeOptionsValues = 0, m_env.optionsInputFileName() = example.inp
-In uqStatisticalForwardProblemOptionsClass::scanOptionsValues(): after reading values of options with prefix 'fp_', state of  object is:
+Entering uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::constructor(): prefix = , alternativeOptionsValues = 0, m_env.optionsInputFileName() = example.inp
+In uqStatisticalForwardProblemOptions::scanOptionsValues(): after reading values of options with prefix 'fp_', state of  object is:
 fp_computeSolution = 1
 fp_computeCovariances = 1
 fp_computeCorrelations = 1
 fp_dataOutputFileName = outputData/sfpOutput
 fp_dataOutputAllowedSet = 0 1 
 
-Leaving uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::constructor(): prefix = fp_
-In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(): computing solution, as requested by user
-Entering uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor(): prefix = fp_, alternativeOptionsValues = 0, m_env.optionsInputFileName() = example.inp
-In uqMonteCarloSGOptionsClass::scanOptionsValues(): after reading values of options with prefix 'fp_mc_', state of object is:
+Leaving uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::constructor(): prefix = fp_
+In uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(): computing solution, as requested by user
+Entering uqMonteCarloSG<P_V,P_M,Q_V,Q_M>::constructor(): prefix = fp_, alternativeOptionsValues = 0, m_env.optionsInputFileName() = example.inp
+In uqMonteCarloSGOptions::scanOptionsValues(): after reading values of options with prefix 'fp_mc_', state of object is:
 fp_mc_dataOutputFileName = outputData/sfpOutput
 fp_mc_dataOutputAllowedSet = 0 1 
 fp_mc_pseq_dataOutputFileName = outputData/fp_p_seq
@@ -155,8 +155,8 @@ fp_mc_qseq_measureRunTimes = 1
 fp_mc_qseq_dataOutputFileName = outputData/fp_q_seq
 fp_mc_qseq_dataOutputFileType = m
 fp_mc_qseq_dataOutputAllowedSet = 0 1 
-Leaving uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::constructor()
-In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): m_optionsObj->m_ov.m_qseqSize = 1048576, paramRv.realizer().subPeriod() = 2048, about to call actualGenerateSequence() with subActualSize = 2048
+Leaving uqMonteCarloSG<P_V,P_M,Q_V,Q_M>::constructor()
+In uqMonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): m_optionsObj->m_ov.m_qseqSize = 1048576, paramRv.realizer().subPeriod() = 2048, about to call actualGenerateSequence() with subActualSize = 2048
 Starting the generation of qoi sequence fp_mc_QoiSeq, with 2048 samples...
 Finished the generation of qoi sequence fp_mc_QoiSeq, with sub 2048 samples
 Some information about this sequence:
@@ -165,22 +165,22 @@ Some information about this sequence:
  Breaking of the seq run time:
 
   QoI function run time   = 0.000868 seconds (15.8684%)
-In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): returned from call to actualGenerateSequence() with subActualSize = 2048
-In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening generic output file (qseq name is fp_mc_QoiSeq) ...
-In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening output files for pseq fp_mc_ParamSeq...
-In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: closed unified data output file 'outputData/fp_p_seq' for pseq fp_mc_ParamSeq
-In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening output files for qseq fp_mc_QoiSeq...
-In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: closed unified data output file 'outputData/fp_q_seq' for qseq fp_mc_QoiSeq
-In uqMonteCarloSGClass<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: closed generic data output file 'outputData/sfpOutput' for qoi sequence fp_mc_QoiSeq
+In uqMonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): returned from call to actualGenerateSequence() with subActualSize = 2048
+In uqMonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening generic output file (qseq name is fp_mc_QoiSeq) ...
+In uqMonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening output files for pseq fp_mc_ParamSeq...
+In uqMonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: closed unified data output file 'outputData/fp_p_seq' for pseq fp_mc_ParamSeq
+In uqMonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening output files for qseq fp_mc_QoiSeq...
+In uqMonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: closed unified data output file 'outputData/fp_q_seq' for qseq fp_mc_QoiSeq
+In uqMonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: closed generic data output file 'outputData/sfpOutput' for qoi sequence fp_mc_QoiSeq
 
-In uqSequentialVectorRealizerClass<V,M>::constructor(): m_chain.subSequenceSize() = 2048
-In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: instantiating cov and corr matrices
-In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: contents of covariance matrix are
+In uqSequentialVectorRealizer<V,M>::constructor(): m_chain.subSequenceSize() = 2048
+In uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: instantiating cov and corr matrices
+In uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: contents of covariance matrix are
 4.02364 ; 1.01851 
-In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: contents of correlation matrix are
+In uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: contents of correlation matrix are
 0.897592 ; 0.45814 
-In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: checking necessity of opening data output file 'outputData/sfpOutput'
-In uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: closed data output file 'outputData/sfpOutput'
+In uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: checking necessity of opening data output file 'outputData/sfpOutput'
+In uqStatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: closed data output file 'outputData/sfpOutput'
 
 Ending run at Mon Sep  3 20:23:46 2012
 Total run time = 4 seconds

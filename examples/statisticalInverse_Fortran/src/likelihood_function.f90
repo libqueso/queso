@@ -27,7 +27,6 @@
 !! intended to match the pure C++ example provided in
 !! examples/statisticalInverseProblem1.
 !!
-!! $Id$
 !!--------------------------------------------------------------------------
 
 function f_likelihood(num_params,parameter_values,parameter_means,matrix,subid,subcomm) bind (C,name='f_likelihood')

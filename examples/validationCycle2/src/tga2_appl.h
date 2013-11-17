@@ -22,23 +22,17 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *--------------------------------------------------------------------------
- *
- * $Id$
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
 #ifndef __TGA2_APPL_H__
 #define __TGA2_APPL_H__
 
-#include <uqValidationCycle.h>
-#include <uqGslMatrix.h>
-#include <uqEnvironment.h>
+#include <queso/ValidationCycle.h>
+#include <queso/GslMatrix.h>
+#include <queso/Environment.h>
 
-void uqAppl(const uqBaseEnvironmentClass& env);
-void uqAppl_LocalComparisonStage(uqValidationCycleClass<uqGslVectorClass,uqGslMatrixClass,uqGslVectorClass,uqGslMatrixClass>& cycle);
-void uqAppl_UnifiedComparisonStage(uqValidationCycleClass<uqGslVectorClass,uqGslMatrixClass,uqGslVectorClass,uqGslMatrixClass>& cycle);
+void uqAppl(const QUESO::BaseEnvironment& env);
+void uqAppl_LocalComparisonStage(QUESO::ValidationCycle<QUESO::GslVector,QUESO::GslMatrix,QUESO::GslVector,QUESO::GslMatrix>& cycle);
+void uqAppl_UnifiedComparisonStage(QUESO::ValidationCycle<QUESO::GslVector,QUESO::GslMatrix,QUESO::GslVector,QUESO::GslMatrix>& cycle);
 
 #endif // __TGA2_APPL_H__

@@ -21,15 +21,12 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id: example_compute.h 37704 2013-03-08 21:10:36Z karl $
-//
-//--------------------------------------------------------------------------
-#ifndef __EX_COMPUTE_H__
-#define __EX_COMPUTE_H__
 
-#include <uqEnvironment.h>
+#ifndef EX_COMPUTE_H
+#define EX_COMPUTE_H
 
-void compute(const uqFullEnvironmentClass& env);
+#include <queso/Environment.h>
+
+void compute(const QUESO::FullEnvironment& env);
 
 #endif

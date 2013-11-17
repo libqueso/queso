@@ -22,27 +22,21 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *--------------------------------------------------------------------------
- *
- * $Id$
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_STATISTICAL_FORWARD_PROBLEM_APPL_H__
-#define __EX_STATISTICAL_FORWARD_PROBLEM_APPL_H__
+#ifndef EX_STATISTICAL_FORWARD_PROBLEM_APPL_H
+#define EX_STATISTICAL_FORWARD_PROBLEM_APPL_H
 
 #include <exStatisticalForwardProblem_qoi.h>
-#include <uqStatisticalForwardProblem.h>
-#include <uqCovCond.h>
+#include <queso/StatisticalForwardProblem.h>
+#include <queso/CovCond.h>
 
 //********************************************************
 // The driving routine: called by main()
 //********************************************************
 template<class P_V,class P_M, class Q_V, class Q_M>
 void 
-uqAppl(const uqBaseEnvironmentClass& env)
+uqAppl(const QUESO::BaseEnvironment& env)
 {
   if (env.fullRank() == 0) {
     std::cout << "Beginning run of 'exStatisticalForwardProblem_example'\n"
@@ -58,7 +52,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
-  uqVectorSpaceClass<P_V,P_M> paramSpace(env,"param_",2,NULL);
+  QUESO::VectorSpace<P_V,P_M> paramSpace(env,"param_",2,NULL);
 
   //******************************************************
   // Step 2 of 6: Instantiate the parameter domain
@@ -74,7 +68,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   P_V paramMaxs(paramSpace.zeroVector());
   paramMaxs[0] = 101.;
   paramMaxs[1] = 99.;
-  uqBoxSubsetClass<P_V,P_M> paramDomain("param_",paramSpace,paramMins,paramMaxs);
+  QUESO::BoxSubset<P_V,P_M> paramDomain("param_",paramSpace,paramMins,paramMaxs);
 
   //******************************************************
   // Step 3 of 6: Instantiate the qoi space (with Q_V and Q_M)
@@ -85,7 +79,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
-  uqVectorSpaceClass<Q_V,Q_M> qoiSpace(env,"qoi_",1,NULL);
+  QUESO::VectorSpace<Q_V,Q_M> qoiSpace(env,"qoi_",1,NULL);
 
   //******************************************************
   // Step 4 of 6: Instantiate the qoi function object (data + routine), to be used by QUESO.
@@ -101,7 +95,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   qoiRoutine_Data.p2MultiplicativeFactor = 3.;
   qoiRoutine_Data.p2ExponentFactor       = 1.1;
 
-  uqGenericVectorFunctionClass<P_V,P_M,Q_V,Q_M> qoiFunctionObj("qoi_",
+  QUESO::GenericVectorFunction<P_V,P_M,Q_V,Q_M> qoiFunctionObj("qoi_",
                                                                paramDomain,
                                                                qoiSpace,
                                                                qoiRoutine<P_V,P_M,Q_V,Q_M>,
@@ -115,13 +109,13 @@ uqAppl(const uqBaseEnvironmentClass& env)
               << std::endl;
   }
 
-  uqUniformVectorRVClass<P_V,P_M> paramRv("param_", // Extra prefix before the default "rv_" prefix
+  QUESO::UniformVectorRV<P_V,P_M> paramRv("param_", // Extra prefix before the default "rv_" prefix
                                           paramDomain);
 
-  uqGenericVectorRVClass<Q_V,Q_M> qoiRv("qoi_", // Extra prefix before the default "rv_" prefix
+  QUESO::GenericVectorRV<Q_V,Q_M> qoiRv("qoi_", // Extra prefix before the default "rv_" prefix
                                          qoiSpace);
 
-  uqStatisticalForwardProblemClass<P_V,P_M,Q_V,Q_M> fp("", // No extra prefix before the default "fp_" prefix
+  QUESO::StatisticalForwardProblem<P_V,P_M,Q_V,Q_M> fp("", // No extra prefix before the default "fp_" prefix
                                                        NULL,
                                                        paramRv,
                                                        qoiFunctionObj,
@@ -148,4 +142,4 @@ uqAppl(const uqBaseEnvironmentClass& env)
 
   return;
 }
-#endif // __EX_STATISTICAL_FORWARD_PROBLEM_APPL_H__
+#endif // EX_STATISTICAL_FORWARD_PROBLEM_APPL_H

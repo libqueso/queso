@@ -13,10 +13,6 @@
 #   Also defines automake conditional IMUT_ENABLED.  Assumes package
 #   is optional unless overridden with $2=yes.
 #
-# LAST MODIFICATION
-#
-#   $Id: iMut.m4 17817 2011-02-18 17:13:16Z karl $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2010 Karl W. Schulz <karl@ices.utexas.edu>

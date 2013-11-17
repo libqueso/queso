@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------bl-
 //--------------------------------------------------------------------------
-// 
+//
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
@@ -17,43 +17,28 @@
 //
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
-// Foundation, Inc. 51 Franklin Street, Fifth Floor, 
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id$
-//
-//--------------------------------------------------------------------------
 
 #include <example_compute.h>
 
 int main(int argc, char* argv[])
 {
   // Initialize environment
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
-#endif
-
   UQ_FATAL_TEST_MACRO(argc != 2,
-                      UQ_UNAVAILABLE_RANK,
+                      QUESO::UQ_UNAVAILABLE_RANK,
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
-  uqFullEnvironmentClass* env =
-#ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
-#else
-    new uqFullEnvironmentClass(0,argv[1],"",NULL);
-#endif
-
+  QUESO::FullEnvironment* env =
+    new QUESO::FullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
   // Compute
   compute(*env);
 
   // Finalize environment
   delete env;
-#ifdef QUESO_HAS_MPI
   MPI_Finalize();
-#endif
-
   return 0;
 }

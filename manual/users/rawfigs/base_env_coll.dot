@@ -1,0 +1,21 @@
+digraph G
+{
+  bgcolor="transparent";
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="QUESO::BaseEnvironment",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_basicPdfs" ,fontname="FreeSans"];
+  Node2 [label="QUESO::BasicPdfsBase",height=0.2,width=0.4,color="black",URL="$class_q_u_e_s_o_1_1_basic_pdfs_base.html",tooltip="TODO: Base class for basic PDFs (via either GSL or Boost)."];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_rngObject" ,fontname="FreeSans"];
+  Node3 [label="QUESO::RngBase",height=0.2,width=0.4,color="black",URL="$class_q_u_e_s_o_1_1_rng_base.html",tooltip="Class for random number generation (base class for either GSL or Boost RNG)."];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_optionsObj" ,fontname="FreeSans"];
+  Node4 [label="QUESO::EnvironmentOptions",height=0.2,width=0.4,color="black",URL="$class_q_u_e_s_o_1_1_environment_options.html",tooltip="This class reads options one can pass to a QUESO environment through an input file."];
+  Node1 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_env" ,fontname="FreeSans"];
+  Node5 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_ov" ,fontname="FreeSans"];
+  Node5 [label="QUESO::EnvOptionsValues",height=0.2,width=0.4,color="black",URL="$class_q_u_e_s_o_1_1_env_options_values.html",tooltip="This class provides a suite options one can pass to a QUESO environment."];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_alternativeOptionsValues" ,fontname="FreeSans"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_inter0Comm\nm_selfComm\nm_subComm\nm_fullComm" ,fontname="FreeSans"];
+  Node6 [label="QUESO::MpiComm",height=0.2,width=0.4,color="black",URL="$class_q_u_e_s_o_1_1_mpi_comm.html",tooltip="The QUESO MPI Communicator Class."];
+  Node1 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_env" ,fontname="FreeSans"];
+}

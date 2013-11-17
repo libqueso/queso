@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------bl-
 //--------------------------------------------------------------------------
-// 
+//
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
@@ -17,32 +17,28 @@
 //
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
-// Foundation, Inc. 51 Franklin Street, Fifth Floor, 
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id$
-//
-//--------------------------------------------------------------------------
-#ifndef __EX_LIKELIHOOD_H__
-#define __EX_LIKELIHOOD_H__
+#ifndef EX_LIKELIHOOD_H
+#define EX_LIKELIHOOD_H
 
-#include <uqGslMatrix.h>
+#include <queso/GslMatrix.h>
 
 struct
 likelihoodRoutine_DataType
 {
-  const uqGslVectorClass* meanVector;
-  const uqGslMatrixClass* covMatrix;
+  const QUESO::GslVector* meanVector;
+  const QUESO::GslMatrix* covMatrix;
 };
 
 double likelihoodRoutine(
-  const uqGslVectorClass& paramValues,
-  const uqGslVectorClass* paramDirection,
+  const QUESO::GslVector& paramValues,
+  const QUESO::GslVector* paramDirection,
   const void*             functionDataPtr,
-  uqGslVectorClass*       gradVector,
-  uqGslMatrixClass*       hessianMatrix,
-  uqGslVectorClass*       hessianEffect);
+  QUESO::GslVector*       gradVector,
+  QUESO::GslMatrix*       hessianMatrix,
+  QUESO::GslVector*       hessianEffect);
 
 #endif

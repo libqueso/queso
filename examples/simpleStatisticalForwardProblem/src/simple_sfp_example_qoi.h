@@ -21,15 +21,12 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id: example_qoi.h 37704 2013-03-08 21:10:36Z karl $
-//
-//--------------------------------------------------------------------------
+
 #ifndef __EX_QOI_H__
 #define __EX_QOI_H__
 
-#include <uqGslMatrix.h>
-#include <uqDistArray.h>
+#include <queso/GslMatrix.h>
+#include <queso/DistArray.h>
 
 struct
 qoiRoutine_DataType
@@ -40,12 +37,12 @@ qoiRoutine_DataType
 
 void
 qoiRoutine(
-  const uqGslVectorClass&                    paramValues,
-  const uqGslVectorClass*                    paramDirection,
+  const QUESO::GslVector&                    paramValues,
+  const QUESO::GslVector*                    paramDirection,
   const void*                                functionDataPtr,
-        uqGslVectorClass&                    qoiValues,
-        uqDistArrayClass<uqGslVectorClass*>* gradVectors,
-        uqDistArrayClass<uqGslMatrixClass*>* hessianMatrices,
-        uqDistArrayClass<uqGslVectorClass*>* hessianEffects);
+        QUESO::GslVector&                    qoiValues,
+        QUESO::DistArray<QUESO::GslVector*>* gradVectors,
+        QUESO::DistArray<QUESO::GslMatrix*>* hessianMatrices,
+        QUESO::DistArray<QUESO::GslVector*>* hessianEffects);
 
 #endif

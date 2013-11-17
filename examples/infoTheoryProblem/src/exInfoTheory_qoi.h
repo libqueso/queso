@@ -22,18 +22,12 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *--------------------------------------------------------------------------
- *
- * $Id: exStatisticalForwardProblem_qoi.h 3867 2009-07-22 14:55:25Z prudenci $
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
-#define __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
+#ifndef EX_STATISTICAL_FORWARD_PROBLEM_QOI_H
+#define EX_STATISTICAL_FORWARD_PROBLEM_QOI_H
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 #include <EpetraExt_DistArray.h>
 
 //********************************************************
@@ -84,4 +78,4 @@ qoiRoutine(
   return;
 }
 
-#endif // __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
+#endif // EX_STATISTICAL_FORWARD_PROBLEM_QOI_H

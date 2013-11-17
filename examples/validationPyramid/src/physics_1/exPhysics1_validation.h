@@ -22,16 +22,10 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *--------------------------------------------------------------------------
- *
- * $Id$
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_PHYSICS_1_VALIDATION_H__
-#define __EX_PHYSICS_1_VALIDATION_H__
+#ifndef EX_PHYSICS_1_VALIDATION_H
+#define EX_PHYSICS_1_VALIDATION_H
 
 #include <uq1D1DFunction.h>
 #include <exPhysics1_likelihood.h>
@@ -45,12 +39,12 @@
 // Class "exPhysics1Validation", instantiated by main()
 //********************************************************
 template <class P_V,class P_M,class Q_V,class Q_M>
-class exPhysics1ValidationClass : public uqModelValidationClass<P_V,P_M,Q_V,Q_M>
+class exPhysics1Validation : public uqModelValidation<P_V,P_M,Q_V,Q_M>
 {
 public:
-  exPhysics1ValidationClass(const uqBaseEnvironmentClass& env,
+  exPhysics1Validation(const uqBaseEnvironment& env,
                             const char*                   prefix);
- ~exPhysics1ValidationClass();
+ ~exPhysics1Validation();
 
   void  run                   ();
 
@@ -59,43 +53,43 @@ private:
   void  runValidationStage    ();
   void  runComparisonStage    ();
 
-  using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_env;
-  using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_prefix;
-  using uqModelValidationClass<P_V,P_M,Q_V,Q_M>::m_cycle;
+  using uqModelValidation<P_V,P_M,Q_V,Q_M>::m_env;
+  using uqModelValidation<P_V,P_M,Q_V,Q_M>::m_prefix;
+  using uqModelValidation<P_V,P_M,Q_V,Q_M>::m_cycle;
 
-  uqAsciiTableClass<P_V,P_M>*                            m_paramsTable;
-  const uqDistArrayClass<std::string>*                   m_paramNames;         // instantiated outside this class!!
+  uqAsciiTable<P_V,P_M>*                            m_paramsTable;
+  const uqDistArray<std::string>*                   m_paramNames;         // instantiated outside this class!!
   P_V*                                                   m_paramMinValues;     // instantiated outside this class!!
   P_V*                                                   m_paramMaxValues;     // instantiated outside this class!!
   P_V*                                                   m_paramInitialValues; // instantiated outside this class!!
-  uqVectorSpaceClass<P_V,P_M>*                           m_paramSpace;
-  uqVectorSetClass<P_V,P_M>*                             m_paramDomain;
+  uqVectorSpace<P_V,P_M>*                           m_paramSpace;
+  uqVectorSet<P_V,P_M>*                             m_paramDomain;
 
-  uqAsciiTableClass<P_V,P_M>*                            m_qoisTable;
-  const uqDistArrayClass<std::string>*                   m_qoiNames; // instantiated outside this class!!
-  uqVectorSpaceClass<Q_V,Q_M>*                           m_qoiSpace;
+  uqAsciiTable<P_V,P_M>*                            m_qoisTable;
+  const uqDistArray<std::string>*                   m_qoiNames; // instantiated outside this class!!
+  uqVectorSpace<Q_V,Q_M>*                           m_qoiSpace;
 
   double                                                 m_predBeta;
   double                                                 m_predInitialTemp;
   double                                                 m_predCriticalW;
   double                                                 m_predCriticalTime;
 
-  uqBaseVectorRVClass<P_V,P_M>*                          m_calPriorRv;
+  uqBaseVectorRV<P_V,P_M>*                          m_calPriorRv;
   std::vector<exPhysics1LikelihoodInfoStruct<P_V,P_M>* > m_calLikelihoodInfoVector;
-  uqBaseScalarFunctionClass<P_V,P_M>*                    m_calLikelihoodFunctionObj;
+  uqBaseScalarFunction<P_V,P_M>*                    m_calLikelihoodFunctionObj;
   exPhysics1QoiInfoStruct<P_V,P_M,Q_V,Q_M>*              m_calQoiRoutineInfo;
 
   std::vector<exPhysics1LikelihoodInfoStruct<P_V,P_M>* > m_valLikelihoodInfoVector;
-  uqBaseScalarFunctionClass<P_V,P_M>*                    m_valLikelihoodFunctionObj;
+  uqBaseScalarFunction<P_V,P_M>*                    m_valLikelihoodFunctionObj;
   exPhysics1QoiInfoStruct<P_V,P_M,Q_V,Q_M>*              m_valQoiRoutineInfo;
 };
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::exPhysics1ValidationClass(
-  const uqBaseEnvironmentClass& env,
+exPhysics1Validation<P_V,P_M,Q_V,Q_M>::exPhysics1Validation(
+  const uqBaseEnvironment& env,
   const char*                   prefix)
   :
-  uqModelValidationClass<P_V,P_M,Q_V,Q_M>(env,prefix),
+  uqModelValidation<P_V,P_M,Q_V,Q_M>(env,prefix),
   m_paramsTable             (NULL),
   m_paramNames              (NULL),
   m_paramMinValues          (NULL),
@@ -120,7 +114,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::exPhysics1ValidationClass(
   }
 
   // Read Ascii file with information on parameters
-  m_paramsTable = new uqAsciiTableClass<P_V,P_M> (m_env,
+  m_paramsTable = new uqAsciiTable<P_V,P_M> (m_env,
                                                   2,    // # of rows
                                                   3,    // # of cols after 'parameter name': min + max + initial value for Markov chain
                                                   NULL, // All extra columns are of 'double' type
@@ -131,18 +125,18 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::exPhysics1ValidationClass(
   m_paramMaxValues     = new P_V(m_paramsTable->doubleColumn(2));
   m_paramInitialValues = new P_V(m_paramsTable->doubleColumn(3));
 
-  m_paramSpace = new uqVectorSpaceClass<P_V,P_M>(m_env,
+  m_paramSpace = new uqVectorSpace<P_V,P_M>(m_env,
                                                  "param_", // Extra prefix before the default "space_" prefix
                                                  m_paramsTable->numRows(),
                                                  NULL);//m_paramNames);
 
-  m_paramDomain = new uqBoxSubsetClass<P_V,P_M>("param_",
+  m_paramDomain = new uqBoxSubset<P_V,P_M>("param_",
                                                 *m_paramSpace,
                                                 *m_paramMinValues,
                                                 *m_paramMaxValues);
 
   // Read Ascii file with information on qois
-  m_qoisTable = new uqAsciiTableClass<P_V,P_M>(m_env,
+  m_qoisTable = new uqAsciiTable<P_V,P_M>(m_env,
                                                1,    // # of rows
                                                0,    // # of cols after 'parameter name': none
                                                NULL, // All extra columns are of 'double' type
@@ -150,13 +144,13 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::exPhysics1ValidationClass(
 
   m_qoiNames = &(m_qoisTable->stringColumn(0));
 
-  m_qoiSpace = new uqVectorSpaceClass<Q_V,Q_M>(m_env,
+  m_qoiSpace = new uqVectorSpace<Q_V,Q_M>(m_env,
                                                "qoi_", // Extra prefix before the default "space_" prefix
                                                m_qoisTable->numRows(),
                                                NULL);//m_qoiNames);
 
   // Instantiate the validation cycle
-  m_cycle = new uqValidationCycleClass<P_V,P_M,Q_V,Q_M>(m_env,
+  m_cycle = new uqValidationCycle<P_V,P_M,Q_V,Q_M>(m_env,
                                                         m_prefix.c_str(), // Use the prefix passed above
                                                         *m_paramSpace,
                                                         *m_qoiSpace);
@@ -175,7 +169,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::exPhysics1ValidationClass(
 }
 
 template <class P_V,class P_M,class Q_V,class Q_M>
-exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::~exPhysics1ValidationClass()
+exPhysics1Validation<P_V,P_M,Q_V,Q_M>::~exPhysics1Validation()
 {
   if (m_env.fullRank() == 0) {
     std::cout << "Entering exPhysics1Validation::destructor()"
@@ -212,7 +206,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::~exPhysics1ValidationClass()
 
 template <class P_V,class P_M,class Q_V,class Q_M>
 void
-exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::run()
+exPhysics1Validation<P_V,P_M,Q_V,Q_M>::run()
 {
   if (m_env.fullRank() == 0) {
     std::cout << "Entering exPhysics1Validation::run()"
@@ -233,7 +227,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::run()
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
+exPhysics1Validation<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
 {
   int iRC;
   struct timeval timevalRef;
@@ -247,7 +241,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   }
 
   // Deal with inverse problem
-  m_calPriorRv = new uqUniformVectorRVClass<P_V,P_M> ("cal_prior_", // Extra prefix before the default "rv_" prefix
+  m_calPriorRv = new uqUniformVectorRV<P_V,P_M> ("cal_prior_", // Extra prefix before the default "rv_" prefix
                                                       *m_paramDomain);
 
   m_calLikelihoodInfoVector.resize(3,NULL);
@@ -255,7 +249,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
   m_calLikelihoodInfoVector[1] = new exPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"physics1InputData/scenario_25_K_min.dat");
   m_calLikelihoodInfoVector[2] = new exPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"physics1InputData/scenario_50_K_min.dat");
 
-  m_calLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("cal_like_",
+  m_calLikelihoodFunctionObj = new uqGenericScalarFunction<P_V,P_M>("cal_like_",
                                                                          *m_paramDomain,
                                                                          exPhysics1LikelihoodRoutine<P_V,P_M>,
                                                                          (void *) &m_calLikelihoodInfoVector,
@@ -300,7 +294,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runCalibrationStage()
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
+exPhysics1Validation<P_V,P_M,Q_V,Q_M>::runValidationStage()
 {
   int iRC;
   struct timeval timevalRef;
@@ -317,7 +311,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
   m_valLikelihoodInfoVector.resize(1,NULL);
   m_valLikelihoodInfoVector[0] = new exPhysics1LikelihoodInfoStruct<P_V,P_M>(*m_paramSpace,"physics1InputData/scenario_100_K_min.dat");
 
-  m_valLikelihoodFunctionObj = new uqGenericScalarFunctionClass<P_V,P_M>("val_like_",
+  m_valLikelihoodFunctionObj = new uqGenericScalarFunction<P_V,P_M>("val_like_",
                                                                          *m_paramDomain,
                                                                          exPhysics1LikelihoodRoutine<P_V,P_M>,
                                                                          (void *) &m_valLikelihoodInfoVector,
@@ -327,7 +321,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
                             *m_valLikelihoodFunctionObj);
 
   // Solve inverse problem = set 'pdf' and 'realizer' of 'postRv'
-  const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(m_cycle->calIP().postRv().realizer()));
+  const uqSequentialVectorRealizer<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizer<P_V,P_M>* >(&(m_cycle->calIP().postRv().realizer()));
   P_M* valProposalCovMatrix = m_cycle->calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because post. rv was computed with Markov Chain
                                                                                                    &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
   m_cycle->valIP().solveWithBayesMetropolisHastings(NULL,
@@ -362,7 +356,7 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runValidationStage()
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
+exPhysics1Validation<P_V,P_M,Q_V,Q_M>::runComparisonStage()
 {
   int iRC;
   struct timeval timevalRef;
@@ -462,4 +456,4 @@ exPhysics1ValidationClass<P_V,P_M,Q_V,Q_M>::runComparisonStage()
   return;
 }
 
-#endif // __EX_PHYSICS_1_VALIDATION_H__
+#endif // EX_PHYSICS_1_VALIDATION_H

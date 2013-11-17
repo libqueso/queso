@@ -37,7 +37,7 @@ echo Build user.................... : $USER
 echo Build host.................... : $BUILD_HOST
 echo Configure date................ : $BUILD_DATE
 echo Build architecture............ : $BUILD_ARCH
-echo SVN revision number........... : $BUILD_VERSION
+echo Source control revision....... : $BUILD_VERSION
 echo
 echo Optional Features:
 
@@ -65,6 +65,12 @@ if test "$HAVE_TRILINOS" == "0"; then
   echo '   'Link with Trilinos......... : no
 else
   echo '   'Link with Trilinos......... : yes
+fi
+
+if test "$HAVE_LIBMESH" == "0"; then
+  echo '   'Link with libmesh.......... : no
+else
+  echo '   'Link with libmesh.......... : yes
 fi
 
 if test "$HAVE_GCOV_TOOLS" = "0"; then
@@ -98,6 +104,12 @@ fi
 
 if test "$HAVE_TRILINOS" = "1"; then
    echo '   'Trilinos DIR............... : $TRILINOS_HOME
+fi
+
+if test "$HAVE_LIBMESH" == "0"; then
+   echo '   'libmesh DIR................ : $LIBMESH_PREFIX
+else
+   echo '   'libmesh DIR................ : $LIBMESH_PREFIX
 fi
 
 echo 		   

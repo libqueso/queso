@@ -23,8 +23,6 @@
  *
  *--------------------------------------------------------------------------
  *
- * $Id$
- *
  * Brief description of this file: 
  * 
  * This is an example of how to define and solve a statistical forward problem 
@@ -37,42 +35,33 @@
  *-------------------------------------------------------------------------- */
 
 #include <exStatisticalForwardProblem_appl.h>
-#include <uqGslMatrix.h>
+#include <queso/GslMatrix.h>
 
 int main(int argc, char* argv[])
 {
   //************************************************
   // Initialize environment
   //************************************************
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
-#endif
+
   UQ_FATAL_TEST_MACRO(argc != 2,
-                      UQ_UNAVAILABLE_RANK,
+                      QUESO::UQ_UNAVAILABLE_RANK,
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
-#ifdef QUESO_HAS_MPI
-  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
-#else
-  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(0,argv[1],"",NULL);
-#endif
-
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
   //************************************************
   // Call application
   //************************************************
-  uqAppl<uqGslVectorClass, // type for parameter vectors
-         uqGslMatrixClass, // type for parameter matrices
-         uqGslVectorClass, // type for qoi vectors
-         uqGslMatrixClass  // type for qoi matrices
+  uqAppl<QUESO::GslVector, // type for parameter vectors
+         QUESO::GslMatrix, // type for parameter matrices
+         QUESO::GslVector, // type for qoi vectors
+         QUESO::GslMatrix  // type for qoi matrices
         >(*env);
 
   //************************************************
   // Finalize environment
   //************************************************
   delete env;
-#ifdef QUESO_HAS_MPI
   MPI_Finalize();
-#endif
-
   return 0;
 }

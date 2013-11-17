@@ -1,17 +1,14 @@
-#include <uqEnvironment.h>
-#include <uqVectorSpace.h>
-#include <uqGslVector.h>
-#include <uqGslMatrix.h>
+#include <queso/Environment.h>
+#include <queso/VectorSpace.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 
-#ifdef QUESO_HAS_MPI
 #include <mpi.h>
-#endif
-
 #define TOL 1e-10
 
 using namespace std;
 
-int matrixIsDiag(const uqGslMatrixClass &M, double diagValue) {
+int matrixIsDiag(const QUESO::GslMatrix &M, double diagValue) {
   // M is assumed to be square
   unsigned int i, j;
   unsigned int n;
@@ -37,7 +34,7 @@ int matrixIsDiag(const uqGslMatrixClass &M, double diagValue) {
   return 1;
 }
 
-void fill2By2Matrix(uqGslMatrixClass &M) {
+void fill2By2Matrix(QUESO::GslMatrix &M) {
   M(0, 0) = 2.0; M(0, 1) = 3.0;
   M(1, 0) = 2.0; M(1, 1) = 2.0;
 }
@@ -46,26 +43,19 @@ int main(int argc, char **argv) {
   unsigned int i, j;
   double diagValue = 1.5;
 
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-#endif
-
-  uqEnvOptionsValuesClass options;
+  QUESO::EnvOptionsValues options;
   options.m_numSubEnvironments = 1;
 
-  uqFullEnvironmentClass *env =
-#ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD, "", "", &options);
-#else
-    new uqFullEnvironmentClass(0, "", "", &options);
-#endif
+  QUESO::FullEnvironment *env =
+    new QUESO::FullEnvironment(MPI_COMM_WORLD, "", "", &options);
 
-  uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> *param_space =
-    new uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass>(*env, "param_", 3, NULL);
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> *param_space =
+    new QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix>(*env, "param_", 3, NULL);
 
-  uqGslVectorClass v(param_space->zeroVector());
-  uqGslMatrixClass M1(*env, v.map(), diagValue);
-  uqGslMatrixClass M2(v, diagValue);
+  QUESO::GslVector v(param_space->zeroVector());
+  QUESO::GslMatrix M1(*env, v.map(), diagValue);
+  QUESO::GslMatrix M2(v, diagValue);
 
   if (!matrixIsDiag(M1, diagValue)) {
     std::cerr << "matrix not diagonal" << std::endl;
@@ -184,10 +174,10 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  uqVectorSpaceClass<uqGslVectorClass, uqGslMatrixClass> space(*env, "", 2, NULL);
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> space(*env, "", 2, NULL);
 
-  uqGslVectorClass v2(space.zeroVector());
-  uqGslMatrixClass M3(v2, 0.0);
+  QUESO::GslVector v2(space.zeroVector());
+  QUESO::GslMatrix M3(v2, 0.0);
 
   fill2By2Matrix(M3);
   M3.filterSmallValues(2.5);
@@ -209,7 +199,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  uqGslMatrixClass M4(v2, 0.0);
+  QUESO::GslMatrix M4(v2, 0.0);
   fill2By2Matrix(M3);
   M4 = M3.inverse();
   if (std::abs(M4(0, 0) + 1.0) > TOL ||
@@ -221,7 +211,7 @@ int main(int argc, char **argv) {
   }
 
   M4 = M3;
-  uqGslMatrixClass I(M3.invertMultiply(M4));
+  QUESO::GslMatrix I(M3.invertMultiply(M4));
   if (!matrixIsDiag(I, 1.0)) {
     std::cerr << "invert multiply failed" << std::endl;
     return 1;
@@ -246,9 +236,6 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-#ifdef QUESO_HAS_MPI
   MPI_Finalize();
-#endif
-
   return 0;
 }

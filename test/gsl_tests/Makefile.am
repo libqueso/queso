@@ -1,24 +1,20 @@
-if SVN_CHECKOUT
+if GIT_CLONE
 BUILT_SOURCES = .license.stamp
 endif
 
 check_PROGRAMS = # Append below
-check_PROGRAMS += get_set_row_column \
-                  get_min_max_vec \
-	          multiple_rhs_matrix_solve \
-                  power_method \
-                  inverse_power_method
+check_PROGRAMS += get_set_row_column
+check_PROGRAMS += get_min_max_vec
+check_PROGRAMS += multiple_rhs_matrix_solve
+check_PROGRAMS += power_method
+check_PROGRAMS += inverse_power_method
 
-AM_CPPFLAGS  = -I$(top_srcdir)/src -I$(top_builddir)/src
-LIBS         = -L$(top_builddir)/src/ -lqueso 
+AM_CPPFLAGS =
+AM_CPPFLAGS += -I.
+AM_CPPFLAGS += -I$(top_builddir)/inc
+AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 
-AM_CPPFLAGS  += -I. \
-                -I$(top_srcdir)/src/core/inc \
-                -I$(top_srcdir)/src/misc/inc \
-                -I$(top_srcdir)/src/basic/inc \
-                -I$(top_srcdir)/src/stats/inc \
-                -I$(top_srcdir)/src/gp/inc \
-	                $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
+LIBS         = -L$(top_builddir)/src/ -lqueso
 
 if GRVY_ENABLED	
   AM_CPPFLAGS += $(GRVY_CFLAGS)
@@ -49,13 +45,14 @@ inverse_power_method_SOURCES = inverse_power_method.C inverse_power_method.h
 
 # Fortran Tests
 
-TESTS             = init.sh \
-                    get_set_row_column \
-                    get_min_max_vec \
-	            multiple_rhs_matrix_solve \
-                    power_method \
-                    inverse_power_method \
-		    finalize.sh
+TESTS =
+TESTS += init.sh
+TESTS += get_set_row_column
+TESTS += get_min_max_vec
+TESTS += multiple_rhs_matrix_solve
+TESTS += power_method
+TESTS += inverse_power_method
+TESTS += finalize.sh
 
 EXTRA_DIST = init.sh finalize.sh input
 
@@ -63,7 +60,7 @@ if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif
 
-if SVN_CHECKOUT
+if GIT_CLONE
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(srcdir)/*.C $(srcdir)/*.h
 	echo 'updated source license headers' >$@

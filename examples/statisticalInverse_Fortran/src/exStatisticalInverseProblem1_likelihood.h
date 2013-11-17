@@ -22,13 +22,9 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-//
-// $Id$
-//
-//--------------------------------------------------------------------------
 
-#ifndef __EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H__
-#define __EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H__
+#ifndef EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H
+#define EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H
 
 #include<cstdio>
 #include<stdlib.h>
@@ -98,7 +94,7 @@ likelihoodRoutine(
 
       // determine local MPI environment info
 
-      const uqBaseEnvironmentClass &env = paramMeans.env();
+      const uqBaseEnvironment &env = paramMeans.env();
       subId                             = (int)env.subId();
       Local_MPI_Comm                    = env.subComm().Comm();
       int num_global_procs;
@@ -141,4 +137,4 @@ likelihoodRoutine(
 #endif
 
 }
-#endif // __EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H__
+#endif // EX_STATISTICAL_INVERSE_PROBLEM_1_LIKELIHOOD_H

@@ -15,10 +15,6 @@
 #   Also defines automake conditional RADIATION_ENABLED.  Assumes
 #   package is optional unless overridden with $2=yes.
 #
-# LAST MODIFICATION
-#
-#   $Id: pecos_radiation.m4 33353 2012-09-25 22:19:37Z roystgnr $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2012 Roy H. Stogner <roystgnr@ices.utexas.edu>

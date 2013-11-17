@@ -13,10 +13,6 @@
 #   #defines HAVE_GRVY.  When ACTION-IF-NOT-FOUND is not specified,
 #   the default behavior is for configure to fail.
 #
-# LAST MODIFICATION
-#
-#   $Id: grvy.m4 13380 2010-09-14 20:23:07Z karl $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2010 Karl W. Schulz <karl@ices.utexas.edu>

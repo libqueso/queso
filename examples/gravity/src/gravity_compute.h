@@ -22,7 +22,6 @@
  *
  *-------------------------------------------------------------------
  *
- * $Id$
  */
  /*------------------------------------------------------------------
  * Brief description of this file: 
@@ -30,11 +29,11 @@
  * This is the header file for 'gravity_compute.C'. 
  *-----------------------------------------------------------------*/
 
-#ifndef __EX_COMPUTE_H__
-#define __EX_COMPUTE_H__
+#ifndef EX_COMPUTE_H
+#define EX_COMPUTE_H
 
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 
-void computeGravityAndTraveledDistance(const uqFullEnvironmentClass& env);
+void computeGravityAndTraveledDistance(const QUESO::FullEnvironment& env);
 
 #endif

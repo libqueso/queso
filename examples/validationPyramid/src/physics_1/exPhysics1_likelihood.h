@@ -22,16 +22,10 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *--------------------------------------------------------------------------
- *
- * $Id$
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_PHYSICS_1_LIKELIHOOD_H__
-#define __EX_PHYSICS_1_LIKELIHOOD_H__
+#ifndef EX_PHYSICS_1_LIKELIHOOD_H
+#define EX_PHYSICS_1_LIKELIHOOD_H
 
 #include <uqVectorSpace.h>
 #include <uqDefines.h>
@@ -42,16 +36,16 @@ template<class P_V,class P_M>
 struct
 exPhysics1LikelihoodInfoStruct
 {
-  exPhysics1LikelihoodInfoStruct(const uqVectorSpaceClass<P_V,P_M>& paramSpace,
+  exPhysics1LikelihoodInfoStruct(const uqVectorSpace<P_V,P_M>& paramSpace,
                                  const std::string&                 inpName);
  ~exPhysics1LikelihoodInfoStruct();
 
-  const uqVectorSpaceClass <P_V,P_M>& m_paramSpace;
+  const uqVectorSpace <P_V,P_M>& m_paramSpace;
 };
 
 template<class P_V,class P_M>
 exPhysics1LikelihoodInfoStruct<P_V,P_M>::exPhysics1LikelihoodInfoStruct(
-  const uqVectorSpaceClass<P_V,P_M>& paramSpace,
+  const uqVectorSpace<P_V,P_M>& paramSpace,
   const std::string&                 inpName)
   :
   m_paramSpace(paramSpace)
@@ -161,4 +155,4 @@ exPhysics1LikelihoodRoutine(
   return resultValue;
 }
 
-#endif // __EX_PHYSICS_1_LIKELIHOOD_H__
+#endif // EX_PHYSICS_1_LIKELIHOOD_H

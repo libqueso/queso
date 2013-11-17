@@ -1,0 +1,14 @@
+env_numSubEnvironments = 1
+env_subDisplayFileName = 
+env_subDisplayAllowAll = 0
+env_subDisplayAllowedSet = 1 
+env_displayVerbosity = 0
+env_syncVerbosity = 0
+env_checkingLevel = 1
+env_rngType = gsl
+env_seed = 1
+env_platformName = my_platform
+env_identifyingString = my_identifying_string
+infmcmc_num_iters = 10
+infmcmc_save_freq = 5
+infmcmc_rwmh_step = 0.1

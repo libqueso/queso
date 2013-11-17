@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------bl-
 //--------------------------------------------------------------------------
-// 
+//
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
@@ -17,46 +17,42 @@
 //
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
-// Foundation, Inc. 51 Franklin Street, Fifth Floor, 
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id$
-//
-//--------------------------------------------------------------------------
 
 #include <example_qoi.h>
 
 void
 qoiRoutine(
-  const uqGslVectorClass&                    paramValues,
-  const uqGslVectorClass*                    paramDirection,
+  const QUESO::GslVector&                    paramValues,
+  const QUESO::GslVector*                    paramDirection,
   const void*                                functionDataPtr,
-        uqGslVectorClass&                    qoiValues,
-        uqDistArrayClass<uqGslVectorClass*>* gradVectors,
-        uqDistArrayClass<uqGslMatrixClass*>* hessianMatrices,
-        uqDistArrayClass<uqGslVectorClass*>* hessianEffects)
+        QUESO::GslVector&                    qoiValues,
+        QUESO::DistArray<QUESO::GslVector*>* gradVectors,
+        QUESO::DistArray<QUESO::GslMatrix*>* hessianMatrices,
+        QUESO::DistArray<QUESO::GslVector*>* hessianEffects)
 {
   // Logic just to avoid warnings from INTEL compiler
-  const uqGslVectorClass* aux1 = paramDirection;
+  const QUESO::GslVector* aux1 = paramDirection;
   if (aux1) {};
-  uqDistArrayClass<uqGslVectorClass*>* aux2 = gradVectors;
+  QUESO::DistArray<QUESO::GslVector*>* aux2 = gradVectors;
   if (aux2) {};
   aux2 = hessianEffects;
-  uqDistArrayClass<uqGslMatrixClass*>* aux3 = hessianMatrices;
+  QUESO::DistArray<QUESO::GslMatrix*>* aux3 = hessianMatrices;
   if (aux3) {};
 
   // Just checking: the user, at the application level, expects
   // vector 'paramValues' to have size 2 and
   // vector 'qoiValues' to have size 1.
   UQ_FATAL_TEST_MACRO(paramValues.sizeGlobal() != 2,
-                      UQ_UNAVAILABLE_RANK,
+                      QUESO::UQ_UNAVAILABLE_RANK,
                       "qoiRoutine()",
                       "paramValues vector does not have size 2");
 
   UQ_FATAL_TEST_MACRO(qoiValues.sizeGlobal() != 1,
-                      UQ_UNAVAILABLE_RANK,
+                      QUESO::UQ_UNAVAILABLE_RANK,
                       "qoiRoutine()",
                       "qoiValues vector does not have size 1");
 
@@ -74,7 +70,7 @@ qoiRoutine(
   //
   // Here we use 'env.subRank()' only. A realistic application might want to use
   // 'env.subComm()' or 'env.subComm().Comm()'
-  const uqBaseEnvironmentClass& env = paramValues.env();
+  const QUESO::BaseEnvironment& env = paramValues.env();
   if (env.subRank() == 0) {
     double coef1 = ((qoiRoutine_DataType *) functionDataPtr)->coef1;
     double coef2 = ((qoiRoutine_DataType *) functionDataPtr)->coef2;

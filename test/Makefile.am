@@ -1,11 +1,10 @@
 SUBDIRS    = t01_valid_cycle t02_sip_sfp t03_sequence t04_bimodal
 
-if SVN_CHECKOUT
+if GIT_CLONE
 BUILT_SOURCES = .license.stamp
 endif
 
 check_PROGRAMS = # Append below
-check_PROGRAMS += test_uqEnvironment
 check_PROGRAMS += test_uqEnvironmentCopy
 check_PROGRAMS += test_uqEnvironmentEquals
 check_PROGRAMS += test_uqEnvironmentNonFatal
@@ -16,17 +15,25 @@ check_PROGRAMS += test_uqGaussianVectorRVClass
 check_PROGRAMS += test_uqGslMatrixConstructorFatal
 check_PROGRAMS += test_uqGslMatrix
 check_PROGRAMS += test_uqTeuchosVector
+check_PROGRAMS += test_uqexception
+check_PROGRAMS += test_DistArrayCtor
+check_PROGRAMS += test_DistArrayCopy
+check_PROGRAMS += test_DistArrayEquals
+check_PROGRAMS += test_DistArrayMisc
+check_PROGRAMS += test_GslVectorSpaceCtor
+check_PROGRAMS += test_GslVectorSpaceMisc
+check_PROGRAMS += test_IntersectionSubsetContains
+check_PROGRAMS += test_operator
+check_PROGRAMS += test_inf_gaussian
+check_PROGRAMS += test_inf_options
+check_PROGRAMS += test_SequenceOfVectorsErase
 
 LIBS         = -L$(top_builddir)/src/ -lqueso
 
-AM_CPPFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src \
-              -I. \
-              -I$(top_srcdir)/src/core/inc \
-              -I$(top_srcdir)/src/misc/inc \
-              -I$(top_srcdir)/src/basic/inc \
-              -I$(top_srcdir)/src/stats/inc \
-              -I$(top_srcdir)/src/gp/inc \
-              $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
+AM_CPPFLAGS =
+AM_CPPFLAGS += -I.
+AM_CPPFLAGS += -I$(top_builddir)/inc
+AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 
 if GRVY_ENABLED	
   AM_CPPFLAGS += $(GRVY_CFLAGS)
@@ -45,7 +52,10 @@ if HDF5_ENABLED
   AM_CPPFLAGS += $(HDF5_CFLAGS) 
 endif
 
-test_uqEnvironment_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironment.C
+if LIBMESH_ENABLED
+  AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
+endif
+
 test_uqEnvironmentCopy_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentCopy.C
 test_uqEnvironmentEquals_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentEquals.C
 test_uqEnvironmentNonFatal_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentNonFatal.C
@@ -56,50 +66,89 @@ test_uqGaussianVectorRVClass_SOURCES = $(top_srcdir)/test/test_GaussianVectorRVC
 test_uqGslMatrixConstructorFatal_SOURCES = $(top_srcdir)/test/test_GslMatrix/test_uqGslMatrixConstructorFatal.C
 test_uqGslMatrix_SOURCES = $(top_srcdir)/test/test_GslMatrix/test_uqGslMatrix.C
 test_uqTeuchosVector_SOURCES = $(top_srcdir)/test/test_TeuchosVector/test_uqTeuchosVector.C
+test_uqexception_SOURCES = $(top_srcdir)/test/test_exception/test_exception.C
+test_DistArrayCtor_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayCtor.C
+test_DistArrayCopy_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayCopy.C
+test_DistArrayEquals_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayEquals.C
+test_DistArrayMisc_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayMisc.C
+test_GslVectorSpaceCtor_SOURCES = $(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceCtor.C
+test_GslVectorSpaceMisc_SOURCES = $(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceMisc.C
+test_IntersectionSubsetContains_SOURCES = $(top_srcdir)/test/test_IntersectionSubset/test_IntersectionSubsetContains.C
+test_operator_SOURCES = $(top_srcdir)/test/test_infinite/test_operator.C
+test_inf_gaussian_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_gaussian.C
+test_inf_options_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_options.C
+test_SequenceOfVectorsErase_SOURCES = $(top_srcdir)/test/test_SequenceOfVectors/test_SequenceOfVectorsErase.C
 
 # Files to freedom stamp
-srcstamp = $(test_uqEnvironment_SOURCES) \
-					 $(test_uqEnvironmentCopy_SOURCES) \
-					 $(test_uqEnvironmentEquals_SOURCES) \
-					 $(test_uqEnvironmentNonFatal_SOURCES) \
-					 $(test_uqEnvironmentOptionsPrint_SOURCES) \
-					 $(test_uqGslVectorConstructorFatal_SOURCES) \
-					 $(test_uqGslVector_SOURCES) \
-					 $(test_uqGaussianVectorRVClass_SOURCES) \
-           $(test_uqGslMatrixConstructorFatal_SOURCES) \
-					 $(test_uqGslMatrix_SOURCES)
+srcstamp =
+srcstamp += $(test_uqEnvironmentCopy_SOURCES)
+srcstamp += $(test_uqEnvironmentEquals_SOURCES)
+srcstamp += $(test_uqEnvironmentNonFatal_SOURCES)
+srcstamp += $(test_uqEnvironmentOptionsPrint_SOURCES)
+srcstamp += $(test_uqGslVectorConstructorFatal_SOURCES)
+srcstamp += $(test_uqGslVector_SOURCES)
+srcstamp += $(test_uqGaussianVectorRVClass_SOURCES)
+srcstamp += $(test_uqGslMatrixConstructorFatal_SOURCES)
+srcstamp += $(test_uqGslMatrix_SOURCES)
+srcstamp += $(test_uqTeuchosVector_SOURCES)
+srcstamp += $(test_uqexception_SOURCES)
+srcstamp += $(test_DistArrayCtor_SOURCES)
+srcstamp += $(test_DistArrayCopy_SOURCES)
+srcstamp += $(test_DistArrayEquals_SOURCES)
+srcstamp += $(test_DistArrayMisc_SOURCES)
+srcstamp += $(test_GslVectorSpaceCtor_SOURCES)
+srcstamp += $(test_GslVectorSpaceMisc_SOURCES)
+srcstamp += $(test_IntersectionSubsetContains_SOURCES)
+srcstamp += $(test_operator_SOURCES)
+srcstamp += $(test_inf_gaussian_SOURCES)
+srcstamp += $(test_inf_options_SOURCES)
 
+TESTS =
+TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
+TESTS += $(top_builddir)/test/test_uqEnvironmentEquals
+TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
+TESTS += $(top_builddir)/test/test_uqEnvironmentOptionsPrint
+TESTS += $(top_builddir)/test/test_uqGslVectorConstructorFatal
+TESTS += $(top_builddir)/test/test_uqGslVector
+TESTS += $(top_builddir)/test/test_uqGaussianVectorRVClass
+TESTS += $(top_builddir)/test/test_uqGslMatrixConstructorFatal
+TESTS += $(top_builddir)/test/test_uqGslMatrix
+TESTS += $(top_builddir)/test/test_uqTeuchosVector
+TESTS += $(top_builddir)/test/test_uqexception
+TESTS += $(top_builddir)/test/test_DistArrayCtor
+TESTS += $(top_builddir)/test/test_DistArrayCopy
+TESTS += $(top_builddir)/test/test_DistArrayEquals
+TESTS += $(top_builddir)/test/test_DistArrayMisc
+TESTS += $(top_builddir)/test/test_GslVectorSpaceCtor
+TESTS += $(top_builddir)/test/test_GslVectorSpaceMisc
+TESTS += $(top_builddir)/test/test_IntersectionSubsetContains
+TESTS += $(top_builddir)/test/test_operator
+TESTS += $(top_builddir)/test/test_inf_gaussian
+TESTS += $(top_builddir)/test/test_inf_options
+TESTS += $(top_builddir)/test/test_SequenceOfVectorsErase
 
-TESTS = $(top_builddir)/test/test_Environment/test_uqEnvironment.sh \
-				$(top_builddir)/test/test_Environment/test_uqEnvironmentCopy.sh \
-				$(top_builddir)/test/test_Environment/test_uqEnvironmentEquals.sh \
-				$(top_builddir)/test/test_uqEnvironmentNonFatal \
-        $(top_builddir)/test/test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh \
-				$(top_builddir)/test/test_GslVector/test_uqGslVectorConstructorFatal.sh \
-				$(top_builddir)/test/test_uqGslVector \
-        $(top_builddir)/test/test_uqGaussianVectorRVClass \
-				$(top_builddir)/test/test_GslMatrix/test_uqGslMatrixConstructorFatal.sh \
-				$(top_builddir)/test/test_uqGslMatrix \
-				$(top_builddir)/test/test_uqTeuchosVector
+XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
-EXTRA_DIST = common/compare.pl \
-						 common/verify.sh \
-             test_Environment/test_uqEnvironment.sh \
-             test_Environment/test_uqEnvironmentCopy.sh \
-             test_Environment/test_uqEnvironmentEquals.sh \
-						 test_GslVector/test_uqGslVectorConstructorFatal.sh \
-             test_GslMatrix/test_uqGslMatrixConstructorFatal.sh \
-						 test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.sh \
-						 test_uqEnvironmentOptions/test.inp
+EXTRA_DIST =
+EXTRA_DIST += common/compare.pl
+EXTRA_DIST += common/verify.sh
+EXTRA_DIST += test_uqEnvironmentOptions/test.inp
+EXTRA_DIST += test_Environment/copy_env
+EXTRA_DIST += test_infinite/inf_options
 
-CLEANFILES = $(top_srcdir)/test/test_Environment/debug_output_sub0.txt \
-						 $(top_srcdir)/test/gslvector_out_sub0.m
+CLEANFILES =
+CLEANFILES += $(top_srcdir)/test/test_Environment/debug_output_sub0.txt
+CLEANFILES += $(top_srcdir)/test/gslvector_out_sub0.m
+
+clean-local:
+	rm -rf $(top_builddir)/test/chain0
+	rm -rf $(top_builddir)/test/outputData
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
 endif
 
-if SVN_CHECKOUT
+if GIT_CLONE
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(srcstamp)
 	echo 'updated source license headers' >$@

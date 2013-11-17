@@ -11,10 +11,20 @@ Version 0.47.1
 Version 0.47.0
   * removed example statisticalInverseProblem as it has a bug - it fails to recreate the problem described in the Normal test from Laine's MCMC tool: http://helios.fmi.fi/~lainema/mcmc/ex/normalex.html.
 
-Version 0.47.0 (In progress)
+Version 0.50.0 (In progress)
+
+  * Implemented MCMC sampling on function spaces
+  * Added function space MCMC unit tests
+  * Added serial and parallel function space MCMC examples
+  * Replace exit() calls with a macro exception handler
+
+Version 0.47.1 (23 Sep 2013)
+
+  * Update manual and fix broken Makefile
+
+Version 0.47.0 (4 Sep 2013)
 
   * Migrated library to github
-  * Replace exit() calls with a macro exception handler
 
 Version 0.46 (13 May 2013)
 

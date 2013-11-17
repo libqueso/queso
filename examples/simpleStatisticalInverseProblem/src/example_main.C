@@ -21,10 +21,6 @@
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id: example_main.C 37704 2013-03-08 21:10:36Z karl $
-//
-//--------------------------------------------------------------------------
 
 #include <example_compute.h>
 
@@ -34,11 +30,11 @@ int main(int argc, char* argv[])
   MPI_Init(&argc,&argv);
 
   UQ_FATAL_TEST_MACRO(argc != 2,
-                      UQ_UNAVAILABLE_RANK,
+                      QUESO::UQ_UNAVAILABLE_RANK,
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
                       
-  uqFullEnvironmentClass* env =  new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+  QUESO::FullEnvironment* env =  new QUESO::FullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
 
   // Compute
   compute(*env);

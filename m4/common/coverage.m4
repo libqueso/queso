@@ -9,10 +9,6 @@
 #   Provides a --enable-coverage option which checks for available
 #   gcov/lcov binaries and provides ENABLE_CODE_COVERAGE conditional.
 #
-# LAST MODIFICATION
-#
-#   $Id: coverage.m4 40881 2013-08-20 17:54:39Z damon $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2012 Roy H. Stogner <roystgnr@ices.utexas.edu>

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------bl-
 //--------------------------------------------------------------------------
-// 
+//
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
@@ -17,23 +17,21 @@
 //
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
-// Foundation, Inc. 51 Franklin Street, Fifth Floor, 
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id$
-//
-//--------------------------------------------------------------------------
 
-#ifndef __EX_TGA_VALIDATION_CYCLE_APPL_H__
-#define __EX_TGA_VALIDATION_CYCLE_APPL_H__
+#ifndef EX_TGA_VALIDATION_CYCLE_APPL_H
+#define EX_TGA_VALIDATION_CYCLE_APPL_H
 
 #include <TgaValidationCycle_likelihood.h>
 #include <TgaValidationCycle_qoi.h>
-#include <uqValidationCycle.h>
-#include <uqVectorSubset.h>
-#include <uqAsciiTable.h>
+#include <queso/ValidationCycle.h>
+#include <queso/VectorSubset.h>
+#include <queso/AsciiTable.h>
+#include <queso/GenericScalarFunction.h>
+#include <queso/UniformVectorRV.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 
@@ -42,11 +40,11 @@
 //Just declaration: actual code is below
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle);
+uqAppl_LocalComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle);
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl_UnifiedComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle);
+uqAppl_UnifiedComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle);
 
 //********************************************************
 // The driving routine "uqAppl()": called by main()
@@ -60,7 +58,7 @@ uqAppl_UnifiedComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle);
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl(const uqBaseEnvironmentClass& env)
+uqAppl(const QUESO::BaseEnvironment& env)
 {
   if (env.fullRank() == 0) {
     std::cout << "Beginning run of 'uqTgaExample' example\n"
@@ -82,7 +80,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   std::vector<std::string> paramNames(2,"");
   paramNames[0] = "A_param";
   paramNames[1] = "E_param";
-  uqVectorSpaceClass<P_V,P_M> paramSpace(env,"param_",paramNames.size(),&paramNames);
+  QUESO::VectorSpace<P_V,P_M> paramSpace(env,"param_",paramNames.size(),&paramNames);
 
   // Instantiate the parameter domain
   P_V paramMinValues    (paramSpace.zeroVector());
@@ -91,7 +89,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   P_V paramMaxValues    (paramSpace.zeroVector());
   paramMaxValues[0] = 2.80e+11;
   paramMaxValues[1] = 2.20e+05;
-  uqBoxSubsetClass<P_V,P_M> paramDomain("param_",
+  QUESO::BoxSubset<P_V,P_M> paramDomain("param_",
                                         paramSpace,
                                         paramMinValues,
                                         paramMaxValues);
@@ -99,10 +97,10 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Instantiate the qoi space
   std::vector<std::string> qoiNames(1,"");
   qoiNames[0] = "TimeFor25PercentOfMass";
-  uqVectorSpaceClass<Q_V,Q_M> qoiSpace(env,"qoi_",qoiNames.size(),&qoiNames);
+  QUESO::VectorSpace<Q_V,Q_M> qoiSpace(env,"qoi_",qoiNames.size(),&qoiNames);
 
   // Instantiate the validation cycle
-  uqValidationCycleClass<P_V,P_M,Q_V,Q_M> cycle(env,
+  QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M> cycle(env,
                                                 "", // No extra prefix
                                                 paramSpace,
                                                 qoiSpace);
@@ -119,16 +117,16 @@ uqAppl(const uqBaseEnvironmentClass& env)
   }
 
   // Inverse problem: instantiate the prior rv
-  uqUniformVectorRVClass<P_V,P_M> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
+  QUESO::UniformVectorRV<P_V,P_M> calPriorRv("cal_prior_", // Extra prefix before the default "rv_" prefix
                                              paramDomain);
 
   // Inverse problem: instantiate the likelihood function object (data + routine)
-  likelihoodRoutine_DataClass<P_V,P_M> calLikelihoodRoutine_Data(env,
+  likelihoodRoutine_Data<P_V,P_M> calLikelihoodRoutine_Data(env,
                                                                  (inputDataDir+"/scenario_5_K_min.dat").c_str(),
                                                                  (inputDataDir+"/scenario_25_K_min.dat").c_str(),
                                                                  (inputDataDir+"/scenario_50_K_min.dat").c_str());
 
-  uqGenericScalarFunctionClass<P_V,P_M> calLikelihoodFunctionObj("cal_like_",
+  QUESO::GenericScalarFunction<P_V,P_M> calLikelihoodFunctionObj("cal_like_",
                                                                  paramDomain,
                                                                  likelihoodRoutine<P_V,P_M>,
                                                                  (void *) &calLikelihoodRoutine_Data,
@@ -161,7 +159,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   double criticalMass_prediction = 0.;
   double criticalTime_prediction = 3.9;
 
-  qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> calQoiRoutine_Data;
+  qoiRoutine_Data<P_V,P_M,Q_V,Q_M> calQoiRoutine_Data;
   calQoiRoutine_Data.m_beta         = beta_prediction;
   calQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   calQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
@@ -194,12 +192,12 @@ uqAppl(const uqBaseEnvironmentClass& env)
   // Inverse problem: no need to instantiate the prior rv (= posterior rv of calibration inverse problem)
 
   // Inverse problem: instantiate the likelihood function object (data + routine)
-  likelihoodRoutine_DataClass<P_V,P_M> valLikelihoodRoutine_Data(env,
+  likelihoodRoutine_Data<P_V,P_M> valLikelihoodRoutine_Data(env,
                                                                  (inputDataDir+"/scenario_100_K_min.dat").c_str(),
                                                                  NULL,
                                                                  NULL);
 
-  uqGenericScalarFunctionClass<P_V,P_M> valLikelihoodFunctionObj("val_like_",
+  QUESO::GenericScalarFunction<P_V,P_M> valLikelihoodFunctionObj("val_like_",
                                                                  paramDomain,
                                                                  likelihoodRoutine<P_V,P_M>,
                                                                  (void *) &valLikelihoodRoutine_Data,
@@ -210,7 +208,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
                          valLikelihoodFunctionObj);
 
   // Inverse problem: solve it, that is, set 'pdf' and 'realizer' of the posterior rv
-  const uqSequentialVectorRealizerClass<P_V,P_M>* tmpRealizer = dynamic_cast< const uqSequentialVectorRealizerClass<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
+  const QUESO::SequentialVectorRealizer<P_V,P_M>* tmpRealizer = dynamic_cast< const QUESO::SequentialVectorRealizer<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
   P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
                                                                                                 &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
   cycle.valIP().solveWithBayesMetropolisHastings(NULL,
@@ -219,7 +217,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
   delete valProposalCovMatrix;
 
   // Forward problem: instantiate it (parameter rv = posterior rv of inverse problem; qoi rv is instantiated internally)
-  qoiRoutine_DataClass<P_V,P_M,Q_V,Q_M> valQoiRoutine_Data;
+  qoiRoutine_Data<P_V,P_M,Q_V,Q_M> valQoiRoutine_Data;
   valQoiRoutine_Data.m_beta         = beta_prediction;
   valQoiRoutine_Data.m_criticalMass = criticalMass_prediction;
   valQoiRoutine_Data.m_criticalTime = criticalTime_prediction;
@@ -279,7 +277,7 @@ uqAppl(const uqBaseEnvironmentClass& env)
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
+uqAppl_LocalComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
@@ -369,7 +367,7 @@ uqAppl_LocalComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
 void 
-uqAppl_UnifiedComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
+uqAppl_UnifiedComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
       cycle.valFP().computeSolutionFlag()) {
@@ -453,4 +451,4 @@ uqAppl_UnifiedComparisonStage(uqValidationCycleClass<P_V,P_M,Q_V,Q_M>& cycle)
 
   return;
 }
-#endif // __EX_TGA_VALIDATION_CYCLE_APPL_H__
+#endif // EX_TGA_VALIDATION_CYCLE_APPL_H

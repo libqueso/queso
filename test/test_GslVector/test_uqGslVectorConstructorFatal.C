@@ -1,25 +1,18 @@
-#include <uqGslVector.h>
-
-#ifdef QUESO_HAS_MPI
+#include <queso/GslVector.h>
 #include <mpi.h>
-#endif
-
-using namespace std;
 
 int main(int argc, char **argv) {
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc, &argv);
-#endif
 
-  uqGslVectorClass vector;
+  try {
+    QUESO::GslVector vector;
+  }
+  catch (...) {
+    std::cerr << "Caught QUESO exception!" << std::endl;
+    return 0;
+  }
+  std::cerr << "Did not catch QUESO exception!" << std::endl;
 
-#ifdef QUESO_HAS_MPI
   MPI_Finalize();
-#endif
-
-  /*
-   * This code should never get here. If it does, the bash script that wraps
-   * around it negates the return value, making this a failure
-   */
-  return 0;
+  return 1;
 }

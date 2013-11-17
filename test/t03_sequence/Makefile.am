@@ -1,14 +1,11 @@
-if SVN_CHECKOUT
+if GIT_CLONE
 BUILT_SOURCES = .license.stamp
 endif
 
-AM_CPPFLAGS  = -I. \
-	-I$(top_srcdir)/src/core/inc \
-	-I$(top_srcdir)/src/misc/inc \
-	-I$(top_srcdir)/src/basic/inc \
-	-I$(top_srcdir)/src/stats/inc \
-	-I$(top_srcdir)/src/gp/inc \
-         $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
+AM_CPPFLAGS =
+AM_CPPFLAGS += -I.
+AM_CPPFLAGS += -I$(top_builddir)/inc
+AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 
 LIBS  = -L$(top_builddir)/src/ -lqueso
 
@@ -44,7 +41,7 @@ if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif
 
-if SVN_CHECKOUT
+if GIT_CLONE
 .license.stamp: $(top_srcdir)/LICENSE
 	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(srcdir)/*.C $(srcdir)/*.h
 	echo 'updated source license headers' >$@

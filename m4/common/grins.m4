@@ -13,10 +13,6 @@
 #   Also defines automake conditional GRINS_ENABLED.  Assumes package
 #   is optional unless overridden with $2=yes.
 #
-# LAST MODIFICATION
-#
-#   $Id: grins.m4 -1   $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2012 Paul T. Bauman <pbauman@ices.utexas.edu>

@@ -13,10 +13,6 @@
 #   Also defines automake conditional VEXCL_ENABLED.  Assumes package
 #   is optional unless overridden with $2=yes.
 #
-# LAST MODIFICATION
-#
-#   $Id: vexcl.m4 -1   $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2013 Roy H. Stogner <roystgnr@ices.utexas.edu>

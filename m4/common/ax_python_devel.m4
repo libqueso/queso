@@ -31,10 +31,6 @@
 #   If you need to use this macro for an older Python version, please
 #   contact the authors. We're always open for feedback.
 #
-# LAST MODIFICATION
-#
-#   $Id: ax_python_devel.m4 22113 2011-06-30 22:42:21Z karl $
-#
 # LICENSE
 #
 #   Copyright (c) 2011 Karl W. Schulz <karl@ices.utexas.edu>

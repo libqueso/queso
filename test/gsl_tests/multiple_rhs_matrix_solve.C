@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------bl-
 //--------------------------------------------------------------------------
-// 
+//
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
@@ -17,40 +17,28 @@
 //
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
-// Foundation, Inc. 51 Franklin Street, Fifth Floor, 
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
-// 
-// $Id$
-//
-//--------------------------------------------------------------------------
 
 #include <multiple_rhs_matrix_solve.h>
-#include <uqGslMatrix.h>
-#include <uqVectorRV.h>
+#include <queso/GslMatrix.h>
+#include <queso/VectorRV.h>
 
 int main(int argc, char* argv[]) 
 {
   int return_flag = 0;
 
    // Initialize environment
-#ifdef QUESO_HAS_MPI
   MPI_Init(&argc,&argv);
-#endif
-  uqFullEnvironmentClass* env =
-#ifdef QUESO_HAS_MPI
-    new uqFullEnvironmentClass(MPI_COMM_WORLD,"input","",NULL);
-#else
-    new uqFullEnvironmentClass(0,"input","",NULL);
-#endif
+
+  QUESO::FullEnvironment* env = new QUESO::FullEnvironment(MPI_COMM_WORLD,"input","",NULL);
 
   return_flag = actualChecking(env);
 
   delete env;
-#ifdef QUESO_HAS_MPI
   MPI_Finalize();
-#endif
 
   // Fin.
   return return_flag;
@@ -59,23 +47,23 @@ int main(int argc, char* argv[])
 /* Separated this out into a function because we want
    the destructor for paramSpace to be called before
    we delete env in main. */
-int actualChecking(const uqFullEnvironmentClass* env)
+int actualChecking(const QUESO::FullEnvironment* env)
 {
   int return_flag = 0;
 
   const double fp_tol = 1.0e-14;
 
   // Instantiate the parameter space
-  uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass>
+  QUESO::VectorSpace<QUESO::GslVector,QUESO::GslMatrix>
     paramSpace( (*env), "param_", 2, NULL);
 
   // Populate Matrix.
-  uqGslMatrixClass* Matrix = paramSpace.newMatrix();
+  QUESO::GslMatrix* Matrix = paramSpace.newMatrix();
   (*Matrix)(0,0) = 4.; (*Matrix)(0,1) = 3.;
   (*Matrix)(1,0) = 5.; (*Matrix)(1,1) = 7.;
 
   // Conduct test.
-  uqGslMatrixClass Result( (*Matrix) );
+  QUESO::GslMatrix Result( (*Matrix) );
 
   Matrix->invertMultiply( (*Matrix), Result );
 

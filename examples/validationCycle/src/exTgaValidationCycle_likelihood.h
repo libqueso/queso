@@ -22,19 +22,13 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *--------------------------------------------------------------------------
- *
- * $Id$
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H__
-#define __EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H__
+#ifndef EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H
+#define EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H
 
-#include <uqEnvironment.h>
-#include <uqDefines.h>
+#include <queso/Environment.h>
+#include <queso/Defines.h>
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_odeiv.h>
 #include <cmath>
@@ -62,13 +56,13 @@ int func(double t, const double Mass[], double f[], void *info)
 //********************************************************
 template<class P_V, class P_M>
 struct
-likelihoodRoutine_DataClass
+likelihoodRoutine_Data
 {
-  likelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env,
+  likelihoodRoutine_Data(const QUESO::BaseEnvironment& env,
                               const char* inpName1,
                               const char* inpName2,
                               const char* inpName3);
- ~likelihoodRoutine_DataClass();
+ ~likelihoodRoutine_Data();
 
   double              m_beta1;
   double              m_variance1;
@@ -85,12 +79,12 @@ likelihoodRoutine_DataClass
   std::vector<double> m_Te3; // temperatures
   std::vector<double> m_Me3; // relative masses
 
-  const uqBaseEnvironmentClass* m_env;
+  const QUESO::BaseEnvironment* m_env;
 };
 
 template<class P_V, class P_M>
-likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
-  const uqBaseEnvironmentClass& env,
+likelihoodRoutine_Data<P_V,P_M>::likelihoodRoutine_Data(
+  const QUESO::BaseEnvironment& env,
   const char* inpName1,
   const char* inpName2,
   const char* inpName3)
@@ -221,7 +215,7 @@ likelihoodRoutine_DataClass<P_V,P_M>::likelihoodRoutine_DataClass(
 }
 
 template<class P_V, class P_M>
-likelihoodRoutine_DataClass<P_V,P_M>::~likelihoodRoutine_DataClass()
+likelihoodRoutine_Data<P_V,P_M>::~likelihoodRoutine_Data()
 {
 }
 
@@ -240,20 +234,20 @@ likelihoodRoutine(
 {
   double resultValue = 0.;
 
-  const uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_env);
+  const QUESO::BaseEnvironment& env = *(((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_env);
 
   env.subComm().Barrier();
   //env.syncPrintDebugMsg("Entering likelihoodRoutine()",1,env.fullComm());
 
   // Compute likelihood for scenario 1
-  double betaTest = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta1;
+  double betaTest = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_beta1;
   if (betaTest) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta1;
-    double variance                = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance1;
-    const std::vector<double>& Te  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te1;
-    const std::vector<double>& Me  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me1;
+    double beta                    = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_beta1;
+    double variance                = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_variance1;
+    const std::vector<double>& Te  = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_Te1;
+    const std::vector<double>& Me  = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_Me1;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -309,14 +303,14 @@ likelihoodRoutine(
   }
 
   // Compute likelihood for scenario 2
-  betaTest = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta2;
+  betaTest = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_beta2;
   if (betaTest > 0.) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta2;
-    double variance                = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance2;
-    const std::vector<double>& Te  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te2;
-    const std::vector<double>& Me  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me2;
+    double beta                    = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_beta2;
+    double variance                = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_variance2;
+    const std::vector<double>& Te  = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_Te2;
+    const std::vector<double>& Me  = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_Me2;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -372,14 +366,14 @@ likelihoodRoutine(
   }
 
   // Compute likelihood for scenario 3
-  betaTest = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta3;
+  betaTest = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_beta3;
   if (betaTest > 0.) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_beta3;
-    double variance                = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_variance3;
-    const std::vector<double>& Te  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Te3;
-    const std::vector<double>& Me  = ((likelihoodRoutine_DataClass<P_V,P_M> *) functionDataPtr)->m_Me3;
+    double beta                    = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_beta3;
+    double variance                = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_variance3;
+    const std::vector<double>& Te  = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_Te3;
+    const std::vector<double>& Me  = ((likelihoodRoutine_Data<P_V,P_M> *) functionDataPtr)->m_Me3;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -444,4 +438,4 @@ likelihoodRoutine(
 #endif
 }
 
-#endif // __EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H__
+#endif // EX_TGA_VALIDATION_CYCLE_LIKELIHOOD_H

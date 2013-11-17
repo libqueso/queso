@@ -23,8 +23,6 @@
  *
  *--------------------------------------------------------------------------
  *
- * $Id: exInfoTheory_gsl.C 14596 2011-02-03 15:10:42Z gabriel $
- *
  * Brief description of this file: 
  * 
  * This is an example of how to use the information theoretic measures such as
@@ -37,7 +35,7 @@
  *-------------------------------------------------------------------------- */
 
 #include <exInfoTheory_appl.h>
-#include <uqGslMatrix.h>
+#include <queso/GslMatrix.h>
 
 int main(int argc, char* argv[])
 {
@@ -53,15 +51,15 @@ int main(int argc, char* argv[])
                       UQ_UNAVAILABLE_RANK,
                       "main()",
                       "input file must be specified in command line as argv[1], just after executable argv[0]");
-  uqFullEnvironmentClass* env = new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+  uqFullEnvironment* env = new uqFullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
 
   //************************************************
   // Call application
   //************************************************
-  uqAppl<uqGslVectorClass, // type for parameter vectors
-         uqGslMatrixClass, // type for parameter matrices
-         uqGslVectorClass, // type for qoi vectors
-         uqGslMatrixClass  // type for qoi matrices
+  uqAppl<uqGslVector, // type for parameter vectors
+         uqGslMatrix, // type for parameter matrices
+         uqGslVector, // type for qoi vectors
+         uqGslMatrix  // type for qoi matrices
         >(*env);
 
   //************************************************

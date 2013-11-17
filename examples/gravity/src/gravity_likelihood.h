@@ -22,7 +22,6 @@
  *
  *-------------------------------------------------------------------
  *
- * $Id$
  */
  /*------------------------------------------------------------------
  * Brief description of this file: 
@@ -33,27 +32,27 @@
 #ifndef __GRAVITY_LIKELIHOOD_H__
 #define __GRAVITY_LIKELIHOOD_H__
 
-#include <uqGslMatrix.h>
+#include <queso/GslMatrix.h>
 
-struct likelihoodRoutine_DataClass // user defined class
+struct likelihoodRoutine_Data // user defined class
 {
-  likelihoodRoutine_DataClass(const uqBaseEnvironmentClass& env);
- ~likelihoodRoutine_DataClass();
+  likelihoodRoutine_Data(const QUESO::BaseEnvironment& env);
+ ~likelihoodRoutine_Data();
 
   std::vector<double> m_heights; // heights
   std::vector<double> m_times;   // times
   std::vector<double> m_stdDevs; // account for uncertainties in 
 				 // time measurement: sigmas
 
-  const uqBaseEnvironmentClass* m_env;
+  const QUESO::BaseEnvironment* m_env;
 };
 
 double likelihoodRoutine( // user defined routine
-  const uqGslVectorClass& paramValues,
-  const uqGslVectorClass* paramDirection,
+  const QUESO::GslVector& paramValues,
+  const QUESO::GslVector* paramDirection,
   const void*             functionDataPtr,
-  uqGslVectorClass*       gradVector,
-  uqGslMatrixClass*       hessianMatrix,
-  uqGslVectorClass*       hessianEffect);
+  QUESO::GslVector*       gradVector,
+  QUESO::GslMatrix*       hessianMatrix,
+  QUESO::GslVector*       hessianEffect);
 
 #endif

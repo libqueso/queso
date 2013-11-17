@@ -13,10 +13,6 @@
 #   #defines HAVE_ABLATION.  When ACTION-IF-NOT-FOUND is not specified,
 #   the default behavior is for configure to fail.
 #
-# LAST MODIFICATION
-#
-#   $Id: pecos_ablation.m4 27847 2012-02-09 23:39:38Z karl $
-#
 # COPYLEFT
 #
 #   Copyright (c) 2010 Karl W. Schulz <karl@ices.utexas.edu>

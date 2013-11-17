@@ -22,21 +22,15 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *--------------------------------------------------------------------------
- *
- * $Id$
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
 #include <tga2_func.h>
 #include <tga2_likelihood.h>
-#include <uqEnvironment.h>
+#include <queso/Environment.h>
 #include <gsl/gsl_odeiv.h>
 
-likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(
-  const uqBaseEnvironmentClass& env,
+likelihoodRoutine_Data::likelihoodRoutine_Data(
+  const QUESO::BaseEnvironment& env,
   const char* inpName1,
   const char* inpName2,
   const char* inpName3)
@@ -164,7 +158,7 @@ likelihoodRoutine_DataClass::likelihoodRoutine_DataClass(
   }
 }
 
-likelihoodRoutine_DataClass::~likelihoodRoutine_DataClass()
+likelihoodRoutine_Data::~likelihoodRoutine_Data()
 {
 }
 
@@ -173,16 +167,16 @@ likelihoodRoutine_DataClass::~likelihoodRoutine_DataClass()
 //********************************************************
 double
 likelihoodRoutine(
-  const uqGslVectorClass& paramValues,
-  const uqGslVectorClass* paramDirection,
+  const QUESO::GslVector& paramValues,
+  const QUESO::GslVector* paramDirection,
   const void*             functionDataPtr,
-  uqGslVectorClass*       gradVector,
-  uqGslMatrixClass*       hessianMatrix,
-  uqGslVectorClass*       hessianEffect)
+  QUESO::GslVector*       gradVector,
+  QUESO::GslMatrix*       hessianMatrix,
+  QUESO::GslVector*       hessianEffect)
 {
   double resultValue = 0.;
 
-  const uqBaseEnvironmentClass& env = *(((likelihoodRoutine_DataClass*) functionDataPtr)->m_env);
+  const QUESO::BaseEnvironment& env = *(((likelihoodRoutine_Data*) functionDataPtr)->m_env);
 
   if (paramDirection  &&
       functionDataPtr && 
@@ -196,14 +190,14 @@ likelihoodRoutine(
   //env.syncPrintDebugMsg("Entering likelihoodRoutine()",1,env.fullComm());
 
   // Compute likelihood for scenario 1
-  double betaTest = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_beta1;
+  double betaTest = ((likelihoodRoutine_Data*) functionDataPtr)->m_beta1;
   if (betaTest) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_beta1;
-    double variance                = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_variance1;
-    const std::vector<double>& Te  = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_Te1;
-    const std::vector<double>& Me  = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_Me1;
+    double beta                    = ((likelihoodRoutine_Data*) functionDataPtr)->m_beta1;
+    double variance                = ((likelihoodRoutine_Data*) functionDataPtr)->m_variance1;
+    const std::vector<double>& Te  = ((likelihoodRoutine_Data*) functionDataPtr)->m_Te1;
+    const std::vector<double>& Me  = ((likelihoodRoutine_Data*) functionDataPtr)->m_Me1;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -259,14 +253,14 @@ likelihoodRoutine(
   }
 
   // Compute likelihood for scenario 2
-  betaTest = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_beta2;
+  betaTest = ((likelihoodRoutine_Data*) functionDataPtr)->m_beta2;
   if (betaTest > 0.) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_beta2;
-    double variance                = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_variance2;
-    const std::vector<double>& Te  = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_Te2;
-    const std::vector<double>& Me  = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_Me2;
+    double beta                    = ((likelihoodRoutine_Data*) functionDataPtr)->m_beta2;
+    double variance                = ((likelihoodRoutine_Data*) functionDataPtr)->m_variance2;
+    const std::vector<double>& Te  = ((likelihoodRoutine_Data*) functionDataPtr)->m_Te2;
+    const std::vector<double>& Me  = ((likelihoodRoutine_Data*) functionDataPtr)->m_Me2;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};
@@ -322,14 +316,14 @@ likelihoodRoutine(
   }
 
   // Compute likelihood for scenario 3
-  betaTest = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_beta3;
+  betaTest = ((likelihoodRoutine_Data*) functionDataPtr)->m_beta3;
   if (betaTest > 0.) {
     double A                       = paramValues[0];
     double E                       = paramValues[1];
-    double beta                    = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_beta3;
-    double variance                = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_variance3;
-    const std::vector<double>& Te  = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_Te3;
-    const std::vector<double>& Me  = ((likelihoodRoutine_DataClass*) functionDataPtr)->m_Me3;
+    double beta                    = ((likelihoodRoutine_Data*) functionDataPtr)->m_beta3;
+    double variance                = ((likelihoodRoutine_Data*) functionDataPtr)->m_variance3;
+    const std::vector<double>& Te  = ((likelihoodRoutine_Data*) functionDataPtr)->m_Te3;
+    const std::vector<double>& Me  = ((likelihoodRoutine_Data*) functionDataPtr)->m_Me3;
     std::vector<double> Mt(Me.size(),0.);
 
     double params[]={A,E,beta};

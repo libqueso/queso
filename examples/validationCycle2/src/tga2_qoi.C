@@ -22,12 +22,6 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *--------------------------------------------------------------------------
- *
- * $Id$
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
 #include <tga2_func.h>
@@ -35,13 +29,13 @@
 #include <gsl/gsl_odeiv.h>
 
 // The actual (user defined) qoi routine
-void qoiRoutine(const uqGslVectorClass&                    paramValues,
-                const uqGslVectorClass*                    paramDirection,
+void qoiRoutine(const QUESO::GslVector&                    paramValues,
+                const QUESO::GslVector*                    paramDirection,
                 const void*                                functionDataPtr,
-                      uqGslVectorClass&                    qoiValues,
-                      uqDistArrayClass<uqGslVectorClass*>* gradVectors,
-                      uqDistArrayClass<uqGslMatrixClass*>* hessianMatrices,
-                      uqDistArrayClass<uqGslVectorClass*>* hessianEffects)
+                      QUESO::GslVector&                    qoiValues,
+                      QUESO::DistArray<QUESO::GslVector*>* gradVectors,
+                      QUESO::DistArray<QUESO::GslMatrix*>* hessianMatrices,
+                      QUESO::DistArray<QUESO::GslVector*>* hessianEffects)
 {
   if (paramDirection  &&
       functionDataPtr && 
@@ -53,9 +47,9 @@ void qoiRoutine(const uqGslVectorClass&                    paramValues,
 
   double A             = paramValues[0];
   double E             = paramValues[1];
-  double beta          = ((qoiRoutine_DataClass *) functionDataPtr)->m_beta;
-  double criticalMass  = ((qoiRoutine_DataClass *) functionDataPtr)->m_criticalMass;
-  double criticalTime  = ((qoiRoutine_DataClass *) functionDataPtr)->m_criticalTime;
+  double beta          = ((qoiRoutine_Data *) functionDataPtr)->m_beta;
+  double criticalMass  = ((qoiRoutine_Data *) functionDataPtr)->m_criticalMass;
+  double criticalTime  = ((qoiRoutine_Data *) functionDataPtr)->m_criticalTime;
 
   double params[]={A,E,beta};
       	

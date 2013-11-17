@@ -21,8 +21,6 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *-------------------------------------------------------------------
- *
- * $Id$
  */
  /*------------------------------------------------------------------
  * Brief description of this file: 
@@ -52,8 +50,8 @@ int main(int argc, char* argv[])
 {
   // Initialize QUESO environment
   MPI_Init(&argc,&argv);
-  uqFullEnvironmentClass* env =
-    new uqFullEnvironmentClass(MPI_COMM_WORLD,argv[1],"",NULL);
+  QUESO::FullEnvironment* env =
+    new QUESO::FullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
 
   // Call application
   computeGravityAndTraveledDistance(*env);

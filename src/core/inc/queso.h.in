@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------bl-
 //--------------------------------------------------------------------------
-// 
+//
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
@@ -17,15 +17,13 @@
 //
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
-// Foundation, Inc. 51 Franklin Street, Fifth Floor, 
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
 //
 // grvy.h: Basic API Definitions
 //
-// $Id: grvy.h.in 14204 2010-09-26 17:58:18Z karl $
-//--------------------------------------------------------------------------
 //--------------------------------------------------------------------------
 
 #ifndef QUESO_H_
@@ -56,5 +54,5 @@
 #define QUESO_GRVY_DIR      "@GRVY_PREFIX@"
 #define QUESO_GLPK_DIR      "@GLPK_PREFIX@"
 #define QUESO_HDF5_DIR      "@HDF5_PREFIX@"
-  
+
 #endif

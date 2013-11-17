@@ -22,19 +22,13 @@
  * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
  *
  *--------------------------------------------------------------------------
- *
- * $Id$
- *
- * Brief description of this file: 
- * 
- *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
-#ifndef __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
-#define __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
+#ifndef EX_STATISTICAL_FORWARD_PROBLEM_QOI_H
+#define EX_STATISTICAL_FORWARD_PROBLEM_QOI_H
 
-#include <uqEnvironment.h>
-#include <uqDistArray.h>
+#include <queso/Environment.h>
+#include <queso/DistArray.h>
 
 //********************************************************
 // The qoi routine: provided by user and called by QUESO
@@ -56,9 +50,9 @@ qoiRoutine(
   const P_V*                    paramDirection,
   const void*                   functionDataPtr,
         Q_V&                    qoiValues,
-        uqDistArrayClass<P_V*>* gradVectors,
-        uqDistArrayClass<P_M*>* hessianMatrices,
-        uqDistArrayClass<P_V*>* hessianEffects)
+        QUESO::DistArray<P_V*>* gradVectors,
+        QUESO::DistArray<P_M*>* hessianMatrices,
+        QUESO::DistArray<P_V*>* hessianEffects)
 {
   //double a1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1MultiplicativeFactor;
   //double e1 = ((qoiRoutine_DataType<P_V,P_M,Q_V,Q_M> *) functionDataPtr)->p1ExponentFactor;
@@ -84,4 +78,4 @@ qoiRoutine(
   return;
 }
 
-#endif // __EX_STATISTICAL_FORWARD_PROBLEM_QOI_H__
+#endif // EX_STATISTICAL_FORWARD_PROBLEM_QOI_H
