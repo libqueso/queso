@@ -106,7 +106,7 @@ clf;
 
 
 % CDF plots ---------------------------------------------------------------
-fprintf(1,' Plotting KDE - raw  <press any key>\n');
+fprintf(1,' Plotting CDF - raw  <press any key>\n');
 [f,xi] = ksdensity(ip_mh_rawChain_unified(:,1),'function','cdf');
 [f2,x2] = ksdensity(ip_mh_rawChain_unified(:,2),'function','cdf');
 plot(xi,f,'b',x2,f2,'g','linewidth',3);
@@ -121,7 +121,7 @@ pause;
 clf;
 
 %FILTERED
-fprintf(1,' Plotting KDE - filtered  <press any key>\n');
+fprintf(1,' Plotting KCDF - filtered  <press any key>\n');
 [f,xi] = ksdensity(ip_mh_filtChain_unified(:,1),'function','cdf');
 [f2,x2] = ksdensity(ip_mh_filtChain_unified(:,2),'function','cdf');
 plot(xi,f,'b',x2,f2,'g','linewidth',3);

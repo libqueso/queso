@@ -82,6 +82,7 @@ exSimpleStatisticalInverseProblem_gsldir = $(prefix)/examples/simpleStatisticalI
 
 exSimpleStatisticalInverseProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/example.inp
 exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/simple_ip_plots.m
+exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/histyy.m
 exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/src/Makefile_sip_example_margarida 
 
 exSimpleStatisticalInverseProblem_gsl_PROGRAMS = exSimpleStatisticalInverseProblem_gsl
@@ -105,28 +106,29 @@ dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseP
 		
 ###################################
 # simpleStatisticalForwardProblem #
-#############################
-# exSimpleStatisticalForwardProblem_gsldir = $(prefix)/examples/simpleStatisticalForwardProblem
-#
-# exSimpleStatisticalForwardProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalForwardProblem/tests/test_2013_08_27/simple_sfp_example.inp
-# exSimpleStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/Makefile_sfp_example_margarida
-#
-# exSimpleStatisticalForwardProblem_gsl_PROGRAMS = exSimpleStatisticalForwardProblem_gsl
-#
-# exSimpleStatisticalForwardProblem_gsl_SOURCES = $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_main.C
-# exSimpleStatisticalForwardProblem_gsl_SOURCES += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.C
-# exSimpleStatisticalForwardProblem_gsl_SOURCES += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.C
-#
-# exSimpleStatisticalForwardProblem_gsl_HEADERS = $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.h
-# exSimpleStatisticalForwardProblem_gsl_HEADERS += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.h
-#
-# exSimpleStatisticalForwardProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
-#
-# exSimpleStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalForwardProblem/src $(QUESO_CPPFLAGS)
-#
-# dist_exSimpleStatisticalForwardProblem_gsl_DATA = ${exSimpleStatisticalForwardProblem_gsl_DATA} \
-# 																						${exSimpleStatisticalForwardProblem_gsl_HEADERS} \
-# 																						${exSimpleStatisticalForwardProblem_gsl_SOURCES}
+###################################
+exSimpleStatisticalForwardProblem_gsldir = $(prefix)/examples/simpleStatisticalForwardProblem
+
+exSimpleStatisticalForwardProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalForwardProblem/tests/test_2013_08_27/simple_sfp_example.inp
+exSimpleStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalForwardProblem/tests/test_2013_08_27/simple_fp_plots.m
+exSimpleStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/Makefile_sfp_example_margarida
+
+exSimpleStatisticalForwardProblem_gsl_PROGRAMS = exSimpleStatisticalForwardProblem_gsl
+
+exSimpleStatisticalForwardProblem_gsl_SOURCES = $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_main.C
+exSimpleStatisticalForwardProblem_gsl_SOURCES += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.C
+exSimpleStatisticalForwardProblem_gsl_SOURCES += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.C
+
+exSimpleStatisticalForwardProblem_gsl_HEADERS = $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_qoi.h
+exSimpleStatisticalForwardProblem_gsl_HEADERS += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/simple_sfp_example_compute.h
+
+exSimpleStatisticalForwardProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
+
+exSimpleStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalForwardProblem/src $(QUESO_CPPFLAGS)
+
+dist_exSimpleStatisticalForwardProblem_gsl_DATA = ${exSimpleStatisticalForwardProblem_gsl_DATA}
+dist_exSimpleStatisticalForwardProblem_gsl_DATA += ${exSimpleStatisticalForwardProblem_gsl_HEADERS}
+dist_exSimpleStatisticalForwardProblem_gsl_DATA += ${exSimpleStatisticalForwardProblem_gsl_SOURCES}
 																						
 ####################################
 # statisticalForwardProblemExample # 
