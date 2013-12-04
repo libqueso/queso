@@ -296,7 +296,38 @@ dist_gravity_gsl_DATA =
 dist_gravity_gsl_DATA += $(gravity_gsl_DATA)
 dist_gravity_gsl_DATA += ${gravity_gsl_HEADERS}
 dist_gravity_gsl_DATA += ${gravity_gsl_SOURCES}
-										 
+					
+####################
+# bimodal          #
+####################
+bimodal_gsldir = $(prefix)/examples/bimodal
+
+bimodal_gsl_DATA = $(top_srcdir)/examples/bimodal/tests/test_2013_12_02/bimodal_1chain.inp
+bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/matlab/plot_all.m
+bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/matlab/plot_likelihood.m
+bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/matlab/plot_likelihood_normalized_taus.m
+bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/matlab/plot_likelihood_unnormalized_taus.m
+bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/src/Makefile_bimodal_violeta
+
+bimodal_gsl_PROGRAMS = bimodal_gsl
+
+bimodal_gsl_SOURCES = $(top_srcdir)/examples/bimodal/src/bimodal_main.C
+bimodal_gsl_SOURCES += $(top_srcdir)/examples/bimodal/src/bimodal_compute.C
+bimodal_gsl_SOURCES += $(top_srcdir)/examples/bimodal/src/bimodal_likelihood.C
+
+bimodal_gsl_HEADERS = $(top_srcdir)/examples/bimodal/src/bimodal_compute.h
+bimodal_gsl_HEADERS += $(top_srcdir)/examples/bimodal/src/bimodal_likelihood.h
+
+bimodal_gsl_LDADD = $(top_builddir)/src/libqueso.la
+
+bimodal_gsl_CPPFLAGS = -I$(top_srcdir)/examples/bimodal/src $(QUESO_CPPFLAGS)
+
+dist_bimodal_gsl_DATA =
+dist_bimodal_gsl_DATA += $(bimodal_gsl_DATA)
+dist_bimodal_gsl_DATA += ${bimodal_gsl_HEADERS}
+dist_bimodal_gsl_DATA += ${bimodal_gsl_SOURCES}
+
+####################										 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif
