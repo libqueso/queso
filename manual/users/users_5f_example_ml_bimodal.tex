@@ -1,7 +1,7 @@
-\section{\texttt{bimodal}}\label{sec:bimodal_bimodal}
+\section{\texttt{bimodal}}\label{sec:example_bimodal}
 
 
-This example replicates the problem in ``Section 4.1 A 1D Problem'' of~\cite{CheungPrudencio2012}: it presents how to use QUESO and the multivevel method for sampling from a posterior PDF composed of the sum of two Gaussian distributions. 
+This example replicates the problem in ``Section 4.1 A 1D Problem'' of~\cite{CheungPrudencio2012}: it presents how to use QUESO and the Multilevel method for sampling from a posterior PDF composed of the sum of two Gaussian distributions. 
 
 Let's define $D=[-250,250]$ and the three distributions $\pi_\prior: D \rightarrow \mathbb{R}_+ $, $f_1: \mathbb{R} \rightarrow \mathbb{R}_+ $ and $f_2: \mathbb{R} \rightarrow \mathbb{R}_+$ by:
 \begin{equation}
@@ -24,7 +24,7 @@ where $f(\theta)= \dfrac{1}{2} f_1(\theta) + \dfrac{1}{2} f_2(\theta)$ is the li
 
 \begin{figure}[htpb]
 \centering
-\includegraphics[scale=0.3]{figs/bimodal_likelihood.png}
+\includegraphics[scale=0.35]{figs/bimodal_likelihood.png}
 \vspace{-10pt}
 \caption{Likelihood function given by $f=f_1/2+ f_2/2$, where $f_1$ and $f_2$ are defined in Equation \eqref{eq:bimodal_functions}.}
 \label{fig:bimodal:likelihood}
@@ -166,7 +166,7 @@ Figure \ref{fig:bimodal_autocorr} presents the autocorrelation of the parameter 
 
 \begin{figure}[htpb]
 \centering
-\includegraphics[scale=0.25]{figs/bimodal_autocorrelation_rawchain}
+\includegraphics[scale=0.3]{figs/bimodal_autocorrelation_rawchain}
 \vspace{-10pt}
 \caption{Autocorrelation plots for $\theta$, all four levels.}
 \label{fig:bimodal_autocorr}

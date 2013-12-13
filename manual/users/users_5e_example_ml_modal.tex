@@ -2,7 +2,7 @@
 
 
 This example presents a combination of two statistical inverse problems in one. 
-It presents the capability of the Multilevel method in sampling from a target distribution that has either one or two models. The random variable of interest has three parameters, i.e., $\bv{\theta}=(\theta_1,\theta_2, \sigma^2) \in \mathbb{R}^3$, where the third parameter may be seen as variation.
+It presents the capability of the Multilevel method in sampling from a target distribution that has either one or two modes (distinct peaks). The random variable of interest has three parameters, i.e., $\bv{\theta}=(\theta_1,\theta_2, \sigma^2) \in \mathbb{R}^3$, where the third parameter may be seen as variation.
 
 The example also it gives the user the opportunity to chose either one single type of prior distribution, uniform, for the three components of the random variable, or two different priors: a uniform and a beta distribution.
 
@@ -29,12 +29,12 @@ where \verb+<num_of_nodes>+ is either 1 or 2.
 \subsection{One-mode distribution}
 
 In this case, the target distribution is assumed to have only one mode.
-Suppose also that the random variable $\bv{\theta}$  can either have a uniform distribution for all its components, i.e.:
+Suppose also that the random variable $\bv{\theta}$  can either have a uniform prior distribution for all its components, i.e.:
 $$
 % \pi_{\text{prior}}=\mathcal{U}([0,3],[0,3],[0,0.3]).
 \pi_{\text{prior}}=\mathcal{U}([0,3]) \times \mathcal{U}([0,3]) \times \mathcal{U}([0,0.3]).
 $$
-or, the prior distribution is defined as a combination of uniform prior for the $\theta_1$, with a beta prior for $\theta_2$:
+or, the prior distribution is defined as a combination of uniform prior for $\theta_1$ and $\theta_2$, with a beta prior for $\sigma^2$:
 $$
 % \pi_{\text{prior}}=\mathcal{U}([0,3],[0,3],[0,0.3]).
 \pi_{\text{prior}}=\mathcal{U}([0,3]) \times \mathcal{U}([0,3]) \times \mathcal{B}(\alpha,\beta), \quad \text{with} \quad \alpha=3 \quad\text{and}\quad \beta=0.09709133373799.
@@ -92,7 +92,7 @@ $$
 The likelihood function is defined as follows:
 \begin{equation}
 \begin{split}\small
-f(\D|\bv{\theta}, M_j)=  -5 \log\left(2 \pi \sigma^2\right)- \dfrac{1}{2\sigma^2} &\Bigg[ 
+f(\D|\bv{\theta})=  -5 \log\left(2 \pi \sigma^2\right)- \dfrac{1}{2\sigma^2} &\Bigg[ 
   \left(10 \sqrt{10 \theta_1+20 \theta_2+10 \sqrt{\theta_1^2+4 \theta_2^2}}-72.0470\right)^2+\\
 &+\left(10 \sqrt{10 \theta_1+20 \theta_2+10 \sqrt{\theta_1^2+4 \theta_2^2}}-71.8995\right)^2+\\
 &+\left(10 \sqrt{10 \theta_1+20 \theta_2+10 \sqrt{\theta_1^2+4 \theta_2^2}}-72.2801\right)^2+\\
@@ -111,7 +111,7 @@ f(\D|\bv{\theta}, M_j)=  -5 \log\left(2 \pi \sigma^2\right)- \dfrac{1}{2\sigma^2
 
 \subsubsection{Running the Two-Mode Example}
  
-To run the executable provided considering a \underline{one-mode} distribution, enter the following commands:
+To run the executable provided considering a \underline{two-modes} distribution, enter the following commands:
 \begin{lstlisting}[label={},caption={Running the example with a two-mode distribution.}]
 $ cd $HOME/LIBRARIES/QUESO-0.50.0/
 $ cd examples/modal
@@ -228,7 +228,7 @@ for details of how the figures have been generated.
 
 \subsubsection{Scatter Plots}
 
-The code presented in Listing \ref{matlab:modal_scatter} uses Matlab function \verb+plotmatrixr+ to generate Figures \ref{fig:modal_scatter_1mode} and \ref{fig:modal_scatter_2modes}
+The code presented in Listing \ref{matlab:modal_scatter} uses Matlab function \verb+plotmatrix+ to generate Figures \ref{fig:modal_scatter_1mode} and \ref{fig:modal_scatter_2modes}
 which presents the scatter plots and histograms of the parameters $\theta_1$ and $\theta_2$, based on the generated raw chains. 
 
 
