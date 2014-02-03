@@ -299,7 +299,7 @@ private:
 
   //! Plans for number of linked chains for each node so that all nodes generate the closest possible to the same number of positions (Step 07 from ML algorithm).
   /*! This method is responsible for the Step 07 in the ML algorithm implemented/described in the method MLSampling<P_V,P_M>::generateSequence.*/ 
-  /*! @param[in] useBalancedChains,indexOfFirstWeight,indexOfLastWeight, unifiedIndexCountersAtProc0Only,currOptions,prevChain
+  /*! @param[in] useBalancedChains,indexOfFirstWeight,indexOfLastWeight, unifiedIndexCountersAtProc0Only,currOptions,prevChain,prevExponent,currExponent,prevLogLikelihoodValues,prevLogTargetValues
       @param[in,out] exchangeStdVec
       @param[out] unbalancedLinkControl, balancedLinkControl*/
   void   generateSequence_Step07_inter0(bool                                            useBalancedChains,                  // input
@@ -309,6 +309,10 @@ private:
                                         UnbalancedLinkedChainsPerNodeStruct&          unbalancedLinkControl,              // (possible) output
                                         const MLSamplingLevelOptions*            currOptions,                        // input
                                         const SequenceOfVectors<P_V,P_M>&        prevChain,                          // input
+					double                                   prevExponent,                       // input
+					double                                   currExponent,                       // input
+					const ScalarSequence<double>&            prevLogLikelihoodValues,            // input
+					const ScalarSequence<double>&            prevLogTargetValues,                // input
                                         std::vector<ExchangeInfoStruct>&              exchangeStdVec,                     // (possible) input/output
                                         BalancedLinkedChainsPerNodeStruct<P_V>&       balancedLinkControl);               // (possible) output
 
@@ -325,6 +329,10 @@ private:
      @param[in,out]  unifiedCovMatrix 
      @param[out] currEta */
   void   generateSequence_Step09_all   (const SequenceOfVectors<P_V,P_M>&        prevChain,                          // input
+					double                                   prevExponent,                       // input
+					double                                   currExponent,                       // input
+					const ScalarSequence<double>&            prevLogLikelihoodValues,            // input
+					const ScalarSequence<double>&            prevLogTargetValues,                // input
                                         unsigned int                                    indexOfFirstWeight,                 // input
                                         unsigned int                                    indexOfLastWeight,                  // input
                                         const std::vector<double>&                      unifiedWeightStdVectorAtProc0Only,  // input
@@ -346,6 +354,10 @@ private:
                                         const UnbalancedLinkedChainsPerNodeStruct&    unbalancedLinkControl,              // input // Round Rock
                                         unsigned int                                    indexOfFirstWeight,                 // input // Round Rock
                                         const SequenceOfVectors<P_V,P_M>&        prevChain,                          // input // Round Rock
+					double                                   prevExponent,                       // input
+					double                                   currExponent,                       // input
+					const ScalarSequence<double>&            prevLogLikelihoodValues,            // input
+					const ScalarSequence<double>&            prevLogTargetValues,                // input
                                         const BalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl,                // input // Round Rock
                                         SequenceOfVectors      <P_V,P_M>&        currChain,                          // output
                                         double&                                         cumulativeRawChainRunTime,          // output
@@ -383,9 +395,13 @@ private:
    /*! @param[in] currOptions, prevChain, exchangeStdVec
     *  @param[out] exchangeStdVec, balancedLinkControl*/
    void   prepareBalLinkedChains_inter0 (const MLSamplingLevelOptions*            currOptions,                        // input
-                                        const SequenceOfVectors<P_V,P_M>&        prevChain,                          // input
-                                        std::vector<ExchangeInfoStruct>&              exchangeStdVec,                     // input/output
-                                        BalancedLinkedChainsPerNodeStruct<P_V>&       balancedLinkControl);               // output
+					 const SequenceOfVectors<P_V,P_M>&        prevChain,                          // input
+					 double                                   prevExponent,                       // input
+					 double                                   currExponent,                       // input
+					 const ScalarSequence<double>&            prevLogLikelihoodValues,            // input
+					 const ScalarSequence<double>&            prevLogTargetValues,                // input
+					 std::vector<ExchangeInfoStruct>&              exchangeStdVec,                     // input/output
+					 BalancedLinkedChainsPerNodeStruct<P_V>&       balancedLinkControl);               // output
 
   /*! @param[in] indexOfFirstWeight, indexOfLastWeight, unifiedIndexCountersAtProc0Only
    *  @param[out] unbalancedLinkControl*/
@@ -414,6 +430,10 @@ private:
                                         const UnbalancedLinkedChainsPerNodeStruct&    unbalancedLinkControl,              // input // Round Rock
                                         unsigned int                                    indexOfFirstWeight,                 // input // Round Rock
                                         const SequenceOfVectors<P_V,P_M>&        prevChain,                          // input // Round Rock
+					double                                   prevExponent,                       // input
+					double                                   currExponent,                       // input
+					const ScalarSequence<double>&            prevLogLikelihoodValues,            // input
+					const ScalarSequence<double>&            prevLogTargetValues,                // input
                                         SequenceOfVectors      <P_V,P_M>&        workingChain,                       // output
                                         double&                                         cumulativeRunTime,                  // output
                                         unsigned int&                                   cumulativeRejections,               // output
@@ -434,6 +454,10 @@ private:
   /*! @param[in] prevChain, exchangeStdVec, finalNumChainsPerNode, finalNumPositionsPerNode
    *  @param[out] balancedLinkControl*/ 
   void   mpiExchangePositions_inter0   (const SequenceOfVectors<P_V,P_M>&        prevChain,                          // input
+					double                                   prevExponent,                       // input
+					double                                   currExponent,                       // input
+					const ScalarSequence<double>&            prevLogLikelihoodValues,            // input
+					const ScalarSequence<double>&            prevLogTargetValues,                // input
                                         const std::vector<ExchangeInfoStruct>&        exchangeStdVec,                     // input
                                         const std::vector<unsigned int>&                finalNumChainsPerNode,              // input
                                         const std::vector<unsigned int>&                finalNumPositionsPerNode,           // input
