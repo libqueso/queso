@@ -681,7 +681,7 @@ MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
   }
 
   P_V auxInitialPosition(m_vectorSpace.zeroVector());
-  double auxInintialLogPrior;
+  double auxInitialLogPrior;
   double auxInitialLogLikelihood;
 
   unsigned int chainIdMax = 0;
@@ -1006,8 +1006,8 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
     if (m_env.inter0Rank() >= 0) {
       unsigned int auxIndex = unbalancedLinkControl.unbLinkedChains[chainId].initialPositionIndexInPreviousChain - indexOfFirstWeight; // KAUST4 // Round Rock
       prevChain.getPositionValues(auxIndex,auxInitialPosition); // Round Rock
-      auxIntitialLogPrior = prevLogTargetValues[auxIndex] - prevLogLikelihoodValues[auxIndex];
-      auxIntitialLogLikelihood = expRatio*prevLogLikelihoodValues[auxIndex];
+      auxInitialLogPrior = prevLogTargetValues[auxIndex] - prevLogLikelihoodValues[auxIndex];
+      auxInitialLogLikelihood = expRatio*prevLogLikelihoodValues[auxIndex];
       tmpChainSize = unbalancedLinkControl.unbLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
       if ((m_env.subDisplayFile()       ) &&
           (m_env.displayVerbosity() >= 3)) {
@@ -4397,6 +4397,9 @@ MLSampling<P_V,P_M>::generateSequence(
 
     MLSamplingLevelOptions*            currOptions           = NULL;  // step 1
     SequenceOfVectors<P_V,P_M>*        prevChain             = NULL;  // step 2
+    ScalarSequence<double> prevLogLikelihoodValues(m_env, 0, "");
+    ScalarSequence<double> prevLogTargetValues    (m_env, 0, "");
+    double                             prevExponent          = 0.;    // step 3
     unsigned int                              indexOfFirstWeight    = 0;     // step 2
     unsigned int                              indexOfLastWeight     = 0;     // step 2
     P_M*                                      unifiedCovMatrix      = NULL;  // step 4
@@ -4444,14 +4447,12 @@ MLSampling<P_V,P_M>::generateSequence(
     // Step 2 of 11: save [chain and corresponding target pdf values] from previous level
     //***********************************************************
     m_currStep = 2;
-    double       prevExponent                   = currExponent;
+    prevExponent                   = currExponent;
     double       prevEta                        = currEta;
     unsigned int prevUnifiedRequestedNumSamples = currUnifiedRequestedNumSamples;
     prevChain = new SequenceOfVectors<P_V,P_M>(m_vectorSpace,
                                                       0,
                                                       m_options.m_prefix+"prev_chain");
-    ScalarSequence<double> prevLogLikelihoodValues(m_env,0,"");
-    ScalarSequence<double> prevLogTargetValues    (m_env,0,"");
 
     indexOfFirstWeight = 0;
     indexOfLastWeight  = 0;
