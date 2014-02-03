@@ -132,16 +132,33 @@ public:
    * 'pROblem_775_ip_', then the constructor will read all options that begin with 'pROblem_775_ip_mh_'.
     Options reading is handled by class 'MetropolisHastingsOptions'.*/
   MetropolisHastingsSG(const char*                         prefix,
-                              const MhOptionsValues*       alternativeOptionsValues, // dakota
-                              const BaseVectorRV<P_V,P_M>& sourceRv,
-                              const P_V&                          initialPosition,
-                              const P_M*                          inputProposalCovMatrix);
+		       const MhOptionsValues*       alternativeOptionsValues, // dakota
+		       const BaseVectorRV<P_V,P_M>& sourceRv,
+		       const P_V&                          initialPosition,
+		       const P_M*                          inputProposalCovMatrix);
+
+  //! Constructor.
+  MetropolisHastingsSG(const char*                         prefix,
+		       const MhOptionsValues*       alternativeOptionsValues, // dakota
+		       const BaseVectorRV<P_V,P_M>& sourceRv,
+		       const P_V&                          initialPosition,
+		       double                              initialLogPrior,
+		       double                              initialLogLikelihood,
+		       const P_M*                          inputProposalCovMatrix);
+  
+  //! Constructor.
+  MetropolisHastingsSG(const MLSamplingLevelOptions& mlOptions,
+		       const BaseVectorRV<P_V,P_M>&  sourceRv,
+		       const P_V&                           initialPosition,
+		       const P_M*                           inputProposalCovMatrix);
 
   //! Constructor.
   MetropolisHastingsSG(const MLSamplingLevelOptions& mlOptions,
-                              const BaseVectorRV<P_V,P_M>&  sourceRv,
-                              const P_V&                           initialPosition,
-                              const P_M*                           inputProposalCovMatrix);
+		       const BaseVectorRV<P_V,P_M>&  sourceRv,
+		       const P_V&                           initialPosition,
+		       double                               initialLogPrior,
+		       double                               initialLogLikelihood,
+		       const P_M*                           inputProposalCovMatrix);
 
   //! Destructor
   ~MetropolisHastingsSG();
@@ -276,6 +293,9 @@ private:
 
         MhOptionsValues                      m_alternativeOptionsValues;
         MetropolisHastingsSGOptions*         m_optionsObj;
+	bool                                        m_computeInitialPriorAndLikelihoodValues;
+	double                                      m_initialLogPriorValue;
+	double                                      m_initialLogLikelihoodValue;
 };
 
 }  // End namespace QUESO

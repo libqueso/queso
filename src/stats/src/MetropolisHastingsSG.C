@@ -158,7 +158,10 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
 #else
   m_alternativeOptionsValues  (),
 #endif
-  m_optionsObj                (NULL)
+  m_optionsObj                (NULL),
+  m_computeInitialPriorAndLikelihoodValues(true),
+  m_initialLogPriorValue      (0.),
+  m_initialLogLikelihoodValue (0.)
 {
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
@@ -206,6 +209,91 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
                             << std::endl;
   }
 }
+template<class P_V,class P_M>
+MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
+  /*! Prefix                     */ const char*                         prefix,
+  /*! Options (if no input file) */ const MhOptionsValues*       alternativeOptionsValues, // dakota
+  /*! The source RV              */ const BaseVectorRV<P_V,P_M>& sourceRv,
+  /*! Initial chain position     */ const P_V&                          initialPosition,
+  /*! Initial chain prior        */ double                              initialLogPrior,
+  /*! Initial chain likelihood   */ double                              initialLogLikelihood,
+  /*! Proposal cov. matrix       */ const P_M*                          inputProposalCovMatrix)
+  :
+  m_env                       (sourceRv.env()),
+  m_vectorSpace               (sourceRv.imageSet().vectorSpace()),
+  m_targetPdf                 (sourceRv.pdf()),
+  m_initialPosition           (initialPosition),
+  m_initialProposalCovMatrix  (m_vectorSpace.zeroVector()),
+  m_nullInputProposalCovMatrix(inputProposalCovMatrix == NULL),
+  m_numDisabledParameters     (0), // gpmsa2
+  m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
+  m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
+  m_tk                        (NULL),
+  m_positionIdForDebugging    (0),
+  m_stageIdForDebugging       (0),
+  m_idsOfUniquePositions      (0),//0.),
+  m_logTargets                (0),//0.),
+  m_alphaQuotients            (0),//0.),
+  m_lastChainSize             (0),
+  m_lastMean                  (NULL),
+  m_lastAdaptedCovMatrix      (NULL),
+  m_numPositionsNotSubWritten (0),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_alternativeOptionsValues  (NULL,NULL),
+#else
+  m_alternativeOptionsValues  (),
+#endif
+  m_optionsObj                (NULL),
+  m_computeInitialPriorAndLikelihoodValues(false),
+  m_initialLogPriorValue      (initialLogPrior),
+  m_initialLogLikelihoodValue (initialLogLikelihood)
+{
+  if (inputProposalCovMatrix != NULL) {
+    m_initialProposalCovMatrix = *inputProposalCovMatrix;
+  }
+  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
+  if (m_env.optionsInputFileName() == "") {
+    m_optionsObj = new MetropolisHastingsSGOptions(m_env,prefix,m_alternativeOptionsValues);
+  }
+  else {
+    m_optionsObj = new MetropolisHastingsSGOptions(m_env,prefix);
+    m_optionsObj->scanOptionsValues();
+  }
+
+  if ((m_env.subDisplayFile()                   ) &&
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
+    *m_env.subDisplayFile() << "Entering MetropolisHastingsSG<P_V,P_M>::constructor(2)"
+                            << ": prefix = " << prefix
+                            << ", alternativeOptionsValues = " << alternativeOptionsValues
+                            << ", m_env.optionsInputFileName() = " << m_env.optionsInputFileName()
+                            << ", m_initialProposalCovMatrix = " << m_initialProposalCovMatrix
+                            << std::endl;
+  }
+
+  UQ_FATAL_TEST_MACRO(sourceRv.imageSet().vectorSpace().dimLocal() != initialPosition.sizeLocal(),
+                      m_env.worldRank(),
+                      "MetropolisHastingsSG<P_V,P_M>::constructor(2)",
+                      "'sourceRv' and 'initialPosition' should have equal dimensions");
+
+  if (inputProposalCovMatrix) {
+    UQ_FATAL_TEST_MACRO(sourceRv.imageSet().vectorSpace().dimLocal() != inputProposalCovMatrix->numRowsLocal(),
+                        m_env.worldRank(),
+                        "MetropolisHastingsSG<P_V,P_M>::constructor(2)",
+                        "'sourceRv' and 'inputProposalCovMatrix' should have equal dimensions");
+    UQ_FATAL_TEST_MACRO(inputProposalCovMatrix->numCols() != inputProposalCovMatrix->numRowsGlobal(),
+                        m_env.worldRank(),
+                        "MetropolisHastingsSG<P_V,P_M>::constructor(2)",
+                        "'inputProposalCovMatrix' should be a square matrix");
+  }
+
+  commonConstructor();
+
+  if ((m_env.subDisplayFile()                   ) &&
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
+    *m_env.subDisplayFile() << "Leaving MetropolisHastingsSG<P_V,P_M>::constructor(2)"
+                            << std::endl;
+  }
+}
 // Constructor -------------------------------------
 template<class P_V,class P_M>
 MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
@@ -237,20 +325,23 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
 #else
   m_alternativeOptionsValues  (),
 #endif
-  m_optionsObj                (new MetropolisHastingsSGOptions(mlOptions))
+  m_optionsObj                (new MetropolisHastingsSGOptions(mlOptions)),
+  m_computeInitialPriorAndLikelihoodValues(true),
+  m_initialLogPriorValue      (0.),
+  m_initialLogLikelihoodValue (0.)
 {
   if (inputProposalCovMatrix != NULL) {
     m_initialProposalCovMatrix = *inputProposalCovMatrix;
     if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
-      *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::constructor(2)"
+      *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::constructor(3)"
                               << ": just set m_initialProposalCovMatrix = " << m_initialProposalCovMatrix
                               << std::endl;
     }
   }
   if ((m_env.subDisplayFile()                   ) &&
       (m_optionsObj->m_ov.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Entering MetropolisHastingsSG<P_V,P_M>::constructor(2)"
+    *m_env.subDisplayFile() << "Entering MetropolisHastingsSG<P_V,P_M>::constructor(3)"
                             << std::endl;
   }
 
@@ -258,7 +349,68 @@ MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
 
   if ((m_env.subDisplayFile()                   ) &&
       (m_optionsObj->m_ov.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "Leaving MetropolisHastingsSG<P_V,P_M>::constructor(2)"
+    *m_env.subDisplayFile() << "Leaving MetropolisHastingsSG<P_V,P_M>::constructor(3)"
+                            << std::endl;
+  }
+}
+// Constructor -------------------------------------
+template<class P_V,class P_M>
+MetropolisHastingsSG<P_V,P_M>::MetropolisHastingsSG(
+  const MLSamplingLevelOptions& mlOptions,
+  const BaseVectorRV<P_V,P_M>&  sourceRv,
+  const P_V&                           initialPosition, // KEY
+  double                               initialLogPrior,
+  double                               initialLogLikelihood,
+  const P_M*                           inputProposalCovMatrix)
+  :
+  m_env                       (sourceRv.env()),
+  m_vectorSpace               (sourceRv.imageSet().vectorSpace()),
+  m_targetPdf                 (sourceRv.pdf()),
+  m_initialPosition           (initialPosition),
+  m_initialProposalCovMatrix  (m_vectorSpace.zeroVector()),
+  m_nullInputProposalCovMatrix(inputProposalCovMatrix == NULL),
+  m_numDisabledParameters     (0), // gpmsa2
+  m_parameterEnabledStatus    (m_vectorSpace.dimLocal(),true), // gpmsa2
+  m_targetPdfSynchronizer     (new ScalarFunctionSynchronizer<P_V,P_M>(m_targetPdf,m_initialPosition)),
+  m_tk                        (NULL),
+  m_positionIdForDebugging    (0),
+  m_stageIdForDebugging       (0),
+  m_idsOfUniquePositions      (0),//0.),
+  m_logTargets                (0),//0.),
+  m_alphaQuotients            (0),//0.),
+  m_lastChainSize             (0),
+  m_lastMean                  (NULL),
+  m_lastAdaptedCovMatrix      (NULL),
+#ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
+  m_alternativeOptionsValues  (NULL,NULL),
+#else
+  m_alternativeOptionsValues  (),
+#endif
+  m_optionsObj                (new MetropolisHastingsSGOptions(mlOptions)),
+  m_computeInitialPriorAndLikelihoodValues(false),
+  m_initialLogPriorValue      (initialLogPrior),
+  m_initialLogLikelihoodValue (initialLogLikelihood)
+{
+  if (inputProposalCovMatrix != NULL) {
+    m_initialProposalCovMatrix = *inputProposalCovMatrix;
+    if ((m_env.subDisplayFile()                   ) &&
+        (m_optionsObj->m_ov.m_totallyMute == false)) {
+      *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::constructor(4)"
+                              << ": just set m_initialProposalCovMatrix = " << m_initialProposalCovMatrix
+                              << std::endl;
+    }
+  }
+  if ((m_env.subDisplayFile()                   ) &&
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
+    *m_env.subDisplayFile() << "Entering MetropolisHastingsSG<P_V,P_M>::constructor(4)"
+                            << std::endl;
+  }
+
+  commonConstructor();
+
+  if ((m_env.subDisplayFile()                   ) &&
+      (m_optionsObj->m_ov.m_totallyMute == false)) {
+    *m_env.subDisplayFile() << "Leaving MetropolisHastingsSG<P_V,P_M>::constructor(4)"
                             << std::endl;
   }
 }
@@ -1326,27 +1478,49 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
                       m_env.worldRank(),
                       "MetropolisHastingsSG<P_V,P_M>::generateFullChain()",
                       "initial position should not be out of target pdf support");
-  if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
+  
   double logPrior      = 0.;
   double logLikelihood = 0.;
+  double logTarget     = 0.;
+  if(m_computeInitialPriorAndLikelihoodValues) {
+    if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
-  double logTarget =        m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment // KEY
+    logTarget =        m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment // KEY
 #else
-  double logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
+    logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
 #endif
-  if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += MiscGetEllapsedSeconds(&timevalTarget);
-  m_rawChainInfo.numTargetCalls++;
-  if ((m_env.subDisplayFile()                   ) &&
-      (m_env.displayVerbosity() >= 3            ) &&
-      (m_optionsObj->m_ov.m_totallyMute == false)) {
-    *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
-                            << ": just returned from likelihood() for initial chain position"
-                            << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
-                            << ", logPrior = "      << logPrior
-                            << ", logLikelihood = " << logLikelihood
-                            << ", logTarget = "     << logTarget
-                            << std::endl;
+    if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += MiscGetEllapsedSeconds(&timevalTarget);
+    m_rawChainInfo.numTargetCalls++;
+    if ((m_env.subDisplayFile()                   ) &&
+	(m_env.displayVerbosity() >= 3            ) &&
+	(m_optionsObj->m_ov.m_totallyMute == false)) {
+      *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
+			      << ": just returned from likelihood() for initial chain position"
+			      << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
+			      << ", logPrior = "      << logPrior
+			      << ", logLikelihood = " << logLikelihood
+			      << ", logTarget = "     << logTarget
+			      << std::endl;
+    }
+  } else {
+    logPrior       = m_initialLogPriorValue;
+    logLikelihood  = m_initialLogLikelihoodValue;
+    logTarget      = logPrior + logLikelihood;
+    if ((m_env.subDisplayFile()                   ) &&
+	(m_env.displayVerbosity() >= 3            ) &&
+	(m_optionsObj->m_ov.m_totallyMute == false)) {
+      *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
+			      << ": used input prior and likelihood for initial chain position"
+			      << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
+			      << ", logPrior = "      << logPrior
+			      << ", logLikelihood = " << logLikelihood
+			      << ", logTarget = "     << logTarget
+			      << std::endl;
+    }
   }
+
+  
+  
 
   //*m_env.subDisplayFile() << "AQUI 001" << std::endl;
   MarkovChainPositionData<P_V> currentPositionData(m_env,

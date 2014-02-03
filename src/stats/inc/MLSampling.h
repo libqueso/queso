@@ -74,7 +74,9 @@ struct ExchangeInfoStruct
 template <class P_V>
 struct BalancedLinkedChainControlStruct
 {
-  P_V*         initialPosition; // KEY new: add logPrior and logLikelihood
+  P_V*         initialPosition; 
+  double       initialLogPrior;
+  double       initialLogLikelihood;
   unsigned int numberOfPositions;
 };
 
