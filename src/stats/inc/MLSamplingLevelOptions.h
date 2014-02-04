@@ -54,6 +54,7 @@
 #define UQ_ML_SAMPLING_L_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV            UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 #define UQ_ML_SAMPLING_L_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
+#define UQ_ML_SAMPLING_L_INITIAL_POSITION_USE_PREVIOUS_LEVEL_LIKELIHOOD_ODV   0
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_NAME_ODV                   UQ_ML_SAMPLING_L_FILENAME_FOR_NO_FILE
 #define UQ_ML_SAMPLING_L_RAW_CHAIN_DATA_INPUT_FILE_TYPE_ODV                   UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT
 #define UQ_ML_SAMPLING_L_LIST_OF_DISABLED_PARAMETERS_ODV                      ""
@@ -204,6 +205,9 @@ public:
   
   //! Type of input file for initial proposal covariance matrix.
   std::string                        m_initialProposalCovMatrixDataInputFileType;
+
+  //! Use previous level likelihood for initial chain position instead of re-computing it from target pdf
+  bool                               m_initialPositionUsePreviousLevelLikelihood;   // ml_likelihood_caching
   
   
   std::set<unsigned int>             m_parameterDisabledSet; // gpmsa2
@@ -372,6 +376,7 @@ private:
   std::string                   m_option_initialPosition_dataInputFileType;
   std::string                   m_option_initialProposalCovMatrix_dataInputFileName;
   std::string                   m_option_initialProposalCovMatrix_dataInputFileType;
+  std::string                   m_option_initialPositionUsePreviousLevelLikelihood;   // ml_likelihood_caching
   std::string                   m_option_listOfDisabledParameters; // gpmsa2
   std::string                   m_option_initialValuesOfDisabledParameters; // gpmsa2
   std::string                   m_option_rawChain_dataInputFileName;

@@ -55,6 +55,7 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
   m_initialPositionDataInputFileType         (UQ_ML_SAMPLING_L_INITIAL_POSITION_DATA_INPUT_FILE_TYPE_ODV),
   m_initialProposalCovMatrixDataInputFileName(UQ_ML_SAMPLING_L_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_NAME_ODV),
   m_initialProposalCovMatrixDataInputFileType(UQ_ML_SAMPLING_L_INITIAL_PROPOSAL_COV_MATRIX_DATA_INPUT_FILE_TYPE_ODV),
+  m_initialPositionUsePreviousLevelLikelihood(UQ_ML_SAMPLING_L_INITIAL_POSITION_USE_PREVIOUS_LEVEL_LIKELIHOOD_ODV),  // ml_likelihood_caching
 //m_parameterDisabledSet                     (), // gpmsa2
   m_str2                                     (""),
   m_initialValuesOfDisabledParameters        (0),
@@ -133,6 +134,7 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
   m_option_initialPosition_dataInputFileType         (m_prefix + "initialPosition_dataInputFileType"         ),
   m_option_initialProposalCovMatrix_dataInputFileName(m_prefix + "initialProposalCovMatrix_dataInputFileName"),
   m_option_initialProposalCovMatrix_dataInputFileType(m_prefix + "initialProposalCovMatrix_dataInputFileType"),
+  m_option_initialPositionUsePreviousLevelLikelihood (m_prefix + "initialPositionUsePreviousLevelLikelihood" ), // ml_likelihood_caching
   m_option_listOfDisabledParameters                  (m_prefix + "listOfDisabledParameters"                  ), // gpmsa2
   m_option_initialValuesOfDisabledParameters         (m_prefix + "initialValuesOfDisabledParameters"         ), // gpmsa2
   m_option_rawChain_dataInputFileName                (m_prefix + "rawChain_dataInputFileName"                ),
@@ -205,6 +207,7 @@ MLSamplingLevelOptions::copyOptionsValues(const MLSamplingLevelOptions& srcOptio
   m_initialPositionDataInputFileType          = srcOptions.m_initialPositionDataInputFileType;
   m_initialProposalCovMatrixDataInputFileName = srcOptions.m_initialProposalCovMatrixDataInputFileName;
   m_initialProposalCovMatrixDataInputFileType = srcOptions.m_initialProposalCovMatrixDataInputFileType;
+  m_initialPositionUsePreviousLevelLikelihood = srcOptions.m_initialPositionUsePreviousLevelLikelihood;
   m_parameterDisabledSet                      = srcOptions.m_parameterDisabledSet; // gpmsa2
   m_str2                                      = srcOptions.m_str2; // gpmsa2
   m_initialValuesOfDisabledParameters         = srcOptions.m_initialValuesOfDisabledParameters;
@@ -336,6 +339,7 @@ MLSamplingLevelOptions::defineMyOptions(po::options_description& optionsDesc) co
     (m_option_initialPosition_dataInputFileType.c_str(),          po::value<std::string >()->default_value(m_initialPositionDataInputFileType         ), "type of input file for initial position"                         )
     (m_option_initialProposalCovMatrix_dataInputFileName.c_str(), po::value<std::string >()->default_value(m_initialProposalCovMatrixDataInputFileName), "name of input file for initial proposal covariance matrix"       )
     (m_option_initialProposalCovMatrix_dataInputFileType.c_str(), po::value<std::string >()->default_value(m_initialProposalCovMatrixDataInputFileType), "type of input file for initial proposal covariance matrix"       )
+    (m_option_initialPositionUsePreviousLevelLikelihood.c_str(),  po::value<bool        >()->default_value(m_initialPositionUsePreviousLevelLikelihood), "use previous level likelihood for initial chain position instead of re-computing from target pdf")
     (m_option_listOfDisabledParameters.c_str(),                   po::value<std::string >()->default_value(m_str2                                     ), "list of disabled parameters"                                     ) // gpmsa2
     (m_option_initialValuesOfDisabledParameters.c_str(),          po::value<std::string >()->default_value(m_str3                                     ), "initial values of disabled parameters"                           ) // gpmsa2
     (m_option_rawChain_dataInputFileName.c_str(),                 po::value<std::string >()->default_value(m_rawChainDataInputFileName                ), "name of input file for raw chain "                               )
@@ -556,6 +560,10 @@ MLSamplingLevelOptions::getMyOptionValues(po::options_description& optionsDesc)
 
   if (m_env.allOptionsMap().count(m_option_initialProposalCovMatrix_dataInputFileType.c_str())) {
     m_initialProposalCovMatrixDataInputFileType = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialProposalCovMatrix_dataInputFileType.c_str()]).as<std::string>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_initialPositionUsePreviousLevelLikelihood.c_str())) {  // ml_likelihood_caching
+    m_initialPositionUsePreviousLevelLikelihood = ((const po::variable_value&) m_env.allOptionsMap()[m_option_initialPositionUsePreviousLevelLikelihood.c_str()]).as<bool>();
   }
 
   if (m_env.allOptionsMap().count(m_option_listOfDisabledParameters)) { // gpmsa2
@@ -879,6 +887,7 @@ MLSamplingLevelOptions::print(std::ostream& os) const
      << "\n" << m_option_initialPosition_dataInputFileType          << " = " << m_initialPositionDataInputFileType
      << "\n" << m_option_initialProposalCovMatrix_dataInputFileName << " = " << m_initialProposalCovMatrixDataInputFileName
      << "\n" << m_option_initialProposalCovMatrix_dataInputFileType << " = " << m_initialProposalCovMatrixDataInputFileType
+     << "\n" << m_option_initialPositionUsePreviousLevelLikelihood  << " = " << m_initialPositionUsePreviousLevelLikelihood
      << "\n" << m_option_listOfDisabledParameters                   << " = "; // gpmsa2
   for (std::set<unsigned int>::iterator setIt = m_parameterDisabledSet.begin(); setIt != m_parameterDisabledSet.end(); ++setIt) {
     os << *setIt << " ";

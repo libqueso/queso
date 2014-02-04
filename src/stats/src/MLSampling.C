@@ -769,12 +769,7 @@ MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
       }
     }
     auxInitialPosition.mpiBcast(0, m_env.subComm()); // Yes, 'subComm', important // KAUST
-    m_env.subComm().Bcast((void *) &auxInitialLogPrior, (int) 1, RawValue_MPI_DOUBLE, 0, // Yes, 'subComm', important
-			     "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
-			     "failed MPI.Bcast() for auxInitialLogPrior");
-    m_env.subComm().Bcast((void *) &auxInitialLogLikelihood, (int) 1, RawValue_MPI_DOUBLE, 0, // Yes, 'subComm', important
-			     "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
-			     "failed MPI.Bcast() for auxInitialLogLikelihood");
+   
 #if 0 // For debug only
     for (int r = 0; r < m_env.subComm().NumProc(); ++r) {
       if (r == m_env.subComm().MyPID()) {
@@ -799,20 +794,37 @@ MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
     ScalarSequence<double> tmpLogLikelihoodValues(m_env,0,"");
     ScalarSequence<double> tmpLogTargetValues    (m_env,0,"");
 
-    // KAUST: all nodes should call here
-    MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
-						 rv,
-						 auxInitialPosition, // KEY new: pass logPrior and logLikelihood
-						 auxInitialLogPrior,
-						 auxInitialLogLikelihood,
-						 &unifiedCovMatrix);
+     MHRawChainInfoStruct mcRawInfo;
+    if(inputOptions.m_initialPositionUsePreviousLevelLikelihood) {  // ml_likelihood_caching
+      m_env.subComm().Bcast((void *) &auxInitialLogPrior, (int) 1, RawValue_MPI_DOUBLE, 0, // Yes, 'subComm', important
+			    "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
+			    "failed MPI.Bcast() for auxInitialLogPrior");
+      m_env.subComm().Bcast((void *) &auxInitialLogLikelihood, (int) 1, RawValue_MPI_DOUBLE, 0, // Yes, 'subComm', important
+			    "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
+			    "failed MPI.Bcast() for auxInitialLogLikelihood");
 
-    // KAUST: all nodes should call here
-    mcSeqGenerator.generateSequence(tmpChain,
-                                    &tmpLogLikelihoodValues, // likelihood is IMPORTANT
-                                    &tmpLogTargetValues);
-    MHRawChainInfoStruct mcRawInfo;
-    mcSeqGenerator.getRawChainInfo(mcRawInfo);
+      MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
+						   rv,
+						   auxInitialPosition, // KEY new: pass logPrior and logLikelihood
+						   auxInitialLogPrior,
+						   auxInitialLogLikelihood,
+						   &unifiedCovMatrix);
+      mcSeqGenerator.generateSequence(tmpChain,
+				      &tmpLogLikelihoodValues, // likelihood is IMPORTANT
+				      &tmpLogTargetValues);
+      mcSeqGenerator.getRawChainInfo(mcRawInfo);
+
+    } else {
+      MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
+						   rv,
+						   auxInitialPosition, 
+						   &unifiedCovMatrix);
+      mcSeqGenerator.generateSequence(tmpChain,
+				      &tmpLogLikelihoodValues, // likelihood is IMPORTANT
+				      &tmpLogTargetValues);
+      mcSeqGenerator.getRawChainInfo(mcRawInfo);
+    }
+
     cumulativeRunTime    += mcRawInfo.runTime;
     cumulativeRejections += mcRawInfo.numRejections;
 
@@ -999,7 +1011,7 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
     //m_env.setExceptionalCircumstance(true);
   }
   double expRatio = currExponent;
-  if(prevExponent > 0.0) expRatio /= prevExponent;
+  if(prevExponent > 0.) expRatio /= prevExponent;
   unsigned int cumulativeNumPositions = 0;
   for (unsigned int chainId = 0; chainId < chainIdMax; ++chainId) {
     unsigned int tmpChainSize = 0;
@@ -1022,12 +1034,7 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
       }
     }
     auxInitialPosition.mpiBcast(0, m_env.subComm()); // Yes, 'subComm', important // KAUST
-    m_env.subComm().Bcast((void *) &auxInitialLogPrior, (int) 1, RawValue_MPI_DOUBLE, 0, // Yes, 'subComm', important
-			     "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
-			     "failed MPI.Bcast() for auxInitialLogPrior");
-    m_env.subComm().Bcast((void *) &auxInitialLogLikelihood, (int) 1, RawValue_MPI_DOUBLE, 0, // Yes, 'subComm', important
-			     "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
-			     "failed MPI.Bcast() for auxInitialLogLikelihood");
+    
 #if 0 // For debug only
     for (int r = 0; r < m_env.subComm().NumProc(); ++r) {
       if (r == m_env.subComm().MyPID()) {
@@ -1053,19 +1060,36 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
     ScalarSequence<double> tmpLogTargetValues    (m_env,0,"");
 
     // KAUST: all nodes should call here
-    MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
-						 rv,
-						 auxInitialPosition, // KEY new: pass logPrior and logLikelihood
-						 auxInitialLogPrior,
-						 auxInitialLogLikelihood,
-						 &unifiedCovMatrix);
-
-    // KAUST: all nodes should call here
-    mcSeqGenerator.generateSequence(tmpChain,
-                                    &tmpLogLikelihoodValues, // likelihood is IMPORTANT
-                                    &tmpLogTargetValues);
     MHRawChainInfoStruct mcRawInfo;
-    mcSeqGenerator.getRawChainInfo(mcRawInfo);
+    if(inputOptions.m_initialPositionUsePreviousLevelLikelihood) {  // ml_likelihood_caching
+      m_env.subComm().Bcast((void *) &auxInitialLogPrior, (int) 1, RawValue_MPI_DOUBLE, 0, // Yes, 'subComm', important
+			    "MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
+			    "failed MPI.Bcast() for auxInitialLogPrior");
+      m_env.subComm().Bcast((void *) &auxInitialLogLikelihood, (int) 1, RawValue_MPI_DOUBLE, 0, // Yes, 'subComm', important
+			    "MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all",
+			    "failed MPI.Bcast() for auxInitialLogLikelihood");
+      MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
+						   rv,
+						   auxInitialPosition, // KEY new: pass logPrior and logLikelihood
+						   auxInitialLogPrior,
+						   auxInitialLogLikelihood,
+						   &unifiedCovMatrix);
+      mcSeqGenerator.generateSequence(tmpChain,
+				      &tmpLogLikelihoodValues, // likelihood is IMPORTANT
+				      &tmpLogTargetValues);
+      mcSeqGenerator.getRawChainInfo(mcRawInfo);
+
+    } else {
+      MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
+						   rv,
+						   auxInitialPosition, 
+						   &unifiedCovMatrix);
+      mcSeqGenerator.generateSequence(tmpChain,
+				      &tmpLogLikelihoodValues, // likelihood is IMPORTANT
+				      &tmpLogTargetValues);
+      mcSeqGenerator.getRawChainInfo(mcRawInfo);
+    }
+
     cumulativeRunTime    += mcRawInfo.runTime;
     cumulativeRejections += mcRawInfo.numRejections;
 
@@ -4462,6 +4486,7 @@ MLSampling<P_V,P_M>::generateSequence(
       generateSequence_Step02_inter0(currOptions,             // input
                                      currChain,               // input/output // restate
                                      currLogLikelihoodValues, // input/output // restate
+
                                      currLogTargetValues,     // input/output // restate
                                      *prevChain,              // output
                                      prevLogLikelihoodValues, // output
