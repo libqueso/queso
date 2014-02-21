@@ -852,6 +852,13 @@ SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaSeq_allStd() const
 {
   return m_etaSeq_allStd;
 }
+
+template<class S_V, class S_M, class P_V, class P_M, class Q_V, class Q_M>
+double
+SimulationModel<S_V,S_M,P_V,P_M,Q_V,Q_M>::etaSeq_allMean() const
+{
+  return m_etaSeq_allMean;
+}
 #endif
 
 template<class S_V,class S_M,class P_V,class P_M,class Q_V,class Q_M>
