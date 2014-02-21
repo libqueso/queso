@@ -60,17 +60,19 @@ private:
   // Private variables
   const BaseEnvironment&      m_env;
   const VectorSpace<S_V,S_M>& m_scenarioSpace;
-        unsigned int                 m_paper_n;
-        std::vector<unsigned int>    m_paper_n_ys_transformed;
-        unsigned int                 m_paper_n_y;
 
-        unsigned int                 m_addId;
-        std::vector<const S_V* >     m_scenarioVecs_standard;
-        std::vector<const D_V* >     m_dataVecs_transformed;
-        std::vector<const D_M* >     m_covMats_transformed_inv;  // = W_i's
-        VectorSpace<D_V,D_M>* m_y_space;
-        D_V*                         m_yVec_transformed;
-        D_M*                         m_Wy;
+  // Number of experiments
+  unsigned int                 m_paper_n;
+  std::vector<unsigned int>    m_paper_n_ys_transformed;
+  unsigned int                 m_paper_n_y;
+
+  unsigned int                 m_addId;
+  std::vector<const S_V* >     m_scenarioVecs_standard;
+  std::vector<const D_V* >     m_dataVecs_transformed;
+  std::vector<const D_M* >     m_covMats_transformed_inv;  // = W_i's
+  VectorSpace<D_V,D_M>* m_y_space;
+  D_V*                         m_yVec_transformed;
+  D_M*                         m_Wy;
 };
 
 }  // End namespace QUESO

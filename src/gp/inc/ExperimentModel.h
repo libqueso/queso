@@ -72,14 +72,20 @@ private:
         EmOptionsValues            m_alternativeOptionsValues;
         ExperimentModelOptions*    m_optionsObj;
 
-        unsigned int                      m_paper_p_x;
-        unsigned int                      m_paper_n;
-        unsigned int                      m_paper_p_delta;
-        unsigned int                      m_paper_n_y;
-        std::vector<D_M* >                m_Dmats;          // NOT to be deleted on destructor
-        std::vector<D_M* >                m_Kmats_interp;   // NOT to be deleted on destructor
-        VectorSpace<D_V,D_M>*      m_n_y_space;      // to be deleted on destructor
-        D_M*                              m_Dmat_BlockDiag; // to be deleted on destructor
+  // Number of experiments
+  unsigned int                      m_paper_n;
+
+  // Number of configuration locations
+  unsigned int                      m_paper_p_x;
+
+  // Number of bases GPs to use for discrepancy (1 in scalar case)
+  unsigned int                      m_paper_p_delta;
+
+  unsigned int                      m_paper_n_y;
+  std::vector<D_M* >                m_Dmats;          // NOT to be deleted on destructor
+  std::vector<D_M* >                m_Kmats_interp;   // NOT to be deleted on destructor
+  VectorSpace<D_V,D_M>*      m_n_y_space;      // to be deleted on destructor
+  D_M*                              m_Dmat_BlockDiag; // to be deleted on destructor
 };
 
 }  // End namespace QUESO
