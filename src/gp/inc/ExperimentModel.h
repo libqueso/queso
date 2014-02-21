@@ -41,6 +41,12 @@ public:
                          const ExperimentStorage<S_V,S_M,D_V,D_M>& experimentStorage,
                          const std::vector<D_M* >&                        Dmats,
                          const std::vector<D_M* >&                        Kmats_interp);
+
+  ExperimentModel(const char * prefix,
+                  const EmOptionsValues * alternativeOptionsValues,
+                  const ExperimentStorage<S_V, S_M, D_V, D_M> &
+                    experimentStorage);
+
  ~ExperimentModel();
 
         unsigned int                   numBasis      () const;
