@@ -63,7 +63,8 @@ int main(int argc, char ** argv) {
   // and experimental data.  It should also store default information about the
   // hyperparameter distributions.
   QUESO::GaussianProcessHelper<QUESO::GslVector, QUESO::GslMatrix>
-    gpHelper(configSpace,
+    gpHelper("gp_",
+             configSpace,
              paramSpace,
              nEtaSpace,
              experimentSpace,
