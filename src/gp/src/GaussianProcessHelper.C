@@ -301,6 +301,32 @@ GaussianProcessHelper<V, M>::addExperiment(const V & experimentScenario,
 
 template <class V, class M>
 void
+GaussianProcessHelper<V, M>::addSimulations(
+    const std::vector<const V *> & simulationScenarios,
+    const std::vector<const V *> & simulationParameters,
+    const std::vector<const V *> & simulationOutputs)
+{
+  for (unsigned int i = 0; i < this->m_numSimulations; i++) {
+    this->addSimulation(simulationScenarios[i], simulationParameters[i],
+        simulationOutputs[i]);
+  }
+}
+
+template <class V, class M>
+void
+GaussianProcessHelper<V, M>::addExperiments(
+    const std::vector<const V *> & experimentScenarios,
+    const std::vector<const V *> & experimentOutputs,
+    const std::vector<const M *> & experimentErrors)
+{
+  for (unsigned int i = 0; i < this->m_numExperiments; i++) {
+    this->addExperiment(experimentScenarios[i], experimentOutputs[i],
+        experimentErrors[i]);
+  }
+}
+
+template <class V, class M>
+void
 GaussianProcessHelper<V, M>::print(std::ostream& os) const
 {
   // Do nothing
