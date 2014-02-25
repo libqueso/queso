@@ -146,18 +146,42 @@ public:
 
   //@}
 
+  //! Add a simulation to \c this
+  /*!
+   * The simulation added to \c this is assumed to correspond to the point
+   * \c simulationScenario in scenario space and \c simulationParameter in
+   * parameter space.  The simulation output is assumed to be stored in
+   * \c simulationOutput.
+   */
   void addSimulation(const V & simulationScenario,
                      const V & simulationParameter,
                      const V & simulationOutput);
 
+  //! Add a experiment to \c this
+  /*!
+   * The experiment added to \c this is assumed to correspond to the point
+   * \c expermientScenario in scenario space. The experiment output and
+   * observation error covariance matrix are assumed to be stored in
+   * \c experimentOutput and \c experimentError respectively.
+   */
   void addExperiment(const V & experimentScenario,
                      const V & experimentOutput,
                      const M & experimentError);
 
+  //! Adds multiple simulations to \c this
+  /*!
+   * This method takes a vector of simulations and calls \c addSimulation on
+   * each element
+   */
   void addSimulations(const std::vector<const V *> & simulationScenarios,
                       const std::vector<const V *> & simulationParameters,
                       const std::vector<const V *> & simulationOutputs);
 
+  //! Adds multiple experiments to \c this
+  /*!
+   * This method takes a vector of experiments and calls \c addExperiment on
+   * each element
+   */
   void addExperiments(const std::vector<const V *> & experimentScenarios,
                       const std::vector<const V *> & experimentOutputs,
                       const std::vector<const M *> & experimentErrors);
