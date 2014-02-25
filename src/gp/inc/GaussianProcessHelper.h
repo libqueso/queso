@@ -36,6 +36,7 @@ class GaussianProcessHelper
 public:
   //! Constructor
   GaussianProcessHelper(const char * prefix,
+                        const BaseVectorRV<V, M> & parameterPrior,
                         const VectorSpace<V, M> & scenarioSpace,
                         const VectorSpace<V, M> & parameterSpace,
                         const VectorSpace<V, M> & simulationOutputSpace,
@@ -198,6 +199,8 @@ private:
   // Private variables
   const char * m_prefix;
 
+  const BaseVectorRV & m_parameterPrior;
+
   const BaseEnvironment & m_env;
 
   const VectorSpace<V, M> & m_scenarioSpace;
@@ -224,6 +227,35 @@ private:
   
   // The emulator state
   const V & m_emulator;
+
+  // All the GP priors information for a scalar GP follows:
+  void setUpHyperpriors();
+
+  // Domains for all the hyperpriors
+  const BoxSubset<V, M> & m_meanDomain;
+  const BoxSubset<V, M> & m_PrecisionDomain;
+  const BoxSubset<V, M> & m_CorrelationStrengthDomain;
+
+  // The hyperpriors
+  UniformVectorRV<V, M> * m_emulatorMean;  // scalar
+  GammaVectorRV<V, M> * m_emulatorPrecision;  // (scalar) gamma(a, b) shape-rate
+  BetaVectorRV<V, M> * m_emulatorCorrelationStrength;  // (dim scenariosspace + dim parameterspace)
+  GammaVectorRV<V, M> * m_discrepancyPrecision;  // (scalar) shape-rate
+  BetaVectorRV<V, M> * m_discrepancyCorrelationStrength;  // (dim scenariospace)
+  ConcatenatedVectorRV<V, M> * m_totalPrior;  // prior for joint parameters and hyperparameters
+
+  // Parameters for hyperpriors.  Hyper-hyperparameters, if you will.  Yo dawg.
+  double m_emulatorPrecisionShape;
+  double m_emulatorPrecisionScale;
+  double m_emulatorCorrelationStrengthAlpha;
+  double m_emulatorCorrelationStrengthBeta;
+  double m_discrepancyPrecisionShape;
+  double m_discrepancyPrecisionScale;
+  double m_discrepancyCorrelationStrengthAlpha;
+  double m_discrepancyCorrelationStrengthBeta;
+
+  // The Gaussian process likelihood sampling model
+  const BaseScalarFunction<V, M> & likelihood;
 };
 
 }  // End namespace QUESO

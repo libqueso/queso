@@ -31,6 +31,7 @@ namespace QUESO {
 template <class V, class M>
 GaussianProcessHelper<V, M>::GaussianProcessHelper(
     const char * prefix,
+    const BaseVectorRV<V, M> & parameterPrior,
     const VectorSpace<V, M> & scenarioSpace,
     const VectorSpace<V, M> & parameterSpace,
     const VectorSpace<V, M> & simulationOutputSpace,
@@ -39,6 +40,7 @@ GaussianProcessHelper<V, M>::GaussianProcessHelper(
     unsigned int numExperiments)
   :
     m_prefix(prefix),
+    m_parameterPrior(parameterPrior),
     m_env(scenarioSpace.env()),
     m_scenarioSpace(scenarioSpace),
     m_parameterSpace(parameterSpace),
@@ -59,6 +61,7 @@ GaussianProcessHelper<V, M>::GaussianProcessHelper(
     m_emulator(m_emulatorSpace.zeroVector())
 {
   // Do nothing
+  this->setUpHyperpriors();
 }
 
 template <class V, class M>
@@ -333,5 +336,133 @@ GaussianProcessHelper<V, M>::print(std::ostream& os) const
 }
 
 }  // End namespace QUESO
+
+// Private methods follow
+template <class V, class M>
+void
+GaussianProcessHelper<V, M>::setUpHyperpriors()
+{
+  // Default value for hyperprior parameters
+  this->m_emulatorPrecisionShape = 5.0;
+  this->m_emulatorPrecisionScale = 1.0 / 5.0;
+  this->m_emulatorCorrelationStrengthAlpha = 1.0;
+  this->m_emulatorCorrelationStrengthBeta = 0.1;
+  this->m_discrepancyPrecisionShape = 1.0;
+  this->m_discrepancyPrecisionScale = 1.0 / 0.0001;
+  this->m_discrepancyCorrelationStrengthAlpha = 1.0;
+  this->m_discrepancyCorrelationStrengthBeta = 0.1;
+
+  VectorSpace<V, M> oneDSpace(this->m_env, "", 1, NULL);
+
+  // Emulator mean
+  V emulatorMeanMin(oneDSpace.zeroVector());
+  V emulatorMeanMax(oneDSpace.zeroVector());
+  emulatorMeanMin.cwSet(-INFINITY);
+  emulatorMeanMax.cwSet(INFINITY);
+
+  BoxSubset<V, M> emulatorMeanDomain("", oneDSpace, emulatorMeanMin,
+      emulatorMeanMax);
+
+  this->m_emulatorMean = new UniformVectorRV<V, M>("", emulatorMeanDomain);
+
+  // Emulator precision
+  V emulatorPrecisionMin(oneDSpace.zeroVector());
+  V emulatorPrecisionMax(oneDSpace.zeroVector());
+  emulatorPrecisionMin.cwSet(0);
+  emulatorPrecisionMax.cwSet(INFINITY);
+
+  BoxSubset<V, M> emulatorPrecisionDomain("", oneDSpace, emulatorPrecisionMin,
+      emulatorPrecisionMax);
+
+  this->m_emulatorPrecision = new GammaVectorRV<V, M>("",
+      emulatorPrecisionDomain,
+      this->m_emulatorPrecisionShape,
+      this->m_emulatorPrecisionScale);
+
+  // Emulator correlation strength
+  unsigned int dimScenario = (this->scenarioSpace).dimLocal();
+  unsigned int dimParameter = (this->parameterSpace).dimLocal();
+  VectorSpace<V, M> emulatorCorrelationSpace(this->m_env, "",
+      dimScenario + dimParameter,
+      NULL);
+
+  V emulatorCorrelationMin(emulatorCorrelationSpace.zeroVector());
+  V emulatorCorrelationMax(emulatorCorrelationSpace.zeroVector());
+  emulatorCorrelationMin.cwSet(0);
+  emulatorCorrelationMax.cwSet(1);
+
+  BoxSubset<V, M> emulatorCorrelationDomain("", emulatorCorrelationSpace,
+      emulatorCorrelationMin,
+      emulatorCorrelationMax);
+
+  this->m_emulatorCorrelationStrength = new BetaVectorRV<V, M>("",
+      emulatorCorrelationDomain,
+      this->m_emulatorCorrelationStrengthAlpha,
+      this->m_emulatorCorrelationStrengthBeta);
+
+  // Discrepancy precision
+  V discrepancyPrecisionMin(oneDSpace.zeroVector());
+  V discrepancyPrecisionMax(oneDSpace.zeroVector());
+  discrepancyPrecisionMin.cwSet(0);
+  descrepancyPrecisionMax.cwSet(INFINITY);
+
+  BoxSubset<V, M> discrepancyPrecisionDomain("", oneDSpace,
+      discrepancyPrecisionMin,
+      emulatorPrecisionMax);
+
+  this->m_discrepancyPrecision = new GammaVectorRV<V, M>("",
+      discrepancyPrecisionDomain,
+      this->m_discrepancyPrecisionShape,
+      this->m_discrepancyPrecisionScale);
+
+  // Discrepancy correlation strength
+  unsigned int dimScenario = (this->scenarioSpace).dimLocal();
+  VectorSpace<V, M> discrepancyCorrelationSpace(this->m_env, "",
+      dimScenario,
+      NULL);
+
+  V discrepancyCorrelationMin(discrepancyCorrelationSpace.zeroVector());
+  V discrepancyCorrelationMax(discrepancyCorrelationSpace.zeroVector());
+  discrepancyCorrelationMin.cwSet(0);
+  discrepancyCorrelationMax.cwSet(1);
+
+  BoxSubset<V, M> discrepancyCorrelationDomain("", discrepancyCorrelationSpace,
+      discrepancyCorrelationMin,
+      discrepancyCorrelationMax);
+
+  this->m_discrepancyCorrelationStrength = new BetaVectorRV<V, M>("",
+      discrepancyCorrelationDomain,
+      this->m_discrepancyCorrelationStrengthAlpha,
+      this->m_discrepancyCorrelationStrengthBeta);
+
+  // Now form full prior
+  unsigned int dimSum = 3 + dimScenario + dimParameter + dimScenario;  // yum
+  VectorSpace<V, M> totalSpace(this->m_env, "", dimSum, NULL);
+  V totalMins(totalSpace.zeroVector());
+  V totalMaxs(totalSpace.zeroVector());
+
+  // Hackety hack McHackington.  There's no better way to do this unfortunately
+  totalMins.cwSet(0);
+  totalMaxs.cwSet(1);
+  totalMins[0] = -INFINITY;
+  totalMaxs[0] = INFINITY;
+  totalMins[1] = 0;
+  totalMaxs[1] = INFINITY;
+  totalMins[dimScenario + dimParameter + 2] = 0;
+  totalMaxs[dimScenario + dimParameter + 2] = INFINITY;
+
+  BoxSubset<V, M> totalDomain("", totalSpace, totalMins, totalMaxs);
+
+  std::vector<BaseVectorRV *> priors;
+  priors.push_back(this->m_parameterPrior);
+  priors.push_back(this->m_emulatorMean);
+  priors.push_back(this->m_emulatorPrecision);
+  priors.push_back(this->m_emulatorCorrelationStrength);
+  priors.push_back(this->m_discrepancyPrecision);
+  priors.push_back(this->m_discrepancyCorrelationStrength);
+
+  // Finally
+  this->m_totalPrior = new ConcatenatedVectorRV<V, M>("", priors, totalDomain);
+}
 
 template class QUESO::GaussianProcessHelper<QUESO::GslVector, QUESO::GslMatrix>;
