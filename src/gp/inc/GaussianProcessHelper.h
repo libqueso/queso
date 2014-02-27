@@ -187,6 +187,8 @@ public:
                       const std::vector<const V *> & experimentOutputs,
                       const std::vector<const M *> & experimentErrors);
 
+  const ConcatenatedVectorRV<V, M> & prior() const;
+
   void print(std::ostream& os) const;
   friend std::ostream & operator<<(std::ostream& os,
                                    const GaussianProcessHelper<V, M> & obj)
@@ -253,9 +255,6 @@ private:
   double m_discrepancyPrecisionScale;
   double m_discrepancyCorrelationStrengthAlpha;
   double m_discrepancyCorrelationStrengthBeta;
-
-  // The Gaussian process likelihood sampling model
-  const BaseScalarFunction<V, M> & likelihood;
 };
 
 }  // End namespace QUESO

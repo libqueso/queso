@@ -329,6 +329,13 @@ GaussianProcessHelper<V, M>::addExperiments(
 }
 
 template <class V, class M>
+const ConcatenatedVectorRV<V, M> &
+GaussianProcessHelper<V, M>::prior() const
+{
+  return this->m_totalPrior;
+}
+
+template <class V, class M>
 void
 GaussianProcessHelper<V, M>::print(std::ostream& os) const
 {
