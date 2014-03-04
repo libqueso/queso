@@ -336,13 +336,125 @@ GaussianProcessHelper<V, M>::prior() const
 }
 
 template <class V, class M>
+double
+lnValue(const V & domainVector, const V * domainDirection, V * gradVector,
+        M * hessianMatrix, V * hessianEffect) const
+{
+  // Components of domainVector:
+  // theta(1)
+  // theta(2)
+  // ...
+  // theta(dimParameterSpace)
+  // emulator_mean
+  // emulator_precision
+  // emulator_corr_strength(1)
+  // ...
+  // emulator_corr_strength(dimScenario + dimParameter)
+  // discrepancy_precision
+  // discrepancy_corr_strength(1)
+  // ...
+  // discrepancy_corr_strength(dimScenario)
+
+  // Construct covariance matrix
+  unsigned int totalDim = this->numExperiments() + this->numSimulations();
+  double prodScenario = 1.0;
+  double prodParameter = 1.0;
+  double prodDiscrepancy = 1.0;
+  unsigned int dimScenario = (this->scenarioSpace).dimLocal();
+  unsigned int dimParameter = (this->parameterSpace).dimLocal();
+
+  // This is cumbersome.  All I want is a matrix.
+  VectorSpace<V, M> gpSpace(this->env(), "", totalDim, NULL);
+  V dummyVector(gpSpace.zeroVector());
+  M covMatrix(dummyVector);
+
+  for (unsigned int i = 0; i < totalDim; i++) {
+    for (unsigned int j = 0; j < totalDim; j++) {
+      V scenario1;
+      V scenario2;
+      V parameter1;
+      V parameter2;
+
+      // Get i-th and j-th simulation and parameter
+      if (i < this->numExperiments()) {
+        scenario1 = this->experimentScenario(i);
+        parameter1 = this->simulationParameter(0);
+        for (unsigned int k = 0; k < dimParameter; k++) {
+          parameter1[k] = domainVector[k]
+        }
+      }
+      else {
+        scenario1 = this->simulationScenario(i);
+        parameter1 = this->simulationParameter(i);
+      }
+
+      if (j < this->numExperiments()) {
+        scenario2 = this->experimentScenario(j);
+        parameter2 = this->simulationParameter(0);
+        for (unsigned int k = 0; k < dimParameter; k++) {
+          parameter2[k] = domainVector[k]
+        }
+      }
+      else {
+        scenario2 = this->simulationScenario(j);
+        parameter2 = this->simulationParameter(j);
+      }
+
+      // Emulator component
+      prodScenario = 1.0;
+      prodParameter = 1.0;
+      unsigned int emulatorCorrStrStart = dimParameter + 2;
+      for (unsigned int k = 0; i < dimScenario; i++) {
+        prodScenario *= std::pow(domainVector[emulatorCorrStrStart+k],
+                                 4.0 * (scenario1[k] - scenario2[k]) *
+                                       (scenario1[k] - scenario2[k]));
+      }
+
+      for (unsigned int k = 0; k < dimParameter; k++) {
+        prodParameter *= std::pow(
+            domainVector[emulatorCorrStrStart+dimScenario+k],
+            4.0 * (parameter1[k] - parameter2[k]) *
+                  (parameter1[k] - parameter2[k]));
+      }
+
+      covMatrix(i, j) = prodScenario * prodParameter /
+                        domainVector[dimParameter+1];  // emulator precision
+
+      // If we're in the experiment cross correlation part, need extra foo
+      if (i < this->numExperiments() && j < this->numExperiments()) {
+        scenario1 = this->simulationScenario(i);
+        scenario2 = this->simulationScenario(j);
+        prodDiscrepancy = 1.0;
+        unsigned int discrepancyCorrStrStart = dimParameter +
+                                               dimParameter +
+                                               dimScenario + 3;
+        for (unsigned int k = 0; k < dimScenario; k++) {
+          prodDiscrepancy *= std::pow(domainVector[discrepancyCorrStrStart+k],
+                                      4.0 * (scenario1[k] - scenario2[k]) *
+                                            (scenario1[k] - scenario2[k]));
+        }
+
+        covMatrix(i, j) += prodDiscrepancy /
+                           domainVector[discrepancyCorrStrStart-1];
+        covMatrix(i, j) += (this->m_experimentErrors)(i, j);
+      }
+    }
+  }
+}
+
+template <class V, class M>
+double
+actualValue(const V & domainVector, const V * domainDirection, V * gradVector,
+            M * hessianMatrix, V * hessianEffect) const
+{
+}
+
+template <class V, class M>
 void
 GaussianProcessHelper<V, M>::print(std::ostream& os) const
 {
   // Do nothing
 }
-
-}  // End namespace QUESO
 
 // Private methods follow
 template <class V, class M>
@@ -471,5 +583,7 @@ GaussianProcessHelper<V, M>::setUpHyperpriors()
   // Finally
   this->m_totalPrior = new ConcatenatedVectorRV<V, M>("", priors, totalDomain);
 }
+
+}  // End namespace QUESO
 
 template class QUESO::GaussianProcessHelper<QUESO::GslVector, QUESO::GslMatrix>;

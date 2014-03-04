@@ -26,12 +26,13 @@
 #define UQ_GP_HELPER_H
 
 #include <queso/Environment.h>
+#include <queso/ScalarFunction.h>
 #include <queso/VectorSpace.h>
 
 namespace QUESO {
 
 template <class V, class M>
-class GaussianProcessHelper
+class ScalarGaussianProcessLikelihood : public BaseScalarFunction
 {
 public:
   //! Constructor
@@ -188,6 +189,18 @@ public:
                       const std::vector<const M *> & experimentErrors);
 
   const ConcatenatedVectorRV<V, M> & prior() const;
+
+  virtual double lnValue(const V & domainVector,
+                         const V * domainDirection,
+                         V * gradVector,
+                         M * hessianMatrix,
+                         V * hessianEffect) const;
+
+  virtual double actualValue(const V & domainVector,
+                             const V * domainDirection,
+                             V * gradVector,
+                             M * hessianMatrix,
+                             V * hessianEffect) const;
 
   void print(std::ostream& os) const;
   friend std::ostream & operator<<(std::ostream& os,
