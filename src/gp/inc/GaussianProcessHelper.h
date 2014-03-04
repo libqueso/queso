@@ -159,17 +159,6 @@ public:
                      const V & simulationParameter,
                      const V & simulationOutput);
 
-  //! Add a experiment to \c this
-  /*!
-   * The experiment added to \c this is assumed to correspond to the point
-   * \c expermientScenario in scenario space. The experiment output and
-   * observation error covariance matrix are assumed to be stored in
-   * \c experimentOutput and \c experimentError respectively.
-   */
-  void addExperiment(const V & experimentScenario,
-                     const V & experimentOutput,
-                     const M & experimentError);
-
   //! Adds multiple simulations to \c this
   /*!
    * This method takes a vector of simulations and calls \c addSimulation on
@@ -179,14 +168,19 @@ public:
                       const std::vector<const V *> & simulationParameters,
                       const std::vector<const V *> & simulationOutputs);
 
-  //! Adds multiple experiments to \c this
+  //! Add all experiments to \c this
   /*!
-   * This method takes a vector of experiments and calls \c addExperiment on
-   * each element
+   * This method takes a vector of *all* the experimental data and associated
+   * observation errors/correlations and stores them.  This cannot be done
+   * piecemeal like the simulation data.
+   *
+   * Each experiment (\experimentOutputs[i]) is assumed to correspond to the
+   * point \c expermientScenarios[i] in scenario space.  The observation error
+   * covariance matrix is assumed to be stored in \c experimentErrors.
    */
   void addExperiments(const std::vector<const V *> & experimentScenarios,
                       const std::vector<const V *> & experimentOutputs,
-                      const std::vector<const M *> & experimentErrors);
+                      const M & experimentErrors);
 
   const ConcatenatedVectorRV<V, M> & prior() const;
 
@@ -233,7 +227,7 @@ private:
   const std::vector<const V *> & m_experimentOutputs;
 
   // Total observation error covriance matrix
-  const M & m_experimentErrors;
+  const M * m_experimentErrors;
 
   // Counter for the number of adds that happen
   unsigned int m_numSimulationAdds;

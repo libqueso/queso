@@ -287,23 +287,6 @@ GaussianProcessHelper<V, M>::addSimulation(const V & simulationScenario,
 
 template <class V, class M>
 void
-GaussianProcessHelper<V, M>::addExperiment(const V & experimentScenario,
-                                           const V & experimentParameter,
-                                           const M & experimentError)
-{
-  UQ_FATAL_TEST_MACRO(this->m_numExperimentAdds >= this->m_numExperiments,
-                      this->m_env.worldRank(),
-                      "GaussianProcessHelper<V, M>::addExperiment()",
-                      "too many experiment adds...");
-
-  this->m_experimentScenarios[this->m_numExperimentAdds] = &experimentScenario;
-  this->m_experimentParameters[this->m_numExperimentAdds] = &experimentParameter;
-  this->m_experimentErrors[this->m_numExperimentAdds] = &experimentError;
-  this->m_numExperimentAdds++;
-}
-
-template <class V, class M>
-void
 GaussianProcessHelper<V, M>::addSimulations(
     const std::vector<const V *> & simulationScenarios,
     const std::vector<const V *> & simulationParameters,
@@ -320,12 +303,16 @@ void
 GaussianProcessHelper<V, M>::addExperiments(
     const std::vector<const V *> & experimentScenarios,
     const std::vector<const V *> & experimentOutputs,
-    const std::vector<const M *> & experimentErrors)
+    const M * experimentErrors)
 {
-  for (unsigned int i = 0; i < this->m_numExperiments; i++) {
-    this->addExperiment(experimentScenarios[i], experimentOutputs[i],
-        experimentErrors[i]);
-  }
+  UQ_FATAL_TEST_MACRO(experimentScenarios.size() > this->m_numExperiments,
+                      this->m_env.worldRank(),
+                      "GaussianProcessHelper<V, M>::addExperiment()",
+                      "too many experiments...");
+  this->m_experimentScenarios = experimentScenarios;
+  this->m_experimentOutputs = experimentOutputs;
+  this->m_experimentErrors = experimentErrors;
+  this->m_numExperimentAdds += experimentScenarios.size();
 }
 
 template <class V, class M>
@@ -368,6 +355,7 @@ lnValue(const V & domainVector, const V * domainDirection, V * gradVector,
   V dummyVector(gpSpace.zeroVector());
   M covMatrix(dummyVector);
 
+  // This for loop is a disaster and could do with a *lot* of optimisation
   for (unsigned int i = 0; i < totalDim; i++) {
     for (unsigned int j = 0; j < totalDim; j++) {
       V scenario1;
