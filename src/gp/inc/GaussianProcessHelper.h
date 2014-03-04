@@ -231,7 +231,9 @@ private:
   const std::vector<const V *> & m_simulationOutputs;
   const std::vector<const V *> & m_experimentScenarios;
   const std::vector<const V *> & m_experimentOutputs;
-  const std::vector<const M *> & m_experimentErrors;
+
+  // Total observation error covriance matrix
+  const M & m_experimentErrors;
 
   // Counter for the number of adds that happen
   unsigned int m_numSimulationAdds;
