@@ -36,17 +36,17 @@ class ScalarGaussianProcessLikelihood : public BaseScalarFunction
 {
 public:
   //! Constructor
-  GaussianProcessHelper(const char * prefix,
-                        const BaseVectorRV<V, M> & parameterPrior,
-                        const VectorSpace<V, M> & scenarioSpace,
-                        const VectorSpace<V, M> & parameterSpace,
-                        const VectorSpace<V, M> & simulationOutputSpace,
-                        const VectorSpace<V, M> & experimentOutputSpace,
-                        unsigned int numSimulations,
-                        unsigned int numExperiments);
+  GaussianProcessEmulator(const char * prefix,
+                          const BaseVectorRV<V, M> & parameterPrior,
+                          const VectorSpace<V, M> & scenarioSpace,
+                          const VectorSpace<V, M> & parameterSpace,
+                          const VectorSpace<V, M> & simulationOutputSpace,
+                          const VectorSpace<V, M> & experimentOutputSpace,
+                          unsigned int numSimulations,
+                          unsigned int numExperiments);
 
   //! Destructor
-  ~GaussianProcessHelper();
+  ~GaussianProcessEmulator();
 
   //! @name Getters
   //@{
@@ -198,7 +198,7 @@ public:
 
   void print(std::ostream& os) const;
   friend std::ostream & operator<<(std::ostream& os,
-                                   const GaussianProcessHelper<V, M> & obj)
+                                   const GaussianProcessEmulator<V, M> & obj)
   {
     obj.print(os);
     return os;
