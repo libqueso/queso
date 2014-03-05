@@ -132,6 +132,69 @@ ExperimentModel<S_V,S_M,D_V,D_M>::ExperimentModel(
   }
 }
 
+template<class S_V, class S_M, class D_V, class D_M>
+ExperimentModel<S_V, S_M, D_V, D_M>::ExperimentModel(
+    const char * prefix,
+    const EmOptionsValues * alternativeOptionsValues,
+    const ExperimentStorage<S_V, S_M, D_V, D_M> & experimentStorage)
+    :
+    m_env(experimentStorage.scenarioSpace().env()),
+    m_alternativeOptionsValues(),
+    m_optionsObj(NULL),
+    m_paper_p_x(experimentStorage.scenarioSpace().dimLocal()),
+    m_paper_n(experimentStorage.numExperiments()),
+    m_paper_p_delta(1),  // This is 1 when there's no D or K matrices
+    m_paper_n_y(0),
+    m_n_y_space(NULL),
+    m_Dmat_BlockDiag(NULL)
+{
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "Entering ExperimentModel<S_V,S_M,D_V,D_M>::constructor()"
+                            << ": prefix = " << prefix
+                            << ", alternativeOptionsValues = " << alternativeOptionsValues
+                            << ", m_env.optionsInputFileName() = " << m_env.optionsInputFileName()
+                            << "\n  m_paper_p_x = "                << m_paper_p_x
+                            << "\n  m_paper_n = "                  << m_paper_n
+                            << "\n  m_paper_p_delta = "            << m_paper_p_delta
+                            << "\n  m_paper_n_y = "                << "to be set soon"
+                            << std::endl;
+  }
+
+  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
+  if (m_env.optionsInputFileName() == "") {
+    m_optionsObj = new ExperimentModelOptions(m_env,prefix,m_alternativeOptionsValues);
+  }
+  else {
+    m_optionsObj = new ExperimentModelOptions(m_env,prefix);
+    m_optionsObj->scanOptionsValues();
+  }
+
+  UQ_FATAL_TEST_MACRO(m_optionsObj->m_ov.m_Gvalues.size() < 1,
+                      m_env.worldRank(),
+                      "ExperimentModel<S_V,S_M,D_V,D_M>::constructor()",
+                      "invalid m_Gs");
+
+  UQ_FATAL_TEST_MACRO(m_paper_n != experimentStorage.xs_standard().size(),
+                      m_env.worldRank(),
+                      "ExperimentModel<S_V,S_M,D_V,D_M>::constructor()",
+                      "invalid m_paper_n");
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
+    *m_env.subDisplayFile() << "In ExperimentModel<S_V,S_M,D_V,D_M>::constructor()"
+                            << ": prefix = " << prefix
+                            << "\n  m_paper_n_y = " << m_paper_n_y
+                            << std::endl;
+  }
+
+  // m_n_y_space = new VectorSpace<D_V,D_M>(m_env, "n_y_", m_paper_n_y, NULL),
+
+  if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 2)) {
+    *m_env.subDisplayFile() << "Leaving ExperimentModel<S_V,S_M,D_V,D_M>::constructor()"
+                            << ": prefix = " << m_optionsObj->m_prefix
+                            << std::endl;
+  }
+}
+
 template<class S_V,class S_M,class D_V,class D_M>
 ExperimentModel<S_V,S_M,D_V,D_M>::~ExperimentModel()
 {

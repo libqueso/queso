@@ -51,6 +51,7 @@ public:
         double                         etaSeq_chunkStd      (unsigned int chunkId) const;
 #else
         double                         etaSeq_allStd        () const;
+        double                         etaSeq_allMean       () const;
 #endif
   const Q_V&                           etaVec_transformed   (const std::string& debugString) const;
   const Q_V&                           basisVec             (unsigned int basisId) const;

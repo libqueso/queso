@@ -296,6 +296,22 @@ dist_gravity_gsl_DATA =
 dist_gravity_gsl_DATA += $(gravity_gsl_DATA)
 dist_gravity_gsl_DATA += ${gravity_gsl_HEADERS}
 dist_gravity_gsl_DATA += ${gravity_gsl_SOURCES}
+
+##################
+# GPMSA examples #
+##################
+gpscalardir = $(prefix)/examples/gp/scalar
+
+# This is for an input file should one exist
+# gpscalar_DATA = $(top_srcdir)/examples/gp/scalar/gpscalar.inp
+
+gpscalar_PROGRAMS = gpscalar
+gpscalar_SOURCES = $(top_srcdir)/examples/gp/scalar/gpscalar.C
+gpscalar_LDADD = $(top_builddir)/src/libqueso.la
+gpscalar_CPPFLAGS = -I$(top_srcdir)/examples/gp/scalar/src $(QUESO_CPPFLAGS)
+
+dist_gpscalar_DATA =
+dist_gpscalar_DATA += ${gpscalar_SOURCES}
 										 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
