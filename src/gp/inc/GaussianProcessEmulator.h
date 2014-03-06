@@ -34,6 +34,7 @@
 #include <queso/ConcatenatedVectorRV.h>
 #include <queso/GammaVectorRV.h>
 #include <queso/BetaVectorRV.h>
+#include <queso/UniformVectorRV.h>
 
 namespace QUESO {
 

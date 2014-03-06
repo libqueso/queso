@@ -100,9 +100,9 @@ int main(int argc, char ** argv) {
 
   // Instantiate each of the simulation points/outputs
   for (unsigned int i = 0; i < numSimulations; i++) {
-    simulationScenarios[i] = new QUESO::GslVector(configSpace.zeroVector());   // 'x_{i+1}^*' in paper
-    paramVecs          [i] = new QUESO::GslVector(paramSpace.zeroVector());   // 't_{i+1}^*' in paper
-    outputVecs         [i] = new QUESO::GslVector(nEtaSpace.zeroVector()); // 'eta_{i+1}' in paper
+    simulationScenarios[i] = new QUESO::GslVector(configSpace.zeroVector());  // 'x_{i+1}^*' in paper
+    paramVecs          [i] = new QUESO::GslVector(paramSpace.zeroVector());  // 't_{i+1}^*' in paper
+    outputVecs         [i] = new QUESO::GslVector(nEtaSpace.zeroVector());  // 'eta_{i+1}' in paper
   }
 
   // All the positions in scenario space where simulations were run
@@ -216,8 +216,11 @@ int main(int argc, char ** argv) {
   gp.addSimulations(simulationScenarios, paramVecs, outputVecs);
   gp.addExperiments(experimentScenarios, experimentVecs, &experimentMat);
 
+  QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix> postRv(
+      "post_",
+      gp.prior().imageSet().vectorSpace());
   QUESO::StatisticalInverseProblem<QUESO::GslVector, QUESO::GslMatrix> ip("",
-      NULL, priorRv, gp);
+      NULL, gp, postRv);
 
   QUESO::GslVector paramInitials(paramSpace.zeroVector());
 

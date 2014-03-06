@@ -33,6 +33,7 @@
 #include <queso/SequentialVectorRealizer.h>
 #include <queso/VectorRV.h>
 #include <queso/ScalarFunction.h>
+#include <queso/GaussianProcessEmulator.h>
 
 namespace QUESO {
 
@@ -95,6 +96,12 @@ public:
                                    const BaseScalarFunction<P_V,P_M>& likelihoodFunction, 
                                          GenericVectorRV   <P_V,P_M>& postRv);
   
+  StatisticalInverseProblem(
+      const char * prefix,
+      const SipOptionsValues * alternativeOptionsValues,
+      const GaussianProcessEmulator<P_V,P_M> & gpEmulator,
+      GenericVectorRV<P_V,P_M> & postRv);
+
   //! Destructor
   ~StatisticalInverseProblem();
   //@}
