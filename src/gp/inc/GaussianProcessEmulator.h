@@ -25,14 +25,20 @@
 #ifndef UQ_GP_HELPER_H
 #define UQ_GP_HELPER_H
 
+#include <vector>
+
 #include <queso/Environment.h>
 #include <queso/ScalarFunction.h>
 #include <queso/VectorSpace.h>
+#include <queso/VectorRV.h>
+#include <queso/ConcatenatedVectorRV.h>
+#include <queso/GammaVectorRV.h>
+#include <queso/BetaVectorRV.h>
 
 namespace QUESO {
 
 template <class V, class M>
-class ScalarGaussianProcessLikelihood : public BaseScalarFunction
+class GaussianProcessEmulator : public BaseScalarFunction<V, M>
 {
 public:
   //! Constructor
@@ -208,7 +214,7 @@ private:
   // Private variables
   const char * m_prefix;
 
-  const BaseVectorRV & m_parameterPrior;
+  const BaseVectorRV<V, M> & m_parameterPrior;
 
   const BaseEnvironment & m_env;
 
