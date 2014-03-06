@@ -3,7 +3,7 @@
 #include <queso/UniformVectorRV.h>
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/VectorSet.h>
-#include <queso/GaussianProcessHelper.h>
+#include <queso/GaussianProcessEmulator.h>
 
 int main(int argc, char ** argv) {
   // Step 0: Set up some variables
@@ -45,7 +45,7 @@ int main(int argc, char ** argv) {
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> experimentSpace(env,
       "experimentspace_", experimentSize, NULL);
 
-  // Step 5: Instantiate the Gaussian process helper object
+  // Step 5: Instantiate the Gaussian process emulator object
   //
   // Regarding simulation scenario input values, QUESO should standardise them
   // so that they exist inside a hypercube.
@@ -59,17 +59,18 @@ int main(int argc, char ** argv) {
   // Regarding experimental data, QUESO should transformed it so that it has
   // zero mean and variance one.
 
-  // GaussianProcessHelper stores all the information about our simulation data
-  // and experimental data.  It should also store default information about the
+  // GaussianProcessEmulator stores all the information about our simulation
+  // data and experimental data.  It also stores default information about the
   // hyperparameter distributions.
-  QUESO::GaussianProcessHelper<QUESO::GslVector, QUESO::GslMatrix>
-    gpHelper("gp_",
-             configSpace,
-             paramSpace,
-             nEtaSpace,
-             experimentSpace,
-             numSimulations,
-             numExperiments);
+  QUESO::GaussianProcessEmulator<QUESO::GslVector, QUESO::GslMatrix>
+    gp("gp_",
+       priorRv,
+       configSpace,
+       paramSpace,
+       nEtaSpace,
+       experimentSpace,
+       numSimulations,
+       numExperiments);
 
   // std::vector containing all the points in scenario space where we have
   // simulations
@@ -215,11 +216,11 @@ int main(int argc, char ** argv) {
   (*(experimentVecs[5]))[0] = 4.75087857533489;
 
   // Add simulation and experimental data
-  gpHelper.addSimulations(simulationScenarios, paramVecs, outputVecs);
-  gpHelper.addExperiments(experimentScenarios, experimentVecs, experimentMats);
+  gp.addSimulations(simulationScenarios, paramVecs, outputVecs);
+  gp.addExperiments(experimentScenarios, experimentVecs, &experimentMat);
 
   QUESO::StatisticalInverseProblem<QUESO::GslVector, QUESO::GslMatrix> ip("",
-      NULL, priorRv, gpHelper);
+      NULL, priorRv, gp);
 
   QUESO::GslVector paramInitials(paramSpace.zeroVector());
 
