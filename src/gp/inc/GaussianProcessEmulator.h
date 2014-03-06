@@ -164,9 +164,9 @@ public:
    * This method takes a vector of simulations and calls \c addSimulation on
    * each element
    */
-  void addSimulations(const std::vector<const V *> & simulationScenarios,
-                      const std::vector<const V *> & simulationParameters,
-                      const std::vector<const V *> & simulationOutputs);
+  void addSimulations(const std::vector<V *> & simulationScenarios,
+                      const std::vector<V *> & simulationParameters,
+                      const std::vector<V *> & simulationOutputs);
 
   //! Add all experiments to \c this
   /*!
@@ -178,9 +178,9 @@ public:
    * point \c expermientScenarios[i] in scenario space.  The observation error
    * covariance matrix is assumed to be stored in \c experimentErrors.
    */
-  void addExperiments(const std::vector<const V *> & experimentScenarios,
-                      const std::vector<const V *> & experimentOutputs,
-                      const M & experimentErrors);
+  void addExperiments(const std::vector<V *> & experimentScenarios,
+                      const std::vector<V *> & experimentOutputs,
+                      const M * experimentErrors);
 
   const ConcatenatedVectorRV<V, M> & prior() const;
 

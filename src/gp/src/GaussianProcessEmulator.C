@@ -293,9 +293,9 @@ GaussianProcessEmulator<V, M>::addSimulation(const V & simulationScenario,
 template <class V, class M>
 void
 GaussianProcessEmulator<V, M>::addSimulations(
-    const std::vector<const V *> & simulationScenarios,
-    const std::vector<const V *> & simulationParameters,
-    const std::vector<const V *> & simulationOutputs)
+    const std::vector<V *> & simulationScenarios,
+    const std::vector<V *> & simulationParameters,
+    const std::vector<V *> & simulationOutputs)
 {
   for (unsigned int i = 0; i < this->m_numSimulations; i++) {
     this->addSimulation(simulationScenarios[i], simulationParameters[i],
@@ -306,8 +306,8 @@ GaussianProcessEmulator<V, M>::addSimulations(
 template <class V, class M>
 void
 GaussianProcessEmulator<V, M>::addExperiments(
-    const std::vector<const V *> & experimentScenarios,
-    const std::vector<const V *> & experimentOutputs,
+    const std::vector<V *> & experimentScenarios,
+    const std::vector<V *> & experimentOutputs,
     const M * experimentErrors)
 {
   UQ_FATAL_TEST_MACRO(experimentScenarios.size() > this->m_numExperiments,

@@ -95,10 +95,8 @@ int main(int argc, char ** argv) {
   std::vector<QUESO::GslVector *> experimentVecs(numExperiments,
       (QUESO::GslVector *) NULL);
 
-  // std::vector containing all the experimental output data observation error
-  // covariance matrices
-  std::vector<QUESO::GslMatrix *> experimentMats(numExperiments,
-      (QUESO::GslMatrix *) NULL);
+  // The experimental output data observation error covariance matrix
+  QUESO::GslMatrix experimentMat(experimentSpace.zeroVector());
 
   // Instantiate each of the simulation points/outputs
   for (unsigned int i = 0; i < numSimulations; i++) {
@@ -194,7 +192,6 @@ int main(int argc, char ** argv) {
   for (unsigned int i = 0; i < numExperiments; i++) {
     experimentScenarios[i] = new QUESO::GslVector(configSpace.zeroVector()); // 'x_{i+1}' in paper
     experimentVecs[i] = new QUESO::GslVector(experimentSpace.zeroVector());
-    experimentMats[i] = new QUESO::GslMatrix(experimentSpace.zeroVector());
   }
 
   // All the positions in scenario space where we have experimental data
