@@ -101,12 +101,12 @@ template <class P_V,class P_M>
 StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
     const char * prefix,
     const SipOptionsValues * alternativeOptionsValues,
-    const GaussianProcessEmulator<P_V, P_M> & gpEmulator,
+    const GaussianProcessFactory<P_V, P_M> & gpFactory,
     GenericVectorRV <P_V,P_M> & postRv)
   :
-  m_env                     (gpEmulator.prior().env()),
-  m_priorRv                 (gpEmulator.prior()),
-  m_likelihoodFunction      (gpEmulator),
+  m_env                     (gpFactory.m_totalPrior->env()),
+  m_priorRv                 (*gpFactory.m_totalPrior),
+  m_likelihoodFunction      (gpFactory.getGaussianProcess()),
   m_postRv                  (postRv),
   m_solutionDomain          (NULL),
   m_solutionPdf             (NULL),

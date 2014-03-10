@@ -42,18 +42,71 @@ template <class V, class M>
 class GaussianProcessEmulator : public BaseScalarFunction<V, M>
 {
 public:
+  GaussianProcessEmulator(const VectorSet<V, M> & domain,
+      const VectorSpace<V, M> & m_scenarioSpace,
+      const VectorSpace<V, M> & m_parameterSpace,
+      const VectorSpace<V, M> & m_simulationOutputSpace,
+      const VectorSpace<V, M> & m_experimentOutputSpace,
+      const unsigned int m_numSimulations,
+      const unsigned int m_numExperiments,
+      const std::vector<V *> & m_simulationScenarios,
+      const std::vector<V *> & m_simulationParameters,
+      const std::vector<V *> & m_simulationOutputs,
+      const std::vector<V *> & m_experimentScenarios,
+      const std::vector<V *> & m_experimentOutputs,
+      const M & m_experimentErrors,
+      const ConcatenatedVectorRV<V, M> & m_totalPrior);
+
+  virtual ~GaussianProcessEmulator();
+
+  virtual double lnValue(const V & domainVector,
+                         const V * domainDirection,
+                         V * gradVector,
+                         M * hessianMatrix,
+                         V * hessianEffect) const;
+
+  virtual double actualValue(const V & domainVector,
+                             const V * domainDirection,
+                             V * gradVector,
+                             M * hessianMatrix,
+                             V * hessianEffect) const;
+
+  const VectorSpace<V, M> & m_scenarioSpace;
+  const VectorSpace<V, M> & m_parameterSpace;
+  const VectorSpace<V, M> & m_simulationOutputSpace;
+  const VectorSpace<V, M> & m_experimentOutputSpace;
+
+  const unsigned int m_numSimulations;
+  const unsigned int m_numExperiments;
+
+  std::vector<const V *> m_simulationScenarios;
+  std::vector<const V *> m_simulationParameters;
+  std::vector<const V *> m_simulationOutputs;
+  std::vector<const V *> m_experimentScenarios;
+  std::vector<const V *> m_experimentOutputs;
+
+  // Total observation error covriance matrix
+  const M & m_experimentErrors;
+
+  const ConcatenatedVectorRV<V, M> & m_totalPrior;
+};
+
+template <class V, class M>
+class GaussianProcessFactory
+{
+public:
   //! Constructor
-  GaussianProcessEmulator(const char * prefix,
-                          const BaseVectorRV<V, M> & parameterPrior,
-                          const VectorSpace<V, M> & scenarioSpace,
-                          const VectorSpace<V, M> & parameterSpace,
-                          const VectorSpace<V, M> & simulationOutputSpace,
-                          const VectorSpace<V, M> & experimentOutputSpace,
-                          unsigned int numSimulations,
-                          unsigned int numExperiments);
+  GaussianProcessFactory(const char * prefix,
+                         const BaseVectorRV<V, M> & parameterPrior,
+                         const VectorSpace<V, M> & scenarioSpace,
+                         const VectorSpace<V, M> & parameterSpace,
+                         const VectorSpace<V, M> & simulationOutputSpace,
+                         const VectorSpace<V, M> & experimentOutputSpace,
+                         unsigned int numSimulations,
+                         unsigned int numExperiments);
 
   //! Destructor
-  ~GaussianProcessEmulator();
+  ~GaussianProcessFactory();
 
   //! @name Getters
   //@{
@@ -88,7 +141,7 @@ public:
    * This returns all points in scenario space at which simulations were
    * executed
    */
-  const std::vector<const V *> & simulationScenarios() const;
+  const std::vector<V *> & simulationScenarios() const;
 
   //! Return the point in \c parameterSpace for simulation \c simulationId
   /*!
@@ -102,7 +155,7 @@ public:
    * This returns all points in parameter space at which simulations were
    * executed
    */
-  const std::vector<const V *> & simulationParameters() const;
+  const std::vector<V *> & simulationParameters() const;
 
   //! Return the simulation output for simulation \c simulationId
   /*!
@@ -115,7 +168,7 @@ public:
    * This returns all points in simulation output space at which simulations
    * were executed
    */
-  const std::vector<const V *> & simulationOutputs() const;
+  const std::vector<V *> & simulationOutputs() const;
 
   //! Return the point in \c scenarioSpace for experiment \c experimentId
   /*!
@@ -129,7 +182,7 @@ public:
    * This returns all points in scenario space at which experiments were
    * executed
    */
-  const std::vector<const V *> & experimentScenarios() const;
+  const std::vector<V *> & experimentScenarios() const;
 
   //! Return the experiment output for experiment \c experimentId
   /*!
@@ -142,16 +195,16 @@ public:
    * This returns all points in experiment output space at which experiments
    * were executed
    */
-  const std::vector<const V *> & experimentOutputs() const;
-
-  //! Return the observation error covariance matrix for experiment \c experimentId
-  const M & experimentError(unsigned int experimentId) const;
+  const std::vector<V *> & experimentOutputs() const;
 
   //! Return all observation error covarince matrices for all experiments
-  const std::vector<const M *> & experimentErrors() const;
+  const M & experimentErrors() const;
 
   //! Return the QUESO environment
   const BaseEnvironment & env() const;
+
+  //! Return the Gaussian process likelihood object
+  const GaussianProcessEmulator<V, M> & getGaussianProcess() const;
 
   //@}
 
@@ -162,9 +215,9 @@ public:
    * parameter space.  The simulation output is assumed to be stored in
    * \c simulationOutput.
    */
-  void addSimulation(const V & simulationScenario,
-                     const V & simulationParameter,
-                     const V & simulationOutput);
+  void addSimulation(V & simulationScenario,
+                     V & simulationParameter,
+                     V & simulationOutput);
 
   //! Adds multiple simulations to \c this
   /*!
@@ -191,28 +244,14 @@ public:
 
   const ConcatenatedVectorRV<V, M> & prior() const;
 
-  virtual double lnValue(const V & domainVector,
-                         const V * domainDirection,
-                         V * gradVector,
-                         M * hessianMatrix,
-                         V * hessianEffect) const;
-
-  virtual double actualValue(const V & domainVector,
-                             const V * domainDirection,
-                             V * gradVector,
-                             M * hessianMatrix,
-                             V * hessianEffect) const;
-
   void print(std::ostream& os) const;
   friend std::ostream & operator<<(std::ostream& os,
-                                   const GaussianProcessEmulator<V, M> & obj)
+                                   const GaussianProcessFactory<V, M> & obj)
   {
     obj.print(os);
     return os;
   }
 
-private:
-  // Private variables
   const char * m_prefix;
 
   const BaseVectorRV<V, M> & m_parameterPrior;
@@ -227,11 +266,11 @@ private:
   unsigned int m_numSimulations;
   unsigned int m_numExperiments;
 
-  const std::vector<const V *> & m_simulationScenarios;
-  const std::vector<const V *> & m_simulationParameters;
-  const std::vector<const V *> & m_simulationOutputs;
-  const std::vector<const V *> & m_experimentScenarios;
-  const std::vector<const V *> & m_experimentOutputs;
+  std::vector<V *> m_simulationScenarios;
+  std::vector<V *> m_simulationParameters;
+  std::vector<V *> m_simulationOutputs;
+  std::vector<V *> m_experimentScenarios;
+  std::vector<V *> m_experimentOutputs;
 
   // Total observation error covriance matrix
   const M * m_experimentErrors;
@@ -241,18 +280,57 @@ private:
   unsigned int m_numExperimentAdds;
 
   // The space in which the emulator (simulator) lives
-  const VectorSpace<V, M> & m_emulatorSpace;
+  // const VectorSpace<V, M> & m_emulatorSpace;
   
   // The emulator state
-  const V & m_emulator;
+  // const V & m_emulator;
 
   // All the GP priors information for a scalar GP follows:
   void setUpHyperpriors();
 
   // Domains for all the hyperpriors
-  const BoxSubset<V, M> & m_meanDomain;
-  const BoxSubset<V, M> & m_PrecisionDomain;
-  const BoxSubset<V, M> & m_CorrelationStrengthDomain;
+  VectorSpace<V, M> * oneDSpace;
+
+  // Emulator mean
+  V * emulatorMeanMin;
+  V * emulatorMeanMax;
+  BoxSubset<V, M> * emulatorMeanDomain;
+
+  // Emulator precision
+  V * emulatorPrecisionMin;
+  V * emulatorPrecisionMax;
+  BoxSubset<V, M> * emulatorPrecisionDomain;
+
+  // Emulator correlation strength
+  VectorSpace<V, M> * emulatorCorrelationSpace;
+
+  V * emulatorCorrelationMin;
+  V * emulatorCorrelationMax;
+
+  BoxSubset<V, M> * emulatorCorrelationDomain;
+
+  // Discrepancy precision
+  V * discrepancyPrecisionMin;
+  V * discrepancyPrecisionMax;
+
+  BoxSubset<V, M> * discrepancyPrecisionDomain;
+
+  // Discrepancy correlation strength
+  VectorSpace<V, M> * discrepancyCorrelationSpace;
+
+  V * discrepancyCorrelationMin;
+  V * discrepancyCorrelationMax;
+
+  BoxSubset<V, M> * discrepancyCorrelationDomain;
+
+  // Now form full prior
+  VectorSpace<V, M> * totalSpace;
+  V * totalMins;
+  V * totalMaxs;
+
+  BoxSubset<V, M> * totalDomain;
+
+  std::vector<const BaseVectorRV<V, M> *> * priors;
 
   // The hyperpriors
   UniformVectorRV<V, M> * m_emulatorMean;  // scalar
@@ -271,6 +349,18 @@ private:
   double m_discrepancyPrecisionScale;
   double m_discrepancyCorrelationStrengthAlpha;
   double m_discrepancyCorrelationStrengthBeta;
+
+  V * m_emulatorPrecisionShapeVec;
+  V * m_emulatorPrecisionScaleVec;
+  V * m_emulatorCorrelationStrengthAlphaVec;
+  V * m_emulatorCorrelationStrengthBetaVec;
+  V * m_discrepancyPrecisionShapeVec;
+  V * m_discrepancyPrecisionScaleVec;
+  V * m_discrepancyCorrelationStrengthAlphaVec;
+  V * m_discrepancyCorrelationStrengthBetaVec;
+
+  // The gaussian process object to build
+  GaussianProcessEmulator<V, M> * gaussianProcess;
 };
 
 }  // End namespace QUESO

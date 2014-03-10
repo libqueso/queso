@@ -99,7 +99,7 @@ public:
   StatisticalInverseProblem(
       const char * prefix,
       const SipOptionsValues * alternativeOptionsValues,
-      const GaussianProcessEmulator<P_V,P_M> & gpEmulator,
+      const GaussianProcessFactory<P_V,P_M> & gpFactory,
       GenericVectorRV<P_V,P_M> & postRv);
 
   //! Destructor
