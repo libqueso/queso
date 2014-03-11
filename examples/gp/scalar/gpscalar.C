@@ -45,6 +45,9 @@ int main(int argc, char ** argv) {
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> experimentSpace(env,
       "experimentspace_", experimentSize, NULL);
 
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> totalExperimentSpace(env,
+      "experimentspace_", experimentSize * numExperiments, NULL);
+
   // Step 5: Instantiate the Gaussian process emulator object
   //
   // Regarding simulation scenario input values, QUESO should standardise them
@@ -71,39 +74,32 @@ int main(int argc, char ** argv) {
               experimentSpace,
               numSimulations,
               numExperiments);
-  std::cout << "got here 4" << std::endl;
 
   // std::vector containing all the points in scenario space where we have
   // simulations
   std::vector<QUESO::GslVector *> simulationScenarios(numSimulations,
       (QUESO::GslVector *) NULL);
-  std::cout << "got here 5" << std::endl;
 
   // std::vector containing all the points in parameter space where we have
   // simulations
   std::vector<QUESO::GslVector *> paramVecs(numSimulations,
       (QUESO::GslVector *) NULL);
-  std::cout << "got here 6" << std::endl;
 
   // std::vector containing all the simulation output data
   std::vector<QUESO::GslVector *> outputVecs(numSimulations,
       (QUESO::GslVector *) NULL);
-  std::cout << "got here 7" << std::endl;
 
   // std::vector containing all the points in scenario space where we have
   // experiments
   std::vector<QUESO::GslVector *> experimentScenarios(numExperiments,
       (QUESO::GslVector *) NULL);
-  std::cout << "got here 8" << std::endl;
 
   // std::vector containing all the experimental output data
   std::vector<QUESO::GslVector *> experimentVecs(numExperiments,
       (QUESO::GslVector *) NULL);
-  std::cout << "got here 9" << std::endl;
 
   // The experimental output data observation error covariance matrix
-  QUESO::GslMatrix experimentMat(experimentSpace.zeroVector());
-  std::cout << "got here 10" << std::endl;
+  QUESO::GslMatrix experimentMat(totalExperimentSpace.zeroVector());
 
   // Instantiate each of the simulation points/outputs
   for (unsigned int i = 0; i < numSimulations; i++) {
@@ -111,7 +107,6 @@ int main(int argc, char ** argv) {
     paramVecs          [i] = new QUESO::GslVector(paramSpace.zeroVector());  // 't_{i+1}^*' in paper
     outputVecs         [i] = new QUESO::GslVector(nEtaSpace.zeroVector());  // 'eta_{i+1}' in paper
   }
-  std::cout << "got here 11" << std::endl;
 
   // All the positions in scenario space where simulations were run
   // This should probably be read from a file
@@ -140,7 +135,6 @@ int main(int argc, char ** argv) {
   (*(simulationScenarios[22]))[0] = 0.833333;
   (*(simulationScenarios[23]))[0] = 0.958333;
   (*(simulationScenarios[24]))[0] = 0.916667;
-  std::cout << "got here 12" << std::endl;
 
   // All the positions in parameter space where simulations were run
   // This should probably be read from a file
@@ -169,7 +163,6 @@ int main(int argc, char ** argv) {
   (*(paramVecs[22]))[0] = 0.458333;
   (*(paramVecs[23]))[0] = 0.666667;
   (*(paramVecs[24]))[0] = 0.958333;
-  std::cout << "got here 13" << std::endl;
 
   // Simulation output from sim_outputs file from matlab gpmsa implementation
   // This should probably be read from a file
@@ -198,13 +191,11 @@ int main(int argc, char ** argv) {
   (*(outputVecs[22]))[0] = 4.23694028613074;
   (*(outputVecs[23]))[0] = 5.31781675076092;
   (*(outputVecs[24]))[0] = 6.39189142027432;
-  std::cout << "got here 14" << std::endl;
 
   for (unsigned int i = 0; i < numExperiments; i++) {
     experimentScenarios[i] = new QUESO::GslVector(configSpace.zeroVector()); // 'x_{i+1}' in paper
     experimentVecs[i] = new QUESO::GslVector(experimentSpace.zeroVector());
   }
-  std::cout << "got here 15" << std::endl;
 
   // All the positions in scenario space where we have experimental data
   // This should probably be read from a file
@@ -214,7 +205,6 @@ int main(int argc, char ** argv) {
   (*(experimentScenarios[3]))[0] = 0.6;
   (*(experimentScenarios[4]))[0] = 0.8;
   (*(experimentScenarios[5]))[0] = 1.0;
-  std::cout << "got here 16" << std::endl;
 
   // These are the experimental data
   // This should probably be read from a file
@@ -224,32 +214,30 @@ int main(int argc, char ** argv) {
   (*(experimentVecs[3]))[0] = 3.8330395105599;
   (*(experimentVecs[4]))[0] = 4.59654198432239;
   (*(experimentVecs[5]))[0] = 4.75087857533489;
-  std::cout << "got here 17" << std::endl;
 
   // Add simulation and experimental data
   gpFactory.addSimulations(simulationScenarios, paramVecs, outputVecs);
-  std::cout << "got here 18" << std::endl;
   gpFactory.addExperiments(experimentScenarios, experimentVecs, &experimentMat);
-  std::cout << "got here 19" << std::endl;
 
   QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix> postRv(
       "post_",
       gpFactory.prior().imageSet().vectorSpace());
-  std::cout << "got here 20" << std::endl;
   QUESO::StatisticalInverseProblem<QUESO::GslVector, QUESO::GslMatrix> ip("",
       NULL, gpFactory, postRv);
-  std::cout << "got here 21" << std::endl;
 
-  QUESO::GslVector paramInitials(paramSpace.zeroVector());
-  std::cout << "got here 22" << std::endl;
+  QUESO::GslVector paramInitials(
+      gpFactory.prior().imageSet().vectorSpace().zeroVector());
 
   // Initial condition of the chain
-  paramInitials[0] = 0.0;
-  std::cout << "got here 23" << std::endl;
+  for (unsigned int i = 0; i < paramInitials.sizeLocal(); i++) {
+    paramInitials[i] = 0.0;
+  }
 
-  QUESO::GslMatrix proposalCovMatrix(paramSpace.zeroVector());
-  std::cout << "got here 24" << std::endl;
-  proposalCovMatrix(0, 0) = 0.1;
+  QUESO::GslMatrix proposalCovMatrix(
+      gpFactory.prior().imageSet().vectorSpace().zeroVector());
+  for (unsigned int i = 0; i < proposalCovMatrix.numRowsLocal(); i++) {
+    proposalCovMatrix(i, i) = 0.1;
+  }
   std::cout << "got here 25" << std::endl;
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);

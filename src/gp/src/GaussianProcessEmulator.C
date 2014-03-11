@@ -104,76 +104,90 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
   V residual(gpSpace.zeroVector());
   M covMatrix(residual);
 
+  V *scenario1;
+  V *scenario2;
+  V *parameter1;
+  V *parameter2;
+
   // This for loop is a disaster and could do with a *lot* of optimisation
   for (unsigned int i = 0; i < totalDim; i++) {
     for (unsigned int j = 0; j < totalDim; j++) {
-      V scenario1;
-      V scenario2;
-      V parameter1;
-      V parameter2;
-
       // Get i-th and j-th simulation and parameter
       if (i < this->m_numExperiments) {
-        scenario1 = *((this->m_experimentScenarios)[i]);
-        parameter1 = *((this->m_simulationParameters)[0]);
+        scenario1 = new V(*((this->m_experimentScenarios)[i]));
+        parameter1 = new V(*((this->m_simulationParameters)[0]));
         for (unsigned int k = 0; k < dimParameter; k++) {
-          parameter1[k] = domainVector[k];
+          (*parameter1)[k] = domainVector[k];
         }
       }
       else {
-        scenario1 = *((this->m_simulationScenarios)[i]);
-        parameter1 = *((this->m_simulationParameters)[i]);
+        scenario1 =
+          new V(*((this->m_simulationScenarios)[i-this->m_numExperiments]));
+        parameter1 =
+          new V(*((this->m_simulationParameters)[i-this->m_numExperiments]));
       }
 
       if (j < this->m_numExperiments) {
-        scenario2 = *((this->m_experimentScenarios)[j]);
-        parameter2 = *((this->m_simulationParameters)[0]);
+        scenario2 = new V(*((this->m_experimentScenarios)[j]));
+        parameter2 = new V(*((this->m_simulationParameters)[0]));
         for (unsigned int k = 0; k < dimParameter; k++) {
-          parameter2[k] = domainVector[k];
+          (*parameter2)[k] = domainVector[k];
         }
       }
       else {
-        scenario2 = *((this->m_simulationScenarios)[j]);
-        parameter2 = *((this->m_simulationParameters)[j]);
+        std::cout << "i, j = " << i << " " << j << std::endl;
+        scenario2 =
+          new V(*((this->m_simulationScenarios)[j-this->m_numExperiments]));
+        std::cout << "i, j = " << i << " " << j << std::endl;
+        parameter2 =
+          new V(*((this->m_simulationParameters)[j-this->m_numExperiments]));
       }
 
       // Emulator component
       prodScenario = 1.0;
       prodParameter = 1.0;
       unsigned int emulatorCorrStrStart = dimParameter + 2;
-      for (unsigned int k = 0; i < dimScenario; i++) {
+      for (unsigned int k = 0; k < dimScenario; k++) {
         prodScenario *= std::pow(domainVector[emulatorCorrStrStart+k],
-                                 4.0 * (scenario1[k] - scenario2[k]) *
-                                       (scenario1[k] - scenario2[k]));
+                                 4.0 * ((*scenario1)[k] - (*scenario2)[k]) *
+                                       ((*scenario1)[k] - (*scenario2)[k]));
       }
 
       for (unsigned int k = 0; k < dimParameter; k++) {
         prodParameter *= std::pow(
             domainVector[emulatorCorrStrStart+dimScenario+k],
-            4.0 * (parameter1[k] - parameter2[k]) *
-                  (parameter1[k] - parameter2[k]));
+            4.0 * ((*parameter1)[k] - (*parameter2)[k]) *
+                  ((*parameter1)[k] - (*parameter2)[k]));
       }
 
       covMatrix(i, j) = prodScenario * prodParameter /
                         domainVector[dimParameter+1];  // emulator precision
 
+      delete scenario1;
+      delete scenario2;
+      delete parameter1;
+      delete parameter2;
+
       // If we're in the experiment cross correlation part, need extra foo
       if (i < this->m_numExperiments && j < this->m_numExperiments) {
-        scenario1 = *((this->m_simulationScenarios)[i]);
-        scenario2 = *((this->m_simulationScenarios)[j]);
+        scenario1 = new V(*((this->m_simulationScenarios)[i]));
+        scenario2 = new V(*((this->m_simulationScenarios)[j]));
         prodDiscrepancy = 1.0;
         unsigned int discrepancyCorrStrStart = dimParameter +
                                                dimParameter +
                                                dimScenario + 3;
         for (unsigned int k = 0; k < dimScenario; k++) {
           prodDiscrepancy *= std::pow(domainVector[discrepancyCorrStrStart+k],
-                                      4.0 * (scenario1[k] - scenario2[k]) *
-                                            (scenario1[k] - scenario2[k]));
+                                      4.0 * ((*scenario1)[k] - (*scenario2)[k]) *
+                                            ((*scenario1)[k] - (*scenario2)[k]));
         }
 
         covMatrix(i, j) += prodDiscrepancy /
                            domainVector[discrepancyCorrStrStart-1];
         covMatrix(i, j) += (this->m_experimentErrors)(i, j);
+
+        delete scenario1;
+        delete scenario2;
       }
     }
   }
