@@ -105,7 +105,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
     GenericVectorRV <P_V,P_M> & postRv)
   :
   m_env                     (gpFactory.m_totalPrior->env()),
-  m_priorRv                 (*gpFactory.m_totalPrior),
+  m_priorRv                 (*(gpFactory.m_totalPrior)),
   m_likelihoodFunction      (gpFactory.getGaussianProcess()),
   m_postRv                  (postRv),
   m_solutionDomain          (NULL),

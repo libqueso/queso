@@ -79,11 +79,11 @@ public:
   const unsigned int m_numSimulations;
   const unsigned int m_numExperiments;
 
-  std::vector<const V *> m_simulationScenarios;
-  std::vector<const V *> m_simulationParameters;
-  std::vector<const V *> m_simulationOutputs;
-  std::vector<const V *> m_experimentScenarios;
-  std::vector<const V *> m_experimentOutputs;
+  const std::vector<V *> & m_simulationScenarios;
+  const std::vector<V *> & m_simulationParameters;
+  const std::vector<V *> & m_simulationOutputs;
+  const std::vector<V *> & m_experimentScenarios;
+  const std::vector<V *> & m_experimentOutputs;
 
   // Total observation error covriance matrix
   const M & m_experimentErrors;

@@ -63,6 +63,12 @@ GaussianProcessEmulator<V, M>::GaussianProcessEmulator(
 }
 
 template <class V, class M>
+GaussianProcessEmulator<V, M>::~GaussianProcessEmulator()
+{
+  // Do nothing?
+}
+
+template <class V, class M>
 double
 GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
                                        const V * domainDirection,
@@ -86,15 +92,15 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
   // discrepancy_corr_strength(dimScenario)
 
   // Construct covariance matrix
-  unsigned int totalDim = this->numExperiments() + this->numSimulations();
+  unsigned int totalDim = this->m_numExperiments + this->m_numSimulations;
   double prodScenario = 1.0;
   double prodParameter = 1.0;
   double prodDiscrepancy = 1.0;
-  unsigned int dimScenario = (this->scenarioSpace).dimLocal();
-  unsigned int dimParameter = (this->parameterSpace).dimLocal();
+  unsigned int dimScenario = (this->m_scenarioSpace).dimLocal();
+  unsigned int dimParameter = (this->m_parameterSpace).dimLocal();
 
   // This is cumbersome.  All I want is a matrix.
-  VectorSpace<V, M> gpSpace(this->env(), "", totalDim, NULL);
+  VectorSpace<V, M> gpSpace(this->m_scenarioSpace.env(), "", totalDim, NULL);
   V residual(gpSpace.zeroVector());
   M covMatrix(residual);
 
@@ -107,28 +113,28 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
       V parameter2;
 
       // Get i-th and j-th simulation and parameter
-      if (i < this->numExperiments()) {
-        scenario1 = this->experimentScenario(i);
-        parameter1 = this->simulationParameter(0);
+      if (i < this->m_numExperiments) {
+        scenario1 = *((this->m_experimentScenarios)[i]);
+        parameter1 = *((this->m_simulationParameters)[0]);
         for (unsigned int k = 0; k < dimParameter; k++) {
           parameter1[k] = domainVector[k];
         }
       }
       else {
-        scenario1 = this->simulationScenario(i);
-        parameter1 = this->simulationParameter(i);
+        scenario1 = *((this->m_simulationScenarios)[i]);
+        parameter1 = *((this->m_simulationParameters)[i]);
       }
 
-      if (j < this->numExperiments()) {
-        scenario2 = this->experimentScenario(j);
-        parameter2 = this->simulationParameter(0);
+      if (j < this->m_numExperiments) {
+        scenario2 = *((this->m_experimentScenarios)[j]);
+        parameter2 = *((this->m_simulationParameters)[0]);
         for (unsigned int k = 0; k < dimParameter; k++) {
           parameter2[k] = domainVector[k];
         }
       }
       else {
-        scenario2 = this->simulationScenario(j);
-        parameter2 = this->simulationParameter(j);
+        scenario2 = *((this->m_simulationScenarios)[j]);
+        parameter2 = *((this->m_simulationParameters)[j]);
       }
 
       // Emulator component
@@ -152,9 +158,9 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
                         domainVector[dimParameter+1];  // emulator precision
 
       // If we're in the experiment cross correlation part, need extra foo
-      if (i < this->numExperiments() && j < this->numExperiments()) {
-        scenario1 = this->simulationScenario(i);
-        scenario2 = this->simulationScenario(j);
+      if (i < this->m_numExperiments && j < this->m_numExperiments) {
+        scenario1 = *((this->m_simulationScenarios)[i]);
+        scenario2 = *((this->m_simulationScenarios)[j]);
         prodDiscrepancy = 1.0;
         unsigned int discrepancyCorrStrStart = dimParameter +
                                                dimParameter +
@@ -173,15 +179,15 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
   }
 
   // Form residual = D - mean
-  for (unsigned int i = 0; i < this->numExperiments(); i++) {
+  for (unsigned int i = 0; i < this->m_numExperiments; i++) {
     // Scalar so ok -- will need updating for nonscalar case
-    residual[i] = ((this->experimentOutput)(i))[0] -
+    residual[i] = (*((this->m_experimentOutputs)[i]))[0] -
       domainVector[dimParameter];
   }
-  for (unsigned int i = 0; i < this->numSimulations(); i++) {
+  for (unsigned int i = 0; i < this->m_numSimulations; i++) {
     // Scalar so ok -- will need updating for nonscalar case
-    residual[i+this->numExperiments()] = ((this->simulationOutput)(i))[0] -
-      domainVector[dimParameter];
+    residual[i+this->m_numExperiments] =
+      (*((this->m_simulationOutputs)[i]))[0] - domainVector[dimParameter];
   }
 
   // Solve covMatrix * sol = residual
@@ -439,25 +445,6 @@ template <class V, class M>
 const GaussianProcessEmulator<V, M> &
 GaussianProcessFactory<V, M>::getGaussianProcess() const
 {
-  // Construct one if we haven't already
-  if (this->gaussianProcess == NULL) {
-    // this->gp = new GaussianProcessEmulator(
-    //     this->prior().imageSet(),
-    //     this->m_scenarioSpace,
-    //     this->m_parameterSpace,
-    //     this->m_simulationOutputSpace,
-    //     this->m_experimentOutputSpace,
-    //     this->m_numSimulations,
-    //     this->m_numExperiments,
-    //     this->m_simulationScenarios,
-    //     this->m_simulationParameters,
-    //     this->m_simulationOutputs,
-    //     this->m_experimentScenarios,
-    //     this->m_experimentOutputs,
-    //     *(this->m_experimentErrors),
-    //     *(this->m_totalPrior));
-  }
-
   return *(this->gaussianProcess);
 }
 
@@ -477,10 +464,25 @@ GaussianProcessFactory<V, M>::addSimulation(V & simulationScenario,
   this->m_simulationOutputs[this->m_numSimulationAdds] = &simulationOutput;
   this->m_numSimulationAdds++;
 
-  // Done adding so form the emulator state
-  // if (this->m_numSimulationAdds == this->m_numSimulations) {
-  //   this->m_emulator.cwSetConcatenated(this->m_simulationOutputs);
-  // }
+  if ((this->m_numSimulationAdds == this->m_numSimulations) &&
+      (this->m_numExperimentAdds == this->m_numExperiments) &&
+      (this->gaussianProcess == NULL)) {
+    this->gaussianProcess = new GaussianProcessEmulator<V, M>(
+        this->prior().imageSet(),
+        this->m_scenarioSpace,
+        this->m_parameterSpace,
+        this->m_simulationOutputSpace,
+        this->m_experimentOutputSpace,
+        this->m_numSimulations,
+        this->m_numExperiments,
+        this->m_simulationScenarios,
+        this->m_simulationParameters,
+        this->m_simulationOutputs,
+        this->m_experimentScenarios,
+        this->m_experimentOutputs,
+        *(this->m_experimentErrors),
+        *(this->m_totalPrior));
+  }
 }
 
 template <class V, class M>
@@ -514,6 +516,26 @@ GaussianProcessFactory<V, M>::addExperiments(
   }
   this->m_experimentErrors = experimentErrors;
   this->m_numExperimentAdds += experimentScenarios.size();
+
+  if ((this->m_numSimulationAdds == this->m_numSimulations) &&
+      (this->m_numExperimentAdds == this->m_numExperiments) &&
+      (this->gaussianProcess == NULL)) {
+    this->gaussianProcess = new GaussianProcessEmulator<V, M>(
+        this->prior().imageSet(),
+        this->m_scenarioSpace,
+        this->m_parameterSpace,
+        this->m_simulationOutputSpace,
+        this->m_experimentOutputSpace,
+        this->m_numSimulations,
+        this->m_numExperiments,
+        this->m_simulationScenarios,
+        this->m_simulationParameters,
+        this->m_simulationOutputs,
+        this->m_experimentScenarios,
+        this->m_experimentOutputs,
+        *(this->m_experimentErrors),
+        *(this->m_totalPrior));
+  }
 }
 
 template <class V, class M>
