@@ -361,6 +361,7 @@ public:
 
   // The gaussian process object to build
   GaussianProcessEmulator<V, M> * gaussianProcess;
+  bool m_constructedGP;
 };
 
 }  // End namespace QUESO

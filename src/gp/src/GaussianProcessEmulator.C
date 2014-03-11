@@ -252,6 +252,7 @@ GaussianProcessFactory<V, M>::GaussianProcessFactory(
   // Do nothing
   this->setUpHyperpriors();
   std::cout << "got here 3" << std::endl;
+  this->m_constructedGP = false;
 }
 
 template <class V, class M>
@@ -466,7 +467,9 @@ GaussianProcessFactory<V, M>::addSimulation(V & simulationScenario,
 
   if ((this->m_numSimulationAdds == this->m_numSimulations) &&
       (this->m_numExperimentAdds == this->m_numExperiments) &&
-      (this->gaussianProcess == NULL)) {
+      (this->m_constructedGP == false)) {
+    std::cout << "MAKING GP" << std::endl;
+    this->m_constructedGP = true;
     this->gaussianProcess = new GaussianProcessEmulator<V, M>(
         this->prior().imageSet(),
         this->m_scenarioSpace,
@@ -519,7 +522,9 @@ GaussianProcessFactory<V, M>::addExperiments(
 
   if ((this->m_numSimulationAdds == this->m_numSimulations) &&
       (this->m_numExperimentAdds == this->m_numExperiments) &&
-      (this->gaussianProcess == NULL)) {
+      (this->m_constructedGP == false)) {
+    this->m_constructedGP = true;
+    std::cout << "MAKING OTHER GP" << std::endl;
     this->gaussianProcess = new GaussianProcessEmulator<V, M>(
         this->prior().imageSet(),
         this->m_scenarioSpace,
