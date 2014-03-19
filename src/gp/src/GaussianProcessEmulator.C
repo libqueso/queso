@@ -215,6 +215,10 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
     minus_2_log_lhd += sol[i] * residual[i];
   }
 
+  if (minus_2_log_lhd < 0) {
+    std::cout << " oh noes!  ln value negative: " << minus_2_log_lhd << std::endl;
+  }
+
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
   return -0.5 * minus_2_log_lhd;
 #else
@@ -265,7 +269,6 @@ GaussianProcessFactory<V, M>::GaussianProcessFactory(
 {
   // Do nothing
   this->setUpHyperpriors();
-  std::cout << "got here 3" << std::endl;
   this->m_constructedGP = false;
 }
 
@@ -482,7 +485,6 @@ GaussianProcessFactory<V, M>::addSimulation(V & simulationScenario,
   if ((this->m_numSimulationAdds == this->m_numSimulations) &&
       (this->m_numExperimentAdds == this->m_numExperiments) &&
       (this->m_constructedGP == false)) {
-    std::cout << "MAKING GP" << std::endl;
     this->m_constructedGP = true;
     this->gaussianProcess = new GaussianProcessEmulator<V, M>(
         this->prior().imageSet(),
@@ -538,7 +540,6 @@ GaussianProcessFactory<V, M>::addExperiments(
       (this->m_numExperimentAdds == this->m_numExperiments) &&
       (this->m_constructedGP == false)) {
     this->m_constructedGP = true;
-    std::cout << "MAKING OTHER GP" << std::endl;
     this->gaussianProcess = new GaussianProcessEmulator<V, M>(
         this->prior().imageSet(),
         this->m_scenarioSpace,
