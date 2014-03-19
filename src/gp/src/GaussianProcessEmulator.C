@@ -257,10 +257,8 @@ GaussianProcessFactory<V, M>::GaussianProcessFactory(
     m_experimentScenarios(numExperiments, (V *)NULL),
     m_experimentOutputs(numExperiments, (V *)NULL),
     m_numSimulationAdds(0),
-    m_numExperimentAdds(0)
-    // m_emulatorSpace(m_env, "emulator_",
-    //     m_numSimulations * (m_simulationOutputSpace).dimLocal(), NULL),
-    // m_emulator(m_emulatorSpace.zeroVector())
+    m_numExperimentAdds(0),
+    priors(6, NULL)
 {
   // Do nothing
   this->setUpHyperpriors();
@@ -740,23 +738,18 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
       *(this->totalMins),
       *(this->totalMaxs));
 
-  this->priors = new std::vector<const BaseVectorRV<V, M> *>;
-  this->priors->push_back(&(this->m_parameterPrior));
-  this->priors->push_back(this->m_emulatorMean);
-  this->priors->push_back(this->m_emulatorPrecision);
-  this->priors->push_back(this->m_emulatorCorrelationStrength);
-  this->priors->push_back(this->m_discrepancyPrecision);
-  this->priors->push_back(this->m_discrepancyCorrelationStrength);
-
-  std::cout << "got here 1" << std::endl;
+  this->priors[0] = &(this->m_parameterPrior);
+  this->priors[1] = this->m_emulatorMean;
+  this->priors[2] = this->m_emulatorPrecision;
+  this->priors[3] = this->m_emulatorCorrelationStrength;
+  this->priors[4] = this->m_discrepancyPrecision;
+  this->priors[5] = this->m_discrepancyCorrelationStrength;
 
   // Finally
   this->m_totalPrior = new ConcatenatedVectorRV<V, M>(
       "",
-      *(this->priors),
+      this->priors,
       *(this->totalDomain));
-
-  std::cout << "got here 2" << std::endl;
 }
 
 }  // End namespace QUESO

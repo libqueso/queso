@@ -330,7 +330,7 @@ public:
 
   BoxSubset<V, M> * totalDomain;
 
-  std::vector<const BaseVectorRV<V, M> *> * priors;
+  std::vector<const BaseVectorRV<V, M> *> priors;
 
   // The hyperpriors
   UniformVectorRV<V, M> * m_emulatorMean;  // scalar
