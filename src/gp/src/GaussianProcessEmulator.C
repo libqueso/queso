@@ -189,6 +189,9 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
         delete scenario2;
       }
     }
+
+    // Add small component to diagonal to make stuff +ve def
+    covMatrix(i, i) += 10.0;
   }
 
   // Form residual = D - mean
