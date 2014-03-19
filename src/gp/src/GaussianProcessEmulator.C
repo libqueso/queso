@@ -728,12 +728,15 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
   // Hackety hack McHackington.  There's no better way to do this unfortunately
   this->totalMins->cwSet(0);
   this->totalMaxs->cwSet(1);
-  (*(this->totalMins))[0] = -INFINITY;
-  (*(this->totalMaxs))[0] = INFINITY;
-  (*(this->totalMins))[1] = 0;
-  (*(this->totalMaxs))[1] = INFINITY;
-  (*(this->totalMins))[dimScenario + dimParameter + 2] = 0;
-  (*(this->totalMaxs))[dimScenario + dimParameter + 2] = INFINITY;
+  (*(this->totalMins))[dimParameter] = -INFINITY;  // Min mean
+  (*(this->totalMaxs))[dimParameter] = INFINITY;  // Max mean
+  (*(this->totalMins))[dimParameter+1] = 0;  // Min emulator precision
+  (*(this->totalMaxs))[dimParameter+1] = INFINITY;  // Max emulator precision
+
+  // Min discrepancy precision
+  (*(this->totalMins))[dimScenario+dimParameter+dimParameter+2] = 0;
+  // Max discrepancy precision
+  (*(this->totalMaxs))[dimScenario+dimParameter+dimParameter+2] = INFINITY;
 
   this->totalDomain = new BoxSubset<V, M>(
       "",
