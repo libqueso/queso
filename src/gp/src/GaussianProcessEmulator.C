@@ -103,6 +103,7 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
   VectorSpace<V, M> gpSpace(this->m_scenarioSpace.env(), "", totalDim, NULL);
   V residual(gpSpace.zeroVector());
   M covMatrix(residual);
+  covMatrix.setInDebugMode(true);
 
   V *scenario1;
   V *scenario2;
@@ -135,10 +136,8 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
         }
       }
       else {
-        std::cout << "i, j = " << i << " " << j << std::endl;
         scenario2 =
           new V(*((this->m_simulationScenarios)[j-this->m_numExperiments]));
-        std::cout << "i, j = " << i << " " << j << std::endl;
         parameter2 =
           new V(*((this->m_simulationParameters)[j-this->m_numExperiments]));
       }

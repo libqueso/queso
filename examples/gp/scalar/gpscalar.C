@@ -236,7 +236,7 @@ int main(int argc, char ** argv) {
   QUESO::GslMatrix proposalCovMatrix(
       gpFactory.prior().imageSet().vectorSpace().zeroVector());
   for (unsigned int i = 0; i < proposalCovMatrix.numRowsLocal(); i++) {
-    proposalCovMatrix(i, i) = 0.1;
+    proposalCovMatrix(i, i) = 0.01;
   }
   std::cout << "got here 25" << std::endl;
 
