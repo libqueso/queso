@@ -230,7 +230,7 @@ int main(int argc, char ** argv) {
 
   // Initial condition of the chain
   for (unsigned int i = 0; i < paramInitials.sizeLocal(); i++) {
-    paramInitials[i] = 0.0;
+    paramInitials[i] = 0.5;
   }
 
   QUESO::GslMatrix proposalCovMatrix(
