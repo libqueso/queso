@@ -1,0 +1,51 @@
+\setlength{\unitlength}{4144sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(3419,1922)(789,-1140)
+\thicklines
+{\color[rgb]{0,0,0}\put(811,-331){\vector( 1, 0){3375}}
+}%
+{\color[rgb]{0,0,0}\put(1981,-331){\vector( 3, 4){615.600}}
+}%
+{\color[rgb]{0,0,0}\put(2600,490){\vector( 3, 1){891}}
+}%
+{\color[rgb]{0,0,0}\put(1120,-940){\vector( 2, 3){400}}
+}%
+{\color[rgb]{0,0,0}\multiput(2611,479)(0.00000,-108.00000){8}{\line( 0,-1){ 54.000}}
+}%
+\thinlines
+{\color[rgb]{0,0,0}\multiput(2611,479)(102.85714,0.00000){4}{\line( 1, 0){ 51.429}}
+\multiput(2971,479)(0.00000,90.00000){2}{\line( 0, 1){ 45.000}}
+}%
+\thicklines
+{\color[rgb]{0,0,0}\put(1981,-1096){\vector( 0, 1){1755}}
+}%
+\thinlines
+{\color[rgb]{0,0,0}\multiput(2071,-196)(102.85714,0.00000){4}{\line( 1, 0){ 51.429}}
+\multiput(2431,-196)(0.00000,128.57143){4}{\line( 0, 1){ 64.286}}
+}%
+\thicklines
+{\color[rgb]{0,0,0}\put(2341,-940){\vector(-1, 0){1215}}
+}%
+{\color[rgb]{0,0,0}\put(3490,780){\vector(-2,-3){1149.231}}
+}%
+\put(3916,-241){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}i-th floor}%
+}}}}
+\put(3916,-466){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}interstory}%
+}}}}
+\put(2251,-310){\makebox(0,0)[lb]{\smash{{\SetFigFont{9}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(2791,360){\makebox(0,0)[lb]{\smash{{\SetFigFont{9}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}}
+\put(2440,-16){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$k_i$}%
+}}}}
+\put(2515,-450){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$u_i$}%
+}}}}
+\put(3000,480){\makebox(0,0)[lb]{\smash{{\SetFigFont{10}{12.0}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}$r_i k_i$}%
+}}}}
+\end{picture}%

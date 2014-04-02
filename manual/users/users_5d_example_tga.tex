@@ -34,11 +34,11 @@ Let $w(T)~=~m(T)/m_0$ denote the mass fraction.
 % A material sample with initial mass $m_0$ and at initial temperature $T_0$ is heated
 % with constant heating rate $\beta$ (K/min) until it fully decomposes.
 % Let $w(T)=m(T)/m_0$ denote the mass fraction.
-\begin{figure}[!h]
+\begin{figure}[!ht]
 \centering
 \includegraphics[scale=0.4]{figs/tga_experiment_data.png}
 \vspace*{-8pt}
-\caption{Mass fraction decay over temperature given different heating rates. Data from J. A. Conesa, R. F. Marcilla and J. A. Caballero, ``Thermogravimetric studies on the thermal decomposition of polyethylenes'', {\it J. Anal. Appl. Pyrolysis}, 36(1):1-15, 1996}
+\caption{Mass fraction decay over temperature given different heating rates. Data from J. A. Conesa, R. F. Marcilla and J. A. Caballero, ``Thermogravimetric studies on the thermal decomposition of polyethylene'', {\it J. Anal. Appl. Pyrolysis}, 36(1):1-15, 1996}
 \label{fig:tga-exp-data}
 \end{figure}
 
@@ -232,7 +232,7 @@ The input random variables for this SFP are the inferred parameters $A$ and $E$ 
 
 To run the executable provided (available after QUESO installation), and generate figures for the chains, PDFs, CDFs, etc., enter the following commands:
 \begin{lstlisting}[label={},caption={}]
-$ cd $HOME/LIBRARIES/QUESO-0.47.1/examples/validationCycle
+$ cd $HOME/LIBRARIES/QUESO-0.50.0/examples/validationCycle
 $ rm outputData/*
 $ ./exTgaValidationCycle_gsl tagCycle.inp    
 $ matlab

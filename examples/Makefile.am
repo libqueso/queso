@@ -296,7 +296,73 @@ dist_gravity_gsl_DATA =
 dist_gravity_gsl_DATA += $(gravity_gsl_DATA)
 dist_gravity_gsl_DATA += ${gravity_gsl_HEADERS}
 dist_gravity_gsl_DATA += ${gravity_gsl_SOURCES}
-										 
+					
+####################
+# bimodal          #
+####################
+bimodal_gsldir = $(prefix)/examples/bimodal
+
+bimodal_gsl_DATA = $(top_srcdir)/examples/bimodal/tests/test_2013_12_02/bimodal_1chain.inp
+bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/matlab/plot_all.m
+bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/matlab/plot_likelihood.m
+bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/matlab/plot_likelihood_normalized_taus.m
+bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/matlab/plot_likelihood_unnormalized_taus.m
+bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/src/Makefile_bimodal_violeta
+
+bimodal_gsl_PROGRAMS = bimodal_gsl
+
+bimodal_gsl_SOURCES = $(top_srcdir)/examples/bimodal/src/bimodal_main.C
+bimodal_gsl_SOURCES += $(top_srcdir)/examples/bimodal/src/bimodal_compute.C
+bimodal_gsl_SOURCES += $(top_srcdir)/examples/bimodal/src/bimodal_likelihood.C
+
+bimodal_gsl_HEADERS = $(top_srcdir)/examples/bimodal/src/bimodal_compute.h
+bimodal_gsl_HEADERS += $(top_srcdir)/examples/bimodal/src/bimodal_likelihood.h
+
+bimodal_gsl_LDADD = $(top_builddir)/src/libqueso.la
+
+bimodal_gsl_CPPFLAGS = -I$(top_srcdir)/examples/bimodal/src $(QUESO_CPPFLAGS)
+
+dist_bimodal_gsl_DATA =
+dist_bimodal_gsl_DATA += $(bimodal_gsl_DATA)
+dist_bimodal_gsl_DATA += ${bimodal_gsl_HEADERS}
+dist_bimodal_gsl_DATA += ${bimodal_gsl_SOURCES}
+
+####################
+# hysteretic          #
+####################
+hysteretic_gsldir = $(prefix)/examples/hysteretic
+
+hysteretic_gsl_DATA = $(top_srcdir)/examples/hysteretic/tests/test_2013_12_11/example.inp
+hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/tests/test_2013_12_11/an.txt
+hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/tests/test_2013_12_11/measured_data1_1.txt
+hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/tests/test_2013_12_11/measured_data1_2.txt
+hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/tests/test_2013_12_11/measured_data1_3.txt
+hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/tests/test_2013_12_11/measured_data1_4.txt
+hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/matlab/plot_all.m
+hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/matlab/cpp_gen.m
+hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/src/Makefile_hysteretic_violeta
+
+hysteretic_gsl_PROGRAMS = hysteretic_gsl
+
+hysteretic_gsl_SOURCES = $(top_srcdir)/examples/hysteretic/src/example_main.C
+hysteretic_gsl_SOURCES += $(top_srcdir)/examples/hysteretic/src/example_compute.C
+hysteretic_gsl_SOURCES += $(top_srcdir)/examples/hysteretic/src/example_likelihood.C
+hysteretic_gsl_SOURCES += $(top_srcdir)/examples/hysteretic/src/example_hyst.C
+
+hysteretic_gsl_HEADERS = $(top_srcdir)/examples/hysteretic/src/example_compute.h
+hysteretic_gsl_HEADERS += $(top_srcdir)/examples/hysteretic/src/example_likelihood.h
+hysteretic_gsl_HEADERS += $(top_srcdir)/examples/hysteretic/src/example_hyst.h
+
+hysteretic_gsl_LDADD = $(top_builddir)/src/libqueso.la
+
+hysteretic_gsl_CPPFLAGS = -I$(top_srcdir)/examples/hysteretic/src $(QUESO_CPPFLAGS)
+
+dist_hysteretic_gsl_DATA =
+dist_hysteretic_gsl_DATA += $(hysteretic_gsl_DATA)
+dist_hysteretic_gsl_DATA += ${hysteretic_gsl_HEADERS}
+dist_hysteretic_gsl_DATA += ${hysteretic_gsl_SOURCES}
+
+####################										 
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif

@@ -177,16 +177,16 @@ where \texttt{DIR} is the root directory of HDF5 installation,  to the configure
 
 
 
-Therefore, the basic steps to configure QUESO using Boost, GSL (required), HDF5 and Trilinos (optional) for installation at `\verb+$HOME/LIBRARIES/QUESO-0.47.1+' are:
+Therefore, the basic steps to configure QUESO using Boost, GSL (required), HDF5 and Trilinos (optional) for installation at `\verb+$HOME/LIBRARIES/QUESO-0.50.0+' are:
 \begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
-$  ./configure --prefix=$HOME/LIBRARIES/QUESO-0.47.1 \
+$  ./configure --prefix=$HOME/LIBRARIES/QUESO-0.50.0 \
   --with-boost=$HOME/LIBRARIES/boost-1.53.0 \
   --with-gsl=$HOME/LIBRARIES/gsl-1.15 \
   --with-hdf5=$HOME/LIBRARIES/hdf5-1.8.10 \
   --with-trilinos=$HOME/LIBRARIES/trilinos-11.2.4
   \end{lstlisting}
 
-Note: the directory `\verb+$HOME/LIBRARIES/QUESO-0.47.1+' does not need to exist in advance, since it will be created by the command \verb+make install+ described in Section \ref{sec:install_Queso_make}.
+Note: the directory `\verb+$HOME/LIBRARIES/QUESO-0.50.0+' does not need to exist in advance, since it will be created by the command \verb+make install+ described in Section \ref{sec:install_Queso_make}.
 
 
 \section{Compile, Check and Install \Queso{}}\label{sec:install_Queso_make}
@@ -266,7 +266,7 @@ A directory named \verb+docs+ will be created in \verb+$HOME/queso_download/ques
 Supposing you have downloaded the file `queso-0.47.1.tar.gz' into \texttt{\$HOME/queso\_download/}.
 %
 In a BASH shell, the basic steps to configure QUESO using GRVY, Boost and GSL for installation at 
-`\verb+$HOME/LIBRARIES/QUESO-0.47.1+'  are:
+`\verb+$HOME/LIBRARIES/QUESO-0.50.0+'  are:
 
 \begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
@@ -283,7 +283,7 @@ $ export FC=gfortran
 $ cd $HOME/queso_download/               #enter source dir
 $ gunzip < queso-0.47.1.tar.gz  | tar xf -
 $ cd $HOME/queso_download/queso-0.47.1   #enter the build dir
-$ ./configure --prefix=$HOME/LIBRARIES/QUESO-0.47.1 \
+$ ./configure --prefix=$HOME/LIBRARIES/QUESO-0.50.0 \
   --with-boost=$HOME/LIBRARIES/boost-1.53.0 \
   --with-gsl=$HOME/LIBRARIES/gsl-1.15 \
   --with-hdf5=$HOME/LIBRARIES/hdf5-1.8.10 \
@@ -292,13 +292,13 @@ $ make
 $ make check
 $ make install 
 $ make docs
-$ ls $HOME/LIBRARIES/QUESO-0.47.1 #listing QUESO installation dir
+$ ls $HOME/LIBRARIES/QUESO-0.50.0 #listing QUESO installation dir
 >>  bin  include  lib  examples
 \end{lstlisting}
 
 % 
 % \paragraph*{Note:} According to  Section \ref{sec:Queso_tree}, \texttt{\$HOME/queso\_download/} is the source tree, \\ \verb+$HOME/queso_download/queso-0.47.1+ is the build tree, and \newline
-% \verb+$HOME/LIBRARIES/QUESO-0.47.1+ is the installation tree.
+% \verb+$HOME/LIBRARIES/QUESO-0.50.0+ is the installation tree.
 % 
 
 
@@ -361,7 +361,7 @@ After having successfully executed steps described in Sections \ref{sec:Pre_Ques
  \item \verb+bin+: contains the executable \verb+queso_version+, which provides information about the installed library. The code bellow presents a sample output:
 
 \begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
-kemelli@margarida:~/LIBRARIES/QUESO-0.47.1/bin$ ./queso_version 
+kemelli@margarida:~/LIBRARIES/QUESO-0.50.0/bin$ ./queso_version 
 ---------------------------------------------------------------
 QUESO Library: Version = 0.47.1 (47.1)
 
@@ -381,13 +381,13 @@ GRVY DIR     =
 GLPK DIR     = 
 HDF5 DIR     = 
 ---------------------------------------------------------------
-kemelli@margarida:~/LIBRARIES/QUESO-0.47.1/bin$ 
+kemelli@margarida:~/LIBRARIES/QUESO-0.50.0/bin$ 
 \end{lstlisting}
 
- \item \verb+lib+: contains the static and dynamic versions of the library. The full to path to this directory, e.g., \verb+$HOME/LIBRARIES/QUESO-0.47.1/lib+ should be added to the user's \verb+LD_LIBRARY_PATH+ environmental variable in order to use QUESO library with his/her application code:
+ \item \verb+lib+: contains the static and dynamic versions of the library. The full to path to this directory, e.g., \verb+$HOME/LIBRARIES/QUESO-0.50.0/lib+ should be added to the user's \verb+LD_LIBRARY_PATH+ environmental variable in order to use QUESO library with his/her application code:
 \begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
- $HOME/LIBRARIES/QUESO-0.47.1/lib
+ $HOME/LIBRARIES/QUESO-0.50.0/lib
 \end{lstlisting}
 
 
@@ -410,13 +410,13 @@ Prepare your environment by either running or saving the following command in
 your \verb+.bashrc+ (supposing you have a BASH-shell):
 \begin{lstlisting}[{basicstyle=\footnotesize\ttfamily}]
 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
- $HOME/LIBRARIES/QUESO-0.47.1/lib
+ $HOME/LIBRARIES/QUESO-0.50.0/lib
 \end{lstlisting}
 
 % or into your \verb+.cshrc+ file (supposing you have a C-shell):
 % \begin{lstlisting}[label={},caption={}]
 % setenv LD_LIBRARY_PATH \$LD_LIBRARY_PATH:
-%        $HOME/LIBRARIES/QUESO-0.47.1/lib
+%        $HOME/LIBRARIES/QUESO-0.50.0/lib
 % \end{lstlisting}
 
 
@@ -426,7 +426,7 @@ respective \verb+.h+ files. Your application code may be linked with QUESO
 library through a Makefile such as the one displayed as follows:
 
 \begin{lstlisting}[basicstyle={\footnotesize\ttfamily},deletekeywords={export,rm}]
-QUESO_DIR = $HOME/LIBRARIES/QUESO-0.47.1/
+QUESO_DIR = $HOME/LIBRARIES/QUESO-0.50.0/
 BOOST_DIR = $HOME/LIBRARIES/boost-1.53.0/
 GSL_DIR = $HOME/LIBRARIES/gsl-1.15/
 GRVY_DIR = $HOME/LIBRARIES/grvy-0.32.0
