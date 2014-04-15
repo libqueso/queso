@@ -215,6 +215,10 @@ int main(int argc, char ** argv) {
   (*(experimentVecs[4]))[0] = 4.59654198432239;
   (*(experimentVecs[5]))[0] = 4.75087857533489;
 
+  for (unsigned int i = 0; i < 5; i++) {
+    experimentMat(i, i) = 0.075 * 0.075;
+  }
+
   // Add simulation and experimental data
   gpFactory.addSimulations(simulationScenarios, paramVecs, outputVecs);
   gpFactory.addExperiments(experimentScenarios, experimentVecs, &experimentMat);
