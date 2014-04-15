@@ -103,7 +103,6 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
   VectorSpace<V, M> gpSpace(this->m_scenarioSpace.env(), "", totalDim, NULL);
   V residual(gpSpace.zeroVector());
   M covMatrix(residual);
-  covMatrix.setInDebugMode(true);
 
   V *scenario1;
   V *scenario2;
@@ -191,7 +190,7 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
     }
 
     // Add small component to diagonal to make stuff +ve def
-    covMatrix(i, i) += 10.0;
+    covMatrix(i, i) += 0.0001;
   }
 
   // Form residual = D - mean
@@ -267,7 +266,6 @@ GaussianProcessFactory<V, M>::GaussianProcessFactory(
     m_numExperimentAdds(0),
     priors(6, NULL)
 {
-  // Do nothing
   this->setUpHyperpriors();
   this->m_constructedGP = false;
 }
@@ -729,6 +727,15 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
   // Hackety hack McHackington.  There's no better way to do this unfortunately
   this->totalMins->cwSet(0);
   this->totalMaxs->cwSet(1);
+
+  const BoxSubset<GslVector, GslMatrix> * box_prior =
+    dynamic_cast<const BoxSubset<GslVector, GslMatrix>* >(&(this->m_parameterPrior.imageSet()));
+  std::cout << "CTOR prior min[0]: " << box_prior->minValues()[0] << std::endl;
+  for (unsigned int i = 0; i < dimParameter; i++) {
+    (*(this->totalMins))[i] = box_prior->minValues()[i];
+    (*(this->totalMaxs))[i] = box_prior->maxValues()[i];
+  }
+
   (*(this->totalMins))[dimParameter] = -INFINITY;  // Min mean
   (*(this->totalMaxs))[dimParameter] = INFINITY;  // Max mean
   (*(this->totalMins))[dimParameter+1] = 0;  // Min emulator precision
