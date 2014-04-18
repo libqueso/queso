@@ -35,7 +35,7 @@ ip_mh_rawChain_dataOutputAllowedSet = 0 1
 ip_mh_rawChain_computeStats         = 1
 
 ip_mh_displayCandidates             = 0
-ip_mh_putOutOfBoundsInChain         = 1
+ip_mh_putOutOfBoundsInChain         = 0
 ip_mh_tk_useLocalHessian            = 0
 ip_mh_tk_useNewtonComponent         = 1
 ip_mh_dr_maxNumExtraStages          = 1
