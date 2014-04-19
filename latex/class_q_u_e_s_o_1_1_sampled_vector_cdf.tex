@@ -1,0 +1,324 @@
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_cdf}{\section{Q\-U\-E\-S\-O\-:\-:Sampled\-Vector\-Cdf$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_sampled_vector_cdf}\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$}}
+}
+
+
+A class for handling sampled vector C\-D\-Fs.  
+
+
+
+
+{\ttfamily \#include $<$Sampled\-Vector\-Cdf.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Sampled\-Vector\-Cdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=234pt]{class_q_u_e_s_o_1_1_sampled_vector_cdf__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Sampled\-Vector\-Cdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_sampled_vector_cdf__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_a9ccd0e1af52f109a50cf9bc2f88370fb}{Sampled\-Vector\-Cdf} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids}{Array\-Of\-One\-D\-Grids}$<$ V, M $>$ \&one\-D\-Grids, const \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_tables}{Array\-Of\-One\-D\-Tables}$<$ V, M $>$ \&cdf\-Values)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_a5434d0c34434b0bdf073523aee4182be}{$\sim$\-Sampled\-Vector\-Cdf} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_a1d908923cf5b441a4cebf7ac3c7fd2d8}{values} (const V \&param\-Values, V \&cdf\-Vec) const 
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Returns the values of the vector C\-D\-F at each element of {\ttfamily param\-Values}. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf}{Base\-Scalar\-Cdf}$<$ double $>$ \& \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_a51ee2c218b4e36dfc0c02bd542205789}{cdf} (unsigned int row\-Id) const 
+\begin{DoxyCompactList}\small\item\em Returns a scalar C\-D\-F stored at row {\ttfamily row\-Id} of the vector C\-D\-F. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_a9d62ca801a3d52b18188ae93b476c847}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em Prints the vector C\-D\-F (values of the grid points and of the C\-D\-F at such grid points). \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_acae1453895e364bf726ef60f8fde1bd8}{sub\-Write\-Contents} (const std\-::string \&var\-Name\-Prefix, const std\-::string \&file\-Name, const std\-::string \&file\-Type, const std\-::set$<$ unsigned int $>$ \&allowed\-Sub\-Env\-Ids) const 
+\begin{DoxyCompactList}\small\item\em Writes the C\-D\-F of an allowed sub-\/environment to a file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf}{Sampled\-Scalar\-Cdf}\\*
+$<$ double $>$ $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_ab1bc899ffdea9ca7e635312f82ff169f}{m\-\_\-cdfs}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$}
+
+A class for handling sampled vector C\-D\-Fs. 
+
+This class implements a sampled vector cumulative distribution function (C\-D\-F), given the grid points where it will be sampled and it returns its values. 
+
+Definition at line 48 of file Sampled\-Vector\-Cdf.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_cdf_a9ccd0e1af52f109a50cf9bc2f88370fb}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}!Sampled\-Vector\-Cdf@{Sampled\-Vector\-Cdf}}
+\index{Sampled\-Vector\-Cdf@{Sampled\-Vector\-Cdf}!QUESO::SampledVectorCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}}
+\subsubsection[{Sampled\-Vector\-Cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}$<$ V, M $>$\-::{\bf Sampled\-Vector\-Cdf} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Array\-Of\-One\-D\-Grids}$<$ V, M $>$ \&}]{one\-D\-Grids, }
+\item[{const {\bf Array\-Of\-One\-D\-Tables}$<$ V, M $>$ \&}]{cdf\-Values}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_sampled_vector_cdf_a9ccd0e1af52f109a50cf9bc2f88370fb}
+
+
+Default constructor. 
+
+Instantiates an object of the class given a prefix and the grid points where it will be sampled/evaluated. 
+
+Definition at line 31 of file Sampled\-Vector\-Cdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids$<$ V, M $>$\-::grid(), Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$\-::m\-\_\-cdfs, Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$\-::m\-\_\-prefix, Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Tables$<$ V, M $>$\-::one\-D\-Table(), and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+35   :
+36   BaseVectorCdf<V,M>(prefix,oneDGrids.rowSpace()),
+37   \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_ab1bc899ffdea9ca7e635312f82ff169f}{m\_cdfs}(\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a4e083383c98725fa83c5c8c133dcfea4}{m\_pdfSupport}.vectorSpace().map(),1)
+38 \{
+39   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+40     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering SampledVectorCdf<V,M>::constructor()"}
+41                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}{m\_prefix}
+42                            << std::endl;
+43   \}
+44 
+45   \textcolor{keywordtype}{char} strI[65];
+46   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_ab1bc899ffdea9ca7e635312f82ff169f}{m\_cdfs}.MyLength(); ++i) \{
+47     sprintf(strI,\textcolor{stringliteral}{"%u\_"},i);
+48     \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_ab1bc899ffdea9ca7e635312f82ff169f}{m\_cdfs}(i,0) = \textcolor{keyword}{new} SampledScalarCdf<double>(\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env},
+49                                                       ((std::string)(\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}{m\_prefix})+strI).c\_str(),
+50                                                       oneDGrids.grid(i),
+51                                                       cdfValues.oneDTable(i));
+52   \}
+53 
+54   \textcolor{keywordflow}{if} ((m\_env.subDisplayFile()) && (m\_env.displayVerbosity() >= 5)) \{
+55     *m\_env.subDisplayFile() << \textcolor{stringliteral}{"Leaving SampledVectorCdf<V,M>::constructor()"}
+56                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}{m\_prefix}
+57                            << std::endl;
+58   \}
+59 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_cdf_a5434d0c34434b0bdf073523aee4182be}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}!$\sim$\-Sampled\-Vector\-Cdf@{$\sim$\-Sampled\-Vector\-Cdf}}
+\index{$\sim$\-Sampled\-Vector\-Cdf@{$\sim$\-Sampled\-Vector\-Cdf}!QUESO::SampledVectorCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}}
+\subsubsection[{$\sim$\-Sampled\-Vector\-Cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}$<$ V, M $>$\-::$\sim${\bf Sampled\-Vector\-Cdf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_sampled_vector_cdf_a5434d0c34434b0bdf073523aee4182be}
+
+
+Destructor. 
+
+
+
+Definition at line 62 of file Sampled\-Vector\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+63 \{
+64   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_ab1bc899ffdea9ca7e635312f82ff169f}{m\_cdfs}.MyLength(); ++i) \{
+65     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_ab1bc899ffdea9ca7e635312f82ff169f}{m\_cdfs}(i,0)) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_ab1bc899ffdea9ca7e635312f82ff169f}{m\_cdfs}(i,0);
+66   \}
+67 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_cdf_a51ee2c218b4e36dfc0c02bd542205789}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}!cdf@{cdf}}
+\index{cdf@{cdf}!QUESO::SampledVectorCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}}
+\subsubsection[{cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Base\-Scalar\-Cdf}$<$ double $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}$<$ V, M $>$\-::cdf (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{row\-Id}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled_vector_cdf_a51ee2c218b4e36dfc0c02bd542205789}
+
+
+Returns a scalar C\-D\-F stored at row {\ttfamily row\-Id} of the vector C\-D\-F. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aac430df67c3f278eb14b1691b9fedbb2}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$}.
+
+
+
+Definition at line 84 of file Sampled\-Vector\-Cdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+85 \{
+86   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(rowId >= \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a4e083383c98725fa83c5c8c133dcfea4}{m\_pdfSupport}.vectorSpace().dimLocal(),
+87                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+88                       \textcolor{stringliteral}{"SampledVectorCdf<T>::cdf()"},
+89                       \textcolor{stringliteral}{"rowId is out of range"});
+90 
+91   SampledVectorCdf<V,M>* tmp = \textcolor{keyword}{const\_cast<}SampledVectorCdf<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+92   \textcolor{keywordflow}{return} *(tmp->m\_cdfs(rowId,0));
+93   
+94 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_cdf_a9d62ca801a3d52b18188ae93b476c847}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}!print@{print}}
+\index{print@{print}!QUESO::SampledVectorCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}$<$ V, M $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled_vector_cdf_a9d62ca801a3d52b18188ae93b476c847}
+
+
+Prints the vector C\-D\-F (values of the grid points and of the C\-D\-F at such grid points). 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a1ab6a49295542017bae6c5853398223f}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$}.
+
+
+
+Definition at line 98 of file Sampled\-Vector\-Cdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$\-::m\-\_\-cdfs.
+
+
+\begin{DoxyCode}
+99 \{
+100   SampledVectorCdf<V,M>* tmp = \textcolor{keyword}{const\_cast<}SampledVectorCdf<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+101   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_ab1bc899ffdea9ca7e635312f82ff169f}{m\_cdfs}.MyLength(); ++i) \{
+102     os << (*tmp->m\_cdfs(i,0))
+103        << std::endl;
+104   \}
+105 
+106   \textcolor{keywordflow}{return};
+107 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_cdf_acae1453895e364bf726ef60f8fde1bd8}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}!sub\-Write\-Contents@{sub\-Write\-Contents}}
+\index{sub\-Write\-Contents@{sub\-Write\-Contents}!QUESO::SampledVectorCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}}
+\subsubsection[{sub\-Write\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}$<$ V, M $>$\-::sub\-Write\-Contents (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{var\-Name\-Prefix, }
+\item[{const std\-::string \&}]{file\-Name, }
+\item[{const std\-::string \&}]{file\-Type, }
+\item[{const std\-::set$<$ unsigned int $>$ \&}]{allowed\-Sub\-Env\-Ids}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled_vector_cdf_acae1453895e364bf726ef60f8fde1bd8}
+
+
+Writes the C\-D\-F of an allowed sub-\/environment to a file. 
+
+
+
+Reimplemented from \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_acd85c96edf9454b64fe31d6750164dfc}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$}.
+
+
+
+Definition at line 111 of file Sampled\-Vector\-Cdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+116 \{
+117   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a172d52f993f1322ed45aaddf71518dbb}{subRank}() < 0,
+118                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+119                       \textcolor{stringliteral}{"SampledVectorCdf<V,M>::subWriteContents()"},
+120                       \textcolor{stringliteral}{"unexpected subRank"});
+121 
+122   SampledVectorCdf<V,M>* tmp = \textcolor{keyword}{const\_cast<}SampledVectorCdf<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+123   \textcolor{keywordtype}{char} compId[16+1];
+124   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_ab1bc899ffdea9ca7e635312f82ff169f}{m\_cdfs}.MyLength(); ++i) \{
+125     sprintf(compId,\textcolor{stringliteral}{"%d"},i);
+126     tmp->m\_cdfs(i,0)->subWriteContents(varNamePrefix+\textcolor{stringliteral}{"comp"}+compId,fileName,fileType,allowedSubEnvIds);
+127   \}
+128 
+129   \textcolor{keywordflow}{return};
+130 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_cdf_a1d908923cf5b441a4cebf7ac3c7fd2d8}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}!values@{values}}
+\index{values@{values}!QUESO::SampledVectorCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}}
+\subsubsection[{values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}$<$ V, M $>$\-::values (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{param\-Values, }
+\item[{V \&}]{cdf\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled_vector_cdf_a1d908923cf5b441a4cebf7ac3c7fd2d8}
+
+
+T\-O\-D\-O\-: Returns the values of the vector C\-D\-F at each element of {\ttfamily param\-Values}. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000041}{Todo}]\-: implement me! \end{DoxyRefDesc}
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a30b15bde5a206071b4e4db26141ce179}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$}.
+
+
+
+Definition at line 71 of file Sampled\-Vector\-Cdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+74 \{
+75   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+76                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+77                       \textcolor{stringliteral}{"SampledVectorCdf<V,M>::cdfVec()"},
+78                       \textcolor{stringliteral}{"incomplete code"});
+79   \textcolor{keywordflow}{return};
+80 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_cdf_ab1bc899ffdea9ca7e635312f82ff169f}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}!m\-\_\-cdfs@{m\-\_\-cdfs}}
+\index{m\-\_\-cdfs@{m\-\_\-cdfs}!QUESO::SampledVectorCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}}
+\subsubsection[{m\-\_\-cdfs}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Dist\-Array}$<${\bf Sampled\-Scalar\-Cdf}$<$double$>$$\ast$$>$ {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf}$<$ V, M $>$\-::m\-\_\-cdfs\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_sampled_vector_cdf_ab1bc899ffdea9ca7e635312f82ff169f}
+
+
+Definition at line 88 of file Sampled\-Vector\-Cdf.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$\-::print(), and Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$\-::\-Sampled\-Vector\-Cdf().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_sampled_vector_cdf_8h}{Sampled\-Vector\-Cdf.\-h}\item 
+src/stats/src/\hyperlink{_sampled_vector_cdf_8_c}{Sampled\-Vector\-Cdf.\-C}\end{DoxyCompactItemize}

@@ -1,0 +1,308 @@
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_r_v}{\section{Q\-U\-E\-S\-O\-:\-:Concatenated\-Vector\-R\-V$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_concatenated_vector_r_v}\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V$<$ V, M $>$}}
+}
+
+
+A class representing concatenated vector R\-Vs.  
+
+
+
+
+{\ttfamily \#include $<$Concatenated\-Vector\-R\-V.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Concatenated\-Vector\-R\-V$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{class_q_u_e_s_o_1_1_concatenated_vector_r_v__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Concatenated\-Vector\-R\-V$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_concatenated_vector_r_v__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a72032f6b6104335f66b6c0e3d4c541b2}{Concatenated\-Vector\-R\-V} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V}$<$ V, M $>$ \&rv1, const \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V}$<$ V, M $>$ \&rv2, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{image\-Set})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a213dad6314572cae365b86968afd83ba}{Concatenated\-Vector\-R\-V} (const char $\ast$prefix, const std\-::vector$<$ const \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V}$<$ V, M $>$ $\ast$ $>$ \&rvs, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{image\-Set})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a04abc805feb3662610a8b14d4d087865}{$\sim$\-Concatenated\-Vector\-R\-V} ()
+\begin{DoxyCompactList}\small\item\em Virtual destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_ac479f33e7ef6ff9f17b930aef13fcd7c}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Prints the vector R\-V. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::vector$<$ const \\*
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V}$<$ V, M $>$ $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\-\_\-rvs}
+\item 
+std\-::vector$<$ const \\*
+\hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf}{Base\-Joint\-Pdf}$<$ V, M $>$ $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_afbe85f9e6091d0086511d911929c2348}{m\-\_\-pdfs}
+\item 
+std\-::vector$<$ const \\*
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer}{Base\-Vector\-Realizer}$<$ V, M $>$ $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_af5481dcec21a16d9b3d00a35d161d34f}{m\-\_\-realizers}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V$<$ V, M $>$}
+
+A class representing concatenated vector R\-Vs. 
+
+This class allows the user to concatenate two vector R\-V of different types and to generate realizations (samples) from this concatenated vector R\-V. It is used, for instance, to concatenate priors from two or more R\-Vs, where one of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. 
+
+Definition at line 52 of file Concatenated\-Vector\-R\-V.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a72032f6b6104335f66b6c0e3d4c541b2}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}!Concatenated\-Vector\-R\-V@{Concatenated\-Vector\-R\-V}}
+\index{Concatenated\-Vector\-R\-V@{Concatenated\-Vector\-R\-V}!QUESO::ConcatenatedVectorRV@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}}
+\subsubsection[{Concatenated\-Vector\-R\-V}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}$<$ V, M $>$\-::{\bf Concatenated\-Vector\-R\-V} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Base\-Vector\-R\-V}$<$ V, M $>$ \&}]{rv1, }
+\item[{const {\bf Base\-Vector\-R\-V}$<$ V, M $>$ \&}]{rv2, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{image\-Set}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a72032f6b6104335f66b6c0e3d4c541b2}
+
+
+Constructor. 
+
+Concatenates two R\-Vs\-: {\ttfamily rv1} and {\ttfamily rv2} into one vector R\-V, given a prefix and the image set of the vector R\-V. 
+
+Definition at line 33 of file Concatenated\-Vector\-R\-V.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-image\-Set, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-mdf, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-pdf, Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-pdfs, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-prefix, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-realizer, Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-realizers, Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-rvs, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-sub\-Cdf, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-unified\-Cdf, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+38   :
+39   BaseVectorRV<V,M>(((std::string)(prefix)+\textcolor{stringliteral}{"concat"}).c\_str(),\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}),
+40   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\_rvs}                   (2,(\textcolor{keyword}{const} BaseVectorRV      <V,M>*) NULL),
+41   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_afbe85f9e6091d0086511d911929c2348}{m\_pdfs}                  (2,(const BaseJointPdf      <V,M>*) NULL),
+42   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_af5481dcec21a16d9b3d00a35d161d34f}{m\_realizers}             (2,(const BaseVectorRealizer<V,M>*) NULL)
+43 \{
+44   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a556761c50e2d171977ef5f19a63c8c73}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a556761c50e2d171977ef5f19a63c8c73}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+45     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a556761c50e2d171977ef5f19a63c8c73}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering ConcatenatedVectorRV<V,M>::constructor(1)"}
+46                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a030ce3bc9873a9eaf6d8bf452c096ab3}{m\_prefix}
+47                             << std::endl;
+48   \}
+49 
+50   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\_rvs}[0]       = &rv1;
+51   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\_rvs}[1]       = &rv2;
+52   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_afbe85f9e6091d0086511d911929c2348}{m\_pdfs}[0]      = &(\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\_rvs}[0]->pdf());
+53   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_afbe85f9e6091d0086511d911929c2348}{m\_pdfs}[1]      = &(\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\_rvs}[1]->pdf());
+54   m\_realizers[0] = &(\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\_rvs}[0]->realizer());
+55   m\_realizers[1] = &(\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\_rvs}[1]->realizer());
+56 
+57   \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a0ca926bca6fbcc688be6fc7496449e8e}{m\_pdf}          = \textcolor{keyword}{new} ConcatenatedJointPdf<V,M>(\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a030ce3bc9873a9eaf6d8bf452c096ab3}{m\_prefix}.c\_str(),
+58                                                         *(\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_afbe85f9e6091d0086511d911929c2348}{m\_pdfs}[0]),
+59                                                         *(\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_afbe85f9e6091d0086511d911929c2348}{m\_pdfs}[1]),
+60                                                         \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_ad31872bb4da22d47528cb9d691b3b7ff}{m\_imageSet});
+61 
+62   \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_ad99bc05293c0fd0a0accb3191fb7119e}{m\_realizer}     = \textcolor{keyword}{new} ConcatenatedVectorRealizer<V,M>(\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a030ce3bc9873a9eaf6d8bf452c096ab3}{m\_prefix}.c\_str(),
+63                                                               *(m\_realizers[0]),
+64                                                               *(m\_realizers[1]),
+65                                                               \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_ad31872bb4da22d47528cb9d691b3b7ff}{m\_imageSet});
+66   \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a1a1117671c7fa2e572a9484463bee3a5}{m\_subCdf}     = NULL; \textcolor{comment}{// FIX ME: complete code}
+67   \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a31a1d44bbb6a7c030ca31a9577904252}{m\_unifiedCdf} = NULL; \textcolor{comment}{// FIX ME: complete code}
+68   \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a5a95d0107f66cf9b0ed3ad18a3d738df}{m\_mdf}        = NULL; \textcolor{comment}{// FIX ME: complete code}
+69 
+70   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a556761c50e2d171977ef5f19a63c8c73}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a556761c50e2d171977ef5f19a63c8c73}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+71     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a556761c50e2d171977ef5f19a63c8c73}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving ConcatenatedVectorRV<V,M>::constructor(1)"}
+72                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a030ce3bc9873a9eaf6d8bf452c096ab3}{m\_prefix}
+73                             << std::endl;
+74   \}
+75 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a213dad6314572cae365b86968afd83ba}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}!Concatenated\-Vector\-R\-V@{Concatenated\-Vector\-R\-V}}
+\index{Concatenated\-Vector\-R\-V@{Concatenated\-Vector\-R\-V}!QUESO::ConcatenatedVectorRV@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}}
+\subsubsection[{Concatenated\-Vector\-R\-V}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}$<$ V, M $>$\-::{\bf Concatenated\-Vector\-R\-V} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const std\-::vector$<$ const {\bf Base\-Vector\-R\-V}$<$ V, M $>$ $\ast$ $>$ \&}]{rvs, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{image\-Set}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a213dad6314572cae365b86968afd83ba}
+
+
+Constructor. 
+
+Concatenates a sequence of R\-Vs, given by\-: {\ttfamily  std\-::vector$<$const Base\-Vector\-R\-V$<$\-V,\-M$>$$\ast$ $>$\& rvs } into one single vector R\-V, given a prefix and the image set of the resulting vector R\-V. 
+
+Definition at line 78 of file Concatenated\-Vector\-R\-V.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-image\-Set, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-mdf, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-pdf, Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-pdfs, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-prefix, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-realizer, Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-realizers, Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-rvs, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-sub\-Cdf, Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$\-::m\-\_\-unified\-Cdf, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+82   :
+83   BaseVectorRV<V,M>(((std::string)(prefix)+\textcolor{stringliteral}{"concat"}).c\_str(),\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}),
+84   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\_rvs}                   (rvs.size(),(\textcolor{keyword}{const} BaseVectorRV      <V,M>*) NULL),
+85   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_afbe85f9e6091d0086511d911929c2348}{m\_pdfs}                  (rvs.size(),(\textcolor{keyword}{const} BaseJointPdf      <V,M>*) NULL),
+86   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_af5481dcec21a16d9b3d00a35d161d34f}{m\_realizers}             (rvs.size(),(\textcolor{keyword}{const} BaseVectorRealizer<V,M>*) NULL)
+87 \{
+88   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a556761c50e2d171977ef5f19a63c8c73}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a556761c50e2d171977ef5f19a63c8c73}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+89     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a556761c50e2d171977ef5f19a63c8c73}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering ConcatenatedVectorRV<V,M>::constructor(2)"}
+90                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a030ce3bc9873a9eaf6d8bf452c096ab3}{m\_prefix}
+91                             << std::endl;
+92   \}
+93 
+94   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\_rvs}.size(); ++i) \{
+95     \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\_rvs} [i]      = rvs[i];
+96     \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_afbe85f9e6091d0086511d911929c2348}{m\_pdfs}[i]      = &(\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\_rvs}[i]->pdf());
+97     \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_af5481dcec21a16d9b3d00a35d161d34f}{m\_realizers}[i] = &(\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{m\_rvs}[i]->realizer());
+98   \}
+99 
+100   \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a0ca926bca6fbcc688be6fc7496449e8e}{m\_pdf}        = \textcolor{keyword}{new} ConcatenatedJointPdf<V,M>(\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a030ce3bc9873a9eaf6d8bf452c096ab3}{m\_prefix}.c\_str(),
+101                                                       \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_afbe85f9e6091d0086511d911929c2348}{m\_pdfs},
+102                                                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_ad31872bb4da22d47528cb9d691b3b7ff}{m\_imageSet});
+103 
+104   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} minPeriod = \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_af5481dcec21a16d9b3d00a35d161d34f}{m\_realizers}[0]->subPeriod();
+105   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_af5481dcec21a16d9b3d00a35d161d34f}{m\_realizers}.size(); ++i) \{
+106     \textcolor{keywordflow}{if} (minPeriod > \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_af5481dcec21a16d9b3d00a35d161d34f}{m\_realizers}[i]->subPeriod()) \{
+107       minPeriod = \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_af5481dcec21a16d9b3d00a35d161d34f}{m\_realizers}[i]->subPeriod();
+108     \}
+109   \}
+110 
+111   \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_ad99bc05293c0fd0a0accb3191fb7119e}{m\_realizer}   = \textcolor{keyword}{new} ConcatenatedVectorRealizer<V,M>(\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a030ce3bc9873a9eaf6d8bf452c096ab3}{m\_prefix}.c\_str(),
+112                                                             \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_r_v_af5481dcec21a16d9b3d00a35d161d34f}{m\_realizers},
+113                                                             minPeriod,
+114                                                             \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_ad31872bb4da22d47528cb9d691b3b7ff}{m\_imageSet});
+115   \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a1a1117671c7fa2e572a9484463bee3a5}{m\_subCdf}     = NULL; \textcolor{comment}{// FIX ME: complete code}
+116   \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a31a1d44bbb6a7c030ca31a9577904252}{m\_unifiedCdf} = NULL; \textcolor{comment}{// FIX ME: complete code}
+117   \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a5a95d0107f66cf9b0ed3ad18a3d738df}{m\_mdf}        = NULL; \textcolor{comment}{// FIX ME: complete code}
+118 
+119   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a556761c50e2d171977ef5f19a63c8c73}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a556761c50e2d171977ef5f19a63c8c73}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+120     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a556761c50e2d171977ef5f19a63c8c73}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving ConcatenatedVectorRV<V,M>::constructor(2)"}
+121                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a030ce3bc9873a9eaf6d8bf452c096ab3}{m\_prefix}
+122                             << std::endl;
+123   \}
+124 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a04abc805feb3662610a8b14d4d087865}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}!$\sim$\-Concatenated\-Vector\-R\-V@{$\sim$\-Concatenated\-Vector\-R\-V}}
+\index{$\sim$\-Concatenated\-Vector\-R\-V@{$\sim$\-Concatenated\-Vector\-R\-V}!QUESO::ConcatenatedVectorRV@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}}
+\subsubsection[{$\sim$\-Concatenated\-Vector\-R\-V}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}$<$ V, M $>$\-::$\sim${\bf Concatenated\-Vector\-R\-V} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a04abc805feb3662610a8b14d4d087865}
+
+
+Virtual destructor. 
+
+
+
+Definition at line 127 of file Concatenated\-Vector\-R\-V.\-C.
+
+
+\begin{DoxyCode}
+128 \{
+129   \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a5a95d0107f66cf9b0ed3ad18a3d738df}{m\_mdf};
+130   \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a31a1d44bbb6a7c030ca31a9577904252}{m\_unifiedCdf};
+131   \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a1a1117671c7fa2e572a9484463bee3a5}{m\_subCdf};
+132   \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_ad99bc05293c0fd0a0accb3191fb7119e}{m\_realizer};
+133   \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a0ca926bca6fbcc688be6fc7496449e8e}{m\_pdf};
+134 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_r_v_ac479f33e7ef6ff9f17b930aef13fcd7c}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}!print@{print}}
+\index{print@{print}!QUESO::ConcatenatedVectorRV@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}$<$ V, M $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_concatenated_vector_r_v_ac479f33e7ef6ff9f17b930aef13fcd7c}
+
+
+T\-O\-D\-O\-: Prints the vector R\-V. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000016}{Todo}]\-: implement me! \end{DoxyRefDesc}
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a5296b918534e12e5b62ac7cb5d20a1e8}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-R\-V$<$ V, M $>$}.
+
+
+
+Definition at line 138 of file Concatenated\-Vector\-R\-V.\-C.
+
+
+\begin{DoxyCode}
+139 \{
+140   os << \textcolor{stringliteral}{"ConcatenatedVectorRV<V,M>::print() says, 'Please implement me.'"} << std::endl;
+141   \textcolor{keywordflow}{return};
+142 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_r_v_afbe85f9e6091d0086511d911929c2348}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}!m\-\_\-pdfs@{m\-\_\-pdfs}}
+\index{m\-\_\-pdfs@{m\-\_\-pdfs}!QUESO::ConcatenatedVectorRV@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}}
+\subsubsection[{m\-\_\-pdfs}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ std\-::vector$<$const {\bf Base\-Joint\-Pdf} $<$V,M$>$$\ast$ $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}$<$ V, M $>$\-::m\-\_\-pdfs\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_concatenated_vector_r_v_afbe85f9e6091d0086511d911929c2348}
+
+
+Definition at line 93 of file Concatenated\-Vector\-R\-V.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V$<$ V, M $>$\-::\-Concatenated\-Vector\-R\-V().
+
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_r_v_af5481dcec21a16d9b3d00a35d161d34f}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}!m\-\_\-realizers@{m\-\_\-realizers}}
+\index{m\-\_\-realizers@{m\-\_\-realizers}!QUESO::ConcatenatedVectorRV@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}}
+\subsubsection[{m\-\_\-realizers}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ std\-::vector$<$const {\bf Base\-Vector\-Realizer}$<$V,M$>$$\ast$ $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}$<$ V, M $>$\-::m\-\_\-realizers\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_concatenated_vector_r_v_af5481dcec21a16d9b3d00a35d161d34f}
+
+
+Definition at line 94 of file Concatenated\-Vector\-R\-V.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V$<$ V, M $>$\-::\-Concatenated\-Vector\-R\-V().
+
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}!m\-\_\-rvs@{m\-\_\-rvs}}
+\index{m\-\_\-rvs@{m\-\_\-rvs}!QUESO::ConcatenatedVectorRV@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}}
+\subsubsection[{m\-\_\-rvs}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ std\-::vector$<$const {\bf Base\-Vector\-R\-V} $<$V,M$>$$\ast$ $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V}$<$ V, M $>$\-::m\-\_\-rvs\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_concatenated_vector_r_v_a5b69ebda44adae11e7d45987dac4b0a6}
+
+
+Definition at line 92 of file Concatenated\-Vector\-R\-V.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-R\-V$<$ V, M $>$\-::\-Concatenated\-Vector\-R\-V().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_concatenated_vector_r_v_8h}{Concatenated\-Vector\-R\-V.\-h}\item 
+src/stats/src/\hyperlink{_concatenated_vector_r_v_8_c}{Concatenated\-Vector\-R\-V.\-C}\end{DoxyCompactItemize}

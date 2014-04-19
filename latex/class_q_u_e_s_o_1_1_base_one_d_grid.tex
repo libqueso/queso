@@ -1,0 +1,277 @@
+\hypertarget{class_q_u_e_s_o_1_1_base_one_d_grid}{\section{Q\-U\-E\-S\-O\-:\-:Base\-One\-D\-Grid$<$ T $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_base_one_d_grid}\index{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid$<$ T $>$@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid$<$ T $>$}}
+}
+
+
+Base class for accommodating one-\/dimensional grids.  
+
+
+
+
+{\ttfamily \#include $<$One\-D\-Grid.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Base\-One\-D\-Grid$<$ T $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_one_d_grid__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Base\-One\-D\-Grid$<$ T $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_one_d_grid__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a83cc4075f64e729df5ab6dbbe992c9fb}{Base\-One\-D\-Grid} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&env, const char $\ast$prefix)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_ae19c9434ea06d92100e8d49686e354e2}{$\sim$\-Base\-One\-D\-Grid} ()
+\begin{DoxyCompactList}\small\item\em Virtual destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Accessor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+virtual T \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a80648b45e665a5a10fec57e7ab094bce}{operator\mbox{[}$\,$\mbox{]}} (unsigned int i) const =0
+\begin{DoxyCompactList}\small\item\em Returns the position of the i-\/th point in the grid. See template specialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+virtual unsigned int \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a388e922ba0c770039ab95e2cd1190dd6}{size} () const =0
+\begin{DoxyCompactList}\small\item\em Grid size; the amount of points which defines the grid. See template specialization. \end{DoxyCompactList}\item 
+virtual unsigned int \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_ac238dee5e7ce70b93bbed696948c9df3}{find\-Interval\-Id} (const T \&param\-Value) const =0
+\begin{DoxyCompactList}\small\item\em Finds the I\-D of an interval. See template specialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a668a0033829b907fac9e13466419b7b1}{m\-\_\-env}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_af5fa59e47fae9f6195b00e5bec8310f8}{m\-\_\-prefix}
+\end{DoxyCompactItemize}
+\subsection*{I/\-O methods}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_af72394608d602022a6cff06018a5df22}{print} (std\-::ostream \&ofsvar) const 
+\begin{DoxyCompactList}\small\item\em Prints the values of the grid points. \end{DoxyCompactList}\item 
+std\-::ostream \& \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a00cca8cd319438b0e49d9ebc72a1749d}{operator$<$$<$} (std\-::ostream \&os, const \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid}{Base\-One\-D\-Grid}$<$ T $>$ \&obj)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T$>$class Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid$<$ T $>$}
+
+Base class for accommodating one-\/dimensional grids. 
+
+Definition at line 46 of file One\-D\-Grid.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_one_d_grid_a83cc4075f64e729df5ab6dbbe992c9fb}{\index{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}!Base\-One\-D\-Grid@{Base\-One\-D\-Grid}}
+\index{Base\-One\-D\-Grid@{Base\-One\-D\-Grid}!QUESO::BaseOneDGrid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}}
+\subsubsection[{Base\-One\-D\-Grid}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}$<$ T $>$\-::{\bf Base\-One\-D\-Grid} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{const char $\ast$}]{prefix}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_one_d_grid_a83cc4075f64e729df5ab6dbbe992c9fb}
+
+
+Default constructor. 
+
+
+
+Definition at line 30 of file One\-D\-Grid.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid$<$ T $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid$<$ T $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+33   :
+34   \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a668a0033829b907fac9e13466419b7b1}{m\_env}   (env),
+35   \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_af5fa59e47fae9f6195b00e5bec8310f8}{m\_prefix}((std::string)(prefix)+\textcolor{stringliteral}{"grid"})
+36 \{
+37   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a668a0033829b907fac9e13466419b7b1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a668a0033829b907fac9e13466419b7b1}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+38     *\hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a668a0033829b907fac9e13466419b7b1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering BaseOneDGrid<T>::constructor()"}
+39                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_af5fa59e47fae9f6195b00e5bec8310f8}{m\_prefix}
+40                            << std::endl;
+41   \}
+42 
+43   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a668a0033829b907fac9e13466419b7b1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a668a0033829b907fac9e13466419b7b1}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+44     *\hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a668a0033829b907fac9e13466419b7b1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving BaseOneDGrid<T>::constructor()"}
+45                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_af5fa59e47fae9f6195b00e5bec8310f8}{m\_prefix}
+46                            << std::endl;
+47   \}
+48 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_one_d_grid_ae19c9434ea06d92100e8d49686e354e2}{\index{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}!$\sim$\-Base\-One\-D\-Grid@{$\sim$\-Base\-One\-D\-Grid}}
+\index{$\sim$\-Base\-One\-D\-Grid@{$\sim$\-Base\-One\-D\-Grid}!QUESO::BaseOneDGrid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}}
+\subsubsection[{$\sim$\-Base\-One\-D\-Grid}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}$<$ T $>$\-::$\sim${\bf Base\-One\-D\-Grid} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_base_one_d_grid_ae19c9434ea06d92100e8d49686e354e2}
+
+
+Virtual destructor. 
+
+
+
+Definition at line 51 of file One\-D\-Grid.\-C.
+
+
+\begin{DoxyCode}
+52 \{
+53 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_one_d_grid_ac238dee5e7ce70b93bbed696948c9df3}{\index{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}!find\-Interval\-Id@{find\-Interval\-Id}}
+\index{find\-Interval\-Id@{find\-Interval\-Id}!QUESO::BaseOneDGrid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}}
+\subsubsection[{find\-Interval\-Id}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ virtual unsigned int {\bf Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}$<$ T $>$\-::find\-Interval\-Id (
+\begin{DoxyParamCaption}
+\item[{const T \&}]{param\-Value}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_one_d_grid_ac238dee5e7ce70b93bbed696948c9df3}
+
+
+Finds the I\-D of an interval. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_std_one_d_grid_aaf32f8fe97724ad2d23d5be9b2faeaae}{Q\-U\-E\-S\-O\-::\-Std\-One\-D\-Grid$<$ T $>$}, and \hyperlink{class_q_u_e_s_o_1_1_uniform_one_d_grid_afa2a0d3a54ce7fed0610a81337dfeae7}{Q\-U\-E\-S\-O\-::\-Uniform\-One\-D\-Grid$<$ T $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_one_d_grid_a80648b45e665a5a10fec57e7ab094bce}{\index{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!QUESO::BaseOneDGrid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}}
+\subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ virtual T {\bf Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}$<$ T $>$\-::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{i}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_one_d_grid_a80648b45e665a5a10fec57e7ab094bce}
+
+
+Returns the position of the i-\/th point in the grid. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_std_one_d_grid_a08cb60749c59ff27239c231d6a0f1eca}{Q\-U\-E\-S\-O\-::\-Std\-One\-D\-Grid$<$ T $>$}, and \hyperlink{class_q_u_e_s_o_1_1_uniform_one_d_grid_a2fe101c8fbce7a6ac00b07781c2c6b6e}{Q\-U\-E\-S\-O\-::\-Uniform\-One\-D\-Grid$<$ T $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_one_d_grid_af72394608d602022a6cff06018a5df22}{\index{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}!print@{print}}
+\index{print@{print}!QUESO::BaseOneDGrid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void {\bf Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}$<$ T $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{ofsvar}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_one_d_grid_af72394608d602022a6cff06018a5df22}
+
+
+Prints the values of the grid points. 
+
+
+
+Definition at line 57 of file One\-D\-Grid.\-C.
+
+
+\begin{DoxyCode}
+58 \{
+59   \textcolor{comment}{// Print values *of* grid points}
+60   os << \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_af5fa59e47fae9f6195b00e5bec8310f8}{m\_prefix} << \textcolor{stringliteral}{"\_sub"} << \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a668a0033829b907fac9e13466419b7b1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a73f7849acdd5d5ba15a3094fe18f258f}{subIdString}() << \textcolor{stringliteral}{" = zeros("} << this->
+      \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a388e922ba0c770039ab95e2cd1190dd6}{size}()
+61      << \textcolor{stringliteral}{","}                                                      << 1
+62      << \textcolor{stringliteral}{");"}
+63      << std::endl;
+64   os << \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_af5fa59e47fae9f6195b00e5bec8310f8}{m\_prefix} << \textcolor{stringliteral}{"\_sub"} << \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a668a0033829b907fac9e13466419b7b1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a73f7849acdd5d5ba15a3094fe18f258f}{subIdString}() << \textcolor{stringliteral}{" = ["};
+65   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < this->\hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid_a388e922ba0c770039ab95e2cd1190dd6}{size}(); ++j) \{
+66     os << (*this)[j] << \textcolor{stringliteral}{" "};
+67   \}
+68   os << \textcolor{stringliteral}{"];"}
+69      << std::endl;
+70 
+71   \textcolor{keywordflow}{return};
+72 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_one_d_grid_a388e922ba0c770039ab95e2cd1190dd6}{\index{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}!size@{size}}
+\index{size@{size}!QUESO::BaseOneDGrid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ virtual unsigned int {\bf Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}$<$ T $>$\-::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_one_d_grid_a388e922ba0c770039ab95e2cd1190dd6}
+
+
+Grid size; the amount of points which defines the grid. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_std_one_d_grid_a006574772a0021d68c6f5c98e2db3458}{Q\-U\-E\-S\-O\-::\-Std\-One\-D\-Grid$<$ T $>$}, and \hyperlink{class_q_u_e_s_o_1_1_uniform_one_d_grid_a66a0589eb7da47895f2bab97b916fca4}{Q\-U\-E\-S\-O\-::\-Uniform\-One\-D\-Grid$<$ T $>$}.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_one_d_grid_a00cca8cd319438b0e49d9ebc72a1749d}{\index{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!QUESO::BaseOneDGrid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ std\-::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os, }
+\item[{const {\bf Base\-One\-D\-Grid}$<$ T $>$ \&}]{obj}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_q_u_e_s_o_1_1_base_one_d_grid_a00cca8cd319438b0e49d9ebc72a1749d}
+
+
+Definition at line 73 of file One\-D\-Grid.\-h.
+
+
+\begin{DoxyCode}
+75   \{
+76     obj.print(os);
+77     \textcolor{keywordflow}{return} os;
+78   \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_one_d_grid_a668a0033829b907fac9e13466419b7b1}{\index{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::BaseOneDGrid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}$<$ T $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_one_d_grid_a668a0033829b907fac9e13466419b7b1}
+
+
+Definition at line 82 of file One\-D\-Grid.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid$<$ T $>$\-::\-Base\-One\-D\-Grid(), Q\-U\-E\-S\-O\-::\-Std\-One\-D\-Grid$<$ T $>$\-::\-Std\-One\-D\-Grid(), and Q\-U\-E\-S\-O\-::\-Uniform\-One\-D\-Grid$<$ T $>$\-::\-Uniform\-One\-D\-Grid().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_one_d_grid_af5fa59e47fae9f6195b00e5bec8310f8}{\index{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}!m\-\_\-prefix@{m\-\_\-prefix}}
+\index{m\-\_\-prefix@{m\-\_\-prefix}!QUESO::BaseOneDGrid@{Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}}
+\subsubsection[{m\-\_\-prefix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ std\-::string {\bf Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid}$<$ T $>$\-::m\-\_\-prefix\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_one_d_grid_af5fa59e47fae9f6195b00e5bec8310f8}
+
+
+Definition at line 83 of file One\-D\-Grid.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-One\-D\-Grid$<$ T $>$\-::\-Base\-One\-D\-Grid(), Q\-U\-E\-S\-O\-::\-Std\-One\-D\-Grid$<$ T $>$\-::\-Std\-One\-D\-Grid(), and Q\-U\-E\-S\-O\-::\-Uniform\-One\-D\-Grid$<$ T $>$\-::\-Uniform\-One\-D\-Grid().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/misc/inc/\hyperlink{_one_d_grid_8h}{One\-D\-Grid.\-h}\item 
+src/misc/src/\hyperlink{_one_d_grid_8_c}{One\-D\-Grid.\-C}\end{DoxyCompactItemize}

@@ -1,0 +1,232 @@
+\hypertarget{class_q_u_e_s_o_1_1_gamma_vector_realizer}{\section{Q\-U\-E\-S\-O\-:\-:Gamma\-Vector\-Realizer$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_gamma_vector_realizer}\index{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer$<$ V, M $>$}}
+}
+
+
+A class for handling sampling from a Gamma probability density distribution.  
+
+
+
+
+{\ttfamily \#include $<$Gamma\-Vector\-Realizer.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Gamma\-Vector\-Realizer$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=252pt]{class_q_u_e_s_o_1_1_gamma_vector_realizer__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Gamma\-Vector\-Realizer$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_gamma_vector_realizer__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_gamma_vector_realizer_ae6ec0099314ff9d89101c168abfcc9c3}{Gamma\-Vector\-Realizer} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ad958991bab8d6369e8a0d66b22a237d4}{unified\-Image\-Set}, const V \&a, const V \&b)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gamma_vector_realizer_ac75db6b81ad76b17b1ffccfdd87594d2}{$\sim$\-Gamma\-Vector\-Realizer} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Realization-\/related methods}
+\begin{DoxyCompactItemize}
+\item 
+V \hyperlink{class_q_u_e_s_o_1_1_gamma_vector_realizer_a536756e884d641240015451f2f7a759c}{m\-\_\-a}
+\item 
+V \hyperlink{class_q_u_e_s_o_1_1_gamma_vector_realizer_a55e4d4fe511a6d63eaa98d6d6a7aaac5}{m\-\_\-b}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gamma_vector_realizer_ac2c9be536e210dd61614f96372df8c62}{realization} (V \&next\-Values) const 
+\begin{DoxyCompactList}\small\item\em Draws a realization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer$<$ V, M $>$}
+
+A class for handling sampling from a Gamma probability density distribution. 
+
+This class handles sampling from a Gamma probability density distribution, of parameters {\ttfamily a} and {\ttfamily b}. 
+
+Definition at line 45 of file Gamma\-Vector\-Realizer.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_gamma_vector_realizer_ae6ec0099314ff9d89101c168abfcc9c3}{\index{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}!Gamma\-Vector\-Realizer@{Gamma\-Vector\-Realizer}}
+\index{Gamma\-Vector\-Realizer@{Gamma\-Vector\-Realizer}!QUESO::GammaVectorRealizer@{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}}
+\subsubsection[{Gamma\-Vector\-Realizer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}$<$ V, M $>$\-::{\bf Gamma\-Vector\-Realizer} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{unified\-Image\-Set, }
+\item[{const V \&}]{a, }
+\item[{const V \&}]{b}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gamma_vector_realizer_ae6ec0099314ff9d89101c168abfcc9c3}
+
+
+Constructor. 
+
+Constructs a new object, given a prefix, the image set of the vector realizer, and the Gamma distribution parameters {\ttfamily a} and {\ttfamily b}, which are assigned to private attributes m\-\_\-alpha and m\-\_\-beta. 
+
+Definition at line 33 of file Gamma\-Vector\-Realizer.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Realizer$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Vector\-Realizer$<$ V, M $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+38   :
+39   BaseVectorRealizer<V,M>(((std::string)(prefix)+\textcolor{stringliteral}{"gen"}).c\_str(),\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ad958991bab8d6369e8a0d66b22a237d4}{unifiedImageSet},
+      std::numeric\_limits<unsigned int>::max()),
+40   \hyperlink{class_q_u_e_s_o_1_1_gamma_vector_realizer_a536756e884d641240015451f2f7a759c}{m\_a}(a),
+41   \hyperlink{class_q_u_e_s_o_1_1_gamma_vector_realizer_a55e4d4fe511a6d63eaa98d6d6a7aaac5}{m\_b}(b)
+42 \{
+43   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+44     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering GammaVectorRealizer<V,M>::constructor()"}
+45                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ac5559b6921816ccaed7afc2d342c2a32}{m\_prefix}
+46                             << std::endl;
+47   \}
+48 
+49   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+50     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving GammaVectorRealizer<V,M>::constructor()"}
+51                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ac5559b6921816ccaed7afc2d342c2a32}{m\_prefix}
+52                             << std::endl;
+53   \}
+54 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gamma_vector_realizer_ac75db6b81ad76b17b1ffccfdd87594d2}{\index{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}!$\sim$\-Gamma\-Vector\-Realizer@{$\sim$\-Gamma\-Vector\-Realizer}}
+\index{$\sim$\-Gamma\-Vector\-Realizer@{$\sim$\-Gamma\-Vector\-Realizer}!QUESO::GammaVectorRealizer@{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}}
+\subsubsection[{$\sim$\-Gamma\-Vector\-Realizer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}$<$ V, M $>$\-::$\sim${\bf Gamma\-Vector\-Realizer} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gamma_vector_realizer_ac75db6b81ad76b17b1ffccfdd87594d2}
+
+
+Destructor. 
+
+
+
+Definition at line 57 of file Gamma\-Vector\-Realizer.\-C.
+
+
+\begin{DoxyCode}
+58 \{
+59 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_gamma_vector_realizer_ac2c9be536e210dd61614f96372df8c62}{\index{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}!realization@{realization}}
+\index{realization@{realization}!QUESO::GammaVectorRealizer@{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}}
+\subsubsection[{realization}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}$<$ V, M $>$\-::realization (
+\begin{DoxyParamCaption}
+\item[{V \&}]{next\-Values}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gamma_vector_realizer_ac2c9be536e210dd61614f96372df8c62}
+
+
+Draws a realization. 
+
+This function draws a realization of a Gamma distribution and saves it in {\ttfamily next\-Values}. It internally checks whether the image set, where the realization should be drawn, belongs to the interval (0, infinity) -\/ which is the range where Gamma distribution is defined over. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_a6845173dd79a80ae11c86cde26e55817}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Realizer$<$ V, M $>$}.
+
+
+
+Definition at line 63 of file Gamma\-Vector\-Realizer.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Box\-Subset$<$ V, M $>$\-::max\-Values(), Q\-U\-E\-S\-O\-::\-Box\-Subset$<$ V, M $>$\-::min\-Values(), and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+64 \{
+65   \textcolor{comment}{// nextValues.cwSetGamma(m\_a,m\_b);}
+66 
+67 \textcolor{comment}{// begin kemelli 2013-April-22 :}
+68   \textcolor{keyword}{const} BoxSubset<V,M>* imageBox = \textcolor{keyword}{dynamic\_cast<}\textcolor{keyword}{const }BoxSubset<V,M>* \textcolor{keyword}{>}(&this->
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_a6c705235d28a3c12641da57cde948872}{m\_unifiedImageSet});
+69 \textcolor{comment}{//  double biggerOfMaxValues = imageBox->maxValues().getMaxValue();}
+70   \textcolor{keywordtype}{double} smallerOfMaxValues = imageBox->maxValues().getMinValue();      
+71   \textcolor{keywordtype}{double} smallerOfMinValues = imageBox->minValues().getMinValue();
+72   
+73  \textcolor{comment}{// Gamma dist belongs to (0,inf)               }
+74  \textcolor{keywordflow}{if}( smallerOfMinValues < 0 ) \textcolor{comment}{//(biggerOfMinValues < 0) || }
+75  \{              
+76    std::cerr << \textcolor{stringliteral}{"In GammaVectorRealizer<V,M>::realization()\(\backslash\)n"} 
+77        << \textcolor{stringliteral}{"Gamma distribution is only defined in (0, infinity).\(\backslash\)n"}
+78        << \textcolor{stringliteral}{"The data provided is: \(\backslash\)n"}
+79        << *imageBox 
+80          << \textcolor{stringliteral}{"Sampling will not cover all interval.\(\backslash\)n"}   
+81          << std::endl;
+82 
+83 
+84     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(smallerOfMaxValues < 0,
+85                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+86                       \textcolor{stringliteral}{"GammaVectorRealizer<V,M>::realization()"},
+87                       \textcolor{stringliteral}{"invalid input: Gamma distribution is only defined in (0, infinity), and
+       min(m\_maxValues)<0. "});      
+88                       
+89  \textcolor{comment}{//  UQ\_FATAL\_TEST\_MACRO(biggerOfMaxValues < 0,}
+90  \textcolor{comment}{//                     m\_env.worldRank(),}
+91  \textcolor{comment}{//                     "GammaVectorRealizer<V,M>::realization()",}
+92  \textcolor{comment}{//                     "invalid input: Gamma distribution is only defined in (0, infinity). ");           
+       }
+93               
+94  \}      
+95 
+96   \textcolor{comment}{// end kemelli 2013-April-22 }
+97   
+98   \textcolor{comment}{// begin kemelli 2013-April-18 : }
+99   \textcolor{keywordtype}{bool} outOfSupport = \textcolor{keyword}{true};
+100   \textcolor{keywordflow}{do} \{
+101 
+102   nextValues.cwSetGamma(\hyperlink{class_q_u_e_s_o_1_1_gamma_vector_realizer_a536756e884d641240015451f2f7a759c}{m\_a},\hyperlink{class_q_u_e_s_o_1_1_gamma_vector_realizer_a55e4d4fe511a6d63eaa98d6d6a7aaac5}{m\_b});
+103   outOfSupport = !(this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_a6c705235d28a3c12641da57cde948872}{m\_unifiedImageSet}.contains(nextValues));
+104 
+105   \} \textcolor{keywordflow}{while} (outOfSupport); 
+106 
+107   \textcolor{comment}{// end kemelli 2013-April-18 :}
+108   
+109   \textcolor{keywordflow}{return};
+110 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_gamma_vector_realizer_a536756e884d641240015451f2f7a759c}{\index{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}!m\-\_\-a@{m\-\_\-a}}
+\index{m\-\_\-a@{m\-\_\-a}!QUESO::GammaVectorRealizer@{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}}
+\subsubsection[{m\-\_\-a}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V {\bf Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}$<$ V, M $>$\-::m\-\_\-a\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_gamma_vector_realizer_a536756e884d641240015451f2f7a759c}
+
+
+Definition at line 77 of file Gamma\-Vector\-Realizer.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_gamma_vector_realizer_a55e4d4fe511a6d63eaa98d6d6a7aaac5}{\index{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}!m\-\_\-b@{m\-\_\-b}}
+\index{m\-\_\-b@{m\-\_\-b}!QUESO::GammaVectorRealizer@{Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}}
+\subsubsection[{m\-\_\-b}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V {\bf Q\-U\-E\-S\-O\-::\-Gamma\-Vector\-Realizer}$<$ V, M $>$\-::m\-\_\-b\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_gamma_vector_realizer_a55e4d4fe511a6d63eaa98d6d6a7aaac5}
+
+
+Definition at line 78 of file Gamma\-Vector\-Realizer.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_gamma_vector_realizer_8h}{Gamma\-Vector\-Realizer.\-h}\item 
+src/stats/src/\hyperlink{_gamma_vector_realizer_8_c}{Gamma\-Vector\-Realizer.\-C}\end{DoxyCompactItemize}

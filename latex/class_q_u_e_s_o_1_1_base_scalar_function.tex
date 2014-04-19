@@ -1,0 +1,222 @@
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_function}{\section{Q\-U\-E\-S\-O\-:\-:Base\-Scalar\-Function$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_base_scalar_function}\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function$<$ V, M $>$}}
+}
+
+
+A templated (base) class for handling scalar functions.  
+
+
+
+
+{\ttfamily \#include $<$Scalar\-Function.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Base\-Scalar\-Function$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_scalar_function__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Base\-Scalar\-Function$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_scalar_function__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a68ab7c82be7eba7bd5d51ce8d85c65f0}{Base\-Scalar\-Function} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domain\-Set})
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a6f96de783e174cfe84682766f5957969}{$\sim$\-Base\-Scalar\-Function} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domain\-Set} () const 
+\begin{DoxyCompactList}\small\item\em Access to the protected attribute {\ttfamily m\-\_\-domain\-Set\-:} domain set of the scalar function. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_aad8957ecbc4e155cbc4c40a1c21135d7}{actual\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const =0
+\begin{DoxyCompactList}\small\item\em Actual value of the scalar function. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_acf2f92adac2df2a0d750dc62cd3a4d0a}{ln\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const =0
+\begin{DoxyCompactList}\small\item\em Logarithm of the value of the scalar function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\-\_\-env}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a6e81dc902aca6a546877da99b2f4a169}{m\-\_\-prefix}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\-\_\-domain\-Set}
+\begin{DoxyCompactList}\small\item\em Domain set of the scalar function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function$<$ V, M $>$}
+
+A templated (base) class for handling scalar functions. 
+
+This class allows the mathematical definition of a scalar function such as\-: $ f: B \subset R \rightarrow R $. A function of one or more variables has always one-\/dimensional range. P\-D\-Fs (marginal, joint) and C\-D\-Fs are examples of scalar functions. 
+
+Definition at line 48 of file Scalar\-Function.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_function_a68ab7c82be7eba7bd5d51ce8d85c65f0}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}!Base\-Scalar\-Function@{Base\-Scalar\-Function}}
+\index{Base\-Scalar\-Function@{Base\-Scalar\-Function}!QUESO::BaseScalarFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}}
+\subsubsection[{Base\-Scalar\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}$<$ V, M $>$\-::{\bf Base\-Scalar\-Function} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{domain\-Set}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_scalar_function_a68ab7c82be7eba7bd5d51ce8d85c65f0}
+
+
+Default constructor. 
+
+Instantiates an object of the class, i.\-e. a scalar function, given a prefix and its domain. 
+
+Definition at line 34 of file Scalar\-Function.\-C.
+
+
+\begin{DoxyCode}
+36   : \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}(\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domainSet}.env()),
+37     \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a6e81dc902aca6a546877da99b2f4a169}{m\_prefix}((std::string)(prefix)+\textcolor{stringliteral}{"func\_"}),
+38     \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}(\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domainSet})
+39 \{
+40 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_function_a6f96de783e174cfe84682766f5957969}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}!$\sim$\-Base\-Scalar\-Function@{$\sim$\-Base\-Scalar\-Function}}
+\index{$\sim$\-Base\-Scalar\-Function@{$\sim$\-Base\-Scalar\-Function}!QUESO::BaseScalarFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}}
+\subsubsection[{$\sim$\-Base\-Scalar\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}$<$ V, M $>$\-::$\sim${\bf Base\-Scalar\-Function} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_base_scalar_function_a6f96de783e174cfe84682766f5957969}
+
+
+Destructor. 
+
+
+
+Definition at line 44 of file Scalar\-Function.\-C.
+
+
+\begin{DoxyCode}
+45 \{
+46 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_function_aad8957ecbc4e155cbc4c40a1c21135d7}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}!actual\-Value@{actual\-Value}}
+\index{actual\-Value@{actual\-Value}!QUESO::BaseScalarFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}}
+\subsubsection[{actual\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual double {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}$<$ V, M $>$\-::actual\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_scalar_function_aad8957ecbc4e155cbc4c40a1c21135d7}
+
+
+Actual value of the scalar function. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a7a3bbf8dab211968e9691a620fee0e4d}{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_gaussian_joint_pdf_ae576dae6a972dd7350ca261569f056da}{Q\-U\-E\-S\-O\-::\-Gaussian\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a3c367a0cc3fb707a136c5df47dd414c1}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_ad67362b4ab48a722db976430cf03165e}{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a87729cb9d59b73baefcbecb03e753cb9}{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_powered_joint_pdf_a916888a016a1cd9aea0a7789be0f6957}{Q\-U\-E\-S\-O\-::\-Powered\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_beta_joint_pdf_a14909bee55e4d764be71e7a313716d9b}{Q\-U\-E\-S\-O\-::\-Beta\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_a4907d38d266d271d34cce9be333a95df}{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_inverse_gamma_joint_pdf_a1e0dbb40992578a11b40d0755f59ef2e}{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_wigner_joint_pdf_a48482e1e5b953cd0753bf0c39486a81f}{Q\-U\-E\-S\-O\-::\-Wigner\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_generic_joint_pdf_a7bddaaf1d4087ca8e35fcb83c0df72d2}{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_uniform_joint_pdf_a358ffa410284ed3e40435439c1c8bbc3}{Q\-U\-E\-S\-O\-::\-Uniform\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a8629ec7c184b58254b147294e52e8c4c}{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_constant_scalar_function_a36f58555d9d88c4785297bf72fb5a9f1}{Q\-U\-E\-S\-O\-::\-Constant\-Scalar\-Function$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}!domain\-Set@{domain\-Set}}
+\index{domain\-Set@{domain\-Set}!QUESO::BaseScalarFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}}
+\subsubsection[{domain\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Vector\-Set}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}$<$ V, M $>$\-::domain\-Set (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}
+
+
+Access to the protected attribute {\ttfamily m\-\_\-domain\-Set\-:} domain set of the scalar function. 
+
+
+
+Definition at line 50 of file Scalar\-Function.\-C.
+
+
+\begin{DoxyCode}
+51 \{
+52   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet};
+53 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_function_acf2f92adac2df2a0d750dc62cd3a4d0a}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}!ln\-Value@{ln\-Value}}
+\index{ln\-Value@{ln\-Value}!QUESO::BaseScalarFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}}
+\subsubsection[{ln\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual double {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}$<$ V, M $>$\-::ln\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_scalar_function_acf2f92adac2df2a0d750dc62cd3a4d0a}
+
+
+Logarithm of the value of the scalar function. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_gaussian_joint_pdf_a14207045679234c5112974be5445b30d}{Q\-U\-E\-S\-O\-::\-Gaussian\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_aca499666e5c3d3d26c562492a15ab112}{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a98e54ee24452e2477469a0c84eecbfca}{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_aaeb1d91fd791399a502f451b07bb1bfe}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_a990337e7c25a4214b15fd71cb6deb384}{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a9c31e89ee4abe8f1747e50c8d472a94d}{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_beta_joint_pdf_a713d655107dd51eac9d1c19630359a06}{Q\-U\-E\-S\-O\-::\-Beta\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_powered_joint_pdf_addcc8c32b3dc30d22fb1e4a8350a14e3}{Q\-U\-E\-S\-O\-::\-Powered\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_inverse_gamma_joint_pdf_a08dbbb7054026fcf4d429870cbe5d36f}{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_wigner_joint_pdf_a64afe5e7a7974fc91b4394e81ba4da55}{Q\-U\-E\-S\-O\-::\-Wigner\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_uniform_joint_pdf_a80858abd7ca07ed42b9e9f0e4c92b3d2}{Q\-U\-E\-S\-O\-::\-Uniform\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_generic_joint_pdf_a566150d033ce9c09a22c6f271a7155a8}{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a0e93bae1ceb42049353e798a8866fd77}{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_constant_scalar_function_acf0fb2fe0c7dbe30bec6782c94e2a9e3}{Q\-U\-E\-S\-O\-::\-Constant\-Scalar\-Function$<$ V, M $>$}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}!m\-\_\-domain\-Set@{m\-\_\-domain\-Set}}
+\index{m\-\_\-domain\-Set@{m\-\_\-domain\-Set}!QUESO::BaseScalarFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}}
+\subsubsection[{m\-\_\-domain\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Vector\-Set}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}$<$ V, M $>$\-::m\-\_\-domain\-Set\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}
+
+
+Domain set of the scalar function. 
+
+
+
+Definition at line 77 of file Scalar\-Function.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::BaseScalarFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}$<$ V, M $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}
+
+
+Definition at line 73 of file Scalar\-Function.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$\-::\-Base\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Beta\-Joint\-Pdf$<$ V, M $>$\-::\-Beta\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf$<$ V, M $>$\-::\-Concatenated\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf$<$ V, M $>$\-::\-Gamma\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Gaussian\-Joint\-Pdf$<$ V, M $>$\-::\-Gaussian\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Joint\-Pdf$<$ V, M $>$\-::\-Inverse\-Gamma\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf$<$ V, M $>$\-::\-Log\-Normal\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Powered\-Joint\-Pdf$<$ V, M $>$\-::\-Powered\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Uniform\-Joint\-Pdf$<$ V, M $>$\-::\-Uniform\-Joint\-Pdf(), and Q\-U\-E\-S\-O\-::\-Wigner\-Joint\-Pdf$<$ V, M $>$\-::\-Wigner\-Joint\-Pdf().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_function_a6e81dc902aca6a546877da99b2f4a169}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}!m\-\_\-prefix@{m\-\_\-prefix}}
+\index{m\-\_\-prefix@{m\-\_\-prefix}!QUESO::BaseScalarFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}}
+\subsubsection[{m\-\_\-prefix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ std\-::string {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function}$<$ V, M $>$\-::m\-\_\-prefix\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_scalar_function_a6e81dc902aca6a546877da99b2f4a169}
+
+
+Definition at line 74 of file Scalar\-Function.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$\-::\-Base\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Beta\-Joint\-Pdf$<$ V, M $>$\-::\-Beta\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf$<$ V, M $>$\-::\-Gamma\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Gaussian\-Joint\-Pdf$<$ V, M $>$\-::\-Gaussian\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Joint\-Pdf$<$ V, M $>$\-::\-Inverse\-Gamma\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf$<$ V, M $>$\-::\-Log\-Normal\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Powered\-Joint\-Pdf$<$ V, M $>$\-::\-Powered\-Joint\-Pdf(), Q\-U\-E\-S\-O\-::\-Uniform\-Joint\-Pdf$<$ V, M $>$\-::\-Uniform\-Joint\-Pdf(), and Q\-U\-E\-S\-O\-::\-Wigner\-Joint\-Pdf$<$ V, M $>$\-::\-Wigner\-Joint\-Pdf().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/basic/inc/\hyperlink{_scalar_function_8h}{Scalar\-Function.\-h}\item 
+src/basic/src/\hyperlink{_scalar_function_8_c}{Scalar\-Function.\-C}\end{DoxyCompactItemize}

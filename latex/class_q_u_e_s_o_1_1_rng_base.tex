@@ -1,0 +1,378 @@
+\hypertarget{class_q_u_e_s_o_1_1_rng_base}{\section{Q\-U\-E\-S\-O\-:\-:Rng\-Base Class Reference}
+\label{class_q_u_e_s_o_1_1_rng_base}\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+}
+
+
+Class for random number generation (base class for either G\-S\-L or Boost R\-N\-G).  
+
+
+
+
+{\ttfamily \#include $<$Rng\-Base.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Rng\-Base\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=302pt]{class_q_u_e_s_o_1_1_rng_base__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_rng_base_ad8dd3cef9323851cad163c37b815bc88}{Rng\-Base} ()
+\begin{DoxyCompactList}\small\item\em Default Constructor\-: it should not be used. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_rng_base_a5e8dbae3304dfd27211b0d1f6de6eee0}{Rng\-Base} (int \hyperlink{class_q_u_e_s_o_1_1_rng_base_a3094da86084e56faaae9325f1117f9a3}{seed}, int world\-Rank)
+\begin{DoxyCompactList}\small\item\em Constructor with seed. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_rng_base_a64e1281954e342f704d5f3cbcbffa30c}{$\sim$\-Rng\-Base} ()
+\begin{DoxyCompactList}\small\item\em Virtual destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Sampling methods}\par
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{class_q_u_e_s_o_1_1_rng_base_a3094da86084e56faaae9325f1117f9a3}{seed} () const 
+\begin{DoxyCompactList}\small\item\em Sets the seed. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_rng_base_a8cb8cbf14298bfcb84de1b562c069e84}{reset\-Seed} (int new\-Seed)
+\begin{DoxyCompactList}\small\item\em Resets the seed with value {\ttfamily new\-Seed}. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_rng_base_aed8342f0c8a4ac0a311cce9cac2b67e5}{uniform\-Sample} () const =0
+\begin{DoxyCompactList}\small\item\em Samples a value from a uniform distribution. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_rng_base_a7be9cf40cc50b973ed8c2f594f402584}{gaussian\-Sample} (double std\-Dev) const =0
+\begin{DoxyCompactList}\small\item\em Samples a value from a Gaussian distribution with standard deviation given by {\ttfamily std\-Dev}. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_rng_base_a098089a93e29db4ad9ac106c8b5de583}{beta\-Sample} (double alpha, double beta) const =0
+\begin{DoxyCompactList}\small\item\em Samples a value from a Beta distribution. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_rng_base_abd9abcf42426b568d4f13f5c3f3dc997}{gamma\-Sample} (double a, double b) const =0
+\begin{DoxyCompactList}\small\item\em Samples a value from a Gamma distribution. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{m\-\_\-seed}
+\begin{DoxyCompactList}\small\item\em Seed. \end{DoxyCompactList}\item 
+int \hyperlink{class_q_u_e_s_o_1_1_rng_base_a94515d2b7d493d8e4e238628716dd11b}{m\-\_\-world\-Rank}
+\begin{DoxyCompactList}\small\item\em Rank of processor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_rng_base_adbd867ec865be8813641146f7a63c80b}{private\-Reset\-Seed} ()
+\begin{DoxyCompactList}\small\item\em Reset seed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for random number generation (base class for either G\-S\-L or Boost R\-N\-G). 
+
+This class is a “virtual” class of generic random number generator, in order to accommodate either G\-S\-L or Boost R\-N\-G. 
+
+Definition at line 45 of file Rng\-Base.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_rng_base_ad8dd3cef9323851cad163c37b815bc88}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}!Rng\-Base@{Rng\-Base}}
+\index{Rng\-Base@{Rng\-Base}!QUESO::RngBase@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+\subsubsection[{Rng\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Rng\-Base\-::\-Rng\-Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_rng_base_ad8dd3cef9323851cad163c37b815bc88}
+
+
+Default Constructor\-: it should not be used. 
+
+
+
+Definition at line 30 of file Rng\-Base.\-C.
+
+
+
+References m\-\_\-world\-Rank, and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+31   :
+32   \hyperlink{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{m\_seed}     (0),
+33   \hyperlink{class_q_u_e_s_o_1_1_rng_base_a94515d2b7d493d8e4e238628716dd11b}{m\_worldRank}(\hyperlink{namespace_q_u_e_s_o_a7d4679800a430ae8e473c1c7bc0bfb21}{UQ\_UNAVAILABLE\_RANK})
+34 \{
+35   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+36                       \hyperlink{class_q_u_e_s_o_1_1_rng_base_a94515d2b7d493d8e4e238628716dd11b}{m\_worldRank},
+37                       \textcolor{stringliteral}{"RngBase::constructor(), default"},
+38                       \textcolor{stringliteral}{"should not be used by user"});
+39 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_base_a5e8dbae3304dfd27211b0d1f6de6eee0}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}!Rng\-Base@{Rng\-Base}}
+\index{Rng\-Base@{Rng\-Base}!QUESO::RngBase@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+\subsubsection[{Rng\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Rng\-Base\-::\-Rng\-Base (
+\begin{DoxyParamCaption}
+\item[{int}]{seed, }
+\item[{int}]{world\-Rank}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_rng_base_a5e8dbae3304dfd27211b0d1f6de6eee0}
+
+
+Constructor with seed. 
+
+
+
+Definition at line 41 of file Rng\-Base.\-C.
+
+
+
+References private\-Reset\-Seed().
+
+
+\begin{DoxyCode}
+42   :
+43   \hyperlink{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{m\_seed}     (\hyperlink{class_q_u_e_s_o_1_1_rng_base_a3094da86084e56faaae9325f1117f9a3}{seed}),
+44   \hyperlink{class_q_u_e_s_o_1_1_rng_base_a94515d2b7d493d8e4e238628716dd11b}{m\_worldRank}(worldRank)
+45 \{
+46   \hyperlink{class_q_u_e_s_o_1_1_rng_base_adbd867ec865be8813641146f7a63c80b}{privateResetSeed}();
+47 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_base_a64e1281954e342f704d5f3cbcbffa30c}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}!$\sim$\-Rng\-Base@{$\sim$\-Rng\-Base}}
+\index{$\sim$\-Rng\-Base@{$\sim$\-Rng\-Base}!QUESO::RngBase@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+\subsubsection[{$\sim$\-Rng\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Rng\-Base\-::$\sim$\-Rng\-Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_rng_base_a64e1281954e342f704d5f3cbcbffa30c}
+
+
+Virtual destructor. 
+
+
+
+Definition at line 49 of file Rng\-Base.\-C.
+
+
+\begin{DoxyCode}
+50 \{
+51 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_rng_base_a098089a93e29db4ad9ac106c8b5de583}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}!beta\-Sample@{beta\-Sample}}
+\index{beta\-Sample@{beta\-Sample}!QUESO::RngBase@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+\subsubsection[{beta\-Sample}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Rng\-Base\-::beta\-Sample (
+\begin{DoxyParamCaption}
+\item[{double}]{alpha, }
+\item[{double}]{beta}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_rng_base_a098089a93e29db4ad9ac106c8b5de583}
+
+
+Samples a value from a Beta distribution. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a4cfa51656336eadbd137c7698e5f1b59}{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}, and \hyperlink{class_q_u_e_s_o_1_1_rng_boost_ab859b0ff1e728c6a65c2aef62afe028e}{Q\-U\-E\-S\-O\-::\-Rng\-Boost}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Beta().
+
+\hypertarget{class_q_u_e_s_o_1_1_rng_base_abd9abcf42426b568d4f13f5c3f3dc997}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}!gamma\-Sample@{gamma\-Sample}}
+\index{gamma\-Sample@{gamma\-Sample}!QUESO::RngBase@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+\subsubsection[{gamma\-Sample}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Rng\-Base\-::gamma\-Sample (
+\begin{DoxyParamCaption}
+\item[{double}]{a, }
+\item[{double}]{b}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_rng_base_abd9abcf42426b568d4f13f5c3f3dc997}
+
+
+Samples a value from a Gamma distribution. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a18017f2291ad584f169a7efc7ca5dd32}{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}, and \hyperlink{class_q_u_e_s_o_1_1_rng_boost_ae4fcb113ba19dbec7684f41c3aebf4e7}{Q\-U\-E\-S\-O\-::\-Rng\-Boost}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Gamma(), and Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Inverse\-Gamma().
+
+\hypertarget{class_q_u_e_s_o_1_1_rng_base_a7be9cf40cc50b973ed8c2f594f402584}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}!gaussian\-Sample@{gaussian\-Sample}}
+\index{gaussian\-Sample@{gaussian\-Sample}!QUESO::RngBase@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+\subsubsection[{gaussian\-Sample}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Rng\-Base\-::gaussian\-Sample (
+\begin{DoxyParamCaption}
+\item[{double}]{std\-Dev}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_rng_base_a7be9cf40cc50b973ed8c2f594f402584}
+
+
+Samples a value from a Gaussian distribution with standard deviation given by {\ttfamily std\-Dev}. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a4ebf1a75b394d2a650c1742c132b00c4}{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}, and \hyperlink{class_q_u_e_s_o_1_1_rng_boost_a9d33a495101b353e267ea7d3a6df361f}{Q\-U\-E\-S\-O\-::\-Rng\-Boost}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Gaussian(), Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Gaussian\-::draw(), and Q\-U\-E\-S\-O\-::\-Misc\-Gammar().
+
+\hypertarget{class_q_u_e_s_o_1_1_rng_base_adbd867ec865be8813641146f7a63c80b}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}!private\-Reset\-Seed@{private\-Reset\-Seed}}
+\index{private\-Reset\-Seed@{private\-Reset\-Seed}!QUESO::RngBase@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+\subsubsection[{private\-Reset\-Seed}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Rng\-Base\-::private\-Reset\-Seed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_rng_base_adbd867ec865be8813641146f7a63c80b}
+
+
+Reset seed. 
+
+
+
+Definition at line 68 of file Rng\-Base.\-C.
+
+
+
+References m\-\_\-seed, and m\-\_\-world\-Rank.
+
+
+
+Referenced by reset\-Seed(), and Rng\-Base().
+
+
+\begin{DoxyCode}
+69 \{
+70   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{m\_seed} >= 0) \{
+71     \textcolor{comment}{// Do nothing}
+72   \}
+73   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{m\_seed} < 0) \{
+74     \hyperlink{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{m\_seed} = (-\hyperlink{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{m\_seed}+\hyperlink{class_q_u_e_s_o_1_1_rng_base_a94515d2b7d493d8e4e238628716dd11b}{m\_worldRank});
+75   \}
+76   \textcolor{comment}{//else \{}
+77   \textcolor{comment}{//  struct timeval timevalNow;}
+78   \textcolor{comment}{//  /*iRC = */gettimeofday(&timevalNow, NULL);}
+79   \textcolor{comment}{//  m\_seed = (int) timevalNow.tv\_usec;}
+80   \textcolor{comment}{//\}}
+81 
+82   \textcolor{keywordflow}{return};
+83 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_base_a8cb8cbf14298bfcb84de1b562c069e84}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}!reset\-Seed@{reset\-Seed}}
+\index{reset\-Seed@{reset\-Seed}!QUESO::RngBase@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+\subsubsection[{reset\-Seed}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Rng\-Base\-::reset\-Seed (
+\begin{DoxyParamCaption}
+\item[{int}]{new\-Seed}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_rng_base_a8cb8cbf14298bfcb84de1b562c069e84}
+
+
+Resets the seed with value {\ttfamily new\-Seed}. 
+
+
+
+Reimplemented in \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a95e515676ae7b503bd3b72eea7432598}{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}, and \hyperlink{class_q_u_e_s_o_1_1_rng_boost_a94c246d855ea22332b0dafc0891e328f}{Q\-U\-E\-S\-O\-::\-Rng\-Boost}.
+
+
+
+Definition at line 60 of file Rng\-Base.\-C.
+
+
+
+References m\-\_\-seed, and private\-Reset\-Seed().
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Rng\-Gsl\-::reset\-Seed(), and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::reset\-Seed().
+
+
+\begin{DoxyCode}
+61 \{
+62   \hyperlink{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{m\_seed} = newSeed;
+63   \hyperlink{class_q_u_e_s_o_1_1_rng_base_adbd867ec865be8813641146f7a63c80b}{privateResetSeed}();
+64   \textcolor{keywordflow}{return};
+65 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_base_a3094da86084e56faaae9325f1117f9a3}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}!seed@{seed}}
+\index{seed@{seed}!QUESO::RngBase@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+\subsubsection[{seed}]{\setlength{\rightskip}{0pt plus 5cm}int Q\-U\-E\-S\-O\-::\-Rng\-Base\-::seed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_rng_base_a3094da86084e56faaae9325f1117f9a3}
+
+
+Sets the seed. 
+
+
+
+Definition at line 54 of file Rng\-Base.\-C.
+
+
+
+References m\-\_\-seed.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Environment\-::seed().
+
+
+\begin{DoxyCode}
+55 \{
+56   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{m\_seed};
+57 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_base_aed8342f0c8a4ac0a311cce9cac2b67e5}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}!uniform\-Sample@{uniform\-Sample}}
+\index{uniform\-Sample@{uniform\-Sample}!QUESO::RngBase@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+\subsubsection[{uniform\-Sample}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Rng\-Base\-::uniform\-Sample (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_rng_base_aed8342f0c8a4ac0a311cce9cac2b67e5}
+
+
+Samples a value from a uniform distribution. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a903f2db902f287a0d7d85f68d95d7225}{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}, and \hyperlink{class_q_u_e_s_o_1_1_rng_boost_aad1548eec706aeb6580af163bd80e0a9}{Q\-U\-E\-S\-O\-::\-Rng\-Boost}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Uniform(), Q\-U\-E\-S\-O\-::\-Misc\-Gammar(), and Q\-U\-E\-S\-O\-::\-Finite\-Distribution\-::sample().
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}!m\-\_\-seed@{m\-\_\-seed}}
+\index{m\-\_\-seed@{m\-\_\-seed}!QUESO::RngBase@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+\subsubsection[{m\-\_\-seed}]{\setlength{\rightskip}{0pt plus 5cm}int Q\-U\-E\-S\-O\-::\-Rng\-Base\-::m\-\_\-seed\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}
+
+
+Seed. 
+
+
+
+Definition at line 85 of file Rng\-Base.\-h.
+
+
+
+Referenced by private\-Reset\-Seed(), reset\-Seed(), Q\-U\-E\-S\-O\-::\-Rng\-Gsl\-::reset\-Seed(), Q\-U\-E\-S\-O\-::\-Rng\-Gsl\-::\-Rng\-Gsl(), and seed().
+
+\hypertarget{class_q_u_e_s_o_1_1_rng_base_a94515d2b7d493d8e4e238628716dd11b}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Base@{Q\-U\-E\-S\-O\-::\-Rng\-Base}!m\-\_\-world\-Rank@{m\-\_\-world\-Rank}}
+\index{m\-\_\-world\-Rank@{m\-\_\-world\-Rank}!QUESO::RngBase@{Q\-U\-E\-S\-O\-::\-Rng\-Base}}
+\subsubsection[{m\-\_\-world\-Rank}]{\setlength{\rightskip}{0pt plus 5cm}int Q\-U\-E\-S\-O\-::\-Rng\-Base\-::m\-\_\-world\-Rank\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_rng_base_a94515d2b7d493d8e4e238628716dd11b}
+
+
+Rank of processor. 
+
+
+
+Definition at line 88 of file Rng\-Base.\-h.
+
+
+
+Referenced by private\-Reset\-Seed(), Q\-U\-E\-S\-O\-::\-Rng\-Gsl\-::reset\-Seed(), Rng\-Base(), Q\-U\-E\-S\-O\-::\-Rng\-Boost\-::\-Rng\-Boost(), and Q\-U\-E\-S\-O\-::\-Rng\-Gsl\-::\-Rng\-Gsl().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{_rng_base_8h}{Rng\-Base.\-h}\item 
+src/core/src/\hyperlink{_rng_base_8_c}{Rng\-Base.\-C}\end{DoxyCompactItemize}

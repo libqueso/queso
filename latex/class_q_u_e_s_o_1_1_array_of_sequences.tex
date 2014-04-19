@@ -1,0 +1,1471 @@
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences}{\section{Q\-U\-E\-S\-O\-:\-:Array\-Of\-Sequences$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_array_of_sequences}\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}}
+}
+
+
+Class for handling array samples (arrays of scalar sequences).  
+
+
+
+
+{\ttfamily \#include $<$Array\-Of\-Sequences.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Array\-Of\-Sequences$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{class_q_u_e_s_o_1_1_array_of_sequences__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Array\-Of\-Sequences$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_array_of_sequences__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a8b4625170975168c1cb3ee34946e564b}{Array\-Of\-Sequences} (const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_af9a4dd979a2fa8dee85bb07793b59ba2}{vector\-Space}, unsigned int \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{sub\-Sequence\-Size}, const std\-::string \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a48f6fe02cf77f4233d3bcdfef3870f19}{name})
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a8632bf1a4b6cd4447694a7108a2689a7}{$\sim$\-Array\-Of\-Sequences} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Sequence methods}\par
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{sub\-Sequence\-Size} () const 
+\begin{DoxyCompactList}\small\item\em Size of the sub-\/sequence of arrays. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a3067aa6afb3a4fd6f30dc753bbceaf9e}{resize\-Sequence} (unsigned int new\-Sub\-Sequence\-Size)
+\begin{DoxyCompactList}\small\item\em Resizes the sequence. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a9267060ca0e57a124d9f8ba64e60027c}{reset\-Values} (unsigned int initial\-Pos, unsigned int num\-Pos)
+\begin{DoxyCompactList}\small\item\em Resets a total of {\ttfamily num\-Pos} values of the sequence starting at position {\ttfamily initial\-Pos}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a81f3ee91830b977945fa152901d4cd8e}{erase\-Positions} (unsigned int initial\-Pos, unsigned int num\-Pos)
+\begin{DoxyCompactList}\small\item\em Erases {\ttfamily num\-Pos} elements of the sequence starting at position {\ttfamily initial\-Pos}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ae75a2eedab5e8d3fc0638f578eba35ab}{get\-Position\-Values} (unsigned int pos\-Id, V \&vec) const 
+\begin{DoxyCompactList}\small\item\em Gets the values of the sequence at position {\ttfamily pos\-Id} and stores them at {\ttfamily vec}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a20e1732527bc5c466abf79b827407d54}{set\-Position\-Values} (unsigned int pos\-Id, const V \&vec)
+\begin{DoxyCompactList}\small\item\em Set the values of {\ttfamily vec} at position {\ttfamily pos\-Id} of the sequence. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a9168423928360ee9dd3d3521f5539892}{set\-Gaussian} (const V \&mean\-Vec, const V \&std\-Dev\-Vec)
+\begin{DoxyCompactList}\small\item\em Sets the values of the sequence as a Gaussian distribution of mean given by {\ttfamily mean\-Vec} and standard deviation by {\ttfamily std\-Dev\-Vec}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a478f81e5a47e06074577b46b2f8fdfd1}{set\-Uniform} (const V \&a\-Vec, const V \&b\-Vec)
+\begin{DoxyCompactList}\small\item\em Sets the values of the sequence as a uniform distribution between the values given by vectors {\ttfamily a\-Vec} and {\ttfamily b\-Vec}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ae9d785ccc1cbf94447efd2dae6467c3d}{mean} (unsigned int initial\-Pos, unsigned int num\-Pos, V \&mean\-Vec) const 
+\begin{DoxyCompactList}\small\item\em Finds the mean value of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_aff464566fefc76edb13ac6f6f8f2bd31}{unified\-Mean} (unsigned int initial\-Pos, unsigned int num\-Pos, V \&unified\-Mean\-Vec) const 
+\begin{DoxyCompactList}\small\item\em Finds the mean value of the unified sequence of {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a7bce5c84299185882c0bb7c6d61bce6d}{sample\-Variance} (unsigned int initial\-Pos, unsigned int num\-Pos, const V \&mean\-Vec, V \&sam\-Vec) const 
+\begin{DoxyCompactList}\small\item\em Finds the sample variance of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a51ad92656e8b2e437982660fabb67ba3}{unified\-Sample\-Variance} (unsigned int initial\-Pos, unsigned int num\-Pos, const V \&mean\-Vec, V \&sam\-Vec) const 
+\begin{DoxyCompactList}\small\item\em Finds the sample variance of the unified sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a5bde372f275a51cd25c883604586d6dd}{population\-Variance} (unsigned int initial\-Pos, unsigned int num\-Pos, const V \&mean\-Vec, V \&pop\-Vec) const 
+\begin{DoxyCompactList}\small\item\em Finds the population variance of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ac6439fcb719bad4810cfe3c020f73486}{auto\-Covariance} (unsigned int initial\-Pos, unsigned int num\-Pos, const V \&mean\-Vec, unsigned int lag, V \&cov\-Vec) const 
+\begin{DoxyCompactList}\small\item\em Calculates the autocovariance. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a057921bf605783c85def57f71cc2101e}{auto\-Corr\-Via\-Def} (unsigned int initial\-Pos, unsigned int num\-Pos, unsigned int lag, V \&corr\-Vec) const 
+\begin{DoxyCompactList}\small\item\em Calculates autocorrelation via definition. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_aa0468a432b6ee77a810357d0ef3b8690}{auto\-Corr\-Via\-Fft} (unsigned int initial\-Pos, unsigned int num\-Pos, const std\-::vector$<$ unsigned int $>$ \&lags, std\-::vector$<$ V $\ast$ $>$ \&corr\-Vecs) const 
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a078e43442f5b12f7a886ace29af0aec0}{auto\-Corr\-Via\-Fft} (unsigned int initial\-Pos, unsigned int num\-Pos, unsigned int num\-Sum, V \&auto\-Corrs\-Sum\-Vec) const 
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_af318beb944a58dcb7b36a645f84edd3f}{min\-Max} (unsigned int initial\-Pos, V \&min\-Vec, V \&max\-Vec) const 
+\begin{DoxyCompactList}\small\item\em Given an initial position {\ttfamily initial\-Pos}, finds the minimum and the maximum values of the sequence. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a2beb77e521581b8c28d1fe0fe71018c6}{histogram} (unsigned int initial\-Pos, const V \&min\-Vec, const V \&max\-Vec, std\-::vector$<$ V $\ast$ $>$ \&centers\-For\-All\-Bins, std\-::vector$<$ V $\ast$ $>$ \&quantts\-For\-All\-Bins) const 
+\begin{DoxyCompactList}\small\item\em Calculates the histogram of the sequence. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a6cd1021725aa1d7e50034f482904660a}{inter\-Quantile\-Range} (unsigned int initial\-Pos, V \&iqrs) const 
+\begin{DoxyCompactList}\small\item\em Returns the interquartile range of the values in the sequence. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ae746fcec9567a5ef3c46f5559c90dee7}{scales\-For\-K\-D\-E} (unsigned int initial\-Pos, const V \&iqrs, unsigned int kde\-Dimension, V \&scales) const 
+\begin{DoxyCompactList}\small\item\em Selects the scales (bandwidth, {\ttfamily scale\-Vec}) for the kernel density estimation, of the sequence. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ade11b2ce02c1b7501a1c465dcfe63a1d}{gaussian\-K\-D\-E} (const V \&evaluation\-Param\-Vec, V \&density\-Vec) const 
+\begin{DoxyCompactList}\small\item\em Gaussian kernel for the K\-D\-E estimate of the sequence. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a221a49bf0e054276007dde487dbedfe6}{gaussian\-K\-D\-E} (unsigned int initial\-Pos, const V \&scales, const std\-::vector$<$ V $\ast$ $>$ \&evaluation\-Param\-Vecs, std\-::vector$<$ V $\ast$ $>$ \&density\-Vecs) const 
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Gaussian kernel for the K\-D\-E of the sequence. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a4b1248fe9601ec598797071210760687}{write\-Contents} (std\-::ofstream \&ofsvar) const 
+\begin{DoxyCompactList}\small\item\em Write contents of the chain to a file. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a20727ea1cc87e2cf81802b7e07eae35f}{unified\-Write\-Contents} (std\-::ofstream \&ofsvar) const 
+\begin{DoxyCompactList}\small\item\em Writes info of the unified sequence to a file. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_af4ab2f575230715be16fff5ae9bb4759}{unified\-Write\-Contents} (const std\-::string \&file\-Name, const std\-::string \&file\-Type) const 
+\begin{DoxyCompactList}\small\item\em Writes info of the unified sequence to a file. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a3fbe0f679fa8828e27dadb89a9fe3eaa}{unified\-Read\-Contents} (const std\-::string \&file\-Name, const std\-::string \&file\-Type, const unsigned int \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{sub\-Sequence\-Size})
+\begin{DoxyCompactList}\small\item\em Reads the unified sequence from a file. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a643996eaf9db7e40a423c06ae5cb881a}{select} (const std\-::vector$<$ unsigned int $>$ \&ids\-Of\-Unique\-Positions)
+\begin{DoxyCompactList}\small\item\em Select positions in the sequence of vectors. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a7c95d24764af395fdff5c9d0c987e694}{filter} (unsigned int initial\-Pos, unsigned int spacing)
+\begin{DoxyCompactList}\small\item\em Filters positions in the sequence of vectors, starting at {\ttfamily initial\-Pos}, and with spacing given by {\ttfamily spacing}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ab529b77aca8e169b1b769051e7de8c3d}{extract\-Scalar\-Seq} (unsigned int initial\-Pos, unsigned int spacing, unsigned int num\-Pos, unsigned int param\-Id, \hyperlink{class_q_u_e_s_o_1_1_scalar_sequence}{Scalar\-Sequence}$<$ double $>$ \&scalar\-Seq) const 
+\begin{DoxyCompactList}\small\item\em Extracts a sequence of scalars of size {\ttfamily num\-Pos}, from position {\ttfamily param\-Id} of the array of sequences. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a615df4add2396b94f5a4be3a5eb971fb}{extract\-Raw\-Data} (unsigned int initial\-Pos, unsigned int spacing, unsigned int num\-Pos, unsigned int param\-Id, std\-::vector$<$ double $>$ \&raw\-Data) const 
+\begin{DoxyCompactList}\small\item\em Extracts the raw data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ \hyperlink{class_q_u_e_s_o_1_1_scalar_sequence}{Scalar\-Sequence}\\*
+$<$ double $>$ $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\-\_\-scalar\-Sequences}
+\begin{DoxyCompactList}\small\item\em Sequence of scalars. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}
+
+Class for handling array samples (arrays of scalar sequences). 
+
+This class handles array of sequences (samples) generated by an algorithm, as well as operations that can be carried over them, e.\-g., calculation of means, correlation and covariance matrices. It is derived from and implements Base\-Vector\-Sequence$<$\-V,\-M$>$. 
+
+Definition at line 44 of file Array\-Of\-Sequences.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a8b4625170975168c1cb3ee34946e564b}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!Array\-Of\-Sequences@{Array\-Of\-Sequences}}
+\index{Array\-Of\-Sequences@{Array\-Of\-Sequences}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{Array\-Of\-Sequences}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::{\bf Array\-Of\-Sequences} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector\-Space}$<$ V, M $>$ \&}]{vector\-Space, }
+\item[{unsigned int}]{sub\-Sequence\-Size, }
+\item[{const std\-::string \&}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a8b4625170975168c1cb3ee34946e564b}
+
+
+Default constructor. 
+
+
+
+Definition at line 32 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::m\-\_\-scalar\-Sequences, and Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::sub\-Sequence\-Size().
+
+
+\begin{DoxyCode}
+35     : BaseVectorSequence<V,M>(\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_af9a4dd979a2fa8dee85bb07793b59ba2}{vectorSpace},\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{subSequenceSize},
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a48f6fe02cf77f4233d3bcdfef3870f19}{name}),
+36       \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}(\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.map(),1)
+37 \{
+38 
+39   \textcolor{comment}{//if (m\_env.subDisplayFile()) \{}
+40   \textcolor{comment}{//  *m\_env.subDisplayFile() << "Entering ArrayOfSequences<V,M>::constructor()"}
+41   \textcolor{comment}{//                         << std::endl;}
+42   \textcolor{comment}{//\}}
+43 
+44   \textcolor{comment}{//if (m\_env.subDisplayFile()) \{}
+45   \textcolor{comment}{//  *m\_env.subDisplayFile() << "In ArrayOfSequences<V,M>::constructor()"}
+46   \textcolor{comment}{//                         << "\(\backslash\)n subSequenceSize = "              << subSequenceSize}
+47   \textcolor{comment}{//                         << "\(\backslash\)n m\_scalarSequences.MyLength() = " << m\_scalarSequences.MyLength()}
+48   \textcolor{comment}{//                         << std::endl;}
+49   \textcolor{comment}{//\}}
+50 
+51   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}.MyLength(); ++i) \{
+52     \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}(i,0) = \textcolor{keyword}{new} ScalarSequence<double>(\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env},
+      \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{subSequenceSize});
+53   \}
+54 
+55   \textcolor{comment}{//if (m\_env.subDisplayFile()) \{}
+56   \textcolor{comment}{//  *m\_env.subDisplayFile() << "Leaving ArrayOfSequences<V,M>::constructor()"}
+57   \textcolor{comment}{//                         << std::endl;}
+58   \textcolor{comment}{//\}}
+59 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a8632bf1a4b6cd4447694a7108a2689a7}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!$\sim$\-Array\-Of\-Sequences@{$\sim$\-Array\-Of\-Sequences}}
+\index{$\sim$\-Array\-Of\-Sequences@{$\sim$\-Array\-Of\-Sequences}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{$\sim$\-Array\-Of\-Sequences}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::$\sim${\bf Array\-Of\-Sequences} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a8632bf1a4b6cd4447694a7108a2689a7}
+
+
+Destructor. 
+
+
+
+Definition at line 63 of file Array\-Of\-Sequences.\-C.
+
+
+\begin{DoxyCode}
+64 \{
+65   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}.MyLength(); ++i) \{
+66     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}(i,0)) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}(i,0);
+67   \}
+68 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a057921bf605783c85def57f71cc2101e}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!auto\-Corr\-Via\-Def@{auto\-Corr\-Via\-Def}}
+\index{auto\-Corr\-Via\-Def@{auto\-Corr\-Via\-Def}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{auto\-Corr\-Via\-Def}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::auto\-Corr\-Via\-Def (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{unsigned int}]{lag, }
+\item[{V \&}]{corr\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a057921bf605783c85def57f71cc2101e}
+
+
+Calculates autocorrelation via definition. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4d322b34c43ad47df9a76582a0693d0}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 346 of file Array\-Of\-Sequences.\-C.
+
+
+\begin{DoxyCode}
+350 \{
+351   V subChainMean              (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.zeroVector());
+352   V subChainAutoCovarianceLag0(\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.zeroVector());
+353 
+354   this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ae9d785ccc1cbf94447efd2dae6467c3d}{mean}(initialPos,
+355              numPos,
+356              subChainMean);
+357   this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ac6439fcb719bad4810cfe3c020f73486}{autoCovariance}(initialPos,
+358                        numPos,
+359                        subChainMean,
+360                        0, \textcolor{comment}{// lag}
+361                        subChainAutoCovarianceLag0);
+362 
+363   this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ac6439fcb719bad4810cfe3c020f73486}{autoCovariance}(initialPos,
+364                        numPos,
+365                        subChainMean,
+366                        lag,
+367                        corrVec);
+368   corrVec /= subChainAutoCovarianceLag0; 
+369 
+370   \textcolor{keywordflow}{return};
+371 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_aa0468a432b6ee77a810357d0ef3b8690}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!auto\-Corr\-Via\-Fft@{auto\-Corr\-Via\-Fft}}
+\index{auto\-Corr\-Via\-Fft@{auto\-Corr\-Via\-Fft}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{auto\-Corr\-Via\-Fft}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::auto\-Corr\-Via\-Fft (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{const std\-::vector$<$ unsigned int $>$ \&}]{lags, }
+\item[{std\-::vector$<$ V $\ast$ $>$ \&}]{corr\-Vecs}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_aa0468a432b6ee77a810357d0ef3b8690}
+Calculates autocorrelation via Fast Fourier transforms (F\-F\-T). T\-O\-D\-O\-: Implement me! 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a709a63b678508c47bedd416ece5342ef}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 374 of file Array\-Of\-Sequences.\-C.
+
+
+\begin{DoxyCode}
+378 \{
+379   \textcolor{keywordflow}{return};
+380 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a078e43442f5b12f7a886ace29af0aec0}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!auto\-Corr\-Via\-Fft@{auto\-Corr\-Via\-Fft}}
+\index{auto\-Corr\-Via\-Fft@{auto\-Corr\-Via\-Fft}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{auto\-Corr\-Via\-Fft}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::auto\-Corr\-Via\-Fft (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{unsigned int}]{num\-Sum, }
+\item[{V \&}]{auto\-Corrs\-Sum\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a078e43442f5b12f7a886ace29af0aec0}
+Calculates autocorrelation via Fast Fourier transforms (F\-F\-T). T\-O\-D\-O\-: Implement me! 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_af9f2478ed4112aa615caef21bf26ab35}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 383 of file Array\-Of\-Sequences.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+387 \{
+388 \textcolor{preprocessor}{#if 0}
+389 \textcolor{preprocessor}{}  \textcolor{keywordtype}{bool} bRC = ((initialPos             <  this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{subSequenceSize}()) &&
+390               (0                      <  numPos                 ) &&
+391               ((initialPos+numPos)    <= this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{subSequenceSize}()) &&
+392               (autoCorrsSumVec.size() == this->vectorSize()     ));
+393   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+394                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+395                       \textcolor{stringliteral}{"ArrayOfSequences<V,M>::autoCorrViaFft(), for sum"},
+396                       \textcolor{stringliteral}{"invalid input data"});
+397 
+398   ScalarSequence<double> data(\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env},0);
+399 
+400   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numParams = this->vectorSize();
+401   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < numParams; ++i) \{
+402     this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ab529b77aca8e169b1b769051e7de8c3d}{extractScalarSeq}(initialPos,
+403                            1, \textcolor{comment}{// spacing}
+404                            numPos,
+405                            i,
+406                            data);
+407 
+408     data.autoCorrViaFft(0,
+409                         numPos,
+410                         autoCorrsSumVec[i]);
+411   \}
+412 \textcolor{preprocessor}{#endif}
+413 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return};
+414 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_ac6439fcb719bad4810cfe3c020f73486}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!auto\-Covariance@{auto\-Covariance}}
+\index{auto\-Covariance@{auto\-Covariance}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{auto\-Covariance}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::auto\-Covariance (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{const V \&}]{mean\-Vec, }
+\item[{unsigned int}]{lag, }
+\item[{V \&}]{cov\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_ac6439fcb719bad4810cfe3c020f73486}
+
+
+Calculates the autocovariance. 
+
+The autocovariance is the covariance of a variable with itself at some other time. It is calculated over a sequence of arrays with initial position {\ttfamily initial\-Pos}, considering {\ttfamily num\-Pos} positions, a lag of {\ttfamily lag}, with mean given by {\ttfamily mean\-Vec}. The results are saved in the output vector {\ttfamily cov\-Vec/} 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3a831c06c8ede53b84ce72fac3f018c0}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 292 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::m\-\_\-scalar\-Sequences, and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+297 \{
+298   \textcolor{keywordtype}{bool} bRC = ((0                     <= initialPos                 ) &&
+299               (0                     <  numPos                     ) &&
+300               ((initialPos+numPos-1) <= (this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{subSequenceSize}()-1)));
+301   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+302                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+303                       \textcolor{stringliteral}{"VectorSequenceAutoCovariance<V,M>()"},
+304                       \textcolor{stringliteral}{"invalid initial position or number of positions"});
+305 
+306   bRC = (numPos > lag);
+307   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+308                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+309                       \textcolor{stringliteral}{"VectorSequenceAutoCovariance<V,M>()"},
+310                       \textcolor{stringliteral}{"lag is too large"});
+311 
+312   bRC = (this->vectorSize() == covVec.size());
+313   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+314                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+315                       \textcolor{stringliteral}{"VectorSequenceAutoCovariance<V,M>()"},
+316                       \textcolor{stringliteral}{"incompatible sizes between covVec vector and vectors in sequence"});
+317 
+318   bRC = (this->vectorSize() == meanVec.size());
+319   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+320                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+321                       \textcolor{stringliteral}{"VectorSequenceAutoCovariance<V,M>()"},
+322                       \textcolor{stringliteral}{"incompatible sizes between meanVec vector and vectors in sequence"});
+323 
+324   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} loopSize      = numPos - lag;
+325   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} finalPosPlus1 = initialPos + loopSize;
+326   \textcolor{keywordtype}{double} doubleLoopSize = (double) loopSize;
+327   covVec.cwSet(0.);
+328 
+329   ArrayOfSequences<V,M>* tmp = \textcolor{keyword}{const\_cast<}ArrayOfSequences<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+330   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < covVec.size(); ++i) \{
+331     \textcolor{keyword}{const} ScalarSequence<double>& seq = *(tmp->m\_scalarSequences(i,0));
+332     \textcolor{keywordtype}{double} meanValue = meanVec[i];
+333     \textcolor{keywordtype}{double} result = 0;
+334     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = initialPos; j < finalPosPlus1; ++j) \{
+335       \textcolor{keywordtype}{double} diff1 = seq[j]     - meanValue;
+336       \textcolor{keywordtype}{double} diff2 = seq[j+lag] - meanValue;
+337       result += diff1*diff2;
+338     \}
+339     covVec[i] = result/doubleLoopSize;
+340   \}
+341 
+342   \textcolor{keywordflow}{return};
+343 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a81f3ee91830b977945fa152901d4cd8e}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!erase\-Positions@{erase\-Positions}}
+\index{erase\-Positions@{erase\-Positions}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{erase\-Positions}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::erase\-Positions (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a81f3ee91830b977945fa152901d4cd8e}
+
+
+Erases {\ttfamily num\-Pos} elements of the sequence starting at position {\ttfamily initial\-Pos}. 
+
+This routine deletes all stored computed vectors 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a2b41ed436f95a1816a811fc368adaf79}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 106 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::delete\-Stored\-Vectors(), and Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::erase\-Positions().
+
+
+\begin{DoxyCode}
+108 \{
+109   \textcolor{keywordflow}{if} (initialPos < this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{subSequenceSize}()) \{
+110     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}.MyLength(); ++i) \{
+111       ScalarSequence<double>& seq = *(\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}(i,0));
+112       seq.erasePositions(initialPos,numPos);
+113     \}
+114   \}
+115 
+116   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{BaseVectorSequence<V,M>::deleteStoredVectors}();
+117 
+118   \textcolor{keywordflow}{return};
+119 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a615df4add2396b94f5a4be3a5eb971fb}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!extract\-Raw\-Data@{extract\-Raw\-Data}}
+\index{extract\-Raw\-Data@{extract\-Raw\-Data}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{extract\-Raw\-Data}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::extract\-Raw\-Data (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{spacing, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{unsigned int}]{param\-Id, }
+\item[{std\-::vector$<$ double $>$ \&}]{raw\-Data}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a615df4add2396b94f5a4be3a5eb971fb}
+
+
+Extracts the raw data. 
+
+Extracts the data from sequence of array at position {\ttfamily param\-Id}, with spacing {\ttfamily spacing}, and saves is in {\ttfamily raw\-Data}. The vector {\ttfamily raw\-Data} will have size {\ttfamily num\-Pos}. Note that, in fact, {\ttfamily spacing} = 1. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aae5259810d72d393328369d8d4087d5d}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 673 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::m\-\_\-scalar\-Sequences.
+
+
+\begin{DoxyCode}
+678 \{
+679   ArrayOfSequences<V,M>* tmp = \textcolor{keyword}{const\_cast<}ArrayOfSequences<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+680   ScalarSequence<double>& seq = *(tmp->m\_scalarSequences(paramId,0));
+681 
+682   rawData.resize(numPos);
+683   \textcolor{keywordflow}{if} (spacing == 1) \{
+684     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < numPos; ++j) \{
+685       rawData[j] = seq[paramId];
+686     \}
+687   \}
+688   \textcolor{keywordflow}{else} \{
+689     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < numPos; ++j) \{
+690       rawData[j] = seq[paramId];
+691     \}
+692   \}
+693 
+694   \textcolor{keywordflow}{return};
+695 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_ab529b77aca8e169b1b769051e7de8c3d}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!extract\-Scalar\-Seq@{extract\-Scalar\-Seq}}
+\index{extract\-Scalar\-Seq@{extract\-Scalar\-Seq}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{extract\-Scalar\-Seq}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::extract\-Scalar\-Seq (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{spacing, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{unsigned int}]{param\-Id, }
+\item[{{\bf Scalar\-Sequence}$<$ double $>$ \&}]{scalar\-Seq}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_ab529b77aca8e169b1b769051e7de8c3d}
+
+
+Extracts a sequence of scalars of size {\ttfamily num\-Pos}, from position {\ttfamily param\-Id} of the array of sequences. 
+
+In this method, the parameter {\ttfamily initial\-Pos} is unused and the parameter {\ttfamily spacing} is always equal to one 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0ec0f2595d606723d0b069e1632cc348}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 647 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::m\-\_\-scalar\-Sequences, and Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::resize\-Sequence().
+
+
+\begin{DoxyCode}
+652 \{
+653   ArrayOfSequences<V,M>* tmp = \textcolor{keyword}{const\_cast<}ArrayOfSequences<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+654   ScalarSequence<double>& seq = *(tmp->m\_scalarSequences(paramId,0));
+655 
+656   scalarSeq.\hyperlink{class_q_u_e_s_o_1_1_scalar_sequence_a2aa8d77c39927060227275b12b6d3dd0}{resizeSequence}(numPos);
+657   \textcolor{keywordflow}{if} (spacing == 1) \{
+658     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < numPos; ++j) \{
+659       scalarSeq[j] = seq[paramId];
+660     \}
+661   \}
+662   \textcolor{keywordflow}{else} \{
+663     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < numPos; ++j) \{
+664       scalarSeq[j] = seq[paramId];
+665     \}
+666   \}
+667 
+668   \textcolor{keywordflow}{return};
+669 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a7c95d24764af395fdff5c9d0c987e694}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!filter@{filter}}
+\index{filter@{filter}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{filter}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::filter (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{spacing}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a7c95d24764af395fdff5c9d0c987e694}
+
+
+Filters positions in the sequence of vectors, starting at {\ttfamily initial\-Pos}, and with spacing given by {\ttfamily spacing}. 
+
+T\-O\-D\-O\-: implement me! 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_adfb88fdbaa1c6b2b040ef888633619ef}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 640 of file Array\-Of\-Sequences.\-C.
+
+
+\begin{DoxyCode}
+642 \{
+643   \textcolor{keywordflow}{return};
+644 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_ade11b2ce02c1b7501a1c465dcfe63a1d}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!gaussian\-K\-D\-E@{gaussian\-K\-D\-E}}
+\index{gaussian\-K\-D\-E@{gaussian\-K\-D\-E}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{gaussian\-K\-D\-E}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::gaussian\-K\-D\-E (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{evaluation\-Param\-Vec, }
+\item[{V \&}]{density\-Vec}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_ade11b2ce02c1b7501a1c465dcfe63a1d}
+
+
+Gaussian kernel for the K\-D\-E estimate of the sequence. 
+
+T\-O\-D\-O\-: implement me! 
+
+Definition at line 539 of file Array\-Of\-Sequences.\-C.
+
+
+\begin{DoxyCode}
+541 \{
+542   \textcolor{keywordflow}{return};
+543 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a221a49bf0e054276007dde487dbedfe6}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!gaussian\-K\-D\-E@{gaussian\-K\-D\-E}}
+\index{gaussian\-K\-D\-E@{gaussian\-K\-D\-E}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{gaussian\-K\-D\-E}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::gaussian\-K\-D\-E (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{const V \&}]{scales, }
+\item[{const std\-::vector$<$ V $\ast$ $>$ \&}]{evaluation\-Param\-Vecs, }
+\item[{std\-::vector$<$ V $\ast$ $>$ \&}]{density\-Vecs}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a221a49bf0e054276007dde487dbedfe6}
+
+
+T\-O\-D\-O\-: Gaussian kernel for the K\-D\-E of the sequence. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000013}{Todo}]\-: implement me! The density estimator will be\-: \[ \hat{f}(x) = \frac{1}{nh} \sum_{j=1}^n K\Big(\frac{x-x_j}{h}\Big),\] where $ K $ is a Gaussian kernel. \end{DoxyRefDesc}
+
+
+Definition at line 546 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Misc\-Gaussian\-Density().
+
+
+\begin{DoxyCode}
+550 \{
+551 \textcolor{preprocessor}{#if 0}
+552 \textcolor{preprocessor}{}  \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} dataSize = sequence.size() - initialPos;
+553   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numEstimationsPerParam = evaluationParamVecs.size();
+554 
+555   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < numEstimationsPerParam; ++j) \{
+556     densityVecs[j] = \textcolor{keyword}{new} V(*(sequence[0]));
+557   \}
+558 
+559   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numParams = sequence[0]->size();
+560   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < numParams; ++i) \{
+561     \textcolor{keywordtype}{double} scaleInv = 1./scales[i];
+562     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < numEstimationsPerParam; ++j) \{
+563       \textcolor{keywordtype}{double} x = (*(evaluationParamVecs[j]))[i];
+564       \textcolor{keywordtype}{double} value = 0.;
+565       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} k = 0; k < dataSize; ++k) \{
+566         \textcolor{keywordtype}{double} xk = (*(sequence[initialPos+k]))[i];
+567         value += \hyperlink{namespace_q_u_e_s_o_a0f94e9b1e8f415c389f180d4a75c5591}{MiscGaussianDensity}((x-xk)*scaleInv,0.,1.);
+568       \}
+569       (*(densityVecs[j]))[i] = scaleInv * (value/(double) numEstimationsPerParam);
+570     \}
+571   \}
+572 
+573 \textcolor{preprocessor}{#endif}
+574 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return};
+575 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_ae75a2eedab5e8d3fc0638f578eba35ab}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!get\-Position\-Values@{get\-Position\-Values}}
+\index{get\-Position\-Values@{get\-Position\-Values}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{get\-Position\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::get\-Position\-Values (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{pos\-Id, }
+\item[{V \&}]{vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_ae75a2eedab5e8d3fc0638f578eba35ab}
+
+
+Gets the values of the sequence at position {\ttfamily pos\-Id} and stores them at {\ttfamily vec}. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a656d47a18b401d6d914b0daf2dea88b0}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 122 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::m\-\_\-scalar\-Sequences.
+
+
+\begin{DoxyCode}
+123 \{
+124   ArrayOfSequences<V,M>* tmp = \textcolor{keyword}{const\_cast<}ArrayOfSequences<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+125   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}.MyLength(); ++i) \{
+126     vec[i] = (*(tmp->m\_scalarSequences(i,0)))[posId];
+127   \}
+128 
+129   \textcolor{keywordflow}{return};
+130 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a2beb77e521581b8c28d1fe0fe71018c6}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!histogram@{histogram}}
+\index{histogram@{histogram}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{histogram}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::histogram (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{const V \&}]{min\-Vec, }
+\item[{const V \&}]{max\-Vec, }
+\item[{std\-::vector$<$ V $\ast$ $>$ \&}]{centers\-For\-All\-Bins, }
+\item[{std\-::vector$<$ V $\ast$ $>$ \&}]{quantts\-For\-All\-Bins}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a2beb77e521581b8c28d1fe0fe71018c6}
+
+
+Calculates the histogram of the sequence. 
+
+T\-O\-D\-O\-: implement me! 
+
+Definition at line 432 of file Array\-Of\-Sequences.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+437 \{
+438 \textcolor{preprocessor}{#if 0}
+439 \textcolor{preprocessor}{}  \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(centersForAllBins.size() != quanttsForAllBins.size(),
+440                       sequence[0]->env().worldRank(),
+441                       \textcolor{stringliteral}{"VectorSequenceHistogram<V,M>()"},
+442                       \textcolor{stringliteral}{"vectors 'centers' and 'quantts' have different sizes"});
+443 
+444   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < quanttsForAllBins.size(); ++j) \{
+445     centersForAllBins[j] = \textcolor{keyword}{new} V(*(sequence[0]));
+446     quanttsForAllBins [j] = \textcolor{keyword}{new} V(*(sequence[0]));
+447   \}
+448 
+449   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} dataSize = sequence.size() - initialPos;
+450   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numParams = sequence[0]->size();
+451   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < numParams; ++i) \{
+452     ScalarSequence<double> data(dataSize,0.);
+453     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < dataSize; ++j) \{
+454       data[j] = (*(sequence[initialPos+j]))[i];
+455     \}
+456 
+457     std::vector<double> centers(centersForAllBins.size(),0.);
+458     std::vector<double> quantts(quanttsForAllBins.size(),0.);
+459     data.histogram(minVec[i],
+460                    maxVec[i],
+461                    centers,
+462                    quantts);
+463 
+464     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < quantts.size(); ++j) \{
+465       (*(centersForAllBins[j]))[i] = centers[j];
+466       (*(quanttsForAllBins[j]))[i] = quantts[j];
+467     \}
+468   \}
+469 
+470 \textcolor{preprocessor}{#endif}
+471 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return};
+472 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a6cd1021725aa1d7e50034f482904660a}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!inter\-Quantile\-Range@{inter\-Quantile\-Range}}
+\index{inter\-Quantile\-Range@{inter\-Quantile\-Range}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{inter\-Quantile\-Range}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::inter\-Quantile\-Range (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{V \&}]{iqrs}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a6cd1021725aa1d7e50034f482904660a}
+
+
+Returns the interquartile range of the values in the sequence. 
+
+T\-O\-D\-O\-: implement me! 
+
+Definition at line 475 of file Array\-Of\-Sequences.\-C.
+
+
+\begin{DoxyCode}
+477 \{
+478 \textcolor{preprocessor}{#if 0}
+479 \textcolor{preprocessor}{}  \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} dataSize = sequence.size() - initialPos;
+480 
+481   \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a8b4625170975168c1cb3ee34946e564b}{ArrayOfSequences} sortedSequence(dataSize,\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.zeroVector());
+482   this->sort(initialPos,
+483              sortedSequence);
+484 
+485   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos1 = (\textcolor{keywordtype}{unsigned} int) ( (((\textcolor{keywordtype}{double}) dataSize) + 1.)*1./4. - 1. );
+486   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} pos3 = (\textcolor{keywordtype}{unsigned} int) ( (((\textcolor{keywordtype}{double}) dataSize) + 1.)*3./4. - 1. );
+487 
+488   \textcolor{keywordtype}{double} fraction1 = (((double) dataSize) + 1.)*1./4. - 1. - ((double) pos1);
+489   \textcolor{keywordtype}{double} fraction3 = (((double) dataSize) + 1.)*3./4. - 1. - ((double) pos3);
+490 
+491   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numParams = sequence[0]->size();
+492   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < numParams; ++i) \{
+493     \textcolor{keywordtype}{double} value1 = (1.-fraction1) * (*sortedSequence[pos1])[i] + fraction1 * (*sortedSequence[pos1+1])[i];
+494     \textcolor{keywordtype}{double} value3 = (1.-fraction3) * (*sortedSequence[pos3])[i] + fraction3 * (*sortedSequence[pos3+1])[i];
+495     iqrs[i] = value3 - value1;
+496   \}
+497 
+498 \textcolor{preprocessor}{#endif}
+499 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return};
+500 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_ae9d785ccc1cbf94447efd2dae6467c3d}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!mean@{mean}}
+\index{mean@{mean}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{mean}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::mean (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{V \&}]{mean\-Vec}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_ae9d785ccc1cbf94447efd2dae6467c3d}
+
+
+Finds the mean value of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. 
+
+
+
+Definition at line 172 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::m\-\_\-scalar\-Sequences, Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::sub\-Mean\-Extra(), and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+174 \{
+175   \textcolor{keywordtype}{bool} bRC = ((0                     <= initialPos                 ) &&
+176               (0                     <  numPos                     ) &&
+177               ((initialPos+numPos-1) <= (this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{subSequenceSize}()-1)));
+178   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+179                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+180                       \textcolor{stringliteral}{"ArrayOfSequences<V,M>::mean()"},
+181                       \textcolor{stringliteral}{"invalid initial position or number of positions"});
+182 
+183   bRC = (this->vectorSize() == meanVec.size());
+184   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+185                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+186                       \textcolor{stringliteral}{"ArrayOfSequences<V,M>::mean()"},
+187                       \textcolor{stringliteral}{"incompatible sizes between meanVec vector and vectors in sequence"});
+188 
+189   meanVec.cwSet(0.);
+190   ArrayOfSequences<V,M>* tmp = \textcolor{keyword}{const\_cast<}ArrayOfSequences<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+191   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < meanVec.size(); ++i) \{
+192     \textcolor{keyword}{const} ScalarSequence<double>& seq = *(tmp->m\_scalarSequences(i,0));
+193     meanVec[i] = seq.subMeanExtra(initialPos, numPos);
+194   \}
+195 
+196   \textcolor{keywordflow}{return};
+197 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_af318beb944a58dcb7b36a645f84edd3f}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!min\-Max@{min\-Max}}
+\index{min\-Max@{min\-Max}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{min\-Max}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::min\-Max (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{V \&}]{min\-Vec, }
+\item[{V \&}]{max\-Vec}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_af318beb944a58dcb7b36a645f84edd3f}
+
+
+Given an initial position {\ttfamily initial\-Pos}, finds the minimum and the maximum values of the sequence. 
+
+
+
+Definition at line 417 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::m\-\_\-scalar\-Sequences, and Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::sub\-Min\-Max\-Extra().
+
+
+\begin{DoxyCode}
+419 \{
+420   ArrayOfSequences<V,M>* tmp = \textcolor{keyword}{const\_cast<}ArrayOfSequences<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+421 
+422   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numParams = this->vectorSize();
+423   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < numParams; ++i) \{
+424     ScalarSequence<double>& seq = *(tmp->m\_scalarSequences(i,0));
+425     seq.subMinMaxExtra(initialPos,minVec[i],maxVec[i]);
+426   \}
+427 
+428   \textcolor{keywordflow}{return};
+429 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a5bde372f275a51cd25c883604586d6dd}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!population\-Variance@{population\-Variance}}
+\index{population\-Variance@{population\-Variance}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{population\-Variance}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::population\-Variance (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{const V \&}]{mean\-Vec, }
+\item[{V \&}]{pop\-Vec}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a5bde372f275a51cd25c883604586d6dd}
+
+
+Finds the population variance of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. 
+
+
+
+Definition at line 246 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::m\-\_\-scalar\-Sequences, and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+250 \{
+251   \textcolor{keywordtype}{bool} bRC = ((0                     <= initialPos                 ) &&
+252               (0                     <  numPos                     ) &&
+253               ((initialPos+numPos-1) <= (this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{subSequenceSize}()-1)));
+254   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+255                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+256                       \textcolor{stringliteral}{"ArrayOfSequences<V,M>::populationVariance()"},
+257                       \textcolor{stringliteral}{"invalid initial position or number of positions"});
+258 
+259   bRC = (this->vectorSize() == popVec.size());
+260   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+261                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+262                       \textcolor{stringliteral}{"ArrayOfSequences<V,M>::populationVariance()"},
+263                       \textcolor{stringliteral}{"incompatible sizes between popVec vector and vectors in sequence"});
+264 
+265   bRC = (this->vectorSize() == meanVec.size());
+266   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+267                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+268                       \textcolor{stringliteral}{"ArrayOfSequences<V,M>::populationVariance()"},
+269                       \textcolor{stringliteral}{"incompatible sizes between meanVec vector and vectors in sequence"});
+270 
+271   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} loopSize      = numPos;
+272   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} finalPosPlus1 = initialPos + loopSize;
+273   \textcolor{keywordtype}{double} doubleLoopSize = (double) loopSize;
+274   popVec.cwSet(0.);
+275 
+276   ArrayOfSequences<V,M>* tmp = \textcolor{keyword}{const\_cast<}ArrayOfSequences<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+277   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < popVec.size(); ++i) \{
+278     \textcolor{keyword}{const} ScalarSequence<double>& seq = *(tmp->m\_scalarSequences(i,0));
+279     \textcolor{keywordtype}{double}                               tmpMean = meanVec[i];
+280     \textcolor{keywordtype}{double}                               result = 0.;
+281     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = initialPos; j < finalPosPlus1; ++j) \{
+282       \textcolor{keywordtype}{double} diff = seq[j] - tmpMean;
+283       result += diff*diff;
+284     \}
+285     popVec[i] = result/doubleLoopSize;
+286   \}
+287 
+288   \textcolor{keywordflow}{return};
+289 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a9267060ca0e57a124d9f8ba64e60027c}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!reset\-Values@{reset\-Values}}
+\index{reset\-Values@{reset\-Values}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{reset\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::reset\-Values (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a9267060ca0e57a124d9f8ba64e60027c}
+
+
+Resets a total of {\ttfamily num\-Pos} values of the sequence starting at position {\ttfamily initial\-Pos}. 
+
+This routine deletes all stored computed vectors 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab007ea121708b1b1a63553433b428413}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 93 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::delete\-Stored\-Vectors().
+
+
+\begin{DoxyCode}
+95 \{
+96   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}.MyLength(); ++i) \{
+97     \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}(i,0)->resetValues(initialPos,numPos);
+98   \}
+99 
+100   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{BaseVectorSequence<V,M>::deleteStoredVectors}();
+101 
+102   \textcolor{keywordflow}{return};
+103 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a3067aa6afb3a4fd6f30dc753bbceaf9e}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!resize\-Sequence@{resize\-Sequence}}
+\index{resize\-Sequence@{resize\-Sequence}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{resize\-Sequence}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::resize\-Sequence (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{new\-Sub\-Sequence\-Size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a3067aa6afb3a4fd6f30dc753bbceaf9e}
+
+
+Resizes the sequence. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_adc238af7f6e8af2402ab791de7d60af5}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 80 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::delete\-Stored\-Vectors().
+
+
+\begin{DoxyCode}
+81 \{
+82   \textcolor{keywordflow}{if} (newSubSequenceSize != this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{subSequenceSize}()) \{
+83     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}.MyLength(); ++i) \{
+84       \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}(i,0)->resizeSequence(newSubSequenceSize);
+85     \}
+86   \}
+87 
+88   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{BaseVectorSequence<V,M>::deleteStoredVectors}();
+89   \textcolor{keywordflow}{return};
+90 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a7bce5c84299185882c0bb7c6d61bce6d}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!sample\-Variance@{sample\-Variance}}
+\index{sample\-Variance@{sample\-Variance}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{sample\-Variance}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::sample\-Variance (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{const V \&}]{mean\-Vec, }
+\item[{V \&}]{sam\-Vec}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a7bce5c84299185882c0bb7c6d61bce6d}
+
+
+Finds the sample variance of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. 
+
+
+
+Definition at line 200 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::m\-\_\-scalar\-Sequences, and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+204 \{
+205   \textcolor{keywordtype}{bool} bRC = ((0                     <= initialPos                 ) &&
+206               (0                     <  numPos                     ) &&
+207               ((initialPos+numPos-1) <= (this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{subSequenceSize}()-1)));
+208   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+209                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+210                       \textcolor{stringliteral}{"ArrayOfSequences<V,M>::sampleVariance()"},
+211                       \textcolor{stringliteral}{"invalid initial position or number of positions"});
+212 
+213   bRC = (this->vectorSize() == samVec.size());
+214   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+215                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+216                       \textcolor{stringliteral}{"ArrayOfSequences<V,M>::sampleVariance()"},
+217                       \textcolor{stringliteral}{"incompatible sizes between samVec vector and vectors in sequence"});
+218 
+219   bRC = (this->vectorSize() == meanVec.size());
+220   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(bRC == \textcolor{keyword}{false},
+221                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+222                       \textcolor{stringliteral}{"ArrayOfSequences<V,M>::sampleVariance()"},
+223                       \textcolor{stringliteral}{"incompatible sizes between meanVec vector and vectors in sequence"});
+224 
+225   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} loopSize      = numPos;
+226   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} finalPosPlus1 = initialPos + loopSize;
+227   \textcolor{keywordtype}{double} doubleLoopSize = (double) loopSize;
+228   samVec.cwSet(0.);
+229 
+230   ArrayOfSequences<V,M>* tmp = \textcolor{keyword}{const\_cast<}ArrayOfSequences<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+231   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < samVec.size(); ++i) \{
+232     \textcolor{keyword}{const} ScalarSequence<double>& seq = *(tmp->m\_scalarSequences(i,0));
+233     \textcolor{keywordtype}{double}                               tmpMean = meanVec[i];
+234     \textcolor{keywordtype}{double}                               result = 0.;
+235     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = initialPos; j < finalPosPlus1; ++j) \{
+236       \textcolor{keywordtype}{double} diff = seq[j] - tmpMean;
+237       result += diff*diff;
+238     \}
+239     samVec[i] = result/(doubleLoopSize - 1.);
+240   \}
+241 
+242   \textcolor{keywordflow}{return};
+243 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_ae746fcec9567a5ef3c46f5559c90dee7}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!scales\-For\-K\-D\-E@{scales\-For\-K\-D\-E}}
+\index{scales\-For\-K\-D\-E@{scales\-For\-K\-D\-E}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{scales\-For\-K\-D\-E}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::scales\-For\-K\-D\-E (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{const V \&}]{iqrs, }
+\item[{unsigned int}]{kde\-Dimension, }
+\item[{V \&}]{scales}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_ae746fcec9567a5ef3c46f5559c90dee7}
+
+
+Selects the scales (bandwidth, {\ttfamily scale\-Vec}) for the kernel density estimation, of the sequence. 
+
+T\-O\-D\-O\-: implement me! 
+
+Definition at line 503 of file Array\-Of\-Sequences.\-C.
+
+
+\begin{DoxyCode}
+507 \{
+508 \textcolor{preprocessor}{#if 0}
+509 \textcolor{preprocessor}{}  \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} dataSize = sequence.size() - initialPos;
+510 
+511   V \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ae9d785ccc1cbf94447efd2dae6467c3d}{mean}(*(sequence[0]));
+512   VectorSequenceMean(sequence,
+513                        initialPos,
+514                        dataSize,
+515                        \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ae9d785ccc1cbf94447efd2dae6467c3d}{mean});
+516 
+517   V samVec(*(sequence[0]));
+518   VectorSequenceSampleVariance(sequence,
+519                                  initialPos,
+520                                  dataSize,
+521                                  \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ae9d785ccc1cbf94447efd2dae6467c3d}{mean},
+522                                  samVec);
+523 
+524   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numParams = sequence[0]->size();
+525   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < numParams; ++i) \{
+526     \textcolor{keywordflow}{if} (iqrs[i] <= 0.) \{
+527       scales[i] = 1.06*std::sqrt(samVec[i])/std::pow(dataSize,1./5.);
+528     \}
+529     \textcolor{keywordflow}{else} \{
+530       scales[i] = 1.06*std::min(std::sqrt(samVec[i]),iqrs[i]/1.34)/std::pow(dataSize,1./5.);
+531     \}
+532   \}
+533 
+534 \textcolor{preprocessor}{#endif}
+535 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return};
+536 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a643996eaf9db7e40a423c06ae5cb881a}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!select@{select}}
+\index{select@{select}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{select}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::select (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ unsigned int $>$ \&}]{ids\-Of\-Unique\-Positions}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a643996eaf9db7e40a423c06ae5cb881a}
+
+
+Select positions in the sequence of vectors. 
+
+T\-O\-D\-O\-: implement me! 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4ff00d9659c59653844b78410571f3fe}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 633 of file Array\-Of\-Sequences.\-C.
+
+
+\begin{DoxyCode}
+635 \{
+636   \textcolor{keywordflow}{return};
+637 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a9168423928360ee9dd3d3521f5539892}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!set\-Gaussian@{set\-Gaussian}}
+\index{set\-Gaussian@{set\-Gaussian}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{set\-Gaussian}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::set\-Gaussian (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{mean\-Vec, }
+\item[{const V \&}]{std\-Dev\-Vec}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a9168423928360ee9dd3d3521f5539892}
+
+
+Sets the values of the sequence as a Gaussian distribution of mean given by {\ttfamily mean\-Vec} and standard deviation by {\ttfamily std\-Dev\-Vec}. 
+
+This routine deletes all stored computed vectors 
+
+Definition at line 146 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::delete\-Stored\-Vectors(), and Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::set\-Gaussian().
+
+
+\begin{DoxyCode}
+147 \{
+148   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}.MyLength(); ++i) \{
+149     ScalarSequence<double>& seq = *(\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}(i,0));
+150     seq.setGaussian(meanVec[i],stdDevVec[i]);
+151   \}
+152 
+153   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{BaseVectorSequence<V,M>::deleteStoredVectors}();
+154 
+155   \textcolor{keywordflow}{return};
+156 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a20e1732527bc5c466abf79b827407d54}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!set\-Position\-Values@{set\-Position\-Values}}
+\index{set\-Position\-Values@{set\-Position\-Values}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{set\-Position\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::set\-Position\-Values (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{pos\-Id, }
+\item[{const V \&}]{vec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a20e1732527bc5c466abf79b827407d54}
+
+
+Set the values of {\ttfamily vec} at position {\ttfamily pos\-Id} of the sequence. 
+
+This routine deletes all stored computed vectors 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5bcce98b68e0e24c05136e7a3bb50c12}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 133 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::delete\-Stored\-Vectors().
+
+
+\begin{DoxyCode}
+134 \{
+135   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}.MyLength(); ++i) \{
+136     ScalarSequence<double>& seq = *(\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}(i,0));
+137     seq[posId] = vec[i];
+138   \}
+139 
+140   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{BaseVectorSequence<V,M>::deleteStoredVectors}();
+141 
+142   \textcolor{keywordflow}{return};
+143 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a478f81e5a47e06074577b46b2f8fdfd1}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!set\-Uniform@{set\-Uniform}}
+\index{set\-Uniform@{set\-Uniform}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{set\-Uniform}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::set\-Uniform (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{a\-Vec, }
+\item[{const V \&}]{b\-Vec}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a478f81e5a47e06074577b46b2f8fdfd1}
+
+
+Sets the values of the sequence as a uniform distribution between the values given by vectors {\ttfamily a\-Vec} and {\ttfamily b\-Vec}. 
+
+This routine deletes all stored computed vectors 
+
+Definition at line 159 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::delete\-Stored\-Vectors(), and Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::set\-Uniform().
+
+
+\begin{DoxyCode}
+160 \{
+161   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}.MyLength(); ++i) \{
+162     ScalarSequence<double>& seq = *(\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{m\_scalarSequences}(i,0));
+163     seq.setUniform(aVec[i],bVec[i]);
+164   \}
+165 
+166   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{BaseVectorSequence<V,M>::deleteStoredVectors}();
+167 
+168   \textcolor{keywordflow}{return};
+169 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!sub\-Sequence\-Size@{sub\-Sequence\-Size}}
+\index{sub\-Sequence\-Size@{sub\-Sequence\-Size}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{sub\-Sequence\-Size}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::sub\-Sequence\-Size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}
+
+
+Size of the sub-\/sequence of arrays. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 72 of file Array\-Of\-Sequences.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::m\-\_\-scalar\-Sequences.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::\-Array\-Of\-Sequences().
+
+
+\begin{DoxyCode}
+73 \{
+74   ArrayOfSequences<V,M>* tmp = \textcolor{keyword}{const\_cast<}ArrayOfSequences<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+75 
+76   \textcolor{keywordflow}{return} tmp->m\_scalarSequences(0,0)->subSequenceSize();
+77 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_aff464566fefc76edb13ac6f6f8f2bd31}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!unified\-Mean@{unified\-Mean}}
+\index{unified\-Mean@{unified\-Mean}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{unified\-Mean}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::unified\-Mean (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{V \&}]{unified\-Mean\-Vec}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_aff464566fefc76edb13ac6f6f8f2bd31}
+
+
+Finds the mean value of the unified sequence of {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. 
+
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a3fbe0f679fa8828e27dadb89a9fe3eaa}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!unified\-Read\-Contents@{unified\-Read\-Contents}}
+\index{unified\-Read\-Contents@{unified\-Read\-Contents}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{unified\-Read\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::unified\-Read\-Contents (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{file\-Name, }
+\item[{const std\-::string \&}]{file\-Type, }
+\item[{const unsigned int}]{sub\-Sequence\-Size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a3fbe0f679fa8828e27dadb89a9fe3eaa}
+
+
+Reads the unified sequence from a file. 
+
+T\-O\-D\-O\-: implement me! 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afcb5935b592ab2e7ee39d23b08bcce62}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 621 of file Array\-Of\-Sequences.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+624 \{
+625   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+626                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+627                       \textcolor{stringliteral}{"ArrayOfSequences<V,M>::unifiedReadContents()"},
+628                       \textcolor{stringliteral}{"not implemented yet"});
+629   \textcolor{keywordflow}{return};
+630 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a51ad92656e8b2e437982660fabb67ba3}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!unified\-Sample\-Variance@{unified\-Sample\-Variance}}
+\index{unified\-Sample\-Variance@{unified\-Sample\-Variance}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{unified\-Sample\-Variance}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::unified\-Sample\-Variance (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{const V \&}]{mean\-Vec, }
+\item[{V \&}]{sam\-Vec}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a51ad92656e8b2e437982660fabb67ba3}
+
+
+Finds the sample variance of the unified sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. 
+
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a20727ea1cc87e2cf81802b7e07eae35f}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!unified\-Write\-Contents@{unified\-Write\-Contents}}
+\index{unified\-Write\-Contents@{unified\-Write\-Contents}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{unified\-Write\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::unified\-Write\-Contents (
+\begin{DoxyParamCaption}
+\item[{std\-::ofstream \&}]{ofsvar}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a20727ea1cc87e2cf81802b7e07eae35f}
+
+
+Writes info of the unified sequence to a file. 
+
+T\-O\-D\-O\-: implement me! 
+
+Definition at line 600 of file Array\-Of\-Sequences.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+601 \{
+602   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+603                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+604                       \textcolor{stringliteral}{"ArrayOfSequences<V,M>::unifiedWriteContents(1)"},
+605                       \textcolor{stringliteral}{"not implemented yet"});
+606   \textcolor{keywordflow}{return};
+607 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_af4ab2f575230715be16fff5ae9bb4759}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!unified\-Write\-Contents@{unified\-Write\-Contents}}
+\index{unified\-Write\-Contents@{unified\-Write\-Contents}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{unified\-Write\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::unified\-Write\-Contents (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{file\-Name, }
+\item[{const std\-::string \&}]{file\-Type}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_af4ab2f575230715be16fff5ae9bb4759}
+
+
+Writes info of the unified sequence to a file. 
+
+T\-O\-D\-O\-: implement me! 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3987ee6d026842e4ddaeaf0bc850ef83}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}.
+
+
+
+Definition at line 610 of file Array\-Of\-Sequences.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+612 \{
+613   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+614                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+615                       \textcolor{stringliteral}{"ArrayOfSequences<V,M>::unifiedWriteContents(2)"},
+616                       \textcolor{stringliteral}{"not implemented yet"});
+617   \textcolor{keywordflow}{return};
+618 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a4b1248fe9601ec598797071210760687}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!write\-Contents@{write\-Contents}}
+\index{write\-Contents@{write\-Contents}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{write\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::write\-Contents (
+\begin{DoxyParamCaption}
+\item[{std\-::ofstream \&}]{ofsvar}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a4b1248fe9601ec598797071210760687}
+
+
+Write contents of the chain to a file. 
+
+
+
+Definition at line 578 of file Array\-Of\-Sequences.\-C.
+
+
+\begin{DoxyCode}
+579 \{
+580   \textcolor{comment}{// Write chain}
+581   ofsvar << \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}{m\_name} << \textcolor{stringliteral}{"\_sub"} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a73f7849acdd5d5ba15a3094fe18f258f}{subIdString}() << \textcolor{stringliteral}{" = zeros("} << this->
+      \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{subSequenceSize}()
+582          << \textcolor{stringliteral}{","}                                                    << this->vectorSize()
+583          << \textcolor{stringliteral}{");"}
+584          << std::endl;
+585   ofsvar << \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}{m\_name} << \textcolor{stringliteral}{"\_sub"} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a73f7849acdd5d5ba15a3094fe18f258f}{subIdString}() << \textcolor{stringliteral}{" = ["};
+586 
+587   V tmpVec(\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.zeroVector());
+588   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} chainSize = this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{subSequenceSize}();
+589   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < chainSize; ++j) \{
+590     this->\hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ae75a2eedab5e8d3fc0638f578eba35ab}{getPositionValues}(j,tmpVec);
+591     ofsvar << tmpVec
+592            << std::endl;
+593   \}
+594   ofsvar << \textcolor{stringliteral}{"];\(\backslash\)n"};
+595 
+596   \textcolor{keywordflow}{return};
+597 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}!m\-\_\-scalar\-Sequences@{m\-\_\-scalar\-Sequences}}
+\index{m\-\_\-scalar\-Sequences@{m\-\_\-scalar\-Sequences}!QUESO::ArrayOfSequences@{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}}
+\subsubsection[{m\-\_\-scalar\-Sequences}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Dist\-Array}$<${\bf Scalar\-Sequence}$<$double$>$$\ast$$>$ {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences}$<$ V, M $>$\-::m\-\_\-scalar\-Sequences\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_array_of_sequences_a1f8047145ca75081c303bbbab5881119}
+
+
+Sequence of scalars. 
+
+
+
+Definition at line 261 of file Array\-Of\-Sequences.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::\-Array\-Of\-Sequences(), Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::auto\-Covariance(), Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::extract\-Raw\-Data(), Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::extract\-Scalar\-Seq(), Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::get\-Position\-Values(), Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::mean(), Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::min\-Max(), Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::population\-Variance(), Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::sample\-Variance(), and Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::sub\-Sequence\-Size().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/basic/inc/\hyperlink{_array_of_sequences_8h}{Array\-Of\-Sequences.\-h}\item 
+src/basic/src/\hyperlink{_array_of_sequences_8_c}{Array\-Of\-Sequences.\-C}\end{DoxyCompactItemize}

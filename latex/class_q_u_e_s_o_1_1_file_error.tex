@@ -1,0 +1,62 @@
+\hypertarget{class_q_u_e_s_o_1_1_file_error}{\section{Q\-U\-E\-S\-O\-:\-:File\-Error Class Reference}
+\label{class_q_u_e_s_o_1_1_file_error}\index{Q\-U\-E\-S\-O\-::\-File\-Error@{Q\-U\-E\-S\-O\-::\-File\-Error}}
+}
+
+
+{\ttfamily \#include $<$exceptions.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:File\-Error\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{class_q_u_e_s_o_1_1_file_error__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:File\-Error\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{class_q_u_e_s_o_1_1_file_error__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_file_error_a3832f21b43e99c46bc29ee904e8dedfc}{File\-Error} (const std\-::string \&filename)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class representing a failed attempt by the library to open a file (or construct an fstream, etc), to be thrown by \char`\"{}queso\-\_\-file\-\_\-error(filename);\char`\"{} For ease of debugging, \char`\"{}filename\char`\"{} should include any (absolute or relative or implicit) pathname that was part of the failed open. 
+
+Definition at line 65 of file exceptions.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_file_error_a3832f21b43e99c46bc29ee904e8dedfc}{\index{Q\-U\-E\-S\-O\-::\-File\-Error@{Q\-U\-E\-S\-O\-::\-File\-Error}!File\-Error@{File\-Error}}
+\index{File\-Error@{File\-Error}!QUESO::FileError@{Q\-U\-E\-S\-O\-::\-File\-Error}}
+\subsubsection[{File\-Error}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-File\-Error\-::\-File\-Error (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_q_u_e_s_o_1_1_file_error_a3832f21b43e99c46bc29ee904e8dedfc}
+
+
+Definition at line 68 of file exceptions.\-h.
+
+
+\begin{DoxyCode}
+68 : std::runtime\_error( \textcolor{stringliteral}{"Error accessing file: "} + filename ) \{\}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{exceptions_8h}{exceptions.\-h}\end{DoxyCompactItemize}

@@ -1,0 +1,1084 @@
+\hypertarget{class_q_u_e_s_o_1_1_vector_space}{\section{Q\-U\-E\-S\-O\-:\-:Vector\-Space$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_vector_space}\index{Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$}}
+}
+
+
+A class representing a vector space.  
+
+
+
+
+{\ttfamily \#include $<$Vector\-Set.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Vector\-Space$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=236pt]{class_q_u_e_s_o_1_1_vector_space__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Vector\-Space$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_vector_space__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_a64856b952d372cb25d0f10853635104a}{new\-Vector} () const
+\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_a840fde1ad7e947821dffd3d5ad164509}{new\-Vector} (double value) const
+\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{class_q_u_e_s_o_1_1_gsl_matrix}{Gsl\-Matrix} $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_ae28843e8ea7cd8b51aaea3318f6651eb}{new\-Matrix} () const
+\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{class_q_u_e_s_o_1_1_gsl_matrix}{Gsl\-Matrix} $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_aea4fbf9ced060c790c4f100a7604c271}{new\-Diag\-Matrix} (double diag\-Value) const
+\end{DoxyCompactItemize}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_vector_space_ab64f81dae5d122ec818fe96ea404f93c}{Vector\-Space} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_vector_space_af4603e4342db319c34fe236b9e057f0e}{Vector\-Space} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&\hyperlink{class_q_u_e_s_o_1_1_vector_space_aa74cd0d1a8b3d599f799ef4aa2ebcfc2}{env}, const char $\ast$\hyperlink{class_q_u_e_s_o_1_1_vector_set_aedcd4b0f502af4c6e6df863c13cddfec}{prefix}, unsigned int dim\-Global\-Value, const std\-::vector$<$ std\-::string $>$ $\ast$\hyperlink{class_q_u_e_s_o_1_1_vector_space_aa315ff4efb4be69a64e341e3ebddca56}{components\-Names\-Vec})
+\begin{DoxyCompactList}\small\item\em Shaped constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_vector_space_aa0677ad2c58ce91321d07f377ffe39f4}{Vector\-Space} (const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ \&aux)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_vector_space_a0e543a391950b82f1107b1bd589ebd72}{$\sim$\-Vector\-Space} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Attribute methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa74cd0d1a8b3d599f799ef4aa2ebcfc2}{env} () const 
+\begin{DoxyCompactList}\small\item\em Environment. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_map}{Map} \& \hyperlink{class_q_u_e_s_o_1_1_vector_space_ac2f40e646c62513ea9a6819b82e8ba24}{map} () const 
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_q_u_e_s_o_1_1_map}{Map}. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_vector_space_a67b0c3620662116f5a346fdaa5faf38e}{num\-Of\-Procs\-For\-Storage} () const 
+\begin{DoxyCompactList}\small\item\em Returns total number of processes. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_vector_space_a5829a1f4f996f8307c840b705144d666}{dim\-Local} () const 
+\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_vector_space_acd4359dc120905c22ca1064e33787239}{dim\-Global} () const 
+\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_vector_space_a6cfb48f3058abca35b23c65147217f64}{global\-Id\-Of\-First\-Component} () const 
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_vector_space_a92e963bb5cab3eecd290dfe4b8f03b04}{zero\-Vector} () const 
+\begin{DoxyCompactList}\small\item\em Returns a vector filled with zeros. \end{DoxyCompactList}\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_a6fc1d08dfe902e83a011ea6a81aff439}{new\-Vector} () const 
+\begin{DoxyCompactList}\small\item\em Creates an empty vector of size given by \hyperlink{class_q_u_e_s_o_1_1_map}{Map}\& map. See template specialization. \end{DoxyCompactList}\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_abc859a81265641b1f8676851fd2ab6bd}{new\-Vector} (double value) const 
+\begin{DoxyCompactList}\small\item\em Creates a vector of size given by \hyperlink{class_q_u_e_s_o_1_1_map}{Map}\& map and all values give by {\ttfamily value}. See template specialization. \end{DoxyCompactList}\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_a7492fbcc76598ba956e45005ba7cd9cc}{new\-Vector} (const V \&v) const 
+\begin{DoxyCompactList}\small\item\em Creates vector as a copy of another. \end{DoxyCompactList}\item 
+M $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_a8277f132ea382a7f49aa4a6ab7cbea1c}{new\-Matrix} () const 
+\begin{DoxyCompactList}\small\item\em Creates an empty matrix of size given by \hyperlink{class_q_u_e_s_o_1_1_map}{Map}\& map. See template specialization. \end{DoxyCompactList}\item 
+M $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_a9f4ad174b63fbc0626070e0f38745e1e}{new\-Diag\-Matrix} (const V \&v) const 
+\begin{DoxyCompactList}\small\item\em Creates a diagonal matrix with the elements and size of vector {\ttfamily v}. \end{DoxyCompactList}\item 
+M $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_afe36d0db933c49cb4508b83dd17d33b6}{new\-Diag\-Matrix} (double diag\-Value) const 
+\begin{DoxyCompactList}\small\item\em Creates a diagonal matrix with the elements {\ttfamily diag\-Value} and size given by \hyperlink{class_q_u_e_s_o_1_1_map}{Map}\& map. See template specialization. \end{DoxyCompactList}\item 
+M $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_ab1e7c7ce9aedb494fb2a6fb1fac6a46b}{new\-Proposal\-Matrix} (const V $\ast$var\-Vec, const V $\ast$aux\-Vec) const 
+\begin{DoxyCompactList}\small\item\em Creates a diagonal matrix conditionally to values from vector {\ttfamily var\-Vec}, guaranteeing that its values are neither 0, N\-A\-N nor I\-N\-F\-I\-N\-I\-T\-Y. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_vector_space_ab8bb323280e36a42ac04623b42369da5}{vector\-Space} () const 
+\begin{DoxyCompactList}\small\item\em Accessor method to {\ttfamily this}. \hyperlink{class_q_u_e_s_o_1_1_vector}{Vector} space to which {\ttfamily this} vector set belongs to. \end{DoxyCompactList}\item 
+bool \hyperlink{class_q_u_e_s_o_1_1_vector_space_ab31d8677d0199e10e1aac9526e2b41e8}{contains} (const V \&vec) const 
+\begin{DoxyCompactList}\small\item\em Whether  vector contains vector {\ttfamily vec}. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ std\-::string $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_a89284638a11e1449149f471a563bb72c}{components\-Names\-Array} () const 
+\begin{DoxyCompactList}\small\item\em Access to private attribute m\-\_\-components\-Names\-Array, which is an instance of \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}. \end{DoxyCompactList}\item 
+const std\-::vector$<$ std\-::string $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa315ff4efb4be69a64e341e3ebddca56}{components\-Names\-Vec} () const 
+\begin{DoxyCompactList}\small\item\em Access to private attribute m\-\_\-components\-Names\-Vec. \end{DoxyCompactList}\item 
+const std\-::string \& \hyperlink{class_q_u_e_s_o_1_1_vector_space_a57c65df3fa6afbcd5c019e8892f53e44}{local\-Component\-Name} (unsigned int local\-Component\-Id) const 
+\begin{DoxyCompactList}\small\item\em Returns the local component names. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_vector_space_adcae173f0230ef737ea592c34cad1d09}{print\-Components\-Names} (std\-::ostream \&os, bool print\-Horizontally) const 
+\begin{DoxyCompactList}\small\item\em Prints the local component names. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_vector_space_a3a1fe3c1833380e2a0b19d35494cb635}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em Prints only a message. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_map}{Map} $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_a9549041aa8525c198155e9ba530e5aa4}{new\-Map} ()
+\begin{DoxyCompactList}\small\item\em Creates a new map. See template specialization. \end{DoxyCompactList}\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{class_q_u_e_s_o_1_1_map}{Map} $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_ac8a3fcaa8d2891c2ca32733dc5a56008}{new\-Map} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\-\_\-dim\-Global}
+\begin{DoxyCompactList}\small\item\em Global dimension. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_map}{Map} $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\-\_\-map}
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_q_u_e_s_o_1_1_map}{Map}. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\-\_\-dim\-Local}
+\begin{DoxyCompactList}\small\item\em Local dimension (number of elements owned by the calling processor.). \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ std\-::string $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_a6bcd9c13374cda32f043a93e171aeabf}{m\-\_\-components\-Names\-Array}
+\begin{DoxyCompactList}\small\item\em Array of strings of the type \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array} to store the names of the components. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ std\-::string $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_a28b5617b4b30cea1e02e4cb01fd067d8}{m\-\_\-components\-Names\-Vec}
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_q_u_e_s_o_1_1_vector}{Vector} of strings of the type \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array} to store the names of the components. \end{DoxyCompactList}\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_vector_space_a7cc6bfad9eb4031dbe763728f0c25a13}{m\-\_\-empty\-Component\-Name}
+\begin{DoxyCompactList}\small\item\em Empty string for the components names. \end{DoxyCompactList}\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\-\_\-zero\-Vector}
+\begin{DoxyCompactList}\small\item\em A vector of all elements equal to zero. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$}
+
+A class representing a vector space. 
+
+Template classes {\ttfamily V} and {\ttfamily M} are to represent a vector class and a matrix class respectively. Currently (as of version 0.\-46.\-0) \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} has matrix and vector classes implemented using either G\-S\-L or Trilinos-\/\-Teuchos libraries. 
+
+Definition at line 46 of file Vector\-Set.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_ab64f81dae5d122ec818fe96ea404f93c}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!Vector\-Space@{Vector\-Space}}
+\index{Vector\-Space@{Vector\-Space}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{Vector\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::{\bf Vector\-Space} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_vector_space_ab64f81dae5d122ec818fe96ea404f93c}
+
+
+Default constructor. 
+
+
+
+Definition at line 38 of file Vector\-Space.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$\-::m\-\_\-env, U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+39   : VectorSet<V,M>()
+40 \{
+41   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+42                       \hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+43                       \textcolor{stringliteral}{"VectorSpace<V,M>::constructor(), default"},
+44                       \textcolor{stringliteral}{"should not be used by user"});
+45 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_af4603e4342db319c34fe236b9e057f0e}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!Vector\-Space@{Vector\-Space}}
+\index{Vector\-Space@{Vector\-Space}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{Vector\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::{\bf Vector\-Space} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{const char $\ast$}]{prefix, }
+\item[{unsigned int}]{dim\-Global\-Value, }
+\item[{const std\-::vector$<$ std\-::string $>$ $\ast$}]{components\-Names\-Vec}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_vector_space_af4603e4342db319c34fe236b9e057f0e}
+
+
+Shaped constructor. 
+
+Construct a vector space with \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} environment {\ttfamily env} and of dimension {\ttfamily dim\-Global\-Value}. 
+
+Definition at line 49 of file Vector\-Space.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::global\-Id\-Of\-First\-Component(), Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::m\-\_\-components\-Names\-Array, Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::m\-\_\-dim\-Global, Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::m\-\_\-dim\-Local, Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::m\-\_\-map, Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$\-::m\-\_\-prefix, Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::m\-\_\-zero\-Vector, Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-Global\-Elements(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+52   : VectorSet<V,M> (\hyperlink{class_q_u_e_s_o_1_1_vector_space_aa74cd0d1a8b3d599f799ef4aa2ebcfc2}{env},((std::string)(\hyperlink{class_q_u_e_s_o_1_1_vector_set_aedcd4b0f502af4c6e6df863c13cddfec}{prefix}) + \textcolor{stringliteral}{"space\_"}).c\_str(),INFINITY),
+53     \hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\_dimGlobal}(dimGlobalValue),
+54     \hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map}(\hyperlink{class_q_u_e_s_o_1_1_vector_space_a9549041aa8525c198155e9ba530e5aa4}{newMap}()),
+55     \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\_dimLocal}(\hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map}->\hyperlink{class_q_u_e_s_o_1_1_map_a6407f6d6a6df8a0a40923c8dc524b021}{NumMyElements}()),
+56     \hyperlink{class_q_u_e_s_o_1_1_vector_space_a6bcd9c13374cda32f043a93e171aeabf}{m\_componentsNamesArray}(NULL),
+57     \hyperlink{class_q_u_e_s_o_1_1_vector_space_a28b5617b4b30cea1e02e4cb01fd067d8}{m\_componentsNamesVec}(NULL),
+58     \hyperlink{class_q_u_e_s_o_1_1_vector_space_a7cc6bfad9eb4031dbe763728f0c25a13}{m\_emptyComponentName}(\textcolor{stringliteral}{""}),
+59     \hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector}(\textcolor{keyword}{new} V(\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env},*\hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map}))
+60 \{
+61   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+62     *\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering VectorSpace<V,M>::constructor(1)"}
+63                             << \textcolor{stringliteral}{", with m\_prefix = "}                << \hyperlink{class_q_u_e_s_o_1_1_vector_set_a472995c02b59c8f3cd77230b39535cca}{m\_prefix}
+64                             << \textcolor{stringliteral}{"\(\backslash\)n  m\_zeroVector->sizeGlobal() = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector}->sizeGlobal()
+65                             << \textcolor{stringliteral}{"\(\backslash\)n  m\_dimGlobal                = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\_dimGlobal}
+66                             << \textcolor{stringliteral}{"\(\backslash\)n  m\_zeroVector->sizeLocal()  = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector}->sizeLocal()
+67                             << \textcolor{stringliteral}{"\(\backslash\)n  m\_dimLocal                 = "} << \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\_dimLocal}
+68                             << \textcolor{stringliteral}{"\(\backslash\)n  m\_map->NumGlobalElements() = "} << \hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map}->
+      \hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}()
+69                             << \textcolor{stringliteral}{"\(\backslash\)n  componentsNamesVec         = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa315ff4efb4be69a64e341e3ebddca56}{componentsNamesVec}
+70                             << std::endl;
+71   \}
+72  
+73   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector}->sizeGlobal() != \hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\_dimGlobal}) \{
+74     std::cerr << \textcolor{stringliteral}{"In VectorSpace<V,M>::constructor(1)"}
+75               << \textcolor{stringliteral}{", with m\_prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_vector_set_a472995c02b59c8f3cd77230b39535cca}{m\_prefix}
+76               << \textcolor{stringliteral}{": m\_zeroVector->sizeGlobal() = "} << \hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector}->sizeGlobal()
+77               << \textcolor{stringliteral}{", m\_dimGlobal = "}                << \hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\_dimGlobal}
+78               << std::endl;
+79   \}
+80   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector}->sizeGlobal() != 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\_dimGlobal}),
+81                       \hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+82                       \textcolor{stringliteral}{"VectorSpace<V,M>::constructor(1)"},
+83                       \textcolor{stringliteral}{"global size of 'm\_zeroVector' is not equal to m\_dimGlobal"});
+84 
+85   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector}->sizeLocal() != \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\_dimLocal}) \{
+86     std::cerr << \textcolor{stringliteral}{"In VectorSpace<V,M>::constructor(1)"}
+87               << \textcolor{stringliteral}{", with m\_prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_vector_set_a472995c02b59c8f3cd77230b39535cca}{m\_prefix}
+88               << \textcolor{stringliteral}{": m\_zeroVector->sizeLocal() = "} << \hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector}->sizeLocal()
+89               << \textcolor{stringliteral}{", m\_dimLocal = "}                << \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\_dimLocal}
+90               << std::endl;
+91   \}
+92   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector}->sizeLocal() != 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\_dimLocal}),
+93                       \hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+94                       \textcolor{stringliteral}{"VectorSpace<V,M>::constructor(1)"},
+95                       \textcolor{stringliteral}{"local size of 'm\_zeroVector' is not equal to m\_dimLocal"});
+96 
+97   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_space_aa315ff4efb4be69a64e341e3ebddca56}{componentsNamesVec} != NULL) \{
+98     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_vector_space_aa315ff4efb4be69a64e341e3ebddca56}{componentsNamesVec}->size() != (size\_t) 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\_dimGlobal}),
+99                         \hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+100                         \textcolor{stringliteral}{"VectorSpace<V,M>::constructor(1)"},
+101                         \textcolor{stringliteral}{"global size of 'componentsNames' is not equal to m\_dimGlobal"});
+102 
+103     \hyperlink{class_q_u_e_s_o_1_1_vector_space_a6bcd9c13374cda32f043a93e171aeabf}{m\_componentsNamesArray} = \textcolor{keyword}{new} DistArray<std::string>(*
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map},1);
+104     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} myFirstId = this->\hyperlink{class_q_u_e_s_o_1_1_vector_space_a6cfb48f3058abca35b23c65147217f64}{globalIdOfFirstComponent}();
+105     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\_dimLocal}; ++i) \{
+106       (*m\_componentsNamesArray)(i,0) = (*\hyperlink{class_q_u_e_s_o_1_1_vector_space_aa315ff4efb4be69a64e341e3ebddca56}{componentsNamesVec})[myFirstId+i];
+107     \}
+108 
+109     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((m\_componentsNamesArray->GlobalLength() != (int) 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\_dimGlobal}),
+110                         \hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+111                         \textcolor{stringliteral}{"VectorSpace<V,M>::constructor(1)"},
+112                         \textcolor{stringliteral}{"global size of 'm\_componentsNamesArray' is not equal to m\_dimGlobal"});
+113     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((m\_componentsNamesArray->MyLength() != (int) m\_dimLocal),
+114                         \hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+115                         \textcolor{stringliteral}{"VectorSpace<V,M>::constructor(1)"},
+116                         \textcolor{stringliteral}{"local size of 'm\_componentsNamesArray' is not equal to m\_dimLocal"});
+117   \}
+118 
+119   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+120     *\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving VectorSpace<V,M>::constructor(1)"}
+121                             << \textcolor{stringliteral}{", with m\_prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_vector_set_a472995c02b59c8f3cd77230b39535cca}{m\_prefix}
+122                             << std::endl;
+123   \}
+124 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_aa0677ad2c58ce91321d07f377ffe39f4}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!Vector\-Space@{Vector\-Space}}
+\index{Vector\-Space@{Vector\-Space}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{Vector\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::{\bf Vector\-Space} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector\-Space}$<$ V, M $>$ \&}]{aux}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_vector_space_aa0677ad2c58ce91321d07f377ffe39f4}
+
+
+Copy constructor. 
+
+
+
+Definition at line 128 of file Vector\-Space.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::m\-\_\-components\-Names\-Array, Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::m\-\_\-components\-Names\-Vec, Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$\-::m\-\_\-env, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+129   : VectorSet<V,M>(aux.env(),((std::string)(aux.m\_prefix)).c\_str(),INFINITY),
+130     \hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\_dimGlobal}(aux.m\_dimGlobal),
+131     \hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map}(\hyperlink{class_q_u_e_s_o_1_1_vector_space_a9549041aa8525c198155e9ba530e5aa4}{newMap}()),
+132     \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\_dimLocal}(\hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map}->\hyperlink{class_q_u_e_s_o_1_1_map_a6407f6d6a6df8a0a40923c8dc524b021}{NumMyElements}()),
+133     \hyperlink{class_q_u_e_s_o_1_1_vector_space_a6bcd9c13374cda32f043a93e171aeabf}{m\_componentsNamesArray}(NULL),
+134     \hyperlink{class_q_u_e_s_o_1_1_vector_space_a28b5617b4b30cea1e02e4cb01fd067d8}{m\_componentsNamesVec}(NULL),
+135     \hyperlink{class_q_u_e_s_o_1_1_vector_space_a7cc6bfad9eb4031dbe763728f0c25a13}{m\_emptyComponentName}(\textcolor{stringliteral}{""}),
+136     \hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector}(\textcolor{keyword}{new} V(\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env},*\hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map}))
+137 \{
+138   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+139     *\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering VectorSpace<V,M>::constructor(2)"}
+140                             << \textcolor{stringliteral}{": aux.m\_componentsNamesArray = "} << aux.m\_componentsNamesArray
+141                             << \textcolor{stringliteral}{", aux.m\_componentsNamesVec = "}   << aux.m\_componentsNamesVec
+142                             << std::endl;
+143   \}
+144 
+145   \textcolor{keywordflow}{if} (aux.m\_componentsNamesArray != NULL) \{
+146     \hyperlink{class_q_u_e_s_o_1_1_vector_space_a6bcd9c13374cda32f043a93e171aeabf}{m\_componentsNamesArray} = \textcolor{keyword}{new} DistArray<std::string>(*(aux.m\_componentsNamesArray)
+      );
+147   \}
+148 
+149   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+150     *\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving VectorSpace<V,M>::constructor(2)"}
+151                             << std::endl;
+152   \}
+153 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a0e543a391950b82f1107b1bd589ebd72}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!$\sim$\-Vector\-Space@{$\sim$\-Vector\-Space}}
+\index{$\sim$\-Vector\-Space@{$\sim$\-Vector\-Space}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{$\sim$\-Vector\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::$\sim${\bf Vector\-Space} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_vector_space_a0e543a391950b82f1107b1bd589ebd72}
+
+
+Destructor. 
+
+
+
+Definition at line 157 of file Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+158 \{
+159   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+160     *\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering VectorSpace<V,M>::destructor()"}
+161                             << std::endl;
+162   \}
+163 
+164   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector}           != NULL) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector};
+165   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_space_a28b5617b4b30cea1e02e4cb01fd067d8}{m\_componentsNamesVec}   != NULL) \textcolor{keyword}{delete} 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_a28b5617b4b30cea1e02e4cb01fd067d8}{m\_componentsNamesVec};
+166   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_space_a6bcd9c13374cda32f043a93e171aeabf}{m\_componentsNamesArray} != NULL) \textcolor{keyword}{delete} 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_a6bcd9c13374cda32f043a93e171aeabf}{m\_componentsNamesArray};
+167   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map}                  != NULL) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map};
+168 
+169   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+170     *\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving VectorSpace<V,M>::destructor()"}
+171                             << std::endl;
+172   \}
+173 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a89284638a11e1449149f471a563bb72c}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!components\-Names\-Array@{components\-Names\-Array}}
+\index{components\-Names\-Array@{components\-Names\-Array}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{components\-Names\-Array}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Dist\-Array}$<$ std\-::string $>$ $\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::components\-Names\-Array (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_a89284638a11e1449149f471a563bb72c}
+
+
+Access to private attribute m\-\_\-components\-Names\-Array, which is an instance of \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}. 
+
+
+
+Definition at line 297 of file Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+298 \{
+299   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_vector_space_a6bcd9c13374cda32f043a93e171aeabf}{m\_componentsNamesArray};
+300 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_aa315ff4efb4be69a64e341e3ebddca56}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!components\-Names\-Vec@{components\-Names\-Vec}}
+\index{components\-Names\-Vec@{components\-Names\-Vec}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{components\-Names\-Vec}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const std\-::vector$<$std\-::string$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::components\-Names\-Vec (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_aa315ff4efb4be69a64e341e3ebddca56}
+
+
+Access to private attribute m\-\_\-components\-Names\-Vec. 
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_ab31d8677d0199e10e1aac9526e2b41e8}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!contains@{contains}}
+\index{contains@{contains}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{contains}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M $>$ bool {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::contains (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_vector_space_ab31d8677d0199e10e1aac9526e2b41e8}
+
+
+Whether  vector contains vector {\ttfamily vec}. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_vector_set_ab59fe6ca67647f58920681e05165a9d0}{Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$}.
+
+
+
+Definition at line 290 of file Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+291 \{
+292   \textcolor{keywordflow}{if} (vec[0]) \{\}; \textcolor{comment}{// just to remove compiler warning}
+293   \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+294 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_acd4359dc120905c22ca1064e33787239}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!dim\-Global@{dim\-Global}}
+\index{dim\-Global@{dim\-Global}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{dim\-Global}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::dim\-Global (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_acd4359dc120905c22ca1064e33787239}
+
+
+Definition at line 205 of file Vector\-Space.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Matrices\-Between\-Vector\-Sequences(), and Q\-U\-E\-S\-O\-::\-Instantiate\-Intersection().
+
+
+\begin{DoxyCode}
+206 \{
+207   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\_dimGlobal};
+208 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a5829a1f4f996f8307c840b705144d666}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!dim\-Local@{dim\-Local}}
+\index{dim\-Local@{dim\-Local}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{dim\-Local}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::dim\-Local (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_a5829a1f4f996f8307c840b705144d666}
+
+
+Definition at line 199 of file Vector\-Space.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Box\-Subset$<$ V, M $>$\-::\-Box\-Subset(), Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Matrices\-Between\-Vector\-Sequences(), and Q\-U\-E\-S\-O\-::\-Exponential\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::\-Exponential\-Matrix\-Covariance\-Function().
+
+
+\begin{DoxyCode}
+200 \{
+201   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\_dimLocal};
+202 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_aa74cd0d1a8b3d599f799ef4aa2ebcfc2}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!env@{env}}
+\index{env@{env}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Base\-Environment} \& {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::env (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_aa74cd0d1a8b3d599f799ef4aa2ebcfc2}
+
+
+Environment. 
+
+
+
+Definition at line 177 of file Vector\-Space.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Instantiate\-Intersection().
+
+
+\begin{DoxyCode}
+178 \{
+179   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env};
+180 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a6cfb48f3058abca35b23c65147217f64}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!global\-Id\-Of\-First\-Component@{global\-Id\-Of\-First\-Component}}
+\index{global\-Id\-Of\-First\-Component@{global\-Id\-Of\-First\-Component}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{global\-Id\-Of\-First\-Component}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::global\-Id\-Of\-First\-Component (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_a6cfb48f3058abca35b23c65147217f64}
+
+
+Definition at line 211 of file Vector\-Space.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::\-Vector\-Space().
+
+
+\begin{DoxyCode}
+212 \{
+213   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map}->\hyperlink{class_q_u_e_s_o_1_1_map_a686b1ea15e0aa9a5de9d6a03456be4a9}{MinMyGID}();
+214 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a57c65df3fa6afbcd5c019e8892f53e44}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!local\-Component\-Name@{local\-Component\-Name}}
+\index{local\-Component\-Name@{local\-Component\-Name}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{local\-Component\-Name}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const std\-::string \& {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::local\-Component\-Name (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{local\-Component\-Id}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_a57c65df3fa6afbcd5c019e8892f53e44}
+
+
+Returns the local component names. 
+
+
+
+Definition at line 303 of file Vector\-Space.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+305 \{
+306   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_space_a6bcd9c13374cda32f043a93e171aeabf}{m\_componentsNamesArray} == NULL) \textcolor{keywordflow}{return} 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_a7cc6bfad9eb4031dbe763728f0c25a13}{m\_emptyComponentName};
+307 
+308   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(localComponentId > \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\_dimLocal},
+309                       \hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+310                       \textcolor{stringliteral}{"VectorSpace<V,M>::localComponentName()"},
+311                       \textcolor{stringliteral}{"localComponentId is too big"});
+312 
+313 \textcolor{comment}{//return (*(const\_cast<DistArray<std::string>*>(m\_componentsNamesArray)))(localComponentId,0);}
+314   \textcolor{keywordflow}{return} (*\hyperlink{class_q_u_e_s_o_1_1_vector_space_a6bcd9c13374cda32f043a93e171aeabf}{m\_componentsNamesArray})(localComponentId,0);
+315 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_ac2f40e646c62513ea9a6819b82e8ba24}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!map@{map}}
+\index{map@{map}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{map}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Map} \& {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_ac2f40e646c62513ea9a6819b82e8ba24}
+
+
+\hyperlink{class_q_u_e_s_o_1_1_map}{Map}. 
+
+
+
+Definition at line 183 of file Vector\-Space.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+184 \{
+185   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map} == NULL,
+186                       \hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+187                       \textcolor{stringliteral}{"VectorSpace<V,M>::map()"},
+188                       \textcolor{stringliteral}{"m\_map is still NULL"});
+189   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map};
+190 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_aea4fbf9ced060c790c4f100a7604c271}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Diag\-Matrix@{new\-Diag\-Matrix}}
+\index{new\-Diag\-Matrix@{new\-Diag\-Matrix}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Diag\-Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ {\bf Gsl\-Matrix} $\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ {\bf Gsl\-Vector}, {\bf Gsl\-Matrix} $>$\-::new\-Diag\-Matrix (
+\begin{DoxyParamCaption}
+\item[{double}]{diag\-Value}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_aea4fbf9ced060c790c4f100a7604c271}
+
+
+Definition at line 60 of file Gsl\-Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+61 \{
+62   \textcolor{keywordflow}{return} \textcolor{keyword}{new} GslMatrix(\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env},*\hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map},diagValue);
+63 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a9f4ad174b63fbc0626070e0f38745e1e}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Diag\-Matrix@{new\-Diag\-Matrix}}
+\index{new\-Diag\-Matrix@{new\-Diag\-Matrix}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Diag\-Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M $>$ M $\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::new\-Diag\-Matrix (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{v}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_a9f4ad174b63fbc0626070e0f38745e1e}
+
+
+Creates a diagonal matrix with the elements and size of vector {\ttfamily v}. 
+
+
+
+Definition at line 237 of file Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+238 \{
+239   \textcolor{keywordflow}{if} (v.sizeGlobal() != \hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\_dimGlobal}) \textcolor{keywordflow}{return} NULL;
+240   \textcolor{keywordflow}{if} (v.sizeLocal () != \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\_dimLocal} ) \textcolor{keywordflow}{return} NULL;
+241 
+242   \textcolor{keywordflow}{return} \textcolor{keyword}{new} M(v);
+243 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_afe36d0db933c49cb4508b83dd17d33b6}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Diag\-Matrix@{new\-Diag\-Matrix}}
+\index{new\-Diag\-Matrix@{new\-Diag\-Matrix}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Diag\-Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ M$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::new\-Diag\-Matrix (
+\begin{DoxyParamCaption}
+\item[{double}]{diag\-Value}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_afe36d0db933c49cb4508b83dd17d33b6}
+
+
+Creates a diagonal matrix with the elements {\ttfamily diag\-Value} and size given by \hyperlink{class_q_u_e_s_o_1_1_map}{Map}\& map. See template specialization. 
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_ac8a3fcaa8d2891c2ca32733dc5a56008}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Map@{new\-Map}}
+\index{new\-Map@{new\-Map}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Map}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ {\bf Map} $\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ {\bf Gsl\-Vector}, {\bf Gsl\-Matrix} $>$\-::new\-Map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_vector_space_ac8a3fcaa8d2891c2ca32733dc5a56008}
+
+
+Definition at line 32 of file Gsl\-Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+33 \{
+34   \textcolor{keywordflow}{return} \textcolor{keyword}{new} Map(\hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\_dimGlobal},0,\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a824458f0d045db251d982ad4c75a4b76}{selfComm}());
+35 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a9549041aa8525c198155e9ba530e5aa4}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Map@{new\-Map}}
+\index{new\-Map@{new\-Map}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Map}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Map}$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::new\-Map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_vector_space_a9549041aa8525c198155e9ba530e5aa4}
+
+
+Creates a new map. See template specialization. 
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_ae28843e8ea7cd8b51aaea3318f6651eb}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Matrix@{new\-Matrix}}
+\index{new\-Matrix@{new\-Matrix}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ {\bf Gsl\-Matrix} $\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ {\bf Gsl\-Vector}, {\bf Gsl\-Matrix} $>$\-::new\-Matrix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_ae28843e8ea7cd8b51aaea3318f6651eb}
+
+
+Definition at line 53 of file Gsl\-Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+54 \{
+55   \textcolor{keywordflow}{return} \textcolor{keyword}{new} GslMatrix(\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env},*\hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map},this->\hyperlink{class_q_u_e_s_o_1_1_vector_space_acd4359dc120905c22ca1064e33787239}{dimGlobal}());
+56 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a8277f132ea382a7f49aa4a6ab7cbea1c}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Matrix@{new\-Matrix}}
+\index{new\-Matrix@{new\-Matrix}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ M$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::new\-Matrix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_a8277f132ea382a7f49aa4a6ab7cbea1c}
+
+
+Creates an empty matrix of size given by \hyperlink{class_q_u_e_s_o_1_1_map}{Map}\& map. See template specialization. 
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_ab1e7c7ce9aedb494fb2a6fb1fac6a46b}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Proposal\-Matrix@{new\-Proposal\-Matrix}}
+\index{new\-Proposal\-Matrix@{new\-Proposal\-Matrix}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Proposal\-Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M $>$ M $\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::new\-Proposal\-Matrix (
+\begin{DoxyParamCaption}
+\item[{const V $\ast$}]{var\-Vec, }
+\item[{const V $\ast$}]{aux\-Vec}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_ab1e7c7ce9aedb494fb2a6fb1fac6a46b}
+
+
+Creates a diagonal matrix conditionally to values from vector {\ttfamily var\-Vec}, guaranteeing that its values are neither 0, N\-A\-N nor I\-N\-F\-I\-N\-I\-T\-Y. 
+
+If var\-Vec\mbox{[}i\mbox{]} is either 0, N\-A\-N or I\-N\-F\-I\-N\-I\-T\-Y, then this method tries to assign the value ($\ast$aux\-Vec)\mbox{[}i\mbox{]})$^\wedge$2 to matrix(i,i). Case ($\ast$aux\-Vec)\mbox{[}i\mbox{]})$^\wedge$2 is either N\-A\-N or I\-N\-F\-I\-N\-I\-T\-Y, then matrix(i,i)=1. 
+
+Definition at line 246 of file Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+247 \{
+248   V tmpVec(*\hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector});
+249   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\_dimLocal}; ++i) \{
+250     \textcolor{keywordtype}{double} variance = INFINITY;
+251     \textcolor{keywordflow}{if} (varVec) variance = (*varVec)[i];
+252     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+253       *\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In VectorSpace<V,M>::newProposalMatrix()"}
+254                               << \textcolor{stringliteral}{": i = "}        << i
+255                               << \textcolor{stringliteral}{", variance = "} << variance
+256                               << std::endl;
+257     \}
+258     \textcolor{keywordflow}{if} ((variance == INFINITY) ||
+259         (variance == NAN     )) \{
+260       \textcolor{keywordflow}{if} (auxVec) \{
+261         tmpVec[i] = std::pow( fabs((*auxVec)[i])*0.05,2. );
+262         \textcolor{keywordflow}{if} ((tmpVec[i] == 0.      ) ||
+263             (tmpVec[i] == INFINITY) ||
+264             (tmpVec[i] == NAN     )) \{
+265           tmpVec[i] = 1.;
+266         \}
+267       \}
+268       \textcolor{keywordflow}{else} \{
+269         tmpVec[i] = 1.;
+270       \}
+271     \}
+272     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (variance == 0.) \{
+273       tmpVec[i] = 1.;
+274     \}
+275     \textcolor{keywordflow}{else} \{
+276       tmpVec[i] = variance;
+277     \}
+278   \}
+279 
+280   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_vector_space_a9f4ad174b63fbc0626070e0f38745e1e}{newDiagMatrix}(tmpVec);
+281 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a64856b952d372cb25d0f10853635104a}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Vector@{new\-Vector}}
+\index{new\-Vector@{new\-Vector}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ {\bf Gsl\-Vector} $\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ {\bf Gsl\-Vector}, {\bf Gsl\-Matrix} $>$\-::new\-Vector (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_a64856b952d372cb25d0f10853635104a}
+
+
+Definition at line 39 of file Gsl\-Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+40 \{
+41   \textcolor{keywordflow}{return} \textcolor{keyword}{new} GslVector(\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env},*\hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map});
+42 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a840fde1ad7e947821dffd3d5ad164509}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Vector@{new\-Vector}}
+\index{new\-Vector@{new\-Vector}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ {\bf Gsl\-Vector} $\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ {\bf Gsl\-Vector}, {\bf Gsl\-Matrix} $>$\-::new\-Vector (
+\begin{DoxyParamCaption}
+\item[{double}]{value}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_a840fde1ad7e947821dffd3d5ad164509}
+
+
+Definition at line 46 of file Gsl\-Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+47 \{
+48   \textcolor{keywordflow}{return} \textcolor{keyword}{new} GslVector(\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env},*\hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map},value);
+49 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a6fc1d08dfe902e83a011ea6a81aff439}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Vector@{new\-Vector}}
+\index{new\-Vector@{new\-Vector}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::new\-Vector (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_a6fc1d08dfe902e83a011ea6a81aff439}
+
+
+Creates an empty vector of size given by \hyperlink{class_q_u_e_s_o_1_1_map}{Map}\& map. See template specialization. 
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_abc859a81265641b1f8676851fd2ab6bd}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Vector@{new\-Vector}}
+\index{new\-Vector@{new\-Vector}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::new\-Vector (
+\begin{DoxyParamCaption}
+\item[{double}]{value}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_abc859a81265641b1f8676851fd2ab6bd}
+
+
+Creates a vector of size given by \hyperlink{class_q_u_e_s_o_1_1_map}{Map}\& map and all values give by {\ttfamily value}. See template specialization. 
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a7492fbcc76598ba956e45005ba7cd9cc}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!new\-Vector@{new\-Vector}}
+\index{new\-Vector@{new\-Vector}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{new\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M $>$ V $\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::new\-Vector (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{v}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_a7492fbcc76598ba956e45005ba7cd9cc}
+
+
+Creates vector as a copy of another. 
+
+
+
+Definition at line 228 of file Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+229 \{
+230   \textcolor{keywordflow}{if} (v.sizeGlobal() != \hyperlink{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{m\_dimGlobal}) \textcolor{keywordflow}{return} NULL;
+231   \textcolor{keywordflow}{if} (v.sizeLocal () != \hyperlink{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{m\_dimLocal} ) \textcolor{keywordflow}{return} NULL;
+232 
+233   \textcolor{keywordflow}{return} \textcolor{keyword}{new} V(v);
+234 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a67b0c3620662116f5a346fdaa5faf38e}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!num\-Of\-Procs\-For\-Storage@{num\-Of\-Procs\-For\-Storage}}
+\index{num\-Of\-Procs\-For\-Storage@{num\-Of\-Procs\-For\-Storage}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{num\-Of\-Procs\-For\-Storage}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::num\-Of\-Procs\-For\-Storage (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_a67b0c3620662116f5a346fdaa5faf38e}
+
+
+Returns total number of processes. 
+
+
+
+Definition at line 193 of file Vector\-Space.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Matrices\-Between\-Vector\-Rvs(), and Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Matrices\-Between\-Vector\-Sequences().
+
+
+\begin{DoxyCode}
+194 \{
+195   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{m\_map}->\hyperlink{class_q_u_e_s_o_1_1_map_aab4fc9911156b61c51f905849e3c9856}{Comm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_aa780721ae0fdeabc5a15e04cb0cad964}{NumProc}();
+196 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a3a1fe3c1833380e2a0b19d35494cb635}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!print@{print}}
+\index{print@{print}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_vector_space_a3a1fe3c1833380e2a0b19d35494cb635}
+
+
+Prints only a message. 
+
+
+
+Reimplemented from \hyperlink{class_q_u_e_s_o_1_1_vector_set_a913fb68533da1e2243882bd63fd2c211}{Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$}.
+
+
+
+Definition at line 338 of file Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+339 \{
+340   os << \textcolor{stringliteral}{"In VectorSpace<V,M>::print()"}
+341      << \textcolor{stringliteral}{": nothing to be printed"} << std::endl;
+342   \textcolor{keywordflow}{return};
+343 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_adcae173f0230ef737ea592c34cad1d09}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!print\-Components\-Names@{print\-Components\-Names}}
+\index{print\-Components\-Names@{print\-Components\-Names}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{print\-Components\-Names}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::print\-Components\-Names (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os, }
+\item[{bool}]{print\-Horizontally}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_adcae173f0230ef737ea592c34cad1d09}
+
+
+Prints the local component names. 
+
+
+
+Definition at line 318 of file Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+320 \{
+321   \textcolor{keywordflow}{if} (printHorizontally) \{ 
+322     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < this->\hyperlink{class_q_u_e_s_o_1_1_vector_space_a5829a1f4f996f8307c840b705144d666}{dimLocal}(); ++i) \{
+323       os << \textcolor{stringliteral}{"'"} << this->\hyperlink{class_q_u_e_s_o_1_1_vector_space_a57c65df3fa6afbcd5c019e8892f53e44}{localComponentName}(i) << \textcolor{stringliteral}{"'"}
+324          << \textcolor{stringliteral}{" "};
+325     \}
+326   \}
+327   \textcolor{keywordflow}{else} \{
+328     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < this->\hyperlink{class_q_u_e_s_o_1_1_vector_space_a5829a1f4f996f8307c840b705144d666}{dimLocal}(); ++i) \{
+329       os << \textcolor{stringliteral}{"'"} << this->\hyperlink{class_q_u_e_s_o_1_1_vector_space_a57c65df3fa6afbcd5c019e8892f53e44}{localComponentName}(i) << \textcolor{stringliteral}{"'"}
+330          << std::endl;
+331     \}
+332   \}
+333 
+334   \textcolor{keywordflow}{return};
+335 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_ab8bb323280e36a42ac04623b42369da5}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!vector\-Space@{vector\-Space}}
+\index{vector\-Space@{vector\-Space}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{vector\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Vector\-Space}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::vector\-Space (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_vector_space_ab8bb323280e36a42ac04623b42369da5}
+
+
+Accessor method to {\ttfamily this}. \hyperlink{class_q_u_e_s_o_1_1_vector}{Vector} space to which {\ttfamily this} vector set belongs to. 
+
+It is virtual in the base class '\hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}' 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_vector_set_a923421590baf5bf93cf066e528f927dc}{Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$}.
+
+
+
+Definition at line 284 of file Vector\-Space.\-C.
+
+
+\begin{DoxyCode}
+285 \{
+286   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};
+287 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a92e963bb5cab3eecd290dfe4b8f03b04}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!zero\-Vector@{zero\-Vector}}
+\index{zero\-Vector@{zero\-Vector}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{zero\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::zero\-Vector (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_vector_space_a92e963bb5cab3eecd290dfe4b8f03b04}
+
+
+Returns a vector filled with zeros. 
+
+
+
+Definition at line 218 of file Vector\-Space.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Matrices\-Between\-Vector\-Rvs(), and Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Matrices\-Between\-Vector\-Sequences().
+
+
+\begin{DoxyCode}
+219 \{
+220   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector} == NULL,
+221                       \hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+222                       \textcolor{stringliteral}{"VectorSpace<V,M>::zeroVector()"},
+223                       \textcolor{stringliteral}{"m\_zeroVector is still NULL"});
+224   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{m\_zeroVector};
+225 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a6bcd9c13374cda32f043a93e171aeabf}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!m\-\_\-components\-Names\-Array@{m\-\_\-components\-Names\-Array}}
+\index{m\-\_\-components\-Names\-Array@{m\-\_\-components\-Names\-Array}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{m\-\_\-components\-Names\-Array}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Dist\-Array}$<$std\-::string$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::m\-\_\-components\-Names\-Array\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_vector_space_a6bcd9c13374cda32f043a93e171aeabf}
+
+
+Array of strings of the type \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array} to store the names of the components. 
+
+
+
+Definition at line 156 of file Vector\-Space.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::\-Vector\-Space().
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a28b5617b4b30cea1e02e4cb01fd067d8}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!m\-\_\-components\-Names\-Vec@{m\-\_\-components\-Names\-Vec}}
+\index{m\-\_\-components\-Names\-Vec@{m\-\_\-components\-Names\-Vec}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{m\-\_\-components\-Names\-Vec}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Dist\-Array}$<$std\-::string$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::m\-\_\-components\-Names\-Vec\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_vector_space_a28b5617b4b30cea1e02e4cb01fd067d8}
+
+
+\hyperlink{class_q_u_e_s_o_1_1_vector}{Vector} of strings of the type \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array} to store the names of the components. 
+
+
+
+Definition at line 159 of file Vector\-Space.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::\-Vector\-Space().
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!m\-\_\-dim\-Global@{m\-\_\-dim\-Global}}
+\index{m\-\_\-dim\-Global@{m\-\_\-dim\-Global}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{m\-\_\-dim\-Global}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::m\-\_\-dim\-Global\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_vector_space_ad3efef4a407fdc5c98fded11f2f2444e}
+
+
+Global dimension. 
+
+
+
+Definition at line 147 of file Vector\-Space.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::\-Vector\-Space().
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!m\-\_\-dim\-Local@{m\-\_\-dim\-Local}}
+\index{m\-\_\-dim\-Local@{m\-\_\-dim\-Local}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{m\-\_\-dim\-Local}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::m\-\_\-dim\-Local\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_vector_space_aa6db91aca8a1f79e27d2f472528850bb}
+
+
+Local dimension (number of elements owned by the calling processor.). 
+
+
+
+Definition at line 153 of file Vector\-Space.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::\-Vector\-Space().
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a7cc6bfad9eb4031dbe763728f0c25a13}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!m\-\_\-empty\-Component\-Name@{m\-\_\-empty\-Component\-Name}}
+\index{m\-\_\-empty\-Component\-Name@{m\-\_\-empty\-Component\-Name}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{m\-\_\-empty\-Component\-Name}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ std\-::string {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::m\-\_\-empty\-Component\-Name\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_vector_space_a7cc6bfad9eb4031dbe763728f0c25a13}
+
+
+Empty string for the components names. 
+
+
+
+Definition at line 162 of file Vector\-Space.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!m\-\_\-map@{m\-\_\-map}}
+\index{m\-\_\-map@{m\-\_\-map}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{m\-\_\-map}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Map}$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::m\-\_\-map\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_vector_space_a752194a4dc937db4db4df2a3b207d3b9}
+
+
+\hyperlink{class_q_u_e_s_o_1_1_map}{Map}. 
+
+
+
+Definition at line 150 of file Vector\-Space.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::\-Vector\-Space().
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Space@{Q\-U\-E\-S\-O\-::\-Vector\-Space}!m\-\_\-zero\-Vector@{m\-\_\-zero\-Vector}}
+\index{m\-\_\-zero\-Vector@{m\-\_\-zero\-Vector}!QUESO::VectorSpace@{Q\-U\-E\-S\-O\-::\-Vector\-Space}}
+\subsubsection[{m\-\_\-zero\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Space}$<$ V, M $>$\-::m\-\_\-zero\-Vector\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_vector_space_a0faa184316e08edb286a1bd0a5059b10}
+
+
+A vector of all elements equal to zero. 
+
+
+
+Definition at line 165 of file Vector\-Space.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Vector\-Space$<$ V, M $>$\-::\-Vector\-Space().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/basic/inc/\hyperlink{_vector_set_8h}{Vector\-Set.\-h}\item 
+src/basic/inc/\hyperlink{_vector_space_8h}{Vector\-Space.\-h}\item 
+src/basic/src/\hyperlink{_vector_space_8_c}{Vector\-Space.\-C}\end{DoxyCompactItemize}

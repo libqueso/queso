@@ -1,0 +1,228 @@
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_covariance_function}{\section{Q\-U\-E\-S\-O\-:\-:Base\-Scalar\-Covariance\-Function$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_base_scalar_covariance_function}\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function$<$ V, M $>$}}
+}
+
+
+A templated (base) class to accommodate scalar covariance functions (of random variables).  
+
+
+
+
+{\ttfamily \#include $<$Scalar\-Covariance\-Function.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Base\-Scalar\-Covariance\-Function$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_scalar_covariance_function__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Base\-Scalar\-Covariance\-Function$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_scalar_covariance_function__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a7a3d53a332dffce97c5579d93eaf91ff}{Base\-Scalar\-Covariance\-Function} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a703aa6a8e475adaface0ec514b48a5bc}{basic\-Domain\-Set})
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a5db872c7f5929e819543f7f58063f3ae}{$\sim$\-Base\-Scalar\-Covariance\-Function} ()
+\begin{DoxyCompactList}\small\item\em Virtual destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Math methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a703aa6a8e475adaface0ec514b48a5bc}{basic\-Domain\-Set} () const 
+\begin{DoxyCompactList}\small\item\em Domain set; access to private attribute m\-\_\-basic\-Domain\-Set. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a93a35146e106c7fb28913c604a918acb}{value} (const V \&domain\-Vector1, const V \&domain\-Vector2) const =0
+\begin{DoxyCompactList}\small\item\em The value of the covariance function. See template specialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\-\_\-env}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a21636873436b88cb77075c6edbd61c71}{m\-\_\-prefix}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a1060392114362022e427678d0f97ab12}{m\-\_\-basic\-Domain\-Set}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function$<$ V, M $>$}
+
+A templated (base) class to accommodate scalar covariance functions (of random variables). 
+
+This class allows the mathematical definition of the covariance function of a random variable Covariance provides a measure of the strength of the correlation between two or more sets of random variates. The covariance for two random variates $ X $ and $ Y $, each with sample size $ N $, is defined by the expectation value\-: $ cov (X,Y) = <(X-\mu_X)(Y-\mu_Y)> = < X Y > - \mu_X \mu_Y $ where $ \mu_X $ and $ \mu_Y $ are the respective means, which can be written out explicitly as \[ cov (X,Y) = \sum_{i=1}^{N} \frac{(x_i - \bar{x})(y_i - \bar{y})}{N}\] 
+
+Definition at line 53 of file Scalar\-Covariance\-Function.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a7a3d53a332dffce97c5579d93eaf91ff}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}!Base\-Scalar\-Covariance\-Function@{Base\-Scalar\-Covariance\-Function}}
+\index{Base\-Scalar\-Covariance\-Function@{Base\-Scalar\-Covariance\-Function}!QUESO::BaseScalarCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}}
+\subsubsection[{Base\-Scalar\-Covariance\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}$<$ V, M $>$\-::{\bf Base\-Scalar\-Covariance\-Function} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{basic\-Domain\-Set}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a7a3d53a332dffce97c5579d93eaf91ff}
+
+
+Default constructor. 
+
+Instantiates an object of the class given a prefix and the domain set. 
+
+Definition at line 31 of file Scalar\-Covariance\-Function.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function$<$ V, M $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+34   :
+35   \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}           (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a703aa6a8e475adaface0ec514b48a5bc}{basicDomainSet}.env()),
+36   \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a21636873436b88cb77075c6edbd61c71}{m\_prefix}        ((std::string)(prefix)+\textcolor{stringliteral}{"cov\_func\_"}),
+37   \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a1060392114362022e427678d0f97ab12}{m\_basicDomainSet}(\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a703aa6a8e475adaface0ec514b48a5bc}{basicDomainSet})
+38 \{
+39   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+40     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       BaseScalarCovarianceFunction<V,M>::constructor()"}
+41                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a21636873436b88cb77075c6edbd61c71}{m\_prefix}
+42                             << std::endl;
+43   \}
+44 
+45   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+46     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving BaseScalarCovarianceFunction<V,M>::constructor()
+      "}
+47                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a21636873436b88cb77075c6edbd61c71}{m\_prefix}
+48                             << std::endl;
+49   \}
+50 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a5db872c7f5929e819543f7f58063f3ae}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}!$\sim$\-Base\-Scalar\-Covariance\-Function@{$\sim$\-Base\-Scalar\-Covariance\-Function}}
+\index{$\sim$\-Base\-Scalar\-Covariance\-Function@{$\sim$\-Base\-Scalar\-Covariance\-Function}!QUESO::BaseScalarCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}}
+\subsubsection[{$\sim$\-Base\-Scalar\-Covariance\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}$<$ V, M $>$\-::$\sim${\bf Base\-Scalar\-Covariance\-Function} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a5db872c7f5929e819543f7f58063f3ae}
+
+
+Virtual destructor. 
+
+
+
+Definition at line 53 of file Scalar\-Covariance\-Function.\-C.
+
+
+\begin{DoxyCode}
+54 \{
+55   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+56     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering BaseScalarCovarianceFunction<V,M>::destructor()
+      "}
+57                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a21636873436b88cb77075c6edbd61c71}{m\_prefix}
+58                             << std::endl;
+59   \}
+60 
+61   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+62     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving BaseScalarCovarianceFunction<V,M>::destructor()"}
+63                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a21636873436b88cb77075c6edbd61c71}{m\_prefix}
+64                             << std::endl;
+65   \}
+66 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a703aa6a8e475adaface0ec514b48a5bc}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}!basic\-Domain\-Set@{basic\-Domain\-Set}}
+\index{basic\-Domain\-Set@{basic\-Domain\-Set}!QUESO::BaseScalarCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}}
+\subsubsection[{basic\-Domain\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Vector\-Set}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}$<$ V, M $>$\-::basic\-Domain\-Set (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a703aa6a8e475adaface0ec514b48a5bc}
+
+
+Domain set; access to private attribute m\-\_\-basic\-Domain\-Set. 
+
+
+
+Definition at line 70 of file Scalar\-Covariance\-Function.\-C.
+
+
+\begin{DoxyCode}
+71 \{
+72   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a1060392114362022e427678d0f97ab12}{m\_basicDomainSet};
+73 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a93a35146e106c7fb28913c604a918acb}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}!value@{value}}
+\index{value@{value}!QUESO::BaseScalarCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}}
+\subsubsection[{value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual double {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}$<$ V, M $>$\-::value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector1, }
+\item[{const V \&}]{domain\-Vector2}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a93a35146e106c7fb28913c604a918acb}
+
+
+The value of the covariance function. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_ad65cfe1440c9045718bc57827d6fb551}{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_covariance_function_ab02d90f973034672b84888c941230a8c}{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Covariance\-Function$<$ V, M $>$}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a1060392114362022e427678d0f97ab12}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}!m\-\_\-basic\-Domain\-Set@{m\-\_\-basic\-Domain\-Set}}
+\index{m\-\_\-basic\-Domain\-Set@{m\-\_\-basic\-Domain\-Set}!QUESO::BaseScalarCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}}
+\subsubsection[{m\-\_\-basic\-Domain\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Vector\-Set}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}$<$ V, M $>$\-::m\-\_\-basic\-Domain\-Set\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a1060392114362022e427678d0f97ab12}
+
+
+Definition at line 78 of file Scalar\-Covariance\-Function.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::BaseScalarCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}$<$ V, M $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}
+
+
+Definition at line 76 of file Scalar\-Covariance\-Function.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function$<$ V, M $>$\-::\-Base\-Scalar\-Covariance\-Function(), Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function$<$ V, M $>$\-::\-Exponential\-Scalar\-Covariance\-Function(), and Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Covariance\-Function$<$ V, M $>$\-::\-Generic\-Scalar\-Covariance\-Function().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a21636873436b88cb77075c6edbd61c71}{\index{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}!m\-\_\-prefix@{m\-\_\-prefix}}
+\index{m\-\_\-prefix@{m\-\_\-prefix}!QUESO::BaseScalarCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}}
+\subsubsection[{m\-\_\-prefix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ std\-::string {\bf Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function}$<$ V, M $>$\-::m\-\_\-prefix\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a21636873436b88cb77075c6edbd61c71}
+
+
+Definition at line 77 of file Scalar\-Covariance\-Function.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function$<$ V, M $>$\-::\-Base\-Scalar\-Covariance\-Function(), Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function$<$ V, M $>$\-::\-Exponential\-Scalar\-Covariance\-Function(), and Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Covariance\-Function$<$ V, M $>$\-::\-Generic\-Scalar\-Covariance\-Function().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_scalar_covariance_function_8h}{Scalar\-Covariance\-Function.\-h}\item 
+src/stats/src/\hyperlink{_scalar_covariance_function_8_c}{Scalar\-Covariance\-Function.\-C}\end{DoxyCompactItemize}

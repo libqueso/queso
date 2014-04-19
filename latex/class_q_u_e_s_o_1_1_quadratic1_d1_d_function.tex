@@ -1,0 +1,109 @@
+\hypertarget{class_q_u_e_s_o_1_1_quadratic1_d1_d_function}{\section{Q\-U\-E\-S\-O\-:\-:Quadratic1\-D1\-D\-Function Class Reference}
+\label{class_q_u_e_s_o_1_1_quadratic1_d1_d_function}\index{Q\-U\-E\-S\-O\-::\-Quadratic1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Quadratic1\-D1\-D\-Function}}
+}
+
+
+Class for one-\/dimensional quadratic functions.  
+
+
+
+
+{\ttfamily \#include $<$1\-D1\-D\-Function.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Quadratic1\-D1\-D\-Function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{class_q_u_e_s_o_1_1_quadratic1_d1_d_function__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Quadratic1\-D1\-D\-Function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{class_q_u_e_s_o_1_1_quadratic1_d1_d_function__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_quadratic1_d1_d_function_a3ad7d62950748c04897381b297db6aea}{Quadratic1\-D1\-D\-Function} (double \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a4c110e621ef1ac557bbcc60d41f5a3c2}{min\-Domain\-Value}, double \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_ad2b80d0c52c0cb56c89f70f30b3bb19e}{max\-Domain\-Value}, double a, double b, double c)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_quadratic1_d1_d_function_a52969f14fb922dae2df3823e411877ea}{$\sim$\-Quadratic1\-D1\-D\-Function} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class for one-\/dimensional quadratic functions. 
+
+This class implements quadratic one-\/dimensional functions. A quadratic function, in mathematics, is a polynomial function of the form \[ f(x)=ax^2+bx+c,\quad a \ne 0.\] The graph of a quadratic function is a parabola whose axis of symmetry is parallel to the y-\/axis. 
+
+Definition at line 292 of file 1\-D1\-D\-Function.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_quadratic1_d1_d_function_a3ad7d62950748c04897381b297db6aea}{\index{Q\-U\-E\-S\-O\-::\-Quadratic1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Quadratic1\-D1\-D\-Function}!Quadratic1\-D1\-D\-Function@{Quadratic1\-D1\-D\-Function}}
+\index{Quadratic1\-D1\-D\-Function@{Quadratic1\-D1\-D\-Function}!QUESO::Quadratic1D1DFunction@{Q\-U\-E\-S\-O\-::\-Quadratic1\-D1\-D\-Function}}
+\subsubsection[{Quadratic1\-D1\-D\-Function}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Quadratic1\-D1\-D\-Function\-::\-Quadratic1\-D1\-D\-Function (
+\begin{DoxyParamCaption}
+\item[{double}]{min\-Domain\-Value, }
+\item[{double}]{max\-Domain\-Value, }
+\item[{double}]{a, }
+\item[{double}]{b, }
+\item[{double}]{c}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_quadratic1_d1_d_function_a3ad7d62950748c04897381b297db6aea}
+
+
+Default constructor. 
+
+Constructs a quadratic function in the interval {\ttfamily \mbox{[}min\-Domain\-Value,max\-Domain\-Value\mbox{]}}, of the type\-: $ f(x)=ax^2+bx+c $. 
+
+Definition at line 412 of file 1\-D1\-D\-Function.\-C.
+
+
+\begin{DoxyCode}
+418   :
+419   \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a8e8c0f8d500675e4acfd4d7043000791}{Base1D1DFunction}(\hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a4c110e621ef1ac557bbcc60d41f5a3c2}{minDomainValue},\hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_ad2b80d0c52c0cb56c89f70f30b3bb19e}{maxDomainValue}),
+420   m\_a                    (a),
+421   m\_b                    (b),
+422   m\_c                    (c)
+423 \{
+424 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_quadratic1_d1_d_function_a52969f14fb922dae2df3823e411877ea}{\index{Q\-U\-E\-S\-O\-::\-Quadratic1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Quadratic1\-D1\-D\-Function}!$\sim$\-Quadratic1\-D1\-D\-Function@{$\sim$\-Quadratic1\-D1\-D\-Function}}
+\index{$\sim$\-Quadratic1\-D1\-D\-Function@{$\sim$\-Quadratic1\-D1\-D\-Function}!QUESO::Quadratic1D1DFunction@{Q\-U\-E\-S\-O\-::\-Quadratic1\-D1\-D\-Function}}
+\subsubsection[{$\sim$\-Quadratic1\-D1\-D\-Function}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Quadratic1\-D1\-D\-Function\-::$\sim$\-Quadratic1\-D1\-D\-Function (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_quadratic1_d1_d_function_a52969f14fb922dae2df3823e411877ea}
+
+
+Destructor. 
+
+
+
+Definition at line 426 of file 1\-D1\-D\-Function.\-C.
+
+
+\begin{DoxyCode}
+427 \{
+428 \}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/misc/inc/\hyperlink{1_d1_d_function_8h}{1\-D1\-D\-Function.\-h}\item 
+src/misc/src/\hyperlink{1_d1_d_function_8_c}{1\-D1\-D\-Function.\-C}\end{DoxyCompactItemize}

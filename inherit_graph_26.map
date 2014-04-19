@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_q_u_e_s_o_1_1_base_vector_realizer.html" title="A templated (base) class for handling sampling from vector RVs. " alt="" coords="5,317,219,363"/>
+<area shape="rect" id="node3" href="$class_q_u_e_s_o_1_1_beta_vector_realizer.html" title="A class for handling sampling from a Beta probability density distribution. " alt="" coords="285,5,499,51"/>
+<area shape="rect" id="node5" href="$class_q_u_e_s_o_1_1_concatenated_vector_realizer.html" title="A class for handling sampling from concatenated probability density distributions. " alt="" coords="281,74,503,121"/>
+<area shape="rect" id="node7" href="$class_q_u_e_s_o_1_1_gamma_vector_realizer.html" title="A class for handling sampling from a Gamma probability density distribution. " alt="" coords="277,143,507,190"/>
+<area shape="rect" id="node9" href="$class_q_u_e_s_o_1_1_gaussian_vector_realizer.html" title="A class for handling sampling from Gaussian probability density distributions. " alt="" coords="273,213,511,259"/>
+<area shape="rect" id="node11" href="$class_q_u_e_s_o_1_1_generic_vector_realizer.html" title="A class for handling sampling from generic probability density distributions. " alt="" coords="277,282,507,329"/>
+<area shape="rect" id="node13" href="$class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer.html" title="A class for handling sampling from an Inverse Gamma probability density distribution. " alt="" coords="279,351,505,398"/>
+<area shape="rect" id="node15" href="$class_q_u_e_s_o_1_1_log_normal_vector_realizer.html" title="A class for handling sampling from a Log&#45;Normal probability density distribution. ..." alt="" coords="267,421,517,467"/>
+<area shape="rect" id="node17" href="$class_q_u_e_s_o_1_1_sequential_vector_realizer.html" title="A class for handling sequential draws (sampling) from probability density distributions. " alt="" coords="267,490,517,537"/>
+<area shape="rect" id="node19" href="$class_q_u_e_s_o_1_1_uniform_vector_realizer.html" title="A class for handling sampling from a Uniform probability density distribution. " alt="" coords="277,559,507,606"/>
+<area shape="rect" id="node21" href="$class_q_u_e_s_o_1_1_wigner_vector_realizer.html" title="A class for handling sampling from a Wigner probability density distribution. " alt="" coords="280,629,504,675"/>
+</map>

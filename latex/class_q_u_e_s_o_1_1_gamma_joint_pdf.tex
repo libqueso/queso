@@ -1,0 +1,321 @@
+\hypertarget{class_q_u_e_s_o_1_1_gamma_joint_pdf}{\section{Q\-U\-E\-S\-O\-:\-:Gamma\-Joint\-Pdf$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_gamma_joint_pdf}\index{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf$<$ V, M $>$}}
+}
+
+
+A class for handling Gamma joint P\-D\-Fs.  
+
+
+
+
+{\ttfamily \#include $<$Gamma\-Joint\-Pdf.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Gamma\-Joint\-Pdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{class_q_u_e_s_o_1_1_gamma_joint_pdf__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Gamma\-Joint\-Pdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_gamma_joint_pdf__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_aae9aa55f730ccefa107e1163bdb8e91a}{Gamma\-Joint\-Pdf} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domain\-Set}, const V \&a, const V \&b)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_a457ae0ae5485dce6e68d03fc8153c2ff}{$\sim$\-Gamma\-Joint\-Pdf} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Math methods}\par
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_a4907d38d266d271d34cce9be333a95df}{actual\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const 
+\begin{DoxyCompactList}\small\item\em Actual value of the Gamma P\-D\-F. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_a990337e7c25a4214b15fd71cb6deb384}{ln\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const 
+\begin{DoxyCompactList}\small\item\em Logarithm of the value of the Gamma P\-D\-F. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_a5fb1d17a267c8110442689721e74c8d4}{compute\-Log\-Of\-Normalization\-Factor} (unsigned int num\-Samples, bool update\-Factor\-Internally) const 
+\begin{DoxyCompactList}\small\item\em Computes the logarithm of the normalization factor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+V \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_ab7120940a19b96f70ffde24ddc22cf20}{m\-\_\-a}
+\item 
+V \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_ad651745cadab6db31b6458ad8f72c570}{m\-\_\-b}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf$<$ V, M $>$}
+
+A class for handling Gamma joint P\-D\-Fs. 
+
+This class allows the mathematical definition of a Gamma Joint P\-D\-F. 
+
+Definition at line 49 of file Gamma\-Joint\-Pdf.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_gamma_joint_pdf_aae9aa55f730ccefa107e1163bdb8e91a}{\index{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}!Gamma\-Joint\-Pdf@{Gamma\-Joint\-Pdf}}
+\index{Gamma\-Joint\-Pdf@{Gamma\-Joint\-Pdf}!QUESO::GammaJointPdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}}
+\subsubsection[{Gamma\-Joint\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}$<$ V, M $>$\-::{\bf Gamma\-Joint\-Pdf} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{domain\-Set, }
+\item[{const V \&}]{a, }
+\item[{const V \&}]{b}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gamma_joint_pdf_aae9aa55f730ccefa107e1163bdb8e91a}
+
+
+Constructor. 
+
+Constructs a new object of the class, given a prefix, the domain set, and the parameters {\ttfamily a} and {\ttfamily b} of the Gamma P\-D\-F. 
+
+Definition at line 33 of file Gamma\-Joint\-Pdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function$<$ V, M $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+38   :
+39   BaseJointPdf<V,M>(((std::string)(prefix)+\textcolor{stringliteral}{"uni"}).c\_str(),\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domainSet}),
+40   \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_ab7120940a19b96f70ffde24ddc22cf20}{m\_a}(a),
+41   \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_ad651745cadab6db31b6458ad8f72c570}{m\_b}(b)
+42 \{
+43   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+44     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering GammaJointPdf<V,M>::constructor()"}
+45                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a6e81dc902aca6a546877da99b2f4a169}{m\_prefix}
+46                             << std::endl;
+47   \}
+48 
+49   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+50     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving GammaJointPdf<V,M>::constructor()"}
+51                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a6e81dc902aca6a546877da99b2f4a169}{m\_prefix}
+52                             << std::endl;
+53   \}
+54 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gamma_joint_pdf_a457ae0ae5485dce6e68d03fc8153c2ff}{\index{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}!$\sim$\-Gamma\-Joint\-Pdf@{$\sim$\-Gamma\-Joint\-Pdf}}
+\index{$\sim$\-Gamma\-Joint\-Pdf@{$\sim$\-Gamma\-Joint\-Pdf}!QUESO::GammaJointPdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}}
+\subsubsection[{$\sim$\-Gamma\-Joint\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}$<$ V, M $>$\-::$\sim${\bf Gamma\-Joint\-Pdf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gamma_joint_pdf_a457ae0ae5485dce6e68d03fc8153c2ff}
+
+
+Destructor. 
+
+
+
+Definition at line 57 of file Gamma\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+58 \{
+59 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_gamma_joint_pdf_a4907d38d266d271d34cce9be333a95df}{\index{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}!actual\-Value@{actual\-Value}}
+\index{actual\-Value@{actual\-Value}!QUESO::GammaJointPdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}}
+\subsubsection[{actual\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}$<$ V, M $>$\-::actual\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gamma_joint_pdf_a4907d38d266d271d34cce9be333a95df}
+
+
+Actual value of the Gamma P\-D\-F. 
+
+This routine calls method \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_a990337e7c25a4214b15fd71cb6deb384}{ln\-Value()} and returns the exponent of the returning value of such method. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a3c367a0cc3fb707a136c5df47dd414c1}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 63 of file Gamma\-Joint\-Pdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+69 \{
+70   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(domainVector.sizeLocal() != this->
+      \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}.vectorSpace().dimLocal(),
+71                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+72                       \textcolor{stringliteral}{"GammaJointPdf<V,M>::actualValue()"},
+73                       \textcolor{stringliteral}{"invalid input"});
+74 
+75   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((domainDirection || gradVector || hessianMatrix || hessianEffect),
+76                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+77                       \textcolor{stringliteral}{"GammaJointPdf<V,M>::actualValue()"},
+78                       \textcolor{stringliteral}{"incomplete code for gradVector, hessianMatrix and hessianEffect calculations"});
+79 
+80   \textcolor{comment}{// No need to multiply by exp(m\_logOfNormalizationFactor) because 'lnValue()' is called [PDF-06]}
+81   \textcolor{keywordflow}{return} exp(this->\hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_a990337e7c25a4214b15fd71cb6deb384}{lnValue}(domainVector,domainDirection,gradVector,hessianMatrix,hessianEffect));
+82 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gamma_joint_pdf_a5fb1d17a267c8110442689721e74c8d4}{\index{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}!compute\-Log\-Of\-Normalization\-Factor@{compute\-Log\-Of\-Normalization\-Factor}}
+\index{compute\-Log\-Of\-Normalization\-Factor@{compute\-Log\-Of\-Normalization\-Factor}!QUESO::GammaJointPdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}}
+\subsubsection[{compute\-Log\-Of\-Normalization\-Factor}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}$<$ V, M $>$\-::compute\-Log\-Of\-Normalization\-Factor (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{num\-Samples, }
+\item[{bool}]{update\-Factor\-Internally}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gamma_joint_pdf_a5fb1d17a267c8110442689721e74c8d4}
+
+
+Computes the logarithm of the normalization factor. 
+
+This routine calls \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a7b7bdd13d2de51198bf75d522e02545b}{Base\-Joint\-Pdf\-::common\-Compute\-Log\-Of\-Normalization\-Factor()}. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a99d8ab490b093abffd6068b6ea5263bb}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 126 of file Gamma\-Joint\-Pdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$\-::common\-Compute\-Log\-Of\-Normalization\-Factor().
+
+
+\begin{DoxyCode}
+127 \{
+128   \textcolor{keywordtype}{double} value = 0.;
+129 
+130   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 2)) \{
+131     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       GammaJointPdf<V,M>::computeLogOfNormalizationFactor()"}
+132                             << std::endl;
+133   \}
+134   value = \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a7b7bdd13d2de51198bf75d522e02545b}{BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor}
+      (numSamples, updateFactorInternally);
+135   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 2)) \{
+136     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       GammaJointPdf<V,M>::computeLogOfNormalizationFactor()"}
+137                             << \textcolor{stringliteral}{", m\_logOfNormalizationFactor = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_ae82d4191f17af8c7a26226d127bc7850}{m\_logOfNormalizationFactor}
+138                             << std::endl;
+139   \}
+140 
+141   \textcolor{keywordflow}{return} value;
+142 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gamma_joint_pdf_a990337e7c25a4214b15fd71cb6deb384}{\index{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}!ln\-Value@{ln\-Value}}
+\index{ln\-Value@{ln\-Value}!QUESO::GammaJointPdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}}
+\subsubsection[{ln\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}$<$ V, M $>$\-::ln\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gamma_joint_pdf_a990337e7c25a4214b15fd71cb6deb384}
+
+
+Logarithm of the value of the Gamma P\-D\-F. 
+
+If the normalization style (m\-\_\-normalization\-Style) is zero, then this routine calls a environment method which handles basic P\-D\-Fs, e.\-g. basic\-Pdfs()-\/$>$gamma\-Pdf\-Actual\-Value() and adds the log of the normalization factor (m\-\_\-log\-Of\-Normalization\-Factor) to it; otherwise the method uses the formula\-: $ lnValue = \sum[ (a_i-1)*log(domainVector_i) -domainVector_i/b_i + m_logOfNormalizationFactor $, where a and b are the parameters of the Gamma P\-D\-F. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_aaeb1d91fd791399a502f451b07bb1bfe}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 86 of file Gamma\-Joint\-Pdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+92 \{
+93   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((domainDirection || gradVector || hessianMatrix || hessianEffect),
+94                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+95                       \textcolor{stringliteral}{"GammaJointPdf<V,M>::lnValue()"},
+96                       \textcolor{stringliteral}{"incomplete code for gradVector, hessianMatrix and hessianEffect calculations"});
+97 
+98   \textcolor{keywordtype}{double} aux = 0.;
+99   \textcolor{keywordtype}{double} result = 0.;
+100   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < domainVector.sizeLocal(); ++i) \{
+101     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a138c99bcef7a67077d9612bddfdcb896}{m\_normalizationStyle} == 0) \{
+102       \textcolor{comment}{//aux = log(gsl\_ran\_gamma\_pdf(domainVector[i],m\_a[i],m\_b[i]));}
+103       aux = log(\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_af106da59f188ba0dbf4f93da3fcd8ca5}{basicPdfs}()->\hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_base_ae5c0c0a14b0f5b89f64e0cd9c0a1b9fd}{gammaPdfActualValue}(domainVector[i],
+      \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_ab7120940a19b96f70ffde24ddc22cf20}{m\_a}[i],\hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_ad651745cadab6db31b6458ad8f72c570}{m\_b}[i]));
+104     \}
+105     \textcolor{keywordflow}{else} \{
+106       aux = (\hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_ab7120940a19b96f70ffde24ddc22cf20}{m\_a}[i]-1.)*log(domainVector[i]) - domainVector[i]/\hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_ad651745cadab6db31b6458ad8f72c570}{m\_b}[i];
+107     \}
+108     \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 99)) \{
+109       *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In GammaJointPdf<V,M>::lnValue()"}
+110                               << \textcolor{stringliteral}{", m\_normalizationStyle = "}      << 
+      \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a138c99bcef7a67077d9612bddfdcb896}{m\_normalizationStyle}
+111                               << \textcolor{stringliteral}{": domainVector["} << i << \textcolor{stringliteral}{"] = "} << domainVector[i]
+112                               << \textcolor{stringliteral}{", m\_a["} << i << \textcolor{stringliteral}{"] = "}          << \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_ab7120940a19b96f70ffde24ddc22cf20}{m\_a}[i]
+113                               << \textcolor{stringliteral}{", m\_b["} << i << \textcolor{stringliteral}{"] = "}          << \hyperlink{class_q_u_e_s_o_1_1_gamma_joint_pdf_ad651745cadab6db31b6458ad8f72c570}{m\_b}[i]
+114                               << \textcolor{stringliteral}{", log(pdf)= "}                   << aux
+115                               << std::endl;
+116     \}
+117     result += aux;
+118   \}
+119   result += \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_ae82d4191f17af8c7a26226d127bc7850}{m\_logOfNormalizationFactor}; \textcolor{comment}{// [PDF-06]}
+120 
+121   \textcolor{keywordflow}{return} result;
+122 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_gamma_joint_pdf_ab7120940a19b96f70ffde24ddc22cf20}{\index{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}!m\-\_\-a@{m\-\_\-a}}
+\index{m\-\_\-a@{m\-\_\-a}!QUESO::GammaJointPdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-a}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V {\bf Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-a\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_gamma_joint_pdf_ab7120940a19b96f70ffde24ddc22cf20}
+
+
+Definition at line 89 of file Gamma\-Joint\-Pdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_gamma_joint_pdf_ad651745cadab6db31b6458ad8f72c570}{\index{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}!m\-\_\-b@{m\-\_\-b}}
+\index{m\-\_\-b@{m\-\_\-b}!QUESO::GammaJointPdf@{Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-b}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V {\bf Q\-U\-E\-S\-O\-::\-Gamma\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-b\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_gamma_joint_pdf_ad651745cadab6db31b6458ad8f72c570}
+
+
+Definition at line 90 of file Gamma\-Joint\-Pdf.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_gamma_joint_pdf_8h}{Gamma\-Joint\-Pdf.\-h}\item 
+src/stats/src/\hyperlink{_gamma_joint_pdf_8_c}{Gamma\-Joint\-Pdf.\-C}\end{DoxyCompactItemize}

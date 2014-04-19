@@ -1,0 +1,335 @@
+\hypertarget{class_q_u_e_s_o_1_1_rng_boost}{\section{Q\-U\-E\-S\-O\-:\-:Rng\-Boost Class Reference}
+\label{class_q_u_e_s_o_1_1_rng_boost}\index{Q\-U\-E\-S\-O\-::\-Rng\-Boost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}}
+}
+
+
+{\ttfamily \#include $<$Rng\-Boost.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Rng\-Boost\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{class_q_u_e_s_o_1_1_rng_boost__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Rng\-Boost\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{class_q_u_e_s_o_1_1_rng_boost__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_rng_boost_a6fa78750ef38de7034414b5e701bc544}{Rng\-Boost} ()
+\begin{DoxyCompactList}\small\item\em Default Constructor\-: it should not be used. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_rng_boost_a8d2d2582ba8c3c892e0e20798730f0a9}{Rng\-Boost} (int \hyperlink{class_q_u_e_s_o_1_1_rng_base_a3094da86084e56faaae9325f1117f9a3}{seed}, int world\-Rank)
+\begin{DoxyCompactList}\small\item\em Constructor with seed. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_rng_boost_a96ffa32ae3700ca164db8799d32b19ca}{$\sim$\-Rng\-Boost} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Sampling methods}
+\begin{DoxyCompactItemize}
+\item 
+boost\-::mt19937 \hyperlink{class_q_u_e_s_o_1_1_rng_boost_aef65914cae8b11e345bfb082db616f0e}{m\-\_\-rng}
+\begin{DoxyCompactList}\small\item\em Random number generator from class boost\-::mt19937. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_rng_boost_a94c246d855ea22332b0dafc0891e328f}{reset\-Seed} (int new\-Seed)
+\begin{DoxyCompactList}\small\item\em Resets the seed with value {\ttfamily new\-Seed}. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_rng_boost_aad1548eec706aeb6580af163bd80e0a9}{uniform\-Sample} () const 
+\begin{DoxyCompactList}\small\item\em Samples a value from a uniform distribution. Support\-: \mbox{[}0,1\mbox{]} or \mbox{[}a,b\mbox{]}. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_rng_boost_a9d33a495101b353e267ea7d3a6df361f}{gaussian\-Sample} (double std\-Dev) const 
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_rng_boost_ab859b0ff1e728c6a65c2aef62afe028e}{beta\-Sample} (double alpha, double beta) const 
+\begin{DoxyCompactList}\small\item\em Samples a value from a Beta distribution. Support\-: \mbox{[}0,1\mbox{]}. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_rng_boost_ae4fcb113ba19dbec7684f41c3aebf4e7}{gamma\-Sample} (double a, double b) const 
+\begin{DoxyCompactList}\small\item\em Samples a value from a Gamma distribution. Support\-: \mbox{[}0,infinity). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 47 of file Rng\-Boost.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_rng_boost_a6fa78750ef38de7034414b5e701bc544}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Boost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}!Rng\-Boost@{Rng\-Boost}}
+\index{Rng\-Boost@{Rng\-Boost}!QUESO::RngBoost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}}
+\subsubsection[{Rng\-Boost}]{\setlength{\rightskip}{0pt plus 5cm}Rng\-Boost\-::\-Rng\-Boost (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_rng_boost_a6fa78750ef38de7034414b5e701bc544}
+
+
+Default Constructor\-: it should not be used. 
+
+
+
+Definition at line 31 of file Rng\-Boost.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Rng\-Base\-::m\-\_\-world\-Rank, and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+32   :
+33   \hyperlink{class_q_u_e_s_o_1_1_rng_base_ad8dd3cef9323851cad163c37b815bc88}{RngBase}()
+34 \{
+35   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+36                       \hyperlink{class_q_u_e_s_o_1_1_rng_base_a94515d2b7d493d8e4e238628716dd11b}{m\_worldRank},
+37                       \textcolor{stringliteral}{"RngBoost::constructor(), default"},
+38                       \textcolor{stringliteral}{"should not be used by user"});
+39 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_boost_a8d2d2582ba8c3c892e0e20798730f0a9}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Boost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}!Rng\-Boost@{Rng\-Boost}}
+\index{Rng\-Boost@{Rng\-Boost}!QUESO::RngBoost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}}
+\subsubsection[{Rng\-Boost}]{\setlength{\rightskip}{0pt plus 5cm}Rng\-Boost\-::\-Rng\-Boost (
+\begin{DoxyParamCaption}
+\item[{int}]{seed, }
+\item[{int}]{world\-Rank}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_rng_boost_a8d2d2582ba8c3c892e0e20798730f0a9}
+
+
+Constructor with seed. 
+
+Constructor with seed -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---. 
+
+Definition at line 42 of file Rng\-Boost.\-C.
+
+
+
+References reset\-Seed().
+
+
+\begin{DoxyCode}
+43   :
+44   \hyperlink{class_q_u_e_s_o_1_1_rng_base_ad8dd3cef9323851cad163c37b815bc88}{RngBase}(\hyperlink{class_q_u_e_s_o_1_1_rng_base_a3094da86084e56faaae9325f1117f9a3}{seed},worldRank)
+45   \textcolor{comment}{//m\_rng(seed)}
+46 \{
+47   \hyperlink{class_q_u_e_s_o_1_1_rng_boost_a94c246d855ea22332b0dafc0891e328f}{resetSeed}(\hyperlink{class_q_u_e_s_o_1_1_rng_base_a3094da86084e56faaae9325f1117f9a3}{seed});
+48 \textcolor{comment}{//TODO Find a suitable test for here; Kemelli todo}
+49 \textcolor{comment}{//   UQ\_FATAL\_TEST\_MACRO(true,}
+50 \textcolor{comment}{//                       m\_worldRank,}
+51 \textcolor{comment}{//                       "RngBoos::constructor()",}
+52 \textcolor{comment}{//                       "Kemelli todo: boost rng");}
+53 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_boost_a96ffa32ae3700ca164db8799d32b19ca}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Boost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}!$\sim$\-Rng\-Boost@{$\sim$\-Rng\-Boost}}
+\index{$\sim$\-Rng\-Boost@{$\sim$\-Rng\-Boost}!QUESO::RngBoost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}}
+\subsubsection[{$\sim$\-Rng\-Boost}]{\setlength{\rightskip}{0pt plus 5cm}Rng\-Boost\-::$\sim$\-Rng\-Boost (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_rng_boost_a96ffa32ae3700ca164db8799d32b19ca}
+
+
+Destructor. 
+
+
+
+Definition at line 56 of file Rng\-Boost.\-C.
+
+
+\begin{DoxyCode}
+57 \{
+58   \textcolor{comment}{//this function does nothing}
+59 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_rng_boost_ab859b0ff1e728c6a65c2aef62afe028e}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Boost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}!beta\-Sample@{beta\-Sample}}
+\index{beta\-Sample@{beta\-Sample}!QUESO::RngBoost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}}
+\subsubsection[{beta\-Sample}]{\setlength{\rightskip}{0pt plus 5cm}double Rng\-Boost\-::beta\-Sample (
+\begin{DoxyParamCaption}
+\item[{double}]{alpha, }
+\item[{double}]{beta}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_rng_boost_ab859b0ff1e728c6a65c2aef62afe028e}
+
+
+Samples a value from a Beta distribution. Support\-: \mbox{[}0,1\mbox{]}. 
+
+The Beta Distribution is a continuous probability distribution; it has two free parameters, which are labeled alpha and beta. The beta distribution is used as a prior distribution for binomial proportions in Bayesian analysis (Evans et al. 2000, p. 34). Uses boost\-::math\-::beta\-\_\-distribution$<$double$>$ beta\-\_\-dist(alpha, beta). Support (domain)\-: \mbox{[}0,1\mbox{]}. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_rng_base_a098089a93e29db4ad9ac106c8b5de583}{Q\-U\-E\-S\-O\-::\-Rng\-Base}.
+
+
+
+Definition at line 90 of file Rng\-Boost.\-C.
+
+
+
+References m\-\_\-rng.
+
+
+\begin{DoxyCode}
+91 \{
+92   \textcolor{keyword}{static} boost::uniform\_01<boost::mt19937> zeroone(\hyperlink{class_q_u_e_s_o_1_1_rng_boost_aef65914cae8b11e345bfb082db616f0e}{m\_rng}); 
+93   boost::math::beta\_distribution<double> beta\_dist(alpha, beta); 
+94   \textcolor{keywordflow}{return} quantile(beta\_dist, zeroone());
+95 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_boost_ae4fcb113ba19dbec7684f41c3aebf4e7}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Boost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}!gamma\-Sample@{gamma\-Sample}}
+\index{gamma\-Sample@{gamma\-Sample}!QUESO::RngBoost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}}
+\subsubsection[{gamma\-Sample}]{\setlength{\rightskip}{0pt plus 5cm}double Rng\-Boost\-::gamma\-Sample (
+\begin{DoxyParamCaption}
+\item[{double}]{a, }
+\item[{double}]{b}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_rng_boost_ae4fcb113ba19dbec7684f41c3aebf4e7}
+
+
+Samples a value from a Gamma distribution. Support\-: \mbox{[}0,infinity). 
+
+The Gamma Distribution is a continuous probability distribution; it has two free parameters, which may be labeled\-: a shape parameter a and an inverse scale parameter b, called a rate parameter. The parameterization with a and b is more common in Bayesian statistics, where the gamma distribution is used as a conjugate prior distribution for various types of inverse scale (aka rate) parameters. Uses boost\-::math\-::gamma\-\_\-distribution$<$double$>$ gamma\-\_\-dist(a,b). Support (domain)\-: \mbox{[}0,infinity). 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_rng_base_abd9abcf42426b568d4f13f5c3f3dc997}{Q\-U\-E\-S\-O\-::\-Rng\-Base}.
+
+
+
+Definition at line 99 of file Rng\-Boost.\-C.
+
+
+
+References m\-\_\-rng.
+
+
+\begin{DoxyCode}
+100 \{
+101   \textcolor{keyword}{static} boost::uniform\_01<boost::mt19937> zeroone(\hyperlink{class_q_u_e_s_o_1_1_rng_boost_aef65914cae8b11e345bfb082db616f0e}{m\_rng});
+102   boost::math::gamma\_distribution<double>  gamma\_dist(a,b);
+103   \textcolor{keywordflow}{return} quantile(gamma\_dist, zeroone());
+104 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_boost_a9d33a495101b353e267ea7d3a6df361f}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Boost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}!gaussian\-Sample@{gaussian\-Sample}}
+\index{gaussian\-Sample@{gaussian\-Sample}!QUESO::RngBoost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}}
+\subsubsection[{gaussian\-Sample}]{\setlength{\rightskip}{0pt plus 5cm}double Rng\-Boost\-::gaussian\-Sample (
+\begin{DoxyParamCaption}
+\item[{double}]{std\-Dev}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_rng_boost_a9d33a495101b353e267ea7d3a6df361f}
+Samples a value from a Gaussian distribution with standard deviation given by {\ttfamily std\-Dev}. Support\-: (-\/infinity, infinity).
+
+The parameter mu (mean or expectation of the distribution) in this Gaussian sample isn't present, and thus, needs to be provided. e.\-g., in the form of a sum. The parameter std\-Dev is its standard deviation; its variance is therefore std\-Dev$^\wedge$2. A random variable with a Gaussian distribution is said to be normally distributed and is called a normal deviate. Uses boost\-::math\-::normal\-\_\-distribution$<$double$>$ gaussian\-\_\-dist(mean, std\-Dev) Support (domain)\-: (-\/infinity, infinity). 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_rng_base_a7be9cf40cc50b973ed8c2f594f402584}{Q\-U\-E\-S\-O\-::\-Rng\-Base}.
+
+
+
+Definition at line 80 of file Rng\-Boost.\-C.
+
+
+
+References m\-\_\-rng.
+
+
+\begin{DoxyCode}
+81 \{
+82   \textcolor{keywordtype}{double} mean = 0.; \textcolor{comment}{//it will be added conveniently later}
+83   \textcolor{keyword}{static} boost::uniform\_01<boost::mt19937> zeroone(\hyperlink{class_q_u_e_s_o_1_1_rng_boost_aef65914cae8b11e345bfb082db616f0e}{m\_rng});
+84   boost::math::normal\_distribution<double>  gaussian\_dist(mean, stdDev);
+85   \textcolor{keywordflow}{return} quantile(gaussian\_dist, zeroone());  
+86 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_boost_a94c246d855ea22332b0dafc0891e328f}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Boost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}!reset\-Seed@{reset\-Seed}}
+\index{reset\-Seed@{reset\-Seed}!QUESO::RngBoost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}}
+\subsubsection[{reset\-Seed}]{\setlength{\rightskip}{0pt plus 5cm}void Rng\-Boost\-::reset\-Seed (
+\begin{DoxyParamCaption}
+\item[{int}]{new\-Seed}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_rng_boost_a94c246d855ea22332b0dafc0891e328f}
+
+
+Resets the seed with value {\ttfamily new\-Seed}. 
+
+
+
+Reimplemented from \hyperlink{class_q_u_e_s_o_1_1_rng_base_a8cb8cbf14298bfcb84de1b562c069e84}{Q\-U\-E\-S\-O\-::\-Rng\-Base}.
+
+
+
+Definition at line 63 of file Rng\-Boost.\-C.
+
+
+
+References m\-\_\-rng.
+
+
+
+Referenced by Rng\-Boost().
+
+
+\begin{DoxyCode}
+64 \{
+65   \hyperlink{class_q_u_e_s_o_1_1_rng_boost_aef65914cae8b11e345bfb082db616f0e}{m\_rng}.seed(newSeed);
+66 
+67   \textcolor{keywordflow}{return};
+68 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_boost_aad1548eec706aeb6580af163bd80e0a9}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Boost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}!uniform\-Sample@{uniform\-Sample}}
+\index{uniform\-Sample@{uniform\-Sample}!QUESO::RngBoost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}}
+\subsubsection[{uniform\-Sample}]{\setlength{\rightskip}{0pt plus 5cm}double Rng\-Boost\-::uniform\-Sample (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_rng_boost_aad1548eec706aeb6580af163bd80e0a9}
+
+
+Samples a value from a uniform distribution. Support\-: \mbox{[}0,1\mbox{]} or \mbox{[}a,b\mbox{]}. 
+
+This function samples from continuous uniform distribution on the range \mbox{[}0,1). It is possible to scale this distribution so the support is defined by the two parameters, a and b, which are its minimum and maximum values. Support\-: -\/infinity $<$ a $<$ x$<$ b$<$ infinity. Uses boost\-::uniform\-\_\-01$<$boost\-::mt19937$>$ zeroone(m\-\_\-rng). 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_rng_base_aed8342f0c8a4ac0a311cce9cac2b67e5}{Q\-U\-E\-S\-O\-::\-Rng\-Base}.
+
+
+
+Definition at line 72 of file Rng\-Boost.\-C.
+
+
+
+References m\-\_\-rng.
+
+
+\begin{DoxyCode}
+73 \{
+74   \textcolor{keyword}{static} boost::uniform\_01<boost::mt19937> zeroone(\hyperlink{class_q_u_e_s_o_1_1_rng_boost_aef65914cae8b11e345bfb082db616f0e}{m\_rng});
+75   \textcolor{keywordflow}{return} zeroone();
+76 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_rng_boost_aef65914cae8b11e345bfb082db616f0e}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Boost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}!m\-\_\-rng@{m\-\_\-rng}}
+\index{m\-\_\-rng@{m\-\_\-rng}!QUESO::RngBoost@{Q\-U\-E\-S\-O\-::\-Rng\-Boost}}
+\subsubsection[{m\-\_\-rng}]{\setlength{\rightskip}{0pt plus 5cm}boost\-::mt19937 Q\-U\-E\-S\-O\-::\-Rng\-Boost\-::m\-\_\-rng\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_rng_boost_aef65914cae8b11e345bfb082db616f0e}
+
+
+Random number generator from class boost\-::mt19937. 
+
+mt19937 are models for a pseudo-\/random number generator. Here it is cannot be static, as it has not been initialized yet. mt19937 has length cycle of 2$^\wedge$(19937)-\/1, requires approximately 625$\ast$sizeof(uint32\-\_\-t) of memory, has relatively high speed (93\% of the fastest available in Boost library), and provides good uniform distribution in up to 623 dimensions. 
+
+Definition at line 110 of file Rng\-Boost.\-h.
+
+
+
+Referenced by beta\-Sample(), gamma\-Sample(), gaussian\-Sample(), reset\-Seed(), and uniform\-Sample().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{_rng_boost_8h}{Rng\-Boost.\-h}\item 
+src/core/src/\hyperlink{_rng_boost_8_c}{Rng\-Boost.\-C}\end{DoxyCompactItemize}

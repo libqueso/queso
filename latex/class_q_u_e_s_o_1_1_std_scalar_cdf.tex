@@ -1,0 +1,327 @@
+\hypertarget{class_q_u_e_s_o_1_1_std_scalar_cdf}{\section{Q\-U\-E\-S\-O\-:\-:Std\-Scalar\-Cdf$<$ T $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_std_scalar_cdf}\index{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf$<$ T $>$@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf$<$ T $>$}}
+}
+
+
+A class for handling standard C\-D\-Fs.  
+
+
+
+
+{\ttfamily \#include $<$Std\-Scalar\-Cdf.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Std\-Scalar\-Cdf$<$ T $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=240pt]{class_q_u_e_s_o_1_1_std_scalar_cdf__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Std\-Scalar\-Cdf$<$ T $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_std_scalar_cdf__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a23bae93733ff0dc82fc51754044e7c17}{Std\-Scalar\-Cdf} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a70c89dd2ad294be170338a283fc58ff3}{env}, const char $\ast$\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_aafb3eaf3bf1d7269073e9c77bd8c766d}{prefix}, const std\-::vector$<$ T $>$ \&cdf\-Grid, const std\-::vector$<$ double $>$ \&cdf\-Values)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a24cf6c93886182c8e46e108aa65e7f4f}{$\sim$\-Std\-Scalar\-Cdf} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a03b075f858fa2a5d35515cf602283985}{value} (T param\-Value) const 
+\begin{DoxyCompactList}\small\item\em Returns the value of the C\-D\-F at {\ttfamily param\-Value}. \end{DoxyCompactList}\item 
+T \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a0b989e6ac45b22f22951389ae4c41861}{inverse} (double cdf\-Value) const 
+\begin{DoxyCompactList}\small\item\em Returns the position of a given value of C\-D\-F. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_ad754f420fbfaa309d6574a0c2674f06e}{get\-Support} (T \&min\-Horizontal, T \&max\-Horizontal) const 
+\begin{DoxyCompactList}\small\item\em Returns the support (image) of the C\-D\-F between two horizontal values (domain). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_af31f2d7dfa14a23987d1d71b36d2d221}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em Prints the C\-D\-F (values of the grid points and of the C\-D\-F at such grid points). \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a9c4edf99c3d0bbd5a011b5e03c5a1bcc}{sub\-Write\-Contents} (const std\-::string \&var\-Name\-Prefix, const std\-::string \&file\-Name, const std\-::string \&file\-Type, const std\-::set$<$ unsigned int $>$ \&allowed\-Sub\-Env\-Ids) const 
+\begin{DoxyCompactList}\small\item\em Writes the C\-D\-F of an allowed sub-\/environment to a file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_std_one_d_grid}{Std\-One\-D\-Grid}$<$ T $>$ \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a6d92d555e9042f0c203b59f3b272f878}{m\-\_\-cdf\-Grid}
+\item 
+const std\-::vector$<$ double $>$ \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_ac04a45e22e2500a5ef8911e2c034364f}{m\-\_\-cdf\-Values}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf}{Sampled\-Scalar\-Cdf}$<$ T $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a2da9aa62766843734025cc059f817258}{m\-\_\-sampled\-Cdf\-Grid}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T$>$class Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf$<$ T $>$}
+
+A class for handling standard C\-D\-Fs. 
+
+This class implements a standard cumulative distribution function (C\-D\-F). Its protected attribute m\-\_\-sampled\-Cdf\-Grid is an object of the class Sampled\-Scalar\-Cdf$<$\-T$>$, so all members of this class are implemented using the members of Sampled\-Scalar\-Cdf$<$\-T$>$. 
+
+Definition at line 48 of file Std\-Scalar\-Cdf.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_std_scalar_cdf_a23bae93733ff0dc82fc51754044e7c17}{\index{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}!Std\-Scalar\-Cdf@{Std\-Scalar\-Cdf}}
+\index{Std\-Scalar\-Cdf@{Std\-Scalar\-Cdf}!QUESO::StdScalarCdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}}
+\subsubsection[{Std\-Scalar\-Cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}$<$ T $>$\-::{\bf Std\-Scalar\-Cdf} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{const char $\ast$}]{prefix, }
+\item[{const std\-::vector$<$ T $>$ \&}]{cdf\-Grid, }
+\item[{const std\-::vector$<$ double $>$ \&}]{cdf\-Values}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_std_scalar_cdf_a23bae93733ff0dc82fc51754044e7c17}
+
+
+Default constructor. 
+
+Instantiates an object of the class given a prefix, the environment, the grid points where it will be evaluated and its resulting values. 
+
+Definition at line 31 of file Std\-Scalar\-Cdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$\-::env(), Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf$<$ T $>$\-::m\-\_\-cdf\-Grid, Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf$<$ T $>$\-::m\-\_\-cdf\-Values, Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$\-::m\-\_\-prefix, Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf$<$ T $>$\-::m\-\_\-sampled\-Cdf\-Grid, Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$\-::prefix(), and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+36   :
+37   BaseScalarCdf<T>(\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a70c89dd2ad294be170338a283fc58ff3}{env},((std::string)(\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_aafb3eaf3bf1d7269073e9c77bd8c766d}{prefix})+\textcolor{stringliteral}{""}).c\_str()),
+38   \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a6d92d555e9042f0c203b59f3b272f878}{m\_cdfGrid}              (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a70c89dd2ad294be170338a283fc58ff3}{env},\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_aafb3eaf3bf1d7269073e9c77bd8c766d}{prefix},cdfGrid),
+39   \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_ac04a45e22e2500a5ef8911e2c034364f}{m\_cdfValues}            (cdfValues),
+40   \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a2da9aa62766843734025cc059f817258}{m\_sampledCdfGrid}       (NULL)
+41 \{
+42   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+43     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering StdScalarCdf<T>::constructor()"}
+44                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a66c2a1bcf0ac517013e7857c3533a187}{m\_prefix}
+45                             << std::endl;
+46   \}
+47 
+48   \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a2da9aa62766843734025cc059f817258}{m\_sampledCdfGrid} = \textcolor{keyword}{new} SampledScalarCdf<T>(\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a70c89dd2ad294be170338a283fc58ff3}{env},\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_aafb3eaf3bf1d7269073e9c77bd8c766d}{prefix},
+      \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a6d92d555e9042f0c203b59f3b272f878}{m\_cdfGrid},\hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_ac04a45e22e2500a5ef8911e2c034364f}{m\_cdfValues});
+49 
+50   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+51     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving StdScalarCdf<T>::constructor()"}
+52                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a66c2a1bcf0ac517013e7857c3533a187}{m\_prefix}
+53                             << std::endl;
+54   \}
+55 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_std_scalar_cdf_a24cf6c93886182c8e46e108aa65e7f4f}{\index{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}!$\sim$\-Std\-Scalar\-Cdf@{$\sim$\-Std\-Scalar\-Cdf}}
+\index{$\sim$\-Std\-Scalar\-Cdf@{$\sim$\-Std\-Scalar\-Cdf}!QUESO::StdScalarCdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}}
+\subsubsection[{$\sim$\-Std\-Scalar\-Cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}$<$ T $>$\-::$\sim${\bf Std\-Scalar\-Cdf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_std_scalar_cdf_a24cf6c93886182c8e46e108aa65e7f4f}
+
+
+Destructor. 
+
+
+
+Definition at line 58 of file Std\-Scalar\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+59 \{
+60   \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a2da9aa62766843734025cc059f817258}{m\_sampledCdfGrid};
+61 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_std_scalar_cdf_ad754f420fbfaa309d6574a0c2674f06e}{\index{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}!get\-Support@{get\-Support}}
+\index{get\-Support@{get\-Support}!QUESO::StdScalarCdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}}
+\subsubsection[{get\-Support}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void {\bf Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}$<$ T $>$\-::get\-Support (
+\begin{DoxyParamCaption}
+\item[{T \&}]{min\-Horizontal, }
+\item[{T \&}]{max\-Horizontal}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_std_scalar_cdf_ad754f420fbfaa309d6574a0c2674f06e}
+
+
+Returns the support (image) of the C\-D\-F between two horizontal values (domain). 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a9684b285f88be8c2bafe4d2abd8a7447}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$}.
+
+
+
+Definition at line 79 of file Std\-Scalar\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+80 \{
+81   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a2da9aa62766843734025cc059f817258}{m\_sampledCdfGrid}->getSupport(minHorizontal,maxHorizontal);
+82 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_std_scalar_cdf_a0b989e6ac45b22f22951389ae4c41861}{\index{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}!inverse@{inverse}}
+\index{inverse@{inverse}!QUESO::StdScalarCdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}}
+\subsubsection[{inverse}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ T {\bf Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}$<$ T $>$\-::inverse (
+\begin{DoxyParamCaption}
+\item[{double}]{cdf\-Value}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_std_scalar_cdf_a0b989e6ac45b22f22951389ae4c41861}
+
+
+Returns the position of a given value of C\-D\-F. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3e1778c76a557716e74b5fc11604dd75}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$}.
+
+
+
+Definition at line 72 of file Std\-Scalar\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+73 \{
+74   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a2da9aa62766843734025cc059f817258}{m\_sampledCdfGrid}->inverse(cdfValue);
+75 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_std_scalar_cdf_af31f2d7dfa14a23987d1d71b36d2d221}{\index{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}!print@{print}}
+\index{print@{print}!QUESO::StdScalarCdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void {\bf Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}$<$ T $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_std_scalar_cdf_af31f2d7dfa14a23987d1d71b36d2d221}
+
+
+Prints the C\-D\-F (values of the grid points and of the C\-D\-F at such grid points). 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a131a7c148188f3f70c2db44cc1a93bc8}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$}.
+
+
+
+Definition at line 86 of file Std\-Scalar\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+87 \{
+88   \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a2da9aa62766843734025cc059f817258}{m\_sampledCdfGrid}->print(os);
+89   \textcolor{keywordflow}{return};
+90 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_std_scalar_cdf_a9c4edf99c3d0bbd5a011b5e03c5a1bcc}{\index{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}!sub\-Write\-Contents@{sub\-Write\-Contents}}
+\index{sub\-Write\-Contents@{sub\-Write\-Contents}!QUESO::StdScalarCdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}}
+\subsubsection[{sub\-Write\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void {\bf Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}$<$ T $>$\-::sub\-Write\-Contents (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{var\-Name\-Prefix, }
+\item[{const std\-::string \&}]{file\-Name, }
+\item[{const std\-::string \&}]{file\-Type, }
+\item[{const std\-::set$<$ unsigned int $>$ \&}]{allowed\-Sub\-Env\-Ids}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_std_scalar_cdf_a9c4edf99c3d0bbd5a011b5e03c5a1bcc}
+
+
+Writes the C\-D\-F of an allowed sub-\/environment to a file. 
+
+It will write the data in Octave/\-Matlab compatible format. 
+
+Reimplemented from \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_abdd6c6f5f8f028a6ffd30168885b6338}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$}.
+
+
+
+Definition at line 94 of file Std\-Scalar\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+99 \{
+100   \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a2da9aa62766843734025cc059f817258}{m\_sampledCdfGrid}->subWriteContents(varNamePrefix,fileName,fileType,allowedSubEnvIds);
+101   \textcolor{keywordflow}{return};
+102 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_std_scalar_cdf_a03b075f858fa2a5d35515cf602283985}{\index{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}!value@{value}}
+\index{value@{value}!QUESO::StdScalarCdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}}
+\subsubsection[{value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ double {\bf Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}$<$ T $>$\-::value (
+\begin{DoxyParamCaption}
+\item[{T}]{param\-Value}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_std_scalar_cdf_a03b075f858fa2a5d35515cf602283985}
+
+
+Returns the value of the C\-D\-F at {\ttfamily param\-Value}. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a887af6d62eb04f2bf3b58c12e586f20b}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$}.
+
+
+
+Definition at line 65 of file Std\-Scalar\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+66 \{
+67   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_std_scalar_cdf_a2da9aa62766843734025cc059f817258}{m\_sampledCdfGrid}->value(paramValue);
+68 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_std_scalar_cdf_a6d92d555e9042f0c203b59f3b272f878}{\index{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}!m\-\_\-cdf\-Grid@{m\-\_\-cdf\-Grid}}
+\index{m\-\_\-cdf\-Grid@{m\-\_\-cdf\-Grid}!QUESO::StdScalarCdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}}
+\subsubsection[{m\-\_\-cdf\-Grid}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ const {\bf Std\-One\-D\-Grid}$<$T$>$ {\bf Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}$<$ T $>$\-::m\-\_\-cdf\-Grid\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_std_scalar_cdf_a6d92d555e9042f0c203b59f3b272f878}
+
+
+Definition at line 93 of file Std\-Scalar\-Cdf.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf$<$ T $>$\-::\-Std\-Scalar\-Cdf().
+
+\hypertarget{class_q_u_e_s_o_1_1_std_scalar_cdf_ac04a45e22e2500a5ef8911e2c034364f}{\index{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}!m\-\_\-cdf\-Values@{m\-\_\-cdf\-Values}}
+\index{m\-\_\-cdf\-Values@{m\-\_\-cdf\-Values}!QUESO::StdScalarCdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}}
+\subsubsection[{m\-\_\-cdf\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ const std\-::vector$<$double$>$ {\bf Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}$<$ T $>$\-::m\-\_\-cdf\-Values\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_std_scalar_cdf_ac04a45e22e2500a5ef8911e2c034364f}
+
+
+Definition at line 94 of file Std\-Scalar\-Cdf.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf$<$ T $>$\-::\-Std\-Scalar\-Cdf().
+
+\hypertarget{class_q_u_e_s_o_1_1_std_scalar_cdf_a2da9aa62766843734025cc059f817258}{\index{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}!m\-\_\-sampled\-Cdf\-Grid@{m\-\_\-sampled\-Cdf\-Grid}}
+\index{m\-\_\-sampled\-Cdf\-Grid@{m\-\_\-sampled\-Cdf\-Grid}!QUESO::StdScalarCdf@{Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}}
+\subsubsection[{m\-\_\-sampled\-Cdf\-Grid}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf Sampled\-Scalar\-Cdf}$<$T$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf}$<$ T $>$\-::m\-\_\-sampled\-Cdf\-Grid\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_std_scalar_cdf_a2da9aa62766843734025cc059f817258}
+
+
+Definition at line 95 of file Std\-Scalar\-Cdf.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Std\-Scalar\-Cdf$<$ T $>$\-::\-Std\-Scalar\-Cdf().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_std_scalar_cdf_8h}{Std\-Scalar\-Cdf.\-h}\item 
+src/stats/src/\hyperlink{_std_scalar_cdf_8_c}{Std\-Scalar\-Cdf.\-C}\end{DoxyCompactItemize}

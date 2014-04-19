@@ -1,0 +1,512 @@
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function}{\section{Q\-U\-E\-S\-O\-:\-:Sampled1\-D1\-D\-Function Class Reference}
+\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function}\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+}
+
+
+Class for one-\/dimensional sampled functions.  
+
+
+
+
+{\ttfamily \#include $<$1\-D1\-D\-Function.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Sampled1\-D1\-D\-Function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=254pt]{class_q_u_e_s_o_1_1_sampled1_d1_d_function__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Sampled1\-D1\-D\-Function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=254pt]{class_q_u_e_s_o_1_1_sampled1_d1_d_function__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_acb53ff4fd590cea97f4ce2101f68f2a3}{Sampled1\-D1\-D\-Function} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. It should not be called by the user. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2c9c2dbdee05fb49c6d80f3e72c49a04}{Sampled1\-D1\-D\-Function} (const std\-::vector$<$ double $>$ \&\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domain\-Values}, const std\-::vector$<$ double $>$ \&\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2354fe46fe075637a85998e1a4f2d64d}{image\-Values})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2d67b2e2e0c95555b4f22a5fcec928c9}{$\sim$\-Sampled1\-D1\-D\-Function} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a779a96683625c9bf6a161cf98ab63f9b}{value} (double domain\-Value) const 
+\begin{DoxyCompactList}\small\item\em Returns the value of the sampled function at point {\ttfamily domain\-Value}. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5579fd73a76c5f82b6f55472c8123bb7}{deriv} (double domain\-Value) const 
+\begin{DoxyCompactList}\small\item\em {\bfseries Bogus}\-: Derivative of the function. \end{DoxyCompactList}\item 
+const std\-::vector$<$ double $>$ \& \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domain\-Values} () const 
+\begin{DoxyCompactList}\small\item\em Array of the domain values (values of the independent variable). \end{DoxyCompactList}\item 
+const std\-::vector$<$ double $>$ \& \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2354fe46fe075637a85998e1a4f2d64d}{image\-Values} () const 
+\begin{DoxyCompactList}\small\item\em Array of the image values (values of the dependent variable). \end{DoxyCompactList}\item 
+bool \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_aba6caa896d9a2c20e354d899bda195d3}{domain\-Value\-Matches\-Exactly} (double domain\-Value) const 
+\begin{DoxyCompactList}\small\item\em Checks whether the domain value {\ttfamily domain\-Value} matches exactly one of the values in the function domain {\ttfamily \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domain\-Values()}}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a7bac8d9e058363240db15bd488e74772}{set} (const std\-::vector$<$ double $>$ \&\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domain\-Values}, const std\-::vector$<$ double $>$ \&\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2354fe46fe075637a85998e1a4f2d64d}{image\-Values})
+\begin{DoxyCompactList}\small\item\em Sets the values of the independent ({\ttfamily domain\-Values}) and dependent ({\ttfamily image\-Values}) variables of this sampled function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods}\par
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_af2968cdef2abc728fff7c50162b28464}{print\-For\-Matlab} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&env, std\-::ofstream \&ofsvar, const std\-::string \&prefix\-Name) const 
+\begin{DoxyCompactList}\small\item\em Prints the values of the function in Matlab/\-Octave format. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::vector$<$ double $>$ \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\-\_\-domain\-Values}
+\begin{DoxyCompactList}\small\item\em Array of the values in the domain of the function (values of the independent variable). \end{DoxyCompactList}\item 
+std\-::vector$<$ double $>$ \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{m\-\_\-image\-Values}
+\begin{DoxyCompactList}\small\item\em Array of the values in the image of the function (values of the dependent variable). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for one-\/dimensional sampled functions. 
+
+This class implements sampled one-\/dimensional functions. A sample function is one whose values are known only at discrete values of the independent variable; i.\-e., its values are only known at grid points. There are several \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} classes which handle grids, all derived from \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid}{Base\-One\-D\-Grid}. Sampled functions are usually defined by arrays. 
+
+Definition at line 347 of file 1\-D1\-D\-Function.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function_acb53ff4fd590cea97f4ce2101f68f2a3}{\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}!Sampled1\-D1\-D\-Function@{Sampled1\-D1\-D\-Function}}
+\index{Sampled1\-D1\-D\-Function@{Sampled1\-D1\-D\-Function}!QUESO::Sampled1D1DFunction@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+\subsubsection[{Sampled1\-D1\-D\-Function}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::\-Sampled1\-D1\-D\-Function (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function_acb53ff4fd590cea97f4ce2101f68f2a3}
+
+
+Default constructor. It should not be called by the user. 
+
+
+
+Definition at line 475 of file 1\-D1\-D\-Function.\-C.
+
+
+\begin{DoxyCode}
+476   :
+477   \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a8e8c0f8d500675e4acfd4d7043000791}{Base1D1DFunction}(-INFINITY,INFINITY)
+478 \{
+479   \textcolor{comment}{//UQ\_FATAL\_TEST\_MACRO(true,}
+480   \textcolor{comment}{//                    UQ\_UNAVAILABLE\_RANK,}
+481   \textcolor{comment}{//                    "SampledD1DFunction::deriv()",}
+482   \textcolor{comment}{//                    "invalid constructor");}
+483 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2c9c2dbdee05fb49c6d80f3e72c49a04}{\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}!Sampled1\-D1\-D\-Function@{Sampled1\-D1\-D\-Function}}
+\index{Sampled1\-D1\-D\-Function@{Sampled1\-D1\-D\-Function}!QUESO::Sampled1D1DFunction@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+\subsubsection[{Sampled1\-D1\-D\-Function}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::\-Sampled1\-D1\-D\-Function (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ double $>$ \&}]{domain\-Values, }
+\item[{const std\-::vector$<$ double $>$ \&}]{image\-Values}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2c9c2dbdee05fb49c6d80f3e72c49a04}
+
+
+Constructor. 
+
+When calling this constructor, the user provides the values of the independent variable ({\ttfamily domain\-Values}) and their respective values in the image set (independent variable, {\ttfamily image\-Value}) 
+
+Definition at line 485 of file 1\-D1\-D\-Function.\-C.
+
+
+
+References m\-\_\-domain\-Values, and m\-\_\-image\-Values.
+
+
+\begin{DoxyCode}
+488   :
+489   \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a8e8c0f8d500675e4acfd4d7043000791}{Base1D1DFunction}(\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domainValues}[0],\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domainValues}[
+      \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domainValues}.size()-1]),
+490   \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}    (\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domainValues}.size(),0.),
+491   \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{m\_imageValues}     (\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2354fe46fe075637a85998e1a4f2d64d}{imageValues}.size(), 0.)
+492 \{
+493   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} tmpSize = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}.size();
+494   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < tmpSize; ++i) \{
+495     \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}[i] = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domainValues}[i];
+496     \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{m\_imageValues} [i] = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2354fe46fe075637a85998e1a4f2d64d}{imageValues} [i];
+497   \}
+498 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2d67b2e2e0c95555b4f22a5fcec928c9}{\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}!$\sim$\-Sampled1\-D1\-D\-Function@{$\sim$\-Sampled1\-D1\-D\-Function}}
+\index{$\sim$\-Sampled1\-D1\-D\-Function@{$\sim$\-Sampled1\-D1\-D\-Function}!QUESO::Sampled1D1DFunction@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+\subsubsection[{$\sim$\-Sampled1\-D1\-D\-Function}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::$\sim$\-Sampled1\-D1\-D\-Function (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2d67b2e2e0c95555b4f22a5fcec928c9}
+
+
+Destructor. 
+
+
+
+Definition at line 500 of file 1\-D1\-D\-Function.\-C.
+
+
+\begin{DoxyCode}
+501 \{
+502 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5579fd73a76c5f82b6f55472c8123bb7}{\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}!deriv@{deriv}}
+\index{deriv@{deriv}!QUESO::Sampled1D1DFunction@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+\subsubsection[{deriv}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::deriv (
+\begin{DoxyParamCaption}
+\item[{double}]{domain\-Value}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5579fd73a76c5f82b6f55472c8123bb7}
+
+
+{\bfseries Bogus}\-: Derivative of the function. 
+
+Derivatives are not defined over sampled functions! Thus, this function simply checks if point {\ttfamily domain\-Value} belongs to the domain of {\ttfamily this} function, and in affirmative case, it returns 0. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a6b8de03f2099f31735dcaf15c24bca32}{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}.
+
+
+
+Definition at line 565 of file 1\-D1\-D\-Function.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::m\-\_\-max\-Domain\-Value, Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::m\-\_\-min\-Domain\-Value, U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-U\-Q\-\_\-\-U\-N\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-R\-A\-N\-K.
+
+
+\begin{DoxyCode}
+566 \{
+567   \textcolor{keywordflow}{if} ((domainValue < \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}{m\_minDomainValue}) || (domainValue > 
+      \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}{m\_maxDomainValue})) \{
+568     std::cerr << \textcolor{stringliteral}{"In Sampled1D1DFunction::deriv()"}
+569               << \textcolor{stringliteral}{": requested x ("}            << domainValue
+570               << \textcolor{stringliteral}{") is out of the interval ("} << \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}{m\_minDomainValue}
+571               << \textcolor{stringliteral}{", "}                         << \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}{m\_maxDomainValue}
+572               << \textcolor{stringliteral}{")"}
+573               << std::endl;
+574   \}
+575 
+576   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(((domainValue < \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}{m\_minDomainValue}) || (domainValue 
+      > \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}{m\_maxDomainValue})),
+577                       \hyperlink{namespace_q_u_e_s_o_a7d4679800a430ae8e473c1c7bc0bfb21}{UQ\_UNAVAILABLE\_RANK},
+578                       \textcolor{stringliteral}{"Sampled1D1DFunction::deriv()"},
+579                       \textcolor{stringliteral}{"x out of range"});
+580 
+581   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+582                       \hyperlink{namespace_q_u_e_s_o_a7d4679800a430ae8e473c1c7bc0bfb21}{UQ\_UNAVAILABLE\_RANK},
+583                       \textcolor{stringliteral}{"Sampled1d1DFunction::deriv()"},
+584                       \textcolor{stringliteral}{"this function makes no sense for this class"});
+585   \textcolor{keywordflow}{return} 0.;
+586 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function_aba6caa896d9a2c20e354d899bda195d3}{\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}!domain\-Value\-Matches\-Exactly@{domain\-Value\-Matches\-Exactly}}
+\index{domain\-Value\-Matches\-Exactly@{domain\-Value\-Matches\-Exactly}!QUESO::Sampled1D1DFunction@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+\subsubsection[{domain\-Value\-Matches\-Exactly}]{\setlength{\rightskip}{0pt plus 5cm}bool Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::domain\-Value\-Matches\-Exactly (
+\begin{DoxyParamCaption}
+\item[{double}]{domain\-Value}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function_aba6caa896d9a2c20e354d899bda195d3}
+
+
+Checks whether the domain value {\ttfamily domain\-Value} matches exactly one of the values in the function domain {\ttfamily \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domain\-Values()}}. 
+
+
+
+Definition at line 601 of file 1\-D1\-D\-Function.\-C.
+
+
+
+References m\-\_\-domain\-Values.
+
+
+\begin{DoxyCode}
+602 \{
+603   \textcolor{keywordtype}{bool} result = \textcolor{keyword}{false};
+604 
+605   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} tmpSize = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}.size();
+606   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < tmpSize; ++i) \{
+607     \textcolor{keywordflow}{if} (domainValue <= \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}[i]) \{
+608       result = (domainValue == \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}[i]);
+609       \textcolor{keywordflow}{break};
+610     \}
+611   \}
+612 
+613   \textcolor{keywordflow}{return} result;
+614 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}!domain\-Values@{domain\-Values}}
+\index{domain\-Values@{domain\-Values}!QUESO::Sampled1D1DFunction@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+\subsubsection[{domain\-Values}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::vector$<$ double $>$ \& Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::domain\-Values (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}
+
+
+Array of the domain values (values of the independent variable). 
+
+
+
+Definition at line 589 of file 1\-D1\-D\-Function.\-C.
+
+
+
+References m\-\_\-domain\-Values.
+
+
+\begin{DoxyCode}
+590 \{
+591   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues};
+592 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2354fe46fe075637a85998e1a4f2d64d}{\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}!image\-Values@{image\-Values}}
+\index{image\-Values@{image\-Values}!QUESO::Sampled1D1DFunction@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+\subsubsection[{image\-Values}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::vector$<$ double $>$ \& Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::image\-Values (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2354fe46fe075637a85998e1a4f2d64d}
+
+
+Array of the image values (values of the dependent variable). 
+
+
+
+Definition at line 595 of file 1\-D1\-D\-Function.\-C.
+
+
+
+References m\-\_\-image\-Values.
+
+
+\begin{DoxyCode}
+596 \{
+597   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{m\_imageValues};
+598 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function_af2968cdef2abc728fff7c50162b28464}{\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}!print\-For\-Matlab@{print\-For\-Matlab}}
+\index{print\-For\-Matlab@{print\-For\-Matlab}!QUESO::Sampled1D1DFunction@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+\subsubsection[{print\-For\-Matlab}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::print\-For\-Matlab (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{std\-::ofstream \&}]{ofsvar, }
+\item[{const std\-::string \&}]{prefix\-Name}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function_af2968cdef2abc728fff7c50162b28464}
+
+
+Prints the values of the function in Matlab/\-Octave format. 
+
+
+
+Definition at line 639 of file 1\-D1\-D\-Function.\-C.
+
+
+
+References m\-\_\-domain\-Values, m\-\_\-image\-Values, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Id\-String().
+
+
+\begin{DoxyCode}
+643 \{
+644   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} tmpSize = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}.size();
+645   \textcolor{keywordflow}{if} (tmpSize == 0) \{
+646     tmpSize = 1;
+647     ofsvar << \textcolor{stringliteral}{"\(\backslash\)n"} << prefixName << \textcolor{stringliteral}{"Time\_sub"} << env.subIdString() << \textcolor{stringliteral}{" = zeros("}  << tmpSize << \textcolor{stringliteral}{",1);"}
+648            << \textcolor{stringliteral}{"\(\backslash\)n"} << prefixName << \textcolor{stringliteral}{"Value\_sub"} << env.subIdString() << \textcolor{stringliteral}{" = zeros("} << tmpSize << \textcolor{stringliteral}{",1);"};
+649   \}
+650   \textcolor{keywordflow}{else} \{
+651     ofsvar << \textcolor{stringliteral}{"\(\backslash\)n"} << prefixName << \textcolor{stringliteral}{"Time\_sub"} << env.subIdString() << \textcolor{stringliteral}{" = zeros("}  << tmpSize << \textcolor{stringliteral}{",1);"}
+652            << \textcolor{stringliteral}{"\(\backslash\)n"} << prefixName << \textcolor{stringliteral}{"Value\_sub"} << env.subIdString() << \textcolor{stringliteral}{" = zeros("} << tmpSize << \textcolor{stringliteral}{",1);"};
+653     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < tmpSize; ++i) \{
+654       ofsvar << \textcolor{stringliteral}{"\(\backslash\)n"} << prefixName << \textcolor{stringliteral}{"Time\_sub"} << env.subIdString() << \textcolor{stringliteral}{"("}  << i+1 << \textcolor{stringliteral}{",1) = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}[i] << \textcolor{stringliteral}{";"}
+655              << \textcolor{stringliteral}{"\(\backslash\)n"} << prefixName << \textcolor{stringliteral}{"Value\_sub"} << env.subIdString() << \textcolor{stringliteral}{"("} << i+1 << \textcolor{stringliteral}{",1) = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{m\_imageValues}[i]  << \textcolor{stringliteral}{";"};
+656     \}
+657   \}
+658 
+659   \textcolor{keywordflow}{return};
+660 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a7bac8d9e058363240db15bd488e74772}{\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}!set@{set}}
+\index{set@{set}!QUESO::Sampled1D1DFunction@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+\subsubsection[{set}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::set (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ double $>$ \&}]{domain\-Values, }
+\item[{const std\-::vector$<$ double $>$ \&}]{image\-Values}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a7bac8d9e058363240db15bd488e74772}
+
+
+Sets the values of the independent ({\ttfamily domain\-Values}) and dependent ({\ttfamily image\-Values}) variables of this sampled function. 
+
+
+
+Definition at line 617 of file 1\-D1\-D\-Function.\-C.
+
+
+
+References m\-\_\-domain\-Values, m\-\_\-image\-Values, Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::m\-\_\-max\-Domain\-Value, and Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::m\-\_\-min\-Domain\-Value.
+
+
+\begin{DoxyCode}
+620 \{
+621   \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}.clear();
+622   \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{m\_imageValues}.clear();
+623 
+624   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} tmpSize = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domainValues}.size();
+625   \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}{m\_minDomainValue} = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domainValues}[0];
+626   \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}{m\_maxDomainValue} = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domainValues}[tmpSize-1];
+627 
+628   \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}.resize(tmpSize,0.);
+629   \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{m\_imageValues}.resize(tmpSize,0.);
+630   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < tmpSize; ++i) \{
+631     \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}[i] = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_ae3ece65039bde30a1392c479ad9b9a1c}{domainValues}[i];
+632     \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{m\_imageValues} [i] = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a2354fe46fe075637a85998e1a4f2d64d}{imageValues} [i];
+633   \}
+634 
+635   \textcolor{keywordflow}{return};
+636 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a779a96683625c9bf6a161cf98ab63f9b}{\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}!value@{value}}
+\index{value@{value}!QUESO::Sampled1D1DFunction@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+\subsubsection[{value}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::value (
+\begin{DoxyParamCaption}
+\item[{double}]{domain\-Value}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a779a96683625c9bf6a161cf98ab63f9b}
+
+
+Returns the value of the sampled function at point {\ttfamily domain\-Value}. 
+
+This function checks if point {\ttfamily domain\-Value} belongs to the domain of {\ttfamily this} function, and in affirmative case, it looks for the image value associated to the domain value passed to the function. If there isn't any, it calculates a linear approximation for the image value of {\ttfamily domain\-Value}, considering its neighbors points in the domain. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a1042dfd930c30a35d6dbf70f94e8dfe5}{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}.
+
+
+
+Definition at line 505 of file 1\-D1\-D\-Function.\-C.
+
+
+
+References m\-\_\-domain\-Values, m\-\_\-image\-Values, Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::m\-\_\-max\-Domain\-Value, Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::m\-\_\-min\-Domain\-Value, U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-U\-Q\-\_\-\-U\-N\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-R\-A\-N\-K.
+
+
+\begin{DoxyCode}
+506 \{
+507   \textcolor{keywordflow}{if} ((domainValue < \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}{m\_minDomainValue}) || (domainValue > 
+      \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}{m\_maxDomainValue})) \{
+508     std::cerr << \textcolor{stringliteral}{"In Sampled1D1DFunction::value()"}
+509               << \textcolor{stringliteral}{": requested x ("}            << domainValue
+510               << \textcolor{stringliteral}{") is out of the interval ("} << \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}{m\_minDomainValue}
+511               << \textcolor{stringliteral}{", "}                         << \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}{m\_maxDomainValue}
+512               << \textcolor{stringliteral}{")"}
+513               << std::endl;
+514   \}
+515 
+516   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(((domainValue < \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}{m\_minDomainValue}) || (domainValue 
+      > \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}{m\_maxDomainValue})),
+517                       \hyperlink{namespace_q_u_e_s_o_a7d4679800a430ae8e473c1c7bc0bfb21}{UQ\_UNAVAILABLE\_RANK},
+518                       \textcolor{stringliteral}{"Sampled1D1DFunction::value()"},
+519                       \textcolor{stringliteral}{"x out of range"});
+520 
+521   \textcolor{keywordtype}{double} returnValue = 0.;
+522 
+523   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} tmpSize = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}.size();
+524   \textcolor{comment}{//std::cout << "In Sampled1D1DFunction::value()"}
+525   \textcolor{comment}{//          << ": domainValue = "         << domainValue}
+526   \textcolor{comment}{//          << ", tmpSize = "             << tmpSize}
+527   \textcolor{comment}{//          << ", m\_domainValues[0] = "   << m\_domainValues[0]}
+528   \textcolor{comment}{//          << ", m\_domainValues[max] = " << m\_domainValues[tmpSize-1]}
+529   \textcolor{comment}{//          << std::endl;}
+530 
+531   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(tmpSize == 0,
+532                       \hyperlink{namespace_q_u_e_s_o_a7d4679800a430ae8e473c1c7bc0bfb21}{UQ\_UNAVAILABLE\_RANK},
+533                       \textcolor{stringliteral}{"Sampled1D1DFunction::value()"},
+534                       \textcolor{stringliteral}{"m\_domainValues.size() = 0"});
+535 
+536   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(domainValue < \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}[0],
+537                       \hyperlink{namespace_q_u_e_s_o_a7d4679800a430ae8e473c1c7bc0bfb21}{UQ\_UNAVAILABLE\_RANK},
+538                       \textcolor{stringliteral}{"Sampled1D1DFunction::value()"},
+539                       \textcolor{stringliteral}{"domainValue < m\_domainValues[0]"});
+540 
+541   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}[tmpSize-1] < domainValue,
+542                       \hyperlink{namespace_q_u_e_s_o_a7d4679800a430ae8e473c1c7bc0bfb21}{UQ\_UNAVAILABLE\_RANK},
+543                       \textcolor{stringliteral}{"Sampled1D1DFunction::value()"},
+544                       \textcolor{stringliteral}{"m\_domainValues[max] < domainValue"});
+545 
+546   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0;
+547   \textcolor{keywordflow}{for} (i = 0; i < tmpSize; ++i) \{
+548     \textcolor{keywordflow}{if} (domainValue <= \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}[i]) \textcolor{keywordflow}{break};
+549   \}
+550 
+551   \textcolor{keywordflow}{if} (domainValue == \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}[i]) \{
+552     \textcolor{comment}{//if (domainValueWasMatchedExactly) *domainValueWasMatchedExactly = true;}
+553     returnValue = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{m\_imageValues}[i];
+554   \}
+555   \textcolor{keywordflow}{else} \{
+556     \textcolor{comment}{//if (domainValueWasMatchedExactly) *domainValueWasMatchedExactly = false;}
+557     \textcolor{keywordtype}{double} ratio = (domainValue - \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}[i-1])/(
+      \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}[i]-\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{m\_domainValues}[i-1]);
+558     returnValue = \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{m\_imageValues}[i-1] + ratio * (\hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{m\_imageValues}[i]-
+      \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{m\_imageValues}[i-1]);
+559   \}
+560 
+561   \textcolor{keywordflow}{return} returnValue;
+562 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}{\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}!m\-\_\-domain\-Values@{m\-\_\-domain\-Values}}
+\index{m\-\_\-domain\-Values@{m\-\_\-domain\-Values}!QUESO::Sampled1D1DFunction@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+\subsubsection[{m\-\_\-domain\-Values}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$double$>$ Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::m\-\_\-domain\-Values\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a6985db1a50a72a3fb1377645ac6cd944}
+
+
+Array of the values in the domain of the function (values of the independent variable). 
+
+
+
+Definition at line 404 of file 1\-D1\-D\-Function.\-h.
+
+
+
+Referenced by domain\-Value\-Matches\-Exactly(), domain\-Values(), print\-For\-Matlab(), Sampled1\-D1\-D\-Function(), set(), and value().
+
+\hypertarget{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}{\index{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}!m\-\_\-image\-Values@{m\-\_\-image\-Values}}
+\index{m\-\_\-image\-Values@{m\-\_\-image\-Values}!QUESO::Sampled1D1DFunction@{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}}
+\subsubsection[{m\-\_\-image\-Values}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$double$>$ Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::m\-\_\-image\-Values\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5569dd39ba1eb7183b608b59e4919a6f}
+
+
+Array of the values in the image of the function (values of the dependent variable). 
+
+
+
+Definition at line 407 of file 1\-D1\-D\-Function.\-h.
+
+
+
+Referenced by image\-Values(), print\-For\-Matlab(), Sampled1\-D1\-D\-Function(), set(), and value().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/misc/inc/\hyperlink{1_d1_d_function_8h}{1\-D1\-D\-Function.\-h}\item 
+src/misc/src/\hyperlink{1_d1_d_function_8_c}{1\-D1\-D\-Function.\-C}\end{DoxyCompactItemize}

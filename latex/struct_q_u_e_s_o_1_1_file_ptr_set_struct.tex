@@ -1,0 +1,120 @@
+\hypertarget{struct_q_u_e_s_o_1_1_file_ptr_set_struct}{\section{Q\-U\-E\-S\-O\-:\-:File\-Ptr\-Set\-Struct Struct Reference}
+\label{struct_q_u_e_s_o_1_1_file_ptr_set_struct}\index{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct@{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct}}
+}
+
+
+Struct for handling data input and output from files.  
+
+
+
+
+{\ttfamily \#include $<$Environment.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a2f8c1b44d5958fcc6716aecde4cad403}{File\-Ptr\-Set\-Struct} ()
+\begin{DoxyCompactList}\small\item\em Struct constructor. \end{DoxyCompactList}\item 
+\hyperlink{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a61639fac9716c69ceebe1750aeebe786}{$\sim$\-File\-Ptr\-Set\-Struct} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::ofstream $\ast$ \hyperlink{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a354cb0a6659254aa38ba38986ccf5c8a}{ofs\-Var}
+\begin{DoxyCompactList}\small\item\em Provides a stream interface to write data to files. \end{DoxyCompactList}\item 
+std\-::ifstream $\ast$ \hyperlink{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a1faa6ed0771368358c29a492edf764ee}{ifs\-Var}
+\begin{DoxyCompactList}\small\item\em Provides a stream interface to read data from files. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Struct for handling data input and output from files. 
+
+This struct deals with data input and output from files. It encapsulates the input/output stream class std\-:\-: fstream. 
+
+Definition at line 66 of file Environment.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a2f8c1b44d5958fcc6716aecde4cad403}{\index{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct@{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct}!File\-Ptr\-Set\-Struct@{File\-Ptr\-Set\-Struct}}
+\index{File\-Ptr\-Set\-Struct@{File\-Ptr\-Set\-Struct}!QUESO::FilePtrSetStruct@{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct}}
+\subsubsection[{File\-Ptr\-Set\-Struct}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct\-::\-File\-Ptr\-Set\-Struct (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a2f8c1b44d5958fcc6716aecde4cad403}
+
+
+Struct constructor. 
+
+
+
+Definition at line 109 of file Environment.\-C.
+
+
+\begin{DoxyCode}
+110   :
+111   \hyperlink{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a354cb0a6659254aa38ba38986ccf5c8a}{ofsVar}(NULL),
+112   \hyperlink{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a1faa6ed0771368358c29a492edf764ee}{ifsVar}(NULL)
+113 \{
+114 \}
+\end{DoxyCode}
+\hypertarget{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a61639fac9716c69ceebe1750aeebe786}{\index{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct@{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct}!$\sim$\-File\-Ptr\-Set\-Struct@{$\sim$\-File\-Ptr\-Set\-Struct}}
+\index{$\sim$\-File\-Ptr\-Set\-Struct@{$\sim$\-File\-Ptr\-Set\-Struct}!QUESO::FilePtrSetStruct@{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct}}
+\subsubsection[{$\sim$\-File\-Ptr\-Set\-Struct}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct\-::$\sim$\-File\-Ptr\-Set\-Struct (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a61639fac9716c69ceebe1750aeebe786}
+
+
+Destructor. 
+
+
+
+Definition at line 116 of file Environment.\-C.
+
+
+\begin{DoxyCode}
+117 \{
+118 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a1faa6ed0771368358c29a492edf764ee}{\index{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct@{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct}!ifs\-Var@{ifs\-Var}}
+\index{ifs\-Var@{ifs\-Var}!QUESO::FilePtrSetStruct@{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct}}
+\subsubsection[{ifs\-Var}]{\setlength{\rightskip}{0pt plus 5cm}std\-::ifstream$\ast$ Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct\-::ifs\-Var}}\label{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a1faa6ed0771368358c29a492edf764ee}
+
+
+Provides a stream interface to read data from files. 
+
+
+
+Definition at line 78 of file Environment.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Environment\-::close\-File(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::open\-Input\-File(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::open\-Unified\-Input\-File(), Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$\-::unified\-Read\-Contents(), and Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::unified\-Read\-Contents().
+
+\hypertarget{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a354cb0a6659254aa38ba38986ccf5c8a}{\index{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct@{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct}!ofs\-Var@{ofs\-Var}}
+\index{ofs\-Var@{ofs\-Var}!QUESO::FilePtrSetStruct@{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct}}
+\subsubsection[{ofs\-Var}]{\setlength{\rightskip}{0pt plus 5cm}std\-::ofstream$\ast$ Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct\-::ofs\-Var}}\label{struct_q_u_e_s_o_1_1_file_ptr_set_struct_a354cb0a6659254aa38ba38986ccf5c8a}
+
+
+Provides a stream interface to write data to files. 
+
+
+
+Definition at line 75 of file Environment.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Environment\-::close\-File(), Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence\-\_\-\-Level0\-\_\-all(), Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence\-\_\-\-Step11\-\_\-inter0(), Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::intern\-Generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::open\-Output\-File(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::open\-Unified\-Output\-File(), Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::solve\-With\-Monte\-Carlo(), Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf$<$ T $>$\-::sub\-Write\-Contents(), Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::sub\-Write\-Contents(), Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$\-::unified\-Write\-Contents(), and Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::unified\-Write\-Contents().
+
+
+
+The documentation for this struct was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{_environment_8h}{Environment.\-h}\item 
+src/core/src/\hyperlink{_environment_8_c}{Environment.\-C}\end{DoxyCompactItemize}

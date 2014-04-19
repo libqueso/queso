@@ -1,0 +1,186 @@
+\hypertarget{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer}{\section{Q\-U\-E\-S\-O\-:\-:Inverse\-Gamma\-Vector\-Realizer$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer}\index{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer$<$ V, M $>$}}
+}
+
+
+A class for handling sampling from an Inverse Gamma probability density distribution.  
+
+
+
+
+{\ttfamily \#include $<$Inverse\-Gamma\-Vector\-Realizer.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Inverse\-Gamma\-Vector\-Realizer$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Inverse\-Gamma\-Vector\-Realizer$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_ae179e3a7aa2b496f2b8b54904c8cb3d5}{Inverse\-Gamma\-Vector\-Realizer} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ad958991bab8d6369e8a0d66b22a237d4}{unified\-Image\-Set}, const V \&alpha, const V \&beta)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_afb9611ce466dff4dac82b3b3efb3339e}{$\sim$\-Inverse\-Gamma\-Vector\-Realizer} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Realization-\/related methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_a115670530398d012040f7183290251d3}{realization} (V \&next\-Values) const 
+\begin{DoxyCompactList}\small\item\em Draws a realization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+V \hyperlink{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_aeb864c46df7833d3723b0df787e283ab}{m\-\_\-alpha}
+\item 
+V \hyperlink{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_a23a2409ad76d55ec0734b9755bea7997}{m\-\_\-beta}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer$<$ V, M $>$}
+
+A class for handling sampling from an Inverse Gamma probability density distribution. 
+
+This class handles sampling from an Inverse Gamma probability density distribution, of parameters {\ttfamily alpha} and {\ttfamily beta}. 
+
+Definition at line 46 of file Inverse\-Gamma\-Vector\-Realizer.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_ae179e3a7aa2b496f2b8b54904c8cb3d5}{\index{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}!Inverse\-Gamma\-Vector\-Realizer@{Inverse\-Gamma\-Vector\-Realizer}}
+\index{Inverse\-Gamma\-Vector\-Realizer@{Inverse\-Gamma\-Vector\-Realizer}!QUESO::InverseGammaVectorRealizer@{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}}
+\subsubsection[{Inverse\-Gamma\-Vector\-Realizer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}$<$ V, M $>$\-::{\bf Inverse\-Gamma\-Vector\-Realizer} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{unified\-Image\-Set, }
+\item[{const V \&}]{alpha, }
+\item[{const V \&}]{beta}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_ae179e3a7aa2b496f2b8b54904c8cb3d5}
+
+
+Constructor. 
+
+Constructs a new object, given a prefix, the image set of the vector realizer, and the Beta distribution parameters {\ttfamily a} and {\ttfamily b}, which are assigned to private attributes m\-\_\-alpha and m\-\_\-beta. 
+
+Definition at line 33 of file Inverse\-Gamma\-Vector\-Realizer.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Realizer$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Vector\-Realizer$<$ V, M $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+38   :
+39   BaseVectorRealizer<V,M>(((std::string)(prefix)+\textcolor{stringliteral}{"gen"}).c\_str(),\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ad958991bab8d6369e8a0d66b22a237d4}{unifiedImageSet},
+      std::numeric\_limits<unsigned int>::max()),
+40   \hyperlink{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_aeb864c46df7833d3723b0df787e283ab}{m\_alpha}(alpha),
+41   \hyperlink{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_a23a2409ad76d55ec0734b9755bea7997}{m\_beta} (beta)
+42 \{
+43   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+44     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering InverseGammaVectorRealizer<V,M>::constructor()"}
+45                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ac5559b6921816ccaed7afc2d342c2a32}{m\_prefix}
+46                             << std::endl;
+47   \}
+48 
+49   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+50     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving InverseGammaVectorRealizer<V,M>::constructor()"}
+51                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ac5559b6921816ccaed7afc2d342c2a32}{m\_prefix}
+52                             << std::endl;
+53   \}
+54 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_afb9611ce466dff4dac82b3b3efb3339e}{\index{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}!$\sim$\-Inverse\-Gamma\-Vector\-Realizer@{$\sim$\-Inverse\-Gamma\-Vector\-Realizer}}
+\index{$\sim$\-Inverse\-Gamma\-Vector\-Realizer@{$\sim$\-Inverse\-Gamma\-Vector\-Realizer}!QUESO::InverseGammaVectorRealizer@{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}}
+\subsubsection[{$\sim$\-Inverse\-Gamma\-Vector\-Realizer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}$<$ V, M $>$\-::$\sim${\bf Inverse\-Gamma\-Vector\-Realizer} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_afb9611ce466dff4dac82b3b3efb3339e}
+
+
+Destructor. 
+
+
+
+Definition at line 57 of file Inverse\-Gamma\-Vector\-Realizer.\-C.
+
+
+\begin{DoxyCode}
+58 \{
+59 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_a115670530398d012040f7183290251d3}{\index{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}!realization@{realization}}
+\index{realization@{realization}!QUESO::InverseGammaVectorRealizer@{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}}
+\subsubsection[{realization}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}$<$ V, M $>$\-::realization (
+\begin{DoxyParamCaption}
+\item[{V \&}]{next\-Values}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_a115670530398d012040f7183290251d3}
+
+
+Draws a realization. 
+
+This function draws a realization of an Inverse Gamma distribution and saves it in {\ttfamily next\-Values}. It internally checks whether the image set, where the realization should be drawn, belongs to the interval (0, infinity) -\/ which is the range where Gamma distribution is defined over. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_a6845173dd79a80ae11c86cde26e55817}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Realizer$<$ V, M $>$}.
+
+
+
+Definition at line 63 of file Inverse\-Gamma\-Vector\-Realizer.\-C.
+
+
+\begin{DoxyCode}
+64 \{
+65   nextValues.cwSetInverseGamma(\hyperlink{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_aeb864c46df7833d3723b0df787e283ab}{m\_alpha},\hyperlink{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_a23a2409ad76d55ec0734b9755bea7997}{m\_beta});
+66   \textcolor{keywordflow}{return};
+67 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_aeb864c46df7833d3723b0df787e283ab}{\index{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}!m\-\_\-alpha@{m\-\_\-alpha}}
+\index{m\-\_\-alpha@{m\-\_\-alpha}!QUESO::InverseGammaVectorRealizer@{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}}
+\subsubsection[{m\-\_\-alpha}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V {\bf Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}$<$ V, M $>$\-::m\-\_\-alpha\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_aeb864c46df7833d3723b0df787e283ab}
+
+
+Definition at line 77 of file Inverse\-Gamma\-Vector\-Realizer.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_a23a2409ad76d55ec0734b9755bea7997}{\index{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}!m\-\_\-beta@{m\-\_\-beta}}
+\index{m\-\_\-beta@{m\-\_\-beta}!QUESO::InverseGammaVectorRealizer@{Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}}
+\subsubsection[{m\-\_\-beta}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V {\bf Q\-U\-E\-S\-O\-::\-Inverse\-Gamma\-Vector\-Realizer}$<$ V, M $>$\-::m\-\_\-beta\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_inverse_gamma_vector_realizer_a23a2409ad76d55ec0734b9755bea7997}
+
+
+Definition at line 78 of file Inverse\-Gamma\-Vector\-Realizer.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_inverse_gamma_vector_realizer_8h}{Inverse\-Gamma\-Vector\-Realizer.\-h}\item 
+src/stats/src/\hyperlink{_inverse_gamma_vector_realizer_8_c}{Inverse\-Gamma\-Vector\-Realizer.\-C}\end{DoxyCompactItemize}

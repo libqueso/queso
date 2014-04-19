@@ -1,0 +1,433 @@
+\hypertarget{class_q_u_e_s_o_1_1_fft}{\section{Q\-U\-E\-S\-O\-:\-:Fft$<$ T $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_fft}\index{Q\-U\-E\-S\-O\-::\-Fft$<$ T $>$@{Q\-U\-E\-S\-O\-::\-Fft$<$ T $>$}}
+}
+
+
+Class for a Fast Fourier Transform (F\-F\-T) algorithm.  
+
+
+
+
+{\ttfamily \#include $<$Fft.\-h$>$}
+
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Fft$<$ T $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_fft__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{class_q_u_e_s_o_1_1_fft_a749f7de2d358417a63e6060b96c5233b}{forward} (const std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&data, unsigned int fft\-Size, std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&forward\-Result)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{class_q_u_e_s_o_1_1_fft_ab7147b1d0ec73019152c149e602172f1}{inverse} (const std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&data, unsigned int fft\-Size, std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&inverse\-Result)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{class_q_u_e_s_o_1_1_fft_ab31ecb8b49b52d107f152fa07a59628d}{forward} (const std\-::vector$<$ double $>$ \&data, unsigned int fft\-Size, std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&forward\-Result)
+\item 
+{\footnotesize template$<$$>$ }\\void \hyperlink{class_q_u_e_s_o_1_1_fft_aed1cacf899ad52ae979c475130411719}{inverse} (const std\-::vector$<$ double $>$ \&data, unsigned int fft\-Size, std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&inverse\-Result)
+\end{DoxyCompactItemize}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_fft_a04fa27a65066c50e029c842fa1e3fe78}{Fft} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&env)
+\begin{DoxyCompactList}\small\item\em Default Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_fft_a3dac972e69f606d201dee17db1e9216b}{$\sim$\-Fft} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_fft_a416c250a17337415b02e6545ed622476}{forward} (const std\-::vector$<$ T $>$ \&data, unsigned int fft\-Size, std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&result)
+\begin{DoxyCompactList}\small\item\em Calculates the forward Fourier transform (for real data. T\-O\-D\-O\-: complex data). \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_fft_a2e1faedd41887115b032b0b45d1f8f58}{inverse} (const std\-::vector$<$ T $>$ \&data, unsigned int fft\-Size, std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&result)
+\begin{DoxyCompactList}\small\item\em Calculates the inverse Fourier transform for real and complex data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_fft_a47bda8b9417d43d94b14d0721b6189e2}{m\-\_\-env}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T$>$class Q\-U\-E\-S\-O\-::\-Fft$<$ T $>$}
+
+Class for a Fast Fourier Transform (F\-F\-T) algorithm. 
+
+This class implements a Fast Fourier Transform (F\-F\-T) algorithm. Fast Fourier Transforms are efficient algorithms for calculating the discrete Fourier transform (D\-F\-T), \[ x_j = \sum_{k=0}^{N-1} z_k \exp(-2\pi i j k / N) \] and its inverse. The D\-F\-T usually arises as an approximation to the continuous Fourier transform when functions are sampled at discrete intervals in space or time. The naive evaluation of the discrete Fourier transform is a matrix-\/vector multiplication $ Ab $. A general matrix-\/vector multiplication takes $ O(N^2)$ operations for $ N $ data-\/points. Fast Fourier transform algorithms use a divide-\/and-\/conquer strategy to factorize the matrix $ A $ into smaller sub-\/matrices, corresponding to the integer factors of the length $ N $. If $ N $ can be factorized into a product of integers $ f_1 f_2 ... f_n $ then the D\-F\-T can be computed in $ O(N \sum f_i) $ operations. For a radix-\/2 F\-F\-T this gives an operation count of $ O(N \log_2 N)$.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000012}{Todo}]\-: Implement Forward Fourier Transform for Complex data.\end{DoxyRefDesc}
+
+
+Definition at line 66 of file Fft.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_fft_a04fa27a65066c50e029c842fa1e3fe78}{\index{Q\-U\-E\-S\-O\-::\-Fft@{Q\-U\-E\-S\-O\-::\-Fft}!Fft@{Fft}}
+\index{Fft@{Fft}!QUESO::Fft@{Q\-U\-E\-S\-O\-::\-Fft}}
+\subsubsection[{Fft}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf Q\-U\-E\-S\-O\-::\-Fft}$<$ T $>$\-::{\bf Fft} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_fft_a04fa27a65066c50e029c842fa1e3fe78}
+
+
+Default Constructor. 
+
+
+
+Definition at line 31 of file Fft.\-C.
+
+
+\begin{DoxyCode}
+32   :
+33   \hyperlink{class_q_u_e_s_o_1_1_fft_a47bda8b9417d43d94b14d0721b6189e2}{m\_env}(env)
+34 \{
+35 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_fft_a3dac972e69f606d201dee17db1e9216b}{\index{Q\-U\-E\-S\-O\-::\-Fft@{Q\-U\-E\-S\-O\-::\-Fft}!$\sim$\-Fft@{$\sim$\-Fft}}
+\index{$\sim$\-Fft@{$\sim$\-Fft}!QUESO::Fft@{Q\-U\-E\-S\-O\-::\-Fft}}
+\subsubsection[{$\sim$\-Fft}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf Q\-U\-E\-S\-O\-::\-Fft}$<$ T $>$\-::$\sim${\bf Fft} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_fft_a3dac972e69f606d201dee17db1e9216b}
+
+
+Destructor. 
+
+
+
+Definition at line 38 of file Fft.\-C.
+
+
+\begin{DoxyCode}
+39 \{
+40 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_fft_a749f7de2d358417a63e6060b96c5233b}{\index{Q\-U\-E\-S\-O\-::\-Fft@{Q\-U\-E\-S\-O\-::\-Fft}!forward@{forward}}
+\index{forward@{forward}!QUESO::Fft@{Q\-U\-E\-S\-O\-::\-Fft}}
+\subsubsection[{forward}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Q\-U\-E\-S\-O\-::\-Fft}$<$ std\-::complex$<$ double $>$ $>$\-::forward (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&}]{data, }
+\item[{unsigned int}]{fft\-Size, }
+\item[{std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&}]{forward\-Result}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_fft_a749f7de2d358417a63e6060b96c5233b}
+
+
+Definition at line 32 of file Complex\-Fft.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-U\-Q\-\_\-\-U\-N\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-R\-A\-N\-K.
+
+
+\begin{DoxyCode}
+36 \{
+37   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+38                       \hyperlink{namespace_q_u_e_s_o_a7d4679800a430ae8e473c1c7bc0bfb21}{UQ\_UNAVAILABLE\_RANK},
+39                       \textcolor{stringliteral}{"Fft<complex>::forward()"},
+40                       \textcolor{stringliteral}{"not implemented yet"});
+41 
+42   std::complex<double> z = data[0]; z += 0.; \textcolor{comment}{// just to avoid icpc warnings}
+43   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}         f = fftSize; f += 1;  \textcolor{comment}{// just to avoid icpc warnings}
+44   forwardResult[0] = 0.;                     \textcolor{comment}{// just to avoid icpc warnings}
+45 \textcolor{preprocessor}{#if 0}
+46 \textcolor{preprocessor}{}  \textcolor{keywordflow}{if} (forwardResult.size() != fftSize) \{
+47     forwardResult.resize(fftSize,std::complex<double>(0.,0.));
+48     std::vector<std::complex<double> >(forwardResult).swap(forwardResult);
+49   \}
+50 
+51   std::vector<double> internalData(fftSize,0.);
+52   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} minSize = std::min((\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) data.size(),fftSize);
+53   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < minSize; ++j) \{
+54     internalData[j] = data[j];
+55   \}
+56 
+57   gsl\_fft\_real\_workspace* realWkSpace = gsl\_fft\_real\_workspace\_alloc(fftSize);
+58   gsl\_fft\_real\_wavetable* realWvTable = gsl\_fft\_real\_wavetable\_alloc(fftSize);
+59 
+60   gsl\_fft\_real\_transform(&internalData[0],
+61                          1,
+62                          fftSize,
+63                          realWvTable,
+64                          realWkSpace);
+65 
+66   gsl\_fft\_real\_wavetable\_free(realWvTable);
+67   gsl\_fft\_real\_workspace\_free(realWkSpace);
+68 
+69   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} halfFFTSize = fftSize/2;
+70   \textcolor{keywordtype}{double} realPartOfFFT = 0.;
+71   \textcolor{keywordtype}{double} imagPartOfFFT = 0.;
+72   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < internalData.size(); ++j) \{
+73     \textcolor{keywordflow}{if} (j == 0) \{
+74       realPartOfFFT = internalData[j];
+75       imagPartOfFFT = 0.;
+76     \}
+77     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (j < halfFFTSize) \{
+78       realPartOfFFT = internalData[2*j-1];
+79       imagPartOfFFT = internalData[2*j  ];
+80     \}
+81     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (j == halfFFTSize) \{
+82       realPartOfFFT = internalData[2*j-1];
+83       imagPartOfFFT = 0.;
+84     \}
+85     \textcolor{keywordflow}{else} \{
+86       realPartOfFFT =  internalData[2*(fftSize-j)-1];
+87       imagPartOfFFT = -internalData[2*(fftSize-j)  ];
+88     \}
+89     forwardResult[j] = std::complex<double>(realPartOfFFT,imagPartOfFFT);
+90   \}
+91 \textcolor{preprocessor}{#endif}
+92 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return};
+93 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_fft_ab31ecb8b49b52d107f152fa07a59628d}{\index{Q\-U\-E\-S\-O\-::\-Fft@{Q\-U\-E\-S\-O\-::\-Fft}!forward@{forward}}
+\index{forward@{forward}!QUESO::Fft@{Q\-U\-E\-S\-O\-::\-Fft}}
+\subsubsection[{forward}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Q\-U\-E\-S\-O\-::\-Fft}$<$ double $>$\-::forward (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ double $>$ \&}]{data, }
+\item[{unsigned int}]{fft\-Size, }
+\item[{std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&}]{forward\-Result}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_fft_ab31ecb8b49b52d107f152fa07a59628d}
+
+
+Definition at line 34 of file Real\-Fft.\-C.
+
+
+\begin{DoxyCode}
+38 \{
+39   \textcolor{keywordflow}{if} (forwardResult.size() != fftSize) \{
+40     forwardResult.resize(fftSize,std::complex<double>(0.,0.));
+41     std::vector<std::complex<double> >(forwardResult).swap(forwardResult);
+42   \}
+43 
+44   std::vector<double> internalData(fftSize,0.);
+45   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} minSize = std::min((\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) data.size(),fftSize);
+46   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < minSize; ++j) \{
+47     internalData[j] = data[j];
+48   \}
+49 
+50   \textcolor{comment}{//double sumOfAllTerms = 0.;}
+51   \textcolor{comment}{//for (unsigned int j = 0; j < fftSize; ++j) \{}
+52   \textcolor{comment}{//  sumOfAllTerms += internalData[j];}
+53   \textcolor{comment}{//\}}
+54 
+55   \textcolor{comment}{//allocTables(fftSize);}
+56   gsl\_fft\_real\_workspace* realWkSpace = gsl\_fft\_real\_workspace\_alloc(fftSize);
+57   gsl\_fft\_real\_wavetable* realWvTable = gsl\_fft\_real\_wavetable\_alloc(fftSize);
+58 
+59   gsl\_fft\_real\_transform(&internalData[0],
+60                          1,
+61                          fftSize,
+62                          realWvTable,
+63                          realWkSpace);
+64 
+65   gsl\_fft\_real\_wavetable\_free(realWvTable);
+66   gsl\_fft\_real\_workspace\_free(realWkSpace);
+67   \textcolor{comment}{//freeTables();}
+68 
+69   \textcolor{comment}{//std::cout << "After FFT"}
+70   \textcolor{comment}{//          << ", sumOfAllTerms = "          << sumOfAllTerms}
+71   \textcolor{comment}{//          << ", sumOfAllTerms - dft[0] = " << sumOfAllTerms - internalData[0]}
+72   \textcolor{comment}{//          << std::endl;}
+73 
+74   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} halfFFTSize = fftSize/2;
+75   \textcolor{keywordtype}{double} realPartOfFFT = 0.;
+76   \textcolor{keywordtype}{double} imagPartOfFFT = 0.;
+77   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < internalData.size(); ++j) \{
+78     \textcolor{keywordflow}{if} (j == 0) \{
+79       realPartOfFFT = internalData[j];
+80       imagPartOfFFT = 0.;
+81     \}
+82     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (j < halfFFTSize) \{
+83       realPartOfFFT = internalData[2*j-1];
+84       imagPartOfFFT = internalData[2*j  ];
+85     \}
+86     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (j == halfFFTSize) \{
+87       realPartOfFFT = internalData[2*j-1];
+88       imagPartOfFFT = 0.;
+89     \}
+90     \textcolor{keywordflow}{else} \{
+91       realPartOfFFT =  internalData[2*(fftSize-j)-1];
+92       imagPartOfFFT = -internalData[2*(fftSize-j)  ];
+93     \}
+94     forwardResult[j] = std::complex<double>(realPartOfFFT,imagPartOfFFT);
+95   \}
+96 
+97   \textcolor{keywordflow}{return};
+98 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_fft_a416c250a17337415b02e6545ed622476}{\index{Q\-U\-E\-S\-O\-::\-Fft@{Q\-U\-E\-S\-O\-::\-Fft}!forward@{forward}}
+\index{forward@{forward}!QUESO::Fft@{Q\-U\-E\-S\-O\-::\-Fft}}
+\subsubsection[{forward}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Q\-U\-E\-S\-O\-::\-Fft}$<$ T $>$\-::forward (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ T $>$ \&}]{data, }
+\item[{unsigned int}]{fft\-Size, }
+\item[{std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&}]{result}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_fft_a416c250a17337415b02e6545ed622476}
+
+
+Calculates the forward Fourier transform (for real data. T\-O\-D\-O\-: complex data). 
+
+This function uses G\-S\-L function 'gsl\-\_\-fft\-\_\-real\-\_\-transform' to compute the F\-F\-T of {\ttfamily data}, a real array (of time-\/ordered real data) of length {\ttfamily fft\-Size}, using a mixed radix decimation-\/in-\/frequency algorithm. There is no restriction on the length {\ttfamily fft\-Size}. Efficient modules are provided for subtransforms of length 2, 3, 4 and 5. Any remaining factors are computed with a slow, $ O(\c fftSize ^2) $, general-\/ {\ttfamily fft\-Size} module. The caller must supply a wavetable containing trigonometric lookup tables and a workspace work.\par
+ The definition of the forward Fourier transform, $ x = FFT(z) $ of size $ N $ is\-: \[ x_j = \sum_{k=0}^{N-1} z_k \exp(-2\pi i j k / N). \] 
+
+Referenced by Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::auto\-Corr\-Via\-Fft().
+
+\hypertarget{class_q_u_e_s_o_1_1_fft_ab7147b1d0ec73019152c149e602172f1}{\index{Q\-U\-E\-S\-O\-::\-Fft@{Q\-U\-E\-S\-O\-::\-Fft}!inverse@{inverse}}
+\index{inverse@{inverse}!QUESO::Fft@{Q\-U\-E\-S\-O\-::\-Fft}}
+\subsubsection[{inverse}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Q\-U\-E\-S\-O\-::\-Fft}$<$ std\-::complex$<$ double $>$ $>$\-::inverse (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&}]{data, }
+\item[{unsigned int}]{fft\-Size, }
+\item[{std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&}]{inverse\-Result}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_fft_ab7147b1d0ec73019152c149e602172f1}
+
+
+Definition at line 97 of file Complex\-Fft.\-C.
+
+
+\begin{DoxyCode}
+101 \{
+102   \textcolor{keywordflow}{if} (inverseResult.size() != fftSize) \{
+103     inverseResult.resize(fftSize,std::complex<double>(0.,0.));
+104     std::vector<std::complex<double> >(inverseResult).swap(inverseResult);
+105   \}
+106 
+107   std::vector<double> internalData(2*fftSize,0.);                          \textcolor{comment}{// Yes, twice the fftSize}
+108   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} minSize = 2 * std::min((\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) data.size(),fftSize); \textcolor{comment}{// Yes, 2*}
+109   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < minSize; ++j) \{
+110     internalData[2*j  ] = data[j].real();
+111     internalData[2*j+1] = data[j].imag();
+112   \}
+113 
+114   gsl\_fft\_complex\_workspace* complexWkSpace = gsl\_fft\_complex\_workspace\_alloc(fftSize);
+115   gsl\_fft\_complex\_wavetable* complexWvTable = gsl\_fft\_complex\_wavetable\_alloc(fftSize);
+116 
+117   gsl\_fft\_complex\_inverse(&internalData[0],
+118                           1,
+119                           fftSize,
+120                           complexWvTable,
+121                           complexWkSpace);
+122 
+123   gsl\_fft\_complex\_wavetable\_free(complexWvTable);
+124   gsl\_fft\_complex\_workspace\_free(complexWkSpace);
+125 
+126   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < fftSize; ++j) \{
+127     inverseResult[j] = std::complex<double>(internalData[2*j],internalData[2*j+1]);
+128   \}
+129 
+130   \textcolor{keywordflow}{return};
+131 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_fft_aed1cacf899ad52ae979c475130411719}{\index{Q\-U\-E\-S\-O\-::\-Fft@{Q\-U\-E\-S\-O\-::\-Fft}!inverse@{inverse}}
+\index{inverse@{inverse}!QUESO::Fft@{Q\-U\-E\-S\-O\-::\-Fft}}
+\subsubsection[{inverse}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Q\-U\-E\-S\-O\-::\-Fft}$<$ double $>$\-::inverse (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ double $>$ \&}]{data, }
+\item[{unsigned int}]{fft\-Size, }
+\item[{std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&}]{inverse\-Result}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_fft_aed1cacf899ad52ae979c475130411719}
+
+
+Definition at line 102 of file Real\-Fft.\-C.
+
+
+\begin{DoxyCode}
+106 \{
+107   \textcolor{keywordflow}{if} (inverseResult.size() != fftSize) \{
+108     inverseResult.resize(fftSize,std::complex<double>(0.,0.));
+109     std::vector<std::complex<double> >(inverseResult).swap(inverseResult);
+110   \}
+111 
+112   std::vector<double> internalData(2*fftSize,0.); \textcolor{comment}{// Yes, twice the fftSize}
+113   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} minSize = std::min((\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) data.size(),fftSize);
+114   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < minSize; ++j) \{
+115     internalData[2*j] = data[j];
+116   \}
+117 
+118   \textcolor{comment}{//if (m\_subDisplayFile()) \{}
+119   \textcolor{comment}{//  *m\_subDisplayFile() << "In Fft<double>::inverse()"}
+120   \textcolor{comment}{//                     << ": about to call gsl\_fft\_complex\_inverse()"}
+121   \textcolor{comment}{//                     << " with fftSize = "         << fftSize}
+122   \textcolor{comment}{//                     << "; internalData.size() = " << internalData.size()}
+123   \textcolor{comment}{//                     << std::endl;}
+124   \textcolor{comment}{//\}}
+125 
+126   gsl\_fft\_complex\_workspace* complexWkSpace = gsl\_fft\_complex\_workspace\_alloc(fftSize);
+127   gsl\_fft\_complex\_wavetable* complexWvTable = gsl\_fft\_complex\_wavetable\_alloc(fftSize);
+128 
+129   gsl\_fft\_complex\_inverse(&internalData[0],
+130                           1,
+131                           fftSize,
+132                           complexWvTable,
+133                           complexWkSpace);
+134 
+135   gsl\_fft\_complex\_wavetable\_free(complexWvTable);
+136   gsl\_fft\_complex\_workspace\_free(complexWkSpace);
+137 
+138   \textcolor{comment}{//if (m\_subDisplayFile()) \{}
+139   \textcolor{comment}{//  *m\_subDisplayFile() << "In Fft<double>::inverse()"}
+140   \textcolor{comment}{//                     << ": returned from gsl\_fft\_complex\_inverse()"}
+141   \textcolor{comment}{//                     << " with fftSize = "          << fftSize}
+142   \textcolor{comment}{//                     << "; inverseResult.size() = " << inverseResult.size()}
+143   \textcolor{comment}{//                     << std::endl;}
+144   \textcolor{comment}{//\}}
+145 
+146   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < fftSize; ++j) \{
+147     inverseResult[j] = std::complex<double>(internalData[2*j],internalData[2*j+1]);
+148   \}
+149 
+150   \textcolor{keywordflow}{return};
+151 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_fft_a2e1faedd41887115b032b0b45d1f8f58}{\index{Q\-U\-E\-S\-O\-::\-Fft@{Q\-U\-E\-S\-O\-::\-Fft}!inverse@{inverse}}
+\index{inverse@{inverse}!QUESO::Fft@{Q\-U\-E\-S\-O\-::\-Fft}}
+\subsubsection[{inverse}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf Q\-U\-E\-S\-O\-::\-Fft}$<$ T $>$\-::inverse (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ T $>$ \&}]{data, }
+\item[{unsigned int}]{fft\-Size, }
+\item[{std\-::vector$<$ std\-::complex$<$ double $>$ $>$ \&}]{result}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_fft_a2e1faedd41887115b032b0b45d1f8f58}
+
+
+Calculates the inverse Fourier transform for real and complex data. 
+
+This function uses G\-S\-L function 'gsl\-\_\-fft\-\_\-complex\-\_\-inverse' to compute the F\-F\-T of {\ttfamily data}, a real array (of time-\/ordered real data) of length {\ttfamily fft\-Size}, using a mixed radix decimation-\/in-\/frequency algorithm. There is no restriction on the length {\ttfamily fft\-Size}. Efficient modules are provided for subtransforms of length 2, 3, 4 and 5. Any remaining factors are computed with a slow, $ O(fftSize^2) $, general-\/ {\ttfamily fft\-Size} module. The caller must supply a wavetable containing trigonometric lookup tables and a workspace work.\par
+ The definition of the inverse Fourier transform, $ x = IFFT(z)$ of size $ N $ is\-: \[ z_j = {1 \over N} \sum_{k=0}^{N-1} x_k \exp(2\pi i j k / N).\] The factor of $ 1/N $ makes this a true inverse. 
+
+Referenced by Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::auto\-Corr\-Via\-Fft().
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_fft_a47bda8b9417d43d94b14d0721b6189e2}{\index{Q\-U\-E\-S\-O\-::\-Fft@{Q\-U\-E\-S\-O\-::\-Fft}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::Fft@{Q\-U\-E\-S\-O\-::\-Fft}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Fft}$<$ T $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_fft_a47bda8b9417d43d94b14d0721b6189e2}
+
+
+Definition at line 113 of file Fft.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/misc/inc/\hyperlink{_fft_8h}{Fft.\-h}\item 
+src/misc/src/\hyperlink{_fft_8_c}{Fft.\-C}\end{DoxyCompactItemize}

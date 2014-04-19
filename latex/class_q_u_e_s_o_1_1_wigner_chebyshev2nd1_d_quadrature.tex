@@ -1,0 +1,175 @@
+\hypertarget{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature}{\section{Q\-U\-E\-S\-O\-:\-:Wigner\-Chebyshev2nd1\-D\-Quadrature Class Reference}
+\label{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature}\index{Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature@{Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature}}
+}
+
+
+Class for second type Chebyshev-\/\-Gauss quadrature rule for one-\/dimensional functions.  
+
+
+
+
+{\ttfamily \#include $<$1\-D\-Quadrature.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Wigner\-Chebyshev2nd1\-D\-Quadrature\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=254pt]{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Wigner\-Chebyshev2nd1\-D\-Quadrature\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=254pt]{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature_ada00887a7e9ad33a5ea4bf60a5f4ae81}{Wigner\-Chebyshev2nd1\-D\-Quadrature} (double \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a938187458b0069e7b3779bc3739a1cc0}{min\-Domain\-Value}, double \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_af3d09abe6716a23f9061b8b657524547}{max\-Domain\-Value}, unsigned int \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a07713b5e8df24bbc8e3e9d13b707e5d0}{order})
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature_aa7013fc823f0e4ad0ab9ccaf588551f5}{$\sim$\-Wigner\-Chebyshev2nd1\-D\-Quadrature} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature_a1be91acea2adbbaf5f61a408d66737fb}{dumb\-Routine} () const 
+\begin{DoxyCompactList}\small\item\em Bogus routine. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class for second type Chebyshev-\/\-Gauss quadrature rule for one-\/dimensional functions. 
+
+Chebyshev-\/\-Gauss quadrature, also called Chebyshev Type 2 quadrature, is a Gaussian quadrature over the interval \mbox{[}-\/1,1\mbox{]} with weighting function $ W(x)=\sqrt{1-x^2}$.\par
+ The abscissas for quadrature order $ n $ are given by the roots of the Chebyshev polynomial of the {\bfseries second} kind $ U_n(x) $, which occur symmetrically about 0.\par
+
+
+The abscissas are given explicitly by $ x_i=\cos[\frac{i\pi}{n+1}].$ and all the weights are $ w_i=\frac{\pi}{n+1}\sin^2[\frac{i\pi}{n+1}]. $
+
+\begin{DoxySeeAlso}{See Also}
+Weisstein, Eric W. \char`\"{}\-Gaussian Quadrature.\char`\"{} From Math\-World--A Wolfram Web Resource. \href{http://mathworld.wolfram.com/GaussianQuadrature.html}{\tt http\-://mathworld.\-wolfram.\-com/\-Gaussian\-Quadrature.\-html}. 
+
+\href{http://en.wikipedia.org/wiki/Chebyshev-Gauss_quadrature}{\tt http\-://en.\-wikipedia.\-org/wiki/\-Chebyshev-\/\-Gauss\-\_\-quadrature}. 
+\end{DoxySeeAlso}
+
+
+Definition at line 313 of file 1\-D\-Quadrature.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature_ada00887a7e9ad33a5ea4bf60a5f4ae81}{\index{Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature@{Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature}!Wigner\-Chebyshev2nd1\-D\-Quadrature@{Wigner\-Chebyshev2nd1\-D\-Quadrature}}
+\index{Wigner\-Chebyshev2nd1\-D\-Quadrature@{Wigner\-Chebyshev2nd1\-D\-Quadrature}!QUESO::WignerChebyshev2nd1DQuadrature@{Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature}}
+\subsubsection[{Wigner\-Chebyshev2nd1\-D\-Quadrature}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature (
+\begin{DoxyParamCaption}
+\item[{double}]{min\-Domain\-Value, }
+\item[{double}]{max\-Domain\-Value, }
+\item[{unsigned int}]{order}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature_ada00887a7e9ad33a5ea4bf60a5f4ae81}
+
+
+Default constructor. 
+
+Constructs a Gaussian-\/\-Chebyshev quadrature (of second type) of order {\ttfamily order}, in the interval {\ttfamily \mbox{[}min\-Domain\-Value,max\-Domain\-Value\mbox{]}}. This method scales the abscissas (positions) of the quadrature from the interval \mbox{[}-\/1,1\mbox{]} to {\ttfamily \mbox{[}min\-Domain\-Value,max\-Domain\-Value\mbox{]}}. 
+
+Definition at line 718 of file 1\-D\-Quadrature.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base1\-D\-Quadrature\-::m\-\_\-max\-Domain\-Value, Q\-U\-E\-S\-O\-::\-Base1\-D\-Quadrature\-::m\-\_\-min\-Domain\-Value, Q\-U\-E\-S\-O\-::\-Base1\-D\-Quadrature\-::m\-\_\-order, Q\-U\-E\-S\-O\-::\-Base1\-D\-Quadrature\-::m\-\_\-positions, and Q\-U\-E\-S\-O\-::\-Base1\-D\-Quadrature\-::m\-\_\-weights.
+
+
+\begin{DoxyCode}
+722   :
+723   \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a78007aa675ab263a24d86774e8b98c28}{Base1DQuadrature}(\hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a938187458b0069e7b3779bc3739a1cc0}{minDomainValue},\hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_af3d09abe6716a23f9061b8b657524547}{maxDomainValue},
+      \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a07713b5e8df24bbc8e3e9d13b707e5d0}{order})
+724 \{
+725   \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_aeda387c028c3ba89ea0f9637a2234212}{m\_positions}.resize(\hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a78ba0750b7220b302e4cd1415c7d4c48}{m\_order}+1,0.); \textcolor{comment}{// Yes, '+1'}
+726   \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a7117fec020a8098d1c22b604268bad93}{m\_weights}.resize  (\hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a78ba0750b7220b302e4cd1415c7d4c48}{m\_order}+1,0.); \textcolor{comment}{// Yes, '+1'}
+727 
+728   \textcolor{comment}{// http://en.wikipedia.org/wiki/Chebyshev-Gauss\_quadrature}
+729   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} n = \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a78ba0750b7220b302e4cd1415c7d4c48}{m\_order}+1;
+730   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < n; ++i) \{
+731     \textcolor{keywordtype}{double} angle = M\_PI*((double)(i+1))/((\textcolor{keywordtype}{double})(n+1));
+732     \textcolor{keywordtype}{double} cosValue = cos(angle);
+733     \textcolor{keywordtype}{double} sinValue = sin(angle);
+734     \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_aeda387c028c3ba89ea0f9637a2234212}{m\_positions}[i] = cosValue;
+735     \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a7117fec020a8098d1c22b604268bad93}{m\_weights}[i] = ( M\_PI/((double)(n+1)) )*sinValue*sinValue;
+736   \}
+737 
+738   \textcolor{comment}{// Scale positions from the interval [-1, 1] to the interval [min,max]}
+739   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_aeda387c028c3ba89ea0f9637a2234212}{m\_positions}.size(); ++j) \{
+740     \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_aeda387c028c3ba89ea0f9637a2234212}{m\_positions}[j] = .5*(\hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_ace30af8dd67b04f11ea37ebe509f256e}{m\_maxDomainValue} - 
+      \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a7165680498394fa2d23ac919a920fc01}{m\_minDomainValue})*\hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_aeda387c028c3ba89ea0f9637a2234212}{m\_positions}[j] + .5*(
+      \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_ace30af8dd67b04f11ea37ebe509f256e}{m\_maxDomainValue} + \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a7165680498394fa2d23ac919a920fc01}{m\_minDomainValue});
+741     \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a7117fec020a8098d1c22b604268bad93}{m\_weights}[j] *= .5*(\hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_ace30af8dd67b04f11ea37ebe509f256e}{m\_maxDomainValue} - 
+      \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a7165680498394fa2d23ac919a920fc01}{m\_minDomainValue});
+742   \}
+743 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature_aa7013fc823f0e4ad0ab9ccaf588551f5}{\index{Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature@{Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature}!$\sim$\-Wigner\-Chebyshev2nd1\-D\-Quadrature@{$\sim$\-Wigner\-Chebyshev2nd1\-D\-Quadrature}}
+\index{$\sim$\-Wigner\-Chebyshev2nd1\-D\-Quadrature@{$\sim$\-Wigner\-Chebyshev2nd1\-D\-Quadrature}!QUESO::WignerChebyshev2nd1DQuadrature@{Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature}}
+\subsubsection[{$\sim$\-Wigner\-Chebyshev2nd1\-D\-Quadrature}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature\-::$\sim$\-Wigner\-Chebyshev2nd1\-D\-Quadrature (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature_aa7013fc823f0e4ad0ab9ccaf588551f5}
+
+
+Destructor. 
+
+
+
+Definition at line 745 of file 1\-D\-Quadrature.\-C.
+
+
+\begin{DoxyCode}
+746 \{
+747 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature_a1be91acea2adbbaf5f61a408d66737fb}{\index{Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature@{Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature}!dumb\-Routine@{dumb\-Routine}}
+\index{dumb\-Routine@{dumb\-Routine}!QUESO::WignerChebyshev2nd1DQuadrature@{Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature}}
+\subsubsection[{dumb\-Routine}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Wigner\-Chebyshev2nd1\-D\-Quadrature\-::dumb\-Routine (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_wigner_chebyshev2nd1_d_quadrature_a1be91acea2adbbaf5f61a408d66737fb}
+
+
+Bogus routine. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base1_d_quadrature_a37bdd63ba8b986e02d47b05fc8795332}{Q\-U\-E\-S\-O\-::\-Base1\-D\-Quadrature}.
+
+
+
+Definition at line 750 of file 1\-D\-Quadrature.\-C.
+
+
+\begin{DoxyCode}
+751 \{
+752   \textcolor{keywordflow}{return};
+753 \}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/misc/inc/\hyperlink{1_d_quadrature_8h}{1\-D\-Quadrature.\-h}\item 
+src/misc/src/\hyperlink{1_d_quadrature_8_c}{1\-D\-Quadrature.\-C}\end{DoxyCompactItemize}

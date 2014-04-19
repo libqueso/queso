@@ -1,0 +1,230 @@
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_mdf}{\section{Q\-U\-E\-S\-O\-:\-:Sampled\-Vector\-Mdf$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_sampled_vector_mdf}\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf$<$ V, M $>$}}
+}
+
+
+A class for handling sampled vector M\-D\-Fs.  
+
+
+
+
+{\ttfamily \#include $<$Sampled\-Vector\-Mdf.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Sampled\-Vector\-Mdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=234pt]{class_q_u_e_s_o_1_1_sampled_vector_mdf__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Sampled\-Vector\-Mdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_sampled_vector_mdf__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_sampled_vector_mdf_ad66c0648ca45526f0912634b2042cba9}{Sampled\-Vector\-Mdf} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids}{Array\-Of\-One\-D\-Grids}$<$ V, M $>$ \&one\-D\-Grids, const \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_tables}{Array\-Of\-One\-D\-Tables}$<$ V, M $>$ \&mdf\-Values)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_sampled_vector_mdf_ab1d081a98ca1285a6fc3d29029c3632c}{$\sim$\-Sampled\-Vector\-Mdf} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_mdf_af4b8d3c492d7cfb94ac82da8df8779e9}{values} (const V \&param\-Values, V \&mdf\-Vec) const 
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Returns the values of the vector M\-D\-F at each element of {\ttfamily param\-Values}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_mdf_af4a617a8e579abb72bf9d91d7ddb17e0}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em Prints the vector M\-D\-F (values of the grid points and of the M\-D\-F at such grid points). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids}{Array\-Of\-One\-D\-Grids}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_mdf_ace43cdea4553e95bec0fa1490962dd69}{m\-\_\-one\-D\-Grids}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_tables}{Array\-Of\-One\-D\-Tables}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_mdf_acc6447be666d94453ca26e8b0b8aa9ad}{m\-\_\-mdf\-Values}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf$<$ V, M $>$}
+
+A class for handling sampled vector M\-D\-Fs. 
+
+This class implements a sampled vector marginal density function (M\-D\-F), given the grid points where it will be sampled and it returns its values. 
+
+Definition at line 47 of file Sampled\-Vector\-Mdf.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_mdf_ad66c0648ca45526f0912634b2042cba9}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}!Sampled\-Vector\-Mdf@{Sampled\-Vector\-Mdf}}
+\index{Sampled\-Vector\-Mdf@{Sampled\-Vector\-Mdf}!QUESO::SampledVectorMdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}}
+\subsubsection[{Sampled\-Vector\-Mdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}$<$ V, M $>$\-::{\bf Sampled\-Vector\-Mdf} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Array\-Of\-One\-D\-Grids}$<$ V, M $>$ \&}]{one\-D\-Grids, }
+\item[{const {\bf Array\-Of\-One\-D\-Tables}$<$ V, M $>$ \&}]{mdf\-Values}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_sampled_vector_mdf_ad66c0648ca45526f0912634b2042cba9}
+
+
+Default constructor. 
+
+Instantiates an object of the class given a prefix and the grid points where it will be sampled/evaluated. 
+
+Definition at line 31 of file Sampled\-Vector\-Mdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Mdf$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Vector\-Mdf$<$ V, M $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+35   :
+36   BaseVectorMdf<V,M>(prefix,oneDGrids.rowSpace()),
+37   \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_mdf_ace43cdea4553e95bec0fa1490962dd69}{m\_oneDGrids}(oneDGrids),
+38   \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_mdf_acc6447be666d94453ca26e8b0b8aa9ad}{m\_mdfValues}(mdfValues)
+39 \{
+40   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf_a39fbb4c9b12a0906a6d8c82535c837c7}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf_a39fbb4c9b12a0906a6d8c82535c837c7}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+41     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf_a39fbb4c9b12a0906a6d8c82535c837c7}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering SampledVectorMdf<V,M>::constructor()"}
+42                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf_ada097dfdcb97838d0bd71a25ed7a4193}{m\_prefix}
+43                            << std::endl;
+44   \}
+45 
+46   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf_a39fbb4c9b12a0906a6d8c82535c837c7}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf_a39fbb4c9b12a0906a6d8c82535c837c7}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+47     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf_a39fbb4c9b12a0906a6d8c82535c837c7}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving SampledVectorMdf<V,M>::constructor()"}
+48                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf_ada097dfdcb97838d0bd71a25ed7a4193}{m\_prefix}
+49                            << std::endl;
+50   \}
+51 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_mdf_ab1d081a98ca1285a6fc3d29029c3632c}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}!$\sim$\-Sampled\-Vector\-Mdf@{$\sim$\-Sampled\-Vector\-Mdf}}
+\index{$\sim$\-Sampled\-Vector\-Mdf@{$\sim$\-Sampled\-Vector\-Mdf}!QUESO::SampledVectorMdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}}
+\subsubsection[{$\sim$\-Sampled\-Vector\-Mdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}$<$ V, M $>$\-::$\sim${\bf Sampled\-Vector\-Mdf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_sampled_vector_mdf_ab1d081a98ca1285a6fc3d29029c3632c}
+
+
+Destructor. 
+
+
+
+Definition at line 54 of file Sampled\-Vector\-Mdf.\-C.
+
+
+\begin{DoxyCode}
+55 \{
+56 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_mdf_af4a617a8e579abb72bf9d91d7ddb17e0}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}!print@{print}}
+\index{print@{print}!QUESO::SampledVectorMdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}$<$ V, M $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled_vector_mdf_af4a617a8e579abb72bf9d91d7ddb17e0}
+
+
+Prints the vector M\-D\-F (values of the grid points and of the M\-D\-F at such grid points). 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf_a8c656209554341cb90f16f867ad9cb37}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Mdf$<$ V, M $>$}.
+
+
+
+Definition at line 73 of file Sampled\-Vector\-Mdf.\-C.
+
+
+\begin{DoxyCode}
+74 \{
+75   \textcolor{comment}{// Print values *of* grid points}
+76   os << \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_mdf_ace43cdea4553e95bec0fa1490962dd69}{m\_oneDGrids};
+77 
+78   \textcolor{comment}{// Print *mdf* values *at* grid points}
+79   os << \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_mdf_acc6447be666d94453ca26e8b0b8aa9ad}{m\_mdfValues};
+80 
+81   \textcolor{keywordflow}{return};
+82 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_mdf_af4b8d3c492d7cfb94ac82da8df8779e9}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}!values@{values}}
+\index{values@{values}!QUESO::SampledVectorMdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}}
+\subsubsection[{values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}$<$ V, M $>$\-::values (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{param\-Values, }
+\item[{V \&}]{mdf\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled_vector_mdf_af4b8d3c492d7cfb94ac82da8df8779e9}
+
+
+T\-O\-D\-O\-: Returns the values of the vector M\-D\-F at each element of {\ttfamily param\-Values}. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000042}{Todo}]\-: implement me! \end{DoxyRefDesc}
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf_a8b7826a86f4034d8960ff92ebf79a32b}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Mdf$<$ V, M $>$}.
+
+
+
+Definition at line 60 of file Sampled\-Vector\-Mdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+63 \{
+64   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+65                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf_a39fbb4c9b12a0906a6d8c82535c837c7}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+66                       \textcolor{stringliteral}{"SampledVectorMdf<V,M>::mdfVec()"},
+67                       \textcolor{stringliteral}{"incomplete code"});
+68   \textcolor{keywordflow}{return};
+69 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_mdf_acc6447be666d94453ca26e8b0b8aa9ad}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}!m\-\_\-mdf\-Values@{m\-\_\-mdf\-Values}}
+\index{m\-\_\-mdf\-Values@{m\-\_\-mdf\-Values}!QUESO::SampledVectorMdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}}
+\subsubsection[{m\-\_\-mdf\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Array\-Of\-One\-D\-Tables}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}$<$ V, M $>$\-::m\-\_\-mdf\-Values\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_sampled_vector_mdf_acc6447be666d94453ca26e8b0b8aa9ad}
+
+
+Definition at line 80 of file Sampled\-Vector\-Mdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_sampled_vector_mdf_ace43cdea4553e95bec0fa1490962dd69}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}!m\-\_\-one\-D\-Grids@{m\-\_\-one\-D\-Grids}}
+\index{m\-\_\-one\-D\-Grids@{m\-\_\-one\-D\-Grids}!QUESO::SampledVectorMdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}}
+\subsubsection[{m\-\_\-one\-D\-Grids}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Array\-Of\-One\-D\-Grids}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Mdf}$<$ V, M $>$\-::m\-\_\-one\-D\-Grids\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_sampled_vector_mdf_ace43cdea4553e95bec0fa1490962dd69}
+
+
+Definition at line 79 of file Sampled\-Vector\-Mdf.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_sampled_vector_mdf_8h}{Sampled\-Vector\-Mdf.\-h}\item 
+src/stats/src/\hyperlink{_sampled_vector_mdf_8_c}{Sampled\-Vector\-Mdf.\-C}\end{DoxyCompactItemize}

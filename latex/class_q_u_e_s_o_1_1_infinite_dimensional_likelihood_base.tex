@@ -1,0 +1,167 @@
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base}{\section{Q\-U\-E\-S\-O\-:\-:Infinite\-Dimensional\-Likelihood\-Base Class Reference}
+\label{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base}\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}}
+}
+
+
+Abstract class representing the likelihood. Users must subclass this.  
+
+
+
+
+{\ttfamily \#include $<$Infinite\-Dimensional\-Likelihood\-Base.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_a6f1c2bc9c09977be76b19e98d949a031}{Infinite\-Dimensional\-Likelihood\-Base} (double \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_a99c973f23406360fee6aad332eade3c1}{obs\-\_\-stddev})
+\begin{DoxyCompactList}\small\item\em Construct a likelihood functional with {\ttfamily obs\-\_\-stddev} as the observational error standard deviation. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_ac27b56bd19349fc4a44caa9ee3e10af5}{$\sim$\-Infinite\-Dimensional\-Likelihood\-Base} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_a54a923baa674e9ee7282d145a53d1823}{set\-\_\-obs\-\_\-stddev} (double stddev)
+\begin{DoxyCompactList}\small\item\em Set the observation standard deviation. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_a99c973f23406360fee6aad332eade3c1}{obs\-\_\-stddev} () const 
+\begin{DoxyCompactList}\small\item\em Return the observation standard deviation. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_aa93ddb8c6ccc2f357d5046ffb142be14}{evaluate} (\hyperlink{class_q_u_e_s_o_1_1_function_base}{Function\-Base} \&flow)=0
+\begin{DoxyCompactList}\small\item\em Evaluate the likelihood functional at {\ttfamily flow}. Subclasses must implement this method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_aa98ee3e521c8ab194c091f64257e7423}{\-\_\-obs\-\_\-stddev}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Abstract class representing the likelihood. Users must subclass this. 
+
+This is the class you must subclass to evaluate your forward problem. The evaluation should be implemented in the \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_aa93ddb8c6ccc2f357d5046ffb142be14}{evaluate()} method. 
+
+Definition at line 42 of file Infinite\-Dimensional\-Likelihood\-Base.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_a6f1c2bc9c09977be76b19e98d949a031}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}!Infinite\-Dimensional\-Likelihood\-Base@{Infinite\-Dimensional\-Likelihood\-Base}}
+\index{Infinite\-Dimensional\-Likelihood\-Base@{Infinite\-Dimensional\-Likelihood\-Base}!QUESO::InfiniteDimensionalLikelihoodBase@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}}
+\subsubsection[{Infinite\-Dimensional\-Likelihood\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base\-::\-Infinite\-Dimensional\-Likelihood\-Base (
+\begin{DoxyParamCaption}
+\item[{double}]{obs\-\_\-stddev}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_a6f1c2bc9c09977be76b19e98d949a031}
+
+
+Construct a likelihood functional with {\ttfamily obs\-\_\-stddev} as the observational error standard deviation. 
+
+
+
+Definition at line 28 of file Infinite\-Dimensional\-Likelihood\-Base.\-C.
+
+
+\begin{DoxyCode}
+30   : \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_aa98ee3e521c8ab194c091f64257e7423}{\_obs\_stddev}(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_a99c973f23406360fee6aad332eade3c1}{obs\_stddev})
+31 \{
+32 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_ac27b56bd19349fc4a44caa9ee3e10af5}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}!$\sim$\-Infinite\-Dimensional\-Likelihood\-Base@{$\sim$\-Infinite\-Dimensional\-Likelihood\-Base}}
+\index{$\sim$\-Infinite\-Dimensional\-Likelihood\-Base@{$\sim$\-Infinite\-Dimensional\-Likelihood\-Base}!QUESO::InfiniteDimensionalLikelihoodBase@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}}
+\subsubsection[{$\sim$\-Infinite\-Dimensional\-Likelihood\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base\-::$\sim$\-Infinite\-Dimensional\-Likelihood\-Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_ac27b56bd19349fc4a44caa9ee3e10af5}
+
+
+Destructor. 
+
+
+
+Definition at line 34 of file Infinite\-Dimensional\-Likelihood\-Base.\-C.
+
+
+\begin{DoxyCode}
+35 \{
+36 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_aa93ddb8c6ccc2f357d5046ffb142be14}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}!evaluate@{evaluate}}
+\index{evaluate@{evaluate}!QUESO::InfiniteDimensionalLikelihoodBase@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}}
+\subsubsection[{evaluate}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base\-::evaluate (
+\begin{DoxyParamCaption}
+\item[{{\bf Function\-Base} \&}]{flow}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_aa93ddb8c6ccc2f357d5046ffb142be14}
+
+
+Evaluate the likelihood functional at {\ttfamily flow}. Subclasses must implement this method. 
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_a99c973f23406360fee6aad332eade3c1}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}!obs\-\_\-stddev@{obs\-\_\-stddev}}
+\index{obs\-\_\-stddev@{obs\-\_\-stddev}!QUESO::InfiniteDimensionalLikelihoodBase@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}}
+\subsubsection[{obs\-\_\-stddev}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base\-::obs\-\_\-stddev (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_a99c973f23406360fee6aad332eade3c1}
+
+
+Return the observation standard deviation. 
+
+
+
+Definition at line 43 of file Infinite\-Dimensional\-Likelihood\-Base.\-C.
+
+
+
+References \-\_\-obs\-\_\-stddev.
+
+
+\begin{DoxyCode}
+44 \{
+45   \textcolor{keywordflow}{return} this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_aa98ee3e521c8ab194c091f64257e7423}{\_obs\_stddev};
+46 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_a54a923baa674e9ee7282d145a53d1823}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}!set\-\_\-obs\-\_\-stddev@{set\-\_\-obs\-\_\-stddev}}
+\index{set\-\_\-obs\-\_\-stddev@{set\-\_\-obs\-\_\-stddev}!QUESO::InfiniteDimensionalLikelihoodBase@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}}
+\subsubsection[{set\-\_\-obs\-\_\-stddev}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base\-::set\-\_\-obs\-\_\-stddev (
+\begin{DoxyParamCaption}
+\item[{double}]{stddev}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_a54a923baa674e9ee7282d145a53d1823}
+
+
+Set the observation standard deviation. 
+
+
+
+Definition at line 38 of file Infinite\-Dimensional\-Likelihood\-Base.\-C.
+
+
+
+References \-\_\-obs\-\_\-stddev.
+
+
+\begin{DoxyCode}
+39 \{
+40   this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_aa98ee3e521c8ab194c091f64257e7423}{\_obs\_stddev} = stddev;
+41 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_aa98ee3e521c8ab194c091f64257e7423}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}!\-\_\-obs\-\_\-stddev@{\-\_\-obs\-\_\-stddev}}
+\index{\-\_\-obs\-\_\-stddev@{\-\_\-obs\-\_\-stddev}!QUESO::InfiniteDimensionalLikelihoodBase@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base}}
+\subsubsection[{\-\_\-obs\-\_\-stddev}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Likelihood\-Base\-::\-\_\-obs\-\_\-stddev\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_likelihood_base_aa98ee3e521c8ab194c091f64257e7423}
+
+
+Definition at line 61 of file Infinite\-Dimensional\-Likelihood\-Base.\-h.
+
+
+
+Referenced by obs\-\_\-stddev(), and set\-\_\-obs\-\_\-stddev().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{_infinite_dimensional_likelihood_base_8h}{Infinite\-Dimensional\-Likelihood\-Base.\-h}\item 
+src/core/src/\hyperlink{_infinite_dimensional_likelihood_base_8_c}{Infinite\-Dimensional\-Likelihood\-Base.\-C}\end{DoxyCompactItemize}

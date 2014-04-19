@@ -1,0 +1,669 @@
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table}{\section{Q\-U\-E\-S\-O\-:\-:Ascii\-Table$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_ascii_table}\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$}}
+}
+
+
+Class for reading A\-S\-C\-I\-I values from a table in a file.  
+
+
+
+
+{\ttfamily \#include $<$Ascii\-Table.\-h$>$}
+
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Ascii\-Table$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_ascii_table__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a4d856e0d046d823e906aa4448b5762f1}{Ascii\-Table} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&env, unsigned int \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa764ef68ef1d2ed85a4b6bd4eb0d7b17}{num\-Rows}, unsigned int num\-Extra\-Cols, const std\-::vector$<$ bool $>$ $\ast$extra\-Col\-Is\-String, const std\-::string \&file\-Name)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ff35b2d6920dc9e13dd8966a76beb10}{$\sim$\-Ascii\-Table} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Property methods}\par
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa764ef68ef1d2ed85a4b6bd4eb0d7b17}{num\-Rows} () const 
+\begin{DoxyCompactList}\small\item\em Returns the number of rows in the table. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a428f547b9f5007e673245c8d2d0be387}{num\-Cols} () const 
+\begin{DoxyCompactList}\small\item\em Returns the number of columns in the table. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ std\-::string $>$ \& \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a8918d88137629c62e2408c164795479c}{string\-Column} (unsigned int j) const 
+\begin{DoxyCompactList}\small\item\em Returns the string stored in column {\ttfamily j}. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a267e1834e60c5df459122b2509e4ca9d}{double\-Column} (unsigned int j) const 
+\begin{DoxyCompactList}\small\item\em Returns the value (double) stored in column {\ttfamily j}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a4e58f0ab57b3af3aa4333955175abcf3}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em Prints the table. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_map}{Map} $\ast$ \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa42459bf69563f6606103c5f6da60a5a}{new\-Map} ()
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a008557a6d782f76a51e72c77b3136322}{read\-Columns\-From\-File} ()
+\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{class_q_u_e_s_o_1_1_map}{Map} $\ast$ \hyperlink{class_q_u_e_s_o_1_1_ascii_table_abb01e65369e9ad3e43e788d8ed2d2415}{new\-Map} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\-\_\-env}
+\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a4f772a7719d36cb0a0908eed37bd1deb}{m\-\_\-num\-Rows}
+\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{m\-\_\-num\-Cols}
+\item 
+std\-::vector$<$ bool $>$ \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a1c84e461d75e0846c156617f222c2ec3}{m\-\_\-col\-Is\-String}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_ascii_table_adb7e4bac907ef1c93d745f02ea9f15d2}{m\-\_\-file\-Name}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_map}{Map} $\ast$ \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a7771fe0a08a93abdeadcc5e55e350eea}{m\-\_\-map}
+\item 
+std\-::vector$<$ \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}\\*
+$<$ std\-::string $>$ $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\-\_\-string\-Columns}
+\item 
+std\-::vector$<$ V $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\-\_\-double\-Columns}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$}
+
+Class for reading A\-S\-C\-I\-I values from a table in a file. 
+
+Definition at line 42 of file Ascii\-Table.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_a4d856e0d046d823e906aa4448b5762f1}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!Ascii\-Table@{Ascii\-Table}}
+\index{Ascii\-Table@{Ascii\-Table}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{Ascii\-Table}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::{\bf Ascii\-Table} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{unsigned int}]{num\-Rows, }
+\item[{unsigned int}]{num\-Extra\-Cols, }
+\item[{const std\-::vector$<$ bool $>$ $\ast$}]{extra\-Col\-Is\-String, }
+\item[{const std\-::string \&}]{file\-Name}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_ascii_table_a4d856e0d046d823e906aa4448b5762f1}
+
+
+Default constructor. 
+
+This constructor reads the data from file {\ttfamily file\-Name}, checking whether the data in each column of the file is or not a string, and whether the data in each row is or not valid. 
+
+Definition at line 31 of file Ascii\-Table.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$\-::m\-\_\-col\-Is\-String, Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$\-::m\-\_\-double\-Columns, Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$\-::m\-\_\-num\-Cols, Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$\-::m\-\_\-string\-Columns, Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$\-::read\-Columns\-From\-File(), and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+37   :
+38   \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}          (env),
+39   \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a4f772a7719d36cb0a0908eed37bd1deb}{m\_numRows}      (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa764ef68ef1d2ed85a4b6bd4eb0d7b17}{numRows}),
+40   \hyperlink{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{m\_numCols}      (1+numExtraCols),
+41   \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a1c84e461d75e0846c156617f222c2ec3}{m\_colIsString}  (1,\textcolor{keyword}{true}),
+42   \hyperlink{class_q_u_e_s_o_1_1_ascii_table_adb7e4bac907ef1c93d745f02ea9f15d2}{m\_fileName}     (fileName),
+43   \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a7771fe0a08a93abdeadcc5e55e350eea}{m\_map}          (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa42459bf69563f6606103c5f6da60a5a}{newMap}()),
+44   \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}(0),
+45   \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}(0)
+46 \{
+47   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+48     *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering AsciiTable<V,M>::constructor()..."}
+49                             << std::endl;
+50   \}
+51 
+52   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{m\_numCols} > 1) \{
+53     \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a1c84e461d75e0846c156617f222c2ec3}{m\_colIsString}.resize(\hyperlink{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{m\_numCols},\textcolor{keyword}{false});
+54     \textcolor{keywordflow}{if} (extraColIsString == NULL) \{
+55       \textcolor{comment}{// Nothing extra needs to be done}
+56     \}
+57     \textcolor{keywordflow}{else} \{
+58       \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} maxJ = std::min(numExtraCols,(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) extraColIsString->size());
+59       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < maxJ; ++j) \{
+60         \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a1c84e461d75e0846c156617f222c2ec3}{m\_colIsString}[1+j] = (*extraColIsString)[j];
+61       \}
+62     \}
+63   \}
+64   \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}.resize(\hyperlink{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{m\_numCols},NULL);
+65   \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}.resize(\hyperlink{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{m\_numCols},NULL);
+66   \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a008557a6d782f76a51e72c77b3136322}{readColumnsFromFile}();
+67 
+68   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+69     *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving AsciiTable<V,M>::constructor()"}
+70                             << std::endl;
+71   \}
+72 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_a2ff35b2d6920dc9e13dd8966a76beb10}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!$\sim$\-Ascii\-Table@{$\sim$\-Ascii\-Table}}
+\index{$\sim$\-Ascii\-Table@{$\sim$\-Ascii\-Table}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{$\sim$\-Ascii\-Table}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::$\sim${\bf Ascii\-Table} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_ascii_table_a2ff35b2d6920dc9e13dd8966a76beb10}
+
+
+Destructor. 
+
+
+
+Definition at line 76 of file Ascii\-Table.\-C.
+
+
+\begin{DoxyCode}
+77 \{
+78   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}.size(); ++j) \{
+79     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}[j]) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}[j];
+80   \}
+81   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}.size(); ++j) \{
+82     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}[j]) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}[j];
+83   \}
+84 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_a267e1834e60c5df459122b2509e4ca9d}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!double\-Column@{double\-Column}}
+\index{double\-Column@{double\-Column}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{double\-Column}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::double\-Column (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{j}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_ascii_table_a267e1834e60c5df459122b2509e4ca9d}
+
+
+Returns the value (double) stored in column {\ttfamily j}. 
+
+
+
+Definition at line 299 of file Ascii\-Table.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+300 \{
+301   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(j >= \hyperlink{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{m\_numCols},
+302                       \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+303                       \textcolor{stringliteral}{"AsciiTable<V,M>::doubleColumn()"},
+304                       \textcolor{stringliteral}{"invalid j"});
+305 
+306   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}[j] == NULL,
+307                       \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+308                       \textcolor{stringliteral}{"AsciiTable<V,M>::doubleColumn()"},
+309                       \textcolor{stringliteral}{"double column is not ready"});
+310 
+311   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}[j];
+312 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_abb01e65369e9ad3e43e788d8ed2d2415}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!new\-Map@{new\-Map}}
+\index{new\-Map@{new\-Map}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{new\-Map}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ {\bf Map} $\ast$ {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ class {\bf Gsl\-Vector}, class {\bf Gsl\-Matrix} $>$\-::new\-Map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_ascii_table_abb01e65369e9ad3e43e788d8ed2d2415}
+
+
+Definition at line 31 of file Gsl\-Ascii\-Table.\-C.
+
+
+\begin{DoxyCode}
+32 \{
+33   \textcolor{keywordflow}{return} \textcolor{keyword}{new} Map(\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a4f772a7719d36cb0a0908eed37bd1deb}{m\_numRows},0,\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a824458f0d045db251d982ad4c75a4b76}{selfComm}());
+34 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_aa42459bf69563f6606103c5f6da60a5a}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!new\-Map@{new\-Map}}
+\index{new\-Map@{new\-Map}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{new\-Map}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Map}$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::new\-Map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_ascii_table_aa42459bf69563f6606103c5f6da60a5a}
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_a428f547b9f5007e673245c8d2d0be387}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!num\-Cols@{num\-Cols}}
+\index{num\-Cols@{num\-Cols}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{num\-Cols}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::num\-Cols (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_ascii_table_a428f547b9f5007e673245c8d2d0be387}
+
+
+Returns the number of columns in the table. 
+
+
+
+Definition at line 275 of file Ascii\-Table.\-C.
+
+
+\begin{DoxyCode}
+276 \{
+277   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{m\_numCols};
+278 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_aa764ef68ef1d2ed85a4b6bd4eb0d7b17}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!num\-Rows@{num\-Rows}}
+\index{num\-Rows@{num\-Rows}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{num\-Rows}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::num\-Rows (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_ascii_table_aa764ef68ef1d2ed85a4b6bd4eb0d7b17}
+
+
+Returns the number of rows in the table. 
+
+
+
+Definition at line 268 of file Ascii\-Table.\-C.
+
+
+\begin{DoxyCode}
+269 \{
+270   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a4f772a7719d36cb0a0908eed37bd1deb}{m\_numRows};
+271 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_a4e58f0ab57b3af3aa4333955175abcf3}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!print@{print}}
+\index{print@{print}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_ascii_table_a4e58f0ab57b3af3aa4333955175abcf3}
+
+
+Prints the table. 
+
+
+
+Definition at line 317 of file Ascii\-Table.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+318 \{
+319   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < \hyperlink{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{m\_numCols}; ++j) \{
+320     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}[j] != NULL) && (
+      \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}[j] != NULL),
+321                         \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+322                         \textcolor{stringliteral}{"AsciiTable<V,M>::print()"},
+323                         \textcolor{stringliteral}{"column is not null on both possible ways"});
+324     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}[j] == NULL) && (
+      \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}[j] == NULL),
+325                         \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+326                         \textcolor{stringliteral}{"AsciiTable<V,M>::print()"},
+327                         \textcolor{stringliteral}{"column is null on both possible ways"});
+328 
+329     os << \textcolor{stringliteral}{"\(\backslash\)nContents of table '"} << \hyperlink{class_q_u_e_s_o_1_1_ascii_table_adb7e4bac907ef1c93d745f02ea9f15d2}{m\_fileName}
+330        << \textcolor{stringliteral}{"', column "}            << j
+331        << \textcolor{stringliteral}{":"}
+332        << std::endl;
+333     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}[j] != NULL) \{
+334       os << *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}[j];
+335       \textcolor{comment}{//DistArray<std::string>& arrayOfStrings = *m\_stringColumns[j];}
+336       \textcolor{comment}{//for (unsigned int i = 0; i < m\_numRows; ++i) \{}
+337       \textcolor{comment}{//  os << arrayOfStrings(i,0)}
+338       \textcolor{comment}{//     << std::endl;}
+339       \textcolor{comment}{//\}}
+340     \}
+341     \textcolor{keywordflow}{else} \{
+342       os << *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}[j];
+343     \}
+344     os << std::endl;
+345   \}
+346 
+347   \textcolor{keywordflow}{return};
+348 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_a008557a6d782f76a51e72c77b3136322}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!read\-Columns\-From\-File@{read\-Columns\-From\-File}}
+\index{read\-Columns\-From\-File@{read\-Columns\-From\-File}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{read\-Columns\-From\-File}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::read\-Columns\-From\-File (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_ascii_table_a008557a6d782f76a51e72c77b3136322}
+
+
+Definition at line 89 of file Ascii\-Table.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Misc\-Read\-Chars\-And\-Double\-From\-File(), Q\-U\-E\-S\-O\-::\-Misc\-Read\-String\-And\-Double\-From\-File(), and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$\-::\-Ascii\-Table().
+
+
+\begin{DoxyCode}
+90 \{
+91   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} maxCharsPerLine = 512;
+92 
+93   std::ifstream ifs(\hyperlink{class_q_u_e_s_o_1_1_ascii_table_adb7e4bac907ef1c93d745f02ea9f15d2}{m\_fileName}.c\_str());
+94   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(ifs.is\_open() == \textcolor{keyword}{false},
+95                       \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+96                       \textcolor{stringliteral}{"AsciiTable<V,M>::readColumnsFromFile()"},
+97                       \textcolor{stringliteral}{"file was not found"});
+98 
+99   \textcolor{comment}{// Determine number of lines}
+100   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numLines = std::count(std::istreambuf\_iterator<char>(ifs),
+101                                      std::istreambuf\_iterator<char>(),
+102                                      \textcolor{charliteral}{'\(\backslash\)n'});
+103 
+104   \textcolor{comment}{// Determine number of valid lines}
+105   \textcolor{keywordtype}{int} iRC;
+106   ifs.seekg(0,std::ios\_base::beg);
+107   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} lineId = 0;
+108   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numValidLines = 0;
+109   std::string tempString;
+110   \textcolor{keywordflow}{while} ((lineId < numLines) && (ifs.eof() == \textcolor{keyword}{false})) \{
+111     iRC = \hyperlink{namespace_q_u_e_s_o_af0fc61c58d0ca592fa172eeab540d39c}{MiscReadStringAndDoubleFromFile}(ifs,tempString,NULL);
+112     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(iRC,
+113                         \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+114                         \textcolor{stringliteral}{"AsciiTable<V,M>::readColumnsFromFile()"},
+115                         \textcolor{stringliteral}{"failed reading during the determination of the number of valid lines"});
+116     \textcolor{comment}{//*m\_env.subDisplayFile() << "lineId = "          << lineId}
+117     \textcolor{comment}{//                        << ", numValidLines = " << numValidLines}
+118     \textcolor{comment}{//                        << ", tempString = "    << tempString}
+119     \textcolor{comment}{//                        << std::endl;}
+120     \textcolor{keywordflow}{if} (tempString[0] != \textcolor{charliteral}{'#'}) numValidLines++;
+121     lineId++;
+122     ifs.ignore(maxCharsPerLine,\textcolor{charliteral}{'\(\backslash\)n'});
+123   \}
+124   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(lineId != numLines,
+125                       \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+126                       \textcolor{stringliteral}{"AsciiTable<V,M>::readColumnsFromFile()"},
+127                       \textcolor{stringliteral}{"the first number of lines read is nonconsistent"});
+128   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a4f772a7719d36cb0a0908eed37bd1deb}{m\_numRows} != numValidLines) \{
+129     \textcolor{keywordtype}{char} errorExplanation[512];
+130     sprintf(errorExplanation,\textcolor{stringliteral}{"number of valid lines (%u) in ASCII table file does not match number of rows
+       (%u)"},numValidLines,\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a4f772a7719d36cb0a0908eed37bd1deb}{m\_numRows});
+131     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+132                         \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+133                         \textcolor{stringliteral}{"AsciiTable<V,M>::readColumnsFromFile()"},
+134                         errorExplanation);
+135   \}
+136 
+137   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+138     *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"ASCII table file '"}    << 
+      \hyperlink{class_q_u_e_s_o_1_1_ascii_table_adb7e4bac907ef1c93d745f02ea9f15d2}{m\_fileName}
+139                             << \textcolor{stringliteral}{"' has "}                << numLines
+140                             << \textcolor{stringliteral}{" lines and specifies "} << numValidLines
+141                             << \textcolor{stringliteral}{" valid lines."}
+142                             << std::endl;
+143   \}
+144 
+145   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j=0; j < \hyperlink{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{m\_numCols}; ++j) \{
+146     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a1c84e461d75e0846c156617f222c2ec3}{m\_colIsString}[j]) \{
+147       \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+148         *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Column j = "} << j
+149                                 << \textcolor{stringliteral}{" is a columns of strings"}
+150                                 << std::endl;
+151       \}
+152       \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}[j] = \textcolor{keyword}{new} DistArray<std::string>(*\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a7771fe0a08a93abdeadcc5e55e350eea}{m\_map},1);
+153     \}
+154     \textcolor{keywordflow}{else} \{
+155       \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+156         *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Column j = "} << j
+157                                 << \textcolor{stringliteral}{" is a columns of doubles"}
+158                                 << std::endl;
+159       \}
+160       \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}[j] = \textcolor{keyword}{new} V(\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env},*\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a7771fe0a08a93abdeadcc5e55e350eea}{m\_map});
+161     \}
+162   \}
+163 
+164   \textcolor{comment}{// Read file until End Of File character is reached}
+165   ifs.seekg(0,std::ios\_base::beg);
+166   lineId = 0;
+167   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} validLineId = 0;
+168   std::string tmpString;
+169   \textcolor{keywordflow}{while} ((lineId < numLines) && (ifs.eof() == \textcolor{keyword}{false})) \{
+170     \textcolor{comment}{//*m\_env.subDisplayFile() << "Beginning read of line (in ASCII table file) of id = " << lineId <<
+       std::endl;}
+171     \textcolor{keywordtype}{bool} endOfLineAchieved = \textcolor{keyword}{false};
+172 
+173     iRC = \hyperlink{namespace_q_u_e_s_o_a575d3153d82b7df3d78ad5cfbf2b83b7}{MiscReadCharsAndDoubleFromFile}(ifs, tmpString, NULL, 
+      endOfLineAchieved);
+174     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(iRC,
+175                         \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+176                         \textcolor{stringliteral}{"AsciiTable<V,M>::readColumnsFromFile()"},
+177                         \textcolor{stringliteral}{"failed reading a first column during the valid lines reading loop"});
+178 
+179     lineId++;
+180     \textcolor{keywordflow}{if} (tmpString[0] == \textcolor{charliteral}{'#'}) \{
+181       \textcolor{keywordflow}{if} (!endOfLineAchieved) ifs.ignore(maxCharsPerLine,\textcolor{charliteral}{'\(\backslash\)n'});
+182       \textcolor{keywordflow}{continue};
+183     \}
+184 
+185     DistArray<std::string>& firstColumn = *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}[0];
+186     firstColumn(validLineId,0) = tmpString;
+187 
+188     \textcolor{comment}{// Check 'validLineId' before setting one more valid line}
+189     \textcolor{keywordflow}{if} (validLineId >= numValidLines) \{
+190       \textcolor{keywordtype}{char} errorExplanation[512];
+191       sprintf(errorExplanation,\textcolor{stringliteral}{"validLineId (%u) got too large during reading of ASCII table file"},
+      validLineId);
+192       \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+193                           \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+194                           \textcolor{stringliteral}{"AsciiTable<V,M>::readColumnsFromFile()"},
+195                           errorExplanation);
+196     \}
+197 
+198     \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+199       *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Just read a string: table["} << validLineId
+200                               << \textcolor{stringliteral}{","}                          << 0 \textcolor{comment}{// j=0}
+201                               << \textcolor{stringliteral}{"] = "}                       << firstColumn(validLineId,0)
+202                               << std::endl;
+203     \}
+204 
+205     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j=1; j < \hyperlink{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{m\_numCols}; ++j) \{
+206       \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(endOfLineAchieved,
+207                           \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+208                           \textcolor{stringliteral}{"AsciiTable<V,M>::readColumnsFromFile()"},
+209                           \textcolor{stringliteral}{"failed reading all columns in a valid line"});
+210       \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a1c84e461d75e0846c156617f222c2ec3}{m\_colIsString}[j]) \{
+211         DistArray<std::string>& arrayOfStrings = *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}[j];
+212         iRC = \hyperlink{namespace_q_u_e_s_o_a575d3153d82b7df3d78ad5cfbf2b83b7}{MiscReadCharsAndDoubleFromFile}(ifs, arrayOfStrings(validLineId,
+      0), NULL, endOfLineAchieved);
+213         \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(iRC,
+214                             \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+215                             \textcolor{stringliteral}{"AsciiTable<V,M>::readColumnsFromFile()"},
+216                             \textcolor{stringliteral}{"failed reading a string column in a valid line"});
+217         \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+218           *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Just read a string: table["} << validLineId
+219                                   << \textcolor{stringliteral}{","}                          << j
+220                                   << \textcolor{stringliteral}{"] = "}                       << arrayOfStrings(validLineId,0)
+221                                   << std::endl;
+222         \}
+223       \}
+224       \textcolor{keywordflow}{else} \{
+225         iRC = \hyperlink{namespace_q_u_e_s_o_a575d3153d82b7df3d78ad5cfbf2b83b7}{MiscReadCharsAndDoubleFromFile}(ifs, tmpString, &(*
+      \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}[j])[validLineId], endOfLineAchieved);
+226         \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(iRC,
+227                             \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+228                             \textcolor{stringliteral}{"AsciiTable<V,M>::readColumnsFromFile()"},
+229                             \textcolor{stringliteral}{"failed reading a double column in a valid line"});
+230         \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+231           *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Just read a double: table["} << validLineId
+232                                   << \textcolor{stringliteral}{","}                          << j
+233                                   << \textcolor{stringliteral}{"] = "}                       << (*
+      \hyperlink{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{m\_doubleColumns}[j])[validLineId]
+234                                   << std::endl;
+235         \}
+236       \}
+237     \}
+238     \textcolor{keywordflow}{if} (!endOfLineAchieved) ifs.ignore(maxCharsPerLine,\textcolor{charliteral}{'\(\backslash\)n'});
+239 
+240     validLineId++;
+241   \}
+242 
+243   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(lineId != numLines,
+244                       \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+245                       \textcolor{stringliteral}{"AsciiTable<V,M>::readColumnsFromFile()"},
+246                       \textcolor{stringliteral}{"the second number of lines read is not consistent"});
+247   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(validLineId != numValidLines,
+248                       \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+249                       \textcolor{stringliteral}{"AsciiTable<V,M>::readColumnsFromFile()"},
+250                       \textcolor{stringliteral}{"the number of valid lines just read is not consistent"});
+251 
+252   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5) \{
+253     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+254       *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Finished reading table '"} << 
+      \hyperlink{class_q_u_e_s_o_1_1_ascii_table_adb7e4bac907ef1c93d745f02ea9f15d2}{m\_fileName}
+255                               << \textcolor{stringliteral}{"'. Its contents per column are:"}
+256                               << std::endl;
+257       *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << *\textcolor{keyword}{this}; \textcolor{comment}{// FIX ME: output might need to be in parallel}
+258       *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << std::endl;
+259     \}    
+260   \}
+261 
+262   \textcolor{keywordflow}{return};
+263 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_a8918d88137629c62e2408c164795479c}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!string\-Column@{string\-Column}}
+\index{string\-Column@{string\-Column}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{string\-Column}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Dist\-Array}$<$ std\-::string $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::string\-Column (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{j}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_ascii_table_a8918d88137629c62e2408c164795479c}
+
+
+Returns the string stored in column {\ttfamily j}. 
+
+
+
+Definition at line 282 of file Ascii\-Table.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+283 \{
+284   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(j >= \hyperlink{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{m\_numCols},
+285                       \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+286                       \textcolor{stringliteral}{"AsciiTable<V,M>::stringColumn()"},
+287                       \textcolor{stringliteral}{"invalid j"});
+288 
+289   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}[j] == NULL,
+290                       \hyperlink{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+291                       \textcolor{stringliteral}{"AsciiTable<V,M>::stringColumn()"},
+292                       \textcolor{stringliteral}{"string column is not ready"});
+293 
+294   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{m\_stringColumns}[j];
+295 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_a1c84e461d75e0846c156617f222c2ec3}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!m\-\_\-col\-Is\-String@{m\-\_\-col\-Is\-String}}
+\index{m\-\_\-col\-Is\-String@{m\-\_\-col\-Is\-String}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{m\-\_\-col\-Is\-String}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ std\-::vector$<$bool$>$ {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::m\-\_\-col\-Is\-String\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_ascii_table_a1c84e461d75e0846c156617f222c2ec3}
+
+
+Definition at line 85 of file Ascii\-Table.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$\-::\-Ascii\-Table().
+
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!m\-\_\-double\-Columns@{m\-\_\-double\-Columns}}
+\index{m\-\_\-double\-Columns@{m\-\_\-double\-Columns}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{m\-\_\-double\-Columns}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ std\-::vector$<$V$\ast$$>$ {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::m\-\_\-double\-Columns\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_ascii_table_aa25a1d14c88cd5de341c43e052622f51}
+
+
+Definition at line 90 of file Ascii\-Table.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$\-::\-Ascii\-Table().
+
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_ascii_table_a2ba907db652aa02d53d493980d7a3753}
+
+
+Definition at line 82 of file Ascii\-Table.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$\-::\-Ascii\-Table().
+
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_adb7e4bac907ef1c93d745f02ea9f15d2}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!m\-\_\-file\-Name@{m\-\_\-file\-Name}}
+\index{m\-\_\-file\-Name@{m\-\_\-file\-Name}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{m\-\_\-file\-Name}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ std\-::string {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::m\-\_\-file\-Name\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_ascii_table_adb7e4bac907ef1c93d745f02ea9f15d2}
+
+
+Definition at line 86 of file Ascii\-Table.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_a7771fe0a08a93abdeadcc5e55e350eea}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!m\-\_\-map@{m\-\_\-map}}
+\index{m\-\_\-map@{m\-\_\-map}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{m\-\_\-map}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Map}$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::m\-\_\-map\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_ascii_table_a7771fe0a08a93abdeadcc5e55e350eea}
+
+
+Definition at line 88 of file Ascii\-Table.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!m\-\_\-num\-Cols@{m\-\_\-num\-Cols}}
+\index{m\-\_\-num\-Cols@{m\-\_\-num\-Cols}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{m\-\_\-num\-Cols}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::m\-\_\-num\-Cols\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_ascii_table_ada886c8db06d2d618f2898ad2cf2bd87}
+
+
+Definition at line 84 of file Ascii\-Table.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$\-::\-Ascii\-Table().
+
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_a4f772a7719d36cb0a0908eed37bd1deb}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!m\-\_\-num\-Rows@{m\-\_\-num\-Rows}}
+\index{m\-\_\-num\-Rows@{m\-\_\-num\-Rows}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{m\-\_\-num\-Rows}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::m\-\_\-num\-Rows\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_ascii_table_a4f772a7719d36cb0a0908eed37bd1deb}
+
+
+Definition at line 83 of file Ascii\-Table.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}{\index{Q\-U\-E\-S\-O\-::\-Ascii\-Table@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}!m\-\_\-string\-Columns@{m\-\_\-string\-Columns}}
+\index{m\-\_\-string\-Columns@{m\-\_\-string\-Columns}!QUESO::AsciiTable@{Q\-U\-E\-S\-O\-::\-Ascii\-Table}}
+\subsubsection[{m\-\_\-string\-Columns}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ std\-::vector$<${\bf Dist\-Array}$<$std\-::string$>$$\ast$$>$ {\bf Q\-U\-E\-S\-O\-::\-Ascii\-Table}$<$ V, M $>$\-::m\-\_\-string\-Columns\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_ascii_table_a14ba55d29e9a4ddeb14cd5acd8a27268}
+
+
+Definition at line 89 of file Ascii\-Table.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Ascii\-Table$<$ V, M $>$\-::\-Ascii\-Table().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/misc/inc/\hyperlink{_ascii_table_8h}{Ascii\-Table.\-h}\item 
+src/misc/src/\hyperlink{_ascii_table_8_c}{Ascii\-Table.\-C}\end{DoxyCompactItemize}

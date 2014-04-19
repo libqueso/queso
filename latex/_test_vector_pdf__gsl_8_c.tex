@@ -1,0 +1,324 @@
+\hypertarget{_test_vector_pdf__gsl_8_c}{\section{src/stats/test/\-Test\-Vector\-Pdf\-\_\-gsl.C File Reference}
+\label{_test_vector_pdf__gsl_8_c}\index{src/stats/test/\-Test\-Vector\-Pdf\-\_\-gsl.\-C@{src/stats/test/\-Test\-Vector\-Pdf\-\_\-gsl.\-C}}
+}
+{\ttfamily \#include $<$boost/test/included/unit\-\_\-test.\-hpp$>$}\\*
+{\ttfamily \#include $<$boost/test/floating\-\_\-point\-\_\-comparison.\-hpp$>$}\\*
+{\ttfamily \#include $<$queso/\-Vector\-Space.\-h$>$}\\*
+{\ttfamily \#include $<$queso/\-Vector\-Pdf.\-h$>$}\\*
+{\ttfamily \#include $<$queso/\-Gsl\-Matrix.\-h$>$}\\*
+Include dependency graph for Test\-Vector\-Pdf\-\_\-gsl.\-C\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_test_vector_pdf__gsl_8_c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_test_vector_pdf__gsl_8_c_a6b2a3852db8bb19ab6909bac01859985}{B\-O\-O\-S\-T\-\_\-\-T\-E\-S\-T\-\_\-\-M\-O\-D\-U\-L\-E}
+\item 
+\#define \hyperlink{_test_vector_pdf__gsl_8_c_a598a3330b3c21701223ee0ca14316eca}{P\-I}~3.\-14159265358979323846
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{_test_vector_pdf__gsl_8_c_aed6db103c62b2cc54f603fc609c15b9b}{B\-O\-O\-S\-T\-\_\-\-A\-U\-T\-O\-\_\-\-T\-E\-S\-T\-\_\-\-C\-A\-S\-E} (test\-\_\-uq\-Gaussian\-Vector\-Pdf)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_test_vector_pdf__gsl_8_c_a6b2a3852db8bb19ab6909bac01859985}{\index{Test\-Vector\-Pdf\-\_\-gsl.\-C@{Test\-Vector\-Pdf\-\_\-gsl.\-C}!B\-O\-O\-S\-T\-\_\-\-T\-E\-S\-T\-\_\-\-M\-O\-D\-U\-L\-E@{B\-O\-O\-S\-T\-\_\-\-T\-E\-S\-T\-\_\-\-M\-O\-D\-U\-L\-E}}
+\index{B\-O\-O\-S\-T\-\_\-\-T\-E\-S\-T\-\_\-\-M\-O\-D\-U\-L\-E@{B\-O\-O\-S\-T\-\_\-\-T\-E\-S\-T\-\_\-\-M\-O\-D\-U\-L\-E}!TestVectorPdf_gsl.C@{Test\-Vector\-Pdf\-\_\-gsl.\-C}}
+\subsubsection[{B\-O\-O\-S\-T\-\_\-\-T\-E\-S\-T\-\_\-\-M\-O\-D\-U\-L\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-O\-O\-S\-T\-\_\-\-T\-E\-S\-T\-\_\-\-M\-O\-D\-U\-L\-E}}\label{_test_vector_pdf__gsl_8_c_a6b2a3852db8bb19ab6909bac01859985}
+
+
+Definition at line 1 of file Test\-Vector\-Pdf\-\_\-gsl.\-C.
+
+\hypertarget{_test_vector_pdf__gsl_8_c_a598a3330b3c21701223ee0ca14316eca}{\index{Test\-Vector\-Pdf\-\_\-gsl.\-C@{Test\-Vector\-Pdf\-\_\-gsl.\-C}!P\-I@{P\-I}}
+\index{P\-I@{P\-I}!TestVectorPdf_gsl.C@{Test\-Vector\-Pdf\-\_\-gsl.\-C}}
+\subsubsection[{P\-I}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-I~3.\-14159265358979323846}}\label{_test_vector_pdf__gsl_8_c_a598a3330b3c21701223ee0ca14316eca}
+
+
+Definition at line 9 of file Test\-Vector\-Pdf\-\_\-gsl.\-C.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{_test_vector_pdf__gsl_8_c_aed6db103c62b2cc54f603fc609c15b9b}{\index{Test\-Vector\-Pdf\-\_\-gsl.\-C@{Test\-Vector\-Pdf\-\_\-gsl.\-C}!B\-O\-O\-S\-T\-\_\-\-A\-U\-T\-O\-\_\-\-T\-E\-S\-T\-\_\-\-C\-A\-S\-E@{B\-O\-O\-S\-T\-\_\-\-A\-U\-T\-O\-\_\-\-T\-E\-S\-T\-\_\-\-C\-A\-S\-E}}
+\index{B\-O\-O\-S\-T\-\_\-\-A\-U\-T\-O\-\_\-\-T\-E\-S\-T\-\_\-\-C\-A\-S\-E@{B\-O\-O\-S\-T\-\_\-\-A\-U\-T\-O\-\_\-\-T\-E\-S\-T\-\_\-\-C\-A\-S\-E}!TestVectorPdf_gsl.C@{Test\-Vector\-Pdf\-\_\-gsl.\-C}}
+\subsubsection[{B\-O\-O\-S\-T\-\_\-\-A\-U\-T\-O\-\_\-\-T\-E\-S\-T\-\_\-\-C\-A\-S\-E}]{\setlength{\rightskip}{0pt plus 5cm}B\-O\-O\-S\-T\-\_\-\-A\-U\-T\-O\-\_\-\-T\-E\-S\-T\-\_\-\-C\-A\-S\-E (
+\begin{DoxyParamCaption}
+\item[{test\-\_\-uq\-Gaussian\-Vector\-Pdf}]{}
+\end{DoxyParamCaption}
+)}}\label{_test_vector_pdf__gsl_8_c_aed6db103c62b2cc54f603fc609c15b9b}
+
+
+Definition at line 13 of file Test\-Vector\-Pdf\-\_\-gsl.\-C.
+
+
+\begin{DoxyCode}
+14 \{
+15   \textcolor{comment}{// Initialize}
+16   MPI\_Init(NULL, NULL);
+17   uqFullEnvironment env;
+18   uqVectorSpace<uqGslVector, uqGslMatrix> domainSpace(env, \textcolor{stringliteral}{"test\_space"}, 2, NULL);
+19   uqMap eMap(2, 0, env.comm());
+20 
+21   uqGslVector domainMinVal(env, eMap, -1e30);
+22   uqGslVector domainMaxVal(env, eMap,  1e30);
+23 
+24   uqGaussianVectorPdf<uqGslVector, uqGslMatrix>* gaussianPdf;
+25   \textcolor{keywordtype}{double} tolClose = 1e-13, tolSmall = 1e-16;
+26   
+27   \textcolor{comment}{//***********************************************************************}
+28   \textcolor{comment}{// Tests for diagonal covariance matrix}
+29   \textcolor{comment}{// NOTE: distribution is not normalized}
+30   \textcolor{comment}{//***********************************************************************}
+31 
+32   \textcolor{comment}{// mean = [0; 0], var = [1; 1]}
+33   uqGslVector expectedVal(env, eMap, 0.0);
+34   uqGslVector varianceVal(env, eMap, 1.0);
+35   uqGslVector testValues(env, eMap, 0.0);
+36 
+37   gaussianPdf = \textcolor{keyword}{new} uqGaussianVectorPdf<uqGslVector, uqGslMatrix>(\textcolor{stringliteral}{"test\_pdf"}, domainSpace, domainMinVal, 
+38                                                                                  domainMaxVal, expectedVal,
+       varianceVal);
+39 
+40   testValues[0] = testValues[1] = 0.0;
+41   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), 1.0, tolClose);
+42   BOOST\_REQUIRE\_SMALL(gaussianPdf->minus2LnDensity(testValues),    tolSmall); \textcolor{comment}{// can't check close b/c
+       exact val = 0}
+43 
+44   testValues[0] = 1.0; testValues[1] = 1.0;
+45   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0), tolClose);
+46   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0 , tolClose);
+47 
+48   testValues[0] = 0.0; testValues[1] = 1.0;
+49   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-0.5), tolClose);
+50   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         1.0 , tolClose);
+51 
+52   testValues[0] = -1.0; testValues[1] = 1.0;
+53   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0), tolClose);
+54   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0 , tolClose);
+55 
+56   testValues[0] = -1.0; testValues[1] = 0.0;
+57   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-0.5), tolClose);
+58   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         1.0 , tolClose);
+59 
+60   testValues[0] = -1.0; testValues[1] = -1.0;
+61   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0), tolClose);
+62   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0 , tolClose);
+63 
+64   testValues[0] = 0.0; testValues[1] = -1.0;
+65   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-0.5), tolClose);
+66   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         1.0 , tolClose);
+67 
+68   testValues[0] = 1.0; testValues[1] = -1.0;
+69   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0), tolClose);
+70   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0 , tolClose);
+71 
+72   testValues[0] = 1.0; testValues[1] = 0.0;
+73   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-0.5), tolClose);
+74   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         1.0 , tolClose);
+75 
+76   \textcolor{keyword}{delete} gaussianPdf;
+77 
+78   \textcolor{comment}{// mean = [0; 0], var = [0.25; 0.5]}
+79   varianceVal[0] = 0.25; varianceVal[1] = 0.5;
+80 
+81   gaussianPdf = \textcolor{keyword}{new} uqGaussianVectorPdf<uqGslVector, uqGslMatrix>(\textcolor{stringliteral}{"test\_pdf"}, domainSpace, domainMinVal, 
+82                                                                                  domainMaxVal, expectedVal,
+       varianceVal);
+83   
+84   testValues[0] = testValues[1] = 0.0;
+85   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), 1.0, tolClose);
+86   BOOST\_REQUIRE\_SMALL(gaussianPdf->minus2LnDensity(testValues),    tolSmall); \textcolor{comment}{// can't check close b/c
+       exact val = 0}
+87 
+88   testValues[0] = 1.0; testValues[1] = 1.0;
+89   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-3.0), tolClose);
+90   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         6.0 , tolClose);
+91 
+92   testValues[0] = 0.0; testValues[1] = 1.0;
+93   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0), tolClose);
+94   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0 , tolClose);
+95 
+96   testValues[0] = -1.0; testValues[1] = 1.0;
+97   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-3.0), tolClose);
+98   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         6.0 , tolClose);
+99 
+100   testValues[0] = -1.0; testValues[1] = 0.0;
+101   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-2.0), tolClose);
+102   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         4.0 , tolClose);
+103 
+104   testValues[0] = -1.0; testValues[1] = -1.0;
+105   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-3.0), tolClose);
+106   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         6.0 , tolClose);
+107 
+108   testValues[0] = 0.0; testValues[1] = -1.0;
+109   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0), tolClose);
+110   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0 , tolClose);
+111 
+112   testValues[0] = 1.0; testValues[1] = -1.0;
+113   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-3.0), tolClose);
+114   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         6.0 , tolClose);
+115 
+116   testValues[0] = 1.0; testValues[1] = 0.0;
+117   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-2.0), tolClose);
+118   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         4.0 , tolClose);
+119 
+120   \textcolor{comment}{// mean = [1.0; -0.5], var = [0.25; 0.5]}
+121   expectedVal[0] = 1.0; expectedVal[1] = -0.5;
+122 
+123   gaussianPdf->updateExpectedValues(expectedVal); \textcolor{comment}{// just update expected value (don't reallocate
+       everything)}
+124 
+125   testValues[0] = 0.0; testValues[1] = 0.0;
+126   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-2.25), tolClose);
+127   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         4.5  , tolClose); 
+128 
+129   testValues[0] = 1.0; testValues[1] = 1.0;
+130   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-2.25), tolClose);
+131   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         4.5 , tolClose);
+132 
+133   testValues[0] = 0.0; testValues[1] = 1.0;
+134   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-4.25), tolClose);
+135   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         8.5  , tolClose);
+136 
+137   testValues[0] = -1.0; testValues[1] = 1.0;
+138   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-10.25), tolClose);
+139   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         20.5  , tolClose);
+140 
+141   testValues[0] = -1.0; testValues[1] = 0.0;
+142   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-8.25), tolClose);
+143   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),        16.5  , tolClose);
+144 
+145   testValues[0] = -1.0; testValues[1] = -1.0;
+146   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-8.25), tolClose);
+147   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),        16.5  , tolClose);
+148 
+149   testValues[0] = 0.0; testValues[1] = -1.0;
+150   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-2.25), tolClose);
+151   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         4.5  , tolClose);
+152 
+153   testValues[0] = 1.0; testValues[1] = -1.0;
+154   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-0.25), tolClose);
+155   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         0.5 , tolClose);
+156 
+157   testValues[0] = 1.0; testValues[1] = 0.0;
+158   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-0.25), tolClose);
+159   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         0.5  , tolClose);
+160 
+161   \textcolor{keyword}{delete} gaussianPdf;
+162 
+163   \textcolor{comment}{//***********************************************************************}
+164   \textcolor{comment}{// Tests for general covariance matrix}
+165   \textcolor{comment}{// NOTE: distribution is not normalized}
+166   \textcolor{comment}{//***********************************************************************}
+167   
+168   \textcolor{comment}{// mean = [0; 0], covar = [1, 0; 0, 1], i.e. same as first case for diagonal matrices}
+169   expectedVal[0] = expectedVal[1] = 0.0;
+170 
+171   uqGslMatrix covMatrix(env, eMap, 1.0);  \textcolor{comment}{// actually diagonal}
+172 
+173   gaussianPdf = \textcolor{keyword}{new} uqGaussianVectorPdf<uqGslVector, uqGslMatrix>(\textcolor{stringliteral}{"test\_pdf"}, domainSpace, domainMinVal, 
+174                                                                                  domainMaxVal, expectedVal,
+       covMatrix);
+175 
+176   testValues[0] = testValues[1] = 0.0;
+177   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), 1.0, tolClose);
+178   BOOST\_REQUIRE\_SMALL(gaussianPdf->minus2LnDensity(testValues),    tolSmall); \textcolor{comment}{// can't check close b/c
+       exact val = 0}
+179 
+180   testValues[0] = 1.0; testValues[1] = 1.0;
+181   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0), tolClose);
+182   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0 , tolClose);
+183 
+184   testValues[0] = 0.0; testValues[1] = 1.0;
+185   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-0.5), tolClose);
+186   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         1.0 , tolClose);
+187 
+188   testValues[0] = -1.0; testValues[1] = 1.0;
+189   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0), tolClose);
+190   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0 , tolClose);
+191 
+192   testValues[0] = -1.0; testValues[1] = 0.0;
+193   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-0.5), tolClose);
+194   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         1.0 , tolClose);
+195 
+196   testValues[0] = -1.0; testValues[1] = -1.0;
+197   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0), tolClose);
+198   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0 , tolClose);
+199 
+200   testValues[0] = 0.0; testValues[1] = -1.0;
+201   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-0.5), tolClose);
+202   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         1.0 , tolClose);
+203 
+204   testValues[0] = 1.0; testValues[1] = -1.0;
+205   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0), tolClose);
+206   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0 , tolClose);
+207 
+208   testValues[0] = 1.0; testValues[1] = 0.0;
+209   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-0.5), tolClose);
+210   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         1.0 , tolClose);
+211 
+212   \textcolor{comment}{//delete gaussianPdf;}
+213 
+214   \textcolor{comment}{// mean = [0, 0], covar = [2, 1; 1, 2];}
+215   covMatrix(0,0) = 2.0; covMatrix(0,1) = 1.0;
+216   covMatrix(1,0) = 1.0; covMatrix(1,1) = 2.0;
+217 
+218 \textcolor{comment}{//   gaussianPdf = new uqGaussianVectorPdf<uqGslVector, uqGslMatrix>("test\_pdf", domainSpace, domainMinVal,
+       }
+219 \textcolor{comment}{//                                                                               domainMaxVal, expectedVal,
+       covMatrix);}
+220 
+221   gaussianPdf->updateCovMatrix(covMatrix);
+222 
+223   testValues[0] = testValues[1] = 0.0;
+224   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), 1.0, tolClose);
+225   BOOST\_REQUIRE\_SMALL(gaussianPdf->minus2LnDensity(testValues),    tolSmall); \textcolor{comment}{// can't check close b/c
+       exact val = 0}
+226 
+227   testValues[0] = 1.0; testValues[1] = 1.0;
+228   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0/3.0), tolClose);
+229   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0/3.0 , tolClose);
+230 
+231   testValues[0] = 0.0; testValues[1] = 1.0;
+232   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0/3.0), tolClose);
+233   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0/3.0 , tolClose);
+234 
+235   testValues[0] = -1.0; testValues[1] = 1.0;
+236   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.0), tolClose);
+237   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         2.0 , tolClose);
+238 
+239   \textcolor{comment}{// mean = [1.0, -0.5], covar = [2, 1; 1, 2];}
+240   expectedVal[0] = 1.0; expectedVal[1] = -0.5;
+241 
+242   gaussianPdf->updateExpectedValues(expectedVal); \textcolor{comment}{// just update expected value (don't reallocate
+       everything)}
+243 
+244   testValues[0] = testValues[1] = 0.0;
+245   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-5.833333333333333e-01), tolClose);
+246   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         1.166666666666667e+00 , tolClose);
+247 
+248   testValues[0] = 1.0; testValues[1] = 1.0;
+249   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-0.75), tolClose);
+250   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         1.5 , tolClose);
+251 
+252   testValues[0] = 0.0; testValues[1] = 1.0;
+253   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-1.583333333333333e+00), tolClose);
+254   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         3.166666666666667e+00 , tolClose);
+255 
+256   testValues[0] = -1.0; testValues[1] = 1.0;
+257   BOOST\_REQUIRE\_CLOSE(gaussianPdf->actualDensity(testValues), std::exp(-3.083333333333333e+00), tolClose);
+258   BOOST\_REQUIRE\_CLOSE(gaussianPdf->minus2LnDensity(testValues),         6.166666666666666e+00 , tolClose);
+259 
+260   \textcolor{keyword}{delete} gaussianPdf;
+261 
+262   \textcolor{comment}{// Clean up}
+263   MPI\_Finalize();
+264 \}
+\end{DoxyCode}

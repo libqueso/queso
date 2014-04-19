@@ -1,0 +1,233 @@
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_function}{\section{Q\-U\-E\-S\-O\-:\-:Base\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_base_vector_function}\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}}
+}
+
+
+A templated (base) class for handling vector functions.  
+
+
+
+
+{\ttfamily \#include $<$Vector\-Function.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Base\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_vector_function__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Base\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_vector_function__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_function_a6f819f1f9adcf13e9ed4a35542aeff20}{Base\-Vector\-Function} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_function_af77b709d473f253e5c56aa620d5f3cb0}{domain\-Set}, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_function_aa3a070a86f7099f53a669f1aab547619}{image\-Set})
+\begin{DoxyCompactList}\small\item\em Default Constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_a25e2bf49649abce43b9390d7cfd04164}{$\sim$\-Base\-Vector\-Function} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_af77b709d473f253e5c56aa620d5f3cb0}{domain\-Set} () const 
+\begin{DoxyCompactList}\small\item\em Access to the protected attribute {\ttfamily m\-\_\-domain\-Set\-:} domain set of the vector function. It is an instance of the class \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_aa3a070a86f7099f53a669f1aab547619}{image\-Set} () const 
+\begin{DoxyCompactList}\small\item\em Access to the protected attribute {\ttfamily m\-\_\-image\-Set\-:} image set of the vector function/ It is an instance of the class \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_a7ecf6f9270dfd96812074c7ab4badd6e}{compute} (const P\-\_\-\-V \&domain\-Vector, const P\-\_\-\-V $\ast$domain\-Direction, Q\-\_\-\-V \&image\-Vector, \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$grad\-Vectors, \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ P\-\_\-\-M $\ast$ $>$ $\ast$hessian\-Matrices, \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$hessian\-Effects) const =0
+\begin{DoxyCompactList}\small\item\em Computes the image vector. See template specialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_abb5487a1874515b698a3d5ee82490881}{m\-\_\-env}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_aacf92c70a9f6d0a951943aa708b7cfa6}{m\-\_\-prefix}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_a485d4d016534371775bb2b00b5a9f4d3}{m\-\_\-domain\-Set}
+\begin{DoxyCompactList}\small\item\em Domain set of the vector function. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_a442585224e86695e302757c0fad17913}{m\-\_\-image\-Set}
+\begin{DoxyCompactList}\small\item\em Image set of the vector function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$class Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}
+
+A templated (base) class for handling vector functions. 
+
+This class allows the mathematical definition of a vector function such as\-: $ \mathbf{q}: B \subset R^n \rightarrow R^m $. It requires the specification of the domain $ B $, which is a subset of the vector space (set) $ R^n $, (and have already been introduced by the class \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}) and of the image set $ R^m $. 
+
+Definition at line 51 of file Vector\-Function.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_function_a6f819f1f9adcf13e9ed4a35542aeff20}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}!Base\-Vector\-Function@{Base\-Vector\-Function}}
+\index{Base\-Vector\-Function@{Base\-Vector\-Function}!QUESO::BaseVectorFunction@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}}
+\subsubsection[{Base\-Vector\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::{\bf Base\-Vector\-Function} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{domain\-Set, }
+\item[{const {\bf Vector\-Set}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \&}]{image\-Set}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_vector_function_a6f819f1f9adcf13e9ed4a35542aeff20}
+
+
+Default Constructor. 
+
+Instantiates an object of the class, i.\-e. a vector function, given a prefix, its domain and image. 
+
+Definition at line 33 of file Vector\-Function.\-C.
+
+
+\begin{DoxyCode}
+37   :
+38   \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_abb5487a1874515b698a3d5ee82490881}{m\_env}      (domainSet.\hyperlink{class_q_u_e_s_o_1_1_vector_set_aa0ed80853d166754ba6ed83e63e737aa}{env}()),
+39   \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_aacf92c70a9f6d0a951943aa708b7cfa6}{m\_prefix}   ((std::string)(prefix)+\textcolor{stringliteral}{"func\_"}),
+40   \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_a485d4d016534371775bb2b00b5a9f4d3}{m\_domainSet}(domainSet),
+41   \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_a442585224e86695e302757c0fad17913}{m\_imageSet} (imageSet)
+42 \{
+43 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_function_a25e2bf49649abce43b9390d7cfd04164}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}!$\sim$\-Base\-Vector\-Function@{$\sim$\-Base\-Vector\-Function}}
+\index{$\sim$\-Base\-Vector\-Function@{$\sim$\-Base\-Vector\-Function}!QUESO::BaseVectorFunction@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}}
+\subsubsection[{$\sim$\-Base\-Vector\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::$\sim${\bf Base\-Vector\-Function} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_function_a25e2bf49649abce43b9390d7cfd04164}
+
+
+Destructor. 
+
+
+
+Definition at line 47 of file Vector\-Function.\-C.
+
+
+\begin{DoxyCode}
+48 \{
+49 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_function_a7ecf6f9270dfd96812074c7ab4badd6e}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}!compute@{compute}}
+\index{compute@{compute}!QUESO::BaseVectorFunction@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}}
+\subsubsection[{compute}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::compute (
+\begin{DoxyParamCaption}
+\item[{const P\-\_\-\-V \&}]{domain\-Vector, }
+\item[{const P\-\_\-\-V $\ast$}]{domain\-Direction, }
+\item[{Q\-\_\-\-V \&}]{image\-Vector, }
+\item[{{\bf Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$}]{grad\-Vectors, }
+\item[{{\bf Dist\-Array}$<$ P\-\_\-\-M $\ast$ $>$ $\ast$}]{hessian\-Matrices, }
+\item[{{\bf Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$}]{hessian\-Effects}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_function_a7ecf6f9270dfd96812074c7ab4badd6e}
+
+
+Computes the image vector. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_generic_vector_function_afcc099493262b90cdace65f24bb6b98d}{Q\-U\-E\-S\-O\-::\-Generic\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_constant_vector_function_a22d15ef82a6284e234364a9f5c176a89}{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_function_af77b709d473f253e5c56aa620d5f3cb0}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}!domain\-Set@{domain\-Set}}
+\index{domain\-Set@{domain\-Set}!QUESO::BaseVectorFunction@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}}
+\subsubsection[{domain\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ const {\bf Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::domain\-Set (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_function_af77b709d473f253e5c56aa620d5f3cb0}
+
+
+Access to the protected attribute {\ttfamily m\-\_\-domain\-Set\-:} domain set of the vector function. It is an instance of the class \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}. 
+
+This is one example of the advantage of how \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} represents mathematical identities in a straightforward manner. 
+
+Definition at line 54 of file Vector\-Function.\-C.
+
+
+\begin{DoxyCode}
+55 \{
+56   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_a485d4d016534371775bb2b00b5a9f4d3}{m\_domainSet};
+57 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_function_aa3a070a86f7099f53a669f1aab547619}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}!image\-Set@{image\-Set}}
+\index{image\-Set@{image\-Set}!QUESO::BaseVectorFunction@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}}
+\subsubsection[{image\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ const {\bf Vector\-Set}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::image\-Set (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_function_aa3a070a86f7099f53a669f1aab547619}
+
+
+Access to the protected attribute {\ttfamily m\-\_\-image\-Set\-:} image set of the vector function/ It is an instance of the class \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}. 
+
+
+
+Definition at line 62 of file Vector\-Function.\-C.
+
+
+\begin{DoxyCode}
+63 \{
+64   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_a442585224e86695e302757c0fad17913}{m\_imageSet};
+65 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_function_a485d4d016534371775bb2b00b5a9f4d3}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}!m\-\_\-domain\-Set@{m\-\_\-domain\-Set}}
+\index{m\-\_\-domain\-Set@{m\-\_\-domain\-Set}!QUESO::BaseVectorFunction@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}}
+\subsubsection[{m\-\_\-domain\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Vector\-Set}$<$P\-\_\-\-V,P\-\_\-\-M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-domain\-Set\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_function_a485d4d016534371775bb2b00b5a9f4d3}
+
+
+Domain set of the vector function. 
+
+
+
+Definition at line 87 of file Vector\-Function.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_function_abb5487a1874515b698a3d5ee82490881}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::BaseVectorFunction@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_function_abb5487a1874515b698a3d5ee82490881}
+
+
+Definition at line 83 of file Vector\-Function.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_function_a442585224e86695e302757c0fad17913}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}!m\-\_\-image\-Set@{m\-\_\-image\-Set}}
+\index{m\-\_\-image\-Set@{m\-\_\-image\-Set}!QUESO::BaseVectorFunction@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}}
+\subsubsection[{m\-\_\-image\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Vector\-Set}$<$Q\-\_\-\-V,Q\-\_\-\-M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-image\-Set\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_function_a442585224e86695e302757c0fad17913}
+
+
+Image set of the vector function. 
+
+
+
+Definition at line 90 of file Vector\-Function.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_function_aacf92c70a9f6d0a951943aa708b7cfa6}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}!m\-\_\-prefix@{m\-\_\-prefix}}
+\index{m\-\_\-prefix@{m\-\_\-prefix}!QUESO::BaseVectorFunction@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}}
+\subsubsection[{m\-\_\-prefix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ std\-::string {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-prefix\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_function_aacf92c70a9f6d0a951943aa708b7cfa6}
+
+
+Definition at line 84 of file Vector\-Function.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/basic/inc/\hyperlink{_vector_function_8h}{Vector\-Function.\-h}\item 
+src/basic/src/\hyperlink{_vector_function_8_c}{Vector\-Function.\-C}\end{DoxyCompactItemize}

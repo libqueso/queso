@@ -1,0 +1,184 @@
+\hypertarget{class_q_u_e_s_o_1_1_constant_vector_function}{\section{Q\-U\-E\-S\-O\-:\-:Constant\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_constant_vector_function}\index{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$@{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}}
+}
+
+
+A class for handling vector functions which image is constant.  
+
+
+
+
+{\ttfamily \#include $<$Constant\-Vector\-Function.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Constant\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=264pt]{class_q_u_e_s_o_1_1_constant_vector_function__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Constant\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_constant_vector_function__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_constant_vector_function_a71f9a54dfabba7ae9b8c0f5f90b3d528}{Constant\-Vector\-Function} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_function_af77b709d473f253e5c56aa620d5f3cb0}{domain\-Set}, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_function_aa3a070a86f7099f53a669f1aab547619}{image\-Set}, const Q\-\_\-\-V \&constant\-Image\-Vector)
+\begin{DoxyCompactList}\small\item\em Default Constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_constant_vector_function_a3be303448d27a3a98910f575a8a9876c}{$\sim$\-Constant\-Vector\-Function} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical method}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_constant_vector_function_a22d15ef82a6284e234364a9f5c176a89}{compute} (const P\-\_\-\-V \&domain\-Vector, const P\-\_\-\-V $\ast$domain\-Direction, Q\-\_\-\-V \&image\-Vector, \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$grad\-Vectors, \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ P\-\_\-\-M $\ast$ $>$ $\ast$hessian\-Matrices, \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$hessian\-Effects) const 
+\begin{DoxyCompactList}\small\item\em Calculates the image vector\-: assigns to the protected attribute {\ttfamily m\-\_\-constant\-Image\-Vector} the value of the constant vector {\ttfamily image\-Vector}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const Q\-\_\-\-V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_constant_vector_function_a7d2befbf254e81916fc1e39ffaebd756}{m\-\_\-constant\-Image\-Vector}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$class Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}
+
+A class for handling vector functions which image is constant. 
+
+This class allows the mathematical definition of a vector-\/valued function which image set is constant vector. 
+
+Definition at line 46 of file Constant\-Vector\-Function.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_constant_vector_function_a71f9a54dfabba7ae9b8c0f5f90b3d528}{\index{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function}!Constant\-Vector\-Function@{Constant\-Vector\-Function}}
+\index{Constant\-Vector\-Function@{Constant\-Vector\-Function}!QUESO::ConstantVectorFunction@{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function}}
+\subsubsection[{Constant\-Vector\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::{\bf Constant\-Vector\-Function} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{domain\-Set, }
+\item[{const {\bf Vector\-Set}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \&}]{image\-Set, }
+\item[{const Q\-\_\-\-V \&}]{constant\-Image\-Vector}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_constant_vector_function_a71f9a54dfabba7ae9b8c0f5f90b3d528}
+
+
+Default Constructor. 
+
+Instantiates an object of the class, i.\-e. a vector function, given a prefix, its domain and constant image. 
+
+Definition at line 33 of file Constant\-Vector\-Function.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-constant\-Image\-Vector.
+
+
+\begin{DoxyCode}
+38   :
+39   BaseVectorFunction<P\_V,P\_M,Q\_V,Q\_M>(((std::string)(prefix)+\textcolor{stringliteral}{"gen"}).c\_str(),
+40                                              \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_af77b709d473f253e5c56aa620d5f3cb0}{domainSet},
+41                                              \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_aa3a070a86f7099f53a669f1aab547619}{imageSet}),
+42   \hyperlink{class_q_u_e_s_o_1_1_constant_vector_function_a7d2befbf254e81916fc1e39ffaebd756}{m\_constantImageVector}(NULL)
+43 \{
+44   \hyperlink{class_q_u_e_s_o_1_1_constant_vector_function_a7d2befbf254e81916fc1e39ffaebd756}{m\_constantImageVector} = \textcolor{keyword}{new} Q\_V(constantImageVector);
+45 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_constant_vector_function_a3be303448d27a3a98910f575a8a9876c}{\index{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function}!$\sim$\-Constant\-Vector\-Function@{$\sim$\-Constant\-Vector\-Function}}
+\index{$\sim$\-Constant\-Vector\-Function@{$\sim$\-Constant\-Vector\-Function}!QUESO::ConstantVectorFunction@{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function}}
+\subsubsection[{$\sim$\-Constant\-Vector\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::$\sim${\bf Constant\-Vector\-Function} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_constant_vector_function_a3be303448d27a3a98910f575a8a9876c}
+
+
+Destructor. 
+
+
+
+Definition at line 49 of file Constant\-Vector\-Function.\-C.
+
+
+\begin{DoxyCode}
+50 \{
+51   \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_constant_vector_function_a7d2befbf254e81916fc1e39ffaebd756}{m\_constantImageVector};
+52 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_constant_vector_function_a22d15ef82a6284e234364a9f5c176a89}{\index{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function}!compute@{compute}}
+\index{compute@{compute}!QUESO::ConstantVectorFunction@{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function}}
+\subsubsection[{compute}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::compute (
+\begin{DoxyParamCaption}
+\item[{const P\-\_\-\-V \&}]{domain\-Vector, }
+\item[{const P\-\_\-\-V $\ast$}]{domain\-Direction, }
+\item[{Q\-\_\-\-V \&}]{image\-Vector, }
+\item[{{\bf Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$}]{grad\-Vectors, }
+\item[{{\bf Dist\-Array}$<$ P\-\_\-\-M $\ast$ $>$ $\ast$}]{hessian\-Matrices, }
+\item[{{\bf Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$}]{hessian\-Effects}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_constant_vector_function_a22d15ef82a6284e234364a9f5c176a89}
+
+
+Calculates the image vector\-: assigns to the protected attribute {\ttfamily m\-\_\-constant\-Image\-Vector} the value of the constant vector {\ttfamily image\-Vector}. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_function_a7ecf6f9270dfd96812074c7ab4badd6e}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}.
+
+
+
+Definition at line 57 of file Constant\-Vector\-Function.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+64 \{
+65   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_constant_vector_function_a7d2befbf254e81916fc1e39ffaebd756}{m\_constantImageVector} == NULL,
+66                       domainVector.env().worldRank(),
+67                       \textcolor{stringliteral}{"ConstantVectorFunction<P\_V,P\_M,Q\_V,Q\_M>::compute()"},
+68                       \textcolor{stringliteral}{"m\_constantImageVector is NULL"});
+69 
+70   imageVector = *\hyperlink{class_q_u_e_s_o_1_1_constant_vector_function_a7d2befbf254e81916fc1e39ffaebd756}{m\_constantImageVector};
+71 
+72   \textcolor{keywordflow}{return};
+73 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_constant_vector_function_a7d2befbf254e81916fc1e39ffaebd756}{\index{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function@{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function}!m\-\_\-constant\-Image\-Vector@{m\-\_\-constant\-Image\-Vector}}
+\index{m\-\_\-constant\-Image\-Vector@{m\-\_\-constant\-Image\-Vector}!QUESO::ConstantVectorFunction@{Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function}}
+\subsubsection[{m\-\_\-constant\-Image\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ const Q\-\_\-\-V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-constant\-Image\-Vector\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_constant_vector_function_a7d2befbf254e81916fc1e39ffaebd756}
+
+
+Definition at line 71 of file Constant\-Vector\-Function.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Constant\-Vector\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::\-Constant\-Vector\-Function().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/basic/inc/\hyperlink{_constant_vector_function_8h}{Constant\-Vector\-Function.\-h}\item 
+src/basic/src/\hyperlink{_constant_vector_function_8_c}{Constant\-Vector\-Function.\-C}\end{DoxyCompactItemize}

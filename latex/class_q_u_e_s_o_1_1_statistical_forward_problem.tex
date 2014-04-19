@@ -1,0 +1,785 @@
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem}{\section{Q\-U\-E\-S\-O\-:\-:Statistical\-Forward\-Problem$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_statistical_forward_problem}\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}}
+}
+
+
+This templated class represents a Statistical Forward Problem.  
+
+
+
+
+{\ttfamily \#include $<$Statistical\-Forward\-Problem.\-h$>$}
+
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Statistical\-Forward\-Problem$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_statistical_forward_problem__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab2aba79cca8d9fde437fa2bc7d196adc}{Statistical\-Forward\-Problem} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_sfp_options_values}{Sfp\-Options\-Values} $\ast$alternative\-Options\-Values, const \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&param\-Rv, const \hyperlink{class_q_u_e_s_o_1_1_base_vector_function}{Base\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \&qoi\-Function, \hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v}{Generic\-Vector\-R\-V}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ae2aa8a443bec68b57342c3afc079356d}{qoi\-Rv})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add0e52e8c9a8f80cc0d4e401a3e958e4}{$\sim$\-Statistical\-Forward\-Problem} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Statistical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a2c67e3878a0bddf2bf28db9f04962456}{compute\-Solution\-Flag} () const 
+\begin{DoxyCompactList}\small\item\em Whether or not compute the solution. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a523a6e2ac16dd949849bb7b46d98b842}{solve\-With\-Monte\-Carlo} (const \hyperlink{class_q_u_e_s_o_1_1_mc_options_values}{Mc\-Options\-Values} $\ast$alternative\-Options\-Values)
+\begin{DoxyCompactList}\small\item\em Solves the problem through Monte Carlo algorithm. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v}{Generic\-Vector\-R\-V}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ae2aa8a443bec68b57342c3afc079356d}{qoi\-Rv} () const 
+\begin{DoxyCompactList}\small\item\em Returns the Qo\-I R\-V; access to private attribute m\-\_\-qoi\-Rv. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence}{Base\-Vector\-Sequence}$<$ Q\-\_\-\-V, \\*
+Q\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_abedc9de0cb7724c9ae37f447a5da4dec}{get\-Param\-Chain} () const 
+\begin{DoxyCompactList}\small\item\em Returns the parameter chain; access to private attribute m\-\_\-param\-Chain. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_af39a259d0c779d3e9bf33fbf0ef013c3}{common\-Constructor} ()
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Common constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\-\_\-env}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab4933700b21362717461ce7da3c8a0e8}{m\-\_\-param\-Rv}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_vector_function}{Base\-Vector\-Function}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_af267c75bf676bb857db1ff45fe5e4484}{m\-\_\-qoi\-Function}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v}{Generic\-Vector\-R\-V}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\-\_\-qoi\-Rv}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence}{Base\-Vector\-Sequence}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\-\_\-param\-Chain}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence}{Base\-Vector\-Sequence}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0c7b7ce063c82ed96ea0a75d119a677a}{m\-\_\-qoi\-Chain}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_monte_carlo_s_g}{Monte\-Carlo\-S\-G}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, \\*
+Q\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a18f3f73759fbc2e64486b11c13b3fbf5}{m\-\_\-mc\-Seq\-Generator}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer}{Base\-Vector\-Realizer}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0b855f085c84bd113827951f3c424d2d}{m\-\_\-solution\-Realizer}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf}{Base\-Joint\-Pdf}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a67810b9d77e549b7eee76cc008e21e5b}{m\-\_\-solution\-Pdf}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values}{Sfp\-Options\-Values} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a8c76cf6924787705afbd66a70954bf6a}{m\-\_\-alternative\-Options\-Values}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options}{Statistical\-Forward\-Problem\-Options} $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\-\_\-options\-Obj}
+\end{DoxyCompactItemize}
+\subsection*{I/\-O methods}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a023244862152f4398c4544e9239fe32a}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Prints the sequence. \end{DoxyCompactList}\item 
+std\-::ostream \& \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aee8ed5dc90b8ecfd9536e60b393376ee}{operator$<$$<$} (std\-::ostream \&os, const \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem}{Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \&obj)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$class Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}
+
+This templated class represents a Statistical Forward Problem. 
+
+This templated class represents a statistical forward problem. It is templated on the types 'P\-\_\-\-V' and 'Q\-\_\-\-V' of vectors and types 'P\-\_\-\-M' and 'Q\-\_\-\-M' of matrices, where 'P\-\_\-' stands for 'parameter' and 'Q\-\_\-' stands for 'quantities of interest'. Conceptually, a statistical forward problem has two input entities and one output entity.\par
+ The input entities of a statistical forward problem are\-: 
+\begin{DoxyEnumerate}
+\item the input (parameter) R\-V, an instance of class '\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V$<$\-P\-\_\-\-V,\-P\-\_\-\-M$>$}', and 
+\item the Qo\-I function, an instance of class 'Base\-Vector\-Function$<$\-P\-\_\-\-V,\-P\-\_\-\-M,\-Q\-\_\-\-V,\-Q\-\_\-\-M$>$'. 
+\end{DoxyEnumerate}Let $ q() $ denote the mathematical Qo\-I function and $ x $ denote a vector of parameters. The Qo\-I function object stores the routine that computes $ q(x) $ and whatever data necessary by such routine. See file 'libs/basic/inc/\-Vector\-Function.\-h' for more details.\par
+ The output entity of a statistical forward problem is\-: 
+\begin{DoxyEnumerate}
+\item the Qo\-I R\-V, another instance of class '\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V$<$\-P\-\_\-\-V,\-P\-\_\-\-M$>$}'. 
+\end{DoxyEnumerate}The Qo\-I R\-V stores the solution according to the Bayesian approach. The solution of a S\-P\-F is computed by calling '\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a523a6e2ac16dd949849bb7b46d98b842}{solve\-With\-Monte\-Carlo()}'. More operations, with different methods, will be available in the future.\par
+ The solution process might demand extra objects to be passed through the chosen solution operation interface. This distinction is important\-: this class separates 'what the problem is' from 'how the problem is solved'. Upon return from a solution operation, the Qo\-I R\-V is available through the operation '\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ae2aa8a443bec68b57342c3afc079356d}{qoi\-Rv()}'. Such Qo\-I R\-V is able to provide\-: 
+\begin{DoxyEnumerate}
+\item a vector realizer through the operation '\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ae2aa8a443bec68b57342c3afc079356d}{qoi\-Rv()}.realizer()', which returns an instance of the class '\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer}{Base\-Vector\-Realizer$<$\-Q\-\_\-\-V,\-Q\-\_\-\-M$>$}'. 
+\end{DoxyEnumerate}
+
+Definition at line 77 of file Statistical\-Forward\-Problem.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_ab2aba79cca8d9fde437fa2bc7d196adc}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!Statistical\-Forward\-Problem@{Statistical\-Forward\-Problem}}
+\index{Statistical\-Forward\-Problem@{Statistical\-Forward\-Problem}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{Statistical\-Forward\-Problem}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::{\bf Statistical\-Forward\-Problem} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Sfp\-Options\-Values} $\ast$}]{alternative\-Options\-Values, }
+\item[{const {\bf Base\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{param\-Rv, }
+\item[{const {\bf Base\-Vector\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \&}]{qoi\-Function, }
+\item[{{\bf Generic\-Vector\-R\-V}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \&}]{qoi\-Rv}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_ab2aba79cca8d9fde437fa2bc7d196adc}
+
+
+Constructor. 
+
+Requirements\-: 1) the image set of the vector random variable 'param\-Rv' and the domain set of the Qo\-I function 'qoi\-Function' should belong to vector spaces of equal dimensions and 2) the image set of the Qo\-I function 'qoi\-Function' and the image set of the vector random variable 'qoi\-Rv' should belong to vector spaces of equal dimensions. If the requirements are satisfied, the constructor then reads input options that begin with the string '$<$prefix$>$fp\-\_\-'. Options reading is handled by class '\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options}{Statistical\-Forward\-Problem\-Options}'. If no options input file is provided, the construction assigns {\ttfamily alternative\-Options\-Values} to the options of the S\-F\-P. 
+\begin{DoxyParams}{Parameters}
+{\em prefix} & The prefix \\
+\hline
+{\em alternative\-Options\-Values} & Options (if no input file) \\
+\hline
+{\em param\-Rv} & The input R\-V \\
+\hline
+{\em qoi\-Function} & The Qo\-I function \\
+\hline
+{\em qoi\-Rv} & The Qo\-I R\-V \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 34 of file Statistical\-Forward\-Problem.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+40   :
+41   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}                     (paramRv.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_ad5bf8486b3bacb46b9d4ecba513fd37b}{env}()),
+42   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab4933700b21362717461ce7da3c8a0e8}{m\_paramRv}                 (paramRv),
+43   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_af267c75bf676bb857db1ff45fe5e4484}{m\_qoiFunction}             (qoiFunction),
+44   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}                   (qoiRv),
+45   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\_paramChain}              (NULL),
+46   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0c7b7ce063c82ed96ea0a75d119a677a}{m\_qoiChain}                (NULL),
+47   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a18f3f73759fbc2e64486b11c13b3fbf5}{m\_mcSeqGenerator}          (NULL),
+48   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0b855f085c84bd113827951f3c424d2d}{m\_solutionRealizer}        (NULL),
+49 \textcolor{preprocessor}{#ifdef UQ\_ALSO\_COMPUTE\_MDFS\_WITHOUT\_KDE}
+50 \textcolor{preprocessor}{}  m\_subMdfGrids             (NULL),
+51   m\_subMdfValues            (NULL),
+52 \textcolor{preprocessor}{#endif}
+53 \textcolor{preprocessor}{}\textcolor{preprocessor}{#ifdef QUESO\_COMPUTES\_EXTRA\_POST\_PROCESSING\_STATISTICS}
+54 \textcolor{preprocessor}{}  m\_subSolutionMdf          (NULL),
+55   m\_subCdfGrids             (NULL),
+56   m\_subCdfValues            (NULL),
+57   m\_subSolutionCdf          (NULL),
+58   m\_unifiedCdfGrids         (NULL),
+59   m\_unifiedCdfValues        (NULL),
+60   m\_unifiedSolutionCdf      (NULL),
+61 \textcolor{preprocessor}{#endif}
+62 \textcolor{preprocessor}{}  \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a67810b9d77e549b7eee76cc008e21e5b}{m\_solutionPdf}             (NULL),
+63   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a8c76cf6924787705afbd66a70954bf6a}{m\_alternativeOptionsValues}(),
+64   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}              (NULL)
+65 \{
+66   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+67     *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       StatisticalForwardProblem<P\_V,P\_M,Q\_V,Q\_M>::constructor()"}
+68                             << \textcolor{stringliteral}{": prefix = "} << prefix
+69                             << \textcolor{stringliteral}{", alternativeOptionsValues = "} << alternativeOptionsValues
+70                             << \textcolor{stringliteral}{", m\_env.optionsInputFileName() = "} << \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_aa0e3ccfe00e6f51dbe6dd6b9b6f65183}{optionsInputFileName}()
+71                             << std::endl;
+72   \}
+73 
+74   \textcolor{keywordflow}{if} (alternativeOptionsValues) \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a8c76cf6924787705afbd66a70954bf6a}{m\_alternativeOptionsValues} = *
+      alternativeOptionsValues;
+75   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_aa0e3ccfe00e6f51dbe6dd6b9b6f65183}{optionsInputFileName}() == \textcolor{stringliteral}{""}) \{
+76     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj} = \textcolor{keyword}{new} StatisticalForwardProblemOptions(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env},prefix,
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a8c76cf6924787705afbd66a70954bf6a}{m\_alternativeOptionsValues});
+77   \}
+78   \textcolor{keywordflow}{else} \{
+79     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj} = \textcolor{keyword}{new} StatisticalForwardProblemOptions(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env},prefix);
+80     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a79677f13d8f76171e0e9482920d1e07c}{scanOptionsValues}();
+81   \}
+82 
+83   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(paramRv.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().\hyperlink{class_q_u_e_s_o_1_1_vector_set_a923421590baf5bf93cf066e528f927dc}{vectorSpace}().
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_a5829a1f4f996f8307c840b705144d666}{dimLocal}() != qoiFunction.domainSet().vectorSpace().dimLocal(),
+84                       \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+85                       \textcolor{stringliteral}{"StatisticalForwardProblem<P\_V,P\_M>::constructor()"},
+86                       \textcolor{stringliteral}{"'paramRv' and 'qoiFunction' are related to vector spaces of different dimensions"});
+87 
+88   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(qoiFunction.imageSet().vectorSpace().dimLocal() != qoiRv.
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace().dimLocal(),
+89                       \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+90                       \textcolor{stringliteral}{"StatisticalForwardProblem<P\_V,P\_M>::constructor()"},
+91                       \textcolor{stringliteral}{"'qoiFunction' and 'qoiRv' are related to vector spaces of different dimensions"});
+92 
+93   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+94     *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       StatisticalForwardProblem<P\_V,P\_M,Q\_V,Q\_M>::constructor()"}
+95                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}
+96                             << std::endl;
+97   \}
+98 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_add0e52e8c9a8f80cc0d4e401a3e958e4}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!$\sim$\-Statistical\-Forward\-Problem@{$\sim$\-Statistical\-Forward\-Problem}}
+\index{$\sim$\-Statistical\-Forward\-Problem@{$\sim$\-Statistical\-Forward\-Problem}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{$\sim$\-Statistical\-Forward\-Problem}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::$\sim${\bf Statistical\-Forward\-Problem} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_add0e52e8c9a8f80cc0d4e401a3e958e4}
+
+
+Destructor. 
+
+
+
+Definition at line 102 of file Statistical\-Forward\-Problem.\-C.
+
+
+\begin{DoxyCode}
+103 \{
+104   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a67810b9d77e549b7eee76cc008e21e5b}{m\_solutionPdf}       ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a67810b9d77e549b7eee76cc008e21e5b}{m\_solutionPdf};
+105 
+106 \textcolor{preprocessor}{#ifdef QUESO\_COMPUTES\_EXTRA\_POST\_PROCESSING\_STATISTICS}
+107 \textcolor{preprocessor}{}  \textcolor{keywordflow}{if} (m\_unifiedSolutionCdf) \textcolor{keyword}{delete} m\_unifiedSolutionCdf;
+108   \textcolor{keywordflow}{if} (m\_unifiedCdfValues  ) \textcolor{keyword}{delete} m\_unifiedCdfValues;
+109   \textcolor{keywordflow}{if} (m\_unifiedCdfGrids   ) \textcolor{keyword}{delete} m\_unifiedCdfGrids;
+110 
+111   \textcolor{keywordflow}{if} (m\_subSolutionCdf    ) \textcolor{keyword}{delete} m\_subSolutionCdf;
+112   \textcolor{keywordflow}{if} (m\_subCdfValues      ) \textcolor{keyword}{delete} m\_subCdfValues;
+113   \textcolor{keywordflow}{if} (m\_subCdfGrids       ) \textcolor{keyword}{delete} m\_subCdfGrids;
+114 
+115   \textcolor{keywordflow}{if} (m\_subSolutionMdf    ) \textcolor{keyword}{delete} m\_subSolutionMdf;
+116 \textcolor{preprocessor}{#endif}
+117 \textcolor{preprocessor}{}\textcolor{preprocessor}{#ifdef UQ\_ALSO\_COMPUTE\_MDFS\_WITHOUT\_KDE}
+118 \textcolor{preprocessor}{}  \textcolor{keywordflow}{if} (m\_subMdfValues      ) \textcolor{keyword}{delete} m\_subMdfValues;
+119   \textcolor{keywordflow}{if} (m\_subMdfGrids       ) \textcolor{keyword}{delete} m\_subMdfGrids;
+120 \textcolor{preprocessor}{#endif}
+121 \textcolor{preprocessor}{}  \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0b855f085c84bd113827951f3c424d2d}{m\_solutionRealizer}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0b855f085c84bd113827951f3c424d2d}{m\_solutionRealizer};
+122 
+123   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a18f3f73759fbc2e64486b11c13b3fbf5}{m\_mcSeqGenerator}    ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a18f3f73759fbc2e64486b11c13b3fbf5}{m\_mcSeqGenerator};
+124 
+125   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0c7b7ce063c82ed96ea0a75d119a677a}{m\_qoiChain}) \{
+126     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0c7b7ce063c82ed96ea0a75d119a677a}{m\_qoiChain}->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aae0804eacc51b37e84b1bd329ce1711c}{clear}();
+127     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0c7b7ce063c82ed96ea0a75d119a677a}{m\_qoiChain};
+128   \}
+129 
+130   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\_paramChain}) \{
+131     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\_paramChain}->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aae0804eacc51b37e84b1bd329ce1711c}{clear}();
+132     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\_paramChain};
+133   \}
+134 
+135   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}        ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj};
+136 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_af39a259d0c779d3e9bf33fbf0ef013c3}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!common\-Constructor@{common\-Constructor}}
+\index{common\-Constructor@{common\-Constructor}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{common\-Constructor}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ void {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::common\-Constructor (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_af39a259d0c779d3e9bf33fbf0ef013c3}
+
+
+T\-O\-D\-O\-: Common constructor. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000048}{Todo}]\-: implement me! \end{DoxyRefDesc}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_a2c67e3878a0bddf2bf28db9f04962456}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!compute\-Solution\-Flag@{compute\-Solution\-Flag}}
+\index{compute\-Solution\-Flag@{compute\-Solution\-Flag}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{compute\-Solution\-Flag}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ bool {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::compute\-Solution\-Flag (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_a2c67e3878a0bddf2bf28db9f04962456}
+
+
+Whether or not compute the solution. 
+
+
+
+Definition at line 141 of file Statistical\-Forward\-Problem.\-C.
+
+
+\begin{DoxyCode}
+142 \{
+143   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_a087c7e28e7c72ee99d5722f75e43c8bb}{m\_computeSolution};
+144 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_abedc9de0cb7724c9ae37f447a5da4dec}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!get\-Param\-Chain@{get\-Param\-Chain}}
+\index{get\-Param\-Chain@{get\-Param\-Chain}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{get\-Param\-Chain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ const {\bf Base\-Vector\-Sequence}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::get\-Param\-Chain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_abedc9de0cb7724c9ae37f447a5da4dec}
+
+
+Returns the parameter chain; access to private attribute m\-\_\-param\-Chain. 
+
+
+
+Definition at line 402 of file Statistical\-Forward\-Problem.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+403 \{
+404 
+405   \textcolor{comment}{// Make sure this runs after the forward propagation}
+406   \textcolor{comment}{// only then we obtain the actual realizations of the parameters}
+407   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\_paramChain} == NULL,
+408                       \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+409                       (std::string)(\textcolor{stringliteral}{"StatisticalForwardProblem<V,M,V,M>::getParamChain()"}),
+410                       \textcolor{stringliteral}{"m\_paramChain is NULL"});
+411 
+412   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\_paramChain};
+413  
+414 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_a023244862152f4398c4544e9239fe32a}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!print@{print}}
+\index{print@{print}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_a023244862152f4398c4544e9239fe32a}
+
+
+T\-O\-D\-O\-: Prints the sequence. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000047}{Todo}]\-: implement me! \end{DoxyRefDesc}
+
+
+Definition at line 418 of file Statistical\-Forward\-Problem.\-C.
+
+
+\begin{DoxyCode}
+419 \{
+420   \textcolor{keywordflow}{return};
+421 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_ae2aa8a443bec68b57342c3afc079356d}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!qoi\-Rv@{qoi\-Rv}}
+\index{qoi\-Rv@{qoi\-Rv}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{qoi\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ const {\bf Generic\-Vector\-R\-V}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::qoi\-Rv (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_ae2aa8a443bec68b57342c3afc079356d}
+
+
+Returns the Qo\-I R\-V; access to private attribute m\-\_\-qoi\-Rv. 
+
+
+
+Definition at line 373 of file Statistical\-Forward\-Problem.\-C.
+
+
+\begin{DoxyCode}
+374 \{
+375   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv};
+376 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_a523a6e2ac16dd949849bb7b46d98b842}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!solve\-With\-Monte\-Carlo@{solve\-With\-Monte\-Carlo}}
+\index{solve\-With\-Monte\-Carlo@{solve\-With\-Monte\-Carlo}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{solve\-With\-Monte\-Carlo}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::solve\-With\-Monte\-Carlo (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mc\-Options\-Values} $\ast$}]{alternative\-Options\-Values}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_a523a6e2ac16dd949849bb7b46d98b842}
+
+
+Solves the problem through Monte Carlo algorithm. 
+
+\begin{DoxyVerb}  Requirements: none at this moment. If the requirements are satisfied, this operation checks
+ the member flag 'm_computeSolution' (one of the options read from the input file during 
+ construction). If the flag is 'false', the operation returns immediately, computing nothing.
+ If the flag is 'true', the operation sets the member variable 'm_qoiRv' accordingly. 
+ The operation:
+\end{DoxyVerb}
+ 
+\begin{DoxyEnumerate}
+\item instantiates 'Sequence\-Of\-Vectors$<$\-P\-\_\-\-V,\-P\-\_\-\-M$>$' (the input sequence of vectors), 
+\item instantiates 'Sequence\-Of\-Vectors$<$\-Q\-\_\-\-V,\-Q\-\_\-\-M$>$' (the output sequence of vectors), 
+\item instantiates 'Monte\-Carlo\-S\-G$<$\-P\-\_\-\-V,\-P\-\_\-\-M,\-Q\-\_\-\-V,\-Q\-\_\-\-M$>$' (the Monte Carlo algorithm), 
+\item populates the output sequence with the Monte Carlo algorithm, 
+\item sets the realizer of 'm\-\_\-qoi\-Rv' with the contents of the output sequence, and 
+\end{DoxyEnumerate}
+
+Definition at line 148 of file Statistical\-Forward\-Problem.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Matrices\-Between\-Vector\-Sequences(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$\-::m\-\_\-prefix, Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct\-::ofs\-Var, Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$\-::sub\-Uniformly\-Sampled\-Cdf(), Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$\-::unified\-Uniformly\-Sampled\-Cdf(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and U\-Q\-\_\-\-F\-I\-L\-E\-\_\-\-E\-X\-T\-E\-N\-S\-I\-O\-N\-\_\-\-F\-O\-R\-\_\-\-M\-A\-T\-L\-A\-B\-\_\-\-F\-O\-R\-M\-A\-T.
+
+
+\begin{DoxyCode}
+150 \{
+151   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a0b0779b41ff304058856e97e1d16b4d4}{fullComm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a4059971c30e023b272fccaa6aa00c426}{Barrier}();
+152   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a0b0779b41ff304058856e97e1d16b4d4}{fullComm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a6f73891de4668c325277ddaa799cf808}{syncPrintDebugMsg}(\textcolor{stringliteral}{"Entering
+       StatisticalForwardProblem<P\_V,P\_M>::solveWithMonteCarlo()"},1,3000000);
+153 
+154   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_a087c7e28e7c72ee99d5722f75e43c8bb}{m\_computeSolution} == \textcolor{keyword}{false}) \{
+155     \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}())) \{
+156       *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       StatisticalForwardProblem<P\_V,P\_M,Q\_V,Q\_M>::solveWithMonteCarlo()"}
+157                               << \textcolor{stringliteral}{": avoiding solution, as requested by user"}
+158                               << std::endl;
+159     \}
+160     \textcolor{keywordflow}{return};
+161   \}
+162   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}())) \{
+163     *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       StatisticalForwardProblem<P\_V,P\_M,Q\_V,Q\_M>::solveWithMonteCarlo()"}
+164                             << \textcolor{stringliteral}{": computing solution, as requested by user"}
+165                             << std::endl;
+166   \}
+167 
+168   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a67810b9d77e549b7eee76cc008e21e5b}{m\_solutionPdf}       ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a67810b9d77e549b7eee76cc008e21e5b}{m\_solutionPdf};
+169 
+170 \textcolor{preprocessor}{#ifdef QUESO\_COMPUTES\_EXTRA\_POST\_PROCESSING\_STATISTICS}
+171 \textcolor{preprocessor}{}  \textcolor{keywordflow}{if} (m\_unifiedSolutionCdf) \textcolor{keyword}{delete} m\_unifiedSolutionCdf;
+172   \textcolor{keywordflow}{if} (m\_unifiedCdfValues  ) \textcolor{keyword}{delete} m\_unifiedCdfValues;
+173   \textcolor{keywordflow}{if} (m\_unifiedCdfGrids   ) \textcolor{keyword}{delete} m\_unifiedCdfGrids;
+174 
+175   \textcolor{keywordflow}{if} (m\_subSolutionCdf    ) \textcolor{keyword}{delete} m\_subSolutionCdf;
+176   \textcolor{keywordflow}{if} (m\_subCdfValues      ) \textcolor{keyword}{delete} m\_subCdfValues;
+177   \textcolor{keywordflow}{if} (m\_subCdfGrids       ) \textcolor{keyword}{delete} m\_subCdfGrids;
+178 
+179   \textcolor{keywordflow}{if} (m\_subSolutionMdf    ) \textcolor{keyword}{delete} m\_subSolutionMdf;
+180 \textcolor{preprocessor}{#endif}
+181 \textcolor{preprocessor}{}\textcolor{preprocessor}{#ifdef UQ\_ALSO\_COMPUTE\_MDFS\_WITHOUT\_KDE}
+182 \textcolor{preprocessor}{}  \textcolor{keywordflow}{if} (m\_subMdfValues      ) \textcolor{keyword}{delete} m\_subMdfValues;
+183   \textcolor{keywordflow}{if} (m\_subMdfGrids       ) \textcolor{keyword}{delete} m\_subMdfGrids;
+184 \textcolor{preprocessor}{#endif}
+185 \textcolor{preprocessor}{}  \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0b855f085c84bd113827951f3c424d2d}{m\_solutionRealizer}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0b855f085c84bd113827951f3c424d2d}{m\_solutionRealizer};
+186 
+187   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a18f3f73759fbc2e64486b11c13b3fbf5}{m\_mcSeqGenerator}    ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a18f3f73759fbc2e64486b11c13b3fbf5}{m\_mcSeqGenerator};
+188 
+189   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0c7b7ce063c82ed96ea0a75d119a677a}{m\_qoiChain}) \{
+190     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0c7b7ce063c82ed96ea0a75d119a677a}{m\_qoiChain}->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aae0804eacc51b37e84b1bd329ce1711c}{clear}();
+191     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0c7b7ce063c82ed96ea0a75d119a677a}{m\_qoiChain};
+192   \}
+193 
+194   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\_paramChain}) \{
+195     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\_paramChain}->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aae0804eacc51b37e84b1bd329ce1711c}{clear}();
+196     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\_paramChain};
+197   \}
+198 
+199   Q\_V numEvaluationPointsVec(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace().zeroVector());
+200   numEvaluationPointsVec.cwSet(250.);
+201 
+202   \textcolor{comment}{// Compute output realizer: Monte Carlo approach}
+203   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\_paramChain} = \textcolor{keyword}{new} SequenceOfVectors<P\_V,P\_M>(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab4933700b21362717461ce7da3c8a0e8}{m\_paramRv}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().\hyperlink{class_q_u_e_s_o_1_1_vector_set_a923421590baf5bf93cf066e528f927dc}{vectorSpace}(),0,\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}+\textcolor{stringliteral}{"paramChain"});
+204   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0c7b7ce063c82ed96ea0a75d119a677a}{m\_qoiChain}   = \textcolor{keyword}{new} SequenceOfVectors<Q\_V,Q\_M>(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace(),  0,\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}+\textcolor{stringliteral}{"qoiChain"}  );
+205   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a18f3f73759fbc2e64486b11c13b3fbf5}{m\_mcSeqGenerator} = \textcolor{keyword}{new} MonteCarloSG<P\_V,P\_M,Q\_V,Q\_M>(
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}.c\_str(),
+206                                                               alternativeOptionsValues,
+207                                                               \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab4933700b21362717461ce7da3c8a0e8}{m\_paramRv},
+208                                                               \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_af267c75bf676bb857db1ff45fe5e4484}{m\_qoiFunction});
+209   \textcolor{comment}{//m\_qoiRv);}
+210   m\_mcSeqGenerator->generateSequence(*\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\_paramChain},
+211                                      *m\_qoiChain);
+212   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0b855f085c84bd113827951f3c424d2d}{m\_solutionRealizer} = \textcolor{keyword}{new} SequentialVectorRealizer<Q\_V,Q\_M>((
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}+\textcolor{stringliteral}{"Qoi"}).c\_str(),
+213                                                                     *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0c7b7ce063c82ed96ea0a75d119a677a}{m\_qoiChain});
+214   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v_a79509d97d93176da2113930c7225b0fd}{setRealizer}(*\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a0b855f085c84bd113827951f3c424d2d}{m\_solutionRealizer});
+215 
+216   \textcolor{comment}{// Compute output mdf: uniform sampling approach}
+217 \textcolor{preprocessor}{#ifdef UQ\_ALSO\_COMPUTE\_MDFS\_WITHOUT\_KDE}
+218 \textcolor{preprocessor}{}  m\_subMdfGrids  = \textcolor{keyword}{new} ArrayOfOneDGrids <Q\_V,Q\_M>((\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}+\textcolor{stringliteral}{"QoiMdf\_"}).c\_str(),\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace());
+219   m\_subMdfValues = \textcolor{keyword}{new} ArrayOfOneDTables<Q\_V,Q\_M>((\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}+\textcolor{stringliteral}{"QoiMdf\_"}).c\_str(),\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace());
+220   m\_qoiChain->subUniformlySampledMdf(numEvaluationPointsVec, \textcolor{comment}{// input}
+221                                      *m\_subMdfGrids,         \textcolor{comment}{// output}
+222                                      *m\_subMdfValues);       \textcolor{comment}{// output}
+223 
+224   m\_subSolutionMdf = \textcolor{keyword}{new} SampledVectorMdf<Q\_V,Q\_M>((\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}+\textcolor{stringliteral}{"Qoi"}).c\_str(),
+225                                                           *m\_subMdfGrids,
+226                                                           *m\_subMdfValues);
+227   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v_a26904c9c8cff4f901e28c067e4b71110}{setMdf}(*m\_subSolutionMdf);
+228 \textcolor{preprocessor}{#endif}
+229 \textcolor{preprocessor}{}
+230   \textcolor{comment}{// Compute output cdf: uniform sampling approach}
+231 \textcolor{preprocessor}{#ifdef QUESO\_COMPUTES\_EXTRA\_POST\_PROCESSING\_STATISTICS}
+232 \textcolor{preprocessor}{}  std::string subCoreName\_qoiCdf(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}+    \textcolor{stringliteral}{"QoiCdf\_"});
+233   std::string uniCoreName\_qoiCdf(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}+\textcolor{stringliteral}{"unifQoiCdf\_"});
+234   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ac0345f57e31ef7833e379ed972bd094d}{numSubEnvironments}() == 1) subCoreName\_qoiCdf = uniCoreName\_qoiCdf;
+235 
+236   std::string subCoreName\_solutionCdf(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}+    \textcolor{stringliteral}{"Qoi"});
+237   std::string uniCoreName\_solutionCdf(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}+\textcolor{stringliteral}{"unifQoi"});
+238   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ac0345f57e31ef7833e379ed972bd094d}{numSubEnvironments}() == 1) subCoreName\_solutionCdf = 
+      uniCoreName\_solutionCdf;
+239 
+240   m\_subCdfGrids  = \textcolor{keyword}{new} ArrayOfOneDGrids <Q\_V,Q\_M>(subCoreName\_qoiCdf.c\_str(),
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace());
+241   m\_subCdfValues = \textcolor{keyword}{new} ArrayOfOneDTables<Q\_V,Q\_M>(subCoreName\_qoiCdf.c\_str(),
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace());
+242   m\_qoiChain->subUniformlySampledCdf(numEvaluationPointsVec, \textcolor{comment}{// input}
+243                                      *m\_subCdfGrids,         \textcolor{comment}{// output}
+244                                      *m\_subCdfValues);       \textcolor{comment}{// output}
+245 
+246   m\_subSolutionCdf = \textcolor{keyword}{new} SampledVectorCdf<Q\_V,Q\_M>(subCoreName\_solutionCdf.c\_str(),
+247                                                           *m\_subCdfGrids,
+248                                                           *m\_subCdfValues);
+249   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v_ab4d13e93cf8b2bf9d61c6fcf6306858e}{setSubCdf}(*m\_subSolutionCdf);
+250 
+251   \textcolor{comment}{// Compute unified cdf if necessary}
+252   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ac0345f57e31ef7833e379ed972bd094d}{numSubEnvironments}() == 1) \{
+253     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v_aa92eb9b8bff6cf9d82e32c98b4b7b0c9}{setUnifiedCdf}(*m\_subSolutionCdf);
+254   \}
+255   \textcolor{keywordflow}{else} \{
+256     m\_unifiedCdfGrids  = \textcolor{keyword}{new} ArrayOfOneDGrids <Q\_V,Q\_M>(uniCoreName\_qoiCdf.c\_str(),
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace());
+257     m\_unifiedCdfValues = \textcolor{keyword}{new} ArrayOfOneDTables<Q\_V,Q\_M>(uniCoreName\_qoiCdf.c\_str(),
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace());
+258     m\_qoiChain->unifiedUniformlySampledCdf(numEvaluationPointsVec, \textcolor{comment}{// input}
+259                                            *m\_unifiedCdfGrids,     \textcolor{comment}{// output}
+260                                            *m\_unifiedCdfValues);   \textcolor{comment}{// output}
+261 
+262     m\_unifiedSolutionCdf = \textcolor{keyword}{new} SampledVectorCdf<Q\_V,Q\_M>(uniCoreName\_solutionCdf.c\_str(),
+263                                                                 *m\_unifiedCdfGrids,
+264                                                                 *m\_unifiedCdfValues);
+265     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v_aa92eb9b8bff6cf9d82e32c98b4b7b0c9}{setUnifiedCdf}(*m\_unifiedSolutionCdf);
+266   \}
+267 \textcolor{preprocessor}{#endif}
+268 \textcolor{preprocessor}{}  \textcolor{comment}{// Compute (just unified one) covariance matrix, if requested}
+269   \textcolor{comment}{// Compute (just unified one) correlation matrix, if requested}
+270   P\_M* pqCovarianceMatrix  = NULL;
+271   P\_M* pqCorrelationMatrix = NULL;
+272   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_abe755434941b852aaf5bd512c153354b}{m\_computeCovariances} || 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_a4de46169004d9ccbe66fdf32ae93ea45}{m\_computeCorrelations}) \{
+273     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+274       *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       StatisticalForwardProblem<P\_V,P\_M,Q\_V,Q\_M>::solveWithMonteCarlo()"}
+275                               << \textcolor{stringliteral}{", prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}
+276                               << \textcolor{stringliteral}{": instantiating cov and corr matrices"}
+277                               << std::endl;
+278     \}
+279     pqCovarianceMatrix = \textcolor{keyword}{new} P\_M(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env},
+280                                  m\_paramRv.imageSet().vectorSpace().map(),       \textcolor{comment}{// number of rows}
+281                                  \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace().dimGlobal());  \textcolor{comment}{// number
+       of cols}
+282     pqCorrelationMatrix = \textcolor{keyword}{new} P\_M(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env},
+283                                   m\_paramRv.imageSet().vectorSpace().map(),      \textcolor{comment}{// number of rows}
+284                                   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace().dimGlobal()); \textcolor{comment}{// number
+       of cols}
+285     \hyperlink{namespace_q_u_e_s_o_ae194d12af9b08b130faf542b9b9ffe9b}{ComputeCovCorrMatricesBetweenVectorSequences}(*
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{m\_paramChain},
+286                                                    *m\_qoiChain,
+287                                                    std::min(m\_paramRv.realizer().subPeriod(),
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aea4b01eef0baf36944d14459a7b9ccf4}{realizer}().subPeriod()), \textcolor{comment}{// FIX ME: might be INFINITY}
+288                                                    *pqCovarianceMatrix,
+289                                                    *pqCorrelationMatrix);
+290   \}
+291 
+292   \textcolor{comment}{// Write data out}
+293   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+294     \textcolor{keywordflow}{if} (pqCovarianceMatrix ) \{
+295       *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       StatisticalForwardProblem<P\_V,P\_M,Q\_V,Q\_M>::solveWithMonteCarlo()"}
+296                               << \textcolor{stringliteral}{", prefix = "}                           << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}
+297                               << \textcolor{stringliteral}{": contents of covariance matrix are\(\backslash\)n"} << *pqCovarianceMatrix
+298                               << std::endl;
+299     \}
+300     \textcolor{keywordflow}{if} (pqCorrelationMatrix) \{
+301       *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       StatisticalForwardProblem<P\_V,P\_M,Q\_V,Q\_M>::solveWithMonteCarlo()"}
+302                               << \textcolor{stringliteral}{", prefix = "}                            << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}
+303                               << \textcolor{stringliteral}{": contents of correlation matrix are\(\backslash\)n"} << *pqCorrelationMatrix
+304                               << std::endl;
+305     \}
+306   \}
+307 
+308   \textcolor{comment}{// Open data output file}
+309   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+310     *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       StatisticalForwardProblem<P\_V,P\_M,Q\_V,Q\_M>::solveWithMonteCarlo()"}
+311                             << \textcolor{stringliteral}{", prefix = "}                                        << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}
+312                             << \textcolor{stringliteral}{": checking necessity of opening data output file '"} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_ad6028c5dff00b18d5085045c3a6d135e}{m\_dataOutputFileName}
+313                             << \textcolor{stringliteral}{"'"}
+314                             << std::endl;
+315   \}
+316   FilePtrSetStruct filePtrSet;
+317   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ab8fe853074f12ea34e18724119a2fc75}{openOutputFile}(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.
+      \hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_ad6028c5dff00b18d5085045c3a6d135e}{m\_dataOutputFileName},
+318                            \hyperlink{_defines_8h_ac440026eff7deb1c1eed1eea0e8e36ba}{UQ\_FILE\_EXTENSION\_FOR\_MATLAB\_FORMAT}, \textcolor{comment}{// Yes,
+       always ".m"}
+319                            \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.
+      \hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_a51d0f0da7a29dfb12340d863e2f980a0}{m\_dataOutputAllowedSet},
+320                            \textcolor{keyword}{false},
+321                            filePtrSet)) \{
+322 \textcolor{preprocessor}{#ifdef UQ\_ALSO\_COMPUTE\_MDFS\_WITHOUT\_KDE}
+323 \textcolor{preprocessor}{}    \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a81f6ade1c28022b813d1276f2c217404}{mdf}().print(*filePtrSet.ofsVar);
+324 \textcolor{preprocessor}{#endif}
+325 \textcolor{preprocessor}{}\textcolor{preprocessor}{#ifdef QUESO\_COMPUTES\_EXTRA\_POST\_PROCESSING\_STATISTICS}
+326 \textcolor{preprocessor}{}    *filePtrSet.ofsVar << \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a905586dc1529a3ae7dd7f04313ca9e8a}{subCdf}();
+327 \textcolor{preprocessor}{#endif}
+328 \textcolor{preprocessor}{}
+329     \textcolor{comment}{//if (pqCovarianceMatrix ) *filePtrSet.ofsVar << *pqCovarianceMatrix;  // FIX ME: output matrix in
+       matlab format}
+330     \textcolor{comment}{//if (pqCorrelationMatrix) *filePtrSet.ofsVar << *pqCorrelationMatrix; // FIX ME: output matrix in
+       matlab format}
+331 
+332     \textcolor{comment}{// Write unified cdf if necessary}
+333 \textcolor{preprocessor}{#ifdef QUESO\_COMPUTES\_EXTRA\_POST\_PROCESSING\_STATISTICS}
+334 \textcolor{preprocessor}{}    \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ac0345f57e31ef7833e379ed972bd094d}{numSubEnvironments}() > 1) \{
+335       \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace().numOfProcsForStorage() == 1) \{
+336         \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae106b5bb8a80b655b88b3a26b1e7c185}{inter0Rank}() == 0) \{
+337           *filePtrSet.ofsVar << \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{m\_qoiRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a045a14e1ee948ac3162199a06606ce80}{unifiedCdf}(); \textcolor{comment}{//*m\_unifiedSolutionCdf;}
+338         \}
+339       \}
+340       \textcolor{keywordflow}{else} \{
+341         \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+342                             \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+343                             \textcolor{stringliteral}{"StatisticalForwardProblem<P\_V,P\_M,Q\_V,Q\_M>::solveWithMonteCarlo()"},
+344                             \textcolor{stringliteral}{"unified cdf writing, parallel vectors not supported yet"});
+345       \}
+346     \}
+347 \textcolor{preprocessor}{#endif}
+348 \textcolor{preprocessor}{}    \textcolor{comment}{// Close data output file}
+349     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ab712bff194ddd91459d4ea8715c77e8b}{closeFile}(filePtrSet,\hyperlink{_defines_8h_ac440026eff7deb1c1eed1eea0e8e36ba}{UQ\_FILE\_EXTENSION\_FOR\_MATLAB\_FORMAT}
+      );
+350     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+351       *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       StatisticalForwardProblem<P\_V,P\_M,Q\_V,Q\_M>::solveWithMonteCarlo()"}
+352                               << \textcolor{stringliteral}{", prefix = "}                 << \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}
+353                               << \textcolor{stringliteral}{": closed data output file '"} << \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_ad6028c5dff00b18d5085045c3a6d135e}{m\_dataOutputFileName}
+354                               << \textcolor{stringliteral}{"'"}
+355                               << std::endl;
+356     \}
+357   \}
+358   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+359     *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << std::endl;
+360   \}
+361 
+362   \textcolor{keywordflow}{if} (pqCovarianceMatrix ) \textcolor{keyword}{delete} pqCovarianceMatrix;
+363   \textcolor{keywordflow}{if} (pqCorrelationMatrix) \textcolor{keyword}{delete} pqCorrelationMatrix;
+364 
+365   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a0b0779b41ff304058856e97e1d16b4d4}{fullComm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a6f73891de4668c325277ddaa799cf808}{syncPrintDebugMsg}(\textcolor{stringliteral}{"Leaving
+       StatisticalForwardProblem<P\_V,P\_M>::solveWithMonteCarlo()"},1,3000000);
+366   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a0b0779b41ff304058856e97e1d16b4d4}{fullComm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a4059971c30e023b272fccaa6aa00c426}{Barrier}();
+367 
+368   \textcolor{keywordflow}{return};
+369 \}
+\end{DoxyCode}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_aee8ed5dc90b8ecfd9536e60b393376ee}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ std\-::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os, }
+\item[{const {\bf Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \&}]{obj}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_aee8ed5dc90b8ecfd9536e60b393376ee}
+
+
+Definition at line 141 of file Statistical\-Forward\-Problem.\-h.
+
+
+\begin{DoxyCode}
+142                                                              \{
+143     obj.print(os);
+144     \textcolor{keywordflow}{return} os;
+145   \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_a8c76cf6924787705afbd66a70954bf6a}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!m\-\_\-alternative\-Options\-Values@{m\-\_\-alternative\-Options\-Values}}
+\index{m\-\_\-alternative\-Options\-Values@{m\-\_\-alternative\-Options\-Values}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{m\-\_\-alternative\-Options\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Sfp\-Options\-Values} {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-alternative\-Options\-Values\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_a8c76cf6924787705afbd66a70954bf6a}
+
+
+Definition at line 167 of file Statistical\-Forward\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_ab8dc530366735e9ca11290e37f95996a}
+
+
+Definition at line 153 of file Statistical\-Forward\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_a18f3f73759fbc2e64486b11c13b3fbf5}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!m\-\_\-mc\-Seq\-Generator@{m\-\_\-mc\-Seq\-Generator}}
+\index{m\-\_\-mc\-Seq\-Generator@{m\-\_\-mc\-Seq\-Generator}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{m\-\_\-mc\-Seq\-Generator}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Monte\-Carlo\-S\-G}$<$P\-\_\-\-V,P\-\_\-\-M,Q\-\_\-\-V,Q\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-mc\-Seq\-Generator\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_a18f3f73759fbc2e64486b11c13b3fbf5}
+
+
+Definition at line 161 of file Statistical\-Forward\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!m\-\_\-options\-Obj@{m\-\_\-options\-Obj}}
+\index{m\-\_\-options\-Obj@{m\-\_\-options\-Obj}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{m\-\_\-options\-Obj}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Statistical\-Forward\-Problem\-Options}$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-options\-Obj\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_a4c286957fda7c134718422d9d4e4f1ca}
+
+
+Definition at line 168 of file Statistical\-Forward\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!m\-\_\-param\-Chain@{m\-\_\-param\-Chain}}
+\index{m\-\_\-param\-Chain@{m\-\_\-param\-Chain}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{m\-\_\-param\-Chain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Base\-Vector\-Sequence}$<$Q\-\_\-\-V,Q\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-param\-Chain\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_add86e10f5d013e532d2687b0ed58dc0e}
+
+
+Definition at line 159 of file Statistical\-Forward\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_ab4933700b21362717461ce7da3c8a0e8}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!m\-\_\-param\-Rv@{m\-\_\-param\-Rv}}
+\index{m\-\_\-param\-Rv@{m\-\_\-param\-Rv}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{m\-\_\-param\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Base\-Vector\-R\-V}$<$P\-\_\-\-V,P\-\_\-\-M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-param\-Rv\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_ab4933700b21362717461ce7da3c8a0e8}
+
+
+Definition at line 155 of file Statistical\-Forward\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_a0c7b7ce063c82ed96ea0a75d119a677a}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!m\-\_\-qoi\-Chain@{m\-\_\-qoi\-Chain}}
+\index{m\-\_\-qoi\-Chain@{m\-\_\-qoi\-Chain}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{m\-\_\-qoi\-Chain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Base\-Vector\-Sequence}$<$Q\-\_\-\-V,Q\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-qoi\-Chain\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_a0c7b7ce063c82ed96ea0a75d119a677a}
+
+
+Definition at line 160 of file Statistical\-Forward\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_af267c75bf676bb857db1ff45fe5e4484}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!m\-\_\-qoi\-Function@{m\-\_\-qoi\-Function}}
+\index{m\-\_\-qoi\-Function@{m\-\_\-qoi\-Function}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{m\-\_\-qoi\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Base\-Vector\-Function}$<$P\-\_\-\-V,P\-\_\-\-M,Q\-\_\-\-V,Q\-\_\-\-M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-qoi\-Function\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_af267c75bf676bb857db1ff45fe5e4484}
+
+
+Definition at line 156 of file Statistical\-Forward\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!m\-\_\-qoi\-Rv@{m\-\_\-qoi\-Rv}}
+\index{m\-\_\-qoi\-Rv@{m\-\_\-qoi\-Rv}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{m\-\_\-qoi\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Generic\-Vector\-R\-V}$<$Q\-\_\-\-V,Q\-\_\-\-M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-qoi\-Rv\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_aa9ce415e5be95e04d6eea53c48fdea2c}
+
+
+Definition at line 157 of file Statistical\-Forward\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_a67810b9d77e549b7eee76cc008e21e5b}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!m\-\_\-solution\-Pdf@{m\-\_\-solution\-Pdf}}
+\index{m\-\_\-solution\-Pdf@{m\-\_\-solution\-Pdf}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{m\-\_\-solution\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Base\-Joint\-Pdf}$<$Q\-\_\-\-V,Q\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-solution\-Pdf\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_a67810b9d77e549b7eee76cc008e21e5b}
+
+
+Definition at line 165 of file Statistical\-Forward\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_a0b855f085c84bd113827951f3c424d2d}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}!m\-\_\-solution\-Realizer@{m\-\_\-solution\-Realizer}}
+\index{m\-\_\-solution\-Realizer@{m\-\_\-solution\-Realizer}!QUESO::StatisticalForwardProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}}
+\subsubsection[{m\-\_\-solution\-Realizer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Base\-Vector\-Realizer}$<$Q\-\_\-\-V,Q\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-solution\-Realizer\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_a0b855f085c84bd113827951f3c424d2d}
+
+
+Definition at line 163 of file Statistical\-Forward\-Problem.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_statistical_forward_problem_8h}{Statistical\-Forward\-Problem.\-h}\item 
+src/stats/src/\hyperlink{_statistical_forward_problem_8_c}{Statistical\-Forward\-Problem.\-C}\end{DoxyCompactItemize}

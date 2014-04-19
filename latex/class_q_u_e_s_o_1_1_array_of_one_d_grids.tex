@@ -1,0 +1,467 @@
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids}{\section{Q\-U\-E\-S\-O\-:\-:Array\-Of\-One\-D\-Grids$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_array_of_one_d_grids}\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids$<$ V, M $>$}}
+}
+
+
+Class to accommodate arrays of one-\/dimensional grid.  
+
+
+
+
+{\ttfamily \#include $<$Array\-Of\-One\-D\-Grids.\-h$>$}
+
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Array\-Of\-One\-D\-Grids$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_array_of_one_d_grids__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_afac2d38cfd5e69c4e7cd7744308063af}{Array\-Of\-One\-D\-Grids} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a07aee362e04f713c139730c991de9baa}{row\-Space})
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a4580db34a8438863e75c40cd47e9c8d4}{$\sim$\-Array\-Of\-One\-D\-Grids} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Property methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a07aee362e04f713c139730c991de9baa}{row\-Space} () const 
+\begin{DoxyCompactList}\small\item\em Returns the (vector) space to which the row belongs to. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a2035c97cda24870644070eae0f8ecfae}{sizes} () const 
+\begin{DoxyCompactList}\small\item\em Returns an array with the sizes of the grids. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a9230fc37403bb00ecd27ad842eb01c2b}{min\-Positions} () const 
+\begin{DoxyCompactList}\small\item\em Returns an array with the minimum position of each grid. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a958f92e18bcab93e1866ec67b18e408b}{max\-Positions} () const 
+\begin{DoxyCompactList}\small\item\em Returns an array with the maximum position of each grid. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Math methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a143a91500dd5cbc18dd9f8ec912f21d1}{set\-Uniform\-Grids} (const V \&sizes\-Vec, const V \&min\-Positions\-Vec, const V \&max\-Positions\-Vec)
+\begin{DoxyCompactList}\small\item\em Sets an array of uniform grids. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Accessor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid}{Base\-One\-D\-Grid}$<$ double $>$ \& \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a1e09877a9c5e712a03812163f628685b}{grid} (unsigned int row\-Id) const 
+\begin{DoxyCompactList}\small\item\em Returns the grid stored in the {\ttfamily row\-Id}-\/th position of the array of grids. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_abe7ada351d4ab3d04987f52cfedb419c}{m\-\_\-env}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae9f51dffdcb939ac6b85d700a60fe167}{m\-\_\-prefix}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_af8f8d1a3e1d4f6213cf64698f95d34da}{m\-\_\-row\-Space}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid}{Base\-One\-D\-Grid}\\*
+$<$ double $>$ $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a0cdfeb23fce031448906cef8d15fd407}{m\-\_\-one\-D\-Grids}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae2164bf692a8fed51b630a114824ffa7}{m\-\_\-sizes}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_aaca722e41b97a006385c588ea888f7d9}{m\-\_\-min\-Positions}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a8deeecb4b58f401acdc1fd101d6b5f42}{m\-\_\-max\-Positions}
+\end{DoxyCompactItemize}
+\subsection*{I/\-O methods}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a2c9eb92727869d6f985ed01c4a6d833d}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em Prints the values of the array of grids (points). \end{DoxyCompactList}\item 
+std\-::ostream \& \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_af1bc76a10219d37cae967bf8f6d9859a}{operator$<$$<$} (std\-::ostream \&os, const \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids}{Array\-Of\-One\-D\-Grids}$<$ V, M $>$ \&obj)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids$<$ V, M $>$}
+
+Class to accommodate arrays of one-\/dimensional grid. 
+
+Arrays of one-\/dimensional grids are necessary in the calculation, for instance, of C\-D\-Fs and M\-D\-F of vector functions (refer to \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf}{Base\-Vector\-Cdf}, \hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf}{Base\-Vector\-Mdf}, and derived classes). 
+
+Definition at line 44 of file Array\-Of\-One\-D\-Grids.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_afac2d38cfd5e69c4e7cd7744308063af}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!Array\-Of\-One\-D\-Grids@{Array\-Of\-One\-D\-Grids}}
+\index{Array\-Of\-One\-D\-Grids@{Array\-Of\-One\-D\-Grids}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{Array\-Of\-One\-D\-Grids}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::{\bf Array\-Of\-One\-D\-Grids} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Space}$<$ V, M $>$ \&}]{row\-Space}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_afac2d38cfd5e69c4e7cd7744308063af}
+
+
+Default constructor. 
+
+
+
+Definition at line 35 of file Array\-Of\-One\-D\-Grids.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids$<$ V, M $>$\-::m\-\_\-one\-D\-Grids.
+
+
+\begin{DoxyCode}
+38   :
+39   \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_abe7ada351d4ab3d04987f52cfedb419c}{m\_env}         (\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a07aee362e04f713c139730c991de9baa}{rowSpace}.env()    ),
+40   \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae9f51dffdcb939ac6b85d700a60fe167}{m\_prefix}      ((std::string)(prefix)+\textcolor{stringliteral}{""}),
+41   \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_af8f8d1a3e1d4f6213cf64698f95d34da}{m\_rowSpace}    (\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a07aee362e04f713c139730c991de9baa}{rowSpace}          ),
+42   \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a0cdfeb23fce031448906cef8d15fd407}{m\_oneDGrids}   (\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_af8f8d1a3e1d4f6213cf64698f95d34da}{m\_rowSpace}.map(),1),
+43   \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae2164bf692a8fed51b630a114824ffa7}{m\_sizes}       (NULL),
+44   \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_aaca722e41b97a006385c588ea888f7d9}{m\_minPositions}(NULL),
+45   \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a8deeecb4b58f401acdc1fd101d6b5f42}{m\_maxPositions}(NULL)
+46 \{
+47   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a0cdfeb23fce031448906cef8d15fd407}{m\_oneDGrids}.MyLength(); ++i) \{
+48     \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a0cdfeb23fce031448906cef8d15fd407}{m\_oneDGrids}(i,0) = NULL;
+49   \}
+50 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_a4580db34a8438863e75c40cd47e9c8d4}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!$\sim$\-Array\-Of\-One\-D\-Grids@{$\sim$\-Array\-Of\-One\-D\-Grids}}
+\index{$\sim$\-Array\-Of\-One\-D\-Grids@{$\sim$\-Array\-Of\-One\-D\-Grids}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{$\sim$\-Array\-Of\-One\-D\-Grids}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::$\sim${\bf Array\-Of\-One\-D\-Grids} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_a4580db34a8438863e75c40cd47e9c8d4}
+
+
+Destructor. 
+
+
+
+Definition at line 54 of file Array\-Of\-One\-D\-Grids.\-C.
+
+
+\begin{DoxyCode}
+55 \{
+56   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a8deeecb4b58f401acdc1fd101d6b5f42}{m\_maxPositions}) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a8deeecb4b58f401acdc1fd101d6b5f42}{m\_maxPositions};
+57   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_aaca722e41b97a006385c588ea888f7d9}{m\_minPositions}) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_aaca722e41b97a006385c588ea888f7d9}{m\_minPositions};
+58   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae2164bf692a8fed51b630a114824ffa7}{m\_sizes}       ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae2164bf692a8fed51b630a114824ffa7}{m\_sizes};
+59 
+60   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a0cdfeb23fce031448906cef8d15fd407}{m\_oneDGrids}.MyLength(); ++i) \{
+61     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a0cdfeb23fce031448906cef8d15fd407}{m\_oneDGrids}(i,0)) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a0cdfeb23fce031448906cef8d15fd407}{m\_oneDGrids}(i,0);
+62   \}
+63 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_a1e09877a9c5e712a03812163f628685b}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!grid@{grid}}
+\index{grid@{grid}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{grid}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Base\-One\-D\-Grid}$<$ double $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::grid (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{row\-Id}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_a1e09877a9c5e712a03812163f628685b}
+
+
+Returns the grid stored in the {\ttfamily row\-Id}-\/th position of the array of grids. 
+
+
+
+Definition at line 140 of file Array\-Of\-One\-D\-Grids.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$\-::\-Sampled\-Vector\-Cdf().
+
+
+\begin{DoxyCode}
+141 \{
+142   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(rowId >= \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_af8f8d1a3e1d4f6213cf64698f95d34da}{m\_rowSpace}.dimLocal(),
+143                       \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_abe7ada351d4ab3d04987f52cfedb419c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+144                       \textcolor{stringliteral}{"ArrayOfOneDUnformGrids<T>::grid()"},
+145                       \textcolor{stringliteral}{"rowId is out of range"});
+146 
+147   ArrayOfOneDGrids<V,M>* tmp = \textcolor{keyword}{const\_cast<}ArrayOfOneDGrids<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+148   \textcolor{keywordflow}{return} *(tmp->m\_oneDGrids(rowId,0));
+149 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_a958f92e18bcab93e1866ec67b18e408b}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!max\-Positions@{max\-Positions}}
+\index{max\-Positions@{max\-Positions}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{max\-Positions}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::max\-Positions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_a958f92e18bcab93e1866ec67b18e408b}
+
+
+Returns an array with the maximum position of each grid. 
+
+
+
+Definition at line 99 of file Array\-Of\-One\-D\-Grids.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+100 \{
+101   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a8deeecb4b58f401acdc1fd101d6b5f42}{m\_maxPositions} == NULL,
+102                       \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_abe7ada351d4ab3d04987f52cfedb419c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+103                       \textcolor{stringliteral}{"ArrayOfOneDGrids<T>::maxPositions()"},
+104                       \textcolor{stringliteral}{"maxPositions is still NULL"});
+105 
+106   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a8deeecb4b58f401acdc1fd101d6b5f42}{m\_maxPositions};
+107 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_a9230fc37403bb00ecd27ad842eb01c2b}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!min\-Positions@{min\-Positions}}
+\index{min\-Positions@{min\-Positions}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{min\-Positions}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::min\-Positions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_a9230fc37403bb00ecd27ad842eb01c2b}
+
+
+Returns an array with the minimum position of each grid. 
+
+
+
+Definition at line 87 of file Array\-Of\-One\-D\-Grids.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+88 \{
+89   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_aaca722e41b97a006385c588ea888f7d9}{m\_minPositions} == NULL,
+90                       \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_abe7ada351d4ab3d04987f52cfedb419c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+91                       \textcolor{stringliteral}{"ArrayOfOneDGrids<T>::minPositions()"},
+92                       \textcolor{stringliteral}{"minPositions is still NULL"});
+93 
+94   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_aaca722e41b97a006385c588ea888f7d9}{m\_minPositions};
+95 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_a2c9eb92727869d6f985ed01c4a6d833d}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!print@{print}}
+\index{print@{print}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_a2c9eb92727869d6f985ed01c4a6d833d}
+
+
+Prints the values of the array of grids (points). 
+
+
+
+Definition at line 154 of file Array\-Of\-One\-D\-Grids.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids$<$ V, M $>$\-::m\-\_\-one\-D\-Grids.
+
+
+\begin{DoxyCode}
+155 \{
+156   ArrayOfOneDGrids<V,M>* tmp = \textcolor{keyword}{const\_cast<}ArrayOfOneDGrids<V,M>*\textcolor{keyword}{>}(\textcolor{keyword}{this});
+157   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a0cdfeb23fce031448906cef8d15fd407}{m\_oneDGrids}.MyLength(); ++i) \{
+158     os << *(tmp->m\_oneDGrids(i,0))
+159        << std::endl;
+160   \}
+161 
+162   \textcolor{keywordflow}{return};
+163 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_a07aee362e04f713c139730c991de9baa}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!row\-Space@{row\-Space}}
+\index{row\-Space@{row\-Space}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{row\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Vector\-Space}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::row\-Space (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_a07aee362e04f713c139730c991de9baa}
+
+
+Returns the (vector) space to which the row belongs to. 
+
+
+
+Definition at line 68 of file Array\-Of\-One\-D\-Grids.\-C.
+
+
+\begin{DoxyCode}
+69 \{
+70   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_af8f8d1a3e1d4f6213cf64698f95d34da}{m\_rowSpace};
+71 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_a143a91500dd5cbc18dd9f8ec912f21d1}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!set\-Uniform\-Grids@{set\-Uniform\-Grids}}
+\index{set\-Uniform\-Grids@{set\-Uniform\-Grids}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{set\-Uniform\-Grids}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::set\-Uniform\-Grids (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{sizes\-Vec, }
+\item[{const V \&}]{min\-Positions\-Vec, }
+\item[{const V \&}]{max\-Positions\-Vec}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_a143a91500dd5cbc18dd9f8ec912f21d1}
+
+
+Sets an array of uniform grids. 
+
+
+
+Definition at line 111 of file Array\-Of\-One\-D\-Grids.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$\-::sub\-Uniformly\-Sampled\-Cdf(), and Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$\-::unified\-Uniformly\-Sampled\-Cdf().
+
+
+\begin{DoxyCode}
+115 \{
+116   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae2164bf692a8fed51b630a114824ffa7}{m\_sizes}        == NULL) \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae2164bf692a8fed51b630a114824ffa7}{m\_sizes}        = \textcolor{keyword}{new} V(sizesVec);
+117   \textcolor{keywordflow}{else}                       *\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae2164bf692a8fed51b630a114824ffa7}{m\_sizes}        = sizesVec;
+118 
+119   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_aaca722e41b97a006385c588ea888f7d9}{m\_minPositions} == NULL) \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_aaca722e41b97a006385c588ea888f7d9}{m\_minPositions} = \textcolor{keyword}{new} V(minPositionsVec);
+120   \textcolor{keywordflow}{else}                       *\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_aaca722e41b97a006385c588ea888f7d9}{m\_minPositions} = minPositionsVec;
+121 
+122   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a8deeecb4b58f401acdc1fd101d6b5f42}{m\_maxPositions} == NULL) \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a8deeecb4b58f401acdc1fd101d6b5f42}{m\_maxPositions} = \textcolor{keyword}{new} V(maxPositionsVec);
+123   \textcolor{keywordflow}{else}                       *\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a8deeecb4b58f401acdc1fd101d6b5f42}{m\_maxPositions} = maxPositionsVec;
+124 
+125   \textcolor{keywordtype}{char} strI[65];
+126   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a0cdfeb23fce031448906cef8d15fd407}{m\_oneDGrids}.MyLength(); ++i) \{
+127     sprintf(strI,\textcolor{stringliteral}{"%u\_"},i);
+128     \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_a0cdfeb23fce031448906cef8d15fd407}{m\_oneDGrids}(i,0) = \textcolor{keyword}{new} UniformOneDGrid<double>(\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_abe7ada351d4ab3d04987f52cfedb419c}{m\_env},
+129                                                           (\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae9f51dffdcb939ac6b85d700a60fe167}{m\_prefix}+strI).c\_str(),
+130                                                           (\textcolor{keywordtype}{unsigned} int) sizesVec[i],
+131                                                           minPositionsVec[i],
+132                                                           maxPositionsVec[i]);
+133   \}
+134 
+135   \textcolor{keywordflow}{return};
+136 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_a2035c97cda24870644070eae0f8ecfae}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!sizes@{sizes}}
+\index{sizes@{sizes}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{sizes}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::sizes (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_a2035c97cda24870644070eae0f8ecfae}
+
+
+Returns an array with the sizes of the grids. 
+
+
+
+Definition at line 75 of file Array\-Of\-One\-D\-Grids.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+76 \{
+77   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae2164bf692a8fed51b630a114824ffa7}{m\_sizes} == NULL,
+78                       \hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_abe7ada351d4ab3d04987f52cfedb419c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+79                       \textcolor{stringliteral}{"ArrayOfOneDGrids<T>::sizes()"},
+80                       \textcolor{stringliteral}{"sizes is still NULL"});
+81 
+82   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae2164bf692a8fed51b630a114824ffa7}{m\_sizes};
+83 \}
+\end{DoxyCode}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_af1bc76a10219d37cae967bf8f6d9859a}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ std\-::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os, }
+\item[{const {\bf Array\-Of\-One\-D\-Grids}$<$ V, M $>$ \&}]{obj}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_af1bc76a10219d37cae967bf8f6d9859a}
+
+
+Definition at line 92 of file Array\-Of\-One\-D\-Grids.\-h.
+
+
+\begin{DoxyCode}
+94   \{
+95     obj.print(os);
+96     \textcolor{keywordflow}{return} os;
+97   \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_abe7ada351d4ab3d04987f52cfedb419c}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_abe7ada351d4ab3d04987f52cfedb419c}
+
+
+Definition at line 101 of file Array\-Of\-One\-D\-Grids.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_a8deeecb4b58f401acdc1fd101d6b5f42}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!m\-\_\-max\-Positions@{m\-\_\-max\-Positions}}
+\index{m\-\_\-max\-Positions@{m\-\_\-max\-Positions}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{m\-\_\-max\-Positions}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::m\-\_\-max\-Positions\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_a8deeecb4b58f401acdc1fd101d6b5f42}
+
+
+Definition at line 108 of file Array\-Of\-One\-D\-Grids.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_aaca722e41b97a006385c588ea888f7d9}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!m\-\_\-min\-Positions@{m\-\_\-min\-Positions}}
+\index{m\-\_\-min\-Positions@{m\-\_\-min\-Positions}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{m\-\_\-min\-Positions}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::m\-\_\-min\-Positions\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_aaca722e41b97a006385c588ea888f7d9}
+
+
+Definition at line 107 of file Array\-Of\-One\-D\-Grids.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_a0cdfeb23fce031448906cef8d15fd407}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!m\-\_\-one\-D\-Grids@{m\-\_\-one\-D\-Grids}}
+\index{m\-\_\-one\-D\-Grids@{m\-\_\-one\-D\-Grids}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{m\-\_\-one\-D\-Grids}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Dist\-Array}$<${\bf Base\-One\-D\-Grid}$<$double$>$$\ast$$>$ {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::m\-\_\-one\-D\-Grids\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_a0cdfeb23fce031448906cef8d15fd407}
+
+
+Definition at line 104 of file Array\-Of\-One\-D\-Grids.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids$<$ V, M $>$\-::\-Array\-Of\-One\-D\-Grids(), and Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids$<$ V, M $>$\-::print().
+
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae9f51dffdcb939ac6b85d700a60fe167}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!m\-\_\-prefix@{m\-\_\-prefix}}
+\index{m\-\_\-prefix@{m\-\_\-prefix}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{m\-\_\-prefix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ std\-::string {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::m\-\_\-prefix\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae9f51dffdcb939ac6b85d700a60fe167}
+
+
+Definition at line 102 of file Array\-Of\-One\-D\-Grids.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_af8f8d1a3e1d4f6213cf64698f95d34da}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!m\-\_\-row\-Space@{m\-\_\-row\-Space}}
+\index{m\-\_\-row\-Space@{m\-\_\-row\-Space}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{m\-\_\-row\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Vector\-Space}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::m\-\_\-row\-Space\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_af8f8d1a3e1d4f6213cf64698f95d34da}
+
+
+Definition at line 103 of file Array\-Of\-One\-D\-Grids.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae2164bf692a8fed51b630a114824ffa7}{\index{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}!m\-\_\-sizes@{m\-\_\-sizes}}
+\index{m\-\_\-sizes@{m\-\_\-sizes}!QUESO::ArrayOfOneDGrids@{Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}}
+\subsubsection[{m\-\_\-sizes}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Grids}$<$ V, M $>$\-::m\-\_\-sizes\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_array_of_one_d_grids_ae2164bf692a8fed51b630a114824ffa7}
+
+
+Definition at line 106 of file Array\-Of\-One\-D\-Grids.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/misc/inc/\hyperlink{_array_of_one_d_grids_8h}{Array\-Of\-One\-D\-Grids.\-h}\item 
+src/misc/src/\hyperlink{_array_of_one_d_grids_8_c}{Array\-Of\-One\-D\-Grids.\-C}\end{DoxyCompactItemize}

@@ -1,0 +1,520 @@
+\hypertarget{class_q_u_e_s_o_1_1_sampled_scalar_cdf}{\section{Q\-U\-E\-S\-O\-:\-:Sampled\-Scalar\-Cdf$<$ T $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_sampled_scalar_cdf}\index{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf$<$ T $>$@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf$<$ T $>$}}
+}
+
+
+A class for handling sampled C\-D\-Fs.  
+
+
+
+
+{\ttfamily \#include $<$Sampled\-Scalar\-Cdf.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Sampled\-Scalar\-Cdf$<$ T $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=258pt]{class_q_u_e_s_o_1_1_sampled_scalar_cdf__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Sampled\-Scalar\-Cdf$<$ T $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_sampled_scalar_cdf__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_aa1b09a58b4afb1b8c1c822dd4575faad}{Sampled\-Scalar\-Cdf} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a70c89dd2ad294be170338a283fc58ff3}{env}, const char $\ast$\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_aafb3eaf3bf1d7269073e9c77bd8c766d}{prefix}, const \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid}{Base\-One\-D\-Grid}$<$ T $>$ \&cdf\-Grid, const std\-::vector$<$ double $>$ \&cdf\-Values)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ae2b5a724fcecef81ef74f8d52b021fcb}{$\sim$\-Sampled\-Scalar\-Cdf} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a3eb93ff8c14d2b66bf692033a2a3b8b6}{value} (T param\-Value) const 
+\begin{DoxyCompactList}\small\item\em Returns the value of the C\-D\-F at {\ttfamily param\-Value}. \end{DoxyCompactList}\item 
+T \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a685b0c343b3ab320680c132c836fb1da}{inverse} (double cdf\-Value) const 
+\begin{DoxyCompactList}\small\item\em Returns the position of a given value of C\-D\-F. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab1d99d5dcc9dc79b50501caf80154c39}{get\-Support} (T \&min\-Horizontal, T \&max\-Horizontal) const 
+\begin{DoxyCompactList}\small\item\em Returns the support (image) of the C\-D\-F between two horizontal values (domain). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a1ae05088dd70e2432a52577ba6dca468}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em Prints the C\-D\-F (values of the grid points and of the C\-D\-F at such grid points). \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_af597534e752c2974448d7fd071266c59}{sub\-Write\-Contents} (const std\-::string \&var\-Name\-Prefix, const std\-::string \&file\-Name, const std\-::string \&file\-Type, const std\-::set$<$ unsigned int $>$ \&allowed\-Sub\-Env\-Ids) const 
+\begin{DoxyCompactList}\small\item\em Writes the C\-D\-F of an allowed sub-\/environment to a file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_one_d_grid}{Base\-One\-D\-Grid}$<$ T $>$ \& \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\-\_\-cdf\-Grid}
+\item 
+const std\-::vector$<$ double $>$ \& \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\-\_\-cdf\-Values}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T$>$class Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf$<$ T $>$}
+
+A class for handling sampled C\-D\-Fs. 
+
+This class implements a sampled cumulative distribution function (C\-D\-F), given the grid points where it will be sampled and its resulting values. 
+
+Definition at line 46 of file Sampled\-Scalar\-Cdf.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_scalar_cdf_aa1b09a58b4afb1b8c1c822dd4575faad}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}!Sampled\-Scalar\-Cdf@{Sampled\-Scalar\-Cdf}}
+\index{Sampled\-Scalar\-Cdf@{Sampled\-Scalar\-Cdf}!QUESO::SampledScalarCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}}
+\subsubsection[{Sampled\-Scalar\-Cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}$<$ T $>$\-::{\bf Sampled\-Scalar\-Cdf} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Base\-One\-D\-Grid}$<$ T $>$ \&}]{cdf\-Grid, }
+\item[{const std\-::vector$<$ double $>$ \&}]{cdf\-Values}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_sampled_scalar_cdf_aa1b09a58b4afb1b8c1c822dd4575faad}
+
+
+Default constructor. 
+
+Instantiates an object of the class given a prefix, the environment, the grid points where it will be sampled/evaluated and its resulting values. 
+
+Definition at line 31 of file Sampled\-Scalar\-Cdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+36   :
+37   BaseScalarCdf<T>(\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a70c89dd2ad294be170338a283fc58ff3}{env},((std::string)(\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_aafb3eaf3bf1d7269073e9c77bd8c766d}{prefix})+\textcolor{stringliteral}{""}).c\_str()),
+38   \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}              (cdfGrid  ),
+39   \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}            (cdfValues)
+40 \{
+41   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+42     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering SampledScalarCdf<T>::constructor()"}
+43                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a66c2a1bcf0ac517013e7857c3533a187}{m\_prefix}
+44                             << std::endl;
+45   \}
+46 
+47   \textcolor{comment}{//for (unsigned int i = 0; i < m\_cdfValues.size(); ++i) \{}
+48   \textcolor{comment}{//  m\_sortedCdfValues[i] = m\_cdfValues[i];}
+49   \textcolor{comment}{//\}}
+50   \textcolor{comment}{//std::sort(m\_sortedCdfValues.begin(), m\_sortedCdfValues.end());}
+51  
+52   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+53     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving SampledScalarCdf<T>::constructor()"}
+54                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a66c2a1bcf0ac517013e7857c3533a187}{m\_prefix}
+55                             << std::endl;
+56   \}
+57 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ae2b5a724fcecef81ef74f8d52b021fcb}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}!$\sim$\-Sampled\-Scalar\-Cdf@{$\sim$\-Sampled\-Scalar\-Cdf}}
+\index{$\sim$\-Sampled\-Scalar\-Cdf@{$\sim$\-Sampled\-Scalar\-Cdf}!QUESO::SampledScalarCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}}
+\subsubsection[{$\sim$\-Sampled\-Scalar\-Cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}$<$ T $>$\-::$\sim${\bf Sampled\-Scalar\-Cdf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ae2b5a724fcecef81ef74f8d52b021fcb}
+
+
+Destructor. 
+
+
+
+Definition at line 60 of file Sampled\-Scalar\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+61 \{
+62 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab1d99d5dcc9dc79b50501caf80154c39}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}!get\-Support@{get\-Support}}
+\index{get\-Support@{get\-Support}!QUESO::SampledScalarCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}}
+\subsubsection[{get\-Support}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}$<$ T $>$\-::get\-Support (
+\begin{DoxyParamCaption}
+\item[{T \&}]{min\-Horizontal, }
+\item[{T \&}]{max\-Horizontal}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab1d99d5dcc9dc79b50501caf80154c39}
+
+
+Returns the support (image) of the C\-D\-F between two horizontal values (domain). 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a9684b285f88be8c2bafe4d2abd8a7447}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$}.
+
+
+
+Definition at line 165 of file Sampled\-Scalar\-Cdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+166 \{
+167   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_ab54be9623cddb0671db458d05d63f0a7}{m\_minHorizontal} == -INFINITY) ||
+168       (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a33beb9b7e610a4fe1458080593982d2e}{m\_maxHorizontal} ==  INFINITY)) \{
+169     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_ab54be9623cddb0671db458d05d63f0a7}{m\_minHorizontal} != -INFINITY) || (
+      \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a33beb9b7e610a4fe1458080593982d2e}{m\_maxHorizontal} != INFINITY),
+170                         \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+171                         \textcolor{stringliteral}{"SampledScalarCdf<T>::getSupport()"},
+172                         \textcolor{stringliteral}{"unexpected values of m\_minHorizontal and/or m\_maxHorizontal"});
+173 
+174     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} iMax = \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}.size();
+175 
+176     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < iMax; ++i) \{
+177       \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[i] > 0.) \{
+178         \textcolor{keywordflow}{if} (i > 0) --i;
+179         \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_ab54be9623cddb0671db458d05d63f0a7}{m\_minHorizontal} = \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[i];
+180         \textcolor{keywordflow}{break};
+181       \}
+182     \}
+183 
+184     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_ab54be9623cddb0671db458d05d63f0a7}{m\_minHorizontal} == -INFINITY,
+185                         \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+186                         \textcolor{stringliteral}{"SampledScalarCdf<T>::getSupport()"},
+187                         \textcolor{stringliteral}{"unexpected value for m\_minHorizontal"});
+188 
+189     \textcolor{keywordflow}{if} (iMax == 1) \{
+190       \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[iMax - 1] != 1.,
+191                           \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+192                           \textcolor{stringliteral}{"SampledScalarCdf<T>::getSupport()"},
+193                           \textcolor{stringliteral}{"unexpected value for case 'iMax = 1'"});
+194       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a33beb9b7e610a4fe1458080593982d2e}{m\_maxHorizontal} = \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[iMax-1];
+195     \}
+196     \textcolor{keywordflow}{else} \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < iMax; ++i) \{
+197       \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[iMax-1-i] < 1.) \{
+198         \textcolor{keywordflow}{if} (i > 0) --i;
+199         \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a33beb9b7e610a4fe1458080593982d2e}{m\_maxHorizontal} = \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[iMax-1-i];
+200         \textcolor{keywordflow}{break};
+201       \}
+202     \}
+203 
+204     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a33beb9b7e610a4fe1458080593982d2e}{m\_maxHorizontal} == INFINITY,
+205                         \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+206                         \textcolor{stringliteral}{"SampledScalarCdf<T>::getSupport()"},
+207                         \textcolor{stringliteral}{"unexpected value for m\_maxHorizontal"});
+208   \}
+209 
+210   minHorizontal = \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_ab54be9623cddb0671db458d05d63f0a7}{m\_minHorizontal};
+211   maxHorizontal = \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a33beb9b7e610a4fe1458080593982d2e}{m\_maxHorizontal};
+212 
+213   \textcolor{keywordflow}{return};
+214 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a685b0c343b3ab320680c132c836fb1da}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}!inverse@{inverse}}
+\index{inverse@{inverse}!QUESO::SampledScalarCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}}
+\subsubsection[{inverse}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ T {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}$<$ T $>$\-::inverse (
+\begin{DoxyParamCaption}
+\item[{double}]{cdf\-Value}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a685b0c343b3ab320680c132c836fb1da}
+
+
+Returns the position of a given value of C\-D\-F. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3e1778c76a557716e74b5fc11604dd75}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$}.
+
+
+
+Definition at line 108 of file Sampled\-Scalar\-Cdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+109 \{
+110   \textcolor{comment}{//*m\_env.subDisplayFile() << "In SampledScalarCdf::inverse(): cdfValue = " << cdfValue}
+111   \textcolor{comment}{//                       << std::endl;}
+112   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((cdfValue < 0.) || (1. < cdfValue),
+113                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+114                       \textcolor{stringliteral}{"SampledScalarCdf<T>::inverse()"},
+115                       \textcolor{stringliteral}{"invalid cdfValue"});
+116   \textcolor{keywordtype}{double} result = 0.;
+117   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0;
+118   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}.size()-1;
+119   \textcolor{keywordtype}{bool} searchPosition = \textcolor{keyword}{true};
+120   \textcolor{keywordflow}{do} \{
+121     \textcolor{keywordflow}{if} (cdfValue == \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[i]) \{
+122       \textcolor{keywordflow}{while} ((0 < i) && (cdfValue == \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[i-1])) --i;
+123       result = \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[i];
+124       searchPosition = \textcolor{keyword}{false};
+125     \}
+126     
+127     \textcolor{keywordflow}{if} (cdfValue == \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[j]) \{
+128       \textcolor{keywordflow}{while} ((0 < j) && (cdfValue == \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[j-1])) --j;
+129       result = \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[j];
+130       searchPosition = \textcolor{keyword}{false};
+131     \}
+132 
+133     \textcolor{keywordflow}{if} ((j-i) <= 0) \{
+134       \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+135                           \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+136                           \textcolor{stringliteral}{"SampledScalarCdf<T>::inverse()"},
+137                           \textcolor{stringliteral}{"invalid pair of values 'i' and 'j'"});
+138     \}
+139     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} ((j-i) == 1) \{
+140       \textcolor{keywordtype}{double} ratio = (cdfValue-\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[i])/(\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[j]-
+      \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[i]);
+141       result = (1.-ratio)*\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[i] + ratio*\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[j];
+142       searchPosition = \textcolor{keyword}{false};
+143     \}
+144     \textcolor{keywordflow}{else} \{
+145       \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} k= (\textcolor{keywordtype}{unsigned} int) ((i+j)*.5);
+146       \textcolor{keywordflow}{if} (cdfValue < \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[k]) \{
+147         j = k;
+148       \}
+149       \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (cdfValue == \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[k]) \{
+150         \textcolor{keywordflow}{while} ((0 < k) && (cdfValue == \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[k-1])) --k;
+151         result = \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[k];
+152         searchPosition = \textcolor{keyword}{false};
+153       \}
+154       \textcolor{keywordflow}{else} \{
+155         i = k;
+156       \}
+157     \}
+158   \} \textcolor{keywordflow}{while} (searchPosition);
+159   
+160   \textcolor{keywordflow}{return} result;
+161 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a1ae05088dd70e2432a52577ba6dca468}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}!print@{print}}
+\index{print@{print}!QUESO::SampledScalarCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}$<$ T $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a1ae05088dd70e2432a52577ba6dca468}
+
+
+Prints the C\-D\-F (values of the grid points and of the C\-D\-F at such grid points). 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a131a7c148188f3f70c2db44cc1a93bc8}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$}.
+
+
+
+Definition at line 218 of file Sampled\-Scalar\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+219 \{
+220   \textcolor{comment}{// Print values *of* grid points}
+221   os << \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid};
+222 
+223   \textcolor{comment}{// Print *cdf* values *at* grid points}
+224   os << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a66c2a1bcf0ac517013e7857c3533a187}{m\_prefix} << \textcolor{stringliteral}{"values\_sub"} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a73f7849acdd5d5ba15a3094fe18f258f}{subIdString}() << \textcolor{stringliteral}{" = zeros("} << 
+      \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}.size()
+225      << \textcolor{stringliteral}{","}                                                            << 1
+226      << \textcolor{stringliteral}{");"}
+227      << std::endl;
+228   os << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a66c2a1bcf0ac517013e7857c3533a187}{m\_prefix} << \textcolor{stringliteral}{"values\_sub"} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a73f7849acdd5d5ba15a3094fe18f258f}{subIdString}() << \textcolor{stringliteral}{" = ["};
+229   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}.size(); ++j) \{
+230     os << \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[j] << \textcolor{stringliteral}{" "};
+231   \}
+232   os << \textcolor{stringliteral}{"];"}
+233      << std::endl;
+234 
+235   \textcolor{keywordflow}{return};
+236 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_scalar_cdf_af597534e752c2974448d7fd071266c59}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}!sub\-Write\-Contents@{sub\-Write\-Contents}}
+\index{sub\-Write\-Contents@{sub\-Write\-Contents}!QUESO::SampledScalarCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}}
+\subsubsection[{sub\-Write\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}$<$ T $>$\-::sub\-Write\-Contents (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{var\-Name\-Prefix, }
+\item[{const std\-::string \&}]{file\-Name, }
+\item[{const std\-::string \&}]{file\-Type, }
+\item[{const std\-::set$<$ unsigned int $>$ \&}]{allowed\-Sub\-Env\-Ids}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled_scalar_cdf_af597534e752c2974448d7fd071266c59}
+
+
+Writes the C\-D\-F of an allowed sub-\/environment to a file. 
+
+It will write the data in Octave/\-Matlab compatible format. 
+
+Reimplemented from \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_abdd6c6f5f8f028a6ffd30168885b6338}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$}.
+
+
+
+Definition at line 240 of file Sampled\-Scalar\-Cdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct\-::ofs\-Var, and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+245 \{
+246   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a172d52f993f1322ed45aaddf71518dbb}{subRank}() < 0,
+247                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+248                       \textcolor{stringliteral}{"SampledScalarCdf<T>::subWriteContents()"},
+249                       \textcolor{stringliteral}{"unexpected subRank"});
+250 
+251   FilePtrSetStruct filePtrSet;
+252   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ab8fe853074f12ea34e18724119a2fc75}{openOutputFile}(fileName,
+253                            fileType, \textcolor{comment}{// "m or hdf"}
+254                            allowedSubEnvIds,
+255                            \textcolor{keyword}{false},
+256                            filePtrSet)) \{
+257 
+258     \textcolor{comment}{// Grid}
+259     *filePtrSet.ofsVar << varNamePrefix << \textcolor{stringliteral}{"grid\_sub"} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a73f7849acdd5d5ba15a3094fe18f258f}{subIdString}() << \textcolor{stringliteral}{" = zeros("}
+       << \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}.size()
+260                        << \textcolor{stringliteral}{","}                                                               << 1
+261                        << \textcolor{stringliteral}{");"}
+262                        << std::endl;
+263     *filePtrSet.ofsVar << varNamePrefix << \textcolor{stringliteral}{"grid\_sub"} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a73f7849acdd5d5ba15a3094fe18f258f}{subIdString}() << \textcolor{stringliteral}{" = ["};
+264 
+265     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} savedPrecision = filePtrSet.ofsVar->precision();
+266     filePtrSet.ofsVar->precision(16);
+267     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}.size(); ++j) \{
+268       *filePtrSet.ofsVar << \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[j] << \textcolor{stringliteral}{" "};
+269     \}
+270     filePtrSet.ofsVar->precision(savedPrecision);
+271 
+272     *filePtrSet.ofsVar << \textcolor{stringliteral}{"];\(\backslash\)n"};
+273 
+274     \textcolor{comment}{// Values}
+275     *filePtrSet.ofsVar << varNamePrefix << \textcolor{stringliteral}{"values\_sub"} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a73f7849acdd5d5ba15a3094fe18f258f}{subIdString}() << \textcolor{stringliteral}{" = zeros("} << \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}.size()
+276                        << \textcolor{stringliteral}{","}                                                                 << 1
+277                        << \textcolor{stringliteral}{");"}
+278                        << std::endl;
+279     *filePtrSet.ofsVar << varNamePrefix << \textcolor{stringliteral}{"values\_sub"} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a73f7849acdd5d5ba15a3094fe18f258f}{subIdString}() << \textcolor{stringliteral}{" = ["};
+280 
+281     savedPrecision = filePtrSet.ofsVar->precision();
+282     filePtrSet.ofsVar->precision(16);
+283     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}.size(); ++j) \{
+284       *filePtrSet.ofsVar << \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[j] << \textcolor{stringliteral}{" "};
+285     \}
+286     filePtrSet.ofsVar->precision(savedPrecision);
+287 
+288     *filePtrSet.ofsVar << \textcolor{stringliteral}{"];\(\backslash\)n"};
+289 
+290     \textcolor{comment}{// Close file}
+291     \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ab712bff194ddd91459d4ea8715c77e8b}{closeFile}(filePtrSet,fileType);
+292   \}
+293 
+294   \textcolor{keywordflow}{return};
+295 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a3eb93ff8c14d2b66bf692033a2a3b8b6}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}!value@{value}}
+\index{value@{value}!QUESO::SampledScalarCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}}
+\subsubsection[{value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ double {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}$<$ T $>$\-::value (
+\begin{DoxyParamCaption}
+\item[{T}]{param\-Value}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a3eb93ff8c14d2b66bf692033a2a3b8b6}
+
+
+Returns the value of the C\-D\-F at {\ttfamily param\-Value}. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a887af6d62eb04f2bf3b58c12e586f20b}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Cdf$<$ T $>$}.
+
+
+
+Definition at line 66 of file Sampled\-Scalar\-Cdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+67 \{
+68   \textcolor{keywordtype}{double} result = 0.;
+69   \textcolor{keywordflow}{if} (paramValue <= \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[0]) \{
+70     result = 0.;
+71   \}
+72   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}.size()-1] <= paramValue) \{
+73     result = 1.;
+74   \}
+75   \textcolor{keywordflow}{else} \{
+76     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} intervalId = \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}.findIntervalId(paramValue);
+77     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(intervalId >= (\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}.size()-1),
+78                         \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+79                         \textcolor{stringliteral}{"SampledScalarCdf<T>::value()"},
+80                         \textcolor{stringliteral}{"invalid intervalId"});
+81 
+82     \textcolor{keywordtype}{double} intervalLen = \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[intervalId+1] - \hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{m\_cdfGrid}[intervalId];
+83     \textcolor{keywordtype}{double} ratio = (paramValue - m\_cdfGrid[intervalId])/intervalLen;
+84 \textcolor{preprocessor}{#if 0}
+85 \textcolor{preprocessor}{}    *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In SampledScalarCdf::value()"}
+86                             << \textcolor{stringliteral}{": paramValue = "}              << paramValue
+87                             << \textcolor{stringliteral}{", intervalId = "}              << intervalId
+88                             << \textcolor{stringliteral}{", cdfGrid.size() = "}          << m\_cdfGrid.size()
+89                             << \textcolor{stringliteral}{", m\_cdfGrid[intervalId] = "}   << m\_cdfGrid[intervalId]
+90                             << \textcolor{stringliteral}{", m\_cdfGrid[intervalId+1] = "} << m\_cdfGrid[intervalId+1]
+91                             << \textcolor{stringliteral}{", intervalLen = "}             << intervalLen
+92                             << \textcolor{stringliteral}{", ratio = "}                   << ratio
+93                             << std::endl;
+94 \textcolor{preprocessor}{#endif}
+95 \textcolor{preprocessor}{}    \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(ratio < 0.,
+96                         \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf_a3caa986ae1ccef96a28b0365fb88c86c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+97                         \textcolor{stringliteral}{"SampledScalarCdf<T>::value()"},
+98                         \textcolor{stringliteral}{"invalid ratio"});
+99 
+100     result = (1.-ratio)*\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[intervalId] + ratio*\hyperlink{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{m\_cdfValues}[intervalId+1];
+101   \}
+102 
+103   \textcolor{keywordflow}{return} result;
+104 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}!m\-\_\-cdf\-Grid@{m\-\_\-cdf\-Grid}}
+\index{m\-\_\-cdf\-Grid@{m\-\_\-cdf\-Grid}!QUESO::SampledScalarCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}}
+\subsubsection[{m\-\_\-cdf\-Grid}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ const {\bf Base\-One\-D\-Grid}$<$T$>$\& {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}$<$ T $>$\-::m\-\_\-cdf\-Grid\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_sampled_scalar_cdf_a58d6744bac9ce8d906839bf381517f4a}
+
+
+Definition at line 92 of file Sampled\-Scalar\-Cdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}{\index{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}!m\-\_\-cdf\-Values@{m\-\_\-cdf\-Values}}
+\index{m\-\_\-cdf\-Values@{m\-\_\-cdf\-Values}!QUESO::SampledScalarCdf@{Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}}
+\subsubsection[{m\-\_\-cdf\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ const std\-::vector$<$double$>$\& {\bf Q\-U\-E\-S\-O\-::\-Sampled\-Scalar\-Cdf}$<$ T $>$\-::m\-\_\-cdf\-Values\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_sampled_scalar_cdf_ab8cf649637f31cc75c9f676d5927c10f}
+
+
+Definition at line 93 of file Sampled\-Scalar\-Cdf.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_sampled_scalar_cdf_8h}{Sampled\-Scalar\-Cdf.\-h}\item 
+src/stats/src/\hyperlink{_sampled_scalar_cdf_8_c}{Sampled\-Scalar\-Cdf.\-C}\end{DoxyCompactItemize}

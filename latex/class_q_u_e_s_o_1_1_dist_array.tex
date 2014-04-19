@@ -1,0 +1,504 @@
+\hypertarget{class_q_u_e_s_o_1_1_dist_array}{\section{Q\-U\-E\-S\-O\-:\-:Dist\-Array$<$ T $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_dist_array}\index{Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$@{Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$}}
+}
+
+
+A class for partitioning vectors and matrices.  
+
+
+
+
+{\ttfamily \#include $<$Dist\-Array.\-h$>$}
+
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Dist\-Array$<$ T $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_dist_array__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_dist_array_a54e6413babda861c8bf5213888c9b9f0}{Dist\-Array} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. Do not call this directly. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_dist_array_a408055a81ec9f83f4eb9b71f1951451c}{Dist\-Array} (const \hyperlink{class_q_u_e_s_o_1_1_map}{Map} \&input\-Map, const int input\-Row\-Size)
+\begin{DoxyCompactList}\small\item\em Constructor for a given input\-Map and input\-Row\-Size. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_dist_array_a0e4de6b524fed444be71ee26349a907b}{Dist\-Array} (const \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ T $>$ \&src)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_dist_array_a8091b856529984e5c307e37e5438bfa4}{$\sim$\-Dist\-Array} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Set methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ T $>$ \& \hyperlink{class_q_u_e_s_o_1_1_dist_array_a6ec9bfcdf00351c8fb9b18dfeab59026}{operator=} (const \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ T $>$ \&rhs)
+\begin{DoxyCompactList}\small\item\em Assignment operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Query methods}\par
+\begin{DoxyCompactItemize}
+\item 
+T \& \hyperlink{class_q_u_e_s_o_1_1_dist_array_a910410bb8104a49f71a8a14700d4681a}{operator()} (int local\-Element\-Id, int col\-Id)
+\begin{DoxyCompactList}\small\item\em Returns a reference to the col\-Id column component of the local\-Element\-Id local element. \end{DoxyCompactList}\item 
+const T \& \hyperlink{class_q_u_e_s_o_1_1_dist_array_a44dad0d61e798227cf34528969c2096a}{operator()} (int local\-Element\-Id, int col\-Id) const 
+\begin{DoxyCompactList}\small\item\em Returns a reference to the col\-Id column component of the local\-Element\-Id local element.(const) \end{DoxyCompactList}\item 
+int \hyperlink{class_q_u_e_s_o_1_1_dist_array_a74e491ed573af8b81f701e2ca136206e}{Global\-Length} () const 
+\begin{DoxyCompactList}\small\item\em Returns the global length of the array. \end{DoxyCompactList}\item 
+int \hyperlink{class_q_u_e_s_o_1_1_dist_array_af4a798f5defa6a37dfc82175c7f92f83}{My\-Length} () const 
+\begin{DoxyCompactList}\small\item\em Returns the length of the locally owned array. \end{DoxyCompactList}\item 
+int \hyperlink{class_q_u_e_s_o_1_1_dist_array_ac20dd88a7b36e19948c39b8f1a1ab805}{Row\-Size} () const 
+\begin{DoxyCompactList}\small\item\em Returns the row size, that is, the amount of data associated with each element. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_dist_array_a415ab5d9ac5074d71497e1ab4c9460f8}{copy} (const \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ T $>$ \&src)
+\begin{DoxyCompactList}\small\item\em Copies the array. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_map}{Map} \hyperlink{class_q_u_e_s_o_1_1_dist_array_aeb1c8299dc302d01ae2fbdafb82b7b37}{m\-\_\-\-Map}
+\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_dist_array_a663f89dc740471dafcf8b526c255d385}{m\-\_\-row\-Size}
+\item 
+std\-::vector$<$ std\-::vector$<$ T $>$ $>$ \hyperlink{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}{m\-\_\-elements}
+\end{DoxyCompactItemize}
+\subsection*{I/\-O methods}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_dist_array_ad9d1da6bb1947b03a01cf1fd43bc5780}{print} (std\-::ostream \&os) const 
+\item 
+std\-::ostream \& \hyperlink{class_q_u_e_s_o_1_1_dist_array_ae1dba6a1558a662e92cb3a823f379fda}{operator$<$$<$} (std\-::ostream \&os, const \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ T $>$ \&obj)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$class Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$}
+
+A class for partitioning vectors and matrices. 
+
+Class \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array} allows the construction and usage of multi-\/vectors. These vectors contain element of type T, and the storage is row-\/oriented (instead of and not column-\/oriented; thus his class should be used as a container for data, on which no B\-L\-A\-S-\/like operations are performed).
+
+\hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array} objects are identified by an \hyperlink{class_q_u_e_s_o_1_1_map}{Map} and a Row\-Size. The map specifies the distribution of the elements across the processors and therefore the number of local elements, while the Row\-Size gives the total number of data assigned to each node. Row\-Size is constant for all elements. 
+
+Definition at line 56 of file Dist\-Array.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_a54e6413babda861c8bf5213888c9b9f0}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!Dist\-Array@{Dist\-Array}}
+\index{Dist\-Array@{Dist\-Array}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{Dist\-Array}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::{\bf Dist\-Array} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_dist_array_a54e6413babda861c8bf5213888c9b9f0}
+
+
+Default constructor. Do not call this directly. 
+
+
+
+Definition at line 36 of file Dist\-Array.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-U\-Q\-\_\-\-U\-N\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-R\-A\-N\-K.
+
+
+\begin{DoxyCode}
+37   : \hyperlink{class_q_u_e_s_o_1_1_dist_array_aeb1c8299dc302d01ae2fbdafb82b7b37}{m\_Map}()
+38 \{
+39   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+40                       \hyperlink{namespace_q_u_e_s_o_a7d4679800a430ae8e473c1c7bc0bfb21}{UQ\_UNAVAILABLE\_RANK},
+41                       \textcolor{stringliteral}{"DistArray<T>::constructor()"},
+42                       \textcolor{stringliteral}{"should not be called"});
+43 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_a408055a81ec9f83f4eb9b71f1951451c}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!Dist\-Array@{Dist\-Array}}
+\index{Dist\-Array@{Dist\-Array}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{Dist\-Array}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::{\bf Dist\-Array} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Map} \&}]{input\-Map, }
+\item[{const int}]{input\-Row\-Size}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_dist_array_a408055a81ec9f83f4eb9b71f1951451c}
+
+
+Constructor for a given input\-Map and input\-Row\-Size. 
+
+
+
+Definition at line 47 of file Dist\-Array.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$\-::m\-\_\-elements, Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$\-::m\-\_\-\-Map, Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$\-::m\-\_\-row\-Size, and Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-Global\-Elements().
+
+
+\begin{DoxyCode}
+48   : \hyperlink{class_q_u_e_s_o_1_1_dist_array_aeb1c8299dc302d01ae2fbdafb82b7b37}{m\_Map}(inputMap),
+49 \textcolor{preprocessor}{#ifdef QUESO\_HAS\_TRILINOS}
+50 \textcolor{preprocessor}{}  m\_epetraDistArray(\textcolor{keyword}{new} EpetraExt::DistArray<T>(inputMap.epetraMap(),inputRowSize))
+51 \textcolor{preprocessor}{#else}
+52 \textcolor{preprocessor}{}  \hyperlink{class_q_u_e_s_o_1_1_dist_array_a663f89dc740471dafcf8b526c255d385}{m\_rowSize}(inputRowSize)
+53 \textcolor{preprocessor}{#endif}
+54 \textcolor{preprocessor}{}\{
+55 \textcolor{preprocessor}{#ifdef QUESO\_HAS\_TRILINOS}
+56 \textcolor{preprocessor}{}\textcolor{preprocessor}{#else}
+57 \textcolor{preprocessor}{}  \hyperlink{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}{m\_elements}.resize(\hyperlink{class_q_u_e_s_o_1_1_dist_array_aeb1c8299dc302d01ae2fbdafb82b7b37}{m\_Map}.\hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}());
+58   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_dist_array_aeb1c8299dc302d01ae2fbdafb82b7b37}{m\_Map}.\hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}(); ++i) \{
+59     \hyperlink{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}{m\_elements}[i].resize(\hyperlink{class_q_u_e_s_o_1_1_dist_array_a663f89dc740471dafcf8b526c255d385}{m\_rowSize});
+60   \}
+61 \textcolor{preprocessor}{#endif}
+62 \textcolor{preprocessor}{}\}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_a0e4de6b524fed444be71ee26349a907b}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!Dist\-Array@{Dist\-Array}}
+\index{Dist\-Array@{Dist\-Array}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{Dist\-Array}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::{\bf Dist\-Array} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Dist\-Array}$<$ T $>$ \&}]{src}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_dist_array_a0e4de6b524fed444be71ee26349a907b}
+
+
+Copy constructor. 
+
+
+
+Definition at line 66 of file Dist\-Array.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$\-::copy(), and Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$\-::m\-\_\-elements.
+
+
+\begin{DoxyCode}
+67   : \hyperlink{class_q_u_e_s_o_1_1_dist_array_aeb1c8299dc302d01ae2fbdafb82b7b37}{m\_Map}(src.m\_Map)
+68 \textcolor{preprocessor}{#ifdef QUESO\_HAS\_TRILINOS}
+69 \textcolor{preprocessor}{}  ,
+70   m\_epetraDistArray(NULL)
+71 \textcolor{preprocessor}{#endif}
+72 \textcolor{preprocessor}{}\{
+73 \textcolor{preprocessor}{#ifdef QUESO\_HAS\_TRILINOS}
+74 \textcolor{preprocessor}{}\textcolor{preprocessor}{#else}
+75 \textcolor{preprocessor}{}  \hyperlink{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}{m\_elements}.clear();
+76 \textcolor{preprocessor}{#endif}
+77 \textcolor{preprocessor}{}  this->\hyperlink{class_q_u_e_s_o_1_1_dist_array_a415ab5d9ac5074d71497e1ab4c9460f8}{copy}(src);
+78 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_a8091b856529984e5c307e37e5438bfa4}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!$\sim$\-Dist\-Array@{$\sim$\-Dist\-Array}}
+\index{$\sim$\-Dist\-Array@{$\sim$\-Dist\-Array}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{$\sim$\-Dist\-Array}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::$\sim${\bf Dist\-Array} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_dist_array_a8091b856529984e5c307e37e5438bfa4}
+
+
+Destructor. 
+
+
+
+Definition at line 82 of file Dist\-Array.\-C.
+
+
+\begin{DoxyCode}
+83 \{
+84 \textcolor{preprocessor}{#ifdef QUESO\_HAS\_TRILINOS}
+85 \textcolor{preprocessor}{}  \textcolor{keyword}{delete} m\_epetraDistArray;
+86   m\_epetraDistArray = NULL;
+87 \textcolor{preprocessor}{#else}
+88 \textcolor{preprocessor}{}  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_dist_array_aeb1c8299dc302d01ae2fbdafb82b7b37}{m\_Map}.\hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}(); ++i) \{
+89     \hyperlink{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}{m\_elements}[i].clear();
+90   \}
+91   \hyperlink{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}{m\_elements}.clear();
+92 \textcolor{preprocessor}{#endif}
+93 \textcolor{preprocessor}{}\}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_a415ab5d9ac5074d71497e1ab4c9460f8}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!copy@{copy}}
+\index{copy@{copy}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{copy}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::copy (
+\begin{DoxyParamCaption}
+\item[{const {\bf Dist\-Array}$<$ T $>$ \&}]{src}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_dist_array_a415ab5d9ac5074d71497e1ab4c9460f8}
+
+
+Copies the array. 
+
+
+
+Definition at line 170 of file Dist\-Array.\-C.
+
+
+
+References queso\-\_\-not\-\_\-implemented.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$\-::\-Dist\-Array().
+
+
+\begin{DoxyCode}
+171 \{
+172   \hyperlink{asserts_8h_a7cd5266c96c8870c5d1c1e13073afb87}{queso\_not\_implemented}();
+173 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_a74e491ed573af8b81f701e2ca136206e}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!Global\-Length@{Global\-Length}}
+\index{Global\-Length@{Global\-Length}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{Global\-Length}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ int {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::Global\-Length (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_dist_array_a74e491ed573af8b81f701e2ca136206e}
+
+
+Returns the global length of the array. 
+
+
+
+Definition at line 136 of file Dist\-Array.\-C.
+
+
+\begin{DoxyCode}
+137 \{
+138 \textcolor{preprocessor}{#ifdef QUESO\_HAS\_TRILINOS}
+139 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return} m\_epetraDistArray->GlobalLength();
+140 \textcolor{preprocessor}{#else}
+141 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_dist_array_aeb1c8299dc302d01ae2fbdafb82b7b37}{m\_Map}.\hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}();
+142 \textcolor{preprocessor}{#endif}
+143 \textcolor{preprocessor}{}\}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_af4a798f5defa6a37dfc82175c7f92f83}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!My\-Length@{My\-Length}}
+\index{My\-Length@{My\-Length}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{My\-Length}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ int {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::My\-Length (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_dist_array_af4a798f5defa6a37dfc82175c7f92f83}
+
+
+Returns the length of the locally owned array. 
+
+
+
+Definition at line 147 of file Dist\-Array.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Array\-Of\-One\-D\-Tables$<$ V, M $>$\-::\-Array\-Of\-One\-D\-Tables().
+
+
+\begin{DoxyCode}
+148 \{
+149 \textcolor{preprocessor}{#ifdef QUESO\_HAS\_TRILINOS}
+150 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return} m\_epetraDistArray->MyLength();
+151 \textcolor{preprocessor}{#else}
+152 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_dist_array_aeb1c8299dc302d01ae2fbdafb82b7b37}{m\_Map}.\hyperlink{class_q_u_e_s_o_1_1_map_a6407f6d6a6df8a0a40923c8dc524b021}{NumMyElements}();
+153 \textcolor{preprocessor}{#endif}
+154 \textcolor{preprocessor}{}\}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_a910410bb8104a49f71a8a14700d4681a}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!operator()@{operator()}}
+\index{operator()@{operator()}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T \& {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::operator() (
+\begin{DoxyParamCaption}
+\item[{int}]{local\-Element\-Id, }
+\item[{int}]{col\-Id}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_dist_array_a910410bb8104a49f71a8a14700d4681a}
+
+
+Returns a reference to the col\-Id column component of the local\-Element\-Id local element. 
+
+
+
+Definition at line 114 of file Dist\-Array.\-C.
+
+
+\begin{DoxyCode}
+115 \{
+116 \textcolor{preprocessor}{#ifdef QUESO\_HAS\_TRILINOS}
+117 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return} (*m\_epetraDistArray)(localElementId,colId);
+118 \textcolor{preprocessor}{#else}
+119 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}{m\_elements}[localElementId][colId];
+120 \textcolor{preprocessor}{#endif}
+121 \textcolor{preprocessor}{}\}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_a44dad0d61e798227cf34528969c2096a}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!operator()@{operator()}}
+\index{operator()@{operator()}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ const T \& {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::operator() (
+\begin{DoxyParamCaption}
+\item[{int}]{local\-Element\-Id, }
+\item[{int}]{col\-Id}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_dist_array_a44dad0d61e798227cf34528969c2096a}
+
+
+Returns a reference to the col\-Id column component of the local\-Element\-Id local element.(const) 
+
+
+
+Definition at line 125 of file Dist\-Array.\-C.
+
+
+\begin{DoxyCode}
+126 \{
+127 \textcolor{preprocessor}{#ifdef QUESO\_HAS\_TRILINOS}
+128 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return} (*m\_epetraDistArray)(localElementId,colId);
+129 \textcolor{preprocessor}{#else}
+130 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}{m\_elements}[localElementId][colId];
+131 \textcolor{preprocessor}{#endif}
+132 \textcolor{preprocessor}{}\}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_a6ec9bfcdf00351c8fb9b18dfeab59026}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!operator=@{operator=}}
+\index{operator=@{operator=}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Dist\-Array}$<$ T $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Dist\-Array}$<$ T $>$ \&}]{rhs}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_dist_array_a6ec9bfcdf00351c8fb9b18dfeab59026}
+
+
+Assignment operator. 
+
+
+
+Definition at line 98 of file Dist\-Array.\-C.
+
+
+\begin{DoxyCode}
+99 \{
+100 \textcolor{preprocessor}{#ifdef QUESO\_HAS\_TRILINOS}
+101 \textcolor{preprocessor}{}\textcolor{preprocessor}{#else}
+102 \textcolor{preprocessor}{}  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_dist_array_aeb1c8299dc302d01ae2fbdafb82b7b37}{m\_Map}.\hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}(); ++i) \{
+103     \hyperlink{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}{m\_elements}[i].clear();
+104   \}
+105   \hyperlink{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}{m\_elements}.clear();
+106 \textcolor{preprocessor}{#endif}
+107 \textcolor{preprocessor}{}  this->\hyperlink{class_q_u_e_s_o_1_1_dist_array_a415ab5d9ac5074d71497e1ab4c9460f8}{copy}(rhs);
+108   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};
+109 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_ad9d1da6bb1947b03a01cf1fd43bc5780}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!print@{print}}
+\index{print@{print}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_dist_array_ad9d1da6bb1947b03a01cf1fd43bc5780}
+
+
+Definition at line 178 of file Dist\-Array.\-C.
+
+
+\begin{DoxyCode}
+179 \{
+180 \textcolor{preprocessor}{#ifdef QUESO\_HAS\_TRILINOS}
+181 \textcolor{preprocessor}{}  os << *m\_epetraDistArray;
+182 \textcolor{preprocessor}{#else}
+183 \textcolor{preprocessor}{}  os << \textcolor{stringliteral}{"m\_rowSize = "}           << \hyperlink{class_q_u_e_s_o_1_1_dist_array_a663f89dc740471dafcf8b526c255d385}{m\_rowSize}
+184      << \textcolor{stringliteral}{", m\_elements.size() = "} << \hyperlink{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}{m\_elements}.size()
+185      << std::endl;
+186 \textcolor{preprocessor}{#endif}
+187 \textcolor{preprocessor}{}
+188   \textcolor{keywordflow}{return};
+189 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_ac20dd88a7b36e19948c39b8f1a1ab805}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!Row\-Size@{Row\-Size}}
+\index{Row\-Size@{Row\-Size}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{Row\-Size}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ int {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::Row\-Size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_dist_array_ac20dd88a7b36e19948c39b8f1a1ab805}
+
+
+Returns the row size, that is, the amount of data associated with each element. 
+
+
+
+Definition at line 158 of file Dist\-Array.\-C.
+
+
+\begin{DoxyCode}
+159 \{
+160 \textcolor{preprocessor}{#ifdef QUESO\_HAS\_TRILINOS}
+161 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return} m\_epetraDistArray->RowSize();
+162 \textcolor{preprocessor}{#else}
+163 \textcolor{preprocessor}{}  \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_dist_array_a663f89dc740471dafcf8b526c255d385}{m\_rowSize};
+164 \textcolor{preprocessor}{#endif}
+165 \textcolor{preprocessor}{}\}
+\end{DoxyCode}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_ae1dba6a1558a662e92cb3a823f379fda}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ std\-::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os, }
+\item[{const {\bf Dist\-Array}$<$ T $>$ \&}]{obj}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_q_u_e_s_o_1_1_dist_array_ae1dba6a1558a662e92cb3a823f379fda}
+
+
+Definition at line 106 of file Dist\-Array.\-h.
+
+
+\begin{DoxyCode}
+107   \{
+108     obj.print(os);
+109 
+110     \textcolor{keywordflow}{return} os;
+111   \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!m\-\_\-elements@{m\-\_\-elements}}
+\index{m\-\_\-elements@{m\-\_\-elements}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{m\-\_\-elements}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ std\-::vector$<$std\-::vector$<$T$>$ $>$ {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::m\-\_\-elements\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_dist_array_af1cfbc37cbe9b608d2c2174811e1987c}
+
+
+Definition at line 124 of file Dist\-Array.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$\-::\-Dist\-Array().
+
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_aeb1c8299dc302d01ae2fbdafb82b7b37}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!m\-\_\-\-Map@{m\-\_\-\-Map}}
+\index{m\-\_\-\-Map@{m\-\_\-\-Map}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{m\-\_\-\-Map}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Map} {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::m\-\_\-\-Map\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_dist_array_aeb1c8299dc302d01ae2fbdafb82b7b37}
+
+
+Definition at line 119 of file Dist\-Array.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$\-::\-Dist\-Array().
+
+\hypertarget{class_q_u_e_s_o_1_1_dist_array_a663f89dc740471dafcf8b526c255d385}{\index{Q\-U\-E\-S\-O\-::\-Dist\-Array@{Q\-U\-E\-S\-O\-::\-Dist\-Array}!m\-\_\-row\-Size@{m\-\_\-row\-Size}}
+\index{m\-\_\-row\-Size@{m\-\_\-row\-Size}!QUESO::DistArray@{Q\-U\-E\-S\-O\-::\-Dist\-Array}}
+\subsubsection[{m\-\_\-row\-Size}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Dist\-Array}$<$ T $>$\-::m\-\_\-row\-Size\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_dist_array_a663f89dc740471dafcf8b526c255d385}
+
+
+Definition at line 123 of file Dist\-Array.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$\-::\-Dist\-Array().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{_dist_array_8h}{Dist\-Array.\-h}\item 
+src/core/src/\hyperlink{_dist_array_8_c}{Dist\-Array.\-C}\end{DoxyCompactItemize}

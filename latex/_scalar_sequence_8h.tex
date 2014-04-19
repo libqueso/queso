@@ -1,0 +1,95 @@
+\hypertarget{_scalar_sequence_8h}{\section{src/basic/inc/\-Scalar\-Sequence.h File Reference}
+\label{_scalar_sequence_8h}\index{src/basic/inc/\-Scalar\-Sequence.\-h@{src/basic/inc/\-Scalar\-Sequence.\-h}}
+}
+
+
+A templated class for handling scalar samples.  
+
+
+{\ttfamily \#include $<$queso/\-Fft.\-h$>$}\\*
+{\ttfamily \#include $<$queso/\-Uniform\-One\-D\-Grid.\-h$>$}\\*
+{\ttfamily \#include $<$queso/\-Environment.\-h$>$}\\*
+{\ttfamily \#include $<$queso/\-Miscellaneous.\-h$>$}\\*
+{\ttfamily \#include $<$queso/\-Defines.\-h$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$complex$>$}\\*
+{\ttfamily \#include $<$sys/time.\-h$>$}\\*
+Include dependency graph for Scalar\-Sequence.\-h\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_scalar_sequence_8h__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_q_u_e_s_o_1_1_scalar_sequence}{Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$}
+\begin{DoxyCompactList}\small\item\em Class for handling scalar samples. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_scalar_sequence_8h_a64aad2676a8b0db9e73a3dfb2d3cf0a0}{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-I\-N\-I\-T\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G}~1
+\item 
+\#define \hyperlink{_scalar_sequence_8h_ab861df57b68ddbaa21de47a2955f1c86}{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-S\-I\-Z\-E\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G}~1
+\item 
+\#define \hyperlink{_scalar_sequence_8h_aeaa93ea37bc3de247daf0de5f9ae6bcd}{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-D\-A\-T\-A\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G}~1
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class T $>$ }\\void \hyperlink{namespace_q_u_e_s_o_af865210b84a63c53796aff42989c4af7}{Q\-U\-E\-S\-O\-::\-Compute\-Sub\-Gaussian2d\-Kde} (const Scalar\-Sequence$<$ T $>$ \&scalar\-Seq1, const Scalar\-Sequence$<$ T $>$ \&scalar\-Seq2, unsigned int initial\-Pos, double scale\-Value1, double scale\-Value2, const std\-::vector$<$ T $>$ \&evaluation\-Positions1, const std\-::vector$<$ T $>$ \&evaluation\-Positions2, std\-::vector$<$ double $>$ \&density\-Values)
+\item 
+{\footnotesize template$<$class T $>$ }\\void \hyperlink{namespace_q_u_e_s_o_af7a1e5f83b5acc46b51bc87eb3dc9b28}{Q\-U\-E\-S\-O\-::\-Compute\-Unified\-Gaussian2d\-Kde} (bool use\-Only\-Inter0\-Comm, const Scalar\-Sequence$<$ T $>$ \&scalar\-Seq1, const Scalar\-Sequence$<$ T $>$ \&scalar\-Seq2, unsigned int initial\-Pos, double unified\-Scale\-Value1, double unified\-Scale\-Value2, const std\-::vector$<$ T $>$ \&unified\-Evaluation\-Positions1, const std\-::vector$<$ T $>$ \&unified\-Evaluation\-Positions2, std\-::vector$<$ double $>$ \&unified\-Density\-Values)
+\item 
+{\footnotesize template$<$class T $>$ }\\void \hyperlink{namespace_q_u_e_s_o_add6823a7271447445f532bf5ce73e9b8}{Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Between\-Scalar\-Sequences} (const Scalar\-Sequence$<$ T $>$ \&sub\-P\-Seq, const Scalar\-Sequence$<$ T $>$ \&sub\-Q\-Seq, unsigned int sub\-Num\-Samples, T \&cov\-Value, T \&corr\-Value)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A templated class for handling scalar samples. 
+
+Definition in file \hyperlink{_scalar_sequence_8h_source}{Scalar\-Sequence.\-h}.
+
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_scalar_sequence_8h_aeaa93ea37bc3de247daf0de5f9ae6bcd}{\index{Scalar\-Sequence.\-h@{Scalar\-Sequence.\-h}!S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-D\-A\-T\-A\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G@{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-D\-A\-T\-A\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G}}
+\index{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-D\-A\-T\-A\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G@{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-D\-A\-T\-A\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G}!ScalarSequence.h@{Scalar\-Sequence.\-h}}
+\subsubsection[{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-D\-A\-T\-A\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-D\-A\-T\-A\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G~1}}\label{_scalar_sequence_8h_aeaa93ea37bc3de247daf0de5f9ae6bcd}
+
+
+Definition at line 39 of file Scalar\-Sequence.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::parallel\-Merge().
+
+\hypertarget{_scalar_sequence_8h_a64aad2676a8b0db9e73a3dfb2d3cf0a0}{\index{Scalar\-Sequence.\-h@{Scalar\-Sequence.\-h}!S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-I\-N\-I\-T\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G@{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-I\-N\-I\-T\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G}}
+\index{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-I\-N\-I\-T\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G@{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-I\-N\-I\-T\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G}!ScalarSequence.h@{Scalar\-Sequence.\-h}}
+\subsubsection[{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-I\-N\-I\-T\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-I\-N\-I\-T\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G~1}}\label{_scalar_sequence_8h_a64aad2676a8b0db9e73a3dfb2d3cf0a0}
+
+
+Definition at line 37 of file Scalar\-Sequence.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::parallel\-Merge(), and Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::unified\-Sort().
+
+\hypertarget{_scalar_sequence_8h_ab861df57b68ddbaa21de47a2955f1c86}{\index{Scalar\-Sequence.\-h@{Scalar\-Sequence.\-h}!S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-S\-I\-Z\-E\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G@{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-S\-I\-Z\-E\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G}}
+\index{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-S\-I\-Z\-E\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G@{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-S\-I\-Z\-E\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G}!ScalarSequence.h@{Scalar\-Sequence.\-h}}
+\subsubsection[{S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-S\-I\-Z\-E\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-C\-A\-L\-A\-R\-\_\-\-S\-E\-Q\-U\-E\-N\-C\-E\-\_\-\-S\-I\-Z\-E\-\_\-\-M\-P\-I\-\_\-\-M\-S\-G~1}}\label{_scalar_sequence_8h_ab861df57b68ddbaa21de47a2955f1c86}
+
+
+Definition at line 38 of file Scalar\-Sequence.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::parallel\-Merge().
+

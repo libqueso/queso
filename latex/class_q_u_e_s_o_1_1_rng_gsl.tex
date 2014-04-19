@@ -1,0 +1,361 @@
+\hypertarget{class_q_u_e_s_o_1_1_rng_gsl}{\section{Q\-U\-E\-S\-O\-:\-:Rng\-Gsl Class Reference}
+\label{class_q_u_e_s_o_1_1_rng_gsl}\index{Q\-U\-E\-S\-O\-::\-Rng\-Gsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}}
+}
+
+
+{\ttfamily \#include $<$Rng\-Gsl.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Rng\-Gsl\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{class_q_u_e_s_o_1_1_rng_gsl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Rng\-Gsl\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{class_q_u_e_s_o_1_1_rng_gsl__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_rng_gsl_ace5a0dca9aa1655c3560602594b17074}{Rng\-Gsl} ()
+\begin{DoxyCompactList}\small\item\em Default Constructor\-: it should not be used. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a719078b54d621d51348b02c1fcac80c1}{Rng\-Gsl} (int \hyperlink{class_q_u_e_s_o_1_1_rng_base_a3094da86084e56faaae9325f1117f9a3}{seed}, int world\-Rank)
+\begin{DoxyCompactList}\small\item\em Constructor with seed. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a201a5c5a0805c8de61110736fef85b7d}{$\sim$\-Rng\-Gsl} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Sampling methods}
+\begin{DoxyCompactItemize}
+\item 
+gsl\-\_\-rng $\ast$ \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\-\_\-rng}
+\begin{DoxyCompactList}\small\item\em G\-S\-L random number generator. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a95e515676ae7b503bd3b72eea7432598}{reset\-Seed} (int new\-Seed)
+\begin{DoxyCompactList}\small\item\em Resets the seed with value {\ttfamily new\-Seed}. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a903f2db902f287a0d7d85f68d95d7225}{uniform\-Sample} () const 
+\begin{DoxyCompactList}\small\item\em Samples a value from a uniform distribution. Support\-: \mbox{[}0,1\mbox{]} or \mbox{[}a,b\mbox{]}. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a4ebf1a75b394d2a650c1742c132b00c4}{gaussian\-Sample} (double std\-Dev) const 
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a4cfa51656336eadbd137c7698e5f1b59}{beta\-Sample} (double alpha, double beta) const 
+\begin{DoxyCompactList}\small\item\em Samples a value from a Beta distribution. Support\-: \mbox{[}0,1\mbox{]}. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a18017f2291ad584f169a7efc7ca5dd32}{gamma\-Sample} (double a, double b) const 
+\begin{DoxyCompactList}\small\item\em Samples a value from a Gamma distribution. Support\-: \mbox{[}0,infinity). \end{DoxyCompactList}\item 
+const gsl\-\_\-rng $\ast$ \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a39503b939878d0e709f98aceba97dd1b}{rng} () const 
+\begin{DoxyCompactList}\small\item\em G\-S\-L random number generator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 49 of file Rng\-Gsl.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_rng_gsl_ace5a0dca9aa1655c3560602594b17074}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Gsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}!Rng\-Gsl@{Rng\-Gsl}}
+\index{Rng\-Gsl@{Rng\-Gsl}!QUESO::RngGsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}}
+\subsubsection[{Rng\-Gsl}]{\setlength{\rightskip}{0pt plus 5cm}Rng\-Gsl\-::\-Rng\-Gsl (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_rng_gsl_ace5a0dca9aa1655c3560602594b17074}
+
+
+Default Constructor\-: it should not be used. 
+
+
+
+Definition at line 32 of file Rng\-Gsl.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Rng\-Base\-::m\-\_\-world\-Rank, and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+33   :
+34   \hyperlink{class_q_u_e_s_o_1_1_rng_base_ad8dd3cef9323851cad163c37b815bc88}{RngBase}()
+35 \{
+36   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+37                       \hyperlink{class_q_u_e_s_o_1_1_rng_base_a94515d2b7d493d8e4e238628716dd11b}{m\_worldRank},
+38                       \textcolor{stringliteral}{"RngGsl::constructor(), default"},
+39                       \textcolor{stringliteral}{"should not be used by user"});
+40 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_gsl_a719078b54d621d51348b02c1fcac80c1}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Gsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}!Rng\-Gsl@{Rng\-Gsl}}
+\index{Rng\-Gsl@{Rng\-Gsl}!QUESO::RngGsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}}
+\subsubsection[{Rng\-Gsl}]{\setlength{\rightskip}{0pt plus 5cm}Rng\-Gsl\-::\-Rng\-Gsl (
+\begin{DoxyParamCaption}
+\item[{int}]{seed, }
+\item[{int}]{world\-Rank}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_rng_gsl_a719078b54d621d51348b02c1fcac80c1}
+
+
+Constructor with seed. 
+
+Constructor with seed -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---. 
+
+Definition at line 43 of file Rng\-Gsl.\-C.
+
+
+
+References gsl\-\_\-rng\-\_\-default\-\_\-seed, m\-\_\-rng, Q\-U\-E\-S\-O\-::\-Rng\-Base\-::m\-\_\-seed, Q\-U\-E\-S\-O\-::\-Rng\-Base\-::m\-\_\-world\-Rank, and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+44   :
+45   \hyperlink{class_q_u_e_s_o_1_1_rng_base_ad8dd3cef9323851cad163c37b815bc88}{RngBase}(\hyperlink{class_q_u_e_s_o_1_1_rng_base_a3094da86084e56faaae9325f1117f9a3}{seed},worldRank),
+46   \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\_rng}         (NULL)
+47 \{
+48   \hyperlink{_rng_gsl_8h_aaedcdd15e9f5b131033de5fca9b4faa7}{gsl\_rng\_default\_seed} = (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} int) \hyperlink{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{m\_seed};
+49   \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\_rng} = gsl\_rng\_alloc(gsl\_rng\_ranlxd2);
+50   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\_rng} == NULL),
+51                       \hyperlink{class_q_u_e_s_o_1_1_rng_base_a94515d2b7d493d8e4e238628716dd11b}{m\_worldRank},
+52                       \textcolor{stringliteral}{"RngGsl::constructor()"},
+53                       \textcolor{stringliteral}{"null m\_rng"});
+54 
+55 \textcolor{comment}{//gsl\_rng\_set(m\_rng, gsl\_rng\_default\_seed);}
+56 \textcolor{preprocessor}{#if 0}
+57 \textcolor{preprocessor}{}  \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_rng_base_a94515d2b7d493d8e4e238628716dd11b}{m\_worldRank} == 0) \{
+58     std::cout << \textcolor{stringliteral}{"In RngGsl::constructor():"}
+59               << \textcolor{stringliteral}{"\(\backslash\)n  m\_seed = "}                                              << 
+      \hyperlink{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{m\_seed}
+60               << \textcolor{stringliteral}{"\(\backslash\)n  internal seed = "}                                       << 
+      \hyperlink{_rng_gsl_8h_aaedcdd15e9f5b131033de5fca9b4faa7}{gsl\_rng\_default\_seed}
+61             \textcolor{comment}{//<< "\(\backslash\)n  first generated sample from uniform distribution = "    << gsl\_rng\_uniform(m\_rng)}
+62             \textcolor{comment}{//<< "\(\backslash\)n  first generated sample from std normal distribution = " << gsl\_ran\_gaussian(m\_rng,1.)}
+63               << std::endl;
+64   \}
+65 \textcolor{preprocessor}{#endif}
+66 \textcolor{preprocessor}{}\}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_gsl_a201a5c5a0805c8de61110736fef85b7d}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Gsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}!$\sim$\-Rng\-Gsl@{$\sim$\-Rng\-Gsl}}
+\index{$\sim$\-Rng\-Gsl@{$\sim$\-Rng\-Gsl}!QUESO::RngGsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}}
+\subsubsection[{$\sim$\-Rng\-Gsl}]{\setlength{\rightskip}{0pt plus 5cm}Rng\-Gsl\-::$\sim$\-Rng\-Gsl (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_rng_gsl_a201a5c5a0805c8de61110736fef85b7d}
+
+
+Destructor. 
+
+
+
+Definition at line 69 of file Rng\-Gsl.\-C.
+
+
+
+References m\-\_\-rng.
+
+
+\begin{DoxyCode}
+70 \{
+71   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\_rng}) gsl\_rng\_free(\hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\_rng});
+72 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_rng_gsl_a4cfa51656336eadbd137c7698e5f1b59}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Gsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}!beta\-Sample@{beta\-Sample}}
+\index{beta\-Sample@{beta\-Sample}!QUESO::RngGsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}}
+\subsubsection[{beta\-Sample}]{\setlength{\rightskip}{0pt plus 5cm}double Rng\-Gsl\-::beta\-Sample (
+\begin{DoxyParamCaption}
+\item[{double}]{alpha, }
+\item[{double}]{beta}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_rng_gsl_a4cfa51656336eadbd137c7698e5f1b59}
+
+
+Samples a value from a Beta distribution. Support\-: \mbox{[}0,1\mbox{]}. 
+
+The Beta Distribution is a continuous probability distribution; it has two free parameters, which are labeled alpha and beta. The beta distribution is used as a prior distribution for binomial proportions in Bayesian analysis (Evans et al. 2000, p. 34). Uses gsl\-\_\-ran\-\_\-beta(). Support (domain)\-: \mbox{[}0,1\mbox{]}. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_rng_base_a098089a93e29db4ad9ac106c8b5de583}{Q\-U\-E\-S\-O\-::\-Rng\-Base}.
+
+
+
+Definition at line 106 of file Rng\-Gsl.\-C.
+
+
+
+References m\-\_\-rng.
+
+
+\begin{DoxyCode}
+107 \{
+108   \textcolor{keywordflow}{return} gsl\_ran\_beta(\hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\_rng},alpha,beta);
+109 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_gsl_a18017f2291ad584f169a7efc7ca5dd32}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Gsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}!gamma\-Sample@{gamma\-Sample}}
+\index{gamma\-Sample@{gamma\-Sample}!QUESO::RngGsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}}
+\subsubsection[{gamma\-Sample}]{\setlength{\rightskip}{0pt plus 5cm}double Rng\-Gsl\-::gamma\-Sample (
+\begin{DoxyParamCaption}
+\item[{double}]{a, }
+\item[{double}]{b}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_rng_gsl_a18017f2291ad584f169a7efc7ca5dd32}
+
+
+Samples a value from a Gamma distribution. Support\-: \mbox{[}0,infinity). 
+
+The Gamma Distribution is a continuous probability distribution; it has two free parameters, which may be labeled\-: a shape parameter a and an inverse scale parameter b, called a rate parameter. Uses gsl\-\_\-ran\-\_\-gamma(). Support (domain)\-: \mbox{[}0,infinity). 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_rng_base_abd9abcf42426b568d4f13f5c3f3dc997}{Q\-U\-E\-S\-O\-::\-Rng\-Base}.
+
+
+
+Definition at line 113 of file Rng\-Gsl.\-C.
+
+
+
+References m\-\_\-rng.
+
+
+\begin{DoxyCode}
+114 \{
+115   \textcolor{keywordflow}{return} gsl\_ran\_gamma(\hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\_rng},a,b);
+116 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_gsl_a4ebf1a75b394d2a650c1742c132b00c4}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Gsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}!gaussian\-Sample@{gaussian\-Sample}}
+\index{gaussian\-Sample@{gaussian\-Sample}!QUESO::RngGsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}}
+\subsubsection[{gaussian\-Sample}]{\setlength{\rightskip}{0pt plus 5cm}double Rng\-Gsl\-::gaussian\-Sample (
+\begin{DoxyParamCaption}
+\item[{double}]{std\-Dev}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_rng_gsl_a4ebf1a75b394d2a650c1742c132b00c4}
+Samples a value from a Gaussian distribution with standard deviation given by {\ttfamily std\-Dev}. Support\-: (-\/infinity, infinity).
+
+The parameter mu (mean or expectation of the distribution) in this Gaussian sample is set to zero, and thus, needs to be provided in an alternative way (e.\-g., in the form of a sum. The parameter std\-Dev is its standard deviation; its variance is therefore std\-Dev$^\wedge$2. A random variable with a Gaussian distribution is said to be normally distributed and is called a normal deviate. Uses gsl\-\_\-ran\-\_\-gaussian(). Support\-: (-\/infinity, infinity). 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_rng_base_a7be9cf40cc50b973ed8c2f594f402584}{Q\-U\-E\-S\-O\-::\-Rng\-Base}.
+
+
+
+Definition at line 99 of file Rng\-Gsl.\-C.
+
+
+
+References m\-\_\-rng.
+
+
+\begin{DoxyCode}
+100 \{
+101   \textcolor{keywordflow}{return} gsl\_ran\_gaussian(\hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\_rng},stdDev);
+102 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_gsl_a95e515676ae7b503bd3b72eea7432598}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Gsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}!reset\-Seed@{reset\-Seed}}
+\index{reset\-Seed@{reset\-Seed}!QUESO::RngGsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}}
+\subsubsection[{reset\-Seed}]{\setlength{\rightskip}{0pt plus 5cm}void Rng\-Gsl\-::reset\-Seed (
+\begin{DoxyParamCaption}
+\item[{int}]{new\-Seed}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_rng_gsl_a95e515676ae7b503bd3b72eea7432598}
+
+
+Resets the seed with value {\ttfamily new\-Seed}. 
+
+
+
+Reimplemented from \hyperlink{class_q_u_e_s_o_1_1_rng_base_a8cb8cbf14298bfcb84de1b562c069e84}{Q\-U\-E\-S\-O\-::\-Rng\-Base}.
+
+
+
+Definition at line 76 of file Rng\-Gsl.\-C.
+
+
+
+References gsl\-\_\-rng\-\_\-default\-\_\-seed, m\-\_\-rng, Q\-U\-E\-S\-O\-::\-Rng\-Base\-::m\-\_\-seed, Q\-U\-E\-S\-O\-::\-Rng\-Base\-::m\-\_\-world\-Rank, Q\-U\-E\-S\-O\-::\-Rng\-Base\-::reset\-Seed(), and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+77 \{
+78   \hyperlink{class_q_u_e_s_o_1_1_rng_base_a8cb8cbf14298bfcb84de1b562c069e84}{RngBase::resetSeed}(newSeed);
+79   gsl\_rng\_free(\hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\_rng});
+80 
+81   \hyperlink{_rng_gsl_8h_aaedcdd15e9f5b131033de5fca9b4faa7}{gsl\_rng\_default\_seed} = (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} int) \hyperlink{class_q_u_e_s_o_1_1_rng_base_ab67b3c940ba6ffb4f2d70079fe36e343}{m\_seed};
+82   \hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\_rng} = gsl\_rng\_alloc(gsl\_rng\_ranlxd2);
+83   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\_rng} == NULL),
+84                       \hyperlink{class_q_u_e_s_o_1_1_rng_base_a94515d2b7d493d8e4e238628716dd11b}{m\_worldRank},
+85                       \textcolor{stringliteral}{"RngGsl::resetSeed()"},
+86                       \textcolor{stringliteral}{"null m\_rng"});
+87   \textcolor{keywordflow}{return};
+88 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_rng_gsl_a39503b939878d0e709f98aceba97dd1b}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Gsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}!rng@{rng}}
+\index{rng@{rng}!QUESO::RngGsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}}
+\subsubsection[{rng}]{\setlength{\rightskip}{0pt plus 5cm}const gsl\-\_\-rng$\ast$ Q\-U\-E\-S\-O\-::\-Rng\-Gsl\-::rng (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_rng_gsl_a39503b939878d0e709f98aceba97dd1b}
+
+
+G\-S\-L random number generator. 
+
+\hypertarget{class_q_u_e_s_o_1_1_rng_gsl_a903f2db902f287a0d7d85f68d95d7225}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Gsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}!uniform\-Sample@{uniform\-Sample}}
+\index{uniform\-Sample@{uniform\-Sample}!QUESO::RngGsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}}
+\subsubsection[{uniform\-Sample}]{\setlength{\rightskip}{0pt plus 5cm}double Rng\-Gsl\-::uniform\-Sample (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_rng_gsl_a903f2db902f287a0d7d85f68d95d7225}
+
+
+Samples a value from a uniform distribution. Support\-: \mbox{[}0,1\mbox{]} or \mbox{[}a,b\mbox{]}. 
+
+This function samples from continuous uniform distribution on the range \mbox{[}0,1). It is possible to scale this distribution so the support is defined by the two parameters, a and b, which are its minimum and maximum values. Support\-: -\/infinity $<$ a $<$ x$<$ b$<$ infinity. Uses gsl\-\_\-rng\-\_\-uniform(m\-\_\-rng). 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_rng_base_aed8342f0c8a4ac0a311cce9cac2b67e5}{Q\-U\-E\-S\-O\-::\-Rng\-Base}.
+
+
+
+Definition at line 92 of file Rng\-Gsl.\-C.
+
+
+
+References m\-\_\-rng.
+
+
+\begin{DoxyCode}
+93 \{
+94   \textcolor{keywordflow}{return} gsl\_rng\_uniform(\hyperlink{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{m\_rng});
+95 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}{\index{Q\-U\-E\-S\-O\-::\-Rng\-Gsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}!m\-\_\-rng@{m\-\_\-rng}}
+\index{m\-\_\-rng@{m\-\_\-rng}!QUESO::RngGsl@{Q\-U\-E\-S\-O\-::\-Rng\-Gsl}}
+\subsubsection[{m\-\_\-rng}]{\setlength{\rightskip}{0pt plus 5cm}gsl\-\_\-rng$\ast$ Q\-U\-E\-S\-O\-::\-Rng\-Gsl\-::m\-\_\-rng\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_rng_gsl_a48893d570695ebf59f8b96e28b9739b1}
+
+
+G\-S\-L random number generator. 
+
+It is chosen, in the constructor, to be of type gsl\-\_\-rng\-\_\-ranlxd2. 
+
+Definition at line 111 of file Rng\-Gsl.\-h.
+
+
+
+Referenced by beta\-Sample(), gamma\-Sample(), gaussian\-Sample(), reset\-Seed(), Rng\-Gsl(), uniform\-Sample(), and $\sim$\-Rng\-Gsl().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{_rng_gsl_8h}{Rng\-Gsl.\-h}\item 
+src/core/src/\hyperlink{_rng_gsl_8_c}{Rng\-Gsl.\-C}\end{DoxyCompactItemize}

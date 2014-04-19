@@ -1,0 +1,128 @@
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base}{\section{Q\-U\-E\-S\-O\-:\-:Infinite\-Dimensional\-Measure\-Base Class Reference}
+\label{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base}\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base}}
+}
+
+
+Abstract base class for infinite dimensional measures.  
+
+
+
+
+{\ttfamily \#include $<$Infinite\-Dimensional\-Measure\-Base.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Infinite\-Dimensional\-Measure\-Base\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=236pt]{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual boost\-::shared\-\_\-ptr\\*
+$<$ \hyperlink{class_q_u_e_s_o_1_1_function_base}{Function\-Base} $>$ \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_a6357b505c9d50f9a5c30583bdf361d7e}{draw} ()=0
+\begin{DoxyCompactList}\small\item\em Draw from the measure, and then return a shared pointer to the draw. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_a85c57f9eb7cfec24122f8fb856066d25}{get\-\_\-kl\-\_\-coefficient} (unsigned int i) const =0
+\begin{DoxyCompactList}\small\item\em Return coefficient {\ttfamily i} of the K\-L expansion of the current draw. Must be called after \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_a6357b505c9d50f9a5c30583bdf361d7e}{draw()} \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_a663782b71522112a0584b27205ac262f}{Infinite\-Dimensional\-Measure\-Base} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_ac979695e339a86943ddda77d72a4a9e6}{$\sim$\-Infinite\-Dimensional\-Measure\-Base} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\subsection{Detailed Description}
+Abstract base class for infinite dimensional measures. 
+
+Definition at line 43 of file Infinite\-Dimensional\-Measure\-Base.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_a663782b71522112a0584b27205ac262f}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base}!Infinite\-Dimensional\-Measure\-Base@{Infinite\-Dimensional\-Measure\-Base}}
+\index{Infinite\-Dimensional\-Measure\-Base@{Infinite\-Dimensional\-Measure\-Base}!QUESO::InfiniteDimensionalMeasureBase@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base}}
+\subsubsection[{Infinite\-Dimensional\-Measure\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base\-::\-Infinite\-Dimensional\-Measure\-Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_a663782b71522112a0584b27205ac262f}
+
+
+Default constructor. 
+
+
+
+Definition at line 29 of file Infinite\-Dimensional\-Measure\-Base.\-C.
+
+
+\begin{DoxyCode}
+30 \{
+31   \textcolor{keywordflow}{return};
+32 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_ac979695e339a86943ddda77d72a4a9e6}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base}!$\sim$\-Infinite\-Dimensional\-Measure\-Base@{$\sim$\-Infinite\-Dimensional\-Measure\-Base}}
+\index{$\sim$\-Infinite\-Dimensional\-Measure\-Base@{$\sim$\-Infinite\-Dimensional\-Measure\-Base}!QUESO::InfiniteDimensionalMeasureBase@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base}}
+\subsubsection[{$\sim$\-Infinite\-Dimensional\-Measure\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base\-::$\sim$\-Infinite\-Dimensional\-Measure\-Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_ac979695e339a86943ddda77d72a4a9e6}
+
+
+Destructor. 
+
+
+
+Definition at line 34 of file Infinite\-Dimensional\-Measure\-Base.\-C.
+
+
+\begin{DoxyCode}
+35 \{
+36 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_a6357b505c9d50f9a5c30583bdf361d7e}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base}!draw@{draw}}
+\index{draw@{draw}!QUESO::InfiniteDimensionalMeasureBase@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base}}
+\subsubsection[{draw}]{\setlength{\rightskip}{0pt plus 5cm}virtual boost\-::shared\-\_\-ptr$<${\bf Function\-Base}$>$ Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base\-::draw (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_a6357b505c9d50f9a5c30583bdf361d7e}
+
+
+Draw from the measure, and then return a shared pointer to the draw. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_gaussian_aa052d66b96ae5bc7f2fae2da9ecf1b2e}{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Gaussian}.
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_a85c57f9eb7cfec24122f8fb856066d25}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base}!get\-\_\-kl\-\_\-coefficient@{get\-\_\-kl\-\_\-coefficient}}
+\index{get\-\_\-kl\-\_\-coefficient@{get\-\_\-kl\-\_\-coefficient}!QUESO::InfiniteDimensionalMeasureBase@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base}}
+\subsubsection[{get\-\_\-kl\-\_\-coefficient}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Measure\-Base\-::get\-\_\-kl\-\_\-coefficient (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{i}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_a85c57f9eb7cfec24122f8fb856066d25}
+
+
+Return coefficient {\ttfamily i} of the K\-L expansion of the current draw. Must be called after \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_measure_base_a6357b505c9d50f9a5c30583bdf361d7e}{draw()} 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_gaussian_a07eac1a9245e12bd3bc73ea65aac5ecf}{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Gaussian}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{_infinite_dimensional_measure_base_8h}{Infinite\-Dimensional\-Measure\-Base.\-h}\item 
+src/core/src/\hyperlink{_infinite_dimensional_measure_base_8_c}{Infinite\-Dimensional\-Measure\-Base.\-C}\end{DoxyCompactItemize}

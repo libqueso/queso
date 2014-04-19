@@ -1,0 +1,278 @@
+\hypertarget{class_q_u_e_s_o_1_1_vector_subset}{\section{Q\-U\-E\-S\-O\-:\-:Vector\-Subset$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_vector_subset}\index{Q\-U\-E\-S\-O\-::\-Vector\-Subset$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Vector\-Subset$<$ V, M $>$}}
+}
+
+
+A templated class for handling subsets.  
+
+
+
+
+{\ttfamily \#include $<$Vector\-Subset.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Vector\-Subset$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_vector_subset__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Vector\-Subset$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_vector_subset__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_vector_subset_a68256de927befecd2694f873dead247a}{Vector\-Subset} ()
+\begin{DoxyCompactList}\small\item\em Default Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_vector_subset_a274c03af88db6d0c183c1b3acfa0d6bd}{Vector\-Subset} (const char $\ast$\hyperlink{class_q_u_e_s_o_1_1_vector_set_aedcd4b0f502af4c6e6df863c13cddfec}{prefix}, const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_vector_subset_afc859b5206bc056c66893c854c191959}{vector\-Space}, double \hyperlink{class_q_u_e_s_o_1_1_vector_set_a3266f16e2672f5f3c929f22df085e545}{volume})
+\begin{DoxyCompactList}\small\item\em Shaped constructor (with volume). \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_vector_subset_a428561193ebdb3a4cce0bca42656815b}{$\sim$\-Vector\-Subset} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_vector_subset_afc859b5206bc056c66893c854c191959}{vector\-Space} () const 
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_q_u_e_s_o_1_1_vector}{Vector} space to which {\ttfamily this} set belongs to. See template specialization. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{class_q_u_e_s_o_1_1_vector_subset_aa3f018d2afdf73dbe5fa7041dee47e0d}{contains} (const V \&vec) const =0
+\begin{DoxyCompactList}\small\item\em Returns whether {\ttfamily this} contains vector {\ttfamily vec}. See template specialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_vector_subset_a62ba8816790e495f7d2302afeaecb436}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em Prints nothing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_vector_subset_a8d1bfbac8c601b407c0a6a7af0904e2f}{m\-\_\-vector\-Space}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Vector\-Subset$<$ V, M $>$}
+
+A templated class for handling subsets. 
+
+This class specifies a subset. The most common example of a subset is a subset of a vector space, present, for instance, in the definition of a scalar function\-: $ \pi: B \subset R^n \rightarrow R $. $ B $ is a subset of the set $ R^n $, which is also a vector space. 
+
+Definition at line 44 of file Vector\-Subset.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_vector_subset_a68256de927befecd2694f873dead247a}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Subset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}!Vector\-Subset@{Vector\-Subset}}
+\index{Vector\-Subset@{Vector\-Subset}!QUESO::VectorSubset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}}
+\subsubsection[{Vector\-Subset}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Subset}$<$ V, M $>$\-::{\bf Vector\-Subset} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_vector_subset_a68256de927befecd2694f873dead247a}
+
+
+Default Constructor. 
+
+It should not be used by the user. 
+
+Definition at line 34 of file Vector\-Subset.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$\-::m\-\_\-env, U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+35   : VectorSet<V,M>(),
+36     \hyperlink{class_q_u_e_s_o_1_1_vector_subset_a8d1bfbac8c601b407c0a6a7af0904e2f}{m\_vectorSpace}(NULL)
+37 \{
+38   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+39                       \hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+40                       \textcolor{stringliteral}{"VectorSubset<V,M>::constructor(), default"},
+41                       \textcolor{stringliteral}{"should not be used by user"});
+42 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_subset_a274c03af88db6d0c183c1b3acfa0d6bd}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Subset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}!Vector\-Subset@{Vector\-Subset}}
+\index{Vector\-Subset@{Vector\-Subset}!QUESO::VectorSubset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}}
+\subsubsection[{Vector\-Subset}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Subset}$<$ V, M $>$\-::{\bf Vector\-Subset} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Space}$<$ V, M $>$ \&}]{vector\-Space, }
+\item[{double}]{volume}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_vector_subset_a274c03af88db6d0c183c1b3acfa0d6bd}
+
+
+Shaped constructor (with volume). 
+
+
+
+Definition at line 46 of file Vector\-Subset.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$\-::m\-\_\-env, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+49   : VectorSet<V,M>(\hyperlink{class_q_u_e_s_o_1_1_vector_subset_afc859b5206bc056c66893c854c191959}{vectorSpace}.env(), \hyperlink{class_q_u_e_s_o_1_1_vector_set_aedcd4b0f502af4c6e6df863c13cddfec}{prefix}, \hyperlink{class_q_u_e_s_o_1_1_vector_set_a3266f16e2672f5f3c929f22df085e545}{volume}),
+50     \hyperlink{class_q_u_e_s_o_1_1_vector_subset_a8d1bfbac8c601b407c0a6a7af0904e2f}{m\_vectorSpace}(&\hyperlink{class_q_u_e_s_o_1_1_vector_subset_afc859b5206bc056c66893c854c191959}{vectorSpace})
+51 \{
+52   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+53     *\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering VectorSubset<V,M>::constructor()"}
+54               << std::endl;
+55   \}
+56 
+57   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+58     *\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving VectorSubset<V,M>::constructor()"}
+59               << std::endl;
+60   \}
+61 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_subset_a428561193ebdb3a4cce0bca42656815b}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Subset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}!$\sim$\-Vector\-Subset@{$\sim$\-Vector\-Subset}}
+\index{$\sim$\-Vector\-Subset@{$\sim$\-Vector\-Subset}!QUESO::VectorSubset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}}
+\subsubsection[{$\sim$\-Vector\-Subset}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Subset}$<$ V, M $>$\-::$\sim${\bf Vector\-Subset} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_vector_subset_a428561193ebdb3a4cce0bca42656815b}
+
+
+Destructor. 
+
+
+
+Definition at line 65 of file Vector\-Subset.\-C.
+
+
+\begin{DoxyCode}
+66 \{
+67   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+68     *\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering VectorSubset<V,M>::destructor()"}
+69                             << std::endl;
+70   \}
+71 
+72   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+73     *\hyperlink{class_q_u_e_s_o_1_1_vector_set_a77f3b57109bc1d89b4111f47458df770}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving VectorSubset<V,M>::destructor()"}
+74                             << std::endl;
+75   \}
+76 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_vector_subset_aa3f018d2afdf73dbe5fa7041dee47e0d}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Subset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}!contains@{contains}}
+\index{contains@{contains}!QUESO::VectorSubset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}}
+\subsubsection[{contains}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual bool {\bf Q\-U\-E\-S\-O\-::\-Vector\-Subset}$<$ V, M $>$\-::contains (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_vector_subset_aa3f018d2afdf73dbe5fa7041dee47e0d}
+
+
+Returns whether {\ttfamily this} contains vector {\ttfamily vec}. See template specialization. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_vector_set_ab59fe6ca67647f58920681e05165a9d0}{Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$}.
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_concatenation_subset_a6d69cad4ff5b5a622357bb27ac5678a0}{Q\-U\-E\-S\-O\-::\-Concatenation\-Subset$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_box_subset_a16fff2b1f133ddd750008680c6831dd0}{Q\-U\-E\-S\-O\-::\-Box\-Subset$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_intersection_subset_a6484888d9232f6ba88865b7a8f45d323}{Q\-U\-E\-S\-O\-::\-Intersection\-Subset$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_discrete_subset_a08781b67f177ffd3e64b25df12a51958}{Q\-U\-E\-S\-O\-::\-Discrete\-Subset$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_vector_subset_a62ba8816790e495f7d2302afeaecb436}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Subset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}!print@{print}}
+\index{print@{print}!QUESO::VectorSubset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Vector\-Subset}$<$ V, M $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_vector_subset_a62ba8816790e495f7d2302afeaecb436}
+
+
+Prints nothing. 
+
+
+
+Reimplemented from \hyperlink{class_q_u_e_s_o_1_1_vector_set_a913fb68533da1e2243882bd63fd2c211}{Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$}.
+
+
+
+Reimplemented in \hyperlink{class_q_u_e_s_o_1_1_box_subset_ae5490757cf0504fbe31681bf0b291e93}{Q\-U\-E\-S\-O\-::\-Box\-Subset$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_box_subset_ae5490757cf0504fbe31681bf0b291e93}{Q\-U\-E\-S\-O\-::\-Box\-Subset$<$ P\-\_\-\-V, P\-\_\-\-M $>$}, \hyperlink{class_q_u_e_s_o_1_1_box_subset_ae5490757cf0504fbe31681bf0b291e93}{Q\-U\-E\-S\-O\-::\-Box\-Subset$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$}, \hyperlink{class_q_u_e_s_o_1_1_concatenation_subset_ae574a1733853d2a0df31ca83dd083061}{Q\-U\-E\-S\-O\-::\-Concatenation\-Subset$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_intersection_subset_ae82d30c62afbd72bc09435888d0c6cbd}{Q\-U\-E\-S\-O\-::\-Intersection\-Subset$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_discrete_subset_ae4ead967806ac7c1a7502f4a07f3e05a}{Q\-U\-E\-S\-O\-::\-Discrete\-Subset$<$ V, M $>$}.
+
+
+
+Definition at line 87 of file Vector\-Subset.\-C.
+
+
+\begin{DoxyCode}
+88 \{
+89   os << \textcolor{stringliteral}{"In VectorSubset<V,M>::print()"}
+90      << \textcolor{stringliteral}{": nothing to be printed"} << std::endl;
+91   \textcolor{keywordflow}{return};
+92 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_vector_subset_afc859b5206bc056c66893c854c191959}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Subset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}!vector\-Space@{vector\-Space}}
+\index{vector\-Space@{vector\-Space}!QUESO::VectorSubset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}}
+\subsubsection[{vector\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Vector\-Space}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Vector\-Subset}$<$ V, M $>$\-::vector\-Space (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_vector_subset_afc859b5206bc056c66893c854c191959}
+
+
+\hyperlink{class_q_u_e_s_o_1_1_vector}{Vector} space to which {\ttfamily this} set belongs to. See template specialization. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_vector_set_a923421590baf5bf93cf066e528f927dc}{Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$}.
+
+
+
+Definition at line 80 of file Vector\-Subset.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Instantiate\-Intersection().
+
+
+\begin{DoxyCode}
+81 \{
+82   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_vector_subset_a8d1bfbac8c601b407c0a6a7af0904e2f}{m\_vectorSpace};
+83 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_vector_subset_a8d1bfbac8c601b407c0a6a7af0904e2f}{\index{Q\-U\-E\-S\-O\-::\-Vector\-Subset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}!m\-\_\-vector\-Space@{m\-\_\-vector\-Space}}
+\index{m\-\_\-vector\-Space@{m\-\_\-vector\-Space}!QUESO::VectorSubset@{Q\-U\-E\-S\-O\-::\-Vector\-Subset}}
+\subsubsection[{m\-\_\-vector\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Vector\-Space}$<$V,M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Vector\-Subset}$<$ V, M $>$\-::m\-\_\-vector\-Space\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_vector_subset_a8d1bfbac8c601b407c0a6a7af0904e2f}
+
+
+Definition at line 79 of file Vector\-Subset.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Box\-Subset$<$ V, M $>$\-::\-Box\-Subset().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/basic/inc/\hyperlink{_vector_subset_8h}{Vector\-Subset.\-h}\item 
+src/basic/src/\hyperlink{_vector_subset_8_c}{Vector\-Subset.\-C}\end{DoxyCompactItemize}

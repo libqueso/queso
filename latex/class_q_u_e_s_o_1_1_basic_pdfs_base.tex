@@ -1,0 +1,189 @@
+\hypertarget{class_q_u_e_s_o_1_1_basic_pdfs_base}{\section{Q\-U\-E\-S\-O\-:\-:Basic\-Pdfs\-Base Class Reference}
+\label{class_q_u_e_s_o_1_1_basic_pdfs_base}\index{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}}
+}
+
+
+T\-O\-D\-O\-: Base class for basic P\-D\-Fs (via either G\-S\-L or Boost).  
+
+
+
+
+{\ttfamily \#include $<$Basic\-Pdfs\-Base.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Basic\-Pdfs\-Base\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_basic_pdfs_base__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_base_a2ca589bc1e025d7e84a0b029b4c610a1}{Basic\-Pdfs\-Base} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_base_acf3bfe40802cd488d9d01077a7d15e55}{Basic\-Pdfs\-Base} (int world\-Rank)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_base_a4e0421cd14da7b04d4242318c7de5ece}{$\sim$\-Basic\-Pdfs\-Base} ()
+\begin{DoxyCompactList}\small\item\em Virtual destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_base_a7a4df6a4b2147eeca4efb22db0ae1b8b}{beta\-Pdf\-Actual\-Value} (double x, double alpha, double beta) const =0
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Actual value of the Beta P\-D\-F (calculated via either Boost or G\-S\-L libraries). See template specialization. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_base_ae5c0c0a14b0f5b89f64e0cd9c0a1b9fd}{gamma\-Pdf\-Actual\-Value} (double x, double a, double b) const =0
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Actual value of the Gamma P\-D\-F (calculated via either Boost or G\-S\-L libraries). See template specialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_base_a67e06f7bb30579581db1a7b9b3507d1c}{m\-\_\-world\-Rank}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+T\-O\-D\-O\-: Base class for basic P\-D\-Fs (via either G\-S\-L or Boost). 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000001}{Todo}]This class {\bfseries will} acommodate the definition of a Joint P\-D\-F using either G\-S\-L or Boost distributions. It will ultimately be called by \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf}{Base\-Joint\-Pdf} and/or its derived classes (via m\-\_\-env.\-basic\-Pdfs()) during the construction of Joint P\-D\-Fs. \end{DoxyRefDesc}
+
+
+Definition at line 44 of file Basic\-Pdfs\-Base.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_basic_pdfs_base_a2ca589bc1e025d7e84a0b029b4c610a1}{\index{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}!Basic\-Pdfs\-Base@{Basic\-Pdfs\-Base}}
+\index{Basic\-Pdfs\-Base@{Basic\-Pdfs\-Base}!QUESO::BasicPdfsBase@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}}
+\subsubsection[{Basic\-Pdfs\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base\-::\-Basic\-Pdfs\-Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_basic_pdfs_base_a2ca589bc1e025d7e84a0b029b4c610a1}
+
+
+Default constructor. 
+
+
+
+Definition at line 30 of file Basic\-Pdfs\-Base.\-C.
+
+
+
+References m\-\_\-world\-Rank, and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+31   :
+32   \hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_base_a67e06f7bb30579581db1a7b9b3507d1c}{m\_worldRank}(\hyperlink{namespace_q_u_e_s_o_a7d4679800a430ae8e473c1c7bc0bfb21}{UQ\_UNAVAILABLE\_RANK})
+33 \{
+34   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+35                       \hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_base_a67e06f7bb30579581db1a7b9b3507d1c}{m\_worldRank},
+36                       \textcolor{stringliteral}{"BasicPdfsBase::constructor(), default"},
+37                       \textcolor{stringliteral}{"should not be used by user"});
+38 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_basic_pdfs_base_acf3bfe40802cd488d9d01077a7d15e55}{\index{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}!Basic\-Pdfs\-Base@{Basic\-Pdfs\-Base}}
+\index{Basic\-Pdfs\-Base@{Basic\-Pdfs\-Base}!QUESO::BasicPdfsBase@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}}
+\subsubsection[{Basic\-Pdfs\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base\-::\-Basic\-Pdfs\-Base (
+\begin{DoxyParamCaption}
+\item[{int}]{world\-Rank}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_basic_pdfs_base_acf3bfe40802cd488d9d01077a7d15e55}
+
+
+Constructor. 
+
+
+
+Definition at line 40 of file Basic\-Pdfs\-Base.\-C.
+
+
+\begin{DoxyCode}
+41   :
+42   \hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_base_a67e06f7bb30579581db1a7b9b3507d1c}{m\_worldRank}(worldRank)
+43 \{
+44 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_basic_pdfs_base_a4e0421cd14da7b04d4242318c7de5ece}{\index{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}!$\sim$\-Basic\-Pdfs\-Base@{$\sim$\-Basic\-Pdfs\-Base}}
+\index{$\sim$\-Basic\-Pdfs\-Base@{$\sim$\-Basic\-Pdfs\-Base}!QUESO::BasicPdfsBase@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}}
+\subsubsection[{$\sim$\-Basic\-Pdfs\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base\-::$\sim$\-Basic\-Pdfs\-Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_basic_pdfs_base_a4e0421cd14da7b04d4242318c7de5ece}
+
+
+Virtual destructor. 
+
+
+
+Definition at line 46 of file Basic\-Pdfs\-Base.\-C.
+
+
+\begin{DoxyCode}
+47 \{
+48 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_basic_pdfs_base_a7a4df6a4b2147eeca4efb22db0ae1b8b}{\index{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}!beta\-Pdf\-Actual\-Value@{beta\-Pdf\-Actual\-Value}}
+\index{beta\-Pdf\-Actual\-Value@{beta\-Pdf\-Actual\-Value}!QUESO::BasicPdfsBase@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}}
+\subsubsection[{beta\-Pdf\-Actual\-Value}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base\-::beta\-Pdf\-Actual\-Value (
+\begin{DoxyParamCaption}
+\item[{double}]{x, }
+\item[{double}]{alpha, }
+\item[{double}]{beta}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_basic_pdfs_base_a7a4df6a4b2147eeca4efb22db0ae1b8b}
+
+
+T\-O\-D\-O\-: Actual value of the Beta P\-D\-F (calculated via either Boost or G\-S\-L libraries). See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_boost_a1fb018d87021cb4af85289102c7fddcb}{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Boost}, and \hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_gsl_aaae1aaf761e7129c7f158a06e3ecdfc1}{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Gsl}.
+
+\hypertarget{class_q_u_e_s_o_1_1_basic_pdfs_base_ae5c0c0a14b0f5b89f64e0cd9c0a1b9fd}{\index{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}!gamma\-Pdf\-Actual\-Value@{gamma\-Pdf\-Actual\-Value}}
+\index{gamma\-Pdf\-Actual\-Value@{gamma\-Pdf\-Actual\-Value}!QUESO::BasicPdfsBase@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}}
+\subsubsection[{gamma\-Pdf\-Actual\-Value}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base\-::gamma\-Pdf\-Actual\-Value (
+\begin{DoxyParamCaption}
+\item[{double}]{x, }
+\item[{double}]{a, }
+\item[{double}]{b}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_basic_pdfs_base_ae5c0c0a14b0f5b89f64e0cd9c0a1b9fd}
+
+
+T\-O\-D\-O\-: Actual value of the Gamma P\-D\-F (calculated via either Boost or G\-S\-L libraries). See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_boost_aabf856ea8be88e4fda2b378e91eee922}{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Boost}, and \hyperlink{class_q_u_e_s_o_1_1_basic_pdfs_gsl_a6bb250677b5c8c94bd3f690a58efaade}{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Gsl}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_basic_pdfs_base_a67e06f7bb30579581db1a7b9b3507d1c}{\index{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}!m\-\_\-world\-Rank@{m\-\_\-world\-Rank}}
+\index{m\-\_\-world\-Rank@{m\-\_\-world\-Rank}!QUESO::BasicPdfsBase@{Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base}}
+\subsubsection[{m\-\_\-world\-Rank}]{\setlength{\rightskip}{0pt plus 5cm}int Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Base\-::m\-\_\-world\-Rank\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_basic_pdfs_base_a67e06f7bb30579581db1a7b9b3507d1c}
+
+
+Definition at line 68 of file Basic\-Pdfs\-Base.\-h.
+
+
+
+Referenced by Basic\-Pdfs\-Base(), Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Boost\-::\-Basic\-Pdfs\-Boost(), Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Gsl\-::\-Basic\-Pdfs\-Gsl(), Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Boost\-::beta\-Pdf\-Actual\-Value(), and Q\-U\-E\-S\-O\-::\-Basic\-Pdfs\-Boost\-::gamma\-Pdf\-Actual\-Value().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{_basic_pdfs_base_8h}{Basic\-Pdfs\-Base.\-h}\item 
+src/core/src/\hyperlink{_basic_pdfs_base_8_c}{Basic\-Pdfs\-Base.\-C}\end{DoxyCompactItemize}

@@ -1,0 +1,178 @@
+\hypertarget{asserts_8h}{\section{src/core/inc/asserts.h File Reference}
+\label{asserts_8h}\index{src/core/inc/asserts.\-h@{src/core/inc/asserts.\-h}}
+}
+{\ttfamily \#include \char`\"{}exceptions.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}queso/config\-\_\-queso.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$iomanip$>$}\\*
+Include dependency graph for asserts.\-h\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asserts_8h__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{asserts_8h_af14af2cef1e39fcbd1c3bcfdbc6ffe28}{queso\-\_\-here}()~do \{ std\-::cerr $<$$<$ \-\_\-\-\_\-\-F\-I\-L\-E\-\_\-\-\_\- $<$$<$ \char`\"{}, line \char`\"{} $<$$<$ \-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\- $<$$<$ \char`\"{}, compiled \char`\"{} $<$$<$ \-\_\-\-\_\-\-D\-A\-T\-E\-\_\-\-\_\- $<$$<$ \char`\"{} at \char`\"{} $<$$<$ \-\_\-\-\_\-\-T\-I\-M\-E\-\_\-\-\_\- $<$$<$ std\-::endl; \} while (0)
+\item 
+\#define \hyperlink{asserts_8h_a95f9887ed9b637efb5b71f1df7d6bc4d}{queso\-\_\-assert}(asserted)~do \{ if (!(asserted)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#asserted \char`\"{}' failed.\char`\"{} $<$$<$ std\-::endl; \hyperlink{asserts_8h_a0af4fa8de607265fa3e7413ba0475a18}{queso\-\_\-error}(); \} \} while(0)
+\item 
+\#define \hyperlink{asserts_8h_a67de25b43faabd8d10a0827676e54a49}{queso\-\_\-assert\-\_\-equal\-\_\-to}(expr1, expr2)~do \{ if (!(expr1 == expr2)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#expr1 \char`\"{} == \char`\"{} \#expr2 \char`\"{}' failed.\textbackslash{}n\char`\"{} \#expr1 \char`\"{} = \char`\"{} $<$$<$ (expr1) $<$$<$ \char`\"{}\textbackslash{}n\char`\"{} \#expr2 \char`\"{} = \char`\"{} $<$$<$ (expr2) $<$$<$ std\-::endl; \hyperlink{asserts_8h_a0af4fa8de607265fa3e7413ba0475a18}{queso\-\_\-error}(); \} \} while(0)
+\item 
+\#define \hyperlink{asserts_8h_a256964c76b421e5187a0aa36e5907cb7}{queso\-\_\-assert\-\_\-not\-\_\-equal\-\_\-to}(expr1, expr2)~do \{ if (!(expr1 != expr2)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#expr1 \char`\"{} != \char`\"{} \#expr2 \char`\"{}' failed.\textbackslash{}n\char`\"{} \#expr1 \char`\"{} = \char`\"{} $<$$<$ (expr1) $<$$<$ \char`\"{}\textbackslash{}n\char`\"{} \#expr2 \char`\"{} = \char`\"{} $<$$<$ (expr2) $<$$<$ std\-::endl; \hyperlink{asserts_8h_a0af4fa8de607265fa3e7413ba0475a18}{queso\-\_\-error}(); \} \} while(0)
+\item 
+\#define \hyperlink{asserts_8h_a02c59e9150c230713f39314a442e2768}{queso\-\_\-assert\-\_\-less}(expr1, expr2)~do \{ if (!(expr1 $<$ expr2)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#expr1 \char`\"{} $<$ \char`\"{} \#expr2 \char`\"{}' failed.\textbackslash{}n\char`\"{} \#expr1 \char`\"{} = \char`\"{} $<$$<$ (expr1) $<$$<$ \char`\"{}\textbackslash{}n\char`\"{} \#expr2 \char`\"{} = \char`\"{} $<$$<$ (expr2) $<$$<$ std\-::endl; \hyperlink{asserts_8h_a0af4fa8de607265fa3e7413ba0475a18}{queso\-\_\-error}(); \} \} while(0)
+\item 
+\#define \hyperlink{asserts_8h_a85bd9423ebc33944bdef21ebaef62ea2}{queso\-\_\-assert\-\_\-greater}(expr1, expr2)~do \{ if (!(expr1 $>$ expr2)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#expr1 \char`\"{} $>$ \char`\"{} \#expr2 \char`\"{}' failed.\textbackslash{}n\char`\"{} \#expr1 \char`\"{} = \char`\"{} $<$$<$ (expr1) $<$$<$ \char`\"{}\textbackslash{}n\char`\"{} \#expr2 \char`\"{} = \char`\"{} $<$$<$ (expr2) $<$$<$ std\-::endl; \hyperlink{asserts_8h_a0af4fa8de607265fa3e7413ba0475a18}{queso\-\_\-error}(); \} \} while(0)
+\item 
+\#define \hyperlink{asserts_8h_a73fd5305f6bc49b50fa21d9d9742a157}{queso\-\_\-assert\-\_\-less\-\_\-equal}(expr1, expr2)~do \{ if (!(expr1 $<$= expr2)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#expr1 \char`\"{} $<$= \char`\"{} \#expr2 \char`\"{}' failed.\textbackslash{}n\char`\"{} \#expr1 \char`\"{} = \char`\"{} $<$$<$ (expr1) $<$$<$ \char`\"{}\textbackslash{}n\char`\"{} \#expr2 \char`\"{} = \char`\"{} $<$$<$ (expr2) $<$$<$ std\-::endl; \hyperlink{asserts_8h_a0af4fa8de607265fa3e7413ba0475a18}{queso\-\_\-error}(); \} \} while(0)
+\item 
+\#define \hyperlink{asserts_8h_a71e713c1171a8e48e343937f4e877e93}{queso\-\_\-assert\-\_\-greater\-\_\-equal}(expr1, expr2)~do \{ if (!(expr1 $>$= expr2)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#expr1 \char`\"{} $>$= \char`\"{} \#expr2 \char`\"{}' failed.\textbackslash{}n\char`\"{} \#expr1 \char`\"{} = \char`\"{} $<$$<$ (expr1) $<$$<$ \char`\"{}\textbackslash{}n\char`\"{} \#expr2 \char`\"{} = \char`\"{} $<$$<$ (expr2) $<$$<$ std\-::endl; \hyperlink{asserts_8h_a0af4fa8de607265fa3e7413ba0475a18}{queso\-\_\-error}(); \} \} while(0)
+\item 
+\#define \hyperlink{asserts_8h_a0af4fa8de607265fa3e7413ba0475a18}{queso\-\_\-error}()~do \{ \hyperlink{asserts_8h_af14af2cef1e39fcbd1c3bcfdbc6ffe28}{queso\-\_\-here}(); \hyperlink{exceptions_8h_afab7833816d1d2328ca5f890ccfc4cae}{Q\-U\-E\-S\-O\-\_\-\-T\-H\-R\-O\-W}(\hyperlink{class_q_u_e_s_o_1_1_logic_error}{Q\-U\-E\-S\-O\-::\-Logic\-Error}()); \} while(0)
+\item 
+\#define \hyperlink{asserts_8h_a7cd5266c96c8870c5d1c1e13073afb87}{queso\-\_\-not\-\_\-implemented}()~do \{ \hyperlink{asserts_8h_af14af2cef1e39fcbd1c3bcfdbc6ffe28}{queso\-\_\-here}(); \hyperlink{exceptions_8h_afab7833816d1d2328ca5f890ccfc4cae}{Q\-U\-E\-S\-O\-\_\-\-T\-H\-R\-O\-W}(\hyperlink{class_q_u_e_s_o_1_1_not_implemented}{Q\-U\-E\-S\-O\-::\-Not\-Implemented}()); \} while(0)
+\item 
+\#define \hyperlink{asserts_8h_aef4406c0569a56b24d3b09fc13034fd8}{queso\-\_\-file\-\_\-error}(filename)~do \{ \hyperlink{asserts_8h_af14af2cef1e39fcbd1c3bcfdbc6ffe28}{queso\-\_\-here}(); \hyperlink{exceptions_8h_afab7833816d1d2328ca5f890ccfc4cae}{Q\-U\-E\-S\-O\-\_\-\-T\-H\-R\-O\-W}(\hyperlink{class_q_u_e_s_o_1_1_file_error}{Q\-U\-E\-S\-O\-::\-File\-Error}(filename)); \} while(0)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{asserts_8h_a95f9887ed9b637efb5b71f1df7d6bc4d}{\index{asserts.\-h@{asserts.\-h}!queso\-\_\-assert@{queso\-\_\-assert}}
+\index{queso\-\_\-assert@{queso\-\_\-assert}!asserts.h@{asserts.\-h}}
+\subsubsection[{queso\-\_\-assert}]{\setlength{\rightskip}{0pt plus 5cm}\#define queso\-\_\-assert(
+\begin{DoxyParamCaption}
+\item[{}]{asserted}
+\end{DoxyParamCaption}
+)~do \{ if (!(asserted)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#asserted \char`\"{}' failed.\char`\"{} $<$$<$ std\-::endl; {\bf queso\-\_\-error}(); \} \} while(0)}}\label{asserts_8h_a95f9887ed9b637efb5b71f1df7d6bc4d}
+
+
+Definition at line 59 of file asserts.\-h.
+
+\hypertarget{asserts_8h_a67de25b43faabd8d10a0827676e54a49}{\index{asserts.\-h@{asserts.\-h}!queso\-\_\-assert\-\_\-equal\-\_\-to@{queso\-\_\-assert\-\_\-equal\-\_\-to}}
+\index{queso\-\_\-assert\-\_\-equal\-\_\-to@{queso\-\_\-assert\-\_\-equal\-\_\-to}!asserts.h@{asserts.\-h}}
+\subsubsection[{queso\-\_\-assert\-\_\-equal\-\_\-to}]{\setlength{\rightskip}{0pt plus 5cm}\#define queso\-\_\-assert\-\_\-equal\-\_\-to(
+\begin{DoxyParamCaption}
+\item[{}]{expr1, }
+\item[{}]{expr2}
+\end{DoxyParamCaption}
+)~do \{ if (!(expr1 == expr2)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#expr1 \char`\"{} == \char`\"{} \#expr2 \char`\"{}' failed.\textbackslash{}n\char`\"{} \#expr1 \char`\"{} = \char`\"{} $<$$<$ (expr1) $<$$<$ \char`\"{}\textbackslash{}n\char`\"{} \#expr2 \char`\"{} = \char`\"{} $<$$<$ (expr2) $<$$<$ std\-::endl; {\bf queso\-\_\-error}(); \} \} while(0)}}\label{asserts_8h_a67de25b43faabd8d10a0827676e54a49}
+
+
+Definition at line 75 of file asserts.\-h.
+
+\hypertarget{asserts_8h_a85bd9423ebc33944bdef21ebaef62ea2}{\index{asserts.\-h@{asserts.\-h}!queso\-\_\-assert\-\_\-greater@{queso\-\_\-assert\-\_\-greater}}
+\index{queso\-\_\-assert\-\_\-greater@{queso\-\_\-assert\-\_\-greater}!asserts.h@{asserts.\-h}}
+\subsubsection[{queso\-\_\-assert\-\_\-greater}]{\setlength{\rightskip}{0pt plus 5cm}\#define queso\-\_\-assert\-\_\-greater(
+\begin{DoxyParamCaption}
+\item[{}]{expr1, }
+\item[{}]{expr2}
+\end{DoxyParamCaption}
+)~do \{ if (!(expr1 $>$ expr2)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#expr1 \char`\"{} $>$ \char`\"{} \#expr2 \char`\"{}' failed.\textbackslash{}n\char`\"{} \#expr1 \char`\"{} = \char`\"{} $<$$<$ (expr1) $<$$<$ \char`\"{}\textbackslash{}n\char`\"{} \#expr2 \char`\"{} = \char`\"{} $<$$<$ (expr2) $<$$<$ std\-::endl; {\bf queso\-\_\-error}(); \} \} while(0)}}\label{asserts_8h_a85bd9423ebc33944bdef21ebaef62ea2}
+
+
+Definition at line 78 of file asserts.\-h.
+
+\hypertarget{asserts_8h_a71e713c1171a8e48e343937f4e877e93}{\index{asserts.\-h@{asserts.\-h}!queso\-\_\-assert\-\_\-greater\-\_\-equal@{queso\-\_\-assert\-\_\-greater\-\_\-equal}}
+\index{queso\-\_\-assert\-\_\-greater\-\_\-equal@{queso\-\_\-assert\-\_\-greater\-\_\-equal}!asserts.h@{asserts.\-h}}
+\subsubsection[{queso\-\_\-assert\-\_\-greater\-\_\-equal}]{\setlength{\rightskip}{0pt plus 5cm}\#define queso\-\_\-assert\-\_\-greater\-\_\-equal(
+\begin{DoxyParamCaption}
+\item[{}]{expr1, }
+\item[{}]{expr2}
+\end{DoxyParamCaption}
+)~do \{ if (!(expr1 $>$= expr2)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#expr1 \char`\"{} $>$= \char`\"{} \#expr2 \char`\"{}' failed.\textbackslash{}n\char`\"{} \#expr1 \char`\"{} = \char`\"{} $<$$<$ (expr1) $<$$<$ \char`\"{}\textbackslash{}n\char`\"{} \#expr2 \char`\"{} = \char`\"{} $<$$<$ (expr2) $<$$<$ std\-::endl; {\bf queso\-\_\-error}(); \} \} while(0)}}\label{asserts_8h_a71e713c1171a8e48e343937f4e877e93}
+
+
+Definition at line 80 of file asserts.\-h.
+
+\hypertarget{asserts_8h_a02c59e9150c230713f39314a442e2768}{\index{asserts.\-h@{asserts.\-h}!queso\-\_\-assert\-\_\-less@{queso\-\_\-assert\-\_\-less}}
+\index{queso\-\_\-assert\-\_\-less@{queso\-\_\-assert\-\_\-less}!asserts.h@{asserts.\-h}}
+\subsubsection[{queso\-\_\-assert\-\_\-less}]{\setlength{\rightskip}{0pt plus 5cm}\#define queso\-\_\-assert\-\_\-less(
+\begin{DoxyParamCaption}
+\item[{}]{expr1, }
+\item[{}]{expr2}
+\end{DoxyParamCaption}
+)~do \{ if (!(expr1 $<$ expr2)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#expr1 \char`\"{} $<$ \char`\"{} \#expr2 \char`\"{}' failed.\textbackslash{}n\char`\"{} \#expr1 \char`\"{} = \char`\"{} $<$$<$ (expr1) $<$$<$ \char`\"{}\textbackslash{}n\char`\"{} \#expr2 \char`\"{} = \char`\"{} $<$$<$ (expr2) $<$$<$ std\-::endl; {\bf queso\-\_\-error}(); \} \} while(0)}}\label{asserts_8h_a02c59e9150c230713f39314a442e2768}
+
+
+Definition at line 77 of file asserts.\-h.
+
+\hypertarget{asserts_8h_a73fd5305f6bc49b50fa21d9d9742a157}{\index{asserts.\-h@{asserts.\-h}!queso\-\_\-assert\-\_\-less\-\_\-equal@{queso\-\_\-assert\-\_\-less\-\_\-equal}}
+\index{queso\-\_\-assert\-\_\-less\-\_\-equal@{queso\-\_\-assert\-\_\-less\-\_\-equal}!asserts.h@{asserts.\-h}}
+\subsubsection[{queso\-\_\-assert\-\_\-less\-\_\-equal}]{\setlength{\rightskip}{0pt plus 5cm}\#define queso\-\_\-assert\-\_\-less\-\_\-equal(
+\begin{DoxyParamCaption}
+\item[{}]{expr1, }
+\item[{}]{expr2}
+\end{DoxyParamCaption}
+)~do \{ if (!(expr1 $<$= expr2)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#expr1 \char`\"{} $<$= \char`\"{} \#expr2 \char`\"{}' failed.\textbackslash{}n\char`\"{} \#expr1 \char`\"{} = \char`\"{} $<$$<$ (expr1) $<$$<$ \char`\"{}\textbackslash{}n\char`\"{} \#expr2 \char`\"{} = \char`\"{} $<$$<$ (expr2) $<$$<$ std\-::endl; {\bf queso\-\_\-error}(); \} \} while(0)}}\label{asserts_8h_a73fd5305f6bc49b50fa21d9d9742a157}
+
+
+Definition at line 79 of file asserts.\-h.
+
+\hypertarget{asserts_8h_a256964c76b421e5187a0aa36e5907cb7}{\index{asserts.\-h@{asserts.\-h}!queso\-\_\-assert\-\_\-not\-\_\-equal\-\_\-to@{queso\-\_\-assert\-\_\-not\-\_\-equal\-\_\-to}}
+\index{queso\-\_\-assert\-\_\-not\-\_\-equal\-\_\-to@{queso\-\_\-assert\-\_\-not\-\_\-equal\-\_\-to}!asserts.h@{asserts.\-h}}
+\subsubsection[{queso\-\_\-assert\-\_\-not\-\_\-equal\-\_\-to}]{\setlength{\rightskip}{0pt plus 5cm}\#define queso\-\_\-assert\-\_\-not\-\_\-equal\-\_\-to(
+\begin{DoxyParamCaption}
+\item[{}]{expr1, }
+\item[{}]{expr2}
+\end{DoxyParamCaption}
+)~do \{ if (!(expr1 != expr2)) \{ std\-::cerr $<$$<$ \char`\"{}Assertion `\char`\"{} \#expr1 \char`\"{} != \char`\"{} \#expr2 \char`\"{}' failed.\textbackslash{}n\char`\"{} \#expr1 \char`\"{} = \char`\"{} $<$$<$ (expr1) $<$$<$ \char`\"{}\textbackslash{}n\char`\"{} \#expr2 \char`\"{} = \char`\"{} $<$$<$ (expr2) $<$$<$ std\-::endl; {\bf queso\-\_\-error}(); \} \} while(0)}}\label{asserts_8h_a256964c76b421e5187a0aa36e5907cb7}
+
+
+Definition at line 76 of file asserts.\-h.
+
+\hypertarget{asserts_8h_a0af4fa8de607265fa3e7413ba0475a18}{\index{asserts.\-h@{asserts.\-h}!queso\-\_\-error@{queso\-\_\-error}}
+\index{queso\-\_\-error@{queso\-\_\-error}!asserts.h@{asserts.\-h}}
+\subsubsection[{queso\-\_\-error}]{\setlength{\rightskip}{0pt plus 5cm}\#define queso\-\_\-error(
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)~do \{ {\bf queso\-\_\-here}(); {\bf Q\-U\-E\-S\-O\-\_\-\-T\-H\-R\-O\-W}({\bf Q\-U\-E\-S\-O\-::\-Logic\-Error}()); \} while(0)}}\label{asserts_8h_a0af4fa8de607265fa3e7413ba0475a18}
+
+
+Definition at line 87 of file asserts.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Full\-Environment\-::read\-Options\-Input\-File().
+
+\hypertarget{asserts_8h_aef4406c0569a56b24d3b09fc13034fd8}{\index{asserts.\-h@{asserts.\-h}!queso\-\_\-file\-\_\-error@{queso\-\_\-file\-\_\-error}}
+\index{queso\-\_\-file\-\_\-error@{queso\-\_\-file\-\_\-error}!asserts.h@{asserts.\-h}}
+\subsubsection[{queso\-\_\-file\-\_\-error}]{\setlength{\rightskip}{0pt plus 5cm}\#define queso\-\_\-file\-\_\-error(
+\begin{DoxyParamCaption}
+\item[{}]{filename}
+\end{DoxyParamCaption}
+)~do \{ {\bf queso\-\_\-here}(); {\bf Q\-U\-E\-S\-O\-\_\-\-T\-H\-R\-O\-W}({\bf Q\-U\-E\-S\-O\-::\-File\-Error}(filename)); \} while(0)}}\label{asserts_8h_aef4406c0569a56b24d3b09fc13034fd8}
+
+
+Definition at line 89 of file asserts.\-h.
+
+\hypertarget{asserts_8h_af14af2cef1e39fcbd1c3bcfdbc6ffe28}{\index{asserts.\-h@{asserts.\-h}!queso\-\_\-here@{queso\-\_\-here}}
+\index{queso\-\_\-here@{queso\-\_\-here}!asserts.h@{asserts.\-h}}
+\subsubsection[{queso\-\_\-here}]{\setlength{\rightskip}{0pt plus 5cm}\#define queso\-\_\-here(
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)~do \{ std\-::cerr $<$$<$ \-\_\-\-\_\-\-F\-I\-L\-E\-\_\-\-\_\- $<$$<$ \char`\"{}, line \char`\"{} $<$$<$ \-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\- $<$$<$ \char`\"{}, compiled \char`\"{} $<$$<$ \-\_\-\-\_\-\-D\-A\-T\-E\-\_\-\-\_\- $<$$<$ \char`\"{} at \char`\"{} $<$$<$ \-\_\-\-\_\-\-T\-I\-M\-E\-\_\-\-\_\- $<$$<$ std\-::endl; \} while (0)}}\label{asserts_8h_af14af2cef1e39fcbd1c3bcfdbc6ffe28}
+
+
+Definition at line 42 of file asserts.\-h.
+
+\hypertarget{asserts_8h_a7cd5266c96c8870c5d1c1e13073afb87}{\index{asserts.\-h@{asserts.\-h}!queso\-\_\-not\-\_\-implemented@{queso\-\_\-not\-\_\-implemented}}
+\index{queso\-\_\-not\-\_\-implemented@{queso\-\_\-not\-\_\-implemented}!asserts.h@{asserts.\-h}}
+\subsubsection[{queso\-\_\-not\-\_\-implemented}]{\setlength{\rightskip}{0pt plus 5cm}\#define queso\-\_\-not\-\_\-implemented(
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)~do \{ {\bf queso\-\_\-here}(); {\bf Q\-U\-E\-S\-O\-\_\-\-T\-H\-R\-O\-W}({\bf Q\-U\-E\-S\-O\-::\-Not\-Implemented}()); \} while(0)}}\label{asserts_8h_a7cd5266c96c8870c5d1c1e13073afb87}
+
+
+Definition at line 88 of file asserts.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Dist\-Array$<$ T $>$\-::copy().
+

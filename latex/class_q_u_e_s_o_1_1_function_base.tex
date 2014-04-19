@@ -1,0 +1,179 @@
+\hypertarget{class_q_u_e_s_o_1_1_function_base}{\section{Q\-U\-E\-S\-O\-:\-:Function\-Base Class Reference}
+\label{class_q_u_e_s_o_1_1_function_base}\index{Q\-U\-E\-S\-O\-::\-Function\-Base@{Q\-U\-E\-S\-O\-::\-Function\-Base}}
+}
+
+
+Abstract base class for function objects.  
+
+
+
+
+{\ttfamily \#include $<$Function\-Base.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_function_base_a0a6135d94fa022bd3775d712fc23e32b}{add} (double \hyperlink{class_q_u_e_s_o_1_1_function_base_a542ed1bd28072fd53fcd7a49d8f2f77b}{scale}, const \hyperlink{class_q_u_e_s_o_1_1_function_base}{Function\-Base} \&rhs)=0
+\begin{DoxyCompactList}\small\item\em Execute {\ttfamily this} += {\ttfamily scale} $\ast$ {\ttfamily rhs}. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_function_base_af3ccfeaae0a8e918d9ce422b9c18c7ca}{pointwise\-\_\-mult} (const \hyperlink{class_q_u_e_s_o_1_1_function_base}{Function\-Base} \&f1, const \hyperlink{class_q_u_e_s_o_1_1_function_base}{Function\-Base} \&f2)=0
+\begin{DoxyCompactList}\small\item\em Pointwise multiply {\ttfamily f1} and {\ttfamily f2} and store the result in {\ttfamily $\ast$this}. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_function_base_a542ed1bd28072fd53fcd7a49d8f2f77b}{scale} (double scale)=0
+\begin{DoxyCompactList}\small\item\em Execute {\ttfamily this} $\ast$= {\ttfamily scale}. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_function_base_a9b07ff14bb5e2511afb555dcbcbfe83b}{zero} ()=0
+\begin{DoxyCompactList}\small\item\em Set {\ttfamily this} to zero everywhere. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_function_base_a0aaac902156559c64708cd41497bff2d}{L2\-\_\-norm} () const =0
+\begin{DoxyCompactList}\small\item\em Return the L2-\/norm of {\ttfamily this}. \end{DoxyCompactList}\item 
+virtual boost\-::shared\-\_\-ptr\\*
+$<$ \hyperlink{class_q_u_e_s_o_1_1_function_base}{Function\-Base} $>$ \hyperlink{class_q_u_e_s_o_1_1_function_base_a238b9b8fc5cd901cac7e8df3018bd170}{zero\-\_\-clone} () const =0
+\begin{DoxyCompactList}\small\item\em Create a zero function copy of {\ttfamily this} and return pointer to it. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_function_base_aa7e4f6011f7787ad9e01fab3260fa798}{save\-\_\-function} (const std\-::string \&filename, double time) const =0
+\begin{DoxyCompactList}\small\item\em Save the current function to an Exodus file called {\ttfamily filename}. {\ttfamily time} is the time to attach to the function and is usually the iteration number. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_function_base_adf2e807076f9630fe281485527e443f3}{Function\-Base} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_function_base_a387bb45998e02219a06a1d3a8280f7ad}{$\sim$\-Function\-Base} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\subsection{Detailed Description}
+Abstract base class for function objects. 
+
+One needs to sublclass this abstract class to implement their own functions using a backend not supported by \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O}. If \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} is linked against lib\-Mesh (and lib\-Mesh was compiled with S\-L\-E\-Pc), you may use Lib\-Mesh\-Function. 
+
+Definition at line 46 of file Function\-Base.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_function_base_adf2e807076f9630fe281485527e443f3}{\index{Q\-U\-E\-S\-O\-::\-Function\-Base@{Q\-U\-E\-S\-O\-::\-Function\-Base}!Function\-Base@{Function\-Base}}
+\index{Function\-Base@{Function\-Base}!QUESO::FunctionBase@{Q\-U\-E\-S\-O\-::\-Function\-Base}}
+\subsubsection[{Function\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Function\-Base\-::\-Function\-Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_function_base_adf2e807076f9630fe281485527e443f3}
+
+
+Constructor. 
+
+
+
+Definition at line 30 of file Function\-Base.\-C.
+
+
+\begin{DoxyCode}
+31 \{
+32 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_function_base_a387bb45998e02219a06a1d3a8280f7ad}{\index{Q\-U\-E\-S\-O\-::\-Function\-Base@{Q\-U\-E\-S\-O\-::\-Function\-Base}!$\sim$\-Function\-Base@{$\sim$\-Function\-Base}}
+\index{$\sim$\-Function\-Base@{$\sim$\-Function\-Base}!QUESO::FunctionBase@{Q\-U\-E\-S\-O\-::\-Function\-Base}}
+\subsubsection[{$\sim$\-Function\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Function\-Base\-::$\sim$\-Function\-Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_function_base_a387bb45998e02219a06a1d3a8280f7ad}
+
+
+Destructor. 
+
+
+
+Definition at line 34 of file Function\-Base.\-C.
+
+
+\begin{DoxyCode}
+35 \{
+36 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_function_base_a0a6135d94fa022bd3775d712fc23e32b}{\index{Q\-U\-E\-S\-O\-::\-Function\-Base@{Q\-U\-E\-S\-O\-::\-Function\-Base}!add@{add}}
+\index{add@{add}!QUESO::FunctionBase@{Q\-U\-E\-S\-O\-::\-Function\-Base}}
+\subsubsection[{add}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Q\-U\-E\-S\-O\-::\-Function\-Base\-::add (
+\begin{DoxyParamCaption}
+\item[{double}]{scale, }
+\item[{const {\bf Function\-Base} \&}]{rhs}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_function_base_a0a6135d94fa022bd3775d712fc23e32b}
+
+
+Execute {\ttfamily this} += {\ttfamily scale} $\ast$ {\ttfamily rhs}. 
+
+\hypertarget{class_q_u_e_s_o_1_1_function_base_a0aaac902156559c64708cd41497bff2d}{\index{Q\-U\-E\-S\-O\-::\-Function\-Base@{Q\-U\-E\-S\-O\-::\-Function\-Base}!L2\-\_\-norm@{L2\-\_\-norm}}
+\index{L2\-\_\-norm@{L2\-\_\-norm}!QUESO::FunctionBase@{Q\-U\-E\-S\-O\-::\-Function\-Base}}
+\subsubsection[{L2\-\_\-norm}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Function\-Base\-::\-L2\-\_\-norm (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_function_base_a0aaac902156559c64708cd41497bff2d}
+
+
+Return the L2-\/norm of {\ttfamily this}. 
+
+\hypertarget{class_q_u_e_s_o_1_1_function_base_af3ccfeaae0a8e918d9ce422b9c18c7ca}{\index{Q\-U\-E\-S\-O\-::\-Function\-Base@{Q\-U\-E\-S\-O\-::\-Function\-Base}!pointwise\-\_\-mult@{pointwise\-\_\-mult}}
+\index{pointwise\-\_\-mult@{pointwise\-\_\-mult}!QUESO::FunctionBase@{Q\-U\-E\-S\-O\-::\-Function\-Base}}
+\subsubsection[{pointwise\-\_\-mult}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Q\-U\-E\-S\-O\-::\-Function\-Base\-::pointwise\-\_\-mult (
+\begin{DoxyParamCaption}
+\item[{const {\bf Function\-Base} \&}]{f1, }
+\item[{const {\bf Function\-Base} \&}]{f2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_function_base_af3ccfeaae0a8e918d9ce422b9c18c7ca}
+
+
+Pointwise multiply {\ttfamily f1} and {\ttfamily f2} and store the result in {\ttfamily $\ast$this}. 
+
+\hypertarget{class_q_u_e_s_o_1_1_function_base_aa7e4f6011f7787ad9e01fab3260fa798}{\index{Q\-U\-E\-S\-O\-::\-Function\-Base@{Q\-U\-E\-S\-O\-::\-Function\-Base}!save\-\_\-function@{save\-\_\-function}}
+\index{save\-\_\-function@{save\-\_\-function}!QUESO::FunctionBase@{Q\-U\-E\-S\-O\-::\-Function\-Base}}
+\subsubsection[{save\-\_\-function}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Q\-U\-E\-S\-O\-::\-Function\-Base\-::save\-\_\-function (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{filename, }
+\item[{double}]{time}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_function_base_aa7e4f6011f7787ad9e01fab3260fa798}
+
+
+Save the current function to an Exodus file called {\ttfamily filename}. {\ttfamily time} is the time to attach to the function and is usually the iteration number. 
+
+\hypertarget{class_q_u_e_s_o_1_1_function_base_a542ed1bd28072fd53fcd7a49d8f2f77b}{\index{Q\-U\-E\-S\-O\-::\-Function\-Base@{Q\-U\-E\-S\-O\-::\-Function\-Base}!scale@{scale}}
+\index{scale@{scale}!QUESO::FunctionBase@{Q\-U\-E\-S\-O\-::\-Function\-Base}}
+\subsubsection[{scale}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Q\-U\-E\-S\-O\-::\-Function\-Base\-::scale (
+\begin{DoxyParamCaption}
+\item[{double}]{scale}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_function_base_a542ed1bd28072fd53fcd7a49d8f2f77b}
+
+
+Execute {\ttfamily this} $\ast$= {\ttfamily scale}. 
+
+\hypertarget{class_q_u_e_s_o_1_1_function_base_a9b07ff14bb5e2511afb555dcbcbfe83b}{\index{Q\-U\-E\-S\-O\-::\-Function\-Base@{Q\-U\-E\-S\-O\-::\-Function\-Base}!zero@{zero}}
+\index{zero@{zero}!QUESO::FunctionBase@{Q\-U\-E\-S\-O\-::\-Function\-Base}}
+\subsubsection[{zero}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Q\-U\-E\-S\-O\-::\-Function\-Base\-::zero (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_function_base_a9b07ff14bb5e2511afb555dcbcbfe83b}
+
+
+Set {\ttfamily this} to zero everywhere. 
+
+\hypertarget{class_q_u_e_s_o_1_1_function_base_a238b9b8fc5cd901cac7e8df3018bd170}{\index{Q\-U\-E\-S\-O\-::\-Function\-Base@{Q\-U\-E\-S\-O\-::\-Function\-Base}!zero\-\_\-clone@{zero\-\_\-clone}}
+\index{zero\-\_\-clone@{zero\-\_\-clone}!QUESO::FunctionBase@{Q\-U\-E\-S\-O\-::\-Function\-Base}}
+\subsubsection[{zero\-\_\-clone}]{\setlength{\rightskip}{0pt plus 5cm}virtual boost\-::shared\-\_\-ptr$<${\bf Function\-Base}$>$ Q\-U\-E\-S\-O\-::\-Function\-Base\-::zero\-\_\-clone (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_function_base_a238b9b8fc5cd901cac7e8df3018bd170}
+
+
+Create a zero function copy of {\ttfamily this} and return pointer to it. 
+
+Create a new instance of \hyperlink{class_q_u_e_s_o_1_1_function_base}{Function\-Base} representing the function that is identically zero (by copying {\ttfamily this}) everywhere and return a boost shared pointer to it 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{_function_base_8h}{Function\-Base.\-h}\item 
+src/core/src/\hyperlink{_function_base_8_c}{Function\-Base.\-C}\end{DoxyCompactItemize}

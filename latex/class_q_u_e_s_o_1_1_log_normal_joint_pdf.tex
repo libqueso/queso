@@ -1,0 +1,460 @@
+\hypertarget{class_q_u_e_s_o_1_1_log_normal_joint_pdf}{\section{Q\-U\-E\-S\-O\-:\-:Log\-Normal\-Joint\-Pdf$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_log_normal_joint_pdf}\index{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf$<$ V, M $>$}}
+}
+
+
+A class for handling Log-\/\-Normal joint P\-D\-Fs.  
+
+
+
+
+{\ttfamily \#include $<$Log\-Normal\-Joint\-Pdf.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Log\-Normal\-Joint\-Pdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{class_q_u_e_s_o_1_1_log_normal_joint_pdf__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Log\-Normal\-Joint\-Pdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_log_normal_joint_pdf__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_ac8a9ad5414281317dfe22731c672a9ca}{Log\-Normal\-Joint\-Pdf} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domain\-Set}, const V \&\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a2ca856981ab03d0c84d19715da581c83}{law\-Exp\-Vector}, const V \&\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_afa9f7634ae6e54973cfe14463740171e}{law\-Var\-Vector})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_abba5c75de7f88fcf51e56aec03f35ffc}{$\sim$\-Log\-Normal\-Joint\-Pdf} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Math methods}\par
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a87729cb9d59b73baefcbecb03e753cb9}{actual\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const 
+\begin{DoxyCompactList}\small\item\em Actual value of the Log-\/\-Normal P\-D\-F (scalar function). \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a9c31e89ee4abe8f1747e50c8d472a94d}{ln\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const 
+\begin{DoxyCompactList}\small\item\em Logarithm of the value of the Log-\/\-Normal P\-D\-F (scalar function). \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a373e37c21ce8acf05fe72f4ec9deef9c}{compute\-Log\-Of\-Normalization\-Factor} (unsigned int num\-Samples, bool update\-Factor\-Internally) const 
+\begin{DoxyCompactList}\small\item\em Computes the logarithm of the normalization factor. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a2ca856981ab03d0c84d19715da581c83}{law\-Exp\-Vector} () const 
+\begin{DoxyCompactList}\small\item\em Access to the vector of mean values and private attribute\-: m\-\_\-law\-Exp\-Vector. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_afa9f7634ae6e54973cfe14463740171e}{law\-Var\-Vector} () const 
+\begin{DoxyCompactList}\small\item\em Access to the vector of variance values and private attribute\-: m\-\_\-law\-Var\-Vector. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a1373e1737c3198b852fab05c77abea35}{m\-\_\-law\-Exp\-Vector}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_abb84bcddf99dc15b4432baac0fc29122}{m\-\_\-law\-Var\-Vector}
+\item 
+bool \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a8c85380b9a7c7ab746b2c8cc9c9cf5ee}{m\-\_\-diagonal\-Cov\-Matrix}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf$<$ V, M $>$}
+
+A class for handling Log-\/\-Normal joint P\-D\-Fs. 
+
+This class allows the mathematical definition of a Log-\/\-Normal Joint P\-D\-F. 
+
+Definition at line 49 of file Log\-Normal\-Joint\-Pdf.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_log_normal_joint_pdf_ac8a9ad5414281317dfe22731c672a9ca}{\index{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}!Log\-Normal\-Joint\-Pdf@{Log\-Normal\-Joint\-Pdf}}
+\index{Log\-Normal\-Joint\-Pdf@{Log\-Normal\-Joint\-Pdf}!QUESO::LogNormalJointPdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}}
+\subsubsection[{Log\-Normal\-Joint\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}$<$ V, M $>$\-::{\bf Log\-Normal\-Joint\-Pdf} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{domain\-Set, }
+\item[{const V \&}]{law\-Exp\-Vector, }
+\item[{const V \&}]{law\-Var\-Vector}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_log_normal_joint_pdf_ac8a9ad5414281317dfe22731c672a9ca}
+
+
+Constructor. 
+
+Constructs a new object of the class, given a prefix and the domain of the P\-D\-F, a vector of mean values, {\ttfamily law\-Exp\-Vector}, and a vector of covariance values {\ttfamily law\-Var\-Vector} (an alternative representation for a diagonal covariance matrix). 
+
+Definition at line 33 of file Log\-Normal\-Joint\-Pdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf$<$ V, M $>$\-::law\-Exp\-Vector(), Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf$<$ V, M $>$\-::law\-Var\-Vector(), Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function$<$ V, M $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+38   :
+39   BaseJointPdf<V,M>(((std::string)(prefix)+\textcolor{stringliteral}{"gau"}).c\_str(),\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domainSet}),
+40   \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a1373e1737c3198b852fab05c77abea35}{m\_lawExpVector}     (\textcolor{keyword}{new} V(\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a2ca856981ab03d0c84d19715da581c83}{lawExpVector})),
+41   \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_abb84bcddf99dc15b4432baac0fc29122}{m\_lawVarVector}     (\textcolor{keyword}{new} V(\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_afa9f7634ae6e54973cfe14463740171e}{lawVarVector})),
+42   \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a8c85380b9a7c7ab746b2c8cc9c9cf5ee}{m\_diagonalCovMatrix}(\textcolor{keyword}{true})
+43 \{
+44   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+45     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering LogNormalJointPdf<V,M>::constructor() [1]"}
+46                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a6e81dc902aca6a546877da99b2f4a169}{m\_prefix}
+47                             << std::endl;
+48   \}
+49 
+50   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 55)) \{
+51     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In LogNormalJointPdf<V,M>::constructor()"}
+52                           \textcolor{comment}{//<< ", prefix = "     << m\_prefix}
+53                             << \textcolor{stringliteral}{": meanVector = "} << this->\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a2ca856981ab03d0c84d19715da581c83}{lawExpVector}()
+54                       << \textcolor{stringliteral}{", Variances = "}  << this->\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_afa9f7634ae6e54973cfe14463740171e}{lawVarVector}()
+55                             << std::endl;
+56   \}
+57 
+58   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+59     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving LogNormalJointPdf<V,M>::constructor() [1]"}
+60                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a6e81dc902aca6a546877da99b2f4a169}{m\_prefix}
+61                             << std::endl;
+62   \}
+63 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_log_normal_joint_pdf_abba5c75de7f88fcf51e56aec03f35ffc}{\index{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}!$\sim$\-Log\-Normal\-Joint\-Pdf@{$\sim$\-Log\-Normal\-Joint\-Pdf}}
+\index{$\sim$\-Log\-Normal\-Joint\-Pdf@{$\sim$\-Log\-Normal\-Joint\-Pdf}!QUESO::LogNormalJointPdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}}
+\subsubsection[{$\sim$\-Log\-Normal\-Joint\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}$<$ V, M $>$\-::$\sim${\bf Log\-Normal\-Joint\-Pdf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_log_normal_joint_pdf_abba5c75de7f88fcf51e56aec03f35ffc}
+
+
+Destructor. 
+
+
+
+Definition at line 66 of file Log\-Normal\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+67 \{
+68   \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_abb84bcddf99dc15b4432baac0fc29122}{m\_lawVarVector};
+69   \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a1373e1737c3198b852fab05c77abea35}{m\_lawExpVector};
+70 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a87729cb9d59b73baefcbecb03e753cb9}{\index{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}!actual\-Value@{actual\-Value}}
+\index{actual\-Value@{actual\-Value}!QUESO::LogNormalJointPdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}}
+\subsubsection[{actual\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}$<$ V, M $>$\-::actual\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a87729cb9d59b73baefcbecb03e753cb9}
+
+
+Actual value of the Log-\/\-Normal P\-D\-F (scalar function). 
+
+This method calls \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a9c31e89ee4abe8f1747e50c8d472a94d}{ln\-Value()} and applies the exponential to its result. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a3c367a0cc3fb707a136c5df47dd414c1}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 88 of file Log\-Normal\-Joint\-Pdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+94 \{
+95   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 55)) \{
+96     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering LogNormalJointPdf<V,M>::actualValue()"}
+97                             << \textcolor{stringliteral}{", meanVector = "}               << *
+      \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a1373e1737c3198b852fab05c77abea35}{m\_lawExpVector}
+98                             << \textcolor{stringliteral}{": domainVector = "}             << domainVector
+99                             << \textcolor{stringliteral}{", domainVector.sizeLocal() = "} << domainVector.sizeLocal()
+100                             << \textcolor{stringliteral}{", this->m\_domainSet.vectorSpace().dimLocal() = "} << this->
+      \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}.vectorSpace().dimLocal()
+101                             << std::endl;
+102   \}
+103 
+104   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(domainVector.sizeLocal() != this->
+      \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}.vectorSpace().dimLocal(),
+105                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+106                       \textcolor{stringliteral}{"LogNormalJointPdf<V,M>::actualValue()"},
+107                       \textcolor{stringliteral}{"invalid input"});
+108 
+109   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((gradVector || hessianMatrix || hessianEffect),
+110                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+111                       \textcolor{stringliteral}{"LogNormalJointPdf<V,M>::actualValue()"},
+112                       \textcolor{stringliteral}{"incomplete code for gradVector, hessianMatrix and hessianEffect calculations"});
+113 
+114   \textcolor{keywordtype}{double} returnValue = 0.;
+115 
+116   V zeroVector(domainVector);
+117   zeroVector.cwSet(0.);
+118   \textcolor{keywordflow}{if} (domainVector.atLeastOneComponentSmallerOrEqualThan(zeroVector)) \{
+119     returnValue = 0.;
+120   \}
+121   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (this->\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}.contains(domainVector) == \textcolor{keyword}{false}) \{ \textcolor{comment}{// prudenci 2011-Oct-04}
+122     returnValue = 0.;
+123   \}
+124   \textcolor{keywordflow}{else} \{
+125     returnValue = std::exp(this->\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a9c31e89ee4abe8f1747e50c8d472a94d}{lnValue}(domainVector,domainDirection,gradVector,hessianMatrix,
+      hessianEffect));
+126   \}
+127   \textcolor{comment}{//returnValue *= exp(m\_logOfNormalizationFactor); // No need, because 'lnValue()' is called right above
+       // [PDF-10]}
+128 
+129   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 55)) \{
+130     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving LogNormalJointPdf<V,M>::actualValue()"}
+131                             << \textcolor{stringliteral}{", meanVector = "}   << *\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a1373e1737c3198b852fab05c77abea35}{m\_lawExpVector}
+132                             << \textcolor{stringliteral}{": domainVector = "} << domainVector
+133                             << \textcolor{stringliteral}{", returnValue = "}  << returnValue
+134                             << std::endl;
+135   \}
+136 
+137   \textcolor{keywordflow}{return} returnValue;
+138 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a373e37c21ce8acf05fe72f4ec9deef9c}{\index{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}!compute\-Log\-Of\-Normalization\-Factor@{compute\-Log\-Of\-Normalization\-Factor}}
+\index{compute\-Log\-Of\-Normalization\-Factor@{compute\-Log\-Of\-Normalization\-Factor}!QUESO::LogNormalJointPdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}}
+\subsubsection[{compute\-Log\-Of\-Normalization\-Factor}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}$<$ V, M $>$\-::compute\-Log\-Of\-Normalization\-Factor (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{num\-Samples, }
+\item[{bool}]{update\-Factor\-Internally}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a373e37c21ce8acf05fe72f4ec9deef9c}
+
+
+Computes the logarithm of the normalization factor. 
+
+This routine calls \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a7b7bdd13d2de51198bf75d522e02545b}{Base\-Joint\-Pdf\-::common\-Compute\-Log\-Of\-Normalization\-Factor()}. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a99d8ab490b093abffd6068b6ea5263bb}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 209 of file Log\-Normal\-Joint\-Pdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$\-::common\-Compute\-Log\-Of\-Normalization\-Factor().
+
+
+\begin{DoxyCode}
+210 \{
+211   \textcolor{keywordtype}{double} value = 0.;
+212 
+213   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 2)) \{
+214     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       LogNormalJointPdf<V,M>::computeLogOfNormalizationFactor()"}
+215                             << std::endl;
+216   \}
+217   value = \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a7b7bdd13d2de51198bf75d522e02545b}{BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor}
+      (numSamples, updateFactorInternally);
+218   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 2)) \{
+219     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       LogNormalJointPdf<V,M>::computeLogOfNormalizationFactor()"}
+220                             << \textcolor{stringliteral}{", m\_logOfNormalizationFactor = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_ae82d4191f17af8c7a26226d127bc7850}{m\_logOfNormalizationFactor}
+221                             << std::endl;
+222   \}
+223 
+224   \textcolor{keywordflow}{return} value;
+225 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a2ca856981ab03d0c84d19715da581c83}{\index{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}!law\-Exp\-Vector@{law\-Exp\-Vector}}
+\index{law\-Exp\-Vector@{law\-Exp\-Vector}!QUESO::LogNormalJointPdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}}
+\subsubsection[{law\-Exp\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}$<$ V, M $>$\-::law\-Exp\-Vector (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a2ca856981ab03d0c84d19715da581c83}
+
+
+Access to the vector of mean values and private attribute\-: m\-\_\-law\-Exp\-Vector. 
+
+
+
+Definition at line 74 of file Log\-Normal\-Joint\-Pdf.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf$<$ V, M $>$\-::\-Log\-Normal\-Joint\-Pdf().
+
+
+\begin{DoxyCode}
+75 \{
+76   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a1373e1737c3198b852fab05c77abea35}{m\_lawExpVector};
+77 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_log_normal_joint_pdf_afa9f7634ae6e54973cfe14463740171e}{\index{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}!law\-Var\-Vector@{law\-Var\-Vector}}
+\index{law\-Var\-Vector@{law\-Var\-Vector}!QUESO::LogNormalJointPdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}}
+\subsubsection[{law\-Var\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}$<$ V, M $>$\-::law\-Var\-Vector (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_log_normal_joint_pdf_afa9f7634ae6e54973cfe14463740171e}
+
+
+Access to the vector of variance values and private attribute\-: m\-\_\-law\-Var\-Vector. 
+
+
+
+Definition at line 81 of file Log\-Normal\-Joint\-Pdf.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf$<$ V, M $>$\-::\-Log\-Normal\-Joint\-Pdf().
+
+
+\begin{DoxyCode}
+82 \{
+83   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_abb84bcddf99dc15b4432baac0fc29122}{m\_lawVarVector};
+84 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a9c31e89ee4abe8f1747e50c8d472a94d}{\index{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}!ln\-Value@{ln\-Value}}
+\index{ln\-Value@{ln\-Value}!QUESO::LogNormalJointPdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}}
+\subsubsection[{ln\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}$<$ V, M $>$\-::ln\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a9c31e89ee4abe8f1747e50c8d472a94d}
+
+
+Logarithm of the value of the Log-\/\-Normal P\-D\-F (scalar function). 
+
+The logarithm of the value of the Log-\/\-Normal density of diagonal covariance matrix (sigma$^\wedge$2) comes from the summation\-: \[ lnValue =- \sum_i \frac{1}{domainVector_i * \sqrt{2 \pi * lawVarVector_i}} exp(-\frac{(\ln( domainVector_i) - lawExpVector_i)^2}{2 lawVarVector_i}) \] as long as $ domainVector_i > 0 $ for all $ i $. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_aaeb1d91fd791399a502f451b07bb1bfe}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 142 of file Log\-Normal\-Joint\-Pdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+148 \{
+149   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 55)) \{
+150     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering LogNormalJointPdf<V,M>::lnValue()"}
+151                             << \textcolor{stringliteral}{", meanVector = "}   << *\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a1373e1737c3198b852fab05c77abea35}{m\_lawExpVector}
+152                             << \textcolor{stringliteral}{": domainVector = "} << domainVector
+153                             << std::endl;
+154   \}
+155 
+156   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((gradVector || hessianMatrix || hessianEffect),
+157                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+158                       \textcolor{stringliteral}{"LogNormalJointPdf<V,M>::lnValue()"},
+159                       \textcolor{stringliteral}{"incomplete code for gradVector, hessianMatrix and hessianEffect calculations"});
+160 
+161   \textcolor{keywordflow}{if} (domainDirection) \{\}; \textcolor{comment}{// just to remove compiler warning}
+162 
+163   \textcolor{keywordtype}{double} returnValue = 0.;
+164 
+165   V zeroVector(domainVector);
+166   zeroVector.cwSet(0.);
+167   \textcolor{keywordflow}{if} (domainVector.atLeastOneComponentSmallerOrEqualThan(zeroVector)) \{
+168     returnValue = -INFINITY;
+169   \}
+170   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (this->\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}.contains(domainVector) == \textcolor{keyword}{false}) \{ \textcolor{comment}{// prudenci 2011-Oct-04}
+171     returnValue = -INFINITY;
+172   \}
+173   \textcolor{keywordflow}{else} \{
+174     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a8c85380b9a7c7ab746b2c8cc9c9cf5ee}{m\_diagonalCovMatrix}) \{
+175       V diffVec(zeroVector);
+176       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < domainVector.sizeLocal(); ++i) \{
+177         diffVec[i] = std::log(domainVector[i]) - this->\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a2ca856981ab03d0c84d19715da581c83}{lawExpVector}()[i];
+178       \}
+179       returnValue = ((diffVec*diffVec)/this->\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_afa9f7634ae6e54973cfe14463740171e}{lawVarVector}()).sumOfComponents();
+180       returnValue *= -0.5;
+181       \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a138c99bcef7a67077d9612bddfdcb896}{m\_normalizationStyle} == 0) \{
+182         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < domainVector.sizeLocal(); ++i) \{
+183           returnValue -= std::log(domainVector[i] * std::sqrt(2. * M\_PI * this->
+      \hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_afa9f7634ae6e54973cfe14463740171e}{lawVarVector}()[i])); \textcolor{comment}{// Contribution of 1/(x\(\backslash\)sqrt\{2\(\backslash\)pi\(\backslash\)sigma^2\})}
+184         \}
+185       \}
+186     \}
+187     \textcolor{keywordflow}{else} \{
+188       \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+189                           \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+190                           \textcolor{stringliteral}{"LogNormalJointPdf<V,M>::lnValue()"},
+191                           \textcolor{stringliteral}{"situation with a non-diagonal covariance matrix makes no sense"});
+192     \}
+193     returnValue += \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_ae82d4191f17af8c7a26226d127bc7850}{m\_logOfNormalizationFactor}; \textcolor{comment}{// [PDF-10]}
+194   \}
+195 
+196   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 55)) \{
+197     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving LogNormalJointPdf<V,M>::lnValue()"}
+198                             << \textcolor{stringliteral}{", meanVector = "}   << *\hyperlink{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a1373e1737c3198b852fab05c77abea35}{m\_lawExpVector}
+199                             << \textcolor{stringliteral}{": domainVector = "} << domainVector
+200                             << \textcolor{stringliteral}{", returnValue = "}  << returnValue
+201                             << std::endl;
+202   \}
+203 
+204   \textcolor{keywordflow}{return} returnValue;
+205 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a8c85380b9a7c7ab746b2c8cc9c9cf5ee}{\index{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}!m\-\_\-diagonal\-Cov\-Matrix@{m\-\_\-diagonal\-Cov\-Matrix}}
+\index{m\-\_\-diagonal\-Cov\-Matrix@{m\-\_\-diagonal\-Cov\-Matrix}!QUESO::LogNormalJointPdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-diagonal\-Cov\-Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ bool {\bf Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-diagonal\-Cov\-Matrix\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a8c85380b9a7c7ab746b2c8cc9c9cf5ee}
+
+
+Definition at line 96 of file Log\-Normal\-Joint\-Pdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a1373e1737c3198b852fab05c77abea35}{\index{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}!m\-\_\-law\-Exp\-Vector@{m\-\_\-law\-Exp\-Vector}}
+\index{m\-\_\-law\-Exp\-Vector@{m\-\_\-law\-Exp\-Vector}!QUESO::LogNormalJointPdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-law\-Exp\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-law\-Exp\-Vector\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_log_normal_joint_pdf_a1373e1737c3198b852fab05c77abea35}
+
+
+Definition at line 94 of file Log\-Normal\-Joint\-Pdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_log_normal_joint_pdf_abb84bcddf99dc15b4432baac0fc29122}{\index{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}!m\-\_\-law\-Var\-Vector@{m\-\_\-law\-Var\-Vector}}
+\index{m\-\_\-law\-Var\-Vector@{m\-\_\-law\-Var\-Vector}!QUESO::LogNormalJointPdf@{Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-law\-Var\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Log\-Normal\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-law\-Var\-Vector\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_log_normal_joint_pdf_abb84bcddf99dc15b4432baac0fc29122}
+
+
+Definition at line 95 of file Log\-Normal\-Joint\-Pdf.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_log_normal_joint_pdf_8h}{Log\-Normal\-Joint\-Pdf.\-h}\item 
+src/stats/src/\hyperlink{_log_normal_joint_pdf_8_c}{Log\-Normal\-Joint\-Pdf.\-C}\end{DoxyCompactItemize}

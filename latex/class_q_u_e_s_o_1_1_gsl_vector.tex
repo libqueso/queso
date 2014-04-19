@@ -1,0 +1,2701 @@
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector}{\section{Q\-U\-E\-S\-O\-:\-:Gsl\-Vector Class Reference}
+\label{class_q_u_e_s_o_1_1_gsl_vector}\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+}
+
+
+Class for vector operations using G\-S\-L library.  
+
+
+
+
+{\ttfamily \#include $<$Gsl\-Vector.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Gsl\-Vector\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=188pt]{class_q_u_e_s_o_1_1_gsl_vector__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Gsl\-Vector\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_gsl_vector__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ad4d0487806dd59f44a828ee228ba17b3}{sort} ()
+\begin{DoxyCompactList}\small\item\em This function sorts the elements of the vector {\ttfamily this} in ascending numerical order. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_aa4f5280c13c99ef028e7838887818c79}{matlab\-Diff} (unsigned int first\-Position\-To\-Store\-Diff, double value\-For\-Remainder\-Position, \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&output\-Vec) const 
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a6f463b2409b210989f45bb7c17cee3f7}{matlab\-Linear\-Interp\-Extrap} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&x1\-Vec, const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&y1\-Vec, const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&x2\-Vec)
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_aaa5bdbc03ef0ab86bad4b86b556a48d3}{mpi\-Bcast} (int src\-Rank, const \hyperlink{class_q_u_e_s_o_1_1_mpi_comm}{Mpi\-Comm} \&bcast\-Comm)
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_acfd7f057bdb82b601086e6b56281659d}{mpi\-All\-Reduce} (\hyperlink{namespace_q_u_e_s_o_ab6a4008f3ba2b0196dae9e41971a9c18}{Raw\-Type\-\_\-\-M\-P\-I\-\_\-\-Op} mpi\-Operation, const \hyperlink{class_q_u_e_s_o_1_1_mpi_comm}{Mpi\-Comm} \&op\-Comm, \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&result\-Vec) const 
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a9c12f5d34643aa5d46f59570955339ab}{mpi\-All\-Quantile} (double probability, const \hyperlink{class_q_u_e_s_o_1_1_mpi_comm}{Mpi\-Comm} \&op\-Comm, \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&result\-Vec) const 
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ab222530a760b07f6c22eafe92585d8c5}{sub\-Write\-Contents} (const std\-::string \&var\-Name\-Prefix, const std\-::string \&file\-Name, const std\-::string \&file\-Type, const std\-::set$<$ unsigned int $>$ \&allowed\-Sub\-Env\-Ids) const 
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ae0047a01f01b4aaf3c67b716f4408932}{sub\-Read\-Contents} (const std\-::string \&file\-Name, const std\-::string \&file\-Type, const std\-::set$<$ unsigned int $>$ \&allowed\-Sub\-Env\-Ids)
+\item 
+gsl\-\_\-vector $\ast$ \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a6a668d6e6cdf69e3004e07742d066036}{data} () const 
+\end{DoxyCompactItemize}
+\begin{Indent}{\bf Constructor/\-Destructor methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a692a46459578174996732d16dd089067}{Gsl\-Vector} ()
+\begin{DoxyCompactList}\small\item\em Default Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a0319d261c759e8f85c3f76e2ce66d350}{Gsl\-Vector} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&\hyperlink{class_q_u_e_s_o_1_1_vector_a2e2952dab0554fedd8dc9a2543715745}{env}, const \hyperlink{class_q_u_e_s_o_1_1_map}{Map} \&\hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map})
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a80d9652ddfbd1ef87fd4ec4ab4e32231}{Gsl\-Vector} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&\hyperlink{class_q_u_e_s_o_1_1_vector_a2e2952dab0554fedd8dc9a2543715745}{env}, const \hyperlink{class_q_u_e_s_o_1_1_map}{Map} \&\hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}, double value)
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a982952f763dc79ad6405d9897ca76697}{Gsl\-Vector} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&\hyperlink{class_q_u_e_s_o_1_1_vector_a2e2952dab0554fedd8dc9a2543715745}{env}, double d1, double d2, const \hyperlink{class_q_u_e_s_o_1_1_map}{Map} \&\hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map})
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ae60c02165e940629b14910cf9dd43d86}{Gsl\-Vector} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&v, double start, double end)
+\begin{DoxyCompactList}\small\item\em Construct a vector, with length the same as {\ttfamily v}, with evenly spaced numbers from {\ttfamily start} to {\ttfamily end}, inclusive. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a6c5eb0ce11a314a4b8af2ed75fc75b30}{Gsl\-Vector} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&y)
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a0bc3734631b7dc54adbfa1ec967f2463}{$\sim$\-Gsl\-Vector} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Set methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \& \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_aec9896bae67226f0f0d030d0de603956}{operator=} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&rhs)
+\begin{DoxyCompactList}\small\item\em Copies values from vector rhs to {\ttfamily this}. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \& \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_abc5068be9af5256983cb2c5ecdcf8229}{operator$\ast$=} (double a)
+\begin{DoxyCompactList}\small\item\em Stores in {\ttfamily this} the coordinate-\/wise multiplication of {\ttfamily this} and a. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \& \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a254b8ce11020280e7af0eea9b7626b4e}{operator/=} (double a)
+\begin{DoxyCompactList}\small\item\em Stores in {\ttfamily this} the coordinate-\/wise division of {\ttfamily this} by a. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \& \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ac0046d85fddd8e9dbbebd19d1b61a9bd}{operator$\ast$=} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&rhs)
+\begin{DoxyCompactList}\small\item\em Stores in {\ttfamily this} the coordinate-\/wise multiplication of {\ttfamily this} with rhs. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \& \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a53644e0b71d5bff6117c5634bba66fe1}{operator/=} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&rhs)
+\begin{DoxyCompactList}\small\item\em Stores in {\ttfamily this} the coordinate-\/wise division of {\ttfamily this} by rhs. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \& \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ae736e2bfbeb9f14a78f33cbbaa6acb19}{operator+=} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&rhs)
+\begin{DoxyCompactList}\small\item\em Stores in {\ttfamily this} the coordinate-\/wise addition of {\ttfamily this} and rhs. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \& \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ac1df668b8aa9a5e1a482ab85a1b0692d}{operator-\/=} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&rhs)
+\begin{DoxyCompactList}\small\item\em Stores in {\ttfamily this} the coordinate-\/wise subtraction of {\ttfamily this} by rhs. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a706d70a875a0e0c0f091e794c8baece5}{cw\-Set} (double value)
+\begin{DoxyCompactList}\small\item\em Component-\/wise sets all values to {\ttfamily this} with value. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a10ad46b42ea27ee0085d89b4e09b075f}{cw\-Set\-Gaussian} (double mean, double std\-Dev)
+\begin{DoxyCompactList}\small\item\em This function sets component-\/wise Gaussian random variates, with mean mean and standard deviation std\-Dev. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a1f13ee9d573dbab8f8efdba30fe840f2}{cw\-Set\-Gaussian} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&mean\-Vec, const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&std\-Dev\-Vec)
+\begin{DoxyCompactList}\small\item\em This function sets component-\/wise Gaussian random variates, with vectors for mean and standard deviation. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a020583cdb101420d2ac34d8cd5c4c270}{cw\-Set\-Uniform} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&a\-Vec, const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&b\-Vec)
+\begin{DoxyCompactList}\small\item\em This function sets component-\/wise a number uniformly distributed in the range of elements of \mbox{[}a\-Vec,b\-Vec\mbox{]}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_aa04f6e813bb7533f50b85eba3da269d5}{cw\-Set\-Beta} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&alpha, const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&beta)
+\begin{DoxyCompactList}\small\item\em This function returns a random variate from the beta distribution, with vector parameters alpha and beta. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ac8f6033638a8d99aa28e68cfe8ead8d3}{cw\-Set\-Gamma} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&a, const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&b)
+\begin{DoxyCompactList}\small\item\em This function returns a random variate from the gamma distribution with vector parameters a and b. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a7609032ec133374fefeeb3aad12df093}{cw\-Set\-Inverse\-Gamma} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&alpha, const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&beta)
+\begin{DoxyCompactList}\small\item\em This function returns a random variate from the inverse gamma distribution with vector parameters alpha and beta. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a6bd9c99a7de9a9203f9f12d36c1e24b6}{cw\-Set\-Concatenated} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&v1, const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&v2)
+\begin{DoxyCompactList}\small\item\em This function concatenates \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} v1 and \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} v2 into {\ttfamily this}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a498269f6ee2cfa975ebf4082ea5ad1a8}{cw\-Set\-Concatenated} (const std\-::vector$<$ const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} $\ast$ $>$ \&vecs)
+\begin{DoxyCompactList}\small\item\em This function concatenates vectors {\ttfamily v1} and {\ttfamily v2} into {\ttfamily this} vector. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ab41a8babfcfd0589e23155979ad90ecb}{cw\-Set} (unsigned int initial\-Pos, const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&vec)
+\begin{DoxyCompactList}\small\item\em This function sets the vector vec into {\ttfamily this} starting at position initial\-Pos. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_abddb8cf9c1a8e596b1c7f02fbad26464}{cw\-Extract} (unsigned int initial\-Pos, \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&vec) const 
+\begin{DoxyCompactList}\small\item\em This function sets the values of this starting at position initial\-Pos ans saves them in vector vec. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a55254ab9351f6ef2217aa167bb9dcbd4}{cw\-Invert} ()
+\begin{DoxyCompactList}\small\item\em This function inverts component-\/wise the element values of {\ttfamily this}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a6b820b96b5b7e8a1af21c4f260a0dade}{cw\-Sqrt} ()
+\begin{DoxyCompactList}\small\item\em This function returns component-\/wise the square-\/root of {\ttfamily this}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Accessor methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+double \& \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a5fa9fb9a84749ea69919e6bc4a5ee9f9}{operator\mbox{[}$\,$\mbox{]}} (unsigned int i)
+\begin{DoxyCompactList}\small\item\em Element access method (non-\/const). \end{DoxyCompactList}\item 
+const double \& \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a10150c873dc75f642bda5d3dd09140f1}{operator\mbox{[}$\,$\mbox{]}} (unsigned int i) const 
+\begin{DoxyCompactList}\small\item\em Element access method (const). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Attribute methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{size\-Local} () const 
+\begin{DoxyCompactList}\small\item\em Returns the length of this vector. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_aaaf58e9e980ce006ea4d2b7f69eb6111}{size\-Global} () const 
+\begin{DoxyCompactList}\small\item\em Returns the global length of this vector. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ad25b83a4bbb41d40a38b674df03e5d37}{get\-Max\-Value} () const 
+\begin{DoxyCompactList}\small\item\em Returns the maximum value in the vector {\ttfamily this}. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a77a9a42edfc1e1500ed8a31373245b9d}{get\-Min\-Value} () const 
+\begin{DoxyCompactList}\small\item\em Returns minimum value in the vector {\ttfamily this}. \end{DoxyCompactList}\item 
+int \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_af27edfee48c38ffcead1bded550da0fc}{get\-Max\-Value\-Index} () const 
+\begin{DoxyCompactList}\small\item\em This function returns the index of the maximum value in the vector {\ttfamily this}. \end{DoxyCompactList}\item 
+int \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_acb36ad4f7a2185a7abadf6b2261d1ab4}{get\-Min\-Value\-Index} () const 
+\begin{DoxyCompactList}\small\item\em This function returns the index of the minimum value in the vector {\ttfamily this}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ae77a2147d9185b1fd9b55b836cba7496}{get\-Max\-Value\-And\-Index} (double \&value, int \&index)
+\begin{DoxyCompactList}\small\item\em This function returns maximum value in the vector {\ttfamily this} and its the index. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a22094d1f67f612646f280a700f85c542}{get\-Min\-Value\-And\-Index} (double \&value, int \&index)
+\begin{DoxyCompactList}\small\item\em This function returns minimum value in the vector {\ttfamily this} and its the index. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a2e1d40289945c31fdf688fef8e9ea726}{abs} () const 
+\begin{DoxyCompactList}\small\item\em This function returns absolute value of elements in {\ttfamily this}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a185bf2c6caa7da0b3418e0c8d1014fdf}{norm2\-Sq} () const 
+\begin{DoxyCompactList}\small\item\em Returns the norm of the vector, as the square root of 2-\/norm of this vector. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a3634fbeeda1a009cf14e3da4e56fc663}{norm2} () const 
+\begin{DoxyCompactList}\small\item\em Returns the 2-\/norm (Euclidean norm) of the vector. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a53702fecb316dbf31a3f9b156111d500}{norm1} () const 
+\begin{DoxyCompactList}\small\item\em Returns the 1-\/norm of the vector. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a46a3eabd6732f12ae8326764e3ef9921}{norm\-Inf} () const 
+\begin{DoxyCompactList}\small\item\em Returns the infinity-\/norm (maximum norm) of the vector. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ad3fc6178cfa5c590e8bb241b791014f5}{sum\-Of\-Components} () const 
+\begin{DoxyCompactList}\small\item\em Returns the sum of the components of the vector. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ae0998a793ae43c6ac83fdc92c826f4b2}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em Print method. Defines the behavior of the std\-::ostream $<$$<$ operator inherited from the Object class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Comparison methods.}\par
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a5b08e4ba8665bb5849da74ac42928741}{at\-Least\-One\-Component\-Smaller\-Than} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&rhs) const 
+\begin{DoxyCompactList}\small\item\em This function returns true if at least one component of {\ttfamily this} is smaller than the respective component of rhs. \end{DoxyCompactList}\item 
+bool \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ad98d06b7c03175741c8208cfe62d8224}{at\-Least\-One\-Component\-Bigger\-Than} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&rhs) const 
+\begin{DoxyCompactList}\small\item\em This function returns true if at least one component of {\ttfamily this} is bigger than the respective component of rhs. \end{DoxyCompactList}\item 
+bool \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a944fb91bd7f91f3987d9cfbfa3f58cfb}{at\-Least\-One\-Component\-Smaller\-Or\-Equal\-Than} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&rhs) const 
+\begin{DoxyCompactList}\small\item\em This function returns true if at least one component of {\ttfamily this} is smaller than or equal to the respective component of rhs. \end{DoxyCompactList}\item 
+bool \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ac8e9dacbea49e0ee56462af34aaeeed8}{at\-Least\-One\-Component\-Bigger\-Or\-Equal\-Than} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&rhs) const 
+\begin{DoxyCompactList}\small\item\em This function returns true if at least one component of {\ttfamily this} is bigger than or equal to the respective component of rhs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a95d78ab4f5b1c7f16ff453d770a955fb}{copy} (const \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} \&src)
+\begin{DoxyCompactList}\small\item\em This function copies the elements of the vector src into {\ttfamily this}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+gsl\-\_\-vector $\ast$ \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\-\_\-vec}
+\begin{DoxyCompactList}\small\item\em G\-S\-L vector. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class for vector operations using G\-S\-L library. 
+
+This class creates and provides basic support for vectors of templated type as a specialization of \hyperlink{class_q_u_e_s_o_1_1_vector}{Vector} using G\-S\-L vectors, which are defined by an encapsulated gsl\-\_\-vector structure. 
+
+Definition at line 48 of file Gsl\-Vector.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a692a46459578174996732d16dd089067}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!Gsl\-Vector@{Gsl\-Vector}}
+\index{Gsl\-Vector@{Gsl\-Vector}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{Gsl\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::\-Gsl\-Vector (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a692a46459578174996732d16dd089067}
+
+
+Default Constructor. 
+
+Creates an empty vector of no length. 
+
+Definition at line 32 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+33   :
+34   \hyperlink{class_q_u_e_s_o_1_1_vector_aff103391923777d30d67f3d89706278b}{Vector}()
+35 \{
+36   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+37                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+38                       \textcolor{stringliteral}{"GslVector::constructor(), default"},
+39                       \textcolor{stringliteral}{"should not be used by user"});
+40 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a0319d261c759e8f85c3f76e2ce66d350}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!Gsl\-Vector@{Gsl\-Vector}}
+\index{Gsl\-Vector@{Gsl\-Vector}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{Gsl\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::\-Gsl\-Vector (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{const {\bf Map} \&}]{map}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a0319d261c759e8f85c3f76e2ce66d350}
+
+
+Definition at line 42 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-map, m\-\_\-vec, Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-Global\-Elements(), Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-My\-Elements(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+43   :
+44   \hyperlink{class_q_u_e_s_o_1_1_vector_aff103391923777d30d67f3d89706278b}{Vector}(\hyperlink{class_q_u_e_s_o_1_1_vector_a2e2952dab0554fedd8dc9a2543715745}{env},\hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}),
+45   \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}        (gsl\_vector\_calloc(\hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}.\hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}()))
+46 \{
+47   \textcolor{comment}{//std::cout << "Entering GslVector::constructor(1)" << std::endl;}
+48 
+49   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec} == NULL),
+50                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+51                       \textcolor{stringliteral}{"GslVector::constructor(1)"},
+52                       \textcolor{stringliteral}{"null vector generated"});
+53 
+54   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) \hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}.
+      \hyperlink{class_q_u_e_s_o_1_1_map_a6407f6d6a6df8a0a40923c8dc524b021}{NumMyElements}(),
+55                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+56                       \textcolor{stringliteral}{"GslVector::constructor(1)"},
+57                       \textcolor{stringliteral}{"incompatible local vec size"});
+58 
+59   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) \hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}.
+      \hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}(),
+60                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+61                       \textcolor{stringliteral}{"GslVector::constructor(1)"},
+62                       \textcolor{stringliteral}{"incompatible global vec size"});
+63 
+64   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_aa99c771bc8d1aafff7277ed8f7fbd157}{m\_map}.\hyperlink{class_q_u_e_s_o_1_1_map_a6407f6d6a6df8a0a40923c8dc524b021}{NumMyElements}(),
+65                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+66                       \textcolor{stringliteral}{"GslVector::constructor(1)"},
+67                       \textcolor{stringliteral}{"incompatible own vec size"});
+68 
+69   \textcolor{comment}{//std::cout << "In GslVector::constructor(env,map)"}
+70   \textcolor{comment}{//          << "\(\backslash\)n  m\_vec->size             = " << m\_vec->size}
+71   \textcolor{comment}{//          << "\(\backslash\)n  map.NumGlobalElements() = " << map.NumGlobalElements()}
+72   \textcolor{comment}{//          << "\(\backslash\)n  map.NumMyElements()     = " << map.NumMyElements()}
+73   \textcolor{comment}{//          << std::endl;}
+74 
+75   \textcolor{comment}{//std::cout << "Leaving GslVector::constructor(1)" << std::endl;}
+76 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a80d9652ddfbd1ef87fd4ec4ab4e32231}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!Gsl\-Vector@{Gsl\-Vector}}
+\index{Gsl\-Vector@{Gsl\-Vector}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{Gsl\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::\-Gsl\-Vector (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{const {\bf Map} \&}]{map, }
+\item[{double}]{value}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a80d9652ddfbd1ef87fd4ec4ab4e32231}
+
+
+Definition at line 78 of file Gsl\-Vector.\-C.
+
+
+
+References cw\-Set(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-map, m\-\_\-vec, Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-Global\-Elements(), Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-My\-Elements(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+79   :
+80   \hyperlink{class_q_u_e_s_o_1_1_vector_aff103391923777d30d67f3d89706278b}{Vector}(\hyperlink{class_q_u_e_s_o_1_1_vector_a2e2952dab0554fedd8dc9a2543715745}{env},\hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}),
+81   \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}        (gsl\_vector\_calloc(\hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}.\hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}()))
+82 \{
+83   \textcolor{comment}{//std::cout << "Entering GslVector::constructor(2)" << std::endl;}
+84 
+85   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec} == NULL),
+86                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+87                       \textcolor{stringliteral}{"GslVector::constructor(2)"},
+88                       \textcolor{stringliteral}{"null vector generated"});
+89 
+90   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) \hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}.
+      \hyperlink{class_q_u_e_s_o_1_1_map_a6407f6d6a6df8a0a40923c8dc524b021}{NumMyElements}(),
+91                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+92                       \textcolor{stringliteral}{"GslVector::constructor(2)"},
+93                       \textcolor{stringliteral}{"incompatible local vec size"});
+94 
+95   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) \hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}.
+      \hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}(),
+96                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+97                       \textcolor{stringliteral}{"GslVector::constructor(2)"},
+98                       \textcolor{stringliteral}{"incompatible global vec size"});
+99 
+100   this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a706d70a875a0e0c0f091e794c8baece5}{cwSet}(value);
+101 
+102   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_aa99c771bc8d1aafff7277ed8f7fbd157}{m\_map}.\hyperlink{class_q_u_e_s_o_1_1_map_a6407f6d6a6df8a0a40923c8dc524b021}{NumMyElements}(),
+103                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+104                       \textcolor{stringliteral}{"GslVector::constructor(2)"},
+105                       \textcolor{stringliteral}{"incompatible own vec size"});
+106 
+107   \textcolor{comment}{//std::cout << "Leaving GslVector::constructor(2)" << std::endl;}
+108 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a982952f763dc79ad6405d9897ca76697}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!Gsl\-Vector@{Gsl\-Vector}}
+\index{Gsl\-Vector@{Gsl\-Vector}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{Gsl\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::\-Gsl\-Vector (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{double}]{d1, }
+\item[{double}]{d2, }
+\item[{const {\bf Map} \&}]{map}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a982952f763dc79ad6405d9897ca76697}
+
+
+Definition at line 110 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-map, m\-\_\-vec, Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-Global\-Elements(), Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-My\-Elements(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+111   :
+112   \hyperlink{class_q_u_e_s_o_1_1_vector_aff103391923777d30d67f3d89706278b}{Vector}(\hyperlink{class_q_u_e_s_o_1_1_vector_a2e2952dab0554fedd8dc9a2543715745}{env},\hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}),
+113   \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}        (gsl\_vector\_calloc(\hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}.\hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}()))
+114 \{
+115   \textcolor{comment}{//std::cout << "Entering GslVector::constructor(3)" << std::endl;}
+116 
+117   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec} == NULL),
+118                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+119                       \textcolor{stringliteral}{"GslVector::constructor(3), linspace"},
+120                       \textcolor{stringliteral}{"null vector generated"});
+121 
+122   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) \hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}.
+      \hyperlink{class_q_u_e_s_o_1_1_map_a6407f6d6a6df8a0a40923c8dc524b021}{NumMyElements}(),
+123                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+124                       \textcolor{stringliteral}{"GslVector::constructor(3)"},
+125                       \textcolor{stringliteral}{"incompatible local vec size"});
+126 
+127   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) \hyperlink{class_q_u_e_s_o_1_1_vector_a0cbedc1f6e24c0ad3b688d201fd649a4}{map}.
+      \hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}(),
+128                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+129                       \textcolor{stringliteral}{"GslVector::constructor(3)"},
+130                       \textcolor{stringliteral}{"incompatible global vec size"});
+131 
+132   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size; ++i) \{
+133     \textcolor{keywordtype}{double} alpha = (double) i / ((\textcolor{keywordtype}{double}) \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size - 1.);
+134     (*this)[i] = (1.-alpha)*d1 + alpha*d2;
+135   \}
+136 
+137   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_aa99c771bc8d1aafff7277ed8f7fbd157}{m\_map}.\hyperlink{class_q_u_e_s_o_1_1_map_a6407f6d6a6df8a0a40923c8dc524b021}{NumMyElements}(),
+138                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+139                       \textcolor{stringliteral}{"GslVector::constructor(3)"},
+140                       \textcolor{stringliteral}{"incompatible own vec size"});
+141 
+142   \textcolor{comment}{//std::cout << "Leaving GslVector::constructor(3)" << std::endl;}
+143 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ae60c02165e940629b14910cf9dd43d86}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!Gsl\-Vector@{Gsl\-Vector}}
+\index{Gsl\-Vector@{Gsl\-Vector}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{Gsl\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::\-Gsl\-Vector (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{v, }
+\item[{double}]{start, }
+\item[{double}]{end}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_ae60c02165e940629b14910cf9dd43d86}
+
+
+Construct a vector, with length the same as {\ttfamily v}, with evenly spaced numbers from {\ttfamily start} to {\ttfamily end}, inclusive. 
+
+
+
+Definition at line 145 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-map, m\-\_\-vec, Q\-U\-E\-S\-O\-::\-Vector\-::map(), Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-Global\-Elements(), Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-My\-Elements(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+146   :
+147   \hyperlink{class_q_u_e_s_o_1_1_vector_aff103391923777d30d67f3d89706278b}{Vector}(v.env(),v.map()),
+148   \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}        (gsl\_vector\_calloc(v.sizeLocal()))
+149 \{
+150   \textcolor{comment}{//std::cout << "Entering GslVector::constructor(4)" << std::endl;}
+151 
+152   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec} == NULL),
+153                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+154                       \textcolor{stringliteral}{"GslVector::constructor(4), linspace"},
+155                       \textcolor{stringliteral}{"null vector generated"});
+156 
+157   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) v.map().NumMyElements(),
+158                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+159                       \textcolor{stringliteral}{"GslVector::constructor(4)"},
+160                       \textcolor{stringliteral}{"incompatible local vec size"});
+161 
+162   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) v.map().NumGlobalElements(),
+163                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+164                       \textcolor{stringliteral}{"GslVector::constructor(4)"},
+165                       \textcolor{stringliteral}{"incompatible global vec size"});
+166 
+167   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size; ++i) \{
+168     \textcolor{keywordtype}{double} alpha = (double) i / ((\textcolor{keywordtype}{double}) \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size - 1.);
+169     (*this)[i] = (1. - alpha) * start + alpha * end;
+170   \}
+171 
+172   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_aa99c771bc8d1aafff7277ed8f7fbd157}{m\_map}.\hyperlink{class_q_u_e_s_o_1_1_map_a6407f6d6a6df8a0a40923c8dc524b021}{NumMyElements}(),
+173                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+174                       \textcolor{stringliteral}{"GslVector::constructor(4)"},
+175                       \textcolor{stringliteral}{"incompatible own vec size"});
+176 
+177   \textcolor{comment}{//std::cout << "Leaving GslVector::constructor(4)" << std::endl;}
+178 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a6c5eb0ce11a314a4b8af2ed75fc75b30}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!Gsl\-Vector@{Gsl\-Vector}}
+\index{Gsl\-Vector@{Gsl\-Vector}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{Gsl\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::\-Gsl\-Vector (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{y}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a6c5eb0ce11a314a4b8af2ed75fc75b30}
+
+
+Definition at line 180 of file Gsl\-Vector.\-C.
+
+
+
+References copy(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-map, m\-\_\-vec, Q\-U\-E\-S\-O\-::\-Vector\-::map(), Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-Global\-Elements(), Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-My\-Elements(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+181   :
+182   \hyperlink{class_q_u_e_s_o_1_1_vector_aff103391923777d30d67f3d89706278b}{Vector}(v.env(),v.map()),
+183   \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}        (gsl\_vector\_calloc(v.sizeLocal()))
+184 \{
+185   \textcolor{comment}{//std::cout << "Entering GslVector::constructor(5)" << std::endl;}
+186 
+187   \textcolor{comment}{// prudenci 2010-06-17 mox}
+188   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec} == NULL),
+189                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+190                       \textcolor{stringliteral}{"GslVector::constructor(5), copy"},
+191                       \textcolor{stringliteral}{"null vector generated"});
+192 
+193   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) v.map().NumMyElements(),
+194                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+195                       \textcolor{stringliteral}{"GslVector::constructor(5)"},
+196                       \textcolor{stringliteral}{"incompatible local vec size"});
+197 
+198   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) v.map().NumGlobalElements(),
+199                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+200                       \textcolor{stringliteral}{"GslVector::constructor(5)"},
+201                       \textcolor{stringliteral}{"incompatible global vec size"});
+202 
+203   this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a95d78ab4f5b1c7f16ff453d770a955fb}{copy}(v);
+204 
+205   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_aa99c771bc8d1aafff7277ed8f7fbd157}{m\_map}.\hyperlink{class_q_u_e_s_o_1_1_map_a6407f6d6a6df8a0a40923c8dc524b021}{NumMyElements}(),
+206                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+207                       \textcolor{stringliteral}{"GslVector::constructor(5)"},
+208                       \textcolor{stringliteral}{"incompatible own vec size"});
+209 
+210   \textcolor{comment}{//std::cout << "Leaving GslVector::constructor(5)" << std::endl;}
+211 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a0bc3734631b7dc54adbfa1ec967f2463}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!$\sim$\-Gsl\-Vector@{$\sim$\-Gsl\-Vector}}
+\index{$\sim$\-Gsl\-Vector@{$\sim$\-Gsl\-Vector}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{$\sim$\-Gsl\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::$\sim$\-Gsl\-Vector (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a0bc3734631b7dc54adbfa1ec967f2463}
+
+
+Destructor. 
+
+
+
+Definition at line 213 of file Gsl\-Vector.\-C.
+
+
+
+References m\-\_\-vec.
+
+
+\begin{DoxyCode}
+214 \{
+215   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}) gsl\_vector\_free(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec});
+216 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a2e1d40289945c31fdf688fef8e9ea726}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!abs@{abs}}
+\index{abs@{abs}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{abs}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Gsl\-Vector} Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::abs (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_a2e1d40289945c31fdf688fef8e9ea726}
+
+
+This function returns absolute value of elements in {\ttfamily this}. 
+
+
+
+Definition at line 1304 of file Gsl\-Vector.\-C.
+
+
+
+References size\-Local().
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::largest\-Eigen(), and Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::smallest\-Eigen().
+
+
+\begin{DoxyCode}
+1305 \{
+1306   \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a692a46459578174996732d16dd089067}{GslVector} abs\_of\_this\_vec( *\textcolor{keyword}{this} );
+1307 
+1308   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = abs\_of\_this\_vec.sizeLocal();
+1309 
+1310   \textcolor{keywordflow}{for}( \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i )
+1311     \{
+1312       abs\_of\_this\_vec[i] = std::fabs( (*\textcolor{keyword}{this})[i] );
+1313     \}
+1314 
+1315   \textcolor{keywordflow}{return} abs\_of\_this\_vec;
+1316 
+1317 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ac8e9dacbea49e0ee56462af34aaeeed8}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!at\-Least\-One\-Component\-Bigger\-Or\-Equal\-Than@{at\-Least\-One\-Component\-Bigger\-Or\-Equal\-Than}}
+\index{at\-Least\-One\-Component\-Bigger\-Or\-Equal\-Than@{at\-Least\-One\-Component\-Bigger\-Or\-Equal\-Than}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{at\-Least\-One\-Component\-Bigger\-Or\-Equal\-Than}]{\setlength{\rightskip}{0pt plus 5cm}bool Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::at\-Least\-One\-Component\-Bigger\-Or\-Equal\-Than (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{rhs}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_ac8e9dacbea49e0ee56462af34aaeeed8}
+
+
+This function returns true if at least one component of {\ttfamily this} is bigger than or equal to the respective component of rhs. 
+
+
+
+Definition at line 1243 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+1244 \{
+1245   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}() != rhs.sizeLocal()),
+1246                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+1247                       \textcolor{stringliteral}{"GslVector::atLeastOneComponentBiggerOrEqualThan()"},
+1248                       \textcolor{stringliteral}{"vectors have different sizes"});
+1249 
+1250   \textcolor{keywordtype}{bool} result = \textcolor{keyword}{false};
+1251   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0;
+1252   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+1253   \textcolor{keywordflow}{while} ((i < size) && (result == \textcolor{keyword}{false})) \{
+1254     result = ( (*this)[i] >= rhs[i] ); \textcolor{comment}{// prudencio 2012-02-06}
+1255     i++;
+1256   \};
+1257 
+1258   \textcolor{keywordflow}{return} result;
+1259 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ad98d06b7c03175741c8208cfe62d8224}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!at\-Least\-One\-Component\-Bigger\-Than@{at\-Least\-One\-Component\-Bigger\-Than}}
+\index{at\-Least\-One\-Component\-Bigger\-Than@{at\-Least\-One\-Component\-Bigger\-Than}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{at\-Least\-One\-Component\-Bigger\-Than}]{\setlength{\rightskip}{0pt plus 5cm}bool Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::at\-Least\-One\-Component\-Bigger\-Than (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{rhs}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_ad98d06b7c03175741c8208cfe62d8224}
+
+
+This function returns true if at least one component of {\ttfamily this} is bigger than the respective component of rhs. 
+
+
+
+Definition at line 1205 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+1206 \{
+1207   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}() != rhs.sizeLocal()),
+1208                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+1209                       \textcolor{stringliteral}{"GslVector::atLeastOneComponentBiggerThan()"},
+1210                       \textcolor{stringliteral}{"vectors have different sizes"});
+1211 
+1212   \textcolor{keywordtype}{bool} result = \textcolor{keyword}{false};
+1213   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0;
+1214   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+1215   \textcolor{keywordflow}{while} ((i < size) && (result == \textcolor{keyword}{false})) \{
+1216     result = ( (*this)[i] > rhs[i] );
+1217     i++;
+1218   \};
+1219 
+1220   \textcolor{keywordflow}{return} result;
+1221 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a944fb91bd7f91f3987d9cfbfa3f58cfb}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!at\-Least\-One\-Component\-Smaller\-Or\-Equal\-Than@{at\-Least\-One\-Component\-Smaller\-Or\-Equal\-Than}}
+\index{at\-Least\-One\-Component\-Smaller\-Or\-Equal\-Than@{at\-Least\-One\-Component\-Smaller\-Or\-Equal\-Than}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{at\-Least\-One\-Component\-Smaller\-Or\-Equal\-Than}]{\setlength{\rightskip}{0pt plus 5cm}bool Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::at\-Least\-One\-Component\-Smaller\-Or\-Equal\-Than (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{rhs}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_a944fb91bd7f91f3987d9cfbfa3f58cfb}
+
+
+This function returns true if at least one component of {\ttfamily this} is smaller than or equal to the respective component of rhs. 
+
+
+
+Definition at line 1224 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+1225 \{
+1226   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}() != rhs.sizeLocal()),
+1227                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+1228                       \textcolor{stringliteral}{"GslVector::atLeastOneComponentSmallerOrEqualThan()"},
+1229                       \textcolor{stringliteral}{"vectors have different sizes"});
+1230 
+1231   \textcolor{keywordtype}{bool} result = \textcolor{keyword}{false};
+1232   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0;
+1233   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+1234   \textcolor{keywordflow}{while} ((i < size) && (result == \textcolor{keyword}{false})) \{
+1235     result = ( (*this)[i] <= rhs[i] ); \textcolor{comment}{// prudencio 2012-02-06}
+1236     i++;
+1237   \};
+1238 
+1239   \textcolor{keywordflow}{return} result;
+1240 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a5b08e4ba8665bb5849da74ac42928741}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!at\-Least\-One\-Component\-Smaller\-Than@{at\-Least\-One\-Component\-Smaller\-Than}}
+\index{at\-Least\-One\-Component\-Smaller\-Than@{at\-Least\-One\-Component\-Smaller\-Than}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{at\-Least\-One\-Component\-Smaller\-Than}]{\setlength{\rightskip}{0pt plus 5cm}bool Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::at\-Least\-One\-Component\-Smaller\-Than (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{rhs}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_a5b08e4ba8665bb5849da74ac42928741}
+
+
+This function returns true if at least one component of {\ttfamily this} is smaller than the respective component of rhs. 
+
+
+
+Definition at line 1186 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+1187 \{
+1188   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}() != rhs.sizeLocal()),
+1189                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+1190                       \textcolor{stringliteral}{"GslVector::atLeastOneComponentSmallerThan()"},
+1191                       \textcolor{stringliteral}{"vectors have different sizes"});
+1192 
+1193   \textcolor{keywordtype}{bool} result = \textcolor{keyword}{false};
+1194   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0;
+1195   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+1196   \textcolor{keywordflow}{while} ((i < size) && (result == \textcolor{keyword}{false})) \{
+1197     result = ( (*this)[i] < rhs[i] );
+1198     i++;
+1199   \};
+1200 
+1201   \textcolor{keywordflow}{return} result;
+1202 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a95d78ab4f5b1c7f16ff453d770a955fb}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!copy@{copy}}
+\index{copy@{copy}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{copy}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::copy (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{src}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_gsl_vector_a95d78ab4f5b1c7f16ff453d770a955fb}
+
+
+This function copies the elements of the vector src into {\ttfamily this}. 
+
+
+
+Definition at line 329 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::copy(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, m\-\_\-vec, U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-R\-C\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+
+Referenced by Gsl\-Vector(), and operator=().
+
+
+\begin{DoxyCode}
+330 \{
+331   this->\hyperlink{class_q_u_e_s_o_1_1_vector_a6f4d3aa282b2f2e1b191a17257a33c56}{Vector::copy}(src); \textcolor{comment}{// prudenci 2010-06-17 mox}
+332   \textcolor{keywordtype}{int} iRC;
+333   iRC = gsl\_vector\_memcpy(this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}, src.m\_vec);
+334   \hyperlink{_defines_8h_aa9107e1a9a5197371a412db3fa349988}{UQ\_FATAL\_RC\_MACRO}(iRC,
+335                     \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+336                     \textcolor{stringliteral}{"GslVector::copy()"},
+337                     \textcolor{stringliteral}{"failed"});
+338 
+339   \textcolor{keywordflow}{return};
+340 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_abddb8cf9c1a8e596b1c7f02fbad26464}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Extract@{cw\-Extract}}
+\index{cw\-Extract@{cw\-Extract}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Extract}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Extract (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{{\bf Gsl\-Vector} \&}]{vec}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_abddb8cf9c1a8e596b1c7f02fbad26464}
+
+
+This function sets the values of this starting at position initial\-Pos ans saves them in vector vec. 
+
+
+
+Definition at line 634 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+635 \{
+636   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(initialPos >= this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}(),
+637                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+638                       \textcolor{stringliteral}{"GslVector::cwExtract()"},
+639                       \textcolor{stringliteral}{"invalid initialPos"});
+640 
+641   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((initialPos +vec.sizeLocal()) > this->
+      \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}(),
+642                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+643                       \textcolor{stringliteral}{"GslVector::cwExtract()"},
+644                       \textcolor{stringliteral}{"invalid vec.sizeLocal()"});
+645 
+646   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < vec.sizeLocal(); ++i) \{
+647     vec[i] = (*this)[initialPos+i];
+648   \}
+649 
+650   \textcolor{keywordflow}{return};
+651 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a55254ab9351f6ef2217aa167bb9dcbd4}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Invert@{cw\-Invert}}
+\index{cw\-Invert@{cw\-Invert}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Invert}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Invert (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gsl_vector_a55254ab9351f6ef2217aa167bb9dcbd4}
+
+
+This function inverts component-\/wise the element values of {\ttfamily this}. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_vector_a3d0d2998b1c2655e0df586e01fc622e8}{Q\-U\-E\-S\-O\-::\-Vector}.
+
+
+
+Definition at line 654 of file Gsl\-Vector.\-C.
+
+
+
+References size\-Local().
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::operator/().
+
+
+\begin{DoxyCode}
+655 \{
+656   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+657   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i) \{
+658     (*this)[i] = 1./(*this)[i];
+659   \}
+660 
+661   \textcolor{keywordflow}{return};
+662 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a706d70a875a0e0c0f091e794c8baece5}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Set@{cw\-Set}}
+\index{cw\-Set@{cw\-Set}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Set}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set (
+\begin{DoxyParamCaption}
+\item[{double}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gsl_vector_a706d70a875a0e0c0f091e794c8baece5}
+
+
+Component-\/wise sets all values to {\ttfamily this} with value. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_vector_a6ba2d1451b70dbae76802181025df159}{Q\-U\-E\-S\-O\-::\-Vector}.
+
+
+
+Definition at line 435 of file Gsl\-Vector.\-C.
+
+
+
+References size\-Local().
+
+
+
+Referenced by Gsl\-Vector(), and Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::inverse().
+
+
+\begin{DoxyCode}
+436 \{
+437   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+438   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i) \{
+439     (*this)[i] = value;
+440   \}
+441 
+442   \textcolor{keywordflow}{return};
+443 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ab41a8babfcfd0589e23155979ad90ecb}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Set@{cw\-Set}}
+\index{cw\-Set@{cw\-Set}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Set}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{const {\bf Gsl\-Vector} \&}]{vec}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_ab41a8babfcfd0589e23155979ad90ecb}
+
+
+This function sets the vector vec into {\ttfamily this} starting at position initial\-Pos. 
+
+
+
+Definition at line 614 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+615 \{
+616   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(initialPos >= this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}(),
+617                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+618                       \textcolor{stringliteral}{"GslVector::cwSet()"},
+619                       \textcolor{stringliteral}{"invalid initialPos"});
+620 
+621   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((initialPos +vec.sizeLocal()) > this->
+      \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}(),
+622                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+623                       \textcolor{stringliteral}{"GslVector::cwSet()"},
+624                       \textcolor{stringliteral}{"invalid vec.sizeLocal()"});
+625 
+626   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < vec.sizeLocal(); ++i) \{
+627     (*this)[initialPos+i] = vec[i];
+628   \}
+629 
+630   \textcolor{keywordflow}{return};
+631 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_aa04f6e813bb7533f50b85eba3da269d5}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Set\-Beta@{cw\-Set\-Beta}}
+\index{cw\-Set\-Beta@{cw\-Set\-Beta}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Set\-Beta}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Beta (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{alpha, }
+\item[{const {\bf Gsl\-Vector} \&}]{beta}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_aa04f6e813bb7533f50b85eba3da269d5}
+
+
+This function returns a random variate from the beta distribution, with vector parameters alpha and beta. 
+
+
+
+Definition at line 474 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Rng\-Base\-::beta\-Sample(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::full\-Rank(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::rng\-Object(), size\-Local(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+475 \{
+476   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}() != alpha.sizeLocal(),
+477                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+478                       \textcolor{stringliteral}{"GslVector::cwSetBeta()"},
+479                       \textcolor{stringliteral}{"incompatible alpha size"});
+480 
+481   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}() != beta.sizeLocal(),
+482                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+483                       \textcolor{stringliteral}{"GslVector::cwSetBeta()"},
+484                       \textcolor{stringliteral}{"incompatible beta size"});
+485 
+486   \textcolor{keywordtype}{double} tmpSample = 0.;
+487   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}(); ++i) \{
+488     tmpSample = \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_afc1f1258b770ac8e27cf308bbcd6a296}{rngObject}()->\hyperlink{class_q_u_e_s_o_1_1_rng_base_a098089a93e29db4ad9ac106c8b5de583}{betaSample}(alpha[i],beta[i]);
+489     \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 99)) \{
+490       *\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In GslVector::cwSetBeta()"}
+491                               << \textcolor{stringliteral}{": fullRank "}   << \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a84a239e42ae443cf71db6e03e8159620}{fullRank}()
+492                               << \textcolor{stringliteral}{", i = "}        << i
+493                               << \textcolor{stringliteral}{", alpha[i] = "} << alpha[i]
+494                               << \textcolor{stringliteral}{", beta[i] = "}  << beta[i]
+495                               << \textcolor{stringliteral}{", sample = "}   << tmpSample
+496                               << std::endl;
+497     \}
+498     \textcolor{keywordflow}{if} ((alpha[i] == 1. ) &&
+499         (beta [i] == 0.1)) \{
+500       \textcolor{keywordflow}{if} (tmpSample == 1.) \{
+501         \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 99)) \{
+502           *\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Hitting 'sampe = 1' in GslVector::cwSetBeta()"}
+503                                   << \textcolor{stringliteral}{": fullRank "}   << \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a84a239e42ae443cf71db6e03e8159620}{fullRank}()
+504                                   << \textcolor{stringliteral}{", i = "}        << i
+505                                   << \textcolor{stringliteral}{", alpha[i] = "} << alpha[i]
+506                                   << \textcolor{stringliteral}{", beta[i] = "}  << beta[i]
+507                                   << \textcolor{stringliteral}{", sample = "}   << tmpSample
+508                                   << std::endl;
+509         \}
+510 \textcolor{preprocessor}{#if 1}
+511 \textcolor{preprocessor}{}        std::cerr << \textcolor{stringliteral}{"Hitting 'sample = 1' in GslVector::cwSetBeta()"}
+512                   << \textcolor{stringliteral}{": fullRank "}   << \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a84a239e42ae443cf71db6e03e8159620}{fullRank}()
+513                   << \textcolor{stringliteral}{", i = "}        << i
+514                   << \textcolor{stringliteral}{", alpha[i] = "} << alpha[i]
+515                   << \textcolor{stringliteral}{", beta[i] = "}  << beta[i]
+516                   << \textcolor{stringliteral}{", sample = "}   << tmpSample
+517                   << std::endl;
+518         \textcolor{keywordflow}{do} \{
+519           tmpSample = \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_afc1f1258b770ac8e27cf308bbcd6a296}{rngObject}()->\hyperlink{class_q_u_e_s_o_1_1_rng_base_a098089a93e29db4ad9ac106c8b5de583}{betaSample}(alpha[i],beta[i]);
+520         \} \textcolor{keywordflow}{while} (tmpSample == 1.);
+521         std::cerr << \textcolor{stringliteral}{"Code was able to get 'sample != 1' in GslVector::cwSetBeta()"}
+522                   << \textcolor{stringliteral}{": fullRank "}   << \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a84a239e42ae443cf71db6e03e8159620}{fullRank}()
+523                   << \textcolor{stringliteral}{", i = "}        << i
+524                   << \textcolor{stringliteral}{", alpha[i] = "} << alpha[i]
+525                   << \textcolor{stringliteral}{", beta[i] = "}  << beta[i]
+526                   << \textcolor{stringliteral}{", sample = "}   << tmpSample
+527                   << std::endl;
+528       \}
+529 \textcolor{preprocessor}{#endif}
+530 \textcolor{preprocessor}{}    \}
+531     (*this)[i] = tmpSample;
+532   \}
+533   \textcolor{keywordflow}{return};
+534 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a6bd9c99a7de9a9203f9f12d36c1e24b6}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Set\-Concatenated@{cw\-Set\-Concatenated}}
+\index{cw\-Set\-Concatenated@{cw\-Set\-Concatenated}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Set\-Concatenated}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Concatenated (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{v1, }
+\item[{const {\bf Gsl\-Vector} \&}]{v2}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a6bd9c99a7de9a9203f9f12d36c1e24b6}
+
+
+This function concatenates \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} v1 and \hyperlink{class_q_u_e_s_o_1_1_gsl_vector}{Gsl\-Vector} v2 into {\ttfamily this}. 
+
+
+
+Definition at line 575 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+576 \{
+577   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}() != v1.sizeLocal() + v2.sizeLocal(),
+578                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+579                       \textcolor{stringliteral}{"GslVector::cwSetConcatenated(1)"},
+580                       \textcolor{stringliteral}{"incompatible vector sizes"});
+581 
+582   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < v1.sizeLocal(); ++i) \{
+583     (*this)[i] = v1[i];
+584   \}
+585 
+586   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < v2.sizeLocal(); ++i) \{
+587     (*this)[v1.sizeLocal()+i] = v2[i];
+588   \}
+589 
+590   \textcolor{keywordflow}{return};
+591 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a498269f6ee2cfa975ebf4082ea5ad1a8}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Set\-Concatenated@{cw\-Set\-Concatenated}}
+\index{cw\-Set\-Concatenated@{cw\-Set\-Concatenated}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Set\-Concatenated}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Concatenated (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ const {\bf Gsl\-Vector} $\ast$ $>$ \&}]{vecs}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a498269f6ee2cfa975ebf4082ea5ad1a8}
+
+
+This function concatenates vectors {\ttfamily v1} and {\ttfamily v2} into {\ttfamily this} vector. 
+
+
+
+Definition at line 594 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+595 \{
+596   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} cummulativeSize = 0;
+597   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < vecs.size(); ++i) \{
+598     \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a692a46459578174996732d16dd089067}{GslVector} tmpVec(*(vecs[i]));
+599     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < vecs[i]->sizeLocal(); ++j) \{
+600       (*this)[cummulativeSize+j] = tmpVec[j];
+601     \}
+602     cummulativeSize += vecs[i]->sizeLocal();
+603   \}
+604 
+605   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}() != cummulativeSize,
+606                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+607                       \textcolor{stringliteral}{"GslVector::cwSetConcatenated(1)"},
+608                       \textcolor{stringliteral}{"incompatible vector sizes"});
+609   \textcolor{keywordflow}{return};
+610 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ac8f6033638a8d99aa28e68cfe8ead8d3}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Set\-Gamma@{cw\-Set\-Gamma}}
+\index{cw\-Set\-Gamma@{cw\-Set\-Gamma}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Set\-Gamma}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Gamma (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{a, }
+\item[{const {\bf Gsl\-Vector} \&}]{b}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_ac8f6033638a8d99aa28e68cfe8ead8d3}
+
+
+This function returns a random variate from the gamma distribution with vector parameters a and b. 
+
+
+
+Definition at line 537 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Rng\-Base\-::gamma\-Sample(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::rng\-Object(), size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+538 \{
+539   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}() != a.sizeLocal(),
+540                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+541                       \textcolor{stringliteral}{"GslVector::cwSetGamma()"},
+542                       \textcolor{stringliteral}{"incompatible a size"});
+543 
+544   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}() != b.sizeLocal(),
+545                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+546                       \textcolor{stringliteral}{"GslVector::cwSetGamma()"},
+547                       \textcolor{stringliteral}{"incompatible b size"});
+548 
+549   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}(); ++i) \{
+550     (*this)[i] = \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_afc1f1258b770ac8e27cf308bbcd6a296}{rngObject}()->\hyperlink{class_q_u_e_s_o_1_1_rng_base_abd9abcf42426b568d4f13f5c3f3dc997}{gammaSample}(a[i],b[i]);
+551   \}
+552   \textcolor{keywordflow}{return};
+553 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a10ad46b42ea27ee0085d89b4e09b075f}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Set\-Gaussian@{cw\-Set\-Gaussian}}
+\index{cw\-Set\-Gaussian@{cw\-Set\-Gaussian}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Set\-Gaussian}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Gaussian (
+\begin{DoxyParamCaption}
+\item[{double}]{mean, }
+\item[{double}]{std\-Dev}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gsl_vector_a10ad46b42ea27ee0085d89b4e09b075f}
+
+
+This function sets component-\/wise Gaussian random variates, with mean mean and standard deviation std\-Dev. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_vector_a44643b7d736001a7e0d0032ed8a7cef0}{Q\-U\-E\-S\-O\-::\-Vector}.
+
+
+
+Definition at line 446 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Rng\-Base\-::gaussian\-Sample(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::rng\-Object(), and size\-Local().
+
+
+\begin{DoxyCode}
+447 \{
+448   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}(); ++i) \{
+449     (*this)[i] = mean + \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_afc1f1258b770ac8e27cf308bbcd6a296}{rngObject}()->\hyperlink{class_q_u_e_s_o_1_1_rng_base_a7be9cf40cc50b973ed8c2f594f402584}{gaussianSample}(stdDev);
+450   \}
+451 
+452   \textcolor{keywordflow}{return};
+453 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a1f13ee9d573dbab8f8efdba30fe840f2}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Set\-Gaussian@{cw\-Set\-Gaussian}}
+\index{cw\-Set\-Gaussian@{cw\-Set\-Gaussian}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Set\-Gaussian}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Gaussian (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{mean\-Vec, }
+\item[{const {\bf Gsl\-Vector} \&}]{std\-Dev\-Vec}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a1f13ee9d573dbab8f8efdba30fe840f2}
+
+
+This function sets component-\/wise Gaussian random variates, with vectors for mean and standard deviation. 
+
+
+
+Definition at line 456 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Rng\-Base\-::gaussian\-Sample(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::rng\-Object(), and size\-Local().
+
+
+\begin{DoxyCode}
+457 \{
+458   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}(); ++i) \{
+459     (*this)[i] = meanVec[i] + \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_afc1f1258b770ac8e27cf308bbcd6a296}{rngObject}()->\hyperlink{class_q_u_e_s_o_1_1_rng_base_a7be9cf40cc50b973ed8c2f594f402584}{gaussianSample}(stdDevVec[i]);
+460   \}
+461   \textcolor{keywordflow}{return};
+462 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a7609032ec133374fefeeb3aad12df093}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Set\-Inverse\-Gamma@{cw\-Set\-Inverse\-Gamma}}
+\index{cw\-Set\-Inverse\-Gamma@{cw\-Set\-Inverse\-Gamma}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Set\-Inverse\-Gamma}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Inverse\-Gamma (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{alpha, }
+\item[{const {\bf Gsl\-Vector} \&}]{beta}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a7609032ec133374fefeeb3aad12df093}
+
+
+This function returns a random variate from the inverse gamma distribution with vector parameters alpha and beta. 
+
+
+
+Definition at line 556 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Rng\-Base\-::gamma\-Sample(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::rng\-Object(), size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+557 \{
+558   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}() != alpha.sizeLocal(),
+559                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+560                       \textcolor{stringliteral}{"GslVector::cwSetInverseGamma()"},
+561                       \textcolor{stringliteral}{"incompatible alpha size"});
+562 
+563   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}() != beta.sizeLocal(),
+564                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+565                       \textcolor{stringliteral}{"GslVector::cwSetInverseGamma()"},
+566                       \textcolor{stringliteral}{"incompatible beta size"});
+567 
+568   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}(); ++i) \{
+569     (*this)[i] = 1./\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_afc1f1258b770ac8e27cf308bbcd6a296}{rngObject}()->\hyperlink{class_q_u_e_s_o_1_1_rng_base_abd9abcf42426b568d4f13f5c3f3dc997}{gammaSample}(alpha[i],1./beta[i]);
+570   \}
+571   \textcolor{keywordflow}{return};
+572 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a020583cdb101420d2ac34d8cd5c4c270}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Set\-Uniform@{cw\-Set\-Uniform}}
+\index{cw\-Set\-Uniform@{cw\-Set\-Uniform}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Set\-Uniform}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Set\-Uniform (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{a\-Vec, }
+\item[{const {\bf Gsl\-Vector} \&}]{b\-Vec}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a020583cdb101420d2ac34d8cd5c4c270}
+
+
+This function sets component-\/wise a number uniformly distributed in the range of elements of \mbox{[}a\-Vec,b\-Vec\mbox{]}. 
+
+
+
+Definition at line 465 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::rng\-Object(), size\-Local(), and Q\-U\-E\-S\-O\-::\-Rng\-Base\-::uniform\-Sample().
+
+
+\begin{DoxyCode}
+466 \{
+467   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}(); ++i) \{
+468     (*this)[i] = aVec[i] + (bVec[i]-aVec[i])*\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_afc1f1258b770ac8e27cf308bbcd6a296}{rngObject}()->
+      \hyperlink{class_q_u_e_s_o_1_1_rng_base_aed8342f0c8a4ac0a311cce9cac2b67e5}{uniformSample}();
+469   \}
+470   \textcolor{keywordflow}{return};
+471 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a6b820b96b5b7e8a1af21c4f260a0dade}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!cw\-Sqrt@{cw\-Sqrt}}
+\index{cw\-Sqrt@{cw\-Sqrt}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{cw\-Sqrt}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::cw\-Sqrt (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a6b820b96b5b7e8a1af21c4f260a0dade}
+
+
+This function returns component-\/wise the square-\/root of {\ttfamily this}. 
+
+
+
+Definition at line 665 of file Gsl\-Vector.\-C.
+
+
+
+References size\-Local().
+
+
+\begin{DoxyCode}
+666 \{
+667   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+668   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i) \{
+669     (*this)[i] = sqrt((*\textcolor{keyword}{this})[i]);
+670   \}
+671 
+672   \textcolor{keywordflow}{return};
+673 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a6a668d6e6cdf69e3004e07742d066036}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!data@{data}}
+\index{data@{data}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{data}]{\setlength{\rightskip}{0pt plus 5cm}gsl\-\_\-vector $\ast$ Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_a6a668d6e6cdf69e3004e07742d066036}
+
+
+Definition at line 1180 of file Gsl\-Vector.\-C.
+
+
+
+References m\-\_\-vec.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::eigen(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::internal\-Svd(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::invert\-Multiply(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::invert\-Multiply\-Force\-L\-U(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::set\-Column(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::set\-Row(), and Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::svd\-Solve().
+
+
+\begin{DoxyCode}
+1181 \{
+1182   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec};
+1183 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ad25b83a4bbb41d40a38b674df03e5d37}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!get\-Max\-Value@{get\-Max\-Value}}
+\index{get\-Max\-Value@{get\-Max\-Value}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{get\-Max\-Value}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::get\-Max\-Value (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_ad25b83a4bbb41d40a38b674df03e5d37}
+
+
+Returns the maximum value in the vector {\ttfamily this}. 
+
+
+
+Definition at line 1262 of file Gsl\-Vector.\-C.
+
+
+
+References m\-\_\-vec.
+
+
+
+Referenced by get\-Max\-Value\-And\-Index().
+
+
+\begin{DoxyCode}
+1263 \{
+1264   \textcolor{keywordflow}{return} gsl\_vector\_max( \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec} );
+1265 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ae77a2147d9185b1fd9b55b836cba7496}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!get\-Max\-Value\-And\-Index@{get\-Max\-Value\-And\-Index}}
+\index{get\-Max\-Value\-And\-Index@{get\-Max\-Value\-And\-Index}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{get\-Max\-Value\-And\-Index}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::get\-Max\-Value\-And\-Index (
+\begin{DoxyParamCaption}
+\item[{double \&}]{value, }
+\item[{int \&}]{index}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_ae77a2147d9185b1fd9b55b836cba7496}
+
+
+This function returns maximum value in the vector {\ttfamily this} and its the index. 
+
+
+
+Definition at line 1286 of file Gsl\-Vector.\-C.
+
+
+
+References get\-Max\-Value(), and get\-Max\-Value\-Index().
+
+
+\begin{DoxyCode}
+1287 \{
+1288   max\_value = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ad25b83a4bbb41d40a38b674df03e5d37}{getMaxValue}();
+1289   max\_value\_index = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_af27edfee48c38ffcead1bded550da0fc}{getMaxValueIndex}();
+1290 
+1291   \textcolor{keywordflow}{return};
+1292 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_af27edfee48c38ffcead1bded550da0fc}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!get\-Max\-Value\-Index@{get\-Max\-Value\-Index}}
+\index{get\-Max\-Value\-Index@{get\-Max\-Value\-Index}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{get\-Max\-Value\-Index}]{\setlength{\rightskip}{0pt plus 5cm}int Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::get\-Max\-Value\-Index (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_af27edfee48c38ffcead1bded550da0fc}
+
+
+This function returns the index of the maximum value in the vector {\ttfamily this}. 
+
+
+
+Definition at line 1274 of file Gsl\-Vector.\-C.
+
+
+
+References m\-\_\-vec.
+
+
+
+Referenced by get\-Max\-Value\-And\-Index().
+
+
+\begin{DoxyCode}
+1275 \{
+1276   \textcolor{keywordflow}{return} gsl\_vector\_max\_index( \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec} );
+1277 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a77a9a42edfc1e1500ed8a31373245b9d}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!get\-Min\-Value@{get\-Min\-Value}}
+\index{get\-Min\-Value@{get\-Min\-Value}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{get\-Min\-Value}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::get\-Min\-Value (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_a77a9a42edfc1e1500ed8a31373245b9d}
+
+
+Returns minimum value in the vector {\ttfamily this}. 
+
+
+
+Definition at line 1268 of file Gsl\-Vector.\-C.
+
+
+
+References m\-\_\-vec.
+
+
+
+Referenced by get\-Min\-Value\-And\-Index().
+
+
+\begin{DoxyCode}
+1269 \{
+1270   \textcolor{keywordflow}{return} gsl\_vector\_min( \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec} );
+1271 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a22094d1f67f612646f280a700f85c542}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!get\-Min\-Value\-And\-Index@{get\-Min\-Value\-And\-Index}}
+\index{get\-Min\-Value\-And\-Index@{get\-Min\-Value\-And\-Index}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{get\-Min\-Value\-And\-Index}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::get\-Min\-Value\-And\-Index (
+\begin{DoxyParamCaption}
+\item[{double \&}]{value, }
+\item[{int \&}]{index}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a22094d1f67f612646f280a700f85c542}
+
+
+This function returns minimum value in the vector {\ttfamily this} and its the index. 
+
+
+
+Definition at line 1295 of file Gsl\-Vector.\-C.
+
+
+
+References get\-Min\-Value(), and get\-Min\-Value\-Index().
+
+
+\begin{DoxyCode}
+1296 \{
+1297   min\_value = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a77a9a42edfc1e1500ed8a31373245b9d}{getMinValue}();
+1298   min\_value\_index = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_acb36ad4f7a2185a7abadf6b2261d1ab4}{getMinValueIndex}();
+1299 
+1300   \textcolor{keywordflow}{return};
+1301 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_acb36ad4f7a2185a7abadf6b2261d1ab4}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!get\-Min\-Value\-Index@{get\-Min\-Value\-Index}}
+\index{get\-Min\-Value\-Index@{get\-Min\-Value\-Index}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{get\-Min\-Value\-Index}]{\setlength{\rightskip}{0pt plus 5cm}int Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::get\-Min\-Value\-Index (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_acb36ad4f7a2185a7abadf6b2261d1ab4}
+
+
+This function returns the index of the minimum value in the vector {\ttfamily this}. 
+
+
+
+Definition at line 1280 of file Gsl\-Vector.\-C.
+
+
+
+References m\-\_\-vec.
+
+
+
+Referenced by get\-Min\-Value\-And\-Index().
+
+
+\begin{DoxyCode}
+1281 \{
+1282   \textcolor{keywordflow}{return} gsl\_vector\_min\_index( \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec} );
+1283 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_aa4f5280c13c99ef028e7838887818c79}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!matlab\-Diff@{matlab\-Diff}}
+\index{matlab\-Diff@{matlab\-Diff}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{matlab\-Diff}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::matlab\-Diff (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{first\-Position\-To\-Store\-Diff, }
+\item[{double}]{value\-For\-Remainder\-Position, }
+\item[{{\bf Gsl\-Vector} \&}]{output\-Vec}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_aa4f5280c13c99ef028e7838887818c79}
+
+
+Definition at line 676 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+680 \{
+681   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+682 
+683   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(firstPositionToStoreDiff > 1,
+684                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+685                       \textcolor{stringliteral}{"GslVector::matlabDiff()"},
+686                       \textcolor{stringliteral}{"invalid firstPositionToStoreDiff"});
+687 
+688   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(size != outputVec.sizeLocal(),
+689                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+690                       \textcolor{stringliteral}{"GslVector::matlabDiff()"},
+691                       \textcolor{stringliteral}{"invalid size of outputVecs"});
+692 
+693   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (size-1); ++i) \{
+694     outputVec[firstPositionToStoreDiff+i] = (*this)[i+1]-(*this)[i];
+695   \}
+696   \textcolor{keywordflow}{if} (firstPositionToStoreDiff == 0) \{
+697     outputVec[size-1] = valueForRemainderPosition;
+698   \}
+699   \textcolor{keywordflow}{else} \{
+700     outputVec[0] = valueForRemainderPosition;
+701   \}
+702 
+703   \textcolor{keywordflow}{return};
+704 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a6f463b2409b210989f45bb7c17cee3f7}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!matlab\-Linear\-Interp\-Extrap@{matlab\-Linear\-Interp\-Extrap}}
+\index{matlab\-Linear\-Interp\-Extrap@{matlab\-Linear\-Interp\-Extrap}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{matlab\-Linear\-Interp\-Extrap}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::matlab\-Linear\-Interp\-Extrap (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{x1\-Vec, }
+\item[{const {\bf Gsl\-Vector} \&}]{y1\-Vec, }
+\item[{const {\bf Gsl\-Vector} \&}]{x2\-Vec}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a6f463b2409b210989f45bb7c17cee3f7}
+
+
+Definition at line 707 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::matlab\-Linear\-Interp\-Extrap().
+
+
+\begin{DoxyCode}
+711 \{
+712   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(x1Vec.sizeLocal() <= 1,
+713                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+714                       \textcolor{stringliteral}{"GslVector::matlabLinearInterpExtrap()"},
+715                       \textcolor{stringliteral}{"invalid 'x1' size"});
+716 
+717   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(x1Vec.sizeLocal() != y1Vec.sizeLocal(),
+718                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+719                       \textcolor{stringliteral}{"GslVector::matlabLinearInterpExtrap()"},
+720                       \textcolor{stringliteral}{"invalid 'x1' and 'y1' sizes"});
+721 
+722   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(x2Vec.sizeLocal() != this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}(),
+723                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+724                       \textcolor{stringliteral}{"GslVector::matlabLinearInterpExtrap()"},
+725                       \textcolor{stringliteral}{"invalid 'x2' and 'this' sizes"});
+726 
+727   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 1; i < x1Vec.sizeLocal(); ++i) \{ \textcolor{comment}{// Yes, '1'}
+728     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(x1Vec[i] <= x1Vec[i-1],
+729                         \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+730                         \textcolor{stringliteral}{"GslVector::matlabLinearInterpExtrap()"},
+731                         \textcolor{stringliteral}{"invalid 'x1' values"});
+732   \}
+733 
+734   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} id2 = 0; id2 < x2Vec.sizeLocal(); ++id2) \{
+735     \textcolor{keywordtype}{double} x2 = x2Vec[id2];
+736     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} id1 = 0;
+737     \textcolor{keywordtype}{bool} found1 = \textcolor{keyword}{false};
+738     \textcolor{keywordflow}{for} (id1 = 0; id1 < x1Vec.sizeLocal(); ++id1) \{
+739       \textcolor{keywordflow}{if} (x2 <= x1Vec[id1]) \{
+740         found1 = \textcolor{keyword}{true};
+741         \textcolor{keywordflow}{break};
+742       \}
+743     \}
+744     \textcolor{keywordtype}{bool} makeLinearModel = \textcolor{keyword}{false};
+745     \textcolor{keywordtype}{double} xa = 0.;
+746     \textcolor{keywordtype}{double} xb = 0.;
+747     \textcolor{keywordtype}{double} ya = 0.;
+748     \textcolor{keywordtype}{double} yb = 0.;
+749     \textcolor{keywordflow}{if} (x2 == x1Vec[id1]) \{
+750       (*this)[id2] = y1Vec[id1];
+751     \}
+752     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (x2 < x1Vec[0]) \{
+753       \textcolor{comment}{// Extrapolation case}
+754       makeLinearModel = \textcolor{keyword}{true};
+755       xa = x1Vec[0];
+756       xb = x1Vec[1];
+757       ya = y1Vec[0];
+758       yb = y1Vec[1];
+759     \}
+760     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (found1 == \textcolor{keyword}{true}) \{
+761       \textcolor{comment}{// Interpolation case}
+762       makeLinearModel = \textcolor{keyword}{true};
+763       xa = x1Vec[id1-1];
+764       xb = x1Vec[id1];
+765       ya = y1Vec[id1-1];
+766       yb = y1Vec[id1];
+767     \}
+768     \textcolor{keywordflow}{else} \{
+769       \textcolor{comment}{// Extrapolation case}
+770       makeLinearModel = \textcolor{keyword}{true};
+771       xa = x1Vec[x1Vec.sizeLocal()-2];
+772       xb = x1Vec[x1Vec.sizeLocal()-1];
+773       ya = y1Vec[x1Vec.sizeLocal()-2];
+774       yb = y1Vec[x1Vec.sizeLocal()-1];
+775     \}
+776 
+777     \textcolor{keywordflow}{if} (makeLinearModel) \{
+778       \textcolor{keywordtype}{double} rate = (yb-ya)/(xb-xa);
+779       (*this)[id2] = ya + (x2-xa)*rate;
+780     \}
+781   \}
+782 
+783 
+784 
+785   \textcolor{keywordflow}{return};
+786 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a9c12f5d34643aa5d46f59570955339ab}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!mpi\-All\-Quantile@{mpi\-All\-Quantile}}
+\index{mpi\-All\-Quantile@{mpi\-All\-Quantile}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{mpi\-All\-Quantile}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::mpi\-All\-Quantile (
+\begin{DoxyParamCaption}
+\item[{double}]{probability, }
+\item[{const {\bf Mpi\-Comm} \&}]{op\-Comm, }
+\item[{{\bf Gsl\-Vector} \&}]{result\-Vec}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_a9c12f5d34643aa5d46f59570955339ab}
+
+
+Definition at line 885 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Mpi\-Comm\-::\-Bcast(), Q\-U\-E\-S\-O\-::\-Mpi\-Comm\-::\-Gather(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Mpi\-Comm\-::\-My\-P\-I\-D(), Q\-U\-E\-S\-O\-::\-Mpi\-Comm\-::\-Num\-Proc(), Raw\-Value\-\_\-\-M\-P\-I\-\_\-\-D\-O\-U\-B\-L\-E, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+886 \{
+887   \textcolor{comment}{// Filter out those nodes that should not participate}
+888   \textcolor{keywordflow}{if} (opComm.MyPID() < 0) \textcolor{keywordflow}{return};
+889 
+890   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((probability < 0.) || (1. < probability),
+891                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+892                       \textcolor{stringliteral}{"GslVector::mpiAllQuantile()"},
+893                       \textcolor{stringliteral}{"invalid input"});
+894 
+895   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+896   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(size != resultVec.sizeLocal(),
+897                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+898                       \textcolor{stringliteral}{"GslVector::mpiAllQuantile()"},
+899                       \textcolor{stringliteral}{"different vector sizes"});
+900 
+901   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i) \{
+902     \textcolor{keywordtype}{double} auxDouble = (int) (*\textcolor{keyword}{this})[i];
+903     std::vector<double> vecOfDoubles(opComm.NumProc(),0.);
+904     opComm.Gather((\textcolor{keywordtype}{void} *) &auxDouble, 1, \hyperlink{_mpi_comm_8h_ad0f503bd9fecfe4e570ca3d15aaf2518}{RawValue\_MPI\_DOUBLE}, (\textcolor{keywordtype}{void} *) &vecOfDoubles[0]
+      , (\textcolor{keywordtype}{int}) 1, \hyperlink{_mpi_comm_8h_ad0f503bd9fecfe4e570ca3d15aaf2518}{RawValue\_MPI\_DOUBLE}, 0,
+905                   \textcolor{stringliteral}{"GslVector::mpiAllQuantile()"},
+906                   \textcolor{stringliteral}{"failed MPI.Gather()"});
+907 
+908     std::sort(vecOfDoubles.begin(), vecOfDoubles.end());
+909 
+910     \textcolor{keywordtype}{double} result = vecOfDoubles[(\textcolor{keywordtype}{unsigned} int)( probability*((\textcolor{keywordtype}{double})(vecOfDoubles.size()-1)) )];
+911 
+912     opComm.Bcast((\textcolor{keywordtype}{void} *) &result, (\textcolor{keywordtype}{int}) 1, \hyperlink{_mpi_comm_8h_ad0f503bd9fecfe4e570ca3d15aaf2518}{RawValue\_MPI\_DOUBLE}, 0,
+913                  \textcolor{stringliteral}{"GslVector::mpiAllQuantile()"},
+914                  \textcolor{stringliteral}{"failed MPI.Bcast()"});
+915 
+916     resultVec[i] = result;
+917   \}
+918 
+919   \textcolor{keywordflow}{return};
+920 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_acfd7f057bdb82b601086e6b56281659d}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!mpi\-All\-Reduce@{mpi\-All\-Reduce}}
+\index{mpi\-All\-Reduce@{mpi\-All\-Reduce}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{mpi\-All\-Reduce}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::mpi\-All\-Reduce (
+\begin{DoxyParamCaption}
+\item[{{\bf Raw\-Type\-\_\-\-M\-P\-I\-\_\-\-Op}}]{mpi\-Operation, }
+\item[{const {\bf Mpi\-Comm} \&}]{op\-Comm, }
+\item[{{\bf Gsl\-Vector} \&}]{result\-Vec}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_acfd7f057bdb82b601086e6b56281659d}
+
+
+Definition at line 861 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Mpi\-Comm\-::\-Allreduce(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Mpi\-Comm\-::\-My\-P\-I\-D(), Raw\-Value\-\_\-\-M\-P\-I\-\_\-\-D\-O\-U\-B\-L\-E, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+862 \{
+863   \textcolor{comment}{// Filter out those nodes that should not participate}
+864   \textcolor{keywordflow}{if} (opComm.MyPID() < 0) \textcolor{keywordflow}{return};
+865 
+866   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+867   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(size != resultVec.sizeLocal(),
+868                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+869                       \textcolor{stringliteral}{"GslVector::mpiAllReduce()"},
+870                       \textcolor{stringliteral}{"different vector sizes"});
+871 
+872   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i) \{
+873     \textcolor{keywordtype}{double} srcValue = (*this)[i];
+874     \textcolor{keywordtype}{double} resultValue = 0.;
+875     opComm.Allreduce((\textcolor{keywordtype}{void} *) &srcValue, (\textcolor{keywordtype}{void} *) &resultValue, (\textcolor{keywordtype}{int}) 1, 
+      \hyperlink{_mpi_comm_8h_ad0f503bd9fecfe4e570ca3d15aaf2518}{RawValue\_MPI\_DOUBLE}, mpiOperation,
+876                      \textcolor{stringliteral}{"GslVector::mpiAllReduce()"},
+877                      \textcolor{stringliteral}{"failed MPI.Allreduce()"});
+878     resultVec[i] = resultValue;
+879   \}
+880 
+881   \textcolor{keywordflow}{return};
+882 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_aaa5bdbc03ef0ab86bad4b86b556a48d3}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!mpi\-Bcast@{mpi\-Bcast}}
+\index{mpi\-Bcast@{mpi\-Bcast}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{mpi\-Bcast}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::mpi\-Bcast (
+\begin{DoxyParamCaption}
+\item[{int}]{src\-Rank, }
+\item[{const {\bf Mpi\-Comm} \&}]{bcast\-Comm}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_aaa5bdbc03ef0ab86bad4b86b556a48d3}
+
+
+Definition at line 797 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Mpi\-Comm\-::\-Allreduce(), Q\-U\-E\-S\-O\-::\-Mpi\-Comm\-::\-Barrier(), Q\-U\-E\-S\-O\-::\-Mpi\-Comm\-::\-Bcast(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Mpi\-Comm\-::\-My\-P\-I\-D(), Q\-U\-E\-S\-O\-::\-Mpi\-Comm\-::\-Num\-Proc(), Raw\-Value\-\_\-\-M\-P\-I\-\_\-\-D\-O\-U\-B\-L\-E, Raw\-Value\-\_\-\-M\-P\-I\-\_\-\-S\-U\-M, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+798 \{
+799   \textcolor{comment}{// Filter out those nodes that should not participate}
+800   \textcolor{keywordflow}{if} (bcastComm.MyPID() < 0) \textcolor{keywordflow}{return};
+801 
+802   \textcolor{comment}{// Check 'srcRank'}
+803   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((srcRank < 0) || (srcRank >= bcastComm.NumProc()),
+804                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+805                       \textcolor{stringliteral}{"GslVector::mpiBcast()"},
+806                       \textcolor{stringliteral}{"invalud srcRank"});
+807 
+808   \textcolor{comment}{// Check number of participant nodes}
+809   \textcolor{keywordtype}{double} localNumNodes = 1.;
+810   \textcolor{keywordtype}{double} totalNumNodes = 0.;
+811   bcastComm.Allreduce((\textcolor{keywordtype}{void} *) &localNumNodes, (\textcolor{keywordtype}{void} *) &totalNumNodes, (\textcolor{keywordtype}{int}) 1, 
+      \hyperlink{_mpi_comm_8h_ad0f503bd9fecfe4e570ca3d15aaf2518}{RawValue\_MPI\_DOUBLE}, \hyperlink{_mpi_comm_8h_afbf78d291c032aa7f512bc566cee2bd1}{RawValue\_MPI\_SUM},
+812                       \textcolor{stringliteral}{"GslVector::mpiBcast()"},
+813                       \textcolor{stringliteral}{"failed MPI.Allreduce() for numNodes"});
+814   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(((\textcolor{keywordtype}{int}) totalNumNodes) != bcastComm.NumProc(),
+815                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+816                       \textcolor{stringliteral}{"GslVector::mpiBcast()"},
+817                       \textcolor{stringliteral}{"inconsistent numNodes"});
+818 
+819   \textcolor{comment}{// Check that all participant nodes have the same vector size}
+820   \textcolor{keywordtype}{double} localVectorSize  = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+821   \textcolor{keywordtype}{double} sumOfVectorSizes = 0.; 
+822   bcastComm.Allreduce((\textcolor{keywordtype}{void} *) &localVectorSize, (\textcolor{keywordtype}{void} *) &sumOfVectorSizes, (\textcolor{keywordtype}{int}) 1, 
+      \hyperlink{_mpi_comm_8h_ad0f503bd9fecfe4e570ca3d15aaf2518}{RawValue\_MPI\_DOUBLE}, \hyperlink{_mpi_comm_8h_afbf78d291c032aa7f512bc566cee2bd1}{RawValue\_MPI\_SUM},
+823                       \textcolor{stringliteral}{"GslVector::mpiBcast()"},
+824                       \textcolor{stringliteral}{"failed MPI.Allreduce() for vectorSize"});
+825 
+826   \textcolor{keywordflow}{if} ( ((\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) sumOfVectorSizes) != ((\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int})(totalNumNodes*localVectorSize)) ) \{
+827     std::cerr << \textcolor{stringliteral}{"rank "}                 << bcastComm.MyPID()
+828               << \textcolor{stringliteral}{": sumOfVectorSizes = "} << sumOfVectorSizes
+829               << \textcolor{stringliteral}{", totalNumNodes = "}    << totalNumNodes
+830               << \textcolor{stringliteral}{", localVectorSize = "}  << localVectorSize
+831               << std::endl;
+832   \}
+833   bcastComm.Barrier();
+834   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(((\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) sumOfVectorSizes) != ((\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int})(totalNumNodes
+      *localVectorSize)),
+835                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+836                       \textcolor{stringliteral}{"GslVector::mpiBcast()"},
+837                       \textcolor{stringliteral}{"inconsistent vectorSize"});
+838 
+839   \textcolor{comment}{// Ok, bcast data}
+840   std::vector<double> dataBuffer((\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) localVectorSize, 0.);
+841   \textcolor{keywordflow}{if} (bcastComm.MyPID() == srcRank) \{
+842     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < dataBuffer.size(); ++i) \{
+843       dataBuffer[i] = (*this)[i];
+844     \}
+845   \}
+846 
+847   bcastComm.Bcast((\textcolor{keywordtype}{void} *) &dataBuffer[0], (\textcolor{keywordtype}{int}) localVectorSize, 
+      \hyperlink{_mpi_comm_8h_ad0f503bd9fecfe4e570ca3d15aaf2518}{RawValue\_MPI\_DOUBLE}, srcRank,
+848                   \textcolor{stringliteral}{"GslVector::mpiBcast()"},
+849                   \textcolor{stringliteral}{"failed MPI.Bcast()"});
+850 
+851   \textcolor{keywordflow}{if} (bcastComm.MyPID() != srcRank) \{
+852     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < dataBuffer.size(); ++i) \{
+853       (*this)[i] = dataBuffer[i];
+854     \}
+855   \}
+856 
+857   \textcolor{keywordflow}{return};
+858 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a53702fecb316dbf31a3f9b156111d500}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!norm1@{norm1}}
+\index{norm1@{norm1}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{norm1}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::norm1 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_a53702fecb316dbf31a3f9b156111d500}
+
+
+Returns the 1-\/norm of the vector. 
+
+
+
+Definition at line 395 of file Gsl\-Vector.\-C.
+
+
+
+References size\-Local().
+
+
+\begin{DoxyCode}
+396 \{
+397   \textcolor{keywordtype}{double} result = 0.;
+398 
+399   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+400   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i) \{
+401     result += fabs((*\textcolor{keyword}{this})[i]);
+402   \}
+403 
+404   \textcolor{keywordflow}{return} result;
+405 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a3634fbeeda1a009cf14e3da4e56fc663}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!norm2@{norm2}}
+\index{norm2@{norm2}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{norm2}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::norm2 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_a3634fbeeda1a009cf14e3da4e56fc663}
+
+
+Returns the 2-\/norm (Euclidean norm) of the vector. 
+
+
+
+Definition at line 389 of file Gsl\-Vector.\-C.
+
+
+
+References norm2\-Sq().
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::invert\-Multiply().
+
+
+\begin{DoxyCode}
+390 \{
+391   \textcolor{keywordflow}{return} std::sqrt(this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a185bf2c6caa7da0b3418e0c8d1014fdf}{norm2Sq}());
+392 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a185bf2c6caa7da0b3418e0c8d1014fdf}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!norm2\-Sq@{norm2\-Sq}}
+\index{norm2\-Sq@{norm2\-Sq}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{norm2\-Sq}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::norm2\-Sq (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_a185bf2c6caa7da0b3418e0c8d1014fdf}
+
+
+Returns the norm of the vector, as the square root of 2-\/norm of this vector. 
+
+
+
+Definition at line 383 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::scalar\-Product().
+
+
+
+Referenced by norm2().
+
+
+\begin{DoxyCode}
+384 \{
+385   \textcolor{keywordflow}{return} \hyperlink{namespace_q_u_e_s_o_a159769395a413f58b974587d5f43bbc7}{scalarProduct}(*\textcolor{keyword}{this},*\textcolor{keyword}{this});
+386 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a46a3eabd6732f12ae8326764e3ef9921}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!norm\-Inf@{norm\-Inf}}
+\index{norm\-Inf@{norm\-Inf}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{norm\-Inf}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::norm\-Inf (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_a46a3eabd6732f12ae8326764e3ef9921}
+
+
+Returns the infinity-\/norm (maximum norm) of the vector. 
+
+
+
+Definition at line 408 of file Gsl\-Vector.\-C.
+
+
+
+References size\-Local().
+
+
+\begin{DoxyCode}
+409 \{
+410   \textcolor{keywordtype}{double} result = 0.;
+411 
+412   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+413   \textcolor{keywordtype}{double} aux = 0.;
+414   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i) \{
+415     aux = fabs((*\textcolor{keyword}{this})[i]);
+416     \textcolor{keywordflow}{if} (aux > result) result = aux;
+417   \}
+418 
+419   \textcolor{keywordflow}{return} result;
+420 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_abc5068be9af5256983cb2c5ecdcf8229}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!operator$\ast$=@{operator$\ast$=}}
+\index{operator$\ast$=@{operator$\ast$=}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{operator$\ast$=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Gsl\-Vector} \& Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::operator$\ast$= (
+\begin{DoxyParamCaption}
+\item[{double}]{a}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_abc5068be9af5256983cb2c5ecdcf8229}
+
+
+Stores in {\ttfamily this} the coordinate-\/wise multiplication of {\ttfamily this} and a. 
+
+
+
+Definition at line 238 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, m\-\_\-vec, U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-R\-C\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+239 \{
+240   \textcolor{keywordtype}{int} iRC;
+241   iRC = gsl\_vector\_scale(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec},a);
+242   \hyperlink{_defines_8h_aa9107e1a9a5197371a412db3fa349988}{UQ\_FATAL\_RC\_MACRO}(iRC,
+243                     \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+244                     \textcolor{stringliteral}{"GslVector::operator*=()"},
+245                     \textcolor{stringliteral}{"failed"});
+246   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};
+247 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ac0046d85fddd8e9dbbebd19d1b61a9bd}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!operator$\ast$=@{operator$\ast$=}}
+\index{operator$\ast$=@{operator$\ast$=}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{operator$\ast$=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Gsl\-Vector} \& Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::operator$\ast$= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{rhs}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_ac0046d85fddd8e9dbbebd19d1b61a9bd}
+
+
+Stores in {\ttfamily this} the coordinate-\/wise multiplication of {\ttfamily this} with rhs. 
+
+
+
+Definition at line 258 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+259 \{
+260   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size1 = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+261   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size2 = rhs.sizeLocal();
+262   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((size1 != size2),
+263                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+264                       \textcolor{stringliteral}{"GslVector::operator*=()"},
+265                       \textcolor{stringliteral}{"different sizes of this and rhs"});
+266 
+267   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size1; ++i) \{
+268     (*this)[i] *= rhs[i];
+269   \}
+270 
+271   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};
+272 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ae736e2bfbeb9f14a78f33cbbaa6acb19}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{operator+=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Gsl\-Vector} \& Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::operator+= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{rhs}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_ae736e2bfbeb9f14a78f33cbbaa6acb19}
+
+
+Stores in {\ttfamily this} the coordinate-\/wise addition of {\ttfamily this} and rhs. 
+
+
+
+Definition at line 292 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, m\-\_\-vec, U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-R\-C\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+293 \{
+294   \textcolor{keywordtype}{int} iRC;
+295   iRC = gsl\_vector\_add(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec},rhs.m\_vec);
+296   \hyperlink{_defines_8h_aa9107e1a9a5197371a412db3fa349988}{UQ\_FATAL\_RC\_MACRO}(iRC,
+297                     \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+298                     \textcolor{stringliteral}{"GslVector::operator+=()"},
+299                     \textcolor{stringliteral}{"failed"});
+300   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};
+301 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ac1df668b8aa9a5e1a482ab85a1b0692d}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!operator-\/=@{operator-\/=}}
+\index{operator-\/=@{operator-\/=}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{operator-\/=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Gsl\-Vector} \& Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::operator-\/= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{rhs}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_ac1df668b8aa9a5e1a482ab85a1b0692d}
+
+
+Stores in {\ttfamily this} the coordinate-\/wise subtraction of {\ttfamily this} by rhs. 
+
+
+
+Definition at line 304 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, m\-\_\-vec, U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-R\-C\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+305 \{
+306   \textcolor{keywordtype}{int} iRC;
+307   iRC = gsl\_vector\_sub(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec},rhs.m\_vec);
+308   \hyperlink{_defines_8h_aa9107e1a9a5197371a412db3fa349988}{UQ\_FATAL\_RC\_MACRO}(iRC,
+309                     \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+310                     \textcolor{stringliteral}{"GslVector::operator-=()"},
+311                     \textcolor{stringliteral}{"failed"});
+312 
+313   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};
+314 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a254b8ce11020280e7af0eea9b7626b4e}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!operator/=@{operator/=}}
+\index{operator/=@{operator/=}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{operator/=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Gsl\-Vector} \& Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::operator/= (
+\begin{DoxyParamCaption}
+\item[{double}]{a}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a254b8ce11020280e7af0eea9b7626b4e}
+
+
+Stores in {\ttfamily this} the coordinate-\/wise division of {\ttfamily this} by a. 
+
+
+
+Definition at line 250 of file Gsl\-Vector.\-C.
+
+
+\begin{DoxyCode}
+251 \{
+252   *\textcolor{keyword}{this} *= (1./a);
+253 
+254   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};
+255 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a53644e0b71d5bff6117c5634bba66fe1}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!operator/=@{operator/=}}
+\index{operator/=@{operator/=}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{operator/=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Gsl\-Vector} \& Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::operator/= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{rhs}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a53644e0b71d5bff6117c5634bba66fe1}
+
+
+Stores in {\ttfamily this} the coordinate-\/wise division of {\ttfamily this} by rhs. 
+
+
+
+Definition at line 275 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+276 \{
+277   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size1 = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+278   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size2 = rhs.sizeLocal();
+279   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((size1 != size2),
+280                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+281                       \textcolor{stringliteral}{"GslVector::operator/=()"},
+282                       \textcolor{stringliteral}{"different sizes of this and rhs"});
+283 
+284   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size1; ++i) \{
+285     (*this)[i] /= rhs[i];
+286   \}
+287 
+288   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};
+289 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_aec9896bae67226f0f0d030d0de603956}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!operator=@{operator=}}
+\index{operator=@{operator=}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Gsl\-Vector} \& Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Gsl\-Vector} \&}]{rhs}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_aec9896bae67226f0f0d030d0de603956}
+
+
+Copies values from vector rhs to {\ttfamily this}. 
+
+
+
+Definition at line 219 of file Gsl\-Vector.\-C.
+
+
+
+References copy(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, size\-Local(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+220 \{
+221   \textcolor{comment}{//std::cout << "In GslVector::operator=()" // mox}
+222   \textcolor{comment}{//          << ": setting size1"}
+223   \textcolor{comment}{//          << std::endl;}
+224   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size1 = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+225   \textcolor{comment}{//std::cout << "In GslVector::operator=()" // mox}
+226   \textcolor{comment}{//          << ": setting size2"}
+227   \textcolor{comment}{//          << std::endl;}
+228   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size2 = rhs.sizeLocal();
+229   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(size1 != size2, \textcolor{comment}{// mox}
+230                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+231                       \textcolor{stringliteral}{"GslVector::operator=()"},
+232                       \textcolor{stringliteral}{"sizes are not compatible"});
+233   this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a95d78ab4f5b1c7f16ff453d770a955fb}{copy}(rhs);
+234   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};
+235 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a5fa9fb9a84749ea69919e6bc4a5ee9f9}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}double \& Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{i}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_a5fa9fb9a84749ea69919e6bc4a5ee9f9}
+
+
+Element access method (non-\/const). 
+
+Returns the i-\/th element if x\mbox{[}i\mbox{]} is specified, the expression x(i) will return the same element. 
+
+Definition at line 317 of file Gsl\-Vector.\-C.
+
+
+
+References m\-\_\-vec.
+
+
+\begin{DoxyCode}
+318 \{
+319   \textcolor{keywordflow}{return} *gsl\_vector\_ptr(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec},i);
+320 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a10150c873dc75f642bda5d3dd09140f1}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}const double \& Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{i}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_a10150c873dc75f642bda5d3dd09140f1}
+
+
+Element access method (const). 
+
+Returns the i-\/th element if x\mbox{[}i\mbox{]} is specified, the expression x(i) will return the same element. 
+
+Definition at line 323 of file Gsl\-Vector.\-C.
+
+
+
+References m\-\_\-vec.
+
+
+\begin{DoxyCode}
+324 \{
+325   \textcolor{keywordflow}{return} *gsl\_vector\_const\_ptr(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec},i);
+326 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ae0998a793ae43c6ac83fdc92c826f4b2}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!print@{print}}
+\index{print@{print}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gsl_vector_ae0998a793ae43c6ac83fdc92c826f4b2}
+
+
+Print method. Defines the behavior of the std\-::ostream $<$$<$ operator inherited from the Object class. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_vector_a7bd70a5181fbc2f20aaac46b0a9e3c72}{Q\-U\-E\-S\-O\-::\-Vector}.
+
+
+
+Definition at line 923 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-print\-Horizontally, Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-print\-Scientific, and size\-Local().
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::operator$<$$<$().
+
+
+\begin{DoxyCode}
+924 \{
+925   \textcolor{comment}{//std::cout << "In GslVector::print(): before sizelocal()"}
+926   \textcolor{comment}{//          << std::endl;}
+927   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+928   \textcolor{comment}{//std::cout << "In GslVector::print(): after sizelocal()"}
+929   \textcolor{comment}{//          << std::endl;}
+930 
+931   \textcolor{comment}{//std::cout << "In GslVector::print(): before os.flags()"}
+932   \textcolor{comment}{//          << std::endl;}
+933   std::ostream::fmtflags curr\_fmt = os.flags();
+934   \textcolor{comment}{//std::cout << "In GslVector::print(): after os.flags()"}
+935   \textcolor{comment}{//          << std::endl;}
+936 
+937   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_a55d8e946571a9491a028ecb9a8a992a4}{m\_printScientific}) \{
+938     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} savedPrecision = os.precision();
+939     os.precision(16);
+940 
+941     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_a6bc4326d0e4f44f015bf2e30c7ee620d}{m\_printHorizontally}) \{
+942       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i) \{
+943         os << std::scientific << (*this)[i]
+944            << \textcolor{stringliteral}{" "};
+945       \}
+946     \}
+947     \textcolor{keywordflow}{else} \{
+948       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i) \{
+949         os << std::scientific << (*this)[i]
+950            << std::endl;
+951       \}
+952     \}
+953 
+954     os.precision(savedPrecision);
+955   \}
+956   \textcolor{keywordflow}{else} \{
+957     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_a6bc4326d0e4f44f015bf2e30c7ee620d}{m\_printHorizontally}) \{
+958       \textcolor{comment}{//std::cout << "In GslVector::print(): where expected"}
+959       \textcolor{comment}{//          << std::endl;}
+960       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i) \{
+961         os << std::dec << (*this)[i]
+962            << \textcolor{stringliteral}{" "};
+963       \}
+964     \}
+965     \textcolor{keywordflow}{else} \{
+966       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i) \{
+967         os << std::dec << (*this)[i]
+968            << std::endl;
+969       \}
+970     \}
+971   \}
+972 
+973   \textcolor{comment}{//std::cout << "In GslVector::print(): before os.flags(curr\_fmt)"}
+974   \textcolor{comment}{//          << std::endl;}
+975   os.flags(curr\_fmt);
+976   \textcolor{comment}{//std::cout << "In GslVector::print(): after os.flags(curr\_fmt)"}
+977   \textcolor{comment}{//          << std::endl;}
+978 
+979   \textcolor{keywordflow}{return};
+980 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_aaaf58e9e980ce006ea4d2b7f69eb6111}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!size\-Global@{size\-Global}}
+\index{size\-Global@{size\-Global}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{size\-Global}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::size\-Global (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gsl_vector_aaaf58e9e980ce006ea4d2b7f69eb6111}
+
+
+Returns the global length of this vector. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_vector_ae22a3f92ec2dfcec49b4def6c7d0b306}{Q\-U\-E\-S\-O\-::\-Vector}.
+
+
+
+Definition at line 372 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-map, m\-\_\-vec, Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-Global\-Elements(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+373 \{
+374   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_aa99c771bc8d1aafff7277ed8f7fbd157}{m\_map}.\hyperlink{class_q_u_e_s_o_1_1_map_ac67907266dcd7108ffe5a0cbef908781}{NumGlobalElements}(),
+375                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+376                       \textcolor{stringliteral}{"GslVector::sizeGlobal()"},
+377                       \textcolor{stringliteral}{"incompatible vec size"});
+378 
+379   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size;
+380 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!size\-Local@{size\-Local}}
+\index{size\-Local@{size\-Local}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{size\-Local}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::size\-Local (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}
+
+
+Returns the length of this vector. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_vector_adf48150d839ad2b6ca24221df6aaa3ef}{Q\-U\-E\-S\-O\-::\-Vector}.
+
+
+
+Definition at line 343 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-map, m\-\_\-vec, Q\-U\-E\-S\-O\-::\-Map\-::\-Num\-My\-Elements(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+
+Referenced by abs(), at\-Least\-One\-Component\-Bigger\-Or\-Equal\-Than(), at\-Least\-One\-Component\-Bigger\-Than(), at\-Least\-One\-Component\-Smaller\-Or\-Equal\-Than(), at\-Least\-One\-Component\-Smaller\-Than(), cw\-Extract(), cw\-Invert(), cw\-Set(), cw\-Set\-Beta(), cw\-Set\-Concatenated(), cw\-Set\-Gamma(), cw\-Set\-Gaussian(), cw\-Set\-Inverse\-Gamma(), cw\-Set\-Uniform(), cw\-Sqrt(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::eigen(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::fill\-With\-Tensor\-Product(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::get\-Column(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::get\-Row(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::\-Gsl\-Matrix(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::invert\-Multiply(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::invert\-Multiply\-Force\-L\-U(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::largest\-Eigen(), Q\-U\-E\-S\-O\-::left\-Diag\-Scaling(), matlab\-Diff(), matlab\-Linear\-Interp\-Extrap(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::matlab\-Linear\-Interp\-Extrap(), Q\-U\-E\-S\-O\-::matrix\-Product(), mpi\-All\-Quantile(), mpi\-All\-Reduce(), mpi\-Bcast(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::multiply(), norm1(), norm\-Inf(), operator$\ast$=(), operator/=(), operator=(), Q\-U\-E\-S\-O\-::operator==(), print(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::rank(), Q\-U\-E\-S\-O\-::right\-Diag\-Scaling(), Q\-U\-E\-S\-O\-::scalar\-Product(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::set\-Column(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::set\-Row(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::smallest\-Eigen(), sub\-Read\-Contents(), sub\-Write\-Contents(), sum\-Of\-Components(), Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::svd(), and Q\-U\-E\-S\-O\-::\-Gsl\-Matrix\-::svd\-Solve().
+
+
+\begin{DoxyCode}
+344 \{
+345   \textcolor{comment}{// mox}
+346   \textcolor{comment}{//std::cout << "Entering GslVector::sizeLocal()"}
+347   \textcolor{comment}{//          << ": &m\_map = "                << &m\_map}
+348   \textcolor{comment}{//          << std::endl;}
+349   \textcolor{comment}{//std::cout << ", m\_map.NumMyElements() = " << m\_map.NumMyElements()}
+350   \textcolor{comment}{//          << std::endl;}
+351   \textcolor{comment}{//std::cout << ", m\_vec = "                 << m\_vec}
+352   \textcolor{comment}{//          << std::endl;}
+353   \textcolor{comment}{//std::cout << ", m\_vec->size = "           << m\_vec->size}
+354   \textcolor{comment}{//          << std::endl;}
+355 
+356   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size != (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) 
+      \hyperlink{class_q_u_e_s_o_1_1_vector_aa99c771bc8d1aafff7277ed8f7fbd157}{m\_map}.\hyperlink{class_q_u_e_s_o_1_1_map_a6407f6d6a6df8a0a40923c8dc524b021}{NumMyElements}(),
+357                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+358                       \textcolor{stringliteral}{"GslVector::sizeLocal()"},
+359                       \textcolor{stringliteral}{"incompatible vec size"});
+360 
+361   \textcolor{comment}{//std::cout << "Leaving GslVector::sizeLocal()"}
+362   \textcolor{comment}{//          << ": m\_vec = " << m\_vec}
+363   \textcolor{comment}{//          << ", m\_vec->size = " << m\_vec->size}
+364   \textcolor{comment}{//          << ", &m\_map = " << &m\_map}
+365   \textcolor{comment}{//          << ", m\_map.NumMyElements() = " << m\_map.NumMyElements()}
+366   \textcolor{comment}{//          << std::endl;}
+367 
+368   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec}->size;
+369 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ad4d0487806dd59f44a828ee228ba17b3}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!sort@{sort}}
+\index{sort@{sort}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{sort}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::sort (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gsl_vector_ad4d0487806dd59f44a828ee228ba17b3}
+
+
+This function sorts the elements of the vector {\ttfamily this} in ascending numerical order. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_vector_a57bec5bd73b41e301b9602c849f0e75f}{Q\-U\-E\-S\-O\-::\-Vector}.
+
+
+
+Definition at line 789 of file Gsl\-Vector.\-C.
+
+
+
+References m\-\_\-vec.
+
+
+\begin{DoxyCode}
+790 \{
+791   gsl\_sort\_vector(\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{m\_vec});
+792 
+793   \textcolor{keywordflow}{return};
+794 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ae0047a01f01b4aaf3c67b716f4408932}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!sub\-Read\-Contents@{sub\-Read\-Contents}}
+\index{sub\-Read\-Contents@{sub\-Read\-Contents}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{sub\-Read\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::sub\-Read\-Contents (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{file\-Name, }
+\item[{const std\-::string \&}]{file\-Type, }
+\item[{const std\-::set$<$ unsigned int $>$ \&}]{allowed\-Sub\-Env\-Ids}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gsl_vector_ae0047a01f01b4aaf3c67b716f4408932}
+
+
+Definition at line 1029 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::close\-File(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::full\-Rank(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Vector\-::num\-Of\-Procs\-For\-Storage(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::open\-Input\-File(), size\-Local(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Rank(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+1033 \{
+1034   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a172d52f993f1322ed45aaddf71518dbb}{subRank}() < 0,
+1035                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+1036                       \textcolor{stringliteral}{"GslVector::subReadContents()"},
+1037                       \textcolor{stringliteral}{"unexpected subRank"});
+1038 
+1039   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(this->\hyperlink{class_q_u_e_s_o_1_1_vector_a4dab068a8b5cedef00b8520c4e106a2b}{numOfProcsForStorage}() > 1,
+1040                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+1041                       \textcolor{stringliteral}{"GslVector::subReadContents()"},
+1042                       \textcolor{stringliteral}{"implemented just for sequential vectors for now"});
+1043 
+1044   FilePtrSetStruct filePtrSet;
+1045   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a3f76733a31991a1ed9a942feb2dc3c}{openInputFile}(fileName,
+1046                           fileType, \textcolor{comment}{// "m or hdf"}
+1047                           allowedSubEnvIds,
+1048                           filePtrSet)) \{
+1049     \textcolor{keywordtype}{double} subReadSize = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+1050 
+1051     \textcolor{comment}{// In the logic below, the id of a line' begins with value 0 (zero)}
+1052     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} idOfMyFirstLine = 1;
+1053     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} idOfMyLastLine = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+1054     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numParams = 1; \textcolor{comment}{// Yes, just '1'}
+1055 
+1056     \textcolor{comment}{// Read number of chain positions in the file by taking care of the first line,}
+1057     \textcolor{comment}{// which resembles something like 'variable\_name = zeros(n\_positions,m\_params);'}
+1058     std::string tmpString;
+1059 
+1060     \textcolor{comment}{// Read 'variable name' string}
+1061     *filePtrSet.ifsVar >> tmpString;
+1062     \textcolor{comment}{//std::cout << "Just read '" << tmpString << "'" << std::endl;}
+1063 
+1064     \textcolor{comment}{// Read '=' sign}
+1065     *filePtrSet.ifsVar >> tmpString;
+1066     \textcolor{comment}{//std::cout << "Just read '" << tmpString << "'" << std::endl;}
+1067     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(tmpString != \textcolor{stringliteral}{"="},
+1068                         \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+1069                         \textcolor{stringliteral}{"GslVector::subReadContents()"},
+1070                         \textcolor{stringliteral}{"string should be the '=' sign"});
+1071 
+1072     \textcolor{comment}{// Read 'zeros(n\_positions,n\_params)' string}
+1073     *filePtrSet.ifsVar >> tmpString;
+1074     \textcolor{comment}{//std::cout << "Just read '" << tmpString << "'" << std::endl;}
+1075     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} posInTmpString = 6;
+1076 
+1077     \textcolor{comment}{// Isolate 'n\_positions' in a string}
+1078     \textcolor{keywordtype}{char} nPositionsString[tmpString.size()-posInTmpString+1];
+1079     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} posInPositionsString = 0;
+1080     \textcolor{keywordflow}{do} \{
+1081       \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(posInTmpString >= tmpString.size(),
+1082                           \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+1083                           \textcolor{stringliteral}{"GslVector::subReadContents()"},
+1084                           \textcolor{stringliteral}{"symbol ',' not found in first line of file"});
+1085       nPositionsString[posInPositionsString++] = tmpString[posInTmpString++];
+1086     \} \textcolor{keywordflow}{while} (tmpString[posInTmpString] != \textcolor{charliteral}{','});
+1087     nPositionsString[posInPositionsString] = \textcolor{charliteral}{'\(\backslash\)0'};
+1088 
+1089     \textcolor{comment}{// Isolate 'n\_params' in a string}
+1090     posInTmpString++; \textcolor{comment}{// Avoid reading ',' char}
+1091     \textcolor{keywordtype}{char} nParamsString[tmpString.size()-posInTmpString+1];
+1092     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} posInParamsString = 0;
+1093     \textcolor{keywordflow}{do} \{
+1094       \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(posInTmpString >= tmpString.size(),
+1095                           \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+1096                           \textcolor{stringliteral}{"GslVector::subReadContents()"},
+1097                           \textcolor{stringliteral}{"symbol ')' not found in first line of file"});
+1098       nParamsString[posInParamsString++] = tmpString[posInTmpString++];
+1099     \} \textcolor{keywordflow}{while} (tmpString[posInTmpString] != \textcolor{charliteral}{')'});
+1100     nParamsString[posInParamsString] = \textcolor{charliteral}{'\(\backslash\)0'};
+1101 
+1102     \textcolor{comment}{// Convert 'n\_positions' and 'n\_params' strings to numbers}
+1103     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} sizeOfVecInFile = (\textcolor{keywordtype}{unsigned} int) strtod(nPositionsString,NULL);
+1104     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numParamsInFile = (\textcolor{keywordtype}{unsigned} int) strtod(nParamsString,   NULL);
+1105     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+1106       *\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In GslVector::subReadContents()"}
+1107                               << \textcolor{stringliteral}{": fullRank "}            << \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a84a239e42ae443cf71db6e03e8159620}{fullRank}()
+1108                               << \textcolor{stringliteral}{", sizeOfVecInFile = "}   << sizeOfVecInFile
+1109                               << \textcolor{stringliteral}{", numParamsInFile = "}   << numParamsInFile
+1110                               << \textcolor{stringliteral}{", this->sizeLocal() = "} << this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}()
+1111                               << std::endl;
+1112     \}
+1113 
+1114     \textcolor{comment}{// Check if [size of vec in file] >= [requested sub vec size]}
+1115     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(sizeOfVecInFile < subReadSize,
+1116                         \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+1117                         \textcolor{stringliteral}{"GslVector::subReadContents()"},
+1118                         \textcolor{stringliteral}{"size of vec in file is not big enough"});
+1119 
+1120     \textcolor{comment}{// Check if [num params in file] == [num params in current vec]}
+1121     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(numParamsInFile != numParams,
+1122                         \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+1123                         \textcolor{stringliteral}{"GslVector::subReadContents()"},
+1124                         \textcolor{stringliteral}{"number of parameters of vec in file is different than number of parameters in this
+       vec object"});
+1125 
+1126     \textcolor{comment}{// Code common to any core in a communicator}
+1127     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} maxCharsPerLine = 64*numParams; \textcolor{comment}{// Up to about 60 characters to represent each parameter
+       value}
+1128 
+1129     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} lineId = 0;
+1130     \textcolor{keywordflow}{while} (lineId < idOfMyFirstLine) \{
+1131       filePtrSet.ifsVar->ignore(maxCharsPerLine,\textcolor{charliteral}{'\(\backslash\)n'});
+1132       lineId++;
+1133     \};
+1134 
+1135     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+1136       *\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In GslVector::subReadContents()"}
+1137                               << \textcolor{stringliteral}{": beginning to read input actual data"}
+1138                               << std::endl;
+1139     \}
+1140 
+1141     \textcolor{comment}{// Take care of initial part of the first data line,}
+1142     \textcolor{comment}{// which resembles something like 'variable\_name = [value1 value2 ...'}
+1143     \textcolor{comment}{// Read 'variable name' string}
+1144     *filePtrSet.ifsVar >> tmpString;
+1145     \textcolor{comment}{//std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;}
+1146 
+1147     \textcolor{comment}{// Read '=' sign}
+1148     *filePtrSet.ifsVar >> tmpString;
+1149     \textcolor{comment}{//std::cout << "Core 0 just read '" << tmpString << "'" << std::endl;}
+1150     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(tmpString != \textcolor{stringliteral}{"="},
+1151                         \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+1152                         \textcolor{stringliteral}{"GslVector::subReadContents()"},
+1153                         \textcolor{stringliteral}{"in core 0, string should be the '=' sign"});
+1154 
+1155     \textcolor{comment}{// Take into account the ' [' portion}
+1156     std::streampos tmpPos = filePtrSet.ifsVar->tellg();
+1157     filePtrSet.ifsVar->seekg(tmpPos+(std::streampos)2);
+1158 
+1159     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+1160       *\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In GslVector::subReadContents()"}
+1161                               << \textcolor{stringliteral}{": beginning to read lines with numbers only"}
+1162                               << \textcolor{stringliteral}{", lineId = "} << lineId
+1163                               << \textcolor{stringliteral}{", idOfMyFirstLine = "} << idOfMyFirstLine
+1164                               << \textcolor{stringliteral}{", idOfMyLastLine = "} << idOfMyLastLine
+1165                               << std::endl;
+1166     \}
+1167 
+1168     \textcolor{keywordflow}{while} (lineId <= idOfMyLastLine) \{
+1169       *filePtrSet.ifsVar >> (*this)[lineId - idOfMyFirstLine];
+1170       lineId++;
+1171     \};
+1172 
+1173     \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ab712bff194ddd91459d4ea8715c77e8b}{closeFile}(filePtrSet,fileType);
+1174   \}
+1175 
+1176   \textcolor{keywordflow}{return};
+1177 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ab222530a760b07f6c22eafe92585d8c5}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!sub\-Write\-Contents@{sub\-Write\-Contents}}
+\index{sub\-Write\-Contents@{sub\-Write\-Contents}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{sub\-Write\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::sub\-Write\-Contents (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{var\-Name\-Prefix, }
+\item[{const std\-::string \&}]{file\-Name, }
+\item[{const std\-::string \&}]{file\-Type, }
+\item[{const std\-::set$<$ unsigned int $>$ \&}]{allowed\-Sub\-Env\-Ids}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_ab222530a760b07f6c22eafe92585d8c5}
+
+
+Definition at line 983 of file Gsl\-Vector.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::close\-File(), Q\-U\-E\-S\-O\-::\-Vector\-::get\-Print\-Horizontally(), Q\-U\-E\-S\-O\-::\-Vector\-::get\-Print\-Scientific(), Q\-U\-E\-S\-O\-::\-Vector\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Vector\-::num\-Of\-Procs\-For\-Storage(), Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct\-::ofs\-Var, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::open\-Output\-File(), Q\-U\-E\-S\-O\-::\-Vector\-::set\-Print\-Horizontally(), Q\-U\-E\-S\-O\-::\-Vector\-::set\-Print\-Scientific(), size\-Local(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Id\-String(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Rank(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+988 \{
+989   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a172d52f993f1322ed45aaddf71518dbb}{subRank}() < 0,
+990                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+991                       \textcolor{stringliteral}{"GslVector::subWriteContents()"},
+992                       \textcolor{stringliteral}{"unexpected subRank"});
+993 
+994   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(this->\hyperlink{class_q_u_e_s_o_1_1_vector_a4dab068a8b5cedef00b8520c4e106a2b}{numOfProcsForStorage}() > 1,
+995                       \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+996                       \textcolor{stringliteral}{"GslVector::subWriteContents()"},
+997                       \textcolor{stringliteral}{"implemented just for sequential vectors for now"});
+998 
+999   FilePtrSetStruct filePtrSet;
+1000   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ab8fe853074f12ea34e18724119a2fc75}{openOutputFile}(fileName,
+1001                            fileType, \textcolor{comment}{// "m or hdf"}
+1002                            allowedSubEnvIds,
+1003                            \textcolor{keyword}{false},
+1004                            filePtrSet)) \{
+1005     *filePtrSet.ofsVar << varNamePrefix << \textcolor{stringliteral}{"\_sub"} << \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a73f7849acdd5d5ba15a3094fe18f258f}{subIdString}() << \textcolor{stringliteral}{" = zeros("} << 
+      this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}()
+1006                        << \textcolor{stringliteral}{","}                                                           << 1
+1007                        << \textcolor{stringliteral}{");"}
+1008                        << std::endl;
+1009     *filePtrSet.ofsVar << varNamePrefix << \textcolor{stringliteral}{"\_sub"} << \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a73f7849acdd5d5ba15a3094fe18f258f}{subIdString}() << \textcolor{stringliteral}{" = ["};
+1010 
+1011     \textcolor{keywordtype}{bool} savedVectorPrintScientific   = this->\hyperlink{class_q_u_e_s_o_1_1_vector_a22b34a6d1ca3acce56054b5145bd83fe}{getPrintScientific}();
+1012     \textcolor{keywordtype}{bool} savedVectorPrintHorizontally = this->\hyperlink{class_q_u_e_s_o_1_1_vector_abd1a972dac88eb02a6de8ec36d04a3ea}{getPrintHorizontally}();
+1013     this->\hyperlink{class_q_u_e_s_o_1_1_vector_a7ac1d907a63659233d0fe24b3abafe68}{setPrintScientific}  (\textcolor{keyword}{true});
+1014     this->\hyperlink{class_q_u_e_s_o_1_1_vector_a993054e464a2626c35667c7c97bc9051}{setPrintHorizontally}(\textcolor{keyword}{false});
+1015     *filePtrSet.ofsVar << *\textcolor{keyword}{this};
+1016                      \textcolor{comment}{//<< std::endl; // No need for 'endl' because horizontally = 'false'}
+1017     this->\hyperlink{class_q_u_e_s_o_1_1_vector_a993054e464a2626c35667c7c97bc9051}{setPrintHorizontally}(savedVectorPrintHorizontally);
+1018     this->\hyperlink{class_q_u_e_s_o_1_1_vector_a7ac1d907a63659233d0fe24b3abafe68}{setPrintScientific}  (savedVectorPrintScientific);
+1019 
+1020     *filePtrSet.ofsVar << \textcolor{stringliteral}{"];\(\backslash\)n"};
+1021 
+1022     \hyperlink{class_q_u_e_s_o_1_1_vector_ae7615172bb1e54339151d3f3d71a0344}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ab712bff194ddd91459d4ea8715c77e8b}{closeFile}(filePtrSet,fileType);
+1023   \}
+1024 
+1025   \textcolor{keywordflow}{return};
+1026 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_ad3fc6178cfa5c590e8bb241b791014f5}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!sum\-Of\-Components@{sum\-Of\-Components}}
+\index{sum\-Of\-Components@{sum\-Of\-Components}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{sum\-Of\-Components}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::sum\-Of\-Components (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_gsl_vector_ad3fc6178cfa5c590e8bb241b791014f5}
+
+
+Returns the sum of the components of the vector. 
+
+
+
+Definition at line 423 of file Gsl\-Vector.\-C.
+
+
+
+References size\-Local().
+
+
+\begin{DoxyCode}
+424 \{
+425   \textcolor{keywordtype}{double} result = 0.;
+426   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size = this->\hyperlink{class_q_u_e_s_o_1_1_gsl_vector_ace6fb1739b7cf6456b3dcde84c766fb3}{sizeLocal}();
+427   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < size; ++i) \{
+428     result += (*this)[i];
+429   \}
+430 
+431   \textcolor{keywordflow}{return} result;
+432 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}{\index{Q\-U\-E\-S\-O\-::\-Gsl\-Vector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}!m\-\_\-vec@{m\-\_\-vec}}
+\index{m\-\_\-vec@{m\-\_\-vec}!QUESO::GslVector@{Q\-U\-E\-S\-O\-::\-Gsl\-Vector}}
+\subsubsection[{m\-\_\-vec}]{\setlength{\rightskip}{0pt plus 5cm}gsl\-\_\-vector$\ast$ Q\-U\-E\-S\-O\-::\-Gsl\-Vector\-::m\-\_\-vec\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_gsl_vector_a503dd126017b7ac587ff511e8d0d833b}
+
+
+G\-S\-L vector. 
+
+
+
+Definition at line 245 of file Gsl\-Vector.\-h.
+
+
+
+Referenced by copy(), data(), get\-Max\-Value(), get\-Max\-Value\-Index(), get\-Min\-Value(), get\-Min\-Value\-Index(), Gsl\-Vector(), operator$\ast$=(), operator+=(), operator-\/=(), operator\mbox{[}$\,$\mbox{]}(), size\-Global(), size\-Local(), sort(), and $\sim$\-Gsl\-Vector().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{_gsl_vector_8h}{Gsl\-Vector.\-h}\item 
+src/core/src/\hyperlink{_gsl_vector_8_c}{Gsl\-Vector.\-C}\end{DoxyCompactItemize}

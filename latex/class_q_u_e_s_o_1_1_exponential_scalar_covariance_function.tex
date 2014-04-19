@@ -1,0 +1,222 @@
+\hypertarget{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function}{\section{Q\-U\-E\-S\-O\-:\-:Exponential\-Scalar\-Covariance\-Function$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function}\index{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function$<$ V, M $>$}}
+}
+
+
+A class for exponential covariances.  
+
+
+
+
+{\ttfamily \#include $<$Exponential\-Scalar\-Covariance\-Function.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Exponential\-Scalar\-Covariance\-Function$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=252pt]{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Exponential\-Scalar\-Covariance\-Function$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_a2b0393d92cd21365c2d76d250007ea9a}{Exponential\-Scalar\-Covariance\-Function} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a703aa6a8e475adaface0ec514b48a5bc}{basic\-Domain\-Set}, double sigma, double a)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_ac3eb24d0980491bd3e5bc718d304789c}{$\sim$\-Exponential\-Scalar\-Covariance\-Function} ()
+\begin{DoxyCompactList}\small\item\em Virtual destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Math methods}\par
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_ad65cfe1440c9045718bc57827d6fb551}{value} (const V \&domain\-Vector1, const V \&domain\-Vector2) const 
+\begin{DoxyCompactList}\small\item\em Calculates the value of the exponential covariance function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_aece243cd9fbe9bdd7720b422c2f7513a}{m\-\_\-sigma}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_a16940568b7c22abb6caf31ccfb505c16}{m\-\_\-a}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function$<$ V, M $>$}
+
+A class for exponential covariances. 
+
+This class implements squared exponential covariance functions of the form\-: \[ cov = a \exp{(-d^2/\sigma^2)}\], where $ d=d(x,y) $ is the distance between two points, $ \sigma^2 $ is the variance and $ a $ is the length scale. This is a stationary covariance function with smooth sample paths. Exponential covariance functions are largely employed in Gaussian processes. 
+
+Definition at line 49 of file Exponential\-Scalar\-Covariance\-Function.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_a2b0393d92cd21365c2d76d250007ea9a}{\index{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}!Exponential\-Scalar\-Covariance\-Function@{Exponential\-Scalar\-Covariance\-Function}}
+\index{Exponential\-Scalar\-Covariance\-Function@{Exponential\-Scalar\-Covariance\-Function}!QUESO::ExponentialScalarCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}}
+\subsubsection[{Exponential\-Scalar\-Covariance\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}$<$ V, M $>$\-::{\bf Exponential\-Scalar\-Covariance\-Function} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{basic\-Domain\-Set, }
+\item[{double}]{sigma, }
+\item[{double}]{a}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_a2b0393d92cd21365c2d76d250007ea9a}
+
+
+Default constructor. 
+
+Instantiates an object of the class given a prefix, the domain set, the variance and a scale factor. 
+
+Definition at line 31 of file Exponential\-Scalar\-Covariance\-Function.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function$<$ V, M $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+36   : 
+37   BaseScalarCovarianceFunction<V,M>(prefix,\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a703aa6a8e475adaface0ec514b48a5bc}{basicDomainSet}),
+38   \hyperlink{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_aece243cd9fbe9bdd7720b422c2f7513a}{m\_sigma}(sigma),
+39   \hyperlink{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_a16940568b7c22abb6caf31ccfb505c16}{m\_a}    (a)
+40 \{
+41   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+42     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       ExponentialScalarCovarianceFunction<V,M>::constructor()"}
+43                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a21636873436b88cb77075c6edbd61c71}{m\_prefix}
+44                             << std::endl;
+45   \}
+46 
+47   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+48     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       ExponentialScalarCovarianceFunction<V,M>::constructor()"}
+49                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a21636873436b88cb77075c6edbd61c71}{m\_prefix}
+50                             << std::endl;
+51   \}
+52 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_ac3eb24d0980491bd3e5bc718d304789c}{\index{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}!$\sim$\-Exponential\-Scalar\-Covariance\-Function@{$\sim$\-Exponential\-Scalar\-Covariance\-Function}}
+\index{$\sim$\-Exponential\-Scalar\-Covariance\-Function@{$\sim$\-Exponential\-Scalar\-Covariance\-Function}!QUESO::ExponentialScalarCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}}
+\subsubsection[{$\sim$\-Exponential\-Scalar\-Covariance\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}$<$ V, M $>$\-::$\sim${\bf Exponential\-Scalar\-Covariance\-Function} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_ac3eb24d0980491bd3e5bc718d304789c}
+
+
+Virtual destructor. 
+
+
+
+Definition at line 55 of file Exponential\-Scalar\-Covariance\-Function.\-C.
+
+
+\begin{DoxyCode}
+56 \{
+57   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+58     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       ExponentialScalarCovarianceFunction<V,M>::destructor()"}
+59                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a21636873436b88cb77075c6edbd61c71}{m\_prefix}
+60                             << std::endl;
+61   \}
+62 
+63   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+64     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       ExponentialScalarCovarianceFunction<V,M>::destructor()"}
+65                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a21636873436b88cb77075c6edbd61c71}{m\_prefix}
+66                             << std::endl;
+67   \}
+68 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_ad65cfe1440c9045718bc57827d6fb551}{\index{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}!value@{value}}
+\index{value@{value}!QUESO::ExponentialScalarCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}}
+\subsubsection[{value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}$<$ V, M $>$\-::value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector1, }
+\item[{const V \&}]{domain\-Vector2}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_ad65cfe1440c9045718bc57827d6fb551}
+
+
+Calculates the value of the exponential covariance function. 
+
+The value of the exponential covariance function is\-: $ cov= a exp (-d^2/sigma)$, with $ d= \sqrt{(domainVector1 - domainVector1)^2} $ 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a93a35146e106c7fb28913c604a918acb}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Covariance\-Function$<$ V, M $>$}.
+
+
+
+Definition at line 72 of file Exponential\-Scalar\-Covariance\-Function.\-C.
+
+
+\begin{DoxyCode}
+73 \{
+74   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+75     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       ExponentialScalarCovarianceFunction<V,M>::value()"}
+76                           << std::endl;
+77   \}
+78 
+79   \textcolor{keywordtype}{double} result = 0.;
+80 
+81   \textcolor{keywordtype}{double} exponent = -(domainVector1 - domainVector2).norm2Sq()/(\hyperlink{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_aece243cd9fbe9bdd7720b422c2f7513a}{m\_sigma}*
+      \hyperlink{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_aece243cd9fbe9bdd7720b422c2f7513a}{m\_sigma});
+82 
+83   result = \hyperlink{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_a16940568b7c22abb6caf31ccfb505c16}{m\_a}*std::exp(exponent);
+84 
+85   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+86     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function_a2a100016b480c498b5219fb937d62543}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       ExponentialScalarCovarianceFunction<V,M>::value()"}
+87                           << std::endl;
+88   \}
+89 
+90   \textcolor{keywordflow}{return} result;
+91 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_a16940568b7c22abb6caf31ccfb505c16}{\index{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}!m\-\_\-a@{m\-\_\-a}}
+\index{m\-\_\-a@{m\-\_\-a}!QUESO::ExponentialScalarCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}}
+\subsubsection[{m\-\_\-a}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}$<$ V, M $>$\-::m\-\_\-a\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_a16940568b7c22abb6caf31ccfb505c16}
+
+
+Definition at line 77 of file Exponential\-Scalar\-Covariance\-Function.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_aece243cd9fbe9bdd7720b422c2f7513a}{\index{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}!m\-\_\-sigma@{m\-\_\-sigma}}
+\index{m\-\_\-sigma@{m\-\_\-sigma}!QUESO::ExponentialScalarCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}}
+\subsubsection[{m\-\_\-sigma}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Exponential\-Scalar\-Covariance\-Function}$<$ V, M $>$\-::m\-\_\-sigma\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_exponential_scalar_covariance_function_aece243cd9fbe9bdd7720b422c2f7513a}
+
+
+Definition at line 76 of file Exponential\-Scalar\-Covariance\-Function.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_exponential_scalar_covariance_function_8h}{Exponential\-Scalar\-Covariance\-Function.\-h}\item 
+src/stats/src/\hyperlink{_exponential_scalar_covariance_function_8_c}{Exponential\-Scalar\-Covariance\-Function.\-C}\end{DoxyCompactItemize}

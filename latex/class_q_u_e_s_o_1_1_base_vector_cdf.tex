@@ -1,0 +1,316 @@
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_cdf}{\section{Q\-U\-E\-S\-O\-:\-:Base\-Vector\-Cdf$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_base_vector_cdf}\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$}}
+}
+
+
+A templated (base) class for handling C\-D\-Fs of vector functions.  
+
+
+
+
+{\ttfamily \#include $<$Vector\-Cdf.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Base\-Vector\-Cdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_vector_cdf__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Base\-Vector\-Cdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_vector_cdf__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_ac7d0efcc78675e5ecc0ec684841c70e2}{Base\-Vector\-Cdf} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aaf5088d3994606a9d449ccd414509709}{pdf\-Support})
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a0b3bcef9ed025de3184649c46c72cafb}{$\sim$\-Base\-Vector\-Cdf} ()
+\begin{DoxyCompactList}\small\item\em Virtual destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aaf5088d3994606a9d449ccd414509709}{pdf\-Support} () const 
+\begin{DoxyCompactList}\small\item\em Returns the image set (support) of the P\-D\-F; access to protected attribute {\ttfamily m\-\_\-pdf\-Support}. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a30b15bde5a206071b4e4db26141ce179}{values} (const V \&param\-Values, V \&cdf\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Finds the value of the vector C\-D\-F at each element of {\ttfamily param\-Value}, and saves it in {\ttfamily cdf\-Vec}. See template specialization. \end{DoxyCompactList}\item 
+virtual const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_cdf}{Base\-Scalar\-Cdf}\\*
+$<$ double $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aac430df67c3f278eb14b1691b9fedbb2}{cdf} (unsigned int row\-Id) const =0
+\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\-\_\-env}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}{m\-\_\-prefix}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a4e083383c98725fa83c5c8c133dcfea4}{m\-\_\-pdf\-Support}
+\end{DoxyCompactItemize}
+\subsection*{I/\-O methods}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a1ab6a49295542017bae6c5853398223f}{print} (std\-::ostream \&os) const =0
+\begin{DoxyCompactList}\small\item\em Prints the vector C\-D\-F. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_acd85c96edf9454b64fe31d6750164dfc}{sub\-Write\-Contents} (const std\-::string \&var\-Name\-Prefix, const std\-::string \&file\-Name, const std\-::string \&file\-Type, const std\-::set$<$ unsigned int $>$ \&allowed\-Sub\-Env\-Ids) const 
+\begin{DoxyCompactList}\small\item\em Writes the C\-D\-F of an allowed sub-\/environment to a file. \end{DoxyCompactList}\item 
+std\-::ostream \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a6da489fb178ea7354d91d756b06a0cfb}{operator$<$$<$} (std\-::ostream \&os, const \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf}{Base\-Vector\-Cdf}$<$ V, M $>$ \&obj)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$}
+
+A templated (base) class for handling C\-D\-Fs of vector functions. 
+
+In many applications is necessary to consider the properties of two or more R\-Vs simultaneously (represented within \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} as Random Vectors, via \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V} and derived classes). When dealing simultaneously with more than one R\-V, ie, a vector R\-V, the joint cumulative distribution function must also be defined. This class handles the C\-D\-Fs of vector R\-V, which are referred to as multivariate/vector/joint C\-D\-Fs. 
+
+Definition at line 56 of file Vector\-Cdf.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_cdf_ac7d0efcc78675e5ecc0ec684841c70e2}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}!Base\-Vector\-Cdf@{Base\-Vector\-Cdf}}
+\index{Base\-Vector\-Cdf@{Base\-Vector\-Cdf}!QUESO::BaseVectorCdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}}
+\subsubsection[{Base\-Vector\-Cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}$<$ V, M $>$\-::{\bf Base\-Vector\-Cdf} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{pdf\-Support}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_vector_cdf_ac7d0efcc78675e5ecc0ec684841c70e2}
+
+
+Default constructor. 
+
+Instantiates an object of the class given a prefix and the support (image set) of the P\-D\-F that is related to this C\-D\-F (recall that the C\-D\-F of a continuous R\-V is the integral of the P\-D\-F of that R\-V). 
+
+Definition at line 31 of file Vector\-Cdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+34   :
+35   \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}       (\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aaf5088d3994606a9d449ccd414509709}{pdfSupport}.env()),
+36   \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}{m\_prefix}    ((std::string)(prefix)+\textcolor{stringliteral}{"Cdf\_"}),
+37   \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a4e083383c98725fa83c5c8c133dcfea4}{m\_pdfSupport}(\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aaf5088d3994606a9d449ccd414509709}{pdfSupport})
+38 \{
+39   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+40     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering BaseVectorCdf<V,M>::constructor()"}
+41                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}{m\_prefix}
+42                            << std::endl;
+43   \}
+44 
+45   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+46     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving BaseVectorCdf<V,M>::constructor()"}
+47                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}{m\_prefix}
+48                            << std::endl;
+49   \}
+50 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_cdf_a0b3bcef9ed025de3184649c46c72cafb}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}!$\sim$\-Base\-Vector\-Cdf@{$\sim$\-Base\-Vector\-Cdf}}
+\index{$\sim$\-Base\-Vector\-Cdf@{$\sim$\-Base\-Vector\-Cdf}!QUESO::BaseVectorCdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}}
+\subsubsection[{$\sim$\-Base\-Vector\-Cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}$<$ V, M $>$\-::$\sim${\bf Base\-Vector\-Cdf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_cdf_a0b3bcef9ed025de3184649c46c72cafb}
+
+
+Virtual destructor. 
+
+
+
+Definition at line 53 of file Vector\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+54 \{
+55 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_cdf_aac430df67c3f278eb14b1691b9fedbb2}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}!cdf@{cdf}}
+\index{cdf@{cdf}!QUESO::BaseVectorCdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}}
+\subsubsection[{cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual const {\bf Base\-Scalar\-Cdf}$<$double$>$\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}$<$ V, M $>$\-::cdf (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{row\-Id}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_cdf_aac430df67c3f278eb14b1691b9fedbb2}
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_a51ee2c218b4e36dfc0c02bd542205789}{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::horizontal\-Distances().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_cdf_aaf5088d3994606a9d449ccd414509709}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}!pdf\-Support@{pdf\-Support}}
+\index{pdf\-Support@{pdf\-Support}!QUESO::BaseVectorCdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}}
+\subsubsection[{pdf\-Support}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Vector\-Set}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}$<$ V, M $>$\-::pdf\-Support (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_cdf_aaf5088d3994606a9d449ccd414509709}
+
+
+Returns the image set (support) of the P\-D\-F; access to protected attribute {\ttfamily m\-\_\-pdf\-Support}. 
+
+
+
+Definition at line 59 of file Vector\-Cdf.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::horizontal\-Distances().
+
+
+\begin{DoxyCode}
+60 \{
+61   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a4e083383c98725fa83c5c8c133dcfea4}{m\_pdfSupport};
+62 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_cdf_a1ab6a49295542017bae6c5853398223f}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}!print@{print}}
+\index{print@{print}!QUESO::BaseVectorCdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}$<$ V, M $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_cdf_a1ab6a49295542017bae6c5853398223f}
+
+
+Prints the vector C\-D\-F. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a9afe1cc5333789fb73974a0d17e7fc0c}{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_a9d62ca801a3d52b18188ae93b476c847}{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_generic_vector_cdf_a475687f4b66245980a79fcc825c76c7c}{Q\-U\-E\-S\-O\-::\-Generic\-Vector\-Cdf$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_cdf_acd85c96edf9454b64fe31d6750164dfc}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}!sub\-Write\-Contents@{sub\-Write\-Contents}}
+\index{sub\-Write\-Contents@{sub\-Write\-Contents}!QUESO::BaseVectorCdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}}
+\subsubsection[{sub\-Write\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}$<$ V, M $>$\-::sub\-Write\-Contents (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{var\-Name\-Prefix, }
+\item[{const std\-::string \&}]{file\-Name, }
+\item[{const std\-::string \&}]{file\-Type, }
+\item[{const std\-::set$<$ unsigned int $>$ \&}]{allowed\-Sub\-Env\-Ids}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_cdf_acd85c96edf9454b64fe31d6750164dfc}
+
+
+Writes the C\-D\-F of an allowed sub-\/environment to a file. 
+
+This function does nothing and should \par
+ not be called by the user. 
+
+Reimplemented in \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_acae1453895e364bf726ef60f8fde1bd8}{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$}.
+
+
+
+Definition at line 66 of file Vector\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+71 \{
+72   std::cerr << \textcolor{stringliteral}{"WARNING: BaseVectorCdf<V,M>::subWriteContents() being used..."}
+73             << std::endl;
+74 
+75   \textcolor{keywordflow}{if} (&varNamePrefix)    \{\}; \textcolor{comment}{// just to remove compiler warning}
+76   \textcolor{keywordflow}{if} (&fileName)         \{\}; \textcolor{comment}{// just to remove compiler warning}
+77   \textcolor{keywordflow}{if} (&fileType)         \{\}; \textcolor{comment}{// just to remove compiler warning}
+78   \textcolor{keywordflow}{if} (&allowedSubEnvIds) \{\}; \textcolor{comment}{// just to remove compiler warning}
+79   \textcolor{keywordflow}{return};
+80 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_cdf_a30b15bde5a206071b4e4db26141ce179}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}!values@{values}}
+\index{values@{values}!QUESO::BaseVectorCdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}}
+\subsubsection[{values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}$<$ V, M $>$\-::values (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{param\-Values, }
+\item[{V \&}]{cdf\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_cdf_a30b15bde5a206071b4e4db26141ce179}
+
+
+Finds the value of the vector C\-D\-F at each element of {\ttfamily param\-Value}, and saves it in {\ttfamily cdf\-Vec}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a369ca9e3dea35ddb4799a89db47b12d6}{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf$<$ V, M $>$}, \hyperlink{class_q_u_e_s_o_1_1_sampled_vector_cdf_a1d908923cf5b441a4cebf7ac3c7fd2d8}{Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_generic_vector_cdf_aac56bdb8cbe36b161cf238db695eb454}{Q\-U\-E\-S\-O\-::\-Generic\-Vector\-Cdf$<$ V, M $>$}.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_cdf_a6da489fb178ea7354d91d756b06a0cfb}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!QUESO::BaseVectorCdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ std\-::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os, }
+\item[{const {\bf Base\-Vector\-Cdf}$<$ V, M $>$ \&}]{obj}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_q_u_e_s_o_1_1_base_vector_cdf_a6da489fb178ea7354d91d756b06a0cfb}
+
+
+Definition at line 86 of file Vector\-Cdf.\-h.
+
+
+\begin{DoxyCode}
+87                                      \{
+88     obj.print(os);
+89     \textcolor{keywordflow}{return} os;
+90   \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::BaseVectorCdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}$<$ V, M $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}
+
+
+Definition at line 101 of file Vector\-Cdf.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$\-::\-Base\-Vector\-Cdf(), Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf$<$ V, M $>$\-::\-Gaussian\-Vector\-Cdf(), and Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$\-::\-Sampled\-Vector\-Cdf().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_cdf_a4e083383c98725fa83c5c8c133dcfea4}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}!m\-\_\-pdf\-Support@{m\-\_\-pdf\-Support}}
+\index{m\-\_\-pdf\-Support@{m\-\_\-pdf\-Support}!QUESO::BaseVectorCdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}}
+\subsubsection[{m\-\_\-pdf\-Support}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Vector\-Set}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}$<$ V, M $>$\-::m\-\_\-pdf\-Support\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_cdf_a4e083383c98725fa83c5c8c133dcfea4}
+
+
+Definition at line 103 of file Vector\-Cdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}!m\-\_\-prefix@{m\-\_\-prefix}}
+\index{m\-\_\-prefix@{m\-\_\-prefix}!QUESO::BaseVectorCdf@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}}
+\subsubsection[{m\-\_\-prefix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ std\-::string {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf}$<$ V, M $>$\-::m\-\_\-prefix\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}
+
+
+Definition at line 102 of file Vector\-Cdf.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$\-::\-Base\-Vector\-Cdf(), Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf$<$ V, M $>$\-::\-Gaussian\-Vector\-Cdf(), Q\-U\-E\-S\-O\-::\-Sampled\-Vector\-Cdf$<$ V, M $>$\-::\-Sampled\-Vector\-Cdf(), and Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::solve\-With\-Monte\-Carlo().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_vector_cdf_8h}{Vector\-Cdf.\-h}\item 
+src/stats/src/\hyperlink{_vector_cdf_8_c}{Vector\-Cdf.\-C}\end{DoxyCompactItemize}

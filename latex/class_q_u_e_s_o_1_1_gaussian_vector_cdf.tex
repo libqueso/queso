@@ -1,0 +1,308 @@
+\hypertarget{class_q_u_e_s_o_1_1_gaussian_vector_cdf}{\section{Q\-U\-E\-S\-O\-:\-:Gaussian\-Vector\-Cdf$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_gaussian_vector_cdf}\index{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf$<$ V, M $>$}}
+}
+
+
+T\-O\-D\-O\-: A class for handling Gaussian C\-D\-Fs.  
+
+
+
+
+{\ttfamily \#include $<$Gaussian\-Vector\-Cdf.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Gaussian\-Vector\-Cdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=234pt]{class_q_u_e_s_o_1_1_gaussian_vector_cdf__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Gaussian\-Vector\-Cdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_gaussian_vector_cdf__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_aeb3e7d0cc777d58fb93d046a9da12071}{Gaussian\-Vector\-Cdf} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aaf5088d3994606a9d449ccd414509709}{pdf\-Support}, const V \&domain\-Expected\-Values, const V \&domain\-Variance\-Values)
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a2f0d23a52c90f82877363de1155b788f}{Gaussian\-Vector\-Cdf} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aaf5088d3994606a9d449ccd414509709}{pdf\-Support}, const V \&domain\-Expected\-Values, const M \&cov\-Matrix)
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a086e92beba8cffc2d0c4822aad49dfac}{$\sim$\-Gaussian\-Vector\-Cdf} ()
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical method}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a369ca9e3dea35ddb4799a89db47b12d6}{values} (const V \&param\-Values, V \&cdf\-Vec) const 
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Returns the values of the vector C\-D\-F at each element of {\ttfamily param\-Values}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O method}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a9afe1cc5333789fb73974a0d17e7fc0c}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Prints the vector C\-D\-F. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a82118210a9047b9e9f393159d53d5a20}{common\-Constructor} ()
+\begin{DoxyCompactList}\small\item\em A common constructor to be used both class constructors. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const M $\ast$ \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a0b00fdc02b3e15cd81d215d5c01bbd1f}{m\-\_\-cov\-Matrix}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf$<$ V, M $>$}
+
+T\-O\-D\-O\-: A class for handling Gaussian C\-D\-Fs. 
+
+This class {\bfseries will} implement a Gaussian vector cumulative distribution function (C\-D\-F). \begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000018}{Todo}]\-: Implement me! \end{DoxyRefDesc}
+
+
+Definition at line 48 of file Gaussian\-Vector\-Cdf.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_gaussian_vector_cdf_aeb3e7d0cc777d58fb93d046a9da12071}{\index{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}!Gaussian\-Vector\-Cdf@{Gaussian\-Vector\-Cdf}}
+\index{Gaussian\-Vector\-Cdf@{Gaussian\-Vector\-Cdf}!QUESO::GaussianVectorCdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}}
+\subsubsection[{Gaussian\-Vector\-Cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}$<$ V, M $>$\-::{\bf Gaussian\-Vector\-Cdf} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{pdf\-Support, }
+\item[{const V \&}]{domain\-Expected\-Values, }
+\item[{const V \&}]{domain\-Variance\-Values}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gaussian_vector_cdf_aeb3e7d0cc777d58fb93d046a9da12071}
+
+
+T\-O\-D\-O\-: Constructor. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000019}{Todo}]\-: implement me! This method calls \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a82118210a9047b9e9f393159d53d5a20}{common\-Constructor()} which is not yet implemented. Instantiates an object of the class given a prefix, the support of the related-\/\-P\-D\-F, and the domain mean and expected values. \end{DoxyRefDesc}
+
+
+Definition at line 31 of file Gaussian\-Vector\-Cdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf$<$ V, M $>$\-::common\-Constructor(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+36   :
+37   BaseVectorCdf<V,M>(prefix,\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aaf5088d3994606a9d449ccd414509709}{pdfSupport}),
+38   \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a0b00fdc02b3e15cd81d215d5c01bbd1f}{m\_covMatrix}              (\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a4e083383c98725fa83c5c8c133dcfea4}{m\_pdfSupport}.newDiagMatrix(domainVarianceValues*
+      domainVarianceValues))
+39 \{
+40   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+41     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering GaussianVectorCdf<V,M>::constructor() [1]"}
+42                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}{m\_prefix}
+43                            << std::endl;
+44   \}
+45 
+46   \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a82118210a9047b9e9f393159d53d5a20}{commonConstructor}();
+47 
+48   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+49     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving GaussianVectorCdf<V,M>::constructor() [1]"}
+50                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}{m\_prefix}
+51                            << std::endl;
+52   \}
+53 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a2f0d23a52c90f82877363de1155b788f}{\index{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}!Gaussian\-Vector\-Cdf@{Gaussian\-Vector\-Cdf}}
+\index{Gaussian\-Vector\-Cdf@{Gaussian\-Vector\-Cdf}!QUESO::GaussianVectorCdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}}
+\subsubsection[{Gaussian\-Vector\-Cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}$<$ V, M $>$\-::{\bf Gaussian\-Vector\-Cdf} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{pdf\-Support, }
+\item[{const V \&}]{domain\-Expected\-Values, }
+\item[{const M \&}]{cov\-Matrix}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a2f0d23a52c90f82877363de1155b788f}
+
+
+T\-O\-D\-O\-: Constructor. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000020}{Todo}]\-: implement me! This method calls \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a82118210a9047b9e9f393159d53d5a20}{common\-Constructor()} which is not yet implemented. Instantiates an object of the class given a prefix, the support of the related-\/\-P\-D\-F, and the domain mean values and covariance matrix. \end{DoxyRefDesc}
+
+
+Definition at line 56 of file Gaussian\-Vector\-Cdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf$<$ V, M $>$\-::common\-Constructor(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+61   :
+62   BaseVectorCdf<V,M>(prefix,\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aaf5088d3994606a9d449ccd414509709}{pdfSupport}),
+63   \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a0b00fdc02b3e15cd81d215d5c01bbd1f}{m\_covMatrix}              (\textcolor{keyword}{new} M(covMatrix))
+64 \{
+65   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+66     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering GaussianVectorCdf<V,M>::constructor() [2]"}
+67                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}{m\_prefix}
+68                            << std::endl;
+69   \}
+70 
+71   \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a82118210a9047b9e9f393159d53d5a20}{commonConstructor}();
+72 
+73   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+74     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving GaussianVectorCdf<V,M>::constructor() [2]"}
+75                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_ac88b657f25153ab6c03bd65b64cada52}{m\_prefix}
+76                            << std::endl;
+77   \}
+78 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a086e92beba8cffc2d0c4822aad49dfac}{\index{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}!$\sim$\-Gaussian\-Vector\-Cdf@{$\sim$\-Gaussian\-Vector\-Cdf}}
+\index{$\sim$\-Gaussian\-Vector\-Cdf@{$\sim$\-Gaussian\-Vector\-Cdf}!QUESO::GaussianVectorCdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}}
+\subsubsection[{$\sim$\-Gaussian\-Vector\-Cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}$<$ V, M $>$\-::$\sim${\bf Gaussian\-Vector\-Cdf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a086e92beba8cffc2d0c4822aad49dfac}
+
+
+Definition at line 81 of file Gaussian\-Vector\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+82 \{
+83   \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a0b00fdc02b3e15cd81d215d5c01bbd1f}{m\_covMatrix};
+84 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a82118210a9047b9e9f393159d53d5a20}{\index{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}!common\-Constructor@{common\-Constructor}}
+\index{common\-Constructor@{common\-Constructor}!QUESO::GaussianVectorCdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}}
+\subsubsection[{common\-Constructor}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}$<$ V, M $>$\-::common\-Constructor (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a82118210a9047b9e9f393159d53d5a20}
+
+
+A common constructor to be used both class constructors. 
+
+
+
+Definition at line 109 of file Gaussian\-Vector\-Cdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf$<$ V, M $>$\-::\-Gaussian\-Vector\-Cdf().
+
+
+\begin{DoxyCode}
+110 \{
+111   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+112                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+113                       \textcolor{stringliteral}{"GaussianVectorCdf<V,M>::commonConstructor()"},
+114                       \textcolor{stringliteral}{"incomplete code"});
+115   \textcolor{keywordflow}{return};
+116 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a9afe1cc5333789fb73974a0d17e7fc0c}{\index{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}!print@{print}}
+\index{print@{print}!QUESO::GaussianVectorCdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}$<$ V, M $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a9afe1cc5333789fb73974a0d17e7fc0c}
+
+
+T\-O\-D\-O\-: Prints the vector C\-D\-F. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000022}{Todo}]\-: implement me! \end{DoxyRefDesc}
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a1ab6a49295542017bae6c5853398223f}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$}.
+
+
+
+Definition at line 101 of file Gaussian\-Vector\-Cdf.\-C.
+
+
+\begin{DoxyCode}
+102 \{
+103   \textcolor{keywordflow}{return};
+104 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a369ca9e3dea35ddb4799a89db47b12d6}{\index{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}!values@{values}}
+\index{values@{values}!QUESO::GaussianVectorCdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}}
+\subsubsection[{values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}$<$ V, M $>$\-::values (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{param\-Values, }
+\item[{V \&}]{cdf\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a369ca9e3dea35ddb4799a89db47b12d6}
+
+
+T\-O\-D\-O\-: Returns the values of the vector C\-D\-F at each element of {\ttfamily param\-Values}. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000021}{Todo}]\-: implement me! \end{DoxyRefDesc}
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_a30b15bde5a206071b4e4db26141ce179}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Cdf$<$ V, M $>$}.
+
+
+
+Definition at line 88 of file Gaussian\-Vector\-Cdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+91 \{
+92   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+93                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf_aa1effe370ac016f1fc7eaf538c5751a6}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+94                       \textcolor{stringliteral}{"GaussianVectorCdf<V,M>::cdfVec()"},
+95                       \textcolor{stringliteral}{"incomplete code"});
+96   \textcolor{keywordflow}{return};
+97 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a0b00fdc02b3e15cd81d215d5c01bbd1f}{\index{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}!m\-\_\-cov\-Matrix@{m\-\_\-cov\-Matrix}}
+\index{m\-\_\-cov\-Matrix@{m\-\_\-cov\-Matrix}!QUESO::GaussianVectorCdf@{Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}}
+\subsubsection[{m\-\_\-cov\-Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const M$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Gaussian\-Vector\-Cdf}$<$ V, M $>$\-::m\-\_\-cov\-Matrix\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_gaussian_vector_cdf_a0b00fdc02b3e15cd81d215d5c01bbd1f}
+
+
+Definition at line 88 of file Gaussian\-Vector\-Cdf.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_gaussian_vector_cdf_8h}{Gaussian\-Vector\-Cdf.\-h}\item 
+src/stats/src/\hyperlink{_gaussian_vector_cdf_8_c}{Gaussian\-Vector\-Cdf.\-C}\end{DoxyCompactItemize}

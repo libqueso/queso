@@ -1,0 +1,877 @@
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem}{\section{Q\-U\-E\-S\-O\-:\-:Statistical\-Inverse\-Problem$<$ P\-\_\-\-V, P\-\_\-\-M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_statistical_inverse_problem}\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem$<$ P\-\_\-\-V, P\-\_\-\-M $>$@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem$<$ P\-\_\-\-V, P\-\_\-\-M $>$}}
+}
+
+
+This templated class represents a Statistical Inverse Problem.  
+
+
+
+
+{\ttfamily \#include $<$Statistical\-Inverse\-Problem.\-h$>$}
+
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Statistical\-Inverse\-Problem$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_statistical_inverse_problem__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a98ad98a7030b2c6577a0e840506bf74d}{Statistical\-Inverse\-Problem} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_sip_options_values}{Sip\-Options\-Values} $\ast$alternative\-Options\-Values, const \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a954df0672a7c1271eaff53b8d5f3fbc2}{prior\-Rv}, const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&likelihood\-Function, \hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v}{Generic\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a69360a2f2ec5f33b33c5b5f61ec15344}{post\-Rv})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a9e63552ba21e18dd6a4748df101decd4}{$\sim$\-Statistical\-Inverse\-Problem} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Statistical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8af5f8ed1db58cf2625bcf459d249167}{compute\-Solution\-Flag} () const 
+\begin{DoxyCompactList}\small\item\em Whether or not compute the solution. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a924189e647110129682308b9bffc3a0d}{solve\-With\-Bayes\-Metropolis\-Hastings} (const \hyperlink{class_q_u_e_s_o_1_1_mh_options_values}{Mh\-Options\-Values} $\ast$alternative\-Options\-Values, const P\-\_\-\-V \&initial\-Values, const P\-\_\-\-M $\ast$initial\-Proposal\-Cov\-Matrix)
+\begin{DoxyCompactList}\small\item\em Solves the problem through Bayes formula and a Metropolis-\/\-Hastings algorithm. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a72a2bfd14054b4c8de14fb86da240ab8}{solve\-With\-Bayes\-M\-L\-Sampling} ()
+\begin{DoxyCompactList}\small\item\em Solves with Bayes Multi-\/\-Level (M\-L) sampling. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a954df0672a7c1271eaff53b8d5f3fbc2}{prior\-Rv} () const 
+\begin{DoxyCompactList}\small\item\em Returns the Prior R\-V; access to private attribute m\-\_\-prior\-Rv. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v}{Generic\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a69360a2f2ec5f33b33c5b5f61ec15344}{post\-Rv} () const 
+\begin{DoxyCompactList}\small\item\em Returns the Posterior R\-V; access to private attribute m\-\_\-postr\-Rv. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5b7801a55f4026c8a06558f19275f596}{log\-Evidence} () const 
+\begin{DoxyCompactList}\small\item\em Returns the logarithm value of the evidence. Related to M\-L. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a1d97b50dca7034acfef4df209b94838c}{mean\-Log\-Likelihood} () const 
+\begin{DoxyCompactList}\small\item\em Returns the mean of the logarithm value of the likelihood. Related to M\-L. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a039958964641a79de68845ae3a00c218}{eig} () const 
+\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\-\_\-env}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{m\-\_\-prior\-Rv}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a27177c077988c85c3310e0491f899332}{m\-\_\-likelihood\-Function}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v}{Generic\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7dc62223cad355422449841ff3ec68e4}{m\-\_\-post\-Rv}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{m\-\_\-solution\-Domain}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf}{Base\-Joint\-Pdf}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a6ea67d31e6651f1dd4aa6983d4a01865}{m\-\_\-solution\-Pdf}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_mdf}{Base\-Vector\-Mdf}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4e4808280b09aa4ae0584521b78230ef}{m\-\_\-sub\-Solution\-Mdf}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_cdf}{Base\-Vector\-Cdf}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4cb3684669aa87b1d4a6903b55978969}{m\-\_\-sub\-Solution\-Cdf}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer}{Base\-Vector\-Realizer}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{m\-\_\-solution\-Realizer}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_metropolis_hastings_s_g}{Metropolis\-Hastings\-S\-G}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_af66c3780c9b23fc917dca0ea6dc12103}{m\-\_\-mh\-Seq\-Generator}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_m_l_sampling}{M\-L\-Sampling}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\-\_\-ml\-Sampler}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence}{Base\-Vector\-Sequence}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{m\-\_\-chain}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_scalar_sequence}{Scalar\-Sequence}$<$ double $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7138a1175f641633f69ab90617fc5f8c}{m\-\_\-log\-Likelihood\-Values}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_scalar_sequence}{Scalar\-Sequence}$<$ double $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aa84ebc22eac5f609d5e269a9ed25c6aa}{m\-\_\-log\-Target\-Values}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_sip_options_values}{Sip\-Options\-Values} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a71659d2393ea46940f963acc95285f17}{m\-\_\-alternative\-Options\-Values}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options}{Statistical\-Inverse\-Problem\-Options} $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\-\_\-options\-Obj}
+\end{DoxyCompactItemize}
+\subsection*{I/\-O methods}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a1f5e10175b41d273d86e54c61cf44839}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Prints the sequence. \end{DoxyCompactList}\item 
+std\-::ostream \& \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4354becd88247e1704b4f9b07faf9e55}{operator$<$$<$} (std\-::ostream \&os, const \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem}{Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&obj)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$class Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem$<$ P\-\_\-\-V, P\-\_\-\-M $>$}
+
+This templated class represents a Statistical Inverse Problem. 
+
+This class is templated on the type 'P\-\_\-\-V' of vector and type 'P\-\_\-\-M' of matrix, where 'P\-\_\-' stands for 'parameter'. Some templated classes might also use 'Q\-\_\-\-V' and 'Q\-\_\-\-M' when referring to a vector type and a matrix type, where 'Q\-\_\-' stands for 'quantities of interest'. Conceptually, a statistical inverse problem has two input entities and one output entity.\par
+ The input entities of a statistical inverse problem are\-: 
+\begin{DoxyEnumerate}
+\item the prior R\-V, an instance of class '\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V$<$\-P\-\_\-\-V,\-P\-\_\-\-M$>$}', and 
+\item the likelihood function, an instance of class '\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function$<$\-P\-\_\-\-V,\-P\-\_\-\-M$>$}'. 
+\end{DoxyEnumerate}Let $ \pi()$ denote the mathematical likelihood function and $ x $ denote a vector of parameters. The likelihood function object stores the routine that computes $ \pi(x) $ and whatever data necessary by such routine. The routine in the likelihood function object can compute either the actual value $ \pi(x) $ or the value $ \ln[\pi(x)] $. See files '\hyperlink{_scalar_function_8h}{basic/inc/\-Scalar\-Function.\-h}' and '\hyperlink{_joint_pdf_8h}{stats/inc/\-Joint\-Pdf.\-h}' for more details.\par
+ The output entity of a statistical inverse problem is the posterior R\-V, another instance of class '\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V$<$\-P\-\_\-\-V,\-P\-\_\-\-M$>$}', which stores the solution according to the Bayesian approach. Upon return from a solution operation, the posterior R\-V is available through the operation '\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a69360a2f2ec5f33b33c5b5f61ec15344}{post\-Rv()}'. Such posterior R\-V is able to provide\-: 
+\begin{DoxyEnumerate}
+\item a joint pdf (up to a multiplicative constant) through the operation '\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a69360a2f2ec5f33b33c5b5f61ec15344}{post\-Rv()}.pdf()', which returns an instance of the class '\hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf}{Base\-Joint\-Pdf$<$\-P\-\_\-\-V,\-P\-\_\-\-M$>$}', and 
+\item a vector realizer through the operation '\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a69360a2f2ec5f33b33c5b5f61ec15344}{post\-Rv()}.realizer()', which returns an instance of the class '\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer}{Base\-Vector\-Realizer$<$\-P\-\_\-\-V,\-P\-\_\-\-M$>$}'. 
+\end{DoxyEnumerate}
+
+Definition at line 80 of file Statistical\-Inverse\-Problem.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a98ad98a7030b2c6577a0e840506bf74d}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!Statistical\-Inverse\-Problem@{Statistical\-Inverse\-Problem}}
+\index{Statistical\-Inverse\-Problem@{Statistical\-Inverse\-Problem}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{Statistical\-Inverse\-Problem}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M $>$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::{\bf Statistical\-Inverse\-Problem} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Sip\-Options\-Values} $\ast$}]{alternative\-Options\-Values, }
+\item[{const {\bf Base\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{prior\-Rv, }
+\item[{const {\bf Base\-Scalar\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{likelihood\-Function, }
+\item[{{\bf Generic\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{post\-Rv}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a98ad98a7030b2c6577a0e840506bf74d}
+
+
+Constructor. 
+
+Requirements\-: 1) the image set of the vector random variable 'prior\-Rv', 2) the domain set of the likelihood function 'likelihood\-Function' and 3) the image set of the vector random variable 'post\-Rv' should belong to vector spaces of equal dimensions. If the requirements are satisfied, the constructor then reads input options that begin with the string '$<$prefix$>$ip\-\_\-'. If no options input file is provided, the construction assigns {\ttfamily alternative\-Options\-Values} to the options of the S\-I\-P. 
+\begin{DoxyParams}{Parameters}
+{\em prefix} & The prefix \\
+\hline
+{\em alternative\-Options\-Values} & Options (if no input file) \\
+\hline
+{\em prior\-Rv} & The prior R\-V \\
+\hline
+{\em likelihood\-Function} & The likelihood function \\
+\hline
+{\em post\-Rv} & The posterior R\-V \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 33 of file Statistical\-Inverse\-Problem.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+39   :
+40   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}                     (priorRv.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_ad5bf8486b3bacb46b9d4ecba513fd37b}{env}()),
+41   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{m\_priorRv}                 (priorRv),
+42   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a27177c077988c85c3310e0491f899332}{m\_likelihoodFunction}      (likelihoodFunction),
+43   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7dc62223cad355422449841ff3ec68e4}{m\_postRv}                  (postRv),
+44   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{m\_solutionDomain}          (NULL),
+45   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a6ea67d31e6651f1dd4aa6983d4a01865}{m\_solutionPdf}             (NULL),
+46   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4e4808280b09aa4ae0584521b78230ef}{m\_subSolutionMdf}          (NULL),
+47   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4cb3684669aa87b1d4a6903b55978969}{m\_subSolutionCdf}          (NULL),
+48   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{m\_solutionRealizer}        (NULL),
+49   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_af66c3780c9b23fc917dca0ea6dc12103}{m\_mhSeqGenerator}          (NULL),
+50   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler}               (NULL),
+51   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{m\_chain}                   (NULL),
+52   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7138a1175f641633f69ab90617fc5f8c}{m\_logLikelihoodValues}     (NULL),
+53   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aa84ebc22eac5f609d5e269a9ed25c6aa}{m\_logTargetValues}         (NULL),
+54   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a71659d2393ea46940f963acc95285f17}{m\_alternativeOptionsValues}(),
+55   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}              (NULL)
+56 \{
+57 \textcolor{preprocessor}{#ifdef QUESO\_MEMORY\_DEBUGGING}
+58 \textcolor{preprocessor}{}  std::cout << \textcolor{stringliteral}{"Entering Sip"} << std::endl;
+59 \textcolor{preprocessor}{#endif}
+60 \textcolor{preprocessor}{}  \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+61     *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       StatisticalInverseProblem<P\_V,P\_M>::constructor()"}
+62                             << \textcolor{stringliteral}{": prefix = "} << prefix
+63                             << \textcolor{stringliteral}{", alternativeOptionsValues = "} << alternativeOptionsValues
+64                             << \textcolor{stringliteral}{", m\_env.optionsInputFileName() = "} << \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_aa0e3ccfe00e6f51dbe6dd6b9b6f65183}{optionsInputFileName}()
+65                             << std::endl;
+66   \}
+67 
+68   \textcolor{keywordflow}{if} (alternativeOptionsValues) \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a71659d2393ea46940f963acc95285f17}{m\_alternativeOptionsValues} = *
+      alternativeOptionsValues;
+69   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_aa0e3ccfe00e6f51dbe6dd6b9b6f65183}{optionsInputFileName}() == \textcolor{stringliteral}{""}) \{
+70     \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj} = \textcolor{keyword}{new} StatisticalInverseProblemOptions(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env},prefix,
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a71659d2393ea46940f963acc95285f17}{m\_alternativeOptionsValues});
+71   \}
+72   \textcolor{keywordflow}{else} \{
+73     \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj} = \textcolor{keyword}{new} StatisticalInverseProblemOptions(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env},prefix);
+74     \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3ed629e5e6eb8d5e9b005c6c6810da91}{scanOptionsValues}();
+75   \}
+76 \textcolor{preprocessor}{#ifdef QUESO\_MEMORY\_DEBUGGING}
+77 \textcolor{preprocessor}{}  std::cout << \textcolor{stringliteral}{"In Sip, finished scanning options"} << std::endl;
+78 \textcolor{preprocessor}{#endif}
+79 \textcolor{preprocessor}{}
+80   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(priorRv.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().\hyperlink{class_q_u_e_s_o_1_1_vector_set_a923421590baf5bf93cf066e528f927dc}{vectorSpace}().
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_a5829a1f4f996f8307c840b705144d666}{dimLocal}() != likelihoodFunction.\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domainSet}().\hyperlink{class_q_u_e_s_o_1_1_vector_set_a923421590baf5bf93cf066e528f927dc}{vectorSpace}().
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_a5829a1f4f996f8307c840b705144d666}{dimLocal}(),
+81                       \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+82                       \textcolor{stringliteral}{"StatisticalInverseProblem<P\_V,P\_M>::constructor()"},
+83                       \textcolor{stringliteral}{"'priorRv' and 'likelihoodFunction' are related to vector spaces of different
+       dimensions"});
+84 
+85   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(priorRv.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().\hyperlink{class_q_u_e_s_o_1_1_vector_set_a923421590baf5bf93cf066e528f927dc}{vectorSpace}().
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_a5829a1f4f996f8307c840b705144d666}{dimLocal}() != postRv.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace().dimLocal(),
+86                       \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+87                       \textcolor{stringliteral}{"StatisticalInverseProblem<P\_V,P\_M>::constructor()"},
+88                       \textcolor{stringliteral}{"'priorRv' and 'postRv' are related to vector spaces of different dimensions"});
+89 
+90   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+91     *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       StatisticalInverseProblem<P\_V,P\_M>::constructor()"}
+92                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}
+93                             << std::endl;
+94   \}
+95 
+96   \textcolor{keywordflow}{return};
+97 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a9e63552ba21e18dd6a4748df101decd4}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!$\sim$\-Statistical\-Inverse\-Problem@{$\sim$\-Statistical\-Inverse\-Problem}}
+\index{$\sim$\-Statistical\-Inverse\-Problem@{$\sim$\-Statistical\-Inverse\-Problem}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{$\sim$\-Statistical\-Inverse\-Problem}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M $>$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::$\sim${\bf Statistical\-Inverse\-Problem} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a9e63552ba21e18dd6a4748df101decd4}
+
+
+Destructor. 
+
+
+
+Definition at line 101 of file Statistical\-Inverse\-Problem.\-C.
+
+
+\begin{DoxyCode}
+102 \{
+103   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{m\_chain}) \{
+104     \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{m\_chain}->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aae0804eacc51b37e84b1bd329ce1711c}{clear}();
+105     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{m\_chain};
+106   \}
+107   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7138a1175f641633f69ab90617fc5f8c}{m\_logLikelihoodValues}) \{
+108     \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7138a1175f641633f69ab90617fc5f8c}{m\_logLikelihoodValues}->\hyperlink{class_q_u_e_s_o_1_1_scalar_sequence_aa5449ca2f03f5e6025d35804bee19ee0}{clear}();
+109     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7138a1175f641633f69ab90617fc5f8c}{m\_logLikelihoodValues};
+110   \}
+111   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aa84ebc22eac5f609d5e269a9ed25c6aa}{m\_logTargetValues}) \{
+112     \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aa84ebc22eac5f609d5e269a9ed25c6aa}{m\_logTargetValues}->\hyperlink{class_q_u_e_s_o_1_1_scalar_sequence_aa5449ca2f03f5e6025d35804bee19ee0}{clear}();
+113     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aa84ebc22eac5f609d5e269a9ed25c6aa}{m\_logTargetValues};
+114   \}
+115   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler}       ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler};
+116   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_af66c3780c9b23fc917dca0ea6dc12103}{m\_mhSeqGenerator}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_af66c3780c9b23fc917dca0ea6dc12103}{m\_mhSeqGenerator};
+117   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{m\_solutionRealizer}) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{m\_solutionRealizer};
+118   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4cb3684669aa87b1d4a6903b55978969}{m\_subSolutionCdf}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4cb3684669aa87b1d4a6903b55978969}{m\_subSolutionCdf};
+119   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4e4808280b09aa4ae0584521b78230ef}{m\_subSolutionMdf}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4e4808280b09aa4ae0584521b78230ef}{m\_subSolutionMdf};
+120   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a6ea67d31e6651f1dd4aa6983d4a01865}{m\_solutionPdf}     ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a6ea67d31e6651f1dd4aa6983d4a01865}{m\_solutionPdf};
+121   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{m\_solutionDomain}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{m\_solutionDomain};
+122   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}      ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj};
+123 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8af5f8ed1db58cf2625bcf459d249167}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!compute\-Solution\-Flag@{compute\-Solution\-Flag}}
+\index{compute\-Solution\-Flag@{compute\-Solution\-Flag}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{compute\-Solution\-Flag}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ bool {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::compute\-Solution\-Flag (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8af5f8ed1db58cf2625bcf459d249167}
+
+
+Whether or not compute the solution. 
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a039958964641a79de68845ae3a00c218}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!eig@{eig}}
+\index{eig@{eig}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{eig}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::eig (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a039958964641a79de68845ae3a00c218}
+
+
+Definition at line 376 of file Statistical\-Inverse\-Problem.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+377 \{
+378   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler} == NULL,
+379                       \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+380                       \textcolor{stringliteral}{"StatisticalInverseProblem<P\_V,P\_M>::eig()"},
+381                       \textcolor{stringliteral}{"m\_mlSampler is NULL"});
+382   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler}->eig();
+383 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5b7801a55f4026c8a06558f19275f596}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!log\-Evidence@{log\-Evidence}}
+\index{log\-Evidence@{log\-Evidence}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{log\-Evidence}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::log\-Evidence (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5b7801a55f4026c8a06558f19275f596}
+
+
+Returns the logarithm value of the evidence. Related to M\-L. 
+
+
+
+Definition at line 356 of file Statistical\-Inverse\-Problem.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+357 \{
+358   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler} == NULL,
+359                       \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+360                       \textcolor{stringliteral}{"StatisticalInverseProblem<P\_V,P\_M>::logEvidence()"},
+361                       \textcolor{stringliteral}{"m\_mlSampler is NULL"});
+362   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler}->logEvidence();
+363 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a1d97b50dca7034acfef4df209b94838c}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!mean\-Log\-Likelihood@{mean\-Log\-Likelihood}}
+\index{mean\-Log\-Likelihood@{mean\-Log\-Likelihood}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{mean\-Log\-Likelihood}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::mean\-Log\-Likelihood (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a1d97b50dca7034acfef4df209b94838c}
+
+
+Returns the mean of the logarithm value of the likelihood. Related to M\-L. 
+
+
+
+Definition at line 366 of file Statistical\-Inverse\-Problem.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+367 \{
+368   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler} == NULL,
+369                       \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+370                       \textcolor{stringliteral}{"StatisticalInverseProblem<P\_V,P\_M>::meanLogLikelihood()"},
+371                       \textcolor{stringliteral}{"m\_mlSampler is NULL"});
+372   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler}->meanLogLikelihood();
+373 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a69360a2f2ec5f33b33c5b5f61ec15344}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!post\-Rv@{post\-Rv}}
+\index{post\-Rv@{post\-Rv}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{post\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M $>$ const {\bf Generic\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::post\-Rv (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a69360a2f2ec5f33b33c5b5f61ec15344}
+
+
+Returns the Posterior R\-V; access to private attribute m\-\_\-postr\-Rv. 
+
+The Posterior R\-V contains the solution of the Bayes problem. 
+
+Definition at line 350 of file Statistical\-Inverse\-Problem.\-C.
+
+
+\begin{DoxyCode}
+351 \{
+352   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7dc62223cad355422449841ff3ec68e4}{m\_postRv};
+353 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a1f5e10175b41d273d86e54c61cf44839}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!print@{print}}
+\index{print@{print}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a1f5e10175b41d273d86e54c61cf44839}
+
+
+T\-O\-D\-O\-: Prints the sequence. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000049}{Todo}]\-: implement me! \end{DoxyRefDesc}
+
+
+Definition at line 387 of file Statistical\-Inverse\-Problem.\-C.
+
+
+\begin{DoxyCode}
+388 \{
+389   \textcolor{keywordflow}{return};
+390 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a954df0672a7c1271eaff53b8d5f3fbc2}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!prior\-Rv@{prior\-Rv}}
+\index{prior\-Rv@{prior\-Rv}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{prior\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M $>$ const {\bf Base\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::prior\-Rv (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a954df0672a7c1271eaff53b8d5f3fbc2}
+
+
+Returns the Prior R\-V; access to private attribute m\-\_\-prior\-Rv. 
+
+
+
+Definition at line 343 of file Statistical\-Inverse\-Problem.\-C.
+
+
+\begin{DoxyCode}
+344 \{
+345   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{m\_priorRv};
+346 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a924189e647110129682308b9bffc3a0d}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!solve\-With\-Bayes\-Metropolis\-Hastings@{solve\-With\-Bayes\-Metropolis\-Hastings}}
+\index{solve\-With\-Bayes\-Metropolis\-Hastings@{solve\-With\-Bayes\-Metropolis\-Hastings}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{solve\-With\-Bayes\-Metropolis\-Hastings}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::solve\-With\-Bayes\-Metropolis\-Hastings (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mh\-Options\-Values} $\ast$}]{alternative\-Options\-Values, }
+\item[{const P\-\_\-\-V \&}]{initial\-Values, }
+\item[{const P\-\_\-\-M $\ast$}]{initial\-Proposal\-Cov\-Matrix}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a924189e647110129682308b9bffc3a0d}
+
+
+Solves the problem through Bayes formula and a Metropolis-\/\-Hastings algorithm. 
+
+\begin{DoxyVerb}  Requirements: 1) 'initialValues' should have the same number of components as member variable
+ 'm_priorRv' and 2) if 'initialProposalCovMatrix' is not NULL, it should be square and its size 
+ should be equal to the size of 'initialValues'. If the requirements are satisfied, this methods
+ checks the member flag 'm_computeSolution' (one of the options read from the input file during 
+ construction). If the flag is 'false', the operation returns immediately, computing nothing; 
+ otherwise, the operation sets the member variable 'm_postRv' accordingly. The operation:
+\end{DoxyVerb}
+ 
+\begin{DoxyEnumerate}
+\item sets the pdf of 'm\-\_\-post\-Rv' equal to an instance of '\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf}{Bayesian\-Joint\-Pdf$<$\-P\-\_\-\-V,\-P\-\_\-\-M$>$}', 
+\item instantiates 'Sequence\-Of\-Vectors$<$\-P\-\_\-\-V,\-P\-\_\-\-M$>$' (the chain), 
+\item instantiates 'Metropolis\-Hastings\-S\-G$<$\-P\-\_\-\-V,\-P\-\_\-\-M$>$' (the Metropolis-\/\-Hastings algorithm), 
+\item populates the chain with the Metropolis-\/\-Hastings algorithm, and 
+\item sets the realizer of 'm\-\_\-post\-Rv' with the contents of the chain. 
+\end{DoxyEnumerate}
+
+Definition at line 127 of file Statistical\-Inverse\-Problem.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Instantiate\-Intersection(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and U\-Q\-\_\-\-S\-I\-P\-\_\-\-F\-I\-L\-E\-N\-A\-M\-E\-\_\-\-F\-O\-R\-\_\-\-N\-O\-\_\-\-F\-I\-L\-E.
+
+
+\begin{DoxyCode}
+131 \{
+132   \textcolor{comment}{//grvy\_timer\_begin("BayesMetropolisHastings"); TODO: revisit timing output}
+133   \textcolor{comment}{//std::cout << "proc " << m\_env.fullRank() << ", HERE sip 000" << std::endl;}
+134   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a0b0779b41ff304058856e97e1d16b4d4}{fullComm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a4059971c30e023b272fccaa6aa00c426}{Barrier}();
+135   \textcolor{comment}{//std::cout << "proc " << m\_env.fullRank() << ", HERE sip 001" << std::endl;}
+136   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a0b0779b41ff304058856e97e1d16b4d4}{fullComm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a6f73891de4668c325277ddaa799cf808}{syncPrintDebugMsg}(\textcolor{stringliteral}{"Entering
+       StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMetropolisHastings()"},1,3000000);
+137 
+138   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_a3ad6bcf891e7d938cc41ac47af698ab9}{m\_computeSolution} == \textcolor{keyword}{false}) \{
+139     \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}())) \{
+140       *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMetropolisHastings()"}
+141                               << \textcolor{stringliteral}{": avoiding solution, as requested by user"}
+142                               << std::endl;
+143     \}
+144     \textcolor{keywordflow}{return};
+145   \}
+146   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}())) \{
+147     *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMetropolisHastings()"}
+148                             << \textcolor{stringliteral}{": computing solution, as requested by user"}
+149                             << std::endl;
+150   \}
+151 
+152   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{m\_priorRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().
+      \hyperlink{class_q_u_e_s_o_1_1_vector_set_a923421590baf5bf93cf066e528f927dc}{vectorSpace}().\hyperlink{class_q_u_e_s_o_1_1_vector_space_a5829a1f4f996f8307c840b705144d666}{dimLocal}() != initialValues.sizeLocal(),
+153                       \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+154                       \textcolor{stringliteral}{"StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMetropolisHastings()"},
+155                       \textcolor{stringliteral}{"'m\_priorRv' and 'initialValues' should have equal dimensions"});
+156 
+157   \textcolor{keywordflow}{if} (initialProposalCovMatrix) \{
+158     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{m\_priorRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().
+      \hyperlink{class_q_u_e_s_o_1_1_vector_set_a923421590baf5bf93cf066e528f927dc}{vectorSpace}().\hyperlink{class_q_u_e_s_o_1_1_vector_space_a5829a1f4f996f8307c840b705144d666}{dimLocal}() != initialProposalCovMatrix->numRowsLocal(),
+159                         \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+160                         \textcolor{stringliteral}{"StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMetropolisHastings()"},
+161                         \textcolor{stringliteral}{"'m\_priorRv' and 'initialProposalCovMatrix' should have equal dimensions"});
+162     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(initialProposalCovMatrix->numCols() != initialProposalCovMatrix
+      ->numRowsGlobal(),
+163                         \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+164                         \textcolor{stringliteral}{"StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMetropolisHastings()"},
+165                         \textcolor{stringliteral}{"'initialProposalCovMatrix' should be a square matrix"});
+166   \}
+167 
+168   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler}       ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler};
+169   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_af66c3780c9b23fc917dca0ea6dc12103}{m\_mhSeqGenerator}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_af66c3780c9b23fc917dca0ea6dc12103}{m\_mhSeqGenerator};
+170   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{m\_solutionRealizer}) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{m\_solutionRealizer};
+171   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4cb3684669aa87b1d4a6903b55978969}{m\_subSolutionCdf}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4cb3684669aa87b1d4a6903b55978969}{m\_subSolutionCdf};
+172   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4e4808280b09aa4ae0584521b78230ef}{m\_subSolutionMdf}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4e4808280b09aa4ae0584521b78230ef}{m\_subSolutionMdf};
+173   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a6ea67d31e6651f1dd4aa6983d4a01865}{m\_solutionPdf}     ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a6ea67d31e6651f1dd4aa6983d4a01865}{m\_solutionPdf};
+174   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{m\_solutionDomain}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{m\_solutionDomain};
+175 
+176   P\_V numEvaluationPointsVec(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{m\_priorRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().\hyperlink{class_q_u_e_s_o_1_1_vector_set_a923421590baf5bf93cf066e528f927dc}{vectorSpace}().
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_a92e963bb5cab3eecd290dfe4b8f03b04}{zeroVector}());
+177   numEvaluationPointsVec.cwSet(250.);
+178 
+179   \textcolor{comment}{// Compute output pdf up to a multiplicative constant: Bayesian approach}
+180   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{m\_solutionDomain} = \hyperlink{namespace_q_u_e_s_o_aa79046437ab085c5487ae16e9a0baeec}{InstantiateIntersection}(
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{m\_priorRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a3206740e05e0c64a88273029e963b185}{pdf}().\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domainSet}(),\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a27177c077988c85c3310e0491f899332}{m\_likelihoodFunction}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domainSet}());
+181 
+182   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a6ea67d31e6651f1dd4aa6983d4a01865}{m\_solutionPdf} = \textcolor{keyword}{new} BayesianJointPdf<P\_V,P\_M>(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}.c\_str(),
+183                                                        \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{m\_priorRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a3206740e05e0c64a88273029e963b185}{pdf}(),
+184                                                        \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a27177c077988c85c3310e0491f899332}{m\_likelihoodFunction},
+185                                                        1.,
+186                                                        *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{m\_solutionDomain});
+187 
+188   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7dc62223cad355422449841ff3ec68e4}{m\_postRv}.\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v_a1645a2db9e84b44df65faefda9921277}{setPdf}(*m\_solutionPdf);
+189 
+190   \textcolor{comment}{// Compute output realizer: Metropolis-Hastings approach}
+191   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{m\_chain}               = \textcolor{keyword}{new} SequenceOfVectors<P\_V,P\_M>(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7dc62223cad355422449841ff3ec68e4}{m\_postRv}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace(),0,\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}+\textcolor{stringliteral}{"chain"});
+192   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7138a1175f641633f69ab90617fc5f8c}{m\_logLikelihoodValues} = \textcolor{keyword}{new} ScalarSequence<double>    (
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env},0,\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}+\textcolor{stringliteral}{"logLike"}  );
+193   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aa84ebc22eac5f609d5e269a9ed25c6aa}{m\_logTargetValues}     = \textcolor{keyword}{new} ScalarSequence<double>    (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env},0,
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}+\textcolor{stringliteral}{"logTarget"});
+194   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_af66c3780c9b23fc917dca0ea6dc12103}{m\_mhSeqGenerator} = \textcolor{keyword}{new} MetropolisHastingsSG<P\_V,P\_M>(
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}.c\_str(), \textcolor{comment}{// dakota}
+195                                                               alternativeOptionsValues,
+196                                                               \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7dc62223cad355422449841ff3ec68e4}{m\_postRv},
+197                                                               initialValues,
+198                                                               initialProposalCovMatrix);
+199 
+200   m\_mhSeqGenerator->generateSequence(*\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{m\_chain},
+201                                      NULL, \textcolor{comment}{//m\_logLikelihoodValues,}
+202                                      NULL);\textcolor{comment}{//m\_logTargetValues);}
+203 
+204   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{m\_solutionRealizer} = \textcolor{keyword}{new} SequentialVectorRealizer<P\_V,P\_M>(
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}.c\_str(),
+205                                                                     *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{m\_chain});
+206 
+207   m\_postRv.setRealizer(*\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{m\_solutionRealizer});
+208 
+209   m\_env.fullComm().syncPrintDebugMsg(\textcolor{stringliteral}{"In
+       StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMetropolisHastings(), code place 1"},3,3000000);
+210   \textcolor{comment}{//m\_env.fullComm().Barrier();}
+211 
+212   \textcolor{comment}{// Compute output mdf: uniform sampling approach}
+213 \textcolor{preprocessor}{#ifdef UQ\_ALSO\_COMPUTE\_MDFS\_WITHOUT\_KDE}
+214 \textcolor{preprocessor}{}  m\_subMdfGrids  = \textcolor{keyword}{new} ArrayOfOneDGrids <P\_V,P\_M>((\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}+\textcolor{stringliteral}{"Mdf\_"}).c\_str(),m\_postRv.imageSet().vectorSpace());
+215   m\_subMdfValues = \textcolor{keyword}{new} ArrayOfOneDTables<P\_V,P\_M>((\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}+\textcolor{stringliteral}{"Mdf\_"}).c\_str(),m\_postRv.imageSet().vectorSpace());
+216   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{m\_chain}->subUniformlySampledMdf(numEvaluationPointsVec, \textcolor{comment}{// input}
+217                                   *m\_subMdfGrids,         \textcolor{comment}{// output}
+218                                   *m\_subMdfValues);       \textcolor{comment}{// output}
+219   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4e4808280b09aa4ae0584521b78230ef}{m\_subSolutionMdf} = \textcolor{keyword}{new} SampledVectorMdf<P\_V,P\_M>(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}.c\_str(),
+220                                                           *m\_subMdfGrids,
+221                                                           *m\_subMdfValues);
+222   m\_postRv.setMdf(*\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4e4808280b09aa4ae0584521b78230ef}{m\_subSolutionMdf});
+223 
+224   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_a5b68edcbfca8473657ee8d58cfc16fb6}{m\_dataOutputFileName}                       !=
+       \hyperlink{_statistical_inverse_problem_options_8h_ac78631f46bad3db4e949f3b7ea34fb00}{UQ\_SIP\_FILENAME\_FOR\_NO\_FILE}                    ) &&
+225       (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_abda641263b3f677da5078fb3ea3f7102}{m\_dataOutputAllowedSet}.find(m\_env.subId()) 
+      != \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_abda641263b3f677da5078fb3ea3f7102}{m\_dataOutputAllowedSet}.end())) \{
+226     \textcolor{keywordflow}{if} (m\_env.subRank() == 0) \{
+227       \textcolor{comment}{// Write data output file}
+228       \textcolor{keywordflow}{if} (m\_env.subDisplayFile()) \{
+229         *m\_env.subDisplayFile() << \textcolor{stringliteral}{"Opening data output file '"} << \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_a5b68edcbfca8473657ee8d58cfc16fb6}{m\_dataOutputFileName}
+230                                 << \textcolor{stringliteral}{"' for calibration problem with problem with prefix = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}
+231                                 << std::endl;
+232       \}
+233 
+234       \textcolor{comment}{// Open file}
+235       \textcolor{comment}{// Always write at the end of an eventual pre-existing file}
+236       std::ofstream* ofsvar = \textcolor{keyword}{new} std::ofstream((\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.
+      \hyperlink{class_q_u_e_s_o_1_1_sip_options_values_a5b68edcbfca8473657ee8d58cfc16fb6}{m\_dataOutputFileName}+\textcolor{stringliteral}{"\_sub"}+m\_env.subIdString()+\textcolor{stringliteral}{".m"}).c\_str(), std::ofstream::out | 
+      std::ofstream::in | std::ofstream::ate);
+237       \textcolor{keywordflow}{if} ((ofsvar            == NULL ) ||
+238           (ofsvar->is\_open() == \textcolor{keyword}{false})) \{
+239         \textcolor{keyword}{delete} ofsvar;
+240         ofsvar = \textcolor{keyword}{new} std::ofstream((\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.
+      \hyperlink{class_q_u_e_s_o_1_1_sip_options_values_a5b68edcbfca8473657ee8d58cfc16fb6}{m\_dataOutputFileName}+\textcolor{stringliteral}{"\_sub"}+m\_env.subIdString()+\textcolor{stringliteral}{".m"}).c\_str(), std::ofstream::out | 
+      std::ofstream::trunc);
+241       \}
+242       \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((ofsvar && ofsvar->is\_open()) == \textcolor{keyword}{false},
+243                           m\_env.worldRank(),
+244                           \textcolor{stringliteral}{"StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMetropolisHastings()"},
+245                           \textcolor{stringliteral}{"failed to open file"});
+246 
+247       m\_postRv.mdf().print(*ofsvar);
+248 
+249       \textcolor{comment}{// Close file}
+250       \textcolor{comment}{//ofsvar->close();}
+251       \textcolor{keyword}{delete} ofsvar;
+252       \textcolor{keywordflow}{if} (m\_env.subDisplayFile()) \{
+253         *m\_env.subDisplayFile() << \textcolor{stringliteral}{"Closed data output file '"} << \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_a5b68edcbfca8473657ee8d58cfc16fb6}{m\_dataOutputFileName}
+254                                 << \textcolor{stringliteral}{"' for calibration problem with problem with prefix = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}
+255                                 << std::endl;
+256       \}
+257     \}
+258   \}
+259 \textcolor{preprocessor}{#endif}
+260 \textcolor{preprocessor}{}  \textcolor{keywordflow}{if} (m\_env.subDisplayFile()) \{
+261     *m\_env.subDisplayFile() << std::endl;
+262   \}
+263 
+264   m\_env.fullComm().syncPrintDebugMsg(\textcolor{stringliteral}{"Leaving
+       StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMetropolisHastings()"},1,3000000);
+265   m\_env.fullComm().Barrier();
+266   \textcolor{comment}{// grvy\_timer\_end("BayesMetropolisHastings"); TODO: revisit timers}
+267   \textcolor{keywordflow}{return};
+268 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a72a2bfd14054b4c8de14fb86da240ab8}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!solve\-With\-Bayes\-M\-L\-Sampling@{solve\-With\-Bayes\-M\-L\-Sampling}}
+\index{solve\-With\-Bayes\-M\-L\-Sampling@{solve\-With\-Bayes\-M\-L\-Sampling}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{solve\-With\-Bayes\-M\-L\-Sampling}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::solve\-With\-Bayes\-M\-L\-Sampling (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a72a2bfd14054b4c8de14fb86da240ab8}
+
+
+Solves with Bayes Multi-\/\-Level (M\-L) sampling. 
+
+
+
+Definition at line 272 of file Statistical\-Inverse\-Problem.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Instantiate\-Intersection().
+
+
+\begin{DoxyCode}
+273 \{
+274   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a0b0779b41ff304058856e97e1d16b4d4}{fullComm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a4059971c30e023b272fccaa6aa00c426}{Barrier}();
+275   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a0b0779b41ff304058856e97e1d16b4d4}{fullComm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a6f73891de4668c325277ddaa799cf808}{syncPrintDebugMsg}(\textcolor{stringliteral}{"Entering
+       StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMLSampling()"},1,3000000);
+276 
+277   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_a3ad6bcf891e7d938cc41ac47af698ab9}{m\_computeSolution} == \textcolor{keyword}{false}) \{
+278     \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}())) \{
+279       *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMLSampling()"}
+280                               << \textcolor{stringliteral}{": avoiding solution, as requested by user"}
+281                               << std::endl;
+282     \}
+283     \textcolor{keywordflow}{return};
+284   \}
+285   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}())) \{
+286     *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMLSampling()"}
+287                             << \textcolor{stringliteral}{": computing solution, as requested by user"}
+288                             << std::endl;
+289   \}
+290 
+291   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler}       ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler};
+292   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_af66c3780c9b23fc917dca0ea6dc12103}{m\_mhSeqGenerator}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_af66c3780c9b23fc917dca0ea6dc12103}{m\_mhSeqGenerator};
+293   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{m\_solutionRealizer}) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{m\_solutionRealizer};
+294   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4cb3684669aa87b1d4a6903b55978969}{m\_subSolutionCdf}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4cb3684669aa87b1d4a6903b55978969}{m\_subSolutionCdf};
+295   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4e4808280b09aa4ae0584521b78230ef}{m\_subSolutionMdf}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4e4808280b09aa4ae0584521b78230ef}{m\_subSolutionMdf};
+296   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a6ea67d31e6651f1dd4aa6983d4a01865}{m\_solutionPdf}     ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a6ea67d31e6651f1dd4aa6983d4a01865}{m\_solutionPdf};
+297   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{m\_solutionDomain}  ) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{m\_solutionDomain};
+298 
+299   P\_V numEvaluationPointsVec(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{m\_priorRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().\hyperlink{class_q_u_e_s_o_1_1_vector_set_a923421590baf5bf93cf066e528f927dc}{vectorSpace}().
+      \hyperlink{class_q_u_e_s_o_1_1_vector_space_a92e963bb5cab3eecd290dfe4b8f03b04}{zeroVector}());
+300   numEvaluationPointsVec.cwSet(250.);
+301 
+302   \textcolor{comment}{// Compute output pdf up to a multiplicative constant: Bayesian approach}
+303   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{m\_solutionDomain} = \hyperlink{namespace_q_u_e_s_o_aa79046437ab085c5487ae16e9a0baeec}{InstantiateIntersection}(
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{m\_priorRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a3206740e05e0c64a88273029e963b185}{pdf}().\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domainSet}(),\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a27177c077988c85c3310e0491f899332}{m\_likelihoodFunction}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domainSet}());
+304 
+305   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a6ea67d31e6651f1dd4aa6983d4a01865}{m\_solutionPdf} = \textcolor{keyword}{new} BayesianJointPdf<P\_V,P\_M>(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}.c\_str(),
+306                                                        \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{m\_priorRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_a3206740e05e0c64a88273029e963b185}{pdf}(),
+307                                                        \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a27177c077988c85c3310e0491f899332}{m\_likelihoodFunction},
+308                                                        1.,
+309                                                        *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{m\_solutionDomain});
+310 
+311   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7dc62223cad355422449841ff3ec68e4}{m\_postRv}.\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v_a1645a2db9e84b44df65faefda9921277}{setPdf}(*m\_solutionPdf);
+312 
+313   \textcolor{comment}{// Compute output realizer: ML approach}
+314   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{m\_chain} = \textcolor{keyword}{new} SequenceOfVectors<P\_V,P\_M>(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7dc62223cad355422449841ff3ec68e4}{m\_postRv}.\hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v_aa4dd2f036228eac1f945bacc7147a922}{imageSet}().vectorSpace(),0,
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}+\textcolor{stringliteral}{"chain"});
+315   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{m\_mlSampler} = \textcolor{keyword}{new} MLSampling<P\_V,P\_M>(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}.c\_str(),
+316                                              \textcolor{comment}{//m\_postRv,}
+317                                                \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{m\_priorRv},
+318                                                \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a27177c077988c85c3310e0491f899332}{m\_likelihoodFunction});
+319   \textcolor{comment}{//                                           initialValues,}
+320   \textcolor{comment}{//                                           initialProposalCovMatrix);}
+321 
+322   m\_mlSampler->generateSequence(*\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{m\_chain},
+323                                 NULL,
+324                                 NULL);
+325 
+326   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{m\_solutionRealizer} = \textcolor{keyword}{new} SequentialVectorRealizer<P\_V,P\_M>(
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{m\_optionsObj}->\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}.c\_str(),
+327                                                                     *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{m\_chain});
+328 
+329   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7dc62223cad355422449841ff3ec68e4}{m\_postRv}.\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v_a79509d97d93176da2113930c7225b0fd}{setRealizer}(*\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{m\_solutionRealizer});
+330 
+331   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+332     *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << std::endl;
+333   \}
+334 
+335   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a0b0779b41ff304058856e97e1d16b4d4}{fullComm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a6f73891de4668c325277ddaa799cf808}{syncPrintDebugMsg}(\textcolor{stringliteral}{"Leaving
+       StatisticalInverseProblem<P\_V,P\_M>::solveWithBayesMLSampling()"},1,3000000);
+336   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a0b0779b41ff304058856e97e1d16b4d4}{fullComm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a4059971c30e023b272fccaa6aa00c426}{Barrier}();
+337 
+338   \textcolor{keywordflow}{return};
+339 \}
+\end{DoxyCode}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4354becd88247e1704b4f9b07faf9e55}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ std\-::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os, }
+\item[{const {\bf Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{obj}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4354becd88247e1704b4f9b07faf9e55}
+
+
+Definition at line 150 of file Statistical\-Inverse\-Problem.\-h.
+
+
+\begin{DoxyCode}
+151                                                      \{
+152     obj.print(os);
+153     \textcolor{keywordflow}{return} os;
+154   \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a71659d2393ea46940f963acc95285f17}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-alternative\-Options\-Values@{m\-\_\-alternative\-Options\-Values}}
+\index{m\-\_\-alternative\-Options\-Values@{m\-\_\-alternative\-Options\-Values}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-alternative\-Options\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf Sip\-Options\-Values} {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-alternative\-Options\-Values\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a71659d2393ea46940f963acc95285f17}
+
+
+Definition at line 175 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-chain@{m\-\_\-chain}}
+\index{m\-\_\-chain@{m\-\_\-chain}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-chain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf Base\-Vector\-Sequence}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-chain\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a5f6b98058067d21fb16981844e32910d}
+
+
+Definition at line 171 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_ac24b3395274db9fad21b13abd2d070d1}
+
+
+Definition at line 157 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a27177c077988c85c3310e0491f899332}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-likelihood\-Function@{m\-\_\-likelihood\-Function}}
+\index{m\-\_\-likelihood\-Function@{m\-\_\-likelihood\-Function}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-likelihood\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ const {\bf Base\-Scalar\-Function}$<$P\-\_\-\-V,P\-\_\-\-M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-likelihood\-Function\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a27177c077988c85c3310e0491f899332}
+
+
+Definition at line 160 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7138a1175f641633f69ab90617fc5f8c}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-log\-Likelihood\-Values@{m\-\_\-log\-Likelihood\-Values}}
+\index{m\-\_\-log\-Likelihood\-Values@{m\-\_\-log\-Likelihood\-Values}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-log\-Likelihood\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf Scalar\-Sequence}$<$double$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-log\-Likelihood\-Values\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7138a1175f641633f69ab90617fc5f8c}
+
+
+Definition at line 172 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_aa84ebc22eac5f609d5e269a9ed25c6aa}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-log\-Target\-Values@{m\-\_\-log\-Target\-Values}}
+\index{m\-\_\-log\-Target\-Values@{m\-\_\-log\-Target\-Values}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-log\-Target\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf Scalar\-Sequence}$<$double$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-log\-Target\-Values\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_aa84ebc22eac5f609d5e269a9ed25c6aa}
+
+
+Definition at line 173 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_af66c3780c9b23fc917dca0ea6dc12103}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-mh\-Seq\-Generator@{m\-\_\-mh\-Seq\-Generator}}
+\index{m\-\_\-mh\-Seq\-Generator@{m\-\_\-mh\-Seq\-Generator}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-mh\-Seq\-Generator}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf Metropolis\-Hastings\-S\-G}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-mh\-Seq\-Generator\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_af66c3780c9b23fc917dca0ea6dc12103}
+
+
+Definition at line 169 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-ml\-Sampler@{m\-\_\-ml\-Sampler}}
+\index{m\-\_\-ml\-Sampler@{m\-\_\-ml\-Sampler}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-ml\-Sampler}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf M\-L\-Sampling}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-ml\-Sampler\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a8410eadca0a84c3ee1ad2e934a2c6d10}
+
+
+Definition at line 170 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-options\-Obj@{m\-\_\-options\-Obj}}
+\index{m\-\_\-options\-Obj@{m\-\_\-options\-Obj}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-options\-Obj}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf Statistical\-Inverse\-Problem\-Options}$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-options\-Obj\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a481954f01d55bab4c1a36392fecb4a12}
+
+
+Definition at line 176 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7dc62223cad355422449841ff3ec68e4}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-post\-Rv@{m\-\_\-post\-Rv}}
+\index{m\-\_\-post\-Rv@{m\-\_\-post\-Rv}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-post\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf Generic\-Vector\-R\-V}$<$P\-\_\-\-V,P\-\_\-\-M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-post\-Rv\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a7dc62223cad355422449841ff3ec68e4}
+
+
+Definition at line 161 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-prior\-Rv@{m\-\_\-prior\-Rv}}
+\index{m\-\_\-prior\-Rv@{m\-\_\-prior\-Rv}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-prior\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ const {\bf Base\-Vector\-R\-V}$<$P\-\_\-\-V,P\-\_\-\-M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-prior\-Rv\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_aebe8ce8eb6fa5f264cafffbe35fbead0}
+
+
+Definition at line 159 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-solution\-Domain@{m\-\_\-solution\-Domain}}
+\index{m\-\_\-solution\-Domain@{m\-\_\-solution\-Domain}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-solution\-Domain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf Vector\-Set}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-solution\-Domain\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a51eeabd608af36b009d67b2a5244db9c}
+
+
+Definition at line 163 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a6ea67d31e6651f1dd4aa6983d4a01865}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-solution\-Pdf@{m\-\_\-solution\-Pdf}}
+\index{m\-\_\-solution\-Pdf@{m\-\_\-solution\-Pdf}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-solution\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf Base\-Joint\-Pdf}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-solution\-Pdf\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a6ea67d31e6651f1dd4aa6983d4a01865}
+
+
+Definition at line 164 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-solution\-Realizer@{m\-\_\-solution\-Realizer}}
+\index{m\-\_\-solution\-Realizer@{m\-\_\-solution\-Realizer}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-solution\-Realizer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf Base\-Vector\-Realizer}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-solution\-Realizer\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4ac9fdff2472ae289fcf1413d210e38e}
+
+
+Definition at line 167 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4cb3684669aa87b1d4a6903b55978969}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-sub\-Solution\-Cdf@{m\-\_\-sub\-Solution\-Cdf}}
+\index{m\-\_\-sub\-Solution\-Cdf@{m\-\_\-sub\-Solution\-Cdf}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-sub\-Solution\-Cdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf Base\-Vector\-Cdf}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-sub\-Solution\-Cdf\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4cb3684669aa87b1d4a6903b55978969}
+
+
+Definition at line 166 of file Statistical\-Inverse\-Problem.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4e4808280b09aa4ae0584521b78230ef}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}!m\-\_\-sub\-Solution\-Mdf@{m\-\_\-sub\-Solution\-Mdf}}
+\index{m\-\_\-sub\-Solution\-Mdf@{m\-\_\-sub\-Solution\-Mdf}!QUESO::StatisticalInverseProblem@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}}
+\subsubsection[{m\-\_\-sub\-Solution\-Mdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M$>$ {\bf Base\-Vector\-Mdf}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::m\-\_\-sub\-Solution\-Mdf\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_a4e4808280b09aa4ae0584521b78230ef}
+
+
+Definition at line 165 of file Statistical\-Inverse\-Problem.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_statistical_inverse_problem_8h}{Statistical\-Inverse\-Problem.\-h}\item 
+src/stats/src/\hyperlink{_statistical_inverse_problem_8_c}{Statistical\-Inverse\-Problem.\-C}\end{DoxyCompactItemize}

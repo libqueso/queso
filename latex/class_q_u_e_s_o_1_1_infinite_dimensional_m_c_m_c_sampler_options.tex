@@ -1,0 +1,547 @@
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options}{\section{Q\-U\-E\-S\-O\-:\-:Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options Class Reference}
+\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options}\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+}
+
+
+This class defines the options that specify the behaviour of the M\-C\-M\-C sampler.  
+
+
+
+
+{\ttfamily \#include $<$Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h$>$}
+
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a75b8f9ff8efcdf810ed966a5e56fdae0}{Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa5828e5c03f12f69edb597cfaf2448ce}{env}, const char $\ast$prefix)
+\begin{DoxyCompactList}\small\item\em Given prefix, read the input file for parameters named prefix\-\_\-$\ast$. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a872f635f05e17901ff245b2c231f8e27}{$\sim$\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_abc90ff7faaa869f71034fafccf35f434}{scan\-Options\-Values} ()
+\begin{DoxyCompactList}\small\item\em Scans the input file for options prefixed with {\ttfamily prefix}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_adf83c39335cefacc35c33770bd020657}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em Prints {\ttfamily this} to {\ttfamily os}. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa5828e5c03f12f69edb597cfaf2448ce}{env} () const 
+\begin{DoxyCompactList}\small\item\em Returns the \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} environment. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a6cb95c7e8adbc6ead99b2cf3fb3aed56}{m\-\_\-prefix}
+\begin{DoxyCompactList}\small\item\em The prefix to look for in the input file. \end{DoxyCompactList}\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a224d09b8aa3f31aa2134338ae2a60018}{m\-\_\-data\-Output\-Dir\-Name}
+\begin{DoxyCompactList}\small\item\em Name of the output dir to save infinite dimensional output files to. \end{DoxyCompactList}\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a2146a3f4d0f276081484743bf3c5b5aa}{m\-\_\-data\-Output\-File\-Name}
+\begin{DoxyCompactList}\small\item\em Name of the H\-D\-F5 output file to store chain statistics. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a65fbd7c98f6e3820206382da50a0133e}{m\-\_\-num\-\_\-iters}
+\begin{DoxyCompactList}\small\item\em The total number of iterations to do. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa477dfa39894194aecbc064e2d11af56}{m\-\_\-save\-\_\-freq}
+\begin{DoxyCompactList}\small\item\em The frequency at which to save the state of the chain. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a08b73ed8aa86a07c5ed02394380d0434}{m\-\_\-rwmh\-\_\-step}
+\begin{DoxyCompactList}\small\item\em The proposal step size. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a1feb71de843cebe5e1d7b6e49224986b}{define\-My\-Options} (po\-::options\-\_\-description \&options\-Desc) const 
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ace4a24a8b00672e231ea18e860875c53}{get\-My\-Option\-Values} (po\-::options\-\_\-description \&options\-Desc)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\-\_\-env}
+\item 
+po\-::options\-\_\-description $\ast$ \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_af3c175cdb1ed25be98ccee045b011b1f}{m\-\_\-options\-Desc}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a897fdd1438ecdd2cd9efe5b1abad55ba}{m\-\_\-option\-\_\-help}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a75dac93b87f4e93ffef95b35c7382ad2}{m\-\_\-option\-\_\-data\-Output\-Dir\-Name}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a4c405def589baa661b5e76f0ca0ef280}{m\-\_\-option\-\_\-data\-Output\-File\-Name}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ab27e1a612339e516eb32b326e1dd6ed5}{m\-\_\-option\-\_\-num\-\_\-iters}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ac2ebcd1aff902c0b01fec2366fe775b6}{m\-\_\-option\-\_\-save\-\_\-freq}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa76584eb25581942458195d26e032578}{m\-\_\-option\-\_\-rwmh\-\_\-step}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class defines the options that specify the behaviour of the M\-C\-M\-C sampler. 
+
+Definition at line 39 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a75b8f9ff8efcdf810ed966a5e56fdae0}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\index{Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{const char $\ast$}]{prefix}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a75b8f9ff8efcdf810ed966a5e56fdae0}
+
+
+Given prefix, read the input file for parameters named prefix\-\_\-$\ast$. 
+
+
+
+Definition at line 35 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-C.
+
+
+
+References m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::options\-Input\-File\-Name(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+38   : \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a6cb95c7e8adbc6ead99b2cf3fb3aed56}{m\_prefix}((std::string)(prefix) + \textcolor{stringliteral}{"infmcmc\_"}),
+39     \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa5828e5c03f12f69edb597cfaf2448ce}{env}),
+40     \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_af3c175cdb1ed25be98ccee045b011b1f}{m\_optionsDesc}(\textcolor{keyword}{new} po::options\_description(\textcolor{stringliteral}{"Infinite Dimensional MCMC Sampler options"})),
+41     \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a897fdd1438ecdd2cd9efe5b1abad55ba}{m\_option\_help}(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a6cb95c7e8adbc6ead99b2cf3fb3aed56}{m\_prefix} + \textcolor{stringliteral}{"help"}),
+42     \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a75dac93b87f4e93ffef95b35c7382ad2}{m\_option\_dataOutputDirName}(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a6cb95c7e8adbc6ead99b2cf3fb3aed56}{m\_prefix} + \textcolor{stringliteral}{"dataOutputDirName"}),
+43     \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a4c405def589baa661b5e76f0ca0ef280}{m\_option\_dataOutputFileName}(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a6cb95c7e8adbc6ead99b2cf3fb3aed56}{m\_prefix} + \textcolor{stringliteral}{"dataOutputFileName"}),
+44     \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ab27e1a612339e516eb32b326e1dd6ed5}{m\_option\_num\_iters}(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a6cb95c7e8adbc6ead99b2cf3fb3aed56}{m\_prefix} + \textcolor{stringliteral}{"num\_iters"}),
+45     \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ac2ebcd1aff902c0b01fec2366fe775b6}{m\_option\_save\_freq}(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a6cb95c7e8adbc6ead99b2cf3fb3aed56}{m\_prefix} + \textcolor{stringliteral}{"save\_freq"}),
+46     \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa76584eb25581942458195d26e032578}{m\_option\_rwmh\_step}(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a6cb95c7e8adbc6ead99b2cf3fb3aed56}{m\_prefix} + \textcolor{stringliteral}{"rwmh\_step"})
+47 \{
+48   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_aa0e3ccfe00e6f51dbe6dd6b9b6f65183}{optionsInputFileName}() == \textcolor{stringliteral}{""},
+49       \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+50       \textcolor{stringliteral}{"InfiniteDimensionalMCMCSamplerOptions::constructor(1)"},
+51       \textcolor{stringliteral}{"this constructor is incompatible with the abscense of an options input file"});
+52 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a872f635f05e17901ff245b2c231f8e27}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!$\sim$\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{$\sim$\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\index{$\sim$\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{$\sim$\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{$\sim$\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::$\sim$\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a872f635f05e17901ff245b2c231f8e27}
+
+
+Destructor. 
+
+
+
+Definition at line 54 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-C.
+
+
+
+References m\-\_\-options\-Desc.
+
+
+\begin{DoxyCode}
+55 \{
+56   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_af3c175cdb1ed25be98ccee045b011b1f}{m\_optionsDesc}) \{
+57     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_af3c175cdb1ed25be98ccee045b011b1f}{m\_optionsDesc};
+58   \}
+59 \} 
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a1feb71de843cebe5e1d7b6e49224986b}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!define\-My\-Options@{define\-My\-Options}}
+\index{define\-My\-Options@{define\-My\-Options}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{define\-My\-Options}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::define\-My\-Options (
+\begin{DoxyParamCaption}
+\item[{po\-::options\-\_\-description \&}]{options\-Desc}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a1feb71de843cebe5e1d7b6e49224986b}
+
+
+Definition at line 82 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-C.
+
+
+
+References m\-\_\-option\-\_\-data\-Output\-Dir\-Name, m\-\_\-option\-\_\-data\-Output\-File\-Name, m\-\_\-option\-\_\-help, m\-\_\-option\-\_\-num\-\_\-iters, m\-\_\-option\-\_\-rwmh\-\_\-step, m\-\_\-option\-\_\-save\-\_\-freq, U\-Q\-\_\-\-I\-N\-F\-\_\-\-D\-A\-T\-A\-\_\-\-O\-U\-T\-P\-U\-T\-\_\-\-D\-I\-R\-\_\-\-N\-A\-M\-E\-\_\-\-O\-D\-V, U\-Q\-\_\-\-I\-N\-F\-\_\-\-D\-A\-T\-A\-\_\-\-O\-U\-T\-P\-U\-T\-\_\-\-F\-I\-L\-E\-\_\-\-N\-A\-M\-E\-\_\-\-O\-D\-V, U\-Q\-\_\-\-I\-N\-F\-\_\-\-N\-U\-M\-\_\-\-I\-T\-E\-R\-S\-\_\-\-O\-D\-V, U\-Q\-\_\-\-I\-N\-F\-\_\-\-R\-W\-M\-H\-\_\-\-S\-T\-E\-P\-\_\-\-O\-D\-V, and U\-Q\-\_\-\-I\-N\-F\-\_\-\-S\-A\-V\-E\-\_\-\-F\-R\-E\-Q\-\_\-\-O\-D\-V.
+
+
+
+Referenced by scan\-Options\-Values().
+
+
+\begin{DoxyCode}
+84 \{
+85   optionsDesc.add\_options()
+86     (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a897fdd1438ecdd2cd9efe5b1abad55ba}{m\_option\_help}.c\_str(), \textcolor{stringliteral}{"produce help message for infinite dimensional sampler"})
+87     (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a75dac93b87f4e93ffef95b35c7382ad2}{m\_option\_dataOutputDirName}.c\_str(), po::value<std::string>()->default\_value(
+      \hyperlink{_infinite_dimensional_m_c_m_c_sampler_options_8_c_aec1cc3af00e966ad1f72d4991db506f9}{UQ\_INF\_DATA\_OUTPUT\_DIR\_NAME\_ODV}), \textcolor{stringliteral}{"name of data output dir"})
+88     (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a4c405def589baa661b5e76f0ca0ef280}{m\_option\_dataOutputFileName}.c\_str(), po::value<std::string>()->
+      default\_value(\hyperlink{_infinite_dimensional_m_c_m_c_sampler_options_8_c_a94a16132b1d2694fe1ba4602594e7bc7}{UQ\_INF\_DATA\_OUTPUT\_FILE\_NAME\_ODV}), \textcolor{stringliteral}{"name of data output file (HDF5)"})
+89     (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ab27e1a612339e516eb32b326e1dd6ed5}{m\_option\_num\_iters}.c\_str(), po::value<int>()->default\_value(
+      \hyperlink{_infinite_dimensional_m_c_m_c_sampler_options_8_c_a09baf502e91d02389a48a0eb808826f3}{UQ\_INF\_NUM\_ITERS\_ODV}), \textcolor{stringliteral}{"number of mcmc iterations to do"})
+90     (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ac2ebcd1aff902c0b01fec2366fe775b6}{m\_option\_save\_freq}.c\_str(), po::value<int>()->default\_value(
+      \hyperlink{_infinite_dimensional_m_c_m_c_sampler_options_8_c_ab6e147540aa260f27861a36a39443878}{UQ\_INF\_SAVE\_FREQ\_ODV}), \textcolor{stringliteral}{"the frequency at which to save the chain state"})
+91     (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa76584eb25581942458195d26e032578}{m\_option\_rwmh\_step}.c\_str(), po::value<double>()->default\_value(
+      \hyperlink{_infinite_dimensional_m_c_m_c_sampler_options_8_c_ab6dfe19abe6e2708a3bb7e50c07ee8da}{UQ\_INF\_RWMH\_STEP\_ODV}), \textcolor{stringliteral}{"the step-size in the random-walk Metropolis proposal"});
+92   \textcolor{keywordflow}{return};
+93 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa5828e5c03f12f69edb597cfaf2448ce}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!env@{env}}
+\index{env@{env}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{env}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Base\-Environment} \& Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::env (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa5828e5c03f12f69edb597cfaf2448ce}
+
+
+Returns the \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} environment. 
+
+
+
+Definition at line 147 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-C.
+
+
+
+References m\-\_\-env.
+
+
+\begin{DoxyCode}
+148 \{
+149   \textcolor{keywordflow}{return} this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env};
+150 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ace4a24a8b00672e231ea18e860875c53}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!get\-My\-Option\-Values@{get\-My\-Option\-Values}}
+\index{get\-My\-Option\-Values@{get\-My\-Option\-Values}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{get\-My\-Option\-Values}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::get\-My\-Option\-Values (
+\begin{DoxyParamCaption}
+\item[{po\-::options\-\_\-description \&}]{options\-Desc}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ace4a24a8b00672e231ea18e860875c53}
+
+
+Definition at line 95 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::all\-Options\-Map(), m\-\_\-data\-Output\-Dir\-Name, m\-\_\-data\-Output\-File\-Name, m\-\_\-env, m\-\_\-num\-\_\-iters, m\-\_\-option\-\_\-data\-Output\-Dir\-Name, m\-\_\-option\-\_\-data\-Output\-File\-Name, m\-\_\-option\-\_\-help, m\-\_\-option\-\_\-num\-\_\-iters, m\-\_\-option\-\_\-rwmh\-\_\-step, m\-\_\-option\-\_\-save\-\_\-freq, m\-\_\-rwmh\-\_\-step, m\-\_\-save\-\_\-freq, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+
+Referenced by scan\-Options\-Values().
+
+
+\begin{DoxyCode}
+97 \{
+98   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a897fdd1438ecdd2cd9efe5b1abad55ba}{m\_option\_help})) \{
+99     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+100       *\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << optionsDesc
+101                               << std::endl;
+102     \}
+103   \}
+104 
+105   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a75dac93b87f4e93ffef95b35c7382ad2}{m\_option\_dataOutputDirName})) 
+      \{
+106     this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a224d09b8aa3f31aa2134338ae2a60018}{m\_dataOutputDirName} = ((\textcolor{keyword}{const} po::variable\_value&) 
+      \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a75dac93b87f4e93ffef95b35c7382ad2}{m\_option\_dataOutputDirName}]).
+      as<std::string>();
+107   \}
+108 
+109   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a4c405def589baa661b5e76f0ca0ef280}{m\_option\_dataOutputFileName})
+      ) \{
+110     this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a2146a3f4d0f276081484743bf3c5b5aa}{m\_dataOutputFileName} = ((\textcolor{keyword}{const} po::variable\_value&) 
+      \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a4c405def589baa661b5e76f0ca0ef280}{m\_option\_dataOutputFileName}]).
+      as<std::string>();
+111   \}
+112 
+113   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ab27e1a612339e516eb32b326e1dd6ed5}{m\_option\_num\_iters})) \{
+114     this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a65fbd7c98f6e3820206382da50a0133e}{m\_num\_iters} = ((\textcolor{keyword}{const} po::variable\_value&) \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ab27e1a612339e516eb32b326e1dd6ed5}{m\_option\_num\_iters}]).as<int>();
+115   \}
+116 
+117   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ac2ebcd1aff902c0b01fec2366fe775b6}{m\_option\_save\_freq})) \{
+118     this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa477dfa39894194aecbc064e2d11af56}{m\_save\_freq} = ((\textcolor{keyword}{const} po::variable\_value&) \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ac2ebcd1aff902c0b01fec2366fe775b6}{m\_option\_save\_freq}]).as<int>();
+119   \}
+120 
+121   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa76584eb25581942458195d26e032578}{m\_option\_rwmh\_step})) \{
+122     this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a08b73ed8aa86a07c5ed02394380d0434}{m\_rwmh\_step} = ((\textcolor{keyword}{const} po::variable\_value&) \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa76584eb25581942458195d26e032578}{m\_option\_rwmh\_step}]).as<double>();
+123   \}
+124 
+125   \textcolor{keywordflow}{return};
+126 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_adf83c39335cefacc35c33770bd020657}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!print@{print}}
+\index{print@{print}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_adf83c39335cefacc35c33770bd020657}
+
+
+Prints {\ttfamily this} to {\ttfamily os}. 
+
+
+
+Definition at line 128 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-C.
+
+
+
+References m\-\_\-data\-Output\-Dir\-Name, m\-\_\-data\-Output\-File\-Name, m\-\_\-num\-\_\-iters, m\-\_\-option\-\_\-data\-Output\-Dir\-Name, m\-\_\-option\-\_\-data\-Output\-File\-Name, m\-\_\-option\-\_\-num\-\_\-iters, m\-\_\-option\-\_\-rwmh\-\_\-step, m\-\_\-option\-\_\-save\-\_\-freq, m\-\_\-rwmh\-\_\-step, and m\-\_\-save\-\_\-freq.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::operator$<$$<$().
+
+
+\begin{DoxyCode}
+129 \{
+130   os << \textcolor{stringliteral}{"\(\backslash\)n"} << this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a75dac93b87f4e93ffef95b35c7382ad2}{m\_option\_dataOutputDirName} << \textcolor{stringliteral}{" = "} << this->
+      \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a224d09b8aa3f31aa2134338ae2a60018}{m\_dataOutputDirName};
+131   os << \textcolor{stringliteral}{"\(\backslash\)n"} << this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a4c405def589baa661b5e76f0ca0ef280}{m\_option\_dataOutputFileName} << \textcolor{stringliteral}{" = "} << this->
+      \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a2146a3f4d0f276081484743bf3c5b5aa}{m\_dataOutputFileName};
+132   os << \textcolor{stringliteral}{"\(\backslash\)n"} << this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ab27e1a612339e516eb32b326e1dd6ed5}{m\_option\_num\_iters} << \textcolor{stringliteral}{" = "} << this->
+      \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a65fbd7c98f6e3820206382da50a0133e}{m\_num\_iters};
+133   os << \textcolor{stringliteral}{"\(\backslash\)n"} << this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ac2ebcd1aff902c0b01fec2366fe775b6}{m\_option\_save\_freq} << \textcolor{stringliteral}{" = "} << this->
+      \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa477dfa39894194aecbc064e2d11af56}{m\_save\_freq};
+134   os << \textcolor{stringliteral}{"\(\backslash\)n"} << this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa76584eb25581942458195d26e032578}{m\_option\_rwmh\_step} << \textcolor{stringliteral}{" = "} << this->
+      \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a08b73ed8aa86a07c5ed02394380d0434}{m\_rwmh\_step};
+135   os << std::endl;
+136   \textcolor{keywordflow}{return};
+137 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_abc90ff7faaa869f71034fafccf35f434}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!scan\-Options\-Values@{scan\-Options\-Values}}
+\index{scan\-Options\-Values@{scan\-Options\-Values}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{scan\-Options\-Values}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::scan\-Options\-Values (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_abc90ff7faaa869f71034fafccf35f434}
+
+
+Scans the input file for options prefixed with {\ttfamily prefix}. 
+
+
+
+Definition at line 61 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-C.
+
+
+
+References define\-My\-Options(), get\-My\-Option\-Values(), m\-\_\-env, m\-\_\-options\-Desc, m\-\_\-prefix, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::scan\-Input\-File\-For\-My\-Options(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+62 \{
+63   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_af3c175cdb1ed25be98ccee045b011b1f}{m\_optionsDesc} == NULL,
+64                       \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+65                       \textcolor{stringliteral}{"InfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()"},
+66                       \textcolor{stringliteral}{"m\_optionsDesc variable is NULL"});
+67 
+68   this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a1feb71de843cebe5e1d7b6e49224986b}{defineMyOptions}(*\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_af3c175cdb1ed25be98ccee045b011b1f}{m\_optionsDesc});
+69   \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae3e118fc38e17537107b347d6b421927}{scanInputFileForMyOptions}(*\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_af3c175cdb1ed25be98ccee045b011b1f}{m\_optionsDesc});
+70   this->\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ace4a24a8b00672e231ea18e860875c53}{getMyOptionValues}(*\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_af3c175cdb1ed25be98ccee045b011b1f}{m\_optionsDesc});
+71 
+72   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() != NULL) \{
+73     *\hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       InfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()"}
+74                             << \textcolor{stringliteral}{": after reading values of options with prefix '"} << 
+      \hyperlink{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a6cb95c7e8adbc6ead99b2cf3fb3aed56}{m\_prefix}
+75                             << \textcolor{stringliteral}{"', state of  object is:"}
+76                             << \textcolor{stringliteral}{"\(\backslash\)n"} << *\textcolor{keyword}{this}
+77                             << std::endl;
+78   \}
+79   \textcolor{keywordflow}{return};
+80 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a224d09b8aa3f31aa2134338ae2a60018}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-data\-Output\-Dir\-Name@{m\-\_\-data\-Output\-Dir\-Name}}
+\index{m\-\_\-data\-Output\-Dir\-Name@{m\-\_\-data\-Output\-Dir\-Name}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-data\-Output\-Dir\-Name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-data\-Output\-Dir\-Name}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a224d09b8aa3f31aa2134338ae2a60018}
+
+
+Name of the output dir to save infinite dimensional output files to. 
+
+For example, if {\ttfamily m\-\_\-data\-Output\-Dir\-Name} is set to 'output\-Data/chain' then a series of folders will be created, one for each \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} subenvironment, called 'output\-Data/chain0', 'output\-Data/chain1', etc. Inside these folders, output data from the infinite dimensional chain will be saved as an H\-D\-F5 file. 
+
+Definition at line 65 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a2146a3f4d0f276081484743bf3c5b5aa}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-data\-Output\-File\-Name@{m\-\_\-data\-Output\-File\-Name}}
+\index{m\-\_\-data\-Output\-File\-Name@{m\-\_\-data\-Output\-File\-Name}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-data\-Output\-File\-Name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-data\-Output\-File\-Name}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a2146a3f4d0f276081484743bf3c5b5aa}
+
+
+Name of the H\-D\-F5 output file to store chain statistics. 
+
+
+
+Definition at line 68 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Base\-Environment}\& Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a798627198e7d75723bd48d123835503c}
+
+
+Definition at line 86 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by env(), get\-My\-Option\-Values(), Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options(), and scan\-Options\-Values().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a65fbd7c98f6e3820206382da50a0133e}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-num\-\_\-iters@{m\-\_\-num\-\_\-iters}}
+\index{m\-\_\-num\-\_\-iters@{m\-\_\-num\-\_\-iters}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-num\-\_\-iters}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-num\-\_\-iters}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a65fbd7c98f6e3820206382da50a0133e}
+
+
+The total number of iterations to do. 
+
+
+
+Definition at line 71 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a75dac93b87f4e93ffef95b35c7382ad2}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-option\-\_\-data\-Output\-Dir\-Name@{m\-\_\-option\-\_\-data\-Output\-Dir\-Name}}
+\index{m\-\_\-option\-\_\-data\-Output\-Dir\-Name@{m\-\_\-option\-\_\-data\-Output\-Dir\-Name}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-data\-Output\-Dir\-Name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-option\-\_\-data\-Output\-Dir\-Name\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a75dac93b87f4e93ffef95b35c7382ad2}
+
+
+Definition at line 90 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a4c405def589baa661b5e76f0ca0ef280}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-option\-\_\-data\-Output\-File\-Name@{m\-\_\-option\-\_\-data\-Output\-File\-Name}}
+\index{m\-\_\-option\-\_\-data\-Output\-File\-Name@{m\-\_\-option\-\_\-data\-Output\-File\-Name}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-data\-Output\-File\-Name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-option\-\_\-data\-Output\-File\-Name\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a4c405def589baa661b5e76f0ca0ef280}
+
+
+Definition at line 91 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a897fdd1438ecdd2cd9efe5b1abad55ba}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-option\-\_\-help@{m\-\_\-option\-\_\-help}}
+\index{m\-\_\-option\-\_\-help@{m\-\_\-option\-\_\-help}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-help}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-option\-\_\-help\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a897fdd1438ecdd2cd9efe5b1abad55ba}
+
+
+Definition at line 89 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), and get\-My\-Option\-Values().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ab27e1a612339e516eb32b326e1dd6ed5}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-option\-\_\-num\-\_\-iters@{m\-\_\-option\-\_\-num\-\_\-iters}}
+\index{m\-\_\-option\-\_\-num\-\_\-iters@{m\-\_\-option\-\_\-num\-\_\-iters}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-num\-\_\-iters}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-option\-\_\-num\-\_\-iters\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ab27e1a612339e516eb32b326e1dd6ed5}
+
+
+Definition at line 92 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa76584eb25581942458195d26e032578}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-option\-\_\-rwmh\-\_\-step@{m\-\_\-option\-\_\-rwmh\-\_\-step}}
+\index{m\-\_\-option\-\_\-rwmh\-\_\-step@{m\-\_\-option\-\_\-rwmh\-\_\-step}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-rwmh\-\_\-step}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-option\-\_\-rwmh\-\_\-step\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa76584eb25581942458195d26e032578}
+
+
+Definition at line 94 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ac2ebcd1aff902c0b01fec2366fe775b6}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-option\-\_\-save\-\_\-freq@{m\-\_\-option\-\_\-save\-\_\-freq}}
+\index{m\-\_\-option\-\_\-save\-\_\-freq@{m\-\_\-option\-\_\-save\-\_\-freq}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-save\-\_\-freq}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-option\-\_\-save\-\_\-freq\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_ac2ebcd1aff902c0b01fec2366fe775b6}
+
+
+Definition at line 93 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_af3c175cdb1ed25be98ccee045b011b1f}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-options\-Desc@{m\-\_\-options\-Desc}}
+\index{m\-\_\-options\-Desc@{m\-\_\-options\-Desc}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-options\-Desc}]{\setlength{\rightskip}{0pt plus 5cm}po\-::options\-\_\-description$\ast$ Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-options\-Desc\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_af3c175cdb1ed25be98ccee045b011b1f}
+
+
+Definition at line 88 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by scan\-Options\-Values(), and $\sim$\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a6cb95c7e8adbc6ead99b2cf3fb3aed56}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-prefix@{m\-\_\-prefix}}
+\index{m\-\_\-prefix@{m\-\_\-prefix}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-prefix}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-prefix}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a6cb95c7e8adbc6ead99b2cf3fb3aed56}
+
+
+The prefix to look for in the input file. 
+
+
+
+Definition at line 55 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by scan\-Options\-Values().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a08b73ed8aa86a07c5ed02394380d0434}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-rwmh\-\_\-step@{m\-\_\-rwmh\-\_\-step}}
+\index{m\-\_\-rwmh\-\_\-step@{m\-\_\-rwmh\-\_\-step}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-rwmh\-\_\-step}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-rwmh\-\_\-step}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_a08b73ed8aa86a07c5ed02394380d0434}
+
+
+The proposal step size. 
+
+
+
+Definition at line 77 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa477dfa39894194aecbc064e2d11af56}{\index{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}!m\-\_\-save\-\_\-freq@{m\-\_\-save\-\_\-freq}}
+\index{m\-\_\-save\-\_\-freq@{m\-\_\-save\-\_\-freq}!QUESO::InfiniteDimensionalMCMCSamplerOptions@{Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options}}
+\subsubsection[{m\-\_\-save\-\_\-freq}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options\-::m\-\_\-save\-\_\-freq}}\label{class_q_u_e_s_o_1_1_infinite_dimensional_m_c_m_c_sampler_options_aa477dfa39894194aecbc064e2d11af56}
+
+
+The frequency at which to save the state of the chain. 
+
+
+
+Definition at line 74 of file Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h.
+
+
+
+Referenced by get\-My\-Option\-Values(), and print().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{_infinite_dimensional_m_c_m_c_sampler_options_8h}{Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-h}\item 
+src/core/src/\hyperlink{_infinite_dimensional_m_c_m_c_sampler_options_8_c}{Infinite\-Dimensional\-M\-C\-M\-C\-Sampler\-Options.\-C}\end{DoxyCompactItemize}

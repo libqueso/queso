@@ -1,0 +1,265 @@
+\hypertarget{class_q_u_e_s_o_1_1_generic_scalar_function}{\section{Q\-U\-E\-S\-O\-:\-:Generic\-Scalar\-Function$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_generic_scalar_function}\index{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function$<$ V, M $>$}}
+}
+
+
+A class for handling generic scalar functions.  
+
+
+
+
+{\ttfamily \#include $<$Generic\-Scalar\-Function.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Generic\-Scalar\-Function$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=252pt]{class_q_u_e_s_o_1_1_generic_scalar_function__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Generic\-Scalar\-Function$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_generic_scalar_function__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a4619abc294e9703b564b4c034211f078}{Generic\-Scalar\-Function} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domain\-Set}, double($\ast$value\-Routine\-Ptr)(const V \&domain\-Vector, const V $\ast$domain\-Direction, const void $\ast$routines\-Data\-Ptr, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect), const void $\ast$routines\-Data\-Ptr, bool routine\-Is\-For\-Ln)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_ae88df82626c01d80179d6380c5c3dcf0}{$\sim$\-Generic\-Scalar\-Function} ()
+\begin{DoxyCompactList}\small\item\em Virtual destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical method}\par
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a8629ec7c184b58254b147294e52e8c4c}{actual\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const 
+\begin{DoxyCompactList}\small\item\em Calculates the actual value of this scalar function. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a0e93bae1ceb42049353e798a8866fd77}{ln\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const 
+\begin{DoxyCompactList}\small\item\em Calculates the logarithm of value of this scalar function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double($\ast$ \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a9feaa5ee6ceb321fde56c5dd4dc48f2f}{m\-\_\-value\-Routine\-Ptr} )(const V \&domain\-Vector, const V $\ast$domain\-Direction, const void $\ast$routines\-Data\-Ptr, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect)
+\begin{DoxyCompactList}\small\item\em Routine defining a scalar function. \end{DoxyCompactList}\item 
+const void $\ast$ \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a46b2964caebcd2e22f913f86798bdf36}{m\-\_\-routines\-Data\-Ptr}
+\item 
+bool \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a22e044d791d578453734356587bd7e65}{m\-\_\-routine\-Is\-For\-Ln}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function$<$ V, M $>$}
+
+A class for handling generic scalar functions. 
+
+This class allows the mathematical definition of a scalar function such as\-: $ f: B \subset R \rightarrow R $. It is derived from \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}. 
+
+Definition at line 43 of file Generic\-Scalar\-Function.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_generic_scalar_function_a4619abc294e9703b564b4c034211f078}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}!Generic\-Scalar\-Function@{Generic\-Scalar\-Function}}
+\index{Generic\-Scalar\-Function@{Generic\-Scalar\-Function}!QUESO::GenericScalarFunction@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}}
+\subsubsection[{Generic\-Scalar\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}$<$ V, M $>$\-::{\bf Generic\-Scalar\-Function} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{domain\-Set, }
+\item[{double($\ast$)(const V \&domain\-Vector, const V $\ast$domain\-Direction, const void $\ast$routines\-Data\-Ptr, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect)}]{value\-Routine\-Ptr, }
+\item[{const void $\ast$}]{routines\-Data\-Ptr, }
+\item[{bool}]{routine\-Is\-For\-Ln}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_generic_scalar_function_a4619abc294e9703b564b4c034211f078}
+
+
+Default constructor. 
+
+Instantiates an object of {\ttfamily this} class given its prefix, domain set and a pointer to a routine. This routine plays the role of a scalar math function, and it is useful, for instance, to calculate the likelihood (and its image set). 
+
+Definition at line 39 of file Generic\-Scalar\-Function.\-C.
+
+
+\begin{DoxyCode}
+44   : BaseScalarFunction<V,M>(((std::string)(prefix)+\textcolor{stringliteral}{"gen"}).c\_str(), \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domainSet}),
+45     \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a9feaa5ee6ceb321fde56c5dd4dc48f2f}{m\_valueRoutinePtr}             (valueRoutinePtr),
+46     \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a46b2964caebcd2e22f913f86798bdf36}{m\_routinesDataPtr}             (routinesDataPtr),
+47     \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a22e044d791d578453734356587bd7e65}{m\_routineIsForLn}              (routineIsForLn)
+48 \{
+49 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_generic_scalar_function_ae88df82626c01d80179d6380c5c3dcf0}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}!$\sim$\-Generic\-Scalar\-Function@{$\sim$\-Generic\-Scalar\-Function}}
+\index{$\sim$\-Generic\-Scalar\-Function@{$\sim$\-Generic\-Scalar\-Function}!QUESO::GenericScalarFunction@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}}
+\subsubsection[{$\sim$\-Generic\-Scalar\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}$<$ V, M $>$\-::$\sim${\bf Generic\-Scalar\-Function} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_generic_scalar_function_ae88df82626c01d80179d6380c5c3dcf0}
+
+
+Virtual destructor. 
+
+
+
+Definition at line 53 of file Generic\-Scalar\-Function.\-C.
+
+
+\begin{DoxyCode}
+54 \{
+55 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_generic_scalar_function_a8629ec7c184b58254b147294e52e8c4c}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}!actual\-Value@{actual\-Value}}
+\index{actual\-Value@{actual\-Value}!QUESO::GenericScalarFunction@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}}
+\subsubsection[{actual\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}$<$ V, M $>$\-::actual\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_generic_scalar_function_a8629ec7c184b58254b147294e52e8c4c}
+
+
+Calculates the actual value of this scalar function. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_aad8957ecbc4e155cbc4c40a1c21135d7}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function$<$ V, M $>$}.
+
+
+
+Definition at line 59 of file Generic\-Scalar\-Function.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+64 \{
+65   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a9feaa5ee6ceb321fde56c5dd4dc48f2f}{m\_valueRoutinePtr} == NULL,
+66                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+67                       \textcolor{stringliteral}{"GenericScalarFunction<V,M>::actualValue()"},
+68                       \textcolor{stringliteral}{"m\_valueRoutinePtr = NULL"});
+69 
+70   \textcolor{keywordtype}{double} value = \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a9feaa5ee6ceb321fde56c5dd4dc48f2f}{m\_valueRoutinePtr}(domainVector, domainDirection, 
+      \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a46b2964caebcd2e22f913f86798bdf36}{m\_routinesDataPtr}, gradVector, hessianMatrix, hessianEffect);
+71   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a22e044d791d578453734356587bd7e65}{m\_routineIsForLn}) \{
+72 \textcolor{preprocessor}{#ifdef QUESO\_EXPECTS\_LN\_LIKELIHOOD\_INSTEAD\_OF\_MINUS\_2\_LN}
+73 \textcolor{preprocessor}{}    value = std::exp(value);
+74 \textcolor{preprocessor}{#else}
+75 \textcolor{preprocessor}{}    value = std::exp(-.5*value);
+76 \textcolor{preprocessor}{#endif}
+77 \textcolor{preprocessor}{}    \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((domainDirection != NULL) ||
+78                         (gradVector      != NULL) ||
+79                         (hessianMatrix   != NULL) ||
+80                         (hessianEffect   != NULL),
+81                         \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+82                         \textcolor{stringliteral}{"GenericScalarFunction<V,M>::gradOfActual()"},
+83                         \textcolor{stringliteral}{"INCOMPLETE CODE"});
+84   \}
+85   \textcolor{keywordflow}{return} value;
+86 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_generic_scalar_function_a0e93bae1ceb42049353e798a8866fd77}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}!ln\-Value@{ln\-Value}}
+\index{ln\-Value@{ln\-Value}!QUESO::GenericScalarFunction@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}}
+\subsubsection[{ln\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}$<$ V, M $>$\-::ln\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_generic_scalar_function_a0e93bae1ceb42049353e798a8866fd77}
+
+
+Calculates the logarithm of value of this scalar function. 
+
+It is used in routines that calculate the likelihood and expect the logarithm of value. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_acf2f92adac2df2a0d750dc62cd3a4d0a}{Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function$<$ V, M $>$}.
+
+
+
+Definition at line 90 of file Generic\-Scalar\-Function.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+95 \{
+96   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a9feaa5ee6ceb321fde56c5dd4dc48f2f}{m\_valueRoutinePtr} == NULL,
+97                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+98                       \textcolor{stringliteral}{"GenericScalarFunction<V,M>::lnValue()"},
+99                       \textcolor{stringliteral}{"m\_valueRoutinePtr = NULL"});
+100 
+101   \textcolor{keywordtype}{double} value = \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a9feaa5ee6ceb321fde56c5dd4dc48f2f}{m\_valueRoutinePtr}(domainVector, domainDirection, 
+      \hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a46b2964caebcd2e22f913f86798bdf36}{m\_routinesDataPtr}, gradVector, hessianMatrix, hessianEffect);
+102   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_generic_scalar_function_a22e044d791d578453734356587bd7e65}{m\_routineIsForLn} == \textcolor{keyword}{false}) \{
+103 \textcolor{preprocessor}{#ifdef QUESO\_EXPECTS\_LN\_LIKELIHOOD\_INSTEAD\_OF\_MINUS\_2\_LN}
+104 \textcolor{preprocessor}{}    value = log(value);
+105 \textcolor{preprocessor}{#else}
+106 \textcolor{preprocessor}{}    value = -2.*log(value);
+107 \textcolor{preprocessor}{#endif}
+108 \textcolor{preprocessor}{}    \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((domainDirection != NULL) ||
+109                         (gradVector      != NULL) ||
+110                         (hessianMatrix   != NULL) ||
+111                         (hessianEffect   != NULL),
+112                         \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+113                         \textcolor{stringliteral}{"GenericScalarFunction<V,M>::gradOfLn()"},
+114                         \textcolor{stringliteral}{"INCOMPLETE CODE"});
+115   \}
+116   \textcolor{keywordflow}{return} value;
+117 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_generic_scalar_function_a22e044d791d578453734356587bd7e65}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}!m\-\_\-routine\-Is\-For\-Ln@{m\-\_\-routine\-Is\-For\-Ln}}
+\index{m\-\_\-routine\-Is\-For\-Ln@{m\-\_\-routine\-Is\-For\-Ln}!QUESO::GenericScalarFunction@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}}
+\subsubsection[{m\-\_\-routine\-Is\-For\-Ln}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ bool {\bf Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}$<$ V, M $>$\-::m\-\_\-routine\-Is\-For\-Ln\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_generic_scalar_function_a22e044d791d578453734356587bd7e65}
+
+
+Definition at line 80 of file Generic\-Scalar\-Function.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_generic_scalar_function_a46b2964caebcd2e22f913f86798bdf36}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}!m\-\_\-routines\-Data\-Ptr@{m\-\_\-routines\-Data\-Ptr}}
+\index{m\-\_\-routines\-Data\-Ptr@{m\-\_\-routines\-Data\-Ptr}!QUESO::GenericScalarFunction@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}}
+\subsubsection[{m\-\_\-routines\-Data\-Ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const void$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}$<$ V, M $>$\-::m\-\_\-routines\-Data\-Ptr\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_generic_scalar_function_a46b2964caebcd2e22f913f86798bdf36}
+
+
+Definition at line 79 of file Generic\-Scalar\-Function.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_generic_scalar_function_a9feaa5ee6ceb321fde56c5dd4dc48f2f}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}!m\-\_\-value\-Routine\-Ptr@{m\-\_\-value\-Routine\-Ptr}}
+\index{m\-\_\-value\-Routine\-Ptr@{m\-\_\-value\-Routine\-Ptr}!QUESO::GenericScalarFunction@{Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}}
+\subsubsection[{m\-\_\-value\-Routine\-Ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double($\ast$ {\bf Q\-U\-E\-S\-O\-::\-Generic\-Scalar\-Function}$<$ V, M $>$\-::m\-\_\-value\-Routine\-Ptr)(const V \&domain\-Vector, const V $\ast$domain\-Direction, const void $\ast$routines\-Data\-Ptr, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_generic_scalar_function_a9feaa5ee6ceb321fde56c5dd4dc48f2f}
+
+
+Routine defining a scalar function. 
+
+The presence of the parameters {\ttfamily grad\-Vectors}, {\ttfamily hessian\-Matrices} and {\ttfamily hessian\-Effects} allows the user to calculate gradient vectors, Hessian matrices and Hessian effects; which can hold important information about her/his statistical application. Used, for instance to define the likelihood. 
+
+Definition at line 78 of file Generic\-Scalar\-Function.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/basic/inc/\hyperlink{_generic_scalar_function_8h}{Generic\-Scalar\-Function.\-h}\item 
+src/basic/src/\hyperlink{_generic_scalar_function_8_c}{Generic\-Scalar\-Function.\-C}\end{DoxyCompactItemize}

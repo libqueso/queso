@@ -1,0 +1,558 @@
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options}{\section{Q\-U\-E\-S\-O\-:\-:Statistical\-Forward\-Problem\-Options Class Reference}
+\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options}\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+}
+
+
+This class reads option values for a Statistical Forward Problem from an input file.  
+
+
+
+
+{\ttfamily \#include $<$Statistical\-Forward\-Problem\-Options.\-h$>$}
+
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Statistical\-Forward\-Problem\-Options\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_statistical_forward_problem_options__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a1c538c09b3c85e59a805fdf1613d7106}{Statistical\-Forward\-Problem\-Options} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&env, const char $\ast$prefix)
+\begin{DoxyCompactList}\small\item\em Constructor\-: reads options from the input file. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a85e048ec9fe9332879a2fafb5735a8ba}{Statistical\-Forward\-Problem\-Options} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&env, const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_sfp_options_values}{Sfp\-Options\-Values} \&alternative\-Options\-Values)
+\begin{DoxyCompactList}\small\item\em Constructor\-: with alternative option values. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a77e78ff0d42128d04db946aa3d002b26}{$\sim$\-Statistical\-Forward\-Problem\-Options} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a79677f13d8f76171e0e9482920d1e07c}{scan\-Options\-Values} ()
+\begin{DoxyCompactList}\small\item\em It scans the option values from the options input file. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a09fead4b82b68d38aaab1072eaacf3e3}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em It prints the option values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values}{Sfp\-Options\-Values} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\-\_\-ov}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\-\_\-prefix}
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_afc27e9772dc59d31e7a3e88d6f7522d0}{define\-My\-Options} (po\-::options\-\_\-description \&options\-Desc) const 
+\begin{DoxyCompactList}\small\item\em Define my S\-F\-P options as the default options. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a697880e27f0c65ac03f54243ac467a0e}{get\-My\-Option\-Values} (po\-::options\-\_\-description \&options\-Desc)
+\begin{DoxyCompactList}\small\item\em Gets the option values of the S\-F\-P. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\-\_\-env}
+\item 
+po\-::options\-\_\-description $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8e7a0bd5657edc636cddd2f377d09501}{m\-\_\-options\-Desc}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a6a48a27ad2c386feb7807e0623573fc5}{m\-\_\-option\-\_\-help}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a5e7c8a8383bb80a98ab4c271748e0d00}{m\-\_\-option\-\_\-compute\-Solution}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad3f809f0695c126956afd86e07f77bc4}{m\-\_\-option\-\_\-compute\-Covariances}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad712823b5b7b3ce5c76a793a531f0f80}{m\-\_\-option\-\_\-compute\-Correlations}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad4f884177efb0d4ab7068dfe00861f9c}{m\-\_\-option\-\_\-data\-Output\-File\-Name}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8f7d13eaec063727f412add0a1a4d9af}{m\-\_\-option\-\_\-data\-Output\-Allowed\-Set}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class reads option values for a Statistical Forward Problem from an input file. 
+
+This class reads the option values for the Statistical Forward Problem (S\-F\-P) from an input file provided by the user. The class expects the prefix '$<$prefix$>$\-\_\-fp\-\_\-'. For instance, if 'prefix' is 'foo\-\_\-775\-\_\-', then the constructor will read all options that begin with 'foo\-\_\-775\-\_\-fp\-\_\-'. If the options request data to be written in the output file (M\-A\-T\-L\-A\-B .m format only, for now), the user can run 'grep zeros $<$O\-U\-T\-P\-U\-T F\-I\-L\-E N\-A\-M\-E$>$' after the solution procedure ends in order to check which M\-A\-T\-L\-A\-B variables are defined and set. The names of the variables are self explanatory. 
+
+Definition at line 107 of file Statistical\-Forward\-Problem\-Options.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a1c538c09b3c85e59a805fdf1613d7106}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!Statistical\-Forward\-Problem\-Options@{Statistical\-Forward\-Problem\-Options}}
+\index{Statistical\-Forward\-Problem\-Options@{Statistical\-Forward\-Problem\-Options}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{Statistical\-Forward\-Problem\-Options}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::\-Statistical\-Forward\-Problem\-Options (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{const char $\ast$}]{prefix}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a1c538c09b3c85e59a805fdf1613d7106}
+
+
+Constructor\-: reads options from the input file. 
+
+
+
+Definition at line 87 of file Statistical\-Forward\-Problem\-Options.\-C.
+
+
+
+References m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::options\-Input\-File\-Name(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+90   :
+91   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}                         (),
+92   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}                     ((std::string)(prefix) + \textcolor{stringliteral}{"fp\_"}   ),
+93   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}                        (env),
+94   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8e7a0bd5657edc636cddd2f377d09501}{m\_optionsDesc}                (\textcolor{keyword}{new} po::options\_description(\textcolor{stringliteral}{"Statistical Forward Problem
+       options"})),
+95   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a6a48a27ad2c386feb7807e0623573fc5}{m\_option\_help}                (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"help"}                ),
+96   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a5e7c8a8383bb80a98ab4c271748e0d00}{m\_option\_computeSolution}     (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"computeSolution"}     ),
+97   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad3f809f0695c126956afd86e07f77bc4}{m\_option\_computeCovariances}  (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"computeCovariances"}  ),
+98   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad712823b5b7b3ce5c76a793a531f0f80}{m\_option\_computeCorrelations} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"computeCorrelations"} ),
+99   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad4f884177efb0d4ab7068dfe00861f9c}{m\_option\_dataOutputFileName}  (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"dataOutputFileName"}  ),
+100   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8f7d13eaec063727f412add0a1a4d9af}{m\_option\_dataOutputAllowedSet}(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"dataOutputAllowedSet"})
+101 \textcolor{preprocessor}{#ifdef UQ\_SFP\_READS\_SOLVER\_OPTION}
+102 \textcolor{preprocessor}{}  m\_option\_solver              (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"solver"}              )
+103 \textcolor{preprocessor}{#endif}
+104 \textcolor{preprocessor}{}\{
+105   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_aa0e3ccfe00e6f51dbe6dd6b9b6f65183}{optionsInputFileName}() == \textcolor{stringliteral}{""},
+106                       \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+107                       \textcolor{stringliteral}{"StatisticalForwardProblemOptions::constructor(1)"},
+108                       \textcolor{stringliteral}{"this constructor is incompatible with the absence of an options input file"});
+109 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a85e048ec9fe9332879a2fafb5735a8ba}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!Statistical\-Forward\-Problem\-Options@{Statistical\-Forward\-Problem\-Options}}
+\index{Statistical\-Forward\-Problem\-Options@{Statistical\-Forward\-Problem\-Options}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{Statistical\-Forward\-Problem\-Options}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::\-Statistical\-Forward\-Problem\-Options (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Sfp\-Options\-Values} \&}]{alternative\-Options\-Values}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a85e048ec9fe9332879a2fafb5735a8ba}
+
+
+Constructor\-: with alternative option values. 
+
+In this constructor, the input options are given by {\ttfamily alternative\-Options\-Values}, rather than the options input file 
+
+Definition at line 111 of file Statistical\-Forward\-Problem\-Options.\-C.
+
+
+
+References m\-\_\-env, m\-\_\-prefix, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::options\-Input\-File\-Name(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+115   :
+116   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}                         (alternativeOptionsValues         ),
+117   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}                     ((std::string)(prefix) + \textcolor{stringliteral}{"fp\_"}    ),
+118   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}                        (env),
+119   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8e7a0bd5657edc636cddd2f377d09501}{m\_optionsDesc}                (NULL),
+120   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a6a48a27ad2c386feb7807e0623573fc5}{m\_option\_help}                (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"help"}                ),
+121   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a5e7c8a8383bb80a98ab4c271748e0d00}{m\_option\_computeSolution}     (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"computeSolution"}     ),
+122   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad3f809f0695c126956afd86e07f77bc4}{m\_option\_computeCovariances}  (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"computeCovariances"}  ),
+123   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad712823b5b7b3ce5c76a793a531f0f80}{m\_option\_computeCorrelations} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"computeCorrelations"} ),
+124   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad4f884177efb0d4ab7068dfe00861f9c}{m\_option\_dataOutputFileName}  (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"dataOutputFileName"}  ),
+125   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8f7d13eaec063727f412add0a1a4d9af}{m\_option\_dataOutputAllowedSet}(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"dataOutputAllowedSet"})
+126 \textcolor{preprocessor}{#ifdef UQ\_SFP\_READS\_SOLVER\_OPTION}
+127 \textcolor{preprocessor}{}  m\_option\_solver              (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix} + \textcolor{stringliteral}{"solver"}              )
+128 \textcolor{preprocessor}{#endif}
+129 \textcolor{preprocessor}{}\{
+130   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_aa0e3ccfe00e6f51dbe6dd6b9b6f65183}{optionsInputFileName}() != \textcolor{stringliteral}{""},
+131                       \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+132                       \textcolor{stringliteral}{"StatisticalForwardProblemOptions::constructor(2)"},
+133                       \textcolor{stringliteral}{"this constructor is incompatible with the existence of an options input file"});
+134 
+135   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() != NULL) \{
+136     *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In StatisticalForwardProblemOptions::constructor(2)"}
+137                             << \textcolor{stringliteral}{": after setting values of options with prefix '"} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}
+138                             << \textcolor{stringliteral}{"', state of object is:"}
+139                             << \textcolor{stringliteral}{"\(\backslash\)n"} << *\textcolor{keyword}{this}
+140                             << std::endl;
+141   \}
+142 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a77e78ff0d42128d04db946aa3d002b26}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!$\sim$\-Statistical\-Forward\-Problem\-Options@{$\sim$\-Statistical\-Forward\-Problem\-Options}}
+\index{$\sim$\-Statistical\-Forward\-Problem\-Options@{$\sim$\-Statistical\-Forward\-Problem\-Options}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{$\sim$\-Statistical\-Forward\-Problem\-Options}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::$\sim$\-Statistical\-Forward\-Problem\-Options (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a77e78ff0d42128d04db946aa3d002b26}
+
+
+Destructor. 
+
+
+
+Definition at line 144 of file Statistical\-Forward\-Problem\-Options.\-C.
+
+
+
+References m\-\_\-options\-Desc.
+
+
+\begin{DoxyCode}
+145 \{
+146   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8e7a0bd5657edc636cddd2f377d09501}{m\_optionsDesc}) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8e7a0bd5657edc636cddd2f377d09501}{m\_optionsDesc};
+147 \} 
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_afc27e9772dc59d31e7a3e88d6f7522d0}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!define\-My\-Options@{define\-My\-Options}}
+\index{define\-My\-Options@{define\-My\-Options}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{define\-My\-Options}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::define\-My\-Options (
+\begin{DoxyParamCaption}
+\item[{po\-::options\-\_\-description \&}]{options\-Desc}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_afc27e9772dc59d31e7a3e88d6f7522d0}
+
+
+Define my S\-F\-P options as the default options. 
+
+
+
+Definition at line 194 of file Statistical\-Forward\-Problem\-Options.\-C.
+
+
+
+References m\-\_\-option\-\_\-compute\-Correlations, m\-\_\-option\-\_\-compute\-Covariances, m\-\_\-option\-\_\-compute\-Solution, m\-\_\-option\-\_\-data\-Output\-Allowed\-Set, m\-\_\-option\-\_\-data\-Output\-File\-Name, m\-\_\-option\-\_\-help, U\-Q\-\_\-\-S\-F\-P\-\_\-\-C\-O\-M\-P\-U\-T\-E\-\_\-\-C\-O\-R\-R\-E\-L\-A\-T\-I\-O\-N\-S\-\_\-\-O\-D\-V, U\-Q\-\_\-\-S\-F\-P\-\_\-\-C\-O\-M\-P\-U\-T\-E\-\_\-\-C\-O\-V\-A\-R\-I\-A\-N\-C\-E\-S\-\_\-\-O\-D\-V, U\-Q\-\_\-\-S\-F\-P\-\_\-\-C\-O\-M\-P\-U\-T\-E\-\_\-\-S\-O\-L\-U\-T\-I\-O\-N\-\_\-\-O\-D\-V, U\-Q\-\_\-\-S\-F\-P\-\_\-\-D\-A\-T\-A\-\_\-\-O\-U\-T\-P\-U\-T\-\_\-\-A\-L\-L\-O\-W\-E\-D\-\_\-\-S\-E\-T\-\_\-\-O\-D\-V, and U\-Q\-\_\-\-S\-F\-P\-\_\-\-D\-A\-T\-A\-\_\-\-O\-U\-T\-P\-U\-T\-\_\-\-F\-I\-L\-E\-\_\-\-N\-A\-M\-E\-\_\-\-O\-D\-V.
+
+
+
+Referenced by scan\-Options\-Values().
+
+
+\begin{DoxyCode}
+195 \{
+196   optionsDesc.add\_options()     
+197     (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a6a48a27ad2c386feb7807e0623573fc5}{m\_option\_help}.c\_str(),                                                                   
+                                 \textcolor{stringliteral}{"produce help message for statistical forward problem"})
+198     (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a5e7c8a8383bb80a98ab4c271748e0d00}{m\_option\_computeSolution}.c\_str(),      po::value<bool       >()->default\_value
+      (\hyperlink{_statistical_forward_problem_options_8h_a8ee85ee13d632a1e54c269c68af1a271}{UQ\_SFP\_COMPUTE\_SOLUTION\_ODV}       ), \textcolor{stringliteral}{"compute solution process"}                 
+                 )
+199     (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad3f809f0695c126956afd86e07f77bc4}{m\_option\_computeCovariances}.c\_str(),   po::value<bool       >()->
+      default\_value(\hyperlink{_statistical_forward_problem_options_8h_aa28405a39c7f3ee8c1cf3446ce315e2c}{UQ\_SFP\_COMPUTE\_COVARIANCES\_ODV}    ), \textcolor{stringliteral}{"compute pq covariances"}             
+                       )
+200     (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad712823b5b7b3ce5c76a793a531f0f80}{m\_option\_computeCorrelations}.c\_str(),  po::value<bool       >()->
+      default\_value(\hyperlink{_statistical_forward_problem_options_8h_aa0c31541814dd70982b6158e9c397ed1}{UQ\_SFP\_COMPUTE\_CORRELATIONS\_ODV}   ), \textcolor{stringliteral}{"compute pq correlations"}          
+                         )
+201     (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad4f884177efb0d4ab7068dfe00861f9c}{m\_option\_dataOutputFileName}.c\_str(),   po::value<std::string>()->
+      default\_value(\hyperlink{_statistical_forward_problem_options_8h_a671a3fb41ecb82838bd80d96d20f906b}{UQ\_SFP\_DATA\_OUTPUT\_FILE\_NAME\_ODV}  ), \textcolor{stringliteral}{"name of data output file"}         
+                         )
+202     (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8f7d13eaec063727f412add0a1a4d9af}{m\_option\_dataOutputAllowedSet}.c\_str(), po::value<std::string>()->
+      default\_value(\hyperlink{_statistical_forward_problem_options_8h_aacce4c79e6074eb5766f43705a605193}{UQ\_SFP\_DATA\_OUTPUT\_ALLOWED\_SET\_ODV}), \textcolor{stringliteral}{"subEnvs that will write to
+       data output file"}         )
+203 #ifdef UQ\_SFP\_READS\_SOLVER\_OPTION
+204     (m\_option\_solver.c\_str(),               po::value<std::string>()->default\_value(UQ\_SFP\_SOLVER\_ODV      
+                 ), \textcolor{stringliteral}{"algorithm for propagation"}                           )
+205 #endif
+206   ;
+207 
+208   \textcolor{keywordflow}{return};
+209 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a697880e27f0c65ac03f54243ac467a0e}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!get\-My\-Option\-Values@{get\-My\-Option\-Values}}
+\index{get\-My\-Option\-Values@{get\-My\-Option\-Values}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{get\-My\-Option\-Values}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::get\-My\-Option\-Values (
+\begin{DoxyParamCaption}
+\item[{po\-::options\-\_\-description \&}]{options\-Desc}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a697880e27f0c65ac03f54243ac467a0e}
+
+
+Gets the option values of the S\-F\-P. 
+
+
+
+Definition at line 212 of file Statistical\-Forward\-Problem\-Options.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::all\-Options\-Map(), Q\-U\-E\-S\-O\-::\-Sfp\-Options\-Values\-::m\-\_\-compute\-Correlations, Q\-U\-E\-S\-O\-::\-Sfp\-Options\-Values\-::m\-\_\-compute\-Covariances, Q\-U\-E\-S\-O\-::\-Sfp\-Options\-Values\-::m\-\_\-compute\-Solution, Q\-U\-E\-S\-O\-::\-Sfp\-Options\-Values\-::m\-\_\-data\-Output\-Allowed\-Set, Q\-U\-E\-S\-O\-::\-Sfp\-Options\-Values\-::m\-\_\-data\-Output\-File\-Name, m\-\_\-env, m\-\_\-option\-\_\-compute\-Correlations, m\-\_\-option\-\_\-compute\-Covariances, m\-\_\-option\-\_\-compute\-Solution, m\-\_\-option\-\_\-data\-Output\-Allowed\-Set, m\-\_\-option\-\_\-data\-Output\-File\-Name, m\-\_\-option\-\_\-help, m\-\_\-ov, Q\-U\-E\-S\-O\-::\-Misc\-Read\-Doubles\-From\-String(), and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+
+Referenced by scan\-Options\-Values().
+
+
+\begin{DoxyCode}
+213 \{
+214   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a6a48a27ad2c386feb7807e0623573fc5}{m\_option\_help})) \{
+215     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+216       *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << optionsDesc
+217                               << std::endl;
+218     \}
+219   \}
+220 
+221   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a5e7c8a8383bb80a98ab4c271748e0d00}{m\_option\_computeSolution})) \{
+222     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_a087c7e28e7c72ee99d5722f75e43c8bb}{m\_computeSolution} = ((\textcolor{keyword}{const} po::variable\_value&) 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a5e7c8a8383bb80a98ab4c271748e0d00}{m\_option\_computeSolution}]).as<bool>();
+223   \}
+224 
+225   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad3f809f0695c126956afd86e07f77bc4}{m\_option\_computeCovariances})
+      ) \{
+226     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_abe755434941b852aaf5bd512c153354b}{m\_computeCovariances} = ((\textcolor{keyword}{const} po::variable\_value&) 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad3f809f0695c126956afd86e07f77bc4}{m\_option\_computeCovariances}]).as<bool>()
+      ;
+227   \}
+228 
+229   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad712823b5b7b3ce5c76a793a531f0f80}{m\_option\_computeCorrelations}
+      )) \{
+230     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_a4de46169004d9ccbe66fdf32ae93ea45}{m\_computeCorrelations} = ((\textcolor{keyword}{const} po::variable\_value&) 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad712823b5b7b3ce5c76a793a531f0f80}{m\_option\_computeCorrelations}]).as<bool>
+      ();
+231   \}
+232 
+233   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad4f884177efb0d4ab7068dfe00861f9c}{m\_option\_dataOutputFileName})
+      ) \{
+234     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_ad6028c5dff00b18d5085045c3a6d135e}{m\_dataOutputFileName} = ((\textcolor{keyword}{const} po::variable\_value&) 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad4f884177efb0d4ab7068dfe00861f9c}{m\_option\_dataOutputFileName}]).
+      as<std::string>();
+235   \}
+236 
+237   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8f7d13eaec063727f412add0a1a4d9af}{m\_option\_dataOutputAllowedSet})) \{
+238     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_a51d0f0da7a29dfb12340d863e2f980a0}{m\_dataOutputAllowedSet}.clear();
+239     std::vector<double> tmpAllow(0,0.);
+240     std::string inputString = \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8f7d13eaec063727f412add0a1a4d9af}{m\_option\_dataOutputAllowedSet}].as<std::string>();
+241     \hyperlink{namespace_q_u_e_s_o_ac3fab438679d1dc864f8d629881dad2e}{MiscReadDoublesFromString}(inputString,tmpAllow);
+242 
+243     \textcolor{keywordflow}{if} (tmpAllow.size() > 0) \{
+244       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < tmpAllow.size(); ++i) \{
+245         \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_a51d0f0da7a29dfb12340d863e2f980a0}{m\_dataOutputAllowedSet}.insert((\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) tmpAllow[i]);
+246       \}
+247     \}
+248   \}
+249 
+250 \textcolor{preprocessor}{#ifdef UQ\_SFP\_READS\_SOLVER\_OPTION}
+251 \textcolor{preprocessor}{}  \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(m\_option\_solver)) \{
+252     \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.m\_solverString = ((\textcolor{keyword}{const} po::variable\_value&) \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[m\_option\_solver]).as<std::string>();
+253   \}
+254 \textcolor{preprocessor}{#endif}
+255 \textcolor{preprocessor}{}
+256   \textcolor{keywordflow}{return};
+257 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a09fead4b82b68d38aaab1072eaacf3e3}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!print@{print}}
+\index{print@{print}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a09fead4b82b68d38aaab1072eaacf3e3}
+
+
+It prints the option values. 
+
+
+
+Definition at line 174 of file Statistical\-Forward\-Problem\-Options.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Sfp\-Options\-Values\-::m\-\_\-compute\-Correlations, Q\-U\-E\-S\-O\-::\-Sfp\-Options\-Values\-::m\-\_\-compute\-Covariances, Q\-U\-E\-S\-O\-::\-Sfp\-Options\-Values\-::m\-\_\-compute\-Solution, Q\-U\-E\-S\-O\-::\-Sfp\-Options\-Values\-::m\-\_\-data\-Output\-Allowed\-Set, Q\-U\-E\-S\-O\-::\-Sfp\-Options\-Values\-::m\-\_\-data\-Output\-File\-Name, m\-\_\-option\-\_\-compute\-Correlations, m\-\_\-option\-\_\-compute\-Covariances, m\-\_\-option\-\_\-compute\-Solution, m\-\_\-option\-\_\-data\-Output\-Allowed\-Set, m\-\_\-option\-\_\-data\-Output\-File\-Name, and m\-\_\-ov.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::operator$<$$<$().
+
+
+\begin{DoxyCode}
+175 \{
+176   os <<         \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a5e7c8a8383bb80a98ab4c271748e0d00}{m\_option\_computeSolution}      << \textcolor{stringliteral}{" = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_a087c7e28e7c72ee99d5722f75e43c8bb}{m\_computeSolution}
+177      << \textcolor{stringliteral}{"\(\backslash\)n"} << \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad3f809f0695c126956afd86e07f77bc4}{m\_option\_computeCovariances}   << \textcolor{stringliteral}{" = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_abe755434941b852aaf5bd512c153354b}{m\_computeCovariances}
+178      << \textcolor{stringliteral}{"\(\backslash\)n"} << \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad712823b5b7b3ce5c76a793a531f0f80}{m\_option\_computeCorrelations}  << \textcolor{stringliteral}{" = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_a4de46169004d9ccbe66fdf32ae93ea45}{m\_computeCorrelations}
+179      << \textcolor{stringliteral}{"\(\backslash\)n"} << \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad4f884177efb0d4ab7068dfe00861f9c}{m\_option\_dataOutputFileName}   << \textcolor{stringliteral}{" = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_ad6028c5dff00b18d5085045c3a6d135e}{m\_dataOutputFileName};
+180   os << \textcolor{stringliteral}{"\(\backslash\)n"} << \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8f7d13eaec063727f412add0a1a4d9af}{m\_option\_dataOutputAllowedSet} << \textcolor{stringliteral}{" = "};
+181   \textcolor{keywordflow}{for} (std::set<unsigned int>::iterator setIt = \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_a51d0f0da7a29dfb12340d863e2f980a0}{m\_dataOutputAllowedSet}.begin
+      (); setIt != \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values_a51d0f0da7a29dfb12340d863e2f980a0}{m\_dataOutputAllowedSet}.end(); ++setIt) \{
+182     os << *setIt << \textcolor{stringliteral}{" "};
+183   \}
+184 \textcolor{preprocessor}{#ifdef UQ\_SFP\_READS\_SOLVER\_OPTION}
+185 \textcolor{preprocessor}{}       << \textcolor{stringliteral}{"\(\backslash\)n"} << m\_option\_solver << \textcolor{stringliteral}{" = "} << \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{m\_ov}.m\_solverString
+186 \textcolor{preprocessor}{#endif}
+187 \textcolor{preprocessor}{}  os << std::endl;
+188 
+189   \textcolor{keywordflow}{return};
+190 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a79677f13d8f76171e0e9482920d1e07c}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!scan\-Options\-Values@{scan\-Options\-Values}}
+\index{scan\-Options\-Values@{scan\-Options\-Values}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{scan\-Options\-Values}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::scan\-Options\-Values (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a79677f13d8f76171e0e9482920d1e07c}
+
+
+It scans the option values from the options input file. 
+
+
+
+Definition at line 151 of file Statistical\-Forward\-Problem\-Options.\-C.
+
+
+
+References define\-My\-Options(), get\-My\-Option\-Values(), m\-\_\-env, m\-\_\-options\-Desc, m\-\_\-prefix, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::scan\-Input\-File\-For\-My\-Options(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+152 \{
+153   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8e7a0bd5657edc636cddd2f377d09501}{m\_optionsDesc} == NULL,
+154                       \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+155                       \textcolor{stringliteral}{"StatisticalForwardProblemOptions::scanOptionsValues()"},
+156                       \textcolor{stringliteral}{"m\_optionsDesc variable is NULL"});
+157 
+158   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_afc27e9772dc59d31e7a3e88d6f7522d0}{defineMyOptions}                (*\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8e7a0bd5657edc636cddd2f377d09501}{m\_optionsDesc});
+159   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae3e118fc38e17537107b347d6b421927}{scanInputFileForMyOptions}(*\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8e7a0bd5657edc636cddd2f377d09501}{m\_optionsDesc});
+160   \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a697880e27f0c65ac03f54243ac467a0e}{getMyOptionValues}              (*\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8e7a0bd5657edc636cddd2f377d09501}{m\_optionsDesc});
+161 
+162   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() != NULL) \{
+163     *\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In StatisticalForwardProblemOptions::scanOptionsValues()
+      "}
+164                             << \textcolor{stringliteral}{": after reading values of options with prefix '"} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{m\_prefix}
+165                             << \textcolor{stringliteral}{"', state of  object is:"}
+166                             << \textcolor{stringliteral}{"\(\backslash\)n"} << *\textcolor{keyword}{this}
+167                             << std::endl;
+168   \}
+169 
+170   \textcolor{keywordflow}{return};
+171 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Base\-Environment}\& Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a14f437399d668fac2aac5861bd6f39ca}
+
+
+Definition at line 143 of file Statistical\-Forward\-Problem\-Options.\-h.
+
+
+
+Referenced by get\-My\-Option\-Values(), scan\-Options\-Values(), and Statistical\-Forward\-Problem\-Options().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad712823b5b7b3ce5c76a793a531f0f80}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!m\-\_\-option\-\_\-compute\-Correlations@{m\-\_\-option\-\_\-compute\-Correlations}}
+\index{m\-\_\-option\-\_\-compute\-Correlations@{m\-\_\-option\-\_\-compute\-Correlations}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-compute\-Correlations}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::m\-\_\-option\-\_\-compute\-Correlations\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad712823b5b7b3ce5c76a793a531f0f80}
+
+
+Definition at line 149 of file Statistical\-Forward\-Problem\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad3f809f0695c126956afd86e07f77bc4}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!m\-\_\-option\-\_\-compute\-Covariances@{m\-\_\-option\-\_\-compute\-Covariances}}
+\index{m\-\_\-option\-\_\-compute\-Covariances@{m\-\_\-option\-\_\-compute\-Covariances}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-compute\-Covariances}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::m\-\_\-option\-\_\-compute\-Covariances\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad3f809f0695c126956afd86e07f77bc4}
+
+
+Definition at line 148 of file Statistical\-Forward\-Problem\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a5e7c8a8383bb80a98ab4c271748e0d00}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!m\-\_\-option\-\_\-compute\-Solution@{m\-\_\-option\-\_\-compute\-Solution}}
+\index{m\-\_\-option\-\_\-compute\-Solution@{m\-\_\-option\-\_\-compute\-Solution}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-compute\-Solution}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::m\-\_\-option\-\_\-compute\-Solution\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a5e7c8a8383bb80a98ab4c271748e0d00}
+
+
+Definition at line 147 of file Statistical\-Forward\-Problem\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8f7d13eaec063727f412add0a1a4d9af}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!m\-\_\-option\-\_\-data\-Output\-Allowed\-Set@{m\-\_\-option\-\_\-data\-Output\-Allowed\-Set}}
+\index{m\-\_\-option\-\_\-data\-Output\-Allowed\-Set@{m\-\_\-option\-\_\-data\-Output\-Allowed\-Set}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-data\-Output\-Allowed\-Set}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::m\-\_\-option\-\_\-data\-Output\-Allowed\-Set\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8f7d13eaec063727f412add0a1a4d9af}
+
+
+Definition at line 151 of file Statistical\-Forward\-Problem\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad4f884177efb0d4ab7068dfe00861f9c}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!m\-\_\-option\-\_\-data\-Output\-File\-Name@{m\-\_\-option\-\_\-data\-Output\-File\-Name}}
+\index{m\-\_\-option\-\_\-data\-Output\-File\-Name@{m\-\_\-option\-\_\-data\-Output\-File\-Name}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-data\-Output\-File\-Name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::m\-\_\-option\-\_\-data\-Output\-File\-Name\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_ad4f884177efb0d4ab7068dfe00861f9c}
+
+
+Definition at line 150 of file Statistical\-Forward\-Problem\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a6a48a27ad2c386feb7807e0623573fc5}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!m\-\_\-option\-\_\-help@{m\-\_\-option\-\_\-help}}
+\index{m\-\_\-option\-\_\-help@{m\-\_\-option\-\_\-help}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-help}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::m\-\_\-option\-\_\-help\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a6a48a27ad2c386feb7807e0623573fc5}
+
+
+Definition at line 146 of file Statistical\-Forward\-Problem\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), and get\-My\-Option\-Values().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8e7a0bd5657edc636cddd2f377d09501}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!m\-\_\-options\-Desc@{m\-\_\-options\-Desc}}
+\index{m\-\_\-options\-Desc@{m\-\_\-options\-Desc}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{m\-\_\-options\-Desc}]{\setlength{\rightskip}{0pt plus 5cm}po\-::options\-\_\-description$\ast$ Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::m\-\_\-options\-Desc\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a8e7a0bd5657edc636cddd2f377d09501}
+
+
+Definition at line 145 of file Statistical\-Forward\-Problem\-Options.\-h.
+
+
+
+Referenced by scan\-Options\-Values(), and $\sim$\-Statistical\-Forward\-Problem\-Options().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!m\-\_\-ov@{m\-\_\-ov}}
+\index{m\-\_\-ov@{m\-\_\-ov}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{m\-\_\-ov}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sfp\-Options\-Values} Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::m\-\_\-ov}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_a87ad4acd32801ea3edd5e65ffb093dbf}
+
+
+Definition at line 133 of file Statistical\-Forward\-Problem\-Options.\-h.
+
+
+
+Referenced by get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}!m\-\_\-prefix@{m\-\_\-prefix}}
+\index{m\-\_\-prefix@{m\-\_\-prefix}!QUESO::StatisticalForwardProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options}}
+\subsubsection[{m\-\_\-prefix}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Statistical\-Forward\-Problem\-Options\-::m\-\_\-prefix}}\label{class_q_u_e_s_o_1_1_statistical_forward_problem_options_adc3ea162cb9889b19128686aa657ab30}
+
+
+Definition at line 134 of file Statistical\-Forward\-Problem\-Options.\-h.
+
+
+
+Referenced by scan\-Options\-Values(), and Statistical\-Forward\-Problem\-Options().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_statistical_forward_problem_options_8h}{Statistical\-Forward\-Problem\-Options.\-h}\item 
+src/stats/src/\hyperlink{_statistical_forward_problem_options_8_c}{Statistical\-Forward\-Problem\-Options.\-C}\end{DoxyCompactItemize}

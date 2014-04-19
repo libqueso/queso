@@ -1,0 +1,148 @@
+\hypertarget{class_q_u_e_s_o_1_1_operator_base}{\section{Q\-U\-E\-S\-O\-:\-:Operator\-Base Class Reference}
+\label{class_q_u_e_s_o_1_1_operator_base}\index{Q\-U\-E\-S\-O\-::\-Operator\-Base@{Q\-U\-E\-S\-O\-::\-Operator\-Base}}
+}
+
+
+Abstract base class for operator objects. Operators are assumed to be symmetric and positive-\/definite.  
+
+
+
+
+{\ttfamily \#include $<$Operator\-Base.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_operator_base_ae16245b5e46e01ff81121cca14190e7f}{get\-\_\-eigenvalue} (unsigned int i) const =0
+\begin{DoxyCompactList}\small\item\em Return eigenvalue {\ttfamily i}. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_operator_base_a598da528247dcaec786eee415664d42e}{get\-\_\-inverted\-\_\-eigenvalue} (unsigned int i) const =0
+\begin{DoxyCompactList}\small\item\em Return the reciprocal of eigenvalue {\ttfamily i}. \end{DoxyCompactList}\item 
+virtual unsigned int \hyperlink{class_q_u_e_s_o_1_1_operator_base_a610fc538c34726a001d49c138a17817e}{get\-\_\-num\-\_\-converged} () const =0
+\begin{DoxyCompactList}\small\item\em Return the number of converged eigenpairs. \end{DoxyCompactList}\item 
+virtual boost\-::shared\-\_\-ptr\\*
+$<$ \hyperlink{class_q_u_e_s_o_1_1_function_base}{Function\-Base} $>$ \hyperlink{class_q_u_e_s_o_1_1_operator_base_adb765561b8de30f081fe23c53b1a03fb}{inverse\-\_\-kl\-\_\-transform} (std\-::vector$<$ double $>$ \&xi, double alpha) const =0
+\begin{DoxyCompactList}\small\item\em Given coefficients {\ttfamily xi}, computes the Karhunen-\/\-Loeve transform. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_operator_base_ae9f848c2418f2dca590175a53be0b250}{Operator\-Base} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_operator_base_a2869fcba07398fa247c0095f3e5f272d}{$\sim$\-Operator\-Base} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\subsection{Detailed Description}
+Abstract base class for operator objects. Operators are assumed to be symmetric and positive-\/definite. 
+
+Definition at line 45 of file Operator\-Base.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_operator_base_ae9f848c2418f2dca590175a53be0b250}{\index{Q\-U\-E\-S\-O\-::\-Operator\-Base@{Q\-U\-E\-S\-O\-::\-Operator\-Base}!Operator\-Base@{Operator\-Base}}
+\index{Operator\-Base@{Operator\-Base}!QUESO::OperatorBase@{Q\-U\-E\-S\-O\-::\-Operator\-Base}}
+\subsubsection[{Operator\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Operator\-Base\-::\-Operator\-Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_operator_base_ae9f848c2418f2dca590175a53be0b250}
+
+
+Constructor. 
+
+
+
+Definition at line 30 of file Operator\-Base.\-C.
+
+
+\begin{DoxyCode}
+31 \{
+32 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_operator_base_a2869fcba07398fa247c0095f3e5f272d}{\index{Q\-U\-E\-S\-O\-::\-Operator\-Base@{Q\-U\-E\-S\-O\-::\-Operator\-Base}!$\sim$\-Operator\-Base@{$\sim$\-Operator\-Base}}
+\index{$\sim$\-Operator\-Base@{$\sim$\-Operator\-Base}!QUESO::OperatorBase@{Q\-U\-E\-S\-O\-::\-Operator\-Base}}
+\subsubsection[{$\sim$\-Operator\-Base}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Operator\-Base\-::$\sim$\-Operator\-Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_operator_base_a2869fcba07398fa247c0095f3e5f272d}
+
+
+Destructor. 
+
+
+
+Definition at line 34 of file Operator\-Base.\-C.
+
+
+\begin{DoxyCode}
+35 \{
+36 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_operator_base_ae16245b5e46e01ff81121cca14190e7f}{\index{Q\-U\-E\-S\-O\-::\-Operator\-Base@{Q\-U\-E\-S\-O\-::\-Operator\-Base}!get\-\_\-eigenvalue@{get\-\_\-eigenvalue}}
+\index{get\-\_\-eigenvalue@{get\-\_\-eigenvalue}!QUESO::OperatorBase@{Q\-U\-E\-S\-O\-::\-Operator\-Base}}
+\subsubsection[{get\-\_\-eigenvalue}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Operator\-Base\-::get\-\_\-eigenvalue (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{i}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_operator_base_ae16245b5e46e01ff81121cca14190e7f}
+
+
+Return eigenvalue {\ttfamily i}. 
+
+You can store them however you want, but having some kind of order to them is useful for {\ttfamily Infinite\-Dimensional\-Measure} 
+
+Referenced by Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Gaussian\-::get\-\_\-kl\-\_\-coefficient().
+
+\hypertarget{class_q_u_e_s_o_1_1_operator_base_a598da528247dcaec786eee415664d42e}{\index{Q\-U\-E\-S\-O\-::\-Operator\-Base@{Q\-U\-E\-S\-O\-::\-Operator\-Base}!get\-\_\-inverted\-\_\-eigenvalue@{get\-\_\-inverted\-\_\-eigenvalue}}
+\index{get\-\_\-inverted\-\_\-eigenvalue@{get\-\_\-inverted\-\_\-eigenvalue}!QUESO::OperatorBase@{Q\-U\-E\-S\-O\-::\-Operator\-Base}}
+\subsubsection[{get\-\_\-inverted\-\_\-eigenvalue}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Operator\-Base\-::get\-\_\-inverted\-\_\-eigenvalue (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{i}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_operator_base_a598da528247dcaec786eee415664d42e}
+
+
+Return the reciprocal of eigenvalue {\ttfamily i}. 
+
+\hypertarget{class_q_u_e_s_o_1_1_operator_base_a610fc538c34726a001d49c138a17817e}{\index{Q\-U\-E\-S\-O\-::\-Operator\-Base@{Q\-U\-E\-S\-O\-::\-Operator\-Base}!get\-\_\-num\-\_\-converged@{get\-\_\-num\-\_\-converged}}
+\index{get\-\_\-num\-\_\-converged@{get\-\_\-num\-\_\-converged}!QUESO::OperatorBase@{Q\-U\-E\-S\-O\-::\-Operator\-Base}}
+\subsubsection[{get\-\_\-num\-\_\-converged}]{\setlength{\rightskip}{0pt plus 5cm}virtual unsigned int Q\-U\-E\-S\-O\-::\-Operator\-Base\-::get\-\_\-num\-\_\-converged (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_operator_base_a610fc538c34726a001d49c138a17817e}
+
+
+Return the number of converged eigenpairs. 
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Gaussian\-::draw(), and Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Gaussian\-::\-Infinite\-Dimensional\-Gaussian().
+
+\hypertarget{class_q_u_e_s_o_1_1_operator_base_adb765561b8de30f081fe23c53b1a03fb}{\index{Q\-U\-E\-S\-O\-::\-Operator\-Base@{Q\-U\-E\-S\-O\-::\-Operator\-Base}!inverse\-\_\-kl\-\_\-transform@{inverse\-\_\-kl\-\_\-transform}}
+\index{inverse\-\_\-kl\-\_\-transform@{inverse\-\_\-kl\-\_\-transform}!QUESO::OperatorBase@{Q\-U\-E\-S\-O\-::\-Operator\-Base}}
+\subsubsection[{inverse\-\_\-kl\-\_\-transform}]{\setlength{\rightskip}{0pt plus 5cm}virtual boost\-::shared\-\_\-ptr$<${\bf Function\-Base}$>$ Q\-U\-E\-S\-O\-::\-Operator\-Base\-::inverse\-\_\-kl\-\_\-transform (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ double $>$ \&}]{xi, }
+\item[{double}]{alpha}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_operator_base_adb765561b8de30f081fe23c53b1a03fb}
+
+
+Given coefficients {\ttfamily xi}, computes the Karhunen-\/\-Loeve transform. 
+
+This transform goes from coefficient space to physical space using {\ttfamily this} as the precision operator\-:   / pow(, {\ttfamily alpha} / 2.\-0) (x) where the lambda are eigenvalues of the precision operator, {\ttfamily this}, and the (x) are eigenfunctions of the precision operator, {\ttfamily this} 
+
+Referenced by Q\-U\-E\-S\-O\-::\-Infinite\-Dimensional\-Gaussian\-::draw().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/core/inc/\hyperlink{_operator_base_8h}{Operator\-Base.\-h}\item 
+src/core/src/\hyperlink{_operator_base_8_c}{Operator\-Base.\-C}\end{DoxyCompactItemize}

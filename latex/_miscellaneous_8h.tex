@@ -1,0 +1,56 @@
+\hypertarget{_miscellaneous_8h}{\section{src/misc/inc/\-Miscellaneous.h File Reference}
+\label{_miscellaneous_8h}\index{src/misc/inc/\-Miscellaneous.\-h@{src/misc/inc/\-Miscellaneous.\-h}}
+}
+{\ttfamily \#include $<$queso/\-Environment.\-h$>$}\\*
+{\ttfamily \#include $<$queso/\-Rng\-Base.\-h$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$math.\-h$>$}\\*
+Include dependency graph for Miscellaneous.\-h\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_miscellaneous_8h__incl}
+\end{center}
+\end{figure}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{namespace_q_u_e_s_o_ac3fab438679d1dc864f8d629881dad2e}{Q\-U\-E\-S\-O\-::\-Misc\-Read\-Doubles\-From\-String} (const std\-::string \&input\-String, std\-::vector$<$ double $>$ \&output\-Doubles)
+\item 
+void \hyperlink{namespace_q_u_e_s_o_a9e0f636bad9d30e3d0fa1589a61d0567}{Q\-U\-E\-S\-O\-::\-Misc\-Read\-Words\-From\-String} (const std\-::string \&input\-String, std\-::vector$<$ std\-::string $>$ \&output\-Words)
+\item 
+int \hyperlink{namespace_q_u_e_s_o_af0fc61c58d0ca592fa172eeab540d39c}{Q\-U\-E\-S\-O\-::\-Misc\-Read\-String\-And\-Double\-From\-File} (std\-::ifstream \&ifs, std\-::string \&term\-String, double $\ast$term\-Value)
+\item 
+int \hyperlink{namespace_q_u_e_s_o_a575d3153d82b7df3d78ad5cfbf2b83b7}{Q\-U\-E\-S\-O\-::\-Misc\-Read\-Chars\-And\-Double\-From\-File} (std\-::ifstream \&ifs, std\-::string \&term\-String, double $\ast$term\-Value, bool \&end\-Of\-Line\-Achieved)
+\item 
+double \hyperlink{namespace_q_u_e_s_o_a4f268914e653262df98af86aeb33285f}{Q\-U\-E\-S\-O\-::\-Misc\-Gammar} (double a, double b, const Rng\-Base $\ast$rng\-Object)
+\item 
+double \hyperlink{namespace_q_u_e_s_o_a424bc33f2e6e287fd468408d14b772ee}{Q\-U\-E\-S\-O\-::\-Misc\-Get\-Ellapsed\-Seconds} (struct timeval $\ast$timeval0)
+\item 
+double \hyperlink{namespace_q_u_e_s_o_a48c1ad47c8bebad572842726591e9d3f}{Q\-U\-E\-S\-O\-::\-Misc\-Hamming\-Window} (unsigned int N, unsigned int j)
+\item 
+double \hyperlink{namespace_q_u_e_s_o_a0f94e9b1e8f415c389f180d4a75c5591}{Q\-U\-E\-S\-O\-::\-Misc\-Gaussian\-Density} (double x, double mu, double sigma)
+\item 
+unsigned int \hyperlink{namespace_q_u_e_s_o_a2f606febc1ff24dc4b427c68b4bb845e}{Q\-U\-E\-S\-O\-::\-Misc\-Uint\-Debug\-Message} (unsigned int value, const char $\ast$message)
+\item 
+int \hyperlink{namespace_q_u_e_s_o_ae9763e7b3ff5f5e2a19bb440f7b7bb4e}{Q\-U\-E\-S\-O\-::\-Misc\-Int\-Debug\-Message} (int value, const char $\ast$message)
+\item 
+double \hyperlink{namespace_q_u_e_s_o_a976de592e2133af50b80f6aad1352165}{Q\-U\-E\-S\-O\-::\-Misc\-Double\-Debug\-Message} (double value, const char $\ast$message)
+\item 
+int \hyperlink{namespace_q_u_e_s_o_abc55c11f68bb99c4eba88030f1164764}{Q\-U\-E\-S\-O\-::\-Check\-File\-Path} (const char $\ast$path)
+\item 
+int \hyperlink{namespace_q_u_e_s_o_a56d7533d2177cf02d3fd761f7a22a873}{Q\-U\-E\-S\-O\-::\-G\-R\-V\-Y\-\_\-\-Check\-Dir} (const char $\ast$dirname)
+\item 
+{\footnotesize template$<$class T $>$ }\\bool \hyperlink{namespace_q_u_e_s_o_a4166a375c5adbea35afaaf20775bc519}{Q\-U\-E\-S\-O\-::\-Misc\-Check\-For\-Same\-Value\-In\-All\-Nodes} (T \&input\-Value, double acceptable\-Treshold, const Mpi\-Comm \&comm, const char $\ast$where\-String)
+\item 
+{\footnotesize template$<$class V $>$ }\\void \hyperlink{namespace_q_u_e_s_o_a3a6b46538ead03c47f13e60542608e34}{Q\-U\-E\-S\-O\-::\-Misc\-Compute\-Positions\-Between\-Min\-Max} (V min\-Values, V max\-Values, std\-::vector$<$ V $\ast$ $>$ \&positions)
+\item 
+{\footnotesize template$<$class V1 , class V2 $>$ }\\void \hyperlink{namespace_q_u_e_s_o_a57ad15be98b39ff64e0719305c639c75}{Q\-U\-E\-S\-O\-::\-Misc\-Check\-The\-Parallel\-Environment} (const V1 \&vec1, const V2 \&vec2)
+\end{DoxyCompactItemize}

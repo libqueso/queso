@@ -1,0 +1,750 @@
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle}{\section{Q\-U\-E\-S\-O\-:\-:Validation\-Cycle$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_validation_cycle}\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}}
+}
+
+
+A templated class for validation cycle of the examples validation\-Cycle and validation\-Cycle2.  
+
+
+
+
+{\ttfamily \#include $<$Validation\-Cycle.\-h$>$}
+
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Validation\-Cycle$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_validation_cycle__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_abd2447f8ec9a109f2c97b8aa73279cc3}{Validation\-Cycle} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a64215b434e018a2ef2f4049aa48ecc17}{env}, const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&param\-Space, const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&qoi\-Space)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac5ba69713d7c3090eb34a431b8238209}{$\sim$\-Validation\-Cycle} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Misc methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a64215b434e018a2ef2f4049aa48ecc17}{env} () const 
+\begin{DoxyCompactList}\small\item\em Access to the environment variable (m\-\_\-env). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Statistical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_af13cd3bac365d8a5b0338ba662741c5e}{instantiate\-Cal\-I\-P} (\hyperlink{class_q_u_e_s_o_1_1_sip_options_values}{Sip\-Options\-Values} $\ast$options\-Values, const \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&prior\-Rv, const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&likelihood\-Function\-Obj)
+\begin{DoxyCompactList}\small\item\em Instantiate an inverse problem for the calibration stage. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a2ae0650115037337b454a85ae2a0990f}{instantiate\-Cal\-F\-P} (\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values}{Sfp\-Options\-Values} $\ast$options\-Values, void($\ast$qoi\-Routine\-Ptr)(const P\-\_\-\-V \&domain\-Vector, const P\-\_\-\-V $\ast$domain\-Direction, const void $\ast$function\-Data\-Ptr, Q\-\_\-\-V \&image\-Vector, \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$grad\-Vectors, \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ P\-\_\-\-M $\ast$ $>$ $\ast$hessian\-Matrices, \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$hessian\-Effects), const void $\ast$qoi\-Routine\-Data\-Ptr)
+\begin{DoxyCompactList}\small\item\em Instantiate a forward problem for the calibration stage. \end{DoxyCompactList}\item 
+const \\*
+\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem}{Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a5a6cbe4851f3657e52a7302d82022233}{cal\-I\-P} () const 
+\begin{DoxyCompactList}\small\item\em Inverse problem of the calibration stage (const) . \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem}{Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a4ac209596278774d5f12e6d806a87d0a}{cal\-I\-P} ()
+\begin{DoxyCompactList}\small\item\em Inverse problem of the calibration stage (non-\/const) . \end{DoxyCompactList}\item 
+const \\*
+\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem}{Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab3ee54cdc9d1d6f726414f4fd2142c56}{cal\-F\-P} () const 
+\begin{DoxyCompactList}\small\item\em Forward problem of the calibration stage (const) . \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem}{Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ad8214c581b3e0879cae7d0643af99f69}{cal\-F\-P} ()
+\begin{DoxyCompactList}\small\item\em Forward problem of the calibration stage (non-\/const) . \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ada0d69cdc89fe50d5b6cbefb37d3867b}{instantiate\-Val\-I\-P} (\hyperlink{class_q_u_e_s_o_1_1_sip_options_values}{Sip\-Options\-Values} $\ast$options\-Values, const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&likelihood\-Function\-Obj)
+\begin{DoxyCompactList}\small\item\em Instantiate an inverse problem for the validation stage. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_acd62b7e91aa2c0dffeb26a8e34fea5fb}{instantiate\-Val\-F\-P} (\hyperlink{class_q_u_e_s_o_1_1_sfp_options_values}{Sfp\-Options\-Values} $\ast$options\-Values, void($\ast$qoi\-Routine\-Ptr)(const P\-\_\-\-V \&domain\-Vector, const P\-\_\-\-V $\ast$domain\-Direction, const void $\ast$function\-Data\-Ptr, Q\-\_\-\-V \&image\-Vector, \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$grad\-Vectors, \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ P\-\_\-\-M $\ast$ $>$ $\ast$hessian\-Matrices, \hyperlink{class_q_u_e_s_o_1_1_dist_array}{Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$hessian\-Effects), const void $\ast$qoi\-Routine\-Data\-Ptr)
+\begin{DoxyCompactList}\small\item\em Instantiate a forward problem for the validation stage. \end{DoxyCompactList}\item 
+const \\*
+\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem}{Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a726e07f03e40bbafcd4dd759d2365750}{val\-I\-P} () const 
+\begin{DoxyCompactList}\small\item\em Inverse problem of the validation stage (const) . \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem}{Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_accd1d098732581bcf919dd78f347da55}{val\-I\-P} ()
+\begin{DoxyCompactList}\small\item\em Inverse problem of the validation stage (non-\/const) . \end{DoxyCompactList}\item 
+const \\*
+\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem}{Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_aea0022cb79bbbc30a7694d50723c746a}{val\-F\-P} () const 
+\begin{DoxyCompactList}\small\item\em Forward problem of the validation stage (const) . \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem}{Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a0bcde7f4a5860ca2dc410575c766bbc9}{val\-F\-P} ()
+\begin{DoxyCompactList}\small\item\em Forward problem of the validation stage (non-\/const) . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}{m\-\_\-env}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adcc61017a11c99f3a6189ddbf7bc76fc}{m\-\_\-prefix}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a641d2e59aed41a93a787c71ec30b6e07}{m\-\_\-param\-Space}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adccd6175c04258a6f603a92a7ae4327c}{m\-\_\-qoi\-Space}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_vector_r_v}{Base\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a9f8c93eb68908f51b728af2fffbfb4a8}{m\-\_\-cal\-Prior\-Rv}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a764d9a79a615317b0749ee69c2234d40}{m\-\_\-cal\-Likelihood\-Function\-Obj}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v}{Generic\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a535b6447a44ac7191e12e887d1710ef0}{m\-\_\-cal\-Post\-Rv}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem}{Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_afa19cacc32a262840f2108ed405f0521}{m\-\_\-cal\-I\-P}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_generic_vector_function}{Generic\-Vector\-Function}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab891acfabc02b5e590deee6e05e30b2c}{m\-\_\-cal\-Qoi\-Function\-Obj}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v}{Generic\-Vector\-R\-V}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac3bac139c827b3210e92d4bac190f89f}{m\-\_\-cal\-Qoi\-Rv}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem}{Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab91bdb2d36652abb6275af640f2844bd}{m\-\_\-cal\-F\-P}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a18afcde29c5ba9f4b7d9db9519166d45}{m\-\_\-val\-Likelihood\-Function\-Obj}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v}{Generic\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a196610836330a456a21c4f3b6ec56883}{m\-\_\-val\-Post\-Rv}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem}{Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ad65609930305ca35305bb7b42b1acfad}{m\-\_\-val\-I\-P}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_generic_vector_function}{Generic\-Vector\-Function}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a35443093bebe1ddbab7fa7cb671be562}{m\-\_\-val\-Qoi\-Function\-Obj}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_generic_vector_r_v}{Generic\-Vector\-R\-V}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a930f8140c5ba8655ea6ce926acc6ceef}{m\-\_\-val\-Qoi\-Rv}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_forward_problem}{Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, \\*
+P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac1ba4bc21405b92f9bce23e8579e5c70}{m\-\_\-val\-F\-P}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$class Q\-U\-E\-S\-O\-::\-Validation\-Cycle$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}
+
+A templated class for validation cycle of the examples validation\-Cycle and validation\-Cycle2. 
+
+It has two stages\-: calibration and validation. First, in the calibration stage, the inverse problem solution (posterior R\-V) is the input parameter vector R\-V for the forward problem. Then, in the Validation stage, the posterior vector R\-V from calibration stage (solution of the forward problem of the calibration stage) is the prior vector R\-V for an inverse problem. Then, the solution of this inverse problem is once more the input parameter vector R\-V for the (validation) forward problem.\par
+ The examples validation\-Cycle and validation\-Cycle2 use the present class to solve the same T\-G\-A problem, and they only differ in implementation styles. 
+
+Definition at line 51 of file Validation\-Cycle.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_abd2447f8ec9a109f2c97b8aa73279cc3}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!Validation\-Cycle@{Validation\-Cycle}}
+\index{Validation\-Cycle@{Validation\-Cycle}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{Validation\-Cycle}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::{\bf Validation\-Cycle} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Space}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{param\-Space, }
+\item[{const {\bf Vector\-Space}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{qoi\-Space}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_validation_cycle_abd2447f8ec9a109f2c97b8aa73279cc3}
+
+
+Constructor. 
+
+
+
+Definition at line 33 of file Validation\-Cycle.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Validation\-Cycle$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Validation\-Cycle$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+38   :
+39   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}{m\_env}                     (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a64215b434e018a2ef2f4049aa48ecc17}{env}),
+40   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adcc61017a11c99f3a6189ddbf7bc76fc}{m\_prefix}                  ((std::string)(prefix) + \textcolor{stringliteral}{"cycle\_"}),
+41   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a641d2e59aed41a93a787c71ec30b6e07}{m\_paramSpace}              (paramSpace),
+42   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adccd6175c04258a6f603a92a7ae4327c}{m\_qoiSpace}                (qoiSpace),
+43   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a764d9a79a615317b0749ee69c2234d40}{m\_calLikelihoodFunctionObj}(NULL),
+44   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a535b6447a44ac7191e12e887d1710ef0}{m\_calPostRv}               (NULL),
+45   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_afa19cacc32a262840f2108ed405f0521}{m\_calIP}                   (NULL),
+46   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab891acfabc02b5e590deee6e05e30b2c}{m\_calQoiFunctionObj}       (NULL),
+47   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac3bac139c827b3210e92d4bac190f89f}{m\_calQoiRv}                (NULL),
+48   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab91bdb2d36652abb6275af640f2844bd}{m\_calFP}                   (NULL),
+49   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a18afcde29c5ba9f4b7d9db9519166d45}{m\_valLikelihoodFunctionObj}(NULL),
+50   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a196610836330a456a21c4f3b6ec56883}{m\_valPostRv}               (NULL),
+51   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ad65609930305ca35305bb7b42b1acfad}{m\_valIP}                   (NULL),
+52   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a35443093bebe1ddbab7fa7cb671be562}{m\_valQoiFunctionObj}       (NULL),
+53   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a930f8140c5ba8655ea6ce926acc6ceef}{m\_valQoiRv}                (NULL),
+54   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac1ba4bc21405b92f9bce23e8579e5c70}{m\_valFP}                   (NULL)
+55 \{
+56   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+57     *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering ValidationCycle<P\_V,P\_M,Q\_V,Q\_M>::constructor()
+      "}
+58                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adcc61017a11c99f3a6189ddbf7bc76fc}{m\_prefix}
+59                            << std::endl;
+60   \}
+61 
+62   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+63     *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving ValidationCycle<P\_V,P\_M,Q\_V,Q\_M>::constructor()"}
+64                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adcc61017a11c99f3a6189ddbf7bc76fc}{m\_prefix}
+65                            << std::endl;
+66   \}
+67 
+68   \textcolor{keywordflow}{return};
+69 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_ac5ba69713d7c3090eb34a431b8238209}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!$\sim$\-Validation\-Cycle@{$\sim$\-Validation\-Cycle}}
+\index{$\sim$\-Validation\-Cycle@{$\sim$\-Validation\-Cycle}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{$\sim$\-Validation\-Cycle}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::$\sim${\bf Validation\-Cycle} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_validation_cycle_ac5ba69713d7c3090eb34a431b8238209}
+
+
+Destructor. 
+
+
+
+Definition at line 72 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+73 \{
+74   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+75     *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering ValidationCycle::destructor()"}
+76                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adcc61017a11c99f3a6189ddbf7bc76fc}{m\_prefix}
+77                            << std::endl;
+78   \}
+79 
+80   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac1ba4bc21405b92f9bce23e8579e5c70}{m\_valFP})             \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac1ba4bc21405b92f9bce23e8579e5c70}{m\_valFP};
+81   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a930f8140c5ba8655ea6ce926acc6ceef}{m\_valQoiRv})          \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a930f8140c5ba8655ea6ce926acc6ceef}{m\_valQoiRv};
+82   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a35443093bebe1ddbab7fa7cb671be562}{m\_valQoiFunctionObj}) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a35443093bebe1ddbab7fa7cb671be562}{m\_valQoiFunctionObj};
+83   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ad65609930305ca35305bb7b42b1acfad}{m\_valIP})             \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ad65609930305ca35305bb7b42b1acfad}{m\_valIP};
+84   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a196610836330a456a21c4f3b6ec56883}{m\_valPostRv})         \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a196610836330a456a21c4f3b6ec56883}{m\_valPostRv};
+85   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab91bdb2d36652abb6275af640f2844bd}{m\_calFP})             \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab91bdb2d36652abb6275af640f2844bd}{m\_calFP};
+86   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac3bac139c827b3210e92d4bac190f89f}{m\_calQoiRv})          \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac3bac139c827b3210e92d4bac190f89f}{m\_calQoiRv};
+87   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab891acfabc02b5e590deee6e05e30b2c}{m\_calQoiFunctionObj}) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab891acfabc02b5e590deee6e05e30b2c}{m\_calQoiFunctionObj};
+88   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_afa19cacc32a262840f2108ed405f0521}{m\_calIP})             \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_afa19cacc32a262840f2108ed405f0521}{m\_calIP};
+89   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a535b6447a44ac7191e12e887d1710ef0}{m\_calPostRv})         \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a535b6447a44ac7191e12e887d1710ef0}{m\_calPostRv};
+90 
+91   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+92     *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving ValidationCycle::destructor()"}
+93                            << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adcc61017a11c99f3a6189ddbf7bc76fc}{m\_prefix}
+94                            << std::endl;
+95   \}
+96 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_ab3ee54cdc9d1d6f726414f4fd2142c56}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!cal\-F\-P@{cal\-F\-P}}
+\index{cal\-F\-P@{cal\-F\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{cal\-F\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ const {\bf Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::cal\-F\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_validation_cycle_ab3ee54cdc9d1d6f726414f4fd2142c56}
+
+
+Forward problem of the calibration stage (const) . 
+
+It is an instance of class Statistical\-Forward\-Problem$<$$>$. 
+
+Definition at line 187 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+188 \{
+189   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab91bdb2d36652abb6275af640f2844bd}{m\_calFP};
+190 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_ad8214c581b3e0879cae7d0643af99f69}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!cal\-F\-P@{cal\-F\-P}}
+\index{cal\-F\-P@{cal\-F\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{cal\-F\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::cal\-F\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_validation_cycle_ad8214c581b3e0879cae7d0643af99f69}
+
+
+Forward problem of the calibration stage (non-\/const) . 
+
+It is an instance of class Statistical\-Forward\-Problem$<$$>$. 
+
+Definition at line 194 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+195 \{
+196   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab91bdb2d36652abb6275af640f2844bd}{m\_calFP};
+197 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a5a6cbe4851f3657e52a7302d82022233}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!cal\-I\-P@{cal\-I\-P}}
+\index{cal\-I\-P@{cal\-I\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{cal\-I\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ const {\bf Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::cal\-I\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_validation_cycle_a5a6cbe4851f3657e52a7302d82022233}
+
+
+Inverse problem of the calibration stage (const) . 
+
+It is an instance of class Statistical\-Inverse\-Problem$<$$>$. 
+
+Definition at line 137 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+138 \{
+139   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_afa19cacc32a262840f2108ed405f0521}{m\_calIP};
+140 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a4ac209596278774d5f12e6d806a87d0a}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!cal\-I\-P@{cal\-I\-P}}
+\index{cal\-I\-P@{cal\-I\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{cal\-I\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::cal\-I\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_validation_cycle_a4ac209596278774d5f12e6d806a87d0a}
+
+
+Inverse problem of the calibration stage (non-\/const) . 
+
+It is an instance of class Statistical\-Inverse\-Problem$<$$>$. 
+
+Definition at line 144 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+145 \{
+146   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_afa19cacc32a262840f2108ed405f0521}{m\_calIP};
+147 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a64215b434e018a2ef2f4049aa48ecc17}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!env@{env}}
+\index{env@{env}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ const {\bf Base\-Environment} \& {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::env (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_validation_cycle_a64215b434e018a2ef2f4049aa48ecc17}
+
+
+Access to the environment variable (m\-\_\-env). 
+
+
+
+Definition at line 100 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+101 \{
+102   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}{m\_env};
+103 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a2ae0650115037337b454a85ae2a0990f}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!instantiate\-Cal\-F\-P@{instantiate\-Cal\-F\-P}}
+\index{instantiate\-Cal\-F\-P@{instantiate\-Cal\-F\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{instantiate\-Cal\-F\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::instantiate\-Cal\-F\-P (
+\begin{DoxyParamCaption}
+\item[{{\bf Sfp\-Options\-Values} $\ast$}]{options\-Values, }
+\item[{void($\ast$)(const P\-\_\-\-V \&domain\-Vector, const P\-\_\-\-V $\ast$domain\-Direction, const void $\ast$function\-Data\-Ptr, Q\-\_\-\-V \&image\-Vector, {\bf Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$grad\-Vectors, {\bf Dist\-Array}$<$ P\-\_\-\-M $\ast$ $>$ $\ast$hessian\-Matrices, {\bf Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$hessian\-Effects)}]{qoi\-Routine\-Ptr, }
+\item[{const void $\ast$}]{qoi\-Routine\-Data\-Ptr}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_validation_cycle_a2ae0650115037337b454a85ae2a0990f}
+
+
+Instantiate a forward problem for the calibration stage. 
+
+
+
+Definition at line 151 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+161 \{
+162   \textcolor{comment}{// Calibration stage: Input parameter vector RV for forward = output posterior vector RV of inverse}
+163 
+164   \textcolor{comment}{// Calibration stage: QoI function object}
+165   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab891acfabc02b5e590deee6e05e30b2c}{m\_calQoiFunctionObj} = \textcolor{keyword}{new} GenericVectorFunction<P\_V,P\_M,Q\_V,Q\_M> (\textcolor{stringliteral}{"cal\_qoi\_"}, \textcolor{comment}{// Extra
+       prefix before the default "func\_" prefix}
+166                                                                            
+      \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a641d2e59aed41a93a787c71ec30b6e07}{m\_paramSpace},
+167                                                                            
+      \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adccd6175c04258a6f603a92a7ae4327c}{m\_qoiSpace},
+168                                                                            qoiRoutinePtr,
+169                                                                            qoiRoutineDataPtr);
+170 
+171   \textcolor{comment}{// Calibration stage: QoI vector RV}
+172   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac3bac139c827b3210e92d4bac190f89f}{m\_calQoiRv} = \textcolor{keyword}{new} GenericVectorRV<Q\_V,Q\_M> (\textcolor{stringliteral}{"cal\_qoi\_"}, \textcolor{comment}{// Extra prefix before the default "RV\_"
+       prefix}
+173                                                     \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adccd6175c04258a6f603a92a7ae4327c}{m\_qoiSpace});
+174 
+175   \textcolor{comment}{// Calibration stage: Forward problem}
+176   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab91bdb2d36652abb6275af640f2844bd}{m\_calFP} = \textcolor{keyword}{new} StatisticalForwardProblem<P\_V,P\_M,Q\_V,Q\_M> ((\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adcc61017a11c99f3a6189ddbf7bc76fc}{m\_prefix}+\textcolor{stringliteral}{"cal\_"}).c\_str(), \textcolor{comment}{//
+       Extra prefix before the default "fp\_" prefix}
+177                                                                    optionsValues,
+178                                                                    *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a535b6447a44ac7191e12e887d1710ef0}{m\_calPostRv}, \textcolor{comment}{// forward
+       input = inverse output}
+179                                                                    *
+      \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ab891acfabc02b5e590deee6e05e30b2c}{m\_calQoiFunctionObj},
+180                                                                    *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac3bac139c827b3210e92d4bac190f89f}{m\_calQoiRv});
+181 
+182   \textcolor{keywordflow}{return};
+183 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_af13cd3bac365d8a5b0338ba662741c5e}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!instantiate\-Cal\-I\-P@{instantiate\-Cal\-I\-P}}
+\index{instantiate\-Cal\-I\-P@{instantiate\-Cal\-I\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{instantiate\-Cal\-I\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::instantiate\-Cal\-I\-P (
+\begin{DoxyParamCaption}
+\item[{{\bf Sip\-Options\-Values} $\ast$}]{options\-Values, }
+\item[{const {\bf Base\-Vector\-R\-V}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{prior\-Rv, }
+\item[{const {\bf Base\-Scalar\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{likelihood\-Function\-Obj}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_validation_cycle_af13cd3bac365d8a5b0338ba662741c5e}
+
+
+Instantiate an inverse problem for the calibration stage. 
+
+
+
+Definition at line 107 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+114 \{
+115   \textcolor{comment}{// Calibration stage: Prior vector RV}
+116   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a9f8c93eb68908f51b728af2fffbfb4a8}{m\_calPriorRv} = &priorRv;
+117 
+118   \textcolor{comment}{// Calibration stage: Likelihood function object (e.g., ln[likelihood])}
+119   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a764d9a79a615317b0749ee69c2234d40}{m\_calLikelihoodFunctionObj} = &likelihoodFunctionObj;
+120 
+121   \textcolor{comment}{// Calibration stage: Posterior vector RV}
+122   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a535b6447a44ac7191e12e887d1710ef0}{m\_calPostRv} = \textcolor{keyword}{new} GenericVectorRV<P\_V,P\_M> (\textcolor{stringliteral}{"cal\_post\_"}, \textcolor{comment}{// Extra prefix before the default
+       "RV\_" prefix}
+123                                                      \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a641d2e59aed41a93a787c71ec30b6e07}{m\_paramSpace});
+124 
+125   \textcolor{comment}{// Calibration stage: Inverse problem}
+126   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_afa19cacc32a262840f2108ed405f0521}{m\_calIP} = \textcolor{keyword}{new} StatisticalInverseProblem<P\_V,P\_M> ((\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adcc61017a11c99f3a6189ddbf7bc76fc}{m\_prefix}+\textcolor{stringliteral}{"cal\_"}).c\_str(), \textcolor{comment}{// Extra
+       prefix before the default "ip\_" prefix}
+127                                                            optionsValues,
+128                                                            *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a9f8c93eb68908f51b728af2fffbfb4a8}{m\_calPriorRv},
+129                                                            *
+      \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a764d9a79a615317b0749ee69c2234d40}{m\_calLikelihoodFunctionObj},
+130                                                            *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a535b6447a44ac7191e12e887d1710ef0}{m\_calPostRv});
+131 
+132   \textcolor{keywordflow}{return};
+133 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_acd62b7e91aa2c0dffeb26a8e34fea5fb}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!instantiate\-Val\-F\-P@{instantiate\-Val\-F\-P}}
+\index{instantiate\-Val\-F\-P@{instantiate\-Val\-F\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{instantiate\-Val\-F\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::instantiate\-Val\-F\-P (
+\begin{DoxyParamCaption}
+\item[{{\bf Sfp\-Options\-Values} $\ast$}]{options\-Values, }
+\item[{void($\ast$)(const P\-\_\-\-V \&domain\-Vector, const P\-\_\-\-V $\ast$domain\-Direction, const void $\ast$function\-Data\-Ptr, Q\-\_\-\-V \&image\-Vector, {\bf Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$grad\-Vectors, {\bf Dist\-Array}$<$ P\-\_\-\-M $\ast$ $>$ $\ast$hessian\-Matrices, {\bf Dist\-Array}$<$ P\-\_\-\-V $\ast$ $>$ $\ast$hessian\-Effects)}]{qoi\-Routine\-Ptr, }
+\item[{const void $\ast$}]{qoi\-Routine\-Data\-Ptr}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_validation_cycle_acd62b7e91aa2c0dffeb26a8e34fea5fb}
+
+
+Instantiate a forward problem for the validation stage. 
+
+
+
+Definition at line 243 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+253 \{
+254   \textcolor{comment}{// Validation stage: Input parameter vector RV for forward = output posterior vector RV of inverse}
+255 
+256   \textcolor{comment}{// Validation stage: QoI function object}
+257   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a35443093bebe1ddbab7fa7cb671be562}{m\_valQoiFunctionObj} = \textcolor{keyword}{new} GenericVectorFunction<P\_V,P\_M,Q\_V,Q\_M> (\textcolor{stringliteral}{"val\_qoi\_"}, \textcolor{comment}{// Extra
+       prefix before the default "func\_" prefix}
+258                                                                            
+      \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a641d2e59aed41a93a787c71ec30b6e07}{m\_paramSpace},
+259                                                                            
+      \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adccd6175c04258a6f603a92a7ae4327c}{m\_qoiSpace},
+260                                                                            qoiRoutinePtr,
+261                                                                            qoiRoutineDataPtr);
+262 
+263   \textcolor{comment}{// Validation stage: QoI vector RV}
+264   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a930f8140c5ba8655ea6ce926acc6ceef}{m\_valQoiRv} = \textcolor{keyword}{new} GenericVectorRV<Q\_V,Q\_M> (\textcolor{stringliteral}{"val\_qoi\_"}, \textcolor{comment}{// Extra prefix before the default "RV\_"
+       prefix}
+265                                                     \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adccd6175c04258a6f603a92a7ae4327c}{m\_qoiSpace});
+266 
+267   \textcolor{comment}{// Validation stage: Forward problem}
+268   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac1ba4bc21405b92f9bce23e8579e5c70}{m\_valFP} = \textcolor{keyword}{new} StatisticalForwardProblem<P\_V,P\_M,Q\_V,Q\_M> ((\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adcc61017a11c99f3a6189ddbf7bc76fc}{m\_prefix}+\textcolor{stringliteral}{"val\_"}).c\_str(),      
+       \textcolor{comment}{// Extra prefix before the default "fp\_" prefix}
+269                                                                    optionsValues,
+270                                                                    *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a196610836330a456a21c4f3b6ec56883}{m\_valPostRv}, \textcolor{comment}{// forward
+       input = inverse output}
+271                                                                    *
+      \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a35443093bebe1ddbab7fa7cb671be562}{m\_valQoiFunctionObj},
+272                                                                    *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a930f8140c5ba8655ea6ce926acc6ceef}{m\_valQoiRv});
+273 
+274   \textcolor{keywordflow}{return};
+275 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_ada0d69cdc89fe50d5b6cbefb37d3867b}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!instantiate\-Val\-I\-P@{instantiate\-Val\-I\-P}}
+\index{instantiate\-Val\-I\-P@{instantiate\-Val\-I\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{instantiate\-Val\-I\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::instantiate\-Val\-I\-P (
+\begin{DoxyParamCaption}
+\item[{{\bf Sip\-Options\-Values} $\ast$}]{options\-Values, }
+\item[{const {\bf Base\-Scalar\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{likelihood\-Function\-Obj}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_validation_cycle_ada0d69cdc89fe50d5b6cbefb37d3867b}
+
+
+Instantiate an inverse problem for the validation stage. 
+
+
+
+Definition at line 201 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+207 \{
+208   \textcolor{comment}{// Validation stage: Prior vector RV = posterior vector RV from calibration stage}
+209 
+210   \textcolor{comment}{// Validation stage: Likelihood function object (e.g., ln[likelihood])}
+211   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a18afcde29c5ba9f4b7d9db9519166d45}{m\_valLikelihoodFunctionObj} = &likelihoodFunctionObj;
+212 
+213   \textcolor{comment}{// Validation stage: Posterior vector RV}
+214   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a196610836330a456a21c4f3b6ec56883}{m\_valPostRv} = \textcolor{keyword}{new} GenericVectorRV<P\_V,P\_M> (\textcolor{stringliteral}{"val\_post\_"}, \textcolor{comment}{// Extra prefix before the default
+       "RV\_" prefix}
+215                                                      \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a641d2e59aed41a93a787c71ec30b6e07}{m\_paramSpace});
+216 
+217   \textcolor{comment}{// Validation stage: Inverse problem}
+218   \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ad65609930305ca35305bb7b42b1acfad}{m\_valIP} = \textcolor{keyword}{new} StatisticalInverseProblem<P\_V,P\_M> ((\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_adcc61017a11c99f3a6189ddbf7bc76fc}{m\_prefix}+\textcolor{stringliteral}{"val\_"}).c\_str(), \textcolor{comment}{// Extra
+       prefix before the default "ip\_" prefix}
+219                                                            optionsValues,
+220                                                            *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a535b6447a44ac7191e12e887d1710ef0}{m\_calPostRv}, \textcolor{comment}{// 'validation stage'
+       inverse input = 'calibration stage' inverse output}
+221                                                            *
+      \hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a18afcde29c5ba9f4b7d9db9519166d45}{m\_valLikelihoodFunctionObj},
+222                                                            *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_a196610836330a456a21c4f3b6ec56883}{m\_valPostRv});
+223 
+224   \textcolor{keywordflow}{return};
+225 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_aea0022cb79bbbc30a7694d50723c746a}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!val\-F\-P@{val\-F\-P}}
+\index{val\-F\-P@{val\-F\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{val\-F\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ const {\bf Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::val\-F\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_validation_cycle_aea0022cb79bbbc30a7694d50723c746a}
+
+
+Forward problem of the validation stage (const) . 
+
+It is an instance of class Statistical\-Forward\-Problem$<$$>$. 
+
+Definition at line 279 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+280 \{
+281   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac1ba4bc21405b92f9bce23e8579e5c70}{m\_valFP};
+282 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a0bcde7f4a5860ca2dc410575c766bbc9}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!val\-F\-P@{val\-F\-P}}
+\index{val\-F\-P@{val\-F\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{val\-F\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Statistical\-Forward\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::val\-F\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_validation_cycle_a0bcde7f4a5860ca2dc410575c766bbc9}
+
+
+Forward problem of the validation stage (non-\/const) . 
+
+It is an instance of class Statistical\-Forward\-Problem$<$$>$. 
+
+Definition at line 286 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+287 \{
+288   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ac1ba4bc21405b92f9bce23e8579e5c70}{m\_valFP};
+289 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a726e07f03e40bbafcd4dd759d2365750}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!val\-I\-P@{val\-I\-P}}
+\index{val\-I\-P@{val\-I\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{val\-I\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ const {\bf Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::val\-I\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_validation_cycle_a726e07f03e40bbafcd4dd759d2365750}
+
+
+Inverse problem of the validation stage (const) . 
+
+It is an instance of class Statistical\-Inverse\-Problem$<$$>$. 
+
+Definition at line 229 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+230 \{
+231   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ad65609930305ca35305bb7b42b1acfad}{m\_valIP};
+232 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_accd1d098732581bcf919dd78f347da55}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!val\-I\-P@{val\-I\-P}}
+\index{val\-I\-P@{val\-I\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{val\-I\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Statistical\-Inverse\-Problem}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::val\-I\-P (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_validation_cycle_accd1d098732581bcf919dd78f347da55}
+
+
+Inverse problem of the validation stage (non-\/const) . 
+
+It is an instance of class Statistical\-Inverse\-Problem$<$$>$. 
+
+Definition at line 236 of file Validation\-Cycle.\-C.
+
+
+\begin{DoxyCode}
+237 \{
+238   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_validation_cycle_ad65609930305ca35305bb7b42b1acfad}{m\_valIP};
+239 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_ab91bdb2d36652abb6275af640f2844bd}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-cal\-F\-P@{m\-\_\-cal\-F\-P}}
+\index{m\-\_\-cal\-F\-P@{m\-\_\-cal\-F\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-cal\-F\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Statistical\-Forward\-Problem}$<$P\-\_\-\-V,P\-\_\-\-M,Q\-\_\-\-V,Q\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-cal\-F\-P\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_ab91bdb2d36652abb6275af640f2844bd}
+
+
+Definition at line 156 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_afa19cacc32a262840f2108ed405f0521}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-cal\-I\-P@{m\-\_\-cal\-I\-P}}
+\index{m\-\_\-cal\-I\-P@{m\-\_\-cal\-I\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-cal\-I\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Statistical\-Inverse\-Problem}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-cal\-I\-P\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_afa19cacc32a262840f2108ed405f0521}
+
+
+Definition at line 152 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a764d9a79a615317b0749ee69c2234d40}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-cal\-Likelihood\-Function\-Obj@{m\-\_\-cal\-Likelihood\-Function\-Obj}}
+\index{m\-\_\-cal\-Likelihood\-Function\-Obj@{m\-\_\-cal\-Likelihood\-Function\-Obj}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-cal\-Likelihood\-Function\-Obj}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Base\-Scalar\-Function}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-cal\-Likelihood\-Function\-Obj\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_a764d9a79a615317b0749ee69c2234d40}
+
+
+Definition at line 150 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a535b6447a44ac7191e12e887d1710ef0}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-cal\-Post\-Rv@{m\-\_\-cal\-Post\-Rv}}
+\index{m\-\_\-cal\-Post\-Rv@{m\-\_\-cal\-Post\-Rv}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-cal\-Post\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Generic\-Vector\-R\-V}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-cal\-Post\-Rv\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_a535b6447a44ac7191e12e887d1710ef0}
+
+
+Definition at line 151 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a9f8c93eb68908f51b728af2fffbfb4a8}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-cal\-Prior\-Rv@{m\-\_\-cal\-Prior\-Rv}}
+\index{m\-\_\-cal\-Prior\-Rv@{m\-\_\-cal\-Prior\-Rv}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-cal\-Prior\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Base\-Vector\-R\-V}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-cal\-Prior\-Rv\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_a9f8c93eb68908f51b728af2fffbfb4a8}
+
+
+Definition at line 149 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_ab891acfabc02b5e590deee6e05e30b2c}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-cal\-Qoi\-Function\-Obj@{m\-\_\-cal\-Qoi\-Function\-Obj}}
+\index{m\-\_\-cal\-Qoi\-Function\-Obj@{m\-\_\-cal\-Qoi\-Function\-Obj}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-cal\-Qoi\-Function\-Obj}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Generic\-Vector\-Function}$<$P\-\_\-\-V,P\-\_\-\-M,Q\-\_\-\-V,Q\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-cal\-Qoi\-Function\-Obj\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_ab891acfabc02b5e590deee6e05e30b2c}
+
+
+Definition at line 154 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_ac3bac139c827b3210e92d4bac190f89f}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-cal\-Qoi\-Rv@{m\-\_\-cal\-Qoi\-Rv}}
+\index{m\-\_\-cal\-Qoi\-Rv@{m\-\_\-cal\-Qoi\-Rv}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-cal\-Qoi\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Generic\-Vector\-R\-V}$<$Q\-\_\-\-V,Q\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-cal\-Qoi\-Rv\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_ac3bac139c827b3210e92d4bac190f89f}
+
+
+Definition at line 155 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_a38a308718da67cac37c1290d86b93bb3}
+
+
+Definition at line 144 of file Validation\-Cycle.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Validation\-Cycle$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::\-Validation\-Cycle().
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a641d2e59aed41a93a787c71ec30b6e07}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-param\-Space@{m\-\_\-param\-Space}}
+\index{m\-\_\-param\-Space@{m\-\_\-param\-Space}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-param\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Vector\-Space}$<$P\-\_\-\-V,P\-\_\-\-M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-param\-Space\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_a641d2e59aed41a93a787c71ec30b6e07}
+
+
+Definition at line 146 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_adcc61017a11c99f3a6189ddbf7bc76fc}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-prefix@{m\-\_\-prefix}}
+\index{m\-\_\-prefix@{m\-\_\-prefix}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-prefix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ std\-::string {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-prefix\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_adcc61017a11c99f3a6189ddbf7bc76fc}
+
+
+Definition at line 145 of file Validation\-Cycle.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Validation\-Cycle$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::\-Validation\-Cycle().
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_adccd6175c04258a6f603a92a7ae4327c}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-qoi\-Space@{m\-\_\-qoi\-Space}}
+\index{m\-\_\-qoi\-Space@{m\-\_\-qoi\-Space}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-qoi\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Vector\-Space}$<$Q\-\_\-\-V,Q\-\_\-\-M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-qoi\-Space\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_adccd6175c04258a6f603a92a7ae4327c}
+
+
+Definition at line 147 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_ac1ba4bc21405b92f9bce23e8579e5c70}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-val\-F\-P@{m\-\_\-val\-F\-P}}
+\index{m\-\_\-val\-F\-P@{m\-\_\-val\-F\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-val\-F\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Statistical\-Forward\-Problem}$<$P\-\_\-\-V,P\-\_\-\-M,Q\-\_\-\-V,Q\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-val\-F\-P\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_ac1ba4bc21405b92f9bce23e8579e5c70}
+
+
+Definition at line 164 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_ad65609930305ca35305bb7b42b1acfad}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-val\-I\-P@{m\-\_\-val\-I\-P}}
+\index{m\-\_\-val\-I\-P@{m\-\_\-val\-I\-P}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-val\-I\-P}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Statistical\-Inverse\-Problem}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-val\-I\-P\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_ad65609930305ca35305bb7b42b1acfad}
+
+
+Definition at line 160 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a18afcde29c5ba9f4b7d9db9519166d45}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-val\-Likelihood\-Function\-Obj@{m\-\_\-val\-Likelihood\-Function\-Obj}}
+\index{m\-\_\-val\-Likelihood\-Function\-Obj@{m\-\_\-val\-Likelihood\-Function\-Obj}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-val\-Likelihood\-Function\-Obj}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Base\-Scalar\-Function}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-val\-Likelihood\-Function\-Obj\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_a18afcde29c5ba9f4b7d9db9519166d45}
+
+
+Definition at line 158 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a196610836330a456a21c4f3b6ec56883}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-val\-Post\-Rv@{m\-\_\-val\-Post\-Rv}}
+\index{m\-\_\-val\-Post\-Rv@{m\-\_\-val\-Post\-Rv}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-val\-Post\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Generic\-Vector\-R\-V}$<$P\-\_\-\-V,P\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-val\-Post\-Rv\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_a196610836330a456a21c4f3b6ec56883}
+
+
+Definition at line 159 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a35443093bebe1ddbab7fa7cb671be562}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-val\-Qoi\-Function\-Obj@{m\-\_\-val\-Qoi\-Function\-Obj}}
+\index{m\-\_\-val\-Qoi\-Function\-Obj@{m\-\_\-val\-Qoi\-Function\-Obj}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-val\-Qoi\-Function\-Obj}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Generic\-Vector\-Function}$<$P\-\_\-\-V,P\-\_\-\-M,Q\-\_\-\-V,Q\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-val\-Qoi\-Function\-Obj\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_a35443093bebe1ddbab7fa7cb671be562}
+
+
+Definition at line 162 of file Validation\-Cycle.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_validation_cycle_a930f8140c5ba8655ea6ce926acc6ceef}{\index{Q\-U\-E\-S\-O\-::\-Validation\-Cycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}!m\-\_\-val\-Qoi\-Rv@{m\-\_\-val\-Qoi\-Rv}}
+\index{m\-\_\-val\-Qoi\-Rv@{m\-\_\-val\-Qoi\-Rv}!QUESO::ValidationCycle@{Q\-U\-E\-S\-O\-::\-Validation\-Cycle}}
+\subsubsection[{m\-\_\-val\-Qoi\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ {\bf Generic\-Vector\-R\-V}$<$Q\-\_\-\-V,Q\-\_\-\-M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Validation\-Cycle}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-val\-Qoi\-Rv\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_validation_cycle_a930f8140c5ba8655ea6ce926acc6ceef}
+
+
+Definition at line 163 of file Validation\-Cycle.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_validation_cycle_8h}{Validation\-Cycle.\-h}\item 
+src/stats/src/\hyperlink{_validation_cycle_8_c}{Validation\-Cycle.\-C}\end{DoxyCompactItemize}

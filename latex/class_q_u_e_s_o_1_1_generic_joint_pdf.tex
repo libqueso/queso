@@ -1,0 +1,245 @@
+\hypertarget{class_q_u_e_s_o_1_1_generic_joint_pdf}{\section{Q\-U\-E\-S\-O\-:\-:Generic\-Joint\-Pdf$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_generic_joint_pdf}\index{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf$<$ V, M $>$}}
+}
+
+
+A class for handling generic joint P\-D\-Fs.  
+
+
+
+
+{\ttfamily \#include $<$Generic\-Joint\-Pdf.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Generic\-Joint\-Pdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{class_q_u_e_s_o_1_1_generic_joint_pdf__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Generic\-Joint\-Pdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_generic_joint_pdf__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_generic_joint_pdf_a580b11a250bfcf29176ca3c94547ed20}{Generic\-Joint\-Pdf} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ V, M $>$ \&scalar\-Function)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_generic_joint_pdf_a5668d8d87960dc04dbde2821339b09f8}{$\sim$\-Generic\-Joint\-Pdf} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Math methods}\par
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_generic_joint_pdf_a7bddaaf1d4087ca8e35fcb83c0df72d2}{actual\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const 
+\begin{DoxyCompactList}\small\item\em Actual value of the P\-D\-F (scalar function). \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_generic_joint_pdf_a566150d033ce9c09a22c6f271a7155a8}{ln\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const 
+\begin{DoxyCompactList}\small\item\em Logarithm of the value of the function. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_generic_joint_pdf_a282b1db04e25086938f3b8969ba484a9}{compute\-Log\-Of\-Normalization\-Factor} (unsigned int num\-Samples, bool update\-Factor\-Internally) const 
+\begin{DoxyCompactList}\small\item\em Computes the logarithm of the normalization factor. See template specialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_generic_joint_pdf_a26902b8f386e73c0d6bb39554ae4ba29}{m\-\_\-scalar\-Function}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf$<$ V, M $>$}
+
+A class for handling generic joint P\-D\-Fs. 
+
+This class allows the mathematical definition of a generic Joint P\-D\-F, such as the posterior P\-D\-F. 
+
+Definition at line 49 of file Generic\-Joint\-Pdf.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_generic_joint_pdf_a580b11a250bfcf29176ca3c94547ed20}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}!Generic\-Joint\-Pdf@{Generic\-Joint\-Pdf}}
+\index{Generic\-Joint\-Pdf@{Generic\-Joint\-Pdf}!QUESO::GenericJointPdf@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}}
+\subsubsection[{Generic\-Joint\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}$<$ V, M $>$\-::{\bf Generic\-Joint\-Pdf} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Base\-Scalar\-Function}$<$ V, M $>$ \&}]{scalar\-Function}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_generic_joint_pdf_a580b11a250bfcf29176ca3c94547ed20}
+
+
+Default constructor. 
+
+Instantiates an object of this class given a prefix and a scalar function. The domain of the scalar function is assigned to the protected attribute m\-\_\-domain\-Set, and the scalar function is also itself copied to the protected attribute m\-\_\-scalar\-Function. 
+
+Definition at line 33 of file Generic\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+36   :
+37   BaseJointPdf<V,M>(((std::string)(prefix)+\textcolor{stringliteral}{"gen"}).c\_str(),scalarFunction.domainSet()),
+38   \hyperlink{class_q_u_e_s_o_1_1_generic_joint_pdf_a26902b8f386e73c0d6bb39554ae4ba29}{m\_scalarFunction}(scalarFunction)
+39 \{
+40 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_generic_joint_pdf_a5668d8d87960dc04dbde2821339b09f8}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}!$\sim$\-Generic\-Joint\-Pdf@{$\sim$\-Generic\-Joint\-Pdf}}
+\index{$\sim$\-Generic\-Joint\-Pdf@{$\sim$\-Generic\-Joint\-Pdf}!QUESO::GenericJointPdf@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}}
+\subsubsection[{$\sim$\-Generic\-Joint\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}$<$ V, M $>$\-::$\sim${\bf Generic\-Joint\-Pdf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_generic_joint_pdf_a5668d8d87960dc04dbde2821339b09f8}
+
+
+Destructor. 
+
+
+
+Definition at line 43 of file Generic\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+44 \{
+45 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_generic_joint_pdf_a7bddaaf1d4087ca8e35fcb83c0df72d2}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}!actual\-Value@{actual\-Value}}
+\index{actual\-Value@{actual\-Value}!QUESO::GenericJointPdf@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}}
+\subsubsection[{actual\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}$<$ V, M $>$\-::actual\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_generic_joint_pdf_a7bddaaf1d4087ca8e35fcb83c0df72d2}
+
+
+Actual value of the P\-D\-F (scalar function). 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a3c367a0cc3fb707a136c5df47dd414c1}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 49 of file Generic\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+55 \{
+56   \textcolor{keywordflow}{return} ((exp(\hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_ae82d4191f17af8c7a26226d127bc7850}{m\_logOfNormalizationFactor}))*
+      \hyperlink{class_q_u_e_s_o_1_1_generic_joint_pdf_a26902b8f386e73c0d6bb39554ae4ba29}{m\_scalarFunction}.actualValue(domainVector,domainDirection,gradVector,hessianMatrix,
+      hessianEffect)); \textcolor{comment}{// [PDF-01]}
+57 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_generic_joint_pdf_a282b1db04e25086938f3b8969ba484a9}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}!compute\-Log\-Of\-Normalization\-Factor@{compute\-Log\-Of\-Normalization\-Factor}}
+\index{compute\-Log\-Of\-Normalization\-Factor@{compute\-Log\-Of\-Normalization\-Factor}!QUESO::GenericJointPdf@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}}
+\subsubsection[{compute\-Log\-Of\-Normalization\-Factor}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}$<$ V, M $>$\-::compute\-Log\-Of\-Normalization\-Factor (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{num\-Samples, }
+\item[{bool}]{m\-\_\-log\-Of\-Normalization\-Factor}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_generic_joint_pdf_a282b1db04e25086938f3b8969ba484a9}
+
+
+Computes the logarithm of the normalization factor. See template specialization. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a99d8ab490b093abffd6068b6ea5263bb}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 73 of file Generic\-Joint\-Pdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$\-::common\-Compute\-Log\-Of\-Normalization\-Factor().
+
+
+\begin{DoxyCode}
+74 \{
+75   \textcolor{keywordtype}{double} value = 0.;
+76 
+77   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 2)) \{
+78     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       GenericJointPdf<V,M>::computeLogOfNormalizationFactor()"}
+79                             << std::endl;
+80   \}
+81   value = \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a7b7bdd13d2de51198bf75d522e02545b}{BaseJointPdf<V,M>::commonComputeLogOfNormalizationFactor}
+      (numSamples, updateFactorInternally);
+82   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 2)) \{
+83     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       GenericJointPdf<V,M>::computeLogOfNormalizationFactor()"}
+84                             << \textcolor{stringliteral}{", m\_logOfNormalizationFactor = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_ae82d4191f17af8c7a26226d127bc7850}{m\_logOfNormalizationFactor}
+85                             << std::endl;
+86   \}
+87 
+88   \textcolor{keywordflow}{return} value;
+89 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_generic_joint_pdf_a566150d033ce9c09a22c6f271a7155a8}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}!ln\-Value@{ln\-Value}}
+\index{ln\-Value@{ln\-Value}!QUESO::GenericJointPdf@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}}
+\subsubsection[{ln\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}$<$ V, M $>$\-::ln\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_generic_joint_pdf_a566150d033ce9c09a22c6f271a7155a8}
+
+
+Logarithm of the value of the function. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_aaeb1d91fd791399a502f451b07bb1bfe}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 61 of file Generic\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+67 \{
+68   \textcolor{keywordflow}{return} (\hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_ae82d4191f17af8c7a26226d127bc7850}{m\_logOfNormalizationFactor} + 
+      \hyperlink{class_q_u_e_s_o_1_1_generic_joint_pdf_a26902b8f386e73c0d6bb39554ae4ba29}{m\_scalarFunction}.lnValue(domainVector,domainDirection,gradVector,hessianMatrix,
+      hessianEffect)); \textcolor{comment}{// [PDF-01]}
+69 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_generic_joint_pdf_a26902b8f386e73c0d6bb39554ae4ba29}{\index{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}!m\-\_\-scalar\-Function@{m\-\_\-scalar\-Function}}
+\index{m\-\_\-scalar\-Function@{m\-\_\-scalar\-Function}!QUESO::GenericJointPdf@{Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-scalar\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Base\-Scalar\-Function}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Generic\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-scalar\-Function\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_generic_joint_pdf_a26902b8f386e73c0d6bb39554ae4ba29}
+
+
+Definition at line 77 of file Generic\-Joint\-Pdf.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_generic_joint_pdf_8h}{Generic\-Joint\-Pdf.\-h}\item 
+src/stats/src/\hyperlink{_generic_joint_pdf_8_c}{Generic\-Joint\-Pdf.\-C}\end{DoxyCompactItemize}

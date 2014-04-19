@@ -1,0 +1,245 @@
+\hypertarget{class_q_u_e_s_o_1_1_base_matrix_covariance_function}{\section{Q\-U\-E\-S\-O\-:\-:Base\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_base_matrix_covariance_function}\index{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}}
+}
+
+
+A templated (base) class to accommodate covariance matrix of (random) vector functions.  
+
+
+
+
+{\ttfamily \#include $<$Matrix\-Covariance\-Function.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Base\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_matrix_covariance_function__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Base\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_matrix_covariance_function__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_aa19fd2a4d2cc8ce822d4712abbd45021}{Base\-Matrix\-Covariance\-Function} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a6ce876e4dae5ab4b165ac100e310dd45}{basic\-Domain\-Set}, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \&image\-Set)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a821c7190922a832ecc4ae3bcc78b99cc}{$\sim$\-Base\-Matrix\-Covariance\-Function} ()
+\begin{DoxyCompactList}\small\item\em Virtual destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Math methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a6ce876e4dae5ab4b165ac100e310dd45}{basic\-Domain\-Set} () const 
+\begin{DoxyCompactList}\small\item\em Domain set; access to private attribute m\-\_\-basic\-Domain\-Set. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_af1ae061b09f7b4187d2ba8920ced6074}{cov\-Matrix} (const P\-\_\-\-V \&domain\-Vector1, const P\-\_\-\-V \&domain\-Vector2, Q\-\_\-\-M \&image\-Matrix) const =0
+\begin{DoxyCompactList}\small\item\em Calculates the covariance matrix. See template specialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\-\_\-env}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a05865387f77ce48e71ab2448982c5616}{m\-\_\-prefix}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a3c466742b27fc304cce106f96d8e49c7}{m\-\_\-basic\-Domain\-Set}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_aa6e05a29048771a3a327b82cea09d480}{m\-\_\-image\-Set}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$class Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}
+
+A templated (base) class to accommodate covariance matrix of (random) vector functions. 
+
+This class allows the mathematical definition of a multivariate covariance function, i.\-e. a covariance matrix of random vector functions. Sometimes the covariance matrix of a multivariate random variable is not known but has to be estimated. Estimation of covariance matrices then deals with the question of how to approximate the actual covariance matrix on the basis of a sample from the multivariate distribution. 
+
+Definition at line 54 of file Matrix\-Covariance\-Function.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_matrix_covariance_function_aa19fd2a4d2cc8ce822d4712abbd45021}{\index{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}!Base\-Matrix\-Covariance\-Function@{Base\-Matrix\-Covariance\-Function}}
+\index{Base\-Matrix\-Covariance\-Function@{Base\-Matrix\-Covariance\-Function}!QUESO::BaseMatrixCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}}
+\subsubsection[{Base\-Matrix\-Covariance\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::{\bf Base\-Matrix\-Covariance\-Function} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \&}]{basic\-Domain\-Set, }
+\item[{const {\bf Vector\-Set}$<$ Q\-\_\-\-V, Q\-\_\-\-M $>$ \&}]{image\-Set}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_matrix_covariance_function_aa19fd2a4d2cc8ce822d4712abbd45021}
+
+
+Default constructor. 
+
+Instantiates an object of the class given a prefix, the domain set and the image set. 
+
+Definition at line 31 of file Matrix\-Covariance\-Function.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-prefix, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+35   :
+36   \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}           (basicDomainSet.\hyperlink{class_q_u_e_s_o_1_1_vector_set_aa0ed80853d166754ba6ed83e63e737aa}{env}()),
+37   \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a05865387f77ce48e71ab2448982c5616}{m\_prefix}        ((std::string)(prefix)+\textcolor{stringliteral}{"cov\_func\_"}),
+38   \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a3c466742b27fc304cce106f96d8e49c7}{m\_basicDomainSet}(basicDomainSet),
+39   \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_aa6e05a29048771a3a327b82cea09d480}{m\_imageSet}      (imageSet)
+40 \{
+41   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+42     *\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       BaseMatrixCovarianceFunction<P\_V,P\_M,Q\_V,Q\_M>::constructor()"}
+43                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a05865387f77ce48e71ab2448982c5616}{m\_prefix}
+44                             << std::endl;
+45   \}
+46 
+47   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+48     *\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       BaseMatrixCovarianceFunction<P\_V,P\_M,Q\_V,Q\_M>::constructor()"}
+49                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a05865387f77ce48e71ab2448982c5616}{m\_prefix}
+50                             << std::endl;
+51   \}
+52 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a821c7190922a832ecc4ae3bcc78b99cc}{\index{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}!$\sim$\-Base\-Matrix\-Covariance\-Function@{$\sim$\-Base\-Matrix\-Covariance\-Function}}
+\index{$\sim$\-Base\-Matrix\-Covariance\-Function@{$\sim$\-Base\-Matrix\-Covariance\-Function}!QUESO::BaseMatrixCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}}
+\subsubsection[{$\sim$\-Base\-Matrix\-Covariance\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::$\sim${\bf Base\-Matrix\-Covariance\-Function} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a821c7190922a832ecc4ae3bcc78b99cc}
+
+
+Virtual destructor. 
+
+
+
+Definition at line 55 of file Matrix\-Covariance\-Function.\-C.
+
+
+\begin{DoxyCode}
+56 \{
+57   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+58     *\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       BaseMatrixCovarianceFunction<P\_V,P\_M,Q\_V,Q\_M>::destructor()"}
+59                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a05865387f77ce48e71ab2448982c5616}{m\_prefix}
+60                             << std::endl;
+61   \}
+62 
+63   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+64     *\hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       BaseMatrixCovarianceFunction<P\_V,P\_M,Q\_V,Q\_M>::destructor()"}
+65                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a05865387f77ce48e71ab2448982c5616}{m\_prefix}
+66                             << std::endl;
+67   \}
+68 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a6ce876e4dae5ab4b165ac100e310dd45}{\index{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}!basic\-Domain\-Set@{basic\-Domain\-Set}}
+\index{basic\-Domain\-Set@{basic\-Domain\-Set}!QUESO::BaseMatrixCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}}
+\subsubsection[{basic\-Domain\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V , class P\-\_\-\-M , class Q\-\_\-\-V , class Q\-\_\-\-M $>$ const {\bf Vector\-Set}$<$ P\-\_\-\-V, P\-\_\-\-M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::basic\-Domain\-Set (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a6ce876e4dae5ab4b165ac100e310dd45}
+
+
+Domain set; access to private attribute m\-\_\-basic\-Domain\-Set. 
+
+
+
+Definition at line 72 of file Matrix\-Covariance\-Function.\-C.
+
+
+\begin{DoxyCode}
+73 \{
+74   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a3c466742b27fc304cce106f96d8e49c7}{m\_basicDomainSet};
+75 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_matrix_covariance_function_af1ae061b09f7b4187d2ba8920ced6074}{\index{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}!cov\-Matrix@{cov\-Matrix}}
+\index{cov\-Matrix@{cov\-Matrix}!QUESO::BaseMatrixCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}}
+\subsubsection[{cov\-Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::cov\-Matrix (
+\begin{DoxyParamCaption}
+\item[{const P\-\_\-\-V \&}]{domain\-Vector1, }
+\item[{const P\-\_\-\-V \&}]{domain\-Vector2, }
+\item[{Q\-\_\-\-M \&}]{image\-Matrix}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_matrix_covariance_function_af1ae061b09f7b4187d2ba8920ced6074}
+
+
+Calculates the covariance matrix. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_exponential_matrix_covariance_function_a039c72a29ea453320cbdb2a6e54a360a}{Q\-U\-E\-S\-O\-::\-Exponential\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_generic_matrix_covariance_function_ad1dc99df94d6fb77aa658fda06fd832d}{Q\-U\-E\-S\-O\-::\-Generic\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a3c466742b27fc304cce106f96d8e49c7}{\index{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}!m\-\_\-basic\-Domain\-Set@{m\-\_\-basic\-Domain\-Set}}
+\index{m\-\_\-basic\-Domain\-Set@{m\-\_\-basic\-Domain\-Set}!QUESO::BaseMatrixCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}}
+\subsubsection[{m\-\_\-basic\-Domain\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Vector\-Set}$<$P\-\_\-\-V,P\-\_\-\-M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-basic\-Domain\-Set\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a3c466742b27fc304cce106f96d8e49c7}
+
+
+Definition at line 80 of file Matrix\-Covariance\-Function.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}{\index{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::BaseMatrixCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a2bf98f6576db775109e240a2d828c578}
+
+
+Definition at line 78 of file Matrix\-Covariance\-Function.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::\-Base\-Matrix\-Covariance\-Function(), Q\-U\-E\-S\-O\-::\-Exponential\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::\-Exponential\-Matrix\-Covariance\-Function(), and Q\-U\-E\-S\-O\-::\-Generic\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::\-Generic\-Matrix\-Covariance\-Function().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_matrix_covariance_function_aa6e05a29048771a3a327b82cea09d480}{\index{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}!m\-\_\-image\-Set@{m\-\_\-image\-Set}}
+\index{m\-\_\-image\-Set@{m\-\_\-image\-Set}!QUESO::BaseMatrixCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}}
+\subsubsection[{m\-\_\-image\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ const {\bf Vector\-Set}$<$Q\-\_\-\-V,Q\-\_\-\-M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-image\-Set\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_matrix_covariance_function_aa6e05a29048771a3a327b82cea09d480}
+
+
+Definition at line 81 of file Matrix\-Covariance\-Function.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Exponential\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::\-Exponential\-Matrix\-Covariance\-Function().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a05865387f77ce48e71ab2448982c5616}{\index{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}!m\-\_\-prefix@{m\-\_\-prefix}}
+\index{m\-\_\-prefix@{m\-\_\-prefix}!QUESO::BaseMatrixCovarianceFunction@{Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}}
+\subsubsection[{m\-\_\-prefix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class P\-\_\-\-V, class P\-\_\-\-M, class Q\-\_\-\-V, class Q\-\_\-\-M$>$ std\-::string {\bf Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function}$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::m\-\_\-prefix\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_matrix_covariance_function_a05865387f77ce48e71ab2448982c5616}
+
+
+Definition at line 79 of file Matrix\-Covariance\-Function.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::\-Base\-Matrix\-Covariance\-Function(), Q\-U\-E\-S\-O\-::\-Exponential\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::\-Exponential\-Matrix\-Covariance\-Function(), and Q\-U\-E\-S\-O\-::\-Generic\-Matrix\-Covariance\-Function$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::\-Generic\-Matrix\-Covariance\-Function().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_matrix_covariance_function_8h}{Matrix\-Covariance\-Function.\-h}\item 
+src/stats/src/\hyperlink{_matrix_covariance_function_8_c}{Matrix\-Covariance\-Function.\-C}\end{DoxyCompactItemize}

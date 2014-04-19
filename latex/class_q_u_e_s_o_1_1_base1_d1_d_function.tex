@@ -1,0 +1,275 @@
+\hypertarget{class_q_u_e_s_o_1_1_base1_d1_d_function}{\section{Q\-U\-E\-S\-O\-:\-:Base1\-D1\-D\-Function Class Reference}
+\label{class_q_u_e_s_o_1_1_base1_d1_d_function}\index{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}}
+}
+
+
+Class for one-\/dimensional functions.  
+
+
+
+
+{\ttfamily \#include $<$1\-D1\-D\-Function.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Base1\-D1\-D\-Function\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base1_d1_d_function__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a8e8c0f8d500675e4acfd4d7043000791}{Base1\-D1\-D\-Function} (double \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a4c110e621ef1ac557bbcc60d41f5a3c2}{min\-Domain\-Value}, double \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_ad2b80d0c52c0cb56c89f70f30b3bb19e}{max\-Domain\-Value})
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a0512da686e14fe3b0544f84432ea322e}{$\sim$\-Base1\-D1\-D\-Function} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a4c110e621ef1ac557bbcc60d41f5a3c2}{min\-Domain\-Value} () const 
+\begin{DoxyCompactList}\small\item\em Returns the minimum value of the domain of the (one-\/dimensional) function. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_ad2b80d0c52c0cb56c89f70f30b3bb19e}{max\-Domain\-Value} () const 
+\begin{DoxyCompactList}\small\item\em Returns the maximum value of the domain of the (one-\/dimensional) function. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a1042dfd930c30a35d6dbf70f94e8dfe5}{value} (double domain\-Value) const =0
+\begin{DoxyCompactList}\small\item\em Returns the value of the (one-\/dimensional) function. See template specialization. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a6b8de03f2099f31735dcaf15c24bca32}{deriv} (double domain\-Value) const =0
+\begin{DoxyCompactList}\small\item\em Returns the value of the derivative of the function. See template specialization. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_ac41e4e15b7f97c14a0389069bf8e833d}{multiply\-And\-Integrate} (const \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function}{Base1\-D1\-D\-Function} \&func, unsigned int quadrature\-Order, double $\ast$result\-With\-Multiplication\-By\-T\-As\-Well) const 
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Multiplies {\ttfamily this} function with {\ttfamily function}, and integrates it numerically. See template specialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}{m\-\_\-min\-Domain\-Value}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}{m\-\_\-max\-Domain\-Value}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for one-\/dimensional functions. 
+
+Base class for one-\/dimensional functions. 
+
+Definition at line 53 of file 1\-D1\-D\-Function.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base1_d1_d_function_a8e8c0f8d500675e4acfd4d7043000791}{\index{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}!Base1\-D1\-D\-Function@{Base1\-D1\-D\-Function}}
+\index{Base1\-D1\-D\-Function@{Base1\-D1\-D\-Function}!QUESO::Base1D1DFunction@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}}
+\subsubsection[{Base1\-D1\-D\-Function}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::\-Base1\-D1\-D\-Function (
+\begin{DoxyParamCaption}
+\item[{double}]{min\-Domain\-Value, }
+\item[{double}]{max\-Domain\-Value}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base1_d1_d_function_a8e8c0f8d500675e4acfd4d7043000791}
+
+
+Default constructor. 
+
+
+
+Definition at line 33 of file 1\-D1\-D\-Function.\-C.
+
+
+
+References m\-\_\-max\-Domain\-Value, m\-\_\-min\-Domain\-Value, U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-U\-Q\-\_\-\-U\-N\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-R\-A\-N\-K.
+
+
+\begin{DoxyCode}
+36   :
+37   \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}{m\_minDomainValue}(\hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a4c110e621ef1ac557bbcc60d41f5a3c2}{minDomainValue}),
+38   \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}{m\_maxDomainValue}(\hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_ad2b80d0c52c0cb56c89f70f30b3bb19e}{maxDomainValue})
+39 \{
+40   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}{m\_minDomainValue} >= 
+      \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}{m\_maxDomainValue},
+41                       \hyperlink{namespace_q_u_e_s_o_a7d4679800a430ae8e473c1c7bc0bfb21}{UQ\_UNAVAILABLE\_RANK},
+42                       \textcolor{stringliteral}{"Base1D1DFunction::constructor()"},
+43                       \textcolor{stringliteral}{"min >= max"});
+44 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base1_d1_d_function_a0512da686e14fe3b0544f84432ea322e}{\index{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}!$\sim$\-Base1\-D1\-D\-Function@{$\sim$\-Base1\-D1\-D\-Function}}
+\index{$\sim$\-Base1\-D1\-D\-Function@{$\sim$\-Base1\-D1\-D\-Function}!QUESO::Base1D1DFunction@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}}
+\subsubsection[{$\sim$\-Base1\-D1\-D\-Function}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::$\sim$\-Base1\-D1\-D\-Function (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_base1_d1_d_function_a0512da686e14fe3b0544f84432ea322e}
+
+
+Destructor. 
+
+
+
+Definition at line 46 of file 1\-D1\-D\-Function.\-C.
+
+
+\begin{DoxyCode}
+47 \{
+48 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base1_d1_d_function_a6b8de03f2099f31735dcaf15c24bca32}{\index{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}!deriv@{deriv}}
+\index{deriv@{deriv}!QUESO::Base1D1DFunction@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}}
+\subsubsection[{deriv}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::deriv (
+\begin{DoxyParamCaption}
+\item[{double}]{domain\-Value}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base1_d1_d_function_a6b8de03f2099f31735dcaf15c24bca32}
+
+
+Returns the value of the derivative of the function. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_lagrange_basis1_d1_d_function_a2c804510956c3eb8f81bf5eb6fe7939c}{Q\-U\-E\-S\-O\-::\-Lagrange\-Basis1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_lagrange_polynomial1_d1_d_function_a202ba706747ba35cf699799fbc3dbb8b}{Q\-U\-E\-S\-O\-::\-Lagrange\-Polynomial1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_func_plus_func1_d1_d_function_a37e3b0d0b5655b555cde6674e382a36e}{Q\-U\-E\-S\-O\-::\-Func\-Plus\-Func1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_func_times_func1_d1_d_function_aac7e1e05101253947079615bf7b5ce6b}{Q\-U\-E\-S\-O\-::\-Func\-Times\-Func1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_scalar_times_func1_d1_d_function_a60d05664b27b5b40cb31d38dc61c74ee}{Q\-U\-E\-S\-O\-::\-Scalar\-Times\-Func1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a5579fd73a76c5f82b6f55472c8123bb7}{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_piecewise_linear1_d1_d_function_aa83d79e691a7cf47dc860e20c75a0cd0}{Q\-U\-E\-S\-O\-::\-Piecewise\-Linear1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_linear1_d1_d_function_abd3ccc80ea449d8a20afb2efc22b131a}{Q\-U\-E\-S\-O\-::\-Linear1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_constant1_d1_d_function_af8f16be24483611f20246f67047e330b}{Q\-U\-E\-S\-O\-::\-Constant1\-D1\-D\-Function}, and \hyperlink{class_q_u_e_s_o_1_1_generic1_d1_d_function_a6e7f189c2cf7f0a88573a23a88229566}{Q\-U\-E\-S\-O\-::\-Generic1\-D1\-D\-Function}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base1_d1_d_function_ad2b80d0c52c0cb56c89f70f30b3bb19e}{\index{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}!max\-Domain\-Value@{max\-Domain\-Value}}
+\index{max\-Domain\-Value@{max\-Domain\-Value}!QUESO::Base1D1DFunction@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}}
+\subsubsection[{max\-Domain\-Value}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::max\-Domain\-Value (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base1_d1_d_function_ad2b80d0c52c0cb56c89f70f30b3bb19e}
+
+
+Returns the maximum value of the domain of the (one-\/dimensional) function. 
+
+
+
+Definition at line 57 of file 1\-D1\-D\-Function.\-C.
+
+
+
+References m\-\_\-max\-Domain\-Value.
+
+
+\begin{DoxyCode}
+58 \{
+59   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}{m\_maxDomainValue};
+60 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base1_d1_d_function_a4c110e621ef1ac557bbcc60d41f5a3c2}{\index{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}!min\-Domain\-Value@{min\-Domain\-Value}}
+\index{min\-Domain\-Value@{min\-Domain\-Value}!QUESO::Base1D1DFunction@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}}
+\subsubsection[{min\-Domain\-Value}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::min\-Domain\-Value (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base1_d1_d_function_a4c110e621ef1ac557bbcc60d41f5a3c2}
+
+
+Returns the minimum value of the domain of the (one-\/dimensional) function. 
+
+
+
+Definition at line 51 of file 1\-D1\-D\-Function.\-C.
+
+
+
+References m\-\_\-min\-Domain\-Value.
+
+
+\begin{DoxyCode}
+52 \{
+53   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}{m\_minDomainValue};
+54 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base1_d1_d_function_ac41e4e15b7f97c14a0389069bf8e833d}{\index{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}!multiply\-And\-Integrate@{multiply\-And\-Integrate}}
+\index{multiply\-And\-Integrate@{multiply\-And\-Integrate}!QUESO::Base1D1DFunction@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}}
+\subsubsection[{multiply\-And\-Integrate}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::multiply\-And\-Integrate (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base1\-D1\-D\-Function} \&}]{func, }
+\item[{unsigned int}]{quadrature\-Order, }
+\item[{double $\ast$}]{result\-With\-Multiplication\-By\-T\-As\-Well}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_base1_d1_d_function_ac41e4e15b7f97c14a0389069bf8e833d}
+
+
+T\-O\-D\-O\-: Multiplies {\ttfamily this} function with {\ttfamily function}, and integrates it numerically. See template specialization. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000004}{Todo}]\-: Please, implement me! \end{DoxyRefDesc}
+
+
+Definition at line 63 of file 1\-D1\-D\-Function.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, Q\-U\-E\-S\-O\-::\-U\-Q\-\_\-\-U\-N\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-R\-A\-N\-K, and value().
+
+
+\begin{DoxyCode}
+64 \{
+65   \textcolor{keywordtype}{double} \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a1042dfd930c30a35d6dbf70f94e8dfe5}{value} = 0.;
+66 
+67   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+68                       \hyperlink{namespace_q_u_e_s_o_a7d4679800a430ae8e473c1c7bc0bfb21}{UQ\_UNAVAILABLE\_RANK},
+69                       \textcolor{stringliteral}{"Base1D1DFunction::multiplyAndIntegrate()"},
+70                       \textcolor{stringliteral}{"not implemented yet"});
+71 
+72   \textcolor{keywordflow}{if} (resultWithMultiplicationByTAsWell) \{ \textcolor{comment}{// Just to eliminate INTEL compiler warnings}
+73     func.value((\textcolor{keywordtype}{double}) quadratureOrder);
+74   \}
+75 
+76   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base1_d1_d_function_a1042dfd930c30a35d6dbf70f94e8dfe5}{value};
+77 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base1_d1_d_function_a1042dfd930c30a35d6dbf70f94e8dfe5}{\index{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}!value@{value}}
+\index{value@{value}!QUESO::Base1D1DFunction@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}}
+\subsubsection[{value}]{\setlength{\rightskip}{0pt plus 5cm}virtual double Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::value (
+\begin{DoxyParamCaption}
+\item[{double}]{domain\-Value}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base1_d1_d_function_a1042dfd930c30a35d6dbf70f94e8dfe5}
+
+
+Returns the value of the (one-\/dimensional) function. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_lagrange_basis1_d1_d_function_ae41dda050ae3e18f057a44fb2d64b6d2}{Q\-U\-E\-S\-O\-::\-Lagrange\-Basis1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_lagrange_polynomial1_d1_d_function_ada2741739cc9ff0fe98bb51e690df072}{Q\-U\-E\-S\-O\-::\-Lagrange\-Polynomial1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_func_plus_func1_d1_d_function_a9e7a69d195d586fa982c6088ff6a7007}{Q\-U\-E\-S\-O\-::\-Func\-Plus\-Func1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_func_times_func1_d1_d_function_adebec22c4730abfe9d5000785a77d000}{Q\-U\-E\-S\-O\-::\-Func\-Times\-Func1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_scalar_times_func1_d1_d_function_af3ff65dedf376a0acde1df1f70fdfd51}{Q\-U\-E\-S\-O\-::\-Scalar\-Times\-Func1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_sampled1_d1_d_function_a779a96683625c9bf6a161cf98ab63f9b}{Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_piecewise_linear1_d1_d_function_a977ad3478bf488b1e3d472f31c3fe146}{Q\-U\-E\-S\-O\-::\-Piecewise\-Linear1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_linear1_d1_d_function_a4264993c026b0a55af32131027c923ff}{Q\-U\-E\-S\-O\-::\-Linear1\-D1\-D\-Function}, \hyperlink{class_q_u_e_s_o_1_1_constant1_d1_d_function_aa80d085d1b5744396df97ec74055cf1f}{Q\-U\-E\-S\-O\-::\-Constant1\-D1\-D\-Function}, and \hyperlink{class_q_u_e_s_o_1_1_generic1_d1_d_function_a4ed092b36144d91ac573e871062cca16}{Q\-U\-E\-S\-O\-::\-Generic1\-D1\-D\-Function}.
+
+
+
+Referenced by multiply\-And\-Integrate(), Q\-U\-E\-S\-O\-::\-Sub\-F1\-F2\-Gaussian2d\-Kde\-Integral(), Q\-U\-E\-S\-O\-::\-Scalar\-Times\-Func1\-D1\-D\-Function\-::value(), Q\-U\-E\-S\-O\-::\-Func\-Times\-Func1\-D1\-D\-Function\-::value(), and Q\-U\-E\-S\-O\-::\-Func\-Plus\-Func1\-D1\-D\-Function\-::value().
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}{\index{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}!m\-\_\-max\-Domain\-Value@{m\-\_\-max\-Domain\-Value}}
+\index{m\-\_\-max\-Domain\-Value@{m\-\_\-max\-Domain\-Value}!QUESO::Base1D1DFunction@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}}
+\subsubsection[{m\-\_\-max\-Domain\-Value}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::m\-\_\-max\-Domain\-Value\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base1_d1_d_function_aa0025999ccab2145cd46c0a81e260e8f}
+
+
+Definition at line 86 of file 1\-D1\-D\-Function.\-h.
+
+
+
+Referenced by Base1\-D1\-D\-Function(), Q\-U\-E\-S\-O\-::\-Generic1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Constant1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Linear1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Piecewise\-Linear1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Scalar\-Times\-Func1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Func\-Times\-Func1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Func\-Plus\-Func1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Lagrange\-Polynomial1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Lagrange\-Basis1\-D1\-D\-Function\-::deriv(), max\-Domain\-Value(), Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::set(), Q\-U\-E\-S\-O\-::\-Generic1\-D1\-D\-Function\-::value(), Q\-U\-E\-S\-O\-::\-Constant1\-D1\-D\-Function\-::value(), Q\-U\-E\-S\-O\-::\-Linear1\-D1\-D\-Function\-::value(), Q\-U\-E\-S\-O\-::\-Piecewise\-Linear1\-D1\-D\-Function\-::value(), and Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::value().
+
+\hypertarget{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}{\index{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}!m\-\_\-min\-Domain\-Value@{m\-\_\-min\-Domain\-Value}}
+\index{m\-\_\-min\-Domain\-Value@{m\-\_\-min\-Domain\-Value}!QUESO::Base1D1DFunction@{Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function}}
+\subsubsection[{m\-\_\-min\-Domain\-Value}]{\setlength{\rightskip}{0pt plus 5cm}double Q\-U\-E\-S\-O\-::\-Base1\-D1\-D\-Function\-::m\-\_\-min\-Domain\-Value\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base1_d1_d_function_a7b18b3854ee74ef5befbc67b75ebbdc5}
+
+
+Definition at line 85 of file 1\-D1\-D\-Function.\-h.
+
+
+
+Referenced by Base1\-D1\-D\-Function(), Q\-U\-E\-S\-O\-::\-Generic1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Constant1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Linear1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Piecewise\-Linear1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Scalar\-Times\-Func1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Func\-Times\-Func1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Func\-Plus\-Func1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Lagrange\-Polynomial1\-D1\-D\-Function\-::deriv(), Q\-U\-E\-S\-O\-::\-Lagrange\-Basis1\-D1\-D\-Function\-::deriv(), min\-Domain\-Value(), Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::set(), Q\-U\-E\-S\-O\-::\-Generic1\-D1\-D\-Function\-::value(), Q\-U\-E\-S\-O\-::\-Constant1\-D1\-D\-Function\-::value(), Q\-U\-E\-S\-O\-::\-Linear1\-D1\-D\-Function\-::value(), Q\-U\-E\-S\-O\-::\-Piecewise\-Linear1\-D1\-D\-Function\-::value(), and Q\-U\-E\-S\-O\-::\-Sampled1\-D1\-D\-Function\-::value().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/misc/inc/\hyperlink{1_d1_d_function_8h}{1\-D1\-D\-Function.\-h}\item 
+src/misc/src/\hyperlink{1_d1_d_function_8_c}{1\-D1\-D\-Function.\-C}\end{DoxyCompactItemize}

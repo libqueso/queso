@@ -1,0 +1,508 @@
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options}{\section{Q\-U\-E\-S\-O\-:\-:Statistical\-Inverse\-Problem\-Options Class Reference}
+\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options}\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+}
+
+
+This class reads option values for a Statistical Inverse Problem from an input file.  
+
+
+
+
+{\ttfamily \#include $<$Statistical\-Inverse\-Problem\-Options.\-h$>$}
+
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Statistical\-Inverse\-Problem\-Options\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_statistical_inverse_problem_options__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ae6f5401589bdfa56f0d3671305600301}{Statistical\-Inverse\-Problem\-Options} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&env, const char $\ast$prefix)
+\begin{DoxyCompactList}\small\item\em Constructor\-: reads options from the input file. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a1338bf7f41712f3475195931f124127b}{Statistical\-Inverse\-Problem\-Options} (const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \&env, const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_sip_options_values}{Sip\-Options\-Values} \&alternative\-Options\-Values)
+\begin{DoxyCompactList}\small\item\em Constructor\-: with alternative option values. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a278d6b4e25dadb6346160f70b6c3bdff}{$\sim$\-Statistical\-Inverse\-Problem\-Options} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3ed629e5e6eb8d5e9b005c6c6810da91}{scan\-Options\-Values} ()
+\begin{DoxyCompactList}\small\item\em It scans the option values from the options input file. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a5e06fc25408a43aad1240dada3f13a4e}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em It prints the option values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_sip_options_values}{Sip\-Options\-Values} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\-\_\-ov}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\-\_\-prefix}
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ae085514e9153c131266f93abea2db3dd}{define\-My\-Options} (po\-::options\-\_\-description \&options\-Desc) const 
+\begin{DoxyCompactList}\small\item\em Define my S\-I\-P options as the default options. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a5984ab1857cbe72f9f665388f9e87e5e}{get\-My\-Option\-Values} (po\-::options\-\_\-description \&options\-Desc)
+\begin{DoxyCompactList}\small\item\em Gets the option values of the S\-I\-P. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\-\_\-env}
+\item 
+po\-::options\-\_\-description $\ast$ \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac7b8dad567ffef98d5a98061a7d631ea}{m\-\_\-options\-Desc}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a6442fa5141155733851550abf54fb727}{m\-\_\-option\-\_\-help}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ab6eeb26f8464cd104a9352774027aa7b}{m\-\_\-option\-\_\-compute\-Solution}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_af1d009496381139b51679b891fc052f8}{m\-\_\-option\-\_\-data\-Output\-File\-Name}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac88a78b03e97a655819b039ed6068bbd}{m\-\_\-option\-\_\-data\-Output\-Allowed\-Set}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class reads option values for a Statistical Inverse Problem from an input file. 
+
+This class reads the option values for the Statistical Inverse Problem (S\-I\-P) from an input file provided by the user. The class expects the prefix '$<$prefix$>$\-\_\-ip\-\_\-'. For instance, if 'prefix' is 'foo\-\_\-775\-\_\-', then the constructor will read all options that begin with 'foo\-\_\-775\-\_\-ip\-\_\-'. If the options request data to be written in the output file (M\-A\-T\-L\-A\-B .m format only, for now), the user can run 'grep zeros $<$O\-U\-T\-P\-U\-T F\-I\-L\-E N\-A\-M\-E$>$' after the solution procedure ends in order to check which M\-A\-T\-L\-A\-B variables are defined and set. The names of the variables are self explanatory. 
+
+Definition at line 106 of file Statistical\-Inverse\-Problem\-Options.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ae6f5401589bdfa56f0d3671305600301}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!Statistical\-Inverse\-Problem\-Options@{Statistical\-Inverse\-Problem\-Options}}
+\index{Statistical\-Inverse\-Problem\-Options@{Statistical\-Inverse\-Problem\-Options}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{Statistical\-Inverse\-Problem\-Options}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::\-Statistical\-Inverse\-Problem\-Options (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{const char $\ast$}]{prefix}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ae6f5401589bdfa56f0d3671305600301}
+
+
+Constructor\-: reads options from the input file. 
+
+
+
+Definition at line 82 of file Statistical\-Inverse\-Problem\-Options.\-C.
+
+
+
+References m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::options\-Input\-File\-Name(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+85   :
+86   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}                         (),
+87   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}                     ((std::string)(prefix) + \textcolor{stringliteral}{"ip\_"}),
+88   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}                        (env),
+89   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac7b8dad567ffef98d5a98061a7d631ea}{m\_optionsDesc}                (\textcolor{keyword}{new} po::options\_description(\textcolor{stringliteral}{"Statistical Inverse Problem
+       options"})),
+90   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a6442fa5141155733851550abf54fb727}{m\_option\_help}                (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix} + \textcolor{stringliteral}{"help"}                ),
+91   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ab6eeb26f8464cd104a9352774027aa7b}{m\_option\_computeSolution}     (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix} + \textcolor{stringliteral}{"computeSolution"}     ),
+92   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_af1d009496381139b51679b891fc052f8}{m\_option\_dataOutputFileName}  (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix} + \textcolor{stringliteral}{"dataOutputFileName"}  ),
+93   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac88a78b03e97a655819b039ed6068bbd}{m\_option\_dataOutputAllowedSet}(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix} + \textcolor{stringliteral}{"dataOutputAllowedSet"})
+94 \textcolor{preprocessor}{#ifdef UQ\_SIP\_READS\_SOLVER\_OPTION}
+95 \textcolor{preprocessor}{}  m\_option\_solver              (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix} + \textcolor{stringliteral}{"solver"}              )
+96 \textcolor{preprocessor}{#endif}
+97 \textcolor{preprocessor}{}\{
+98   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_aa0e3ccfe00e6f51dbe6dd6b9b6f65183}{optionsInputFileName}() == \textcolor{stringliteral}{""},
+99                       \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+100                       \textcolor{stringliteral}{"StatisticalInverseProblemOptions::constructor(1)"},
+101                       \textcolor{stringliteral}{"this constructor is incompatible with the absence of an options input file"});
+102 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a1338bf7f41712f3475195931f124127b}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!Statistical\-Inverse\-Problem\-Options@{Statistical\-Inverse\-Problem\-Options}}
+\index{Statistical\-Inverse\-Problem\-Options@{Statistical\-Inverse\-Problem\-Options}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{Statistical\-Inverse\-Problem\-Options}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::\-Statistical\-Inverse\-Problem\-Options (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Environment} \&}]{env, }
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Sip\-Options\-Values} \&}]{alternative\-Options\-Values}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a1338bf7f41712f3475195931f124127b}
+
+
+Constructor\-: with alternative option values. 
+
+In this constructor, the input options are given by {\ttfamily alternative\-Options\-Values}, rather than the options input file 
+
+Definition at line 105 of file Statistical\-Inverse\-Problem\-Options.\-C.
+
+
+
+References m\-\_\-env, m\-\_\-prefix, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::options\-Input\-File\-Name(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+109   :
+110   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}                         (alternativeOptionsValues),
+111   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}                     ((std::string)(prefix) + \textcolor{stringliteral}{"ip\_"}),
+112   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}                        (env),
+113   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac7b8dad567ffef98d5a98061a7d631ea}{m\_optionsDesc}                (NULL),
+114   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a6442fa5141155733851550abf54fb727}{m\_option\_help}                (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix} + \textcolor{stringliteral}{"help"}                ),
+115   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ab6eeb26f8464cd104a9352774027aa7b}{m\_option\_computeSolution}     (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix} + \textcolor{stringliteral}{"computeSolution"}     ),
+116   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_af1d009496381139b51679b891fc052f8}{m\_option\_dataOutputFileName}  (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix} + \textcolor{stringliteral}{"dataOutputFileName"}  ),
+117   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac88a78b03e97a655819b039ed6068bbd}{m\_option\_dataOutputAllowedSet}(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix} + \textcolor{stringliteral}{"dataOutputAllowedSet"})
+118 \textcolor{preprocessor}{#ifdef UQ\_SIP\_READS\_SOLVER\_OPTION}
+119 \textcolor{preprocessor}{}  m\_option\_solver              (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix} + \textcolor{stringliteral}{"solver"}              )
+120 \textcolor{preprocessor}{#endif}
+121 \textcolor{preprocessor}{}\{
+122   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_aa0e3ccfe00e6f51dbe6dd6b9b6f65183}{optionsInputFileName}() != \textcolor{stringliteral}{""},
+123                       \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+124                       \textcolor{stringliteral}{"StatisticalInverseProblemOptions::constructor(2)"},
+125                       \textcolor{stringliteral}{"this constructor is incompatible with the existence of an options input file"});
+126 
+127   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() != NULL) \{
+128     *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In StatisticalInverseProblemOptions::constructor(2)"}
+129                             << \textcolor{stringliteral}{": after setting values of options with prefix '"} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}
+130                             << \textcolor{stringliteral}{"', state of object is:"}
+131                             << \textcolor{stringliteral}{"\(\backslash\)n"} << *\textcolor{keyword}{this}
+132                             << std::endl;
+133   \}
+134 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a278d6b4e25dadb6346160f70b6c3bdff}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!$\sim$\-Statistical\-Inverse\-Problem\-Options@{$\sim$\-Statistical\-Inverse\-Problem\-Options}}
+\index{$\sim$\-Statistical\-Inverse\-Problem\-Options@{$\sim$\-Statistical\-Inverse\-Problem\-Options}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{$\sim$\-Statistical\-Inverse\-Problem\-Options}]{\setlength{\rightskip}{0pt plus 5cm}Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::$\sim$\-Statistical\-Inverse\-Problem\-Options (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a278d6b4e25dadb6346160f70b6c3bdff}
+
+
+Destructor. 
+
+
+
+Definition at line 136 of file Statistical\-Inverse\-Problem\-Options.\-C.
+
+
+
+References m\-\_\-options\-Desc.
+
+
+\begin{DoxyCode}
+137 \{
+138   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac7b8dad567ffef98d5a98061a7d631ea}{m\_optionsDesc}) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac7b8dad567ffef98d5a98061a7d631ea}{m\_optionsDesc};
+139 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ae085514e9153c131266f93abea2db3dd}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!define\-My\-Options@{define\-My\-Options}}
+\index{define\-My\-Options@{define\-My\-Options}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{define\-My\-Options}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::define\-My\-Options (
+\begin{DoxyParamCaption}
+\item[{po\-::options\-\_\-description \&}]{options\-Desc}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ae085514e9153c131266f93abea2db3dd}
+
+
+Define my S\-I\-P options as the default options. 
+
+
+
+Definition at line 187 of file Statistical\-Inverse\-Problem\-Options.\-C.
+
+
+
+References m\-\_\-option\-\_\-compute\-Solution, m\-\_\-option\-\_\-data\-Output\-Allowed\-Set, m\-\_\-option\-\_\-data\-Output\-File\-Name, m\-\_\-option\-\_\-help, U\-Q\-\_\-\-S\-I\-P\-\_\-\-C\-O\-M\-P\-U\-T\-E\-\_\-\-S\-O\-L\-U\-T\-I\-O\-N\-\_\-\-O\-D\-V, U\-Q\-\_\-\-S\-I\-P\-\_\-\-D\-A\-T\-A\-\_\-\-O\-U\-T\-P\-U\-T\-\_\-\-A\-L\-L\-O\-W\-E\-D\-\_\-\-S\-E\-T\-\_\-\-O\-D\-V, and U\-Q\-\_\-\-S\-I\-P\-\_\-\-D\-A\-T\-A\-\_\-\-O\-U\-T\-P\-U\-T\-\_\-\-F\-I\-L\-E\-\_\-\-N\-A\-M\-E\-\_\-\-O\-D\-V.
+
+
+
+Referenced by scan\-Options\-Values().
+
+
+\begin{DoxyCode}
+188 \{
+189   optionsDesc.add\_options()     
+190     (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a6442fa5141155733851550abf54fb727}{m\_option\_help}.c\_str(),                                                                   
+                                 \textcolor{stringliteral}{"produce help message for statistical inverse problem"})
+191     (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ab6eeb26f8464cd104a9352774027aa7b}{m\_option\_computeSolution}.c\_str(),      po::value<bool       >()->default\_value
+      (\hyperlink{_statistical_inverse_problem_options_8h_a391844c7f349197c10bc3b38a95f5c65}{UQ\_SIP\_COMPUTE\_SOLUTION\_ODV}       ), \textcolor{stringliteral}{"compute solution process"}                 
+                 )
+192     (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_af1d009496381139b51679b891fc052f8}{m\_option\_dataOutputFileName}.c\_str(),   po::value<std::string>()->
+      default\_value(\hyperlink{_statistical_inverse_problem_options_8h_a19f3d5cf3650ba583bb8ebf60e41eb1a}{UQ\_SIP\_DATA\_OUTPUT\_FILE\_NAME\_ODV}  ), \textcolor{stringliteral}{"name of data output file"}         
+                         )
+193     (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac88a78b03e97a655819b039ed6068bbd}{m\_option\_dataOutputAllowedSet}.c\_str(), po::value<std::string>()->
+      default\_value(\hyperlink{_statistical_inverse_problem_options_8h_a8abf6a2917933f5f1f0bd1e81299d506}{UQ\_SIP\_DATA\_OUTPUT\_ALLOWED\_SET\_ODV}), \textcolor{stringliteral}{"subEnvs that will write to
+       data output file"}         )
+194 #ifdef UQ\_SIP\_READS\_SOLVER\_OPTION
+195     (m\_option\_solver.c\_str(),               po::value<std::string>()->default\_value(UQ\_SIP\_SOLVER\_ODV      
+                 ), \textcolor{stringliteral}{"algorithm for calibration"}                           )
+196 #endif
+197   ;
+198 
+199   \textcolor{keywordflow}{return};
+200 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a5984ab1857cbe72f9f665388f9e87e5e}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!get\-My\-Option\-Values@{get\-My\-Option\-Values}}
+\index{get\-My\-Option\-Values@{get\-My\-Option\-Values}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{get\-My\-Option\-Values}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::get\-My\-Option\-Values (
+\begin{DoxyParamCaption}
+\item[{po\-::options\-\_\-description \&}]{options\-Desc}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a5984ab1857cbe72f9f665388f9e87e5e}
+
+
+Gets the option values of the S\-I\-P. 
+
+
+
+Definition at line 203 of file Statistical\-Inverse\-Problem\-Options.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::all\-Options\-Map(), Q\-U\-E\-S\-O\-::\-Sip\-Options\-Values\-::m\-\_\-compute\-Solution, Q\-U\-E\-S\-O\-::\-Sip\-Options\-Values\-::m\-\_\-data\-Output\-Allowed\-Set, Q\-U\-E\-S\-O\-::\-Sip\-Options\-Values\-::m\-\_\-data\-Output\-File\-Name, m\-\_\-env, m\-\_\-option\-\_\-compute\-Solution, m\-\_\-option\-\_\-data\-Output\-Allowed\-Set, m\-\_\-option\-\_\-data\-Output\-File\-Name, m\-\_\-option\-\_\-help, m\-\_\-ov, Q\-U\-E\-S\-O\-::\-Misc\-Read\-Doubles\-From\-String(), and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+
+Referenced by scan\-Options\-Values().
+
+
+\begin{DoxyCode}
+204 \{
+205   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a6442fa5141155733851550abf54fb727}{m\_option\_help})) \{
+206     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+207       *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << optionsDesc
+208                               << std::endl;
+209     \}
+210   \}
+211 
+212   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ab6eeb26f8464cd104a9352774027aa7b}{m\_option\_computeSolution})) \{
+213     \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_a3ad6bcf891e7d938cc41ac47af698ab9}{m\_computeSolution} = ((\textcolor{keyword}{const} po::variable\_value&) 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ab6eeb26f8464cd104a9352774027aa7b}{m\_option\_computeSolution}]).as<bool>();
+214   \}
+215 
+216   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_af1d009496381139b51679b891fc052f8}{m\_option\_dataOutputFileName})
+      ) \{
+217     \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_a5b68edcbfca8473657ee8d58cfc16fb6}{m\_dataOutputFileName} = ((\textcolor{keyword}{const} po::variable\_value&) 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_af1d009496381139b51679b891fc052f8}{m\_option\_dataOutputFileName}]).
+      as<std::string>();
+218   \}
+219 
+220   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac88a78b03e97a655819b039ed6068bbd}{m\_option\_dataOutputAllowedSet})) \{
+221     \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_abda641263b3f677da5078fb3ea3f7102}{m\_dataOutputAllowedSet}.clear();
+222     std::vector<double> tmpAllow(0,0.);
+223     std::string inputString = \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac88a78b03e97a655819b039ed6068bbd}{m\_option\_dataOutputAllowedSet}].as<std::string>();
+224     \hyperlink{namespace_q_u_e_s_o_ac3fab438679d1dc864f8d629881dad2e}{MiscReadDoublesFromString}(inputString,tmpAllow);
+225 
+226     \textcolor{keywordflow}{if} (tmpAllow.size() > 0) \{
+227       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < tmpAllow.size(); ++i) \{
+228         \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_abda641263b3f677da5078fb3ea3f7102}{m\_dataOutputAllowedSet}.insert((\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}) tmpAllow[i]);
+229       \}
+230     \}
+231   \}
+232 
+233 \textcolor{preprocessor}{#ifdef UQ\_SIP\_READS\_SOLVER\_OPTION}
+234 \textcolor{preprocessor}{}  \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}().count(m\_option\_solver)) \{
+235     \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.m\_solverString = ((\textcolor{keyword}{const} po::variable\_value&) \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_ae7cee155956e0e70112f45e2ad1f02c8}{allOptionsMap}()[m\_option\_solver]).as<std::string>();
+236   \}
+237 \textcolor{preprocessor}{#endif}
+238 \textcolor{preprocessor}{}
+239   \textcolor{keywordflow}{return};
+240 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a5e06fc25408a43aad1240dada3f13a4e}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!print@{print}}
+\index{print@{print}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a5e06fc25408a43aad1240dada3f13a4e}
+
+
+It prints the option values. 
+
+
+
+Definition at line 170 of file Statistical\-Inverse\-Problem\-Options.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Sip\-Options\-Values\-::m\-\_\-compute\-Solution, Q\-U\-E\-S\-O\-::\-Sip\-Options\-Values\-::m\-\_\-data\-Output\-Allowed\-Set, Q\-U\-E\-S\-O\-::\-Sip\-Options\-Values\-::m\-\_\-data\-Output\-File\-Name, m\-\_\-option\-\_\-compute\-Solution, m\-\_\-option\-\_\-data\-Output\-Allowed\-Set, m\-\_\-option\-\_\-data\-Output\-File\-Name, and m\-\_\-ov.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::operator$<$$<$().
+
+
+\begin{DoxyCode}
+171 \{
+172   os << \textcolor{stringliteral}{"\(\backslash\)n"} << \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ab6eeb26f8464cd104a9352774027aa7b}{m\_option\_computeSolution}      << \textcolor{stringliteral}{" = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_a3ad6bcf891e7d938cc41ac47af698ab9}{m\_computeSolution}
+173      << \textcolor{stringliteral}{"\(\backslash\)n"} << \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_af1d009496381139b51679b891fc052f8}{m\_option\_dataOutputFileName}   << \textcolor{stringliteral}{" = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_a5b68edcbfca8473657ee8d58cfc16fb6}{m\_dataOutputFileName};
+174   os << \textcolor{stringliteral}{"\(\backslash\)n"} << \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac88a78b03e97a655819b039ed6068bbd}{m\_option\_dataOutputAllowedSet} << \textcolor{stringliteral}{" = "};
+175   \textcolor{keywordflow}{for} (std::set<unsigned int>::iterator setIt = \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_abda641263b3f677da5078fb3ea3f7102}{m\_dataOutputAllowedSet}.begin
+      (); setIt != \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.\hyperlink{class_q_u_e_s_o_1_1_sip_options_values_abda641263b3f677da5078fb3ea3f7102}{m\_dataOutputAllowedSet}.end(); ++setIt) \{
+176     os << *setIt << \textcolor{stringliteral}{" "};
+177   \}
+178 \textcolor{preprocessor}{#ifdef UQ\_SIP\_READS\_SOLVER\_OPTION}
+179 \textcolor{preprocessor}{}     << \textcolor{stringliteral}{"\(\backslash\)n"} << m\_option\_solver << \textcolor{stringliteral}{" = "} << \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{m\_ov}.m\_solverString
+180 \textcolor{preprocessor}{#endif}
+181 \textcolor{preprocessor}{}  os << std::endl;
+182 
+183   \textcolor{keywordflow}{return};
+184 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3ed629e5e6eb8d5e9b005c6c6810da91}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!scan\-Options\-Values@{scan\-Options\-Values}}
+\index{scan\-Options\-Values@{scan\-Options\-Values}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{scan\-Options\-Values}]{\setlength{\rightskip}{0pt plus 5cm}void Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::scan\-Options\-Values (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3ed629e5e6eb8d5e9b005c6c6810da91}
+
+
+It scans the option values from the options input file. 
+
+
+
+Definition at line 143 of file Statistical\-Inverse\-Problem\-Options.\-C.
+
+
+
+References define\-My\-Options(), get\-My\-Option\-Values(), m\-\_\-env, m\-\_\-options\-Desc, m\-\_\-prefix, Q\-U\-E\-S\-O\-::\-Base\-Environment\-::scan\-Input\-File\-For\-My\-Options(), Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+144 \{
+145   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac7b8dad567ffef98d5a98061a7d631ea}{m\_optionsDesc} == NULL,
+146                       \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+147                       \textcolor{stringliteral}{"StatisticalInverseProblemOptions::scanOptionsValues()"},
+148                       \textcolor{stringliteral}{"m\_optionsDesc variable is NULL"});
+149 
+150   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ae085514e9153c131266f93abea2db3dd}{defineMyOptions}                (*\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac7b8dad567ffef98d5a98061a7d631ea}{m\_optionsDesc});
+151   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae3e118fc38e17537107b347d6b421927}{scanInputFileForMyOptions}(*\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac7b8dad567ffef98d5a98061a7d631ea}{m\_optionsDesc});
+152   \textcolor{comment}{//std::cout << "scan 000\(\backslash\)n"}
+153   \textcolor{comment}{//          << std::endl;}
+154   \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a5984ab1857cbe72f9f665388f9e87e5e}{getMyOptionValues}              (*\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac7b8dad567ffef98d5a98061a7d631ea}{m\_optionsDesc});
+155   \textcolor{comment}{//std::cout << "scan 001\(\backslash\)n"}
+156   \textcolor{comment}{//          << std::endl;}
+157 
+158   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() != NULL) \{
+159     *\hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In StatisticalInverseProblemOptions::scanOptionsValues()
+      "}
+160                             << \textcolor{stringliteral}{": after reading values of options with prefix '"} << 
+      \hyperlink{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{m\_prefix}
+161                             << \textcolor{stringliteral}{"', state of  object is:"}
+162                             << \textcolor{stringliteral}{"\(\backslash\)n"} << *\textcolor{keyword}{this}
+163                             << std::endl;
+164   \}
+165 
+166   \textcolor{keywordflow}{return};
+167 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Base\-Environment}\& Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_afce40a7fed3b00fc8cabad7ff81ef35f}
+
+
+Definition at line 142 of file Statistical\-Inverse\-Problem\-Options.\-h.
+
+
+
+Referenced by get\-My\-Option\-Values(), scan\-Options\-Values(), and Statistical\-Inverse\-Problem\-Options().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ab6eeb26f8464cd104a9352774027aa7b}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!m\-\_\-option\-\_\-compute\-Solution@{m\-\_\-option\-\_\-compute\-Solution}}
+\index{m\-\_\-option\-\_\-compute\-Solution@{m\-\_\-option\-\_\-compute\-Solution}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-compute\-Solution}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::m\-\_\-option\-\_\-compute\-Solution\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ab6eeb26f8464cd104a9352774027aa7b}
+
+
+Definition at line 146 of file Statistical\-Inverse\-Problem\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac88a78b03e97a655819b039ed6068bbd}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!m\-\_\-option\-\_\-data\-Output\-Allowed\-Set@{m\-\_\-option\-\_\-data\-Output\-Allowed\-Set}}
+\index{m\-\_\-option\-\_\-data\-Output\-Allowed\-Set@{m\-\_\-option\-\_\-data\-Output\-Allowed\-Set}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-data\-Output\-Allowed\-Set}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::m\-\_\-option\-\_\-data\-Output\-Allowed\-Set\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac88a78b03e97a655819b039ed6068bbd}
+
+
+Definition at line 148 of file Statistical\-Inverse\-Problem\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_af1d009496381139b51679b891fc052f8}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!m\-\_\-option\-\_\-data\-Output\-File\-Name@{m\-\_\-option\-\_\-data\-Output\-File\-Name}}
+\index{m\-\_\-option\-\_\-data\-Output\-File\-Name@{m\-\_\-option\-\_\-data\-Output\-File\-Name}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-data\-Output\-File\-Name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::m\-\_\-option\-\_\-data\-Output\-File\-Name\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_af1d009496381139b51679b891fc052f8}
+
+
+Definition at line 147 of file Statistical\-Inverse\-Problem\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a6442fa5141155733851550abf54fb727}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!m\-\_\-option\-\_\-help@{m\-\_\-option\-\_\-help}}
+\index{m\-\_\-option\-\_\-help@{m\-\_\-option\-\_\-help}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{m\-\_\-option\-\_\-help}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::m\-\_\-option\-\_\-help\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a6442fa5141155733851550abf54fb727}
+
+
+Definition at line 145 of file Statistical\-Inverse\-Problem\-Options.\-h.
+
+
+
+Referenced by define\-My\-Options(), and get\-My\-Option\-Values().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac7b8dad567ffef98d5a98061a7d631ea}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!m\-\_\-options\-Desc@{m\-\_\-options\-Desc}}
+\index{m\-\_\-options\-Desc@{m\-\_\-options\-Desc}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{m\-\_\-options\-Desc}]{\setlength{\rightskip}{0pt plus 5cm}po\-::options\-\_\-description$\ast$ Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::m\-\_\-options\-Desc\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ac7b8dad567ffef98d5a98061a7d631ea}
+
+
+Definition at line 144 of file Statistical\-Inverse\-Problem\-Options.\-h.
+
+
+
+Referenced by scan\-Options\-Values(), and $\sim$\-Statistical\-Inverse\-Problem\-Options().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!m\-\_\-ov@{m\-\_\-ov}}
+\index{m\-\_\-ov@{m\-\_\-ov}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{m\-\_\-ov}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sip\-Options\-Values} Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::m\-\_\-ov}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_a3f432ce80a98a70c33376bf9a1c4b36c}
+
+
+Definition at line 132 of file Statistical\-Inverse\-Problem\-Options.\-h.
+
+
+
+Referenced by get\-My\-Option\-Values(), and print().
+
+\hypertarget{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}{\index{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}!m\-\_\-prefix@{m\-\_\-prefix}}
+\index{m\-\_\-prefix@{m\-\_\-prefix}!QUESO::StatisticalInverseProblemOptions@{Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options}}
+\subsubsection[{m\-\_\-prefix}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Q\-U\-E\-S\-O\-::\-Statistical\-Inverse\-Problem\-Options\-::m\-\_\-prefix}}\label{class_q_u_e_s_o_1_1_statistical_inverse_problem_options_ad58cf6e7350173ebea80576184a97e2b}
+
+
+Definition at line 133 of file Statistical\-Inverse\-Problem\-Options.\-h.
+
+
+
+Referenced by scan\-Options\-Values(), and Statistical\-Inverse\-Problem\-Options().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_statistical_inverse_problem_options_8h}{Statistical\-Inverse\-Problem\-Options.\-h}\item 
+src/stats/src/\hyperlink{_statistical_inverse_problem_options_8_c}{Statistical\-Inverse\-Problem\-Options.\-C}\end{DoxyCompactItemize}

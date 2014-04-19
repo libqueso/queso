@@ -1,0 +1,442 @@
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_joint_pdf}{\section{Q\-U\-E\-S\-O\-:\-:Concatenated\-Joint\-Pdf$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_concatenated_joint_pdf}\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf$<$ V, M $>$}}
+}
+
+
+A class for handling concatenated P\-D\-Fs.  
+
+
+
+
+{\ttfamily \#include $<$Concatenated\-Joint\-Pdf.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Concatenated\-Joint\-Pdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{class_q_u_e_s_o_1_1_concatenated_joint_pdf__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Concatenated\-Joint\-Pdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_concatenated_joint_pdf__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_aff646f6aafe63e66dca291925bad6ca1}{Concatenated\-Joint\-Pdf} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf}{Base\-Joint\-Pdf}$<$ V, M $>$ \&density1, const \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf}{Base\-Joint\-Pdf}$<$ V, M $>$ \&density2, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&concatenated\-Domain)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a96f8908c3ee9d975919624b37eea20bb}{Concatenated\-Joint\-Pdf} (const char $\ast$prefix, const std\-::vector$<$ const \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf}{Base\-Joint\-Pdf}$<$ V, M $>$ $\ast$ $>$ \&densities, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&concatenated\-Domain)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a9b4a0c33fa7dc23034be19455de61bcd}{$\sim$\-Concatenated\-Joint\-Pdf} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Math methods}\par
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a7a3bbf8dab211968e9691a620fee0e4d}{actual\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const 
+\begin{DoxyCompactList}\small\item\em Calculates the actual values of each density. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_aca499666e5c3d3d26c562492a15ab112}{ln\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const 
+\begin{DoxyCompactList}\small\item\em Calculates the logarithm of the values of each density. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a686ff513ae812f26f9a71705dd2082ad}{set\-Normalization\-Style} (unsigned int value) const 
+\begin{DoxyCompactList}\small\item\em Sets the normalization style of all densities to {\ttfamily value}. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_ad960a39a781a7a891df0ae0ee4670199}{compute\-Log\-Of\-Normalization\-Factor} (unsigned int num\-Samples, bool update\-Factor\-Internally) const 
+\begin{DoxyCompactList}\small\item\em Computes the logarithm of the normalization factor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::vector$<$ const \\*
+\hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf}{Base\-Joint\-Pdf}$<$ V, M $>$ $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\-\_\-densities}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf$<$ V, M $>$}
+
+A class for handling concatenated P\-D\-Fs. 
+
+This class allows the user to defines concatenated probability density distributions, i.\-e, two or more distinct P\-D\-Fs can be concatenated into one single P\-D\-F. This class used, for instance, to concatenate priors from two or more R\-Vs, where one of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. 
+
+Definition at line 52 of file Concatenated\-Joint\-Pdf.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_joint_pdf_aff646f6aafe63e66dca291925bad6ca1}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}!Concatenated\-Joint\-Pdf@{Concatenated\-Joint\-Pdf}}
+\index{Concatenated\-Joint\-Pdf@{Concatenated\-Joint\-Pdf}!QUESO::ConcatenatedJointPdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}}
+\subsubsection[{Concatenated\-Joint\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}$<$ V, M $>$\-::{\bf Concatenated\-Joint\-Pdf} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Base\-Joint\-Pdf}$<$ V, M $>$ \&}]{density1, }
+\item[{const {\bf Base\-Joint\-Pdf}$<$ V, M $>$ \&}]{density2, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{concatenated\-Domain}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_concatenated_joint_pdf_aff646f6aafe63e66dca291925bad6ca1}
+
+
+Constructor. 
+
+Concatenates two P\-D\-Fs\-: {\ttfamily density1} and {\ttfamily density2} into one vector P\-D\-F, given a prefix and the concatenated domain of such P\-D\-Fs. 
+
+Definition at line 33 of file Concatenated\-Joint\-Pdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf$<$ V, M $>$\-::m\-\_\-densities, Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function$<$ V, M $>$\-::m\-\_\-env, U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$\-::vector\-Space(), and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+38   :
+39   BaseJointPdf<V,M>(((std::string)(prefix)+\textcolor{stringliteral}{"concat"}).c\_str(),concatenatedDomain),
+40   \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}             (2,(\textcolor{keyword}{const} BaseJointPdf<V,M>*) NULL)
+41 \{
+42   \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}[0] = &density1;
+43   \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}[1] = &density2;
+44 
+45   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size1 = \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}[0]->domainSet().vectorSpace().dimLocal();
+46   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size2 = \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}[1]->domainSet().vectorSpace().dimLocal();
+47   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size  = concatenatedDomain.vectorSpace().dimLocal();
+48 
+49   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((size1+size2) != size,
+50                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+51                       \textcolor{stringliteral}{"ConcatenatedJointPdf<V,M>::constructor(1)"},
+52                       \textcolor{stringliteral}{"incompatible dimensions"});
+53 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a96f8908c3ee9d975919624b37eea20bb}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}!Concatenated\-Joint\-Pdf@{Concatenated\-Joint\-Pdf}}
+\index{Concatenated\-Joint\-Pdf@{Concatenated\-Joint\-Pdf}!QUESO::ConcatenatedJointPdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}}
+\subsubsection[{Concatenated\-Joint\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}$<$ V, M $>$\-::{\bf Concatenated\-Joint\-Pdf} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const std\-::vector$<$ const {\bf Base\-Joint\-Pdf}$<$ V, M $>$ $\ast$ $>$ \&}]{densities, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{concatenated\-Domain}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a96f8908c3ee9d975919624b37eea20bb}
+
+
+Constructor. 
+
+Concatenates a sequence of P\-D\-Fs, given by\-: {\ttfamily  std\-::vector$<$const Base\-Joint\-Pdf$<$\-V,\-M$>$$\ast$ $>$\& densities } into one single P\-D\-F, given a prefix and the concatenated domain of such P\-D\-Fs. 
+
+Definition at line 56 of file Concatenated\-Joint\-Pdf.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf$<$ V, M $>$\-::m\-\_\-densities, Q\-U\-E\-S\-O\-::\-Base\-Scalar\-Function$<$ V, M $>$\-::m\-\_\-env, U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, Q\-U\-E\-S\-O\-::\-Vector\-Set$<$ V, M $>$\-::vector\-Space(), and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::world\-Rank().
+
+
+\begin{DoxyCode}
+60   :
+61   BaseJointPdf<V,M>(((std::string)(prefix)+\textcolor{stringliteral}{"concat"}).c\_str(),concatenatedDomain),
+62   \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}             (densities.size(),(\textcolor{keyword}{const} BaseJointPdf<V,M>*) NULL)
+63 \{
+64   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} sumSizes = 0;
+65   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}.size(); ++i) \{
+66     \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}[i] = densities[i];
+67     sumSizes += \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}[i]->domainSet().vectorSpace().dimLocal();
+68   \}
+69 
+70   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} size  = concatenatedDomain.vectorSpace().dimLocal();
+71 
+72   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(sumSizes != size,
+73                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+74                       \textcolor{stringliteral}{"ConcatenatedJointPdf<V,M>::constructor(2)"},
+75                       \textcolor{stringliteral}{"incompatible dimensions"});
+76 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a9b4a0c33fa7dc23034be19455de61bcd}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}!$\sim$\-Concatenated\-Joint\-Pdf@{$\sim$\-Concatenated\-Joint\-Pdf}}
+\index{$\sim$\-Concatenated\-Joint\-Pdf@{$\sim$\-Concatenated\-Joint\-Pdf}!QUESO::ConcatenatedJointPdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}}
+\subsubsection[{$\sim$\-Concatenated\-Joint\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}$<$ V, M $>$\-::$\sim${\bf Concatenated\-Joint\-Pdf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a9b4a0c33fa7dc23034be19455de61bcd}
+
+
+Destructor. 
+
+
+
+Definition at line 79 of file Concatenated\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+80 \{
+81 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a7a3bbf8dab211968e9691a620fee0e4d}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}!actual\-Value@{actual\-Value}}
+\index{actual\-Value@{actual\-Value}!QUESO::ConcatenatedJointPdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}}
+\subsubsection[{actual\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}$<$ V, M $>$\-::actual\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a7a3bbf8dab211968e9691a620fee0e4d}
+
+
+Calculates the actual values of each density. 
+
+The final actual value is the multiplication of all values calculated. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a3c367a0cc3fb707a136c5df47dd414c1}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 95 of file Concatenated\-Joint\-Pdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+101 \{
+102   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+103     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering ConcatenatedJointPdf<V,M>::actualValue()"}
+104                             << \textcolor{stringliteral}{": domainVector = "} << domainVector
+105                             << std::endl;
+106   \}
+107 
+108   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(domainVector.sizeLocal() != this->
+      \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}.vectorSpace().dimLocal(),
+109                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+110                       \textcolor{stringliteral}{"ConcatenatedJointPdf<V,M>::actualValue()"},
+111                       \textcolor{stringliteral}{"invalid input"});
+112 
+113   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((domainDirection || gradVector || hessianMatrix || hessianEffect),
+114                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+115                       \textcolor{stringliteral}{"ConcatenatedJointPdf<V,M>::actualValue()"},
+116                       \textcolor{stringliteral}{"incomplete code for gradVector, hessianMatrix and hessianEffect calculations"});
+117 
+118   std::vector<V*> vecs(\hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}.size(),(V*) NULL);
+119   std::vector<double> values(\hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}.size(),0.);
+120   \textcolor{keywordtype}{double} returnValue = 1.;
+121   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} cummulativeSize = 0;
+122   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < vecs.size(); ++i) \{
+123     vecs[i] = \textcolor{keyword}{new} V(\hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}[i]->\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domainSet}().vectorSpace().zeroVector());
+124     domainVector.cwExtract(cummulativeSize,*(vecs[i]));
+125     values[i] = \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}[i]->actualValue(*(vecs[i]),NULL,NULL,NULL,NULL);
+126     returnValue *= values[i];
+127     \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 99)) \{
+128       *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In ConcatenatedJointPdf<V,M>::actualValue()"}
+129                               << \textcolor{stringliteral}{", *(vecs["} << i << \textcolor{stringliteral}{"]) = "}       << *(vecs[i])
+130                               << \textcolor{stringliteral}{": values["} << i << \textcolor{stringliteral}{"] = "}        << values[i]
+131                               << \textcolor{stringliteral}{", temporary cumulative value = "} << returnValue
+132                               << std::endl;
+133     \}
+134     cummulativeSize += vecs[i]->sizeLocal();
+135     \textcolor{keyword}{delete} vecs[i];
+136   \}
+137   \textcolor{comment}{//returnValue *= exp(m\_logOfNormalizationFactor); // No need, because each PDF should be already
+       normalized [PDF-11]}
+138 
+139   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+140     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving ConcatenatedJointPdf<V,M>::actualValue()"}
+141                             << \textcolor{stringliteral}{": domainVector = "} << domainVector
+142                             << \textcolor{stringliteral}{", returnValue = "}  << returnValue
+143                             << std::endl;
+144   \}
+145 
+146   \textcolor{keywordflow}{return} returnValue;
+147 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_joint_pdf_ad960a39a781a7a891df0ae0ee4670199}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}!compute\-Log\-Of\-Normalization\-Factor@{compute\-Log\-Of\-Normalization\-Factor}}
+\index{compute\-Log\-Of\-Normalization\-Factor@{compute\-Log\-Of\-Normalization\-Factor}!QUESO::ConcatenatedJointPdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}}
+\subsubsection[{compute\-Log\-Of\-Normalization\-Factor}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}$<$ V, M $>$\-::compute\-Log\-Of\-Normalization\-Factor (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{num\-Samples, }
+\item[{bool}]{update\-Factor\-Internally}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_concatenated_joint_pdf_ad960a39a781a7a891df0ae0ee4670199}
+
+
+Computes the logarithm of the normalization factor. 
+
+This method calls the \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_ad960a39a781a7a891df0ae0ee4670199}{compute\-Log\-Of\-Normalization\-Factor()} for each one of the densities that have been concatenated. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a99d8ab490b093abffd6068b6ea5263bb}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 202 of file Concatenated\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+203 \{
+204   \textcolor{keywordtype}{double} value = 0.;
+205 
+206   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 2)) \{
+207     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       ConcatenatedJointPdf<V,M>::computeLogOfNormalizationFactor()"}
+208                             << std::endl;
+209   \}
+210   \textcolor{keywordtype}{double} volume = \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}.volume();
+211   \textcolor{keywordflow}{if} (((boost::math::isnan)(volume)) ||
+212       (volume == -INFINITY         ) ||
+213       (volume ==  INFINITY         ) ||
+214       (volume <= 0.                )) \{
+215     \textcolor{comment}{// Do nothing}
+216   \}
+217   \textcolor{keywordflow}{else} \{
+218     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}.size(); ++i) \{
+219       \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}[i]->computeLogOfNormalizationFactor(numSamples, updateFactorInternally);
+220     \}
+221   \}
+222   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 2)) \{
+223     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       ConcatenatedJointPdf<V,M>::computeLogOfNormalizationFactor()"}
+224                             << \textcolor{stringliteral}{", m\_logOfNormalizationFactor = "} << 
+      \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_ae82d4191f17af8c7a26226d127bc7850}{m\_logOfNormalizationFactor}
+225                             << std::endl;
+226   \}
+227 
+228   \textcolor{keywordflow}{return} value;
+229 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_joint_pdf_aca499666e5c3d3d26c562492a15ab112}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}!ln\-Value@{ln\-Value}}
+\index{ln\-Value@{ln\-Value}!QUESO::ConcatenatedJointPdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}}
+\subsubsection[{ln\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}$<$ V, M $>$\-::ln\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_concatenated_joint_pdf_aca499666e5c3d3d26c562492a15ab112}
+
+
+Calculates the logarithm of the values of each density. 
+
+The final logarithm value is the addition of all values calculated. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_aaeb1d91fd791399a502f451b07bb1bfe}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 151 of file Concatenated\-Joint\-Pdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+157 \{
+158   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+159     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering ConcatenatedJointPdf<V,M>::lnValue()"}
+160                             << \textcolor{stringliteral}{": domainVector = "} << domainVector
+161                             << std::endl;
+162   \}
+163 
+164   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((domainDirection || gradVector || hessianMatrix || hessianEffect),
+165                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+166                       \textcolor{stringliteral}{"ConcatenatedJointPdf<V,M>::lnValue()"},
+167                       \textcolor{stringliteral}{"incomplete code for gradVector, hessianMatrix and hessianEffect calculations"});
+168 
+169   std::vector<V*> vecs(\hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}.size(),(V*) NULL);
+170   std::vector<double> values(\hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}.size(),0.);
+171   \textcolor{keywordtype}{double} returnValue = 0.;
+172   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} cummulativeSize = 0;
+173   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < vecs.size(); ++i) \{
+174     vecs[i] = \textcolor{keyword}{new} V(\hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}[i]->\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_ad0937628825249dd36ded3ce0c7959ac}{domainSet}().vectorSpace().zeroVector());
+175     domainVector.cwExtract(cummulativeSize,*(vecs[i]));
+176     values[i] = \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}[i]->lnValue(*(vecs[i]),NULL,NULL,NULL,NULL);
+177     returnValue += values[i];
+178     \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 99)) \{  \textcolor{comment}{// gpmsa}
+179       *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In ConcatenatedJointPdf<V,M>::lnValue()"}
+180                               << \textcolor{stringliteral}{", *(vecs["} << i << \textcolor{stringliteral}{"]) = "}       << *(vecs[i])
+181                               << \textcolor{stringliteral}{": values["} << i << \textcolor{stringliteral}{"] = "}        << values[i]
+182                               << \textcolor{stringliteral}{", temporary cumulative value = "} << returnValue
+183                               << std::endl;
+184     \}
+185     cummulativeSize += vecs[i]->sizeLocal();
+186     \textcolor{keyword}{delete} vecs[i];
+187   \}
+188   \textcolor{comment}{//returnValue += m\_logOfNormalizationFactor; // No need, because each PDF should be already normalized
+       [PDF-11]}
+189 
+190   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+191     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving ConcatenatedJointPdf<V,M>::lnValue()"}
+192                             << \textcolor{stringliteral}{": domainVector = "} << domainVector
+193                             << \textcolor{stringliteral}{", returnValue = "}  << returnValue
+194                             << std::endl;
+195   \}
+196 
+197   \textcolor{keywordflow}{return} returnValue;
+198 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a686ff513ae812f26f9a71705dd2082ad}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}!set\-Normalization\-Style@{set\-Normalization\-Style}}
+\index{set\-Normalization\-Style@{set\-Normalization\-Style}!QUESO::ConcatenatedJointPdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}}
+\subsubsection[{set\-Normalization\-Style}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}$<$ V, M $>$\-::set\-Normalization\-Style (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{value}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a686ff513ae812f26f9a71705dd2082ad}
+
+
+Sets the normalization style of all densities to {\ttfamily value}. 
+
+
+
+Reimplemented from \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_ab11f1d096f82cc7857cefe1b92f6b28e}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 85 of file Concatenated\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+86 \{
+87   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}.size(); ++i) \{
+88     \hyperlink{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{m\_densities}[i]->setNormalizationStyle(value);
+89   \}
+90   \textcolor{keywordflow}{return};
+91 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}!m\-\_\-densities@{m\-\_\-densities}}
+\index{m\-\_\-densities@{m\-\_\-densities}!QUESO::ConcatenatedJointPdf@{Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-densities}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ std\-::vector$<$const {\bf Base\-Joint\-Pdf}$<$V,M$>$$\ast$ $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-densities\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_concatenated_joint_pdf_a42ee130daadf7ceb0d1745011f5b1169}
+
+
+Definition at line 100 of file Concatenated\-Joint\-Pdf.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Concatenated\-Joint\-Pdf$<$ V, M $>$\-::\-Concatenated\-Joint\-Pdf().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_concatenated_joint_pdf_8h}{Concatenated\-Joint\-Pdf.\-h}\item 
+src/stats/src/\hyperlink{_concatenated_joint_pdf_8_c}{Concatenated\-Joint\-Pdf.\-C}\end{DoxyCompactItemize}

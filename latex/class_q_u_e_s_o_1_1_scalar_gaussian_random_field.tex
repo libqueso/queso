@@ -1,0 +1,547 @@
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field}{\section{Q\-U\-E\-S\-O\-:\-:Scalar\-Gaussian\-Random\-Field$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field}\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field$<$ V, M $>$}}
+}
+
+
+A class for handling scalar Gaussian random fields (G\-R\-F).  
+
+
+
+
+{\ttfamily \#include $<$Scalar\-Gaussian\-Random\-Field.\-h$>$}
+
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Scalar\-Gaussian\-Random\-Field$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_scalar_gaussian_random_field__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a97e289939e97f5280dd29cda787bbcbb}{Scalar\-Gaussian\-Random\-Field} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ac4edd4b4742e09be69e8f0aab3ecb6c6}{index\-Set}, const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ac2421f1e67dc7a0052cdebfaf464421e}{mean\-Function}, const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function}{Base\-Scalar\-Covariance\-Function}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a3b8e2cce1f6fff8383de2325dc2981b5}{covariance\-Function})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ad0ae533f9f30c4d38ea9244accb91838}{Scalar\-Gaussian\-Random\-Field} (const \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field}{Scalar\-Gaussian\-Random\-Field} \&obj)
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Copy constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a913f644a4ba78c2d4f538802c743a20e}{$\sim$\-Scalar\-Gaussian\-Random\-Field} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Set methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field}{Scalar\-Gaussian\-Random\-Field} \& \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aebc3cec0fcb380ef912332a2eec8724c}{operator=} (const \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field}{Scalar\-Gaussian\-Random\-Field} \&rhs)
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Assignment operator; it copies {\ttfamily rhs} to {\ttfamily this}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Math methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ac4edd4b4742e09be69e8f0aab3ecb6c6}{index\-Set} () const 
+\begin{DoxyCompactList}\small\item\em Index set; access to protected attribute m\-\_\-index\-Set. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ac2421f1e67dc7a0052cdebfaf464421e}{mean\-Function} () const 
+\begin{DoxyCompactList}\small\item\em Mean function; access to protected attribute m\-\_\-mean\-Function. \end{DoxyCompactList}\item 
+const \\*
+\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function}{Base\-Scalar\-Covariance\-Function}\\*
+$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a3b8e2cce1f6fff8383de2325dc2981b5}{covariance\-Function} () const 
+\begin{DoxyCompactList}\small\item\em Covariance function; access to protected attribute m\-\_\-covariance\-Function. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aea3e501fbf8ece28702666138f0eb8e0}{sample\-Function} (const std\-::vector$<$ V $\ast$ $>$ \&field\-Positions, V \&sample\-Values)
+\begin{DoxyCompactList}\small\item\em Function that samples from a Gaussian P\-D\-F. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a40ea0ed2c0011577bd17a7bcfaa9dfa6}{copy} (const \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field}{Scalar\-Gaussian\-Random\-Field} \&src)
+\begin{DoxyCompactList}\small\item\em Copy method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_af1f041e02404457420e5b32dee70edc3}{m\-\_\-env}
+\begin{DoxyCompactList}\small\item\em Environment. \end{DoxyCompactList}\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a92b889ad0b3f05650afc60b3808af1b9}{m\-\_\-prefix}
+\begin{DoxyCompactList}\small\item\em Prefix. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ada3f607cbe463fd3f735e33acca3f132}{m\-\_\-index\-Set}
+\begin{DoxyCompactList}\small\item\em Index set. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a89e14e481690ccfa5536352018c7641f}{m\-\_\-mean\-Function}
+\begin{DoxyCompactList}\small\item\em Mean function. \end{DoxyCompactList}\item 
+const \\*
+\hyperlink{class_q_u_e_s_o_1_1_base_scalar_covariance_function}{Base\-Scalar\-Covariance\-Function}\\*
+$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a7db273a4030d7bede05d9d4ef0efd043}{m\-\_\-covariance\-Function}
+\begin{DoxyCompactList}\small\item\em Covariance function. \end{DoxyCompactList}\item 
+std\-::vector$<$ V $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\-\_\-saved\-Positions}
+\begin{DoxyCompactList}\small\item\em Saved positions. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aaffc22808e1c4a88073a171d781412a5}{m\-\_\-saved\-Rv\-Image\-Space}
+\begin{DoxyCompactList}\small\item\em Image set of the R\-V. \end{DoxyCompactList}\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a0a59f8828711e204296d1cfb0ad6260a}{m\-\_\-saved\-Rv\-Law\-Exp\-Vector}
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_q_u_e_s_o_1_1_vector}{Vector} of the mean value of the R\-V. \end{DoxyCompactList}\item 
+M $\ast$ \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aca6f26fffd99c7d8fee7a8300e623dcd}{m\-\_\-saved\-Rv\-Law\-Cov\-Matrix}
+\begin{DoxyCompactList}\small\item\em Covariance matrix of the R\-V. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_r_v}{Gaussian\-Vector\-R\-V}$<$ V, M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ab8ca399444079041b75eb0986fe0fc80}{m\-\_\-saved\-Rv}
+\begin{DoxyCompactList}\small\item\em My R\-V. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field$<$ V, M $>$}
+
+A class for handling scalar Gaussian random fields (G\-R\-F). 
+
+This class implements a scalar Gaussian random field (G\-R\-F); i.\-e. a random field involving Gaussian probability density functions (P\-D\-Fs) of the variables. A one-\/dimensional G\-R\-F is also called a Gaussian process. 
+
+Definition at line 46 of file Scalar\-Gaussian\-Random\-Field.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a97e289939e97f5280dd29cda787bbcbb}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!Scalar\-Gaussian\-Random\-Field@{Scalar\-Gaussian\-Random\-Field}}
+\index{Scalar\-Gaussian\-Random\-Field@{Scalar\-Gaussian\-Random\-Field}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{Scalar\-Gaussian\-Random\-Field}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::{\bf Scalar\-Gaussian\-Random\-Field} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{index\-Set, }
+\item[{const {\bf Base\-Scalar\-Function}$<$ V, M $>$ \&}]{mean\-Function, }
+\item[{const {\bf Base\-Scalar\-Covariance\-Function}$<$ V, M $>$ \&}]{covariance\-Function}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a97e289939e97f5280dd29cda787bbcbb}
+
+
+Constructor. 
+
+Constructs a new object, given a prefix, an index set, and both a mean and a covariance function. This method deletes the previous saved positions. 
+
+Definition at line 32 of file Scalar\-Gaussian\-Random\-Field.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field$<$ V, M $>$\-::m\-\_\-saved\-Positions.
+
+
+\begin{DoxyCode}
+37   :
+38   \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_af1f041e02404457420e5b32dee70edc3}{m\_env}                (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ac4edd4b4742e09be69e8f0aab3ecb6c6}{indexSet}.env()),
+39   \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a92b889ad0b3f05650afc60b3808af1b9}{m\_prefix}             ((std::string)(prefix)+\textcolor{stringliteral}{"grf\_"}),
+40   \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ada3f607cbe463fd3f735e33acca3f132}{m\_indexSet}           (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ac4edd4b4742e09be69e8f0aab3ecb6c6}{indexSet}),
+41   \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a89e14e481690ccfa5536352018c7641f}{m\_meanFunction}       (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ac2421f1e67dc7a0052cdebfaf464421e}{meanFunction}),
+42   \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a7db273a4030d7bede05d9d4ef0efd043}{m\_covarianceFunction} (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a3b8e2cce1f6fff8383de2325dc2981b5}{covarianceFunction}),
+43   \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aaffc22808e1c4a88073a171d781412a5}{m\_savedRvImageSpace}  (NULL),
+44   \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a0a59f8828711e204296d1cfb0ad6260a}{m\_savedRvLawExpVector}(NULL),
+45   \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aca6f26fffd99c7d8fee7a8300e623dcd}{m\_savedRvLawCovMatrix}(NULL),
+46   \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ab8ca399444079041b75eb0986fe0fc80}{m\_savedRv}            (NULL)
+47 \{
+48   \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}.clear();
+49 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ad0ae533f9f30c4d38ea9244accb91838}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!Scalar\-Gaussian\-Random\-Field@{Scalar\-Gaussian\-Random\-Field}}
+\index{Scalar\-Gaussian\-Random\-Field@{Scalar\-Gaussian\-Random\-Field}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{Scalar\-Gaussian\-Random\-Field}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::{\bf Scalar\-Gaussian\-Random\-Field} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$ \&}]{obj}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ad0ae533f9f30c4d38ea9244accb91838}
+
+
+T\-O\-D\-O\-: Copy constructor. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000043}{Todo}]\-: implement me! \end{DoxyRefDesc}
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a913f644a4ba78c2d4f538802c743a20e}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!$\sim$\-Scalar\-Gaussian\-Random\-Field@{$\sim$\-Scalar\-Gaussian\-Random\-Field}}
+\index{$\sim$\-Scalar\-Gaussian\-Random\-Field@{$\sim$\-Scalar\-Gaussian\-Random\-Field}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{$\sim$\-Scalar\-Gaussian\-Random\-Field}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::$\sim${\bf Scalar\-Gaussian\-Random\-Field} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a913f644a4ba78c2d4f538802c743a20e}
+
+
+Destructor. 
+
+
+
+Definition at line 52 of file Scalar\-Gaussian\-Random\-Field.\-C.
+
+
+\begin{DoxyCode}
+53 \{
+54 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a40ea0ed2c0011577bd17a7bcfaa9dfa6}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!copy@{copy}}
+\index{copy@{copy}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{copy}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::copy (
+\begin{DoxyParamCaption}
+\item[{const {\bf Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$ \&}]{src}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a40ea0ed2c0011577bd17a7bcfaa9dfa6}
+
+
+Copy method. 
+
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a3b8e2cce1f6fff8383de2325dc2981b5}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!covariance\-Function@{covariance\-Function}}
+\index{covariance\-Function@{covariance\-Function}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{covariance\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Base\-Scalar\-Covariance\-Function}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::covariance\-Function (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a3b8e2cce1f6fff8383de2325dc2981b5}
+
+
+Covariance function; access to protected attribute m\-\_\-covariance\-Function. 
+
+
+
+Definition at line 72 of file Scalar\-Gaussian\-Random\-Field.\-C.
+
+
+\begin{DoxyCode}
+73 \{
+74   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a7db273a4030d7bede05d9d4ef0efd043}{m\_covarianceFunction};
+75 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ac4edd4b4742e09be69e8f0aab3ecb6c6}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!index\-Set@{index\-Set}}
+\index{index\-Set@{index\-Set}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{index\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Vector\-Set}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::index\-Set (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ac4edd4b4742e09be69e8f0aab3ecb6c6}
+
+
+Index set; access to protected attribute m\-\_\-index\-Set. 
+
+
+
+Definition at line 58 of file Scalar\-Gaussian\-Random\-Field.\-C.
+
+
+\begin{DoxyCode}
+59 \{
+60   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ada3f607cbe463fd3f735e33acca3f132}{m\_indexSet};
+61 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ac2421f1e67dc7a0052cdebfaf464421e}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!mean\-Function@{mean\-Function}}
+\index{mean\-Function@{mean\-Function}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{mean\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Base\-Scalar\-Function}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::mean\-Function (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ac2421f1e67dc7a0052cdebfaf464421e}
+
+
+Mean function; access to protected attribute m\-\_\-mean\-Function. 
+
+
+
+Definition at line 65 of file Scalar\-Gaussian\-Random\-Field.\-C.
+
+
+\begin{DoxyCode}
+66 \{
+67   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a89e14e481690ccfa5536352018c7641f}{m\_meanFunction};
+68 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aebc3cec0fcb380ef912332a2eec8724c}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!operator=@{operator=}}
+\index{operator=@{operator=}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Scalar\-Gaussian\-Random\-Field}\& {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$ \&}]{rhs}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aebc3cec0fcb380ef912332a2eec8724c}
+
+
+T\-O\-D\-O\-: Assignment operator; it copies {\ttfamily rhs} to {\ttfamily this}. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000044}{Todo}]\-: implement me! \end{DoxyRefDesc}
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aea3e501fbf8ece28702666138f0eb8e0}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!sample\-Function@{sample\-Function}}
+\index{sample\-Function@{sample\-Function}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{sample\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::sample\-Function (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ V $\ast$ $>$ \&}]{field\-Positions, }
+\item[{V \&}]{sample\-Values}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aea3e501fbf8ece28702666138f0eb8e0}
+
+
+Function that samples from a Gaussian P\-D\-F. 
+
+Given the field positions, this method performs a number of tests, calculates the mean vector, the covariance matrix and then it samples from a Gaussian random vector as many positions as required. 
+
+Definition at line 79 of file Scalar\-Gaussian\-Random\-Field.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+80 \{
+81   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_af1f041e02404457420e5b32dee70edc3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_af1f041e02404457420e5b32dee70edc3}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 99)) \{
+82     *\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_af1f041e02404457420e5b32dee70edc3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       ScalarGaussianRandomField<V,M>::sampleFunction()"}
+83                             << std::endl;
+84   \}
+85 
+86   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(fieldPositions.size() != sampleValues.sizeLocal(),
+87                       \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_af1f041e02404457420e5b32dee70edc3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a84a239e42ae443cf71db6e03e8159620}{fullRank}(),
+88                       \textcolor{stringliteral}{"ScalarGaussianRandomField<V,M>::sampleFunction()"},
+89                       \textcolor{stringliteral}{"invalid input data"});
+90 
+91   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}.size() == 0   ) &&
+92       (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aaffc22808e1c4a88073a171d781412a5}{m\_savedRvImageSpace}     == NULL) &&
+93       (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a0a59f8828711e204296d1cfb0ad6260a}{m\_savedRvLawExpVector}   == NULL) &&
+94       (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aca6f26fffd99c7d8fee7a8300e623dcd}{m\_savedRvLawCovMatrix}   == NULL) &&
+95       (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ab8ca399444079041b75eb0986fe0fc80}{m\_savedRv}               == NULL)) \{
+96     \textcolor{comment}{// Ok}
+97   \}
+98   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}.size() != 0   ) &&
+99            (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aaffc22808e1c4a88073a171d781412a5}{m\_savedRvImageSpace}     != NULL) &&
+100            (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a0a59f8828711e204296d1cfb0ad6260a}{m\_savedRvLawExpVector}   != NULL) &&
+101            (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aca6f26fffd99c7d8fee7a8300e623dcd}{m\_savedRvLawCovMatrix}   != NULL) &&
+102            (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ab8ca399444079041b75eb0986fe0fc80}{m\_savedRv}               != NULL)) \{
+103     \textcolor{comment}{// Ok}
+104   \}
+105   \textcolor{keywordflow}{else} \{
+106     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+107                         \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_af1f041e02404457420e5b32dee70edc3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a84a239e42ae443cf71db6e03e8159620}{fullRank}(),
+108                         \textcolor{stringliteral}{"ScalarGaussianRandomField<V,M>::sampleFunction()"},
+109                         \textcolor{stringliteral}{"invalid combination of pointer values"});
+110   \}
+111 
+112   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numberOfPositions = fieldPositions.size();
+113   \textcolor{keywordtype}{bool} instantiate = \textcolor{keyword}{true};
+114   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}.size() == numberOfPositions) \{
+115     \textcolor{keywordtype}{bool} allPositionsAreEqual = \textcolor{keyword}{true};
+116     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < numberOfPositions; ++i) \{
+117       \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}[i] == NULL,
+118                           \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_af1f041e02404457420e5b32dee70edc3}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a84a239e42ae443cf71db6e03e8159620}{fullRank}(),
+119                           \textcolor{stringliteral}{"ScalarGaussianRandomField<V,M>::sampleFunction()"},
+120                           \textcolor{stringliteral}{"m\_savedPositions[i] should not be NULL"});
+121       \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}[i]->sizeLocal() == fieldPositions[i]->sizeLocal()) &&
+122           (*(\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}[i])           == *(fieldPositions[i])          )) \{
+123         \textcolor{comment}{// Ok}
+124       \}
+125       \textcolor{keywordflow}{else} \{
+126         allPositionsAreEqual = \textcolor{keyword}{false};
+127         \textcolor{keywordflow}{break};
+128       \}
+129     \} \textcolor{comment}{// for i}
+130     instantiate = !allPositionsAreEqual;
+131   \}
+132 
+133   \textcolor{keywordflow}{if} (instantiate) \{
+134     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ab8ca399444079041b75eb0986fe0fc80}{m\_savedRv};
+135     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aca6f26fffd99c7d8fee7a8300e623dcd}{m\_savedRvLawCovMatrix};
+136     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a0a59f8828711e204296d1cfb0ad6260a}{m\_savedRvLawExpVector};
+137     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aaffc22808e1c4a88073a171d781412a5}{m\_savedRvImageSpace};
+138     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}.size(); ++i) \{
+139       \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}[i];
+140     \}
+141     \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}.clear();
+142 
+143     \textcolor{comment}{// Set m\_savedPositions}
+144     \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}.resize(numberOfPositions,NULL);
+145     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}.size(); ++i) \{
+146       \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}[i] = \textcolor{keyword}{new} V(*(fieldPositions[i]));
+147     \}
+148 
+149     \textcolor{comment}{// Set m\_savedRvImageSpace}
+150     \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aaffc22808e1c4a88073a171d781412a5}{m\_savedRvImageSpace} = \textcolor{keyword}{new} VectorSpace<V,M>(\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_af1f041e02404457420e5b32dee70edc3}{m\_env}, \textcolor{stringliteral}{"grf\_"}, numberOfPositions, 
+      NULL);
+151 
+152     \textcolor{comment}{// Set m\_savedRvLawExpVector}
+153     \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a0a59f8828711e204296d1cfb0ad6260a}{m\_savedRvLawExpVector} = \textcolor{keyword}{new} V(\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aaffc22808e1c4a88073a171d781412a5}{m\_savedRvImageSpace}->zeroVector()
+      );
+154     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < numberOfPositions; ++i) \{
+155       (*m\_savedRvLawExpVector)[i] = \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a89e14e481690ccfa5536352018c7641f}{m\_meanFunction}.actualValue(*(fieldPositions[i]),NULL,NULL
+      ,NULL,NULL);
+156     \}
+157 
+158     \textcolor{comment}{// Set m\_savedRvLawCovMatrix}
+159     \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aca6f26fffd99c7d8fee7a8300e623dcd}{m\_savedRvLawCovMatrix} = \textcolor{keyword}{new} M(\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aaffc22808e1c4a88073a171d781412a5}{m\_savedRvImageSpace}->zeroVector()
+      );
+160     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < numberOfPositions; ++i) \{
+161       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < numberOfPositions; ++j) \{
+162         (*m\_savedRvLawCovMatrix)(i,j) = \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a7db273a4030d7bede05d9d4ef0efd043}{m\_covarianceFunction}.value(*(fieldPositions[i])
+      ,*(fieldPositions[j]));
+163         \textcolor{keywordflow}{if} ((m\_env.subDisplayFile()) && (m\_env.displayVerbosity() >= 3)) \{
+164           *m\_env.subDisplayFile() << \textcolor{stringliteral}{"In ScalarGaussianRandomField<V,M>::sampleFunction()"}
+165                                   << \textcolor{stringliteral}{": i = "} << i
+166                                   << \textcolor{stringliteral}{", j = "} << j
+167                                   << \textcolor{stringliteral}{", *(fieldPositions[i]) = "} << *(fieldPositions[i])
+168                                   << \textcolor{stringliteral}{", *(fieldPositions[j]) = "} << *(fieldPositions[j])
+169                                   << \textcolor{stringliteral}{", (*m\_savedRvLawCovMatrix)(i,j) = "} << (*m\_savedRvLawCovMatrix)(i,j)
+170                                   << std::endl;
+171         \}
+172       \}
+173     \}
+174 
+175     \textcolor{comment}{// Set m\_savedRv}
+176     \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ab8ca399444079041b75eb0986fe0fc80}{m\_savedRv} = \textcolor{keyword}{new} GaussianVectorRV<V,M>(\textcolor{stringliteral}{"grf\_"},
+177                                                  *\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aaffc22808e1c4a88073a171d781412a5}{m\_savedRvImageSpace},
+178                                                  *\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a0a59f8828711e204296d1cfb0ad6260a}{m\_savedRvLawExpVector},
+179                                                  *\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aca6f26fffd99c7d8fee7a8300e623dcd}{m\_savedRvLawCovMatrix});
+180 
+181     \textcolor{keywordflow}{if} ((m\_env.subDisplayFile()) && (m\_env.displayVerbosity() >= 3)) \{
+182       *m\_env.subDisplayFile() << \textcolor{stringliteral}{"In ScalarGaussianRandomField<V,M>::sampleFunction()"}
+183                               << \textcolor{stringliteral}{": just instantiated Gaussian RV"}
+184                               << \textcolor{stringliteral}{"\(\backslash\)n *m\_savedRvLawExpVector = "} << *m\_savedRvLawExpVector
+185                               << \textcolor{stringliteral}{"\(\backslash\)n *m\_savedRvLawCovMatrix = "} << *
+      \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aca6f26fffd99c7d8fee7a8300e623dcd}{m\_savedRvLawCovMatrix}
+186                               << std::endl;
+187       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < numberOfPositions; ++i) \{
+188         *m\_env.subDisplayFile() << \textcolor{stringliteral}{" *(m\_savedPositions["} << i
+189                                 << \textcolor{stringliteral}{"]) = "}                << *(\hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{m\_savedPositions}[i])
+190                                 << std::endl;
+191       \}
+192     \}
+193   \} \textcolor{comment}{// if (instantiate)}
+194 
+195   \textcolor{comment}{// Generate sample function}
+196   \textcolor{keywordflow}{if} ((m\_env.subDisplayFile()) && (m\_env.displayVerbosity() >= 99)) \{
+197     *m\_env.subDisplayFile() << \textcolor{stringliteral}{"In ScalarGaussianRandomField<V,M>::sampleFunction()"}
+198                             << \textcolor{stringliteral}{": about to realize sample values"}
+199                             << std::endl;
+200   \}
+201   \hyperlink{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ab8ca399444079041b75eb0986fe0fc80}{m\_savedRv}->realizer().realization(sampleValues);
+202   \textcolor{keywordflow}{if} ((m\_env.subDisplayFile()) && (m\_env.displayVerbosity() >= 99)) \{
+203     *m\_env.subDisplayFile() << \textcolor{stringliteral}{"In ScalarGaussianRandomField<V,M>::sampleFunction()"}
+204                             << \textcolor{stringliteral}{": just realized sample values"}
+205                             << std::endl;
+206   \}
+207 
+208   \textcolor{keywordflow}{if} ((m\_env.subDisplayFile()) && (m\_env.displayVerbosity() >= 99)) \{
+209     *m\_env.subDisplayFile() << \textcolor{stringliteral}{"Leaving ScalarGaussianRandomField<V,M>::sampleFunction()"}
+210                             << std::endl;
+211   \}
+212 
+213   \textcolor{keywordflow}{return};
+214 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a7db273a4030d7bede05d9d4ef0efd043}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!m\-\_\-covariance\-Function@{m\-\_\-covariance\-Function}}
+\index{m\-\_\-covariance\-Function@{m\-\_\-covariance\-Function}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{m\-\_\-covariance\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Base\-Scalar\-Covariance\-Function}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::m\-\_\-covariance\-Function\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a7db273a4030d7bede05d9d4ef0efd043}
+
+
+Covariance function. 
+
+
+
+Definition at line 109 of file Scalar\-Gaussian\-Random\-Field.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_af1f041e02404457420e5b32dee70edc3}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_af1f041e02404457420e5b32dee70edc3}
+
+
+Environment. 
+
+
+
+Definition at line 97 of file Scalar\-Gaussian\-Random\-Field.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ada3f607cbe463fd3f735e33acca3f132}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!m\-\_\-index\-Set@{m\-\_\-index\-Set}}
+\index{m\-\_\-index\-Set@{m\-\_\-index\-Set}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{m\-\_\-index\-Set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Vector\-Set}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::m\-\_\-index\-Set\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ada3f607cbe463fd3f735e33acca3f132}
+
+
+Index set. 
+
+
+
+Definition at line 103 of file Scalar\-Gaussian\-Random\-Field.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a89e14e481690ccfa5536352018c7641f}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!m\-\_\-mean\-Function@{m\-\_\-mean\-Function}}
+\index{m\-\_\-mean\-Function@{m\-\_\-mean\-Function}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{m\-\_\-mean\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Base\-Scalar\-Function}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::m\-\_\-mean\-Function\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a89e14e481690ccfa5536352018c7641f}
+
+
+Mean function. 
+
+
+
+Definition at line 106 of file Scalar\-Gaussian\-Random\-Field.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a92b889ad0b3f05650afc60b3808af1b9}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!m\-\_\-prefix@{m\-\_\-prefix}}
+\index{m\-\_\-prefix@{m\-\_\-prefix}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{m\-\_\-prefix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ std\-::string {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::m\-\_\-prefix\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a92b889ad0b3f05650afc60b3808af1b9}
+
+
+Prefix. 
+
+
+
+Definition at line 100 of file Scalar\-Gaussian\-Random\-Field.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!m\-\_\-saved\-Positions@{m\-\_\-saved\-Positions}}
+\index{m\-\_\-saved\-Positions@{m\-\_\-saved\-Positions}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{m\-\_\-saved\-Positions}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ std\-::vector$<$V$\ast$$>$ {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::m\-\_\-saved\-Positions\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a5993884088927e1eb818cb8d473c5be8}
+
+
+Saved positions. 
+
+
+
+Definition at line 112 of file Scalar\-Gaussian\-Random\-Field.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field$<$ V, M $>$\-::\-Scalar\-Gaussian\-Random\-Field().
+
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ab8ca399444079041b75eb0986fe0fc80}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!m\-\_\-saved\-Rv@{m\-\_\-saved\-Rv}}
+\index{m\-\_\-saved\-Rv@{m\-\_\-saved\-Rv}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{m\-\_\-saved\-Rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Gaussian\-Vector\-R\-V}$<$V,M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::m\-\_\-saved\-Rv\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_ab8ca399444079041b75eb0986fe0fc80}
+
+
+My R\-V. 
+
+
+
+Definition at line 124 of file Scalar\-Gaussian\-Random\-Field.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aaffc22808e1c4a88073a171d781412a5}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!m\-\_\-saved\-Rv\-Image\-Space@{m\-\_\-saved\-Rv\-Image\-Space}}
+\index{m\-\_\-saved\-Rv\-Image\-Space@{m\-\_\-saved\-Rv\-Image\-Space}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{m\-\_\-saved\-Rv\-Image\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Vector\-Space}$<$V,M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::m\-\_\-saved\-Rv\-Image\-Space\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aaffc22808e1c4a88073a171d781412a5}
+
+
+Image set of the R\-V. 
+
+
+
+Definition at line 115 of file Scalar\-Gaussian\-Random\-Field.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aca6f26fffd99c7d8fee7a8300e623dcd}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!m\-\_\-saved\-Rv\-Law\-Cov\-Matrix@{m\-\_\-saved\-Rv\-Law\-Cov\-Matrix}}
+\index{m\-\_\-saved\-Rv\-Law\-Cov\-Matrix@{m\-\_\-saved\-Rv\-Law\-Cov\-Matrix}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{m\-\_\-saved\-Rv\-Law\-Cov\-Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ M$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::m\-\_\-saved\-Rv\-Law\-Cov\-Matrix\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_aca6f26fffd99c7d8fee7a8300e623dcd}
+
+
+Covariance matrix of the R\-V. 
+
+
+
+Definition at line 121 of file Scalar\-Gaussian\-Random\-Field.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a0a59f8828711e204296d1cfb0ad6260a}{\index{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}!m\-\_\-saved\-Rv\-Law\-Exp\-Vector@{m\-\_\-saved\-Rv\-Law\-Exp\-Vector}}
+\index{m\-\_\-saved\-Rv\-Law\-Exp\-Vector@{m\-\_\-saved\-Rv\-Law\-Exp\-Vector}!QUESO::ScalarGaussianRandomField@{Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}}
+\subsubsection[{m\-\_\-saved\-Rv\-Law\-Exp\-Vector}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Scalar\-Gaussian\-Random\-Field}$<$ V, M $>$\-::m\-\_\-saved\-Rv\-Law\-Exp\-Vector\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_scalar_gaussian_random_field_a0a59f8828711e204296d1cfb0ad6260a}
+
+
+\hyperlink{class_q_u_e_s_o_1_1_vector}{Vector} of the mean value of the R\-V. 
+
+
+
+Definition at line 118 of file Scalar\-Gaussian\-Random\-Field.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_scalar_gaussian_random_field_8h}{Scalar\-Gaussian\-Random\-Field.\-h}\item 
+src/stats/src/\hyperlink{_scalar_gaussian_random_field_8_c}{Scalar\-Gaussian\-Random\-Field.\-C}\end{DoxyCompactItemize}

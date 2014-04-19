@@ -1,0 +1,557 @@
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf}{\section{Q\-U\-E\-S\-O\-:\-:Bayesian\-Joint\-Pdf$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf}\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf$<$ V, M $>$}}
+}
+
+
+A class for handling Bayesian joint P\-D\-Fs.  
+
+
+
+
+{\ttfamily \#include $<$Bayesian\-Joint\-Pdf.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Bayesian\-Joint\-Pdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{class_q_u_e_s_o_1_1_bayesian_joint_pdf__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Bayesian\-Joint\-Pdf$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_bayesian_joint_pdf__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a035122f1015976118ba96c9cd37edda0}{Bayesian\-Joint\-Pdf} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf}{Base\-Joint\-Pdf}$<$ V, M $>$ \&prior\-Density, const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ V, M $>$ \&likelihood\-Function, double likelihood\-Exponent, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&intersection\-Domain)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a060c1d9fcfd092dbc5501afaa9b362db}{$\sim$\-Bayesian\-Joint\-Pdf} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Math methods}\par
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_ad67362b4ab48a722db976430cf03165e}{actual\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const 
+\begin{DoxyCompactList}\small\item\em Actual value of the P\-D\-F (scalar function). \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a98e54ee24452e2477469a0c84eecbfca}{ln\-Value} (const V \&domain\-Vector, const V $\ast$domain\-Direction, V $\ast$grad\-Vector, M $\ast$hessian\-Matrix, V $\ast$hessian\-Effect) const 
+\begin{DoxyCompactList}\small\item\em Computes the logarithm of the value of the function. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a7e00d685068bcf34253e5a101b539261}{compute\-Log\-Of\-Normalization\-Factor} (unsigned int num\-Samples, bool update\-Factor\-Internally) const 
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Computes the logarithm of the normalization factor. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_aa23751ede9ec9f2e7bdd81c5326f47d5}{set\-Normalization\-Style} (unsigned int value) const 
+\begin{DoxyCompactList}\small\item\em Sets a value to be used in the normalization style of the prior density P\-D\-F (ie, protected attribute m\-\_\-prior\-Density). \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_aaae16348ff3b0ab3c1c64605fbc1d493}{last\-Computed\-Log\-Prior} () const 
+\begin{DoxyCompactList}\small\item\em Returns the logarithm of the last computed Prior value. Access to protected attribute m\-\_\-last\-Computed\-Log\-Prior. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a500cbccdedf8dbc7c1f9652c262a160a}{last\-Computed\-Log\-Likelihood} () const 
+\begin{DoxyCompactList}\small\item\em Returns the logarithm of the last computed likelihood value. Access to protected attribute m\-\_\-last\-Computed\-Log\-Likelihood. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf}{Base\-Joint\-Pdf}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a3cafafe8c5ea2353eedaecee156f609a}{m\-\_\-prior\-Density}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function}{Base\-Scalar\-Function}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a8e2506801de447f8acd187f8edfa330d}{m\-\_\-likelihood\-Function}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{m\-\_\-likelihood\-Exponent}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2b1c5582be60a876a6dd08766e7e31ed}{m\-\_\-last\-Computed\-Log\-Prior}
+\item 
+double \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af97f3ff0d65154366e31d14fd88ccb38}{m\-\_\-last\-Computed\-Log\-Likelihood}
+\item 
+V \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af4252d2628298423a60335eef72136c6}{m\-\_\-tmp\-Vector1}
+\item 
+V \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2c81721bddf0ffd5547751f1a8221a5d}{m\-\_\-tmp\-Vector2}
+\item 
+M $\ast$ \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a686da1b57929c8b506a5e8fe8974603d}{m\-\_\-tmp\-Matrix}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf$<$ V, M $>$}
+
+A class for handling Bayesian joint P\-D\-Fs. 
+
+This class allows the mathematical definition of a Bayesian Joint P\-D\-F. 
+
+Definition at line 49 of file Bayesian\-Joint\-Pdf.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a035122f1015976118ba96c9cd37edda0}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!Bayesian\-Joint\-Pdf@{Bayesian\-Joint\-Pdf}}
+\index{Bayesian\-Joint\-Pdf@{Bayesian\-Joint\-Pdf}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{Bayesian\-Joint\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::{\bf Bayesian\-Joint\-Pdf} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Base\-Joint\-Pdf}$<$ V, M $>$ \&}]{prior\-Density, }
+\item[{const {\bf Base\-Scalar\-Function}$<$ V, M $>$ \&}]{likelihood\-Function, }
+\item[{double}]{likelihood\-Exponent, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{intersection\-Domain}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a035122f1015976118ba96c9cd37edda0}
+
+
+Default constructor. 
+
+Instantiates an object of this class given a prefix and a scalar function. The domain of the scalar function is assigned to the protected attribute m\-\_\-domain\-Set, and the scalar fiction is also itself copied to the protected attribute m\-\_\-scalar\-Function. 
+
+Definition at line 33 of file Bayesian\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+39   :
+40   BaseJointPdf<V,M>(((std::string)(prefix)+\textcolor{stringliteral}{"bay"}).c\_str(),intersectionDomain),
+41   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a3cafafe8c5ea2353eedaecee156f609a}{m\_priorDensity}             (priorDensity),
+42   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a8e2506801de447f8acd187f8edfa330d}{m\_likelihoodFunction}       (likelihoodFunction),
+43   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{m\_likelihoodExponent}       (likelihoodExponent),
+44   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2b1c5582be60a876a6dd08766e7e31ed}{m\_lastComputedLogPrior}     (0.),
+45   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af97f3ff0d65154366e31d14fd88ccb38}{m\_lastComputedLogLikelihood}(0.),
+46   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af4252d2628298423a60335eef72136c6}{m\_tmpVector1}               (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}.vectorSpace().zeroVector()),
+47   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2c81721bddf0ffd5547751f1a8221a5d}{m\_tmpVector2}               (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}.vectorSpace().zeroVector()),
+48   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a686da1b57929c8b506a5e8fe8974603d}{m\_tmpMatrix}                (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}.vectorSpace().newMatrix())
+49 \{
+50 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a060c1d9fcfd092dbc5501afaa9b362db}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!$\sim$\-Bayesian\-Joint\-Pdf@{$\sim$\-Bayesian\-Joint\-Pdf}}
+\index{$\sim$\-Bayesian\-Joint\-Pdf@{$\sim$\-Bayesian\-Joint\-Pdf}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{$\sim$\-Bayesian\-Joint\-Pdf}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::$\sim${\bf Bayesian\-Joint\-Pdf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a060c1d9fcfd092dbc5501afaa9b362db}
+
+
+Destructor. 
+
+
+
+Definition at line 53 of file Bayesian\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+54 \{
+55   \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a686da1b57929c8b506a5e8fe8974603d}{m\_tmpMatrix};
+56 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_ad67362b4ab48a722db976430cf03165e}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!actual\-Value@{actual\-Value}}
+\index{actual\-Value@{actual\-Value}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{actual\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ double {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::actual\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_ad67362b4ab48a722db976430cf03165e}
+
+
+Actual value of the P\-D\-F (scalar function). 
+
+If the exponent of the likelihood function (likelihood\-Exponent) is zero, i.\-e. the likelihood is constant and unitary, then the actual value is the value of the prior P\-D\-F; otherwise, the actual value is scaled (multiplied) by a power of the value of the likelihood function. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a3c367a0cc3fb707a136c5df47dd414c1}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 82 of file Bayesian\-Joint\-Pdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+88 \{
+89   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+90     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering BayesianJointPdf<V,M>::actualValue()"}
+91                             << \textcolor{stringliteral}{": domainVector = "} << domainVector
+92                             << std::endl;
+93   \}
+94 
+95   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(domainVector.sizeLocal() != this->
+      \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}.vectorSpace().dimLocal(),
+96                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+97                       \textcolor{stringliteral}{"BayesianJointPdf<V,M>::actualValue()"},
+98                       \textcolor{stringliteral}{"invalid input"});
+99 
+100   V* gradVLike = NULL;
+101   \textcolor{keywordflow}{if} (gradVector) gradVLike = &\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af4252d2628298423a60335eef72136c6}{m\_tmpVector1};
+102 
+103   M* hessianMLike = NULL;
+104   \textcolor{keywordflow}{if} (hessianMatrix) hessianMLike = \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a686da1b57929c8b506a5e8fe8974603d}{m\_tmpMatrix};
+105 
+106   V* hessianELike = NULL;
+107   \textcolor{keywordflow}{if} (hessianEffect) hessianELike = &\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2c81721bddf0ffd5547751f1a8221a5d}{m\_tmpVector2};
+108 
+109   \textcolor{keywordtype}{double} value1 = \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a3cafafe8c5ea2353eedaecee156f609a}{m\_priorDensity}.actualValue (domainVector,domainDirection,gradVector,
+      hessianMatrix,hessianEffect);
+110   \textcolor{keywordtype}{double} value2 = 1.;
+111   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{m\_likelihoodExponent} != 0.) \{
+112     value2 = \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a8e2506801de447f8acd187f8edfa330d}{m\_likelihoodFunction}.actualValue(domainVector,domainDirection,gradVLike ,
+      hessianMLike ,hessianELike );
+113   \}
+114 
+115   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((gradVector || hessianMatrix || hessianEffect),
+116                       \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+117                       \textcolor{stringliteral}{"BayesianJointPdf<V,M>::actualValue()"},
+118                       \textcolor{stringliteral}{"incomplete code for gradVector, hessianMatrix and hessianEffect calculations"});
+119 
+120   \textcolor{keywordtype}{double} returnValue = value1;
+121   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{m\_likelihoodExponent} == 0.) \{
+122     \textcolor{comment}{// Do nothing}
+123   \}
+124   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{m\_likelihoodExponent} == 1.) \{
+125     returnValue *= value2;
+126   \}
+127   \textcolor{keywordflow}{else} \{
+128     returnValue *= pow(value2,\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{m\_likelihoodExponent});
+129   \}
+130   returnValue *= exp(\hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_ae82d4191f17af8c7a26226d127bc7850}{m\_logOfNormalizationFactor}); \textcolor{comment}{// [PDF-02] ???}
+131 
+132   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2b1c5582be60a876a6dd08766e7e31ed}{m\_lastComputedLogPrior}      = log(value1);
+133   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af97f3ff0d65154366e31d14fd88ccb38}{m\_lastComputedLogLikelihood} = \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{m\_likelihoodExponent}*log(
+      value2);
+134 
+135   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+136     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving BayesianJointPdf<V,M>::actualValue()"}
+137                             << \textcolor{stringliteral}{": domainVector = "} << domainVector
+138                             << \textcolor{stringliteral}{", returnValue = "}  << returnValue
+139                             << std::endl;
+140   \}
+141 
+142   \textcolor{keywordflow}{return} returnValue;
+143 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a7e00d685068bcf34253e5a101b539261}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!compute\-Log\-Of\-Normalization\-Factor@{compute\-Log\-Of\-Normalization\-Factor}}
+\index{compute\-Log\-Of\-Normalization\-Factor@{compute\-Log\-Of\-Normalization\-Factor}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{compute\-Log\-Of\-Normalization\-Factor}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::compute\-Log\-Of\-Normalization\-Factor (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{num\-Samples, }
+\item[{bool}]{update\-Factor\-Internally}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a7e00d685068bcf34253e5a101b539261}
+
+
+T\-O\-D\-O\-: Computes the logarithm of the normalization factor. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000014}{Todo}]\-: implement me! \end{DoxyRefDesc}
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_a99d8ab490b093abffd6068b6ea5263bb}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 257 of file Bayesian\-Joint\-Pdf.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+258 \{
+259   \textcolor{keywordtype}{double} value = 0.;
+260 
+261   \textcolor{keywordtype}{double} volume = \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_a67696e86211197938c72cd11863f5cf8}{m\_domainSet}.volume();
+262   \textcolor{keywordflow}{if} (((boost::math::isnan)(volume)) ||
+263       (volume == -INFINITY         ) ||
+264       (volume ==  INFINITY         ) ||
+265       (volume <= 0.                )) \{
+266     \textcolor{comment}{// Do nothing}
+267   \}
+268   \textcolor{keywordflow}{else} \{
+269     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\textcolor{keyword}{true},
+270                         \hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+271                         \textcolor{stringliteral}{"BayesianJointPdf<V,M>::lnValue()"},
+272                         \textcolor{stringliteral}{"incomplete code for computeLogOfNormalizationFactor()"});
+273   \}
+274 
+275   \textcolor{keywordflow}{return} value;
+276 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a500cbccdedf8dbc7c1f9652c262a160a}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!last\-Computed\-Log\-Likelihood@{last\-Computed\-Log\-Likelihood}}
+\index{last\-Computed\-Log\-Likelihood@{last\-Computed\-Log\-Likelihood}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{last\-Computed\-Log\-Likelihood}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::last\-Computed\-Log\-Likelihood (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a500cbccdedf8dbc7c1f9652c262a160a}
+
+
+Returns the logarithm of the last computed likelihood value. Access to protected attribute m\-\_\-last\-Computed\-Log\-Likelihood. 
+
+
+
+Definition at line 75 of file Bayesian\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+76 \{
+77   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af97f3ff0d65154366e31d14fd88ccb38}{m\_lastComputedLogLikelihood};
+78 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_aaae16348ff3b0ab3c1c64605fbc1d493}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!last\-Computed\-Log\-Prior@{last\-Computed\-Log\-Prior}}
+\index{last\-Computed\-Log\-Prior@{last\-Computed\-Log\-Prior}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{last\-Computed\-Log\-Prior}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ double {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::last\-Computed\-Log\-Prior (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_aaae16348ff3b0ab3c1c64605fbc1d493}
+
+
+Returns the logarithm of the last computed Prior value. Access to protected attribute m\-\_\-last\-Computed\-Log\-Prior. 
+
+
+
+Definition at line 68 of file Bayesian\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+69 \{
+70   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2b1c5582be60a876a6dd08766e7e31ed}{m\_lastComputedLogPrior};
+71 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a98e54ee24452e2477469a0c84eecbfca}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!ln\-Value@{ln\-Value}}
+\index{ln\-Value@{ln\-Value}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{ln\-Value}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ double {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::ln\-Value (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{domain\-Vector, }
+\item[{const V $\ast$}]{domain\-Direction, }
+\item[{V $\ast$}]{grad\-Vector, }
+\item[{M $\ast$}]{hessian\-Matrix, }
+\item[{V $\ast$}]{hessian\-Effect}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a98e54ee24452e2477469a0c84eecbfca}
+
+
+Computes the logarithm of the value of the function. 
+
+Analogously to the method \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_ad67362b4ab48a722db976430cf03165e}{actual\-Value()}, if the exponent of the likelihood function (likelihood\-Exponent) is zero then the Logarithm of the value of the function is the logarithm of the value of the prior P\-D\-F; otherwise, the value is scaled (added) by a power of the value of the likelihood function. 
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_aaeb1d91fd791399a502f451b07bb1bfe}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 147 of file Bayesian\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+153 \{
+154   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+155     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering BayesianJointPdf<V,M>::lnValue()"}
+156                             << \textcolor{stringliteral}{": domainVector = "} << domainVector
+157                             << std::endl;
+158   \}
+159 
+160   V* gradVLike = NULL;
+161   \textcolor{keywordflow}{if} (gradVector) gradVLike = &\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af4252d2628298423a60335eef72136c6}{m\_tmpVector1};
+162 
+163   M* hessianMLike = NULL;
+164   \textcolor{keywordflow}{if} (hessianMatrix) hessianMLike = \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a686da1b57929c8b506a5e8fe8974603d}{m\_tmpMatrix};
+165 
+166   V* hessianELike = NULL;
+167   \textcolor{keywordflow}{if} (hessianEffect) hessianELike = &\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2c81721bddf0ffd5547751f1a8221a5d}{m\_tmpVector2};
+168 
+169   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+170     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In BayesianJointPdf<V,M>::lnValue()"}
+171                             << \textcolor{stringliteral}{", domainVector = "} << domainVector
+172                             << \textcolor{stringliteral}{": about to call prior()"}
+173                             << std::endl;
+174   \}
+175 
+176   \textcolor{keywordtype}{double} value1 = \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a3cafafe8c5ea2353eedaecee156f609a}{m\_priorDensity}.lnValue(domainVector,domainDirection,gradVector,
+      hessianMatrix,hessianEffect);
+177 
+178   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+179     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In BayesianJointPdf<V,M>::lnValue()"}
+180                             << \textcolor{stringliteral}{", domainVector = "} << domainVector
+181                             << \textcolor{stringliteral}{": lnPrior = "} << value1
+182                             << std::endl;
+183   \}
+184 
+185   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+186     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In BayesianJointPdf<V,M>::lnValue()"}
+187                             << \textcolor{stringliteral}{", domainVector = "} << domainVector
+188                             << \textcolor{stringliteral}{": about to call likelihood()"}
+189                             << std::endl;
+190   \}
+191 
+192   \textcolor{keywordtype}{double} value2 = 0.;
+193   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{m\_likelihoodExponent} != 0.) \{
+194     value2 = \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a8e2506801de447f8acd187f8edfa330d}{m\_likelihoodFunction}.lnValue(domainVector,domainDirection,gradVLike, 
+      hessianMLike, hessianELike );
+195   \}
+196 
+197   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+198     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In BayesianJointPdf<V,M>::lnValue()"}
+199                             << \textcolor{stringliteral}{", domainVector = "} << domainVector
+200                             << \textcolor{stringliteral}{": value1 = "}       << value1
+201                             << \textcolor{stringliteral}{", value2 = "}       << value2
+202                             << std::endl;
+203     \textcolor{keywordflow}{if} (gradVector) \{
+204       *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In BayesianJointPdf<V,M>::lnValue()"}
+205                               << \textcolor{stringliteral}{", domainVector = "} << domainVector
+206                               << \textcolor{stringliteral}{": gradVector = "}   << *gradVector
+207                               << \textcolor{stringliteral}{", gradVLike = "}    << *gradVLike
+208                               << std::endl;
+209     \}
+210     \textcolor{keywordflow}{if} (hessianMatrix) \{
+211       *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In BayesianJointPdf<V,M>::lnValue()"}
+212                               << \textcolor{stringliteral}{", domainVector = "}  << domainVector
+213                               << \textcolor{stringliteral}{": hessianMatrix = "} << *hessianMatrix
+214                               << \textcolor{stringliteral}{", hessianMLike = "}  << *hessianMLike
+215                               << std::endl;
+216     \}
+217     \textcolor{keywordflow}{if} (hessianEffect) \{
+218       *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In BayesianJointPdf<V,M>::lnValue()"}
+219                               << \textcolor{stringliteral}{", domainVector = "}  << domainVector
+220                               << \textcolor{stringliteral}{": hessianEffect = "} << *hessianEffect
+221                               << \textcolor{stringliteral}{", hessianELike = "}  << *hessianELike
+222                               << std::endl;
+223     \}
+224   \}
+225 
+226   \textcolor{keywordflow}{if} (gradVector   ) *gradVector    += *gradVLike;
+227   \textcolor{keywordflow}{if} (hessianMatrix) *hessianMatrix += *hessianMLike;
+228   \textcolor{keywordflow}{if} (hessianEffect) *hessianEffect += *hessianELike;
+229 
+230   \textcolor{keywordtype}{double} returnValue = value1;
+231   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{m\_likelihoodExponent} == 0.) \{
+232     \textcolor{comment}{// Do nothing}
+233   \}
+234   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{m\_likelihoodExponent} == 1.) \{
+235     returnValue += value2;
+236   \}
+237   \textcolor{keywordflow}{else} \{
+238     returnValue += value2*\hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{m\_likelihoodExponent};
+239   \} \textcolor{comment}{// prudenci 2010/03/05}
+240   returnValue += \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_ae82d4191f17af8c7a26226d127bc7850}{m\_logOfNormalizationFactor}; \textcolor{comment}{// [PDF-02] ???}
+241 
+242   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2b1c5582be60a876a6dd08766e7e31ed}{m\_lastComputedLogPrior}      = value1;
+243   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af97f3ff0d65154366e31d14fd88ccb38}{m\_lastComputedLogLikelihood} = \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{m\_likelihoodExponent}*value2;
+244 
+245   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 54)) \{
+246     *\hyperlink{class_q_u_e_s_o_1_1_base_scalar_function_adf44141aeb765d97613286f88f235f04}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving BayesianJointPdf<V,M>::lnValue()"}
+247                             << \textcolor{stringliteral}{": domainVector = "} << domainVector
+248                             << \textcolor{stringliteral}{", returnValue = "}  << returnValue
+249                             << std::endl;
+250   \}
+251 
+252   \textcolor{keywordflow}{return} returnValue;
+253 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_aa23751ede9ec9f2e7bdd81c5326f47d5}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!set\-Normalization\-Style@{set\-Normalization\-Style}}
+\index{set\-Normalization\-Style@{set\-Normalization\-Style}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{set\-Normalization\-Style}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::set\-Normalization\-Style (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{value}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_aa23751ede9ec9f2e7bdd81c5326f47d5}
+
+
+Sets a value to be used in the normalization style of the prior density P\-D\-F (ie, protected attribute m\-\_\-prior\-Density). 
+
+
+
+Reimplemented from \hyperlink{class_q_u_e_s_o_1_1_base_joint_pdf_ab11f1d096f82cc7857cefe1b92f6b28e}{Q\-U\-E\-S\-O\-::\-Base\-Joint\-Pdf$<$ V, M $>$}.
+
+
+
+Definition at line 60 of file Bayesian\-Joint\-Pdf.\-C.
+
+
+\begin{DoxyCode}
+61 \{
+62   \hyperlink{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a3cafafe8c5ea2353eedaecee156f609a}{m\_priorDensity}.setNormalizationStyle(value);
+63   \textcolor{keywordflow}{return};
+64 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af97f3ff0d65154366e31d14fd88ccb38}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!m\-\_\-last\-Computed\-Log\-Likelihood@{m\-\_\-last\-Computed\-Log\-Likelihood}}
+\index{m\-\_\-last\-Computed\-Log\-Likelihood@{m\-\_\-last\-Computed\-Log\-Likelihood}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-last\-Computed\-Log\-Likelihood}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ double {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-last\-Computed\-Log\-Likelihood\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af97f3ff0d65154366e31d14fd88ccb38}
+
+
+Definition at line 107 of file Bayesian\-Joint\-Pdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2b1c5582be60a876a6dd08766e7e31ed}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!m\-\_\-last\-Computed\-Log\-Prior@{m\-\_\-last\-Computed\-Log\-Prior}}
+\index{m\-\_\-last\-Computed\-Log\-Prior@{m\-\_\-last\-Computed\-Log\-Prior}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-last\-Computed\-Log\-Prior}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ double {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-last\-Computed\-Log\-Prior\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2b1c5582be60a876a6dd08766e7e31ed}
+
+
+Definition at line 106 of file Bayesian\-Joint\-Pdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!m\-\_\-likelihood\-Exponent@{m\-\_\-likelihood\-Exponent}}
+\index{m\-\_\-likelihood\-Exponent@{m\-\_\-likelihood\-Exponent}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-likelihood\-Exponent}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ double {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-likelihood\-Exponent\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a511b1e403ebcab436177491ea8f21c07}
+
+
+Definition at line 105 of file Bayesian\-Joint\-Pdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a8e2506801de447f8acd187f8edfa330d}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!m\-\_\-likelihood\-Function@{m\-\_\-likelihood\-Function}}
+\index{m\-\_\-likelihood\-Function@{m\-\_\-likelihood\-Function}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-likelihood\-Function}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Base\-Scalar\-Function}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-likelihood\-Function\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a8e2506801de447f8acd187f8edfa330d}
+
+
+Definition at line 104 of file Bayesian\-Joint\-Pdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a3cafafe8c5ea2353eedaecee156f609a}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!m\-\_\-prior\-Density@{m\-\_\-prior\-Density}}
+\index{m\-\_\-prior\-Density@{m\-\_\-prior\-Density}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-prior\-Density}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Base\-Joint\-Pdf}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-prior\-Density\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a3cafafe8c5ea2353eedaecee156f609a}
+
+
+Definition at line 103 of file Bayesian\-Joint\-Pdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a686da1b57929c8b506a5e8fe8974603d}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!m\-\_\-tmp\-Matrix@{m\-\_\-tmp\-Matrix}}
+\index{m\-\_\-tmp\-Matrix@{m\-\_\-tmp\-Matrix}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-tmp\-Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ M$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-tmp\-Matrix\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a686da1b57929c8b506a5e8fe8974603d}
+
+
+Definition at line 111 of file Bayesian\-Joint\-Pdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af4252d2628298423a60335eef72136c6}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!m\-\_\-tmp\-Vector1@{m\-\_\-tmp\-Vector1}}
+\index{m\-\_\-tmp\-Vector1@{m\-\_\-tmp\-Vector1}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-tmp\-Vector1}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-tmp\-Vector1\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_af4252d2628298423a60335eef72136c6}
+
+
+Definition at line 109 of file Bayesian\-Joint\-Pdf.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2c81721bddf0ffd5547751f1a8221a5d}{\index{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}!m\-\_\-tmp\-Vector2@{m\-\_\-tmp\-Vector2}}
+\index{m\-\_\-tmp\-Vector2@{m\-\_\-tmp\-Vector2}!QUESO::BayesianJointPdf@{Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}}
+\subsubsection[{m\-\_\-tmp\-Vector2}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V {\bf Q\-U\-E\-S\-O\-::\-Bayesian\-Joint\-Pdf}$<$ V, M $>$\-::m\-\_\-tmp\-Vector2\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_bayesian_joint_pdf_a2c81721bddf0ffd5547751f1a8221a5d}
+
+
+Definition at line 110 of file Bayesian\-Joint\-Pdf.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_bayesian_joint_pdf_8h}{Bayesian\-Joint\-Pdf.\-h}\item 
+src/stats/src/\hyperlink{_bayesian_joint_pdf_8_c}{Bayesian\-Joint\-Pdf.\-C}\end{DoxyCompactItemize}

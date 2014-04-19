@@ -1,0 +1,2199 @@
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence}{\section{Q\-U\-E\-S\-O\-:\-:Base\-Vector\-Sequence$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_base_vector_sequence}\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}}
+}
+
+
+Base class for handling vector and array samples (sequence of vectors or arrays).  
+
+
+
+
+{\ttfamily \#include $<$Vector\-Sequence.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Base\-Vector\-Sequence$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_vector_sequence__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Base\-Vector\-Sequence$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_base_vector_sequence__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a42a447ef253acf28ccb9a20706665b54}{Base\-Vector\-Sequence} (const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_af9a4dd979a2fa8dee85bb07793b59ba2}{vector\-Space}, unsigned int \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{sub\-Sequence\-Size}, const std\-::string \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a48f6fe02cf77f4233d3bcdfef3870f19}{name})
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a2e86f2e6dc72338301fcc6898e6f87d4}{$\sim$\-Base\-Vector\-Sequence} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Sequence methods}\par
+\begin{DoxyCompactItemize}
+\item 
+virtual unsigned int \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{sub\-Sequence\-Size} () const =0
+\begin{DoxyCompactList}\small\item\em Size of the sub-\/sequence of vectors. See template specialization. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a188dc4632db5b93c01e8bc69bf631f4a}{unified\-Sequence\-Size} () const 
+\begin{DoxyCompactList}\small\item\em Calculates the size of the unified sequence of vectors. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a2fefedf9e5b90f22881103b3f92555f6}{vector\-Size\-Local} () const 
+\begin{DoxyCompactList}\small\item\em Local dimension (size) of the vector space. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aac107ca7ba8ce666f8f994e8bbe922a8}{vector\-Size\-Global} () const 
+\begin{DoxyCompactList}\small\item\em Global dimension (size) of the vector space. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_af9a4dd979a2fa8dee85bb07793b59ba2}{vector\-Space} () const 
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_q_u_e_s_o_1_1_vector}{Vector} space; access to protected attribute Vector\-Space$<$\-V,\-M$>$\& m\-\_\-vector\-Space. \end{DoxyCompactList}\item 
+const std\-::string \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a48f6fe02cf77f4233d3bcdfef3870f19}{name} () const 
+\begin{DoxyCompactList}\small\item\em Access to protected attribute {\ttfamily m\-\_\-name\-:} name of the sequence of vectors. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0a2f78cd12e0f136f7801f7d0175b849}{set\-Name} (const std\-::string \&new\-Name)
+\begin{DoxyCompactList}\small\item\em Changes the name of the sequence of vectors. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aae0804eacc51b37e84b1bd329ce1711c}{clear} ()
+\begin{DoxyCompactList}\small\item\em Reset the values and the size of the sequence of vectors. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1b2c4cb7623e0034e4cd66f6443f2fdd}{sub\-Min\-Plain} () const 
+\begin{DoxyCompactList}\small\item\em Finds the minimum value of the sub-\/sequence. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5d330cec5b2c7d9d7eb8079bed4a07ea}{unified\-Min\-Plain} () const 
+\begin{DoxyCompactList}\small\item\em Finds the minimum value of the unified sequence. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a152da47e6633bcac5f32b588b98d6f4f}{sub\-Max\-Plain} () const 
+\begin{DoxyCompactList}\small\item\em Finds the maximum value of the sub-\/sequence. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a277e760600eb5aa64da9561634a19d63}{unified\-Max\-Plain} () const 
+\begin{DoxyCompactList}\small\item\em Finds the maximum value of the unified sequence. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aba7a42fcab55a24264ff80e12d7da2de}{sub\-Mean\-Plain} () const 
+\begin{DoxyCompactList}\small\item\em Finds the mean value of the sub-\/sequence. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a64ad551265df354e8c4ccff0d14cb883}{unified\-Mean\-Plain} () const 
+\begin{DoxyCompactList}\small\item\em Finds the mean value of the unified sequence. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a679cf7f46c588ed4ba75beeb8fe8ae2d}{sub\-Median\-Plain} () const 
+\begin{DoxyCompactList}\small\item\em Finds the median value of the sub-\/sequence. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_acdb70319baecc3985e56b9e85502e3cf}{unified\-Median\-Plain} () const 
+\begin{DoxyCompactList}\small\item\em Finds the median value of the unified sequence. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a9de650586582d258eb977444d83286a6}{sub\-Sample\-Variance\-Plain} () const 
+\begin{DoxyCompactList}\small\item\em Finds the variance of a sample of the sub-\/sequence. \end{DoxyCompactList}\item 
+const V \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a34a8b31757c6b728feefcf396d62c12f}{unified\-Sample\-Variance\-Plain} () const 
+\begin{DoxyCompactList}\small\item\em Finds the variance of a sample of the unified sequence. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_box_subset}{Box\-Subset}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5c5ede038fbdb296e3913bc39142b7ff}{sub\-Box\-Plain} () const 
+\begin{DoxyCompactList}\small\item\em Finds a box subset of the sub-\/sequence (given by its min and max values calculated via sub\-Min\-Plain and sub\-Max\-Plain). \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_box_subset}{Box\-Subset}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a69757707519d6d10b454c36ee624fecc}{unified\-Box\-Plain} () const 
+\begin{DoxyCompactList}\small\item\em Finds a box subset of the unified-\/sequence (given by the min and max values of the unified sequence calculated via unified\-Min\-Plain and unified\-Max\-Plain). \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{delete\-Stored\-Vectors} ()
+\begin{DoxyCompactList}\small\item\em Deletes all the stored vectors. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a50419477cd593478815aa52af58695a8}{append} (const \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence}{Base\-Vector\-Sequence}$<$ V, M $>$ \&src, unsigned int initial\-Pos, unsigned int num\-Pos)
+\begin{DoxyCompactList}\small\item\em Appends the vector {\ttfamily src} to {\ttfamily this} vector. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a971e9e1a87e4eb47b4910348a6b437d5}{sub\-Positions\-Of\-Maximum} (const \hyperlink{class_q_u_e_s_o_1_1_scalar_sequence}{Scalar\-Sequence}$<$ double $>$ \&sub\-Corresponding\-Scalar\-Values, \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence}{Base\-Vector\-Sequence}$<$ V, M $>$ \&sub\-Positions\-Of\-Maximum)
+\begin{DoxyCompactList}\small\item\em Finds the positions where the maximum element occurs in the sub-\/sequence. \end{DoxyCompactList}\item 
+double \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4269482101b2bcdb1975543f8191ab4c}{unified\-Positions\-Of\-Maximum} (const \hyperlink{class_q_u_e_s_o_1_1_scalar_sequence}{Scalar\-Sequence}$<$ double $>$ \&sub\-Corresponding\-Scalar\-Values, \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence}{Base\-Vector\-Sequence}$<$ V, M $>$ \&unified\-Positions\-Of\-Maximum)
+\begin{DoxyCompactList}\small\item\em Finds the positions where the maximum element occurs in the unified sequence. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_adc238af7f6e8af2402ab791de7d60af5}{resize\-Sequence} (unsigned int new\-Sub\-Sequence\-Size)=0
+\begin{DoxyCompactList}\small\item\em Resize the sequence. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab007ea121708b1b1a63553433b428413}{reset\-Values} (unsigned int initial\-Pos, unsigned int num\-Pos)=0
+\begin{DoxyCompactList}\small\item\em Reset the values of the sequence. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a2b41ed436f95a1816a811fc368adaf79}{erase\-Positions} (unsigned int initial\-Pos, unsigned int num\-Pos)=0
+\begin{DoxyCompactList}\small\item\em Erase {\ttfamily num\-Pos} positions in the sequence, starting at position {\ttfamily initial\-Pos}. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a656d47a18b401d6d914b0daf2dea88b0}{get\-Position\-Values} (unsigned int pos\-Id, V \&vec) const =0
+\begin{DoxyCompactList}\small\item\em Gets the values of the sequence at position {\ttfamily pos\-Id} and stores them at {\ttfamily vec}. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5bcce98b68e0e24c05136e7a3bb50c12}{set\-Position\-Values} (unsigned int pos\-Id, const V \&vec)=0
+\begin{DoxyCompactList}\small\item\em Set the values in {\ttfamily vec} at position {\ttfamily pos\-Id} of the sequence. See template specialization. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aa1081248d23a2b18307962993892eb4c}{set\-Gaussian} (const V \&mean\-Vec, const V \&std\-Dev\-Vec)
+\begin{DoxyCompactList}\small\item\em Sets the values of the sequence as a Gaussian distribution of mean given by {\ttfamily mean\-Vec} and standard deviation by {\ttfamily std\-Dev\-Vec}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a96d44e7dd53a077a4c7be73f008b351e}{set\-Uniform} (const V \&a\-Vec, const V \&b\-Vec)
+\begin{DoxyCompactList}\small\item\em Sets the values of the sequence as a uniform distribution between the values given by vectors {\ttfamily a\-Vec} and {\ttfamily b\-Vec}. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab36f3e2511108259c272d8a148452505}{sub\-Mean\-Extra} (unsigned int initial\-Pos, unsigned int num\-Pos, V \&mean\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Finds the mean value of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a6ee252d07395644a9175aabf2bad7aed}{unified\-Mean\-Extra} (unsigned int initial\-Pos, unsigned int num\-Pos, V \&unified\-Mean\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Finds the mean value of the unified sequence of {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a80caa77a7258c3ae44b6320846cfe29d}{sub\-Median\-Extra} (unsigned int initial\-Pos, unsigned int num\-Pos, V \&median\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Finds the median value of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab3b300eb093fe8d726996db5726e59e4}{unified\-Median\-Extra} (unsigned int initial\-Pos, unsigned int local\-Num\-Pos, V \&unified\-Median\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Finds the median value of the unified sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a6a786862951dfae45a9daebc9d81e676}{sub\-Sample\-Variance\-Extra} (unsigned int initial\-Pos, unsigned int num\-Pos, const V \&mean\-Vec, V \&sam\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Finds the sample variance of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_abc759076a4c5d9e1586a6d93629778ff}{unified\-Sample\-Variance\-Extra} (unsigned int initial\-Pos, unsigned int num\-Pos, const V \&unified\-Mean\-Vec, V \&unified\-Sam\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Finds the sample variance of the unified sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_af21f1923841372684ae9e5812767832d}{sub\-Population\-Variance} (unsigned int initial\-Pos, unsigned int num\-Pos, const V \&mean\-Vec, V \&pop\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Finds the population variance of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ad9e165f7a0d57e2fa45e7b3926dac1a2}{unified\-Population\-Variance} (unsigned int initial\-Pos, unsigned int num\-Pos, const V \&unified\-Mean\-Vec, V \&unified\-Pop\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Finds the population variance of the unified-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3a831c06c8ede53b84ce72fac3f018c0}{auto\-Covariance} (unsigned int initial\-Pos, unsigned int num\-Pos, const V \&mean\-Vec, unsigned int lag, V \&cov\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Calculates the autocovariance. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4d322b34c43ad47df9a76582a0693d0}{auto\-Corr\-Via\-Def} (unsigned int initial\-Pos, unsigned int num\-Pos, unsigned int lag, V \&corr\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Calculates autocorrelation via definition. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a709a63b678508c47bedd416ece5342ef}{auto\-Corr\-Via\-Fft} (unsigned int initial\-Pos, unsigned int num\-Pos, const std\-::vector$<$ unsigned int $>$ \&lags, std\-::vector$<$ V $\ast$ $>$ \&corr\-Vecs) const =0
+\begin{DoxyCompactList}\small\item\em Calculates autocorrelation via Fast Fourier transforms (F\-F\-T). See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_af9f2478ed4112aa615caef21bf26ab35}{auto\-Corr\-Via\-Fft} (unsigned int initial\-Pos, unsigned int num\-Pos, unsigned int num\-Sum, V \&auto\-Corrs\-Sum\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Calculates autocorrelation via Fast Fourier transforms (F\-F\-T). See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a14fd8d5c3ff3fb2f7eb3f4b9e7131d0c}{sub\-Min\-Max\-Extra} (unsigned int initial\-Pos, unsigned int num\-Pos, V \&min\-Vec, V \&max\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Finds the minimum and the maximum values of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a2d6cd9b93580715762318b51edbd9463}{unified\-Min\-Max\-Extra} (unsigned int initial\-Pos, unsigned int num\-Pos, V \&unified\-Min\-Vec, V \&unified\-Max\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Finds the minimum and the maximum values of the unified sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a66c6af1f9a509720264d121b408a45f3}{sub\-Histogram} (unsigned int initial\-Pos, const V \&min\-Vec, const V \&max\-Vec, std\-::vector$<$ V $\ast$ $>$ \&centers\-For\-All\-Bins, std\-::vector$<$ V $\ast$ $>$ \&quantts\-For\-All\-Bins) const =0
+\begin{DoxyCompactList}\small\item\em Calculates the histogram of the sub-\/sequence. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a04653bd3bd8b9c29ae6d03a2eb0b3779}{unified\-Histogram} (unsigned int initial\-Pos, const V \&unified\-Min\-Vec, const V \&unified\-Max\-Vec, std\-::vector$<$ V $\ast$ $>$ \&unified\-Centers\-For\-All\-Bins, std\-::vector$<$ V $\ast$ $>$ \&unified\-Quantts\-For\-All\-Bins) const =0
+\begin{DoxyCompactList}\small\item\em Calculates the histogram of the unified sequence. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a62cb96f153a8608ef1727265a734aacb}{sub\-Inter\-Quantile\-Range} (unsigned int initial\-Pos, V \&iqr\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Returns the interquartile range of the values in the sub-\/sequence. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a49b50dfef9bf3475eb681855268c050d}{unified\-Inter\-Quantile\-Range} (unsigned int initial\-Pos, V \&unified\-Iqr\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Returns the interquartile range of the values in the unified sequence. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_af3210c9073cedfcd8dfe79ed323975a2}{sub\-Scales\-For\-Kde} (unsigned int initial\-Pos, const V \&iqr\-Vec, unsigned int kde\-Dimension, V \&scale\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Selects the scales (bandwidth, {\ttfamily scale\-Vec}) for the kernel density estimation, considering only the sub-\/sequence. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a68eae0b37fc934391ce7af2c370fd585}{unified\-Scales\-For\-Kde} (unsigned int initial\-Pos, const V \&unified\-Iqr\-Vec, unsigned int kde\-Dimension, V \&unified\-Scale\-Vec) const =0
+\begin{DoxyCompactList}\small\item\em Selects the scales (bandwidth) for the kernel density estimation, considering the unified sequence. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0fec2746f326acad09b406ad8efe1cfc}{sub\-Gaussian1d\-Kde} (unsigned int initial\-Pos, const V \&scale\-Vec, const std\-::vector$<$ V $\ast$ $>$ \&evaluation\-Param\-Vecs, std\-::vector$<$ V $\ast$ $>$ \&density\-Vecs) const =0
+\begin{DoxyCompactList}\small\item\em Gaussian kernel for the K\-D\-E estimate of the sub-\/sequence. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aa799ae2fde5edc96939990925d7be9ac}{unified\-Gaussian1d\-Kde} (unsigned int initial\-Pos, const V \&unified\-Scale\-Vec, const std\-::vector$<$ V $\ast$ $>$ \&unified\-Evaluation\-Param\-Vecs, std\-::vector$<$ V $\ast$ $>$ \&unified\-Density\-Vecs) const =0
+\begin{DoxyCompactList}\small\item\em Gaussian kernel for the K\-D\-E estimate of the unified sequence. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aa59738c6df15b1b369b90f0d025fb6f2}{sub\-Write\-Contents} (unsigned int initial\-Pos, unsigned int num\-Pos, const std\-::string \&file\-Name, const std\-::string \&file\-Type, const std\-::set$<$ unsigned int $>$ \&allowed\-Sub\-Env\-Ids) const =0
+\begin{DoxyCompactList}\small\item\em Writes info of the sub-\/sequence to a file. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a7226d1093a7ab07792410414237f08da}{sub\-Write\-Contents} (unsigned int initial\-Pos, unsigned int num\-Pos, std\-::ofstream \&ofsvar, const std\-::string \&file\-Type) const =0
+\begin{DoxyCompactList}\small\item\em Writes info of the sub-\/sequence to a file. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3987ee6d026842e4ddaeaf0bc850ef83}{unified\-Write\-Contents} (const std\-::string \&file\-Name, const std\-::string \&file\-Type) const =0
+\begin{DoxyCompactList}\small\item\em Writes info of the unified sequence to a file. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afcb5935b592ab2e7ee39d23b08bcce62}{unified\-Read\-Contents} (const std\-::string \&file\-Name, const std\-::string \&file\-Type, const unsigned int \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{sub\-Sequence\-Size})=0
+\begin{DoxyCompactList}\small\item\em Reads info of the unified sequence from a file. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4ff00d9659c59653844b78410571f3fe}{select} (const std\-::vector$<$ unsigned int $>$ \&ids\-Of\-Unique\-Positions)=0
+\begin{DoxyCompactList}\small\item\em Select positions in the sequence of vectors. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_adfb88fdbaa1c6b2b040ef888633619ef}{filter} (unsigned int initial\-Pos, unsigned int spacing)=0
+\begin{DoxyCompactList}\small\item\em Filters positions in the sequence of vectors, starting at {\ttfamily initial\-Pos}, and with spacing given by {\ttfamily spacing}. See template specialization. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e34f6205e26eab1e9cbe457dbd376bc}{compute\-Filter\-Params} (std\-::ofstream $\ast$passed\-Ofs, unsigned int \&initial\-Pos, unsigned int \&spacing)
+\begin{DoxyCompactList}\small\item\em Computes the filtering parameters {\ttfamily spacing} for the sequence of vectors. \end{DoxyCompactList}\item 
+virtual double \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a7f70b1762b6ba91a8f619403453cf2b2}{estimate\-Conv\-Brooks\-Gelman} (unsigned int initial\-Pos, unsigned int num\-Pos) const =0
+\begin{DoxyCompactList}\small\item\em Estimates convergence rate using Brooks \& Gelman method. See template specialization. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0ec0f2595d606723d0b069e1632cc348}{extract\-Scalar\-Seq} (unsigned int initial\-Pos, unsigned int spacing, unsigned int num\-Pos, unsigned int param\-Id, \hyperlink{class_q_u_e_s_o_1_1_scalar_sequence}{Scalar\-Sequence}$<$ double $>$ \&scalar\-Seq) const =0
+\begin{DoxyCompactList}\small\item\em Extracts a sequence of scalars of size {\ttfamily num\-Pos}, starting at position {\ttfamily initial\-Pos}, given spacing {\ttfamily spacing}. See template specialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a35629a6937e22752e3b252e84457e791}{copy} (const \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence}{Base\-Vector\-Sequence}$<$ V, M $>$ \&src)
+\begin{DoxyCompactList}\small\item\em Copies vector sequence {\ttfamily src} to {\ttfamily this}. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aae5259810d72d393328369d8d4087d5d}{extract\-Raw\-Data} (unsigned int initial\-Pos, unsigned int spacing, unsigned int num\-Pos, unsigned int param\-Id, std\-::vector$<$ double $>$ \&raw\-Data) const =0
+\begin{DoxyCompactList}\small\item\em Extracts the raw data. See template specialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Base\-Environment} \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\-\_\-env}
+\item 
+const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\-\_\-vector\-Space}
+\item 
+std\-::string \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}{m\-\_\-name}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_fft}{Fft}$<$ double $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_add593820ac53e4adccb3002ba0becfa7}{m\-\_\-fft\-Obj}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{m\-\_\-sub\-Min\-Plain}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{m\-\_\-unified\-Min\-Plain}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{m\-\_\-sub\-Max\-Plain}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{m\-\_\-unified\-Max\-Plain}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aea341eac0220157a44f373e1377e0ca0}{m\-\_\-sub\-Mean\-Plain}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0bb5f2fa3d8369412b8cf5f6795b95b4}{m\-\_\-unified\-Mean\-Plain}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a99ab57b8cb62b14eedd606b9d2e75672}{m\-\_\-sub\-Median\-Plain}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ac723ac11f629ba07915f7520b36e4138}{m\-\_\-unified\-Median\-Plain}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a25dc9797633cb4b23b7330c5d3de9dd7}{m\-\_\-sub\-Sample\-Variance\-Plain}
+\item 
+V $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab6fa4daa233c386ea96718cf6cac603b}{m\-\_\-unified\-Sample\-Variance\-Plain}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_box_subset}{Box\-Subset}$<$ V, M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8fa117289936a6b0cd83dd55aaf55047}{m\-\_\-sub\-Box\-Plain}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_box_subset}{Box\-Subset}$<$ V, M $>$ $\ast$ \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a13e15d877a0826605eb62fd65244761a}{m\-\_\-unified\-Box\-Plain}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$}
+
+Base class for handling vector and array samples (sequence of vectors or arrays). 
+
+This class handles either vector or array samples generated by an algorithm, as well as operations that can be carried over them, e.\-g., calculation of means, correlation and covariance matrices. 
+
+Definition at line 54 of file Vector\-Sequence.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a42a447ef253acf28ccb9a20706665b54}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!Base\-Vector\-Sequence@{Base\-Vector\-Sequence}}
+\index{Base\-Vector\-Sequence@{Base\-Vector\-Sequence}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{Base\-Vector\-Sequence}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::{\bf Base\-Vector\-Sequence} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector\-Space}$<$ V, M $>$ \&}]{vector\-Space, }
+\item[{unsigned int}]{sub\-Sequence\-Size, }
+\item[{const std\-::string \&}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a42a447ef253acf28ccb9a20706665b54}
+
+
+Default constructor. 
+
+
+
+Definition at line 34 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+38   :
+39   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}                       (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_af9a4dd979a2fa8dee85bb07793b59ba2}{vectorSpace}.env()),
+40   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}               (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_af9a4dd979a2fa8dee85bb07793b59ba2}{vectorSpace}),
+41   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}{m\_name}                      (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a48f6fe02cf77f4233d3bcdfef3870f19}{name}),
+42   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_add593820ac53e4adccb3002ba0becfa7}{m\_fftObj}                    (\textcolor{keyword}{new} Fft<double>(\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env})),
+43   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{m\_subMinPlain}               (NULL),
+44   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{m\_unifiedMinPlain}           (NULL),
+45   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{m\_subMaxPlain}               (NULL),
+46   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{m\_unifiedMaxPlain}           (NULL),
+47   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aea341eac0220157a44f373e1377e0ca0}{m\_subMeanPlain}              (NULL),
+48   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0bb5f2fa3d8369412b8cf5f6795b95b4}{m\_unifiedMeanPlain}          (NULL),
+49   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a99ab57b8cb62b14eedd606b9d2e75672}{m\_subMedianPlain}            (NULL),
+50   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ac723ac11f629ba07915f7520b36e4138}{m\_unifiedMedianPlain}        (NULL),
+51   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a25dc9797633cb4b23b7330c5d3de9dd7}{m\_subSampleVariancePlain}    (NULL),
+52   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab6fa4daa233c386ea96718cf6cac603b}{m\_unifiedSampleVariancePlain}(NULL),
+53   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8fa117289936a6b0cd83dd55aaf55047}{m\_subBoxPlain}               (NULL),
+54   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a13e15d877a0826605eb62fd65244761a}{m\_unifiedBoxPlain}           (NULL)
+55 \{
+56   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}) \{\}; \textcolor{comment}{// just to avoid compiler warning}
+57 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a2e86f2e6dc72338301fcc6898e6f87d4}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!$\sim$\-Base\-Vector\-Sequence@{$\sim$\-Base\-Vector\-Sequence}}
+\index{$\sim$\-Base\-Vector\-Sequence@{$\sim$\-Base\-Vector\-Sequence}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{$\sim$\-Base\-Vector\-Sequence}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::$\sim${\bf Base\-Vector\-Sequence} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a2e86f2e6dc72338301fcc6898e6f87d4}
+
+
+Destructor. 
+
+
+
+Definition at line 60 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+61 \{
+62   \textcolor{comment}{//clear();}
+63   this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{deleteStoredVectors}();
+64   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_add593820ac53e4adccb3002ba0becfa7}{m\_fftObj} != NULL) \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_add593820ac53e4adccb3002ba0becfa7}{m\_fftObj};
+65 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a50419477cd593478815aa52af58695a8}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!append@{append}}
+\index{append@{append}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{append}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::append (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Vector\-Sequence}$<$ V, M $>$ \&}]{src, }
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a50419477cd593478815aa52af58695a8}
+
+
+Appends the vector {\ttfamily src} to {\ttfamily this} vector. 
+
+This routine deletes all stored computed vectors 
+
+Definition at line 357 of file Vector\-Sequence.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::get\-Position\-Values(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::sub\-Sequence\-Size(), U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O, and Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::vector\-Space().
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Bal\-Linked\-Chains\-\_\-all(), and Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Unb\-Linked\-Chains\-\_\-all().
+
+
+\begin{DoxyCode}
+361 \{
+362   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((src.subSequenceSize() < (initialPos+1)),
+363                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+364                       \textcolor{stringliteral}{"BaseVectorSequence<V,M>::append()"},
+365                       \textcolor{stringliteral}{"initialPos is too big"});
+366 
+367   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((src.subSequenceSize() < (initialPos+numPos)),
+368                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+369                       \textcolor{stringliteral}{"BaseVectorSequence<V,M>::append()"},
+370                       \textcolor{stringliteral}{"numPos is too big"});
+371 
+372   this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{deleteStoredVectors}();
+373   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} currentSize = this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}();
+374   this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_adc238af7f6e8af2402ab791de7d60af5}{resizeSequence}(currentSize+numPos);
+375   V tmpVec(src.vectorSpace().zeroVector());
+376   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < numPos; ++i) \{
+377     src.getPositionValues(initialPos+i,tmpVec);
+378     this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5bcce98b68e0e24c05136e7a3bb50c12}{setPositionValues}(currentSize+i,tmpVec);
+379   \}
+380 
+381   \textcolor{keywordflow}{return};
+382 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_ab4d322b34c43ad47df9a76582a0693d0}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!auto\-Corr\-Via\-Def@{auto\-Corr\-Via\-Def}}
+\index{auto\-Corr\-Via\-Def@{auto\-Corr\-Via\-Def}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{auto\-Corr\-Via\-Def}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::auto\-Corr\-Via\-Def (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{unsigned int}]{lag, }
+\item[{V \&}]{corr\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_ab4d322b34c43ad47df9a76582a0693d0}
+
+
+Calculates autocorrelation via definition. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a5f49d2dcabf21016d3c210ffa5f12462}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a057921bf605783c85def57f71cc2101e}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a709a63b678508c47bedd416ece5342ef}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!auto\-Corr\-Via\-Fft@{auto\-Corr\-Via\-Fft}}
+\index{auto\-Corr\-Via\-Fft@{auto\-Corr\-Via\-Fft}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{auto\-Corr\-Via\-Fft}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::auto\-Corr\-Via\-Fft (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{const std\-::vector$<$ unsigned int $>$ \&}]{lags, }
+\item[{std\-::vector$<$ V $\ast$ $>$ \&}]{corr\-Vecs}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a709a63b678508c47bedd416ece5342ef}
+
+
+Calculates autocorrelation via Fast Fourier transforms (F\-F\-T). See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_ac4f7e6626d4c18b89003e442e91281ea}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_aa0468a432b6ee77a810357d0ef3b8690}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_af9f2478ed4112aa615caef21bf26ab35}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!auto\-Corr\-Via\-Fft@{auto\-Corr\-Via\-Fft}}
+\index{auto\-Corr\-Via\-Fft@{auto\-Corr\-Via\-Fft}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{auto\-Corr\-Via\-Fft}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::auto\-Corr\-Via\-Fft (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{unsigned int}]{num\-Sum, }
+\item[{V \&}]{auto\-Corrs\-Sum\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_af9f2478ed4112aa615caef21bf26ab35}
+
+
+Calculates autocorrelation via Fast Fourier transforms (F\-F\-T). See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_aea06bdd27167a184fb4bf80f85c8fcff}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a078e43442f5b12f7a886ace29af0aec0}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a3a831c06c8ede53b84ce72fac3f018c0}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!auto\-Covariance@{auto\-Covariance}}
+\index{auto\-Covariance@{auto\-Covariance}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{auto\-Covariance}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::auto\-Covariance (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{const V \&}]{mean\-Vec, }
+\item[{unsigned int}]{lag, }
+\item[{V \&}]{cov\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a3a831c06c8ede53b84ce72fac3f018c0}
+
+
+Calculates the autocovariance. See template specialization. 
+
+The autocovariance is the covariance of a variable with itself at some other time. It is calculated over a sequence of vectors with initial position {\ttfamily initial\-Pos}, considering {\ttfamily num\-Pos} positions, a lag of {\ttfamily lag}, with mean given by {\ttfamily mean\-Vec}. The results are saved in the output vector {\ttfamily cov\-Vec/} 
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a190622cf14733c11b48d153f98ee1525}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ac6439fcb719bad4810cfe3c020f73486}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_aae0804eacc51b37e84b1bd329ce1711c}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!clear@{clear}}
+\index{clear@{clear}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{clear}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::clear (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_aae0804eacc51b37e84b1bd329ce1711c}
+
+
+Reset the values and the size of the sequence of vectors. 
+
+
+
+Definition at line 136 of file Vector\-Sequence.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), and Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence\-\_\-\-Step02\-\_\-inter0().
+
+
+\begin{DoxyCode}
+137 \{
+138   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} numPos = this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}();
+139   \textcolor{keywordflow}{if} (numPos) \{
+140     this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab007ea121708b1b1a63553433b428413}{resetValues}(0,numPos);
+141     this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_adc238af7f6e8af2402ab791de7d60af5}{resizeSequence}(0);
+142   \}
+143 
+144   \textcolor{keywordflow}{return};
+145 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a8e34f6205e26eab1e9cbe457dbd376bc}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!compute\-Filter\-Params@{compute\-Filter\-Params}}
+\index{compute\-Filter\-Params@{compute\-Filter\-Params}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{compute\-Filter\-Params}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::compute\-Filter\-Params (
+\begin{DoxyParamCaption}
+\item[{std\-::ofstream $\ast$}]{passed\-Ofs, }
+\item[{unsigned int \&}]{initial\-Pos, }
+\item[{unsigned int \&}]{spacing}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a8e34f6205e26eab1e9cbe457dbd376bc}
+
+
+Computes the filtering parameters {\ttfamily spacing} for the sequence of vectors. 
+
+
+
+Definition at line 613 of file Vector\-Sequence.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), and Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence\-\_\-\-Step11\-\_\-inter0().
+
+
+\begin{DoxyCode}
+617 \{
+618   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+619     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"\(\backslash\)n"}
+620                             << \textcolor{stringliteral}{"\(\backslash\)n-----------------------------------------------------"}
+621                             << \textcolor{stringliteral}{"\(\backslash\)n Computing filter parameters for chain '"} << 
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}{m\_name} << \textcolor{stringliteral}{"' ..."}
+622                             << \textcolor{stringliteral}{"\(\backslash\)n-----------------------------------------------------"}
+623                             << \textcolor{stringliteral}{"\(\backslash\)n"}
+624                             << std::endl;
+625   \}
+626 
+627   \textcolor{keywordtype}{bool} okSituation = ((passedOfs == NULL                            ) ||
+628                       ((passedOfs != NULL) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a172d52f993f1322ed45aaddf71518dbb}{subRank}() >= 0)));
+629   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(!okSituation,
+630                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+631                       \textcolor{stringliteral}{"BaseVectorSequence<V,M>::computeFilterParams()"},
+632                       \textcolor{stringliteral}{"unexpected combination of file pointer and subRank"});
+633 
+634   \textcolor{comment}{//initialPos = 0;}
+635   spacing    = 1;
+636 
+637   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+638     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"\(\backslash\)n-----------------------------------------------------"}
+639                             << \textcolor{stringliteral}{"\(\backslash\)n Finished computing filter parameters for chain '"} << 
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}{m\_name} << \textcolor{stringliteral}{"'"}
+640                             << \textcolor{stringliteral}{": initialPos = "} << initialPos
+641                             << \textcolor{stringliteral}{", spacing = "}    << spacing
+642                             << \textcolor{stringliteral}{"\(\backslash\)n-----------------------------------------------------"}
+643                             << \textcolor{stringliteral}{"\(\backslash\)n"}
+644                             << std::endl;
+645   \}
+646 
+647   \textcolor{keywordflow}{return};
+648 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a35629a6937e22752e3b252e84457e791}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!copy@{copy}}
+\index{copy@{copy}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{copy}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::copy (
+\begin{DoxyParamCaption}
+\item[{const {\bf Base\-Vector\-Sequence}$<$ V, M $>$ \&}]{src}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a35629a6937e22752e3b252e84457e791}
+
+
+Copies vector sequence {\ttfamily src} to {\ttfamily this}. 
+
+This routine deletes all stored computed vectors 
+
+Definition at line 653 of file Vector\-Sequence.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::m\-\_\-name, Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::m\-\_\-vector\-Space, and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$\-::copy().
+
+
+\begin{DoxyCode}
+654 \{
+655   \textcolor{comment}{// FIX ME: should check environments as well ???}
+656 
+657   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.dimLocal() != src.m\_vectorSpace.
+      dimLocal(),
+658                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+659                       \textcolor{stringliteral}{"SequenceOfVectors<V,M>::copy()"},
+660                       \textcolor{stringliteral}{"incompatible vector space dimensions"});
+661 
+662   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}{m\_name} = src.m\_name;
+663   this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{deleteStoredVectors}();
+664 
+665   \textcolor{keywordflow}{return};
+666 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!delete\-Stored\-Vectors@{delete\-Stored\-Vectors}}
+\index{delete\-Stored\-Vectors@{delete\-Stored\-Vectors}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{delete\-Stored\-Vectors}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::delete\-Stored\-Vectors (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}
+
+
+Deletes all the stored vectors. 
+
+It deletes all stored vectors and assigns N\-U\-L\-L value to the pointers\-: m\-\_\-sub\-Min\-Plain, m\-\_\-unified\-Min\-Plain, m\-\_\-sub\-Max\-Plain, m\-\_\-unified\-Max\-Plain, m\-\_\-sub\-Mean\-Plain, m\-\_\-unified\-Mean\-Plain, m\-\_\-sub\-Median\-Plain, m\-\_\-unified\-Median\-Plain, m\-\_\-sub\-Box\-Plain, m\-\_\-unified\-Box\-Plain, m\-\_\-sub\-Sample\-Variance\-Plain, m\-\_\-unified\-Sample\-Variance\-Plain. 
+
+Definition at line 301 of file Vector\-Sequence.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::erase\-Positions(), Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$\-::erase\-Positions(), Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::reset\-Values(), Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$\-::reset\-Values(), Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::resize\-Sequence(), Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$\-::resize\-Sequence(), Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::set\-Gaussian(), Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::set\-Position\-Values(), Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$\-::set\-Position\-Values(), and Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::set\-Uniform().
+
+
+\begin{DoxyCode}
+302 \{
+303   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{m\_subMinPlain}) \{
+304     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{m\_subMinPlain};
+305     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{m\_subMinPlain}                = NULL;
+306   \}
+307   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{m\_unifiedMinPlain}) \{
+308     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{m\_unifiedMinPlain};
+309     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{m\_unifiedMinPlain}            = NULL;
+310   \}
+311   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{m\_subMaxPlain}) \{
+312     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{m\_subMaxPlain};
+313     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{m\_subMaxPlain}                = NULL;
+314   \}
+315   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{m\_unifiedMaxPlain}) \{
+316     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{m\_unifiedMaxPlain};
+317     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{m\_unifiedMaxPlain}            = NULL;
+318   \}
+319   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aea341eac0220157a44f373e1377e0ca0}{m\_subMeanPlain}) \{
+320     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aea341eac0220157a44f373e1377e0ca0}{m\_subMeanPlain};
+321     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aea341eac0220157a44f373e1377e0ca0}{m\_subMeanPlain}               = NULL;
+322   \}
+323   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0bb5f2fa3d8369412b8cf5f6795b95b4}{m\_unifiedMeanPlain}) \{
+324     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0bb5f2fa3d8369412b8cf5f6795b95b4}{m\_unifiedMeanPlain};
+325     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0bb5f2fa3d8369412b8cf5f6795b95b4}{m\_unifiedMeanPlain}           = NULL;
+326   \}
+327   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a99ab57b8cb62b14eedd606b9d2e75672}{m\_subMedianPlain}) \{
+328     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a99ab57b8cb62b14eedd606b9d2e75672}{m\_subMedianPlain};
+329     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a99ab57b8cb62b14eedd606b9d2e75672}{m\_subMedianPlain}             = NULL;
+330   \}
+331   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ac723ac11f629ba07915f7520b36e4138}{m\_unifiedMedianPlain}) \{
+332     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ac723ac11f629ba07915f7520b36e4138}{m\_unifiedMedianPlain};
+333     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ac723ac11f629ba07915f7520b36e4138}{m\_unifiedMedianPlain}         = NULL;
+334   \}
+335   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a25dc9797633cb4b23b7330c5d3de9dd7}{m\_subSampleVariancePlain}) \{
+336     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a25dc9797633cb4b23b7330c5d3de9dd7}{m\_subSampleVariancePlain};
+337     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a25dc9797633cb4b23b7330c5d3de9dd7}{m\_subSampleVariancePlain}     = NULL;
+338   \}
+339   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab6fa4daa233c386ea96718cf6cac603b}{m\_unifiedSampleVariancePlain}) \{
+340     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab6fa4daa233c386ea96718cf6cac603b}{m\_unifiedSampleVariancePlain};
+341     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab6fa4daa233c386ea96718cf6cac603b}{m\_unifiedSampleVariancePlain} = NULL;
+342   \}
+343   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8fa117289936a6b0cd83dd55aaf55047}{m\_subBoxPlain}) \{
+344     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8fa117289936a6b0cd83dd55aaf55047}{m\_subBoxPlain};
+345     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8fa117289936a6b0cd83dd55aaf55047}{m\_subBoxPlain}     = NULL;
+346   \}
+347   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a13e15d877a0826605eb62fd65244761a}{m\_unifiedBoxPlain}) \{
+348     \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a13e15d877a0826605eb62fd65244761a}{m\_unifiedBoxPlain};
+349     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a13e15d877a0826605eb62fd65244761a}{m\_unifiedBoxPlain} = NULL;
+350   \}
+351 
+352   \textcolor{keywordflow}{return};
+353 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a2b41ed436f95a1816a811fc368adaf79}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!erase\-Positions@{erase\-Positions}}
+\index{erase\-Positions@{erase\-Positions}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{erase\-Positions}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::erase\-Positions (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a2b41ed436f95a1816a811fc368adaf79}
+
+
+Erase {\ttfamily num\-Pos} positions in the sequence, starting at position {\ttfamily initial\-Pos}. 
+
+This routine deletes all stored computed vectors 
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a1455ec3ab1b63006a8fe85a8c169c649}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a81f3ee91830b977945fa152901d4cd8e}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a7f70b1762b6ba91a8f619403453cf2b2}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!estimate\-Conv\-Brooks\-Gelman@{estimate\-Conv\-Brooks\-Gelman}}
+\index{estimate\-Conv\-Brooks\-Gelman@{estimate\-Conv\-Brooks\-Gelman}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{estimate\-Conv\-Brooks\-Gelman}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual double {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::estimate\-Conv\-Brooks\-Gelman (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a7f70b1762b6ba91a8f619403453cf2b2}
+
+
+Estimates convergence rate using Brooks \& Gelman method. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_aac49d62310d6db805e2075dd886b417a}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Full\-Chain().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_aae5259810d72d393328369d8d4087d5d}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!extract\-Raw\-Data@{extract\-Raw\-Data}}
+\index{extract\-Raw\-Data@{extract\-Raw\-Data}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{extract\-Raw\-Data}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::extract\-Raw\-Data (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{spacing, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{unsigned int}]{param\-Id, }
+\item[{std\-::vector$<$ double $>$ \&}]{raw\-Data}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_aae5259810d72d393328369d8d4087d5d}
+
+
+Extracts the raw data. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a217e1f9a9d1a6fe8117c25d37fcbae23}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a615df4add2396b94f5a4be3a5eb971fb}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a0ec0f2595d606723d0b069e1632cc348}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!extract\-Scalar\-Seq@{extract\-Scalar\-Seq}}
+\index{extract\-Scalar\-Seq@{extract\-Scalar\-Seq}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{extract\-Scalar\-Seq}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::extract\-Scalar\-Seq (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{spacing, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{unsigned int}]{param\-Id, }
+\item[{{\bf Scalar\-Sequence}$<$ double $>$ \&}]{scalar\-Seq}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a0ec0f2595d606723d0b069e1632cc348}
+
+
+Extracts a sequence of scalars of size {\ttfamily num\-Pos}, starting at position {\ttfamily initial\-Pos}, given spacing {\ttfamily spacing}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_ac977b3b26a6af2ae727671f1246262fd}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ab529b77aca8e169b1b769051e7de8c3d}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_adfb88fdbaa1c6b2b040ef888633619ef}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!filter@{filter}}
+\index{filter@{filter}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{filter}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::filter (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{spacing}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_adfb88fdbaa1c6b2b040ef888633619ef}
+
+
+Filters positions in the sequence of vectors, starting at {\ttfamily initial\-Pos}, and with spacing given by {\ttfamily spacing}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_aa826dc4cbb2607d2bc54144998d9fa01}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a7c95d24764af395fdff5c9d0c987e694}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a656d47a18b401d6d914b0daf2dea88b0}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!get\-Position\-Values@{get\-Position\-Values}}
+\index{get\-Position\-Values@{get\-Position\-Values}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{get\-Position\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::get\-Position\-Values (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{pos\-Id, }
+\item[{V \&}]{vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a656d47a18b401d6d914b0daf2dea88b0}
+
+
+Gets the values of the sequence at position {\ttfamily pos\-Id} and stores them at {\ttfamily vec}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a9c46159287cb508791ea29282cd488ff}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_ae75a2eedab5e8d3fc0638f578eba35ab}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::actual\-Generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::append(), Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Matrices\-Between\-Vector\-Sequences(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Full\-Chain(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::unified\-Positions\-Of\-Maximum(), and Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::update\-Adapted\-Cov\-Matrix().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a48f6fe02cf77f4233d3bcdfef3870f19}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!name@{name}}
+\index{name@{name}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{name}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const std\-::string \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a48f6fe02cf77f4233d3bcdfef3870f19}
+
+
+Access to protected attribute {\ttfamily m\-\_\-name\-:} name of the sequence of vectors. 
+
+This method is used, for instance, to recover the name of a sequence of vector samples, such as the 'raw\-Chain' for the raw chain of samples used in an Monte Carlo algorithm. 
+
+Definition at line 121 of file Vector\-Sequence.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::actual\-Generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Full\-Chain(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::intern\-Generate\-Sequence(), and Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::write\-Info().
+
+
+\begin{DoxyCode}
+122 \{
+123   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}{m\_name};
+124 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_ab007ea121708b1b1a63553433b428413}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!reset\-Values@{reset\-Values}}
+\index{reset\-Values@{reset\-Values}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{reset\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::reset\-Values (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_ab007ea121708b1b1a63553433b428413}
+
+
+Reset the values of the sequence. See template specialization. 
+
+This routine deletes all stored computed vectors 
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a75e0f11bb3abdf5cd691ba8769ca7222}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a9267060ca0e57a124d9f8ba64e60027c}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_adc238af7f6e8af2402ab791de7d60af5}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!resize\-Sequence@{resize\-Sequence}}
+\index{resize\-Sequence@{resize\-Sequence}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{resize\-Sequence}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::resize\-Sequence (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{new\-Sub\-Sequence\-Size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_adc238af7f6e8af2402ab791de7d60af5}
+
+
+Resize the sequence. See template specialization. 
+
+This routine deletes all stored computed vectors 
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a751e8d4c3791271c7100395312f37c7b}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a3067aa6afb3a4fd6f30dc753bbceaf9e}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::actual\-Generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::actual\-Read\-Sequence(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Full\-Chain(), Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::sub\-Positions\-Of\-Maximum(), and Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::unified\-Positions\-Of\-Maximum().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a4ff00d9659c59653844b78410571f3fe}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!select@{select}}
+\index{select@{select}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{select}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::select (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ unsigned int $>$ \&}]{ids\-Of\-Unique\-Positions}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a4ff00d9659c59653844b78410571f3fe}
+
+
+Select positions in the sequence of vectors. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a8094ca3dd6addf572728a88a987168ab}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a643996eaf9db7e40a423c06ae5cb881a}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_aa1081248d23a2b18307962993892eb4c}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!set\-Gaussian@{set\-Gaussian}}
+\index{set\-Gaussian@{set\-Gaussian}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{set\-Gaussian}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::set\-Gaussian (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{mean\-Vec, }
+\item[{const V \&}]{std\-Dev\-Vec}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_aa1081248d23a2b18307962993892eb4c}
+
+
+Sets the values of the sequence as a Gaussian distribution of mean given by {\ttfamily mean\-Vec} and standard deviation by {\ttfamily std\-Dev\-Vec}. 
+
+This routine deletes all stored computed vectors 
+
+Definition at line 583 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+584 \{
+585   V gaussianVector(\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.zeroVector());
+586   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(); ++j) \{
+587     gaussianVector.cwSetGaussian(meanVec,stdDevVec);
+588     this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5bcce98b68e0e24c05136e7a3bb50c12}{setPositionValues}(j,gaussianVector);
+589   \}
+590 
+591   this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{deleteStoredVectors}();
+592 
+593   \textcolor{keywordflow}{return};
+594 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a0a2f78cd12e0f136f7801f7d0175b849}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!set\-Name@{set\-Name}}
+\index{set\-Name@{set\-Name}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{set\-Name}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::set\-Name (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{new\-Name}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a0a2f78cd12e0f136f7801f7d0175b849}
+
+
+Changes the name of the sequence of vectors. 
+
+
+
+Definition at line 128 of file Vector\-Sequence.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence\-\_\-\-Level0\-\_\-all(), Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence\-\_\-\-Step02\-\_\-inter0(), Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence\-\_\-\-Step11\-\_\-inter0(), and Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::intern\-Generate\-Sequence().
+
+
+\begin{DoxyCode}
+129 \{
+130   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}{m\_name} = newName;
+131   \textcolor{keywordflow}{return};
+132 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a5bcce98b68e0e24c05136e7a3bb50c12}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!set\-Position\-Values@{set\-Position\-Values}}
+\index{set\-Position\-Values@{set\-Position\-Values}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{set\-Position\-Values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::set\-Position\-Values (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{pos\-Id, }
+\item[{const V \&}]{vec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a5bcce98b68e0e24c05136e7a3bb50c12}
+
+
+Set the values in {\ttfamily vec} at position {\ttfamily pos\-Id} of the sequence. See template specialization. 
+
+This routine deletes all stored computed vectors 
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a822aecb4ddeb8da89683f6c3a1ce11c1}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a20e1732527bc5c466abf79b827407d54}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::actual\-Generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::actual\-Read\-Sequence(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Full\-Chain(), Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::sub\-Positions\-Of\-Maximum(), and Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::unified\-Positions\-Of\-Maximum().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a96d44e7dd53a077a4c7be73f008b351e}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!set\-Uniform@{set\-Uniform}}
+\index{set\-Uniform@{set\-Uniform}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{set\-Uniform}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::set\-Uniform (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{a\-Vec, }
+\item[{const V \&}]{b\-Vec}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a96d44e7dd53a077a4c7be73f008b351e}
+
+
+Sets the values of the sequence as a uniform distribution between the values given by vectors {\ttfamily a\-Vec} and {\ttfamily b\-Vec}. 
+
+This routine deletes all stored computed vectors 
+
+Definition at line 598 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+599 \{
+600   V uniformVector(\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.zeroVector());
+601   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(); ++j) \{
+602     uniformVector.cwSetUniform(aVec,bVec);
+603     this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5bcce98b68e0e24c05136e7a3bb50c12}{setPositionValues}(j,uniformVector);
+604   \}
+605 
+606   this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5609e02046ba555f0eebe49c6c231faf}{deleteStoredVectors}();
+607 
+608   \textcolor{keywordflow}{return};
+609 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a5c5ede038fbdb296e3913bc39142b7ff}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Box\-Plain@{sub\-Box\-Plain}}
+\index{sub\-Box\-Plain@{sub\-Box\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Box\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Box\-Subset}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Box\-Plain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a5c5ede038fbdb296e3913bc39142b7ff}
+
+
+Finds a box subset of the sub-\/sequence (given by its min and max values calculated via sub\-Min\-Plain and sub\-Max\-Plain). 
+
+
+
+Definition at line 273 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+274 \{
+275   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8fa117289936a6b0cd83dd55aaf55047}{m\_subBoxPlain} == NULL) \{
+276     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8fa117289936a6b0cd83dd55aaf55047}{m\_subBoxPlain} = \textcolor{keyword}{new} BoxSubset<V,M>(\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}{m\_name}.c\_str(),
+277                                               \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace},
+278                                               this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1b2c4cb7623e0034e4cd66f6443f2fdd}{subMinPlain}(),
+279                                               this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a152da47e6633bcac5f32b588b98d6f4f}{subMaxPlain}());
+280   \}
+281 
+282   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8fa117289936a6b0cd83dd55aaf55047}{m\_subBoxPlain};
+283 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a0fec2746f326acad09b406ad8efe1cfc}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Gaussian1d\-Kde@{sub\-Gaussian1d\-Kde}}
+\index{sub\-Gaussian1d\-Kde@{sub\-Gaussian1d\-Kde}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Gaussian1d\-Kde}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Gaussian1d\-Kde (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{const V \&}]{scale\-Vec, }
+\item[{const std\-::vector$<$ V $\ast$ $>$ \&}]{evaluation\-Param\-Vecs, }
+\item[{std\-::vector$<$ V $\ast$ $>$ \&}]{density\-Vecs}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a0fec2746f326acad09b406ad8efe1cfc}
+
+
+Gaussian kernel for the K\-D\-E estimate of the sub-\/sequence. See template specialization. 
+
+Computes a probability density estimate of the sample in {\ttfamily this} sub-\/sequence, starting at position {\ttfamily initial\-Pos}. {\ttfamily density\-Vecs} is the vector of density values evaluated at the points in {\ttfamily evaluation\-Param\-Vecs}. The estimate is based on Gaussian (normal) kernel function, using a window parameter ({\ttfamily scale\-Vec}). 
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a71c2d67969c2992c3c8a532734ddfcce}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a66c6af1f9a509720264d121b408a45f3}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Histogram@{sub\-Histogram}}
+\index{sub\-Histogram@{sub\-Histogram}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Histogram}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Histogram (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{const V \&}]{min\-Vec, }
+\item[{const V \&}]{max\-Vec, }
+\item[{std\-::vector$<$ V $\ast$ $>$ \&}]{centers\-For\-All\-Bins, }
+\item[{std\-::vector$<$ V $\ast$ $>$ \&}]{quantts\-For\-All\-Bins}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a66c6af1f9a509720264d121b408a45f3}
+
+
+Calculates the histogram of the sub-\/sequence. See template specialization. 
+
+The I\-Q\-R is a robust estimate of the spread of the data, since changes in the upper and lower 25\% of the data do not affect it. If there are outliers in the data, then the I\-Q\-R is more representative than the standard deviation as an estimate of the spread of the body of the data. The I\-Q\-R is less efficient than the standard deviation as an estimate of the spread when the data is all from the normal distribution. (from Matlab) 
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a175f159aae54514b666c0f845997d8b3}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a62cb96f153a8608ef1727265a734aacb}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Inter\-Quantile\-Range@{sub\-Inter\-Quantile\-Range}}
+\index{sub\-Inter\-Quantile\-Range@{sub\-Inter\-Quantile\-Range}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Inter\-Quantile\-Range}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Inter\-Quantile\-Range (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{V \&}]{iqr\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a62cb96f153a8608ef1727265a734aacb}
+
+
+Returns the interquartile range of the values in the sub-\/sequence. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a86985625ab899ea03ecf4bc56538ea49}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a152da47e6633bcac5f32b588b98d6f4f}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Max\-Plain@{sub\-Max\-Plain}}
+\index{sub\-Max\-Plain@{sub\-Max\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Max\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Max\-Plain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a152da47e6633bcac5f32b588b98d6f4f}
+
+
+Finds the maximum value of the sub-\/sequence. 
+
+
+
+Definition at line 175 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+176 \{
+177   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{m\_subMaxPlain} == NULL) \{
+178     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{m\_subMinPlain} == NULL) \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{m\_subMinPlain} = 
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+179     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{m\_subMaxPlain} = \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+180     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a14fd8d5c3ff3fb2f7eb3f4b9e7131d0c}{subMinMaxExtra}(0,this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(),*
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{m\_subMinPlain},*\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{m\_subMaxPlain});
+181   \}
+182 
+183   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{m\_subMaxPlain};
+184 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_ab36f3e2511108259c272d8a148452505}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Mean\-Extra@{sub\-Mean\-Extra}}
+\index{sub\-Mean\-Extra@{sub\-Mean\-Extra}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Mean\-Extra}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Mean\-Extra (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{V \&}]{mean\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_ab36f3e2511108259c272d8a148452505}
+
+
+Finds the mean value of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a422147ff61e955c29f62447bf0b4d29c}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::update\-Adapted\-Cov\-Matrix().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_aba7a42fcab55a24264ff80e12d7da2de}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Mean\-Plain@{sub\-Mean\-Plain}}
+\index{sub\-Mean\-Plain@{sub\-Mean\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Mean\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Mean\-Plain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_aba7a42fcab55a24264ff80e12d7da2de}
+
+
+Finds the mean value of the sub-\/sequence. 
+
+
+
+Definition at line 201 of file Vector\-Sequence.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::update\-Adapted\-Cov\-Matrix().
+
+
+\begin{DoxyCode}
+202 \{
+203   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aea341eac0220157a44f373e1377e0ca0}{m\_subMeanPlain} == NULL) \{
+204     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aea341eac0220157a44f373e1377e0ca0}{m\_subMeanPlain} = \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+205     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab36f3e2511108259c272d8a148452505}{subMeanExtra}(0,\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(),*\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aea341eac0220157a44f373e1377e0ca0}{m\_subMeanPlain});
+206   \}
+207 
+208   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aea341eac0220157a44f373e1377e0ca0}{m\_subMeanPlain};
+209 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a80caa77a7258c3ae44b6320846cfe29d}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Median\-Extra@{sub\-Median\-Extra}}
+\index{sub\-Median\-Extra@{sub\-Median\-Extra}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Median\-Extra}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Median\-Extra (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{V \&}]{median\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a80caa77a7258c3ae44b6320846cfe29d}
+
+
+Finds the median value of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_ab2ebb58b191d40323da456b82fad2dc6}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a679cf7f46c588ed4ba75beeb8fe8ae2d}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Median\-Plain@{sub\-Median\-Plain}}
+\index{sub\-Median\-Plain@{sub\-Median\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Median\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Median\-Plain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a679cf7f46c588ed4ba75beeb8fe8ae2d}
+
+
+Finds the median value of the sub-\/sequence. 
+
+
+
+Definition at line 225 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+226 \{
+227   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a99ab57b8cb62b14eedd606b9d2e75672}{m\_subMedianPlain} == NULL) \{
+228     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a99ab57b8cb62b14eedd606b9d2e75672}{m\_subMedianPlain} = \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+229     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a80caa77a7258c3ae44b6320846cfe29d}{subMedianExtra}(0, \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(), *
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a99ab57b8cb62b14eedd606b9d2e75672}{m\_subMedianPlain});
+230   \}
+231 
+232   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a99ab57b8cb62b14eedd606b9d2e75672}{m\_subMedianPlain};
+233 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a14fd8d5c3ff3fb2f7eb3f4b9e7131d0c}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Min\-Max\-Extra@{sub\-Min\-Max\-Extra}}
+\index{sub\-Min\-Max\-Extra@{sub\-Min\-Max\-Extra}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Min\-Max\-Extra}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Min\-Max\-Extra (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{V \&}]{min\-Vec, }
+\item[{V \&}]{max\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a14fd8d5c3ff3fb2f7eb3f4b9e7131d0c}
+
+
+Finds the minimum and the maximum values of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a00bb55607fc38bfd59d65bb53d31fe6f}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a1b2c4cb7623e0034e4cd66f6443f2fdd}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Min\-Plain@{sub\-Min\-Plain}}
+\index{sub\-Min\-Plain@{sub\-Min\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Min\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Min\-Plain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a1b2c4cb7623e0034e4cd66f6443f2fdd}
+
+
+Finds the minimum value of the sub-\/sequence. 
+
+
+
+Definition at line 149 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+150 \{
+151   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{m\_subMinPlain} == NULL) \{
+152     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{m\_subMinPlain} = \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+153     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{m\_subMaxPlain} == NULL) \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{m\_subMaxPlain} = 
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+154     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a14fd8d5c3ff3fb2f7eb3f4b9e7131d0c}{subMinMaxExtra}(0,this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(),*
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{m\_subMinPlain},*\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{m\_subMaxPlain});
+155   \}
+156 
+157   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{m\_subMinPlain};
+158 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_af21f1923841372684ae9e5812767832d}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Population\-Variance@{sub\-Population\-Variance}}
+\index{sub\-Population\-Variance@{sub\-Population\-Variance}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Population\-Variance}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Population\-Variance (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{const V \&}]{mean\-Vec, }
+\item[{V \&}]{pop\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_af21f1923841372684ae9e5812767832d}
+
+
+Finds the population variance of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_ae6041aecbc1abb2f4e0981914dd5c0ca}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a971e9e1a87e4eb47b4910348a6b437d5}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Positions\-Of\-Maximum@{sub\-Positions\-Of\-Maximum}}
+\index{sub\-Positions\-Of\-Maximum@{sub\-Positions\-Of\-Maximum}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Positions\-Of\-Maximum}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ double {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Positions\-Of\-Maximum (
+\begin{DoxyParamCaption}
+\item[{const {\bf Scalar\-Sequence}$<$ double $>$ \&}]{sub\-Corresponding\-Scalar\-Values, }
+\item[{{\bf Base\-Vector\-Sequence}$<$ V, M $>$ \&}]{sub\-Positions\-Of\-Maximum}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a971e9e1a87e4eb47b4910348a6b437d5}
+
+
+Finds the positions where the maximum element occurs in the sub-\/sequence. 
+
+
+
+Definition at line 386 of file Vector\-Sequence.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::resize\-Sequence(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::set\-Position\-Values(), Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::sub\-Max\-Plain(), Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::sub\-Sequence\-Size(), and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence().
+
+
+\begin{DoxyCode}
+389 \{
+390   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+391     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       BaseVectorSequence<V,M>::subPositionsOfMaximum()"}
+392                             << \textcolor{stringliteral}{": subCorrespondingScalarValues,subSequenceSize() = "} << 
+      subCorrespondingScalarValues.\hyperlink{class_q_u_e_s_o_1_1_scalar_sequence_a0288ea295eedc216a1617b3286f6f3a0}{subSequenceSize}()
+393                             << \textcolor{stringliteral}{", this->subSequenceSize = "} << this->
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}()
+394                             << std::endl;
+395   \}
+396 
+397   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(subCorrespondingScalarValues.
+      \hyperlink{class_q_u_e_s_o_1_1_scalar_sequence_a0288ea295eedc216a1617b3286f6f3a0}{subSequenceSize}() != this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(),
+398                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+399                       \textcolor{stringliteral}{"BaseVectorSequence<V,M>::subPositionsOfMaximum()"},
+400                       \textcolor{stringliteral}{"invalid input"});
+401 
+402   \textcolor{keywordtype}{double} subMaxValue = subCorrespondingScalarValues.\hyperlink{class_q_u_e_s_o_1_1_scalar_sequence_ae4689059a4d99dffd386422f1c1aa4b9}{subMaxPlain}();
+403   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} iMax = subCorrespondingScalarValues.\hyperlink{class_q_u_e_s_o_1_1_scalar_sequence_a0288ea295eedc216a1617b3286f6f3a0}{subSequenceSize}();
+404 
+405   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} subNumPos = 0;
+406   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < iMax; ++i) \{
+407     \textcolor{keywordflow}{if} (subCorrespondingScalarValues[i] == subMaxValue) \{
+408       subNumPos++;
+409     \}
+410   \}
+411 
+412   V tmpVec(this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_af9a4dd979a2fa8dee85bb07793b59ba2}{vectorSpace}().zeroVector());
+413   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a971e9e1a87e4eb47b4910348a6b437d5}{subPositionsOfMaximum}.resizeSequence(subNumPos);
+414   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0;
+415   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < iMax; ++i) \{
+416     \textcolor{keywordflow}{if} (subCorrespondingScalarValues[i] == subMaxValue) \{
+417       this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a656d47a18b401d6d914b0daf2dea88b0}{getPositionValues}                (i,tmpVec);
+418       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a971e9e1a87e4eb47b4910348a6b437d5}{subPositionsOfMaximum}.setPositionValues(j,tmpVec);
+419       j++;
+420     \}
+421   \}
+422 
+423   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+424     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving BaseVectorSequence<V,M>::subPositionsOfMaximum()
+      "}
+425                             << std::endl;
+426   \}
+427 
+428   \textcolor{keywordflow}{return} subMaxValue;
+429 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a6a786862951dfae45a9daebc9d81e676}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Sample\-Variance\-Extra@{sub\-Sample\-Variance\-Extra}}
+\index{sub\-Sample\-Variance\-Extra@{sub\-Sample\-Variance\-Extra}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Sample\-Variance\-Extra}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Sample\-Variance\-Extra (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{const V \&}]{mean\-Vec, }
+\item[{V \&}]{sam\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a6a786862951dfae45a9daebc9d81e676}
+
+
+Finds the sample variance of the sub-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_ad21147b7594224e8de732f8b3b631fc3}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a9de650586582d258eb977444d83286a6}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Sample\-Variance\-Plain@{sub\-Sample\-Variance\-Plain}}
+\index{sub\-Sample\-Variance\-Plain@{sub\-Sample\-Variance\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Sample\-Variance\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Sample\-Variance\-Plain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a9de650586582d258eb977444d83286a6}
+
+
+Finds the variance of a sample of the sub-\/sequence. 
+
+
+
+Definition at line 249 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+250 \{
+251   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a25dc9797633cb4b23b7330c5d3de9dd7}{m\_subSampleVariancePlain} == NULL) \{
+252     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a25dc9797633cb4b23b7330c5d3de9dd7}{m\_subSampleVariancePlain} = \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+253     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a6a786862951dfae45a9daebc9d81e676}{subSampleVarianceExtra}(0,\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(),
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_aba7a42fcab55a24264ff80e12d7da2de}{subMeanPlain}(),*\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a25dc9797633cb4b23b7330c5d3de9dd7}{m\_subSampleVariancePlain});
+254   \}
+255 
+256   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a25dc9797633cb4b23b7330c5d3de9dd7}{m\_subSampleVariancePlain};
+257 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_af3210c9073cedfcd8dfe79ed323975a2}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Scales\-For\-Kde@{sub\-Scales\-For\-Kde}}
+\index{sub\-Scales\-For\-Kde@{sub\-Scales\-For\-Kde}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Scales\-For\-Kde}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Scales\-For\-Kde (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{const V \&}]{iqr\-Vec, }
+\item[{unsigned int}]{kde\-Dimension, }
+\item[{V \&}]{scale\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_af3210c9073cedfcd8dfe79ed323975a2}
+
+
+Selects the scales (bandwidth, {\ttfamily scale\-Vec}) for the kernel density estimation, considering only the sub-\/sequence. See template specialization. 
+
+The bandwidth of the kernel is a free parameter which exhibits a strong influence on the resulting estimate. Silverman (1986) suggests the following normal-\/based estimates\-: S1 = 1.\-06 × (standard deviation) × n$^\wedge$\{-\/1/5\} S2 = 0.\-79 × ({\ttfamily iqr\-Vec}) × n$^\wedge$\{-\/1/5\}, where {\ttfamily iqr\-Vec} is the interquartile range {\ttfamily scale\-Vec} = 0.\-90 × minimum(standard deviation, {\ttfamily iqr\-Vec} /1.34) × n$^\wedge$\{-\/1/5\}. These estimates are popular due to their simplicity, and are used in \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} with the adaptation of the exponent oven the sample size n (-\/1/5) with -\/1/(4 + {\ttfamily kde\-Dimension}) where {\ttfamily kde\-Dimension} is the K\-D\-E dimension. 
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_afd08d0c5c360636708f530dec8c67e38}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Sequence\-Size@{sub\-Sequence\-Size}}
+\index{sub\-Sequence\-Size@{sub\-Sequence\-Size}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Sequence\-Size}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual unsigned int {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Sequence\-Size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}
+
+
+Size of the sub-\/sequence of vectors. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a0224bd3e961d86af5d2886301c0c2b86}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a007d00d2398007b9bac82ed23eedb1e2}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::actual\-Generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::append(), Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Matrices\-Between\-Vector\-Sequences(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Full\-Chain(), Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::intern\-Generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::update\-Adapted\-Cov\-Matrix(), and Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::write\-Info().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_aa59738c6df15b1b369b90f0d025fb6f2}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Write\-Contents@{sub\-Write\-Contents}}
+\index{sub\-Write\-Contents@{sub\-Write\-Contents}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Write\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Write\-Contents (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{const std\-::string \&}]{file\-Name, }
+\item[{const std\-::string \&}]{file\-Type, }
+\item[{const std\-::set$<$ unsigned int $>$ \&}]{allowed\-Sub\-Env\-Ids}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_aa59738c6df15b1b369b90f0d025fb6f2}
+
+
+Writes info of the sub-\/sequence to a file. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_ab4342629e89ee72896cb844c54f821f3}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::actual\-Generate\-Sequence(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Full\-Chain(), Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), and Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::intern\-Generate\-Sequence().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a7226d1093a7ab07792410414237f08da}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!sub\-Write\-Contents@{sub\-Write\-Contents}}
+\index{sub\-Write\-Contents@{sub\-Write\-Contents}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{sub\-Write\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::sub\-Write\-Contents (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{std\-::ofstream \&}]{ofsvar, }
+\item[{const std\-::string \&}]{file\-Type}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a7226d1093a7ab07792410414237f08da}
+
+
+Writes info of the sub-\/sequence to a file. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a589a4141ec53e032dd2ad2aa6e223f70}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a69757707519d6d10b454c36ee624fecc}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Box\-Plain@{unified\-Box\-Plain}}
+\index{unified\-Box\-Plain@{unified\-Box\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Box\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Box\-Subset}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Box\-Plain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a69757707519d6d10b454c36ee624fecc}
+
+
+Finds a box subset of the unified-\/sequence (given by the min and max values of the unified sequence calculated via unified\-Min\-Plain and unified\-Max\-Plain). 
+
+
+
+Definition at line 287 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+288 \{
+289   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a13e15d877a0826605eb62fd65244761a}{m\_unifiedBoxPlain} == NULL) \{
+290     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a13e15d877a0826605eb62fd65244761a}{m\_unifiedBoxPlain} = \textcolor{keyword}{new} BoxSubset<V,M>(\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}{m\_name}.c\_str(),
+291                                                   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace},
+292                                                   this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5d330cec5b2c7d9d7eb8079bed4a07ea}{unifiedMinPlain}(),
+293                                                   this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a277e760600eb5aa64da9561634a19d63}{unifiedMaxPlain}());
+294   \}
+295 
+296   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a13e15d877a0826605eb62fd65244761a}{m\_unifiedBoxPlain};
+297 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_aa799ae2fde5edc96939990925d7be9ac}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Gaussian1d\-Kde@{unified\-Gaussian1d\-Kde}}
+\index{unified\-Gaussian1d\-Kde@{unified\-Gaussian1d\-Kde}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Gaussian1d\-Kde}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Gaussian1d\-Kde (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{const V \&}]{unified\-Scale\-Vec, }
+\item[{const std\-::vector$<$ V $\ast$ $>$ \&}]{unified\-Evaluation\-Param\-Vecs, }
+\item[{std\-::vector$<$ V $\ast$ $>$ \&}]{unified\-Density\-Vecs}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_aa799ae2fde5edc96939990925d7be9ac}
+
+
+Gaussian kernel for the K\-D\-E estimate of the unified sequence. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a5605b0c15ee53f7fb1bfc89e08cf1fa7}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a04653bd3bd8b9c29ae6d03a2eb0b3779}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Histogram@{unified\-Histogram}}
+\index{unified\-Histogram@{unified\-Histogram}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Histogram}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Histogram (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{const V \&}]{unified\-Min\-Vec, }
+\item[{const V \&}]{unified\-Max\-Vec, }
+\item[{std\-::vector$<$ V $\ast$ $>$ \&}]{unified\-Centers\-For\-All\-Bins, }
+\item[{std\-::vector$<$ V $\ast$ $>$ \&}]{unified\-Quantts\-For\-All\-Bins}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a04653bd3bd8b9c29ae6d03a2eb0b3779}
+
+
+Calculates the histogram of the unified sequence. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a8ef8ac8a2b2af3a24fa4c6d2b309b463}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a49b50dfef9bf3475eb681855268c050d}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Inter\-Quantile\-Range@{unified\-Inter\-Quantile\-Range}}
+\index{unified\-Inter\-Quantile\-Range@{unified\-Inter\-Quantile\-Range}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Inter\-Quantile\-Range}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Inter\-Quantile\-Range (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{V \&}]{unified\-Iqr\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a49b50dfef9bf3475eb681855268c050d}
+
+
+Returns the interquartile range of the values in the unified sequence. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_ab4f95ccde1110f4138a9bfebb4eca822}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a277e760600eb5aa64da9561634a19d63}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Max\-Plain@{unified\-Max\-Plain}}
+\index{unified\-Max\-Plain@{unified\-Max\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Max\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Max\-Plain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a277e760600eb5aa64da9561634a19d63}
+
+
+Finds the maximum value of the unified sequence. 
+
+
+
+Definition at line 188 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+189 \{
+190   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{m\_unifiedMaxPlain} == NULL) \{
+191     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{m\_unifiedMinPlain} == NULL) \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{m\_unifiedMinPlain} = 
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+192     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{m\_unifiedMaxPlain} = \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+193     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a2d6cd9b93580715762318b51edbd9463}{unifiedMinMaxExtra}(0,this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(),*
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{m\_unifiedMinPlain},*\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{m\_unifiedMaxPlain});
+194   \}
+195 
+196   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{m\_unifiedMaxPlain};
+197 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a6ee252d07395644a9175aabf2bad7aed}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Mean\-Extra@{unified\-Mean\-Extra}}
+\index{unified\-Mean\-Extra@{unified\-Mean\-Extra}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Mean\-Extra}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Mean\-Extra (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{V \&}]{unified\-Mean\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a6ee252d07395644a9175aabf2bad7aed}
+
+
+Finds the mean value of the unified sequence of {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_aba06456dee4124f8a3b9de07e0ce2163}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Matrices\-Between\-Vector\-Sequences().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a64ad551265df354e8c4ccff0d14cb883}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Mean\-Plain@{unified\-Mean\-Plain}}
+\index{unified\-Mean\-Plain@{unified\-Mean\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Mean\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Mean\-Plain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a64ad551265df354e8c4ccff0d14cb883}
+
+
+Finds the mean value of the unified sequence. 
+
+
+
+Definition at line 213 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+214 \{
+215   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0bb5f2fa3d8369412b8cf5f6795b95b4}{m\_unifiedMeanPlain} == NULL) \{
+216     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0bb5f2fa3d8369412b8cf5f6795b95b4}{m\_unifiedMeanPlain} = \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+217     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a6ee252d07395644a9175aabf2bad7aed}{unifiedMeanExtra}(0,\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(),*
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0bb5f2fa3d8369412b8cf5f6795b95b4}{m\_unifiedMeanPlain});
+218   \}
+219 
+220   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a0bb5f2fa3d8369412b8cf5f6795b95b4}{m\_unifiedMeanPlain};
+221 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_ab3b300eb093fe8d726996db5726e59e4}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Median\-Extra@{unified\-Median\-Extra}}
+\index{unified\-Median\-Extra@{unified\-Median\-Extra}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Median\-Extra}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Median\-Extra (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{local\-Num\-Pos, }
+\item[{V \&}]{unified\-Median\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_ab3b300eb093fe8d726996db5726e59e4}
+
+
+Finds the median value of the unified sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a98ea24cb28d79de06ce89c12dfbc3d61}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_acdb70319baecc3985e56b9e85502e3cf}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Median\-Plain@{unified\-Median\-Plain}}
+\index{unified\-Median\-Plain@{unified\-Median\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Median\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Median\-Plain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_acdb70319baecc3985e56b9e85502e3cf}
+
+
+Finds the median value of the unified sequence. 
+
+
+
+Definition at line 237 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+238 \{
+239   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ac723ac11f629ba07915f7520b36e4138}{m\_unifiedMedianPlain} == NULL) \{
+240     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ac723ac11f629ba07915f7520b36e4138}{m\_unifiedMedianPlain} = \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+241     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab3b300eb093fe8d726996db5726e59e4}{unifiedMedianExtra}(0, \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(), *
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ac723ac11f629ba07915f7520b36e4138}{m\_unifiedMedianPlain});
+242   \}
+243 
+244   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ac723ac11f629ba07915f7520b36e4138}{m\_unifiedMedianPlain};
+245 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a2d6cd9b93580715762318b51edbd9463}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Min\-Max\-Extra@{unified\-Min\-Max\-Extra}}
+\index{unified\-Min\-Max\-Extra@{unified\-Min\-Max\-Extra}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Min\-Max\-Extra}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Min\-Max\-Extra (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{V \&}]{unified\-Min\-Vec, }
+\item[{V \&}]{unified\-Max\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a2d6cd9b93580715762318b51edbd9463}
+
+
+Finds the minimum and the maximum values of the unified sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_ad7abbd1b4895135796d24206edff778d}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a5d330cec5b2c7d9d7eb8079bed4a07ea}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Min\-Plain@{unified\-Min\-Plain}}
+\index{unified\-Min\-Plain@{unified\-Min\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Min\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Min\-Plain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a5d330cec5b2c7d9d7eb8079bed4a07ea}
+
+
+Finds the minimum value of the unified sequence. 
+
+
+
+Definition at line 162 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+163 \{
+164   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{m\_unifiedMinPlain} == NULL) \{
+165     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{m\_unifiedMinPlain} = \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+166     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{m\_unifiedMaxPlain} == NULL) \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{m\_unifiedMaxPlain} = 
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+167     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a2d6cd9b93580715762318b51edbd9463}{unifiedMinMaxExtra}(0,this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(),*
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{m\_unifiedMinPlain},*\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{m\_unifiedMaxPlain});
+168   \}
+169 
+170   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{m\_unifiedMinPlain};
+171 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_ad9e165f7a0d57e2fa45e7b3926dac1a2}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Population\-Variance@{unified\-Population\-Variance}}
+\index{unified\-Population\-Variance@{unified\-Population\-Variance}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Population\-Variance}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Population\-Variance (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{const V \&}]{unified\-Mean\-Vec, }
+\item[{V \&}]{unified\-Pop\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_ad9e165f7a0d57e2fa45e7b3926dac1a2}
+
+
+Finds the population variance of the unified-\/sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a8d4648246e0c0f5df4b38a1eb8e90e04}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a4269482101b2bcdb1975543f8191ab4c}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Positions\-Of\-Maximum@{unified\-Positions\-Of\-Maximum}}
+\index{unified\-Positions\-Of\-Maximum@{unified\-Positions\-Of\-Maximum}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Positions\-Of\-Maximum}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ double {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Positions\-Of\-Maximum (
+\begin{DoxyParamCaption}
+\item[{const {\bf Scalar\-Sequence}$<$ double $>$ \&}]{sub\-Corresponding\-Scalar\-Values, }
+\item[{{\bf Base\-Vector\-Sequence}$<$ V, M $>$ \&}]{unified\-Positions\-Of\-Maximum}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a4269482101b2bcdb1975543f8191ab4c}
+
+
+Finds the positions where the maximum element occurs in the unified sequence. 
+
+
+
+Definition at line 433 of file Vector\-Sequence.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::get\-Position\-Values(), Raw\-Value\-\_\-\-M\-P\-I\-\_\-\-D\-O\-U\-B\-L\-E, Raw\-Value\-\_\-\-M\-P\-I\-\_\-\-I\-N\-T, Raw\-Value\-\_\-\-M\-P\-I\-\_\-\-M\-A\-X, Raw\-Value\-\_\-\-M\-P\-I\-\_\-\-S\-U\-M, Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::resize\-Sequence(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::set\-Position\-Values(), Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::sub\-Max\-Plain(), Q\-U\-E\-S\-O\-::\-Scalar\-Sequence$<$ T $>$\-::sub\-Sequence\-Size(), and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence().
+
+
+\begin{DoxyCode}
+436 \{
+437   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+438     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"}
+439                             << \textcolor{stringliteral}{": subCorrespondingScalarValues,subSequenceSize() = "} << 
+      subCorrespondingScalarValues.\hyperlink{class_q_u_e_s_o_1_1_scalar_sequence_a0288ea295eedc216a1617b3286f6f3a0}{subSequenceSize}()
+440                             << \textcolor{stringliteral}{", this->subSequenceSize = "} << this->
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}()
+441                             << std::endl;
+442   \}
+443 
+444   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(subCorrespondingScalarValues.
+      \hyperlink{class_q_u_e_s_o_1_1_scalar_sequence_a0288ea295eedc216a1617b3286f6f3a0}{subSequenceSize}() != this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(),
+445                       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+446                       \textcolor{stringliteral}{"BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"},
+447                       \textcolor{stringliteral}{"invalid input"});
+448 
+449   \textcolor{keywordtype}{double} subMaxValue = subCorrespondingScalarValues.\hyperlink{class_q_u_e_s_o_1_1_scalar_sequence_ae4689059a4d99dffd386422f1c1aa4b9}{subMaxPlain}();
+450 
+451   \textcolor{comment}{//******************************************************************}
+452   \textcolor{comment}{// Get overall max}
+453   \textcolor{comment}{//******************************************************************}
+454   \textcolor{keywordtype}{double} unifiedMaxValue;
+455   std::vector<double> sendbufPos(1,0.);
+456   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < sendbufPos.size(); ++i) \{
+457     sendbufPos[i] = subMaxValue;
+458   \}
+459   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a689e4d140c74d495d97eb498714a4b82}{inter0Comm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a72e137e60ef8060efb1ee5fc874fa4b8}{Allreduce}((\textcolor{keywordtype}{void} *) &sendbufPos[0], (\textcolor{keywordtype}{void} *) &unifiedMaxValue, 
+      (\textcolor{keywordtype}{int}) sendbufPos.size(), \hyperlink{_mpi_comm_8h_ad0f503bd9fecfe4e570ca3d15aaf2518}{RawValue\_MPI\_DOUBLE}, \hyperlink{_mpi_comm_8h_a68f3ac7ff71a6504e236b0c95de78178}{RawValue\_MPI\_MAX},
+460                                \textcolor{stringliteral}{"BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"},
+461                                \textcolor{stringliteral}{"failed MPI.Allreduce() for max"});
+462 
+463   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} iMax = subCorrespondingScalarValues.\hyperlink{class_q_u_e_s_o_1_1_scalar_sequence_a0288ea295eedc216a1617b3286f6f3a0}{subSequenceSize}();
+464   \textcolor{keywordtype}{int} subNumPos = 0; \textcolor{comment}{// Yes, 'int', due to MPI to be used soon}
+465   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < iMax; ++i) \{
+466     \textcolor{keywordflow}{if} (subCorrespondingScalarValues[i] == unifiedMaxValue) \{
+467       subNumPos++;
+468     \}
+469   \}
+470 
+471   V tmpVec(this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_af9a4dd979a2fa8dee85bb07793b59ba2}{vectorSpace}().zeroVector());
+472   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4269482101b2bcdb1975543f8191ab4c}{unifiedPositionsOfMaximum}.resizeSequence(subNumPos);
+473   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0;
+474   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < iMax; ++i) \{
+475     \textcolor{keywordflow}{if} (subCorrespondingScalarValues[i] == unifiedMaxValue) \{
+476       this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a656d47a18b401d6d914b0daf2dea88b0}{getPositionValues}                    (i,tmpVec);
+477       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4269482101b2bcdb1975543f8191ab4c}{unifiedPositionsOfMaximum}.setPositionValues(j,tmpVec);
+478       j++;
+479     \}
+480   \}
+481 
+482   std::vector<int> auxBuf(1,0);
+483   \textcolor{keywordtype}{int} unifiedNumPos = 0; \textcolor{comment}{// Yes, 'int', due to MPI to be used soon}
+484   auxBuf[0] = subNumPos;
+485   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a689e4d140c74d495d97eb498714a4b82}{inter0Comm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a72e137e60ef8060efb1ee5fc874fa4b8}{Allreduce}((\textcolor{keywordtype}{void} *) &auxBuf[0], (\textcolor{keywordtype}{void} *) &unifiedNumPos, (\textcolor{keywordtype}{int}) 
+      auxBuf.size(), \hyperlink{_mpi_comm_8h_a1f067da7be967aa1ff144738cadd3e57}{RawValue\_MPI\_INT}, \hyperlink{_mpi_comm_8h_afbf78d291c032aa7f512bc566cee2bd1}{RawValue\_MPI\_SUM},
+486                                \textcolor{stringliteral}{"BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"},
+487                                \textcolor{stringliteral}{"failed MPI.Allreduce() for sum"});
+488   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4269482101b2bcdb1975543f8191ab4c}{unifiedPositionsOfMaximum}.resizeSequence(unifiedNumPos);
+489 
+490   \textcolor{comment}{//******************************************************************}
+491   \textcolor{comment}{// Use MPI\_Gatherv for number of positions}
+492   \textcolor{comment}{//******************************************************************}
+493   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} Np = (\textcolor{keywordtype}{unsigned} int) \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a689e4d140c74d495d97eb498714a4b82}{inter0Comm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_aa780721ae0fdeabc5a15e04cb0cad964}{NumProc}();
+494 
+495   std::vector<int> recvcntsPos(Np,0); \textcolor{comment}{// '0' is NOT the correct value for recvcntsPos[0]}
+496   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a689e4d140c74d495d97eb498714a4b82}{inter0Comm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a184a5e411afcfb6dc41e99fca9435045}{Gather}((\textcolor{keywordtype}{void} *) &subNumPos, 1, 
+      \hyperlink{_mpi_comm_8h_a1f067da7be967aa1ff144738cadd3e57}{RawValue\_MPI\_INT}, (\textcolor{keywordtype}{void} *) &recvcntsPos[0], (\textcolor{keywordtype}{int}) 1, 
+      \hyperlink{_mpi_comm_8h_a1f067da7be967aa1ff144738cadd3e57}{RawValue\_MPI\_INT}, 0,
+497                             \textcolor{stringliteral}{"BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"},
+498                             \textcolor{stringliteral}{"failed MPI.Gatherv()"});
+499   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae106b5bb8a80b655b88b3a26b1e7c185}{inter0Rank}() == 0) \{
+500     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(recvcntsPos[0] != (\textcolor{keywordtype}{int}) subNumPos,
+501                         \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+502                         \textcolor{stringliteral}{"BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"},
+503                         \textcolor{stringliteral}{"failed MPI.Gather() result at proc 0 (recvcntsPos[0])"});
+504   \}
+505 
+506   std::vector<int> displsPos(Np,0);
+507   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} nodeId = 1; nodeId < Np; ++nodeId) \{ \textcolor{comment}{// Yes, from '1' on}
+508     displsPos[nodeId] = displsPos[nodeId-1] + recvcntsPos[nodeId-1];
+509   \}
+510   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae106b5bb8a80b655b88b3a26b1e7c185}{inter0Rank}() == 0) \{
+511     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(unifiedNumPos != (displsPos[Np - 1] + recvcntsPos[Np - 1]),
+512                         \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+513                         \textcolor{stringliteral}{"BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"},
+514                         \textcolor{stringliteral}{"failed MPI.Gather() result at proc 0 (unifiedNumPos)"});
+515   \}
+516 
+517   \textcolor{comment}{//******************************************************************}
+518   \textcolor{comment}{// Use MPI\_Gatherv for number of doubles}
+519   \textcolor{comment}{//******************************************************************}
+520   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} dimSize = \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.dimLocal();
+521   \textcolor{keywordtype}{int} subNumDbs = subNumPos * dimSize; \textcolor{comment}{// Yes, 'int', due to MPI to be used soon}
+522   std::vector<int> recvcntsDbs(Np,0); \textcolor{comment}{// '0' is NOT the correct value for recvcntsDbs[0]}
+523   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a689e4d140c74d495d97eb498714a4b82}{inter0Comm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a184a5e411afcfb6dc41e99fca9435045}{Gather}((\textcolor{keywordtype}{void} *) &subNumDbs, 1, 
+      \hyperlink{_mpi_comm_8h_a1f067da7be967aa1ff144738cadd3e57}{RawValue\_MPI\_INT}, (\textcolor{keywordtype}{void} *) &recvcntsDbs[0], (\textcolor{keywordtype}{int}) 1, 
+      \hyperlink{_mpi_comm_8h_a1f067da7be967aa1ff144738cadd3e57}{RawValue\_MPI\_INT}, 0,
+524                             \textcolor{stringliteral}{"BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"},
+525                             \textcolor{stringliteral}{"failed MPI.Gatherv()"});
+526   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae106b5bb8a80b655b88b3a26b1e7c185}{inter0Rank}() == 0) \{
+527     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(recvcntsDbs[0] != (\textcolor{keywordtype}{int}) subNumDbs,
+528                         \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+529                         \textcolor{stringliteral}{"BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"},
+530                         \textcolor{stringliteral}{"failed MPI.Gather() result at proc 0 (recvcntsDbs[0])"});
+531   \}
+532 
+533   std::vector<int> displsDbs(Np,0);
+534   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} nodeId = 1; nodeId < Np; ++nodeId) \{ \textcolor{comment}{// Yes, from '1' on}
+535     displsDbs[nodeId] = displsDbs[nodeId-1] + recvcntsDbs[nodeId-1];
+536   \}
+537   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae106b5bb8a80b655b88b3a26b1e7c185}{inter0Rank}() == 0) \{
+538     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(((\textcolor{keywordtype}{int}) (unifiedNumPos*dimSize)) != (displsDbs[Np - 1] + 
+      recvcntsDbs[Np - 1]),
+539                         \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+540                         \textcolor{stringliteral}{"BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"},
+541                         \textcolor{stringliteral}{"failed MPI.Gather() result at proc 0 (unifiedNumPos*dimSize)"});
+542   \}
+543 
+544   \textcolor{comment}{//******************************************************************}
+545   \textcolor{comment}{// Prepare counters and buffers for gatherv of maximum positions}
+546   \textcolor{comment}{//******************************************************************}
+547   std::vector<double> sendbufDbs(subNumDbs,0.);
+548   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) subNumPos; ++i) \{
+549     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4269482101b2bcdb1975543f8191ab4c}{unifiedPositionsOfMaximum}.getPositionValues(i,tmpVec);
+550     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < dimSize; ++j) \{
+551       sendbufDbs[i*dimSize + j] = tmpVec[j];
+552     \}
+553   \}
+554 
+555   std::vector<double> recvbufDbs(unifiedNumPos * dimSize);
+556 
+557   \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a689e4d140c74d495d97eb498714a4b82}{inter0Comm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a9313449240c1bb2289870309a5c711ed}{Gatherv}((\textcolor{keywordtype}{void} *) &sendbufDbs[0], (\textcolor{keywordtype}{int}) subNumDbs, 
+      \hyperlink{_mpi_comm_8h_ad0f503bd9fecfe4e570ca3d15aaf2518}{RawValue\_MPI\_DOUBLE}, (\textcolor{keywordtype}{void} *) &recvbufDbs[0], (\textcolor{keywordtype}{int} *) &recvcntsDbs[0], (\textcolor{keywordtype}{int} *) &
+      displsDbs[0], \hyperlink{_mpi_comm_8h_ad0f503bd9fecfe4e570ca3d15aaf2518}{RawValue\_MPI\_DOUBLE}, 0,
+558                              \textcolor{stringliteral}{"BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"},
+559                              \textcolor{stringliteral}{"failed MPI.Gatherv()"});
+560 
+561   \textcolor{comment}{//******************************************************************}
+562   \textcolor{comment}{// Transfer data from 'recvbuf' to 'unifiedPositionsOfMaximum'}
+563   \textcolor{comment}{//******************************************************************}
+564   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae106b5bb8a80b655b88b3a26b1e7c185}{inter0Rank}() == (int) 0) \{
+565     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < (\textcolor{keywordtype}{unsigned} int) unifiedNumPos; ++i) \{
+566       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < dimSize; ++j) \{
+567         tmpVec[j] = recvbufDbs[i*dimSize + j];
+568       \}
+569       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4269482101b2bcdb1975543f8191ab4c}{unifiedPositionsOfMaximum}.setPositionValues(i,tmpVec);
+570     \}
+571   \}
+572 
+573   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) \{
+574     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"}
+575                             << std::endl;
+576   \}
+577 
+578   \textcolor{keywordflow}{return} unifiedMaxValue;
+579 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_afcb5935b592ab2e7ee39d23b08bcce62}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Read\-Contents@{unified\-Read\-Contents}}
+\index{unified\-Read\-Contents@{unified\-Read\-Contents}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Read\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Read\-Contents (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{file\-Name, }
+\item[{const std\-::string \&}]{file\-Type, }
+\item[{const unsigned int}]{sub\-Sequence\-Size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_afcb5935b592ab2e7ee39d23b08bcce62}
+
+
+Reads info of the unified sequence from a file. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_af463a5a9b5cf846b73fb5c54f59d574b}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_a3fbe0f679fa8828e27dadb89a9fe3eaa}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::actual\-Read\-Sequence(), and Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::read\-Full\-Chain().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_abc759076a4c5d9e1586a6d93629778ff}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Sample\-Variance\-Extra@{unified\-Sample\-Variance\-Extra}}
+\index{unified\-Sample\-Variance\-Extra@{unified\-Sample\-Variance\-Extra}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Sample\-Variance\-Extra}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Sample\-Variance\-Extra (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{unsigned int}]{num\-Pos, }
+\item[{const V \&}]{unified\-Mean\-Vec, }
+\item[{V \&}]{unified\-Sam\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_abc759076a4c5d9e1586a6d93629778ff}
+
+
+Finds the sample variance of the unified sequence, considering {\ttfamily num\-Pos} positions starting at position {\ttfamily initial\-Pos} and of mean {\ttfamily mean\-Vec}. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a10fe04c3cb095aca5c55e5a2d4400e44}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Matrices\-Between\-Vector\-Sequences().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a34a8b31757c6b728feefcf396d62c12f}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Sample\-Variance\-Plain@{unified\-Sample\-Variance\-Plain}}
+\index{unified\-Sample\-Variance\-Plain@{unified\-Sample\-Variance\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Sample\-Variance\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const V \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Sample\-Variance\-Plain (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a34a8b31757c6b728feefcf396d62c12f}
+
+
+Finds the variance of a sample of the unified sequence. 
+
+
+
+Definition at line 261 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+262 \{
+263   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab6fa4daa233c386ea96718cf6cac603b}{m\_unifiedSampleVariancePlain} == NULL) \{
+264     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab6fa4daa233c386ea96718cf6cac603b}{m\_unifiedSampleVariancePlain} = \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.newVector();
+265     \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_abc759076a4c5d9e1586a6d93629778ff}{unifiedSampleVarianceExtra}(0,\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}(),
+      \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a64ad551265df354e8c4ccff0d14cb883}{unifiedMeanPlain}(),*\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab6fa4daa233c386ea96718cf6cac603b}{m\_unifiedSampleVariancePlain});
+266   \}
+267 
+268   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_ab6fa4daa233c386ea96718cf6cac603b}{m\_unifiedSampleVariancePlain};
+269 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a68eae0b37fc934391ce7af2c370fd585}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Scales\-For\-Kde@{unified\-Scales\-For\-Kde}}
+\index{unified\-Scales\-For\-Kde@{unified\-Scales\-For\-Kde}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Scales\-For\-Kde}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Scales\-For\-Kde (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{initial\-Pos, }
+\item[{const V \&}]{unified\-Iqr\-Vec, }
+\item[{unsigned int}]{kde\-Dimension, }
+\item[{V \&}]{unified\-Scale\-Vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a68eae0b37fc934391ce7af2c370fd585}
+
+
+Selects the scales (bandwidth) for the kernel density estimation, considering the unified sequence. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a88ac94235c0c7ab1858fcd54fd40d087}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a188dc4632db5b93c01e8bc69bf631f4a}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Sequence\-Size@{unified\-Sequence\-Size}}
+\index{unified\-Sequence\-Size@{unified\-Sequence\-Size}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Sequence\-Size}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Sequence\-Size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a188dc4632db5b93c01e8bc69bf631f4a}
+
+
+Calculates the size of the unified sequence of vectors. 
+
+T\-O\-D\-O\-: this procedure does not support parallel vectors yet. 
+
+Definition at line 70 of file Vector\-Sequence.\-C.
+
+
+
+References Raw\-Value\-\_\-\-M\-P\-I\-\_\-\-S\-U\-M, Raw\-Value\-\_\-\-M\-P\-I\-\_\-\-U\-N\-S\-I\-G\-N\-E\-D, and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::checkpoint\-M\-L(), and Q\-U\-E\-S\-O\-::\-M\-L\-Sampling$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence\-\_\-\-Step02\-\_\-inter0().
+
+
+\begin{DoxyCode}
+71 \{
+72   \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} unifiedNumSamples = 0;
+73 
+74   \textcolor{keywordtype}{bool} useOnlyInter0Comm = (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.numOfProcsForStorage() == 1);
+75 
+76   \textcolor{keywordflow}{if} (useOnlyInter0Comm) \{
+77     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_ae106b5bb8a80b655b88b3a26b1e7c185}{inter0Rank}() >= 0) \{
+78       \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} subNumSamples = this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}();
+79       \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a689e4d140c74d495d97eb498714a4b82}{inter0Comm}().\hyperlink{class_q_u_e_s_o_1_1_mpi_comm_a72e137e60ef8060efb1ee5fc874fa4b8}{Allreduce}((\textcolor{keywordtype}{void} *) &subNumSamples, (\textcolor{keywordtype}{void} *) &
+      unifiedNumSamples, (\textcolor{keywordtype}{int}) 1, \hyperlink{_mpi_comm_8h_a06cbfbc33436f6e0dc8a48ff3c49bdfc}{RawValue\_MPI\_UNSIGNED}, \hyperlink{_mpi_comm_8h_afbf78d291c032aa7f512bc566cee2bd1}{RawValue\_MPI\_SUM},
+80                                    \textcolor{stringliteral}{"BaseVectorSequence<V,M>::unifiedSequenceSize()"},
+81                                    \textcolor{stringliteral}{"failed MPI.Allreduce() for unifiedSequenceSize()"});
+82     \}
+83     \textcolor{keywordflow}{else} \{
+84       \textcolor{comment}{// Node not in the 'inter0' communicator}
+85       unifiedNumSamples = this->\hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_afd6278702d40bdf1044697bbd6ad1957}{subSequenceSize}();
+86     \}
+87   \}
+88   \textcolor{keywordflow}{else} \{
+89     \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}((useOnlyInter0Comm == \textcolor{keyword}{false}),
+90                         \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+91                         \textcolor{stringliteral}{"BaseVectorSequence<V,M>::unifiedSequenceSize()"},
+92                         \textcolor{stringliteral}{"parallel vectors not supported yet"});
+93   \}
+94 
+95   \textcolor{keywordflow}{return} unifiedNumSamples;
+96 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a3987ee6d026842e4ddaeaf0bc850ef83}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!unified\-Write\-Contents@{unified\-Write\-Contents}}
+\index{unified\-Write\-Contents@{unified\-Write\-Contents}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{unified\-Write\-Contents}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ virtual void {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::unified\-Write\-Contents (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{file\-Name, }
+\item[{const std\-::string \&}]{file\-Type}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a3987ee6d026842e4ddaeaf0bc850ef83}
+
+
+Writes info of the unified sequence to a file. See template specialization. 
+
+
+
+Implemented in \hyperlink{class_q_u_e_s_o_1_1_sequence_of_vectors_a19f46ad2f88402913e7ed1357ae6b6a8}{Q\-U\-E\-S\-O\-::\-Sequence\-Of\-Vectors$<$ V, M $>$}, and \hyperlink{class_q_u_e_s_o_1_1_array_of_sequences_af4ab2f575230715be16fff5ae9bb4759}{Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$}.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence(), and Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::intern\-Generate\-Sequence().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_aac107ca7ba8ce666f8f994e8bbe922a8}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!vector\-Size\-Global@{vector\-Size\-Global}}
+\index{vector\-Size\-Global@{vector\-Size\-Global}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{vector\-Size\-Global}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::vector\-Size\-Global (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_aac107ca7ba8ce666f8f994e8bbe922a8}
+
+
+Global dimension (size) of the vector space. 
+
+
+
+Definition at line 107 of file Vector\-Sequence.\-C.
+
+
+\begin{DoxyCode}
+108 \{
+109   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.dimGlobal();
+110 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a2fefedf9e5b90f22881103b3f92555f6}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!vector\-Size\-Local@{vector\-Size\-Local}}
+\index{vector\-Size\-Local@{vector\-Size\-Local}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{vector\-Size\-Local}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ unsigned int {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::vector\-Size\-Local (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a2fefedf9e5b90f22881103b3f92555f6}
+
+
+Local dimension (size) of the vector space. 
+
+
+
+Definition at line 100 of file Vector\-Sequence.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Monte\-Carlo\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M, Q\-\_\-\-V, Q\-\_\-\-M $>$\-::generate\-Sequence(), and Q\-U\-E\-S\-O\-::\-Metropolis\-Hastings\-S\-G$<$ P\-\_\-\-V, P\-\_\-\-M $>$\-::generate\-Sequence().
+
+
+\begin{DoxyCode}
+101 \{
+102   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace}.dimLocal();
+103 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_af9a4dd979a2fa8dee85bb07793b59ba2}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!vector\-Space@{vector\-Space}}
+\index{vector\-Space@{vector\-Space}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{vector\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Vector\-Space}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::vector\-Space (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_af9a4dd979a2fa8dee85bb07793b59ba2}
+
+
+\hyperlink{class_q_u_e_s_o_1_1_vector}{Vector} space; access to protected attribute Vector\-Space$<$\-V,\-M$>$\& m\-\_\-vector\-Space. 
+
+
+
+Definition at line 114 of file Vector\-Sequence.\-C.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::append(), and Q\-U\-E\-S\-O\-::\-Compute\-Cov\-Corr\-Matrices\-Between\-Vector\-Sequences().
+
+
+\begin{DoxyCode}
+115 \{
+116   \textcolor{keywordflow}{return} \hyperlink{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{m\_vectorSpace};
+117 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-env@{m\-\_\-env}}
+\index{m\-\_\-env@{m\-\_\-env}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-env}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Base\-Environment}\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-env\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a8e8824d2a63c5a43bcc6473e3a0491e8}
+
+
+Definition at line 413 of file Vector\-Sequence.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Array\-Of\-Sequences$<$ V, M $>$\-::\-Array\-Of\-Sequences().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_add593820ac53e4adccb3002ba0becfa7}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-fft\-Obj@{m\-\_\-fft\-Obj}}
+\index{m\-\_\-fft\-Obj@{m\-\_\-fft\-Obj}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-fft\-Obj}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Fft}$<$double$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-fft\-Obj\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_add593820ac53e4adccb3002ba0becfa7}
+
+
+Definition at line 417 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-name@{m\-\_\-name}}
+\index{m\-\_\-name@{m\-\_\-name}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ std\-::string {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-name\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a3c379b2f7c20a2a1dd083ea43fca1494}
+
+
+Definition at line 415 of file Vector\-Sequence.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::copy().
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a8fa117289936a6b0cd83dd55aaf55047}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-sub\-Box\-Plain@{m\-\_\-sub\-Box\-Plain}}
+\index{m\-\_\-sub\-Box\-Plain@{m\-\_\-sub\-Box\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-sub\-Box\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Box\-Subset}$<$V,M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-sub\-Box\-Plain\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a8fa117289936a6b0cd83dd55aaf55047}
+
+
+Definition at line 428 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-sub\-Max\-Plain@{m\-\_\-sub\-Max\-Plain}}
+\index{m\-\_\-sub\-Max\-Plain@{m\-\_\-sub\-Max\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-sub\-Max\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-sub\-Max\-Plain\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a1f24826fd2ca206a6e2662ade55dc5cb}
+
+
+Definition at line 420 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_aea341eac0220157a44f373e1377e0ca0}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-sub\-Mean\-Plain@{m\-\_\-sub\-Mean\-Plain}}
+\index{m\-\_\-sub\-Mean\-Plain@{m\-\_\-sub\-Mean\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-sub\-Mean\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-sub\-Mean\-Plain\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_aea341eac0220157a44f373e1377e0ca0}
+
+
+Definition at line 422 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a99ab57b8cb62b14eedd606b9d2e75672}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-sub\-Median\-Plain@{m\-\_\-sub\-Median\-Plain}}
+\index{m\-\_\-sub\-Median\-Plain@{m\-\_\-sub\-Median\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-sub\-Median\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-sub\-Median\-Plain\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a99ab57b8cb62b14eedd606b9d2e75672}
+
+
+Definition at line 424 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-sub\-Min\-Plain@{m\-\_\-sub\-Min\-Plain}}
+\index{m\-\_\-sub\-Min\-Plain@{m\-\_\-sub\-Min\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-sub\-Min\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-sub\-Min\-Plain\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_ab4be9e46882547032a1b738b6fafc2f8}
+
+
+Definition at line 418 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a25dc9797633cb4b23b7330c5d3de9dd7}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-sub\-Sample\-Variance\-Plain@{m\-\_\-sub\-Sample\-Variance\-Plain}}
+\index{m\-\_\-sub\-Sample\-Variance\-Plain@{m\-\_\-sub\-Sample\-Variance\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-sub\-Sample\-Variance\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-sub\-Sample\-Variance\-Plain\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a25dc9797633cb4b23b7330c5d3de9dd7}
+
+
+Definition at line 426 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a13e15d877a0826605eb62fd65244761a}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-unified\-Box\-Plain@{m\-\_\-unified\-Box\-Plain}}
+\index{m\-\_\-unified\-Box\-Plain@{m\-\_\-unified\-Box\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-unified\-Box\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ {\bf Box\-Subset}$<$V,M$>$$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-unified\-Box\-Plain\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a13e15d877a0826605eb62fd65244761a}
+
+
+Definition at line 429 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-unified\-Max\-Plain@{m\-\_\-unified\-Max\-Plain}}
+\index{m\-\_\-unified\-Max\-Plain@{m\-\_\-unified\-Max\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-unified\-Max\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-unified\-Max\-Plain\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a5abbf8a1b56ffd00f00a065ff1af1e68}
+
+
+Definition at line 421 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a0bb5f2fa3d8369412b8cf5f6795b95b4}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-unified\-Mean\-Plain@{m\-\_\-unified\-Mean\-Plain}}
+\index{m\-\_\-unified\-Mean\-Plain@{m\-\_\-unified\-Mean\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-unified\-Mean\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-unified\-Mean\-Plain\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a0bb5f2fa3d8369412b8cf5f6795b95b4}
+
+
+Definition at line 423 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_ac723ac11f629ba07915f7520b36e4138}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-unified\-Median\-Plain@{m\-\_\-unified\-Median\-Plain}}
+\index{m\-\_\-unified\-Median\-Plain@{m\-\_\-unified\-Median\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-unified\-Median\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-unified\-Median\-Plain\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_ac723ac11f629ba07915f7520b36e4138}
+
+
+Definition at line 425 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-unified\-Min\-Plain@{m\-\_\-unified\-Min\-Plain}}
+\index{m\-\_\-unified\-Min\-Plain@{m\-\_\-unified\-Min\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-unified\-Min\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-unified\-Min\-Plain\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a8401f459127618bbdcb0826ddb69b550}
+
+
+Definition at line 419 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_ab6fa4daa233c386ea96718cf6cac603b}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-unified\-Sample\-Variance\-Plain@{m\-\_\-unified\-Sample\-Variance\-Plain}}
+\index{m\-\_\-unified\-Sample\-Variance\-Plain@{m\-\_\-unified\-Sample\-Variance\-Plain}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-unified\-Sample\-Variance\-Plain}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ V$\ast$ {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-unified\-Sample\-Variance\-Plain\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_ab6fa4daa233c386ea96718cf6cac603b}
+
+
+Definition at line 427 of file Vector\-Sequence.\-h.
+
+\hypertarget{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}{\index{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}!m\-\_\-vector\-Space@{m\-\_\-vector\-Space}}
+\index{m\-\_\-vector\-Space@{m\-\_\-vector\-Space}!QUESO::BaseVectorSequence@{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}}
+\subsubsection[{m\-\_\-vector\-Space}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ const {\bf Vector\-Space}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence}$<$ V, M $>$\-::m\-\_\-vector\-Space\hspace{0.3cm}{\ttfamily [protected]}}}\label{class_q_u_e_s_o_1_1_base_vector_sequence_a4bd171e39ed050ff105c808336f35198}
+
+
+Definition at line 414 of file Vector\-Sequence.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Base\-Vector\-Sequence$<$ V, M $>$\-::copy().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/basic/inc/\hyperlink{_vector_sequence_8h}{Vector\-Sequence.\-h}\item 
+src/basic/src/\hyperlink{_vector_sequence_8_c}{Vector\-Sequence.\-C}\end{DoxyCompactItemize}

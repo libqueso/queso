@@ -1,0 +1,714 @@
+\hypertarget{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group}{\section{Q\-U\-E\-S\-O\-:\-:Hessian\-Cov\-Matrices\-T\-K\-Group$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group}\index{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group$<$ V, M $>$}}
+}
+
+
+This class allows the representation of a transition kernel with Hessians.  
+
+
+
+
+{\ttfamily \#include $<$Hessian\-Cov\-Matrices\-T\-K\-Group.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Hessian\-Cov\-Matrices\-T\-K\-Group$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Hessian\-Cov\-Matrices\-T\-K\-Group$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a130c5c8e70e348350a12bd8d8a207fd4}{Hessian\-Cov\-Matrices\-T\-K\-Group} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_vector_space}{Vector\-Space}$<$ V, M $>$ \&vector\-Space, const std\-::vector$<$ double $>$ \&scales, const \hyperlink{class_q_u_e_s_o_1_1_scalar_function_synchronizer}{Scalar\-Function\-Synchronizer}$<$ V, M $>$ \&target\-Pdf\-Synchronizer)
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a7d5732bbedaebfc7b63ccbb11ea2c1b6}{$\sim$\-Hessian\-Cov\-Matrices\-T\-K\-Group} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Statistical/\-Mathematical methods}\par
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_abf0f6a04543c18b2f95e615b09191c2b}{symmetric} () const 
+\begin{DoxyCompactList}\small\item\em Whether or not the matrix is symmetric. Always 'false'. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_r_v}{Gaussian\-Vector\-R\-V}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a7a9a6fabad72d063438733436704ff2b}{rv} (unsigned int stage\-Id)
+\begin{DoxyCompactList}\small\item\em Gaussian increment property to construct a transition kernel. \end{DoxyCompactList}\item 
+const \hyperlink{class_q_u_e_s_o_1_1_gaussian_vector_r_v}{Gaussian\-Vector\-R\-V}$<$ V, M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a658ecfbd10f11f4951649986ad65ae76}{rv} (const std\-::vector$<$ unsigned int $>$ \&stage\-Ids)
+\begin{DoxyCompactList}\small\item\em Gaussian increment property to construct a transition kernel. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Misc methods}\par
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a935cca86e22544d5a478e05862a4a200}{set\-Pre\-Computing\-Position} (const V \&position, unsigned int stage\-Id)
+\begin{DoxyCompactList}\small\item\em Sets the pre-\/computing positions {\ttfamily m\-\_\-pre\-Computing\-Positions}\mbox{[}stage\-Id\mbox{]} with a new vector of size {\ttfamily position}. \end{DoxyCompactList}\item 
+void \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_af5ca7d6d8464e444607bb3da6cd39be8}{clear\-Pre\-Computing\-Positions} ()
+\begin{DoxyCompactList}\small\item\em Clears the pre-\/computing positions {\ttfamily m\-\_\-pre\-Computing\-Positions}\mbox{[}stage\-Id\mbox{]}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf I/\-O methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_aa780d91ffdf133df50d5d9a3a0edaa95}{print} (std\-::ostream \&os) const 
+\begin{DoxyCompactList}\small\item\em T\-O\-D\-O\-: Prints the transition kernel. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \\*
+\hyperlink{class_q_u_e_s_o_1_1_scalar_function_synchronizer}{Scalar\-Function\-Synchronizer}$<$ V, \\*
+M $>$ \& \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a22daa22c22e5d9800c3817f6912ca122}{m\-\_\-target\-Pdf\-Synchronizer}
+\item 
+std\-::vector$<$ V $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\-\_\-original\-Newton\-Steps}
+\item 
+std\-::vector$<$ M $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\-\_\-original\-Cov\-Matrices}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group$<$ V, M $>$}
+
+This class allows the representation of a transition kernel with Hessians. 
+
+Definition at line 41 of file Hessian\-Cov\-Matrices\-T\-K\-Group.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a130c5c8e70e348350a12bd8d8a207fd4}{\index{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}!Hessian\-Cov\-Matrices\-T\-K\-Group@{Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\index{Hessian\-Cov\-Matrices\-T\-K\-Group@{Hessian\-Cov\-Matrices\-T\-K\-Group}!QUESO::HessianCovMatricesTKGroup@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\subsubsection[{Hessian\-Cov\-Matrices\-T\-K\-Group}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}$<$ V, M $>$\-::{\bf Hessian\-Cov\-Matrices\-T\-K\-Group} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Vector\-Space}$<$ V, M $>$ \&}]{vector\-Space, }
+\item[{const std\-::vector$<$ double $>$ \&}]{scales, }
+\item[{const {\bf Scalar\-Function\-Synchronizer}$<$ V, M $>$ \&}]{target\-Pdf\-Synchronizer}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a130c5c8e70e348350a12bd8d8a207fd4}
+
+
+Default constructor. 
+
+
+
+Definition at line 33 of file Hessian\-Cov\-Matrices\-T\-K\-Group.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group$<$ V, M $>$\-::m\-\_\-original\-Cov\-Matrices, Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group$<$ V, M $>$\-::m\-\_\-original\-Newton\-Steps, Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$\-::m\-\_\-pre\-Computing\-Positions, Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$\-::m\-\_\-rvs, Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$\-::m\-\_\-scales, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+38   :
+39   BaseTKGroup<V,M>(prefix,vectorSpace,scales),
+40   \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a22daa22c22e5d9800c3817f6912ca122}{m\_targetPdfSynchronizer}(targetPdfSynchronizer),
+41   \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}  (scales.size()+1,NULL), \textcolor{comment}{// Yes, +1}
+42   \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}  (scales.size()+1,NULL)  \textcolor{comment}{// Yes, +1}
+43 \{
+44   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+45     *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering HessianCovMatricesTKGroup<V,M>::constructor()"}
+46                            << std::endl;
+47   \}
+48 
+49   \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}.resize(scales.size()+1,NULL); \textcolor{comment}{// Yes, +1 (IMPORTANT: overwrite initialization done by
+       BaseTKGroup<V,M>)}
+50 
+51   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+52     *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In HessianCovMatricesTKGroup<V,M>::constructor()"}
+53                            << \textcolor{stringliteral}{": m\_scales.size() = "}                   << 
+      \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_ad36d4dc6f4812e3e10d8090f0dbb9e40}{m\_scales}.size()
+54                            << \textcolor{stringliteral}{", m\_preComputingPositions.size() = "}    << 
+      \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}.size()
+55                            << \textcolor{stringliteral}{", m\_rvs.size() = "}                      << \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}.size()
+56                            << \textcolor{stringliteral}{", m\_originalNewtonSteps.size() = "}      << 
+      \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}.size()
+57                            << \textcolor{stringliteral}{", m\_originalCovMatrices.size() = "}      << 
+      \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}.size()
+58                            << std::endl;
+59   \}
+60 
+61   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+62     *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving HessianCovMatricesTKGroup<V,M>::constructor()"}
+63                            << std::endl;
+64   \}
+65 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a7d5732bbedaebfc7b63ccbb11ea2c1b6}{\index{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}!$\sim$\-Hessian\-Cov\-Matrices\-T\-K\-Group@{$\sim$\-Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\index{$\sim$\-Hessian\-Cov\-Matrices\-T\-K\-Group@{$\sim$\-Hessian\-Cov\-Matrices\-T\-K\-Group}!QUESO::HessianCovMatricesTKGroup@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\subsubsection[{$\sim$\-Hessian\-Cov\-Matrices\-T\-K\-Group}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}$<$ V, M $>$\-::$\sim${\bf Hessian\-Cov\-Matrices\-T\-K\-Group} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a7d5732bbedaebfc7b63ccbb11ea2c1b6}
+
+
+Destructor. 
+
+
+
+Definition at line 68 of file Hessian\-Cov\-Matrices\-T\-K\-Group.\-C.
+
+
+\begin{DoxyCode}
+69 \{
+70 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_af5ca7d6d8464e444607bb3da6cd39be8}{\index{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}!clear\-Pre\-Computing\-Positions@{clear\-Pre\-Computing\-Positions}}
+\index{clear\-Pre\-Computing\-Positions@{clear\-Pre\-Computing\-Positions}!QUESO::HessianCovMatricesTKGroup@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\subsubsection[{clear\-Pre\-Computing\-Positions}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}$<$ V, M $>$\-::clear\-Pre\-Computing\-Positions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_af5ca7d6d8464e444607bb3da6cd39be8}
+
+
+Clears the pre-\/computing positions {\ttfamily m\-\_\-pre\-Computing\-Positions}\mbox{[}stage\-Id\mbox{]}. 
+
+
+
+Reimplemented from \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_adb4decb4e8f01dce2ae4d5a3333c74f8}{Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$}.
+
+
+
+Definition at line 361 of file Hessian\-Cov\-Matrices\-T\-K\-Group.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$\-::clear\-Pre\-Computing\-Positions(), and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+362 \{
+363   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}.size() != 
+      \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}.size(),
+364                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+365                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::clearPreComputingPositions()"},
+366                       \textcolor{stringliteral}{"m\_preComputingPositions.size() != m\_originalNewtonSteps.size()"});
+367 
+368   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}.size() != 
+      \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}.size(),
+369                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+370                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::clearPreComputingPositions()"},
+371                       \textcolor{stringliteral}{"m\_preComputingPositions.size() != m\_originalCovMatrices.size()"});
+372 
+373   \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_adb4decb4e8f01dce2ae4d5a3333c74f8}{BaseTKGroup<V,M>::clearPreComputingPositions}();
+374 
+375   \textcolor{comment}{// RVs are not deleted in base class because the cov matrices are constant in the case of scaledTK class}
+376   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}.size(); ++i) \{
+377     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[i]) \{
+378       \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[i];
+379       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[i] = NULL;
+380     \}
+381   \}
+382 
+383   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}.size(); ++i) \{
+384     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}[i]) \{
+385       \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}[i];
+386       \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}[i] = NULL;
+387     \}
+388   \}
+389 
+390   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}.size(); ++i) \{
+391     \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}[i]) \{
+392       \textcolor{keyword}{delete} \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}[i];
+393       \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}[i] = NULL;
+394     \}
+395   \}
+396 
+397   \textcolor{keywordflow}{return};
+398 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_aa780d91ffdf133df50d5d9a3a0edaa95}{\index{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}!print@{print}}
+\index{print@{print}!QUESO::HessianCovMatricesTKGroup@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\subsubsection[{print}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}$<$ V, M $>$\-::print (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream \&}]{os}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_aa780d91ffdf133df50d5d9a3a0edaa95}
+
+
+T\-O\-D\-O\-: Prints the transition kernel. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000033}{Todo}]\-: implement me! \end{DoxyRefDesc}
+
+
+Reimplemented from \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_ad6f7aa1ed1f75476b46333847e5086ba}{Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$}.
+
+
+
+Definition at line 402 of file Hessian\-Cov\-Matrices\-T\-K\-Group.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$\-::print().
+
+
+\begin{DoxyCode}
+403 \{
+404   \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_ad6f7aa1ed1f75476b46333847e5086ba}{BaseTKGroup<V,M>::print}(os);
+405   \textcolor{keywordflow}{return};
+406 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a7a9a6fabad72d063438733436704ff2b}{\index{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}!rv@{rv}}
+\index{rv@{rv}!QUESO::HessianCovMatricesTKGroup@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\subsubsection[{rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Gaussian\-Vector\-R\-V}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}$<$ V, M $>$\-::rv (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{stage\-Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a7a9a6fabad72d063438733436704ff2b}
+
+
+Gaussian increment property to construct a transition kernel. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a6bd8e0bec0105471aad8801cbf1a0851}{Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$}.
+
+
+
+Definition at line 81 of file Hessian\-Cov\-Matrices\-T\-K\-Group.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+82 \{
+83   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}.size() <= stageId,
+84                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+85                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::rv1()"},
+86                       \textcolor{stringliteral}{"m\_rvs.size() <= stageId"});
+87 
+88   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[stageId] == NULL,
+89                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+90                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::rv1()"},
+91                       \textcolor{stringliteral}{"m\_rvs[stageId] == NULL"});
+92 
+93   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}.size() <= stageId,
+94                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+95                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::rv1()"},
+96                       \textcolor{stringliteral}{"m\_preComputingPositions.size() <= stageId"});
+97 
+98   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}[stageId] == NULL,
+99                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+100                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::rv1()"},
+101                       \textcolor{stringliteral}{"m\_preComputingPositions[stageId] == NULL"});
+102 
+103   \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[stageId]->updateLawExpVector(*\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}[stageId] + *
+      \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}[stageId]);
+104   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()        ) &&
+105       (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 10)) \{
+106     *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In HessianCovMatrixTKGroup<V,M>::rv1()"}
+107                             << \textcolor{stringliteral}{", stageId = "} << stageId
+108                             << \textcolor{stringliteral}{": about to call m\_rvs[stageId]->updateLawCovMatrix()"}
+109                             << \textcolor{stringliteral}{", covMatrix = \(\backslash\)n"} << *\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}[stageId] \textcolor{comment}{
+      // FIX ME: might demand parallelism}
+110                             << std::endl;
+111   \}
+112   \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[stageId]->updateLawCovMatrix(*\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}[stageId]);
+113 
+114   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[stageId];
+115 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a658ecfbd10f11f4951649986ad65ae76}{\index{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}!rv@{rv}}
+\index{rv@{rv}!QUESO::HessianCovMatricesTKGroup@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\subsubsection[{rv}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Gaussian\-Vector\-R\-V}$<$ V, M $>$ \& {\bf Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}$<$ V, M $>$\-::rv (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ unsigned int $>$ \&}]{stage\-Ids}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a658ecfbd10f11f4951649986ad65ae76}
+
+
+Gaussian increment property to construct a transition kernel. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a35eaf213217ec41a9d85b957db01a9ff}{Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$}.
+
+
+
+Definition at line 119 of file Hessian\-Cov\-Matrices\-T\-K\-Group.\-C.
+
+
+
+References U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+120 \{
+121   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}.size() <= stageIds[0],
+122                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+123                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::rv2()"},
+124                       \textcolor{stringliteral}{"m\_rvs.size() <= stageIds[0]"});
+125 
+126   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[stageIds[0]] == NULL,
+127                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+128                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::rv2()"},
+129                       \textcolor{stringliteral}{"m\_rvs[stageIds[0]] == NULL"});
+130 
+131   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}.size() <= stageIds[
+      0],
+132                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+133                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::rv2()"},
+134                       \textcolor{stringliteral}{"m\_preComputingPositions.size() <= stageIds[0]"});
+135 
+136   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}[stageIds[0]] == 
+      NULL,
+137                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+138                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::rv2()"},
+139                       \textcolor{stringliteral}{"m\_preComputingPositions[stageIds[0]] == NULL"});
+140 
+141   \textcolor{keywordtype}{double} factor = 1./\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_ad36d4dc6f4812e3e10d8090f0dbb9e40}{m\_scales}[stageIds.size()-1]/\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_ad36d4dc6f4812e3e10d8090f0dbb9e40}{m\_scales}[stageIds.size()-1];
+142 
+143   \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[stageIds[0]]->updateLawExpVector(*\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}[stageIds[0]] 
+      + factor*(*\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}[stageIds[0]]));
+144   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()        ) &&
+145       (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 10)) \{
+146     *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In HessianCovMatrixTKGroup<V,M>::rv2()"}
+147                             << \textcolor{stringliteral}{", stageIds.size() = "} << stageIds.size()
+148                             << \textcolor{stringliteral}{", stageIds[0] = "}     << stageIds[0]
+149                             << \textcolor{stringliteral}{", factor = "}          << factor
+150                             << \textcolor{stringliteral}{": about to call m\_rvs[stageIds[0]]->updateLawCovVector()"}
+151                             << \textcolor{stringliteral}{", covMatrix = \(\backslash\)n"} << factor*(*
+      \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}[stageIds[0]]) \textcolor{comment}{// FIX ME: might demand parallelism}
+152                             << std::endl;
+153   \}
+154   \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[stageIds[0]]->updateLawCovMatrix(factor*(*\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}[stageIds[
+      0]]));
+155 
+156   \textcolor{keywordflow}{return} *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[stageIds[0]];
+157 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a935cca86e22544d5a478e05862a4a200}{\index{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}!set\-Pre\-Computing\-Position@{set\-Pre\-Computing\-Position}}
+\index{set\-Pre\-Computing\-Position@{set\-Pre\-Computing\-Position}!QUESO::HessianCovMatricesTKGroup@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\subsubsection[{set\-Pre\-Computing\-Position}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ bool {\bf Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}$<$ V, M $>$\-::set\-Pre\-Computing\-Position (
+\begin{DoxyParamCaption}
+\item[{const V \&}]{position, }
+\item[{unsigned int}]{stage\-Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a935cca86e22544d5a478e05862a4a200}
+
+
+Sets the pre-\/computing positions {\ttfamily m\-\_\-pre\-Computing\-Positions}\mbox{[}stage\-Id\mbox{]} with a new vector of size {\ttfamily position}. 
+
+
+
+Reimplemented from \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_acd1efb5b2ae3eb4f1130fa37201545d8}{Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$}.
+
+
+
+Definition at line 161 of file Hessian\-Cov\-Matrices\-T\-K\-Group.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$\-::set\-Pre\-Computing\-Position(), and U\-Q\-\_\-\-F\-A\-T\-A\-L\-\_\-\-T\-E\-S\-T\-\_\-\-M\-A\-C\-R\-O.
+
+
+\begin{DoxyCode}
+162 \{
+163   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+164     *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering
+       HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"}
+165                            << \textcolor{stringliteral}{": position = "} << position
+166                            << \textcolor{stringliteral}{", stageId = "}  << stageId
+167                            << std::endl;
+168   \}
+169 
+170   \textcolor{keywordtype}{bool} validPreComputingPosition = \textcolor{keyword}{true};
+171 
+172   \textcolor{comment}{// Verify consistency of sizes}
+173   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}.size() <= stageId,
+174                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+175                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"},
+176                       \textcolor{stringliteral}{"m\_preComputingPositions.size() <= stageId"});
+177 
+178   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}.size() != 
+      \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}.size(),
+179                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+180                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"},
+181                       \textcolor{stringliteral}{"m\_preComputingPositions.size() != m\_rvs.size()"});
+182 
+183   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}.size() != 
+      \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}.size(),
+184                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+185                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"},
+186                       \textcolor{stringliteral}{"m\_preComputingPositions.size() != m\_originalNewtonSteps.size()"});
+187 
+188   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}.size() != 
+      \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}.size(),
+189                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+190                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"},
+191                       \textcolor{stringliteral}{"m\_preComputingPositions.size() != m\_originalCovMatrices.size()"});
+192 
+193   \textcolor{comment}{// Verify data is not null}
+194   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}[stageId] != NULL,
+195                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+196                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"},
+197                       \textcolor{stringliteral}{"m\_preComputingPositions[stageId] != NULL"});
+198 
+199   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[stageId] != NULL,
+200                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+201                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"},
+202                       \textcolor{stringliteral}{"m\_rvs[stageId] != NULL"});
+203 
+204   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}[stageId] != NULL,
+205                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+206                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"},
+207                       \textcolor{stringliteral}{"m\_originalNewtonSteps[stageId] != NULL"});
+208 
+209   \hyperlink{_defines_8h_a56d63d18d0a6d45757de47fcc06f574d}{UQ\_FATAL\_TEST\_MACRO}(\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}[stageId] != NULL,
+210                       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a78b57112bbd0e6dd0e8afec00b40ffa7}{worldRank}(),
+211                       \textcolor{stringliteral}{"HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"},
+212                       \textcolor{stringliteral}{"m\_originalCovMatrices[stageId] != NULL"});
+213 
+214   \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_acd1efb5b2ae3eb4f1130fa37201545d8}{BaseTKGroup<V,M>::setPreComputingPosition}(position,stageId);
+215 
+216   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+217     *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"}
+218                            << \textcolor{stringliteral}{", position = "}                          << position
+219                            << \textcolor{stringliteral}{", stageId = "}                           << stageId
+220                            << \textcolor{stringliteral}{": m\_originalNewtonSteps.size() = "}      << 
+      \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}.size()
+221                            << \textcolor{stringliteral}{", m\_originalCovMatrices.size() = "}      << 
+      \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}.size()
+222                            << \textcolor{stringliteral}{", m\_preComputingPositions.size() = "}    << 
+      \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}.size()
+223                            << \textcolor{stringliteral}{", m\_rvs.size() = "}                      << \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}.size()
+224                            << std::endl;
+225   \}
+226 
+227   \textcolor{keywordflow}{if} (\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a22daa22c22e5d9800c3817f6912ca122}{m\_targetPdfSynchronizer}.domainSet().contains(position)) \{
+228     M* tmpHessian = \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a9930bbda0f3d9368653fb0577b89ec33}{m\_vectorSpace}->newMatrix();
+229     M* tmpCovMat  = \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a9930bbda0f3d9368653fb0577b89ec33}{m\_vectorSpace}->newMatrix();
+230     V* tmpGrad    = \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a9930bbda0f3d9368653fb0577b89ec33}{m\_vectorSpace}->newVector();
+231 
+232     \textcolor{keywordtype}{double} logPrior = 0.;
+233     \textcolor{keywordtype}{double} logLikelihood = 0.;
+234     \textcolor{keywordtype}{double} logTarget = 0.;
+235     logTarget = \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a22daa22c22e5d9800c3817f6912ca122}{m\_targetPdfSynchronizer}.callFunction(&position, \textcolor{comment}{// Might demand
+       parallel environment}
+236                                                      NULL,
+237                                                      tmpGrad,
+238                                                      tmpHessian,
+239                                                      NULL,
+240                                                      &logPrior,
+241                                                      &logLikelihood);
+242     \textcolor{keywordflow}{if} (logTarget) \{\}; \textcolor{comment}{// just to remove compiler warning}
+243 
+244     \textcolor{comment}{// IMPORTANT: covariance matrix = (Hessian)^\{-1\} !!!}
+245     V unitVector(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a9930bbda0f3d9368653fb0577b89ec33}{m\_vectorSpace}->zeroVector());
+246     V multVector(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a9930bbda0f3d9368653fb0577b89ec33}{m\_vectorSpace}->zeroVector());
+247     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} j = 0; j < tmpHessian->numCols(); ++j) \{
+248       \textcolor{keywordflow}{if} (j > 0) unitVector[j-1] = 0.;
+249       unitVector[j] = 1.;
+250       tmpHessian->invertMultiply(unitVector, multVector);
+251       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < tmpHessian->numRowsLocal(); ++i) \{
+252         (*tmpCovMat)(i,j) = multVector[i];
+253       \}
+254     \}
+255     \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+256       *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"}
+257                              << \textcolor{stringliteral}{", position = "}  << position
+258                              << \textcolor{stringliteral}{", stageId = "}   << stageId
+259                              << \textcolor{stringliteral}{":\(\backslash\)n H = "}       << *tmpHessian
+260                              << \textcolor{stringliteral}{"\(\backslash\)n H^\{-1\} = "}   << *tmpCovMat
+261                              << \textcolor{stringliteral}{"\(\backslash\)n H*H^\{-1\} = "} << (*tmpHessian)*(*tmpCovMat)
+262                              << \textcolor{stringliteral}{"\(\backslash\)n H^\{-1\}*H = "} << (*tmpCovMat)*(*tmpHessian)
+263                              << std::endl;
+264     \}
+265 
+266     \textcolor{comment}{// Force covariance matrix to be symmetric, as the Hessian (supposedly) is}
+267     *tmpCovMat = .5*((*tmpCovMat) + tmpCovMat->transpose());
+268 
+269     \textcolor{comment}{// Test if covariance matrix is positive definite}
+270     M lowerChol(*tmpCovMat);
+271     \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()        ) &&
+272         (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 10)) \{
+273       *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"}
+274                               << \textcolor{stringliteral}{", position = "}  << position
+275                               << \textcolor{stringliteral}{", stageId = "}   << stageId
+276                               << \textcolor{stringliteral}{": calling lowerChol.chol()"}
+277                               << \textcolor{stringliteral}{", lowerChol = "} << lowerChol
+278                               << std::endl;
+279     \}
+280     \textcolor{keywordtype}{int} iRC = lowerChol.chol();
+281     \textcolor{keywordflow}{if} (iRC) \{
+282       std::cerr << \textcolor{stringliteral}{"In HessianCovMatricesTKGroup<V,M>::setPreComputingPosition(): chol failed\(\backslash\)n"};
+283     \}
+284     \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()        ) &&
+285         (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 10)) \{
+286       *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"}
+287                               << \textcolor{stringliteral}{", position = "}  << position
+288                               << \textcolor{stringliteral}{", stageId = "}   << stageId
+289                               << \textcolor{stringliteral}{": got lowerChol.chol() with iRC = "} << iRC
+290                               << std::endl;
+291     \}
+292 
+293     \textcolor{keywordtype}{bool} covIsPositiveDefinite = !iRC;
+294 
+295     \textcolor{keywordflow}{if} (covIsPositiveDefinite) \{
+296       \textcolor{comment}{//UQ\_FATAL\_TEST\_MACRO(stageId >= m\_scales.size(),}
+297       \textcolor{comment}{//                    m\_env.worldRank(),}
+298       \textcolor{comment}{//                    "HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()",}
+299       \textcolor{comment}{//                    "stageId is too large for m\_scales");}
+300       \textcolor{comment}{//double factor = 1./m\_scales[stageId]/m\_scales[stageId];}
+301       \textcolor{comment}{//*tmpCovMat *= factor;}
+302 
+303       \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}[stageId] = \textcolor{keyword}{new} V(-1.*(*tmpCovMat)*(*tmpGrad));
+304       \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}[stageId] = \textcolor{keyword}{new} M(*tmpCovMat);
+305 
+306       \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+307         *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"In
+       HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"}
+308                                << \textcolor{stringliteral}{", position = "}        << position
+309                                << \textcolor{stringliteral}{", stageId = "}         << stageId
+310                                << \textcolor{stringliteral}{", about to instantiate a Gaussian RV"}
+311                                << \textcolor{stringliteral}{": tmpHessian = "}      << *tmpHessian
+312                                << \textcolor{stringliteral}{", preComputingPos = "} << *
+      \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}[stageId]
+313                                << \textcolor{stringliteral}{", tmpCovMat = "}       << *tmpCovMat
+314                                << \textcolor{stringliteral}{", tmpGrad = "}         << *tmpGrad
+315                                << \textcolor{stringliteral}{", preComputedPos = "}  << *
+      \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}[stageId] + *\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}[
+      stageId]
+316                              \textcolor{comment}{//<< ", factor = "          << factor}
+317                              \textcolor{comment}{//<< ", rvCov = "           << factor*(*tmpCovMat)}
+318                                << std::endl;
+319       \}
+320       \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[stageId] = \textcolor{keyword}{new} GaussianVectorRV<V,M>(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a7c77e4969de60624dba1049cf44a1ab6}{m\_prefix}.c\_str(),
+321                                                         *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a9930bbda0f3d9368653fb0577b89ec33}{m\_vectorSpace},
+322                                                         *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}[
+      stageId] + *\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}[stageId],
+323                                                         *\hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}[stageId
+      ]);
+324     \}
+325     \textcolor{keywordflow}{else} \{
+326       validPreComputingPosition = \textcolor{keyword}{false};
+327     \}
+328 
+329     \textcolor{keyword}{delete} tmpGrad;
+330     \textcolor{keyword}{delete} tmpCovMat;
+331     \textcolor{keyword}{delete} tmpHessian;
+332   \}
+333   \textcolor{keywordflow}{else} \{
+334     validPreComputingPosition = \textcolor{keyword}{false};
+335   \}
+336 
+337   \textcolor{keywordflow}{if} (validPreComputingPosition == \textcolor{keyword}{false}) \{
+338     \textcolor{comment}{// Put "default" values on variables}
+339     V tmpGrad  (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a9930bbda0f3d9368653fb0577b89ec33}{m\_vectorSpace}->zeroVector());
+340     M tmpCovMat(tmpGrad,1.); \textcolor{comment}{// = identity matrix}
+341     \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{m\_originalNewtonSteps}[stageId] = \textcolor{keyword}{new} V(-1.*tmpCovMat*tmpGrad);
+342     \hyperlink{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{m\_originalCovMatrices}[stageId] = \textcolor{keyword}{new} M(tmpCovMat);
+343     \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a87c6b02ea45ab3de634c22afa58f53a5}{m\_rvs}[stageId] = \textcolor{keyword}{new} GaussianVectorRV<V,M>(\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a7c77e4969de60624dba1049cf44a1ab6}{m\_prefix}.c\_str(),
+344                                                       *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a9930bbda0f3d9368653fb0577b89ec33}{m\_vectorSpace},
+345                                                       *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a93d7fe55e30a7c6f209b01cb8a67e322}{m\_preComputingPositions}[
+      stageId],
+346                                                       tmpCovMat);
+347   \}
+348 
+349   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+350     *\hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_a2bce5e8aa5c844d4332a0e73cf00a1f9}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving
+       HessianCovMatricesTKGroup<V,M>::setPreComputingPosition()"}
+351                            << \textcolor{stringliteral}{": position = "} << position
+352                            << \textcolor{stringliteral}{", stageId = "}  << stageId
+353                            << std::endl;
+354   \}
+355 
+356   \textcolor{keywordflow}{return} validPreComputingPosition;
+357 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_abf0f6a04543c18b2f95e615b09191c2b}{\index{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}!symmetric@{symmetric}}
+\index{symmetric@{symmetric}!QUESO::HessianCovMatricesTKGroup@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\subsubsection[{symmetric}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ bool {\bf Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}$<$ V, M $>$\-::symmetric (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_abf0f6a04543c18b2f95e615b09191c2b}
+
+
+Whether or not the matrix is symmetric. Always 'false'. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000032}{Todo}]\-: It only returns 'false', thus a test for its symmetricity must be included. \end{DoxyRefDesc}
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_t_k_group_ad0130349060d50b985c83b6bb1abc58e}{Q\-U\-E\-S\-O\-::\-Base\-T\-K\-Group$<$ V, M $>$}.
+
+
+
+Definition at line 74 of file Hessian\-Cov\-Matrices\-T\-K\-Group.\-C.
+
+
+\begin{DoxyCode}
+75 \{
+76   \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+77 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}{\index{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}!m\-\_\-original\-Cov\-Matrices@{m\-\_\-original\-Cov\-Matrices}}
+\index{m\-\_\-original\-Cov\-Matrices@{m\-\_\-original\-Cov\-Matrices}!QUESO::HessianCovMatricesTKGroup@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\subsubsection[{m\-\_\-original\-Cov\-Matrices}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ std\-::vector$<$M$\ast$$>$ {\bf Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}$<$ V, M $>$\-::m\-\_\-original\-Cov\-Matrices\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_acc7219917faf933e77694894856fa646}
+
+
+Definition at line 93 of file Hessian\-Cov\-Matrices\-T\-K\-Group.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group$<$ V, M $>$\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group().
+
+\hypertarget{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}{\index{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}!m\-\_\-original\-Newton\-Steps@{m\-\_\-original\-Newton\-Steps}}
+\index{m\-\_\-original\-Newton\-Steps@{m\-\_\-original\-Newton\-Steps}!QUESO::HessianCovMatricesTKGroup@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\subsubsection[{m\-\_\-original\-Newton\-Steps}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ std\-::vector$<$V$\ast$$>$ {\bf Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}$<$ V, M $>$\-::m\-\_\-original\-Newton\-Steps\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a4c0fe3171a35cdd453a4e23e1438ddf9}
+
+
+Definition at line 92 of file Hessian\-Cov\-Matrices\-T\-K\-Group.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group$<$ V, M $>$\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group().
+
+\hypertarget{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a22daa22c22e5d9800c3817f6912ca122}{\index{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}!m\-\_\-target\-Pdf\-Synchronizer@{m\-\_\-target\-Pdf\-Synchronizer}}
+\index{m\-\_\-target\-Pdf\-Synchronizer@{m\-\_\-target\-Pdf\-Synchronizer}!QUESO::HessianCovMatricesTKGroup@{Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}}
+\subsubsection[{m\-\_\-target\-Pdf\-Synchronizer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ const {\bf Scalar\-Function\-Synchronizer}$<$V,M$>$\& {\bf Q\-U\-E\-S\-O\-::\-Hessian\-Cov\-Matrices\-T\-K\-Group}$<$ V, M $>$\-::m\-\_\-target\-Pdf\-Synchronizer\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_hessian_cov_matrices_t_k_group_a22daa22c22e5d9800c3817f6912ca122}
+
+
+Definition at line 91 of file Hessian\-Cov\-Matrices\-T\-K\-Group.\-h.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_hessian_cov_matrices_t_k_group_8h}{Hessian\-Cov\-Matrices\-T\-K\-Group.\-h}\item 
+src/stats/src/\hyperlink{_hessian_cov_matrices_t_k_group_8_c}{Hessian\-Cov\-Matrices\-T\-K\-Group.\-C}\end{DoxyCompactItemize}

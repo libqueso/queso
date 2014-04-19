@@ -1,0 +1,57 @@
+\hypertarget{_environment_8h}{\section{src/core/inc/\-Environment.h File Reference}
+\label{_environment_8h}\index{src/core/inc/\-Environment.\-h@{src/core/inc/\-Environment.\-h}}
+}
+
+
+Class to set up a \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} environment.  
+
+
+{\ttfamily \#include $<$queso/\-Defines.\-h$>$}\\*
+{\ttfamily \#include $<$queso/\-Mpi\-Comm.\-h$>$}\\*
+{\ttfamily \#include $<$boost/program\-\_\-options.\-hpp$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$queso/\-Rng\-Base.\-h$>$}\\*
+{\ttfamily \#include $<$queso/\-Basic\-Pdfs\-Base.\-h$>$}\\*
+Include dependency graph for Environment.\-h\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_environment_8h__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_q_u_e_s_o_1_1_file_ptr_set_struct}{Q\-U\-E\-S\-O\-::\-File\-Ptr\-Set\-Struct}
+\begin{DoxyCompactList}\small\item\em Struct for handling data input and output from files. \end{DoxyCompactList}\item 
+class \hyperlink{class_q_u_e_s_o_1_1_base_environment}{Q\-U\-E\-S\-O\-::\-Base\-Environment}
+\begin{DoxyCompactList}\small\item\em This (virtual) class sets up the environment underlying the use of the \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} library by an executable. \end{DoxyCompactList}\item 
+class \hyperlink{class_q_u_e_s_o_1_1_empty_environment}{Q\-U\-E\-S\-O\-::\-Empty\-Environment}
+\begin{DoxyCompactList}\small\item\em This class sets up the environment underlying the use of the \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} library by an executable. \end{DoxyCompactList}\item 
+class \hyperlink{class_q_u_e_s_o_1_1_full_environment}{Q\-U\-E\-S\-O\-::\-Full\-Environment}
+\begin{DoxyCompactList}\small\item\em This class sets up the full environment underlying the use of the \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} library by an executable. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{namespace_q_u_e_s_o_a97e263e01a0ff9fad14de6a8840b007e}{Q\-U\-E\-S\-O\-::queso\-\_\-terminate\-\_\-handler} ()
+\begin{DoxyCompactList}\small\item\em Function for unhandled exceptions in Queso. \end{DoxyCompactList}\item 
+void \hyperlink{namespace_q_u_e_s_o_ae2e4805bfcc226b2ceb17c8a8dbb1297}{Q\-U\-E\-S\-O\-::\-Q\-U\-E\-S\-O\-\_\-version\-\_\-print} (std\-::ostream \&os)
+\item 
+int \hyperlink{namespace_q_u_e_s_o_a61ed284ac8a5002856025bf21955b215}{Q\-U\-E\-S\-O\-::\-Q\-U\-E\-S\-O\-\_\-get\-\_\-numeric\-\_\-version} ()
+\item 
+std\-::ostream \& \hyperlink{namespace_q_u_e_s_o_ae007c2d003b9f75b31b073ececd3120a}{Q\-U\-E\-S\-O\-::operator$<$$<$} (std\-::ostream \&os, const Base\-Environment \&obj)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class to set up a \hyperlink{namespace_q_u_e_s_o}{Q\-U\-E\-S\-O} environment. 
+
+Definition in file \hyperlink{_environment_8h_source}{Environment.\-h}.
+

@@ -1,0 +1,240 @@
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_realizer}{\section{Q\-U\-E\-S\-O\-:\-:Concatenated\-Vector\-Realizer$<$ V, M $>$ Class Template Reference}
+\label{class_q_u_e_s_o_1_1_concatenated_vector_realizer}\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer$<$ V, M $>$@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer$<$ V, M $>$}}
+}
+
+
+A class for handling sampling from concatenated probability density distributions.  
+
+
+
+
+{\ttfamily \#include $<$Concatenated\-Vector\-Realizer.\-h$>$}
+
+
+
+Inheritance diagram for Q\-U\-E\-S\-O\-:\-:Concatenated\-Vector\-Realizer$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{class_q_u_e_s_o_1_1_concatenated_vector_realizer__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Q\-U\-E\-S\-O\-:\-:Concatenated\-Vector\-Realizer$<$ V, M $>$\-:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_q_u_e_s_o_1_1_concatenated_vector_realizer__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor/\-Destructor methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a8a97c764739721d97851285e69b9739a}{Concatenated\-Vector\-Realizer} (const char $\ast$prefix, const \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer}{Base\-Vector\-Realizer}$<$ V, M $>$ \&realizer1, const \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer}{Base\-Vector\-Realizer}$<$ V, M $>$ \&realizer2, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ad958991bab8d6369e8a0d66b22a237d4}{unified\-Image\-Set})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_afc7fe7165243f12a2da43f78ee67ef5c}{Concatenated\-Vector\-Realizer} (const char $\ast$prefix, const std\-::vector$<$ const \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer}{Base\-Vector\-Realizer}$<$ V, M $>$ $\ast$ $>$ \&realizers, unsigned int min\-Period, const \hyperlink{class_q_u_e_s_o_1_1_vector_set}{Vector\-Set}$<$ V, M $>$ \&\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ad958991bab8d6369e8a0d66b22a237d4}{unified\-Image\-Set})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a661c37a3cd05a88d98ba95cc2780bb81}{$\sim$\-Concatenated\-Vector\-Realizer} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Realization-\/related methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_afa41c8065e84a5bbfd74a67436ecd889}{realization} (V \&next\-Values) const 
+\begin{DoxyCompactList}\small\item\em Performs a realization (sample) from a probability density function. See template specialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::vector$<$ const \\*
+\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer}{Base\-Vector\-Realizer}$<$ V, M $>$ $\ast$ $>$ \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}{m\-\_\-realizers}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class V, class M$>$class Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer$<$ V, M $>$}
+
+A class for handling sampling from concatenated probability density distributions. 
+
+This class allows the user draw samples from concatenated probability density distributions (two or more distinct probability distributions has(ve) been concatenated into one single vector R\-V). This class used, for instance, to draw realization of concatenate priors from two or more R\-Vs, where one of them has a uniform distribution whereas the other one(s) has a Gaussian distribution. 
+
+Definition at line 48 of file Concatenated\-Vector\-Realizer.\-h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a8a97c764739721d97851285e69b9739a}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}!Concatenated\-Vector\-Realizer@{Concatenated\-Vector\-Realizer}}
+\index{Concatenated\-Vector\-Realizer@{Concatenated\-Vector\-Realizer}!QUESO::ConcatenatedVectorRealizer@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}}
+\subsubsection[{Concatenated\-Vector\-Realizer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}$<$ V, M $>$\-::{\bf Concatenated\-Vector\-Realizer} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const {\bf Base\-Vector\-Realizer}$<$ V, M $>$ \&}]{realizer1, }
+\item[{const {\bf Base\-Vector\-Realizer}$<$ V, M $>$ \&}]{realizer2, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{unified\-Image\-Set}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a8a97c764739721d97851285e69b9739a}
+
+
+Constructor. 
+
+Concatenates two R\-Vs\-: {\ttfamily rv1} and {\ttfamily rv2} into one vector R\-V, given a prefix and the image set of the vector R\-V. 
+
+Definition at line 33 of file Concatenated\-Vector\-Realizer.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Base\-Environment\-::display\-Verbosity(), Q\-U\-E\-S\-O\-::\-Base\-Vector\-Realizer$<$ V, M $>$\-::m\-\_\-env, Q\-U\-E\-S\-O\-::\-Base\-Vector\-Realizer$<$ V, M $>$\-::m\-\_\-prefix, Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer$<$ V, M $>$\-::m\-\_\-realizers, and Q\-U\-E\-S\-O\-::\-Base\-Environment\-::sub\-Display\-File().
+
+
+\begin{DoxyCode}
+38   :
+39   BaseVectorRealizer<V,M>( ((std::string)(prefix)+\textcolor{stringliteral}{"gen"}).c\_str(),\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ad958991bab8d6369e8a0d66b22a237d4}{unifiedImageSet},std::min(
+      realizer1.subPeriod(),realizer2.subPeriod()) ), \textcolor{comment}{// 2011/Oct/02}
+40   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}{m\_realizers}(2,(\textcolor{keyword}{const} BaseVectorRealizer<V,M>*) NULL)
+41 \{
+42   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+43     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Entering ConcatenatedVectorRealizer<V,M>::constructor()"}
+44                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ac5559b6921816ccaed7afc2d342c2a32}{m\_prefix}
+45                             << std::endl;
+46   \}
+47 
+48   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}{m\_realizers}[0] = &realizer1;
+49   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}{m\_realizers}[1] = &realizer2;
+50 
+51   \textcolor{keywordflow}{if} ((\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}()) && (\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.
+      \hyperlink{class_q_u_e_s_o_1_1_base_environment_a1fe5f244fc0316a0ab3e37463f108b96}{displayVerbosity}() >= 5)) \{
+52     *\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_acde246c52f82d8ed687d91cfac14c29c}{m\_env}.\hyperlink{class_q_u_e_s_o_1_1_base_environment_a8a0064746ae8dddfece4229b9ad374d6}{subDisplayFile}() << \textcolor{stringliteral}{"Leaving ConcatenatedVectorRealizer<V,M>::constructor()"}
+53                             << \textcolor{stringliteral}{": prefix = "} << \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ac5559b6921816ccaed7afc2d342c2a32}{m\_prefix}
+54                             << std::endl;
+55   \}
+56 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_realizer_afc7fe7165243f12a2da43f78ee67ef5c}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}!Concatenated\-Vector\-Realizer@{Concatenated\-Vector\-Realizer}}
+\index{Concatenated\-Vector\-Realizer@{Concatenated\-Vector\-Realizer}!QUESO::ConcatenatedVectorRealizer@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}}
+\subsubsection[{Concatenated\-Vector\-Realizer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}$<$ V, M $>$\-::{\bf Concatenated\-Vector\-Realizer} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{prefix, }
+\item[{const std\-::vector$<$ const {\bf Base\-Vector\-Realizer}$<$ V, M $>$ $\ast$ $>$ \&}]{realizers, }
+\item[{unsigned int}]{min\-Period, }
+\item[{const {\bf Vector\-Set}$<$ V, M $>$ \&}]{unified\-Image\-Set}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_concatenated_vector_realizer_afc7fe7165243f12a2da43f78ee67ef5c}
+
+
+Constructor. 
+
+Concatenates a sequence of R\-Vs, given by\-: {\ttfamily  std\-::vector$<$const Base\-Vector\-R\-V$<$\-V,\-M$>$$\ast$ $>$\& rvs } into one single vector R\-V, given a prefix and the image set of the resulting vector R\-V. 
+
+Definition at line 59 of file Concatenated\-Vector\-Realizer.\-C.
+
+
+
+References Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer$<$ V, M $>$\-::m\-\_\-realizers.
+
+
+\begin{DoxyCode}
+64   :
+65   BaseVectorRealizer<V,M>( ((std::string)(prefix)+\textcolor{stringliteral}{"gen"}).c\_str(),\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ad958991bab8d6369e8a0d66b22a237d4}{unifiedImageSet},minPeriod),
+66   \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}{m\_realizers}(realizers.size(),(\textcolor{keyword}{const} BaseVectorRealizer<V,M>*) NULL)
+67 \{
+68   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}{m\_realizers}.size(); ++i) \{
+69     \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}{m\_realizers}[i] = realizers[i];
+70   \}
+71 \}
+\end{DoxyCode}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a661c37a3cd05a88d98ba95cc2780bb81}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}!$\sim$\-Concatenated\-Vector\-Realizer@{$\sim$\-Concatenated\-Vector\-Realizer}}
+\index{$\sim$\-Concatenated\-Vector\-Realizer@{$\sim$\-Concatenated\-Vector\-Realizer}!QUESO::ConcatenatedVectorRealizer@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}}
+\subsubsection[{$\sim$\-Concatenated\-Vector\-Realizer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}$<$ V, M $>$\-::$\sim${\bf Concatenated\-Vector\-Realizer} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a661c37a3cd05a88d98ba95cc2780bb81}
+
+
+Destructor. 
+
+
+
+Definition at line 74 of file Concatenated\-Vector\-Realizer.\-C.
+
+
+\begin{DoxyCode}
+75 \{
+76 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_realizer_afa41c8065e84a5bbfd74a67436ecd889}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}!realization@{realization}}
+\index{realization@{realization}!QUESO::ConcatenatedVectorRealizer@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}}
+\subsubsection[{realization}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V , class M $>$ void {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}$<$ V, M $>$\-::realization (
+\begin{DoxyParamCaption}
+\item[{V \&}]{next\-Values}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_q_u_e_s_o_1_1_concatenated_vector_realizer_afa41c8065e84a5bbfd74a67436ecd889}
+
+
+Performs a realization (sample) from a probability density function. See template specialization. 
+
+
+
+Implements \hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_a6845173dd79a80ae11c86cde26e55817}{Q\-U\-E\-S\-O\-::\-Base\-Vector\-Realizer$<$ V, M $>$}.
+
+
+
+Definition at line 80 of file Concatenated\-Vector\-Realizer.\-C.
+
+
+\begin{DoxyCode}
+81 \{
+82   std::vector<V*> vecs(\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}{m\_realizers}.size(),(V*)NULL);
+83   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < vecs.size(); ++i) \{
+84     vecs[i] = \textcolor{keyword}{new} V(\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}{m\_realizers}[i]->\hyperlink{class_q_u_e_s_o_1_1_base_vector_realizer_ad958991bab8d6369e8a0d66b22a237d4}{unifiedImageSet}().vectorSpace().zeroVector())
+      ;
+85     \textcolor{comment}{//std::cout << "In ConcatenatedVectorRealizer<V,M>::realization: v[i]->sizeLocal() = " <<
+       v[i]->sizeLocal() << std::endl;}
+86     \hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}{m\_realizers}[i]->realization(*(vecs[i]));
+87   \}
+88 
+89   \textcolor{comment}{//std::cout << "In ConcatenatedVectorRealizer<V,M>::realization: nextValues.sizeLocal() = " <<
+       nextValues.sizeLocal() << std::endl;}
+90   std::vector<const V*> constVecs(\hyperlink{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}{m\_realizers}.size(),(V*)NULL);
+91   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < vecs.size(); ++i) \{
+92     constVecs[i] = vecs[i];
+93   \}
+94   nextValues.cwSetConcatenated(constVecs);
+95   \textcolor{comment}{//std::cout << "In ConcatenatedVectorRealizer<V,M>::realization: succeeded" << std::endl;}
+96 
+97   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} i = 0; i < vecs.size(); ++i) \{
+98     \textcolor{keyword}{delete} vecs[i];
+99   \}
+100 
+101   \textcolor{keywordflow}{return};
+102 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}{\index{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}!m\-\_\-realizers@{m\-\_\-realizers}}
+\index{m\-\_\-realizers@{m\-\_\-realizers}!QUESO::ConcatenatedVectorRealizer@{Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}}
+\subsubsection[{m\-\_\-realizers}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class V, class M$>$ std\-::vector$<$const {\bf Base\-Vector\-Realizer}$<$V,M$>$$\ast$ $>$ {\bf Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer}$<$ V, M $>$\-::m\-\_\-realizers\hspace{0.3cm}{\ttfamily [private]}}}\label{class_q_u_e_s_o_1_1_concatenated_vector_realizer_a1be059d72ef9d1296928d345774e89c7}
+
+
+Definition at line 81 of file Concatenated\-Vector\-Realizer.\-h.
+
+
+
+Referenced by Q\-U\-E\-S\-O\-::\-Concatenated\-Vector\-Realizer$<$ V, M $>$\-::\-Concatenated\-Vector\-Realizer().
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/stats/inc/\hyperlink{_concatenated_vector_realizer_8h}{Concatenated\-Vector\-Realizer.\-h}\item 
+src/stats/src/\hyperlink{_concatenated_vector_realizer_8_c}{Concatenated\-Vector\-Realizer.\-C}\end{DoxyCompactItemize}
