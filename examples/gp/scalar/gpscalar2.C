@@ -11,10 +11,12 @@
 void readExpData(const std::vector<QUESO::GslVector *> & experimentScenarios,
     const std::vector<QUESO::GslVector *> & experimentOutputs) {
   FILE * fp_in = fopen("gp/scalar/ctf_dat.txt", "r");
+  unsigned int i = 0;
   double pressure;
   
   while (fscanf(fp_in, "%lf\n", &pressure) != EOF) {
-    printf("%lf\n", pressure);
+    (*(experimentOutputs[i]))[0] = pressure;
+    i++;
   }
 
   fclose(fp_in);
@@ -24,17 +26,26 @@ void readSimData(const std::vector<QUESO::GslVector *> & simulationScenarios,
     const std::vector<QUESO::GslVector *> & simulationParameters,
     const std::vector<QUESO::GslVector *> & simulationOutputs) {
   FILE * fp_in = fopen("gp/scalar/dakota_pstudy.dat", "r");
-  unsigned int id, size = 512;
+  unsigned int i, id, size = 512;
   double k_tmasl, k_tmoml, k_tnrgl, k_xkwlx, k_cd, pressure;
   char line[size];
 
   // First line is a header, so we ignore it
   fgets(line, size, fp_in);
 
+  i = 0;
   while (fscanf(fp_in, "%d %lf %lf %lf %lf %lf %lf\n", &id, &k_tmasl, &k_tmoml,
         &k_tnrgl, &k_xkwlx, &k_cd, &pressure) != EOF) {
-    printf("%d %lf %lf %lf %lf %lf %lf\n", id, k_tmasl, k_tmoml, k_tnrgl,
-        k_xkwlx, k_cd, pressure);
+    (*(simulationScenarios[i]))[0] = 0.5;
+
+    (*(simulationParameters[i]))[0] = k_tmasl;
+    (*(simulationParameters[i]))[1] = k_tmoml;
+    (*(simulationParameters[i]))[2] = k_tnrgl;
+    (*(simulationParameters[i]))[3] = k_xkwlx;
+    (*(simulationParameters[i]))[4] = k_cd;
+
+    (*(simulationOutputs[i]))[0] = pressure;
+    i++;
   }
 
     fclose(fp_in);
@@ -42,9 +53,9 @@ void readSimData(const std::vector<QUESO::GslVector *> & simulationScenarios,
 
 int main(int argc, char ** argv) {
   // Step 0: Set up some variables
-  unsigned int numExperiments = 6;  // Number of experiments
-  unsigned int numUncertainVars = 1;  // Number of things to calibrate
-  unsigned int numSimulations = 25;  // Number of simulations
+  unsigned int numExperiments = 10;  // Number of experiments
+  unsigned int numUncertainVars = 5;  // Number of things to calibrate
+  unsigned int numSimulations = 50;  // Number of simulations
   unsigned int numConfigVars = 1;  // Dimension of configuration space
   unsigned int numEta = 1;  // Number of responses the model is returning
   unsigned int experimentSize = 1;  // Size of each experiment
@@ -143,44 +154,13 @@ int main(int argc, char ** argv) {
     outputVecs         [i] = new QUESO::GslVector(nEtaSpace.zeroVector());  // 'eta_{i+1}' in paper
   }
 
-  readExpData(experimentScenarios, experimentVecs);
-  readSimData(simulationScenarios, paramVecs, outputVecs);
-  exit(1);
-
-  // All the positions in scenario space where simulations were run
-  // This should probably be read from a file
-  (*(simulationScenarios[24]))[0] = 0.916667;
-
-  // All the positions in parameter space where simulations were run
-  // This should probably be read from a file
-  (*(paramVecs[24]))[0] = 0.958333;
-
-  // Simulation output from sim_outputs file from matlab gpmsa implementation
-  // This should probably be read from a file
-  (*(outputVecs[24]))[0] = 6.39189142027432;
-
   for (unsigned int i = 0; i < numExperiments; i++) {
     experimentScenarios[i] = new QUESO::GslVector(configSpace.zeroVector()); // 'x_{i+1}' in paper
     experimentVecs[i] = new QUESO::GslVector(experimentSpace.zeroVector());
   }
 
-  // All the positions in scenario space where we have experimental data
-  // This should probably be read from a file
-  (*(experimentScenarios[0]))[0] = 0.0;
-  (*(experimentScenarios[1]))[0] = 0.2;
-  (*(experimentScenarios[2]))[0] = 0.4;
-  (*(experimentScenarios[3]))[0] = 0.6;
-  (*(experimentScenarios[4]))[0] = 0.8;
-  (*(experimentScenarios[5]))[0] = 1.0;
-
-  // These are the experimental data
-  // This should probably be read from a file
-  (*(experimentVecs[0]))[0] = 1.59294826065229;
-  (*(experimentVecs[1]))[0] = 2.17696977275016;
-  (*(experimentVecs[2]))[0] = 2.87061286591332;
-  (*(experimentVecs[3]))[0] = 3.8330395105599;
-  (*(experimentVecs[4]))[0] = 4.59654198432239;
-  (*(experimentVecs[5]))[0] = 4.75087857533489;
+  readExpData(experimentScenarios, experimentVecs);
+  readSimData(simulationScenarios, paramVecs, outputVecs);
 
   for (unsigned int i = 0; i < 5; i++) {
     experimentMat(i, i) = 0.075 * 0.075;
