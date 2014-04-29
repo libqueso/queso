@@ -69,10 +69,18 @@ int main(int argc, char ** argv) {
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
       "param_", numUncertainVars, NULL);
 
+  // Parameter (theta) bounds:
+  //   upper_bounds  1.05 1.1 1.1 1.1 1.1
+  //   lower_bounds  0.95 0.9 0.9 0.9 0.9
+  //   descriptors   'k_tmasl' 'k_xkle' 'k_xkwew' 'k_xkwlx' 'k_cd'
   QUESO::GslVector paramMins(paramSpace.zeroVector());
-  paramMins.cwSet(0.0);
   QUESO::GslVector paramMaxs(paramSpace.zeroVector());
-  paramMaxs.cwSet(1.0);
+
+  paramMins.cwSet(0.9);
+  paramMaxs.cwSet(1.1);
+
+  paramMins[0] = 0.95;
+  paramMaxs[0] = 1.05;
 
   QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix> paramDomain("param_",
       paramSpace, paramMins, paramMaxs);
@@ -162,8 +170,8 @@ int main(int argc, char ** argv) {
   readExpData(experimentScenarios, experimentVecs);
   readSimData(simulationScenarios, paramVecs, outputVecs);
 
-  for (unsigned int i = 0; i < 5; i++) {
-    experimentMat(i, i) = 0.075 * 0.075;
+  for (unsigned int i = 0; i < numExperiments; i++) {
+    experimentMat(i, i) = 0.025 * 0.025;
   }
 
   // Add simulation and experimental data
@@ -181,7 +189,7 @@ int main(int argc, char ** argv) {
 
   // Initial condition of the chain
   for (unsigned int i = 0; i < paramInitials.sizeLocal(); i++) {
-    paramInitials[i] = 0.5;
+    paramInitials[i] = 0.95;
   }
 
   QUESO::GslMatrix proposalCovMatrix(
