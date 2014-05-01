@@ -576,8 +576,8 @@ void
 GaussianProcessFactory<V, M>::setUpHyperpriors()
 {
   // Default value for hyperprior parameters
-  this->m_emulatorPrecisionShape = 1.0;
-  this->m_emulatorPrecisionScale = 1.0 / 0.0001;
+  this->m_emulatorPrecisionShape = 5.0;
+  this->m_emulatorPrecisionScale = 1.0 / 5.0;
   this->m_emulatorCorrelationStrengthAlpha = 1.0;
   this->m_emulatorCorrelationStrengthBeta = 0.1;
   this->m_discrepancyPrecisionShape = 1.0;
