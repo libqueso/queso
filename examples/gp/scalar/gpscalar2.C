@@ -70,9 +70,9 @@ int main(int argc, char ** argv) {
       "param_", numUncertainVars, NULL);
 
   // Parameter (theta) bounds:
-  //   upper_bounds  1.05 1.1 1.1 1.1 1.1
-  //   lower_bounds  0.95 0.9 0.9 0.9 0.9
   //   descriptors   'k_tmasl' 'k_xkle' 'k_xkwew' 'k_xkwlx' 'k_cd'
+  //   upper_bounds   1.05      1.1      1.1       1.1       1.1
+  //   lower_bounds   0.95      0.9      0.9       0.9       0.9
   QUESO::GslVector paramMins(paramSpace.zeroVector());
   QUESO::GslVector paramMaxs(paramSpace.zeroVector());
 
@@ -188,8 +188,20 @@ int main(int argc, char ** argv) {
       gpFactory.prior().imageSet().vectorSpace().zeroVector());
 
   // Initial condition of the chain
-  for (unsigned int i = 0; i < paramInitials.sizeLocal(); i++) {
-    paramInitials[i] = 0.95;
+  // for (unsigned int i = 0; i < paramInitials.sizeLocal(); i++) {
+  //   paramInitials[i] = 0.95;
+  // }
+
+  // 'Best' initial conditions (from cobra report) are:
+  paramInitials[0] = 1.05;  // k_tmasl
+  paramInitials[1] = 0.9;  // k_tmoml
+  paramInitials[2] = 0.9888;  // k_tnrgl
+  paramInitials[3] = 0.995;  // k_xkwlx
+  paramInitials[4] = 1.0178;  // k_cd
+  paramInitials[5] = 0.0;  // Emulator mean
+
+  for (unsigned int i = 6; i < 15; i++) {
+    paramInitials[i] = 0.01;
   }
 
   QUESO::GslMatrix proposalCovMatrix(
