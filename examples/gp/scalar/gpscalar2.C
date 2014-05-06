@@ -96,11 +96,8 @@ int main(int argc, char ** argv) {
   QUESO::GslVector paramMins(paramSpace.zeroVector());
   QUESO::GslVector paramMaxs(paramSpace.zeroVector());
 
-  paramMins.cwSet(0.9);
-  paramMaxs.cwSet(1.1);
-
-  paramMins[0] = 0.95;
-  paramMaxs[0] = 1.05;
+  paramMins.cwSet(0.0);
+  paramMaxs.cwSet(1.0);
 
   QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix> paramDomain("param_",
       paramSpace, paramMins, paramMaxs);
@@ -187,11 +184,14 @@ int main(int argc, char ** argv) {
     experimentVecs[i] = new QUESO::GslVector(experimentSpace.zeroVector());
   }
 
-  readExpData(experimentScenarios, experimentVecs);
-  readSimData(simulationScenarios, paramVecs, outputVecs);
+  readData(simulationScenarios,
+      paramVecs,
+      outputVecs,
+      experimentScenarios,
+      experimentVecs);
 
   for (unsigned int i = 0; i < numExperiments; i++) {
-    experimentMat(i, i) = 0.025 * 0.025;
+    experimentMat(i, i) = 1.0;
   }
 
   // Add simulation and experimental data
