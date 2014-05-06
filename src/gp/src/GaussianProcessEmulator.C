@@ -195,7 +195,7 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
     }
 
     // Add small component to diagonal to make stuff +ve def
-    covMatrix(i, i) += 0.0001;
+    covMatrix(i, i) += 0.0000001;
   }
 
   // Form residual = D - mean
@@ -729,7 +729,6 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
 
   const BoxSubset<GslVector, GslMatrix> * box_prior =
     dynamic_cast<const BoxSubset<GslVector, GslMatrix>* >(&(this->m_parameterPrior.imageSet()));
-  std::cout << "CTOR prior min[0]: " << box_prior->minValues()[0] << std::endl;
 
   (*(this->totalMins))[dimParameter] = -INFINITY;  // Min mean
   (*(this->totalMaxs))[dimParameter] = INFINITY;  // Max mean
