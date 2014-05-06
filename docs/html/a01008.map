@@ -1,0 +1,15 @@
+<map id="QUESO::BaseJointPdf&lt; V, M &gt;" name="QUESO::BaseJointPdf&lt; V, M &gt;">
+<area shape="rect" id="node5" href="$a00035.html" title="BayesianJointPdf\&lt; P\l_V, P_M \&gt;" alt="" coords="508,5,665,51"/>
+<area shape="rect" id="node7" href="$a00035.html" title="A class for handling Bayesian joint PDFs. " alt="" coords="491,74,683,121"/>
+<area shape="rect" id="node9" href="$a00036.html" title="A class for handling Beta joint PDFs. " alt="" coords="504,143,669,190"/>
+<area shape="rect" id="node11" href="$a00040.html" title="A class for handling concatenated PDFs. " alt="" coords="483,213,691,259"/>
+<area shape="rect" id="node13" href="$a00064.html" title="A class for handling Gamma joint PDFs. " alt="" coords="495,282,679,329"/>
+<area shape="rect" id="node15" href="$a00068.html" title="A class for handling Gaussian joint PDFs. " alt="" coords="492,351,681,398"/>
+<area shape="rect" id="node17" href="$a00075.html" title="A class for handling generic joint PDFs. " alt="" coords="495,421,679,467"/>
+<area shape="rect" id="node19" href="$a00092.html" title="A class for handling Inverse Gamma joint PDFs. " alt="" coords="481,490,692,537"/>
+<area shape="rect" id="node21" href="$a00099.html" title="A class for handling Log&#45;Normal joint PDFs. " alt="" coords="485,559,688,606"/>
+<area shape="rect" id="node23" href="$a00120.html" title="A class for handling a powered joint PDFs. " alt="" coords="492,629,681,675"/>
+<area shape="rect" id="node25" href="$a00149.html" title="A class for handling uniform joint PDFs. " alt="" coords="496,698,677,745"/>
+<area shape="rect" id="node27" href="$a00163.html" title="A class for handling Wigner joint PDFs. " alt="" coords="497,767,676,814"/>
+<area shape="rect" id="node2" href="$a00024.html" title="A templated (base) class for handling scalar functions. " alt="" coords="5,386,216,433"/>
+</map>

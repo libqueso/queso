@@ -1,9 +1,0 @@
-<map id="QUESO::MonteCarloSGOptions" name="QUESO::MonteCarloSGOptions">
-<area shape="rect" id="node2" href="$class_q_u_e_s_o_1_1_base_environment.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,143,648,172"/>
-<area shape="rect" id="node8" href="$class_q_u_e_s_o_1_1_environment_options.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="811,31,1029,60"/>
-<area shape="rect" id="node14" href="$class_q_u_e_s_o_1_1_mpi_comm.html" title="The QUESO MPI Communicator Class. " alt="" coords="847,213,993,243"/>
-<area shape="rect" id="node4" href="$class_q_u_e_s_o_1_1_basic_pdfs_base.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,169,195,199"/>
-<area shape="rect" id="node6" href="$class_q_u_e_s_o_1_1_rng_base.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,116,175,145"/>
-<area shape="rect" id="node11" href="$class_q_u_e_s_o_1_1_env_options_values.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,28,205,57"/>
-<area shape="rect" id="node17" href="$class_q_u_e_s_o_1_1_mc_options_values.html" title="This class provides options for the Monte Carlo sequence generator if no input file is available..." alt="" coords="451,323,645,352"/>
-</map>

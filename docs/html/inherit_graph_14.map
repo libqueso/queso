@@ -1,0 +1,20 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$a00024.html" title="A templated (base) class for handling scalar functions. " alt="" coords="5,386,216,433"/>
+<area shape="rect" id="node3" href="$a00019.html" title="QUESO::BaseJointPdf\l\&lt; P_V, P_M \&gt;" alt="" coords="301,247,467,294"/>
+<area shape="rect" id="node5" href="$a00019.html" title="QUESO::BaseJointPdf\l\&lt; Q_V, Q_M \&gt;" alt="" coords="301,317,467,363"/>
+<area shape="rect" id="node7" href="$a00019.html" title="A templated (base) class for handling joint PDFs. " alt="" coords="301,386,467,433"/>
+<area shape="rect" id="node33" href="$a00045.html" title="A class for handling scalar functions which image is a constant (real number). " alt="" coords="264,455,504,502"/>
+<area shape="rect" id="node35" href="$a00078.html" title="A class for handling generic scalar functions. " alt="" coords="269,525,499,571"/>
+<area shape="rect" id="node9" href="$a00035.html" title="QUESO::BayesianJointPdf\l\&lt; P_V, P_M \&gt;" alt="" coords="563,5,755,51"/>
+<area shape="rect" id="node11" href="$a00035.html" title="A class for handling Bayesian joint PDFs. " alt="" coords="563,74,755,121"/>
+<area shape="rect" id="node13" href="$a00036.html" title="A class for handling Beta joint PDFs. " alt="" coords="576,143,741,190"/>
+<area shape="rect" id="node15" href="$a00040.html" title="A class for handling concatenated PDFs. " alt="" coords="555,213,763,259"/>
+<area shape="rect" id="node17" href="$a00064.html" title="A class for handling Gamma joint PDFs. " alt="" coords="567,282,751,329"/>
+<area shape="rect" id="node19" href="$a00068.html" title="A class for handling Gaussian joint PDFs. " alt="" coords="564,351,753,398"/>
+<area shape="rect" id="node21" href="$a00075.html" title="A class for handling generic joint PDFs. " alt="" coords="567,421,751,467"/>
+<area shape="rect" id="node23" href="$a00092.html" title="A class for handling Inverse Gamma joint PDFs. " alt="" coords="553,490,764,537"/>
+<area shape="rect" id="node25" href="$a00099.html" title="A class for handling Log&#45;Normal joint PDFs. " alt="" coords="557,559,760,606"/>
+<area shape="rect" id="node27" href="$a00120.html" title="A class for handling a powered joint PDFs. " alt="" coords="564,629,753,675"/>
+<area shape="rect" id="node29" href="$a00149.html" title="A class for handling uniform joint PDFs. " alt="" coords="568,698,749,745"/>
+<area shape="rect" id="node31" href="$a00163.html" title="A class for handling Wigner joint PDFs. " alt="" coords="569,767,748,814"/>
+</map>
