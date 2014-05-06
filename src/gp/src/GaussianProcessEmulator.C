@@ -112,9 +112,13 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
   // This for loop is a disaster and could do with a *lot* of optimisation
   for (unsigned int i = 0; i < totalDim; i++) {
     for (unsigned int j = 0; j < totalDim; j++) {
-      // Get i-th and j-th simulation and parameter
+      // Decide whether to do experiment part of the covariance matrix
+      // Get i-th simulation-parameter pair
       if (i < this->m_numExperiments) {
+        // Experiment scenario (known)
         scenario1 = new V(*((this->m_experimentScenarios)[i]));
+
+        // Experiment parameter (unknown)
         parameter1 = new V(*((this->m_simulationParameters)[0]));
         for (unsigned int k = 0; k < dimParameter; k++) {
           (*parameter1)[k] = domainVector[k];
