@@ -198,7 +198,7 @@ public:
   /*! \brief Regularisation parameter for the DRAM covariance matrix
    *
    * This is a parameter in the DRAM algorithm that regularises the proposal
-   * covariance matrix.
+   * covariance matrix.  Details can be found in Haario et al (2006).
    *
    * The parameter defines how much the diagonal of the proposal covariance
    * matrix is perturbed.  Usually this is small, of order 1e-5.
