@@ -208,17 +208,11 @@ int main(int argc, char ** argv) {
       gpFactory.prior().imageSet().vectorSpace().zeroVector());
 
   // Initial condition of the chain
-  // for (unsigned int i = 0; i < paramInitials.sizeLocal(); i++) {
-  //   paramInitials[i] = 0.95;
-  // }
+  for (unsigned int i = 0; i < paramInitials.sizeLocal(); i++) {
+    paramInitials[i] = 0.5;
+  }
 
-  // 'Best' initial conditions (from cobra report) are:
-  paramInitials[0] = 1.05;  // k_tmasl
-  paramInitials[1] = 0.9;  // k_tmoml
-  paramInitials[2] = 0.9888;  // k_tnrgl
-  paramInitials[3] = 0.995;  // k_xkwlx
-  paramInitials[4] = 1.0178;  // k_cd
-  paramInitials[5] = 0.0;  // Emulator mean
+  paramInitials[5]  = 0.00;  // Emulator mean
 
   for (unsigned int i = 6; i < 15; i++) {
     paramInitials[i] = 0.01;
@@ -226,10 +220,23 @@ int main(int argc, char ** argv) {
 
   QUESO::GslMatrix proposalCovMatrix(
       gpFactory.prior().imageSet().vectorSpace().zeroVector());
-  for (unsigned int i = 0; i < proposalCovMatrix.numRowsLocal(); i++) {
-    proposalCovMatrix(i, i) = 0.01;
-  }
-  std::cout << "got here 25" << std::endl;
+
+  double scale = 1000.0;
+  proposalCovMatrix(0, 0)   = 0.2;
+  proposalCovMatrix(1, 1)   = 0.2;
+  proposalCovMatrix(2, 2)   = 0.2;
+  proposalCovMatrix(3, 3)   = 0.2;
+  proposalCovMatrix(4, 4)   = 0.2;
+  proposalCovMatrix(5, 5)   = 0.1 / scale;  // not used
+  proposalCovMatrix(6, 6)   = 5.0 / scale;
+  proposalCovMatrix(7, 7)   = 0.1 / scale;
+  proposalCovMatrix(8, 8)   = 0.1 / scale;
+  proposalCovMatrix(9, 9)   = 0.1 / scale;
+  proposalCovMatrix(10, 10) = 0.1 / scale;
+  proposalCovMatrix(11, 11) = 0.1 / scale;
+  proposalCovMatrix(12, 12) = 0.1 / scale;
+  proposalCovMatrix(13, 13) = 10.0 / scale;
+  proposalCovMatrix(14, 14) = 0.1 / scale;
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
   std::cout << "got here 26" << std::endl;
