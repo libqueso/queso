@@ -730,10 +730,6 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
   const BoxSubset<GslVector, GslMatrix> * box_prior =
     dynamic_cast<const BoxSubset<GslVector, GslMatrix>* >(&(this->m_parameterPrior.imageSet()));
   std::cout << "CTOR prior min[0]: " << box_prior->minValues()[0] << std::endl;
-  for (unsigned int i = 0; i < dimParameter; i++) {
-    (*(this->totalMins))[i] = box_prior->minValues()[i];
-    (*(this->totalMaxs))[i] = box_prior->maxValues()[i];
-  }
 
   (*(this->totalMins))[dimParameter] = -INFINITY;  // Min mean
   (*(this->totalMaxs))[dimParameter] = INFINITY;  // Max mean
