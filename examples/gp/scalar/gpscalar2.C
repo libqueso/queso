@@ -239,10 +239,8 @@ int main(int argc, char ** argv) {
   proposalCovMatrix(14, 14) = 0.1 / scale;
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
-  std::cout << "got here 26" << std::endl;
 
   MPI_Finalize();
-  std::cout << "got here 27" << std::endl;
 
   return 0;
 }
