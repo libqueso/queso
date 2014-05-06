@@ -201,13 +201,11 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
   // Form residual = D - mean
   for (unsigned int i = 0; i < this->m_numExperiments; i++) {
     // Scalar so ok -- will need updating for nonscalar case
-    residual[i] = (*((this->m_experimentOutputs)[i]))[0] -
-      domainVector[dimParameter];
+    residual[i] = (*((this->m_experimentOutputs)[i]))[0];
   }
   for (unsigned int i = 0; i < this->m_numSimulations; i++) {
     // Scalar so ok -- will need updating for nonscalar case
-    residual[i+this->m_numExperiments] =
-      (*((this->m_simulationOutputs)[i]))[0] - domainVector[dimParameter];
+    residual[i+this->m_numExperiments] = (*((this->m_simulationOutputs)[i]))[0];
   }
 
   // Solve covMatrix * sol = residual
