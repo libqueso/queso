@@ -8,27 +8,21 @@
 #include <cstdio>
 
 // Read in data files
-void readExpData(const std::vector<QUESO::GslVector *> & experimentScenarios,
-    const std::vector<QUESO::GslVector *> & experimentOutputs) {
-  FILE * fp_in = fopen("gp/scalar/ctf_dat.txt", "r");
-  unsigned int i = 0;
-  double pressure;
-  
-  while (fscanf(fp_in, "%lf\n", &pressure) != EOF) {
-    (*(experimentOutputs[i]))[0] = pressure;
-    i++;
-  }
-
-  fclose(fp_in);
-}
-
-void readSimData(const std::vector<QUESO::GslVector *> & simulationScenarios,
+void readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
     const std::vector<QUESO::GslVector *> & simulationParameters,
-    const std::vector<QUESO::GslVector *> & simulationOutputs) {
+    const std::vector<QUESO::GslVector *> & simulationOutputs,
+    const std::vector<QUESO::GslVector *> & experimentScenarios,
+    const std::vector<QUESO::GslVector *> & experimentOutputs) {
   FILE * fp_in = fopen("gp/scalar/dakota_pstudy.dat", "r");
   unsigned int i, id, size = 512;
   double k_tmasl, k_tmoml, k_tnrgl, k_xkwlx, k_cd, pressure;
   char line[size];
+
+  double mins[] = {0.95, 0.9, 0.9, 0.9, 0.9};
+  double maxs[] = {1.05, 1.1, 1.1, 1.1, 1.1};
+
+  double meansim = 0;
+  double m2sim = 0;
 
   // First line is a header, so we ignore it
   fgets(line, size, fp_in);
@@ -38,17 +32,43 @@ void readSimData(const std::vector<QUESO::GslVector *> & simulationScenarios,
         &k_tnrgl, &k_xkwlx, &k_cd, &pressure) != EOF) {
     (*(simulationScenarios[i]))[0] = 0.5;
 
-    (*(simulationParameters[i]))[0] = k_tmasl;
-    (*(simulationParameters[i]))[1] = k_tmoml;
-    (*(simulationParameters[i]))[2] = k_tnrgl;
-    (*(simulationParameters[i]))[3] = k_xkwlx;
-    (*(simulationParameters[i]))[4] = k_cd;
+    (*(simulationParameters[i]))[0] = (k_tmasl - mins[0]) / (maxs[0] - mins[0]);
+    (*(simulationParameters[i]))[1] = (k_tmoml - mins[1]) / (maxs[1] - mins[1]);
+    (*(simulationParameters[i]))[2] = (k_tnrgl - mins[2]) / (maxs[2] - mins[2]);
+    (*(simulationParameters[i]))[3] = (k_xkwlx - mins[3]) / (maxs[3] - mins[3]);
+    (*(simulationParameters[i]))[4] = (k_cd    - mins[4]) / (maxs[4] - mins[4]);
 
     (*(simulationOutputs[i]))[0] = pressure;
     i++;
+
+    double delta = pressure - meansim;
+    meansim += delta / i;
+    m2sim += delta * (pressure - meansim);
   }
 
-    fclose(fp_in);
+  double stdsim = m2sim / (double)(i - 1);
+
+  for (unsigned int j = 0; j < i; j++) {
+    (*(simulationOutputs[j]))[0] -= meansim;
+    (*(simulationOutputs[j]))[0] /= stdsim;
+  }
+
+  fclose(fp_in);  // Done with simulation data
+
+  // Read in experimental data
+  fp_in = fopen("gp/scalar/ctf_dat.txt", "r");
+  i = 0;
+  while (fscanf(fp_in, "%lf\n", &pressure) != EOF) {
+    (*(experimentOutputs[i]))[0] = pressure;
+    i++;
+  }
+
+  for (unsigned int j = 0; j < i; j++) {
+    (*(experimentOutputs[j]))[0] -= meansim;
+    (*(experimentOutputs[j]))[0] /= stdsim;
+  }
+
+  fclose(fp_in);
 }
 
 int main(int argc, char ** argv) {
