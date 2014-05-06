@@ -162,8 +162,9 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
                   ((*parameter1)[k] - (*parameter2)[k]));
       }
 
+      double emPrecision = (domainVector[dimParameter+1] < 0.3) ? 0.3 : domainVector[dimParameter+1];
       covMatrix(i, j) = prodScenario * prodParameter /
-                        domainVector[dimParameter+1];  // emulator precision
+                        emPrecision;  // emulator precision
 
       delete scenario1;
       delete scenario2;
