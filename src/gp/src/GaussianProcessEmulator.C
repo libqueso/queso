@@ -217,10 +217,6 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
     minus_2_log_lhd += sol[i] * residual[i];
   }
 
-  if (minus_2_log_lhd < 0) {
-    std::cout << " oh noes!  ln value negative: " << minus_2_log_lhd << std::endl;
-  }
-
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
   return -0.5 * minus_2_log_lhd;
 #else
