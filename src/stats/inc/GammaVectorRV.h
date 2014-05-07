@@ -59,17 +59,21 @@ template<class V, class M>
 class GammaVectorRV : public BaseVectorRV<V,M> {
 public:
   
-      //! @name Constructor/Destructor methods
+  //! @name Constructor/Destructor methods
   //@{
   //! Default Constructor
-  /*! Construct a Gamma vector RV with parameters \c a>0  and \c b>0, whose variates live in \c imageSet.
-   * The constructor will check whether or not the data provided via \c imageSet belongs to 
-   * \f$ (0, \infty)\f$, which is a requirement imposed by the Gamma distribution. If this condition 
-   * is not satisfied, an error  message will be displayed and the program will exit. */
-  GammaVectorRV(const char*                  prefix,
-                       const VectorSet<V,M>& imageSet,
-                       const V&                     a,
-                       const V&                     b);
+  /*!
+   * Construct a Gamma vector RV with parameters \c a > 0  and \c b > 0, whose
+   * variates live in \c imageSet.  The constructor will check whether or not
+   * the data provided via \c imageSet is outside of \f$ [0, \infty)\f$, which
+   * is a requirement imposed by the Gamma distribution.  If this condition
+   * is not satisfied, an error message will be displayed and an exception will
+   * be thrown.
+   */
+  GammaVectorRV(const char *            prefix,
+                const BoxSubset<V, M> & imageSet,
+                const V &               a,
+                const V &               b);
   //! Virtual destructor
   virtual ~GammaVectorRV();
   //@}
