@@ -27,6 +27,7 @@ check_PROGRAMS += test_operator
 check_PROGRAMS += test_inf_gaussian
 check_PROGRAMS += test_inf_options
 check_PROGRAMS += test_SequenceOfVectorsErase
+check_PROGRAMS += test_GammaVectorRVDomain
 
 LIBS         = -L$(top_builddir)/src/ -lqueso
 
@@ -78,6 +79,7 @@ test_operator_SOURCES = $(top_srcdir)/test/test_infinite/test_operator.C
 test_inf_gaussian_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_gaussian.C
 test_inf_options_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_options.C
 test_SequenceOfVectorsErase_SOURCES = $(top_srcdir)/test/test_SequenceOfVectors/test_SequenceOfVectorsErase.C
+test_GammaVectorRVDomain_SOURCES = $(top_srcdir)/test/test_GammaVectorRV/GammaVectorRVDomain.C
 
 # Files to freedom stamp
 srcstamp =
@@ -102,6 +104,7 @@ srcstamp += $(test_IntersectionSubsetContains_SOURCES)
 srcstamp += $(test_operator_SOURCES)
 srcstamp += $(test_inf_gaussian_SOURCES)
 srcstamp += $(test_inf_options_SOURCES)
+srcstamp += $(test_GammaVectorRVDomain_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
@@ -126,6 +129,7 @@ TESTS += $(top_builddir)/test/test_operator
 TESTS += $(top_builddir)/test/test_inf_gaussian
 TESTS += $(top_builddir)/test/test_inf_options
 TESTS += $(top_builddir)/test/test_SequenceOfVectorsErase
+TESTS += $(top_builddir)/test/test_GammaVectorRVDomain
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
