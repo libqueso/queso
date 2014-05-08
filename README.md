@@ -31,6 +31,12 @@ After successfully running `configure`, type `make` to build the
 Then type `make install` to install it in the directory previously
 specified by the `--prefix` option of the `configure` script.
 
+Documentation
+-------------
+
+`QUESO` documentation is available
+[here](http://libqueso.github.io/queso/docs/html/).
+
 Dependencies
 ------------
 
