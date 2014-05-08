@@ -31,13 +31,13 @@ namespace QUESO {
 // Constructor---------------------------------------
 // TODO: Check: the constructor receives imageSet, but uses m_imageSet to assign m_pdf and m_realizer. (Kemelli 2013/4/22)
 template<class V, class M>
-GammaVectorRV<V,M>::GammaVectorRV(
-  const char*                  prefix,
-  const VectorSet<V,M>& imageSet,
-  const V&                     a,
-  const V&                     b)
+GammaVectorRV<V, M>::GammaVectorRV(
+  const char *            prefix,
+  const BoxSubset<V, M> & imageSet,
+  const V &               a,
+  const V &               b)
   :
-  BaseVectorRV<V,M>(((std::string)(prefix)+"uni").c_str(),imageSet)
+  BaseVectorRV<V,M>(((std::string)(prefix)+"uni").c_str(), imageSet)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering GammaVectorRV<V,M>::constructor()"
@@ -45,30 +45,18 @@ GammaVectorRV<V,M>::GammaVectorRV(
                             << std::endl;
   }
  
-// begin kemelli 2013-April-22 -------------------------- 
-// better to check for the parameter values in the constructor, 
-// rather than in GammaVectorRealizer<V,M>::realization
+  // Check for invalid parameter values here rather than in the realizer
+  double smallerOfMaxValues = imageSet.maxValues().getMinValue();
+  double smallerOfMinValues = imageSet.minValues().getMinValue();
 
-  const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&imageSet);
-  double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
-  double smallerOfMinValues = imageBox->minValues().getMinValue();
-  
- // Gamma dist is defined only in (0,inf)		
- if( smallerOfMinValues < 0 ) 
- {		
-   std::cerr << "In GammaVectorRV<V,M>::constructor()\n" 
-       << "Gamma distribution is only defined in (0, infinity).\n"
-       << "The data provided is: \n"
-       << *imageBox 
-         << "Sampling will not cover all interval.\n"   
-         << std::endl;
-
-    UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
-                      m_env.worldRank(),
-                      "GammaVectorRealizer<V,M>::constructor()",
-                      "invalid input: Gamma distribution is only defined in (0, infinity), and min(m_maxValues)<0");      
- }	
-// end kemelli 2013-April-22 --------------------------
+  if ((smallerOfMinValues < 0) || (smallerOfMaxValues < 0)) {
+    std::cerr << "Gamma distribution is not defined outside of [0, infinity). "
+              << "The domain provided is:"
+              << std::endl
+              << imageSet
+              << std::endl;
+    queso_error();
+  }
 
   m_pdf        = new GammaJointPdf<V,M>(m_prefix.c_str(),
                                                m_imageSet,
