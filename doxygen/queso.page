@@ -1,9 +1,9 @@
 /*! \mainpage The QUESO Library
 
-<b>Version \version</b>, October 2009
+<b>Version \version</b>, May 2014
 <hr>
 
-<b>Quantification of Uncertainty for Estimation, Simulation and Optimization (QUES0) </b>
+<b>Quantification of Uncertainty for Estimation, Simulation and Optimization (QUESO) </b>
 
 The QUESO library is a collection of C++ classes and algorithms to
 support model validation and the prediction of quantities of interest
@@ -19,9 +19,11 @@ based/html format.
 
 \section bugs Reporting Bugs
 
-Bugs in the code and errors or omissions in the documentation can be
-reported to damon@ices.utexas.edu.  Requests and contributions are
-welcome at the same e-mail address.
+Bugs in the code and errors or omissions in the documentation can be reported
+to queso-users@googlegroups.com or as a
+<a href="https://github.com/libqueso/queso/issues/new>GitHub ticket</a>.
+Requests and contributions are also welcome using either of the two methods
+mentioned above.
 
 All bug reports should include:
 <ul>
@@ -38,12 +40,12 @@ All bug reports should include:
 bot Coverage</a>
 
 \section licence License
-\copydoc License
+See <a href="https://github.com/libqueso/queso/blob/master/LICENSE>here</a>.
 
 \section acknowledgements Acknowledgments
 \copydoc Acknowledgments
 
 \section pecos-center More Information About PECOS
-\copydoc About
+See <a href="http://pecos.ices.utexas.edu/">here</a>.
 
- */
+*/
