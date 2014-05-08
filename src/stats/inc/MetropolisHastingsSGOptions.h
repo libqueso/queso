@@ -91,7 +91,7 @@
 
 namespace QUESO {
 
-/*! \file uqMetropolisHastingsSGOptions.h
+/*! \file MetropolisHastingsSGOptions.h
     \brief Classes to allow options to be passed to a Metropolis-Hastings algorithm.
 */
 
@@ -183,7 +183,26 @@ public:
   std::string                        m_amAdaptedMatricesDataOutputFileType;
   bool                               m_amAdaptedMatricesDataOutputAllowAll;
   std::set<unsigned int>             m_amAdaptedMatricesDataOutputAllowedSet;
+
+  /*! \brief Proposal covariance scaling factor, usually 2.4 * 2.4 / d
+   *
+   * This is a parameter in the DRAM algorithm and can be found in Haario et al
+   * (2006).
+   *
+   * The parameter defines how much the proposal covariance matrix is to be
+   * scaled by, and should usually be set to 2.4 * 2.4 / d, where d is the
+   * dimension of the state space being sampled.
+   */
   double                             m_amEta;
+
+  /*! \brief Regularisation parameter for the DRAM covariance matrix
+   *
+   * This is a parameter in the DRAM algorithm that regularises the proposal
+   * covariance matrix.  Details can be found in Haario et al (2006).
+   *
+   * The parameter defines how much the diagonal of the proposal covariance
+   * matrix is perturbed.  Usually this is small, of order 1e-5.
+   */
   double                             m_amEpsilon;
 
   unsigned int                       m_enableBrooksGelmanConvMonitor;
@@ -200,19 +219,19 @@ private:
 #endif
 };
 
-// --------------------------------------------------
-// --------------------------------------------------
-// --------------------------------------------------
-
 /*! \class MetropolisHastingsSGOptions
- *  \brief This class reads the options for the  Metropolis-Hastings generator of samples from  an input file.
+ *  \brief This class reads the options for the Metropolis-Hastings generator of samples from an input file.
  * 
- * This class implements a Metropolis-Hastings generator of samples. 'SG' stands for 'Sequence Generator'.
- * Metropolis-Hastings generator of samples expects some options to be fully defined. This class reads 
- * the options for the Metropolis-Hastings generator of samples from an input file provided by the 
- * user. The class expects the prefix '\<prefix\>_mh_'. For instance, if 'prefix' is 'foo_775_fp_', 
- * then the constructor will read all options that begin with 'foo_775_fp_mh_'. Options reading is 
- * handled by class 'MetropolisHastingsOptions'. */
+ * This class implements a Metropolis-Hastings generator of samples.  'SG'
+ * stands for 'Sequence Generator'.  Metropolis-Hastings generator of samples
+ * expects some options to be fully defined.  This class reads the options for
+ * the Metropolis-Hastings generator of samples from an input file provided by
+ * the user.  The class expects the prefix '\<prefix\>_mh_'.  For instance, if
+ * 'prefix' is 'foo_775_fp_', then the constructor will read all options that
+ * begin with 'foo_775_fp_mh_'.  Options reading is hpandled by class
+ * 'MetropolisHastingsOptions'.  To set options by hand, use the \c
+ * MhOptionsValues class.
+ */
 
 class MetropolisHastingsSGOptions
 {
@@ -242,7 +261,9 @@ public:
   void print            (std::ostream& os) const;
   //@}
   
+  //! This class is where the actual options are stored
   MhOptionsValues             m_ov;
+
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   SequenceStatisticalOptions* m_rawChainStatisticalOptionsObj;
   bool                               m_rawChainStatOptsInstantiated;
@@ -312,7 +333,10 @@ private:
   std::string                   m_option_am_adaptedMatrices_dataOutputFileType;
   std::string                   m_option_am_adaptedMatrices_dataOutputAllowAll;
   std::string                   m_option_am_adaptedMatrices_dataOutputAllowedSet;
+
+  //! See MhOptionsValues::m_amEta
   std::string                   m_option_am_eta;
+  //! See MhOptionsValues::m_amEpsilon
   std::string                   m_option_am_epsilon;
 
   std::string                   m_option_enableBrooksGelmanConvMonitor;
