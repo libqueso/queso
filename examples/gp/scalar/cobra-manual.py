@@ -50,3 +50,6 @@ eta = 0.906 * samples[:,3] + 0.478 * samples[:,4]
 
 ax.hist(eta[5000:], bins=20)
 fig.savefig('eta.pdf')
+
+print "eta mean:", np.mean(eta[5000:])
+print "eta std:", np.std(eta[5000:])  # should be 0.00791
