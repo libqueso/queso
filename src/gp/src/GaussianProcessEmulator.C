@@ -162,7 +162,7 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
                   ((*parameter1)[k] - (*parameter2)[k]));
       }
 
-      double emPrecision = (domainVector[dimParameter+1] < 0.3) ? 0.3 : domainVector[dimParameter+1];
+      double emPrecision = domainVector[dimParameter+1];
       covMatrix(i, j) = prodScenario * prodParameter /
                         emPrecision;  // emulator precision
 
@@ -607,7 +607,7 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
   this->emulatorPrecisionMax = new V(this->oneDSpace->zeroVector());
   this->m_emulatorPrecisionShapeVec = new V(this->oneDSpace->zeroVector());
   this->m_emulatorPrecisionScaleVec = new V(this->oneDSpace->zeroVector());
-  this->emulatorPrecisionMin->cwSet(0);
+  this->emulatorPrecisionMin->cwSet(0.3);
   this->emulatorPrecisionMax->cwSet(INFINITY);
   this->m_emulatorPrecisionShapeVec->cwSet(this->m_emulatorPrecisionShape);
   this->m_emulatorPrecisionScaleVec->cwSet(this->m_emulatorPrecisionScale);
@@ -732,7 +732,7 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
 
   (*(this->totalMins))[dimParameter] = -INFINITY;  // Min mean
   (*(this->totalMaxs))[dimParameter] = INFINITY;  // Max mean
-  (*(this->totalMins))[dimParameter+1] = 0;  // Min emulator precision
+  (*(this->totalMins))[dimParameter+1] = 0.3;  // Min emulator precision
   (*(this->totalMaxs))[dimParameter+1] = INFINITY;  // Max emulator precision
 
   // Min discrepancy precision
