@@ -8,7 +8,7 @@
 #include <cstdio>
 
 // Read in data files
-void readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
+double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
     const std::vector<QUESO::GslVector *> & simulationParameters,
     const std::vector<QUESO::GslVector *> & simulationOutputs,
     const std::vector<QUESO::GslVector *> & experimentScenarios,
@@ -69,6 +69,8 @@ void readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
   }
 
   fclose(fp_in);
+
+  return stdsim;
 }
 
 int main(int argc, char ** argv) {
@@ -184,14 +186,14 @@ int main(int argc, char ** argv) {
     experimentVecs[i] = new QUESO::GslVector(experimentSpace.zeroVector());
   }
 
-  readData(simulationScenarios,
-      paramVecs,
-      outputVecs,
-      experimentScenarios,
-      experimentVecs);
+  double stdsim = readData(simulationScenarios,
+                           paramVecs,
+                           outputVecs,
+                           experimentScenarios,
+                           experimentVecs);
 
   for (unsigned int i = 0; i < numExperiments; i++) {
-    experimentMat(i, i) = 1.0;
+    experimentMat(i, i) = (0.025 / stdsim) * (0.025 / stdsim);
   }
 
   // Add simulation and experimental data
