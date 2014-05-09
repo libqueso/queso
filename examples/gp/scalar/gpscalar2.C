@@ -214,31 +214,45 @@ int main(int argc, char ** argv) {
     paramInitials[i] = 0.5;
   }
 
-  paramInitials[5]  = 0.00;  // Emulator mean
+  paramInitials[5]  = 0.0;  // Emulator mean
+  paramInitials[6]  = 1.0;
+  paramInitials[7]  = 0.97;
+  paramInitials[8]  = 0.97;
+  paramInitials[9]  = 0.97;
+  paramInitials[10]  = 0.97;
+  paramInitials[11]  = 0.97;
+  paramInitials[12]  = 0.97;
+  paramInitials[13]  = 10.0;
+  paramInitials[14]  = 0.97;
 
-  for (unsigned int i = 6; i < 15; i++) {
-    paramInitials[i] = 0.01;
-  }
+  // for (unsigned int i = 7; i < 15; i++) {
+  //   paramInitials[i] = 0.01;
+  // }
 
   QUESO::GslMatrix proposalCovMatrix(
       gpFactory.prior().imageSet().vectorSpace().zeroVector());
 
-  double scale = 1000.0;
-  proposalCovMatrix(0, 0)   = 0.2;
-  proposalCovMatrix(1, 1)   = 0.2;
-  proposalCovMatrix(2, 2)   = 0.2;
-  proposalCovMatrix(3, 3)   = 0.2;
-  proposalCovMatrix(4, 4)   = 0.2;
-  proposalCovMatrix(5, 5)   = 0.1 / scale;  // not used
-  proposalCovMatrix(6, 6)   = 5.0 / scale;
-  proposalCovMatrix(7, 7)   = 0.1 / scale;
-  proposalCovMatrix(8, 8)   = 0.1 / scale;
-  proposalCovMatrix(9, 9)   = 0.1 / scale;
-  proposalCovMatrix(10, 10) = 0.1 / scale;
-  proposalCovMatrix(11, 11) = 0.1 / scale;
-  proposalCovMatrix(12, 12) = 0.1 / scale;
-  proposalCovMatrix(13, 13) = 10.0 / scale;
-  proposalCovMatrix(14, 14) = 0.1 / scale;
+  double scale = 600.0;
+  proposalCovMatrix(0, 0)   = 3.1646 / 10.0;
+  proposalCovMatrix(1, 1)   = 3.1341 / 10.0;
+  proposalCovMatrix(2, 2)   = 3.1508 / 10.0;
+  proposalCovMatrix(3, 3)   = 0.3757 / 10.0;
+  proposalCovMatrix(4, 4)   = 0.6719 / 10.0;
+  proposalCovMatrix(5, 5)   = 0.1 / scale;  // not used.  emulator mean
+  proposalCovMatrix(6, 6)   = 0.4953 / scale;  // emulator precision
+  proposalCovMatrix(7, 7)   = 0.6058 / scale;  // emulator corr str
+  proposalCovMatrix(8, 8)   = 7.6032e-04 / scale;  // emulator corr str
+  proposalCovMatrix(9, 9)   = 8.3815e-04 / scale;  // emulator corr str
+  proposalCovMatrix(10, 10) = 7.5412e-04 / scale;  // emulator corr str
+  proposalCovMatrix(11, 11) = 0.2682 / scale;  // emulator corr str
+  proposalCovMatrix(12, 12) = 0.0572 / scale;  // emulator corr str
+  proposalCovMatrix(13, 13) = 1.3417e+05 / scale;  // discrepancy precision
+  proposalCovMatrix(14, 14) = 0.3461 / scale;  // discrepancy corr str
+
+  // Square to get variances
+  for (unsigned int i = 0; i < 15; i++) {
+    proposalCovMatrix(i, i) = proposalCovMatrix(i, i) * proposalCovMatrix(i, i);
+  }
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
 
