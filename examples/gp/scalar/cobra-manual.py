@@ -30,6 +30,7 @@ with open(str(sys.argv[1])+'/ip_raw_chain_sub'+chain+'.m', 'r') as fin:
     samples = np.loadtxt(StringIO(samples))
 
 num_samples = samples.shape[0]
+N = 60000
 
 mins = np.array([0.95, 0.9, 0.9, 0.9, 0.9])
 maxs = np.array([1.05, 1.1, 1.1, 1.1, 1.1])
@@ -39,7 +40,7 @@ samples[:,4] = mins[4] + (samples[:,4] * (maxs[4] - mins[4]))
 
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
-ax.scatter(samples[5000:,3], samples[5000:,4])
+ax.scatter(samples[N:,3], samples[N:,4])
 ax.set_xlabel('k_xkwlx')
 ax.set_ylabel('k_cd')
 fig.savefig('joint.pdf')
@@ -48,8 +49,8 @@ ax.cla()
 
 eta = 0.906 * samples[:,3] + 0.478 * samples[:,4]
 
-ax.hist(eta[5000:], bins=20)
+ax.hist(eta[N:], bins=20)
 fig.savefig('eta.pdf')
 
-print "eta mean:", np.mean(eta[5000:])
-print "eta std:", np.std(eta[5000:])  # should be 0.00791
+print "eta mean:", np.mean(eta[N:])
+print "eta std:", np.std(eta[N:], ddof=1)  # should be 0.00791
