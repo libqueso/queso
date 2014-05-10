@@ -51,7 +51,7 @@ is_package_required=ifelse([$2], ,no, $2 )
 
 HAVE_HDF5=0
 
-### if test "${with_hdf5}" != no ; then
+if test "${with_hdf5}" != no ; then
 
     if test -d "${HDF5_PREFIX}/lib" ; then
 
@@ -182,7 +182,7 @@ HAVE_HDF5=0
 
     AC_SUBST(HAVE_HDF5)
 
-### fi
+fi
 
 AM_CONDITIONAL(HDF5_ENABLED,test x$HAVE_HDF5 = x1)
 

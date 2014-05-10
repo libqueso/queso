@@ -1,0 +1,76 @@
+###############################################
+# UQ Environment
+###############################################
+env_numSubEnvironments   = 1
+env_subDisplayFileName   = outputData/display
+env_subDisplayAllowAll   = 0
+env_subDisplayAllowedSet = 0 1
+env_displayVerbosity     = 2
+env_syncVerbosity        = 0
+env_seed                 = -1
+
+###############################################
+# Statistical inverse problem (ip)
+###############################################
+ip_computeSolution      = 1
+ip_dataOutputFileName   = outputData/sipOutput
+ip_dataOutputAllowedSet = 0
+
+###############################################
+# 'ip_': information for Multilevel algorithm
+###############################################
+ip_ml_dataOutputFileName   = outputData/sipOutput_ml
+ip_ml_dataOutputAllowedSet = 0 1
+
+###############################################
+# All levels, unless otherwise specified
+###############################################
+#ip_ml_default_loadBalance = 0
+ip_ml_default_rawChain_size = 10000
+ip_ml_default_rawChain_dataOutputFileName = outputData/rawChain_ml #data from all levels will be written
+ip_ml_default_minEffectiveSizeRatio = 0.49
+ip_ml_default_maxEffectiveSizeRatio = 0.51
+ip_ml_default_minRejectionRate      = 0.24
+ip_ml_default_maxRejectionRate      = 0.4
+ip_ml_default_putOutOfBoundsInChain = 0
+
+###############################################
+# Level 3
+###############################################
+#ip_ml_3_dr_maxNumExtraStages          = 1
+#ip_ml_3_dr_listOfScalesForExtraStages = 3.333
+
+###############################################
+# Last level (level 4 for 'bimodal_gsl' executable)
+###############################################
+ip_ml_last_dataOutputFileName                  = outputData/sipOutput_ml
+ip_ml_last_dataOutputAllowedSet                = 0 1
+
+#ip_ml_last_loadBalance                         = 0
+ip_ml_last_rawChain_size                       = 10000
+ip_ml_last_rawChain_dataOutputFileName         = outputData/rawChain_ml
+ip_ml_last_rawChain_dataOutputAllowedSet       = 0
+ip_ml_last_rawChain_computeStats               = 1
+ip_ml_last_rawChain_stats_kde_compute          = 1
+ip_ml_last_rawChain_stats_kde_numEvalPositions = 200
+ip_ml_last_rawChain_stats_covMatrix_compute    = 1
+ip_ml_last_rawChain_stats_corrMatrix_compute   = 1
+
+ip_ml_last_filteredChain_generate                   = 1
+ip_ml_last_filteredChain_lag                        = 2
+ip_ml_last_filteredChain_dataOutputFileName         = outputData/filtChain_ml
+ip_ml_last_filteredChain_dataOutputAllowedSet       = 0
+ip_ml_last_filteredChain_computeStats               = 1
+ip_ml_last_filteredChain_stats_kde_compute          = 1
+ip_ml_last_filteredChain_stats_kde_numEvalPositions = 200
+ip_ml_last_filteredChain_stats_covMatrix_compute    = 1
+ip_ml_last_filteredChain_stats_corrMatrix_compute   = 1
+
+ip_ml_last_dr_maxNumExtraStages                = 1
+ip_ml_last_dr_listOfScalesForExtraStages       = 5.
+
+ip_ml_last_minEffectiveSizeRatio = 0.49
+ip_ml_last_maxEffectiveSizeRatio = 0.51
+ip_ml_last_minRejectionRate      = 0.24
+ip_ml_last_maxRejectionRate      = 0.4
+ip_ml_last_putOutOfBoundsInChain = 0

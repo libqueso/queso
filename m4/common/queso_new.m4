@@ -82,7 +82,7 @@ HAVE_QUESO=0
 
     AC_LANG_PUSH([C++])
 
-    AC_CHECK_HEADER([uqDefines.h], [found_header=yes], [found_header=no])
+    AC_CHECK_HEADER([queso/queso.h], [found_header=yes], [found_header=no])
 
     #-----------------------
     # Minimum version check
@@ -115,7 +115,7 @@ HAVE_QUESO=0
         version_succeeded=no
 
         AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-        @%:@include <queso.h>
+        @%:@include <queso/queso.h>
             ]], [[
             #if QUESO_MAJOR_VERSION > $MAJOR_VER
             /* Sweet nibblets */
@@ -136,14 +136,7 @@ HAVE_QUESO=0
     fi   dnl end test if header if available
 
 
-    dnl PB: Replaced the previous CHECK_HEADER test with COMPILE_IFELSE test becaue
-    dnl PB: uqDefines.h depends on MPI and the user will always get a CPP warning
-    dnl PB: since the c-preprocessor test will not use MPI.
-    dnl PB: However, I'm still not satisfied because no message is emitted and
-    dnl PB: if somehow the library was present, but not the includes, the user
-    dnl PB: will be a little lost.
-
-#####     AC_COMPILE_IFELSE([#include "uqDefines.h"],[found_header=yes],[found_header=no])
+#####     AC_COMPILE_IFELSE([#include "queso/queso.h"],[found_header=yes],[found_header=no])
 ##### 
 #####     ac_QUESO_BOOST_PROGRAM_OPTIONS_LDFLAGS_COMPILER=''
 #####     

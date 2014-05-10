@@ -50,7 +50,7 @@ Since the parameters have known independent Gaussian distributions, the results 
  
 To run the executable provided (available after QUESO installation), enter the following commands:
 \begin{lstlisting}[label={},caption={}]
-$ cd $HOME/LIBRARIES/QUESO-0.47.1/
+$ cd $HOME/LIBRARIES/QUESO-0.50.0/
 $ cd examples/simpleStatisticalForwardProblem
 $ rm outputData/*
 $ ./exSimpleStatisticalForwardProblem_gsl example.inp    
@@ -117,12 +117,12 @@ Listing \ref{code:makefile} presents a Makefile, named `\texttt{Makefile\_sfp\_e
 
 Thus, to compile, build and execute the code, the user just needs to run the following commands in the same directory where the files are:
 \begin{lstlisting}
-$ cd HOME/LIBRARIES/QUESO-0.47.1/examples/simpleStatisticalForwardProblem 
+$ cd HOME/LIBRARIES/QUESO-0.50.0/examples/simpleStatisticalForwardProblem 
 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
   $HOME/LIBRARIES/gsl-1.15/lib/:\
   $HOME/LIBRARIES/boost-1.53.0/lib/:\
   $HOME/LIBRARIES/hdf5-1.8.10/lib:\
-  $HOME/LIBRARIES/QUESO-0.47.1/lib 
+  $HOME/LIBRARIES/QUESO-0.50.0/lib 
 $ make -f Makefile_sfp_example_margarida 
 $ ./simple_sfp_example simple_sfp_example.inp
 \end{lstlisting}

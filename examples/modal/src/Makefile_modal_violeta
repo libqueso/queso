@@ -1,0 +1,44 @@
+##########################################################
+# Using installed QUESO 0.47.1, from tarball, in 'violeta'
+##########################################################
+
+QUESO_DIR = /home/kemelli/LIBRARIES/QUESO-0.50.0
+BOOST_DIR = /home/kemelli/LIBRARIES/boost-1.53.0
+GSL_DIR  =  /home/kemelli/LIBRARIES/gsl-1.15
+HDF5_DIR  = /home/kemelli/LIBRARIES/hdf5-1.8.10
+
+INC_PATHS = \
+	-I. \
+	-I$(QUESO_DIR)/include \
+	-I$(BOOST_DIR)/include \
+	-I$(GSL_DIR)/include \
+	-I$(HDF5_DIR)/include
+
+LIBS = \
+	-L$(QUESO_DIR)/lib -lqueso \
+	-L$(BOOST_DIR)/lib -lboost_program_options \
+	-L$(GSL_DIR)/lib -lgsl \
+	-L$(HDF5_DIR)/lib -lhdf5 
+
+CXX = mpic++
+CXXFLAGS += -g -Wall -c
+
+default: all
+
+.SUFFIXES: .o .C
+
+all:	modal_example_gsl
+
+clean:
+	rm -f *~
+	rm -f *.o
+	rm -f modal_gsl
+
+modal_example_gsl: example_main.o example_likelihood.o example_compute.o
+	$(CXX) example_main.o \
+	       example_likelihood.o \
+	       example_compute.o \
+	       -o modal_gsl $(LIBS)
+
+%.o: %.C
+	$(CXX) $(INC_PATHS) $(CXXFLAGS) $<
