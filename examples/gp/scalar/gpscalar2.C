@@ -210,10 +210,13 @@ int main(int argc, char ** argv) {
       gpFactory.prior().imageSet().vectorSpace().zeroVector());
 
   // Initial condition of the chain
-  for (unsigned int i = 0; i < paramInitials.sizeLocal(); i++) {
-    paramInitials[i] = 0.5;
-  }
-
+  // Have to set each of these by hand, *and* the sampler is sensitive to these
+  // values
+  paramInitials[0] = 0.5;
+  paramInitials[1] = 0.5;
+  paramInitials[2] = 0.5;
+  paramInitials[3] = 0.5;
+  paramInitials[4] = 0.5;
   paramInitials[5]  = 0.0;  // Emulator mean
   paramInitials[6]  = 1.0;
   paramInitials[7]  = 0.97;
@@ -225,19 +228,18 @@ int main(int argc, char ** argv) {
   paramInitials[13]  = 10.0;
   paramInitials[14]  = 0.97;
 
-  // for (unsigned int i = 7; i < 15; i++) {
-  //   paramInitials[i] = 0.01;
-  // }
-
   QUESO::GslMatrix proposalCovMatrix(
       gpFactory.prior().imageSet().vectorSpace().zeroVector());
 
+  // Setting the proposal covariance matrix by hand.
+  // This requires great forethough, and is to be considered a massive hack.
+  // These values were taken from the gpmsa matlab code and fiddled with.
   double scale = 600.0;
-  proposalCovMatrix(0, 0)   = 3.1646 / 10.0;
-  proposalCovMatrix(1, 1)   = 3.1341 / 10.0;
-  proposalCovMatrix(2, 2)   = 3.1508 / 10.0;
-  proposalCovMatrix(3, 3)   = 0.3757 / 10.0;
-  proposalCovMatrix(4, 4)   = 0.6719 / 10.0;
+  proposalCovMatrix(0, 0)   = 3.1646 / 10.0;  // param 1
+  proposalCovMatrix(1, 1)   = 3.1341 / 10.0;  // param 2
+  proposalCovMatrix(2, 2)   = 3.1508 / 10.0;  // param 3
+  proposalCovMatrix(3, 3)   = 0.3757 / 10.0;  // param 4
+  proposalCovMatrix(4, 4)   = 0.6719 / 10.0;  // param 5
   proposalCovMatrix(5, 5)   = 0.1 / scale;  // not used.  emulator mean
   proposalCovMatrix(6, 6)   = 0.4953 / scale;  // emulator precision
   proposalCovMatrix(7, 7)   = 0.6058 / scale;  // emulator corr str
