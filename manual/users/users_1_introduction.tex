@@ -708,8 +708,8 @@ a simple, but useful, implementation of DRAM is described in Algorithm \ref{alg:
  
 
 \begin{algorithm}[!hp]
-\SetLine
-\SetLine
+\SetAlgoLined
+\SetAlgoLined
 \KwIn{Number of positions in the chain $n_{\text{pos}}\geqslant 2$; initial guess $\mathbf{m}^{(0)}$; initial first stage proposal covariance $C^{(0)}$; $n_{\text{stages}}\geqslant 1$; and functions $q_i:\underbrace{\mathbb{R}^N\times\ldots\times\mathbb{R}^N}_{(i+1)\text{ times}}\rightarrow\mathbb{R}_{+}$}
 % \KwOut{}
 
@@ -1010,8 +1010,8 @@ estimate the evidence $\pi( \D ,M_j)$.
 
 \begin{algorithm}[!htb]
 %\AlFnt
-\SetLine
-\SetLine
+\SetAlgoLined
+\SetAlgoLined
 \KwIn{for each $\ell=0,\ldots,L$: the total amount of samples to be generated at $\ell$-th level ($n_\text{total}^{(\ell)}>0$) and the thresholds ($0<\beta_\text{min}^{(\ell)}<\beta_\text{max}^{(\ell)}<1$) on the effective sample size of the $\ell$-th level}
 
 %\KwOut{The n-th sample for $\bv{\theta}$ with the target PDF $\pi_\text{int}^{(\ell)}$. }
@@ -1079,8 +1079,8 @@ obtain $\bv{\theta}^{(0) [k]}, k=1,\ldots,n_\text{total}^{(0)}$}
 
 % 
 % \begin{algorithm}[!htb]
-% \SetLine
-% \SetLine
+% \SetAlgoLined
+% \SetAlgoLined
 % \KwIn{for each $\ell=0,\ldots,L$: the total amount of samples to be generated at $\ell$-th level ($n_\text{total}^{(\ell)}>0$) and the thresholds ($0<\beta_\text{min}^{(\ell)}<\beta_\text{max}^{(\ell)}<1$) on the effective sample size of the $\ell$-th level}
 % \KwOut{}
 %  
@@ -1211,8 +1211,8 @@ An implementation of Monte Carlo algorithm is described in Algorithm
 
 \begin{algorithm}[!htb]
 %\AlFnt
-\SetLine
-\SetLine
+\SetAlgoLined
+\SetAlgoLined
 \KwIn{Starting point $x_0$, step size $\delta$, number of trials $M$, number of steps per trial $N$, unnormalized density or probability function  $P(x)$ for the target distribution.}
 
 \KwOut{Random number sequence $x_i$, $i=0,1,2,\ldots$}
