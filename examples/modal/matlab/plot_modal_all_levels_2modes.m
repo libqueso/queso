@@ -1,0 +1,321 @@
+clear all
+cd ../tests/test_2013_11_22/outputData_2modes
+rawChain_ml
+
+% Level 1
+fprintf(1,'Scatter plots and histograms of raw chains - Level 0 <press any key>\n');
+plotmatrix(ip_ml_0_rawChain_unified, '+b')
+set(gca,'fontsize',20); 
+xlabel('\theta_1                       \theta_2                        \theta_3','fontsize',16);
+ylabel('\theta_3                       \theta_2                        \theta_1','fontsize',16);
+title('Scatter plots and histograms, Level 0 - 2 modes')
+set(gca,'FontSize',16);
+print -dpng modal_2_modes_level_0
+pause;
+clf; 
+
+% Level 1
+fprintf(1,'Scatter plots and histograms of raw chains - Level 1 <press any key>\n');
+plotmatrix(ip_ml_1_rawChain_unified, '+b')
+set(gca,'fontsize',20); 
+xlabel('\theta_1                       \theta_2                        \theta_3','fontsize',16);
+ylabel('\theta_3                       \theta_2                        \theta_1','fontsize',16);
+title('Scatter plots and histograms, Level 1 - 2 modes')
+set(gca,'FontSize',16);
+print -dpng modal_2_modes_level_1
+pause;
+clf; 
+
+% Level 2
+fprintf(1,'Scatter plots and histograms of raw chains - Level 2 <press any key>\n');
+plotmatrix(ip_ml_2_rawChain_unified, '+b')
+set(gca,'fontsize',20); 
+xlabel('\theta_1                       \theta_2                        \theta_3','fontsize',16);
+ylabel('\theta_3                       \theta_2                        \theta_1','fontsize',16);
+title('Scatter plots and histograms, Level 2 - 2 modes')
+set(gca,'FontSize',16);
+print -dpng modal_2_modes_level_2
+pause;
+clf; 
+
+% Level 3
+fprintf(1,'Scatter plots and histograms of raw chains - Level 3 <press any key>\n');
+plotmatrix(ip_ml_3_rawChain_unified, '+b')
+set(gca,'fontsize',20); 
+xlabel('\theta_1                       \theta_2                        \theta_3','fontsize',16);
+ylabel('\theta_3                       \theta_2                        \theta_1','fontsize',16);
+title('Scatter plots and histograms, Level 3 - 2 modes')
+set(gca,'FontSize',16);
+print -dpng modal_2_modes_level_3
+pause;
+clf; 
+
+% Level 4
+fprintf(1,'Scatter plots and histograms of raw chains - Level 4 <press any key>\n');
+plotmatrix(ip_ml_4_rawChain_unified, '+b')
+set(gca,'fontsize',20); 
+xlabel('\theta_1                       \theta_2                        \theta_3','fontsize',16);
+ylabel('\theta_3                       \theta_2                        \theta_1','fontsize',16);
+title('Scatter plots and histograms, Level 4 - 2 modes')
+set(gca,'FontSize',16);
+print -dpng modal_2_modes_level_4
+pause;
+clf; 
+
+% Level 5
+fprintf(1,'Scatter plots and histograms of raw chains - Level 5 <press any key>\n');
+plotmatrix(ip_ml_5_rawChain_unified, '+b')
+set(gca,'fontsize',20); 
+xlabel('\theta_1                       \theta_2                        \theta_3','fontsize',16);
+ylabel('\theta_3                       \theta_2                        \theta_1','fontsize',16);
+title('Scatter plots and histograms, Level 5 - 2 modes')
+set(gca,'FontSize',16);
+print -dpng modal_2_modes_level_5
+pause;
+clf; 
+
+% Level 6
+fprintf(1,'Scatter plots and histograms of raw chains - Level 6 <press any key>\n');
+plotmatrix(ip_ml_6_rawChain_unified, '+b')
+set(gca,'fontsize',20); 
+xlabel('\theta_1                       \theta_2                        \theta_3','fontsize',16);
+ylabel('\theta_3                       \theta_2                        \theta_1','fontsize',16);
+title('Scatter plots and histograms, Level 6 - 2 modes')
+set(gca,'FontSize',16);
+print -dpng modal_2_modes_level_6
+pause;
+clf; 
+
+% Level 7
+fprintf(1,'Scatter plots and histograms of raw chains - Level 7 <press any key>\n');
+plotmatrix(ip_ml_7_rawChain_unified, '+b')
+set(gca,'fontsize',20); 
+xlabel('\theta_1                       \theta_2                        \theta_3','fontsize',16);
+ylabel('\theta_3                       \theta_2                        \theta_1','fontsize',16);
+title('Scatter plots and histograms, Level 7 - 2 modes')
+set(gca,'FontSize',16);
+print -dpng modal_2_modes_level_7
+pause;
+clf; 
+
+% Level 8
+fprintf(1,'Scatter plots and histograms of raw chains - Level 8 <press any key>\n');
+plotmatrix(ip_ml_8_rawChain_unified, '+b')
+set(gca,'fontsize',20); 
+xlabel('\theta_1                       \theta_2                        \theta_3','fontsize',16);
+ylabel('\theta_3                       \theta_2                        \theta_1','fontsize',16);
+title('Scatter plots and histograms, Level 8 - 2 modes')
+set(gca,'FontSize',16);
+print -dpng modal_2_modes_level_8
+pause;
+clf; 
+
+% Level 9
+fprintf(1,'Scatter plots and histograms of raw chains - Level 9 <press any key>\n');
+plotmatrix(ip_ml_9_rawChain_unified, '+b')
+set(gca,'fontsize',20); 
+xlabel('\theta_1                       \theta_2                        \theta_3','fontsize',16);
+ylabel('\theta_3                       \theta_2                        \theta_1','fontsize',16);
+title('Scatter plots and histograms, Level 9 - 2 modes')
+set(gca,'FontSize',16);
+print -dpng modal_2_modes_level_9
+pause;
+clf; 
+
+% KDE estimation
+% theta 1
+fprintf(1,' Plotting KDE - theta_1 <press any key>\n');
+[f,xi] = ksdensity(ip_ml_1_rawChain_unified(:,1),'function','pdf');
+plot(xi,f,'-r','linewidth',3);
+hold on;  clear xi; clear f;
+[f,xi] = ksdensity(ip_ml_2_rawChain_unified(:,1),'function','pdf');
+plot(xi,f,'-g','linewidth',3)
+[f,xi] = ksdensity(ip_ml_3_rawChain_unified(:,1),'function','pdf');
+plot(xi,f,'-b','linewidth',3)
+[f,xi] = ksdensity(ip_ml_4_rawChain_unified(:,1),'function','pdf');
+plot(xi,f,'-c','linewidth',3)
+[f,xi] = ksdensity(ip_ml_5_rawChain_unified(:,1),'function','pdf');
+plot(xi,f,'-m','linewidth',3)
+[f,xi] = ksdensity(ip_ml_6_rawChain_unified(:,1),'function','pdf');
+plot(xi,f,'-k','linewidth',3)
+[f,xi] = ksdensity(ip_ml_7_rawChain_unified(:,1),'function','pdf');
+plot(xi,f,'--r','linewidth',3)
+[f,xi] = ksdensity(ip_ml_8_rawChain_unified(:,1),'function','pdf');
+plot(xi,f,'--g','linewidth',3)
+[f,xi] = ksdensity(ip_ml_9_rawChain_unified(:,1),'function','pdf');
+plot(xi,f,'--b','linewidth',3)
+h=legend('Level 1','Level 2','Level 3','Level 4','Level 5','Level 6','Level 7','Level 8','Level 9','location','northeast');
+title('\theta_1 Kernel Density Estimation (raw chain)','fontname', 'Times', 'fontsize',20);
+set(gca,'FontSize',16);
+grid on;
+axis([-1 4 0 6]);
+hold off;
+print -dpng modal_2_modes_kde_theta1
+pause;
+clf; 
+ 
+%theta 2
+fprintf(1,' Plotting KDE - theta_2 <press any key>\n'); 
+% [f,xi] = ksdensity(ip_ml_0_rawChain_unified(:,2),'function','pdf');
+% plot(xi,f,'-ok','linewidth',3);
+% hold on;  clear xi; clear f;
+[f,xi] = ksdensity(ip_ml_1_rawChain_unified(:,2),'function','pdf');
+plot(xi,f,'-r','linewidth',3);
+hold on;clear xi; clear f;
+[f,xi] = ksdensity(ip_ml_2_rawChain_unified(:,2),'function','pdf');
+plot(xi,f,'-g','linewidth',3)
+[f,xi] = ksdensity(ip_ml_3_rawChain_unified(:,2),'function','pdf');
+plot(xi,f,'-b','linewidth',3)
+[f,xi] = ksdensity(ip_ml_4_rawChain_unified(:,2),'function','pdf');
+plot(xi,f,'-c','linewidth',3)
+[f,xi] = ksdensity(ip_ml_5_rawChain_unified(:,2),'function','pdf');
+plot(xi,f,'-m','linewidth',3)
+[f,xi] = ksdensity(ip_ml_6_rawChain_unified(:,2),'function','pdf');
+plot(xi,f,'-k','linewidth',3)
+[f,xi] = ksdensity(ip_ml_7_rawChain_unified(:,2),'function','pdf');
+plot(xi,f,'--r','linewidth',3)
+[f,xi] = ksdensity(ip_ml_8_rawChain_unified(:,2),'function','pdf');
+plot(xi,f,'--g','linewidth',3)
+[f,xi] = ksdensity(ip_ml_9_rawChain_unified(:,2),'function','pdf');
+plot(xi,f,'--b','linewidth',3)
+h=legend('Level 1','Level 2','Level 3','Level 4','Level 5','Level 6','Level 7','Level 8','Level 9','location','northeast');
+
+title('\theta_2 Kernel Density Estimation (raw chain)','fontname', 'Times', 'fontsize',20);
+set(gca,'FontSize',16);grid on;
+hold off; 
+print -dpng modal_2_modes_kde_theta2
+pause;
+clf; 
+
+
+
+%theta 3 
+fprintf(1,' Plotting KDE - theta_3 <press any key>\n');
+[f,xi] = ksdensity(ip_ml_1_rawChain_unified(:,3),'function','pdf');
+plot(xi,f,'-r','linewidth',3);
+hold on;  clear xi; clear f;
+[f,xi] = ksdensity(ip_ml_2_rawChain_unified(:,3),'function','pdf');
+plot(xi,f,'-g','linewidth',3)
+[f,xi] = ksdensity(ip_ml_3_rawChain_unified(:,3),'function','pdf');
+plot(xi,f,'-b','linewidth',3)
+[f,xi] = ksdensity(ip_ml_4_rawChain_unified(:,3),'function','pdf');
+plot(xi,f,'-c','linewidth',3)
+[f,xi] = ksdensity(ip_ml_5_rawChain_unified(:,3),'function','pdf');
+plot(xi,f,'-m','linewidth',3)
+[f,xi] = ksdensity(ip_ml_6_rawChain_unified(:,3),'function','pdf');
+plot(xi,f,'-k','linewidth',3)
+[f,xi] = ksdensity(ip_ml_7_rawChain_unified(:,3),'function','pdf');
+plot(xi,f,'--r','linewidth',3)
+[f,xi] = ksdensity(ip_ml_8_rawChain_unified(:,3),'function','pdf');
+plot(xi,f,'--g','linewidth',3)
+[f,xi] = ksdensity(ip_ml_9_rawChain_unified(:,3),'function','pdf');
+plot(xi,f,'--b','linewidth',3)
+h=legend('Level 1','Level 2','Level 3','Level 4','Level 5','Level 6','Level 7','Level 8','Level 9','location','northeast');
+title('\theta_3 Kernel Density Estimation (raw chain)','fontname', 'Times', 'fontsize',20);
+set(gca,'FontSize',16);grid on;
+axis([-0.1 .6 0 22]);
+hold off; 
+print -dpng modal_2_modes_kde_theta3
+pause;
+clf; 
+
+% Target pdf
+fprintf(1,' Plotting KDE - target PDF <press any key>\n');
+%[f,xi] = ksdensity(ip_ml_0_rawLogTarget_unified,'function','pdf');
+%plot(xi,f,'-k','linewidth',3)
+%hold on;  clear xi; clear f;
+[f,xi] = ksdensity(ip_ml_1_rawLogTarget_unified,'function','pdf');
+plot(xi,f,'-r','linewidth',3);
+hold on;  clear xi; clear f;
+[f,xi] = ksdensity(ip_ml_2_rawLogTarget_unified,'function','pdf');
+plot(xi,f,'-g','linewidth',3)
+[f,xi] = ksdensity(ip_ml_3_rawLogTarget_unified,'function','pdf');
+plot(xi,f,'-b','linewidth',3)
+[f,xi] = ksdensity(ip_ml_4_rawLogTarget_unified,'function','pdf');
+plot(xi,f,'-c','linewidth',3)
+[f,xi] = ksdensity(ip_ml_5_rawLogTarget_unified,'function','pdf');
+plot(xi,f,'-m','linewidth',3)
+[f,xi] = ksdensity(ip_ml_6_rawLogTarget_unified,'function','pdf');
+plot(xi,f,'--k','linewidth',3)
+[f,xi] = ksdensity(ip_ml_7_rawLogTarget_unified,'function','pdf');
+plot(xi,f,'--r','linewidth',3)
+[f,xi] = ksdensity(ip_ml_8_rawLogTarget_unified,'function','pdf');
+plot(xi,f,'--g','linewidth',3)
+[f,xi] = ksdensity(ip_ml_9_rawLogTarget_unified,'function','pdf');
+plot(xi,f,'--b','linewidth',3)
+h=legend('Level 1','Level 2','Level 3','Level 4','Level 5','Level 6','Level 7','Level 8','Level 9','location','northwest');
+
+
+title('Target PDF Kernel Density Estimation','fontname', 'Times', 'fontsize',20);
+hold off; grid on;
+axis([0 15 0 .45]);
+print -dpng modal_2_modes_kde_target
+pause;
+clf; 
+
+% AUTOCORRELATION PLOTS
+%Theta 1
+nlags=20;
+i=1;
+[ACF0,lags,bounds]= autocorr(ip_ml_0_rawChain_unified(:,i), nlags, 0);
+[ACF1,lags,bounds]= autocorr(ip_ml_1_rawChain_unified(:,i), nlags, 0);
+[ACF2,lags,bounds]= autocorr(ip_ml_2_rawChain_unified(:,i), nlags, 0);
+[ACF3,lags,bounds]= autocorr(ip_ml_3_rawChain_unified(:,i), nlags, 0);
+[ACF4,lags,bounds]= autocorr(ip_ml_4_rawChain_unified(:,i), nlags, 0);
+[ACF5,lags,bounds]= autocorr(ip_ml_5_rawChain_unified(:,i), nlags, 0);
+[ACF6,lags,bounds]= autocorr(ip_ml_6_rawChain_unified(:,i), nlags, 0);
+[ACF7,lags,bounds]= autocorr(ip_ml_7_rawChain_unified(:,i), nlags, 0);
+[ACF8,lags,bounds]= autocorr(ip_ml_8_rawChain_unified(:,i), nlags, 0);
+plot(ACF0,lags,'-k', ACF1,lags,'-r',ACF2,lags,'-g',ACF3,lags,'-b',ACF4,lags,'-c',ACF5,lags,'-m',ACF6,lags,'--k',ACF7,lags,'--r',ACF8,lags,'--g','linewidth',3);
+h=legend('Level 0','Level 1','Level 2','Level 3','Level 4','Level 5','Level 6','Level 7','Level 8','location','northeast');
+set(gca,'FontSize',16);
+grid minor;
+title('Autocorrelation - Parameter \theta_1','fontname', 'Times', 'fontsize',20);
+print -dpng modal_2_modes_autocorrelation_theta1
+pause;
+clf; 
+
+% AUTOCORRELATION PLOTS
+%Theta 2
+i=2;
+[ACF0,lags,bounds]= autocorr(ip_ml_0_rawChain_unified(:,i), nlags, 0);
+[ACF1,lags,bounds]= autocorr(ip_ml_1_rawChain_unified(:,i), nlags, 0);
+[ACF2,lags,bounds]= autocorr(ip_ml_2_rawChain_unified(:,i), nlags, 0);
+[ACF3,lags,bounds]= autocorr(ip_ml_3_rawChain_unified(:,i), nlags, 0);
+[ACF4,lags,bounds]= autocorr(ip_ml_4_rawChain_unified(:,i), nlags, 0);
+[ACF5,lags,bounds]= autocorr(ip_ml_5_rawChain_unified(:,i), nlags, 0);
+[ACF6,lags,bounds]= autocorr(ip_ml_6_rawChain_unified(:,i), nlags, 0);
+[ACF7,lags,bounds]= autocorr(ip_ml_7_rawChain_unified(:,i), nlags, 0);
+[ACF8,lags,bounds]= autocorr(ip_ml_8_rawChain_unified(:,i), nlags, 0);
+plot(ACF0,lags,'-k', ACF1,lags,'-r',ACF2,lags,'-g',ACF3,lags,'-b',ACF4,lags,'-c',ACF5,lags,'-m',ACF6,lags,'--k',ACF7,lags,'--r',ACF8,lags,'--g','linewidth',3);
+h=legend('Level 0','Level 1','Level 2','Level 3','Level 4','Level 5','Level 6','Level 7','Level 8','location','northeast');
+set(gca,'FontSize',16);
+grid minor;
+title('Autocorrelation - Parameter \theta_2','fontname', 'Times', 'fontsize',20);
+print -dpng modal_2_modes_autocorrelation_theta2
+pause;
+clf; 
+
+
+%Theta 3
+i=3;
+[ACF0,lags,bounds]= autocorr(ip_ml_0_rawChain_unified(:,i), nlags, 0);
+[ACF1,lags,bounds]= autocorr(ip_ml_1_rawChain_unified(:,i), nlags, 0);
+[ACF2,lags,bounds]= autocorr(ip_ml_2_rawChain_unified(:,i), nlags, 0);
+[ACF3,lags,bounds]= autocorr(ip_ml_3_rawChain_unified(:,i), nlags, 0);
+[ACF4,lags,bounds]= autocorr(ip_ml_4_rawChain_unified(:,i), nlags, 0);
+[ACF5,lags,bounds]= autocorr(ip_ml_5_rawChain_unified(:,i), nlags, 0);
+[ACF6,lags,bounds]= autocorr(ip_ml_6_rawChain_unified(:,i), nlags, 0);
+[ACF7,lags,bounds]= autocorr(ip_ml_7_rawChain_unified(:,i), nlags, 0);
+[ACF8,lags,bounds]= autocorr(ip_ml_8_rawChain_unified(:,i), nlags, 0);
+plot(ACF0,lags,'-k', ACF1,lags,'-r',ACF2,lags,'-g',ACF3,lags,'-b',ACF4,lags,'-c',ACF5,lags,'-m',ACF6,lags,'--k',ACF7,lags,'--r',ACF8,lags,'--g','linewidth',3);
+h=legend('Level 0','Level 1','Level 2','Level 3','Level 4','Level 5','Level 6','Level 7','Level 8','location','northeast');
+set(gca,'FontSize',16);
+grid minor;
+title('Autocorrelation - Parameter \theta_3','fontname', 'Times', 'fontsize',20);
+print -dpng modal_2_modes_autocorrelation_theta3
+pause;
+clf; 
+
+cd ../matlab
+

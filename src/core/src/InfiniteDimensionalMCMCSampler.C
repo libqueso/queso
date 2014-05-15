@@ -270,6 +270,9 @@ hid_t InfiniteDimensionalMCMCSampler::_create_scalar_dataset(const std::string &
 
     return dset;
   }
+
+  hid_t dummy;
+  return dummy;
 }
 
 void InfiniteDimensionalMCMCSampler::_append_scalar_dataset(hid_t dset, double data)
@@ -284,7 +287,7 @@ void InfiniteDimensionalMCMCSampler::_append_scalar_dataset(hid_t dset, double d
 
     // Extend the dataset
     // Set dims to be the *new* dimension of the extended dataset
-    dims[0] = { this->_iteration / this->m_ov->m_save_freq };
+    dims[0] = this->_iteration / this->m_ov->m_save_freq;
     err = H5Dset_extent(dset, dims);
 
     // Select hyperslab on file dataset

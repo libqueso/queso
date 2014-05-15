@@ -1,0 +1,47 @@
+##############################################################
+# Using installed QUESO 0.50.0, external release, in 'violeta'
+##############################################################
+
+QUESO_DIR = /home/kemelli/LIBRARIES/QUESO-0.50.0
+BOOST_DIR = /home/kemelli/LIBRARIES/boost-1.53.0
+GSL_DIR  =  /home/kemelli/LIBRARIES/gsl-1.15
+HDF5_DIR  = /home/kemelli/LIBRARIES/hdf5-1.8.10
+
+INC_PATHS = \
+	-I. \
+	-I$(QUESO_DIR)/include \
+	-I$(BOOST_DIR)/include \
+	-I$(GSL_DIR)/include \
+	-I$(HDF5_DIR)/include
+
+LIBS = \
+	-L$(QUESO_DIR)/lib -lqueso \
+	-L$(BOOST_DIR)/lib -lboost_program_options \
+	-L$(GSL_DIR)/lib -lgsl \
+	-L$(HDF5_DIR)/lib -lhdf5 
+
+CXX = mpic++
+#CXX = mpicxx
+#CXX = /opt/local/bin/openmpicxx
+
+CXXFLAGS += -g -Wall -c
+
+default: all
+
+.SUFFIXES: .o .C
+
+all:	bimodal_bimodal_gsl
+
+clean:
+	rm -f *~
+	rm -f *.o
+	rm -f bimodal_gsl
+
+bimodal_bimodal_gsl: bimodal_main.o bimodal_likelihood.o bimodal_compute.o
+	$(CXX) bimodal_main.o \
+	       bimodal_likelihood.o \
+	       bimodal_compute.o \
+	       -o bimodal_gsl $(LIBS)
+
+%.o: %.C
+	$(CXX) $(INC_PATHS) $(CXXFLAGS) $<
