@@ -190,6 +190,7 @@ AC_CONFIG_FILES([
   test/gsl_tests/input
   test/test_Environment/copy_env
   test/test_infinite/inf_options
+  test/test_Regression/GaussianMean1DRegression_options
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page
