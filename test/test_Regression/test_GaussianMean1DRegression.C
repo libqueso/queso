@@ -18,16 +18,19 @@
 // Output: The estimated mean of the posterior distribution and the standard deviation about this mean. Also the number of likelihood function calls. 
 
 // User Input
-// Everything in this test is controlled through a queso style input file processed by boost::program_options.  
+// Everything in this test is controlled through a queso style input file processed by boost::program_options. The name of this file is passed
+// to the program through the command line. If no name is passed in, the program tries the default file name specified by inputFileODV. 
 // Options GaussianMean1DRegression_priorMean, GaussianMean1DRegression_priorVar, GaussianMean1DRegression_samplingVar, GaussianMean1DRegression_dataSet
-// are added to the boost::program_options options descriptor and parsed from the input file.
+// are added to the boost::program_options options descriptor and parsed from the input file. These options can also be specified on the command line,
+// in which case the command line value will overwrite the input file value. 
 // This allows the user to supply the mean and variance of a gaussian prior, the known model variance, and a string of samples from the "true" 
 // model - i.e. the data. 
+// Running the program with the option '--help', or '-h', will show the proper usage of the program and list all the available options.
 
 #define PI 3.14159265358979323846
 
 // default input file name
-const std::string inpFileDefault = "test_GaussianMean1DRegression.inp";
+const std::string inputFileODV = "GaussianMean1DRegression_options";
 
 // default option values
 const double priorMeanODV = 0.0;
@@ -123,37 +126,44 @@ void GaussianMean1DRegressionCompute(const QUESO::BaseEnvironment& env, double p
 
   invProb.solveWithBayesMLSampling();
 
-  // extract contents of posterior random variable (i.e. the MCMC samples)
-  // store them in a QUESO::ScalarSequence and gather all of them to inter0 root proc
+  // compute mean and second moment of samples on each proc via Knuth online mean/variance algorithm
   int N = invProb.postRv().realizer().subPeriod();
-  QUESO::ScalarSequence<double> subSamples(env, N, ""); 
+  double subMean = 0.0;
+  double subM2 = 0.0;
+  double delta;
   P_V sample(paramSpace.zeroVector());
-  for(int i=0; i<N; i++) {   
+  for(int n=1; n<=N; n++) {   
     invProb.postRv().realizer().realization(sample);
-    subSamples[i] = sample[0];
+    delta = sample[0] - subMean;
+    subMean += delta/n;
+    subM2 += delta*(sample[0] - subMean);
   }
-  std::vector<double> unifiedSamples;
-  subSamples.getUnifiedContentsAtProc0Only(true, unifiedSamples);
 
-  // get the total number of likelihood calls at inter0 root proc
+  // gather all Ns, means, and M2s to proc 0  
+  std::vector<int> unifiedNs(env.inter0Comm().NumProc());
+  std::vector<double> unifiedMeans(env.inter0Comm().NumProc());
+  std::vector<double> unifiedM2s(env.inter0Comm().NumProc());
+  MPI_Gather(&N, 1, MPI_INT, &(unifiedNs[0]), 1, MPI_INT, 0, env.inter0Comm().Comm());
+  MPI_Gather(&subMean, 1, MPI_DOUBLE, &(unifiedMeans[0]), 1, MPI_DOUBLE, 0, env.inter0Comm().Comm());
+  MPI_Gather(&subM2, 1, MPI_DOUBLE, &(unifiedM2s[0]), 1, MPI_DOUBLE, 0, env.inter0Comm().Comm());
+
+  // get the total number of likelihood calls at proc 0
   unsigned long totalLikelihoodCalls = 0;
   MPI_Reduce(&likelihoodCalls, &totalLikelihoodCalls, 1, MPI_UNSIGNED_LONG, MPI_SUM, 0, env.inter0Comm().Comm());
 
-  // compute posterior mean & std. output results on inter0 root proc
+  // compute global posterior mean and std via Chan algorithm, output results on proc 0
   if(env.inter0Rank() == 0) {
-    double postMean = 0.0;
-    double postVar = 0.0;
-  
-    // Knuth online mean/variance algorithm
-    N = unifiedSamples.size();
-    for(int n=1; n<=N; n++) {   
-      double delta = unifiedSamples[n-1] - postMean;
-      postMean += delta/n;
-      postVar += delta*(unifiedSamples[n-1] - postMean);
-    }
-    postVar /= N;
-  
-    std::cout<<"Posterior Markov chain length: "<<N<<std::endl;
+    int postN = unifiedNs[0];
+    double postMean = unifiedMeans[0];
+    double postVar = unifiedM2s[0];
+    for(unsigned int i=1; i<unifiedNs.size(); i++) {
+      delta = unifiedMeans[i] - postMean;
+      postMean = (postN*postMean + unifiedNs[i]*unifiedMeans[i])/(postN + unifiedNs[i]);
+      postVar += unifiedM2s[i] + delta*delta*(((double)postN*unifiedNs[i])/(postN + unifiedNs[i])); 
+      postN += unifiedNs[i];
+    }  
+    postVar /= postN;
+    std::cout<<"Number of posterior samples: "<<postN<<std::endl;
     std::cout<<"Posterior mean: "<<postMean<<" +/- "<<std::sqrt(postVar)<<std::endl;
     std::cout<<"Likelihood function calls: "<<totalLikelihoodCalls<<std::endl;
   }
@@ -165,53 +175,79 @@ int main(int argc, char* argv[])
   // Initialize environments
   //************************************************
   MPI_Init(&argc,&argv);
-
-  const char* configFile;
-  if(argc > 1)
-    configFile = argv[1];
-  else
-    configFile = inpFileDefault.c_str();
-
-   // initilize environment
-  QUESO::FullEnvironment env(MPI_COMM_WORLD,       // MPI communicator
-			     configFile,           // input file name
-			     "",                   // name prefix
-			     NULL );               // alt options
-
-  // reset seed to value in input file + fullRank
-  env.resetSeed(env.seed() + env.fullRank());
-
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank); 
+  
+  // variables to be filled by command line and/or input file values
+  std::string inputFile;
   double priorMean;
   double priorVar;
   std::string dataString;
   likelihoodData dat;
 
-  // Define program options 
-  po::options_description myOptDesc("GaussianMean1DRegression specific options");  
-  myOptDesc.add_options()
+  po::options_description generic("Generic options");
+  generic.add_options()
+    ("help,h", "Produce help message");
+
+  po::options_description config("GaussianMean1DRegression specific options");  
+  config.add_options()
     ("GaussianMean1DRegression_priorMean", po::value<double>(&priorMean)->default_value(priorMeanODV), "Prior Mean")
     ("GaussianMean1DRegression_priorVar", po::value<double>(&priorVar)->default_value(priorVarODV), "Prior Standard Deviation")
     ("GaussianMean1DRegression_samplingVar", po::value<double>(&dat.samplingVar)->default_value(samplingVarODV), "Data Sampling Standard Deviation")
     ("GaussianMean1DRegression_dataSet", po::value<std::string>(&dataString)->default_value(dataSetODV), "Calibration Data");
 
-  // One more pass on the input file to get GaussianMean1DRegression option values
-  po::variables_map myOptMap;
-  std::ifstream config_stream(configFile);
-  try {
-    po::store(po::parse_config_file(config_stream, myOptDesc, true), myOptMap);
-  } catch(std::exception& e) {
-    if(env.fullRank() == 0)
-      std::cout<<"Caught exception: "<<e.what()<<std::endl;
-  }
-  config_stream.close();
-  po::notify(myOptMap);
+  po::options_description hidden("hidden options");
+  hidden.add_options()
+    ("input_file", po::value<std::string>(&inputFile)->default_value(inputFileODV), "QUESO configuration file");
+  po::positional_options_description p;
+  p.add("input_file", -1);
 
-  // parse data string into a vector of doubles stored in dat.dataSet  
+  po::options_description cmdline_options;
+  cmdline_options.add(generic).add(config).add(hidden);
+  po::options_description visible("Allowed options");
+  visible.add(generic).add(config);
+
+  // parse command line for help, inputFile, and any config options present
+  po::variables_map vm;
+  try {
+    po::store(po::command_line_parser(argc, argv).
+	      options(cmdline_options).positional(p).run(), vm);
+  } catch(std::exception& e) {
+    if(rank == 0)
+      std::cout<<"Caught exception: "<<e.what()<<std::endl;
+    MPI_Abort(MPI_COMM_WORLD, -1);
+  }
+  po::notify(vm);
+
+  // if help is requested, print out usgae and visible options, then exit cleanly
+  if (vm.count("help")) {
+    if(rank == 0) {
+      std::cout<<"Usage: "<<argv[0]<<" <input_file (="<<inputFileODV<<")>"<<std::endl; 
+      std::cout<<visible<<std::endl;
+    }
+    MPI_Finalize();
+    return 1;
+  }
+
+  // parse the input file to get GaussianMean1DRegression option values
+  std::ifstream config_stream(inputFile.c_str());
+  try {
+    po::store(po::parse_config_file(config_stream, config, true), vm);
+  } catch(std::exception& e) {
+    if(rank == 0)
+      std::cout<<"Caught exception: "<<e.what()<<std::endl;
+    MPI_Abort(MPI_COMM_WORLD, -1);
+  }
+  po::notify(vm);
+  config_stream.close();
+
+   // parse the data string into a vector of doubles and store them in dat.dataSet  
   std::istringstream iss(dataString);
   std::copy(std::istream_iterator<double>(iss), std::istream_iterator<double>(), std::back_inserter(dat.dataSet));
-
+ 
   // output the option values that will be used by QUESO
-  if(env.fullRank() == 0) {
+  if(rank == 0) {
+    std::cout<<"QUESO options file: "<<inputFile<<std::endl;
     std::cout<<"Read option GaussianMean1DRegression_priorMean: "<<priorMean<<std::endl;
     std::cout<<"Read option GaussianMean1DRegression_priorVar: "<<priorVar<<std::endl;
     std::cout<<"Read option GaussianMean1DRegression_samplingVar: "<<dat.samplingVar<<std::endl;
@@ -220,6 +256,15 @@ int main(int argc, char* argv[])
       std::cout<<dat.dataSet[i]<<" ";
     std::cout<<std::endl;
   }
+
+   // initilize environment
+  QUESO::FullEnvironment env(MPI_COMM_WORLD,       // MPI communicator
+			     inputFile.c_str(),    // input file name
+			     "",                   // name prefix
+			     NULL );               // alt options
+
+  // reset seed to value in input file + fullRank
+  env.resetSeed(env.seed() + env.fullRank());
 
   // Work routine, with GSL
   GaussianMean1DRegressionCompute<QUESO::GslVector,QUESO::GslMatrix>(env, priorMean, priorVar, dat);
