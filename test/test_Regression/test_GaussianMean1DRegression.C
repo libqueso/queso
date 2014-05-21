@@ -163,9 +163,20 @@ void GaussianMean1DRegressionCompute(const QUESO::BaseEnvironment& env, double p
       postN += unifiedNs[i];
     }  
     postVar /= postN;
+
+    //compute exact answer - available in this case since the exact posterior is a gaussian
+    N = dat.dataSet.size();
+    double dataSum = 0.;
+    for(int i=0; i<N; i++) 
+      dataSum += dat.dataSet[i];
+    double datMean = dataSum/N;
+    double postMeanExact = (N*priorVar/(N*priorVar + dat.samplingVar))*datMean + (dat.samplingVar/(N*priorVar + dat.samplingVar))*priorMean;
+    double postVarExact = 1./(N/dat.samplingVar + 1./priorVar);
+    
     std::cout<<"Number of posterior samples: "<<postN<<std::endl;
-    std::cout<<"Posterior mean: "<<postMean<<" +/- "<<std::sqrt(postVar)<<std::endl;
+    std::cout<<"Estimated posterior mean: "<<postMean<<" +/- "<<std::sqrt(postVar)<<std::endl;
     std::cout<<"Likelihood function calls: "<<totalLikelihoodCalls<<std::endl;
+    std::cout<<"\nExact posterior: Gaussian with mean "<<postMeanExact<<", standard deviation "<<std::sqrt(postVarExact)<<std::endl; 
   }
 }
 

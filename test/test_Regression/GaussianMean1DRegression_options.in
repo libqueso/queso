@@ -1,7 +1,7 @@
 ###############################################
 # UQ Environment
 ###############################################
-env_numSubEnvironments   = 2
+env_numSubEnvironments   = 1
 env_subDisplayFileName   = outputData/display
 env_subDisplayAllowAll   = 1
 env_displayVerbosity     = 2
@@ -22,7 +22,6 @@ ip_dataOutputAllowedSet = 0
 #ip_ml_restartOutput_levelPeriod = 1
 #ip_ml_restartOutput_baseNameForFiles = outputData/quesoRestart
 #ip_ml_restartInput_baseNameForFiles = outputData/quesoRestart
-#ip_ml_restartInput_level0Start = 1
 ip_ml_dataOutputFileName   = outputData/sipOutput
 
 ###############################################
@@ -32,7 +31,7 @@ ip_ml_dataOutputFileName   = outputData/sipOutput
 ip_ml_default_putOutOfBoundsInChain = 0
 ip_ml_default_initialPositionUsePreviousLevelLikelihood = 0
 ip_ml_default_totallyMute = 1
-ip_ml_default_rawChain_size = 10000
+ip_ml_default_rawChain_size = 15000
 
 ###############################################
 # Last level 
