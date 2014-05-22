@@ -1482,18 +1482,20 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
   double logPrior      = 0.;
   double logLikelihood = 0.;
   double logTarget     = 0.;
-  if(m_computeInitialPriorAndLikelihoodValues) {
+  if (m_computeInitialPriorAndLikelihoodValues) {
     if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalTarget, NULL);
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
     logTarget =        m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment // KEY
 #else
     logTarget = -0.5 * m_targetPdfSynchronizer->callFunction(&valuesOf1stPosition,NULL,NULL,NULL,NULL,&logPrior,&logLikelihood); // Might demand parallel environment
 #endif
-    if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) m_rawChainInfo.targetRunTime += MiscGetEllapsedSeconds(&timevalTarget);
+    if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) {
+      m_rawChainInfo.targetRunTime += MiscGetEllapsedSeconds(&timevalTarget);
+    }
     m_rawChainInfo.numTargetCalls++;
     if ((m_env.subDisplayFile()                   ) &&
-	(m_env.displayVerbosity() >= 3            ) &&
-	(m_optionsObj->m_ov.m_totallyMute == false)) {
+        (m_env.displayVerbosity() >= 3            ) &&
+        (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
 			      << ": just returned from likelihood() for initial chain position"
 			      << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
@@ -1502,13 +1504,14 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
 			      << ", logTarget = "     << logTarget
 			      << std::endl;
     }
-  } else {
+  }
+  else {
     logPrior       = m_initialLogPriorValue;
     logLikelihood  = m_initialLogLikelihoodValue;
     logTarget      = logPrior + logLikelihood;
     if ((m_env.subDisplayFile()                   ) &&
-	(m_env.displayVerbosity() >= 3            ) &&
-	(m_optionsObj->m_ov.m_totallyMute == false)) {
+        (m_env.displayVerbosity() >= 3            ) &&
+        (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateFullChain()"
 			      << ": used input prior and likelihood for initial chain position"
 			      << ", m_rawChainInfo.numTargetCalls = " << m_rawChainInfo.numTargetCalls
@@ -1518,9 +1521,6 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
 			      << std::endl;
     }
   }
-
-  
-  
 
   //*m_env.subDisplayFile() << "AQUI 001" << std::endl;
   MarkovChainPositionData<P_V> currentPositionData(m_env,

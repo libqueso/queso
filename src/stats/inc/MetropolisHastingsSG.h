@@ -268,34 +268,34 @@ private:
   int    writeInfo                (const BaseVectorSequence<P_V,P_M>&  workingChain,
                                    std::ofstream&                             ofsvar) const;
 
-  const BaseEnvironment&                     m_env;
-  const VectorSpace <P_V,P_M>&               m_vectorSpace;
-  const BaseJointPdf<P_V,P_M>&               m_targetPdf;
-        P_V                                         m_initialPosition;
-        P_M                                         m_initialProposalCovMatrix;
-        bool                                        m_nullInputProposalCovMatrix;
-        unsigned int                                m_numDisabledParameters; // gpmsa2
-        std::vector<bool>                           m_parameterEnabledStatus; // gpmsa2
-  const ScalarFunctionSynchronizer<P_V,P_M>* m_targetPdfSynchronizer;
+  const BaseEnvironment & m_env;
+  const VectorSpace <P_V,P_M> & m_vectorSpace;
+  const BaseJointPdf<P_V,P_M> & m_targetPdf;
+  P_V m_initialPosition;
+  P_M m_initialProposalCovMatrix;
+  bool m_nullInputProposalCovMatrix;
+  unsigned int m_numDisabledParameters; // gpmsa2
+  std::vector<bool> m_parameterEnabledStatus; // gpmsa2
+  const ScalarFunctionSynchronizer<P_V,P_M> * m_targetPdfSynchronizer;
 
-        BaseTKGroup<P_V,P_M>*                m_tk;
-        unsigned int                                m_positionIdForDebugging;
-        unsigned int                                m_stageIdForDebugging;
-        std::vector<unsigned int>                   m_idsOfUniquePositions;
-        std::vector<double>                         m_logTargets;
-        std::vector<double>                         m_alphaQuotients;
-        double                                      m_lastChainSize;
-        P_V*                                        m_lastMean;
-        P_M*                                        m_lastAdaptedCovMatrix;
-        unsigned int                                m_numPositionsNotSubWritten;
+  BaseTKGroup<P_V,P_M> * m_tk;
+  unsigned int m_positionIdForDebugging;
+  unsigned int m_stageIdForDebugging;
+  std::vector<unsigned int> m_idsOfUniquePositions;
+  std::vector<double> m_logTargets;
+  std::vector<double> m_alphaQuotients;
+  double m_lastChainSize;
+  P_V * m_lastMean;
+  P_M * m_lastAdaptedCovMatrix;
+  unsigned int m_numPositionsNotSubWritten;
 
-        MHRawChainInfoStruct                      m_rawChainInfo;
+  MHRawChainInfoStruct m_rawChainInfo;
 
-        MhOptionsValues                      m_alternativeOptionsValues;
-        MetropolisHastingsSGOptions*         m_optionsObj;
-	bool                                        m_computeInitialPriorAndLikelihoodValues;
-	double                                      m_initialLogPriorValue;
-	double                                      m_initialLogLikelihoodValue;
+  MhOptionsValues m_alternativeOptionsValues;
+  MetropolisHastingsSGOptions * m_optionsObj;
+	bool m_computeInitialPriorAndLikelihoodValues;
+	double m_initialLogPriorValue;
+	double m_initialLogLikelihoodValue;
 };
 
 }  // End namespace QUESO

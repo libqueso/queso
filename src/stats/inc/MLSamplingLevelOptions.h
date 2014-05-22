@@ -207,7 +207,7 @@ public:
   std::string                        m_initialProposalCovMatrixDataInputFileType;
 
   //! Use previous level likelihood for initial chain position instead of re-computing it from target pdf
-  bool                               m_initialPositionUsePreviousLevelLikelihood;   // ml_likelihood_caching
+  bool                               m_initialPositionUsePreviousLevelLikelihood;  // ml_likelihood_caching
   
   
   std::set<unsigned int>             m_parameterDisabledSet; // gpmsa2
@@ -370,15 +370,15 @@ private:
   std::string                   m_option_minRejectionRate;
   std::string                   m_option_maxRejectionRate;
   std::string                   m_option_covRejectionRate;
-  std::string                   m_option_minAcceptableEta; // gpmsa1
+  std::string                   m_option_minAcceptableEta;  // gpmsa1
   std::string                   m_option_totallyMute;
   std::string                   m_option_initialPosition_dataInputFileName;
   std::string                   m_option_initialPosition_dataInputFileType;
   std::string                   m_option_initialProposalCovMatrix_dataInputFileName;
   std::string                   m_option_initialProposalCovMatrix_dataInputFileType;
-  std::string                   m_option_initialPositionUsePreviousLevelLikelihood;   // ml_likelihood_caching
-  std::string                   m_option_listOfDisabledParameters; // gpmsa2
-  std::string                   m_option_initialValuesOfDisabledParameters; // gpmsa2
+  std::string                   m_option_initialPositionUsePreviousLevelLikelihood;  // ml_likelihood_caching
+  std::string                   m_option_listOfDisabledParameters;  // gpmsa2
+  std::string                   m_option_initialValuesOfDisabledParameters;  // gpmsa2
   std::string                   m_option_rawChain_dataInputFileName;
   std::string                   m_option_rawChain_dataInputFileType;
   std::string                   m_option_rawChain_size;
