@@ -139,7 +139,7 @@ EXTRA_DIST += common/verify.sh
 EXTRA_DIST += test_uqEnvironmentOptions/test.inp
 EXTRA_DIST += test_Environment/copy_env
 EXTRA_DIST += test_infinite/inf_options
-EXTRA_DIST += test_Regression/test_GaussianMean1DRegression.inp
+EXTRA_DIST += test_Regression/GaussianMean1DRegression_options.in
 
 CLEANFILES =
 CLEANFILES += $(top_srcdir)/test/test_Environment/debug_output_sub0.txt
