@@ -66,7 +66,8 @@ int main(int argc, char ** argv) {
   // data and experimental data.  It also stores default information about the
   // hyperparameter distributions.
   QUESO::GaussianProcessFactory<QUESO::GslVector, QUESO::GslMatrix>
-    gpFactory("gp_",
+    gpFactory(env,
+              NULL,
               priorRv,
               configSpace,
               paramSpace,

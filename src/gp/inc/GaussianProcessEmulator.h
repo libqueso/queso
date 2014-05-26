@@ -35,6 +35,7 @@
 #include <queso/GammaVectorRV.h>
 #include <queso/BetaVectorRV.h>
 #include <queso/UniformVectorRV.h>
+#include <queso/GaussianProcessEmulatorOptions.h>
 
 namespace QUESO {
 
@@ -96,14 +97,16 @@ class GaussianProcessFactory
 {
 public:
   //! Constructor
-  GaussianProcessFactory(const char * prefix,
-                         const BaseVectorRV<V, M> & parameterPrior,
-                         const VectorSpace<V, M> & scenarioSpace,
-                         const VectorSpace<V, M> & parameterSpace,
-                         const VectorSpace<V, M> & simulationOutputSpace,
-                         const VectorSpace<V, M> & experimentOutputSpace,
-                         unsigned int numSimulations,
-                         unsigned int numExperiments);
+  GaussianProcessFactory(
+      const BaseEnvironment & env,
+      GaussianProcessEmulatorOptions * opts,
+      const BaseVectorRV<V, M> & parameterPrior,
+      const VectorSpace<V, M> & scenarioSpace,
+      const VectorSpace<V, M> & parameterSpace,
+      const VectorSpace<V, M> & simulationOutputSpace,
+      const VectorSpace<V, M> & experimentOutputSpace,
+      unsigned int numSimulations,
+      unsigned int numExperiments);
 
   //! Destructor
   ~GaussianProcessFactory();
@@ -252,11 +255,9 @@ public:
     return os;
   }
 
-  const char * m_prefix;
+  const BaseEnvironment & m_env;
 
   const BaseVectorRV<V, M> & m_parameterPrior;
-
-  const BaseEnvironment & m_env;
 
   const VectorSpace<V, M> & m_scenarioSpace;
   const VectorSpace<V, M> & m_parameterSpace;
@@ -340,16 +341,6 @@ public:
   BetaVectorRV<V, M> * m_discrepancyCorrelationStrength;  // (dim scenariospace)
   ConcatenatedVectorRV<V, M> * m_totalPrior;  // prior for joint parameters and hyperparameters
 
-  // Parameters for hyperpriors.  Hyper-hyperparameters, if you will.  Yo dawg.
-  double m_emulatorPrecisionShape;
-  double m_emulatorPrecisionScale;
-  double m_emulatorCorrelationStrengthAlpha;
-  double m_emulatorCorrelationStrengthBeta;
-  double m_discrepancyPrecisionShape;
-  double m_discrepancyPrecisionScale;
-  double m_discrepancyCorrelationStrengthAlpha;
-  double m_discrepancyCorrelationStrengthBeta;
-
   V * m_emulatorPrecisionShapeVec;
   V * m_emulatorPrecisionScaleVec;
   V * m_emulatorCorrelationStrengthAlphaVec;
@@ -362,6 +353,11 @@ public:
   // The gaussian process object to build
   GaussianProcessEmulator<V, M> * gaussianProcess;
   bool m_constructedGP;
+
+private:
+
+  GaussianProcessEmulatorOptions * m_opts;
+
 };
 
 }  // End namespace QUESO

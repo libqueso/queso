@@ -238,7 +238,8 @@ GaussianProcessEmulator<V, M>::actualValue(const V & domainVector,
 
 template <class V, class M>
 GaussianProcessFactory<V, M>::GaussianProcessFactory(
-    const char * prefix,
+    const BaseEnvironment & env,
+    GaussianProcessEmulatorOptions * opts,
     const BaseVectorRV<V, M> & parameterPrior,
     const VectorSpace<V, M> & scenarioSpace,
     const VectorSpace<V, M> & parameterSpace,
@@ -247,9 +248,8 @@ GaussianProcessFactory<V, M>::GaussianProcessFactory(
     unsigned int numSimulations,
     unsigned int numExperiments)
   :
-    m_prefix(prefix),
+    m_env(env),
     m_parameterPrior(parameterPrior),
-    m_env(scenarioSpace.env()),
     m_scenarioSpace(scenarioSpace),
     m_parameterSpace(parameterSpace),
     m_simulationOutputSpace(simulationOutputSpace),
@@ -265,6 +265,18 @@ GaussianProcessFactory<V, M>::GaussianProcessFactory(
     m_numExperimentAdds(0),
     priors(6, NULL)
 {
+  // DM: Not sure if the logic in these 3 if-blocks is correct
+  if ((opts == NULL) && (this->m_env.optionsInputFileName() == "")) {
+    std::cerr << "Must options object or an input file" << std::endl;
+    queso_error();
+  }
+  if (opts != NULL) {
+    this->m_opts = opts;
+  }
+  if (this->m_env.optionsInputFileName() != "") {
+    this->m_opts->scanOptionsValues();
+  }
+
   this->setUpHyperpriors();
   this->m_constructedGP = false;
 }
@@ -574,15 +586,14 @@ template <class V, class M>
 void
 GaussianProcessFactory<V, M>::setUpHyperpriors()
 {
-  // Default value for hyperprior parameters
-  this->m_emulatorPrecisionShape = 5.0;
-  this->m_emulatorPrecisionScale = 1.0 / 5.0;
-  this->m_emulatorCorrelationStrengthAlpha = 1.0;
-  this->m_emulatorCorrelationStrengthBeta = 0.1;
-  this->m_discrepancyPrecisionShape = 1.0;
-  this->m_discrepancyPrecisionScale = 1.0 / 0.0001;
-  this->m_discrepancyCorrelationStrengthAlpha = 1.0;
-  this->m_discrepancyCorrelationStrengthBeta = 0.1;
+  double emulatorPrecisionShape = this->m_opts->m_emulatorPrecisionShape;
+  double emulatorPrecisionScale = this->m_opts->m_emulatorPrecisionScale;
+  double emulatorCorrelationStrengthAlpha = this->m_opts->m_emulatorCorrelationStrengthAlpha;
+  double emulatorCorrelationStrengthBeta = this->m_opts->m_emulatorCorrelationStrengthBeta;
+  double discrepancyPrecisionShape = this->m_opts->m_discrepancyPrecisionShape;
+  double discrepancyPrecisionScale = this->m_opts->m_discrepancyPrecisionScale;
+  double discrepancyCorrelationStrengthAlpha = this->m_opts->m_discrepancyCorrelationStrengthAlpha;
+  double discrepancyCorrelationStrengthBeta = this->m_opts->m_discrepancyCorrelationStrengthBeta;
 
   this->oneDSpace = new VectorSpace<V, M>(this->m_env, "", 1, NULL);
 
@@ -609,8 +620,8 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
   this->m_emulatorPrecisionScaleVec = new V(this->oneDSpace->zeroVector());
   this->emulatorPrecisionMin->cwSet(0.3);
   this->emulatorPrecisionMax->cwSet(INFINITY);
-  this->m_emulatorPrecisionShapeVec->cwSet(this->m_emulatorPrecisionShape);
-  this->m_emulatorPrecisionScaleVec->cwSet(this->m_emulatorPrecisionScale);
+  this->m_emulatorPrecisionShapeVec->cwSet(emulatorPrecisionShape);
+  this->m_emulatorPrecisionScaleVec->cwSet(emulatorPrecisionScale);
 
   this->emulatorPrecisionDomain = new BoxSubset<V, M>(
       "",
@@ -642,8 +653,8 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
       this->emulatorCorrelationSpace->zeroVector());
   this->emulatorCorrelationMin->cwSet(0);
   this->emulatorCorrelationMax->cwSet(1);
-  this->m_emulatorCorrelationStrengthAlphaVec->cwSet(this->m_emulatorCorrelationStrengthAlpha);
-  this->m_emulatorCorrelationStrengthBetaVec->cwSet(this->m_emulatorCorrelationStrengthBeta);
+  this->m_emulatorCorrelationStrengthAlphaVec->cwSet(emulatorCorrelationStrengthAlpha);
+  this->m_emulatorCorrelationStrengthBetaVec->cwSet(emulatorCorrelationStrengthBeta);
 
   this->emulatorCorrelationDomain = new BoxSubset<V, M>(
       "",
@@ -663,8 +674,8 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
   this->m_discrepancyPrecisionScaleVec = new V(this->oneDSpace->zeroVector());
   this->discrepancyPrecisionMin->cwSet(0);
   this->discrepancyPrecisionMax->cwSet(INFINITY);
-  this->m_discrepancyPrecisionShapeVec->cwSet(this->m_discrepancyPrecisionShape);
-  this->m_discrepancyPrecisionScaleVec->cwSet(this->m_discrepancyPrecisionScale);
+  this->m_discrepancyPrecisionShapeVec->cwSet(discrepancyPrecisionShape);
+  this->m_discrepancyPrecisionScaleVec->cwSet(discrepancyPrecisionScale);
 
   this->discrepancyPrecisionDomain = new BoxSubset<V, M>(
       "",
@@ -694,8 +705,8 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
       this->discrepancyCorrelationSpace->zeroVector());
   this->discrepancyCorrelationMin->cwSet(0);
   this->discrepancyCorrelationMax->cwSet(1);
-  this->m_discrepancyCorrelationStrengthAlphaVec->cwSet(this->m_discrepancyCorrelationStrengthAlpha);
-  this->m_discrepancyCorrelationStrengthBetaVec->cwSet(this->m_discrepancyCorrelationStrengthBeta);
+  this->m_discrepancyCorrelationStrengthAlphaVec->cwSet(discrepancyCorrelationStrengthAlpha);
+  this->m_discrepancyCorrelationStrengthBetaVec->cwSet(discrepancyCorrelationStrengthBeta);
 
   this->discrepancyCorrelationDomain = new BoxSubset<V, M>(
       "",
