@@ -40,7 +40,6 @@ GaussianProcessEmulatorOptions::GaussianProcessEmulatorOptions(
   const BaseEnvironment & env,
   const char * prefix)
   :
-  m_ov(),
   m_prefix((std::string)(prefix) + "gp_"),
   m_env(env),
   m_optionsDesc(new po::options_description("Gaussian process emulator options")),
@@ -139,49 +138,49 @@ GaussianProcessEmulatorOptions::getMyOptionValues(po::options_description& optio
   }
 
   if (m_env.allOptionsMap().count(m_option_emulatorPrecisionShape)) {
-    m_ov.m_emulatorPrecisionShape = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorPrecisionShape]).as<double>();
+    this->m_emulatorPrecisionShape = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorPrecisionShape]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_emulatorPrecisionScale)) {
-    m_ov.m_emulatorPrecisionScale = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorPrecisionScale]).as<double>();
+    this->m_emulatorPrecisionScale = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorPrecisionScale]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_emulatorCorrelationStrengthAlpha)) {
-    m_ov.m_emulatorCorrelationStrengthAlpha = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorCorrelationStrengthAlpha]).as<double>();
+    this->m_emulatorCorrelationStrengthAlpha = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorCorrelationStrengthAlpha]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_emulatorCorrelationStrengthBeta)) {
-    m_ov.m_emulatorCorrelationStrengthBeta = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorCorrelationStrengthBeta]).as<double>();
+    this->m_emulatorCorrelationStrengthBeta = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorCorrelationStrengthBeta]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_discrepancyPrecisionShape)) {
-    m_ov.m_discrepancyPrecisionShape = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyPrecisionShape]).as<double>();
+    this->m_discrepancyPrecisionShape = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyPrecisionShape]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_discrepancyPrecisionScale)) {
-    m_ov.m_discrepancyPrecisionScale = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyPrecisionScale]).as<double>();
+    this->m_discrepancyPrecisionScale = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyPrecisionScale]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_discrepancyCorrelationStrengthAlpha)) {
-    m_ov.m_discrepancyCorrelationStrengthAlpha = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyCorrelationStrengthAlpha]).as<double>();
+    this->m_discrepancyCorrelationStrengthAlpha = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyCorrelationStrengthAlpha]).as<double>();
   }
 
   if (m_env.allOptionsMap().count(m_option_discrepancyCorrelationStrengthBeta)) {
-    m_ov.m_discrepancyCorrelationStrengthBeta = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyCorrelationStrengthBeta]).as<double>();
+    this->m_discrepancyCorrelationStrengthBeta = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyCorrelationStrengthBeta]).as<double>();
   }
 }
 
 void
 GaussianProcessEmulatorOptions::print(std::ostream& os) const
 {
-  os << "\n" << m_option_emulatorPrecisionShape << " = " << m_ov.m_emulatorPrecisionShape
-     << "\n" << m_option_emulatorPrecisionScale << " = " << m_ov.m_emulatorPrecisionScale
-     << "\n" << m_option_emulatorCorrelationStrengthAlpha << " = " << m_ov.m_emulatorCorrelationStrengthAlpha
-     << "\n" << m_option_emulatorCorrelationStrengthBeta << " = " << m_ov.m_emulatorCorrelationStrengthBeta
-     << "\n" << m_option_discrepancyPrecisionShape << " = " << m_ov.m_discrepancyPrecisionShape
-     << "\n" << m_option_discrepancyPrecisionScale << " = " << m_ov.m_discrepancyPrecisionScale
-     << "\n" << m_option_discrepancyCorrelationStrengthAlpha << " = " << m_ov.m_discrepancyCorrelationStrengthAlpha
-     << "\n" << m_option_discrepancyCorrelationStrengthBeta << " = " << m_ov.m_discrepancyCorrelationStrengthBeta
+  os << "\n" << m_option_emulatorPrecisionShape << " = " << this->m_emulatorPrecisionShape
+     << "\n" << m_option_emulatorPrecisionScale << " = " << this->m_emulatorPrecisionScale
+     << "\n" << m_option_emulatorCorrelationStrengthAlpha << " = " << this->m_emulatorCorrelationStrengthAlpha
+     << "\n" << m_option_emulatorCorrelationStrengthBeta << " = " << this->m_emulatorCorrelationStrengthBeta
+     << "\n" << m_option_discrepancyPrecisionShape << " = " << this->m_discrepancyPrecisionShape
+     << "\n" << m_option_discrepancyPrecisionScale << " = " << this->m_discrepancyPrecisionScale
+     << "\n" << m_option_discrepancyCorrelationStrengthAlpha << " = " << this->m_discrepancyCorrelationStrengthAlpha
+     << "\n" << m_option_discrepancyCorrelationStrengthBeta << " = " << this->m_discrepancyCorrelationStrengthBeta
      << std::endl;
 }
 
