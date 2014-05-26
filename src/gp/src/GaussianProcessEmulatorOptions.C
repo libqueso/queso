@@ -51,7 +51,7 @@ GaussianProcessEmulatorOptions::GaussianProcessEmulatorOptions(
   m_option_discrepancyPrecisionShape(m_prefix + "discrepancy_precision_shape"),
   m_option_discrepancyPrecisionScale(m_prefix + "discrepancy_precision_scale"),
   m_option_discrepancyCorrelationStrengthAlpha(m_prefix + "discrepancy_correlation_strength_alpha"),
-  m_option_discrepancyCorrelationStrengthBeta(m_prefix + "discrepancy_correlation_strength_beta"),
+  m_option_discrepancyCorrelationStrengthBeta(m_prefix + "discrepancy_correlation_strength_beta")
 {
   if (m_env.optionsInputFileName() == "") {
     std::cerr << "Missing input file is required" << std::endl;
@@ -124,7 +124,7 @@ GaussianProcessEmulatorOptions::defineMyOptions(po::options_description& options
     (m_option_discrepancyPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for discrepancy precision")
     (m_option_discrepancyPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for discrepancy precision")
     (m_option_discrepancyCorrelationStrengthAlpha.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV), "alpha hyperprior (Beta) parameter for discrepancy correlation strength")
-    (m_option_discrepancyCorrelationStrengthBeta.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV), "beta hyperprior (Beta) parameter for discrepancy correlation strength")
+    (m_option_discrepancyCorrelationStrengthBeta.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV), "beta hyperprior (Beta) parameter for discrepancy correlation strength");
 }
 
 void
