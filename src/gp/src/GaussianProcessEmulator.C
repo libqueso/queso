@@ -270,12 +270,19 @@ GaussianProcessFactory<V, M>::GaussianProcessFactory(
     std::cerr << "Must options object or an input file" << std::endl;
     queso_error();
   }
+
   if (opts != NULL) {
     this->m_opts = opts;
   }
+  else {
+    // Create a default one
+    this->m_opts = new GaussianProcessEmulatorOptions(this->m_env, "");
+  }
+
   if (this->m_env.optionsInputFileName() != "") {
     this->m_opts->scanOptionsValues();
   }
+
 
   this->setUpHyperpriors();
   this->m_constructedGP = false;
