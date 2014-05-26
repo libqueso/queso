@@ -159,10 +159,4 @@ GaussianProcessEmulatorOptions::print(std::ostream& os) const
      << std::endl;
 }
 
-std::ostream& operator<<(std::ostream& os, const GaussianProcessEmulatorOptions& obj)
-{
-  obj.print(os);
-  return os;
-}
-
 }  // End namespace QUESO

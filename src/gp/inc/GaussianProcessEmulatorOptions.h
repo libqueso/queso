@@ -81,6 +81,13 @@ public:
   //! Returns the QUESO environment
   const BaseEnvironment& env() const;
 
+  friend std::ostream & operator<<(std::ostream& os,
+      const GaussianProcessEmulatorOptions & obj)
+  {
+    obj.print(os);
+    return os;
+  }
+
 private:
   void defineMyOptions(po::options_description& optionsDesc) const;
   void getMyOptionValues(po::options_description& optionsDesc);
@@ -98,8 +105,6 @@ private:
   std::string m_option_discrepancyCorrelationStrengthAlpha;
   std::string m_option_discrepancyCorrelationStrengthBeta;
 };
-
-std::ostream& operator<<(std::ostream& os, const GaussianProcessEmulatorOptions & opts);
 
 }  // End namespace QUESO
 
