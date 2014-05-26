@@ -727,9 +727,6 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
   this->totalMins->cwSet(0);
   this->totalMaxs->cwSet(1);
 
-  const BoxSubset<GslVector, GslMatrix> * box_prior =
-    dynamic_cast<const BoxSubset<GslVector, GslMatrix>* >(&(this->m_parameterPrior.imageSet()));
-
   (*(this->totalMins))[dimParameter] = -INFINITY;  // Min mean
   (*(this->totalMaxs))[dimParameter] = INFINITY;  // Max mean
   (*(this->totalMins))[dimParameter+1] = 0.3;  // Min emulator precision
