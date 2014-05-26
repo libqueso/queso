@@ -66,31 +66,6 @@ GaussianProcessEmulatorOptions::~GaussianProcessEmulatorOptions()
   }
 }
 
-GaussianProcessEmulatorOptions::GaussianProcessEmulatorOptions(const GaussianProcessEmulatorOptions& src)
-{
-  this->copy(src);
-}
-
-GaussianProcessEmulatorOptions&
-GaussianProcessEmulatorOptions::operator=(const GaussianProcessEmulatorOptions& rhs)
-{
-  this->copy(rhs);
-  return *this;
-}
-
-void
-GaussianProcessEmulatorOptions::copy(const GaussianProcessEmulatorOptions& src)
-{
-  m_emulatorPrecisionShape = src.m_emulatorPrecisionShape;
-  m_emulatorPrecisionScale = src.m_emulatorPrecisionScale;
-  m_emulatorCorrelationStrengthAlpha = src.m_emulatorCorrelationStrengthAlpha;
-  m_emulatorCorrelationStrengthBeta = src.m_emulatorCorrelationStrengthBeta;
-  m_discrepancyPrecisionShape = src.m_discrepancyPrecisionShape;
-  m_discrepancyPrecisionScale = src.m_discrepancyPrecisionScale;
-  m_discrepancyCorrelationStrengthAlpha = src.m_discrepancyCorrelationStrengthAlpha;
-  m_discrepancyCorrelationStrengthBeta = src.m_discrepancyCorrelationStrengthBeta;
-}
-
 void
 GaussianProcessEmulatorOptions::scanOptionsValues()
 {
