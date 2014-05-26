@@ -62,6 +62,7 @@ BUILT_SOURCES += ExperimentModel.h
 BUILT_SOURCES += ExperimentModelOptions.h
 BUILT_SOURCES += ExperimentStorage.h
 BUILT_SOURCES += GaussianProcessEmulator.h
+BUILT_SOURCES += GaussianProcessEmulatorOptions.h
 BUILT_SOURCES += GcmExperimentInfo.h
 BUILT_SOURCES += GcmJointInfo.h
 BUILT_SOURCES += GcmJointTildeInfo.h
@@ -276,6 +277,8 @@ ExperimentModelOptions.h: $(top_srcdir)/src/gp/inc/ExperimentModelOptions.h
 ExperimentStorage.h: $(top_srcdir)/src/gp/inc/ExperimentStorage.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianProcessEmulator.h: $(top_srcdir)/src/gp/inc/GaussianProcessEmulator.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianProcessEmulatorOptions.h: $(top_srcdir)/src/gp/inc/GaussianProcessEmulatorOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GcmExperimentInfo.h: $(top_srcdir)/src/gp/inc/GcmExperimentInfo.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
