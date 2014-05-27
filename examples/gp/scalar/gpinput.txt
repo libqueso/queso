@@ -46,3 +46,12 @@ ip_mh_am_eta                        = 0.384
 ip_mh_am_epsilon                    = 1.e-5
 
 ip_mh_filteredChain_generate             = 0
+
+gp_emulator_precision_shape = 5.0
+gp_emulator_precision_scale = 0.2
+gp_emulator_correlation_strength_alpha = 1.0
+gp_emulator_correlation_strength_beta = 0.1
+gp_discrepancy_precision_shape = 1.0
+gp_discrepancy_precision_scale = 1e4
+gp_discrepancy_correlation_strength_alpha = 1.0
+gp_discrepancy_correlation_strength_beta = 0.1

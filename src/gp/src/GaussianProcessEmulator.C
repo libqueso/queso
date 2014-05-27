@@ -283,7 +283,6 @@ GaussianProcessFactory<V, M>::GaussianProcessFactory(
     this->m_opts->scanOptionsValues();
   }
 
-
   this->setUpHyperpriors();
   this->m_constructedGP = false;
 }
