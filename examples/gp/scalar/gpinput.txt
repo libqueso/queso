@@ -55,3 +55,5 @@ gp_discrepancy_precision_shape = 1.0
 gp_discrepancy_precision_scale = 1e4
 gp_discrepancy_correlation_strength_alpha = 1.0
 gp_discrepancy_correlation_strength_beta = 0.1
+gp_emulator_data_precision_shape = 3.0
+gp_emulator_data_precision_scale = 333.333

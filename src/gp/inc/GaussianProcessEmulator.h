@@ -304,25 +304,25 @@ public:
 
   // Emulator correlation strength
   VectorSpace<V, M> * emulatorCorrelationSpace;
-
   V * emulatorCorrelationMin;
   V * emulatorCorrelationMax;
-
   BoxSubset<V, M> * emulatorCorrelationDomain;
 
   // Discrepancy precision
   V * discrepancyPrecisionMin;
   V * discrepancyPrecisionMax;
-
   BoxSubset<V, M> * discrepancyPrecisionDomain;
 
   // Discrepancy correlation strength
   VectorSpace<V, M> * discrepancyCorrelationSpace;
-
   V * discrepancyCorrelationMin;
   V * discrepancyCorrelationMax;
-
   BoxSubset<V, M> * discrepancyCorrelationDomain;
+
+  // Emulator data precision
+  V * emulatorDataPrecisionMin;
+  V * emulatorDataPrecisionMax;
+  BoxSubset<V, M> * emulatorDataPrecisionDomain;
 
   // Now form full prior
   VectorSpace<V, M> * totalSpace;
@@ -339,6 +339,7 @@ public:
   BetaVectorRV<V, M> * m_emulatorCorrelationStrength;  // (dim scenariosspace + dim parameterspace)
   GammaVectorRV<V, M> * m_discrepancyPrecision;  // (scalar) shape-rate
   BetaVectorRV<V, M> * m_discrepancyCorrelationStrength;  // (dim scenariospace)
+  GammaVectorRV<V, M> * m_emulatorDataPrecision;  // (scalar) shape-rate
   ConcatenatedVectorRV<V, M> * m_totalPrior;  // prior for joint parameters and hyperparameters
 
   V * m_emulatorPrecisionShapeVec;
@@ -349,13 +350,14 @@ public:
   V * m_discrepancyPrecisionScaleVec;
   V * m_discrepancyCorrelationStrengthAlphaVec;
   V * m_discrepancyCorrelationStrengthBetaVec;
+  V * m_emulatorDataPrecisionShapeVec;
+  V * m_emulatorDataPrecisionScaleVec;
 
   // The gaussian process object to build
   GaussianProcessEmulator<V, M> * gaussianProcess;
   bool m_constructedGP;
 
 private:
-
   GaussianProcessEmulatorOptions * m_opts;
 
 };

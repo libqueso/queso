@@ -33,6 +33,8 @@
 #define UQ_GP_DISCREPANCY_PRECISION_SCALE_ODV 1e4
 #define UQ_GP_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV 1.0
 #define UQ_GP_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV 0.1
+#define UQ_GP_EMULATOR_DATA_PRECISION_SHAPE_ODV 3.0
+#define UQ_GP_EMULATOR_DATA_PRECISION_SCALE_ODV 333.333
 
 namespace QUESO {
 
@@ -51,7 +53,9 @@ GaussianProcessEmulatorOptions::GaussianProcessEmulatorOptions(
   m_option_discrepancyPrecisionShape(m_prefix + "discrepancy_precision_shape"),
   m_option_discrepancyPrecisionScale(m_prefix + "discrepancy_precision_scale"),
   m_option_discrepancyCorrelationStrengthAlpha(m_prefix + "discrepancy_correlation_strength_alpha"),
-  m_option_discrepancyCorrelationStrengthBeta(m_prefix + "discrepancy_correlation_strength_beta")
+  m_option_discrepancyCorrelationStrengthBeta(m_prefix + "discrepancy_correlation_strength_beta"),
+  m_option_emulatorDataPrecisionShape(m_prefix + "emulator_data_precision_shape"),
+  m_option_emulatorDataPrecisionScale(m_prefix + "emulator_data_precision_scale")
 {
   if (m_env.optionsInputFileName() == "") {
     std::cerr << "Missing input file is required" << std::endl;
@@ -99,7 +103,9 @@ GaussianProcessEmulatorOptions::defineMyOptions(po::options_description& options
     (m_option_discrepancyPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for discrepancy precision")
     (m_option_discrepancyPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for discrepancy precision")
     (m_option_discrepancyCorrelationStrengthAlpha.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV), "alpha hyperprior (Beta) parameter for discrepancy correlation strength")
-    (m_option_discrepancyCorrelationStrengthBeta.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV), "beta hyperprior (Beta) parameter for discrepancy correlation strength");
+    (m_option_discrepancyCorrelationStrengthBeta.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV), "beta hyperprior (Beta) parameter for discrepancy correlation strength")
+    (m_option_emulatorDataPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GP_EMULATOR_DATA_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for emulator data precision")
+    (m_option_emulatorDataPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GP_EMULATOR_DATA_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for emulator data precision");
 }
 
 void
@@ -143,6 +149,14 @@ GaussianProcessEmulatorOptions::getMyOptionValues(po::options_description& optio
   if (m_env.allOptionsMap().count(m_option_discrepancyCorrelationStrengthBeta)) {
     this->m_discrepancyCorrelationStrengthBeta = ((const po::variable_value &) m_env.allOptionsMap()[m_option_discrepancyCorrelationStrengthBeta]).as<double>();
   }
+
+  if (m_env.allOptionsMap().count(m_option_emulatorDataPrecisionShape)) {
+    this->m_emulatorDataPrecisionShape = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorDataPrecisionShape]).as<double>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_emulatorDataPrecisionScale)) {
+    this->m_emulatorDataPrecisionScale = ((const po::variable_value &) m_env.allOptionsMap()[m_option_emulatorDataPrecisionScale]).as<double>();
+  }
 }
 
 void
@@ -156,6 +170,8 @@ GaussianProcessEmulatorOptions::print(std::ostream& os) const
      << "\n" << m_option_discrepancyPrecisionScale << " = " << this->m_discrepancyPrecisionScale
      << "\n" << m_option_discrepancyCorrelationStrengthAlpha << " = " << this->m_discrepancyCorrelationStrengthAlpha
      << "\n" << m_option_discrepancyCorrelationStrengthBeta << " = " << this->m_discrepancyCorrelationStrengthBeta
+     << "\n" << m_option_emulatorDataPrecisionShape << " = " << this->m_emulatorDataPrecisionShape
+     << "\n" << m_option_emulatorDataPrecisionScale << " = " << this->m_emulatorDataPrecisionScale
      << std::endl;
 }
 

@@ -81,6 +81,12 @@ public:
   //! Returns the QUESO environment
   const BaseEnvironment& env() const;
 
+  //! The shape parameter for the Gamma hyperprior for the emulator data precision
+  double m_emulatorDataPrecisionShape;
+
+  //! The scale parameter for the Gamma hyperprior for the emulator data precision
+  double m_emulatorDataPrecisionScale;
+
   friend std::ostream & operator<<(std::ostream& os,
       const GaussianProcessEmulatorOptions & obj)
   {
@@ -104,6 +110,8 @@ private:
   std::string m_option_discrepancyPrecisionScale;
   std::string m_option_discrepancyCorrelationStrengthAlpha;
   std::string m_option_discrepancyCorrelationStrengthBeta;
+  std::string m_option_emulatorDataPrecisionShape;
+  std::string m_option_emulatorDataPrecisionScale;
 };
 
 }  // End namespace QUESO

@@ -90,6 +90,7 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
   // discrepancy_corr_strength(1)
   // ...
   // discrepancy_corr_strength(dimScenario)
+  // emulator_data_precision(1)
 
   // Construct covariance matrix
   unsigned int totalDim = this->m_numExperiments + this->m_numSimulations;
@@ -194,8 +195,14 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
       }
     }
 
-    // Add small component to diagonal to make stuff +ve def
-    covMatrix(i, i) += 0.0000001;
+    // Add small white noise component to diagonal to make stuff +ve def
+    unsigned int dimSum = 4 +
+                          dimParameter +
+                          dimParameter +
+                          dimScenario +
+                          dimScenario;  // yum
+    double nugget = 1.0 / domainVector[dimSum-1];
+    covMatrix(i, i) += nugget;
   }
 
   // Form residual = D - mean
@@ -263,7 +270,7 @@ GaussianProcessFactory<V, M>::GaussianProcessFactory(
     m_experimentOutputs(numExperiments, (V *)NULL),
     m_numSimulationAdds(0),
     m_numExperimentAdds(0),
-    priors(6, NULL)
+    priors(7, NULL)
 {
   // DM: Not sure if the logic in these 3 if-blocks is correct
   if ((opts == NULL) && (this->m_env.optionsInputFileName() == "")) {
@@ -600,6 +607,8 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
   double discrepancyPrecisionScale = this->m_opts->m_discrepancyPrecisionScale;
   double discrepancyCorrelationStrengthAlpha = this->m_opts->m_discrepancyCorrelationStrengthAlpha;
   double discrepancyCorrelationStrengthBeta = this->m_opts->m_discrepancyCorrelationStrengthBeta;
+  double emulatorDataPrecisionShape = this->m_opts->m_emulatorDataPrecisionShape;
+  double emulatorDataPrecisionScale = this->m_opts->m_emulatorDataPrecisionScale;
 
   this->oneDSpace = new VectorSpace<V, M>(this->m_env, "", 1, NULL);
 
@@ -725,8 +734,29 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
       *(this->m_discrepancyCorrelationStrengthAlphaVec),
       *(this->m_discrepancyCorrelationStrengthBetaVec));
 
+  // Emulator data precision
+  this->emulatorDataPrecisionMin = new V(this->oneDSpace->zeroVector());
+  this->emulatorDataPrecisionMax = new V(this->oneDSpace->zeroVector());
+  this->m_emulatorDataPrecisionShapeVec = new V(this->oneDSpace->zeroVector());
+  this->m_emulatorDataPrecisionScaleVec = new V(this->oneDSpace->zeroVector());
+  this->emulatorDataPrecisionMin->cwSet(60.0);
+  this->emulatorDataPrecisionMax->cwSet(1e5);
+  this->m_emulatorDataPrecisionShapeVec->cwSet(emulatorDataPrecisionShape);
+  this->m_emulatorDataPrecisionScaleVec->cwSet(emulatorDataPrecisionScale);
+
+  this->emulatorDataPrecisionDomain = new BoxSubset<V, M>(
+      "",
+      *(this->oneDSpace),
+      *(this->emulatorDataPrecisionMin),
+      *(this->emulatorDataPrecisionMax));
+
+  this->m_emulatorDataPrecision = new GammaVectorRV<V, M>("",
+      *(this->emulatorDataPrecisionDomain),
+      *(this->m_emulatorDataPrecisionShapeVec),
+      *(this->m_emulatorDataPrecisionScaleVec));
+
   // Now form full prior
-  unsigned int dimSum = 3 +
+  unsigned int dimSum = 4 +
                         dimParameter +
                         dimParameter +
                         dimScenario +
@@ -748,6 +778,8 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
   (*(this->totalMaxs))[dimParameter] = INFINITY;  // Max mean
   (*(this->totalMins))[dimParameter+1] = 0.3;  // Min emulator precision
   (*(this->totalMaxs))[dimParameter+1] = INFINITY;  // Max emulator precision
+  (*(this->totalMins))[dimSum-1] = 60.0;  // Min emulator data precision
+  (*(this->totalMaxs))[dimSum-1] = 1e5;  // Max emulator data precision
 
   // Min discrepancy precision
   (*(this->totalMins))[dimScenario+dimParameter+dimParameter+2] = 0;
@@ -766,6 +798,7 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
   this->priors[3] = this->m_emulatorCorrelationStrength;
   this->priors[4] = this->m_discrepancyPrecision;
   this->priors[5] = this->m_discrepancyCorrelationStrength;
+  this->priors[6] = this->m_emulatorDataPrecision;
 
   // Finally
   this->m_totalPrior = new ConcatenatedVectorRV<V, M>(

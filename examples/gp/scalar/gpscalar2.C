@@ -228,6 +228,7 @@ int main(int argc, char ** argv) {
   paramInitials[12]  = 0.97;
   paramInitials[13]  = 10.0;
   paramInitials[14]  = 0.97;
+  paramInitials[15]  = 8000.0;
 
   QUESO::GslMatrix proposalCovMatrix(
       gpFactory.prior().imageSet().vectorSpace().zeroVector());
@@ -251,9 +252,10 @@ int main(int argc, char ** argv) {
   proposalCovMatrix(12, 12) = 0.0572 / scale;  // emulator corr str
   proposalCovMatrix(13, 13) = 1.3417e+05 / scale;  // discrepancy precision
   proposalCovMatrix(14, 14) = 0.3461 / scale;  // discrepancy corr str
+  proposalCovMatrix(15, 15) = 495.3 / scale;  // emulator data precision
 
   // Square to get variances
-  for (unsigned int i = 0; i < 15; i++) {
+  for (unsigned int i = 0; i < 16; i++) {
     proposalCovMatrix(i, i) = proposalCovMatrix(i, i) * proposalCovMatrix(i, i);
   }
 
