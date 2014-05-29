@@ -18,6 +18,7 @@ double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
   double k_tmasl, k_tmoml, k_tnrgl, k_xkwlx, k_cd, pressure;
   char line[size];
 
+  // The user should know what the bounds on the data are
   double mins[] = {0.95, 0.9, 0.9, 0.9, 0.9};
   double maxs[] = {1.05, 1.1, 1.1, 1.1, 1.1};
 
@@ -48,6 +49,7 @@ double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
 
   double stdsim = m2sim / (double)(i - 1);
 
+  // The user is required to standardise the experimental and simulation data
   for (unsigned int j = 0; j < i; j++) {
     (*(simulationOutputs[j]))[0] -= meansim;
     (*(simulationOutputs[j]))[0] /= stdsim;
@@ -63,6 +65,7 @@ double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
     i++;
   }
 
+  // Also required to standardise experimental data too
   for (unsigned int j = 0; j < i; j++) {
     (*(experimentOutputs[j]))[0] -= meansim;
     (*(experimentOutputs[j]))[0] /= stdsim;
@@ -70,6 +73,9 @@ double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
 
   fclose(fp_in);
 
+  // Returning standard deviation of data (simulation data is treated as
+  // plentiful and the standard deviation of this data is treated as the 'true'
+  // standard deviation of the data.  This can be argued.)
   return stdsim;
 }
 
@@ -95,6 +101,8 @@ int main(int argc, char ** argv) {
   //   descriptors   'k_tmasl' 'k_xkle' 'k_xkwew' 'k_xkwlx' 'k_cd'
   //   upper_bounds   1.05      1.1      1.1       1.1       1.1
   //   lower_bounds   0.95      0.9      0.9       0.9       0.9
+  //
+  // These bounds are dealt with when reading in the data
   QUESO::GslVector paramMins(paramSpace.zeroVector());
   QUESO::GslVector paramMaxs(paramSpace.zeroVector());
 
@@ -123,16 +131,16 @@ int main(int argc, char ** argv) {
 
   // Step 5: Instantiate the Gaussian process emulator object
   //
-  // Regarding simulation scenario input values, QUESO should standardise them
-  // so that they exist inside a hypercube.
-  //
-  // Regarding simulation output data, QUESO should transform it so that the
-  // mean is zero and the variance is one.
-  //
-  // Regarding experimental scenario input values, QUESO should standardize
+  // Regarding simulation scenario input values, the user should standardise
   // them so that they exist inside a hypercube.
   //
-  // Regarding experimental data, QUESO should transformed it so that it has
+  // Regarding simulation output data, the user should transform it so that the
+  // mean is zero and the variance is one.
+  //
+  // Regarding experimental scenario input values, the user should standardize
+  // them so that they exist inside a hypercube.
+  //
+  // Regarding experimental data, the user should transformed it so that it has
   // zero mean and variance one.
 
   // GaussianProcessEmulator stores all the information about our simulation
@@ -187,6 +195,9 @@ int main(int argc, char ** argv) {
     experimentVecs[i] = new QUESO::GslVector(experimentSpace.zeroVector());
   }
 
+  // Read in data and store the standard deviation of the simulation data.  We
+  // will need the standard deviation when we pass the experiment error
+  // covariance matrix to QUESO.
   double stdsim = readData(simulationScenarios,
                            paramVecs,
                            outputVecs,
@@ -194,6 +205,7 @@ int main(int argc, char ** argv) {
                            experimentVecs);
 
   for (unsigned int i = 0; i < numExperiments; i++) {
+    // Passing in error of experiments (standardised).
     experimentMat(i, i) = (0.025 / stdsim) * (0.025 / stdsim);
   }
 
@@ -213,29 +225,29 @@ int main(int argc, char ** argv) {
   // Initial condition of the chain
   // Have to set each of these by hand, *and* the sampler is sensitive to these
   // values
-  paramInitials[0] = 0.5;
-  paramInitials[1] = 0.5;
-  paramInitials[2] = 0.5;
-  paramInitials[3] = 0.5;
-  paramInitials[4] = 0.5;
-  paramInitials[5]  = 0.0;  // Emulator mean
-  paramInitials[6]  = 1.0;
-  paramInitials[7]  = 0.97;
-  paramInitials[8]  = 0.97;
-  paramInitials[9]  = 0.97;
-  paramInitials[10]  = 0.97;
-  paramInitials[11]  = 0.97;
-  paramInitials[12]  = 0.97;
-  paramInitials[13]  = 10.0;
-  paramInitials[14]  = 0.97;
-  paramInitials[15]  = 8000.0;
+  paramInitials[0] = 0.5; // param 1
+  paramInitials[1] = 0.5; // param 2
+  paramInitials[2] = 0.5; // param 3
+  paramInitials[3] = 0.5; // param 4
+  paramInitials[4] = 0.5; // param 5
+  paramInitials[5]  = 0.0;  // not used.  emulator mean
+  paramInitials[6]  = 1.0; // emulator corr str
+  paramInitials[7]  = 0.97; // emulator corr str
+  paramInitials[8]  = 0.97; // emulator corr str
+  paramInitials[9]  = 0.97; // emulator corr str
+  paramInitials[10]  = 0.97; // emulator corr str
+  paramInitials[11]  = 0.97; // emulator corr str
+  paramInitials[12]  = 0.97; // emulator corr str
+  paramInitials[13]  = 10.0; // discrepancy precision
+  paramInitials[14]  = 0.97; // discrepancy corr str
+  paramInitials[15]  = 8000.0; // emulator data precision
 
   QUESO::GslMatrix proposalCovMatrix(
       gpFactory.prior().imageSet().vectorSpace().zeroVector());
 
-  // Setting the proposal covariance matrix by hand.
-  // This requires great forethough, and is to be considered a massive hack.
-  // These values were taken from the gpmsa matlab code and fiddled with.
+  // Setting the proposal covariance matrix by hand.  This requires great
+  // forethough, and can generally be referred to as a massive hack.  These
+  // values were taken from the gpmsa matlab code and fiddled with.
   double scale = 600.0;
   proposalCovMatrix(0, 0)   = 3.1646 / 10.0;  // param 1
   proposalCovMatrix(1, 1)   = 3.1341 / 10.0;  // param 2
