@@ -375,17 +375,6 @@ gpscalar_CPPFLAGS = -I$(top_srcdir)/examples/gp/scalar/src $(QUESO_CPPFLAGS)
 dist_gpscalar_DATA =
 dist_gpscalar_DATA += ${gpscalar_SOURCES}
 
-
-gpscalar2dir = $(prefix)/examples/gp/scalar
-
-gpscalar2_PROGRAMS = gpscalar2
-gpscalar2_SOURCES = $(top_srcdir)/examples/gp/scalar/gpscalar2.C
-gpscalar2_LDADD = $(top_builddir)/src/libqueso.la
-gpscalar2_CPPFLAGS = -I$(top_srcdir)/examples/gp/scalar/src $(QUESO_CPPFLAGS)
-
-dist_gpscalar2_DATA =
-dist_gpscalar2_DATA += ${gpscalar2_SOURCES}
-
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif
