@@ -45,6 +45,8 @@ examples/infinite_dim/parallel_inverse_options
 examples/inverse_problem
 examples/operator
 examples/parallel_inverse_problem
+examples/gpscalar
+examples/gpscalar2
 
 src/core/inc/queso.h
 src/libqueso.la
