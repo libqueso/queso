@@ -362,7 +362,19 @@ dist_hysteretic_gsl_DATA += $(hysteretic_gsl_DATA)
 dist_hysteretic_gsl_DATA += ${hysteretic_gsl_HEADERS}
 dist_hysteretic_gsl_DATA += ${hysteretic_gsl_SOURCES}
 
-####################										 
+##################
+# GPMSA examples #
+##################
+gpmsa_scalardir = $(prefix)/examples/gp/scalar
+
+gpmsa_scalar_PROGRAMS = gpmsa_scalar
+gpmsa_scalar_SOURCES = $(top_srcdir)/examples/gp/scalar/gpmsa_scalar.C
+gpmsa_scalar_LDADD = $(top_builddir)/src/libqueso.la
+gpmsa_scalar_CPPFLAGS = -I$(top_srcdir)/examples/gp/scalar/src $(QUESO_CPPFLAGS)
+
+dist_gpmsa_scalar_DATA =
+dist_gpmsa_scalar_DATA += ${gpmsa_scalar_SOURCES}
+
 if CODE_COVERAGE_ENABLED
   CLEANFILES = *.gcda *.gcno
 endif

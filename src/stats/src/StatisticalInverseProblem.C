@@ -25,6 +25,7 @@
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/GPMSA.h>
 
 namespace QUESO {
 
@@ -83,6 +84,66 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
                       "'priorRv' and 'likelihoodFunction' are related to vector spaces of different dimensions");
 
   UQ_FATAL_TEST_MACRO(priorRv.imageSet().vectorSpace().dimLocal() != postRv.imageSet().vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "StatisticalInverseProblem<P_V,P_M>::constructor()",
+                      "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving StatisticalInverseProblem<P_V,P_M>::constructor()"
+                            << ": prefix = " << m_optionsObj->m_prefix
+                            << std::endl;
+  }
+
+  return;
+}
+
+template <class P_V,class P_M>
+StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
+    const char * prefix,
+    const SipOptionsValues * alternativeOptionsValues,
+    const GPMSAFactory<P_V, P_M> & gpmsaFactory,
+    GenericVectorRV <P_V,P_M> & postRv)
+  :
+  m_env                     (gpmsaFactory.m_totalPrior->env()),
+  m_priorRv                 (*(gpmsaFactory.m_totalPrior)),
+  m_likelihoodFunction      (gpmsaFactory.getGPMSAEmulator()),
+  m_postRv                  (postRv),
+  m_solutionDomain          (NULL),
+  m_solutionPdf             (NULL),
+  m_subSolutionMdf          (NULL),
+  m_subSolutionCdf          (NULL),
+  m_solutionRealizer        (NULL),
+  m_mhSeqGenerator          (NULL),
+  m_mlSampler               (NULL),
+  m_chain                   (NULL),
+  m_logLikelihoodValues     (NULL),
+  m_logTargetValues         (NULL),
+  m_alternativeOptionsValues(),
+  m_optionsObj              (NULL)
+{
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering StatisticalInverseProblem<P_V,P_M>::constructor()"
+                            << ": prefix = " << prefix
+                            << ", alternativeOptionsValues = " << alternativeOptionsValues
+                            << ", m_env.optionsInputFileName() = " << m_env.optionsInputFileName()
+                            << std::endl;
+  }
+
+  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
+  if (m_env.optionsInputFileName() == "") {
+    m_optionsObj = new StatisticalInverseProblemOptions(m_env,prefix,m_alternativeOptionsValues);
+  }
+  else {
+    m_optionsObj = new StatisticalInverseProblemOptions(m_env,prefix);
+    m_optionsObj->scanOptionsValues();
+  }
+
+  UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != m_likelihoodFunction.domainSet().vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "StatisticalInverseProblem<P_V,P_M>::constructor()",
+                      "'priorRv' and 'likelihoodFunction' are related to vector spaces of different dimensions");
+
+  UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != postRv.imageSet().vectorSpace().dimLocal(),
                       m_env.worldRank(),
                       "StatisticalInverseProblem<P_V,P_M>::constructor()",
                       "'priorRv' and 'postRv' are related to vector spaces of different dimensions");

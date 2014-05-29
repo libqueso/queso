@@ -33,6 +33,7 @@
 #include <queso/SequentialVectorRealizer.h>
 #include <queso/VectorRV.h>
 #include <queso/ScalarFunction.h>
+#include <queso/GPMSA.h>
 
 namespace QUESO {
 
@@ -95,6 +96,24 @@ public:
                                    const BaseScalarFunction<P_V,P_M>& likelihoodFunction, 
                                          GenericVectorRV   <P_V,P_M>& postRv);
   
+  //! Constructor for statistical inverse problems to be sovled using GPMSA
+  /*!
+   * Requirements:
+   *   1) the factory for the GPMSA object
+   *   2) the image set of the vector random variable \c postRv (obtainable via
+   *      GaussianProcessFactory::prior method) should be equal to the full
+   *      prior image set (including all the hyperparameters)
+   *
+   * If the requirements are satisfied, the constructor then reads input
+   * options that begin with the string '\<prefix\>ip_'.  If no options input
+   * file is provided, the construction assigns \c alternativeOptionsValues to
+   * the options of the statistical inverse problem.
+   */
+  StatisticalInverseProblem(const char * prefix,
+                            const SipOptionsValues * alternativeOptionsValues,
+                            const GPMSAFactory<P_V,P_M> & gpmsaFactory,
+                            GenericVectorRV<P_V,P_M> & postRv);
+
   //! Destructor
   ~StatisticalInverseProblem();
   //@}
