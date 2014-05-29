@@ -33,7 +33,7 @@
 #include <queso/SequentialVectorRealizer.h>
 #include <queso/VectorRV.h>
 #include <queso/ScalarFunction.h>
-#include <queso/GaussianProcessEmulator.h>
+#include <queso/GPMSA.h>
 
 namespace QUESO {
 
@@ -111,7 +111,7 @@ public:
    */
   StatisticalInverseProblem(const char * prefix,
                             const SipOptionsValues * alternativeOptionsValues,
-                            const GaussianProcessFactory<P_V,P_M> & gpFactory,
+                            const GPMSAFactory<P_V,P_M> & gpmsaFactory,
                             GenericVectorRV<P_V,P_M> & postRv);
 
   //! Destructor

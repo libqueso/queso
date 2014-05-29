@@ -22,8 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef UQ_GP_HELPER_H
-#define UQ_GP_HELPER_H
+#ifndef UQ_GPMSA_HELPER_H
+#define UQ_GPMSA_HELPER_H
 
 #include <vector>
 
@@ -35,30 +35,30 @@
 #include <queso/GammaVectorRV.h>
 #include <queso/BetaVectorRV.h>
 #include <queso/UniformVectorRV.h>
-#include <queso/GaussianProcessEmulatorOptions.h>
+#include <queso/GPMSAOptions.h>
 
 namespace QUESO {
 
 template <class V, class M>
-class GaussianProcessEmulator : public BaseScalarFunction<V, M>
+class GPMSAEmulator : public BaseScalarFunction<V, M>
 {
 public:
-  GaussianProcessEmulator(const VectorSet<V, M> & domain,
-      const VectorSpace<V, M> & m_scenarioSpace,
-      const VectorSpace<V, M> & m_parameterSpace,
-      const VectorSpace<V, M> & m_simulationOutputSpace,
-      const VectorSpace<V, M> & m_experimentOutputSpace,
-      const unsigned int m_numSimulations,
-      const unsigned int m_numExperiments,
-      const std::vector<V *> & m_simulationScenarios,
-      const std::vector<V *> & m_simulationParameters,
-      const std::vector<V *> & m_simulationOutputs,
-      const std::vector<V *> & m_experimentScenarios,
-      const std::vector<V *> & m_experimentOutputs,
-      const M & m_experimentErrors,
-      const ConcatenatedVectorRV<V, M> & m_totalPrior);
+  GPMSAEmulator(const VectorSet<V, M> & domain,
+                const VectorSpace<V, M> & m_scenarioSpace,
+                const VectorSpace<V, M> & m_parameterSpace,
+                const VectorSpace<V, M> & m_simulationOutputSpace,
+                const VectorSpace<V, M> & m_experimentOutputSpace,
+                const unsigned int m_numSimulations,
+                const unsigned int m_numExperiments,
+                const std::vector<V *> & m_simulationScenarios,
+                const std::vector<V *> & m_simulationParameters,
+                const std::vector<V *> & m_simulationOutputs,
+                const std::vector<V *> & m_experimentScenarios,
+                const std::vector<V *> & m_experimentOutputs,
+                const M & m_experimentErrors,
+                const ConcatenatedVectorRV<V, M> & m_totalPrior);
 
-  virtual ~GaussianProcessEmulator();
+  virtual ~GPMSAEmulator();
 
   virtual double lnValue(const V & domainVector,
                          const V * domainDirection,
@@ -93,23 +93,22 @@ public:
 };
 
 template <class V, class M>
-class GaussianProcessFactory
+class GPMSAFactory
 {
 public:
   //! Constructor
-  GaussianProcessFactory(
-      const BaseEnvironment & env,
-      GaussianProcessEmulatorOptions * opts,
-      const BaseVectorRV<V, M> & parameterPrior,
-      const VectorSpace<V, M> & scenarioSpace,
-      const VectorSpace<V, M> & parameterSpace,
-      const VectorSpace<V, M> & simulationOutputSpace,
-      const VectorSpace<V, M> & experimentOutputSpace,
-      unsigned int numSimulations,
-      unsigned int numExperiments);
+  GPMSAFactory(const BaseEnvironment & env,
+               GPMSAOptions * opts,
+               const BaseVectorRV<V, M> & parameterPrior,
+               const VectorSpace<V, M> & scenarioSpace,
+               const VectorSpace<V, M> & parameterSpace,
+               const VectorSpace<V, M> & simulationOutputSpace,
+               const VectorSpace<V, M> & experimentOutputSpace,
+               unsigned int numSimulations,
+               unsigned int numExperiments);
 
   //! Destructor
-  ~GaussianProcessFactory();
+  ~GPMSAFactory();
 
   //! @name Getters
   //@{
@@ -206,8 +205,8 @@ public:
   //! Return the QUESO environment
   const BaseEnvironment & env() const;
 
-  //! Return the Gaussian process likelihood object
-  const GaussianProcessEmulator<V, M> & getGaussianProcess() const;
+  //! Return the GPMSAEmulator likelihood object
+  const GPMSAEmulator<V, M> & getGPMSAEmulator() const;
 
   //@}
 
@@ -249,7 +248,7 @@ public:
 
   void print(std::ostream& os) const;
   friend std::ostream & operator<<(std::ostream& os,
-                                   const GaussianProcessFactory<V, M> & obj)
+                                   const GPMSAFactory<V, M> & obj)
   {
     obj.print(os);
     return os;
@@ -354,14 +353,14 @@ public:
   V * m_emulatorDataPrecisionScaleVec;
 
   // The gaussian process object to build
-  GaussianProcessEmulator<V, M> * gaussianProcess;
+  GPMSAEmulator<V, M> * gpmsaEmulator;
   bool m_constructedGP;
 
 private:
-  GaussianProcessEmulatorOptions * m_opts;
+  GPMSAOptions * m_opts;
 
 };
 
 }  // End namespace QUESO
 
-#endif // UQ_GP_HELPER_H
+#endif // UQ_GPMSA_HELPER_H

@@ -3,7 +3,7 @@
 #include <queso/UniformVectorRV.h>
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/VectorSet.h>
-#include <queso/GaussianProcessEmulator.h>
+#include <queso/GPMSA.h>
 
 #include <cstdio>
 
@@ -143,19 +143,19 @@ int main(int argc, char ** argv) {
   // Regarding experimental data, the user should transformed it so that it has
   // zero mean and variance one.
 
-  // GaussianProcessEmulator stores all the information about our simulation
+  // GPMSA stores all the information about our simulation
   // data and experimental data.  It also stores default information about the
   // hyperparameter distributions.
-  QUESO::GaussianProcessFactory<QUESO::GslVector, QUESO::GslMatrix>
-    gpFactory(env,
-              NULL,
-              priorRv,
-              configSpace,
-              paramSpace,
-              nEtaSpace,
-              experimentSpace,
-              numSimulations,
-              numExperiments);
+  QUESO::GPMSAFactory<QUESO::GslVector, QUESO::GslMatrix>
+    gpmsaFactory(env,
+                 NULL,
+                 priorRv,
+                 configSpace,
+                 paramSpace,
+                 nEtaSpace,
+                 experimentSpace,
+                 numSimulations,
+                 numExperiments);
 
   // std::vector containing all the points in scenario space where we have
   // simulations
@@ -210,17 +210,17 @@ int main(int argc, char ** argv) {
   }
 
   // Add simulation and experimental data
-  gpFactory.addSimulations(simulationScenarios, paramVecs, outputVecs);
-  gpFactory.addExperiments(experimentScenarios, experimentVecs, &experimentMat);
+  gpmsaFactory.addSimulations(simulationScenarios, paramVecs, outputVecs);
+  gpmsaFactory.addExperiments(experimentScenarios, experimentVecs, &experimentMat);
 
   QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix> postRv(
       "post_",
-      gpFactory.prior().imageSet().vectorSpace());
+      gpmsaFactory.prior().imageSet().vectorSpace());
   QUESO::StatisticalInverseProblem<QUESO::GslVector, QUESO::GslMatrix> ip("",
-      NULL, gpFactory, postRv);
+      NULL, gpmsaFactory, postRv);
 
   QUESO::GslVector paramInitials(
-      gpFactory.prior().imageSet().vectorSpace().zeroVector());
+      gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
 
   // Initial condition of the chain
   // Have to set each of these by hand, *and* the sampler is sensitive to these
@@ -243,7 +243,7 @@ int main(int argc, char ** argv) {
   paramInitials[15]  = 8000.0; // emulator data precision
 
   QUESO::GslMatrix proposalCovMatrix(
-      gpFactory.prior().imageSet().vectorSpace().zeroVector());
+      gpmsaFactory.prior().imageSet().vectorSpace().zeroVector());
 
   // Setting the proposal covariance matrix by hand.  This requires great
   // forethough, and can generally be referred to as a massive hack.  These

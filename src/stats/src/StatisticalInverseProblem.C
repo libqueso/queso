@@ -25,7 +25,7 @@
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
-#include <queso/GaussianProcessEmulator.h>
+#include <queso/GPMSA.h>
 
 namespace QUESO {
 
@@ -101,12 +101,12 @@ template <class P_V,class P_M>
 StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
     const char * prefix,
     const SipOptionsValues * alternativeOptionsValues,
-    const GaussianProcessFactory<P_V, P_M> & gpFactory,
+    const GPMSAFactory<P_V, P_M> & gpmsaFactory,
     GenericVectorRV <P_V,P_M> & postRv)
   :
-  m_env                     (gpFactory.m_totalPrior->env()),
-  m_priorRv                 (*(gpFactory.m_totalPrior)),
-  m_likelihoodFunction      (gpFactory.getGaussianProcess()),
+  m_env                     (gpmsaFactory.m_totalPrior->env()),
+  m_priorRv                 (*(gpmsaFactory.m_totalPrior)),
+  m_likelihoodFunction      (gpmsaFactory.getGPMSAEmulator()),
   m_postRv                  (postRv),
   m_solutionDomain          (NULL),
   m_solutionPdf             (NULL),

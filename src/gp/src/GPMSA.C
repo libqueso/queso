@@ -22,14 +22,14 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/GaussianProcessEmulator.h>
+#include <queso/GPMSA.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
 namespace QUESO {
 
 template <class V, class M>
-GaussianProcessEmulator<V, M>::GaussianProcessEmulator(
+GPMSAEmulator<V, M>::GPMSAEmulator(
     const VectorSet<V, M> & domain,
     const VectorSpace<V, M> & m_scenarioSpace,
     const VectorSpace<V, M> & m_parameterSpace,
@@ -63,14 +63,14 @@ GaussianProcessEmulator<V, M>::GaussianProcessEmulator(
 }
 
 template <class V, class M>
-GaussianProcessEmulator<V, M>::~GaussianProcessEmulator()
+GPMSAEmulator<V, M>::~GPMSAEmulator()
 {
   // Do nothing?
 }
 
 template <class V, class M>
 double
-GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
+GPMSAEmulator<V, M>::lnValue(const V & domainVector,
                                        const V * domainDirection,
                                        V * gradVector,
                                        M * hessianMatrix,
@@ -233,7 +233,7 @@ GaussianProcessEmulator<V, M>::lnValue(const V & domainVector,
 
 template <class V, class M>
 double
-GaussianProcessEmulator<V, M>::actualValue(const V & domainVector,
+GPMSAEmulator<V, M>::actualValue(const V & domainVector,
                                            const V * domainDirection,
                                            V * gradVector,
                                            M * hessianMatrix,
@@ -244,9 +244,9 @@ GaussianProcessEmulator<V, M>::actualValue(const V & domainVector,
 }
 
 template <class V, class M>
-GaussianProcessFactory<V, M>::GaussianProcessFactory(
+GPMSAFactory<V, M>::GPMSAFactory(
     const BaseEnvironment & env,
-    GaussianProcessEmulatorOptions * opts,
+    GPMSAOptions * opts,
     const BaseVectorRV<V, M> & parameterPrior,
     const VectorSpace<V, M> & scenarioSpace,
     const VectorSpace<V, M> & parameterSpace,
@@ -283,7 +283,7 @@ GaussianProcessFactory<V, M>::GaussianProcessFactory(
   }
   else {
     // Create a default one
-    this->m_opts = new GaussianProcessEmulatorOptions(this->m_env, "");
+    this->m_opts = new GPMSAOptions(this->m_env, "");
   }
 
   if (this->m_env.optionsInputFileName() != "") {
@@ -295,66 +295,66 @@ GaussianProcessFactory<V, M>::GaussianProcessFactory(
 }
 
 template <class V, class M>
-GaussianProcessFactory<V, M>::~GaussianProcessFactory()
+GPMSAFactory<V, M>::~GPMSAFactory()
 {
   // Do nothing
 }
 
 template <class V, class M>
 unsigned int
-GaussianProcessFactory<V, M>::numSimulations() const
+GPMSAFactory<V, M>::numSimulations() const
 {
   return this->m_numSimulations;
 }
 
 template <class V, class M>
 unsigned int
-GaussianProcessFactory<V, M>::numExperiments() const
+GPMSAFactory<V, M>::numExperiments() const
 {
   return this->m_numExperiments;
 }
 
 template <class V, class M>
 const VectorSpace<V, M> &
-GaussianProcessFactory<V, M>::scenarioSpace() const
+GPMSAFactory<V, M>::scenarioSpace() const
 {
   return this->m_scenarioSpace;
 }
 
 template <class V, class M>
 const VectorSpace<V, M> &
-GaussianProcessFactory<V, M>::parameterSpace() const
+GPMSAFactory<V, M>::parameterSpace() const
 {
   return this->m_parameterSpace;
 }
  
 template <class V, class M>
 const VectorSpace<V, M> &
-GaussianProcessFactory<V, M>::simulationOutputSpace() const
+GPMSAFactory<V, M>::simulationOutputSpace() const
 {
   return this->m_simulationOutputSpace;
 }
 
 template <class V, class M>
 const VectorSpace<V, M> &
-GaussianProcessFactory<V, M>::experimentOutputSpace() const
+GPMSAFactory<V, M>::experimentOutputSpace() const
 {
   return this->m_experimentOutputSpace;
 }
 
 template <class V, class M>
 const V &
-GaussianProcessFactory<V, M>::simulationScenario(
+GPMSAFactory<V, M>::simulationScenario(
     unsigned int simulationId) const
 {
   UQ_FATAL_TEST_MACRO(simulationId >= m_simulationScenarios.size(),
                       m_env.worldRank(),
-                      "GaussianProcessFactory<V, M>::scenarioVec_original()",
+                      "GPMSAFactory<V, M>::scenarioVec_original()",
                       "simulationId is too large");
 
   UQ_FATAL_TEST_MACRO(m_simulationScenarios[simulationId] == NULL,
                       m_env.worldRank(),
-                      "GaussianProcessFactory<V, M>::scenarioVec_original()",
+                      "GPMSAFactory<V, M>::scenarioVec_original()",
                       "vector is NULL");
 
   return *(this->m_simulationScenarios[simulationId]);
@@ -362,24 +362,24 @@ GaussianProcessFactory<V, M>::simulationScenario(
 
 template <class V, class M>
 const std::vector<V *> &
-GaussianProcessFactory<V, M>::simulationScenarios() const
+GPMSAFactory<V, M>::simulationScenarios() const
 {
   return this->m_simulationScenarios;
 }
 
 template <class V, class M>
 const V &
-GaussianProcessFactory<V, M>::simulationParameter(
+GPMSAFactory<V, M>::simulationParameter(
     unsigned int simulationId) const
 {
   UQ_FATAL_TEST_MACRO(simulationId >= m_simulationParameters.size(),
                       m_env.worldRank(),
-                      "GaussianProcessFactory<V, M>::parameterVec_original()",
+                      "GPMSAFactory<V, M>::parameterVec_original()",
                       "simulationId is too large");
 
   UQ_FATAL_TEST_MACRO(m_simulationParameters[simulationId] == NULL,
                       m_env.worldRank(),
-                      "GaussianProcessFactory<V, M>::parameterVec_original()",
+                      "GPMSAFactory<V, M>::parameterVec_original()",
                       "vector is NULL");
 
   return *(this->m_simulationParameters[simulationId]);
@@ -387,24 +387,24 @@ GaussianProcessFactory<V, M>::simulationParameter(
 
 template <class V, class M>
 const std::vector<V *> &
-GaussianProcessFactory<V, M>::simulationParameters() const
+GPMSAFactory<V, M>::simulationParameters() const
 {
   return this->m_simulationParameters;
 }
 
 template <class V, class M>
 const V &
-GaussianProcessFactory<V, M>::simulationOutput(
+GPMSAFactory<V, M>::simulationOutput(
     unsigned int simulationId) const
 {
   UQ_FATAL_TEST_MACRO(simulationId >= m_simulationOutputs.size(),
                       m_env.worldRank(),
-                      "GaussianProcessFactory<V, M>::outputVec_original()",
+                      "GPMSAFactory<V, M>::outputVec_original()",
                       "simulationId is too large");
 
   UQ_FATAL_TEST_MACRO(m_simulationOutputs[simulationId] == NULL,
                       m_env.worldRank(),
-                      "GaussianProcessFactory<V, M>::outputVec_original()",
+                      "GPMSAFactory<V, M>::outputVec_original()",
                       "vector is NULL");
 
   return *(this->m_simulationOutputs[simulationId]);
@@ -412,24 +412,24 @@ GaussianProcessFactory<V, M>::simulationOutput(
 
 template <class V, class M>
 const std::vector<V *> &
-GaussianProcessFactory<V, M>::simulationOutputs() const
+GPMSAFactory<V, M>::simulationOutputs() const
 {
   return this->m_simulationOutputs;
 }
 
 template <class V, class M>
 const V &
-GaussianProcessFactory<V, M>::experimentScenario(
+GPMSAFactory<V, M>::experimentScenario(
     unsigned int experimentId) const
 {
   UQ_FATAL_TEST_MACRO(experimentId >= (this->m_experimentScenarios).size(),
                       m_env.worldRank(),
-                      "GaussianProcessFactory<V, M>::experimentScenario()",
+                      "GPMSAFactory<V, M>::experimentScenario()",
                       "experimentId is too large");
 
   UQ_FATAL_TEST_MACRO(this->m_experimentScenarios[experimentId] == NULL,
                       m_env.worldRank(),
-                      "GaussianProcessFactory<V, M>::experimentScenario()",
+                      "GPMSAFactory<V, M>::experimentScenario()",
                       "vector is NULL");
 
   return *(this->m_experimentScenarios[experimentId]);
@@ -437,24 +437,24 @@ GaussianProcessFactory<V, M>::experimentScenario(
 
 template <class V, class M>
 const std::vector<V *> &
-GaussianProcessFactory<V, M>::experimentScenarios() const
+GPMSAFactory<V, M>::experimentScenarios() const
 {
   return this->m_experimentScenarios;
 }
 
 template <class V, class M>
 const V &
-GaussianProcessFactory<V, M>::experimentOutput(
+GPMSAFactory<V, M>::experimentOutput(
     unsigned int experimentId) const
 {
   UQ_FATAL_TEST_MACRO(experimentId >= (this->m_experimentOutputs).size(),
                       m_env.worldRank(),
-                      "GaussianProcessFactory<V, M>::experimentOutput()",
+                      "GPMSAFactory<V, M>::experimentOutput()",
                       "experimentId is too large");
 
   UQ_FATAL_TEST_MACRO(this->m_experimentOutputs[experimentId] == NULL,
                       m_env.worldRank(),
-                      "GaussianProcessFactory<V, M>::experimentOutput()",
+                      "GPMSAFactory<V, M>::experimentOutput()",
                       "vector is NULL");
 
   return *(this->m_experimentOutputs[experimentId]);
@@ -462,41 +462,41 @@ GaussianProcessFactory<V, M>::experimentOutput(
 
 template <class V, class M>
 const std::vector<V *> &
-GaussianProcessFactory<V, M>::experimentOutputs() const
+GPMSAFactory<V, M>::experimentOutputs() const
 {
   return this->m_experimentOutputs;
 }
 
 template <class V, class M>
 const M &
-GaussianProcessFactory<V, M>::experimentErrors() const
+GPMSAFactory<V, M>::experimentErrors() const
 {
   return *(this->m_experimentErrors);
 }
 
 template <class V, class M>
 const BaseEnvironment &
-GaussianProcessFactory<V, M>::env() const
+GPMSAFactory<V, M>::env() const
 {
   return this->m_env;
 }
 
 template <class V, class M>
-const GaussianProcessEmulator<V, M> &
-GaussianProcessFactory<V, M>::getGaussianProcess() const
+const GPMSAEmulator<V, M> &
+GPMSAFactory<V, M>::getGPMSAEmulator() const
 {
-  return *(this->gaussianProcess);
+  return *(this->gpmsaEmulator);
 }
 
 template <class V, class M>
 void
-GaussianProcessFactory<V, M>::addSimulation(V & simulationScenario,
+GPMSAFactory<V, M>::addSimulation(V & simulationScenario,
                                             V & simulationParameter,
                                             V & simulationOutput)
 {
   UQ_FATAL_TEST_MACRO(this->m_numSimulationAdds >= this->m_numSimulations,
                       this->m_env.worldRank(),
-                      "GaussianProcessFactory<V, M>::addSimulation()",
+                      "GPMSAFactory<V, M>::addSimulation()",
                       "too many simulation adds...");
 
   this->m_simulationScenarios[this->m_numSimulationAdds] = &simulationScenario;
@@ -508,7 +508,7 @@ GaussianProcessFactory<V, M>::addSimulation(V & simulationScenario,
       (this->m_numExperimentAdds == this->m_numExperiments) &&
       (this->m_constructedGP == false)) {
     this->m_constructedGP = true;
-    this->gaussianProcess = new GaussianProcessEmulator<V, M>(
+    this->gpmsaEmulator = new GPMSAEmulator<V, M>(
         this->prior().imageSet(),
         this->m_scenarioSpace,
         this->m_parameterSpace,
@@ -528,7 +528,7 @@ GaussianProcessFactory<V, M>::addSimulation(V & simulationScenario,
 
 template <class V, class M>
 void
-GaussianProcessFactory<V, M>::addSimulations(
+GPMSAFactory<V, M>::addSimulations(
     const std::vector<V *> & simulationScenarios,
     const std::vector<V *> & simulationParameters,
     const std::vector<V *> & simulationOutputs)
@@ -541,14 +541,14 @@ GaussianProcessFactory<V, M>::addSimulations(
 
 template <class V, class M>
 void
-GaussianProcessFactory<V, M>::addExperiments(
+GPMSAFactory<V, M>::addExperiments(
     const std::vector<V *> & experimentScenarios,
     const std::vector<V *> & experimentOutputs,
     const M * experimentErrors)
 {
   UQ_FATAL_TEST_MACRO(experimentScenarios.size() > this->m_numExperiments,
                       this->m_env.worldRank(),
-                      "GaussianProcessFactory<V, M>::addExperiment()",
+                      "GPMSAFactory<V, M>::addExperiment()",
                       "too many experiments...");
 
   for (unsigned int i = 0; i < this->m_experimentScenarios.size(); i++) {
@@ -562,7 +562,7 @@ GaussianProcessFactory<V, M>::addExperiments(
       (this->m_numExperimentAdds == this->m_numExperiments) &&
       (this->m_constructedGP == false)) {
     this->m_constructedGP = true;
-    this->gaussianProcess = new GaussianProcessEmulator<V, M>(
+    this->gpmsaEmulator = new GPMSAEmulator<V, M>(
         this->prior().imageSet(),
         this->m_scenarioSpace,
         this->m_parameterSpace,
@@ -582,14 +582,14 @@ GaussianProcessFactory<V, M>::addExperiments(
 
 template <class V, class M>
 const ConcatenatedVectorRV<V, M> &
-GaussianProcessFactory<V, M>::prior() const
+GPMSAFactory<V, M>::prior() const
 {
   return *(this->m_totalPrior);
 }
 
 template <class V, class M>
 void
-GaussianProcessFactory<V, M>::print(std::ostream& os) const
+GPMSAFactory<V, M>::print(std::ostream& os) const
 {
   // Do nothing
 }
@@ -597,7 +597,7 @@ GaussianProcessFactory<V, M>::print(std::ostream& os) const
 // Private methods follow
 template <class V, class M>
 void
-GaussianProcessFactory<V, M>::setUpHyperpriors()
+GPMSAFactory<V, M>::setUpHyperpriors()
 {
   double emulatorPrecisionShape = this->m_opts->m_emulatorPrecisionShape;
   double emulatorPrecisionScale = this->m_opts->m_emulatorPrecisionScale;
@@ -809,4 +809,4 @@ GaussianProcessFactory<V, M>::setUpHyperpriors()
 
 }  // End namespace QUESO
 
-template class QUESO::GaussianProcessFactory<QUESO::GslVector, QUESO::GslMatrix>;
+template class QUESO::GPMSAFactory<QUESO::GslVector, QUESO::GslMatrix>;

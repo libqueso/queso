@@ -47,13 +47,13 @@ ip_mh_am_epsilon                    = 1.e-5
 
 ip_mh_filteredChain_generate             = 0
 
-gp_emulator_precision_shape = 5.0
-gp_emulator_precision_scale = 0.2
-gp_emulator_correlation_strength_alpha = 1.0
-gp_emulator_correlation_strength_beta = 0.1
-gp_discrepancy_precision_shape = 1.0
-gp_discrepancy_precision_scale = 1e4
-gp_discrepancy_correlation_strength_alpha = 1.0
-gp_discrepancy_correlation_strength_beta = 0.1
-gp_emulator_data_precision_shape = 3.0
-gp_emulator_data_precision_scale = 333.333
+gpmsa_emulator_precision_shape = 5.0
+gpmsa_emulator_precision_scale = 0.2
+gpmsa_emulator_correlation_strength_alpha = 1.0
+gpmsa_emulator_correlation_strength_beta = 0.1
+gpmsa_discrepancy_precision_shape = 1.0
+gpmsa_discrepancy_precision_scale = 1e4
+gpmsa_discrepancy_correlation_strength_alpha = 1.0
+gpmsa_discrepancy_correlation_strength_beta = 0.1
+gpmsa_emulator_data_precision_shape = 3.0
+gpmsa_emulator_data_precision_scale = 333.333

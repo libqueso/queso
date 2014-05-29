@@ -22,27 +22,27 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/GaussianProcessEmulatorOptions.h>
+#include <queso/GPMSAOptions.h>
 
 // ODV = option default value
-#define UQ_GP_EMULATOR_PRECISION_SHAPE_ODV 5.0
-#define UQ_GP_EMULATOR_PRECISION_SCALE_ODV 0.2
-#define UQ_GP_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV 1.0
-#define UQ_GP_EMULATOR_CORRELATION_STRENGTH_BETA_ODV 0.1
-#define UQ_GP_DISCREPANCY_PRECISION_SHAPE_ODV 1.0
-#define UQ_GP_DISCREPANCY_PRECISION_SCALE_ODV 1e4
-#define UQ_GP_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV 1.0
-#define UQ_GP_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV 0.1
-#define UQ_GP_EMULATOR_DATA_PRECISION_SHAPE_ODV 3.0
-#define UQ_GP_EMULATOR_DATA_PRECISION_SCALE_ODV 333.333
+#define UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV 5.0
+#define UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV 0.2
+#define UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV 1.0
+#define UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_BETA_ODV 0.1
+#define UQ_GPMSA_DISCREPANCY_PRECISION_SHAPE_ODV 1.0
+#define UQ_GPMSA_DISCREPANCY_PRECISION_SCALE_ODV 1e4
+#define UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV 1.0
+#define UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV 0.1
+#define UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV 3.0
+#define UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV 333.333
 
 namespace QUESO {
 
-GaussianProcessEmulatorOptions::GaussianProcessEmulatorOptions(
+GPMSAOptions::GPMSAOptions(
   const BaseEnvironment & env,
   const char * prefix)
   :
-  m_prefix((std::string)(prefix) + "gp_"),
+  m_prefix((std::string)(prefix) + "gpmsa_"),
   m_env(env),
   m_optionsDesc(new po::options_description("Gaussian process emulator options")),
   m_option_help(m_prefix + "help"),
@@ -63,7 +63,7 @@ GaussianProcessEmulatorOptions::GaussianProcessEmulatorOptions(
   }
 }
 
-GaussianProcessEmulatorOptions::~GaussianProcessEmulatorOptions()
+GPMSAOptions::~GPMSAOptions()
 {
   if (m_optionsDesc) {
     delete m_optionsDesc;
@@ -71,7 +71,7 @@ GaussianProcessEmulatorOptions::~GaussianProcessEmulatorOptions()
 }
 
 void
-GaussianProcessEmulatorOptions::scanOptionsValues()
+GPMSAOptions::scanOptionsValues()
 {
   if (m_optionsDesc == NULL) {
     std::cerr << "m_optionsDesc variable is NULL" << std::endl;
@@ -83,7 +83,7 @@ GaussianProcessEmulatorOptions::scanOptionsValues()
   getMyOptionValues(*m_optionsDesc);
 
   if (m_env.subDisplayFile() != NULL) {
-    *m_env.subDisplayFile() << "In GaussianProcessEmulatorOptions::scanOptionsValues()"
+    *m_env.subDisplayFile() << "In GPMSAOptions::scanOptionsValues()"
                             << ": after reading values of options with prefix '" << m_prefix
                             << "', state of  object is:"
                             << "\n" << *this
@@ -92,24 +92,24 @@ GaussianProcessEmulatorOptions::scanOptionsValues()
 }
 
 void
-GaussianProcessEmulatorOptions::defineMyOptions(po::options_description& optionsDesc) const
+GPMSAOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
   optionsDesc.add_options()
     (m_option_help.c_str(), "produce help message Gaussian process emulator")
-    (m_option_emulatorPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GP_EMULATOR_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for emulator precision")
-    (m_option_emulatorPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GP_EMULATOR_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for emulator precision")
-    (m_option_emulatorCorrelationStrengthAlpha.c_str(), po::value<double>()->default_value(UQ_GP_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV), "alpha hyperprior (Beta) parameter for emulator correlation strength")
-    (m_option_emulatorCorrelationStrengthBeta.c_str(), po::value<double>()->default_value(UQ_GP_EMULATOR_CORRELATION_STRENGTH_BETA_ODV), "beta hyperprior (Beta) parameter for emulator correlation strength")
-    (m_option_discrepancyPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for discrepancy precision")
-    (m_option_discrepancyPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for discrepancy precision")
-    (m_option_discrepancyCorrelationStrengthAlpha.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV), "alpha hyperprior (Beta) parameter for discrepancy correlation strength")
-    (m_option_discrepancyCorrelationStrengthBeta.c_str(), po::value<double>()->default_value(UQ_GP_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV), "beta hyperprior (Beta) parameter for discrepancy correlation strength")
-    (m_option_emulatorDataPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GP_EMULATOR_DATA_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for emulator data precision")
-    (m_option_emulatorDataPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GP_EMULATOR_DATA_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for emulator data precision");
+    (m_option_emulatorPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for emulator precision")
+    (m_option_emulatorPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for emulator precision")
+    (m_option_emulatorCorrelationStrengthAlpha.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_ALPHA_ODV), "alpha hyperprior (Beta) parameter for emulator correlation strength")
+    (m_option_emulatorCorrelationStrengthBeta.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_CORRELATION_STRENGTH_BETA_ODV), "beta hyperprior (Beta) parameter for emulator correlation strength")
+    (m_option_discrepancyPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GPMSA_DISCREPANCY_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for discrepancy precision")
+    (m_option_discrepancyPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GPMSA_DISCREPANCY_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for discrepancy precision")
+    (m_option_discrepancyCorrelationStrengthAlpha.c_str(), po::value<double>()->default_value(UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_ALPHA_ODV), "alpha hyperprior (Beta) parameter for discrepancy correlation strength")
+    (m_option_discrepancyCorrelationStrengthBeta.c_str(), po::value<double>()->default_value(UQ_GPMSA_DISCREPANCY_CORRELATION_STRENGTH_BETA_ODV), "beta hyperprior (Beta) parameter for discrepancy correlation strength")
+    (m_option_emulatorDataPrecisionShape.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_DATA_PRECISION_SHAPE_ODV), "shape hyperprior (Gamma) parameter for emulator data precision")
+    (m_option_emulatorDataPrecisionScale.c_str(), po::value<double>()->default_value(UQ_GPMSA_EMULATOR_DATA_PRECISION_SCALE_ODV), "scale hyperprior (Gamma) parameter for emulator data precision");
 }
 
 void
-GaussianProcessEmulatorOptions::getMyOptionValues(po::options_description& optionsDesc)
+GPMSAOptions::getMyOptionValues(po::options_description& optionsDesc)
 {
   if (m_env.allOptionsMap().count(m_option_help)) {
     if (m_env.subDisplayFile()) {
@@ -160,7 +160,7 @@ GaussianProcessEmulatorOptions::getMyOptionValues(po::options_description& optio
 }
 
 void
-GaussianProcessEmulatorOptions::print(std::ostream& os) const
+GPMSAOptions::print(std::ostream& os) const
 {
   os << "\n" << m_option_emulatorPrecisionShape << " = " << this->m_emulatorPrecisionShape
      << "\n" << m_option_emulatorPrecisionScale << " = " << this->m_emulatorPrecisionScale

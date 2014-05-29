@@ -252,8 +252,8 @@ libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GcmZInfo.C
 libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GcmZTildeInfo.C
 libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/SimulationModel.C
 libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/SimulationStorage.C
-libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GaussianProcessEmulator.C
-libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GaussianProcessEmulatorOptions.C
+libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GPMSA.C
+libqueso_la_SOURCES += $(top_srcdir)/src/gp/src/GPMSAOptions.C
 
 # Headers to install from core/inc
 
@@ -424,8 +424,8 @@ libqueso_include_HEADERS += $(top_srcdir)/src/gp/inc/GpmsaComputerModelOptions.h
 libqueso_include_HEADERS += $(top_srcdir)/src/gp/inc/SimulationModel.h
 libqueso_include_HEADERS += $(top_srcdir)/src/gp/inc/SimulationModelOptions.h
 libqueso_include_HEADERS += $(top_srcdir)/src/gp/inc/SimulationStorage.h
-libqueso_include_HEADERS += $(top_srcdir)/src/gp/inc/GaussianProcessEmulator.h
-libqueso_include_HEADERS += $(top_srcdir)/src/gp/inc/GaussianProcessEmulatorOptions.h
+libqueso_include_HEADERS += $(top_srcdir)/src/gp/inc/GPMSA.h
+libqueso_include_HEADERS += $(top_srcdir)/src/gp/inc/GPMSAOptions.h
 
 # Install the magic header
 libqueso_include_HEADERS += $(top_srcdir)/src/contrib/inc/all.h

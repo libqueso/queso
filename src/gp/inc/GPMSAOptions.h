@@ -21,29 +21,29 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef UQ_GP_EMULATOR_OPTIONS_H
-#define UQ_GP_EMULATOR_OPTIONS_H
+#ifndef UQ_GPMSA_OPTIONS_H
+#define UQ_GPMSA_OPTIONS_H
 
 #include <queso/Environment.h>
 
 namespace QUESO {
 
 /*!
- * \file GaussianProcessEmulatorOptions.h
+ * \file GPMSAOptions.h
  * \brief This class defines the options that specify the behaviour of the Gaussian process emulator
  *
- * \class GaussianProcessEmulatorOptions
+ * \class GPMSAOptions
  * \brief This class defines the options that specify the behaviour of the Gaussian process emulator
  */
 
-class GaussianProcessEmulatorOptions
+class GPMSAOptions
 {
 public:
   //! Given prefix, read the input file for parameters named prefix_*
-  GaussianProcessEmulatorOptions(const BaseEnvironment& env, const char* prefix);
+  GPMSAOptions(const BaseEnvironment& env, const char* prefix);
 
   //! Destructor
- ~GaussianProcessEmulatorOptions();
+ ~GPMSAOptions();
 
   //! Scans the input file for options prefixed with \c prefix
   void scanOptionsValues();
@@ -87,8 +87,7 @@ public:
   //! The scale parameter for the Gamma hyperprior for the emulator data precision
   double m_emulatorDataPrecisionScale;
 
-  friend std::ostream & operator<<(std::ostream& os,
-      const GaussianProcessEmulatorOptions & obj)
+  friend std::ostream & operator<<(std::ostream& os, const GPMSAOptions & obj)
   {
     obj.print(os);
     return os;
@@ -116,4 +115,4 @@ private:
 
 }  // End namespace QUESO
 
-#endif // UQ_INFMCMC_OPTIONS_H
+#endif // UQ_GPMSA_OPTIONS_H
