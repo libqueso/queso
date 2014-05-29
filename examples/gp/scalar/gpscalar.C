@@ -5,11 +5,79 @@
 #include <queso/VectorSet.h>
 #include <queso/GaussianProcessEmulator.h>
 
+#include <cstdio>
+
+// Read in data files
+double readData(const std::vector<QUESO::GslVector *> & simulationScenarios,
+    const std::vector<QUESO::GslVector *> & simulationParameters,
+    const std::vector<QUESO::GslVector *> & simulationOutputs,
+    const std::vector<QUESO::GslVector *> & experimentScenarios,
+    const std::vector<QUESO::GslVector *> & experimentOutputs) {
+  FILE * fp_in = fopen("gp/scalar/dakota_pstudy.dat", "r");
+  unsigned int i, id, size = 512;
+  double k_tmasl, k_tmoml, k_tnrgl, k_xkwlx, k_cd, pressure;
+  char line[size];
+
+  double mins[] = {0.95, 0.9, 0.9, 0.9, 0.9};
+  double maxs[] = {1.05, 1.1, 1.1, 1.1, 1.1};
+
+  double meansim = 0;
+  double m2sim = 0;
+
+  // First line is a header, so we ignore it
+  fgets(line, size, fp_in);
+
+  i = 0;
+  while (fscanf(fp_in, "%d %lf %lf %lf %lf %lf %lf\n", &id, &k_tmasl, &k_tmoml,
+        &k_tnrgl, &k_xkwlx, &k_cd, &pressure) != EOF) {
+    (*(simulationScenarios[i]))[0] = 0.5;
+
+    (*(simulationParameters[i]))[0] = (k_tmasl - mins[0]) / (maxs[0] - mins[0]);
+    (*(simulationParameters[i]))[1] = (k_tmoml - mins[1]) / (maxs[1] - mins[1]);
+    (*(simulationParameters[i]))[2] = (k_tnrgl - mins[2]) / (maxs[2] - mins[2]);
+    (*(simulationParameters[i]))[3] = (k_xkwlx - mins[3]) / (maxs[3] - mins[3]);
+    (*(simulationParameters[i]))[4] = (k_cd    - mins[4]) / (maxs[4] - mins[4]);
+
+    (*(simulationOutputs[i]))[0] = pressure;
+    i++;
+
+    double delta = pressure - meansim;
+    meansim += delta / i;
+    m2sim += delta * (pressure - meansim);
+  }
+
+  double stdsim = m2sim / (double)(i - 1);
+
+  for (unsigned int j = 0; j < i; j++) {
+    (*(simulationOutputs[j]))[0] -= meansim;
+    (*(simulationOutputs[j]))[0] /= stdsim;
+  }
+
+  fclose(fp_in);  // Done with simulation data
+
+  // Read in experimental data
+  fp_in = fopen("gp/scalar/ctf_dat.txt", "r");
+  i = 0;
+  while (fscanf(fp_in, "%lf\n", &pressure) != EOF) {
+    (*(experimentOutputs[i]))[0] = pressure;
+    i++;
+  }
+
+  for (unsigned int j = 0; j < i; j++) {
+    (*(experimentOutputs[j]))[0] -= meansim;
+    (*(experimentOutputs[j]))[0] /= stdsim;
+  }
+
+  fclose(fp_in);
+
+  return stdsim;
+}
+
 int main(int argc, char ** argv) {
   // Step 0: Set up some variables
-  unsigned int numExperiments = 6;  // Number of experiments
-  unsigned int numUncertainVars = 1;  // Number of things to calibrate
-  unsigned int numSimulations = 25;  // Number of simulations
+  unsigned int numExperiments = 10;  // Number of experiments
+  unsigned int numUncertainVars = 5;  // Number of things to calibrate
+  unsigned int numSimulations = 50;  // Number of simulations
   unsigned int numConfigVars = 1;  // Dimension of configuration space
   unsigned int numEta = 1;  // Number of responses the model is returning
   unsigned int experimentSize = 1;  // Size of each experiment
@@ -23,9 +91,14 @@ int main(int argc, char ** argv) {
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
       "param_", numUncertainVars, NULL);
 
+  // Parameter (theta) bounds:
+  //   descriptors   'k_tmasl' 'k_xkle' 'k_xkwew' 'k_xkwlx' 'k_cd'
+  //   upper_bounds   1.05      1.1      1.1       1.1       1.1
+  //   lower_bounds   0.95      0.9      0.9       0.9       0.9
   QUESO::GslVector paramMins(paramSpace.zeroVector());
-  paramMins.cwSet(0.0);
   QUESO::GslVector paramMaxs(paramSpace.zeroVector());
+
+  paramMins.cwSet(0.0);
   paramMaxs.cwSet(1.0);
 
   QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix> paramDomain("param_",
@@ -109,115 +182,19 @@ int main(int argc, char ** argv) {
     outputVecs         [i] = new QUESO::GslVector(nEtaSpace.zeroVector());  // 'eta_{i+1}' in paper
   }
 
-  // All the positions in scenario space where simulations were run
-  // This should probably be read from a file
-  (*(simulationScenarios[0]))[0] = 0.0416667;
-  (*(simulationScenarios[1]))[0] = 0.125;
-  (*(simulationScenarios[2]))[0] = 0;
-  (*(simulationScenarios[3]))[0] = 0.166667;
-  (*(simulationScenarios[4]))[0] = 0.0833333;
-  (*(simulationScenarios[5]))[0] = 0.333333;
-  (*(simulationScenarios[6]))[0] = 0.208333;
-  (*(simulationScenarios[7]))[0] = 0.291667;
-  (*(simulationScenarios[8]))[0] = 0.375;
-  (*(simulationScenarios[9]))[0] = 0.25;
-  (*(simulationScenarios[10]))[0] = 0.583333;
-  (*(simulationScenarios[11]))[0] = 0.416667;
-  (*(simulationScenarios[12]))[0] = 0.541667;
-  (*(simulationScenarios[13]))[0] = 0.5;
-  (*(simulationScenarios[14]))[0] = 0.458333;
-  (*(simulationScenarios[15]))[0] = 0.708333;
-  (*(simulationScenarios[16]))[0] = 0.75;
-  (*(simulationScenarios[17]))[0] = 0.666667;
-  (*(simulationScenarios[18]))[0] = 0.625;
-  (*(simulationScenarios[19]))[0] = 0.791667;
-  (*(simulationScenarios[20]))[0] = 0.875;
-  (*(simulationScenarios[21]))[0] = 1;
-  (*(simulationScenarios[22]))[0] = 0.833333;
-  (*(simulationScenarios[23]))[0] = 0.958333;
-  (*(simulationScenarios[24]))[0] = 0.916667;
-
-  // All the positions in parameter space where simulations were run
-  // This should probably be read from a file
-  (*(paramVecs[0]))[0] = 0.125;
-  (*(paramVecs[1]))[0] = 0.375;
-  (*(paramVecs[2]))[0] = 0.583333;
-  (*(paramVecs[3]))[0] = 0.708333;
-  (*(paramVecs[4]))[0] = 0.875;
-  (*(paramVecs[5]))[0] = 0.0;
-  (*(paramVecs[6]))[0] = 0.208333;
-  (*(paramVecs[7]))[0] = 0.5;
-  (*(paramVecs[8]))[0] = 0.791667;
-  (*(paramVecs[9]))[0] = 0.916667;
-  (*(paramVecs[10]))[0] = 0.0416667;
-  (*(paramVecs[11]))[0] = 0.291667;
-  (*(paramVecs[12]))[0] = 0.416667;
-  (*(paramVecs[13]))[0] = 0.625;
-  (*(paramVecs[14]))[0] = 1.0;
-  (*(paramVecs[15]))[0] = 0.166667;
-  (*(paramVecs[16]))[0] = 0.333333;
-  (*(paramVecs[17]))[0] = 0.541667;
-  (*(paramVecs[18]))[0] = 0.75;
-  (*(paramVecs[19]))[0] = 0.833333;
-  (*(paramVecs[20]))[0] = 0.0833333;
-  (*(paramVecs[21]))[0] = 0.25;
-  (*(paramVecs[22]))[0] = 0.458333;
-  (*(paramVecs[23]))[0] = 0.666667;
-  (*(paramVecs[24]))[0] = 0.958333;
-
-  // Simulation output from sim_outputs file from matlab gpmsa implementation
-  // This should probably be read from a file
-  (*(outputVecs[0]))[0] = 1.60656419103786;
-  (*(outputVecs[1]))[0] = 2.03091732612410;
-  (*(outputVecs[2]))[0] = 1.63843806135107;
-  (*(outputVecs[3]))[0] = 2.4638773088846;
-  (*(outputVecs[4]))[0] = 2.21838509163166;
-  (*(outputVecs[5]))[0] = 2.30939315250214;
-  (*(outputVecs[6]))[0] = 2.17300595474166;
-  (*(outputVecs[7]))[0] = 2.71440886744846;
-  (*(outputVecs[8]))[0] = 3.45738385598637;
-  (*(outputVecs[9]))[0] = 3.08913132945656;
-  (*(outputVecs[10]))[0] = 2.8542802908597;
-  (*(outputVecs[11]))[0] = 2.82284112252142;
-  (*(outputVecs[12]))[0] = 3.35111130604648;
-  (*(outputVecs[13]))[0] = 3.62106706299426;
-  (*(outputVecs[14]))[0] = 4.27778530159255;
-  (*(outputVecs[15]))[0] = 3.28874614306084;
-  (*(outputVecs[16]))[0] = 3.71321395867495;
-  (*(outputVecs[17]))[0] = 3.97952570579624;
-  (*(outputVecs[18]))[0] = 4.37705002709939;
-  (*(outputVecs[19]))[0] = 5.31766210668879;
-  (*(outputVecs[20]))[0] = 3.43505963946617;
-  (*(outputVecs[21]))[0] = 4.04494232394982;
-  (*(outputVecs[22]))[0] = 4.23694028613074;
-  (*(outputVecs[23]))[0] = 5.31781675076092;
-  (*(outputVecs[24]))[0] = 6.39189142027432;
-
   for (unsigned int i = 0; i < numExperiments; i++) {
     experimentScenarios[i] = new QUESO::GslVector(configSpace.zeroVector()); // 'x_{i+1}' in paper
     experimentVecs[i] = new QUESO::GslVector(experimentSpace.zeroVector());
   }
 
-  // All the positions in scenario space where we have experimental data
-  // This should probably be read from a file
-  (*(experimentScenarios[0]))[0] = 0.0;
-  (*(experimentScenarios[1]))[0] = 0.2;
-  (*(experimentScenarios[2]))[0] = 0.4;
-  (*(experimentScenarios[3]))[0] = 0.6;
-  (*(experimentScenarios[4]))[0] = 0.8;
-  (*(experimentScenarios[5]))[0] = 1.0;
+  double stdsim = readData(simulationScenarios,
+                           paramVecs,
+                           outputVecs,
+                           experimentScenarios,
+                           experimentVecs);
 
-  // These are the experimental data
-  // This should probably be read from a file
-  (*(experimentVecs[0]))[0] = 1.59294826065229;
-  (*(experimentVecs[1]))[0] = 2.17696977275016;
-  (*(experimentVecs[2]))[0] = 2.87061286591332;
-  (*(experimentVecs[3]))[0] = 3.8330395105599;
-  (*(experimentVecs[4]))[0] = 4.59654198432239;
-  (*(experimentVecs[5]))[0] = 4.75087857533489;
-
-  for (unsigned int i = 0; i < 5; i++) {
-    experimentMat(i, i) = 0.075 * 0.075;
+  for (unsigned int i = 0; i < numExperiments; i++) {
+    experimentMat(i, i) = (0.025 / stdsim) * (0.025 / stdsim);
   }
 
   // Add simulation and experimental data
@@ -234,22 +211,57 @@ int main(int argc, char ** argv) {
       gpFactory.prior().imageSet().vectorSpace().zeroVector());
 
   // Initial condition of the chain
-  for (unsigned int i = 0; i < paramInitials.sizeLocal(); i++) {
-    paramInitials[i] = 0.5;
-  }
+  // Have to set each of these by hand, *and* the sampler is sensitive to these
+  // values
+  paramInitials[0] = 0.5;
+  paramInitials[1] = 0.5;
+  paramInitials[2] = 0.5;
+  paramInitials[3] = 0.5;
+  paramInitials[4] = 0.5;
+  paramInitials[5]  = 0.0;  // Emulator mean
+  paramInitials[6]  = 1.0;
+  paramInitials[7]  = 0.97;
+  paramInitials[8]  = 0.97;
+  paramInitials[9]  = 0.97;
+  paramInitials[10]  = 0.97;
+  paramInitials[11]  = 0.97;
+  paramInitials[12]  = 0.97;
+  paramInitials[13]  = 10.0;
+  paramInitials[14]  = 0.97;
+  paramInitials[15]  = 8000.0;
 
   QUESO::GslMatrix proposalCovMatrix(
       gpFactory.prior().imageSet().vectorSpace().zeroVector());
-  for (unsigned int i = 0; i < proposalCovMatrix.numRowsLocal(); i++) {
-    proposalCovMatrix(i, i) = 0.01;
+
+  // Setting the proposal covariance matrix by hand.
+  // This requires great forethough, and is to be considered a massive hack.
+  // These values were taken from the gpmsa matlab code and fiddled with.
+  double scale = 600.0;
+  proposalCovMatrix(0, 0)   = 3.1646 / 10.0;  // param 1
+  proposalCovMatrix(1, 1)   = 3.1341 / 10.0;  // param 2
+  proposalCovMatrix(2, 2)   = 3.1508 / 10.0;  // param 3
+  proposalCovMatrix(3, 3)   = 0.3757 / 10.0;  // param 4
+  proposalCovMatrix(4, 4)   = 0.6719 / 10.0;  // param 5
+  proposalCovMatrix(5, 5)   = 0.1 / scale;  // not used.  emulator mean
+  proposalCovMatrix(6, 6)   = 0.4953 / scale;  // emulator precision
+  proposalCovMatrix(7, 7)   = 0.6058 / scale;  // emulator corr str
+  proposalCovMatrix(8, 8)   = 7.6032e-04 / scale;  // emulator corr str
+  proposalCovMatrix(9, 9)   = 8.3815e-04 / scale;  // emulator corr str
+  proposalCovMatrix(10, 10) = 7.5412e-04 / scale;  // emulator corr str
+  proposalCovMatrix(11, 11) = 0.2682 / scale;  // emulator corr str
+  proposalCovMatrix(12, 12) = 0.0572 / scale;  // emulator corr str
+  proposalCovMatrix(13, 13) = 1.3417e+05 / scale;  // discrepancy precision
+  proposalCovMatrix(14, 14) = 0.3461 / scale;  // discrepancy corr str
+  proposalCovMatrix(15, 15) = 495.3 / scale;  // emulator data precision
+
+  // Square to get variances
+  for (unsigned int i = 0; i < 16; i++) {
+    proposalCovMatrix(i, i) = proposalCovMatrix(i, i) * proposalCovMatrix(i, i);
   }
-  std::cout << "got here 25" << std::endl;
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
-  std::cout << "got here 26" << std::endl;
 
   MPI_Finalize();
-  std::cout << "got here 27" << std::endl;
 
   return 0;
 }
