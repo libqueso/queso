@@ -96,4 +96,3 @@ test/test_operator
 test/test_uqexception
 test/test_SequenceOfVectorsErase
 test/test_gpmsa_cobra
-test/test_gpmsa_cobra_output

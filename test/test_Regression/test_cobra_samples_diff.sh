@@ -4,3 +4,4 @@ set -o pipefail
 
 ./test_gpmsa_cobra
 diff test_Regression/test_gpmsa_cobra_samples.m test_gpmsa_cobra_output/ip_raw_chain_sub0.m
+rm -r test_gpmsa_cobra_output
