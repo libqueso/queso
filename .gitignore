@@ -95,3 +95,4 @@ test/test_infinite/inf_options
 test/test_operator
 test/test_uqexception
 test/test_SequenceOfVectorsErase
+test/test_gpmsa_cobra
