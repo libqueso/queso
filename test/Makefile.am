@@ -144,7 +144,11 @@ EXTRA_DIST += test_uqEnvironmentOptions/test.inp
 EXTRA_DIST += test_Environment/copy_env
 EXTRA_DIST += test_infinite/inf_options
 EXTRA_DIST += test_Regression/GaussianMean1DRegression_options.in
-EXTRA_DIST += test_Regression/gpmsa_cobra_input.txt
+EXTRA_DIST += test_Regression/gpmsa_cobra_input.txt.in
+EXTRA_DIST += test_Regression/test_cobra_samples_diff.sh.in
+EXTRA_DIST += test_Regression/test_gpmsa_cobra_samples.m.in
+EXTRA_DIST += test_Regression/ctf_dat.txt.in
+EXTRA_DIST += test_Regression/dakota_pstudy.dat.in
 
 CLEANFILES =
 CLEANFILES += $(top_srcdir)/test/test_Environment/debug_output_sub0.txt
