@@ -22,13 +22,13 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include "JeffreysVectorRV.h"
+#include <queso/JeffreysVectorRV.h>
 
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
-#include "JeffreysJointPdf.h" //TODO: these are not included in QUESO distributions
-#include "JeffreysVectorRealizer.h"
+//#include "JeffreysJointPdf.h" //TODO: these are not included in QUESO distributions
+//#include "JeffreysVectorRealizer.h"
 
 namespace QUESO {
 

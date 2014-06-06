@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include "JeffreysJointPdf.h"
+#include <queso/JeffreysJointPdf.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
@@ -134,7 +134,7 @@ JeffreysJointPdf<V,M>::lnValue(
   return result; // No need to add m_logOfNormalizationFactor [PDF-04]
 }
 //--------------------------------------------------
-template<class V, class M>//TODO: do we need this?
+template<class V, class M>//TODO: do we need this? right now is same as in uniform
 double
 JeffreysJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {

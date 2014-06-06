@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include "JeffreysVectorRealizer.h"
+#include <queso/JeffreysVectorRealizer.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
