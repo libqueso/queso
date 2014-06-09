@@ -12,6 +12,7 @@ class Likelihood : public QUESO::BaseScalarFunction<V, M>
 public:
 
   Likelihood(const char * prefix, const QUESO::VectorSet<V, M> & domain)
+  : QUESO::BaseScalarFunction<V, M>(prefix, domain)
   {
     // Setup here
   }
@@ -35,17 +36,20 @@ public:
     //
     // 3) Return below
 
+    double misfit = 0.0;
+
 #ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
-    // return -0.5 * misfit;
+    return -0.5 * misfit;
 #else
-    // return misfit;
+    return misfit;
 #endif
   }
 
   virtual double actualValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const
   {
-    // return exp(this->lnValue(...))
+    return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
+          hessianMatrix, hessianEffect));
   }
 
 private:
@@ -61,6 +65,9 @@ int main(int argc, char ** argv) {
   // Step 1 of 5: Instantiate the parameter space
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
       "param_", 1, NULL);
+
+  double min_val = 0.0;
+  double max_val = 1.0;
 
   // Step 2 of 5: Set up the prior
   QUESO::GslVector paramMins(paramSpace.zeroVector());
