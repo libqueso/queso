@@ -30,7 +30,7 @@ check_PROGRAMS += test_SequenceOfVectorsErase
 check_PROGRAMS += test_GaussianMean1DRegression
 check_PROGRAMS += test_gpmsa_cobra
 
-LIBS         = -L$(top_builddir)/src/ -lqueso
+LDADD       = $(top_builddir)/src/libqueso.la
 
 AM_CPPFLAGS =
 AM_CPPFLAGS += -I.
@@ -81,6 +81,7 @@ test_inf_gaussian_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_gaussian.C
 test_inf_options_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_options.C
 test_SequenceOfVectorsErase_SOURCES = $(top_srcdir)/test/test_SequenceOfVectors/test_SequenceOfVectorsErase.C
 test_GaussianMean1DRegression_SOURCES = $(top_srcdir)/test/test_Regression/test_GaussianMean1DRegression.C
+test_GaussianMean1DRegression_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
 test_gpmsa_cobra_SOURCES = $(top_srcdir)/test/test_Regression/test_gpmsa_cobra.C
 
 # Files to freedom stamp
