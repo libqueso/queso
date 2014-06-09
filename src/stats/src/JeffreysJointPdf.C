@@ -77,10 +77,12 @@ JeffreysJointPdf<V,M>::actualValue(
 
   double pdf = 1.0;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i){
-    if (//((boost::math::isnan)()) ||
+    if (domainVector[i] < 0. ) {
+      queso_error_msg("The domain for Jeffreys prior should be greater than zero."); }
+    else if (//((boost::math::isnan)()) ||
         (domainVector[i] == -INFINITY         ) ||
         (domainVector[i] ==  INFINITY         ) ||
-        (domainVector[i] <= 0.                ) ||
+        //(domainVector[i] <= 0.                ) ||
         (m_normalizationStyle != 0   )) {//TODO: R: not sure what this is doing?
       pdf = 0.;
     }
@@ -115,10 +117,12 @@ JeffreysJointPdf<V,M>::lnValue(
   double pdf = 1.0;
   double result = 0.;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i){
-    if (//((boost::math::isnan)()) ||
+    if (domainVector[i] < 0. ) {
+      queso_error_msg("The domain for Jeffreys prior should be greater than zero."); }
+    else if (//((boost::math::isnan)()) ||
         (domainVector[i] == -INFINITY         ) ||
         (domainVector[i] ==  INFINITY         ) ||
-        (domainVector[i] <= 0.                ) ||
+        //(domainVector[i] <= 0.                ) ||
         (m_normalizationStyle != 0   )) {//TODO: R: not sure what this is doing?
       pdf = 0.;
       result = -INFINITY; //TODO: what do we do here?
@@ -134,7 +138,7 @@ JeffreysJointPdf<V,M>::lnValue(
   return result; // No need to add m_logOfNormalizationFactor [PDF-04]
 }
 //--------------------------------------------------
-template<class V, class M>//TODO: do we need this? right now is same as in uniform
+template<class V, class M>
 double
 JeffreysJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const
 {
