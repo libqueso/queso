@@ -65,11 +65,20 @@ JeffreysVectorRealizer<V,M>::realization(V& nextValues) const
                       "JeffreysVectorRealizer<V,M>::realization()",
                       "only box images are supported right now");
   //take log of Jeffreys bounds to set uniform bounds
-//  for (unsigned int i = 0; i < BoxSubset<V,M>::BoxSubset::m_vectorSpace->dimLocal(); i++){
-  //  BoxSubset<V,M>::BoxSubset::m_minValues[i] = 0.;
-  //}
-  nextValues.cwSetUniform(imageBox->minValues(),imageBox->maxValues());
-  for (unsigned int i = 0; i < nextValues.sizeLocal(); i++){
+  //write macro test to make sure bounds not less than 0 ?
+  using std::log;
+  QUESO::GslVector logMinValues(imageBox->minValues());
+  for (unsigned int i = 0; i < logMinValues.sizeLocal(); ++i) {
+    logMinValues[i] = log(logMinValues[i]);
+  }
+
+  QUESO::GslVector logMaxValues(imageBox->maxValues());
+  for (unsigned int i = 0; i < logMaxValues.sizeLocal(); ++i) {
+    logMaxValues[i] = log(logMaxValues[i]);
+  }
+
+  nextValues.cwSetUniform(log(imageBox->minValues()),imageBox->maxValues());
+  for (unsigned int i = 0; i < nextValues.sizeLocal(); ++i){
     nextValues[i] = exp(nextValues[i]);
   }
   return;
