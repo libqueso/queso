@@ -30,7 +30,7 @@ check_PROGRAMS += test_SequenceOfVectorsErase
 check_PROGRAMS += test_GaussianMean1DRegression
 check_PROGRAMS += test_gpmsa_cobra
 
-LIBS         = -L$(top_builddir)/src/ -lqueso
+LDADD       = $(top_builddir)/src/libqueso.la
 
 AM_CPPFLAGS =
 AM_CPPFLAGS += -I.
