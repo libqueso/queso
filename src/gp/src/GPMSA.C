@@ -274,8 +274,7 @@ GPMSAFactory<V, M>::GPMSAFactory(
 {
   // DM: Not sure if the logic in these 3 if-blocks is correct
   if ((opts == NULL) && (this->m_env.optionsInputFileName() == "")) {
-    std::cerr << "Must options object or an input file" << std::endl;
-    queso_error();
+    queso_error_msg("Must options object or an input file");
   }
 
   if (opts != NULL) {

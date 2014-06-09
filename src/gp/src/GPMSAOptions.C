@@ -58,8 +58,7 @@ GPMSAOptions::GPMSAOptions(
   m_option_emulatorDataPrecisionScale(m_prefix + "emulator_data_precision_scale")
 {
   if (m_env.optionsInputFileName() == "") {
-    std::cerr << "Missing input file is required" << std::endl;
-    queso_error();
+    queso_error_msg("Missing input file is required");
   }
 }
 
@@ -74,8 +73,7 @@ void
 GPMSAOptions::scanOptionsValues()
 {
   if (m_optionsDesc == NULL) {
-    std::cerr << "m_optionsDesc variable is NULL" << std::endl;
-    queso_error();
+    queso_error_msg("m_optionsDesc variable is NULL");
   }
 
   defineMyOptions(*m_optionsDesc);

@@ -316,8 +316,7 @@ double estimateKL_ANN( RV_1<P_V,P_M>& xRV,
 
   // sanity check
   if( dimX != dimY ) {
-    std::cout << "Error-KL: the dimensions should agree" << std::endl;
-    queso_error();
+    queso_error_msg("Error-KL: the dimensions should agree");
   }
 
   // Allocate memory
@@ -392,8 +391,7 @@ double estimateCE_ANN( RV_1<P_V,P_M>& xRV,
 
   // sanity check
   if( dimX != dimY ) {
-    std::cout << "Error-CE: the dimensions should agree" << std::endl;
-    queso_error();
+    queso_error_msg("Error-CE: the dimensions should agree");
   }
 
   // Allocate memory
