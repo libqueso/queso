@@ -29,6 +29,7 @@ check_PROGRAMS += test_inf_options
 check_PROGRAMS += test_SequenceOfVectorsErase
 check_PROGRAMS += test_GaussianMean1DRegression
 check_PROGRAMS += test_gpmsa_cobra
+check_PROGRAMS += test_LlhdTargetOutput
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -83,6 +84,7 @@ test_SequenceOfVectorsErase_SOURCES = $(top_srcdir)/test/test_SequenceOfVectors/
 test_GaussianMean1DRegression_SOURCES = $(top_srcdir)/test/test_Regression/test_GaussianMean1DRegression.C
 test_GaussianMean1DRegression_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
 test_gpmsa_cobra_SOURCES = $(top_srcdir)/test/test_Regression/test_gpmsa_cobra.C
+test_LlhdTargetOutput_SOURCES = $(top_srcdir)/test/test_StatisticalInverseProblem/test_LlhdTargetOutput.C
 
 # Files to freedom stamp
 srcstamp =
@@ -109,6 +111,7 @@ srcstamp += $(test_inf_gaussian_SOURCES)
 srcstamp += $(test_inf_options_SOURCES)
 srcstamp += $(test_GaussianMean1DRegression_SOURCES)
 srcstamp += $(test_gpmsa_cobra_SOURCES)
+srcstamp += $(test_LlhdTargetOutput_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
@@ -135,6 +138,7 @@ TESTS += $(top_builddir)/test/test_inf_options
 TESTS += $(top_builddir)/test/test_SequenceOfVectorsErase
 TESTS += $(top_builddir)/test/test_GaussianMean1DRegression
 TESTS += $(top_builddir)/test/test_Regression/test_cobra_samples_diff.sh
+TESTS += $(top_builddir)/test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
@@ -150,6 +154,10 @@ EXTRA_DIST += test_Regression/test_cobra_samples_diff.sh.in
 EXTRA_DIST += test_Regression/test_gpmsa_cobra_samples.m.in
 EXTRA_DIST += test_Regression/ctf_dat.txt.in
 EXTRA_DIST += test_Regression/dakota_pstudy.dat.in
+EXTRA_DIST += test_StatisticalInverseProblem/both_input.txt
+EXTRA_DIST += test_StatisticalInverseProblem/llhdout_input.txt
+EXTRA_DIST += test_StatisticalInverseProblem/targetout_input.txt
+EXTRA_DIST += test_StatisticalInverseProblem/neither_input.txt
 
 CLEANFILES =
 CLEANFILES += $(top_srcdir)/test/test_Environment/debug_output_sub0.txt

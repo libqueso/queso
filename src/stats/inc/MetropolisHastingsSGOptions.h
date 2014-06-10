@@ -88,6 +88,8 @@
 #define UQ_MH_SG_AM_EPSILON_ODV                                       1.e-5
 #define UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                    0
 #define UQ_MH_SG_BROOKS_GELMAN_LAG                                    100
+#define UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                                0
+#define UQ_MH_SG_OUTPUT_LOG_TARGET                                    0
 
 namespace QUESO {
 
@@ -95,11 +97,14 @@ namespace QUESO {
     \brief Classes to allow options to be passed to a Metropolis-Hastings algorithm.
 */
 
-/*! \class MhOptionsValues
- *  \brief This class provides options for the Metropolis-Hastings generator of samples if no input file is available.
+/*!
+ * \class MhOptionsValues
+ * \brief This class provides options for the Metropolis-Hastings generator of samples if no input file is available.
  * 
- *  Metropolis-Hastings generator of samples expects some options for its methods to be fully defined. 
- * This class provides default values for such options if no input file is available. */
+ * Metropolis-Hastings generator of samples expects some options for its
+ * methods to be fully defined.  This class provides default values for such
+ * options if no input file is available.
+ */
 
 class MhOptionsValues
 {
@@ -207,6 +212,12 @@ public:
 
   unsigned int                       m_enableBrooksGelmanConvMonitor;
   unsigned int                       m_BrooksGelmanLag;
+
+  //! Flag for deciding whether or not to dump log likelihood values in output
+  bool m_outputLogLikelihood;
+
+  //! Flag for deciding whether or not to dump log target values in output
+  bool m_outputLogTarget;
 
 private:
   //! Copies the option values from \c src to \c this.
@@ -341,6 +352,9 @@ private:
 
   std::string                   m_option_enableBrooksGelmanConvMonitor;
   std::string                   m_option_BrooksGelmanLag;
+
+  std::string                   m_option_outputLogLikelihood;
+  std::string                   m_option_outputLogTarget;
 };
 
 std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSGOptions& obj);

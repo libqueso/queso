@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/asserts.h>
 #include <queso/MetropolisHastingsSG.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -972,12 +973,33 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
                             << std::endl;
   }
 
-  UQ_FATAL_TEST_MACRO(m_vectorSpace.dimLocal() != workingChain.vectorSizeLocal(),
-                      m_env.worldRank(),
-                      "MetropolisHastingsSG<P_V,P_M>::generateSequence()",
-                      "'m_vectorSpace' and 'workingChain' are related to vector spaces of different dimensions");
+  if (m_vectorSpace.dimLocal() != workingChain.vectorSizeLocal()) {
+    std::cerr << "'m_vectorSpace' and 'workingChain' are related to vector"
+              << "spaces of different dimensions"
+              << std::endl;
+    queso_error();
+  }
 
-  //m_env.syncPrintDebugMsg("Entering MetropolisHastingsSG<P_V,P_M>::generateSequence()",2,3000000,m_env.fullComm());  // Dangerous to barrier on fullComm ... // KAUST
+  // Set a flag to write out log likelihood or not
+  bool writeLogLikelihood;
+  if ((workingLogLikelihoodValues != NULL) &&
+      (m_optionsObj->m_ov.m_outputLogLikelihood)) {
+    writeLogLikelihood = true;
+  }
+  else {
+    writeLogLikelihood = false;
+  }
+
+  // Set a flag to write out log target or not
+  bool writeLogTarget;
+  if ((workingLogTargetValues != NULL) &&
+      (m_optionsObj->m_ov.m_outputLogTarget)) {
+    writeLogTarget = true;
+  }
+  else {
+    writeLogTarget = false;
+  }
+
   MiscCheckTheParallelEnvironment<P_V,P_V>(m_initialPosition,
                                              m_initialPosition);
 
@@ -1074,7 +1096,7 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
                                 << std::endl;
       }
 
-      if (workingLogLikelihoodValues) {
+      if (writeLogLikelihood) {
         workingLogLikelihoodValues->subWriteContents(m_optionsObj->m_ov.m_rawChainSize - m_numPositionsNotSubWritten,
                                                      m_numPositionsNotSubWritten,
                                                      m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
@@ -1082,7 +1104,7 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
                                                      m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
       }
 
-      if (workingLogTargetValues) {
+      if (writeLogTarget) {
         workingLogTargetValues->subWriteContents(m_optionsObj->m_ov.m_rawChainSize - m_numPositionsNotSubWritten,
                                                  m_numPositionsNotSubWritten,
                                                  m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
@@ -1176,12 +1198,12 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
                               << std::endl;
     }
 
-    if (workingLogLikelihoodValues) {
+    if (writeLogLikelihood) {
       workingLogLikelihoodValues->unifiedWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
                                                        m_optionsObj->m_ov.m_rawChainDataOutputFileType);
     }
 
-    if (workingLogTargetValues) {
+    if (writeLogTarget) {
       workingLogTargetValues->unifiedWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
                                                    m_optionsObj->m_ov.m_rawChainDataOutputFileType);
     }
@@ -1307,7 +1329,7 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
                                 << std::endl;
       }
 
-      if (workingLogLikelihoodValues) {
+      if (writeLogLikelihood) {
         workingLogLikelihoodValues->subWriteContents(0,
                                                      workingChain.subSequenceSize(),
                                                      m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_likelihood",
@@ -1315,7 +1337,7 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
                                                      m_optionsObj->m_ov.m_filteredChainDataOutputAllowedSet);
       }
 
-      if (workingLogTargetValues) {
+      if (writeLogTarget) {
         workingLogTargetValues->subWriteContents(0,
                                                  workingChain.subSequenceSize(),
                                                  m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_target",
@@ -1340,12 +1362,12 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
                                 << std::endl;
       }
 
-      if (workingLogLikelihoodValues) {
+      if (writeLogLikelihood) {
         workingLogLikelihoodValues->unifiedWriteContents(m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_likelihood",
                                                          m_optionsObj->m_ov.m_filteredChainDataOutputFileType);
       }
 
-      if (workingLogTargetValues) {
+      if (writeLogTarget) {
         workingLogTargetValues->unifiedWriteContents(m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_target",
                                                      m_optionsObj->m_ov.m_filteredChainDataOutputFileType);
       }
@@ -1463,6 +1485,26 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     *m_env.subDisplayFile() << std::endl;
   }
 
+  // Set a flag to write out log likelihood or not
+  bool writeLogLikelihood;
+  if ((workingLogLikelihoodValues != NULL) &&
+      (m_optionsObj->m_ov.m_outputLogLikelihood)) {
+    writeLogLikelihood = true;
+  }
+  else {
+    writeLogLikelihood = false;
+  }
+
+  // Set a flag to write out log target or not
+  bool writeLogTarget;
+  if ((workingLogTargetValues != NULL) &&
+      (m_optionsObj->m_ov.m_outputLogTarget)) {
+    writeLogTarget = true;
+  }
+  else {
+    writeLogTarget = false;
+  }
+
   bool outOfTargetSupport = !m_targetPdf.domainSet().contains(valuesOf1stPosition);
   if ((m_env.subDisplayFile()) &&
       (outOfTargetSupport    )) {
@@ -1565,7 +1607,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
                               << std::endl;
     }
 
-    if (workingLogLikelihoodValues) {
+    if (writeLogLikelihood) {
       workingLogLikelihoodValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                    m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                    m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
@@ -1573,7 +1615,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
                                                    m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
     }
 
-    if (workingLogTargetValues) {
+    if (writeLogTarget) {
       workingLogTargetValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
@@ -2011,7 +2053,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
                                 << std::endl;
       }
 
-      if (workingLogLikelihoodValues) {
+      if (writeLogLikelihood) {
         workingLogLikelihoodValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                      m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                      m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
@@ -2019,7 +2061,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
                                                      m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
       }
 
-      if (workingLogTargetValues) {
+      if (writeLogTarget) {
         workingLogTargetValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                  m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                  m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",

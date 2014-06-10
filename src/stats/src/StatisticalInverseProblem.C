@@ -249,18 +249,24 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   m_postRv.setPdf(*m_solutionPdf);
 
   // Compute output realizer: Metropolis-Hastings approach
-  m_chain               = new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
-  m_logLikelihoodValues = new ScalarSequence<double>    (m_env,0,m_optionsObj->m_prefix+"logLike"  );
-  m_logTargetValues     = new ScalarSequence<double>    (m_env,0,m_optionsObj->m_prefix+"logTarget");
+  m_chain = new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
   m_mhSeqGenerator = new MetropolisHastingsSG<P_V,P_M>(m_optionsObj->m_prefix.c_str(), // dakota
-                                                              alternativeOptionsValues,
-                                                              m_postRv,
-                                                              initialValues,
-                                                              initialProposalCovMatrix);
+                                                       alternativeOptionsValues,
+                                                       m_postRv,
+                                                       initialValues,
+                                                       initialProposalCovMatrix);
 
-  m_mhSeqGenerator->generateSequence(*m_chain,
-                                     NULL, //m_logLikelihoodValues,
-                                     NULL);//m_logTargetValues);
+  m_logLikelihoodValues = new ScalarSequence<double>(m_env, 0,
+                                                     m_optionsObj->m_prefix +
+                                                     "logLike");
+
+  m_logTargetValues = new ScalarSequence<double>(m_env, 0,
+                                                 m_optionsObj->m_prefix +
+                                                 "logTarget");
+
+  // m_logLikelihoodValues and m_logTargetValues may be NULL
+  m_mhSeqGenerator->generateSequence(*m_chain, m_logLikelihoodValues,
+                                     m_logTargetValues);
 
   m_solutionRealizer = new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                                     *m_chain);
