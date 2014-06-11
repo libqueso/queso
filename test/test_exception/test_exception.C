@@ -23,8 +23,7 @@ int main(int argc, char **argv)
   // hit with exception
   try
     {
-      printf("Executing error\n");
-      queso_error();
+      queso_error_msg("Executing error");
     }
   catch(...)
     {
