@@ -1,0 +1,213 @@
+--------------------------------------------------------------------------------------------------------------
+QUESO Library: Version = 0.50.1 (5001)
+
+Development Build
+
+Build Date   = 2014-06-11 14:44
+Build Host   = zoidberg.ices.utexas.edu
+Build User   = damon
+Build Arch   = x86_64-unknown-linux-gnu
+Build Rev    = 9ad7de3
+
+C++ Config   = /opt/apps/ossw/libraries/mpich2/mpich2-1.4.1p1/sl6/gcc-4.7/bin/mpicxx -g -O2 -Wall
+
+Trilinos DIR = 
+GSL Libs     = -L/opt/apps/ossw/libraries/gsl/gsl-1.15/sl6/gcc-4.7/lib -lgsl -lgslcblas -lm
+GRVY DIR     = /opt/apps/ossw/libraries/grvy/grvy-0.32.0/sl6/gcc-4.7/boost-1.51.0/hdf5-1.8.9
+GLPK DIR     = 
+HDF5 DIR     = /opt/apps/ossw/libraries/hdf5/hdf5-1.8.9/sl6/gcc-4.7
+--------------------------------------------------------------------------------------------------------------
+Beginning run at Wed Jun 11 14:48:10 2014
+
+Entering StatisticalInverseProblem<P_V,P_M>::constructor(): prefix = , alternativeOptionsValues = 0, m_env.optionsInputFileName() = ./example.inp
+In StatisticalInverseProblemOptions::scanOptionsValues(): after reading values of options with prefix 'ip_', state of  object is:
+
+ip_computeSolution = 1
+ip_dataOutputFileName = outputData/sipOutput
+ip_dataOutputAllowedSet = 0 
+
+Leaving StatisticalInverseProblem<P_V,P_M>::constructor(): prefix = ip_
+In StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(): computing solution, as requested by user
+In MetropolisHastingsSGOptions::scanOptionsValues(): after reading values of options with prefix 'ip_mh_', state of object is:
+ip_mh_dataOutputFileName = outputData/sipOutput
+ip_mh_dataOutputAllowAll = 0
+ip_mh_dataOutputAllowedSet = 0 1 
+ip_mh_totallyMute = 0
+ip_mh_initialPosition_dataInputFileName = .
+ip_mh_initialPosition_dataInputFileType = m
+ip_mh_initialProposalCovMatrix_dataInputFileName = .
+ip_mh_initialProposalCovMatrix_dataInputFileType = m
+ip_mh_listOfDisabledParameters = 
+ip_mh_rawChain_dataInputFileName = .
+ip_mh_rawChain_dataInputFileType = m
+ip_mh_rawChain_size = 32768
+ip_mh_rawChain_generateExtra = 0
+ip_mh_rawChain_displayPeriod = 50000
+ip_mh_rawChain_measureRunTimes = 1
+ip_mh_rawChain_dataOutputPeriod = 0
+ip_mh_rawChain_dataOutputFileName = outputData/ip_raw_chain
+ip_mh_rawChain_dataOutputFileType = m
+ip_mh_rawChain_dataOutputAllowAll = 0
+ip_mh_rawChain_dataOutputAllowedSet = 0 1 
+ip_mh_filteredChain_generate = 1
+ip_mh_filteredChain_discardedPortion = 0
+ip_mh_filteredChain_lag = 16
+ip_mh_filteredChain_dataOutputFileName = outputData/ip_filt_chain
+ip_mh_filteredChain_dataOutputFileType = m
+ip_mh_filteredChain_dataOutputAllowAll = 0
+ip_mh_filteredChain_dataOutputAllowedSet = 0 1 
+ip_mh_displayCandidates = 0
+ip_mh_putOutOfBoundsInChain = 1
+ip_mh_tk_useLocalHessian = 0
+ip_mh_tk_useNewtonComponent = 1
+ip_mh_dr_maxNumExtraStages = 1
+ip_mh_dr_listOfScalesForExtraStages = 5 
+ip_mh_dr_duringAmNonAdaptiveInt = 1
+ip_mh_am_keepInitialMatrix = 0
+ip_mh_am_initialNonAdaptInterval = 0
+ip_mh_am_adaptInterval = 100
+ip_mh_am_adaptedMatrices_dataOutputPeriod = 0
+ip_mh_am_adaptedMatrices_dataOutputFileName = .
+ip_mh_am_adaptedMatrices_dataOutputFileType = m
+ip_mh_am_adaptedMatrices_dataOutputAllowAll = 0
+ip_mh_am_adaptedMatrices_dataOutputAllowedSet = 
+ip_mh_am_eta = 1.92
+ip_mh_am_epsilon = 1e-05
+ip_mh_enableBrooksGelmanConvMonitor = 0
+ip_mh_BrooksGelmanLag = 100
+ip_mh_outputLogLikelihood = 0
+ip_mh_outputLogTarget = 0
+
+Entering MetropolisHastingsSG<P_V,P_M>::constructor(1): prefix = ip_, alternativeOptionsValues = 0, m_env.optionsInputFileName() = ./example.inp, m_initialProposalCovMatrix = 8 4 ; 4 16 
+Entering MetropolisHastingsSG<P_V,P_M>::commonConstructor()
+In MetropolisHastingsSG<P_V,P_M>::commonConstructor(): just instantiated a 'ScaledCovMatrix' TK class
+Leaving MetropolisHastingsSG<P_V,P_M>::commonConstructor()
+Leaving MetropolisHastingsSG<P_V,P_M>::constructor(1)
+Starting the generation of Markov chain ip_mh_rawChain, with 32768 positions...
+
+In MetropolisHastingsSG<P_V,P_M>::generateFullChain(): contents of initial position are:0.1 -1.4 
+In MetropolisHastingsSG<P_V,P_M>::generateFullChain(): targetPdf.domaintSet() info is:In BoxSubset<V,M>::print(): m_minValues = -inf -inf , m_maxValues = inf inf , m_volume = inf
+
+Finished the generation of Markov chain ip_mh_rawChain, with sub 32768 positions
+Some information about this chain:
+  Chain run time       = 0.860662 seconds
+
+ Breaking of the chain run time:
+
+  Candidate run time   = 0.227863 seconds (26.4753%)
+  Num target calls  = 58468
+  Target d. run time   = 0.114551 seconds (13.3096%)
+  Avg target run time   = 1.95921e-06 seconds
+  Mh alpha run time    = 0.005854 seconds (0.680174%)
+  Dr alpha run time    = 0.338052 seconds (39.2781%)
+----------------------   --------------
+  Sum                  = 0.68632 seconds (79.7433%)
+
+ Other run times:
+  DR run time          = 0.552945 seconds (64.2465%)
+  AM run time          = 0 seconds (0%)
+  Number of DRs = 25700(num_DRs/chain_size = 0.784302)
+  Out of target support in DR = 0
+  Rejection percentage = 23.8525 %
+  Out of target support percentage = 0 %
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_, chain name = ip_mh_rawChain: about to try to open generic output file 'outputData/sipOutput.m', subId = 0, subenv is allowed to write (1/true or 0/false) = 1...
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: returned from opening generic output file 'outputData/sipOutput.m', subId = 0
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: about to try to write raw sub chain output file 'outputData/ip_raw_chain.m', subId = 0, subenv is allowed to write  1/true or 0/false) = 1...
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(): just wrote (per period request) remaining 32768 chain positions , 0 <= pos <= 32767
+Entering BaseVectorSequence<V,M>::subPositionsOfMaximum(): subCorrespondingScalarValues,subSequenceSize() = 32768, this->subSequenceSize = 32768
+Leaving BaseVectorSequence<V,M>::subPositionsOfMaximum()
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(): just computed MLE, rawSubMLEvalue = -3.41481e-06, rawSubMLEpositions.subSequenceSize() = 1, rawSubMLEpositions[0] = -0.994878 1.99948 
+Entering BaseVectorSequence<V,M>::subPositionsOfMaximum(): subCorrespondingScalarValues,subSequenceSize() = 32768, this->subSequenceSize = 32768
+Leaving BaseVectorSequence<V,M>::subPositionsOfMaximum()
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(): just computed MAP, rawSubMAPvalue = -3.41481e-06, rawSubMAPpositions.subSequenceSize() = 1, rawSubMAPpositions[0] = -0.994878 1.99948 
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: returned from writing raw sub chain output file 'outputData/ip_raw_chain.m', subId = 0
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: about to try to write raw unified chain output file 'outputData/ip_raw_chain.m', subId = 0...
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_, raw chain name = ip_mh_rawChain: returned from writing raw unified chain output file 'outputData/ip_raw_chain.m', subId = 0
+Entering BaseVectorSequence<V,M>::unifiedPositionsOfMaximum(): subCorrespondingScalarValues,subSequenceSize() = 32768, this->subSequenceSize = 32768
+Leaving BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(): just computed MLE, rawUnifiedMLEvalue = -3.41481e-06, rawUnifiedMLEpositions.subSequenceSize() = 1, rawUnifiedMLEpositions[0] = -0.994878 1.99948 
+Entering BaseVectorSequence<V,M>::unifiedPositionsOfMaximum(): subCorrespondingScalarValues,subSequenceSize() = 32768, this->subSequenceSize = 32768
+Leaving BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(): just computed MAP, rawUnifiedMAPvalue = -3.41481e-06, rawUnifiedMAPpositions.subSequenceSize() = 1, rawUnifiedMAPpositions[0] = -0.994878 1.99948 
+
+
+-----------------------------------------------------
+ Writing more information about the Markov chain ip_mh_rawChain to output file ...
+-----------------------------------------------------
+
+
+-----------------------------------------------------
+ Finished writing more information about the Markov chain ip_mh_rawChain
+-----------------------------------------------------
+
+Entering SequenceOfVectors<V,M>::filter(): initialPos = 0, spacing = 16, subSequenceSize = 32768
+Leaving SequenceOfVectors<V,M>::filter(): initialPos = 0, spacing = 16, subSequenceSize = 2048
+Entering ScalarSequence<V,M>::filter(): initialPos = 0, spacing = 16, subSequenceSize = 32768
+Leaving ScalarSequence<V,M>::filter(): initialPos = 0, spacing = 16, subSequenceSize = 2048
+Entering ScalarSequence<V,M>::filter(): initialPos = 0, spacing = 16, subSequenceSize = 32768
+Leaving ScalarSequence<V,M>::filter(): initialPos = 0, spacing = 16, subSequenceSize = 2048
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_: checking necessity of opening output files for filtered chain ip_mh_filtChain...
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_: closed sub output file 'outputData/ip_filt_chain' for filtered chain ip_mh_filtChain
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_: closed unified output file 'outputData/ip_filt_chain' for filtered chain ip_mh_filtChain
+In MetropolisHastingsSG<P_V,P_M>::generateSequence(), prefix = ip_mh_: closed generic output file 'outputData/sipOutput' (chain name is ip_mh_filtChain)
+
+In SequentialVectorRealizer<V,M>::constructor(): m_chain.subSequenceSize() = 2048
+
+Entering StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::constructor(): prefix = , alternativeOptionsValues = 0, m_env.optionsInputFileName() = ./example.inp
+In StatisticalForwardProblemOptions::scanOptionsValues(): after reading values of options with prefix 'fp_', state of  object is:
+fp_computeSolution = 1
+fp_computeCovariances = 1
+fp_computeCorrelations = 1
+fp_dataOutputFileName = outputData/sfpOutput
+fp_dataOutputAllowedSet = 0 1 
+
+Leaving StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::constructor(): prefix = fp_
+In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(): computing solution, as requested by user
+Entering MonteCarloSG<P_V,P_M,Q_V,Q_M>::constructor(): prefix = fp_, alternativeOptionsValues = 0, m_env.optionsInputFileName() = ./example.inp
+In MonteCarloSGOptions::scanOptionsValues(): after reading values of options with prefix 'fp_mc_', state of object is:
+fp_mc_dataOutputFileName = outputData/sfpOutput
+fp_mc_dataOutputAllowedSet = 0 1 
+fp_mc_pseq_dataOutputPeriod = 0
+fp_mc_pseq_dataOutputFileName = outputData/fp_p_seq
+fp_mc_pseq_dataOutputFileType = m
+fp_mc_pseq_dataOutputAllowedSet = 0 1 
+fp_mc_qseq_dataInputFileName = .
+fp_mc_qseq_dataInputFileType = m
+fp_mc_qseq_size = 1048576
+fp_mc_qseq_displayPeriod = 20000
+fp_mc_qseq_measureRunTimes = 1
+fp_mc_qseq_dataOutputPeriod = 0
+fp_mc_qseq_dataOutputFileName = outputData/fp_q_seq
+fp_mc_qseq_dataOutputFileType = m
+fp_mc_qseq_dataOutputAllowedSet = 0 1 
+Leaving MonteCarloSG<P_V,P_M,Q_V,Q_M>::constructor()
+In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): m_optionsObj->m_ov.m_qseqSize = 1048576, paramRv.realizer().subPeriod() = 2048, about to call actualGenerateSequence() with subActualSize = 2048
+Starting the generation of qoi sequence fp_mc_QoiSeq, with 2048 samples...
+Finished the generation of qoi sequence fp_mc_QoiSeq, with sub 2048 samples
+Some information about this sequence:
+  Sequence run time = 0.0025 seconds
+
+ Breaking of the seq run time:
+
+  QoI function run time   = 0.000355 seconds (14.2%)
+In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(): returned from call to actualGenerateSequence() with subActualSize = 2048
+In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening generic output file (qseq name is fp_mc_QoiSeq) ...
+In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening output files for pseq fp_mc_ParamSeq...
+In MonteCarloG<P_V,P_M>::internGenerateSequence(): just wrote remaining pseq positions (per period request)
+In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: closed unified data output file 'outputData/fp_p_seq' for pseq fp_mc_ParamSeq
+In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: checking necessity of opening output files for qseq fp_mc_QoiSeq...
+In MonteCarloG<P_V,P_M>::internGenerateSequence(): just wrote remaining qseq positions (per period request)
+In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: closed unified data output file 'outputData/fp_q_seq' for qseq fp_mc_QoiSeq
+In MonteCarloSG<P_V,P_M,Q_V,Q_M>::internGenerateSequence(), prefix = fp_mc_: closed generic data output file 'outputData/sfpOutput' for QoI sequence fp_mc_QoiSeq
+
+In SequentialVectorRealizer<V,M>::constructor(): m_chain.subSequenceSize() = 2048
+In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: instantiating cov and corr matrices
+In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: contents of covariance matrix are
+4.02364 ; 1.01851 
+In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: contents of correlation matrix are
+0.897592 ; 0.45814 
+In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: checking necessity of opening data output file 'outputData/sfpOutput'
+In StatisticalForwardProblem<P_V,P_M,Q_V,Q_M>::solveWithMonteCarlo(), prefix = fp_: closed data output file 'outputData/sfpOutput'
+
+Ending run at Wed Jun 11 14:48:11 2014
+Total run time = 1 seconds
