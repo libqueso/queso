@@ -88,8 +88,8 @@
 #define UQ_MH_SG_AM_EPSILON_ODV                                       1.e-5
 #define UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                    0
 #define UQ_MH_SG_BROOKS_GELMAN_LAG                                    100
-#define UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                                0
-#define UQ_MH_SG_OUTPUT_LOG_TARGET                                    0
+#define UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                                1
+#define UQ_MH_SG_OUTPUT_LOG_TARGET                                    1
 
 namespace QUESO {
 
