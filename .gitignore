@@ -96,3 +96,13 @@ test/test_operator
 test/test_uqexception
 test/test_SequenceOfVectorsErase
 test/test_gpmsa_cobra
+test/test_LlhdTargetOutput
+test/test_StatisticalInverseProblem/both_input.txt
+test/test_StatisticalInverseProblem/llhdout_input.txt
+test/test_StatisticalInverseProblem/neither_input.txt
+test/test_StatisticalInverseProblem/targetout_input.txt
+test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+test/test_outputBoth/
+test/test_outputLlhd/
+test/test_outputNeither/
+test/test_outputTarget/
