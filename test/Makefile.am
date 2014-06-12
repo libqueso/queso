@@ -154,10 +154,11 @@ EXTRA_DIST += test_Regression/test_cobra_samples_diff.sh.in
 EXTRA_DIST += test_Regression/test_gpmsa_cobra_samples.m.in
 EXTRA_DIST += test_Regression/ctf_dat.txt.in
 EXTRA_DIST += test_Regression/dakota_pstudy.dat.in
-EXTRA_DIST += test_StatisticalInverseProblem/both_input.txt
-EXTRA_DIST += test_StatisticalInverseProblem/llhdout_input.txt
-EXTRA_DIST += test_StatisticalInverseProblem/targetout_input.txt
-EXTRA_DIST += test_StatisticalInverseProblem/neither_input.txt
+EXTRA_DIST += test_StatisticalInverseProblem/both_input.txt.in
+EXTRA_DIST += test_StatisticalInverseProblem/llhdout_input.txt.in
+EXTRA_DIST += test_StatisticalInverseProblem/targetout_input.txt.in
+EXTRA_DIST += test_StatisticalInverseProblem/neither_input.txt.in
+EXTRA_DIST += test_StatisticalInverseProblem/test_LlhdTargetOutput.sh.in
 
 CLEANFILES =
 CLEANFILES += $(top_srcdir)/test/test_Environment/debug_output_sub0.txt
