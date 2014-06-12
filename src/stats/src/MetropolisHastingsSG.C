@@ -1099,7 +1099,7 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
       if (writeLogLikelihood) {
         workingLogLikelihoodValues->subWriteContents(m_optionsObj->m_ov.m_rawChainSize - m_numPositionsNotSubWritten,
                                                      m_numPositionsNotSubWritten,
-                                                     m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
+                                                     m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_loglikelihood",
                                                      m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                                      m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
       }
@@ -1107,7 +1107,7 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
       if (writeLogTarget) {
         workingLogTargetValues->subWriteContents(m_optionsObj->m_ov.m_rawChainSize - m_numPositionsNotSubWritten,
                                                  m_numPositionsNotSubWritten,
-                                                 m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
+                                                 m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_logtarget",
                                                  m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                                  m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
       }
@@ -1199,12 +1199,12 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
     }
 
     if (writeLogLikelihood) {
-      workingLogLikelihoodValues->unifiedWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
+      workingLogLikelihoodValues->unifiedWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_loglikelihood",
                                                        m_optionsObj->m_ov.m_rawChainDataOutputFileType);
     }
 
     if (writeLogTarget) {
-      workingLogTargetValues->unifiedWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
+      workingLogTargetValues->unifiedWriteContents(m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_logtarget",
                                                    m_optionsObj->m_ov.m_rawChainDataOutputFileType);
     }
 
@@ -1332,7 +1332,7 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
       if (writeLogLikelihood) {
         workingLogLikelihoodValues->subWriteContents(0,
                                                      workingChain.subSequenceSize(),
-                                                     m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_likelihood",
+                                                     m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_loglikelihood",
                                                      m_optionsObj->m_ov.m_filteredChainDataOutputFileType,
                                                      m_optionsObj->m_ov.m_filteredChainDataOutputAllowedSet);
       }
@@ -1340,7 +1340,7 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
       if (writeLogTarget) {
         workingLogTargetValues->subWriteContents(0,
                                                  workingChain.subSequenceSize(),
-                                                 m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_target",
+                                                 m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_logtarget",
                                                  m_optionsObj->m_ov.m_filteredChainDataOutputFileType,
                                                  m_optionsObj->m_ov.m_filteredChainDataOutputAllowedSet);
       }
@@ -1363,12 +1363,12 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
       }
 
       if (writeLogLikelihood) {
-        workingLogLikelihoodValues->unifiedWriteContents(m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_likelihood",
+        workingLogLikelihoodValues->unifiedWriteContents(m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_loglikelihood",
                                                          m_optionsObj->m_ov.m_filteredChainDataOutputFileType);
       }
 
       if (writeLogTarget) {
-        workingLogTargetValues->unifiedWriteContents(m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_target",
+        workingLogTargetValues->unifiedWriteContents(m_optionsObj->m_ov.m_filteredChainDataOutputFileName + "_logtarget",
                                                      m_optionsObj->m_ov.m_filteredChainDataOutputFileType);
       }
     }
@@ -1610,7 +1610,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     if (writeLogLikelihood) {
       workingLogLikelihoodValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                    m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                                   m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
+                                                   m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_loglikelihood",
                                                    m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                                    m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
     }
@@ -1618,7 +1618,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     if (writeLogTarget) {
       workingLogTargetValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                               m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
+                                               m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_logtarget",
                                                m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                                m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
     }
@@ -2056,7 +2056,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
       if (writeLogLikelihood) {
         workingLogLikelihoodValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                      m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                                     m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_likelihood",
+                                                     m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_loglikelihood",
                                                      m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                                      m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
       }
@@ -2064,7 +2064,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
       if (writeLogTarget) {
         workingLogTargetValues->subWriteContents(0 + 1 - m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
                                                  m_optionsObj->m_ov.m_rawChainDataOutputPeriod,
-                                                 m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_target",
+                                                 m_optionsObj->m_ov.m_rawChainDataOutputFileName + "_logtarget",
                                                  m_optionsObj->m_ov.m_rawChainDataOutputFileType,
                                                  m_optionsObj->m_ov.m_rawChainDataOutputAllowedSet);
       }
