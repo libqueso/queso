@@ -22,12 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef UQ_JEFFREYS_JOINT_PROB_DENSITY_H
+#ifndef UQ_JEFFREYS_JOINY_PROB_DENSITY_H
 #define UQ_JEFFREYS_JOINT_PROB_DENSITY_H
-
-#include <cmath>
-
-#include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
 
 #include <queso/JointPdf.h>
 #include <queso/Environment.h>
@@ -36,14 +32,12 @@
 
 namespace QUESO {
 
-//*****************************************************
-// Jeffreys probability density class [PDF-04]
-//*****************************************************
 /*!
  * \class JeffreysJointPdf
  * \brief A class for handling jeffreys joint PDFs.
  *
- * This class allows the mathematical definition of a Jeffreys Joint PDF.*/
+ * This class allows the mathematical definition of a Jeffreys Joint PDF.
+*/
 
 template<class V, class M>
 class JeffreysJointPdf : public BaseJointPdf<V,M> {
@@ -51,7 +45,7 @@ public:
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor
-  /*! Constructs a new object of the class, given a prefix and the domain set of the uniform PDF.  */
+  /*! Constructs a new object of the class, given a prefix and the domain set of the jeffreys PDF.  */
   JeffreysJointPdf(const char*                  prefix,
                          const VectorSet<V,M>& domainSet);
   //! Destructor
@@ -63,8 +57,8 @@ public:
   //! Actual value of the jeffreys PDF.
   /*! If the domain of the PDF is well defined (neither negative nor infinite), then the actual
    * value is given by 1/x, otherwise the actual
-   * value is 1.*/
- //TODO: should we have a different default value if domain not well-defined?
+   * value is 0.*/
+  
   double actualValue(const V& domainVector, const V* domainDirection, V*
       gradVector, M* hessianMatrix, V* hessianEffect) const;
   

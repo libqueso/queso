@@ -28,13 +28,9 @@
 #include <queso/VectorRealizer.h>
 #include <queso/VectorSequence.h>
 #include <queso/Environment.h>
-#include <math.h>
 
 namespace QUESO {
 
-//*****************************************************
-// Uniform class [R-04]
-//*****************************************************
 /*! 
  * \class JeffreysVectorRealizer
  * \brief A class for handling sampling from a jeffreys probability density

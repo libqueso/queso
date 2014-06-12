@@ -64,10 +64,9 @@ JeffreysJointPdf<V,M>::actualValue(
         M* hessianMatrix,
         V* hessianEffect) const
 {
-  UQ_FATAL_TEST_MACRO(domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal(),
-                      m_env.worldRank(),
-                      "JeffreysJointPdf<V,M>::actualValue()",
-                      "invalid input");
+  if (domainVector.sizeLocal() != this->m_domainSet.vectorSpace().dimLocal()) {
+    queso_error_msg("There is an invalid input while computing JeffreysJointPdf<V,M>::actualValue()");
+  }
 
   if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
   if (hessianMatrix) *hessianMatrix *= 0.;
@@ -79,15 +78,13 @@ JeffreysJointPdf<V,M>::actualValue(
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i){
     if (domainVector[i] < 0. ) {
       queso_error_msg("The domain for Jeffreys prior should be greater than zero."); }
-    else if (//((boost::math::isnan)()) ||
-        (domainVector[i] == -INFINITY         ) ||
-        (domainVector[i] ==  INFINITY         ) ||
-        //(domainVector[i] <= 0.                ) ||
+    else if ((domainVector[i] == -INFINITY         ) ||
+        (domainVector[i]      ==  INFINITY         ) ||
         (m_normalizationStyle != 0   )) {//TODO: R: not sure what this is doing?
       pdf = 0.;
     }
   else {
-    pdf = pdf*(1./domainVector[i]);
+    pdf = pdf * (1. / domainVector[i]);
     }
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
@@ -119,16 +116,14 @@ JeffreysJointPdf<V,M>::lnValue(
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i){
     if (domainVector[i] < 0. ) {
       queso_error_msg("The domain for Jeffreys prior should be greater than zero."); }
-    else if (//((boost::math::isnan)()) ||
-        (domainVector[i] == -INFINITY         ) ||
-        (domainVector[i] ==  INFINITY         ) ||
-        //(domainVector[i] <= 0.                ) ||
+    else if ((domainVector[i] == -INFINITY         ) ||
+        (domainVector[i]      ==  INFINITY         ) ||
         (m_normalizationStyle != 0   )) {//TODO: R: not sure what this is doing?
       pdf = 0.;
       result = -INFINITY; //TODO: what do we do here?
     }
   else {
-    pdf = pdf*(1./domainVector[i]);
+    pdf = pdf * (1. / domainVector[i]);
     result = -log(pdf);
     }
   }
@@ -164,4 +159,3 @@ JeffreysJointPdf<V,M>::computeLogOfNormalizationFactor(unsigned int numSamples, 
 }  // End namespace QUESO
 
 template class QUESO::JeffreysJointPdf<QUESO::GslVector, QUESO::GslMatrix>;
-

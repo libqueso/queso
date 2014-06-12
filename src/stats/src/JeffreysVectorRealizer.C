@@ -60,29 +60,28 @@ JeffreysVectorRealizer<V,M>::realization(V& nextValues) const
 {
   const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&m_unifiedImageSet);
 
-  UQ_FATAL_TEST_MACRO(imageBox == NULL,
-                      m_env.worldRank(),
-                      "JeffreysVectorRealizer<V,M>::realization()",
-                      "only box images are supported right now");
+  if (imageBox == NULL) {
+    queso_error_msg(" For JeffreysVectorRealizer<V,M>::realization(), only box
+        images are supported right now ");
+  }
   //take log of Jeffreys bounds to set uniform bounds
-  using std::log;
-  QUESO::GslVector logMinValues(imageBox->minValues());
+  GslVector logMinValues(imageBox->minValues());
   for (unsigned int i = 0; i < logMinValues.sizeLocal(); ++i) {
     if (logMinValues[i] < 0.) {
       queso_error_msg("The minimum value for a Jeffreys distribution should be greater than
           or equal to zero."); }
-    else logMinValues[i] = log(logMinValues[i]);
+    else logMinValues[i] = std::log(logMinValues[i]);
   }
 
-  QUESO::GslVector logMaxValues(imageBox->maxValues());
+  GslVector logMaxValues(imageBox->maxValues());
   for (unsigned int i = 0; i < logMaxValues.sizeLocal(); ++i) {
     if (logMaxValues[i] <= 0.) {
       queso_error_msg("The maximum value for a Jeffreys distribution should be greater than
           zero."); }
-    else logMaxValues[i] = log(logMaxValues[i]);
+    else logMaxValues[i] = std::log(logMaxValues[i]);
   }
 
-  nextValues.cwSetUniform(log(imageBox->minValues()),imageBox->maxValues());
+  nextValues.cwSetUniform(logMinValues,logMaxValues);
   for (unsigned int i = 0; i < nextValues.sizeLocal(); ++i){
     nextValues[i] = exp(nextValues[i]);
   }
