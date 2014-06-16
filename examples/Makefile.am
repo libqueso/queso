@@ -83,7 +83,6 @@ exSimpleStatisticalInverseProblem_gsldir = $(prefix)/examples/simpleStatisticalI
 exSimpleStatisticalInverseProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/example.inp
 exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/simple_ip_plots.m
 exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/tests/test_2013_08_26/histyy.m
-exSimpleStatisticalInverseProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalInverseProblem/src/Makefile_sip_example_margarida 
 
 exSimpleStatisticalInverseProblem_gsl_PROGRAMS = exSimpleStatisticalInverseProblem_gsl
 
@@ -111,7 +110,6 @@ exSimpleStatisticalForwardProblem_gsldir = $(prefix)/examples/simpleStatisticalF
 
 exSimpleStatisticalForwardProblem_gsl_DATA = $(top_srcdir)/examples/simpleStatisticalForwardProblem/tests/test_2013_08_27/simple_sfp_example.inp
 exSimpleStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalForwardProblem/tests/test_2013_08_27/simple_fp_plots.m
-exSimpleStatisticalForwardProblem_gsl_DATA += $(top_srcdir)/examples/simpleStatisticalForwardProblem/src/Makefile_sfp_example_margarida
 
 exSimpleStatisticalForwardProblem_gsl_PROGRAMS = exSimpleStatisticalForwardProblem_gsl
 
@@ -275,7 +273,6 @@ gravity_gsl_DATA = $(top_srcdir)/examples/gravity/tests/test_2013_01_22/gravity_
 gravity_gsl_DATA += $(top_srcdir)/examples/gravity/tests/test_2013_01_22/gravity_plots_ip.m
 gravity_gsl_DATA += $(top_srcdir)/examples/gravity/tests/test_2013_01_22/gravity_plots_fp.m
 gravity_gsl_DATA += $(top_srcdir)/examples/gravity/tests/test_2013_01_22/autocorr_local.m
-gravity_gsl_DATA += $(top_srcdir)/examples/gravity/src/Makefile_example_violeta
 
 gravity_gsl_PROGRAMS = gravity_gsl
 
@@ -307,7 +304,6 @@ bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/matlab/plot_all.m
 bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/matlab/plot_likelihood.m
 bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/matlab/plot_likelihood_normalized_taus.m
 bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/matlab/plot_likelihood_unnormalized_taus.m
-bimodal_gsl_DATA += $(top_srcdir)/examples/bimodal/src/Makefile_bimodal_violeta
 
 bimodal_gsl_PROGRAMS = bimodal_gsl
 
@@ -340,7 +336,6 @@ hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/tests/test_2013_12_11/m
 hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/tests/test_2013_12_11/measured_data1_4.txt
 hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/matlab/plot_all.m
 hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/matlab/cpp_gen.m
-hysteretic_gsl_DATA += $(top_srcdir)/examples/hysteretic/src/Makefile_hysteretic_violeta
 
 hysteretic_gsl_PROGRAMS = hysteretic_gsl
 
