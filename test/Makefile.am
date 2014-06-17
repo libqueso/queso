@@ -174,7 +174,7 @@ endif
 
 if GIT_CLONE
 .license.stamp: $(top_srcdir)/LICENSE
-	@$(top_srcdir)/src/common/lic_utils/update_license.pl $(QUESO_STAMPED_FILES)
+	@$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
 	echo 'updated source license headers' >$@
 endif
 
