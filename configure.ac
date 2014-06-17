@@ -11,7 +11,7 @@ AX_PREFIX_CONFIG_H(config_queso.h,QUESO,config_queso.h.tmp)
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CANONICAL_TARGET()
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([color-tests subdir-objects])
 
 # Release versioning
 
@@ -209,6 +209,16 @@ AC_CONFIG_FILES([
   chmod +x test/test_Regression/test_cobra_samples_diff.sh
   chmod +x test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
 ])
+
+dnl ----------------------------------------------
+dnl Collect files for licence header stamping here
+dnl ----------------------------------------------
+_AC_SRCDIRS(.)
+
+# We have to do this by subdirectory because otherwise distcheck breaks as we
+# start picking up files in the directories that it uses
+QUESO_STAMPED_FILES=$(find $ac_abs_top_srcdir/{src,examples,test} -name "*.h" -or -name "*.C" | tr "\n" " ")
+AC_SUBST(QUESO_STAMPED_FILES)
 
 AC_OUTPUT()
 
