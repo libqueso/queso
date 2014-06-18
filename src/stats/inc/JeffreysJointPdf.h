@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef UQ_JEFFREYS_JOINY_PROB_DENSITY_H
+#ifndef UQ_JEFFREYS_JOINT_PROB_DENSITY_H
 #define UQ_JEFFREYS_JOINT_PROB_DENSITY_H
 
 #include <queso/JointPdf.h>
