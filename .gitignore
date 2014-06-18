@@ -5,6 +5,9 @@
 *.gcda
 *.gcno
 *~
+*.log
+*.trs
+*.dirstamp
 
 Makefile.in
 Makefile

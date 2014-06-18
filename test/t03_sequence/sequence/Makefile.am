@@ -17,7 +17,7 @@ SequenceExample_gsl_SOURCES = example_main.C example_compute.C
 
 if SVN_CHECKOUT
 .license.stamp: $(top_srcdir)/LICENSE
-	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE *.C *.h
+	$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
 	echo 'updated source license headers' >$@
 endif
 

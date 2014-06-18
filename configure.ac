@@ -175,7 +175,6 @@ AC_CONFIG_FILES([
   inc/queso/Makefile
   src/Makefile
   src/contrib/ANN/Makefile
-  src/contrib/ANN/lib/Makefile
   src/contrib/ANN/test/Makefile
   src/core/inc/queso.h
   examples/Makefile        
