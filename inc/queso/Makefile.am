@@ -118,6 +118,9 @@ BUILT_SOURCES += InfoTheory.h
 BUILT_SOURCES += InverseGammaJointPdf.h
 BUILT_SOURCES += InverseGammaVectorRV.h
 BUILT_SOURCES += InverseGammaVectorRealizer.h
+BUILT_SOURCES += JeffreysJointPdf.h
+BUILT_SOURCES += JeffreysVectorRV.h
+BUILT_SOURCES += JeffreysVectorRealizer.h
 BUILT_SOURCES += JointPdf.h
 BUILT_SOURCES += LogNormalJointPdf.h
 BUILT_SOURCES += LogNormalVectorRV.h
@@ -389,6 +392,12 @@ InverseGammaJointPdf.h: $(top_srcdir)/src/stats/inc/InverseGammaJointPdf.h
 InverseGammaVectorRV.h: $(top_srcdir)/src/stats/inc/InverseGammaVectorRV.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InverseGammaVectorRealizer.h: $(top_srcdir)/src/stats/inc/InverseGammaVectorRealizer.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+JeffreysJointPdf.h: $(top_srcdir)/src/stats/inc/JeffreysJointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+JeffreysVectorRV.h: $(top_srcdir)/src/stats/inc/JeffreysVectorRV.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+JeffreysVectorRealizer.h: $(top_srcdir)/src/stats/inc/JeffreysVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 JointPdf.h: $(top_srcdir)/src/stats/inc/JointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
