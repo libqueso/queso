@@ -14,6 +14,9 @@ include $(top_srcdir)/doxygen/aminclude.am
 AUX_DIST = build-aux/install-sh    \
            build-aux/missing
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = queso.pc queso-deps.pc
+
 if CODE_COVERAGE_ENABLED
 
 lcov_dir=$(top_builddir)/docs/html/lcov
