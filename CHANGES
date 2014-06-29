@@ -3,6 +3,8 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
+* Adding jeffreys distribution as an available prior distribution
+
 Version 0.51.0
   * Adding likelihood value caching to ML sampler
   * Adding Eric Wright to contributors list
