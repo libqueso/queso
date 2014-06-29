@@ -20,16 +20,18 @@
 // Foundation, Inc. 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301  USA
 //
-// ----------------------------------------------------------------------el-
+//-----------------------------------------------------------------------el-
 #ifndef UQ_JEFFREYS_VECTOR_RV_H
 #define UQ_JEFFREYS_VECTOR_RV_H
 
 #include <queso/VectorRV.h>
 #include <queso/VectorSpace.h>
+#include <queso/JointPdf.h>
 #include <queso/VectorRealizer.h>
 #include <queso/VectorCdf.h>
 #include <queso/VectorMdf.h>
 #include <queso/SequenceOfVectors.h>
+#include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
 
 namespace QUESO {
 

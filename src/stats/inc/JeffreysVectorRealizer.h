@@ -25,6 +25,7 @@
 #ifndef UQ_JEFFREYS_REALIZER_H
 #define UQ_JEFFREYS_REALIZER_H
 
+#include <queso/Defines.h>
 #include <queso/VectorRealizer.h>
 #include <queso/VectorSequence.h>
 #include <queso/Environment.h>

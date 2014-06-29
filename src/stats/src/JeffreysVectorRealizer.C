@@ -61,23 +61,19 @@ JeffreysVectorRealizer<V,M>::realization(V& nextValues) const
   const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&m_unifiedImageSet);
 
   if (imageBox == NULL) {
-    queso_error_msg(" For JeffreysVectorRealizer<V,M>::realization(), only box
-        images are supported right now ");
-  }
+    queso_error_msg(" For JeffreysVectorRealizer<V,M>::realization(), only box images are supported right now ");}
   //take log of Jeffreys bounds to set uniform bounds
   GslVector logMinValues(imageBox->minValues());
   for (unsigned int i = 0; i < logMinValues.sizeLocal(); ++i) {
     if (logMinValues[i] < 0.) {
-      queso_error_msg("The minimum value for a Jeffreys distribution should be greater than
-          or equal to zero."); }
+      queso_error_msg("The minimum value for a Jeffreys distribution should be greater than or equal to zero."); }
     else logMinValues[i] = std::log(logMinValues[i]);
   }
 
   GslVector logMaxValues(imageBox->maxValues());
   for (unsigned int i = 0; i < logMaxValues.sizeLocal(); ++i) {
     if (logMaxValues[i] <= 0.) {
-      queso_error_msg("The maximum value for a Jeffreys distribution should be greater than
-          zero."); }
+      queso_error_msg("The maximum value for a Jeffreys distribution should be greater than zero."); }
     else logMaxValues[i] = std::log(logMaxValues[i]);
   }
 
