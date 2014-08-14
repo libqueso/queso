@@ -30,6 +30,8 @@
 #include <queso/HessianCovMatricesTKGroup.h>
 #include <queso/ScaledCovMatrixTKGroup.h>
 
+#include <queso/GaussianJointPdf.h>
+
 namespace QUESO {
 
 // Default constructor -----------------------------

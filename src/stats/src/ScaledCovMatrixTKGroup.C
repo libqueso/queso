@@ -25,6 +25,7 @@
 #include <queso/ScaledCovMatrixTKGroup.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/GaussianJointPdf.h>
 
 namespace QUESO {
 

@@ -23,6 +23,8 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/LogNormalVectorRV.h>
+#include <queso/LogNormalJointPdf.h>
+#include <queso/LogNormalVectorRealizer.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
