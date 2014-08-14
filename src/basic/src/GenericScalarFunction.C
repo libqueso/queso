@@ -69,11 +69,7 @@ double GenericScalarFunction<V,M>::actualValue(const V& domainVector,
 
   double value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);
   if (m_routineIsForLn) {
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
     value = std::exp(value);
-#else
-    value = std::exp(-.5*value);
-#endif
     UQ_FATAL_TEST_MACRO((domainDirection != NULL) ||
                         (gradVector      != NULL) ||
                         (hessianMatrix   != NULL) ||
@@ -100,11 +96,7 @@ double GenericScalarFunction<V,M>::lnValue(const V& domainVector,
 
   double value = m_valueRoutinePtr(domainVector, domainDirection, m_routinesDataPtr, gradVector, hessianMatrix, hessianEffect);
   if (m_routineIsForLn == false) {
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
     value = log(value);
-#else
-    value = -2.*log(value);
-#endif
     UQ_FATAL_TEST_MACRO((domainDirection != NULL) ||
                         (gradVector      != NULL) ||
                         (hessianMatrix   != NULL) ||
