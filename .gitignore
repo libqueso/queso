@@ -20,6 +20,8 @@ aminclude.am
 autom4te.cache
 build-aux
 .license.stamp
+queso.pc
+queso-deps.pc
 
 _configs.sed
 config.log

@@ -3,6 +3,11 @@
 
 AC_PREREQ(2.65)
 AC_INIT([queso], [0.50.1], [queso-users@googlegroups.com])
+PACKAGE_DESCRIPTION="The parallel C++ statistical library QUESO: Quantification of uncertainty for estimation, simulation and optimization"
+AC_SUBST([PACKAGE_DESCRIPTION])
+PACKAGE_URL="https://github.com/libqueso/queso"
+AC_SUBST([PACKAGE_URL])
+
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_CONFIG_HEADERS(config_queso.h.tmp)
@@ -171,6 +176,8 @@ AX_SUMMARIZE_ENV
 # Generate makefiles
 
 AC_CONFIG_FILES([
+  queso.pc
+  queso-deps.pc
   Makefile
   inc/queso/Makefile
   src/Makefile
