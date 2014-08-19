@@ -59,32 +59,32 @@ if LIBMESH_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
 endif
 
-test_uqEnvironmentCopy_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentCopy.C
-test_uqEnvironmentEquals_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentEquals.C
-test_uqEnvironmentNonFatal_SOURCES = $(top_srcdir)/test/test_Environment/test_uqEnvironmentNonFatal.C
-test_uqEnvironmentOptionsPrint_SOURCES = $(top_srcdir)/test/test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.C
-test_uqGslVectorConstructorFatal_SOURCES = $(top_srcdir)/test/test_GslVector/test_uqGslVectorConstructorFatal.C
-test_uqGslVector_SOURCES = $(top_srcdir)/test/test_GslVector/test_uqGslVector.C
-test_uqGaussianVectorRVClass_SOURCES = $(top_srcdir)/test/test_GaussianVectorRVClass/test_uqGaussianVectorRVClass.C
-test_uqGslMatrixConstructorFatal_SOURCES = $(top_srcdir)/test/test_GslMatrix/test_uqGslMatrixConstructorFatal.C
-test_uqGslMatrix_SOURCES = $(top_srcdir)/test/test_GslMatrix/test_uqGslMatrix.C
-test_uqTeuchosVector_SOURCES = $(top_srcdir)/test/test_TeuchosVector/test_uqTeuchosVector.C
-test_uqexception_SOURCES = $(top_srcdir)/test/test_exception/test_exception.C
-test_DistArrayCtor_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayCtor.C
-test_DistArrayCopy_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayCopy.C
-test_DistArrayEquals_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayEquals.C
-test_DistArrayMisc_SOURCES = $(top_srcdir)/test/test_DistArray/test_DistArrayMisc.C
-test_GslVectorSpaceCtor_SOURCES = $(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceCtor.C
-test_GslVectorSpaceMisc_SOURCES = $(top_srcdir)/test/test_GslVectorSpace/test_GslVectorSpaceMisc.C
-test_IntersectionSubsetContains_SOURCES = $(top_srcdir)/test/test_IntersectionSubset/test_IntersectionSubsetContains.C
-test_operator_SOURCES = $(top_srcdir)/test/test_infinite/test_operator.C
-test_inf_gaussian_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_gaussian.C
-test_inf_options_SOURCES = $(top_srcdir)/test/test_infinite/test_inf_options.C
-test_SequenceOfVectorsErase_SOURCES = $(top_srcdir)/test/test_SequenceOfVectors/test_SequenceOfVectorsErase.C
-test_GaussianMean1DRegression_SOURCES = $(top_srcdir)/test/test_Regression/test_GaussianMean1DRegression.C
+test_uqEnvironmentCopy_SOURCES = test_Environment/test_uqEnvironmentCopy.C
+test_uqEnvironmentEquals_SOURCES = test_Environment/test_uqEnvironmentEquals.C
+test_uqEnvironmentNonFatal_SOURCES = test_Environment/test_uqEnvironmentNonFatal.C
+test_uqEnvironmentOptionsPrint_SOURCES = test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.C
+test_uqGslVectorConstructorFatal_SOURCES = test_GslVector/test_uqGslVectorConstructorFatal.C
+test_uqGslVector_SOURCES = test_GslVector/test_uqGslVector.C
+test_uqGaussianVectorRVClass_SOURCES = test_GaussianVectorRVClass/test_uqGaussianVectorRVClass.C
+test_uqGslMatrixConstructorFatal_SOURCES = test_GslMatrix/test_uqGslMatrixConstructorFatal.C
+test_uqGslMatrix_SOURCES = test_GslMatrix/test_uqGslMatrix.C
+test_uqTeuchosVector_SOURCES = test_TeuchosVector/test_uqTeuchosVector.C
+test_uqexception_SOURCES = test_exception/test_exception.C
+test_DistArrayCtor_SOURCES = test_DistArray/test_DistArrayCtor.C
+test_DistArrayCopy_SOURCES = test_DistArray/test_DistArrayCopy.C
+test_DistArrayEquals_SOURCES = test_DistArray/test_DistArrayEquals.C
+test_DistArrayMisc_SOURCES = test_DistArray/test_DistArrayMisc.C
+test_GslVectorSpaceCtor_SOURCES = test_GslVectorSpace/test_GslVectorSpaceCtor.C
+test_GslVectorSpaceMisc_SOURCES = test_GslVectorSpace/test_GslVectorSpaceMisc.C
+test_IntersectionSubsetContains_SOURCES = test_IntersectionSubset/test_IntersectionSubsetContains.C
+test_operator_SOURCES = test_infinite/test_operator.C
+test_inf_gaussian_SOURCES = test_infinite/test_inf_gaussian.C
+test_inf_options_SOURCES = test_infinite/test_inf_options.C
+test_SequenceOfVectorsErase_SOURCES = test_SequenceOfVectors/test_SequenceOfVectorsErase.C
+test_GaussianMean1DRegression_SOURCES = test_Regression/test_GaussianMean1DRegression.C
 test_GaussianMean1DRegression_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
-test_gpmsa_cobra_SOURCES = $(top_srcdir)/test/test_Regression/test_gpmsa_cobra.C
-test_LlhdTargetOutput_SOURCES = $(top_srcdir)/test/test_StatisticalInverseProblem/test_LlhdTargetOutput.C
+test_gpmsa_cobra_SOURCES = test_Regression/test_gpmsa_cobra.C
+test_LlhdTargetOutput_SOURCES = test_StatisticalInverseProblem/test_LlhdTargetOutput.C
 
 # Files to freedom stamp
 srcstamp =
@@ -174,7 +174,7 @@ endif
 
 if GIT_CLONE
 .license.stamp: $(top_srcdir)/LICENSE
-	$(top_srcdir)/src/common/lic_utils/update_license.pl $(srcstamp)
+	@$(top_srcdir)/src/common/lic_utils/update_license.pl $(top_srcdir)/LICENSE $(QUESO_STAMPED_FILES)
 	echo 'updated source license headers' >$@
 endif
 
