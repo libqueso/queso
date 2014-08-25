@@ -30,6 +30,7 @@ check_PROGRAMS += test_SequenceOfVectorsErase
 check_PROGRAMS += test_GaussianMean1DRegression
 check_PROGRAMS += test_gpmsa_cobra
 check_PROGRAMS += test_LlhdTargetOutput
+check_PROGRAMS += test_jeffreys
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -85,6 +86,7 @@ test_GaussianMean1DRegression_SOURCES = test_Regression/test_GaussianMean1DRegre
 test_GaussianMean1DRegression_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
 test_gpmsa_cobra_SOURCES = test_Regression/test_gpmsa_cobra.C
 test_LlhdTargetOutput_SOURCES = test_StatisticalInverseProblem/test_LlhdTargetOutput.C
+test_jeffreys_SOURCES = test_Regression/test_jeffreys.C
 
 # Files to freedom stamp
 srcstamp =
@@ -112,6 +114,7 @@ srcstamp += $(test_inf_options_SOURCES)
 srcstamp += $(test_GaussianMean1DRegression_SOURCES)
 srcstamp += $(test_gpmsa_cobra_SOURCES)
 srcstamp += $(test_LlhdTargetOutput_SOURCES)
+srcstamp += $(test_jeffreys_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
@@ -139,6 +142,7 @@ TESTS += $(top_builddir)/test/test_SequenceOfVectorsErase
 TESTS += $(top_builddir)/test/test_GaussianMean1DRegression
 TESTS += $(top_builddir)/test/test_Regression/test_cobra_samples_diff.sh
 TESTS += $(top_builddir)/test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+TESTS += $(top_builddir)/test/test_Regression/test_jeffreys_samples_diff.sh
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
@@ -159,6 +163,9 @@ EXTRA_DIST += test_StatisticalInverseProblem/llhdout_input.txt.in
 EXTRA_DIST += test_StatisticalInverseProblem/targetout_input.txt.in
 EXTRA_DIST += test_StatisticalInverseProblem/neither_input.txt.in
 EXTRA_DIST += test_StatisticalInverseProblem/test_LlhdTargetOutput.sh.in
+EXTRA_DIST += test_Regression/jeffreys_input.txt.in
+EXTRA_DIST += test_Regression/test_jeffreys_samples_diff.sh.in
+EXTRA_DIST += test_Regression/test_jeffreys_samples.m.in
 
 CLEANFILES =
 CLEANFILES += $(top_srcdir)/test/test_Environment/debug_output_sub0.txt

@@ -25,6 +25,7 @@
 #include <queso/JeffreysVectorRV.h>
 #include <queso/JeffreysJointPdf.h>
 #include <queso/JeffreysVectorRealizer.h>
+#include <queso/VectorSet.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 

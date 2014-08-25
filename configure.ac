@@ -207,6 +207,9 @@ AC_CONFIG_FILES([
   test/test_StatisticalInverseProblem/llhdout_input.txt
   test/test_StatisticalInverseProblem/neither_input.txt
   test/test_StatisticalInverseProblem/targetout_input.txt
+  test/test_Regression/jeffreys_input.txt
+  test/test_Regression/test_jeffreys_samples_diff.sh
+  test/test_Regression/test_jeffreys_samples.m
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page
@@ -214,6 +217,7 @@ AC_CONFIG_FILES([
 [
   chmod +x test/test_Regression/test_cobra_samples_diff.sh
   chmod +x test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+  chmod +x test/test_Regression/test_jeffreys_samples_diff.sh
 ])
 
 dnl ----------------------------------------------
