@@ -25,11 +25,7 @@ public:
   {
     double misfit = 1.0;
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
     return -0.5 * misfit;
-#else
-    return misfit;
-#endif
   }
 
   virtual double actualValue(const V & domainVector, const V * domainDirection,

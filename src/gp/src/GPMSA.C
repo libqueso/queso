@@ -224,11 +224,7 @@ GPMSAEmulator<V, M>::lnValue(const V & domainVector,
     minus_2_log_lhd += sol[i] * residual[i];
   }
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
   return -0.5 * minus_2_log_lhd;
-#else
-  return minus_2_log_lhd;
-#endif
 }
 
 template <class V, class M>

@@ -63,10 +63,6 @@ likelihoodRoutine(
     result = scalarProduct(diffVec, matrix * diffVec);
   }
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
   return -.5*result;
-#else
-  return result;
-#endif
 }
 #endif // EX_STATISTICAL_INVERSE_PROBLEM_LIKELIHOOD_H

@@ -91,9 +91,5 @@ double likelihoodRoutine(
   double result = -0.5*((double) numModes)*5.*log(2.*M_PI*sigmaSq) - 0.5*(sum1+sum2)/sigmaSq;
 
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
   return result;
-#else
-  return -2.*result; 
-#endif
 }
