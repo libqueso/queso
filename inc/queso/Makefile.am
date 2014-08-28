@@ -95,6 +95,7 @@ BUILT_SOURCES += BayesianJointPdf.h
 BUILT_SOURCES += BetaJointPdf.h
 BUILT_SOURCES += BetaVectorRV.h
 BUILT_SOURCES += BetaVectorRealizer.h
+BUILT_SOURCES += CompactlySupportedScaledCovMatrixTKGroup.h
 BUILT_SOURCES += ConcatenatedJointPdf.h
 BUILT_SOURCES += ConcatenatedVectorRV.h
 BUILT_SOURCES += ConcatenatedVectorRealizer.h
@@ -118,6 +119,9 @@ BUILT_SOURCES += GenericVectorRV.h
 BUILT_SOURCES += GenericVectorRealizer.h
 BUILT_SOURCES += HessianCovMatricesTKGroup.h
 BUILT_SOURCES += InfoTheory.h
+BUILT_SOURCES += InvLogitGaussianJointPdf.h
+BUILT_SOURCES += InvLogitGaussianVectorRV.h
+BUILT_SOURCES += InvLogitGaussianVectorRealizer.h
 BUILT_SOURCES += InverseGammaJointPdf.h
 BUILT_SOURCES += InverseGammaVectorRV.h
 BUILT_SOURCES += InverseGammaVectorRealizer.h
@@ -350,6 +354,8 @@ BetaVectorRV.h: $(top_srcdir)/src/stats/inc/BetaVectorRV.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BetaVectorRealizer.h: $(top_srcdir)/src/stats/inc/BetaVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+CompactlySupportedScaledCovMatrixTKGroup.h: $(top_srcdir)/src/stats/inc/CompactlySupportedScaledCovMatrixTKGroup.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ConcatenatedJointPdf.h: $(top_srcdir)/src/stats/inc/ConcatenatedJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ConcatenatedVectorRV.h: $(top_srcdir)/src/stats/inc/ConcatenatedVectorRV.h
@@ -395,6 +401,12 @@ GenericVectorRealizer.h: $(top_srcdir)/src/stats/inc/GenericVectorRealizer.h
 HessianCovMatricesTKGroup.h: $(top_srcdir)/src/stats/inc/HessianCovMatricesTKGroup.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InfoTheory.h: $(top_srcdir)/src/stats/inc/InfoTheory.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InvLogitGaussianJointPdf.h: $(top_srcdir)/src/stats/inc/InvLogitGaussianJointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InvLogitGaussianVectorRV.h: $(top_srcdir)/src/stats/inc/InvLogitGaussianVectorRV.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InvLogitGaussianVectorRealizer.h: $(top_srcdir)/src/stats/inc/InvLogitGaussianVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InverseGammaJointPdf.h: $(top_srcdir)/src/stats/inc/InverseGammaJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

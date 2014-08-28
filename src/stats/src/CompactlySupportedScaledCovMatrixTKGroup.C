@@ -22,31 +22,30 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/ScaledCovMatrixTKGroup.h>
+#include <queso/CompactlySupportedScaledCovMatrixTKGroup.h>
+#include <queso/InvLogitGaussianJointPdf.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
-#include <queso/GaussianJointPdf.h>
 
 namespace QUESO {
 
-// Default constructor ------------------------------
 template<class V, class M>
-ScaledCovMatrixTKGroup<V,M>::ScaledCovMatrixTKGroup(
-  const char*                    prefix,
-  const VectorSpace<V,M>& vectorSpace, // FIX ME: vectorSubset ???
-  const std::vector<double>&     scales,
-  const M&                       covMatrix)
-  :
-  BaseTKGroup<V,M>(prefix,vectorSpace,scales),
-  m_originalCovMatrix    (covMatrix)
+CompactlySupportedScaledCovMatrixTKGroup<V,M>::CompactlySupportedScaledCovMatrixTKGroup(
+    const char * prefix,
+    const BoxSubset<V,M> & boxSubset,
+    const std::vector<double> & scales,
+    const M & covMatrix)
+  : BaseTKGroup<V, M>(prefix, boxSubset.vectorSpace(), scales),
+    m_boxSubset(boxSubset),
+    m_originalCovMatrix(covMatrix)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering ScaledCovMatrixTKGroup<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering CompactlySupportedScaledCovMatrixTKGroup<V,M>::constructor()"
                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "In ScaledCovMatrixTKGroup<V,M>::constructor()"
+    *m_env.subDisplayFile() << "In CompactlySupportedScaledCovMatrixTKGroup<V,M>::constructor()"
                            << ": m_scales.size() = "                << m_scales.size()
                            << ", m_preComputingPositions.size() = " << m_preComputingPositions.size()
                            << ", m_rvs.size() = "                   << m_rvs.size()
@@ -57,90 +56,91 @@ ScaledCovMatrixTKGroup<V,M>::ScaledCovMatrixTKGroup(
   setRVsWithZeroMean();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving ScaledCovMatrixTKGroup<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving CompactlySupportedScaledCovMatrixTKGroup<V,M>::constructor()"
                            << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-ScaledCovMatrixTKGroup<V,M>::~ScaledCovMatrixTKGroup()
+CompactlySupportedScaledCovMatrixTKGroup<V,M>::~CompactlySupportedScaledCovMatrixTKGroup()
 {
 }
 // Math/Stats methods--------------------------------
 template<class V, class M>
 bool
-ScaledCovMatrixTKGroup<V,M>::symmetric() const
+CompactlySupportedScaledCovMatrixTKGroup<V,M>::symmetric() const
 {
   return true;
 }
 //---------------------------------------------------
 template<class V, class M>
-const GaussianVectorRV<V,M>&
-ScaledCovMatrixTKGroup<V,M>::rv(unsigned int stageId)
+const InvLogitGaussianVectorRV<V,M>&
+CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv(unsigned int stageId)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
                       m_env.worldRank(),
-                      "ScaledCovMatrixTKGroup<V,M>::rv1()",
+                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv1()",
                       "m_rvs.size() = 0");
 
   UQ_FATAL_TEST_MACRO(m_rvs[0] == NULL, // Yes, '0', because that is the id used below
                       m_env.worldRank(),
-                      "ScaledCovMatrixTKGroup<V,M>::rv1()",
+                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv1()",
                       "m_rvs[0] == NULL");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
                       m_env.worldRank(),
-                      "ScaledCovMatrixTKGroup<V,M>::rv1()",
+                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv1()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
                       m_env.worldRank(),
-                      "ScaledCovMatrixTKGroup<V,M>::rv1()",
+                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv1()",
                       "m_preComputingPositions[stageId] == NULL");
 
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
-    *m_env.subDisplayFile() << "In ScaledCovMatrixTKGroup<V,M>::rv1()"
+    *m_env.subDisplayFile() << "In CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv1()"
                             << ", stageId = " << stageId
                             << ": about to call m_rvs[0]->updateLawExpVector()"
                             << ", vector = " << *m_preComputingPositions[stageId] // FIX ME: might demand parallelism
                             << std::endl;
   }
 
-  GaussianVectorRV<V, M> * gaussian_rv = dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[0]);
+  InvLogitGaussianVectorRV<V, M> * invlogit_gaussian =
+    dynamic_cast<InvLogitGaussianVectorRV<V, M> * >(m_rvs[0]);
 
-  gaussian_rv->updateLawExpVector(*m_preComputingPositions[stageId]);
+  invlogit_gaussian->updateLawExpVector(*m_preComputingPositions[stageId]);
 
-  return (*gaussian_rv);
+  return (*invlogit_gaussian);
 }
 //---------------------------------------------------
 template<class V, class M>
-const GaussianVectorRV<V,M>&
-ScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
+const InvLogitGaussianVectorRV<V,M>&
+CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() < stageIds.size(),
                       m_env.worldRank(),
-                      "ScaledCovMatrixTKGroup<V,M>::rv2()",
+                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv2()",
                       "m_rvs.size() < stageIds.size()");
 
   UQ_FATAL_TEST_MACRO(m_rvs[stageIds.size()-1] == NULL,
                       m_env.worldRank(),
-                      "ScaledCovMatrixTKGroup<V,M>::rv2()",
+                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv2()",
                       "m_rvs[stageIds.size()-1] == NULL");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageIds[0],
                       m_env.worldRank(),
-                      "ScaledCovMatrixTKGroup<V,M>::rv2()",
+                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv2()",
                       "m_preComputingPositions.size() <= stageIds[0]");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageIds[0]] == NULL,
                       m_env.worldRank(),
-                      "ScaledCovMatrixTKGroup<V,M>::rv2()",
+                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv2()",
                       "m_preComputingPositions[stageIds[0]] == NULL");
 
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
-    *m_env.subDisplayFile() << "In ScaledCovMatrixTKGroup<V,M>::rv2()"
+    *m_env.subDisplayFile() << "In CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv2()"
                             << ", stageIds.size() = " << stageIds.size()
                             << ", stageIds[0] = "     << stageIds[0]
                             << ": about to call m_rvs[stageIds.size()-1]->updateLawExpVector()"
@@ -148,22 +148,23 @@ ScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
                             << std::endl;
   }
 
-  GaussianVectorRV<V, M> * gaussian_rv = dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[stageIds.size()-1]);
+  InvLogitGaussianVectorRV<V, M> * invlogit_gaussian =
+    dynamic_cast<InvLogitGaussianVectorRV<V, M> * >(m_rvs[stageIds.size()-1]);
+  
+  invlogit_gaussian->updateLawExpVector(*m_preComputingPositions[stageIds[0]]);
 
-  gaussian_rv->updateLawExpVector(*m_preComputingPositions[stageIds[0]]);
-
-  return (*gaussian_rv);
+  return (*invlogit_gaussian);
 }
 //---------------------------------------------------
 template<class V, class M>
 void
-ScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix(const M& covMatrix)
+CompactlySupportedScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix(const M& covMatrix)
 {
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     double factor = 1./m_scales[i]/m_scales[i];
     if ((m_env.subDisplayFile()        ) &&
         (m_env.displayVerbosity() >= 10)) {
-      *m_env.subDisplayFile() << "In ScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix()"
+      *m_env.subDisplayFile() << "In CompactlySupportedScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix()"
                               << ", m_scales.size() = " << m_scales.size()
                               << ", i = "               << i
                               << ", m_scales[i] = "     << m_scales[i]
@@ -172,7 +173,11 @@ ScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix(const M& covMatrix)
                               << ", covMatrix = \n" << factor*covMatrix // FIX ME: might demand parallelism
                               << std::endl;
     }
-    dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[i])->updateLawCovMatrix(factor*covMatrix);
+
+    InvLogitGaussianVectorRV<V, M> * invlogit_gaussian =
+      dynamic_cast<InvLogitGaussianVectorRV<V, M> * >(m_rvs[i]);
+
+    invlogit_gaussian->updateLawCovMatrix(factor*covMatrix);
   }
 
   return;
@@ -181,10 +186,10 @@ ScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix(const M& covMatrix)
 // Misc methods -------------------------------------
 template<class V, class M>
 bool
-ScaledCovMatrixTKGroup<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
+CompactlySupportedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering ScaledCovMatrixTKGroup<V,M>::setPreComputingPosition()"
+    *m_env.subDisplayFile() << "Entering CompactlySupportedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition()"
                            << ": position = " << position
                            << ", stageId = "  << stageId
                            << std::endl;
@@ -194,7 +199,7 @@ ScaledCovMatrixTKGroup<V,M>::setPreComputingPosition(const V& position, unsigned
   //setRVsWithZeroMean();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "In ScaledCovMatrixTKGroup<V,M>::setPreComputingPosition()"
+    *m_env.subDisplayFile() << "In CompactlySupportedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition()"
                            << ", position = "        << position
                            << ", stageId = "         << stageId
                            << ": preComputingPos = " << *m_preComputingPositions[stageId];
@@ -202,14 +207,14 @@ ScaledCovMatrixTKGroup<V,M>::setPreComputingPosition(const V& position, unsigned
       *m_env.subDisplayFile() << ", factor = " << 1./m_scales[stageId]/m_scales[stageId];
     }
     if (stageId < m_rvs.size()) {
-      const GaussianJointPdf<V,M>* pdfPtr = dynamic_cast< const GaussianJointPdf<V,M>* >(&(m_rvs[stageId]->pdf()));
+      const InvLogitGaussianJointPdf<V,M>* pdfPtr = dynamic_cast< const InvLogitGaussianJointPdf<V,M>* >(&(m_rvs[stageId]->pdf()));
       *m_env.subDisplayFile() << ", rvCov = " << pdfPtr->lawCovMatrix(); // FIX ME: might demand parallelism
     }
     *m_env.subDisplayFile() << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving ScaledCovMatrixTKGroup<V,M>::setPreComputingPosition()"
+    *m_env.subDisplayFile() << "Leaving CompactlySupportedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition()"
                            << ": position = " << position
                            << ", stageId = "  << stageId
                            << std::endl;
@@ -220,7 +225,7 @@ ScaledCovMatrixTKGroup<V,M>::setPreComputingPosition(const V& position, unsigned
 //---------------------------------------------------
 template<class V, class M>
 void
-ScaledCovMatrixTKGroup<V,M>::clearPreComputingPositions()
+CompactlySupportedScaledCovMatrixTKGroup<V,M>::clearPreComputingPositions()
 {
   BaseTKGroup<V,M>::clearPreComputingPositions();
   return;
@@ -230,36 +235,35 @@ ScaledCovMatrixTKGroup<V,M>::clearPreComputingPositions()
 // Private methods------------------------------------
 template<class V, class M>
 void
-ScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()
+CompactlySupportedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
                       m_env.worldRank(),
-                      "ScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
+                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
                       "m_rvs.size() = 0");
 
   UQ_FATAL_TEST_MACRO(m_rvs.size() != m_scales.size(),
                       m_env.worldRank(),
-                      "ScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
+                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
                       "m_rvs.size() != m_scales.size()");
 
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     double factor = 1./m_scales[i]/m_scales[i];
     UQ_FATAL_TEST_MACRO(m_rvs[i] != NULL,
                         m_env.worldRank(),
-                        "ScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
+                        "CompactlySupportedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
                         "m_rvs[i] != NULL");
-    m_rvs[i] = new GaussianVectorRV<V,M>(m_prefix.c_str(),
-                                                *m_vectorSpace,
-                                                m_vectorSpace->zeroVector(),
-                                                factor*m_originalCovMatrix);
+    m_rvs[i] = new InvLogitGaussianVectorRV<V,M>(m_prefix.c_str(),
+        m_boxSubset, m_vectorSpace->zeroVector(),
+        factor*m_originalCovMatrix);
   }
 
   return;
 }
-// I/O methods---------------------------------------
+
 template<class V, class M>
 void
-ScaledCovMatrixTKGroup<V,M>::print(std::ostream& os) const
+CompactlySupportedScaledCovMatrixTKGroup<V,M>::print(std::ostream& os) const
 {
   BaseTKGroup<V,M>::print(os);
   return;
@@ -267,4 +271,4 @@ ScaledCovMatrixTKGroup<V,M>::print(std::ostream& os) const
 
 }  // End namespace QUESO
 
-template class QUESO::ScaledCovMatrixTKGroup<QUESO::GslVector, QUESO::GslMatrix>;
+template class QUESO::CompactlySupportedScaledCovMatrixTKGroup<QUESO::GslVector, QUESO::GslMatrix>;

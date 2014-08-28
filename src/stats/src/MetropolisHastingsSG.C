@@ -29,6 +29,7 @@
 
 #include <queso/HessianCovMatricesTKGroup.h>
 #include <queso/ScaledCovMatrixTKGroup.h>
+#include <queso/CompactlySupportedScaledCovMatrixTKGroup.h>
 
 #include <queso/GaussianJointPdf.h>
 
@@ -523,10 +524,14 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
                           "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
     }
 
-    m_tk = new ScaledCovMatrixTKGroup<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
-                                                      m_vectorSpace,
-                                                      drScalesAll,
-                                                      m_initialProposalCovMatrix);
+    // m_tk = new ScaledCovMatrixTKGroup<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
+    //                                                   m_vectorSpace,
+    //                                                   drScalesAll,
+    //                                                   m_initialProposalCovMatrix);
+    m_tk = new CompactlySupportedScaledCovMatrixTKGroup<P_V,P_M>(
+        m_optionsObj->m_prefix.c_str(), dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()), drScalesAll,
+        m_initialProposalCovMatrix);
+
     if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
@@ -589,8 +594,18 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
     }
     else {
       double yLogTargetToUse = y.logTarget();
+
+      double yprod = 1.0;
+      double xprod = 1.0;
+      for (unsigned int i = 0; i < x.vecValues().sizeLocal(); i++) {
+        xprod *= 1.0 / (x.vecValues()[i] * (1.0 - x.vecValues()[i]));
+        yprod *= 1.0 / (y.vecValues()[i] * (1.0 - y.vecValues()[i]));
+      }
+
       if (m_tk->symmetric()) {
+        std::cerr << "TK IS SYMMETRIC" << std::endl;
         alphaQuotient = std::exp(yLogTargetToUse - x.logTarget());
+
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 3            ) &&
             (m_optionsObj->m_ov.m_totallyMute == false)) {
@@ -605,6 +620,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
         }
       }
       else {
+        std::cerr << "TK IS NOT SYMMETRIC" << std::endl;
         double qyx = m_tk->rv(yStageId).pdf().lnValue(x.vecValues(),NULL,NULL,NULL,NULL);
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
@@ -1695,11 +1711,22 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     // Point 2/6 of logic for new position
     // Loop: generate new position
     //****************************************************
-    // sep2011
     bool keepGeneratingCandidates = true;
     while (keepGeneratingCandidates) {
-      if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
+      if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) {
+        iRC = gettimeofday(&timevalCandidate, NULL);
+      }
+
+      // Do a logit transform.  This ensures that candidates are never outside
+      // of the support of the prior distribution.  They may, however, be
+      // outside of the support of the likelihood distribution.
       m_tk->rv(0).realizer().realization(tmpVecValues);
+      // for (unsigned int i = 0; i < tmpVecValues.sizeLocal(); i++) {
+      //   // Do inverse logit of tmpVecValues
+      //   double tmp = std::exp(tmpVecValues[i]);
+      //   tmpVecValues[i] = tmp / (1.0 + tmp);
+      // }
+
       if (m_numDisabledParameters > 0) { // gpmsa2
         for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
           if (m_parameterEnabledStatus[paramId] == false) {

@@ -100,7 +100,11 @@ HessianCovMatricesTKGroup<V,M>::rv(unsigned int stageId)
                       "HessianCovMatricesTKGroup<V,M>::rv1()",
                       "m_preComputingPositions[stageId] == NULL");
 
-  m_rvs[stageId]->updateLawExpVector(*m_preComputingPositions[stageId] + *m_originalNewtonSteps[stageId]);
+  GaussianVectorRV<V, M> * gaussian_rv =
+    dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[stageId]);
+
+  gaussian_rv->updateLawExpVector(*m_preComputingPositions[stageId] + *m_originalNewtonSteps[stageId]);
+
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "In HessianCovMatrixTKGroup<V,M>::rv1()"
@@ -109,9 +113,10 @@ HessianCovMatricesTKGroup<V,M>::rv(unsigned int stageId)
                             << ", covMatrix = \n" << *m_originalCovMatrices[stageId] // FIX ME: might demand parallelism
                             << std::endl;
   }
-  m_rvs[stageId]->updateLawCovMatrix(*m_originalCovMatrices[stageId]);
 
-  return *m_rvs[stageId];
+  gaussian_rv->updateLawCovMatrix(*m_originalCovMatrices[stageId]);
+
+  return *gaussian_rv;
 }
 //---------------------------------------------------
 template<class V, class M>
@@ -140,7 +145,11 @@ HessianCovMatricesTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
 
   double factor = 1./m_scales[stageIds.size()-1]/m_scales[stageIds.size()-1];
 
-  m_rvs[stageIds[0]]->updateLawExpVector(*m_preComputingPositions[stageIds[0]] + factor*(*m_originalNewtonSteps[stageIds[0]]));
+  GaussianVectorRV<V, M> * gaussian_rv =
+    dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[stageIds[0]]);
+
+  gaussian_rv->updateLawExpVector(*m_preComputingPositions[stageIds[0]] + factor*(*m_originalNewtonSteps[stageIds[0]]));
+
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
     *m_env.subDisplayFile() << "In HessianCovMatrixTKGroup<V,M>::rv2()"
@@ -151,9 +160,9 @@ HessianCovMatricesTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
                             << ", covMatrix = \n" << factor*(*m_originalCovMatrices[stageIds[0]]) // FIX ME: might demand parallelism
                             << std::endl;
   }
-  m_rvs[stageIds[0]]->updateLawCovMatrix(factor*(*m_originalCovMatrices[stageIds[0]]));
+  gaussian_rv->updateLawCovMatrix(factor*(*m_originalCovMatrices[stageIds[0]]));
 
-  return *m_rvs[stageIds[0]];
+  return *gaussian_rv;
 }
 // Misc methods--------------------------------------
 template<class V, class M>
