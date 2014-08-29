@@ -22,8 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef UQ_COMP_SUPP_SCALEDCOV_TK_GROUP_H
-#define UQ_COMP_SUPP_SCALEDCOV_TK_GROUP_H
+#ifndef UQ_TRANSFORMED_SCALEDCOV_TK_GROUP_H
+#define UQ_TRANSFORMED_SCALEDCOV_TK_GROUP_H
 
 #include <queso/TKGroup.h>
 #include <queso/VectorRV.h>
@@ -35,21 +35,21 @@ namespace QUESO {
 //*****************************************************
 // TK with scaled cov matrix
 //*****************************************************
-/*! \class CompactlySupportedScaledCovMatrixTKGroup
+/*! \class TransformedScaledCovMatrixTKGroup
  *  \brief This class allows the representation of a transition kernel with a scaled covariance matrix. */
  
 template<class V, class M>
-class CompactlySupportedScaledCovMatrixTKGroup : public BaseTKGroup<V, M> {
+class TransformedScaledCovMatrixTKGroup : public BaseTKGroup<V, M> {
 public:
   //! @name Constructor/Destructor methods
   //@{ 
   //! Default constructor.
-  CompactlySupportedScaledCovMatrixTKGroup(const char * prefix,
+  TransformedScaledCovMatrixTKGroup(const char * prefix,
       const BoxSubset<V, M> & boxSubset, const std::vector<double> & scales,
       const M & covMatrix);
 
   //! Destructor.
-  ~CompactlySupportedScaledCovMatrixTKGroup();
+  ~TransformedScaledCovMatrixTKGroup();
   //@}
   
   //! @name Statistical/Mathematical methods
@@ -98,8 +98,11 @@ private:
 
   const BoxSubset<V, M> & m_boxSubset;
   M m_originalCovMatrix;
+
+  void transformToGaussianSpace(const V & physicalPoint,
+      V & transformedPoint) const;
 };
 
 }  // End namespace QUESO
 
-#endif // UQ_COMP_SUPP_SCALEDCOV_TK_GROUP_H
+#endif // UQ_TRANSFORMED_SCALEDCOV_TK_GROUP_H

@@ -95,7 +95,6 @@ BUILT_SOURCES += BayesianJointPdf.h
 BUILT_SOURCES += BetaJointPdf.h
 BUILT_SOURCES += BetaVectorRV.h
 BUILT_SOURCES += BetaVectorRealizer.h
-BUILT_SOURCES += CompactlySupportedScaledCovMatrixTKGroup.h
 BUILT_SOURCES += ConcatenatedJointPdf.h
 BUILT_SOURCES += ConcatenatedVectorRV.h
 BUILT_SOURCES += ConcatenatedVectorRealizer.h
@@ -157,6 +156,7 @@ BUILT_SOURCES += StatisticalInverseProblem.h
 BUILT_SOURCES += StatisticalInverseProblemOptions.h
 BUILT_SOURCES += StdScalarCdf.h
 BUILT_SOURCES += TKGroup.h
+BUILT_SOURCES += TransformedScaledCovMatrixTKGroup.h
 BUILT_SOURCES += UniformJointPdf.h
 BUILT_SOURCES += UniformVectorRV.h
 BUILT_SOURCES += UniformVectorRealizer.h
@@ -354,8 +354,6 @@ BetaVectorRV.h: $(top_srcdir)/src/stats/inc/BetaVectorRV.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 BetaVectorRealizer.h: $(top_srcdir)/src/stats/inc/BetaVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
-CompactlySupportedScaledCovMatrixTKGroup.h: $(top_srcdir)/src/stats/inc/CompactlySupportedScaledCovMatrixTKGroup.h
-	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ConcatenatedJointPdf.h: $(top_srcdir)/src/stats/inc/ConcatenatedJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ConcatenatedVectorRV.h: $(top_srcdir)/src/stats/inc/ConcatenatedVectorRV.h
@@ -477,6 +475,8 @@ StatisticalInverseProblemOptions.h: $(top_srcdir)/src/stats/inc/StatisticalInver
 StdScalarCdf.h: $(top_srcdir)/src/stats/inc/StdScalarCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TKGroup.h: $(top_srcdir)/src/stats/inc/TKGroup.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TransformedScaledCovMatrixTKGroup.h: $(top_srcdir)/src/stats/inc/TransformedScaledCovMatrixTKGroup.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 UniformJointPdf.h: $(top_srcdir)/src/stats/inc/UniformJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

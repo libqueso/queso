@@ -38,9 +38,16 @@ InvLogitGaussianVectorRealizer<V, M>::InvLogitGaussianVectorRealizer(
     const M & lowerCholLawCovMatrix)
   : BaseVectorRealizer<V, M>(((std::string)(prefix)+"invlogit_gau").c_str(),
       unifiedImageBoxSubset, std::numeric_limits<unsigned int>::max()),
-    m_gaussianRealizer(((std::string)(prefix)+"invlogit_gau").c_str(),
-        unifiedImageBoxSubset, lawExpVector, lowerCholLawCovMatrix)
+    m_unifiedLawExpVector(new V(lawExpVector)),
+    m_unifiedLawVarVector(
+        unifiedImageBoxSubset.vectorSpace().newVector(INFINITY)),  // FIX ME
+    m_lowerCholLawCovMatrix(new M(lowerCholLawCovMatrix)),
+    m_matU(NULL),
+    m_vecSsqrt(NULL),
+    m_matVt(NULL),
+    m_unifiedImageBoxSubset(unifiedImageBoxSubset)
 {
+  *m_unifiedLawExpVector = lawExpVector;
 }
 
 template<class V, class M>
@@ -53,39 +60,88 @@ InvLogitGaussianVectorRealizer<V, M>::InvLogitGaussianVectorRealizer(
     const M & matVt)
   : BaseVectorRealizer<V, M>(((std::string)(prefix)+"invlogit_gau").c_str(),
       unifiedImageBoxSubset, std::numeric_limits<unsigned int>::max()),
-    m_gaussianRealizer(((std::string)(prefix)+"invlogit_gau").c_str(),
-        unifiedImageBoxSubset, lawExpVector, matU, vecSsqrt, matVt)
+    m_unifiedLawExpVector(new V(lawExpVector)),
+    m_unifiedLawVarVector(
+        unifiedImageBoxSubset.vectorSpace().newVector( INFINITY)), // FIX ME
+    m_lowerCholLawCovMatrix(NULL),
+    m_matU(new M(matU)),
+    m_vecSsqrt(new V(vecSsqrt)),
+    m_matVt(new M(matVt)),
+    m_unifiedImageBoxSubset(unifiedImageBoxSubset)
 {
+  *m_unifiedLawExpVector = lawExpVector; // ????
 }
 
 template<class V, class M>
 InvLogitGaussianVectorRealizer<V, M>::~InvLogitGaussianVectorRealizer()
 {
+  delete m_matVt;
+  delete m_vecSsqrt;
+  delete m_matU;
+  delete m_lowerCholLawCovMatrix;
+  delete m_unifiedLawVarVector;
+  delete m_unifiedLawExpVector;
 }
 
 template <class V, class M>
 const V &
 InvLogitGaussianVectorRealizer<V, M>::unifiedLawExpVector() const
 {
-  return this->m_gaussianRealizer.unifiedLawExpVector();
+  return *m_unifiedLawExpVector;
 }
 
 template <class V, class M>
 const V &
 InvLogitGaussianVectorRealizer<V, M>::unifiedLawVarVector() const
 {
-  return this->m_gaussianRealizer.unifiedLawVarVector();
+  return *m_unifiedLawVarVector;
 }
 
 template<class V, class M>
 void
 InvLogitGaussianVectorRealizer<V, M>::realization(V & nextValues) const
 {
-  this->m_gaussianRealizer.realization(nextValues);
+  V iidGaussianVector(m_unifiedImageSet.vectorSpace().zeroVector());
+
+  iidGaussianVector.cwSetGaussian(0.0, 1.0);
+
+  if (m_lowerCholLawCovMatrix) {
+    nextValues = (*m_unifiedLawExpVector) +
+      (*m_lowerCholLawCovMatrix) * iidGaussianVector;
+  }
+  else if (m_matU && m_vecSsqrt && m_matVt) {
+    nextValues = (*m_unifiedLawExpVector) +
+      (*m_matU) * ((*m_vecSsqrt) * ((*m_matVt) * iidGaussianVector));
+  }
+  else {
+    queso_error_msg("GaussianVectorRealizer<V,M>::realization() inconsistent internal state");
+  }
+
+  V min_domain_bounds(this->m_unifiedImageBoxSubset.minValues());
+  V max_domain_bounds(this->m_unifiedImageBoxSubset.maxValues());
 
   for (unsigned int i = 0; i < nextValues.sizeLocal(); i++) {
     double temp = std::exp(nextValues[i]);
-    nextValues[i] = temp / (1.0 + temp);
+    double min_val = min_domain_bounds[i];
+    double max_val = max_domain_bounds[i];
+
+    if (boost::math::isfinite(min_val) &&
+        boost::math::isfinite(max_val)) {
+        // Left- and right-hand sides are finite.  Do full transform.
+        nextValues[i] = (max_val * temp + min_val) / (1.0 + temp);
+      }
+    else if (boost::math::isfinite(min_val) &&
+             !boost::math::isfinite(max_val)) {
+      // Left-hand side finite, but right-hand side is not.
+      // Do only left-hand transform.
+      nextValues[i] = (max_val * temp - 1.0) / temp;
+    }
+    else if (!boost::math::isfinite(min_val) &&
+             boost::math::isfinite(max_val)) {
+      // Right-hand side is finite, but left-hand side is not.
+      // Do only right-hand transform.
+      temp + min_val;
+    }
   }
 }
 
@@ -94,7 +150,10 @@ void
 InvLogitGaussianVectorRealizer<V, M>::updateLawExpVector(
     const V & newLawExpVector)
 {
-  this->m_gaussianRealizer.updateLawExpVector(newLawExpVector);
+  // delete old expected values (allocated at construction or last call to this function)
+  delete m_unifiedLawExpVector;
+
+  m_unifiedLawExpVector = new V(newLawExpVector);
 }
 
 template<class V, class M>
@@ -102,7 +161,16 @@ void
 InvLogitGaussianVectorRealizer<V, M>::updateLowerCholLawCovMatrix(
     const M & newLowerCholLawCovMatrix)
 {
-  this->m_gaussianRealizer.updateLowerCholLawCovMatrix(newLowerCholLawCovMatrix);
+  // delete old expected values (allocated at construction or last call to this function)
+  delete m_lowerCholLawCovMatrix;
+  delete m_matU;
+  delete m_vecSsqrt;
+  delete m_matVt;
+
+  m_lowerCholLawCovMatrix = new M(newLowerCholLawCovMatrix);
+  m_matU                  = NULL;
+  m_vecSsqrt              = NULL;
+  m_matVt                 = NULL;
 }
 
 template<class V, class M>
@@ -112,7 +180,16 @@ InvLogitGaussianVectorRealizer<V, M>::updateLowerCholLawCovMatrix(
   const V & vecSsqrt,
   const M & matVt)
 {
-  this->m_gaussianRealizer.updateLowerCholLawCovMatrix(matU, vecSsqrt, matVt);
+  // delete old expected values (allocated at construction or last call to this function)
+  delete m_lowerCholLawCovMatrix;
+  delete m_matU;
+  delete m_vecSsqrt;
+  delete m_matVt;
+
+  m_lowerCholLawCovMatrix = NULL;
+  m_matU                  = new M(matU);
+  m_vecSsqrt              = new V(vecSsqrt);
+  m_matVt                 = new M(matVt);
 }
 
 }  // End namespace QUESO

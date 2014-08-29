@@ -94,7 +94,20 @@ public:
   //@}
   
 private:
-  GaussianVectorRealizer<V, M> m_gaussianRealizer;
+  V* m_unifiedLawExpVector;
+  V* m_unifiedLawVarVector;
+  M* m_lowerCholLawCovMatrix;
+  M* m_matU;
+  V* m_vecSsqrt;
+  M* m_matVt;
+
+  using BaseVectorRealizer<V,M>::m_env;
+  using BaseVectorRealizer<V,M>::m_prefix;
+  using BaseVectorRealizer<V,M>::m_unifiedImageSet;
+  using BaseVectorRealizer<V,M>::m_subPeriod;
+
+  // For easy access to the bounds of the domain
+  const BoxSubset<V, M> & m_unifiedImageBoxSubset;
 };
 
 }  // End namespace QUESO

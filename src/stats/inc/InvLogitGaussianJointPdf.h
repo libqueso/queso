@@ -30,7 +30,6 @@
 #include <boost/math/special_functions.hpp> // for Boost isnan. Note parentheses are important in function call.
 
 #include <queso/JointPdf.h>
-#include <queso/GaussianJointPdf.h>
 #include <queso/ScalarFunction.h>
 #include <queso/BoxSubset.h>
 
@@ -102,7 +101,17 @@ public:
   const V& lawVarVector() const;
   //@}
 private:
-  GaussianJointPdf<V, M> m_gaussianPdf;
+  using BaseScalarFunction<V,M>::m_env;
+  using BaseScalarFunction<V,M>::m_prefix;
+  using BaseScalarFunction<V,M>::m_domainSet;
+  using BaseJointPdf<V,M>::m_normalizationStyle;
+  using BaseJointPdf<V,M>::m_logOfNormalizationFactor;
+  V*       m_lawExpVector;
+  V*       m_lawVarVector;
+  bool     m_diagonalCovMatrix;
+  const M* m_lawCovMatrix;
+
+  const BoxSubset<V, M> & m_domainBoxSubset;
 };
 
 }  // End namespace QUESO

@@ -22,7 +22,7 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/CompactlySupportedScaledCovMatrixTKGroup.h>
+#include <queso/TransformedScaledCovMatrixTKGroup.h>
 #include <queso/InvLogitGaussianJointPdf.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -30,7 +30,7 @@
 namespace QUESO {
 
 template<class V, class M>
-CompactlySupportedScaledCovMatrixTKGroup<V,M>::CompactlySupportedScaledCovMatrixTKGroup(
+TransformedScaledCovMatrixTKGroup<V,M>::TransformedScaledCovMatrixTKGroup(
     const char * prefix,
     const BoxSubset<V,M> & boxSubset,
     const std::vector<double> & scales,
@@ -40,12 +40,12 @@ CompactlySupportedScaledCovMatrixTKGroup<V,M>::CompactlySupportedScaledCovMatrix
     m_originalCovMatrix(covMatrix)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering CompactlySupportedScaledCovMatrixTKGroup<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Entering TransformedScaledCovMatrixTKGroup<V,M>::constructor()"
                            << std::endl;
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "In CompactlySupportedScaledCovMatrixTKGroup<V,M>::constructor()"
+    *m_env.subDisplayFile() << "In TransformedScaledCovMatrixTKGroup<V,M>::constructor()"
                            << ": m_scales.size() = "                << m_scales.size()
                            << ", m_preComputingPositions.size() = " << m_preComputingPositions.size()
                            << ", m_rvs.size() = "                   << m_rvs.size()
@@ -53,53 +53,54 @@ CompactlySupportedScaledCovMatrixTKGroup<V,M>::CompactlySupportedScaledCovMatrix
                            << std::endl;
   }
 
+  // Set RVs to have zero mean in the Gaussian space
   setRVsWithZeroMean();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving CompactlySupportedScaledCovMatrixTKGroup<V,M>::constructor()"
+    *m_env.subDisplayFile() << "Leaving TransformedScaledCovMatrixTKGroup<V,M>::constructor()"
                            << std::endl;
   }
 }
 // Destructor ---------------------------------------
 template<class V, class M>
-CompactlySupportedScaledCovMatrixTKGroup<V,M>::~CompactlySupportedScaledCovMatrixTKGroup()
+TransformedScaledCovMatrixTKGroup<V,M>::~TransformedScaledCovMatrixTKGroup()
 {
 }
 // Math/Stats methods--------------------------------
 template<class V, class M>
 bool
-CompactlySupportedScaledCovMatrixTKGroup<V,M>::symmetric() const
+TransformedScaledCovMatrixTKGroup<V,M>::symmetric() const
 {
-  return true;
+  return false;
 }
 //---------------------------------------------------
 template<class V, class M>
 const InvLogitGaussianVectorRV<V,M>&
-CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv(unsigned int stageId)
+TransformedScaledCovMatrixTKGroup<V,M>::rv(unsigned int stageId)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
                       m_env.worldRank(),
-                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv1()",
+                      "TransformedScaledCovMatrixTKGroup<V,M>::rv1()",
                       "m_rvs.size() = 0");
 
   UQ_FATAL_TEST_MACRO(m_rvs[0] == NULL, // Yes, '0', because that is the id used below
                       m_env.worldRank(),
-                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv1()",
+                      "TransformedScaledCovMatrixTKGroup<V,M>::rv1()",
                       "m_rvs[0] == NULL");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageId,
                       m_env.worldRank(),
-                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv1()",
+                      "TransformedScaledCovMatrixTKGroup<V,M>::rv1()",
                       "m_preComputingPositions.size() <= stageId");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageId] == NULL,
                       m_env.worldRank(),
-                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv1()",
+                      "TransformedScaledCovMatrixTKGroup<V,M>::rv1()",
                       "m_preComputingPositions[stageId] == NULL");
 
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
-    *m_env.subDisplayFile() << "In CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv1()"
+    *m_env.subDisplayFile() << "In TransformedScaledCovMatrixTKGroup<V,M>::rv1()"
                             << ", stageId = " << stageId
                             << ": about to call m_rvs[0]->updateLawExpVector()"
                             << ", vector = " << *m_preComputingPositions[stageId] // FIX ME: might demand parallelism
@@ -109,38 +110,42 @@ CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv(unsigned int stageId)
   InvLogitGaussianVectorRV<V, M> * invlogit_gaussian =
     dynamic_cast<InvLogitGaussianVectorRV<V, M> * >(m_rvs[0]);
 
-  invlogit_gaussian->updateLawExpVector(*m_preComputingPositions[stageId]);
+  V transformedPreComputingPositions(*m_preComputingPositions[stageId]);
+  transformToGaussianSpace(*m_preComputingPositions[stageId],
+      transformedPreComputingPositions);
+
+  invlogit_gaussian->updateLawExpVector(transformedPreComputingPositions);
 
   return (*invlogit_gaussian);
 }
 //---------------------------------------------------
 template<class V, class M>
 const InvLogitGaussianVectorRV<V,M>&
-CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
+TransformedScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() < stageIds.size(),
                       m_env.worldRank(),
-                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv2()",
+                      "TransformedScaledCovMatrixTKGroup<V,M>::rv2()",
                       "m_rvs.size() < stageIds.size()");
 
   UQ_FATAL_TEST_MACRO(m_rvs[stageIds.size()-1] == NULL,
                       m_env.worldRank(),
-                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv2()",
+                      "TransformedScaledCovMatrixTKGroup<V,M>::rv2()",
                       "m_rvs[stageIds.size()-1] == NULL");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions.size() <= stageIds[0],
                       m_env.worldRank(),
-                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv2()",
+                      "TransformedScaledCovMatrixTKGroup<V,M>::rv2()",
                       "m_preComputingPositions.size() <= stageIds[0]");
 
   UQ_FATAL_TEST_MACRO(m_preComputingPositions[stageIds[0]] == NULL,
                       m_env.worldRank(),
-                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv2()",
+                      "TransformedScaledCovMatrixTKGroup<V,M>::rv2()",
                       "m_preComputingPositions[stageIds[0]] == NULL");
 
   if ((m_env.subDisplayFile()        ) &&
       (m_env.displayVerbosity() >= 10)) {
-    *m_env.subDisplayFile() << "In CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv2()"
+    *m_env.subDisplayFile() << "In TransformedScaledCovMatrixTKGroup<V,M>::rv2()"
                             << ", stageIds.size() = " << stageIds.size()
                             << ", stageIds[0] = "     << stageIds[0]
                             << ": about to call m_rvs[stageIds.size()-1]->updateLawExpVector()"
@@ -150,21 +155,25 @@ CompactlySupportedScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int
 
   InvLogitGaussianVectorRV<V, M> * invlogit_gaussian =
     dynamic_cast<InvLogitGaussianVectorRV<V, M> * >(m_rvs[stageIds.size()-1]);
+
+  V transformedPreComputingPositions(*m_preComputingPositions[stageIds[0]]);
+  transformToGaussianSpace(*m_preComputingPositions[stageIds[0]],
+      transformedPreComputingPositions);
   
-  invlogit_gaussian->updateLawExpVector(*m_preComputingPositions[stageIds[0]]);
+  invlogit_gaussian->updateLawExpVector(transformedPreComputingPositions);
 
   return (*invlogit_gaussian);
 }
 //---------------------------------------------------
 template<class V, class M>
 void
-CompactlySupportedScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix(const M& covMatrix)
+TransformedScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix(const M& covMatrix)
 {
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     double factor = 1./m_scales[i]/m_scales[i];
     if ((m_env.subDisplayFile()        ) &&
         (m_env.displayVerbosity() >= 10)) {
-      *m_env.subDisplayFile() << "In CompactlySupportedScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix()"
+      *m_env.subDisplayFile() << "In TransformedScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix()"
                               << ", m_scales.size() = " << m_scales.size()
                               << ", i = "               << i
                               << ", m_scales[i] = "     << m_scales[i]
@@ -186,10 +195,10 @@ CompactlySupportedScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix(const M& covMa
 // Misc methods -------------------------------------
 template<class V, class M>
 bool
-CompactlySupportedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
+TransformedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition(const V& position, unsigned int stageId)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Entering CompactlySupportedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition()"
+    *m_env.subDisplayFile() << "Entering TransformedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition()"
                            << ": position = " << position
                            << ", stageId = "  << stageId
                            << std::endl;
@@ -199,7 +208,7 @@ CompactlySupportedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition(const V& 
   //setRVsWithZeroMean();
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "In CompactlySupportedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition()"
+    *m_env.subDisplayFile() << "In TransformedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition()"
                            << ", position = "        << position
                            << ", stageId = "         << stageId
                            << ": preComputingPos = " << *m_preComputingPositions[stageId];
@@ -214,7 +223,7 @@ CompactlySupportedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition(const V& 
   }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
-    *m_env.subDisplayFile() << "Leaving CompactlySupportedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition()"
+    *m_env.subDisplayFile() << "Leaving TransformedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition()"
                            << ": position = " << position
                            << ", stageId = "  << stageId
                            << std::endl;
@@ -225,7 +234,7 @@ CompactlySupportedScaledCovMatrixTKGroup<V,M>::setPreComputingPosition(const V& 
 //---------------------------------------------------
 template<class V, class M>
 void
-CompactlySupportedScaledCovMatrixTKGroup<V,M>::clearPreComputingPositions()
+TransformedScaledCovMatrixTKGroup<V,M>::clearPreComputingPositions()
 {
   BaseTKGroup<V,M>::clearPreComputingPositions();
   return;
@@ -235,23 +244,23 @@ CompactlySupportedScaledCovMatrixTKGroup<V,M>::clearPreComputingPositions()
 // Private methods------------------------------------
 template<class V, class M>
 void
-CompactlySupportedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()
+TransformedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
                       m_env.worldRank(),
-                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
+                      "TransformedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
                       "m_rvs.size() = 0");
 
   UQ_FATAL_TEST_MACRO(m_rvs.size() != m_scales.size(),
                       m_env.worldRank(),
-                      "CompactlySupportedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
+                      "TransformedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
                       "m_rvs.size() != m_scales.size()");
 
   for (unsigned int i = 0; i < m_scales.size(); ++i) {
     double factor = 1./m_scales[i]/m_scales[i];
     UQ_FATAL_TEST_MACRO(m_rvs[i] != NULL,
                         m_env.worldRank(),
-                        "CompactlySupportedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
+                        "TransformedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()",
                         "m_rvs[i] != NULL");
     m_rvs[i] = new InvLogitGaussianVectorRV<V,M>(m_prefix.c_str(),
         m_boxSubset, m_vectorSpace->zeroVector(),
@@ -263,12 +272,49 @@ CompactlySupportedScaledCovMatrixTKGroup<V,M>::setRVsWithZeroMean()
 
 template<class V, class M>
 void
-CompactlySupportedScaledCovMatrixTKGroup<V,M>::print(std::ostream& os) const
+TransformedScaledCovMatrixTKGroup<V,M>::print(std::ostream& os) const
 {
   BaseTKGroup<V,M>::print(os);
   return;
 }
 
+template<class V, class M>
+void
+TransformedScaledCovMatrixTKGroup<V, M>::transformToGaussianSpace(
+    const V & physicalPoint, V & transformedPoint) const
+{
+  V min_domain_bounds(this->m_boxSubset.minValues());
+  V max_domain_bounds(this->m_boxSubset.maxValues());
+
+  for (unsigned int i = 0; i < transformedPoint.sizeLocal(); i++) {
+    double min_val = min_domain_bounds[i];
+    double max_val = max_domain_bounds[i];
+
+    if (boost::math::isfinite(min_val) &&
+        boost::math::isfinite(max_val)) {
+        // Left- and right-hand sides are finite.  Do full transform.
+        transformedPoint[i] = std::log(physicalPoint[i] - min_val) -
+            std::log(max_val - physicalPoint[i]);
+    }
+    else if (boost::math::isfinite(min_val) &&
+             !boost::math::isfinite(max_val)) {
+      // Left-hand side finite, but right-hand side is not.
+      // Do only left-hand transform.
+      transformedPoint[i] = std::log(physicalPoint[i] - min_val);
+    }
+    else if (!boost::math::isfinite(min_val) &&
+             boost::math::isfinite(max_val)) {
+      // Right-hand side is finite, but left-hand side is not.
+      // Do only right-hand transform.
+      transformedPoint[i] = -std::log(max_val - physicalPoint[i]);
+    }
+    else {
+      // No transform.
+      transformedPoint[i] = physicalPoint[i];
+    }
+  }
+}
+
 }  // End namespace QUESO
 
-template class QUESO::CompactlySupportedScaledCovMatrixTKGroup<QUESO::GslVector, QUESO::GslMatrix>;
+template class QUESO::TransformedScaledCovMatrixTKGroup<QUESO::GslVector, QUESO::GslMatrix>;
