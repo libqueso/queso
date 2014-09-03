@@ -32,17 +32,20 @@
 
 namespace QUESO {
 
-//*****************************************************
-// TK with scaled cov matrix
-//*****************************************************
-/*! \class TransformedScaledCovMatrixTKGroup
- *  \brief This class allows the representation of a transition kernel with a scaled covariance matrix. */
- 
+/*!
+ * \class TransformedScaledCovMatrixTKGroup
+ * \brief This class represents a transition kernel with a scaled covariance matrix on hybrid bounded/unbounded state spaces.
+ *
+ * The unbounded directions utilise a standard Gaussian proposal.  The bounded
+ * or half-bounded directions utilise a transformed Gaussian proposal, so that
+ * no realizations are generated outside of the state space.
+ */
+
 template<class V, class M>
 class TransformedScaledCovMatrixTKGroup : public BaseTKGroup<V, M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   TransformedScaledCovMatrixTKGroup(const char * prefix,
       const BoxSubset<V, M> & boxSubset, const std::vector<double> & scales,
@@ -51,34 +54,38 @@ public:
   //! Destructor.
   ~TransformedScaledCovMatrixTKGroup();
   //@}
-  
+
   //! @name Statistical/Mathematical methods
   //@{
-  //! Whether or not the matrix is symmetric. Always 'true'.
-  /*! \todo: It only returns 'true', thus a test for its symmetricity must be included.*/
+  //! Whether or not the matrix is symmetric.  Always 'false'.
   bool symmetric() const;
-  
+
   //! InvLogitGaussian increment property to construct a transition kernel.
   const InvLogitGaussianVectorRV<V, M> & rv(unsigned int stageId);
-  
+
   //! InvLogitGaussian increment property to construct a transition kernel.
   const InvLogitGaussianVectorRV<V, M> & rv(
       const std::vector<unsigned int> & stageIds);
-  
-  //! Scales the covariance matrix.
+
+  //! Scales the covariance matrix of the underlying Gaussian distribution.
   /*! The covariance matrix is scaled by a factor of \f$ 1/scales^2 \f$.*/
   void updateLawCovMatrix(const M & covMatrix);
   //@}
-  
+
   //! @name Misc methods
   //@{
-  //! Sets the pre-computing positions \c m_preComputingPositions[stageId] with a new vector of size \c position.  
+  //! Sets the pre-computing positions \c m_preComputingPositions[stageId] with a new vector of size \c position.
+  /*!
+   * The vector \c position is in *physical* space.  This is then transformed
+   * using transformToGaussianSpace to map to a point in Gaussian space where
+   * we can, for example, update the mean of the underlying Gaussian RV.
+   */
   bool setPreComputingPosition(const V & position, unsigned int stageId);
-  
+
   //! Clears the pre-computing positions \c m_preComputingPositions[stageId]
   void clearPreComputingPositions();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the transition kernel.
@@ -87,8 +94,9 @@ public:
   //@}
 
 private:
-  //! Sets the mean of the RVs to zero.
+  //! Sets the mean of the underlying Gaussian RVs to zero.
   void setRVsWithZeroMean();
+
   using BaseTKGroup<V, M>::m_env;
   using BaseTKGroup<V, M>::m_prefix;
   using BaseTKGroup<V, M>::m_vectorSpace;
