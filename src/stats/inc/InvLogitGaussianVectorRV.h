@@ -32,60 +32,61 @@ namespace QUESO {
 
 /*!
  * \class InvLogitGaussianVectorRV
- * \brief A class representing a Gaussian vector RV.
- * 
- * This class allows the user to compute the value of a Gaussian PDF and to generate realizations
- * (samples) from it.
- * 
- * In probability theory, the normal (or Gaussian) distribution is a continuous probability 
- * distribution, defined by the formula:
- * \f[    f(x| \mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}} e^{ -\frac{(x-\mu)^2}{2\sigma^2} }. \f]
- * 
- * The parameter \f$ \mu \f$  in this formula is the mean or expectation of the distribution (and also 
- * its median and mode). The parameter \f$ \sigma \f$  is its standard deviation; its variance is therefore
- * \f$ \sigma^2 \f$ . */
+ * \brief A class representing a (transformed) Gaussian vector RV with bounds
+ *
+ * This class allows the user to compute the value of a (transoformed) Gaussian
+ * PDF and to generate realizations (samples) from it.
+ */
 
 template<class V, class M>
 class InvLogitGaussianVectorRV : public BaseVectorRV<V, M> {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Constructor  
-  /*! Construct a Gaussian vector RV with mean \c lawExpVector and diagonal covariance matrix
-   * \c lawVarVector whose variates live in \c imageSet.*/
+  //! Constructor
+  /*!
+   * Construct a (transformed) Gaussian vector RV with mean \c lawExpVector
+   * (of the Gaussian, not the transformed Gaussian) and diagonal covariance
+   * matrix \c lawVarVector whose variates live in \c imageBoxSubset.
+   */
   InvLogitGaussianVectorRV(const char * prefix,
       const BoxSubset<V, M> & imageBoxSubset, const V & lawExpVector,
       const V & lawVarVector);
-  
-  //! Constructor  
-  /*! Construct a Gaussian vector RV with mean \c lawExpVector and covariance matrix
-   * \c lawCovMatrix whose variates live in \c imageSet.*/
+
+  //! Constructor
+  /*!
+   * Construct a (transformed) Gaussian vector RV with mean \c lawExpVector
+   * (of the Gaussian, not the transformed Gaussian) and covariance matrix
+   * \c lawCovMatrix whose variates live in \c imageBoxSubset.
+   */
   InvLogitGaussianVectorRV(const char * prefix,
       const BoxSubset<V, M> & imageBoxSubset, const V & lawExpVector,
       const M & lawCovMatrix);
-  
+
   //! Virtual destructor
   virtual ~InvLogitGaussianVectorRV();
   //@}
 
   //! @name Statistical methods
   //@{
-  //! Updates the vector that contains the mean values.
+  //! Updates the vector that contains the mean values for the underlying Gaussian.
   void updateLawExpVector(const V & newLawExpVector);
-  
+
   //! Updates the covariance matrix.
-  /*! This method tries to use Cholesky decomposition; and if it fails, the method then 
-   *  calls a SVD decomposition.*/
+  /*!
+   * This method tries to use Cholesky decomposition; and if it fails, the
+   * method then calls a SVD decomposition.
+   */
   void updateLawCovMatrix(const M & newLawCovMatrix);
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the vector RV.
   /*! \todo: implement me!*/
   void print(std::ostream & os) const;
  //@}
-  
+
 private:
   using BaseVectorRV<V,M>::m_env;
   using BaseVectorRV<V,M>::m_prefix;
