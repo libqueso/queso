@@ -26,35 +26,49 @@
 #define UQ_INV_LOGIT_GAUSSIAN_REALIZER_H
 
 #include <queso/VectorRealizer.h>
-#include <queso/GaussianVectorRealizer.h>
 
 namespace QUESO {
 
-/*! 
+/*!
  * \class InvLogitGaussianVectorRealizer
- * \brief A class for handling sampling from Gaussian probability density distributions.
+ * \brief A class for handling sampling from (transformed) Gaussian probability density distributions with bounds
  *
- * This class handles sampling from a Gaussian probability density distribution.*/
+ * To get a realization from a transformed Gaussian (i.e. with bounds), an
+ * inverse \c logit transform is applied.  I.e., samples are \f$ f(X) \f$ where
+ * \f$ X \f$ is drawn from a Gaussian and where
+ *
+ * \f[
+ *   f(x) = \frac{b \exp(x) + a}{1 + \exp(x)}.
+ * \f]
+ *
+ * This will produce a sample in the closed interval [a, b].
+ */
 
 template<class V, class M>
 class InvLogitGaussianVectorRealizer : public BaseVectorRealizer<V,M> {
 public:
-  
+
   //! @name Constructor/Destructor methods
   //@{
   //! Constructor
-  /*! Constructs a new object, given a prefix and the image set of the vector realizer, a
-   * vector of mean values, \c lawExpVector, and a lower triangular matrix resulting from 
-   * Cholesky decomposition of the covariance matrix, \c lowerCholLawCovMatrix.  */ 
+  /*!
+   * Constructs a new object, given a prefix and the image set of the vector
+   * realizer, a vector of mean values, \c lawExpVector (of the Gaussian, not
+   * the transformed Gaussian), and a lower triangular matrix resulting from
+   * Cholesky decomposition of the covariance matrix, \c lowerCholLawCovMatrix.
+   */
   InvLogitGaussianVectorRealizer(const char * prefix,
       const BoxSubset<V, M> & unifiedImageBoxSubset, const V & lawExpVector,
-      const M & lowerCholLawCovMatrix); // lower triangular matrix resulting from Cholesky decomposition of the covariance matrix
+      const M & lowerCholLawCovMatrix);
 
   //! Constructor
-  /*! Constructs a new object, given a prefix and the image set of the vector realizer, a
-   * vector of mean values, \c lawExpVector, and a set of two matrices and one vector 
-   * resulting from the Single Value Decomposition of the covariance matrix, \c matU, 
-   * \c vecSsqrt and \c matVt.  */ 
+  /*!
+   * Constructs a new object, given a prefix and the image set of the vector
+   * realizer, a vector of mean values, \c lawExpVector (of the Gaussian, not
+   * the transformed Gaussian), and a set of two matrices and one vector
+   * resulting from the Single Value Decomposition of the covariance matrix,
+   * \c matU, \c vecSsqrt and \c matVt.
+   */
   InvLogitGaussianVectorRealizer(const char * prefix,
       const BoxSubset<V, M> & unifiedImageBoxSubset, const V & lawExpVector,
       const M & matU, const V & vecSsqrt, const M & matVt);
@@ -65,46 +79,51 @@ public:
 
   //! @name Realization-related methods
   //@{
-  //! Access to the vector of mean values and private attribute:  m_unifiedLawExpVector. 
+  //! Access to the vector of mean values of the Gaussian and private attribute:  m_unifiedLawExpVector.
   const V & unifiedLawExpVector() const;
-  
-  //! Access to the vector of variance values and private attribute:  m_unifiedLawVarVector. 
-  const V & unifiedLawVarVector() const;
-     
-  //! Draws a realization.
-  /*! This function draws a realization of a Gaussian distribution of mean \c m_unifiedLawExpVector 
-   * and variance \c m_unifiedLawVarVector and saves it in \c nextValues.*/
-  void realization(V & nextValues) const;
-  
-  //! Updates the mean with the new value \c newLawExpVector.  
-  void updateLawExpVector(const V & newLawExpVector);
-  
-  //! Updates the lower triangular matrix from Cholesky decomposition of the covariance matrix to the new value \c newLowerCholLawCovMatrix.
-  /*! The lower triangular matrix results resulting from a Cholesky decomposition of the 
-   * covariance matrix. This routine deletes old expected values: m_lowerCholLawCovMatrix;
-   *   m_matU, m_vecSsqrt, m_matVt.*/
-  void updateLowerCholLawCovMatrix(const M & newLowerCholLawCovMatrix);
-  
-  //! Updates the SVD matrices from SVD decomposition of the covariance matrix to the new values: \c matU, \c vecSsqrt, and \c matVt.
-  /*! The lower triangular matrix results resulting from a Cholesky decomposition of the 
-   * covariance matrix. This routine deletes old expected values: m_lowerCholLawCovMatrix;
-   *   m_matU, m_vecSsqrt, m_matVt. */
-    void updateLowerCholLawCovMatrix(const M & matU, const V & vecSsqrt,
-           const M & matVt);
-  //@}
-  
-private:
-  V* m_unifiedLawExpVector;
-  V* m_unifiedLawVarVector;
-  M* m_lowerCholLawCovMatrix;
-  M* m_matU;
-  V* m_vecSsqrt;
-  M* m_matVt;
 
-  using BaseVectorRealizer<V,M>::m_env;
-  using BaseVectorRealizer<V,M>::m_prefix;
-  using BaseVectorRealizer<V,M>::m_unifiedImageSet;
-  using BaseVectorRealizer<V,M>::m_subPeriod;
+  //! Access to the vector of variance values and private attribute:  m_unifiedLawVarVector.
+  const V & unifiedLawVarVector() const;
+
+  //! Draws a realization.
+  /*!
+   * This function draws a realization of a (transformed) Gaussian
+   * distribution with mean \c m_unifiedLawExpVector and variance
+   * \c m_unifiedLawVarVector and saves it in \c nextValues.
+   */
+  void realization(V & nextValues) const;
+
+  //! Updates the mean of the Gaussian with the new value \c newLawExpVector.
+  void updateLawExpVector(const V & newLawExpVector);
+
+  //! Updates the lower triangular matrix from Cholesky decomposition of the covariance matrix to the new value \c newLowerCholLawCovMatrix.
+  /*! The lower triangular matrix results resulting from a Cholesky
+   * decomposition of the covariance matrix. This routine deletes old expected
+   * values: m_lowerCholLawCovMatrix; m_matU, m_vecSsqrt, m_matVt.
+   */
+  void updateLowerCholLawCovMatrix(const M & newLowerCholLawCovMatrix);
+
+  //! Updates the SVD matrices from SVD decomposition of the covariance matrix to the new values: \c matU, \c vecSsqrt, and \c matVt.
+  /*! The lower triangular matrix results resulting from a Cholesky
+   * decomposition of the covariance matrix. This routine deletes old expected
+   * values: m_lowerCholLawCovMatrix; m_matU, m_vecSsqrt, m_matVt.
+   */
+  void updateLowerCholLawCovMatrix(const M & matU, const V & vecSsqrt,
+      const M & matVt);
+  //@}
+
+private:
+  V * m_unifiedLawExpVector;
+  V * m_unifiedLawVarVector;
+  M * m_lowerCholLawCovMatrix;
+  M * m_matU;
+  V * m_vecSsqrt;
+  M * m_matVt;
+
+  using BaseVectorRealizer<V, M>::m_env;
+  using BaseVectorRealizer<V, M>::m_prefix;
+  using BaseVectorRealizer<V, M>::m_unifiedImageSet;
+  using BaseVectorRealizer<V, M>::m_subPeriod;
 
   // For easy access to the bounds of the domain
   const BoxSubset<V, M> & m_unifiedImageBoxSubset;
