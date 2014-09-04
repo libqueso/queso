@@ -8,6 +8,7 @@
 *.log
 *.trs
 *.dirstamp
+queso-*tar.gz
 
 Makefile.in
 Makefile
@@ -37,9 +38,21 @@ config_queso.h.tmp.in
 config_queso.h.tmp.in~
 configure
 
+m4/libtool.m4
+m4/ltoptions.m4
+m4/ltsugar.m4
+m4/ltversion.m4
+m4/lt~obsolete.m4
+
 doxygen/txt_common/about_vpath.page
 doxygen/queso.dox
 docs
+manual/users/figs
+manual/users/make_all_failed
+manual/users/users.bbl
+manual/users/users.blg
+manual/users/users.out
+manual/users/users.toc
 
 examples/exInfoTheory_gsl
 examples/exSimpleStatisticalInverseProblem_gsl
@@ -56,6 +69,16 @@ examples/inverse_problem
 examples/operator
 examples/parallel_inverse_problem
 examples/gpmsa_scalar
+examples/bimodal_gsl
+examples/exSimpleStatisticalForwardProblem_gsl
+examples/gp/scalar/outputData
+examples/gpscalar
+examples/gpscalar2
+examples/hysteretic_gsl
+examples/outputData
+examples/template_eg
+examples/template_example/outputData
+examples/template_example/template_example
 
 src/core/inc/queso.h
 src/libqueso.la
@@ -123,3 +146,11 @@ test/test_jeffreys
 test/test_gsloptimizer
 test/test_seedwithmap
 test/test_seedwithmap_fd
+test/test_GammaVectorRVDomain
+test/test_GaussianMean1DRegression
+test/test_Regression/GaussianMean1DRegression_options
+test/test_Regression/ctf_dat.txt
+test/test_Regression/dakota_pstudy.dat
+test/test_Regression/gpmsa_cobra_input.txt
+test/test_Regression/test_cobra_samples_diff.sh
+test/test_Regression/test_gpmsa_cobra_samples.m
