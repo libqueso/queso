@@ -232,7 +232,7 @@ int main(int argc, char ** argv) {
   paramInitials[3] = 0.5; // param 4
   paramInitials[4] = 0.5; // param 5
   paramInitials[5]  = 0.0;  // not used.  emulator mean
-  paramInitials[6]  = 1.0; // emulator corr str
+  paramInitials[6]  = 1.0; // emulator precision
   paramInitials[7]  = 0.97; // emulator corr str
   paramInitials[8]  = 0.97; // emulator corr str
   paramInitials[9]  = 0.97; // emulator corr str
