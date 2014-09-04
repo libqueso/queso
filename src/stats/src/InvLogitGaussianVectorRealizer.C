@@ -134,13 +134,13 @@ InvLogitGaussianVectorRealizer<V, M>::realization(V & nextValues) const
              !boost::math::isfinite(max_val)) {
       // Left-hand side finite, but right-hand side is not.
       // Do only left-hand transform.
-      nextValues[i] = (max_val * temp - 1.0) / temp;
+      nextValues[i] = temp + min_val;
     }
     else if (!boost::math::isfinite(min_val) &&
              boost::math::isfinite(max_val)) {
       // Right-hand side is finite, but left-hand side is not.
       // Do only right-hand transform.
-      temp + min_val;
+      nextValues[i] = (max_val * temp - 1.0) / temp;
     }
   }
 }

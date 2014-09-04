@@ -125,6 +125,12 @@ InvLogitGaussianJointPdf<V,M>::lnValue(
 
     if (boost::math::isfinite(min_val) &&
         boost::math::isfinite(max_val)) {
+
+      if (domainVector[i] == min_val || domainVector[i] == max_val) {
+        // Exit early if we can
+        return -INFINITY;
+      }
+
         // Left- and right-hand sides are finite.  Do full transform.
         transformedDomainVector[i] = std::log(domainVector[i] - min_val) -
             std::log(max_val - domainVector[i]);
@@ -135,6 +141,12 @@ InvLogitGaussianJointPdf<V,M>::lnValue(
     }
     else if (boost::math::isfinite(min_val) &&
              !boost::math::isfinite(max_val)) {
+
+      if (domainVector[i] == min_val) {
+        // Exit early if we can
+        return -INFINITY;
+      }
+
       // Left-hand side finite, but right-hand side is not.
       // Do only left-hand transform.
       transformedDomainVector[i] = std::log(domainVector[i] - min_val);
@@ -143,6 +155,12 @@ InvLogitGaussianJointPdf<V,M>::lnValue(
     }
     else if (!boost::math::isfinite(min_val) &&
              boost::math::isfinite(max_val)) {
+
+      if (domainVector[i] == max_val) {
+        // Exit early if we can
+        return -INFINITY;
+      }
+
       // Right-hand side is finite, but left-hand side is not.
       // Do only right-hand transform.
       transformedDomainVector[i] = -std::log(max_val - domainVector[i]);
