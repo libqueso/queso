@@ -37,16 +37,20 @@ namespace QUESO {
  * WRITE DOCS HERE
  */
 
+class Vector;
+
 class BaseOptimizer {
 public:
-  //! @name Constructor/Destructor methods.
-  //@{
   //! Default constructor.
   BaseOptimizer();
 
   //! Destructor
   virtual ~BaseOptimizer();
-  //@}
+
+  virtual const Vector * minimize() = 0;
+
+protected:
+  Vector * minimizer;
 };
 
 }  // End namespace QUESO

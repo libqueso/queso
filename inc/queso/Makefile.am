@@ -37,6 +37,7 @@ BUILT_SOURCES += EnvironmentOptions.h
 BUILT_SOURCES += FunctionBase.h
 BUILT_SOURCES += FunctionOperatorBuilder.h
 BUILT_SOURCES += GslMatrix.h
+BUILT_SOURCES += GslOptimizer.h
 BUILT_SOURCES += GslVector.h
 BUILT_SOURCES += InfiniteDimensionalGaussian.h
 BUILT_SOURCES += InfiniteDimensionalLikelihoodBase.h
@@ -50,6 +51,7 @@ BUILT_SOURCES += Map.h
 BUILT_SOURCES += Matrix.h
 BUILT_SOURCES += MpiComm.h
 BUILT_SOURCES += OperatorBase.h
+BUILT_SOURCES += Optimizer.h
 BUILT_SOURCES += RngBase.h
 BUILT_SOURCES += RngBoost.h
 BUILT_SOURCES += RngGsl.h
@@ -231,6 +233,8 @@ FunctionOperatorBuilder.h: $(top_srcdir)/src/core/inc/FunctionOperatorBuilder.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GslMatrix.h: $(top_srcdir)/src/core/inc/GslMatrix.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GslOptimizer.h: $(top_srcdir)/src/core/inc/GslOptimizer.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GslVector.h: $(top_srcdir)/src/core/inc/GslVector.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InfiniteDimensionalGaussian.h: $(top_srcdir)/src/core/inc/InfiniteDimensionalGaussian.h
@@ -256,6 +260,8 @@ Matrix.h: $(top_srcdir)/src/core/inc/Matrix.h
 MpiComm.h: $(top_srcdir)/src/core/inc/MpiComm.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 OperatorBase.h: $(top_srcdir)/src/core/inc/OperatorBase.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+Optimizer.h: $(top_srcdir)/src/core/inc/Optimizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngBase.h: $(top_srcdir)/src/core/inc/RngBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

@@ -22,14 +22,14 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <queso/Optimizer.h>
+
 namespace QUESO {
 
-// Default constructor
 BaseOptimizer::BaseOptimizer()
 {
 }
 
-// Destructor
 BaseOptimizer::~BaseOptimizer()
 {
 }
