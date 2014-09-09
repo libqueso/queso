@@ -48,6 +48,13 @@ extern "C" {
       state[i] = gsl_vector_get(x, i);
     }
 
+    // Bail early if GSL tries to evaluate outside of the domain
+    if (!objectiveFunction.domainSet().contains(state)) {
+      return GSL_NAN;
+    }
+
+    // Should cace derivative here so we don't a) segfault in the user's code
+    // and b) so we don't recompute stuff
     double result = -objectiveFunction.lnValue(state, NULL, NULL, NULL, NULL);
 
     return result;
@@ -67,8 +74,16 @@ extern "C" {
       state[i] = gsl_vector_get(x, i);
     }
 
-    // We should cache the return value here so we don't recompute stuff
-    double fx = -objectiveFunction.lnValue(state, NULL, &deriv, NULL, NULL);
+    if (!objectiveFunction.domainSet().contains(state)) {
+      // Fill derivative with error codes if the point is outside of the
+      // domain
+      for (unsigned int i = 0; i < deriv.sizeLocal(); i++) {
+        gsl_vector_set(derivative, i, GSL_NAN);
+      }
+    }
+    else {
+      // We should cache the return value here so we don't recompute stuff
+      double fx = -objectiveFunction.lnValue(state, NULL, &deriv, NULL, NULL);
 
     for (unsigned int i = 0; i < deriv.sizeLocal(); i++) {
       gsl_vector_set(derivative, i, deriv[i]);
