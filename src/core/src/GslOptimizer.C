@@ -119,7 +119,7 @@ GslOptimizer::minimize() {
     zeroVector().sizeLocal();
 
   const gsl_multimin_fdfminimizer_type * T =
-    gsl_multimin_fdfminimizer_conjugate_fr;
+    gsl_multimin_fdfminimizer_vector_bfgs2;
 
   gsl_multimin_fdfminimizer * s =
     gsl_multimin_fdfminimizer_alloc(T, dim);
@@ -145,9 +145,8 @@ GslOptimizer::minimize() {
     status = gsl_multimin_fdfminimizer_iterate(s);
 
     if (status) {
-      if (status == GSL_ENOPROG) {
-        std::cerr << "Minimizer could not make progress" << std::endl;
-      }
+      std::cerr << "Error while GSL does optimisation."
+                << "See below for GSL error type." << std::endl;
       std::cerr << "Gsl error: " << gsl_strerror(status) << std::endl;
       break;
     }
@@ -155,10 +154,9 @@ GslOptimizer::minimize() {
     // What is this hard-coded value?
     status = gsl_multimin_test_gradient(s->gradient, 1e-3);
 
-    if (status == GSL_SUCCESS) {
-      std::cerr << "Minimizer will do another iteration" << std::endl;
-    }
-  } while (status == GSL_CONTINUE && iter < 100);  // We shouldn't be hard-coding the max number of iterations
+  } while (status == GSL_CONTINUE && iter < 100);  // We shouldn't be
+                                                   // hard-coding the max
+                                                   // number of iterations
 
   // Get the minimizer
   GslVector * minimizer = new GslVector(this->m_objectiveFunction.domainSet().
