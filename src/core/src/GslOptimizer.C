@@ -115,8 +115,8 @@ const Vector *
 GslOptimizer::minimize() {
   size_t iter = 0;
   int status;
-  int dim = this->m_objectiveFunction.domainSet().vectorSpace().zeroVector().
-    sizeLocal();
+  unsigned int dim = this->m_objectiveFunction.domainSet().vectorSpace().
+    zeroVector().sizeLocal();
 
   const gsl_multimin_fdfminimizer_type * T =
     gsl_multimin_fdfminimizer_conjugate_fr;
