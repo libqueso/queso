@@ -85,8 +85,9 @@ extern "C" {
       // We should cache the return value here so we don't recompute stuff
       double fx = -objectiveFunction.lnValue(state, NULL, &deriv, NULL, NULL);
 
-    for (unsigned int i = 0; i < deriv.sizeLocal(); i++) {
-      gsl_vector_set(derivative, i, deriv[i]);
+      for (unsigned int i = 0; i < deriv.sizeLocal(); i++) {
+        gsl_vector_set(derivative, i, -deriv[i]);  // We need the minus sign
+      }
     }
   }
 
