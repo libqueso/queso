@@ -28,7 +28,6 @@
 #include <queso/GslVector.h>
 #include <queso/VectorSpace.h>
 #include <queso/ScalarFunction.h>
-#include <queso/JointPdf.h>
 #include <queso/GslOptimizer.h>
 
 namespace QUESO {
@@ -39,8 +38,8 @@ extern "C" {
   // This evaluate -log posterior
   double c_evaluate(const gsl_vector * x, void * context) {
 
-    BaseJointPdf<GslVector, GslMatrix> & objectiveFunction =
-      *(static_cast<BaseJointPdf<GslVector, GslMatrix> * >(context));
+    BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction =
+      *(static_cast<BaseScalarFunction<GslVector, GslMatrix> * >(context));
 
     GslVector state(objectiveFunction.domainSet().vectorSpace().zeroVector());
 
@@ -57,8 +56,8 @@ extern "C" {
   // This evaluates the derivative of -log posterior
   void c_evaluate_derivative(const gsl_vector * x, void * context,
       gsl_vector * derivative) {
-    BaseJointPdf<GslVector, GslMatrix> & objectiveFunction = 
-      *(static_cast<BaseJointPdf<GslVector, GslMatrix> * >(context));
+    BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction =
+      *(static_cast<BaseScalarFunction<GslVector, GslMatrix> * >(context));
 
     GslVector state(objectiveFunction.domainSet().vectorSpace().zeroVector());
     GslVector deriv(objectiveFunction.domainSet().vectorSpace().zeroVector());
