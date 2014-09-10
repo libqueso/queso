@@ -111,3 +111,7 @@ test/test_outputBoth/
 test/test_outputLlhd/
 test/test_outputNeither/
 test/test_outputTarget/
+test/test_Regression/jeffreys_input.txt
+test/test_Regression/test_jeffreys_samples.m
+test/test_Regression/test_jeffreys_samples.diff.sh
+test/test_jeffreys
