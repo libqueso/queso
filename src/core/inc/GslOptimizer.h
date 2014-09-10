@@ -48,9 +48,14 @@ class BaseScalarFunction;
 
 class GslOptimizer : public BaseOptimizer {
 public:
-  //! Default constructor.
+  //! Constructs an object that will maximize a scalar function
+  /*!
+   * The function \c objectiveFunction is the function that will be maximized.
+   * The optimization algorithm will be initialized at \c initialPoint.
+   */
   GslOptimizer(
-      const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction);
+      const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction,
+      const GslVector & intialPoint);
 
   //! Destructor
   virtual ~GslOptimizer();
@@ -59,6 +64,7 @@ public:
 
 private:
   const BaseScalarFunction<GslVector, GslMatrix> & m_objectiveFunction;
+  const GslVector & m_initialPoint;
 };
 
 }  // End namespace QUESO

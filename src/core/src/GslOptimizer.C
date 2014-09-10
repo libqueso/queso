@@ -101,9 +101,11 @@ extern "C" {
 }  // End extern "C"
 
 GslOptimizer::GslOptimizer(
-    const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction)
+    const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction,
+    const GslVector & initialPoint)
   : BaseOptimizer(),
-    m_objectiveFunction(objectiveFunction)
+    m_objectiveFunction(objectiveFunction),
+    m_initialPoint(initialPoint)
 {
 }
 
@@ -131,13 +133,13 @@ GslOptimizer::minimize() {
   minusLogPosterior.fdf = &c_evaluate_with_derivative;
   minusLogPosterior.params = (void *)(&(this->m_objectiveFunction));
 
-  // Set initial point (should take this from the user instead);
+  // Set initial point
   gsl_vector * x = gsl_vector_alloc(dim);
   for (unsigned int i = 0; i < dim; i++) {
-    gsl_vector_set(x, i, 9.0);  // DM: Initial point should not be hard-coded
+    gsl_vector_set(x, i, (this->m_initialPoint)[i]);
   }
 
-  // What are these hard-coded values?
+  // TODO: Allow the user to tweak these hard-coded values
   gsl_multimin_fdfminimizer_set(s, &minusLogPosterior, x, 0.01, 0.1);
 
   do {
@@ -151,7 +153,7 @@ GslOptimizer::minimize() {
       break;
     }
 
-    // What is this hard-coded value?
+    // TODO: Allow the user to tweak this hard-coded value
     status = gsl_multimin_test_gradient(s->gradient, 1e-3);
 
   } while (status == GSL_CONTINUE && iter < 100);  // We shouldn't be

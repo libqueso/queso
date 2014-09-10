@@ -57,7 +57,10 @@ int main(int argc, char ** argv) {
   ObjectiveFunction<QUESO::GslVector, QUESO::GslMatrix> objectiveFunction(
       "", domain);
 
-  QUESO::GslOptimizer optimizer(objectiveFunction);
+  QUESO::GslVector initialPoint(paramSpace.zeroVector());
+  initialPoint[0] = 9.0;
+
+  QUESO::GslOptimizer optimizer(objectiveFunction, initialPoint);
 
   const QUESO::GslVector * minimizer = dynamic_cast<const QUESO::GslVector *>(
       optimizer.minimize());

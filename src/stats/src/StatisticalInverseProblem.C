@@ -258,7 +258,7 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   // the optimisation
   if (this->m_seedWithMAPEstimator) {
     // Do optimisation before sampling
-    GslOptimizer optimizer(*m_solutionPdf);
+    GslOptimizer optimizer(*m_solutionPdf, initialValues);
     const GslVector * minimizer = dynamic_cast<const GslVector *>(
         optimizer.minimize());
 
