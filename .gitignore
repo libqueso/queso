@@ -115,3 +115,5 @@ test/test_Regression/jeffreys_input.txt
 test/test_Regression/test_jeffreys_samples.m
 test/test_Regression/test_jeffreys_samples.diff.sh
 test/test_jeffreys
+test/test_gsloptimizer
+test/test_seedwithmap
