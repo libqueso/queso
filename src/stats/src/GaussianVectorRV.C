@@ -23,6 +23,8 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/GaussianVectorRV.h>
+#include <queso/GaussianVectorRealizer.h>
+#include <queso/GaussianJointPdf.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 

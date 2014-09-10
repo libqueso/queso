@@ -23,6 +23,8 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/ConcatenatedVectorRV.h>
+#include <queso/ConcatenatedVectorRealizer.h>
+#include <queso/ConcatenatedJointPdf.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 

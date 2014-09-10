@@ -23,6 +23,8 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/GammaVectorRV.h>
+#include <queso/GammaVectorRealizer.h>
+#include <queso/GammaJointPdf.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 

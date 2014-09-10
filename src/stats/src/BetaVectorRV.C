@@ -22,9 +22,12 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/BetaVectorRV.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+
+#include <queso/BetaJointPdf.h>
+#include <queso/BetaVectorRV.h>
+#include <queso/BetaVectorRealizer.h>
 
 namespace QUESO {
 
