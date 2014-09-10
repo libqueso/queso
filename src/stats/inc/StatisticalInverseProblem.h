@@ -140,6 +140,13 @@ public:
   void solveWithBayesMetropolisHastings(const MhOptionsValues* alternativeOptionsValues, // dakota
 					const P_V&                    initialValues,
 					const P_M*                    initialProposalCovMatrix);
+
+  //! Seeds the chain with the result of a deterministic optimisation
+  /*!
+   * This only works for Metropolis-Hastings right now.  Multi-level is not
+   * currently supported.
+   */
+  void seedWithMAPEstimator();
   
   //! Solves with Bayes Multi-Level (ML) sampling.
   void                             solveWithBayesMLSampling        ();
@@ -193,6 +200,8 @@ private:
         
         SipOptionsValues                  m_alternativeOptionsValues;
         StatisticalInverseProblemOptions* m_optionsObj;
+
+        bool                              m_seedWithMAPEstimator;
 
 #ifdef UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
         ArrayOfOneDGrids    <P_V,P_M>*   m_subMdfGrids;
