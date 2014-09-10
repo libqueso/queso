@@ -55,16 +55,20 @@ public:
    //! @name Math methods
   //@{
   //! Actual value of the jeffreys PDF.
-  /*! If the domain of the PDF is well defined (neither negative nor infinite), then the actual
-   * value is given by 1/x, otherwise the actual
-   * value is 0.*/
-  
+  /*!
+   * If the domain of the PDF is well defined (neither negative nor infinite),
+   * then the actual value is given by
+   * 1.0 / (\c domainVector[0] * ... * \c domainVector[n-1]), otherwise the
+   * actual value is 0.0
+   */
   double actualValue(const V& domainVector, const V* domainDirection, V*
       gradVector, M* hessianMatrix, V* hessianEffect) const;
   
   //! Logarithm of the value of the jeffreys PDF.
-  /*! Analogous to the actualValue routine, except that the logarithm of the calculated value is
-   * returned. */
+  /*!
+   * Analogous to the \c actualValue routine, except that the logarithm of the
+   * calculated value is returned.
+   */
   double lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const;
   
   //TODO: do we want this part?

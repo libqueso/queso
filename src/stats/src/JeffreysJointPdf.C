@@ -76,15 +76,16 @@ JeffreysJointPdf<V,M>::actualValue(
 
   double pdf = 1.0;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i){
-    if (domainVector[i] < 0. ) {
-      queso_error_msg("The domain for Jeffreys prior should be greater than zero."); }
+    if (domainVector[i] < 0.0 ) {
+      queso_error_msg("The domain for Jeffreys prior should be greater than zero.");
+    }
     else if ((domainVector[i] == -INFINITY         ) ||
         (domainVector[i]      ==  INFINITY         ) ||
         (m_normalizationStyle != 0   )) {//TODO: R: not sure what this is doing?
-      pdf = 0.;
+      pdf = 0.0;
     }
   else {
-    pdf = pdf * (1. / domainVector[i]);
+    pdf = pdf * (1.0 / domainVector[i]);
     }
   }
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
@@ -105,7 +106,7 @@ JeffreysJointPdf<V,M>::lnValue(
         V* hessianEffect) const
 {
   if (gradVector   ) *gradVector     = m_domainSet.vectorSpace().zeroVector();
-  if (hessianMatrix) *hessianMatrix *= 0.;
+  if (hessianMatrix) *hessianMatrix *= 0.0;
   if (hessianEffect) *hessianEffect  = m_domainSet.vectorSpace().zeroVector();
 
   if (domainVector[0]) {}; // just to remove compiler warning
@@ -114,16 +115,17 @@ JeffreysJointPdf<V,M>::lnValue(
   double pdf = 1.0;
   double result = 0.;
   for (unsigned int i = 0; i < domainVector.sizeLocal(); ++i){
-    if (domainVector[i] < 0. ) {
-      queso_error_msg("The domain for Jeffreys prior should be greater than zero."); }
+    if (domainVector[i] < 0.0) {
+      queso_error_msg("The domain for Jeffreys prior should be greater than zero.");
+    }
     else if ((domainVector[i] == -INFINITY         ) ||
         (domainVector[i]      ==  INFINITY         ) ||
         (m_normalizationStyle != 0   )) {//TODO: R: not sure what this is doing?
-      pdf = 0.;
+      pdf = 0.0;
       result = -INFINITY; //TODO: what do we do here?
     }
   else {
-    pdf = pdf * (1. / domainVector[i]);
+    pdf = pdf * (1.0 / domainVector[i]);
     result = -log(pdf);
     }
   }
