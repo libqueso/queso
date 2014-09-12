@@ -53,7 +53,7 @@ extern "C" {
       return GSL_NAN;
     }
 
-    // Should cace derivative here so we don't a) segfault in the user's code
+    // Should cache derivative here so we don't a) segfault in the user's code
     // and b) so we don't recompute stuff
     double result = -objectiveFunction.lnValue(state, NULL, NULL, NULL, NULL);
 
@@ -72,6 +72,10 @@ extern "C" {
     // DM: Doing this copy sucks, but whatever.  It'll do for now.
     for (unsigned int i = 0; i < state.sizeLocal(); i++) {
       state[i] = gsl_vector_get(x, i);
+
+      // We fill with GSL_NAN and use it as a flag to check later that the user
+      // actually fills the derivative vector with stuff
+      deriv[i] = GSL_NAN;
     }
 
     if (!objectiveFunction.domainSet().contains(state)) {
@@ -85,8 +89,53 @@ extern "C" {
       // We should cache the return value here so we don't recompute stuff
       double fx = -objectiveFunction.lnValue(state, NULL, &deriv, NULL, NULL);
 
+      // Decide whether or not we need to do a finite difference based on
+      // whether the user actually filled deriv with values that are not
+      // GSL_NAN
+      //
+      // We're currently doing this check every time this function gets called.
+      // We could probably pull this logic out of here and put it somewhere
+      // where it only happens once
+      bool userComputedDerivative = true;
       for (unsigned int i = 0; i < deriv.sizeLocal(); i++) {
-        gsl_vector_set(derivative, i, -deriv[i]);  // We need the minus sign
+        // If the user missed out a derivative in any direction, fall back to
+        // a finite difference
+        if (gsl_isnan(deriv[i])) {
+          userComputedDerivative = false;
+          break;
+        }
+      }
+
+      if (userComputedDerivative) {
+        for (unsigned int i = 0; i < deriv.sizeLocal(); i++) {
+          gsl_vector_set(derivative, i, -deriv[i]);  // We need the minus sign
+        }
+      }
+      else {
+        // Finite difference step-size
+        double h = 1e-4;
+
+        // User did not provide a derivative, so do a finite difference
+        for (unsigned int i = 0; i < deriv.sizeLocal(); i++) {
+          double tempState = state[i];
+          state[i] += h;
+
+          // User didn't provide a derivative, so we don't bother passing in
+          // the derivative vector again
+          double fxph = -objectiveFunction.lnValue(state, NULL, NULL, NULL,
+              NULL);
+
+          // Reset the state back to what it was before
+          state[i] = tempState;
+
+          // Make sure we didn't do anything dumb and tell gsl if we did
+          if (!gsl_isnan(fx) && !gsl_isnan(fxph)) {
+            gsl_vector_set(derivative, i, (fxph - fx) / h);
+          }
+          else {
+            gsl_vector_set(derivative, i, GSL_NAN);
+          }
+        }
       }
     }
   }
@@ -147,7 +196,7 @@ GslOptimizer::minimize() {
     status = gsl_multimin_fdfminimizer_iterate(s);
 
     if (status) {
-      std::cerr << "Error while GSL does optimisation."
+      std::cerr << "Error while GSL does optimisation. "
                 << "See below for GSL error type." << std::endl;
       std::cerr << "Gsl error: " << gsl_strerror(status) << std::endl;
       break;

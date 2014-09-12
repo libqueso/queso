@@ -28,13 +28,8 @@ public:
 
   virtual double lnValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const {
-
-    // Need to check if NULL because QUESO will somtimes call this with a
-    // NULL pointer
-    if (gradVector != NULL) {
-      (*gradVector)[0] = -2.0 * domainVector[0];
-    }
-
+    // Note: we do not fill gradVector, so QUESO should fall back to a finite
+    // difference calculation for the derivative
     return -(domainVector[0] * domainVector[0]);
   }
 };
@@ -81,8 +76,9 @@ int main(int argc, char ** argv) {
   QUESO::GslVector first_sample(paramSpace.zeroVector());
   posterior.realizer().realization(first_sample);
 
-  // Tight tolerance for analytical derivative
-  if (std::abs(first_sample[0]) > 1e-10) {
+  // Looser tolerance for the derivative calculated by using a finite
+  // difference
+  if (std::abs(first_sample[0]) > 1e-5) {
     std::cerr << "seedWithMAPEstimator failed.  Seed was: " << first_sample[0]
               << std::endl;
     std::cerr << "Actual seed should be 0.0" << std::endl;
