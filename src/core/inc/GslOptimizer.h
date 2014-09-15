@@ -54,17 +54,15 @@ public:
    * The optimization algorithm will be initialized at \c initialPoint.
    */
   GslOptimizer(
-      const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction,
-      const GslVector & intialPoint);
+      const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction);
 
   //! Destructor
   virtual ~GslOptimizer();
 
-  virtual const Vector * minimize();
+  virtual const Vector * minimize(const Vector & initialPoint);
 
 private:
   const BaseScalarFunction<GslVector, GslMatrix> & m_objectiveFunction;
-  const GslVector & m_initialPoint;
 };
 
 }  // End namespace QUESO

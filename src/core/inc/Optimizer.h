@@ -47,7 +47,7 @@ public:
   //! Destructor
   virtual ~BaseOptimizer();
 
-  virtual const Vector * minimize() = 0;
+  virtual const Vector * minimize(const Vector & initialPoint) = 0;
 
 protected:
   Vector * minimizer;

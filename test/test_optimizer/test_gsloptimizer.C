@@ -60,10 +60,10 @@ int main(int argc, char ** argv) {
   QUESO::GslVector initialPoint(paramSpace.zeroVector());
   initialPoint[0] = 9.0;
 
-  QUESO::GslOptimizer optimizer(objectiveFunction, initialPoint);
+  QUESO::GslOptimizer optimizer(objectiveFunction);
 
   const QUESO::GslVector * minimizer = dynamic_cast<const QUESO::GslVector *>(
-      optimizer.minimize());
+      optimizer.minimize(initialPoint));
 
   if (std::abs((*minimizer)[0]) > 1e-10) {
     std::cerr << "GslOptimize failed.  Found minimizer at: " << (*minimizer)[0]

@@ -150,11 +150,9 @@ extern "C" {
 }  // End extern "C"
 
 GslOptimizer::GslOptimizer(
-    const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction,
-    const GslVector & initialPoint)
+    const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction)
   : BaseOptimizer(),
-    m_objectiveFunction(objectiveFunction),
-    m_initialPoint(initialPoint)
+    m_objectiveFunction(objectiveFunction)
 {
 }
 
@@ -163,7 +161,7 @@ GslOptimizer::~GslOptimizer()
 }
 
 const Vector *
-GslOptimizer::minimize() {
+GslOptimizer::minimize(const Vector & initialPoint) {
   size_t iter = 0;
   int status;
   unsigned int dim = this->m_objectiveFunction.domainSet().vectorSpace().
@@ -183,9 +181,14 @@ GslOptimizer::minimize() {
   minusLogPosterior.params = (void *)(&(this->m_objectiveFunction));
 
   // Set initial point
+  // DM: The dynamic cast is needed because the abstract base class does not
+  // have a pure virtual operator[] method.  We can implement one and remove
+  // this dynamic cast in the future.
+  const GslVector & gslInitialPoint = dynamic_cast<const GslVector &>(
+      initialPoint);
   gsl_vector * x = gsl_vector_alloc(dim);
   for (unsigned int i = 0; i < dim; i++) {
-    gsl_vector_set(x, i, (this->m_initialPoint)[i]);
+    gsl_vector_set(x, i, gslInitialPoint[i]);
   }
 
   // TODO: Allow the user to tweak these hard-coded values
