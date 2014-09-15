@@ -365,7 +365,7 @@ gpmsa_scalardir = $(prefix)/examples/gp/scalar
 gpmsa_scalar_PROGRAMS = gpmsa_scalar
 gpmsa_scalar_SOURCES = gp/scalar/gpmsa_scalar.C
 gpmsa_scalar_LDADD = $(top_builddir)/src/libqueso.la
-gpmsa_scalar_CPPFLAGS = -I$(top_srcdir)/examples/gp/scalar/src $(QUESO_CPPFLAGS)
+gpmsa_scalar_CPPFLAGS = -I$(top_srcdir)/examples/gp/scalar $(QUESO_CPPFLAGS)
 
 dist_gpmsa_scalar_DATA =
 dist_gpmsa_scalar_DATA += ${gpmsa_scalar_SOURCES}

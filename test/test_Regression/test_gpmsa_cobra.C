@@ -272,6 +272,8 @@ int main(int argc, char ** argv) {
     proposalCovMatrix(i, i) = proposalCovMatrix(i, i) * proposalCovMatrix(i, i);
   }
 
+  ip.doNotSeedWithMAPEstimator();
+
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
 
   MPI_Finalize();
