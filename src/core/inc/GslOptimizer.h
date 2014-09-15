@@ -51,7 +51,6 @@ public:
   //! Constructs an object that will maximize a scalar function
   /*!
    * The function \c objectiveFunction is the function that will be maximized.
-   * The optimization algorithm will be initialized at \c initialPoint.
    */
   GslOptimizer(
       const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction);
@@ -59,6 +58,7 @@ public:
   //! Destructor
   virtual ~GslOptimizer();
 
+  //! Minimize the objective function, starting at \c initialPoint
   virtual const Vector * minimize(const Vector & initialPoint);
 
 private:
