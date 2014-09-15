@@ -24,7 +24,7 @@ RUNDIR=`pwd`
 #
 # Regresion Test #1: Validation cycle with TGA example 
 
-VERIFY_DATE="07-30-2010"
+VERIFY_DATE="09-15-2014"
 SOLDIR="outputData"
 EXE="./TgaValidationCycle_gsl"   # executable name
 SOLREFS="$srcdir/regression/$VERIFY_DATE"
