@@ -75,6 +75,8 @@ libqueso_la_SOURCES += core/src/TeuchosMatrix.C
 libqueso_la_SOURCES += core/src/MpiComm.C
 libqueso_la_SOURCES += core/src/Map.C
 libqueso_la_SOURCES += core/src/DistArray.C
+libqueso_la_SOURCES += core/src/Optimizer.C
+libqueso_la_SOURCES += core/src/GslOptimizer.C
 
 
 # Sources that need libmesh
@@ -275,6 +277,8 @@ libqueso_include_HEADERS += core/inc/DistArray.h
 libqueso_include_HEADERS += core/inc/asserts.h
 libqueso_include_HEADERS += core/inc/exceptions.h
 libqueso_include_HEADERS += core/inc/Vector.h
+libqueso_include_HEADERS += core/inc/Optimizer.h
+libqueso_include_HEADERS += core/inc/GslOptimizer.h
 
 # Headers that need libmesh
 libqueso_include_HEADERS += core/inc/FunctionBase.h

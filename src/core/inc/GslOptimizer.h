@@ -22,36 +22,49 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/VectorSet.h>
-#include <queso/ScalarFunction.h>
-#include <queso/GslVector.h>
-#include <queso/GslMatrix.h>
+#ifndef UQ_GSL_OPTIMIZER_H
+#define UQ_GSL_OPTIMIZER_H
+
+#include <queso/Optimizer.h>
 
 namespace QUESO {
 
-// Default constructor
-template<class V, class M>
-BaseScalarFunction<V, M>::BaseScalarFunction(const char * prefix,
-    const VectorSet<V, M> & domainSet)
-  : m_env(domainSet.env()),
-    m_prefix((std::string)(prefix) + "func_"),
-    m_domainSet(domainSet)
-{
-}
+/*!
+ * \file GslOptimizer.h
+ * \brief Class for handling optimization of scalar functions
+ *
+ * \class GslOptimizer
+ * \brief A base class for handling optimisation of scalar functions
+ *
+ * WRITE DOCS HERE
+ */
 
-// Destructor
-template<class V, class M>
-BaseScalarFunction<V, M>::~BaseScalarFunction()
-{
-}
+class Vector;
+class GslVector;
+class GslMatrix;
 
-// Math methods
-template<class V, class M>
-const VectorSet<V, M> & BaseScalarFunction<V, M>::domainSet() const
-{
-  return m_domainSet;
-}
+template <class V, class M>
+class BaseScalarFunction;
+
+class GslOptimizer : public BaseOptimizer {
+public:
+  //! Constructs an object that will maximize a scalar function
+  /*!
+   * The function \c objectiveFunction is the function that will be maximized.
+   */
+  GslOptimizer(
+      const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction);
+
+  //! Destructor
+  virtual ~GslOptimizer();
+
+  //! Minimize the objective function, starting at \c initialPoint
+  virtual const Vector * minimize(const Vector & initialPoint);
+
+private:
+  const BaseScalarFunction<GslVector, GslMatrix> & m_objectiveFunction;
+};
 
 }  // End namespace QUESO
 
-template class QUESO::BaseScalarFunction<QUESO::GslVector, QUESO::GslMatrix>;
+#endif // UQ_GSL_OPTIMIZER_H

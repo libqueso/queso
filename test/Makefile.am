@@ -31,6 +31,9 @@ check_PROGRAMS += test_GaussianMean1DRegression
 check_PROGRAMS += test_gpmsa_cobra
 check_PROGRAMS += test_LlhdTargetOutput
 check_PROGRAMS += test_jeffreys
+check_PROGRAMS += test_gsloptimizer
+check_PROGRAMS += test_seedwithmap
+check_PROGRAMS += test_seedwithmap_fd
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -87,6 +90,9 @@ test_GaussianMean1DRegression_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST
 test_gpmsa_cobra_SOURCES = test_Regression/test_gpmsa_cobra.C
 test_LlhdTargetOutput_SOURCES = test_StatisticalInverseProblem/test_LlhdTargetOutput.C
 test_jeffreys_SOURCES = test_Regression/test_jeffreys.C
+test_gsloptimizer_SOURCES = test_optimizer/test_gsloptimizer.C
+test_seedwithmap_SOURCES = test_optimizer/test_seedwithmap.C
+test_seedwithmap_fd_SOURCES = test_optimizer/test_seedwithmap_fd.C
 
 # Files to freedom stamp
 srcstamp =
@@ -115,6 +121,9 @@ srcstamp += $(test_GaussianMean1DRegression_SOURCES)
 srcstamp += $(test_gpmsa_cobra_SOURCES)
 srcstamp += $(test_LlhdTargetOutput_SOURCES)
 srcstamp += $(test_jeffreys_SOURCES)
+srcstamp += $(test_gsloptimizer_SOURCES)
+srcstamp += $(test_seedwithmap_SOURCES)
+srcstamp += $(test_seedwithmap_fd_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
@@ -143,6 +152,9 @@ TESTS += $(top_builddir)/test/test_GaussianMean1DRegression
 TESTS += $(top_builddir)/test/test_Regression/test_cobra_samples_diff.sh
 TESTS += $(top_builddir)/test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
 TESTS += $(top_builddir)/test/test_Regression/test_jeffreys_samples_diff.sh
+TESTS += $(top_builddir)/test/test_gsloptimizer
+TESTS += $(top_builddir)/test/test_seedwithmap
+TESTS += $(top_builddir)/test/test_seedwithmap_fd
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 

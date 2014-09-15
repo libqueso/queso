@@ -158,7 +158,16 @@ BayesianJointPdf<V,M>::lnValue(
   }
 
   V* gradVLike = NULL;
-  if (gradVector) gradVLike = &m_tmpVector1;
+  if (gradVector) {
+    gradVLike = &m_tmpVector1;
+
+    // DM:  We do this because we want to be able to test whether the user
+    //      actually filled gradVector, rather than passing a different
+    //      instance of V to the likelihood code
+    for (unsigned int i = 0; i < m_tmpVector1.sizeLocal(); i++) {
+      m_tmpVector1[i] = (*gradVector)[i];
+    }
+  }
 
   M* hessianMLike = NULL;
   if (hessianMatrix) hessianMLike = m_tmpMatrix;

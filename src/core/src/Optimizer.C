@@ -22,36 +22,16 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <queso/VectorSet.h>
-#include <queso/ScalarFunction.h>
-#include <queso/GslVector.h>
-#include <queso/GslMatrix.h>
+#include <queso/Optimizer.h>
 
 namespace QUESO {
 
-// Default constructor
-template<class V, class M>
-BaseScalarFunction<V, M>::BaseScalarFunction(const char * prefix,
-    const VectorSet<V, M> & domainSet)
-  : m_env(domainSet.env()),
-    m_prefix((std::string)(prefix) + "func_"),
-    m_domainSet(domainSet)
+BaseOptimizer::BaseOptimizer()
 {
 }
 
-// Destructor
-template<class V, class M>
-BaseScalarFunction<V, M>::~BaseScalarFunction()
+BaseOptimizer::~BaseOptimizer()
 {
-}
-
-// Math methods
-template<class V, class M>
-const VectorSet<V, M> & BaseScalarFunction<V, M>::domainSet() const
-{
-  return m_domainSet;
 }
 
 }  // End namespace QUESO
-
-template class QUESO::BaseScalarFunction<QUESO::GslVector, QUESO::GslMatrix>;

@@ -26,6 +26,7 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/GPMSA.h>
+#include <queso/GslOptimizer.h>
 
 namespace QUESO {
 
@@ -53,7 +54,8 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
   m_alternativeOptionsValues(),
-  m_optionsObj              (NULL)
+  m_optionsObj              (NULL),
+  m_seedWithMAPEstimator    (true)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering Sip" << std::endl;
@@ -119,7 +121,8 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
   m_alternativeOptionsValues(),
-  m_optionsObj              (NULL)
+  m_optionsObj              (NULL),
+  m_seedWithMAPEstimator    (true)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering StatisticalInverseProblem<P_V,P_M>::constructor()"
@@ -247,14 +250,30 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
                                                        *m_solutionDomain);
 
   m_postRv.setPdf(*m_solutionPdf);
-
-  // Compute output realizer: Metropolis-Hastings approach
   m_chain = new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
-  m_mhSeqGenerator = new MetropolisHastingsSG<P_V,P_M>(m_optionsObj->m_prefix.c_str(), // dakota
-                                                       alternativeOptionsValues,
-                                                       m_postRv,
-                                                       initialValues,
-                                                       initialProposalCovMatrix);
+
+  // Decide whether or not to create a MetropolisHastingsSG instance from the
+  // user-provided initial seed, or use the user-provided seed for a
+  // deterministic optimisation instead and seed the chain with the result of
+  // the optimisation
+  if (this->m_seedWithMAPEstimator) {
+    // Do optimisation before sampling
+    GslOptimizer optimizer(*m_solutionPdf);
+    const GslVector * minimizer = dynamic_cast<const GslVector *>(
+        optimizer.minimize(initialValues));
+
+    // Compute output realizer: Metropolis-Hastings approach
+    m_mhSeqGenerator = new MetropolisHastingsSG<P_V, P_M>(
+        m_optionsObj->m_prefix.c_str(), alternativeOptionsValues,
+        m_postRv, *minimizer, initialProposalCovMatrix);
+  }
+  else {
+    // Compute output realizer: Metropolis-Hastings approach
+    m_mhSeqGenerator = new MetropolisHastingsSG<P_V, P_M>(
+        m_optionsObj->m_prefix.c_str(), alternativeOptionsValues, m_postRv,
+        initialValues, initialProposalCovMatrix);
+  }
+
 
   m_logLikelihoodValues = new ScalarSequence<double>(m_env, 0,
                                                      m_optionsObj->m_prefix +
@@ -333,7 +352,14 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   // grvy_timer_end("BayesMetropolisHastings"); TODO: revisit timers
   return;
 }
-//--------------------------------------------------
+
+template <class P_V, class P_M>
+void
+StatisticalInverseProblem<P_V, P_M>::doNotSeedWithMAPEstimator()
+{
+  this->m_seedWithMAPEstimator = false;
+}
+
 template <class P_V,class P_M>
 void
 StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
