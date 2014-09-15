@@ -72,8 +72,6 @@ int main(int argc, char ** argv) {
   QUESO::GslMatrix proposalCovarianceMatrix(paramSpace.zeroVector());
   proposalCovarianceMatrix(0, 0) = 1.0;
 
-  ip.seedWithMAPEstimator();
-
   ip.solveWithBayesMetropolisHastings(NULL, initialValues,
       &proposalCovarianceMatrix);
 

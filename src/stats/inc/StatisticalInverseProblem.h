@@ -146,7 +146,7 @@ public:
    * This only works for Metropolis-Hastings right now.  Multi-level is not
    * currently supported.
    */
-  void seedWithMAPEstimator();
+  void doNotSeedWithMAPEstimator();
   
   //! Solves with Bayes Multi-Level (ML) sampling.
   void                             solveWithBayesMLSampling        ();
