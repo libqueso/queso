@@ -191,7 +191,9 @@ GslOptimizer::minimize(const Vector & initialPoint) {
     gsl_vector_set(x, i, gslInitialPoint[i]);
   }
 
-  // TODO: Allow the user to tweak these hard-coded values
+  /*!
+   * \todo Allow the user to tweak these hard-coded values
+   */
   gsl_multimin_fdfminimizer_set(s, &minusLogPosterior, x, 0.01, 0.1);
 
   do {
@@ -208,9 +210,10 @@ GslOptimizer::minimize(const Vector & initialPoint) {
     // TODO: Allow the user to tweak this hard-coded value
     status = gsl_multimin_test_gradient(s->gradient, 1e-3);
 
-  } while (status == GSL_CONTINUE && iter < 100);  // We shouldn't be
-                                                   // hard-coding the max
-                                                   // number of iterations
+  /*!
+   * \todo We shouldn't be hard-coding the max number of iterations
+   */
+  } while (status == GSL_CONTINUE && iter < 100);
 
   // Get the minimizer
   GslVector * minimizer = new GslVector(this->m_objectiveFunction.domainSet().
