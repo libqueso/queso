@@ -526,8 +526,8 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
                           "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
     }
 
-    // Hopefully this dynamic cast works.  We need it so that m_tk can inspect
-    // the bounds and do the necessary transform
+    // We need this dynamic_cast to BoxSubset so that m_tk can inspect the
+    // domain bounds and do the necessary transform
     m_tk = new TransformedScaledCovMatrixTKGroup<P_V, P_M>(
         m_optionsObj->m_prefix.c_str(),
         dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()),
