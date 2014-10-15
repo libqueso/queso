@@ -337,4 +337,93 @@ GslOptimizer::minimizer() const
     return minimizer;
   }
 
+  const GslVector* GslOptimizer::minimize_no_gradient( unsigned int dim, const GslVector& initial_guess )
+  {
+    // Set initial point
+    gsl_vector* x = gsl_vector_alloc(dim);
+    for (unsigned int i = 0; i < dim; i++) {
+      gsl_vector_set(x, i, initial_guess[i]);
+    }
+
+    // Tell GSL which solver we're using
+    const gsl_multimin_fminimizer_type* type = NULL;
+
+    switch(m_solver_type)
+      {
+      case(NELDER_MEAD):
+        type = gsl_multimin_fminimizer_nmsimplex;
+        break;
+      case(NELDER_MEAD2):
+        type = gsl_multimin_fminimizer_nmsimplex2;
+        break;
+      case(NELDER_MEAD2_RAND):
+        type = gsl_multimin_fminimizer_nmsimplex2rand;
+        break;
+      case(FLETCHER_REEVES_CG):
+      case(POLAK_RIBIERE_CG):
+      case(BFGS):
+      case(BFGS2):
+      case(STEEPEST_DECENT):
+      default:
+        // Wat?!
+        queso_error();
+      }
+
+    // Init solver
+    gsl_multimin_fminimizer* solver =
+      gsl_multimin_fminimizer_alloc(type, dim);
+
+    // Point GSL at the right functions
+    gsl_multimin_function minusLogPosterior;
+    minusLogPosterior.n = dim;
+    minusLogPosterior.f = &c_evaluate;
+    minusLogPosterior.params = (void *)(&(this->m_objectiveFunction));
+
+    // Needed for these gradient free algorithms.
+    gsl_vector* step_size = gsl_vector_alloc(dim);
+
+    /*! \todo This very much needs to be set (heterogeneously) by the user. */
+    gsl_vector_set_all(step_size,0.1);
+
+    gsl_multimin_fminimizer_set(solver, &minusLogPosterior, x, step_size);
+
+    GslVector* minimizer = new GslVector(this->m_objectiveFunction.domainSet().
+                                          vectorSpace().zeroVector());
+
+    int status;
+    size_t iter = 0;
+    double size = 0.0;
+
+    do
+      {
+        iter++;
+        status = gsl_multimin_fminimizer_iterate(solver);
+
+        if (status) {
+          if( m_objectiveFunction.domainSet().env().fullRank() == 0 )
+            {
+              std::cerr << "Error while GSL does optimisation. "
+                        << "See below for GSL error type." << std::endl;
+              std::cerr << "Gsl error: " << gsl_strerror(status) << std::endl;
+            }
+          break;
+        }
+
+        size = gsl_multimin_fminimizer_size(solver);
+
+        /*! \todo Tolerance should be set by the user*/
+        status = gsl_multimin_test_size (size, 1e-2);
+
+      }
+    /*! \todo max iterations should be set by the user */
+    while (status == GSL_CONTINUE && iter < 100);
+
+    // We're being good human beings and cleaning up the memory we allocated
+    gsl_vector_free(step_size);
+    gsl_multimin_fminimizer_free(solver);
+    gsl_vector_free(x);
+
+    return minimizer;
+  }
+
 }  // End namespace QUESO

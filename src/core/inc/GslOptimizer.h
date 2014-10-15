@@ -101,6 +101,8 @@ private:
 
   const GslVector* minimize_with_gradient( unsigned int dim, const GslVector& initial_guess );
 
+  const GslVector* minimize_no_gradient( unsigned int dim, const GslVector& initial_guess );
+
 };
 
 }  // End namespace QUESO
