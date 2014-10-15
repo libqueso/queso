@@ -309,10 +309,6 @@ GslOptimizer::minimizer() const
     minusLogPosterior.fdf = &c_evaluate_with_derivative;
     minusLogPosterior.params = (void *)(this);
 
-
-    /*!
-     * \todo Allow the user to tweak these hard-coded values
-     */
     gsl_multimin_fdfminimizer_set(solver, &minusLogPosterior, x, m_fdfstep_size, m_line_tol);
 
     int status;
