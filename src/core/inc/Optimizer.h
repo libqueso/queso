@@ -34,7 +34,8 @@ namespace QUESO {
  * \class BaseOptimizer
  * \brief A base class for handling optimisation of scalar functions
  *
- * WRITE DOCS HERE
+ * This class defines the interface every optimizer must adhere to.  All
+ * optimizers should subclass this class.
  */
 
 class Vector;
@@ -49,8 +50,39 @@ public:
 
   virtual const Vector * minimize(const Vector & initialPoint) = 0;
 
+  //! Returns the maximum number of iterations the optimizer will do
+  /*!
+   * Default value is 100
+   */
+  unsigned int getMaxIterations() const;
+
+  //! Returns the tolerance used to test for an extremum in the optimizer
+  /*!
+   * Default value is 1e-3
+   */
+  double getTolerance() const;
+
+  //! Returns the step size used in the finite difference formula
+  /*!
+   * Default value is 1e-4
+   */
+  double getFiniteDifferenceStepSize() const;
+
+  //! Sets the maximum number of iterations to be used by the optimizer
+  void setMaxIterations(unsigned int maxIterations);
+
+  //! Sets the tolerance the optimizer will use to test for an extremum
+  void setTolerance(double tolerance);
+
+  //! Sets the step to use in the finite difference derivative
+  void setFiniteDifferenceStepSize(double h);
+
 protected:
   Vector * minimizer;
+
+  unsigned int m_maxIterations;
+  double m_tolerance;
+  double m_finiteDifferenceStepSize;
 };
 
 }  // End namespace QUESO

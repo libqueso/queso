@@ -38,10 +38,10 @@ extern "C" {
   // This evaluate -log posterior
   double c_evaluate(const gsl_vector * x, void * context) {
 
-    BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction =
-      *(static_cast<BaseScalarFunction<GslVector, GslMatrix> * >(context));
+    GslOptimizer * optimizer = static_cast<GslOptimizer * >(context);
 
-    GslVector state(objectiveFunction.domainSet().vectorSpace().zeroVector());
+    GslVector state(
+        optimizer->objectiveFunction().domainSet().vectorSpace().zeroVector());
 
     // DM: Doing this copy sucks, but whatever.  It'll do for now.
     for (unsigned int i = 0; i < state.sizeLocal(); i++) {
@@ -49,13 +49,14 @@ extern "C" {
     }
 
     // Bail early if GSL tries to evaluate outside of the domain
-    if (!objectiveFunction.domainSet().contains(state)) {
+    if (!optimizer->objectiveFunction().domainSet().contains(state)) {
       return GSL_NAN;
     }
 
     // Should cache derivative here so we don't a) segfault in the user's code
     // and b) so we don't recompute stuff
-    double result = -objectiveFunction.lnValue(state, NULL, NULL, NULL, NULL);
+    double result = -optimizer->objectiveFunction().lnValue(state, NULL, NULL,
+        NULL, NULL);
 
     return result;
   }
@@ -63,11 +64,12 @@ extern "C" {
   // This evaluates the derivative of -log posterior
   void c_evaluate_derivative(const gsl_vector * x, void * context,
       gsl_vector * derivative) {
-    BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction =
-      *(static_cast<BaseScalarFunction<GslVector, GslMatrix> * >(context));
+    GslOptimizer * optimizer = static_cast<GslOptimizer * >(context);
 
-    GslVector state(objectiveFunction.domainSet().vectorSpace().zeroVector());
-    GslVector deriv(objectiveFunction.domainSet().vectorSpace().zeroVector());
+    GslVector state(
+        optimizer->objectiveFunction().domainSet().vectorSpace().zeroVector());
+    GslVector deriv(
+        optimizer->objectiveFunction().domainSet().vectorSpace().zeroVector());
 
     // DM: Doing this copy sucks, but whatever.  It'll do for now.
     for (unsigned int i = 0; i < state.sizeLocal(); i++) {
@@ -78,7 +80,7 @@ extern "C" {
       deriv[i] = GSL_NAN;
     }
 
-    if (!objectiveFunction.domainSet().contains(state)) {
+    if (!optimizer->objectiveFunction().domainSet().contains(state)) {
       // Fill derivative with error codes if the point is outside of the
       // domain
       for (unsigned int i = 0; i < deriv.sizeLocal(); i++) {
@@ -87,7 +89,8 @@ extern "C" {
     }
     else {
       // We should cache the return value here so we don't recompute stuff
-      double fx = -objectiveFunction.lnValue(state, NULL, &deriv, NULL, NULL);
+      double fx = -optimizer->objectiveFunction().lnValue(state, NULL, &deriv,
+          NULL, NULL);
 
       // Decide whether or not we need to do a finite difference based on
       // whether the user actually filled deriv with values that are not
@@ -113,7 +116,7 @@ extern "C" {
       }
       else {
         // Finite difference step-size
-        double h = 1e-4;
+        double h = optimizer->getFiniteDifferenceStepSize();
 
         // User did not provide a derivative, so do a finite difference
         for (unsigned int i = 0; i < deriv.sizeLocal(); i++) {
@@ -122,8 +125,8 @@ extern "C" {
 
           // User didn't provide a derivative, so we don't bother passing in
           // the derivative vector again
-          double fxph = -objectiveFunction.lnValue(state, NULL, NULL, NULL,
-              NULL);
+          double fxph = -optimizer->objectiveFunction().lnValue(state, NULL,
+              NULL, NULL, NULL);
 
           // Reset the state back to what it was before
           state[i] = tempState;
@@ -178,7 +181,7 @@ GslOptimizer::minimize(const Vector & initialPoint) {
   minusLogPosterior.f = &c_evaluate;
   minusLogPosterior.df = &c_evaluate_derivative;
   minusLogPosterior.fdf = &c_evaluate_with_derivative;
-  minusLogPosterior.params = (void *)(&(this->m_objectiveFunction));
+  minusLogPosterior.params = (void *)(this);
 
   // Set initial point
   // DM: The dynamic cast is needed because the abstract base class does not
@@ -208,12 +211,12 @@ GslOptimizer::minimize(const Vector & initialPoint) {
     }
 
     // TODO: Allow the user to tweak this hard-coded value
-    status = gsl_multimin_test_gradient(s->gradient, 1e-3);
+    status = gsl_multimin_test_gradient(s->gradient, this->getTolerance());
 
   /*!
    * \todo We shouldn't be hard-coding the max number of iterations
    */
-  } while (status == GSL_CONTINUE && iter < 100);
+  } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
 
   // Get the minimizer
   GslVector * minimizer = new GslVector(this->m_objectiveFunction.domainSet().
@@ -228,6 +231,12 @@ GslOptimizer::minimize(const Vector & initialPoint) {
 
   // Return the minimizer.  That's all she wrote.
   return minimizer;
+}
+
+const BaseScalarFunction<GslVector, GslMatrix> &
+GslOptimizer::objectiveFunction() const
+{
+  return this->m_objectiveFunction;
 }
 
 }  // End namespace QUESO

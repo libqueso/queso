@@ -61,6 +61,9 @@ public:
   //! Minimize the objective function, starting at \c initialPoint
   virtual const Vector * minimize(const Vector & initialPoint);
 
+  //! Returns the objective function
+  const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction() const;
+
 private:
   const BaseScalarFunction<GslVector, GslMatrix> & m_objectiveFunction;
 };
