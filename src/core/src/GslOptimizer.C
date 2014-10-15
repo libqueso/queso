@@ -173,76 +173,20 @@ GslOptimizer::~GslOptimizer()
   delete this->m_initialPoint;
 }
 
-void
-GslOptimizer::minimize() {
-  size_t iter = 0;
-  int status;
+const Vector *
+GslOptimizer::minimize(const Vector & initialPoint) {
+
   unsigned int dim = this->m_objectiveFunction.domainSet().vectorSpace().
     zeroVector().sizeLocal();
 
-  const gsl_multimin_fdfminimizer_type * T =
-    gsl_multimin_fdfminimizer_vector_bfgs2;
-
-  gsl_multimin_fdfminimizer * s =
-    gsl_multimin_fdfminimizer_alloc(T, dim);
-
-  gsl_multimin_function_fdf minusLogPosterior;
-  minusLogPosterior.n = dim;
-  minusLogPosterior.f = &c_evaluate;
-  minusLogPosterior.df = &c_evaluate_derivative;
-  minusLogPosterior.fdf = &c_evaluate_with_derivative;
-  minusLogPosterior.params = (void *)(this);
-
-  if (!this->m_objectiveFunction.domainSet().contains(
-        *(this->m_initialPoint))) {
-    std::cerr << "Minimization was given initial point outside of domain"
-              << std::endl;
-    queso_error();
-  }
-
-  // Set initial point
   // DM: The dynamic cast is needed because the abstract base class does not
   // have a pure virtual operator[] method.  We can implement one and remove
   // this dynamic cast in the future.
-  const GslVector & gslInitialPoint = dynamic_cast<const GslVector &>(
-      *(this->m_initialPoint));
-  gsl_vector * x = gsl_vector_alloc(dim);
-  for (unsigned int i = 0; i < dim; i++) {
-    gsl_vector_set(x, i, gslInitialPoint[i]);
-  }
+  const GslVector & initial_guess = dynamic_cast<const GslVector &>(initialPoint);
 
-  /*!
-   * \todo Allow the user to tweak these hard-coded values
-   */
-  gsl_multimin_fdfminimizer_set(s, &minusLogPosterior, x, 0.01, 0.1);
+  const GslVector* minimizer = this->minimize_with_gradient( dim, initial_guess );
 
-  do {
-    iter++;
-    status = gsl_multimin_fdfminimizer_iterate(s);
-
-    if (status) {
-      std::cerr << "Error while GSL does optimisation. "
-                << "See below for GSL error type." << std::endl;
-      std::cerr << "Gsl error: " << gsl_strerror(status) << std::endl;
-      break;
-    }
-
-    // TODO: Allow the user to tweak this hard-coded value
-    status = gsl_multimin_test_gradient(s->gradient, this->getTolerance());
-
-  /*!
-   * \todo We shouldn't be hard-coding the max number of iterations
-   */
-  } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
-
-  // Get the minimizer
-  for (unsigned int i = 0; i < dim; i++) {
-    (*(this->m_minimizer))[i] = gsl_vector_get(s->x, i);
-  }
-
-  // We're being good human beings and cleaning up the memory we allocated
-  gsl_multimin_fdfminimizer_free(s);
-  gsl_vector_free(x);
+  return minimizer;
 }
 
 const BaseScalarFunction<GslVector, GslMatrix> &
@@ -299,6 +243,69 @@ GslOptimizer::minimizer() const
       } // switch(solver)
 
     return gradient_needed;
+  }
+
+  const GslVector* GslOptimizer::minimize_with_gradient( unsigned int dim, const GslVector& initial_guess )
+  {
+    // Set initial point
+    gsl_vector * x = gsl_vector_alloc(dim);
+    for (unsigned int i = 0; i < dim; i++) {
+      gsl_vector_set(x, i, initial_guess[i]);
+    }
+
+    const gsl_multimin_fdfminimizer_type * T =
+      gsl_multimin_fdfminimizer_vector_bfgs2;
+
+    gsl_multimin_fdfminimizer * s =
+      gsl_multimin_fdfminimizer_alloc(T, dim);
+
+    gsl_multimin_function_fdf minusLogPosterior;
+    minusLogPosterior.n = dim;
+    minusLogPosterior.f = &c_evaluate;
+    minusLogPosterior.df = &c_evaluate_derivative;
+    minusLogPosterior.fdf = &c_evaluate_with_derivative;
+    minusLogPosterior.params = (void *)(&(this->m_objectiveFunction));
+
+
+    /*!
+     * \todo Allow the user to tweak these hard-coded values
+     */
+    gsl_multimin_fdfminimizer_set(s, &minusLogPosterior, x, 0.01, 0.1);
+
+    int status;
+    size_t iter = 0;
+
+    do {
+      iter++;
+      status = gsl_multimin_fdfminimizer_iterate(s);
+
+      if (status) {
+        std::cerr << "Error while GSL does optimisation. "
+                  << "See below for GSL error type." << std::endl;
+        std::cerr << "Gsl error: " << gsl_strerror(status) << std::endl;
+        break;
+      }
+
+      // TODO: Allow the user to tweak this hard-coded value
+      status = gsl_multimin_test_gradient(s->gradient, this->getTolerance());
+
+      /*!
+       * \todo We shouldn't be hard-coding the max number of iterations
+       */
+    } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations())); 
+
+    // Get the minimizer
+    GslVector * minimizer = new GslVector(this->m_objectiveFunction.domainSet().
+                                          vectorSpace().zeroVector());
+    for (unsigned int i = 0; i < dim; i++) {
+      (*minimizer)[i] = gsl_vector_get(s->x, i);
+    }
+
+    // We're being good human beings and cleaning up the memory we allocated
+    gsl_multimin_fdfminimizer_free(s);
+    gsl_vector_free(x);
+
+    return minimizer;
   }
 
 }  // End namespace QUESO
