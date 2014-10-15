@@ -66,7 +66,7 @@ public:
 
   //! Returns the objective function
   const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction() const;
-  
+
   enum SolverType { FLETCHER_REEVES_CG,
                     POLAK_RIBIERE_CG,
                     BFGS,
