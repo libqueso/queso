@@ -66,6 +66,16 @@ public:
 
   //! Returns the objective function
   const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction() const;
+  
+  // Added enum for GSL optimizer solver types.
+  enum SolverType { FLETCHER_REEVES,
+                    CONJUGATE_GRADIENT,
+                    BFGS,
+                    BFGS2,
+                    STEEPEST_DECENT,
+                    NELDER_MEAD,
+                    NELDER_MEAD2,
+                    NELDER_MEAD2_RAND };
 
   //! Set the point at which the optimization starts
   void setInitialPoint(const GslVector & intialPoint);
@@ -79,8 +89,12 @@ public:
 
 private:
   const BaseScalarFunction<GslVector, GslMatrix> & m_objectiveFunction;
+  
   GslVector * m_initialPoint;
   GslVector * m_minimizer;
+
+  SolverType m_solver_type;
+
 };
 
 }  // End namespace QUESO

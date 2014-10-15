@@ -159,7 +159,8 @@ GslOptimizer::GslOptimizer(
     m_initialPoint(new GslVector(objectiveFunction.domainSet().
           vectorSpace().zeroVector())),
     m_minimizer(new GslVector(this->m_objectiveFunction.domainSet().
-        vectorSpace().zeroVector()))
+        vectorSpace().zeroVector())),
+    m_solver_type(BFGS2)
 {
   // We initialize the minimizer to GSL_NAN just in case the optimization fails
   for (unsigned int i = 0; i < this->m_minimizer->sizeLocal(); i++) {
