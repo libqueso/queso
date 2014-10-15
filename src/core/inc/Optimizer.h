@@ -80,7 +80,6 @@ public:
 protected:
   Vector * minimizer;
 
-private:
   unsigned int m_maxIterations;
   double m_tolerance;
   double m_finiteDifferenceStepSize;
