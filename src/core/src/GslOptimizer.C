@@ -300,7 +300,7 @@ GslOptimizer::minimizer() const
     minusLogPosterior.f = &c_evaluate;
     minusLogPosterior.df = &c_evaluate_derivative;
     minusLogPosterior.fdf = &c_evaluate_with_derivative;
-    minusLogPosterior.params = (void *)(&(this->m_objectiveFunction));
+    minusLogPosterior.params = (void *)(this);
 
 
     /*!
@@ -325,12 +325,9 @@ GslOptimizer::minimizer() const
         break;
       }
 
-      status = gsl_multimin_test_gradient(s->gradient, this->getTolerance());
+      status = gsl_multimin_test_gradient(solver->gradient, this->getTolerance());
 
-      /*!
-       * \todo We shouldn't be hard-coding the max number of iterations
-       */
-    } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations())); 
+    } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
 
     // Get the minimizer
     GslVector * minimizer = new GslVector(this->m_objectiveFunction.domainSet().
