@@ -51,22 +51,22 @@ public:
   virtual const Vector * minimize(const Vector & initialPoint) = 0;
 
   //! Returns the maximum number of iterations the optimizer will do
-  virtual unsigned int getMaxIterations() const;
+  unsigned int getMaxIterations() const;
 
   //! Returns the tolerance used to test for an extremum in the optimizer
-  virtual double getTolerance() const;
+  double getTolerance() const;
 
   //! Returns the step size used in the finite difference formula
-  virtual double getFiniteDifferenceStepSize() const;
+  double getFiniteDifferenceStepSize() const;
 
   //! Sets the maximum number of iterations to be used by the optimizer
-  virtual void setMaxIterations(unsigned int maxIterations);
+  void setMaxIterations(unsigned int maxIterations);
 
   //! Sets the tolerance the optimizer will use to test for an extremum
-  virtual void setTolerance(double tolerance);
+  void setTolerance(double tolerance);
 
   //! Sets the step to use in the finite difference derivative
-  virtual void setFiniteDifferenceStepSize(double h);
+  void setFiniteDifferenceStepSize(double h);
 
 protected:
   Vector * minimizer;
