@@ -383,7 +383,7 @@ GslOptimizer::minimizer() const
     gsl_multimin_function minusLogPosterior;
     minusLogPosterior.n = dim;
     minusLogPosterior.f = &c_evaluate;
-    minusLogPosterior.params = (void *)(&(this->m_objectiveFunction));
+    minusLogPosterior.params = (void *)(this);
 
     // Needed for these gradient free algorithms.
     gsl_vector* step_size = gsl_vector_alloc(dim);
@@ -418,11 +418,11 @@ GslOptimizer::minimizer() const
         size = gsl_multimin_fminimizer_size(solver);
 
         /*! \todo Tolerance should be set by the user*/
-        status = gsl_multimin_test_size (size, 1e-2);
+        status = gsl_multimin_test_size (size, this->getTolerance());
 
       }
     /*! \todo max iterations should be set by the user */
-    while (status == GSL_CONTINUE && iter < 100);
+    while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
 
     // We're being good human beings and cleaning up the memory we allocated
     gsl_vector_free(step_size);
