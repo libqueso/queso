@@ -253,12 +253,39 @@ GslOptimizer::minimizer() const
       gsl_vector_set(x, i, initial_guess[i]);
     }
 
-    const gsl_multimin_fdfminimizer_type * T =
-      gsl_multimin_fdfminimizer_vector_bfgs2;
+    // Tell GSL which solver we're using
+    const gsl_multimin_fdfminimizer_type* type = NULL;
 
-    gsl_multimin_fdfminimizer * s =
-      gsl_multimin_fdfminimizer_alloc(T, dim);
+    switch(m_solver_type)
+      {
+      case(FLETCHER_REEVES_CG):
+        type = gsl_multimin_fdfminimizer_conjugate_fr;
+        break;
+      case(POLAK_RIBIERE_CG):
+        type = gsl_multimin_fdfminimizer_conjugate_pr;
+        break;
+      case(BFGS):
+        type = gsl_multimin_fdfminimizer_vector_bfgs;
+        break;
+      case(BFGS2):
+        type = gsl_multimin_fdfminimizer_vector_bfgs2;
+        break;
+      case(STEEPEST_DECENT):
+        type = gsl_multimin_fdfminimizer_steepest_descent;
+        break;
+      case(NELDER_MEAD):
+      case(NELDER_MEAD2):
+      case(NELDER_MEAD2_RAND):
+      default:
+        // Wat?!
+        queso_error();
+      }
 
+    // Init solver
+    gsl_multimin_fdfminimizer * solver =
+      gsl_multimin_fdfminimizer_alloc(type, dim);
+
+    // Point GSL to the right functions
     gsl_multimin_function_fdf minusLogPosterior;
     minusLogPosterior.n = dim;
     minusLogPosterior.f = &c_evaluate;
@@ -270,14 +297,14 @@ GslOptimizer::minimizer() const
     /*!
      * \todo Allow the user to tweak these hard-coded values
      */
-    gsl_multimin_fdfminimizer_set(s, &minusLogPosterior, x, 0.01, 0.1);
+    gsl_multimin_fdfminimizer_set(solver, &minusLogPosterior, x, 0.01, 0.1);
 
     int status;
     size_t iter = 0;
 
     do {
       iter++;
-      status = gsl_multimin_fdfminimizer_iterate(s);
+      status = gsl_multimin_fdfminimizer_iterate(solver);
 
       if (status) {
         std::cerr << "Error while GSL does optimisation. "
@@ -286,7 +313,6 @@ GslOptimizer::minimizer() const
         break;
       }
 
-      // TODO: Allow the user to tweak this hard-coded value
       status = gsl_multimin_test_gradient(s->gradient, this->getTolerance());
 
       /*!
@@ -298,11 +324,11 @@ GslOptimizer::minimizer() const
     GslVector * minimizer = new GslVector(this->m_objectiveFunction.domainSet().
                                           vectorSpace().zeroVector());
     for (unsigned int i = 0; i < dim; i++) {
-      (*minimizer)[i] = gsl_vector_get(s->x, i);
+      (*minimizer)[i] = gsl_vector_get(solver->x, i);
     }
 
     // We're being good human beings and cleaning up the memory we allocated
-    gsl_multimin_fdfminimizer_free(s);
+    gsl_multimin_fdfminimizer_free(solver);
     gsl_vector_free(x);
 
     return minimizer;
