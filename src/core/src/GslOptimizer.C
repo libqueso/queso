@@ -220,8 +220,8 @@ GslOptimizer::minimizer() const
 
     switch(solver)
       {
-      case(FLETCHER_REEVES):
-      case(CONJUGATE_GRADIENT):
+      case(FLETCHER_REEVES_CG):
+      case(POLAK_RIBIERE_CG):
       case(BFGS):
       case(BFGS2):
       case(STEEPEST_DECENT):

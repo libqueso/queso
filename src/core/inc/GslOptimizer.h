@@ -67,9 +67,8 @@ public:
   //! Returns the objective function
   const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction() const;
   
-  // Added enum for GSL optimizer solver types.
-  enum SolverType { FLETCHER_REEVES,
-                    CONJUGATE_GRADIENT,
+  enum SolverType { FLETCHER_REEVES_CG,
+                    POLAK_RIBIERE_CG,
                     BFGS,
                     BFGS2,
                     STEEPEST_DECENT,
