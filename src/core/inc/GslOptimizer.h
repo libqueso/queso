@@ -86,6 +86,8 @@ public:
    * optimization failed
    */
   const GslVector & minimizer() const;
+  
+  void set_solver_type( SolverType solver );
 
 private:
   const BaseScalarFunction<GslVector, GslMatrix> & m_objectiveFunction;

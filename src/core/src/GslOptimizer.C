@@ -264,5 +264,10 @@ GslOptimizer::minimizer() const
 {
   return *(this->m_minimizer);
 }
+  
+  void GslOptimizer::set_solver_type( SolverType solver )
+  {
+    m_solver_type = solver;
+  }
 
 }  // End namespace QUESO
