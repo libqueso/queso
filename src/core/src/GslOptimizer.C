@@ -160,12 +160,16 @@ GslOptimizer::GslOptimizer(
           vectorSpace().zeroVector())),
     m_minimizer(new GslVector(this->m_objectiveFunction.domainSet().
         vectorSpace().zeroVector())),
-    m_solver_type(BFGS2)
+    m_solver_type(BFGS2),
+    m_step_size(this->m_objectiveFunction.domainSet().vectorSpace().zeroVector())
 {
   // We initialize the minimizer to GSL_NAN just in case the optimization fails
   for (unsigned int i = 0; i < this->m_minimizer->sizeLocal(); i++) {
     (*(this->m_minimizer))[i] = GSL_NAN;
   }
+  
+  // Set to documented default value.
+  m_step_size.cwSet(0.1);
 }
 
 GslOptimizer::~GslOptimizer()
@@ -388,8 +392,9 @@ GslOptimizer::minimizer() const
     // Needed for these gradient free algorithms.
     gsl_vector* step_size = gsl_vector_alloc(dim);
 
-    /*! \todo This very much needs to be set (heterogeneously) by the user. */
-    gsl_vector_set_all(step_size,0.1);
+    for(unsigned int i = 0; i < dim; i++) {
+      gsl_vector_set(step_size, i, m_step_size[i]);
+    }
 
     gsl_multimin_fminimizer_set(solver, &minusLogPosterior, x, step_size);
 
@@ -430,6 +435,11 @@ GslOptimizer::minimizer() const
     gsl_vector_free(x);
 
     return minimizer;
+  }
+
+  void GslOptimizer::set_step_size( const GslVector& step_size )
+  {
+    m_step_size = step_size;
   }
 
 }  // End namespace QUESO

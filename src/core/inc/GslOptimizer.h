@@ -88,6 +88,14 @@ public:
   
   void set_solver_type( SolverType solver );
 
+  //! Sets step size used in gradient-free solvers
+  /*!
+   * By default, the step size used will be a vector of 0.1.
+   * Use this method to reset the step_size to the desired
+   * values.
+   */
+  void set_step_size( const GslVector& step_size );
+
 private:
   const BaseScalarFunction<GslVector, GslMatrix> & m_objectiveFunction;
   
@@ -95,6 +103,9 @@ private:
   GslVector * m_minimizer;
 
   SolverType m_solver_type;
+
+  //! For use in gradient-free algorithms
+  GslVector m_step_size;
 
   //! Helper function
   bool solver_needs_gradient(SolverType solver);
