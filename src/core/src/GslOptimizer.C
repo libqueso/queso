@@ -184,7 +184,16 @@ GslOptimizer::minimize(const Vector & initialPoint) {
   // this dynamic cast in the future.
   const GslVector & initial_guess = dynamic_cast<const GslVector &>(initialPoint);
 
-  const GslVector* minimizer = this->minimize_with_gradient( dim, initial_guess );
+  const GslVector* minimizer = NULL;
+
+  if( this->solver_needs_gradient(m_solver_type) )
+    {
+      minimizer = this->minimize_with_gradient( dim, initial_guess );
+    }
+  else
+    {
+      minimizer = this->minimize_no_gradient( dim, initial_guess );
+    }
 
   return minimizer;
 }
