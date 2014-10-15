@@ -448,4 +448,9 @@ GslOptimizer::minimizer() const
     m_solver_type = solver;
   }
 
+  void GslOptimizer::set_step_size( const GslVector& step_size )
+  {
+    m_step_size = step_size;
+  }
+
 }  // End namespace QUESO
