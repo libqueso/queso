@@ -270,4 +270,35 @@ GslOptimizer::minimizer() const
     m_solver_type = solver;
   }
 
+  bool GslOptimizer::solver_needs_gradient( SolverType solver )
+  {
+    bool gradient_needed = false;
+
+    switch(solver)
+      {
+      case(FLETCHER_REEVES):
+      case(CONJUGATE_GRADIENT):
+      case(BFGS):
+      case(BFGS2):
+      case(STEEPEST_DECENT):
+        {
+          gradient_needed = true;
+          break;
+        }
+      case(NELDER_MEAD):
+      case(NELDER_MEAD2):
+      case(NELDER_MEAD2_RAND):
+        {
+          break;
+        }
+      default:
+        {
+          // Wat?!
+          queso_error();
+        }
+      } // switch(solver)
+
+    return gradient_needed;
+  }
+
 }  // End namespace QUESO

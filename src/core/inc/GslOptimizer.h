@@ -97,6 +97,9 @@ private:
 
   SolverType m_solver_type;
 
+  //! Helper function
+  bool solver_needs_gradient(SolverType solver);
+
 };
 
 }  // End namespace QUESO
