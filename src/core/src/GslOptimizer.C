@@ -113,7 +113,7 @@ extern "C" {
       }
       else {
         // Finite difference step-size
-        double h = 1e-4;
+        double h = this->getFiniteDifferenceStepSize();
 
         // User did not provide a derivative, so do a finite difference
         for (unsigned int i = 0; i < deriv.sizeLocal(); i++) {
@@ -208,12 +208,12 @@ GslOptimizer::minimize(const Vector & initialPoint) {
     }
 
     // TODO: Allow the user to tweak this hard-coded value
-    status = gsl_multimin_test_gradient(s->gradient, 1e-3);
+    status = gsl_multimin_test_gradient(s->gradient, this->getTolerance());
 
   /*!
    * \todo We shouldn't be hard-coding the max number of iterations
    */
-  } while (status == GSL_CONTINUE && iter < 100);
+  } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
 
   // Get the minimizer
   GslVector * minimizer = new GslVector(this->m_objectiveFunction.domainSet().
