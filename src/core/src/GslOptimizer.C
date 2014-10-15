@@ -307,9 +307,12 @@ GslOptimizer::minimizer() const
       status = gsl_multimin_fdfminimizer_iterate(solver);
 
       if (status) {
-        std::cerr << "Error while GSL does optimisation. "
-                  << "See below for GSL error type." << std::endl;
-        std::cerr << "Gsl error: " << gsl_strerror(status) << std::endl;
+        if( m_objectiveFunction.domainSet().env().fullRank() == 0 )
+          {
+            std::cerr << "Error while GSL does optimisation. "
+                      << "See below for GSL error type." << std::endl;
+            std::cerr << "Gsl error: " << gsl_strerror(status) << std::endl;
+          }
         break;
       }
 
