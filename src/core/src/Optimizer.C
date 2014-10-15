@@ -34,4 +34,40 @@ BaseOptimizer::~BaseOptimizer()
 {
 }
 
+unsigned int
+BaseOptimizer::getMaxIterations() const
+{
+  return this->m_maxIterations;
+}
+
+double
+BaseOptimizer::getTolerance() const
+{
+  return this->m_tolerance;
+}
+
+double
+BaseOptimizer::getFiniteDifferenceStepSize() const
+{
+  return this->m_finiteDifferenceStepSize;
+}
+
+void
+BaseOptimizer::setMaxIterations(unsigned int maxIterations)
+{
+  this->m_maxIterations = maxIterations;
+}
+
+void
+BaseOptimizer::setTolerance(double tolerance)
+{
+  this->m_tolerance = tolerance;
+}
+
+void
+BaseOptimizer::setFiniteDifferenceStepSize(double h)
+{
+  this->m_finiteDifferenceStepSize = h;
+}
+
 }  // End namespace QUESO

@@ -49,8 +49,21 @@ public:
 
   virtual const Vector * minimize(const Vector & initialPoint) = 0;
 
+  virtual unsigned int getMaxIterations() const;
+  virtual double getTolerance() const;
+  virtual double getFiniteDifferenceStepSize() const;
+
+  virtual void setMaxIterations(unsigned int maxIterations);
+  virtual void setTolerance(double tolerance);
+  virtual void setFiniteDifferenceStepSize(double h);
+
 protected:
   Vector * minimizer;
+
+private:
+  unsigned int m_maxIterations;
+  double m_tolerance;
+  double m_finiteDifferenceStepSize;
 };
 
 }  // End namespace QUESO
