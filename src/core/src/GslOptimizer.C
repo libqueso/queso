@@ -156,9 +156,15 @@ GslOptimizer::GslOptimizer(
     const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction)
   : BaseOptimizer(),
     m_objectiveFunction(objectiveFunction),
-    m_initialPoint(new GslVector(objectiveFunction.domainSet().vectorSpace().
-          zeroVector()))
+    m_initialPoint(new GslVector(objectiveFunction.domainSet().
+          vectorSpace().zeroVector())),
+    m_minimizer(new GslVector(this->m_objectiveFunction.domainSet().
+        vectorSpace().zeroVector()))
 {
+  // We initialize the minimizer to GSL_NAN just in case the optimization fails
+  for (unsigned int i = 0; i < this->m_minimizer->sizeLocal(); i++) {
+    (*(this->m_minimizer))[i] = GSL_NAN;
+  }
 }
 
 GslOptimizer::~GslOptimizer()
@@ -198,7 +204,7 @@ GslOptimizer::minimize() {
   // have a pure virtual operator[] method.  We can implement one and remove
   // this dynamic cast in the future.
   const GslVector & gslInitialPoint = dynamic_cast<const GslVector &>(
-      initialPoint);
+      *(this->m_initialPoint));
   gsl_vector * x = gsl_vector_alloc(dim);
   for (unsigned int i = 0; i < dim; i++) {
     gsl_vector_set(x, i, gslInitialPoint[i]);
@@ -229,18 +235,13 @@ GslOptimizer::minimize() {
   } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
 
   // Get the minimizer
-  GslVector * minimizer = new GslVector(this->m_objectiveFunction.domainSet().
-      vectorSpace().zeroVector());
   for (unsigned int i = 0; i < dim; i++) {
-    (*minimizer)[i] = gsl_vector_get(s->x, i);
+    (*(this->m_minimizer))[i] = gsl_vector_get(s->x, i);
   }
 
   // We're being good human beings and cleaning up the memory we allocated
   gsl_multimin_fdfminimizer_free(s);
   gsl_vector_free(x);
-
-  // Return the minimizer.  That's all she wrote.
-  return minimizer;
 }
 
 const BaseScalarFunction<GslVector, GslMatrix> &
@@ -250,11 +251,17 @@ GslOptimizer::objectiveFunction() const
 }
 
 void
-GslOptimizer::setInitialPoint(GslVector & initialPoint)
+GslOptimizer::setInitialPoint(const GslVector & initialPoint)
 {
   for (unsigned int i = 0; i < initialPoint.sizeLocal(); i++) {
     (*(this->m_initialPoint))[i] = initialPoint[i];
   }
+}
+
+const GslVector &
+GslOptimizer::minimizer() const
+{
+  return *(this->m_minimizer);
 }
 
 }  // End namespace QUESO

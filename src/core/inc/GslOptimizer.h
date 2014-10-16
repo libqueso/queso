@@ -68,11 +68,19 @@ public:
   const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction() const;
 
   //! Set the point at which the optimization starts
-  void setInitialPoint(GslVector & intialPoint);
+  void setInitialPoint(const GslVector & intialPoint);
+
+  //! Return the point that minimizes the objective function
+  /*!
+   * This state will be filled with GSL_NAN if, for some reason, the
+   * optimization failed
+   */
+  const GslVector & minimizer() const;
 
 private:
   const BaseScalarFunction<GslVector, GslMatrix> & m_objectiveFunction;
   GslVector * m_initialPoint;
+  GslVector * m_minimizer;
 };
 
 }  // End namespace QUESO
