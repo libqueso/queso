@@ -48,7 +48,11 @@ public:
   //! Destructor
   virtual ~BaseOptimizer();
 
-  virtual const Vector * minimize(const Vector & initialPoint) = 0;
+  //! Minimize the objective function, starting at \c m_initialPoint
+  /*!
+   * m_initialPoint is handled in the derived class
+   */
+  virtual void minimize() = 0;
 
   //! Returns the maximum number of iterations the optimizer will do
   /*!

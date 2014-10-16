@@ -259,13 +259,13 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   if (this->m_seedWithMAPEstimator) {
     // Do optimisation before sampling
     GslOptimizer optimizer(*m_solutionPdf);
-    const GslVector * minimizer = dynamic_cast<const GslVector *>(
-        optimizer.minimize(initialValues));
+    optimizer.setInitialPoint(dynamic_cast<const GslVector &>(initialValues));
+    optimizer.minimize();
 
     // Compute output realizer: Metropolis-Hastings approach
     m_mhSeqGenerator = new MetropolisHastingsSG<P_V, P_M>(
         m_optionsObj->m_prefix.c_str(), alternativeOptionsValues,
-        m_postRv, *minimizer, initialProposalCovMatrix);
+        m_postRv, optimizer.minimizer(), initialProposalCovMatrix);
   }
   else {
     // Compute output realizer: Metropolis-Hastings approach

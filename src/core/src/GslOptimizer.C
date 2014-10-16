@@ -155,16 +155,25 @@ extern "C" {
 GslOptimizer::GslOptimizer(
     const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction)
   : BaseOptimizer(),
-    m_objectiveFunction(objectiveFunction)
+    m_objectiveFunction(objectiveFunction),
+    m_initialPoint(new GslVector(objectiveFunction.domainSet().
+          vectorSpace().zeroVector())),
+    m_minimizer(new GslVector(this->m_objectiveFunction.domainSet().
+        vectorSpace().zeroVector()))
 {
+  // We initialize the minimizer to GSL_NAN just in case the optimization fails
+  for (unsigned int i = 0; i < this->m_minimizer->sizeLocal(); i++) {
+    (*(this->m_minimizer))[i] = GSL_NAN;
+  }
 }
 
 GslOptimizer::~GslOptimizer()
 {
+  delete this->m_initialPoint;
 }
 
-const Vector *
-GslOptimizer::minimize(const Vector & initialPoint) {
+void
+GslOptimizer::minimize() {
   size_t iter = 0;
   int status;
   unsigned int dim = this->m_objectiveFunction.domainSet().vectorSpace().
@@ -183,12 +192,19 @@ GslOptimizer::minimize(const Vector & initialPoint) {
   minusLogPosterior.fdf = &c_evaluate_with_derivative;
   minusLogPosterior.params = (void *)(this);
 
+  if (!this->m_objectiveFunction.domainSet().contains(
+        *(this->m_initialPoint))) {
+    std::cerr << "Minimization was given initial point outside of domain"
+              << std::endl;
+    queso_error();
+  }
+
   // Set initial point
   // DM: The dynamic cast is needed because the abstract base class does not
   // have a pure virtual operator[] method.  We can implement one and remove
   // this dynamic cast in the future.
   const GslVector & gslInitialPoint = dynamic_cast<const GslVector &>(
-      initialPoint);
+      *(this->m_initialPoint));
   gsl_vector * x = gsl_vector_alloc(dim);
   for (unsigned int i = 0; i < dim; i++) {
     gsl_vector_set(x, i, gslInitialPoint[i]);
@@ -219,24 +235,33 @@ GslOptimizer::minimize(const Vector & initialPoint) {
   } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
 
   // Get the minimizer
-  GslVector * minimizer = new GslVector(this->m_objectiveFunction.domainSet().
-      vectorSpace().zeroVector());
   for (unsigned int i = 0; i < dim; i++) {
-    (*minimizer)[i] = gsl_vector_get(s->x, i);
+    (*(this->m_minimizer))[i] = gsl_vector_get(s->x, i);
   }
 
   // We're being good human beings and cleaning up the memory we allocated
   gsl_multimin_fdfminimizer_free(s);
   gsl_vector_free(x);
-
-  // Return the minimizer.  That's all she wrote.
-  return minimizer;
 }
 
 const BaseScalarFunction<GslVector, GslMatrix> &
 GslOptimizer::objectiveFunction() const
 {
   return this->m_objectiveFunction;
+}
+
+void
+GslOptimizer::setInitialPoint(const GslVector & initialPoint)
+{
+  for (unsigned int i = 0; i < initialPoint.sizeLocal(); i++) {
+    (*(this->m_initialPoint))[i] = initialPoint[i];
+  }
+}
+
+const GslVector &
+GslOptimizer::minimizer() const
+{
+  return *(this->m_minimizer);
 }
 
 }  // End namespace QUESO

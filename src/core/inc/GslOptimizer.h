@@ -58,14 +58,29 @@ public:
   //! Destructor
   virtual ~GslOptimizer();
 
-  //! Minimize the objective function, starting at \c initialPoint
-  virtual const Vector * minimize(const Vector & initialPoint);
+  //! Minimize the objective function, starting at \c m_initialPoint
+  /*!
+   * m_initialPoint is handled in the derived class
+   */
+  virtual void minimize();
 
   //! Returns the objective function
   const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction() const;
 
+  //! Set the point at which the optimization starts
+  void setInitialPoint(const GslVector & intialPoint);
+
+  //! Return the point that minimizes the objective function
+  /*!
+   * This state will be filled with GSL_NAN if, for some reason, the
+   * optimization failed
+   */
+  const GslVector & minimizer() const;
+
 private:
   const BaseScalarFunction<GslVector, GslMatrix> & m_objectiveFunction;
+  GslVector * m_initialPoint;
+  GslVector * m_minimizer;
 };
 
 }  // End namespace QUESO

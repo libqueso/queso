@@ -61,12 +61,12 @@ int main(int argc, char ** argv) {
   initialPoint[0] = 9.0;
 
   QUESO::GslOptimizer optimizer(objectiveFunction);
+  optimizer.setInitialPoint(initialPoint);
+  optimizer.minimize();
 
-  const QUESO::GslVector * minimizer = dynamic_cast<const QUESO::GslVector *>(
-      optimizer.minimize(initialPoint));
-
-  if (std::abs((*minimizer)[0]) > 1e-10) {
-    std::cerr << "GslOptimize failed.  Found minimizer at: " << (*minimizer)[0]
+  if (std::abs((optimizer.minimizer())[0]) > 1e-10) {
+    std::cerr << "GslOptimize failed.  Found minimizer at: "
+              << (optimizer.minimizer())[0]
               << std::endl;
     std::cerr << "Actual minimizer is 0.0" << std::endl;
     queso_error();
