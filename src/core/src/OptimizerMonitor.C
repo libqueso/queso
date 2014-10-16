@@ -53,25 +53,38 @@ namespace QUESO
     m_objective_hist.push_back(objective);
     m_norm_hist.push_back(norm);
 
+    // Print out to screen if the user set the option
     if( m_display_conv )
       {
+        // If we are appending the first entry, print a nice header
         if( m_minimizer_hist.size() == 1 )
           {
-            unsigned int width = 35;
-            
-            printf("%5c",'i');
-            printf("%7c     ",'f');
-            printf("%10s    \n", "norm");
-              
-            printf("%s\n", std::string(width,'-').c_str() );
+            this->print_header();
           }
 
-        printf("%5d %12.5e %12.5e\n", 
-               (int)m_norm_hist.size(),
-               objective, 
-               norm );
+        // We're assuming here the size of the array is the current iteration
+        this->print_iteration(m_norm_hist.size());
       }
 
+  }
+
+  void OptimizerMonitor::print_header() const
+  {
+    unsigned int width = 35;
+
+    printf("%5c",'i');
+    printf("%7c     ",'f');
+    printf("%10s    \n", "norm");
+
+    printf("%s\n", std::string(width,'-').c_str() );
+  }
+
+  void OptimizerMonitor::print_iteration( unsigned int iter ) const
+  {
+    printf( "%5d %12.5e %12.5e\n",
+            iter,
+            m_objective_hist[iter],
+            m_norm_hist[iter] );
   }
 
 } // end namespace QUESO

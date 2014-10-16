@@ -58,6 +58,9 @@ namespace QUESO
     std::vector<double> m_objective_hist;
     std::vector<double> m_norm_hist;
 
+    void print_header() const;
+    void print_iteration( unsigned int iter ) const;
+
   };
 
 } // end namespace QUESO
