@@ -115,4 +115,10 @@ RngGsl::gammaSample(double a, double b) const
   return gsl_ran_gamma(m_rng,a,b);
 }
 
+const gsl_rng* 
+RngGsl::rng() const
+{
+  return m_rng;
+}
+
 }  // End namespace QUESO
