@@ -155,12 +155,15 @@ extern "C" {
 GslOptimizer::GslOptimizer(
     const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction)
   : BaseOptimizer(),
-    m_objectiveFunction(objectiveFunction)
+    m_objectiveFunction(objectiveFunction),
+    m_initialPoint(new GslVector(objectiveFunction.domainSet().vectorSpace().
+          zeroVector()))
 {
 }
 
 GslOptimizer::~GslOptimizer()
 {
+  delete this->m_initialPoint;
 }
 
 void
@@ -237,6 +240,14 @@ const BaseScalarFunction<GslVector, GslMatrix> &
 GslOptimizer::objectiveFunction() const
 {
   return this->m_objectiveFunction;
+}
+
+void
+GslOptimizer::setInitialPoint(GslVector & initialPoint)
+{
+  for (unsigned int i = 0; i < initialPoint.sizeLocal(); i++) {
+    (*(this->m_initialPoint))[i] = initialPoint[i];
+  }
 }
 
 }  // End namespace QUESO
