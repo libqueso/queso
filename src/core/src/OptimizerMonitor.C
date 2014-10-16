@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <cstdio>
+#include <string>
 #include <queso/OptimizerMonitor.h>
 
 namespace QUESO
@@ -51,26 +53,25 @@ namespace QUESO
     m_objective_hist.push_back(objective);
     m_norm_hist.push_back(norm);
 
-    /*
     if( m_display_conv )
       {
         if( m_minimizer_hist.size() == 1 )
           {
-            unsigned int width = 29;
+            unsigned int width = 35;
             
             printf("%5c",'i');
-            printf("%7s     ",'f');
-            printf("%8s    ",'norm');
+            printf("%7c     ",'f');
+            printf("%10s    \n", "norm");
               
-            printf("%s\n", std::string(width,"-").c_str() );
+            printf("%s\n", std::string(width,'-').c_str() );
           }
 
         printf("%5d %12.5e %12.5e\n", 
-               m_norm_hist.size(),
+               (int)m_norm_hist.size(),
                objective, 
                norm );
       }
-    */
+
   }
 
 } // end namespace QUESO
