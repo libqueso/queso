@@ -186,6 +186,13 @@ GslOptimizer::minimize() {
   minusLogPosterior.fdf = &c_evaluate_with_derivative;
   minusLogPosterior.params = (void *)(this);
 
+  if (!this->m_objectiveFunction.domainSet().contains(
+        *(this->m_initialPoint))) {
+    std::cerr << "Minimization was given initial point outside of domain"
+              << std::endl;
+    queso_error();
+  }
+
   // Set initial point
   // DM: The dynamic cast is needed because the abstract base class does not
   // have a pure virtual operator[] method.  We can implement one and remove
