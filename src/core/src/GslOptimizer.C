@@ -163,8 +163,8 @@ GslOptimizer::~GslOptimizer()
 {
 }
 
-const Vector *
-GslOptimizer::minimize(const Vector & initialPoint) {
+void
+GslOptimizer::minimize() {
   size_t iter = 0;
   int status;
   unsigned int dim = this->m_objectiveFunction.domainSet().vectorSpace().

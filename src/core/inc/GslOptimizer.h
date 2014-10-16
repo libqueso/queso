@@ -58,8 +58,11 @@ public:
   //! Destructor
   virtual ~GslOptimizer();
 
-  //! Minimize the objective function, starting at \c initialPoint
-  virtual const Vector * minimize(const Vector & initialPoint);
+  //! Minimize the objective function, starting at \c m_initialPoint
+  /*!
+   * m_initialPoint is handled in the derived class
+   */
+  virtual void minimize();
 
   //! Returns the objective function
   const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction() const;
