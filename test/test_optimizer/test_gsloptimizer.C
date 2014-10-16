@@ -8,6 +8,7 @@
 #include <queso/BoxSubset.h>
 #include <queso/ScalarFunction.h>
 #include <queso/GslOptimizer.h>
+#include <queso/OptimizerMonitor.h>
 
 template <class V, class M>
 class ObjectiveFunction : public QUESO::BaseScalarFunction<V, M> {
@@ -74,7 +75,11 @@ int main(int argc, char ** argv) {
 
   optimizer.setInitialPoint(initialPoint);
   optimizer.set_solver_type(QUESO::GslOptimizer::NELDER_MEAD2);
-  optimizer.minimize();
+
+  QUESO::OptimizerMonitor monitor;
+  monitor.set_display_output(true,false);
+
+  optimizer.minimize(&monitor);
 
   if (std::abs((optimizer.minimizer())[0]) > 1e-10) {
     std::cerr << "GslOptimize failed.  Found minimizer at: "
