@@ -42,6 +42,7 @@ namespace QUESO {
 class Vector;
 class GslVector;
 class GslMatrix;
+class OptimizerMonitor;
 
 template <class V, class M>
 class BaseScalarFunction;
@@ -62,7 +63,7 @@ public:
   /*!
    * m_initialPoint is handled in the derived class
    */
-  virtual void minimize();
+  virtual void minimize(OptimizerMonitor* monitor = NULL);
 
   //! Returns the objective function
   const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction() const;
@@ -131,9 +132,9 @@ private:
   //! Helper function
   bool solver_needs_gradient(SolverType solver);
 
-  void minimize_with_gradient( unsigned int dim );
+  void minimize_with_gradient( unsigned int dim, OptimizerMonitor* monitor );
 
-  void minimize_no_gradient( unsigned int dim );
+  void minimize_no_gradient( unsigned int dim, OptimizerMonitor* monitor );
 
 };
 

@@ -25,10 +25,12 @@
 #include <iostream>
 
 #include <gsl/gsl_multimin.h>
+#include <gsl/gsl_blas.h>
 #include <queso/GslVector.h>
 #include <queso/VectorSpace.h>
 #include <queso/ScalarFunction.h>
 #include <queso/GslOptimizer.h>
+#include <queso/OptimizerMonitor.h>
 
 namespace QUESO {
 
@@ -177,7 +179,7 @@ GslOptimizer::~GslOptimizer()
   delete this->m_initialPoint;
 }
 
-void GslOptimizer::minimize() {
+void GslOptimizer::minimize(OptimizerMonitor* monitor) {
 
   // First check that initial guess is reasonable
   if (!this->m_objectiveFunction.domainSet().contains(*(this->m_initialPoint)))
@@ -195,11 +197,11 @@ void GslOptimizer::minimize() {
 
   if( this->solver_needs_gradient(m_solver_type) )
     {
-      this->minimize_with_gradient( dim );
+      this->minimize_with_gradient( dim, monitor );
     }
   else
     {
-      this->minimize_no_gradient( dim );
+      this->minimize_no_gradient( dim, monitor );
     }
 
   return;
@@ -261,7 +263,7 @@ GslOptimizer::minimizer() const
     return gradient_needed;
   }
 
-  void GslOptimizer::minimize_with_gradient( unsigned int dim )
+  void GslOptimizer::minimize_with_gradient( unsigned int dim, OptimizerMonitor* monitor )
   {
     // Set initial point
     gsl_vector * x = gsl_vector_alloc(dim);
@@ -330,6 +332,21 @@ GslOptimizer::minimizer() const
 
       status = gsl_multimin_test_gradient(solver->gradient, this->getTolerance());
 
+      if(monitor)
+        {
+          gsl_vector* x = gsl_multimin_fdfminimizer_x(solver);
+          std::vector<double> x_min(dim);
+          for( unsigned int i = 0; i < dim; i++)
+            x_min[i] = gsl_vector_get(x,i);
+
+          double f = gsl_multimin_fdfminimizer_minimum(solver);
+
+          gsl_vector* grad = gsl_multimin_fdfminimizer_gradient(solver);
+          double grad_norm = gsl_blas_dnrm2(grad);
+
+          monitor->append( x_min, f, grad_norm );
+        }
+
     } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
 
     for (unsigned int i = 0; i < dim; i++) {
@@ -343,7 +360,7 @@ GslOptimizer::minimizer() const
     return;
   }
 
-  void GslOptimizer::minimize_no_gradient( unsigned int dim )
+  void GslOptimizer::minimize_no_gradient( unsigned int dim, OptimizerMonitor* monitor )
   {
     // Set initial point
     gsl_vector* x = gsl_vector_alloc(dim);
@@ -416,6 +433,18 @@ GslOptimizer::minimizer() const
         size = gsl_multimin_fminimizer_size(solver);
 
         status = gsl_multimin_test_size (size, this->getTolerance());
+
+        if(monitor)
+        {
+          gsl_vector* x = gsl_multimin_fminimizer_x(solver);
+          std::vector<double> x_min(dim);
+          for( unsigned int i = 0; i < dim; i++)
+            x_min[i] = gsl_vector_get(x,i);
+
+          double f = gsl_multimin_fminimizer_minimum(solver);
+
+          monitor->append( x_min, f, size );
+        }
 
       }
 
