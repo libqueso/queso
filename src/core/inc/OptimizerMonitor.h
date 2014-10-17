@@ -46,12 +46,26 @@ namespace QUESO
 
     ~OptimizerMonitor();
 
+    //! Enabling output to std::cout everytime append is called
+    /*!
+     * Helpful when wanting to monitor convergence progress in real time.
+     * The print_xmin argument controls whether or not the current estimate
+     * of the minimizer is printed. Not recommended if you have more than a
+     * handful of dimensions over which you are optimizing.
+     */
     void set_display_output( bool enable_output, bool print_xmin );
     
+    //! Add current value of minimizer, objective, and error norm
     void append( std::vector<double>& x_min, double objective, double norm );
     
+    //! Clears internal datastructures and resets display variables to false.
     void reset();
 
+    //! Prints entire convergence history.
+    /*!
+     *  The print_xmin argument controls whether or not the estimate
+     *  of the minimizer (all components) is printed.
+     */
     void print( std::ostream& output, bool print_xmin = false ) const;
 
   private:
