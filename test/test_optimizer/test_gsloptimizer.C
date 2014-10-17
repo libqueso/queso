@@ -77,7 +77,7 @@ int main(int argc, char ** argv) {
   optimizer.set_solver_type(QUESO::GslOptimizer::NELDER_MEAD2);
 
   QUESO::OptimizerMonitor monitor;
-  monitor.set_display_output(true,false);
+  monitor.set_display_output(true,true);
 
   optimizer.minimize(&monitor);
 
