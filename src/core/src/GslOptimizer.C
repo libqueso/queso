@@ -177,29 +177,32 @@ GslOptimizer::~GslOptimizer()
   delete this->m_initialPoint;
 }
 
-const Vector *
-GslOptimizer::minimize(const Vector & initialPoint) {
+void GslOptimizer::minimize() {
+
+  // First check that initial guess is reasonable
+  if (!this->m_objectiveFunction.domainSet().contains(*(this->m_initialPoint)))
+    {
+      if( m_objectiveFunction.domainSet().env().fullRank() == 0 )
+        {
+          std::cerr << "Minimization was given initial point outside of domain"
+                    << std::endl;
+        }
+      queso_error();
+    }
 
   unsigned int dim = this->m_objectiveFunction.domainSet().vectorSpace().
     zeroVector().sizeLocal();
 
-  // DM: The dynamic cast is needed because the abstract base class does not
-  // have a pure virtual operator[] method.  We can implement one and remove
-  // this dynamic cast in the future.
-  const GslVector & initial_guess = dynamic_cast<const GslVector &>(initialPoint);
-
-  const GslVector* minimizer = NULL;
-
   if( this->solver_needs_gradient(m_solver_type) )
     {
-      minimizer = this->minimize_with_gradient( dim, initial_guess );
+      this->minimize_with_gradient( dim );
     }
   else
     {
-      minimizer = this->minimize_no_gradient( dim, initial_guess );
+      this->minimize_no_gradient( dim );
     }
 
-  return minimizer;
+  return;
 }
 
 const BaseScalarFunction<GslVector, GslMatrix> &
@@ -258,12 +261,12 @@ GslOptimizer::minimizer() const
     return gradient_needed;
   }
 
-  const GslVector* GslOptimizer::minimize_with_gradient( unsigned int dim, const GslVector& initial_guess )
+  void GslOptimizer::minimize_with_gradient( unsigned int dim )
   {
     // Set initial point
     gsl_vector * x = gsl_vector_alloc(dim);
     for (unsigned int i = 0; i < dim; i++) {
-      gsl_vector_set(x, i, initial_guess[i]);
+      gsl_vector_set(x, i, (*m_initialPoint)[i]);
     }
 
     // Tell GSL which solver we're using
@@ -333,26 +336,23 @@ GslOptimizer::minimizer() const
 
     } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
 
-    // Get the minimizer
-    GslVector * minimizer = new GslVector(this->m_objectiveFunction.domainSet().
-                                          vectorSpace().zeroVector());
     for (unsigned int i = 0; i < dim; i++) {
-      (*minimizer)[i] = gsl_vector_get(solver->x, i);
+      (*m_minimizer)[i] = gsl_vector_get(solver->x, i);
     }
 
     // We're being good human beings and cleaning up the memory we allocated
     gsl_multimin_fdfminimizer_free(solver);
     gsl_vector_free(x);
 
-    return minimizer;
+    return;
   }
 
-  const GslVector* GslOptimizer::minimize_no_gradient( unsigned int dim, const GslVector& initial_guess )
+  void GslOptimizer::minimize_no_gradient( unsigned int dim )
   {
     // Set initial point
     gsl_vector* x = gsl_vector_alloc(dim);
     for (unsigned int i = 0; i < dim; i++) {
-      gsl_vector_set(x, i, initial_guess[i]);
+      gsl_vector_set(x, i, (*m_initialPoint)[i]);
     }
 
     // Tell GSL which solver we're using
@@ -398,9 +398,6 @@ GslOptimizer::minimizer() const
 
     gsl_multimin_fminimizer_set(solver, &minusLogPosterior, x, step_size);
 
-    GslVector* minimizer = new GslVector(this->m_objectiveFunction.domainSet().
-                                          vectorSpace().zeroVector());
-
     int status;
     size_t iter = 0;
     double size = 0.0;
@@ -429,12 +426,16 @@ GslOptimizer::minimizer() const
     /*! \todo max iterations should be set by the user */
     while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
 
+    for (unsigned int i = 0; i < dim; i++) {
+      (*m_minimizer)[i] = gsl_vector_get(solver->x, i);
+    }
+
     // We're being good human beings and cleaning up the memory we allocated
     gsl_vector_free(step_size);
     gsl_multimin_fminimizer_free(solver);
     gsl_vector_free(x);
 
-    return minimizer;
+    return;
   }
 
   void GslOptimizer::set_step_size( const GslVector& step_size )

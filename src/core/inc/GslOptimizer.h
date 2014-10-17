@@ -110,9 +110,9 @@ private:
   //! Helper function
   bool solver_needs_gradient(SolverType solver);
 
-  const GslVector* minimize_with_gradient( unsigned int dim, const GslVector& initial_guess );
+  void minimize_with_gradient( unsigned int dim );
 
-  const GslVector* minimize_no_gradient( unsigned int dim, const GslVector& initial_guess );
+  void minimize_no_gradient( unsigned int dim );
 
 };
 
