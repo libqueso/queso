@@ -70,9 +70,9 @@ namespace QUESO
 
   void OptimizerMonitor::print_header( std::ostream& output ) const
   {
-    unsigned int width = 35;
+    unsigned int width = 37;
 
-    if( m_print_xmin) width += (m_minimizer_hist[0]).size()*12;
+    if( m_print_xmin) width += (m_minimizer_hist[0]).size()*15;
 
     output.width(5);
     output << "i";
@@ -81,15 +81,15 @@ namespace QUESO
       {
         for( unsigned int i = 0; i < m_minimizer_hist[0].size(); i++ )
           {
-            output.width(8);
+            output.width(9);
             output << "x" << i << std::string(5,' ');
           }
       }
 
-    output.width(8);
+    output.width(9);
     output << "f" << std::string(5,' ');
 
-    output.width(11);
+    output.width(12);
     output << "norm" << std::endl;
     output << std::string(width,'-') << std::endl;
   }
@@ -105,19 +105,19 @@ namespace QUESO
           {
             output.width(2);
             output << "  ";
-            output.width(12);
+            output.width(13);
             output << std::scientific << m_minimizer_hist[iter-1][i];
           }
       }
 
     output.width(2);
     output << "  ";
-    output.width(12);
+    output.width(13);
     output << std::scientific << m_objective_hist[iter-1];
 
     output.width(2);
     output << "  ";
-    output.width(12);
+    output.width(13);
     output << m_norm_hist[iter-1] << std::endl;
   }
 
