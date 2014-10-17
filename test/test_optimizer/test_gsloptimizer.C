@@ -73,32 +73,30 @@ int main(int argc, char ** argv) {
   initialPoint[1] = -1.0;
 
   QUESO::GslOptimizer optimizer(objectiveFunction);
-  optimizer.setInitialPoint(initialPoint);
-  optimizer.minimize();
 
-  if (std::abs((optimizer.minimizer())[0]) > 1e-10) {
-    std::cerr << "GslOptimize failed.  Found minimizer at: "
-              << (optimizer.minimizer())[0]
-              << std::endl;
-    std::cerr << "Actual minimizer is 0.0" << std::endl;
-    queso_error();
-  }
-
-  optimizer.setInitialPoint(initialPoint);
-  optimizer.set_solver_type(QUESO::GslOptimizer::NELDER_MEAD2);
+  double tol = 1.0e-10;
+  optimizer.setTolerance(tol);
+  optimizer.set_solver_type(QUESO::GslOptimizer::STEEPEST_DECENT);
 
   QUESO::OptimizerMonitor monitor;
   monitor.set_display_output(true,true);
 
+  std::cout << "Solving with Steepest Decent" << std::endl;
   optimizer.minimize(&monitor);
 
-  if (std::abs((optimizer.minimizer())[0]) > 1e-10) {
-    std::cerr << "GslOptimize failed.  Found minimizer at: "
-              << (optimizer.minimizer())[0]
+  if (std::abs((*minimizer)[0] - 1.0) > tol) {
+    std::cerr << "GslOptimize failed.  Found minimizer at: " << (*minimizer)[0]
               << std::endl;
-    std::cerr << "Actual minimizer is 0.0" << std::endl;
+    std::cerr << "Actual minimizer is 1.0" << std::endl;
     queso_error();
   }
+
+  optimizer.set_solver_type(QUESO::GslOptimizer::NELDER_MEAD2);
+  monitor.reset();
+  monitor.set_display_output(true,true);
+
+  std::cout << std::endl << "Solving with Nelder Mead" << std::endl;
+  optimizer.minimize(&monitor);
 
   return 0;
 }
