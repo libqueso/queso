@@ -72,5 +72,17 @@ int main(int argc, char ** argv) {
     queso_error();
   }
 
+  optimizer.setInitialPoint(initialPoint);
+  optimizer.set_solver_type(QUESO::GslOptimizer::NELDER_MEAD2);
+  optimizer.minimize();
+
+  if (std::abs((optimizer.minimizer())[0]) > 1e-10) {
+    std::cerr << "GslOptimize failed.  Found minimizer at: "
+              << (optimizer.minimizer())[0]
+              << std::endl;
+    std::cerr << "Actual minimizer is 0.0" << std::endl;
+    queso_error();
+  }
+
   return 0;
 }
