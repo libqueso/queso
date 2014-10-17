@@ -21,7 +21,7 @@ public:
 
   virtual double actualValue(const V & domainVector, const V * domainDirection,
       V * gradVector, M * hessianMatrix, V * hessianEffect) const {
-    return std::exp(this->actualValue(domainVector, domainDirection,
+    return std::exp(this->lnValue(domainVector, domainDirection,
           gradVector, hessianMatrix, hessianEffect));
   }
 
