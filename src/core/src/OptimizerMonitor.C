@@ -121,4 +121,14 @@ namespace QUESO
     output << m_norm_hist[iter-1] << std::endl;
   }
 
+  void OptimizerMonitor::reset()
+  {
+    m_display_conv = false;
+    m_print_xmin = false;
+
+    m_minimizer_hist.clear();
+    m_objective_hist.clear();
+    m_norm_hist.clear();
+  }
+
 } // end namespace QUESO

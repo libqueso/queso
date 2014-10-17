@@ -50,6 +50,8 @@ namespace QUESO
     
     void append( std::vector<double>& x_min, double objective, double norm );
     
+    void reset();
+
   private:
     
     bool m_display_conv;
