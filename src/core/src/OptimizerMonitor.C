@@ -72,8 +72,19 @@ namespace QUESO
   {
     unsigned int width = 35;
 
+    if( m_print_xmin) width += (m_minimizer_hist[0]).size()*12;
+
     output.width(5);
     output << "i";
+
+    if( m_print_xmin)
+      {
+        for( unsigned int i = 0; i < m_minimizer_hist[0].size(); i++ )
+          {
+            output.width(8);
+            output << "x" << i << std::string(5,' ');
+          }
+      }
 
     output.width(8);
     output << "f" << std::string(5,' ');
@@ -87,6 +98,17 @@ namespace QUESO
   {
     output.width(5);
     output << iter;
+
+    if( m_print_xmin)
+      {
+        for( unsigned int i = 0; i < m_minimizer_hist[iter-1].size(); i++ )
+          {
+            output.width(2);
+            output << "  ";
+            output.width(12);
+            output << std::scientific << m_minimizer_hist[iter-1][i];
+          }
+      }
 
     output.width(2);
     output << "  ";
