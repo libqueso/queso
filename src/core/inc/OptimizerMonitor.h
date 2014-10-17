@@ -26,6 +26,7 @@
 #define UQ_OPTIMIZER_MONITOR_H
 
 #include <vector>
+#include <iostream>
 
 namespace QUESO
 {
@@ -58,8 +59,8 @@ namespace QUESO
     std::vector<double> m_objective_hist;
     std::vector<double> m_norm_hist;
 
-    void print_header() const;
-    void print_iteration( unsigned int iter ) const;
+    void print_header( std::ostream& output ) const;
+    void print_iteration( unsigned int iter, std::ostream& output ) const;
 
   };
 

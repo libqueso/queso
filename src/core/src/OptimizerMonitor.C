@@ -22,8 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
-#include <cstdio>
 #include <string>
+#include <iomanip>
 #include <queso/OptimizerMonitor.h>
 
 namespace QUESO
@@ -59,32 +59,44 @@ namespace QUESO
         // If we are appending the first entry, print a nice header
         if( m_minimizer_hist.size() == 1 )
           {
-            this->print_header();
+            this->print_header(std::cout);
           }
 
         // We're assuming here the size of the array is the current iteration
-        this->print_iteration(m_norm_hist.size());
+        this->print_iteration(m_norm_hist.size(),std::cout);
       }
 
   }
 
-  void OptimizerMonitor::print_header() const
+  void OptimizerMonitor::print_header( std::ostream& output ) const
   {
     unsigned int width = 35;
 
-    printf("%5c",'i');
-    printf("%7c     ",'f');
-    printf("%10s    \n", "norm");
+    output.width(5);
+    output << "i";
 
-    printf("%s\n", std::string(width,'-').c_str() );
+    output.width(8);
+    output << "f" << std::string(5,' ');
+
+    output.width(11);
+    output << "norm" << std::string(4,' ') << std::endl;
+    output << std::string(width,'-') << std::endl;
   }
 
-  void OptimizerMonitor::print_iteration( unsigned int iter ) const
+  void OptimizerMonitor::print_iteration( unsigned int iter, std::ostream& output ) const
   {
-    printf( "%5d %12.5e %12.5e\n",
-            iter,
-            m_objective_hist[iter],
-            m_norm_hist[iter] );
+    output.width(5);
+    output << iter;
+
+    output.width(2);
+    output << "  ";
+    output.width(12);
+    output << std::scientific << m_objective_hist[iter-1];
+
+    output.width(2);
+    output << "  ";
+    output.width(12);
+    output << m_norm_hist[iter-1] << std::endl;
   }
 
 } // end namespace QUESO
