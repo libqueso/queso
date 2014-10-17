@@ -79,7 +79,7 @@ namespace QUESO
     output << "f" << std::string(5,' ');
 
     output.width(11);
-    output << "norm" << std::string(4,' ') << std::endl;
+    output << "norm" << std::endl;
     output << std::string(width,'-') << std::endl;
   }
 
