@@ -52,6 +52,8 @@ namespace QUESO
     
     void reset();
 
+    void print( std::ostream& output, bool print_xmin = false ) const;
+
   private:
     
     bool m_display_conv;

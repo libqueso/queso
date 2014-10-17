@@ -24,6 +24,7 @@
 
 #include <string>
 #include <iomanip>
+#include <queso/asserts.h>
 #include <queso/OptimizerMonitor.h>
 
 namespace QUESO
@@ -131,6 +132,24 @@ namespace QUESO
     m_minimizer_hist.clear();
     m_objective_hist.clear();
     m_norm_hist.clear();
+  }
+
+  void OptimizerMonitor::print( std::ostream& output, bool print_xmin ) const
+  {
+    // First check that there's something to print.
+    if( m_norm_hist.empty() )
+      {
+        std::cerr << "Nothing to print from OptimizerMonitor!" << std::endl;
+        queso_error();
+      }
+
+    this->print_header(output,print_xmin);
+
+    unsigned int size = m_norm_hist.size();
+    for(unsigned int i = 0; i < size; i++ )
+      {
+        this->print_iteration(i,output,print_xmin);
+      }
   }
 
 } // end namespace QUESO
