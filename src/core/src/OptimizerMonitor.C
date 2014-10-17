@@ -49,6 +49,7 @@ namespace QUESO
 
   void OptimizerMonitor::append( std::vector<double>& x_min, double objective, double norm )
   {
+    // This needs to be done before trying to print
     m_minimizer_hist.push_back(x_min);
     m_objective_hist.push_back(objective);
     m_norm_hist.push_back(norm);
@@ -59,25 +60,25 @@ namespace QUESO
         // If we are appending the first entry, print a nice header
         if( m_minimizer_hist.size() == 1 )
           {
-            this->print_header(std::cout);
+            this->print_header(std::cout, m_print_xmin);
           }
 
         // We're assuming here the size of the array is the current iteration
-        this->print_iteration(m_norm_hist.size(),std::cout);
+        this->print_iteration(m_norm_hist.size(),std::cout,m_print_xmin);
       }
 
   }
 
-  void OptimizerMonitor::print_header( std::ostream& output ) const
+  void OptimizerMonitor::print_header( std::ostream& output, bool print_xmin ) const
   {
     unsigned int width = 37;
 
-    if( m_print_xmin) width += (m_minimizer_hist[0]).size()*15;
+    if( print_xmin) width += (m_minimizer_hist[0]).size()*15;
 
     output.width(5);
     output << "i";
 
-    if( m_print_xmin)
+    if( print_xmin)
       {
         for( unsigned int i = 0; i < m_minimizer_hist[0].size(); i++ )
           {
@@ -94,12 +95,13 @@ namespace QUESO
     output << std::string(width,'-') << std::endl;
   }
 
-  void OptimizerMonitor::print_iteration( unsigned int iter, std::ostream& output ) const
+  void OptimizerMonitor::print_iteration( unsigned int iter, std::ostream& output,
+                                          bool print_xmin ) const
   {
     output.width(5);
     output << iter;
 
-    if( m_print_xmin)
+    if( print_xmin)
       {
         for( unsigned int i = 0; i < m_minimizer_hist[iter-1].size(); i++ )
           {

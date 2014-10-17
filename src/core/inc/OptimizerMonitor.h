@@ -61,8 +61,9 @@ namespace QUESO
     std::vector<double> m_objective_hist;
     std::vector<double> m_norm_hist;
 
-    void print_header( std::ostream& output ) const;
-    void print_iteration( unsigned int iter, std::ostream& output ) const;
+    void print_header( std::ostream& output, bool print_xmin ) const;
+    void print_iteration( unsigned int iter, std::ostream& output,
+                          bool print_xmin ) const;
 
   };
 
