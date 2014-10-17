@@ -98,5 +98,7 @@ int main(int argc, char ** argv) {
   std::cout << std::endl << "Solving with Nelder Mead" << std::endl;
   optimizer.minimize(&monitor);
 
+  monitor.print(std::cout,false);
+
   return 0;
 }
