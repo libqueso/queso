@@ -78,7 +78,7 @@ int main(int argc, char ** argv) {
   optimizer.setTolerance(tol);
   optimizer.set_solver_type(QUESO::GslOptimizer::STEEPEST_DECENT);
 
-  QUESO::OptimizerMonitor monitor;
+  QUESO::OptimizerMonitor monitor(env);
   monitor.set_display_output(true,true);
 
   std::cout << "Solving with Steepest Decent" << std::endl;

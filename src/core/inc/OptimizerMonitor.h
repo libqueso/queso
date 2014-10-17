@@ -30,6 +30,8 @@
 
 namespace QUESO
 {
+  class BaseEnvironment;
+
   //! Object to monitor convergence of optimizers
   class OptimizerMonitor
   {
@@ -42,7 +44,7 @@ namespace QUESO
      * goes beyond n_iters, there will not be an error, just less performance
      * by the monitor. Defaults to reserving space for 100 iterations
      */
-    OptimizerMonitor( unsigned int n_iters = 100 );
+    OptimizerMonitor( const BaseEnvironment& env, unsigned int n_iters = 100 );
 
     ~OptimizerMonitor();
 
@@ -69,6 +71,8 @@ namespace QUESO
     void print( std::ostream& output, bool print_xmin = false ) const;
 
   private:
+
+    const BaseEnvironment& m_env;
     
     bool m_display_conv;
     bool m_print_xmin;

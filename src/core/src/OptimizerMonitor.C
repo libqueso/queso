@@ -25,13 +25,15 @@
 #include <string>
 #include <iomanip>
 #include <queso/asserts.h>
+#include <queso/Environment.h>
 #include <queso/OptimizerMonitor.h>
 
 namespace QUESO
 {
 
-  OptimizerMonitor::OptimizerMonitor( unsigned int n_iters )
-    : m_display_conv(false),
+  OptimizerMonitor::OptimizerMonitor( const BaseEnvironment& env, unsigned int n_iters )
+    : m_env(env),
+      m_display_conv(false),
       m_print_xmin(false)
   {
     m_minimizer_hist.reserve(n_iters);
@@ -77,52 +79,59 @@ namespace QUESO
 
     if( print_xmin) width += (m_minimizer_hist[0]).size()*15;
 
-    output.width(5);
-    output << "i";
-
-    if( print_xmin)
+    // Only print output on processor 0
+    if( m_env.fullRank() == 0 )
       {
-        for( unsigned int i = 0; i < m_minimizer_hist[0].size(); i++ )
+        output.width(5);
+        output << "i";
+
+        if( print_xmin)
           {
-            output.width(9);
-            output << "x" << i << std::string(5,' ');
+            for( unsigned int i = 0; i < m_minimizer_hist[0].size(); i++ )
+              {
+                output.width(9);
+                output << "x" << i << std::string(5,' ');
+              }
           }
+
+        output.width(9);
+        output << "f" << std::string(5,' ');
+
+        output.width(12);
+        output << "norm" << std::endl;
+        output << std::string(width,'-') << std::endl;
       }
-
-    output.width(9);
-    output << "f" << std::string(5,' ');
-
-    output.width(12);
-    output << "norm" << std::endl;
-    output << std::string(width,'-') << std::endl;
   }
 
   void OptimizerMonitor::print_iteration( unsigned int iter, std::ostream& output,
                                           bool print_xmin ) const
   {
-    output.width(5);
-    output << iter;
-
-    if( print_xmin)
+    if( m_env.fullRank() == 0 )
       {
-        for( unsigned int i = 0; i < m_minimizer_hist[iter].size(); i++ )
+        output.width(5);
+        output << iter;
+
+        if( print_xmin)
           {
-            output.width(2);
-            output << "  ";
-            output.width(13);
-            output << std::scientific << m_minimizer_hist[iter][i];
+            for( unsigned int i = 0; i < m_minimizer_hist[iter].size(); i++ )
+              {
+                output.width(2);
+                output << "  ";
+                output.width(13);
+                output << std::scientific << m_minimizer_hist[iter][i];
+              }
           }
+
+        output.width(2);
+        output << "  ";
+        output.width(13);
+        output << std::scientific << m_objective_hist[iter];
+
+        output.width(2);
+        output << "  ";
+        output.width(13);
+        output << m_norm_hist[iter] << std::endl;
       }
-
-    output.width(2);
-    output << "  ";
-    output.width(13);
-    output << std::scientific << m_objective_hist[iter];
-
-    output.width(2);
-    output << "  ";
-    output.width(13);
-    output << m_norm_hist[iter] << std::endl;
   }
 
   void OptimizerMonitor::reset()
