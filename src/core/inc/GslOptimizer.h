@@ -89,6 +89,10 @@ public:
   
   void set_solver_type( SolverType solver );
 
+  void set_solver_type( std::string& solver );
+
+  SolverType string_to_enum( std::string& solver );
+
   //! Sets step size used in gradient-free solvers
   /*!
    * By default, the step size used will be a vector of 0.1.

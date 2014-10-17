@@ -91,7 +91,8 @@ int main(int argc, char ** argv) {
     queso_error();
   }
 
-  optimizer.set_solver_type(QUESO::GslOptimizer::NELDER_MEAD2);
+  std::string nm = "nelder_mead2";
+  optimizer.set_solver_type(nm);
   monitor.reset();
   monitor.set_display_output(true,true);
 

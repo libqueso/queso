@@ -482,4 +482,49 @@ GslOptimizer::minimizer() const
     m_step_size = step_size;
   }
 
+  GslOptimizer::SolverType GslOptimizer::string_to_enum( std::string& solver )
+  {
+    SolverType solver_type;
+
+    if( solver == std::string("fletcher_reeves_cg") )
+      solver_type = FLETCHER_REEVES_CG;
+    else if( solver == std::string("polak_ribiere_cg") )
+      solver_type = POLAK_RIBIERE_CG;
+    else if( solver == std::string("bfgs") )
+      solver_type = BFGS;
+    else if( solver == std::string("bfgs2") )
+      solver_type = BFGS2;
+    else if( solver == std::string("steepest_decent") )
+      solver_type = STEEPEST_DECENT;
+    else if( solver == std::string("nelder_mead") )
+      solver_type = NELDER_MEAD;
+    else if( solver == std::string("nelder_mead2") )
+      solver_type = NELDER_MEAD2;
+    else if( solver == std::string("nelder_mead2_rand") )
+      solver_type = NELDER_MEAD2_RAND;
+    else
+      {
+        if( m_objectiveFunction.domainSet().env().fullRank() == 0 )
+          {
+            std::cerr << "Error: Invalid GslOptimizer solver name: " << solver << std::endl
+                      << "       Valids choices are: fletcher_reeves_cg" << std::endl
+                      << "                           polak_ribiere_cg" << std::endl
+                      << "                           bfgs" << std::endl
+                      << "                           bfgs2" << std::endl
+                      << "                           steepest_decent" << std::endl
+                      << "                           nelder_mead" << std::endl
+                      << "                           nelder_mead2" << std::endl
+                      << "                           nelder_mead2_rand" << std::endl;
+          }
+        queso_error();
+      }
+
+    return solver_type;
+  }
+
+  void GslOptimizer::set_solver_type( std::string& solver )
+  {
+    this->set_solver_type( this->string_to_enum(solver) );
+  }
+
 }  // End namespace QUESO
