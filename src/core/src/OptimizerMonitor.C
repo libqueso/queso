@@ -64,8 +64,9 @@ namespace QUESO
             this->print_header(std::cout, m_print_xmin);
           }
 
-        // We're assuming here the size of the array is the current iteration
-        this->print_iteration(m_norm_hist.size(),std::cout,m_print_xmin);
+        /* We're assuming here the size of the array is the current iteration.
+           Shift by -1 since we count from 0 in C++. */
+        this->print_iteration(m_norm_hist.size()-1,std::cout,m_print_xmin);
       }
 
   }
@@ -104,24 +105,24 @@ namespace QUESO
 
     if( print_xmin)
       {
-        for( unsigned int i = 0; i < m_minimizer_hist[iter-1].size(); i++ )
+        for( unsigned int i = 0; i < m_minimizer_hist[iter].size(); i++ )
           {
             output.width(2);
             output << "  ";
             output.width(13);
-            output << std::scientific << m_minimizer_hist[iter-1][i];
+            output << std::scientific << m_minimizer_hist[iter][i];
           }
       }
 
     output.width(2);
     output << "  ";
     output.width(13);
-    output << std::scientific << m_objective_hist[iter-1];
+    output << std::scientific << m_objective_hist[iter];
 
     output.width(2);
     output << "  ";
     output.width(13);
-    output << m_norm_hist[iter-1] << std::endl;
+    output << m_norm_hist[iter] << std::endl;
   }
 
   void OptimizerMonitor::reset()
