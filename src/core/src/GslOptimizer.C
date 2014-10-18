@@ -166,9 +166,7 @@ GslOptimizer::GslOptimizer(
     m_line_tol(0.1)
 {
   // We initialize the minimizer to GSL_NAN just in case the optimization fails
-  for (unsigned int i = 0; i < this->m_minimizer->sizeLocal(); i++) {
-    (*(this->m_minimizer))[i] = GSL_NAN;
-  }
+  m_minimizer->cwSet(GSL_NAN);
   
   // Set to documented default value.
   m_fstep_size.cwSet(0.1);
