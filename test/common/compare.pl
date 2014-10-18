@@ -141,7 +141,7 @@ if($num_sol1 != $num_sol2) {
 for($count = 0;$count < $num_sol1; $count++) {
 
     if( $sol1a[$count] != $sol2a[$count] ) {
-	my $delta = abs($sol1a[$count] - $sol2a[$count]);
+	my $delta = abs(($sol1a[$count] - $sol2a[$count]) / $sol2a[$count]);
 	if ( $delta <= $TOL ) {
 	    print " --> Within tol. ($sol1a[$count] - $sol2a[$count]) -> [delta = $delta] -> " .
 		"Col 1 -> Index = $count\n";
@@ -155,7 +155,7 @@ for($count = 0;$count < $num_sol1; $count++) {
     if($two_cols == 1) {
 	if( $sol1b[$count] != $sol2b[$count] ) {
 
-	    my $delta = abs($sol1b[$count] - $sol2b[$count]);
+	    my $delta = abs(($sol1b[$count] - $sol2b[$count]) / $sol2b[$count]);
 	    if ( $delta <= $TOL ) {
 		print " --> Within tol. ($sol1b[$count] - $sol2b[$count]) -> [delta = $delta] -> " .
 		    "Col 2 -> Index = $count\n";
