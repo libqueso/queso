@@ -419,11 +419,10 @@ GslOptimizer::minimizer() const
 
         size = gsl_multimin_fminimizer_size(solver);
 
-        /*! \todo Tolerance should be set by the user*/
         status = gsl_multimin_test_size (size, this->getTolerance());
 
       }
-    /*! \todo max iterations should be set by the user */
+
     while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
 
     for (unsigned int i = 0; i < dim; i++) {
