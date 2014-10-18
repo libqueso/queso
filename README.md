@@ -86,7 +86,18 @@ feel free to ask questions on one of the mailing lists:
 
 Citing QUESO
 -------
-Please add the following citation to any paper, technical report or 
+Please add the following citation to any paper, technical report or
 article describing the use of the `QUESO` library:
 
--- [QUESO2011] E. E. Prudencio and K. W. Schulz, The parallel C++ statistical library QUESO: Quantification of uncertainty for estimation, simulation and optimization, IEuro-Par. 2011 Workshops, Part I7155, Lecture Notes in Computer Science, eds. M. Alexander (Springer-Verlag, 2012) pp. 398–407. http://dx.doi.org/10.1007/978-3-642-29737-3_44
+```bibtex
+@inproceedings{Prudencio2012,
+  author = {Prudencio, Ernesto E and Schulz, Karl W},
+  booktitle = {Euro-Par 2011: Parallel Processing Workshops},
+  pages = {398--407},
+  publisher = {Springer},
+  title = {{The parallel C++ statistical library ‘QUESO’: Quantification of
+    Uncertainty for Estimation, Simulation and Optimization}},
+  url = {http://dx.doi.org/10.1007/978-3-642-29737-3\_44},
+  year = {2012}
+}
+```
