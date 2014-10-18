@@ -472,16 +472,6 @@ GslOptimizer::minimizer() const
     m_fdfstep_size = step_size;
   }
 
-  void GslOptimizer::set_solver_type( SolverType solver )
-  {
-    m_solver_type = solver;
-  }
-
-  void GslOptimizer::set_step_size( const GslVector& step_size )
-  {
-    m_step_size = step_size;
-  }
-
   GslOptimizer::SolverType GslOptimizer::string_to_enum( std::string& solver )
   {
     SolverType solver_type;

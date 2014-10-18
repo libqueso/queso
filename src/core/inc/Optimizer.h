@@ -83,7 +83,6 @@ public:
   void setFiniteDifferenceStepSize(double h);
 
 protected:
-  Vector * minimizer;
 
   unsigned int m_maxIterations;
   double m_tolerance;

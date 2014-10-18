@@ -84,8 +84,8 @@ int main(int argc, char ** argv) {
   std::cout << "Solving with Steepest Decent" << std::endl;
   optimizer.minimize(&monitor);
 
-  if (std::abs((*minimizer)[0] - 1.0) > tol) {
-    std::cerr << "GslOptimize failed.  Found minimizer at: " << (*minimizer)[0]
+  if (std::abs( optimizer.minimizer()[0] - 1.0) > tol) {
+    std::cerr << "GslOptimize failed.  Found minimizer at: " << optimizer.minimizer()[0]
               << std::endl;
     std::cerr << "Actual minimizer is 1.0" << std::endl;
     queso_error();
