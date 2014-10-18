@@ -161,7 +161,9 @@ GslOptimizer::GslOptimizer(
     m_minimizer(new GslVector(this->m_objectiveFunction.domainSet().
         vectorSpace().zeroVector())),
     m_solver_type(BFGS2),
-    m_step_size(this->m_objectiveFunction.domainSet().vectorSpace().zeroVector())
+    m_fstep_size(this->m_objectiveFunction.domainSet().vectorSpace().zeroVector()),
+    m_fdfstep_size(1.0),
+    m_line_tol(0.1)
 {
   // We initialize the minimizer to GSL_NAN just in case the optimization fails
   for (unsigned int i = 0; i < this->m_minimizer->sizeLocal(); i++) {
@@ -169,7 +171,7 @@ GslOptimizer::GslOptimizer(
   }
   
   // Set to documented default value.
-  m_step_size.cwSet(0.1);
+  m_fstep_size.cwSet(0.1);
 }
 
 GslOptimizer::~GslOptimizer()
@@ -313,7 +315,7 @@ GslOptimizer::minimizer() const
     /*!
      * \todo Allow the user to tweak these hard-coded values
      */
-    gsl_multimin_fdfminimizer_set(solver, &minusLogPosterior, x, 0.01, 0.1);
+    gsl_multimin_fdfminimizer_set(solver, &minusLogPosterior, x, m_fdfstep_size, m_line_tol);
 
     int status;
     size_t iter = 0;
@@ -393,7 +395,7 @@ GslOptimizer::minimizer() const
     gsl_vector* step_size = gsl_vector_alloc(dim);
 
     for(unsigned int i = 0; i < dim; i++) {
-      gsl_vector_set(step_size, i, m_step_size[i]);
+      gsl_vector_set(step_size, i, m_fstep_size[i]);
     }
 
     gsl_multimin_fminimizer_set(solver, &minusLogPosterior, x, step_size);
@@ -439,7 +441,12 @@ GslOptimizer::minimizer() const
 
   void GslOptimizer::set_step_size( const GslVector& step_size )
   {
-    m_step_size = step_size;
+    m_fstep_size = step_size;
+  }
+
+  void GslOptimizer::set_step_size( double step_size )
+  {
+    m_fdfstep_size = step_size;
   }
 
 }  // End namespace QUESO

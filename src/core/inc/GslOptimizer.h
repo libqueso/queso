@@ -96,6 +96,21 @@ public:
    */
   void set_step_size( const GslVector& step_size );
 
+  //! Sets step size used in gradient-based solvers
+  /*!
+   * GSL doesn't document this parameter well, but it seems to be related
+   * to the line search, so we default to 1.0 for full step.
+   */
+  void set_step_size( double step_size );
+
+  //! Set GSL line minimization tolerance
+  /*!
+   *  Applicable only to gradient-based solvers. Default is 0.1, as
+   *  recommended by GSL documentation. See GSL documentation
+   *  for more details.
+   */
+  void set_line_tol( double tol );
+
 private:
   const BaseScalarFunction<GslVector, GslMatrix> & m_objectiveFunction;
   
@@ -105,7 +120,13 @@ private:
   SolverType m_solver_type;
 
   //! For use in gradient-free algorithms
-  GslVector m_step_size;
+  GslVector m_fstep_size;
+
+  //! For use in gradient-based algorithms
+  double m_fdfstep_size;
+
+  //! Line minimization tolerance in gradient-based algorithms
+  double m_line_tol;
 
   //! Helper function
   bool solver_needs_gradient(SolverType solver);
