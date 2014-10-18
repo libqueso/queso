@@ -159,12 +159,17 @@ GslOptimizer::GslOptimizer(
     m_initialPoint(new GslVector(objectiveFunction.domainSet().
           vectorSpace().zeroVector())),
     m_minimizer(new GslVector(this->m_objectiveFunction.domainSet().
-        vectorSpace().zeroVector()))
+        vectorSpace().zeroVector())),
+    m_solver_type(BFGS2),
+    m_fstep_size(this->m_objectiveFunction.domainSet().vectorSpace().zeroVector()),
+    m_fdfstep_size(1.0),
+    m_line_tol(0.1)
 {
   // We initialize the minimizer to GSL_NAN just in case the optimization fails
-  for (unsigned int i = 0; i < this->m_minimizer->sizeLocal(); i++) {
-    (*(this->m_minimizer))[i] = GSL_NAN;
-  }
+  m_minimizer->cwSet(GSL_NAN);
+  
+  // Set to documented default value.
+  m_fstep_size.cwSet(0.1);
 }
 
 GslOptimizer::~GslOptimizer()
@@ -172,76 +177,32 @@ GslOptimizer::~GslOptimizer()
   delete this->m_initialPoint;
 }
 
-void
-GslOptimizer::minimize() {
-  size_t iter = 0;
-  int status;
+void GslOptimizer::minimize() {
+
+  // First check that initial guess is reasonable
+  if (!this->m_objectiveFunction.domainSet().contains(*(this->m_initialPoint)))
+    {
+      if( m_objectiveFunction.domainSet().env().fullRank() == 0 )
+        {
+          std::cerr << "Minimization was given initial point outside of domain"
+                    << std::endl;
+        }
+      queso_error();
+    }
+
   unsigned int dim = this->m_objectiveFunction.domainSet().vectorSpace().
     zeroVector().sizeLocal();
 
-  const gsl_multimin_fdfminimizer_type * T =
-    gsl_multimin_fdfminimizer_vector_bfgs2;
-
-  gsl_multimin_fdfminimizer * s =
-    gsl_multimin_fdfminimizer_alloc(T, dim);
-
-  gsl_multimin_function_fdf minusLogPosterior;
-  minusLogPosterior.n = dim;
-  minusLogPosterior.f = &c_evaluate;
-  minusLogPosterior.df = &c_evaluate_derivative;
-  minusLogPosterior.fdf = &c_evaluate_with_derivative;
-  minusLogPosterior.params = (void *)(this);
-
-  if (!this->m_objectiveFunction.domainSet().contains(
-        *(this->m_initialPoint))) {
-    std::cerr << "Minimization was given initial point outside of domain"
-              << std::endl;
-    queso_error();
-  }
-
-  // Set initial point
-  // DM: The dynamic cast is needed because the abstract base class does not
-  // have a pure virtual operator[] method.  We can implement one and remove
-  // this dynamic cast in the future.
-  const GslVector & gslInitialPoint = dynamic_cast<const GslVector &>(
-      *(this->m_initialPoint));
-  gsl_vector * x = gsl_vector_alloc(dim);
-  for (unsigned int i = 0; i < dim; i++) {
-    gsl_vector_set(x, i, gslInitialPoint[i]);
-  }
-
-  /*!
-   * \todo Allow the user to tweak these hard-coded values
-   */
-  gsl_multimin_fdfminimizer_set(s, &minusLogPosterior, x, 0.01, 0.1);
-
-  do {
-    iter++;
-    status = gsl_multimin_fdfminimizer_iterate(s);
-
-    if (status) {
-      std::cerr << "Error while GSL does optimisation. "
-                << "See below for GSL error type." << std::endl;
-      std::cerr << "Gsl error: " << gsl_strerror(status) << std::endl;
-      break;
+  if( this->solver_needs_gradient(m_solver_type) )
+    {
+      this->minimize_with_gradient( dim );
+    }
+  else
+    {
+      this->minimize_no_gradient( dim );
     }
 
-    // TODO: Allow the user to tweak this hard-coded value
-    status = gsl_multimin_test_gradient(s->gradient, this->getTolerance());
-
-  /*!
-   * \todo We shouldn't be hard-coding the max number of iterations
-   */
-  } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
-
-  // Get the minimizer
-  for (unsigned int i = 0; i < dim; i++) {
-    (*(this->m_minimizer))[i] = gsl_vector_get(s->x, i);
-  }
-
-  // We're being good human beings and cleaning up the memory we allocated
-  gsl_multimin_fdfminimizer_free(s);
-  gsl_vector_free(x);
+  return;
 }
 
 const BaseScalarFunction<GslVector, GslMatrix> &
@@ -263,5 +224,227 @@ GslOptimizer::minimizer() const
 {
   return *(this->m_minimizer);
 }
+  
+  void GslOptimizer::set_solver_type( SolverType solver )
+  {
+    m_solver_type = solver;
+  }
+
+  bool GslOptimizer::solver_needs_gradient( SolverType solver )
+  {
+    bool gradient_needed = false;
+
+    switch(solver)
+      {
+      case(FLETCHER_REEVES_CG):
+      case(POLAK_RIBIERE_CG):
+      case(BFGS):
+      case(BFGS2):
+      case(STEEPEST_DECENT):
+        {
+          gradient_needed = true;
+          break;
+        }
+      case(NELDER_MEAD):
+      case(NELDER_MEAD2):
+      case(NELDER_MEAD2_RAND):
+        {
+          break;
+        }
+      default:
+        {
+          // Wat?!
+          queso_error();
+        }
+      } // switch(solver)
+
+    return gradient_needed;
+  }
+
+  void GslOptimizer::minimize_with_gradient( unsigned int dim )
+  {
+    // Set initial point
+    gsl_vector * x = gsl_vector_alloc(dim);
+    for (unsigned int i = 0; i < dim; i++) {
+      gsl_vector_set(x, i, (*m_initialPoint)[i]);
+    }
+
+    // Tell GSL which solver we're using
+    const gsl_multimin_fdfminimizer_type* type = NULL;
+
+    switch(m_solver_type)
+      {
+      case(FLETCHER_REEVES_CG):
+        type = gsl_multimin_fdfminimizer_conjugate_fr;
+        break;
+      case(POLAK_RIBIERE_CG):
+        type = gsl_multimin_fdfminimizer_conjugate_pr;
+        break;
+      case(BFGS):
+        type = gsl_multimin_fdfminimizer_vector_bfgs;
+        break;
+      case(BFGS2):
+        type = gsl_multimin_fdfminimizer_vector_bfgs2;
+        break;
+      case(STEEPEST_DECENT):
+        type = gsl_multimin_fdfminimizer_steepest_descent;
+        break;
+      case(NELDER_MEAD):
+      case(NELDER_MEAD2):
+      case(NELDER_MEAD2_RAND):
+      default:
+        // Wat?!
+        queso_error();
+      }
+
+    // Init solver
+    gsl_multimin_fdfminimizer * solver =
+      gsl_multimin_fdfminimizer_alloc(type, dim);
+
+    // Point GSL to the right functions
+    gsl_multimin_function_fdf minusLogPosterior;
+    minusLogPosterior.n = dim;
+    minusLogPosterior.f = &c_evaluate;
+    minusLogPosterior.df = &c_evaluate_derivative;
+    minusLogPosterior.fdf = &c_evaluate_with_derivative;
+    minusLogPosterior.params = (void *)(this);
+
+
+    /*!
+     * \todo Allow the user to tweak these hard-coded values
+     */
+    gsl_multimin_fdfminimizer_set(solver, &minusLogPosterior, x, m_fdfstep_size, m_line_tol);
+
+    int status;
+    size_t iter = 0;
+
+    do {
+      iter++;
+      status = gsl_multimin_fdfminimizer_iterate(solver);
+
+      if (status) {
+        if( m_objectiveFunction.domainSet().env().fullRank() == 0 )
+          {
+            std::cerr << "Error while GSL does optimisation. "
+                      << "See below for GSL error type." << std::endl;
+            std::cerr << "Gsl error: " << gsl_strerror(status) << std::endl;
+          }
+        break;
+      }
+
+      status = gsl_multimin_test_gradient(solver->gradient, this->getTolerance());
+
+    } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
+
+    for (unsigned int i = 0; i < dim; i++) {
+      (*m_minimizer)[i] = gsl_vector_get(solver->x, i);
+    }
+
+    // We're being good human beings and cleaning up the memory we allocated
+    gsl_multimin_fdfminimizer_free(solver);
+    gsl_vector_free(x);
+
+    return;
+  }
+
+  void GslOptimizer::minimize_no_gradient( unsigned int dim )
+  {
+    // Set initial point
+    gsl_vector* x = gsl_vector_alloc(dim);
+    for (unsigned int i = 0; i < dim; i++) {
+      gsl_vector_set(x, i, (*m_initialPoint)[i]);
+    }
+
+    // Tell GSL which solver we're using
+    const gsl_multimin_fminimizer_type* type = NULL;
+
+    switch(m_solver_type)
+      {
+      case(NELDER_MEAD):
+        type = gsl_multimin_fminimizer_nmsimplex;
+        break;
+      case(NELDER_MEAD2):
+        type = gsl_multimin_fminimizer_nmsimplex2;
+        break;
+      case(NELDER_MEAD2_RAND):
+        type = gsl_multimin_fminimizer_nmsimplex2rand;
+        break;
+      case(FLETCHER_REEVES_CG):
+      case(POLAK_RIBIERE_CG):
+      case(BFGS):
+      case(BFGS2):
+      case(STEEPEST_DECENT):
+      default:
+        // Wat?!
+        queso_error();
+      }
+
+    // Init solver
+    gsl_multimin_fminimizer* solver =
+      gsl_multimin_fminimizer_alloc(type, dim);
+
+    // Point GSL at the right functions
+    gsl_multimin_function minusLogPosterior;
+    minusLogPosterior.n = dim;
+    minusLogPosterior.f = &c_evaluate;
+    minusLogPosterior.params = (void *)(this);
+
+    // Needed for these gradient free algorithms.
+    gsl_vector* step_size = gsl_vector_alloc(dim);
+
+    for(unsigned int i = 0; i < dim; i++) {
+      gsl_vector_set(step_size, i, m_fstep_size[i]);
+    }
+
+    gsl_multimin_fminimizer_set(solver, &minusLogPosterior, x, step_size);
+
+    int status;
+    size_t iter = 0;
+    double size = 0.0;
+
+    do
+      {
+        iter++;
+        status = gsl_multimin_fminimizer_iterate(solver);
+
+        if (status) {
+          if( m_objectiveFunction.domainSet().env().fullRank() == 0 )
+            {
+              std::cerr << "Error while GSL does optimisation. "
+                        << "See below for GSL error type." << std::endl;
+              std::cerr << "Gsl error: " << gsl_strerror(status) << std::endl;
+            }
+          break;
+        }
+
+        size = gsl_multimin_fminimizer_size(solver);
+
+        status = gsl_multimin_test_size (size, this->getTolerance());
+
+      }
+
+    while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
+
+    for (unsigned int i = 0; i < dim; i++) {
+      (*m_minimizer)[i] = gsl_vector_get(solver->x, i);
+    }
+
+    // We're being good human beings and cleaning up the memory we allocated
+    gsl_vector_free(step_size);
+    gsl_multimin_fminimizer_free(solver);
+    gsl_vector_free(x);
+
+    return;
+  }
+
+  void GslOptimizer::set_step_size( const GslVector& step_size )
+  {
+    m_fstep_size = step_size;
+  }
+
+  void GslOptimizer::set_step_size( double step_size )
+  {
+    m_fdfstep_size = step_size;
+  }
 
 }  // End namespace QUESO
