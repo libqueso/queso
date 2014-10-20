@@ -25,7 +25,7 @@
 import re
 import sys
 
-def convertOne(mFileName, getChain=True, getLike=True, getTarget=True, chainIdent=r'[cC]hain\w*', logLikeIdent=r'[lL]ogLikelihood\w*', logTargetIdent=r'[lL]ogTarget\w*'):
+def convertMFile(mFileName, getChain=True, getLike=True, getTarget=True, chainIdent=r'[cC]hain\w*', logLikeIdent=r'[lL]ogLikelihood\w*', logTargetIdent=r'[lL]ogTarget\w*'):
     mFileNameBase = mFileName.rstrip('.m')
     dataEncloseTokens = ('[', ']')
 
@@ -98,4 +98,4 @@ if __name__ == "__main__":
     # parse files one-by-one
     for mFileName in sys.argv[1:]:
         print 'Converting {0}...'.format(mFileName)
-        convertOne(mFileName, getChain=optMapGets['-chain'], getLike=optMapGets['-like'], getTarget=optMapGets['-target'], chainIdent=optMapIdents['-chainIdent'], logLikeIdent=optMapIdents['-likeIdent'], logTargetIdent=optMapIdents['-targetIdent'])
+        convertMFile(mFileName, getChain=optMapGets['-chain'], getLike=optMapGets['-like'], getTarget=optMapGets['-target'], chainIdent=optMapIdents['-chainIdent'], logLikeIdent=optMapIdents['-likeIdent'], logTargetIdent=optMapIdents['-targetIdent'])
