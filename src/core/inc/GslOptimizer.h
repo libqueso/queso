@@ -42,6 +42,7 @@ namespace QUESO {
 class Vector;
 class GslVector;
 class GslMatrix;
+class OptimizerMonitor;
 
 template <class V, class M>
 class BaseScalarFunction;
@@ -62,11 +63,11 @@ public:
   /*!
    * m_initialPoint is handled in the derived class
    */
-  virtual void minimize();
+  virtual void minimize(OptimizerMonitor* monitor = NULL);
 
   //! Returns the objective function
   const BaseScalarFunction<GslVector, GslMatrix> & objectiveFunction() const;
-  
+
   enum SolverType { FLETCHER_REEVES_CG,
                     POLAK_RIBIERE_CG,
                     BFGS,
@@ -87,6 +88,10 @@ public:
   const GslVector & minimizer() const;
   
   void set_solver_type( SolverType solver );
+
+  void set_solver_type( std::string& solver );
+
+  SolverType string_to_enum( std::string& solver );
 
   //! Sets step size used in gradient-free solvers
   /*!
@@ -131,9 +136,9 @@ private:
   //! Helper function
   bool solver_needs_gradient(SolverType solver);
 
-  void minimize_with_gradient( unsigned int dim );
+  void minimize_with_gradient( unsigned int dim, OptimizerMonitor* monitor );
 
-  void minimize_no_gradient( unsigned int dim );
+  void minimize_no_gradient( unsigned int dim, OptimizerMonitor* monitor );
 
 };
 

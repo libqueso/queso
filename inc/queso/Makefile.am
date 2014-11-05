@@ -52,6 +52,7 @@ BUILT_SOURCES += Matrix.h
 BUILT_SOURCES += MpiComm.h
 BUILT_SOURCES += OperatorBase.h
 BUILT_SOURCES += Optimizer.h
+BUILT_SOURCES += OptimizerMonitor.h
 BUILT_SOURCES += RngBase.h
 BUILT_SOURCES += RngBoost.h
 BUILT_SOURCES += RngGsl.h
@@ -262,6 +263,8 @@ MpiComm.h: $(top_srcdir)/src/core/inc/MpiComm.h
 OperatorBase.h: $(top_srcdir)/src/core/inc/OperatorBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 Optimizer.h: $(top_srcdir)/src/core/inc/Optimizer.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+OptimizerMonitor.h: $(top_srcdir)/src/core/inc/OptimizerMonitor.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngBase.h: $(top_srcdir)/src/core/inc/RngBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

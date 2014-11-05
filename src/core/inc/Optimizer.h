@@ -39,6 +39,7 @@ namespace QUESO {
  */
 
 class Vector;
+class OptimizerMonitor;
 
 class BaseOptimizer {
 public:
@@ -52,7 +53,7 @@ public:
   /*!
    * m_initialPoint is handled in the derived class
    */
-  virtual void minimize() = 0;
+  virtual void minimize(OptimizerMonitor* monitor) = 0;
 
   //! Returns the maximum number of iterations the optimizer will do
   /*!
@@ -82,7 +83,6 @@ public:
   void setFiniteDifferenceStepSize(double h);
 
 protected:
-  Vector * minimizer;
 
   unsigned int m_maxIterations;
   double m_tolerance;

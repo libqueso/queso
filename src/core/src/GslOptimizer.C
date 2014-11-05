@@ -25,10 +25,12 @@
 #include <iostream>
 
 #include <gsl/gsl_multimin.h>
+#include <gsl/gsl_blas.h>
 #include <queso/GslVector.h>
 #include <queso/VectorSpace.h>
 #include <queso/ScalarFunction.h>
 #include <queso/GslOptimizer.h>
+#include <queso/OptimizerMonitor.h>
 
 namespace QUESO {
 
@@ -177,7 +179,7 @@ GslOptimizer::~GslOptimizer()
   delete this->m_initialPoint;
 }
 
-void GslOptimizer::minimize() {
+void GslOptimizer::minimize(OptimizerMonitor* monitor) {
 
   // First check that initial guess is reasonable
   if (!this->m_objectiveFunction.domainSet().contains(*(this->m_initialPoint)))
@@ -195,11 +197,11 @@ void GslOptimizer::minimize() {
 
   if( this->solver_needs_gradient(m_solver_type) )
     {
-      this->minimize_with_gradient( dim );
+      this->minimize_with_gradient( dim, monitor );
     }
   else
     {
-      this->minimize_no_gradient( dim );
+      this->minimize_no_gradient( dim, monitor );
     }
 
   return;
@@ -261,7 +263,7 @@ GslOptimizer::minimizer() const
     return gradient_needed;
   }
 
-  void GslOptimizer::minimize_with_gradient( unsigned int dim )
+  void GslOptimizer::minimize_with_gradient( unsigned int dim, OptimizerMonitor* monitor )
   {
     // Set initial point
     gsl_vector * x = gsl_vector_alloc(dim);
@@ -309,10 +311,6 @@ GslOptimizer::minimizer() const
     minusLogPosterior.fdf = &c_evaluate_with_derivative;
     minusLogPosterior.params = (void *)(this);
 
-
-    /*!
-     * \todo Allow the user to tweak these hard-coded values
-     */
     gsl_multimin_fdfminimizer_set(solver, &minusLogPosterior, x, m_fdfstep_size, m_line_tol);
 
     int status;
@@ -334,6 +332,21 @@ GslOptimizer::minimizer() const
 
       status = gsl_multimin_test_gradient(solver->gradient, this->getTolerance());
 
+      if(monitor)
+        {
+          gsl_vector* x = gsl_multimin_fdfminimizer_x(solver);
+          std::vector<double> x_min(dim);
+          for( unsigned int i = 0; i < dim; i++)
+            x_min[i] = gsl_vector_get(x,i);
+
+          double f = gsl_multimin_fdfminimizer_minimum(solver);
+
+          gsl_vector* grad = gsl_multimin_fdfminimizer_gradient(solver);
+          double grad_norm = gsl_blas_dnrm2(grad);
+
+          monitor->append( x_min, f, grad_norm );
+        }
+
     } while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
 
     for (unsigned int i = 0; i < dim; i++) {
@@ -347,7 +360,7 @@ GslOptimizer::minimizer() const
     return;
   }
 
-  void GslOptimizer::minimize_no_gradient( unsigned int dim )
+  void GslOptimizer::minimize_no_gradient( unsigned int dim, OptimizerMonitor* monitor )
   {
     // Set initial point
     gsl_vector* x = gsl_vector_alloc(dim);
@@ -421,6 +434,18 @@ GslOptimizer::minimizer() const
 
         status = gsl_multimin_test_size (size, this->getTolerance());
 
+        if(monitor)
+        {
+          gsl_vector* x = gsl_multimin_fminimizer_x(solver);
+          std::vector<double> x_min(dim);
+          for( unsigned int i = 0; i < dim; i++)
+            x_min[i] = gsl_vector_get(x,i);
+
+          double f = gsl_multimin_fminimizer_minimum(solver);
+
+          monitor->append( x_min, f, size );
+        }
+
       }
 
     while ((status == GSL_CONTINUE) && (iter < this->getMaxIterations()));
@@ -445,6 +470,51 @@ GslOptimizer::minimizer() const
   void GslOptimizer::set_step_size( double step_size )
   {
     m_fdfstep_size = step_size;
+  }
+
+  GslOptimizer::SolverType GslOptimizer::string_to_enum( std::string& solver )
+  {
+    SolverType solver_type;
+
+    if( solver == std::string("fletcher_reeves_cg") )
+      solver_type = FLETCHER_REEVES_CG;
+    else if( solver == std::string("polak_ribiere_cg") )
+      solver_type = POLAK_RIBIERE_CG;
+    else if( solver == std::string("bfgs") )
+      solver_type = BFGS;
+    else if( solver == std::string("bfgs2") )
+      solver_type = BFGS2;
+    else if( solver == std::string("steepest_decent") )
+      solver_type = STEEPEST_DECENT;
+    else if( solver == std::string("nelder_mead") )
+      solver_type = NELDER_MEAD;
+    else if( solver == std::string("nelder_mead2") )
+      solver_type = NELDER_MEAD2;
+    else if( solver == std::string("nelder_mead2_rand") )
+      solver_type = NELDER_MEAD2_RAND;
+    else
+      {
+        if( m_objectiveFunction.domainSet().env().fullRank() == 0 )
+          {
+            std::cerr << "Error: Invalid GslOptimizer solver name: " << solver << std::endl
+                      << "       Valids choices are: fletcher_reeves_cg" << std::endl
+                      << "                           polak_ribiere_cg" << std::endl
+                      << "                           bfgs" << std::endl
+                      << "                           bfgs2" << std::endl
+                      << "                           steepest_decent" << std::endl
+                      << "                           nelder_mead" << std::endl
+                      << "                           nelder_mead2" << std::endl
+                      << "                           nelder_mead2_rand" << std::endl;
+          }
+        queso_error();
+      }
+
+    return solver_type;
+  }
+
+  void GslOptimizer::set_solver_type( std::string& solver )
+  {
+    this->set_solver_type( this->string_to_enum(solver) );
   }
 
 }  // End namespace QUESO
