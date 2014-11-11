@@ -17,7 +17,7 @@ int main(int argc, char **argv)
   {
   LibMeshInit init(argc, argv);
 
-  Mesh mesh;
+  Mesh mesh(init.comm());
   MeshTools::Generation::build_square(mesh, 20, 20, -1.0, 1.0, -1.0, 1.0, QUAD4);
 
   QUESO::FunctionOperatorBuilder fobuilder;
