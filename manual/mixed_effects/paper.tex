@@ -1,0 +1,169 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+
+\title{Brief Article}
+\author{The Author}
+%\date{}							% Activate to display a given date or no date
+
+\begin{document}
+%\maketitle
+%\section{}
+%\subsection{}
+
+\begin{center}
+{\bf {\LARGE Bayesian Mixed-Effects Modeling}}
+\end{center}
+
+\section{Introduction}
+
+\noindent
+We consider a scenario in which a total of $n_\theta$ model parameters $\mathbf{\theta} = \left(\theta_1, \theta_2, \ldots, \theta_{n_\theta-1}, \theta_{n_\theta} \right)$ are simultaneously calibrated to $M$ experimental datasets $\{ \mathbf{y}_1, \mathbf{y}_2, \ldots, \mathbf{y}_{M-1}, \mathbf{y}_M \}$.  The $n_{\theta,i}$-element vector $\mathbf{\theta}_{[i]}$ identifies the subset of parameters in $\theta$ that pertain to the model $\eta_i (\cdot)$ being fitted to dataset $\mathbf{y}_i$, $i = 1, \ldots, M$.  The experimental data may in addition be indexed by $n_x$ design variables $\mathbf{x} = \left( x_1, x_2, \ldots, x_{n_x-1}, x_{n_x} \right)$.  The subset of design variables pertaining to the $j$-th experimental scenario will be denoted $\mathbf{x}_{[j]}$, $j = 1, \ldots, M$.  We assume $\mathbf{y}_j$ consists of $n_j$ observations, the $k$-th of which is associated with design vector $\mathbf{x}_{[j],k}$, $k = 1, \ldots, n_j$.  The model calculation pertaining to $y_{jk}$ is therefore $\eta_j \left(\mathbf{x}_{[j],k}, \mathbf{\theta}_{[j]} \right)$.
+
+\vspace{5mm}
+
+\noindent
+In the code, the structure defined in the previous paragraph is represented by the {\tt clist} matrix.  {\tt clist} is a $n_\theta \times M$ matrix, with rows associated with parameters $\{ \theta_1, \ldots, \theta_{n_\theta} \}$ and columns with experimental scenarios $\{ 1, \ldots, M \}$.  The column entries in {\tt clist} for scenario $j$ are zero for all rows corresponding to parameters $\theta$ \emph{not} appearing in model $\eta_j (\cdot)$.  Parameters appearing in model $\eta_j (\cdot)$ are numbered from 1 to $n_{\theta,j}$ in the $j$-th column of {\tt clist}, in the order they appear in the vector $\mathbf{\theta}$.  
+
+\vspace{5mm}
+
+\noindent
+The adaptive MCMC algorithm implemented for posterior sampling involves generating a multivariate proposal, i.e. in each iteration a single candidate vector that includes every random model parameter is generated.  To avoid rejecting candidates based solely on a proposed parameter value falling outside its finite or half-infinite support, we work with a one-to-one transformation of the model parameters $\mathbf{\tau} = f(\mathbf{\theta}) = \left( f_1 \left( \theta_1 \right), \ldots, f_{n_\theta} \left( \theta_{n_\theta} \right) \right)$ that removes interval or half-interval constraints:
+\[
+\tau_i = \left\{ \begin{array}{l}
+\log \left( \theta_i - \ell_i \right) - \log \left( u_i - \theta_i \right) \,,\,\theta_i \in (\ell_i, u_i) \\
+\log \left( \theta_i - \ell_i \right) \,,\,\theta_i \in (\ell_i, \infty) \\
+\log \left( u_i - \theta_i \right) \,,\,\theta_i \in (-\infty, u_i) \\
+\theta_i \,,\, \theta_i \in (-\infty, \infty)
+\end{array} \right. \,.
+\]
+The inverse transformation $\mathbf{\theta} = f^{-1}(\mathbf{\tau}) = \left( f_1^{-1} \left( \tau_1 \right), \ldots, f_{n_\theta}^{-1} \left( \tau_{n_\theta} \right) \right)$ is given by
+\[
+\theta_i = \left\{ \begin{array}{l}
+\left( \ell_i + u_i \exp (\tau_i) \right)/\left(1+\exp(\tau_i) \right)\,,\,\theta_i \in (\ell_i, u_i) \\
+\ell_i + \exp(\tau_i) \,,\,\theta_i \in (\ell_i, \infty) \\
+u_i - \exp(\tau_i) \,,\,\theta_i \in (-\infty, u_i) \\
+\tau_i \,,\, \theta_i \in (-\infty, \infty)
+\end{array} \right. \,.
+\]
+The Jacobian matrix of the inverse transformation $f^{-1} (\mathbf{\tau})$, needed later for computation of the log posterior distribution, is thus diagonal with the following elements:
+\[
+\frac{\partial f_i^{-1} (\tau_i)}{\partial \tau_i} = \left\{ \begin{array}{l}
+\left( u_i - \ell_i \right) \exp(\tau_i) /\left(1+\exp(\tau_i) \right)^2 = \left( \theta_i - \ell_i \right) \left( u_i - \theta_i \right) / \left( u_i - \ell_i \right) \,,\,\theta_i \in (\ell_i, u_i) \\
+\exp(\tau_i) = \theta_i - \ell_i \,,\,\theta_i \in (\ell_i, \infty) \\
+- \exp(\tau_i) = \theta_i - u_i \,,\,\theta_i \in (-\infty, u_i) \\
+1 \,,\, \theta_i \in (-\infty, \infty)
+\end{array} \right. \,.
+\]
+
+\vspace{5mm}
+
+\noindent
+Experimental scenario-specific additive perturbations to a subset of the $n_\theta$ fixed effect parameters $\mathbf{\tau}=f(\mathbf{\theta})$ are allowed.  In the code, the indices of these parameters are denoted by the vector {\tt hlist}.  These perturbations are referred to as random effects, and being specific to the fit of individual experimental datasets, can therefore be associated only with rows of {\tt clist} having more than one non-zero entry.  In other words, perturbing a fixed effect $\theta_k$ that is being fit to only a single experimental dataset is redundant.  On the other hand, not every fixed effect in common to fitting at least two experimental datasets need be associated with a random effect.  We let $n_h$ denote the number of random effects contained in {\tt hlist}, and $\mathbf{\delta}_{[\mbox{{\scriptsize {\tt hlist}}}]}$ a $n_h$-element vector of random effects corresponding to each element of {\tt hlist}.  For the $i$-th experimental scenario, only a subset of the perturbations identified by {\tt hlist} may be associated with a subset of the fixed effects $\mathbf{\theta}_{[i]}$, denoted $[h_i] = [i]~\cap$ {\tt hlist}.  The associated subset of random effect parameters will thus be denoted $\mathbf{\delta}_{[h_i]}^i$.  We let $\mathcal{M}$ denote the set of experimental scenarios for which $[h_i] \ne \varnothing$.
+
+\vspace{5mm}
+
+\noindent
+To complete the background description, we let $\mathbf{\vartheta}_i$ denote the parameter vector evaluated by the model $\eta_i (\cdot)$ of the $i$-th experimental scenario:  If $j \in \{ 1, \ldots, n_{\theta,i} \}$ and $k$ is the $j$-th index element of $[i]$, set 
+\[
+\vartheta_{i,j} = \left\{ \begin{array}{l}
+f_k^{-1}(f_k(\theta_k) + \delta_k^i) \,, \mbox{ for } k \in [h_i] \mbox{ and } i \in \mathcal{M} \,, \\[1ex]
+\theta_k \,, \mbox{ otherwise}
+\end{array} \right. \,.
+\]
+
+\section{Log-Likelihood Function}
+
+\noindent
+Given $\mathbf{\theta}$ and $\mathbf{\delta}_{[h_i]}^i$ for $i \in \mathcal{M}$, the statistical model for the experimental data is given by
+\[
+y_{i,j} = \eta_i \left(\mathbf{x}_{[i],j}, \mathbf{\vartheta}_i \right) + \epsilon_{i,j} \,, j = 1, \ldots, n_i \,,\, i = 1, \ldots, M \,,
+\]
+where the $n_i$-element experimental error vector $\mathbf{\varepsilon}_i = (\epsilon_{i,1}, \ldots, \epsilon_{i,n_i})^T$ given precision parameter $\lambda_i$ is assumed to be mean-zero Gaussian,
+\[
+\mathbf{\varepsilon}_i \sim \mathcal{N} \left( \mathbf{0}_{n_i} \,, \lambda_i^{-1} \mathbf{\Sigma}_i \right) \,.
+\]
+Here $\mathbf{0}_{n_i}$ denotes the $n_i$-element vector of zeros and the fixed $n_i \times n_i$ matrix $\mathbf{\Sigma}_i$ is symmetric and positive definite.  Letting $\mathbf{X}_{[i]} = \left( \mathbf{x}_{[i],1} \, \cdots \, \mathbf{x}_{[i],n_i} \right)^T$ denote the matrix having the input conditions for the $i$-th experimental scenario as rows, and collecting the model evaluations corresponding to each input condition in the $n_i$-element vector $\mathbf{\eta}^i \left( \mathbf{X}_{[i]}, \mathbf{\vartheta}_i \right) = \left(\eta_i \left( \mathbf{x}_{[i],1}, \mathbf{\vartheta}_i \right), \ldots, \eta_i \left( \mathbf{x}_{[i], n_i}, \mathbf{\vartheta}_i \right) \right)^T$, this model is written in vector form as
+\[
+\mathbf{y}_i = \mathbf{\eta}^i \left( \mathbf{X}_{[i]}, \mathbf{\vartheta}_i \right) + \mathbf{\varepsilon}_i \,,~\mathbf{\varepsilon}_i \sim \mathcal{N} \left( \mathbf{0}_{n_i} \,, \lambda_i^{-1} \mathbf{\Sigma}_i \right) \,,~ i = 1, \ldots, M \,.
+\]
+The log-likelihood function is therefore given by
+\begin{align*}
+\MoveEqLeft[10] \ell \left( \, \mathbf{\theta}, \left\{ \mathbf{\delta}_{[h_i]}^i \right\}_{i \in \mathcal{M}}, \lambda_1, \ldots, \lambda_M \, | \, \mathbf{y}_1, \ldots, \mathbf{y}_M \, \right) \\
+=& -\frac{1}{2} \left( \log(2 \pi) \sum_{i=1}^M n_i + \sum_{i=1}^M \log \left( \left| \mathbf{\Sigma}_i \right| \right) - \sum_{i=1}^M n_i \log \left( \lambda_i \right) +  \right. \\
+&\left. \sum_{i=1}^M \lambda_i \left( \mathbf{y}_i - \mathbf{\eta}^i \left( \mathbf{X}_{[i]}, \mathbf{\vartheta}_i \right) \right)^T \mathbf{\Sigma}_i^{-1} \left( \mathbf{y}_i - \mathbf{\eta}^i \left( \mathbf{X}_{[i]}, \mathbf{\vartheta}_i \right) \right) \right) \,.
+\end{align*}
+Neglecting constant terms,
+\begin{align*}
+\MoveEqLeft[5] \ell \left( \, \mathbf{\theta}, \left\{ \mathbf{\delta}_{[h_i]}^i \right\}_{i \in \mathcal{M}}, \lambda_1, \ldots, \lambda_M \, | \, \mathbf{y}_1, \ldots, \mathbf{y}_M \, \right) \\
+& = \frac{1}{2} \left( \sum_{i=1}^M n_i \log \left( \lambda_i \right) - \sum_{i=1}^M \lambda_i \left( \mathbf{y}_i - \mathbf{\eta}^i \left( \mathbf{X}_{[i]}, \mathbf{\vartheta}_i \right) \right)^T \mathbf{\Sigma}_i^{-1} \left( \mathbf{y}_i - \mathbf{\eta}^i \left( \mathbf{X}_{[i]}, \mathbf{\vartheta}_i \right) \right) \right) \,.
+\end{align*}
+For the purpose of calculation, we work with $\omega_i = \log(\lambda_i)$, noting that $\lambda_i = \exp(\omega_i)$ and $\partial \lambda_i /\partial \omega_i = \exp(\omega_i) = \lambda_i$.
+
+\section{Log-Prior Function}
+
+\noindent
+Given the ($n_h (n_h+1)/2$)-element vector $\mathbf{\phi}$, the distribution of the $n_h$-element random effect vector $\delta_{[\mbox{{\scriptsize {\tt hlist}}}]}$ is assumed to be mean-zero Gaussian having $n_h \times n_h$ precision matrix $\mathbf{P} (\mathbf{\phi})$.  The parameters $\mathbf{\phi}$ characterize the space of symmetric positive definite matrices in the following way.  Given $\mathbf{\phi}$, define the $n_h \times n_h$ symmetric matrix $\mathbf{\Phi}$ having elements $\mathbf{\Phi}_{ij} = \phi_{j+(i-1)(2n_h-i)/2}$ for $j = i, i+1, \ldots, n_h \,,\, i = 1, \ldots, n_h$, and $\mathbf{\Phi}_{ij} = \mathbf{\Phi}_{ji}$ for $i = j+1, \ldots, n_h \,,\, j = 1, \ldots, n_h-1$.  The spectral decomposition of $\mathbf{\Phi}$ is given uniquely by $\mathbf{\Phi} = \mathbf{U}_\phi \mathbf{D}_\phi \mathbf{U}_\phi^T$, where $\mathbf{D}_\phi$ is a diagonal matrix having elements $d_{\phi,i}$, $i = 1, \ldots, n_h$.  We take $\mathbf{P}(\mathbf{\phi}) = \mathbf{U}_\phi \exp \left( \mathbf{D}_\phi \right) \mathbf{U}_{\phi}^T$, where $\exp \left( \mathbf{D}_\phi \right) = \mbox{ diag} \left( \exp \left( d_{\phi,i} \right) \,,\, i=1,\ldots, n_h \right)$.  In this way, $\mathbf{\phi} \leftrightarrow \mathbf{P}(\mathbf{\phi})$ describes a one-to-one relationship between the ($n_h (n_h+1)/2$)-dimensional space of reals and the $n_h \times n_h$ space of real symmetric, positive definite matrices.
+
+\vspace{5mm}
+
+\noindent
+The random effect vector $\mathbf{\delta}_{[h_i]}^i$ for $i \in \mathcal{M}$ is a subset of $\delta_{[\mbox{{\scriptsize {\tt hlist}}}]}$.  Let $\mathbf{\Pi}$ be the permutation matrix such that
+\[
+\begin{pmatrix}
+\delta_{\mbox{{\scriptsize {\tt hlist}}} \setminus [h_i]}^i \\
+\delta_{[h_i]}^i 
+\end{pmatrix} = \mathbf{\Pi} \, \delta_{\mbox{{\scriptsize {\tt hlist}}}} \,.
+\]
+The precision matrix of this rearrangement of $\delta_{[\mbox{{\scriptsize {\tt hlist}}}]}$ is given by
+\[
+\mathbf{\Pi} \, \mathbf{P}(\mathbf{\phi}) \, \mathbf{\Pi}^T = \begin{pmatrix}
+\mathbf{P}_{\pi,11} (\mathbf{\phi})& \mathbf{P}_{\pi,21}^T (\mathbf{\phi}) \\
+\mathbf{P}_{\pi,21} (\mathbf{\phi}) & \mathbf{P}_{\pi,22} (\mathbf{\phi})
+\end{pmatrix} \,,
+\]
+where the blocks have sizes conforming to the lengths of $\delta_{\mbox{{\scriptsize {\tt hlist}}} \setminus [h_i]}^i$ and $\delta_{[h_i]}^i$ in the obvious manner.  The precision matrix of $\mathbf{\delta}_{[h_i]}^i$ is therefore
+\[
+\mathbf{P}_i (\mathbf{\phi}) = \mathbf{P}_{\pi,22} (\mathbf{\phi}) - \mathbf{P}_{\pi,21} (\mathbf{\phi}) \mathbf{P}_{\pi,11}^{-1} (\mathbf{\phi}) \mathbf{P}_{\pi,21}^T (\mathbf{\phi}) \,.
+\]
+With this development, our prior assumption on the random effects is that given parameters $\mathbf{\phi}$, the $\delta_{[h_i]}^i$ are independently mean-zero Gaussian distributed having precision matrices $\mathbf{P}_i (\mathbf{\phi})$ for $i \in \mathcal{M}$.  The upper triangular Cholesky factor $\mathbf{R}_i (\mathbf{\phi})$ of $\mathbf{P}_i (\mathbf{\phi})$ --- used in computing the multivariate Gaussian density function in the log-prior function given below --- is obtained from the upper triangular Cholesky factor of $\mathbf{\Pi} \, \mathbf{P}(\mathbf{\phi}) \, \mathbf{\Pi}^T$ by noting that $\mathbf{R}_i (\mathbf{\phi})$ is equal to the block associated with $\delta_{[h_i]}^i$.
+
+\vspace{5mm}
+
+\noindent
+To complete the prior specification, we assume that $\mathbf{\theta}$ is distributed as $\pi_\theta (\mathbf{\theta})$, $\lambda_1, \ldots, \lambda_M$ are independently distributed as $\pi_{\lambda_i} (\lambda_i)$ for $i =1, \ldots, M$, and $\mathbf{\phi}$ is distributed as $\pi_\phi (\mathbf{\phi})$.  Several options for specification of these distributions are available in the code.
+
+\vspace{5mm}
+
+\noindent
+In the following, we let $|[h_i]|$ denote the number of elements contained in the set $[h_i]$.  Noting that in addition to the above specification, the parameters $\mathbf{\theta}$, $\left\{ \delta_{[h_i]}^i \right\}_{i \in \mathcal{M}}$ given $\mathbf{\phi}$, $\{ \lambda_1, \ldots, \lambda_M \}$, and $\mathbf{\phi}$ are mutually independently distributed, the log-prior function is given by
+\begin{align*}
+\MoveEqLeft p \left( \, \mathbf{\theta}, \left\{ \mathbf{\delta}_{[h_i]}^i \right\}_{i \in \mathcal{M}}, \lambda_1, \ldots, \lambda_M, \mathbf{\phi} \, \right) \\
+=& -\frac{1}{2} \left( \log(2 \pi) \sum_{i \in \mathcal{M}} |[h_i]| - 2\sum_{i \in \mathcal{M}} \log \left( \left| \mathbf{R}_i (\mathbf{\phi}) \right| \right) + \sum_{i \in \mathcal{M}}  \left( \mathbf{R}_i (\mathbf{\phi}) \mathbf{\delta}_{[h_i]}^i \right)^T \left( \mathbf{R}_i (\mathbf{\phi}) \mathbf{\delta}_{[h_i]}^i \right) \right) +\\
+& \log \left( \pi_{\theta} (\mathbf{\theta}) \right) + \sum_{i=1}^M \log \left( \pi_{\lambda_i} \left( \lambda_i \right) \right) + \log \left( \pi_\phi ( \mathbf{\phi} ) \right) \,.
+\end{align*}
+Neglecting constant terms,
+\begin{align*}
+\MoveEqLeft[10] p \left( \, \mathbf{\theta}, \left\{ \mathbf{\delta}_{[h_i]}^i \right\}_{i \in \mathcal{M}}, \lambda_1, \ldots, \lambda_M, \mathbf{\phi} \, \right) \\
+=& \sum_{i \in \mathcal{M}} \log \left( \left| \mathbf{R}_i (\mathbf{\phi}) \right| \right) - \frac{1}{2} \sum_{i \in \mathcal{M}}  \left( \mathbf{R}_i (\mathbf{\phi}) \mathbf{\delta}_{[h_i]}^i \right)^T \left( \mathbf{R}_i (\mathbf{\phi}) \mathbf{\delta}_{[h_i]}^i \right) +\\
+& \log \left( \pi_{\theta} (\mathbf{\theta}) \right) + \sum_{i=1}^M \log \left( \pi_{\lambda_i} \left( \lambda_i \right) \right) + \log \left( \pi_\phi ( \mathbf{\phi} ) \right) \,.
+\end{align*}
+
+\section{Log-Posterior Function}
+
+The adaptive MCMC algorithm samples the posterior distribution of the unconstrained parameters $\left\{ \mathbf{\tau}, \left\{ \mathbf{\delta}_{[h_i]}^i \right\}_{i \in \mathcal{M}}, \omega_1, \ldots, \omega_M, \mathbf{\phi} \right\}$.  We compute the log-posterior function utilized in this algorithm as follows:
+\begin{align*}
+\MoveEqLeft \pi \left( \, \mathbf{\tau}, \left\{ \mathbf{\delta}_{[h_i]}^i \right\}_{i \in \mathcal{M}}, \omega_1, \ldots, \omega_M, \mathbf{\phi} \, | \,  \mathbf{y}_1, \ldots, \mathbf{y}_M \, \right) \\
+=&~\ell \left( \, \mathbf{\theta}, \left\{ \mathbf{\delta}_{[h_i]}^i \right\}_{i \in \mathcal{M}}, \lambda_1, \ldots, \lambda_M \, | \, \mathbf{y}_1, \ldots, \mathbf{y}_M \, \right) + p \left( \, \mathbf{\theta}, \left\{ \mathbf{\delta}_{[h_i]}^i \right\}_{i \in \mathcal{M}}, \lambda_1, \ldots, \lambda_M, \mathbf{\phi} \, \right) +\\
+& \sum_{i=1}^{n_\theta} \log \left( \mbox{abs}\left( \frac{\partial f_i^{-1} (\tau_i)}{\partial \tau_i} \right) \right) + \sum_{i=1}^M \log \left( \lambda_i \right) \,.
+\end{align*}
+The last line in this equation arises from the Jacobian of the transformation $\left( \mathbf{\theta}, \left\{\lambda_1, \ldots, \lambda_M \right\} \right) \rightarrow \left( \mathbf{\tau}, \left\{ \omega_1, \ldots, \omega_M \right\} \right)$.
+
+\end{document}  
