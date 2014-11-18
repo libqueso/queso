@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 #------------------------------------------------------------------------------
-# Simple solution comparison tool for QUESO generated output (Matlab format). 
+# Simple solution comparison tool for QUESO generated output (Matlab format).
 #------------------------------------------------------------------------------
 
 use warnings;
@@ -12,7 +12,7 @@ my $DEFAULT_TOL = 1e-8;
 if (@ARGV >= 2) {
     $file1 = shift @ARGV;
     $file2 = shift @ARGV;
-    
+
 } else {
     print "\nUsage: compare [solfile1] [solfile2]  <tolerance>\n\n";
     exit 0;
@@ -47,7 +47,7 @@ sub parse_queso_matlab_output {
 
     while ($line = <$IN1>)
     {
-    
+
 	# Terminate at the end of the array definition
 
 	if($line =~ m/\];/) {
@@ -55,29 +55,29 @@ sub parse_queso_matlab_output {
 	}
 
 	# 2nd line of output is special: defines the array and has 1st value (2 col format)
-	
+
 	if($line =~ m/\S+ = \[(\S+) (\d+)\b/) {
 	    push(@sola,$1);
 	    push(@solb,$2);
 	    $two_cols = 1;
 	}
-	
+
 	# 2nd line of output is special: defines the array and has 1st value (1 col format)
-	
+
 	elsif($line =~ m/\S+ = \[(\S+)\b/) {
 	    push(@sola,$1);
 	}
 
 	# Normal lines: two column format...
-	
+
 	elsif($line =~ m/(\S+) (\S+)\b/ ) {
 	    push(@sola,$1);
 	    push(@solb,$2);
 	    $two_cols = 1;
 	}
-	
+
 	# Normal lines: one column format...
-	
+
 	elsif($line =~ m/(\S+)\b/ ) {
 	    push(@sola,$1);
 	}
@@ -99,14 +99,14 @@ sub parse_queso_matlab_output {
 #-------------------------------------------------------------
 # Call routine to Store groovy contents of each solution file
 #
-# Note: slight bit of perl trickery here to get two array 
+# Note: slight bit of perl trickery here to get two array
 #       references back from the parsing routine
 #-------------------------------------------------------------
 
 my ($sol1a_ref,$sol1b_ref) = parse_queso_matlab_output ( $file1 );
 my ($sol2a_ref,$sol2b_ref) = parse_queso_matlab_output ( $file2 );
 
-my @sol1a = @$sol1a_ref;	 
+my @sol1a = @$sol1a_ref;
 my @sol1b = @$sol1b_ref;
 
 my @sol2a = @$sol2a_ref;
@@ -141,13 +141,13 @@ if($num_sol1 != $num_sol2) {
 for($count = 0;$count < $num_sol1; $count++) {
 
     if( $sol1a[$count] != $sol2a[$count] ) {
-	my $delta = abs($sol1a[$count] - $sol2a[$count]);
+	my $delta = abs(($sol1a[$count] - $sol2a[$count]) / $sol2a[$count]);
 	if ( $delta <= $TOL ) {
-	    print " --> Within tol. ($sol1a[$count] - $sol2a[$count]) -> [delta = $delta] -> " .
+	    print " --> Within tol. ($sol1a[$count] - $sol2a[$count]) / $sol2a[$count] -> [delta = $delta] -> " .
 		"Col 1 -> Index = $count\n";
 	} else {
-	    print " --> Different   ($sol1a[$count] - $sol2a[$count]) -> [delta = $delta] -> " .
-		"Col 1 -> Index =$count\n"; 
+	    print " --> Different   ($sol1a[$count] - $sol2a[$count]) / $sol2a[$count] -> [delta = $delta] -> " .
+		"Col 1 -> Index =$count\n";
 	    $success=0;
 	}
     }
@@ -155,12 +155,12 @@ for($count = 0;$count < $num_sol1; $count++) {
     if($two_cols == 1) {
 	if( $sol1b[$count] != $sol2b[$count] ) {
 
-	    my $delta = abs($sol1b[$count] - $sol2b[$count]);
+	    my $delta = abs(($sol1b[$count] - $sol2b[$count]) / $sol2b[$count]);
 	    if ( $delta <= $TOL ) {
-		print " --> Within tol. ($sol1b[$count] - $sol2b[$count]) -> [delta = $delta] -> " .
+		print " --> Within tol. ($sol1b[$count] - $sol2b[$count]) / $sol2b[$count] -> [delta = $delta] -> " .
 		    "Col 2 -> Index = $count\n";
 	    } else {
-		print " --> Different   ($sol1b[$count] - $sol2b[$count]) -> [delta = $delta] -> " .
+		print " --> Different   ($sol1b[$count] - $sol2b[$count]) / $sol2b[$count] -> [delta = $delta] -> " .
 		    "Col 2 -> Index = $count\n";
 		$success=0;
 	    }
@@ -176,6 +176,3 @@ if ($success == 1) {
     print " --> FAILED\n";
     exit -1;
 }
-
-
-
