@@ -1,13 +1,13 @@
 #!/bin/bash
 #----------------------------------------------------------
 # PECOS Regression tests for QUESO
-# 
+#
 # 1. Validation cycle using TGA example.
 #
 # Originally: 5-19-09
 #----------------------------------------------------------
 
-TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)
+TOLERANCE="1e-10"	                   # solution diff tolerance (relative)
 SAVELOG=1		                   # Log model output?
 COMMONDIR="$srcdir/../common"
 
@@ -22,7 +22,7 @@ RUNDIR=`pwd`
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 #
-# Regresion Test #1: Validation cycle with TGA example 
+# Regresion Test #1: Validation cycle with TGA example
 
 #VERIFY_DATE="07-12-2009"
 #VERIFY_DATE="09-06-2009"
@@ -68,14 +68,10 @@ igot=0
 # Compare outputs from 1 output file.
 
 for file in display_sub0.txt ; do
-
-#    pwd
-#    echo $SOLREFS/$file
     grep "e-[0-9]\|e+[0-9]" $SOLREFS/$file | grep -v sec | grep -v Arch > $SOLDIR/nada0
     grep "e-[0-9]\|e+[0-9]" $SOLDIR/$file | grep -v sec | grep -v Arch > $SOLDIR/nada1
     diff $SOLDIR/nada0 $SOLDIR/nada1
     let igot="$igot + $?"
-
 done
 
 cd - >& /dev/null
@@ -85,9 +81,3 @@ if [ $igot -eq 0 ];then
 else
   message_fail "$TESTNAME failed verification"
 fi
-
-#------------------------------------------------------------------------------
-#------------------------------------------------------------------------------
-
-
-
