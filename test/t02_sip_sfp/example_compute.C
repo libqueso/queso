@@ -77,7 +77,6 @@ void compute(const QUESO::FullEnvironment& env) {
   QUESO::GslMatrix proposalCovMatrix(paramSpace.zeroVector());
   proposalCovMatrix(0,0) = 8.; proposalCovMatrix(0,1) = 4.;
   proposalCovMatrix(1,0) = 4.; proposalCovMatrix(1,1) = 16.;
-  ip.doNotSeedWithMAPEstimator();
   ip.solveWithBayesMetropolisHastings(NULL,paramInitials, &proposalCovMatrix);
 
   // Step 6 of 9: Instantiate the qoi space

@@ -149,7 +149,6 @@ uqAppl(const QUESO::BaseEnvironment& env)
   }
 
   P_M* calProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(NULL,&paramInitialValues);
-  cycle.calIP().doNotSeedWithMAPEstimator();
   cycle.calIP().solveWithBayesMetropolisHastings(NULL,
                                                  paramInitialValues,
                                                  calProposalCovMatrix);
@@ -212,7 +211,6 @@ uqAppl(const QUESO::BaseEnvironment& env)
   const QUESO::SequentialVectorRealizer<P_V,P_M>* tmpRealizer = dynamic_cast< const QUESO::SequentialVectorRealizer<P_V,P_M>* >(&(cycle.calIP().postRv().realizer()));
   P_M* valProposalCovMatrix = cycle.calIP().postRv().imageSet().vectorSpace().newProposalMatrix(&tmpRealizer->unifiedSampleVarVector(),  // Use 'realizer()' because the posterior rv was computed with Markov Chain
                                                                                                 &tmpRealizer->unifiedSampleExpVector()); // Use these values as the initial values
-  cycle.valIP().doNotSeedWithMAPEstimator();
   cycle.valIP().solveWithBayesMetropolisHastings(NULL,
                                                  tmpRealizer->unifiedSampleExpVector(),
                                                  valProposalCovMatrix);
