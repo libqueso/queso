@@ -145,7 +145,7 @@ public:
 		       double                              initialLogPrior,
 		       double                              initialLogLikelihood,
 		       const P_M*                          inputProposalCovMatrix);
-  
+
   //! Constructor.
   MetropolisHastingsSG(const MLSamplingLevelOptions& mlOptions,
 		       const BaseVectorRV<P_V,P_M>&  sourceRv,
