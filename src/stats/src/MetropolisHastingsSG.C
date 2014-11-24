@@ -2524,7 +2524,6 @@ MetropolisHastingsSG<P_V, P_M>::transformInitialCovMatrixToGaussianSpace(
         std::cerr << "QUESO does not support uniform-like proposal "
                   << "distributions.  Try making the proposal variance smaller"
                   << std::endl;
-        queso_error();
       }
 
       // The mean is the midpoint
