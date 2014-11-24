@@ -93,6 +93,12 @@ public:
   void print(std::ostream & os) const;
   //@}
 
+  // Convenience method that transforms a point in physical (user) space to a
+  // space with no boundaries and where the proposal covariance matrix is
+  // Gaussian
+  void transformToGaussianSpace(const V & physicalPoint,
+      V & transformedPoint) const;
+
 private:
   //! Sets the mean of the underlying Gaussian RVs to zero.
   void setRVsWithZeroMean();
@@ -107,8 +113,6 @@ private:
   const BoxSubset<V, M> & m_boxSubset;
   M m_originalCovMatrix;
 
-  void transformToGaussianSpace(const V & physicalPoint,
-      V & transformedPoint) const;
 };
 
 }  // End namespace QUESO

@@ -2127,7 +2127,22 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         P_V transporterVec(m_vectorSpace.zeroVector());
         for (unsigned int i = 0; i < partialChain.subSequenceSize(); ++i) {
           workingChain.getPositionValues(idOfFirstPositionInSubChain+i,transporterVec);
-          partialChain.setPositionValues(i,transporterVec);
+
+          // Transform to the space without boundaries.  This is the space
+          // where the proposal distribution is Gaussian
+          if (m_optionsObj->m_ov.m_tkUseLocalHessian == false) {
+            // Only do this when we don't use the Hessian (this may change in
+            // future, but transformToGaussianSpace() is only implemented in
+            // TransformedScaledCovMatrixTKGroup
+            P_V transformedTransporterVec(m_vectorSpace.zeroVector());
+            dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V, P_M>* >(
+                m_tk)->transformToGaussianSpace(transporterVec,
+                  transformedTransporterVec);
+            partialChain.setPositionValues(i, transformedTransporterVec);
+          }
+          else {
+            partialChain.setPositionValues(i, transporterVec);
+          }
         }
         updateAdaptedCovMatrix(partialChain,
                                idOfFirstPositionInSubChain,
