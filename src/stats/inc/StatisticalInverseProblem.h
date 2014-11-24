@@ -123,20 +123,35 @@ public:
   //! Whether or not compute the solution.  
   bool                             computeSolutionFlag             () const;
    
-  //! Solves the problem through Bayes formula and a Metropolis-Hastings algorithm. 
-  /*! Requirements: 1) 'initialValues' should have the same number of components as member variable
-   * 'm_priorRv' and 2) if 'initialProposalCovMatrix' is not NULL, it should be square and its size 
-   * should be equal to the size of 'initialValues'. If the requirements are satisfied, this methods
-   * checks the member flag 'm_computeSolution' (one of the options read from the input file during 
-   * construction). If the flag is 'false', the operation returns immediately, computing nothing; 
-   * otherwise, the operation sets the member variable 'm_postRv' accordingly. The operation:
-<list type=number>
-<item> sets the pdf of 'm_postRv' equal to an instance of 'BayesianJointPdf<P_V,P_M>',
-<item> instantiates 'SequenceOfVectors<P_V,P_M>' (the chain),
-<item> instantiates 'MetropolisHastingsSG<P_V,P_M>' (the Metropolis-Hastings algorithm),
-<item> populates the chain with the Metropolis-Hastings algorithm, and
-<item> sets the realizer of 'm_postRv' with the contents of the chain.
-</list> */
+  //! Solves the problem via Bayes formula and a Metropolis-Hastings algorithm.
+  /*!
+   * Requirements:
+   * <list type=number>
+   * <item> 'initialValues' should have the same number of components as member
+   *        variable 'm_priorRv'
+   * <item> if 'initialProposalCovMatrix' is not NULL, it should be square and
+   *        its size should be equal to the size of 'initialValues'.
+   * </list>
+   *
+   * If the requirements are satisfied, this methods checks the member flag
+   * 'm_computeSolution' (one of the options read from the input file during 
+   * construction). If the flag is 'false', the operation returns immediately,
+   * computing nothing; otherwise, the operation sets the member variable
+   * 'm_postRv' accordingly. The operation:
+   * <list type=number>
+   * <item> sets the pdf of 'm_postRv' equal to an instance of
+   *        BayesianJointPdf<P_V,P_M>,
+   * <item> instantiates SequenceOfVectors<P_V,P_M> (the chain),
+   * <item> instantiates MetropolisHastingsSG<P_V,P_M> (the Metropolis-Hastings
+   *        algorithm),
+   * <item> populates the chain with the Metropolis-Hastings algorithm, and
+   * <item> sets the realizer of 'm_postRv' with the contents of the chain.
+   * </list>
+   *
+   * If \c seedWithMapEstimator() is called before this method, then
+   * \c initialValues is used as the initial condition for an optimization
+   * procedure, the result of which will be used as the seed for the chain.
+   */
   void solveWithBayesMetropolisHastings(const MhOptionsValues* alternativeOptionsValues, // dakota
 					const P_V&                    initialValues,
 					const P_M*                    initialProposalCovMatrix);
@@ -146,7 +161,7 @@ public:
    * This only works for Metropolis-Hastings right now.  Multi-level is not
    * currently supported.
    */
-  void doNotSeedWithMAPEstimator();
+  void seedWithMAPEstimator();
   
   //! Solves with Bayes Multi-Level (ML) sampling.
   void                             solveWithBayesMLSampling        ();

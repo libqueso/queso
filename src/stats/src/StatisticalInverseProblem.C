@@ -55,7 +55,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_logTargetValues         (NULL),
   m_alternativeOptionsValues(),
   m_optionsObj              (NULL),
-  m_seedWithMAPEstimator    (true)
+  m_seedWithMAPEstimator    (false)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering Sip" << std::endl;
@@ -122,7 +122,7 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_logTargetValues         (NULL),
   m_alternativeOptionsValues(),
   m_optionsObj              (NULL),
-  m_seedWithMAPEstimator    (true)
+  m_seedWithMAPEstimator    (false)
 {
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Entering StatisticalInverseProblem<P_V,P_M>::constructor()"
@@ -355,9 +355,9 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
 
 template <class P_V, class P_M>
 void
-StatisticalInverseProblem<P_V, P_M>::doNotSeedWithMAPEstimator()
+StatisticalInverseProblem<P_V, P_M>::seedWithMAPEstimator()
 {
-  this->m_seedWithMAPEstimator = false;
+  this->m_seedWithMAPEstimator = true;
 }
 
 template <class P_V,class P_M>
