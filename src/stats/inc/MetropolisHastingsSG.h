@@ -296,6 +296,9 @@ private:
 	bool m_computeInitialPriorAndLikelihoodValues;
 	double m_initialLogPriorValue;
 	double m_initialLogLikelihoodValue;
+
+  void transformInitialCovMatrixToGaussianSpace(const BoxSubset<P_V, P_M> &
+      boxSubset);
 };
 
 }  // End namespace QUESO

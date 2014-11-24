@@ -526,6 +526,10 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
                           "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
     }
 
+    // Variable transform initial proposal cov matrix
+    transformInitialCovMatrixToGaussianSpace(
+        dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
+
     // We need this dynamic_cast to BoxSubset so that m_tk can inspect the
     // domain bounds and do the necessary transform
     m_tk = new TransformedScaledCovMatrixTKGroup<P_V, P_M>(
@@ -2477,6 +2481,58 @@ MetropolisHastingsSG<P_V,P_M>::updateAdaptedCovMatrix(
   }
 
   return;
+}
+
+template <class P_V, class P_M>
+void
+MetropolisHastingsSG<P_V, P_M>::transformInitialCovMatrixToGaussianSpace(
+    const BoxSubset<P_V, P_M> & boxSubset)
+{
+  P_V min_domain_bounds(boxSubset.minValues());
+  P_V max_domain_bounds(boxSubset.maxValues());
+
+  for (unsigned int i = 0; i < min_domain_bounds.sizeLocal(); i++) {
+    double min_val = min_domain_bounds[i];
+    double max_val = max_domain_bounds[i];
+
+    if (boost::math::isfinite(min_val) && boost::math::isfinite(max_val)) {
+      if (m_initialProposalCovMatrix(i, i) >= max_val - min_val) {
+        // User is trying to specify a uniform proposal distribution, which
+        // is unsupported.  Throw an error for now.
+        std::cerr << "Proposal variance element "
+                  << i
+                  << " is "
+                  << m_initialProposalCovMatrix(i, i)
+                  << " but domain is of size "
+                  << max_val - min_val
+                  << std::endl;
+        std::cerr << "QUESO does not support uniform-like proposal "
+                  << "distributions.  Try making the proposal variance smaller"
+                  << std::endl;
+        queso_error();
+      }
+
+      // The mean is the midpoint
+      double midpoint = (max_val + min_val) / 2.0;
+      double derivative = (1.0 / (midpoint - min_val)) +
+                          (1.0 / (max_val - midpoint));
+
+      // User specified the covariance matrix on a bounded domain, so we
+      // need to *divide* by the derivative of the transform
+      double transformJacobian = 1.0 / derivative;
+
+      // Just do the multiplication by hand for now.  There's no method in
+      // Gsl(Vector|Matrix) to do this for me.
+      for (unsigned int j = 0; j < min_domain_bounds.sizeLocal(); j++) {
+        // Multiply column j by element j
+        m_initialProposalCovMatrix(j, i) *= transformJacobian;
+      }
+      for (unsigned int j = 0; j < min_domain_bounds.sizeLocal(); j++) {
+        // Multiply row j by element j
+        m_initialProposalCovMatrix(i, j) *= transformJacobian;
+      }
+    }
+  }
 }
 
 }  // End namespace QUESO

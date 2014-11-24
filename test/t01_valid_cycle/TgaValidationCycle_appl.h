@@ -39,11 +39,11 @@
 
 //Just declaration: actual code is below
 template<class P_V,class P_M,class Q_V,class Q_M>
-void 
+void
 uqAppl_LocalComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle);
 
 template<class P_V,class P_M,class Q_V,class Q_M>
-void 
+void
 uqAppl_UnifiedComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle);
 
 //********************************************************
@@ -57,7 +57,7 @@ uqAppl_UnifiedComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle);
 // Stages 2, 3 and 4 constitute the actual validation cycle.
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
-void 
+void
 uqAppl(const QUESO::BaseEnvironment& env)
 {
   if (env.fullRank() == 0) {
@@ -276,7 +276,7 @@ uqAppl(const QUESO::BaseEnvironment& env)
 // The 'local comparison stage' of the driving routine "uqAppl()"
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
-void 
+void
 uqAppl_LocalComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
@@ -366,7 +366,7 @@ uqAppl_LocalComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle)
 // The 'unified comparison stage' of the driving routine "uqAppl()"
 //********************************************************
 template<class P_V,class P_M,class Q_V,class Q_M>
-void 
+void
 uqAppl_UnifiedComparisonStage(QUESO::ValidationCycle<P_V,P_M,Q_V,Q_M>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
