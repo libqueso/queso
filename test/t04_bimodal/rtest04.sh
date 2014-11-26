@@ -8,7 +8,7 @@
 #----------------------------------------------------------
 
 TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)
-SAVELOG=0		                   # Log model output?
+SAVELOG=1		                   # Log model output?
 COMMONDIR="$srcdir/../common"
 
 #----------------
