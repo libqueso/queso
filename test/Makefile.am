@@ -34,7 +34,7 @@ check_PROGRAMS += test_jeffreys
 check_PROGRAMS += test_gsloptimizer
 check_PROGRAMS += test_seedwithmap
 check_PROGRAMS += test_seedwithmap_fd
-check_PROGRAMS += test_adaptedcov
+check_PROGRAMS += test_logitadaptedcov
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -94,7 +94,7 @@ test_jeffreys_SOURCES = test_Regression/test_jeffreys.C
 test_gsloptimizer_SOURCES = test_optimizer/test_gsloptimizer.C
 test_seedwithmap_SOURCES = test_optimizer/test_seedwithmap.C
 test_seedwithmap_fd_SOURCES = test_optimizer/test_seedwithmap_fd.C
-test_adaptedcov_SOURCES = test_Regression/test_adaptedcov.C
+test_logitadaptedcov_SOURCES = test_Regression/test_logitadaptedcov.C
 
 # Files to freedom stamp
 srcstamp =
@@ -126,7 +126,7 @@ srcstamp += $(test_jeffreys_SOURCES)
 srcstamp += $(test_gsloptimizer_SOURCES)
 srcstamp += $(test_seedwithmap_SOURCES)
 srcstamp += $(test_seedwithmap_fd_SOURCES)
-srcstamp += $(test_adaptedcov_SOURCES)
+srcstamp += $(test_logitadaptedcov_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
@@ -158,7 +158,7 @@ TESTS += $(top_builddir)/test/test_Regression/test_jeffreys_samples_diff.sh
 TESTS += $(top_builddir)/test/test_gsloptimizer
 TESTS += $(top_builddir)/test/test_seedwithmap
 TESTS += $(top_builddir)/test/test_seedwithmap_fd
-TESTS += $(top_builddir)/test/test_adaptedcov
+TESTS += $(top_builddir)/test/test_logitadaptedcov
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
