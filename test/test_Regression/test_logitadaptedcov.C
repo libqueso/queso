@@ -5,7 +5,41 @@
 #include <queso/BoxSubset.h>
 #include <queso/UniformVectorRV.h>
 #include <queso/GaussianVectorRV.h>
+#include <queso/GaussianJointPdf.h>
+#include <queso/InvLogitGaussianJointPdf.h>
 #include <queso/StatisticalInverseProblem.h>
+
+template<class V, class M>
+class Likelihood : public QUESO::BaseScalarFunction<V, M>
+{
+public:
+
+  Likelihood(const char * prefix, const QUESO::VectorSet<V, M> & domain,
+      const QUESO::GaussianJointPdf<V, M> & pdf)
+  : QUESO::BaseScalarFunction<V, M>(prefix, domain),
+    m_pdf(pdf)
+  {
+  }
+
+  virtual ~Likelihood()
+  {
+  }
+
+  virtual double lnValue(const V & domainVector, const V * domainDirection,
+      V * gradVector, M * hessianMatrix, V * hessianEffect) const
+  {
+    return this->m_pdf.lnValue(domainVector, NULL, NULL, NULL, NULL);
+  }
+
+  virtual double actualValue(const V & domainVector, const V * domainDirection,
+      V * gradVector, M * hessianMatrix, V * hessianEffect) const
+  {
+    return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
+          hessianMatrix, hessianEffect));
+  }
+
+  const QUESO::GaussianJointPdf<V, M> & m_pdf;
+};
 
 int main(int argc, char ** argv) {
   MPI_Init(&argc, &argv);
@@ -37,14 +71,17 @@ int main(int argc, char ** argv) {
   cov(1, 0) = 0.001;
   cov(1, 1) = 0.05 * 0.05;
 
-  QUESO::GaussianVectorRV<QUESO::GslVector, QUESO::GslMatrix> likelihood(
-      "likelihood_", paramDomain, mean, cov);
+  QUESO::GaussianJointPdf<QUESO::GslVector, QUESO::GslMatrix> pdf("pdf_",
+      paramDomain, mean, cov);
+
+  Likelihood<QUESO::GslVector, QUESO::GslMatrix> likelihood("likelihood_",
+      paramDomain, pdf);
 
   QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix> posterior(
       "posterior_", paramDomain);
 
   QUESO::StatisticalInverseProblem<QUESO::GslVector, QUESO::GslMatrix> ip("",
-      NULL, prior, likelihood.pdf(), posterior);
+      NULL, prior, likelihood, posterior);
 
   QUESO::GslVector paramInitials(paramSpace.zeroVector());
   paramInitials.cwSet(0.5);
@@ -57,7 +94,15 @@ int main(int argc, char ** argv) {
 
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
 
-  // ip.sequenceGenerator().transitionKernel().rv(0);
+  QUESO::GslMatrix adaptedCovMatrix(
+      dynamic_cast<const QUESO::InvLogitGaussianJointPdf<QUESO::GslVector,
+          QUESO::GslMatrix> &>(
+            ip.sequenceGenerator().transitionKernel().rv(0).pdf()).lawCovMatrix());
+
+  std::cout << "Adapted covariance matrix is: "
+            << adaptedCovMatrix(0, 0) << " " << adaptedCovMatrix(0, 1)
+            << adaptedCovMatrix(1, 0) << " " << adaptedCovMatrix(1, 1)
+            << std::endl;
 
   MPI_Finalize();
 
