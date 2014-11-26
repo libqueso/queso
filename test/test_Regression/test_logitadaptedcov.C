@@ -99,10 +99,9 @@ int main(int argc, char ** argv) {
           QUESO::GslMatrix> &>(
             ip.sequenceGenerator().transitionKernel().rv(0).pdf()).lawCovMatrix());
 
-  std::cout << "Adapted covariance matrix is: "
-            << adaptedCovMatrix(0, 0) << " " << adaptedCovMatrix(0, 1)
-            << adaptedCovMatrix(1, 0) << " " << adaptedCovMatrix(1, 1)
-            << std::endl;
+  std::cout << "Adapted covariance matrix is:" << std::endl;
+            << adaptedCovMatrix(0, 0) << " " << adaptedCovMatrix(0, 1) << std::endl;
+            << adaptedCovMatrix(1, 0) << " " << adaptedCovMatrix(1, 1) << std::endl;
 
   MPI_Finalize();
 
