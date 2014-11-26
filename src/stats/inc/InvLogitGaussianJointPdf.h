@@ -41,13 +41,13 @@ namespace QUESO {
  * the bounded directions, the PDF is
  *
  * \f[
- *   p(x) = \frac{1}{2 \sigma^2 \pi} \exp \left( - \frac12 (\text{logit} x - \mu)^2 \right) \text{logit}'(x), \quad x \in [a, b],
+ *   p(x) = \frac{1}{2 \sigma^2 \pi} \exp \left( - \frac12 (\mbox{logit} x - \mu)^2 \right) \mbox{logit}'(x), \quad x \in [a, b],
  * \f]
  *
  * where \c logit is defined as
  *
  * \f[
- *   \text{logit}(x) = \log \left( \frac{x - a}{b - x} \right), \quad x \in [a, b].
+ *   \mbox{logit}(x) = \log \left( \frac{x - a}{b - x} \right), \quad x \in [a, b].
  * \f]
  */
 
@@ -97,7 +97,7 @@ public:
    * \f[
    *   lnValue =- \sum_i \frac{1}{\sqrt{|covMatrix|} \sqrt{2 \pi}} exp(-\frac{(domainVector_i - lawExpVector_i) * covMatrix^{-1} *
    *   (domainVector_i - lawExpVector_i) }{2} +
-   *   \log \text{logit}'(domainVector_i),
+   *   \log \mbox{logit}'(domainVector_i),
    * \f]
    *
    * where the \f$ covMatrix \f$ may recovered via \c this->lawVarVector(), in
