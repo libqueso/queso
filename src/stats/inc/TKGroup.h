@@ -67,7 +67,7 @@ public:
   virtual       bool                          symmetric                 () const = 0;
   
   //! Gaussian increment property to construct a transition kernel. See template specialization.
-  virtual const BaseVectorRV<V,M>& rv                        (unsigned int                     stageId ) = 0;
+  virtual const BaseVectorRV<V,M>& rv                        (unsigned int                     stageId ) const = 0;
   
   //! Gaussian increment property to construct a transition kernel. See template specialization.
   virtual const BaseVectorRV<V,M>& rv                        (const std::vector<unsigned int>& stageIds) = 0;

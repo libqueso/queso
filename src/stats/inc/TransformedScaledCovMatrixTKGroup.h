@@ -61,7 +61,7 @@ public:
   bool symmetric() const;
 
   //! InvLogitGaussian increment property to construct a transition kernel.
-  const InvLogitGaussianVectorRV<V, M> & rv(unsigned int stageId);
+  const InvLogitGaussianVectorRV<V, M> & rv(unsigned int stageId) const;
 
   //! InvLogitGaussian increment property to construct a transition kernel.
   const InvLogitGaussianVectorRV<V, M> & rv(

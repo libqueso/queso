@@ -78,7 +78,7 @@ HessianCovMatricesTKGroup<V,M>::symmetric() const
 //---------------------------------------------------
 template<class V, class M>
 const GaussianVectorRV<V,M>&
-HessianCovMatricesTKGroup<V,M>::rv(unsigned int stageId)
+HessianCovMatricesTKGroup<V,M>::rv(unsigned int stageId) const
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() <= stageId,
                       m_env.worldRank(),
