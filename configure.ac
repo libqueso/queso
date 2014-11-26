@@ -210,6 +210,7 @@ AC_CONFIG_FILES([
   test/test_Regression/jeffreys_input.txt
   test/test_Regression/test_jeffreys_samples_diff.sh
   test/test_Regression/test_jeffreys_samples.m
+  test/test_Regression/adaptedcov_input.txt
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page

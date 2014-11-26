@@ -34,6 +34,7 @@ check_PROGRAMS += test_jeffreys
 check_PROGRAMS += test_gsloptimizer
 check_PROGRAMS += test_seedwithmap
 check_PROGRAMS += test_seedwithmap_fd
+check_PROGRAMS += test_adaptedcov
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -42,21 +43,21 @@ AM_CPPFLAGS += -I.
 AM_CPPFLAGS += -I$(top_builddir)/inc
 AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 
-if GRVY_ENABLED	
+if GRVY_ENABLED
   AM_CPPFLAGS += $(GRVY_CFLAGS)
 endif
 
 if TRILINOS_ENABLED
-  AM_CPPFLAGS += -I$(TRILINOS_INCLUDE) 
+  AM_CPPFLAGS += -I$(TRILINOS_INCLUDE)
   LIBS += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
 endif
 
-if GLPK_ENABLED	
+if GLPK_ENABLED
   AM_CPPFLAGS += $(GLPK_CFLAGS)
 endif
 
-if HDF5_ENABLED	
-  AM_CPPFLAGS += $(HDF5_CFLAGS) 
+if HDF5_ENABLED
+  AM_CPPFLAGS += $(HDF5_CFLAGS)
 endif
 
 if LIBMESH_ENABLED
@@ -93,6 +94,7 @@ test_jeffreys_SOURCES = test_Regression/test_jeffreys.C
 test_gsloptimizer_SOURCES = test_optimizer/test_gsloptimizer.C
 test_seedwithmap_SOURCES = test_optimizer/test_seedwithmap.C
 test_seedwithmap_fd_SOURCES = test_optimizer/test_seedwithmap_fd.C
+test_adaptedcov_SOURCES = test_Regression/test_adaptedcov.C
 
 # Files to freedom stamp
 srcstamp =
@@ -124,6 +126,7 @@ srcstamp += $(test_jeffreys_SOURCES)
 srcstamp += $(test_gsloptimizer_SOURCES)
 srcstamp += $(test_seedwithmap_SOURCES)
 srcstamp += $(test_seedwithmap_fd_SOURCES)
+srcstamp += $(test_adaptedcov_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
@@ -155,6 +158,7 @@ TESTS += $(top_builddir)/test/test_Regression/test_jeffreys_samples_diff.sh
 TESTS += $(top_builddir)/test/test_gsloptimizer
 TESTS += $(top_builddir)/test/test_seedwithmap
 TESTS += $(top_builddir)/test/test_seedwithmap_fd
+TESTS += $(top_builddir)/test/test_adaptedcov
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
@@ -178,6 +182,7 @@ EXTRA_DIST += test_StatisticalInverseProblem/test_LlhdTargetOutput.sh.in
 EXTRA_DIST += test_Regression/jeffreys_input.txt.in
 EXTRA_DIST += test_Regression/test_jeffreys_samples_diff.sh.in
 EXTRA_DIST += test_Regression/test_jeffreys_samples.m.in
+EXTRA_DIST += test_Regression/adaptedcov_input.txt.in
 
 DISTCLEANFILES =
 DISTCLEANFILES += test_gpmsa_cobra_output/display_sub0.txt
