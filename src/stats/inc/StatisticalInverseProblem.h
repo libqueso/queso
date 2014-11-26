@@ -43,11 +43,11 @@ namespace QUESO {
 
 /*! \class StatisticalInverseProblem
  *  \brief This templated class represents a Statistical Inverse Problem.
- * 
- * This class is templated on the type 'P_V' of vector and type 'P_M' of matrix, where 
- * 'P_' stands for 'parameter'. Some templated classes might also use 'Q_V' and 'Q_M' 
- * when referring to a vector type and a matrix type, where 'Q_' stands for 'quantities 
- * of interest'. Conceptually, a statistical inverse problem has two input entities and 
+ *
+ * This class is templated on the type 'P_V' of vector and type 'P_M' of matrix, where
+ * 'P_' stands for 'parameter'. Some templated classes might also use 'Q_V' and 'Q_M'
+ * when referring to a vector type and a matrix type, where 'Q_' stands for 'quantities
+ * of interest'. Conceptually, a statistical inverse problem has two input entities and
  * one output entity.\n
  *
  * The input entities of a statistical inverse problem are:
@@ -55,16 +55,16 @@ namespace QUESO {
 <item> the prior RV, an instance of class 'BaseVectorRV<P_V,P_M>', and
 <item> the likelihood function, an instance of class 'BaseScalarFunction<P_V,P_M>'.
 </list>
- * Let \f$ \pi()\f$ denote the mathematical likelihood function and \f$ x \f$ denote a 
- * vector of parameters. The likelihood function object stores the routine that computes 
- * \f$ \pi(x) \f$ and whatever data necessary by such routine. The routine in the 
+ * Let \f$ \pi()\f$ denote the mathematical likelihood function and \f$ x \f$ denote a
+ * vector of parameters. The likelihood function object stores the routine that computes
+ * \f$ \pi(x) \f$ and whatever data necessary by such routine. The routine in the
  * likelihood function object can compute either the actual value \f$ \pi(x) \f$ or the
- * value \f$ \ln[\pi(x)] \f$. See files 
+ * value \f$ \ln[\pi(x)] \f$. See files
  * 'basic/inc/ScalarFunction.h' and 'stats/inc/JointPdf.h' for more details.\n
  *
- * The output entity of a statistical inverse problem is the posterior RV, another instance 
- * of class 'BaseVectorRV<P_V,P_M>', which stores the solution according to the Bayesian 
- * approach. Upon return from a solution operation, the posterior RV is available through the 
+ * The output entity of a statistical inverse problem is the posterior RV, another instance
+ * of class 'BaseVectorRV<P_V,P_M>', which stores the solution according to the Bayesian
+ * approach. Upon return from a solution operation, the posterior RV is available through the
  * operation 'postRv()'. Such posterior RV is able to provide:
 <list type=number>
 <item> a joint pdf (up to a multiplicative constant) through the operation 'postRv().pdf()',
@@ -73,8 +73,8 @@ namespace QUESO {
        instance of the class 'BaseVectorRealizer<P_V,P_M>'.
 </list>*/
 
-/* OLD STUFF: The constructor of the 'scalar function' asks for the user to specify which 
- * value the routine is actually computing, so that the 'scalar function' class can properly 
+/* OLD STUFF: The constructor of the 'scalar function' asks for the user to specify which
+ * value the routine is actually computing, so that the 'scalar function' class can properly
  * implements both class operations 'actualValue()' and 'minus2LnValue()'*/
 
 template <class P_V,class P_M>
@@ -83,19 +83,19 @@ class StatisticalInverseProblem
 public:
  //! @name Constructor/Destructor methods
  //@{
- //! Constructor. 
- /*! Requirements: 1) the image set of the vector random variable 'priorRv', 2) the domain set of 
- * the likelihood function 'likelihoodFunction' and 3) the image set of the vector random variable 
- * 'postRv' should belong to vector spaces of equal dimensions. If the requirements are satisfied, 
- * the constructor then reads input options that begin with the string '\<prefix\>ip_'. If no 
- * options input file is provided, the construction assigns \c alternativeOptionsValues to the 
+ //! Constructor.
+ /*! Requirements: 1) the image set of the vector random variable 'priorRv', 2) the domain set of
+ * the likelihood function 'likelihoodFunction' and 3) the image set of the vector random variable
+ * 'postRv' should belong to vector spaces of equal dimensions. If the requirements are satisfied,
+ * the constructor then reads input options that begin with the string '\<prefix\>ip_'. If no
+ * options input file is provided, the construction assigns \c alternativeOptionsValues to the
  * options of the SIP.*/
   StatisticalInverseProblem(const char*                               prefix,
                                    const SipOptionsValues*            alternativeOptionsValues, // dakota
-                                   const BaseVectorRV      <P_V,P_M>& priorRv,            
-                                   const BaseScalarFunction<P_V,P_M>& likelihoodFunction, 
+                                   const BaseVectorRV      <P_V,P_M>& priorRv,
+                                   const BaseScalarFunction<P_V,P_M>& likelihoodFunction,
                                          GenericVectorRV   <P_V,P_M>& postRv);
-  
+
   //! Constructor for statistical inverse problems to be sovled using GPMSA
   /*!
    * Requirements:
@@ -120,9 +120,9 @@ public:
 
   //! @name Statistical methods
   //@{
-  //! Whether or not compute the solution.  
+  //! Whether or not compute the solution.
   bool                             computeSolutionFlag             () const;
-   
+
   //! Solves the problem via Bayes formula and a Metropolis-Hastings algorithm.
   /*!
    * Requirements:
@@ -162,7 +162,7 @@ public:
    * currently supported.
    */
   void seedWithMAPEstimator();
-  
+
   //! Solves with Bayes Multi-Level (ML) sampling.
   void                             solveWithBayesMLSampling        ();
 
@@ -171,21 +171,21 @@ public:
 
   //! Returns the Prior RV; access to private attribute m_priorRv.
   const BaseVectorRV   <P_V,P_M>& priorRv                   () const;
-  
+
   //! Returns the Posterior RV; access to private attribute m_postrRv.
   /*! The Posterior RV contains the solution of the Bayes problem.*/
   const GenericVectorRV<P_V,P_M>& postRv                    () const;
-  
+
   //! Returns the logarithm value of the evidence. Related to ML.
   double                           logEvidence                     () const;
 
    //! Returns the mean of the logarithm value of the likelihood. Related to ML.
   double                           meanLogLikelihood               () const;
-  
+
   //\TODO Related to ML.
   double                           eig                             () const;
-  //@}   
-	
+  //@}
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the sequence.
@@ -215,7 +215,7 @@ private:
         BaseVectorSequence  <P_V,P_M>*   m_chain;
         ScalarSequence      <double>*    m_logLikelihoodValues;
         ScalarSequence      <double>*    m_logTargetValues;
-        
+
         SipOptionsValues                  m_alternativeOptionsValues;
         StatisticalInverseProblemOptions* m_optionsObj;
 

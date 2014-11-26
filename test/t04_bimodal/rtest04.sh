@@ -1,7 +1,7 @@
 #!/bin/bash
 #----------------------------------------------------------
 # PECOS Regression tests for QUESO
-# 
+#
 # 1. Validation cycle using TGA example.
 #
 # Originally: 5-19-09
@@ -22,7 +22,7 @@ RUNDIR=`pwd`
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 #
-# Regresion Test #1: Validation cycle with TGA example 
+# Regresion Test #1: Validation cycle with TGA example
 
 #VERIFY_DATE="07-12-2009"
 #VERIFY_DATE="09-22-2010"
@@ -95,9 +95,3 @@ if [ $igot -eq 0 ];then
 else
   message_fail "$TESTNAME failed verification"
 fi
-
-#------------------------------------------------------------------------------
-#------------------------------------------------------------------------------
-
-
-
