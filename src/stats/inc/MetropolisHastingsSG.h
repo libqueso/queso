@@ -195,6 +195,9 @@ public:
 
    //@}
 
+  //! Returns the underlying transition kernel for this sequence generator
+  const BaseTKGroup<P_V, P_M> & transitionKernel() const;
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the sequence.

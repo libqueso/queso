@@ -948,6 +948,13 @@ MetropolisHastingsSG<P_V,P_M>::writeInfo(
   return iRC;
 }
 
+template <class P_V, class P_M>
+const BaseTKGroup<P_V, P_M> &
+MetropolisHastingsSG<P_V, P_M>::transitionKernel() const
+{
+  return *m_tk;
+}
+
 // Statistical methods -----------------------------
 /* This operation currently implements the DRAM algorithm (Heikki Haario, Marko
  * Laine, Antonietta Mira and Eero Saksman, "DRAM: Efficient Adaptive MCMC",

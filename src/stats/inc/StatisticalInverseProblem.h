@@ -165,7 +165,10 @@ public:
   
   //! Solves with Bayes Multi-Level (ML) sampling.
   void                             solveWithBayesMLSampling        ();
-  
+
+  //! Return the underlying MetropolisHastingSG object
+  const MetropolisHastingsSG<P_V, P_M> & sequenceGenerator() const;
+
   //! Returns the Prior RV; access to private attribute m_priorRv.
   const BaseVectorRV   <P_V,P_M>& priorRv                   () const;
   
