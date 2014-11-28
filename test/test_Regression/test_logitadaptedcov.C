@@ -1,3 +1,4 @@
+#include <iomanip>
 #include <queso/Environment.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
@@ -8,6 +9,8 @@
 #include <queso/GaussianJointPdf.h>
 #include <queso/InvLogitGaussianJointPdf.h>
 #include <queso/StatisticalInverseProblem.h>
+
+#define TOL 1e-14
 
 template<class V, class M>
 class Likelihood : public QUESO::BaseScalarFunction<V, M>
@@ -99,11 +102,32 @@ int main(int argc, char ** argv) {
           QUESO::GslMatrix> &>(
             ip.sequenceGenerator().transitionKernel().rv(0).pdf()).lawCovMatrix());
 
-  std::cout << "Adapted covariance matrix is:" << std::endl;
-            << adaptedCovMatrix(0, 0) << " " << adaptedCovMatrix(0, 1) << std::endl;
+  std::cout << std::setprecision(15)
+            << "Adapted covariance matrix is:" << std::endl
+            << adaptedCovMatrix(0, 0) << " " << adaptedCovMatrix(0, 1) << std::endl
             << adaptedCovMatrix(1, 0) << " " << adaptedCovMatrix(1, 1) << std::endl;
+
+
+  QUESO::GslMatrix regressionTestMatrix(proposalCovMatrix);
+  regressionTestMatrix(0, 0) = 0.0155346059919622;
+  regressionTestMatrix(0, 1) = 0.00611251379952771;
+  regressionTestMatrix(1, 0) = 0.00611251379952771;
+  regressionTestMatrix(1, 1) = 0.0155897610147395;
+
+  QUESO::GslMatrix diff(regressionTestMatrix - adaptedCovMatrix);
+
+
+  std::cout << "norm is " << diff.normFrob() / regressionTestMatrix.normFrob() << std::endl;
+
+  unsigned int result;
+  if (diff.normFrob() / regressionTestMatrix.normFrob() > TOL) {
+    result = 1;
+  }
+  else {
+    result = 0;
+  }
 
   MPI_Finalize();
 
-  return 0;
+  return result;
 }
