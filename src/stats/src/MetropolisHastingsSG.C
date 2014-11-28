@@ -1531,7 +1531,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
                       m_env.worldRank(),
                       "MetropolisHastingsSG<P_V,P_M>::generateFullChain()",
                       "initial position should not be out of target pdf support");
-  
+
   double logPrior      = 0.;
   double logLikelihood = 0.;
   double logTarget     = 0.;
