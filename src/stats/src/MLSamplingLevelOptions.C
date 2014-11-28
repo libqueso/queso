@@ -177,7 +177,8 @@ MLSamplingLevelOptions::MLSamplingLevelOptions(
   m_option_am_adaptedMatrices_dataOutputAllowAll     (m_prefix + "amAdaptedMatrices_dataOutputAllowAll"      ),
   m_option_am_adaptedMatrices_dataOutputAllowedSet   (m_prefix + "amAdaptedMatrices_dataOutputAllowedSet"    ),
   m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
-  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                )
+  m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
 }
 
@@ -262,6 +263,7 @@ MLSamplingLevelOptions::copyOptionsValues(const MLSamplingLevelOptions& srcOptio
   m_str7                                      = srcOptions.m_str7;
   m_amEta                                     = srcOptions.m_amEta;
   m_amEpsilon                                 = srcOptions.m_amEpsilon;
+  m_doLogitTransform                          = srcOptions.m_doLogitTransform;
 
   return;
 }
@@ -383,6 +385,7 @@ MLSamplingLevelOptions::defineMyOptions(po::options_description& optionsDesc) co
     (m_option_am_adaptedMatrices_dataOutputAllowedSet.c_str(),    po::value<std::string >()->default_value(m_str7                                     ), "type of output file for 'am' adapted matrices"                   )
     (m_option_am_eta.c_str(),                                     po::value<double      >()->default_value(m_amEta                                    ), "'am' eta"                                                        )
     (m_option_am_epsilon.c_str(),                                 po::value<double      >()->default_value(m_amEpsilon                                ), "'am' epsilon"                                                    )
+    (m_option_doLogitTransform.c_str(),                           po::value<bool        >()->default_value(UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM        ), "flag for doing logit transform for bounded domains"              )
   ;
 
   return;
@@ -855,7 +858,9 @@ MLSamplingLevelOptions::getMyOptionValues(po::options_description& optionsDesc)
     m_amEpsilon = ((const po::variable_value&) m_env.allOptionsMap()[m_option_am_epsilon.c_str()]).as<double>();
   }
 
-  return;
+  if (m_env.allOptionsMap().count(m_option_doLogitTransform.c_str())) {
+    m_doLogitTransform = ((const po::variable_value&) m_env.allOptionsMap()[m_option_doLogitTransform.c_str()]).as<bool>();
+  }
 }
 
 void
@@ -951,6 +956,7 @@ MLSamplingLevelOptions::print(std::ostream& os) const
   }
   os << "\n" << m_option_am_eta                                     << " = " << m_amEta
      << "\n" << m_option_am_epsilon                                 << " = " << m_amEpsilon
+     << "\n" << m_option_doLogitTransform                           << " = " << m_doLogitTransform
      << std::endl;
 
   return;

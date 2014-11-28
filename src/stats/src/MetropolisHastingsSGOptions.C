@@ -92,7 +92,8 @@ MhOptionsValues::MhOptionsValues(
   m_enableBrooksGelmanConvMonitor            (UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR),
   m_BrooksGelmanLag                          (UQ_MH_SG_BROOKS_GELMAN_LAG),
   m_outputLogLikelihood                      (UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD),
-  m_outputLogTarget                          (UQ_MH_SG_OUTPUT_LOG_TARGET)
+  m_outputLogTarget                          (UQ_MH_SG_OUTPUT_LOG_TARGET),
+  m_doLogitTransform                         (UQ_MH_SG_DO_LOGIT_TRANSFORM)
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   ,
   m_alternativeRawSsOptionsValues            (),
@@ -182,6 +183,7 @@ MhOptionsValues::copy(const MhOptionsValues& src)
   m_BrooksGelmanLag                           = src.m_BrooksGelmanLag;
   m_outputLogLikelihood                       = src.m_outputLogLikelihood;
   m_outputLogTarget                           = src.m_outputLogTarget;
+  m_doLogitTransform                          = src.m_doLogitTransform;
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_alternativeRawSsOptionsValues             = src.m_alternativeRawSsOptionsValues;
@@ -265,7 +267,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"             ),
   m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
   m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
-  m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           )
+  m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
@@ -342,7 +345,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"             ),
   m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
   m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
-  m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           )
+  m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
@@ -439,7 +443,8 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"             ),
   m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
   m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
-  m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           )
+  m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
   m_ov.m_dataOutputFileName                        = mlOptions.m_dataOutputFileName;
   m_ov.m_dataOutputAllowAll                        = mlOptions.m_dataOutputAllowAll;
@@ -495,6 +500,7 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_ov.m_BrooksGelmanLag                           = UQ_MH_SG_BROOKS_GELMAN_LAG;
   m_ov.m_outputLogLikelihood                       = UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD;
   m_ov.m_outputLogTarget                           = UQ_MH_SG_OUTPUT_LOG_TARGET;
+  m_ov.m_doLogitTransform                          = mlOptions.m_doLogitTransform;
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 //m_ov.m_alternativeRawSsOptionsValues             = mlOptions.; // dakota
@@ -639,6 +645,7 @@ MetropolisHastingsSGOptions::print(std::ostream& os) const
      << "\n" << m_option_BrooksGelmanLag                            << " = " << m_ov.m_BrooksGelmanLag
      << "\n" << m_option_outputLogLikelihood                        << " = " << m_ov.m_outputLogLikelihood
      << "\n" << m_option_outputLogTarget                            << " = " << m_ov.m_outputLogTarget
+     << "\n" << m_option_doLogitTransform                           << " = " << m_ov.m_doLogitTransform
      << std::endl;
 
   return;
@@ -704,6 +711,7 @@ MetropolisHastingsSGOptions::defineMyOptions(po::options_description& optionsDes
     (m_option_BrooksGelmanLag.c_str(),                            po::value<unsigned int>()->default_value(UQ_MH_SG_BROOKS_GELMAN_LAG                                   ), "number of chain positions before starting to compute metric")
     (m_option_outputLogLikelihood.c_str(),                        po::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                               ), "flag to toggle output of log likelihood values"             )
     (m_option_outputLogTarget.c_str(),                            po::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_TARGET                                   ), "flag to toggle output of log target values"                 )
+    (m_option_doLogitTransform.c_str(),                           po::value<bool        >()->default_value(UQ_MH_SG_DO_LOGIT_TRANSFORM                                  ), "flag to toggle logit transform for bounded domains"         )
   ;
 
   return;
@@ -1014,7 +1022,9 @@ MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsD
     m_ov.m_outputLogTarget = ((const po::variable_value&) m_env.allOptionsMap()[m_option_outputLogTarget]).as<bool>();
   }
 
-  return;
+  if (m_env.allOptionsMap().count(m_option_doLogitTransform)) {
+    m_ov.m_doLogitTransform = ((const po::variable_value&) m_env.allOptionsMap()[m_option_doLogitTransform]).as<bool>();
+  }
 }
 
 // --------------------------------------------------

@@ -526,16 +526,24 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
                           "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
     }
 
-    // Variable transform initial proposal cov matrix
-    transformInitialCovMatrixToGaussianSpace(
-        dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
+    // Decide whether or not to do logit transform
+    if (m_optionsObj->m_ov.m_doLogitTransform) {
+      // Variable transform initial proposal cov matrix
+      transformInitialCovMatrixToGaussianSpace(
+          dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
 
-    // We need this dynamic_cast to BoxSubset so that m_tk can inspect the
-    // domain bounds and do the necessary transform
-    m_tk = new TransformedScaledCovMatrixTKGroup<P_V, P_M>(
-        m_optionsObj->m_prefix.c_str(),
-        dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()),
-        drScalesAll, m_initialProposalCovMatrix);
+      // We need this dynamic_cast to BoxSubset so that m_tk can inspect the
+      // domain bounds and do the necessary transform
+      m_tk = new TransformedScaledCovMatrixTKGroup<P_V, P_M>(
+          m_optionsObj->m_prefix.c_str(),
+          dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()),
+          drScalesAll, m_initialProposalCovMatrix);
+    }
+    else {
+      m_tk = new ScaledCovMatrixTKGroup<P_V, P_M>(
+          m_optionsObj->m_prefix.c_str(), m_vectorSpace, drScalesAll,
+          m_initialProposalCovMatrix);
+    }
 
     if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
@@ -2137,7 +2145,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
 
           // Transform to the space without boundaries.  This is the space
           // where the proposal distribution is Gaussian
-          if (m_optionsObj->m_ov.m_tkUseLocalHessian == false) {
+          if (this->m_optionsObj->m_ov.m_doLogitTransform == true) {
             // Only do this when we don't use the Hessian (this may change in
             // future, but transformToGaussianSpace() is only implemented in
             // TransformedScaledCovMatrixTKGroup
@@ -2287,7 +2295,6 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
           tmpCholIsPositiveDefinite = true;
         }
         if (tmpCholIsPositiveDefinite) {
-          TransformedScaledCovMatrixTKGroup<P_V,P_M>* tempTK = dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk);
           P_M tmpMatrix(m_optionsObj->m_ov.m_amEta*attemptedMatrix);
           if (m_numDisabledParameters > 0) { // gpmsa2
             for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
@@ -2302,7 +2309,14 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
               }
             }
           }
-          tempTK->updateLawCovMatrix(tmpMatrix);
+          if (this->m_optionsObj->m_ov.m_doLogitTransform) {
+            (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
+              ->updateLawCovMatrix(tmpMatrix);
+          }
+          else{
+            (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
+              ->updateLawCovMatrix(tmpMatrix);
+          }
 
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
           UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
