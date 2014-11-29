@@ -154,3 +154,8 @@ test/test_Regression/dakota_pstudy.dat
 test/test_Regression/gpmsa_cobra_input.txt
 test/test_Regression/test_cobra_samples_diff.sh
 test/test_Regression/test_gpmsa_cobra_samples.m
+test/test_Regression/adaptedcov_input.txt
+test/test_Regression/test_jeffreys_samples_diff.sh
+test/test_adaptedcov_output/
+test/test_gpmsa_cobra_output/
+test/test_logitadaptedcov
