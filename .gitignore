@@ -8,6 +8,7 @@
 *.log
 *.trs
 *.dirstamp
+*.aux
 queso-*tar.gz
 
 Makefile.in
@@ -53,6 +54,7 @@ manual/users/users.bbl
 manual/users/users.blg
 manual/users/users.out
 manual/users/users.toc
+manual/users/QUESO_users_manual.pdf
 
 examples/exInfoTheory_gsl
 examples/exSimpleStatisticalInverseProblem_gsl
