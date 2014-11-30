@@ -262,7 +262,7 @@ int main(int argc, char ** argv) {
   proposalCovMatrix(10, 10) = 7.5412e-04 / scale;  // emulator corr str
   proposalCovMatrix(11, 11) = 0.2682 / scale;  // emulator corr str
   proposalCovMatrix(12, 12) = 0.0572 / scale;  // emulator corr str
-  proposalCovMatrix(13, 13) = 1.3417e+05 / scale;  // discrepancy precision
+  proposalCovMatrix(13, 13) = 1.3417 / scale;  // discrepancy precision
   proposalCovMatrix(14, 14) = 0.3461 / scale;  // discrepancy corr str
   proposalCovMatrix(15, 15) = 495.3 / scale;  // emulator data precision
 

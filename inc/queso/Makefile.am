@@ -118,6 +118,9 @@ BUILT_SOURCES += GenericVectorRV.h
 BUILT_SOURCES += GenericVectorRealizer.h
 BUILT_SOURCES += HessianCovMatricesTKGroup.h
 BUILT_SOURCES += InfoTheory.h
+BUILT_SOURCES += InvLogitGaussianJointPdf.h
+BUILT_SOURCES += InvLogitGaussianVectorRV.h
+BUILT_SOURCES += InvLogitGaussianVectorRealizer.h
 BUILT_SOURCES += InverseGammaJointPdf.h
 BUILT_SOURCES += InverseGammaVectorRV.h
 BUILT_SOURCES += InverseGammaVectorRealizer.h
@@ -153,6 +156,7 @@ BUILT_SOURCES += StatisticalInverseProblem.h
 BUILT_SOURCES += StatisticalInverseProblemOptions.h
 BUILT_SOURCES += StdScalarCdf.h
 BUILT_SOURCES += TKGroup.h
+BUILT_SOURCES += TransformedScaledCovMatrixTKGroup.h
 BUILT_SOURCES += UniformJointPdf.h
 BUILT_SOURCES += UniformVectorRV.h
 BUILT_SOURCES += UniformVectorRealizer.h
@@ -396,6 +400,12 @@ HessianCovMatricesTKGroup.h: $(top_srcdir)/src/stats/inc/HessianCovMatricesTKGro
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InfoTheory.h: $(top_srcdir)/src/stats/inc/InfoTheory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InvLogitGaussianJointPdf.h: $(top_srcdir)/src/stats/inc/InvLogitGaussianJointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InvLogitGaussianVectorRV.h: $(top_srcdir)/src/stats/inc/InvLogitGaussianVectorRV.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InvLogitGaussianVectorRealizer.h: $(top_srcdir)/src/stats/inc/InvLogitGaussianVectorRealizer.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InverseGammaJointPdf.h: $(top_srcdir)/src/stats/inc/InverseGammaJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InverseGammaVectorRV.h: $(top_srcdir)/src/stats/inc/InverseGammaVectorRV.h
@@ -465,6 +475,8 @@ StatisticalInverseProblemOptions.h: $(top_srcdir)/src/stats/inc/StatisticalInver
 StdScalarCdf.h: $(top_srcdir)/src/stats/inc/StdScalarCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TKGroup.h: $(top_srcdir)/src/stats/inc/TKGroup.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TransformedScaledCovMatrixTKGroup.h: $(top_srcdir)/src/stats/inc/TransformedScaledCovMatrixTKGroup.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 UniformJointPdf.h: $(top_srcdir)/src/stats/inc/UniformJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

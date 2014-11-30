@@ -98,6 +98,7 @@
 #define UQ_ML_SAMPLING_L_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOWED_SET_ODV      ""
 #define UQ_ML_SAMPLING_L_AM_ETA_ODV                                           1.
 #define UQ_ML_SAMPLING_L_AM_EPSILON_ODV                                       1.e-5
+#define UQ_ML_SAMPLING_L_DO_LOGIT_TRANSFORM                                   0
 
 namespace QUESO {
   
@@ -339,6 +340,9 @@ public:
   //! 'am' epsilon.
   double                             m_amEpsilon;
 
+  //! Whether or not a logit transform will be done for bounded domains
+  bool m_doLogitTransform;
+
 private:
   //! Copies the option values from \c srcOptions to \c this.
   void   copyOptionsValues(const MLSamplingLevelOptions& srcOptions);
@@ -422,6 +426,7 @@ private:
   std::string                   m_option_am_adaptedMatrices_dataOutputAllowedSet;
   std::string                   m_option_am_eta;
   std::string                   m_option_am_epsilon;
+  std::string                   m_option_doLogitTransform;
 };
 
 std::ostream& operator<<(std::ostream& os, const MLSamplingLevelOptions& obj);

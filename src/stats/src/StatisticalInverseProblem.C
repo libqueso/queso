@@ -430,16 +430,24 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
 
   return;
 }
+
+template <class P_V, class P_M>
+const MetropolisHastingsSG<P_V, P_M> &
+StatisticalInverseProblem<P_V, P_M>::sequenceGenerator() const
+{
+  return *m_mhSeqGenerator;
+}
+
 //--------------------------------------------------
 template <class P_V,class P_M>
-const BaseVectorRV<P_V,P_M>& 
+const BaseVectorRV<P_V,P_M>&
 StatisticalInverseProblem<P_V,P_M>::priorRv() const
 {
   return m_priorRv;
 }
 //--------------------------------------------------
 template <class P_V,class P_M>
-const GenericVectorRV<P_V,P_M>& 
+const GenericVectorRV<P_V,P_M>&
 StatisticalInverseProblem<P_V,P_M>::postRv() const
 {
   return m_postRv;

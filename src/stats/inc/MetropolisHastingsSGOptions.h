@@ -90,6 +90,7 @@
 #define UQ_MH_SG_BROOKS_GELMAN_LAG                                    100
 #define UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                                1
 #define UQ_MH_SG_OUTPUT_LOG_TARGET                                    1
+#define UQ_MH_SG_DO_LOGIT_TRANSFORM                                   1
 
 namespace QUESO {
 
@@ -218,6 +219,9 @@ public:
 
   //! Flag for deciding whether or not to dump log target values in output
   bool m_outputLogTarget;
+
+  //! Flag for deciding whether or not to do logit transform of bounded domains
+  bool m_doLogitTransform;
 
 private:
   //! Copies the option values from \c src to \c this.
@@ -355,6 +359,7 @@ private:
 
   std::string                   m_option_outputLogLikelihood;
   std::string                   m_option_outputLogTarget;
+  std::string                   m_option_doLogitTransform;
 };
 
 std::ostream& operator<<(std::ostream& os, const MetropolisHastingsSGOptions& obj);

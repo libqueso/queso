@@ -145,7 +145,7 @@ public:
 		       double                              initialLogPrior,
 		       double                              initialLogLikelihood,
 		       const P_M*                          inputProposalCovMatrix);
-  
+
   //! Constructor.
   MetropolisHastingsSG(const MLSamplingLevelOptions& mlOptions,
 		       const BaseVectorRV<P_V,P_M>&  sourceRv,
@@ -194,6 +194,9 @@ public:
   void         getRawChainInfo    (MHRawChainInfoStruct& info) const;
 
    //@}
+
+  //! Returns the underlying transition kernel for this sequence generator
+  const BaseTKGroup<P_V, P_M> & transitionKernel() const;
 
   //! @name I/O methods
   //@{
@@ -296,6 +299,9 @@ private:
 	bool m_computeInitialPriorAndLikelihoodValues;
 	double m_initialLogPriorValue;
 	double m_initialLogLikelihoodValue;
+
+  void transformInitialCovMatrixToGaussianSpace(const BoxSubset<P_V, P_M> &
+      boxSubset);
 };
 
 }  // End namespace QUESO

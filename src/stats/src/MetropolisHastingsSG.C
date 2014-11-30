@@ -29,6 +29,9 @@
 
 #include <queso/HessianCovMatricesTKGroup.h>
 #include <queso/ScaledCovMatrixTKGroup.h>
+#include <queso/TransformedScaledCovMatrixTKGroup.h>
+
+#include <queso/InvLogitGaussianJointPdf.h>
 
 #include <queso/GaussianJointPdf.h>
 
@@ -523,10 +526,25 @@ MetropolisHastingsSG<P_V,P_M>::commonConstructor()
                           "proposal cov matrix should have been passed by user, since, according to the input algorithm options, local Hessians will not be used in the proposal");
     }
 
-    m_tk = new ScaledCovMatrixTKGroup<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
-                                                      m_vectorSpace,
-                                                      drScalesAll,
-                                                      m_initialProposalCovMatrix);
+    // Decide whether or not to do logit transform
+    if (m_optionsObj->m_ov.m_doLogitTransform) {
+      // Variable transform initial proposal cov matrix
+      transformInitialCovMatrixToGaussianSpace(
+          dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()));
+
+      // We need this dynamic_cast to BoxSubset so that m_tk can inspect the
+      // domain bounds and do the necessary transform
+      m_tk = new TransformedScaledCovMatrixTKGroup<P_V, P_M>(
+          m_optionsObj->m_prefix.c_str(),
+          dynamic_cast<const BoxSubset<P_V, P_M> & >(m_targetPdf.domainSet()),
+          drScalesAll, m_initialProposalCovMatrix);
+    }
+    else {
+      m_tk = new ScaledCovMatrixTKGroup<P_V, P_M>(
+          m_optionsObj->m_prefix.c_str(), m_vectorSpace, drScalesAll,
+          m_initialProposalCovMatrix);
+    }
+
     if ((m_env.subDisplayFile()                   ) &&
         (m_optionsObj->m_ov.m_totallyMute == false)) {
       *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::commonConstructor()"
@@ -589,8 +607,10 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
     }
     else {
       double yLogTargetToUse = y.logTarget();
+
       if (m_tk->symmetric()) {
         alphaQuotient = std::exp(yLogTargetToUse - x.logTarget());
+
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 3            ) &&
             (m_optionsObj->m_ov.m_totallyMute == false)) {
@@ -609,7 +629,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
             (m_optionsObj->m_ov.m_totallyMute == false)) {
-          const GaussianJointPdf<P_V,P_M>* pdfYX = dynamic_cast< const GaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
+          const InvLogitGaussianJointPdf<P_V,P_M>* pdfYX = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(yStageId).pdf()));
           *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
                                  << ", rvYX.lawExpVector = " << pdfYX->lawExpVector()
                                  << ", rvYX.lawVarVector = " << pdfYX->lawVarVector()
@@ -620,7 +640,7 @@ MetropolisHastingsSG<P_V,P_M>::alpha(
         if ((m_env.subDisplayFile()                   ) &&
             (m_env.displayVerbosity() >= 10           ) &&
             (m_optionsObj->m_ov.m_totallyMute == false)) {
-          const GaussianJointPdf<P_V,P_M>* pdfXY = dynamic_cast< const GaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
+          const InvLogitGaussianJointPdf<P_V,P_M>* pdfXY = dynamic_cast< const InvLogitGaussianJointPdf<P_V,P_M>* >(&(m_tk->rv(xStageId).pdf()));
           *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::alpha(x,y)"
                                  << ", rvXY.lawExpVector = " << pdfXY->lawExpVector()
                                  << ", rvXY.lawVarVector = " << pdfXY->lawVarVector()
@@ -934,6 +954,13 @@ MetropolisHastingsSG<P_V,P_M>::writeInfo(
   }
 
   return iRC;
+}
+
+template <class P_V, class P_M>
+const BaseTKGroup<P_V, P_M> &
+MetropolisHastingsSG<P_V, P_M>::transitionKernel() const
+{
+  return *m_tk;
 }
 
 // Statistical methods -----------------------------
@@ -1504,7 +1531,7 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
                       m_env.worldRank(),
                       "MetropolisHastingsSG<P_V,P_M>::generateFullChain()",
                       "initial position should not be out of target pdf support");
-  
+
   double logPrior      = 0.;
   double logLikelihood = 0.;
   double logTarget     = 0.;
@@ -1695,11 +1722,14 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
     // Point 2/6 of logic for new position
     // Loop: generate new position
     //****************************************************
-    // sep2011
     bool keepGeneratingCandidates = true;
     while (keepGeneratingCandidates) {
-      if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) iRC = gettimeofday(&timevalCandidate, NULL);
+      if (m_optionsObj->m_ov.m_rawChainMeasureRunTimes) {
+        iRC = gettimeofday(&timevalCandidate, NULL);
+      }
+
       m_tk->rv(0).realizer().realization(tmpVecValues);
+
       if (m_numDisabledParameters > 0) { // gpmsa2
         for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
           if (m_parameterEnabledStatus[paramId] == false) {
@@ -2112,7 +2142,22 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
         P_V transporterVec(m_vectorSpace.zeroVector());
         for (unsigned int i = 0; i < partialChain.subSequenceSize(); ++i) {
           workingChain.getPositionValues(idOfFirstPositionInSubChain+i,transporterVec);
-          partialChain.setPositionValues(i,transporterVec);
+
+          // Transform to the space without boundaries.  This is the space
+          // where the proposal distribution is Gaussian
+          if (this->m_optionsObj->m_ov.m_doLogitTransform == true) {
+            // Only do this when we don't use the Hessian (this may change in
+            // future, but transformToGaussianSpace() is only implemented in
+            // TransformedScaledCovMatrixTKGroup
+            P_V transformedTransporterVec(m_vectorSpace.zeroVector());
+            dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V, P_M>* >(
+                m_tk)->transformToGaussianSpace(transporterVec,
+                  transformedTransporterVec);
+            partialChain.setPositionValues(i, transformedTransporterVec);
+          }
+          else {
+            partialChain.setPositionValues(i, transporterVec);
+          }
         }
         updateAdaptedCovMatrix(partialChain,
                                idOfFirstPositionInSubChain,
@@ -2250,7 +2295,6 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
           tmpCholIsPositiveDefinite = true;
         }
         if (tmpCholIsPositiveDefinite) {
-          ScaledCovMatrixTKGroup<P_V,P_M>* tempTK = dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk);
           P_M tmpMatrix(m_optionsObj->m_ov.m_amEta*attemptedMatrix);
           if (m_numDisabledParameters > 0) { // gpmsa2
             for (unsigned int paramId = 0; paramId < m_vectorSpace.dimLocal(); ++paramId) {
@@ -2265,7 +2309,14 @@ MetropolisHastingsSG<P_V,P_M>::generateFullChain(
               }
             }
           }
-          tempTK->updateLawCovMatrix(tmpMatrix);
+          if (this->m_optionsObj->m_ov.m_doLogitTransform) {
+            (dynamic_cast<TransformedScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
+              ->updateLawCovMatrix(tmpMatrix);
+          }
+          else{
+            (dynamic_cast<ScaledCovMatrixTKGroup<P_V,P_M>* >(m_tk))
+              ->updateLawCovMatrix(tmpMatrix);
+          }
 
 #ifdef UQ_DRAM_MCG_REQUIRES_INVERTED_COV_MATRICES
           UQ_FATAL_RC_MACRO(UQ_INCOMPLETE_IMPLEMENTATION_RC,
@@ -2466,6 +2517,57 @@ MetropolisHastingsSG<P_V,P_M>::updateAdaptedCovMatrix(
   }
 
   return;
+}
+
+template <class P_V, class P_M>
+void
+MetropolisHastingsSG<P_V, P_M>::transformInitialCovMatrixToGaussianSpace(
+    const BoxSubset<P_V, P_M> & boxSubset)
+{
+  P_V min_domain_bounds(boxSubset.minValues());
+  P_V max_domain_bounds(boxSubset.maxValues());
+
+  for (unsigned int i = 0; i < min_domain_bounds.sizeLocal(); i++) {
+    double min_val = min_domain_bounds[i];
+    double max_val = max_domain_bounds[i];
+
+    if (boost::math::isfinite(min_val) && boost::math::isfinite(max_val)) {
+      if (m_initialProposalCovMatrix(i, i) >= max_val - min_val) {
+        // User is trying to specify a uniform proposal distribution, which
+        // is unsupported.  Throw an error for now.
+        std::cerr << "Proposal variance element "
+                  << i
+                  << " is "
+                  << m_initialProposalCovMatrix(i, i)
+                  << " but domain is of size "
+                  << max_val - min_val
+                  << std::endl;
+        std::cerr << "QUESO does not support uniform-like proposal "
+                  << "distributions.  Try making the proposal variance smaller"
+                  << std::endl;
+      }
+
+      // The mean is the midpoint
+      double midpoint = (max_val + min_val) / 2.0;
+      double derivative = (1.0 / (midpoint - min_val)) +
+                          (1.0 / (max_val - midpoint));
+
+      // User specified the covariance matrix on a bounded domain, so we
+      // need to *divide* by the derivative of the transform
+      double transformJacobian = 1.0 / derivative;
+
+      // Just do the multiplication by hand for now.  There's no method in
+      // Gsl(Vector|Matrix) to do this for me.
+      for (unsigned int j = 0; j < min_domain_bounds.sizeLocal(); j++) {
+        // Multiply column j by element j
+        m_initialProposalCovMatrix(j, i) *= transformJacobian;
+      }
+      for (unsigned int j = 0; j < min_domain_bounds.sizeLocal(); j++) {
+        // Multiply row j by element j
+        m_initialProposalCovMatrix(i, j) *= transformJacobian;
+      }
+    }
+  }
 }
 
 }  // End namespace QUESO
