@@ -1,5 +1,5 @@
 # -*- Autoconf -*-
-# Process this file with autoconf to produce a configure script. 
+# Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.65)
 AC_INIT([queso], [0.51.0], [queso-users@googlegroups.com])
@@ -133,7 +133,7 @@ AX_PATH_GLPK([4.35],[no])
 AX_PATH_HDF5_NEW([1.8.0],[no])
 
 # Check for ANN (external library)
-# AX_PATH_ANN 
+# AX_PATH_ANN
 #### TODO: Make sure that the ANN uses L-infinity (Max) norm
 
 # Check for ANN feature
@@ -184,7 +184,7 @@ AC_CONFIG_FILES([
   src/contrib/ANN/Makefile
   src/contrib/ANN/test/Makefile
   src/core/inc/queso.h
-  examples/Makefile        
+  examples/Makefile
   examples/infinite_dim/inverse_options
   examples/infinite_dim/parallel_inverse_options
   test/Makefile
