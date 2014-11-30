@@ -10,30 +10,30 @@ AM_CPPFLAGS +=  $(BOOST_CPPFLAGS) $(GSL_CFLAGS) $(ANN_CFLAGS)
 LIBS   = -L$(top_builddir)/src/ -lqueso $(GSL_LIBS)
 
 if TRILINOS_ENABLED
-  AM_CPPFLAGS += -I$(TRILINOS_INCLUDE) 
+  AM_CPPFLAGS += -I$(TRILINOS_INCLUDE)
   LIBS += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
 endif
 
-if GLPK_ENABLED	
+if GLPK_ENABLED
   AM_CPPFLAGS += $(GLPK_CFLAGS)
   LIBS += $(GLPK_LIBS)
 endif
 
-if GRVY_ENABLED	
+if GRVY_ENABLED
   AM_CPPFLAGS += $(GRVY_CFLAGS)
 endif
 
-if HDF5_ENABLED	
-  AM_CPPFLAGS += $(HDF5_CFLAGS) 
+if HDF5_ENABLED
+  AM_CPPFLAGS += $(HDF5_CFLAGS)
   LIBS += $(HDF5_LIBS)
 endif
 
 EXTRA_DIST     = inputData regression rtest01.sh
-TESTS          = rtest01.sh 
+TESTS          = rtest01.sh
 check_PROGRAMS = TgaValidationCycle_gsl
 
 TgaValidationCycle_gsl_SOURCES =
-TgaValidationCycle_gsl_SOURCES += TgaValidationCycle_gsl.C TgaValidationCycle_appl.h 
+TgaValidationCycle_gsl_SOURCES += TgaValidationCycle_gsl.C TgaValidationCycle_appl.h
 TgaValidationCycle_gsl_SOURCES += TgaValidationCycle_likelihood.h TgaValidationCycle_qoi.h
 TgaValidationCycle_gsl_SOURCES += tgaCycle.inp
 
