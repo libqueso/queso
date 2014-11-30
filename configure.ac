@@ -198,26 +198,38 @@ AC_CONFIG_FILES([
   test/test_infinite/inf_options
   test/test_Regression/GaussianMean1DRegression_options
   test/test_Regression/gpmsa_cobra_input.txt
-  test/test_Regression/test_cobra_samples_diff.sh
   test/test_Regression/test_gpmsa_cobra_samples.m
   test/test_Regression/ctf_dat.txt
   test/test_Regression/dakota_pstudy.dat
-  test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
   test/test_StatisticalInverseProblem/both_input.txt
   test/test_StatisticalInverseProblem/llhdout_input.txt
   test/test_StatisticalInverseProblem/neither_input.txt
   test/test_StatisticalInverseProblem/targetout_input.txt
   test/test_Regression/jeffreys_input.txt
-  test/test_Regression/test_jeffreys_samples_diff.sh
   test/test_Regression/test_jeffreys_samples.m
   test/test_Regression/adaptedcov_input.txt
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page
+])
+
+AC_CONFIG_FILES([test/test_Regression/test_cobra_samples_diff.sh
 ],
 [
   chmod +x test/test_Regression/test_cobra_samples_diff.sh
+])
+
+AC_CONFIG_FILES([
+  test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+],
+[
   chmod +x test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+])
+
+AC_CONFIG_FILES([
+  test/test_Regression/test_jeffreys_samples_diff.sh
+],
+[
   chmod +x test/test_Regression/test_jeffreys_samples_diff.sh
 ])
 
