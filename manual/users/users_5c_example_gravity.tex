@@ -198,14 +198,14 @@ where $y$ is the distance traveled and our quantity of interest (QoI).
  
 To run the executable provided (available after QUESO installation), enter the following commands:
 \begin{lstlisting}[label={},caption={}]
-$ cd $HOME/LIBRARIES/QUESO-0.50.0/examples/gravity
+$ cd $HOME/LIBRARIES/QUESO-0.51.0/examples/gravity
 $ rm outputData/*
 $ ./gravity_gsl gravity_inv_fwd.inp
 \end{lstlisting}
 
 The console output of the program is:
 \begin{lstlisting}[caption={Console output of program \texttt{gravity\_gsl}}, label={code:console_output},language={bash}]
-kemelli@violeta:~/LIBRARIES/QUESO-0.50.0/examples/gravity$ ./gravity_gsl gravity_inv_fwd.inp 
+kemelli@violeta:~/LIBRARIES/QUESO-0.51.0/examples/gravity$ ./gravity_gsl gravity_inv_fwd.inp 
 ---------------------------------------------------------------------
 QUESO Library: Version = 0.47.1 (47.1)
 
@@ -251,7 +251,7 @@ Ending run of 'Gravity + Projectile motion' example at Mon Apr 29 17:27:33 2013
 
 Ending run at Mon Apr 29 17:27:33 2013
 Total run time = 1 seconds
-kemelli@violeta:~/LIBRARIES/QUESO-0.50.0/examples/gravity$ 
+kemelli@violeta:~/LIBRARIES/QUESO-0.51.0/examples/gravity$ 
 \end{lstlisting}
 
 
@@ -334,7 +334,7 @@ Thus, to build and run the application code with $N_p = 8$, and $N_s=8$ subenvir
 
 
 \begin{lstlisting}[caption={}, label={},language={bash}]
-cd $HOME/LIBRARIES/QUESO-0.50.0/examples/gravity/
+cd $HOME/LIBRARIES/QUESO-0.51.0/examples/gravity/
 mpirun -np 8 ./gravity_gsl gravity_inv_fwd.inp
 \end{lstlisting}
 
