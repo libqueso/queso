@@ -179,6 +179,16 @@ EXTRA_DIST += test_Regression/jeffreys_input.txt.in
 EXTRA_DIST += test_Regression/test_jeffreys_samples_diff.sh.in
 EXTRA_DIST += test_Regression/test_jeffreys_samples.m.in
 
+DISTCLEANFILES =
+DISTCLEANFILES += test_gpmsa_cobra_output/display_sub0.txt
+DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain.m
+DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_loglikelihood.m
+DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_loglikelihood_sub0.m
+DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_logtarget.m
+DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_logtarget_sub0.m
+DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_sub0.m
+DISTCLEANFILES += test_gpmsa_cobra_output/sipOutput_sub0.m
+
 CLEANFILES =
 CLEANFILES += $(top_srcdir)/test/test_Environment/debug_output_sub0.txt
 CLEANFILES += $(top_srcdir)/test/gslvector_out_sub0.m
