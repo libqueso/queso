@@ -25,6 +25,7 @@
 #include <queso/ScaledCovMatrixTKGroup.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/GaussianJointPdf.h>
 
 namespace QUESO {
 
@@ -75,7 +76,7 @@ ScaledCovMatrixTKGroup<V,M>::symmetric() const
 //---------------------------------------------------
 template<class V, class M>
 const GaussianVectorRV<V,M>&
-ScaledCovMatrixTKGroup<V,M>::rv(unsigned int stageId)
+ScaledCovMatrixTKGroup<V,M>::rv(unsigned int stageId) const
 {
   UQ_FATAL_TEST_MACRO(m_rvs.size() == 0,
                       m_env.worldRank(),
@@ -105,9 +106,12 @@ ScaledCovMatrixTKGroup<V,M>::rv(unsigned int stageId)
                             << ", vector = " << *m_preComputingPositions[stageId] // FIX ME: might demand parallelism
                             << std::endl;
   }
-  m_rvs[0]->updateLawExpVector(*m_preComputingPositions[stageId]);
 
-  return (*m_rvs[0]);
+  GaussianVectorRV<V, M> * gaussian_rv = dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[0]);
+
+  gaussian_rv->updateLawExpVector(*m_preComputingPositions[stageId]);
+
+  return (*gaussian_rv);
 }
 //---------------------------------------------------
 template<class V, class M>
@@ -143,9 +147,12 @@ ScaledCovMatrixTKGroup<V,M>::rv(const std::vector<unsigned int>& stageIds)
                             << ", vector = " << *m_preComputingPositions[stageIds[0]] // FIX ME: might demand parallelism
                             << std::endl;
   }
-  m_rvs[stageIds.size()-1]->updateLawExpVector(*m_preComputingPositions[stageIds[0]]);
 
-  return (*m_rvs[stageIds.size()-1]);
+  GaussianVectorRV<V, M> * gaussian_rv = dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[stageIds.size()-1]);
+
+  gaussian_rv->updateLawExpVector(*m_preComputingPositions[stageIds[0]]);
+
+  return (*gaussian_rv);
 }
 //---------------------------------------------------
 template<class V, class M>
@@ -165,7 +172,7 @@ ScaledCovMatrixTKGroup<V,M>::updateLawCovMatrix(const M& covMatrix)
                               << ", covMatrix = \n" << factor*covMatrix // FIX ME: might demand parallelism
                               << std::endl;
     }
-    m_rvs[i]->updateLawCovMatrix(factor*covMatrix);
+    dynamic_cast<GaussianVectorRV<V, M> * >(m_rvs[i])->updateLawCovMatrix(factor*covMatrix);
   }
 
   return;

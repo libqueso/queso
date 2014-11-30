@@ -9,7 +9,7 @@ The example also it gives the user the opportunity to chose either one single ty
 Choosing between a one-mode or a two-mode target distribution is done at execution level, as presented in the following code line:
 
 \begin{lstlisting}[label={},caption={}]
-$ cd $HOME/LIBRARIES/QUESO-0.50.0/
+$ cd $HOME/LIBRARIES/QUESO-0.51.0/
 $ cd examples/modal
 $ rm outputData/*
 $ ./modal_gsl example.inp <num_of_nodes>
@@ -57,7 +57,7 @@ The likelihood function is defined as follows:
  
 To run the executable provided considering a \underline{one-mode} distribution, enter the following commands:
 \begin{lstlisting}[label={},caption={Running the example with a one-mode distribution.}]
-$ cd $HOME/LIBRARIES/QUESO-0.50.0/
+$ cd $HOME/LIBRARIES/QUESO-0.51.0/
 $ cd examples/modal
 $ rm outputData/*
 $ ./modal_gsl example.inp 1      #one mode!
@@ -113,7 +113,7 @@ f(\D|\bv{\theta})=  -5 \log\left(2 \pi \sigma^2\right)- \dfrac{1}{2\sigma^2} &\B
  
 To run the executable provided considering a \underline{two-modes} distribution, enter the following commands:
 \begin{lstlisting}[label={},caption={Running the example with a two-mode distribution.}]
-$ cd $HOME/LIBRARIES/QUESO-0.50.0/
+$ cd $HOME/LIBRARIES/QUESO-0.51.0/
 $ cd examples/modal
 $ rm outputData/*
 $ ./modal_gsl example.inp 2         # two modes!
@@ -194,12 +194,12 @@ Listing \ref{code:modal_makefile} presents a Makefile, named `\texttt{Makefile\_
 
 Thus, to compile, build and execute the code, the user just needs to run the following commands in the same directory where the files are:
 \begin{lstlisting}
-$ cd $HOME/LIBRARIES/QUESO-0.50.0/examples/modal/
+$ cd $HOME/LIBRARIES/QUESO-0.51.0/examples/modal/
 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
   $HOME/LIBRARIES/gsl-1.15/lib/:\
   $HOME/LIBRARIES/boost-1.53.0/lib/:\
   $HOME/LIBRARIES/hdf5-1.8.10/lib:\
-  $HOME/LIBRARIES/QUESO-0.50.0/lib 
+  $HOME/LIBRARIES/QUESO-0.51.0/lib 
 $ make -f Makefile_modal_violeta 
 $ ./modal_gsl example.inp <num_modes>
 \end{lstlisting}

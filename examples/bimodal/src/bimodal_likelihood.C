@@ -71,11 +71,7 @@ double likelihoodRoutine(
       resultValue = 1040.;
     }
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
     returnValue = -.5*resultValue;
-#else
-    returnValue = resultValue; 
-#endif
   
 
   if (paramValues.env().exceptionalCircumstance()) {

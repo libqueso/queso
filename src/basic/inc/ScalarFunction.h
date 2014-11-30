@@ -34,47 +34,51 @@ namespace QUESO {
 
 /*! \file ScalarFunction.h
  * \brief Set of classes for handling vector functions.
- * 
+ *
  * \class BaseScalarFunction
  * \brief A templated (base) class for handling scalar functions.
  *
  * This class allows the mathematical definition of a scalar function such as:
- * \f$ f: B \subset R \rightarrow R \f$. A function of one or more variables 
- * has always one-dimensional range.  PDFs (marginal, joint) and CDFs are examples 
- * of scalar functions. */
-
+ * \f$ f: B \subset R \rightarrow R \f$. A function of one or more variables
+ * has always one-dimensional range.  PDFs (marginal, joint) and CDFs are examples
+ * of scalar functions.
+ */
 
 template<class V,class M>
 class BaseScalarFunction {
 public:
   //! @name Constructor/Destructor methods.
-  //@{ 
+  //@{
   //! Default constructor.
-  /*! Instantiates an object of the class, i.e. a scalar function, given a prefix and its domain.*/
-  BaseScalarFunction(const char*                  prefix,
-			    const VectorSet<V,M>& domainSet);
-  //! Destructor	
+  /*!
+   * Instantiates an object of the class, i.e. a scalar function, given a
+   * prefix and its domain.
+   */
+  BaseScalarFunction(const char * prefix, const VectorSet<V, M> & domainSet);
+
+  //! Destructor
   virtual ~BaseScalarFunction();
   //@}
-  
-    //! @name Mathematical methods.
-  //@{  
+
+  //! @name Mathematical methods.
+  //@{
   //! Access to the protected attribute \c m_domainSet: domain set of the scalar function.
-  const VectorSet<V,M>& domainSet  ()  const;
-  
-  
+  const VectorSet<V, M> & domainSet() const;
+
   //! Actual value of the scalar function.
-  virtual       double                 actualValue(const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
-  
+  virtual double actualValue(const V & domainVector, const V * domainDirection,
+      V * gradVector, M * hessianMatrix, V * hessianEffect) const = 0;
+
   //! Logarithm of the value of the scalar function.
-  virtual       double                 lnValue    (const V& domainVector, const V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) const = 0;
+  virtual double lnValue(const V & domainVector, const V * domainDirection,
+      V * gradVector, M * hessianMatrix, V * hessianEffect) const = 0;
   //@}
 protected:
-  const BaseEnvironment& m_env;
-        std::string             m_prefix;
-	
-  //! Domain set of the scalar function.	
-  const VectorSet<V,M>&  m_domainSet;
+  const BaseEnvironment & m_env;
+  std::string m_prefix;
+
+  //! Domain set of the scalar function.
+  const VectorSet<V, M> & m_domainSet;
 };
 
 }  // End namespace QUESO

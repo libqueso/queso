@@ -90,7 +90,10 @@ MhOptionsValues::MhOptionsValues(
   m_amEta                                    (UQ_MH_SG_AM_ETA_ODV),
   m_amEpsilon                                (UQ_MH_SG_AM_EPSILON_ODV),
   m_enableBrooksGelmanConvMonitor            (UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR),
-  m_BrooksGelmanLag                          (UQ_MH_SG_BROOKS_GELMAN_LAG)
+  m_BrooksGelmanLag                          (UQ_MH_SG_BROOKS_GELMAN_LAG),
+  m_outputLogLikelihood                      (UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD),
+  m_outputLogTarget                          (UQ_MH_SG_OUTPUT_LOG_TARGET),
+  m_doLogitTransform                         (UQ_MH_SG_DO_LOGIT_TRANSFORM)
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   ,
   m_alternativeRawSsOptionsValues            (),
@@ -178,6 +181,9 @@ MhOptionsValues::copy(const MhOptionsValues& src)
   m_amEpsilon                                 = src.m_amEpsilon;
   m_enableBrooksGelmanConvMonitor             = src.m_enableBrooksGelmanConvMonitor;
   m_BrooksGelmanLag                           = src.m_BrooksGelmanLag;
+  m_outputLogLikelihood                       = src.m_outputLogLikelihood;
+  m_outputLogTarget                           = src.m_outputLogTarget;
+  m_doLogitTransform                          = src.m_doLogitTransform;
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   m_alternativeRawSsOptionsValues             = src.m_alternativeRawSsOptionsValues;
@@ -259,7 +265,10 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
   m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
   m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"             ),
-  m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           )
+  m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
+  m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
+  m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() == "",
                       m_env.worldRank(),
@@ -334,7 +343,10 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
   m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
   m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"             ),
-  m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           )
+  m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
+  m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
+  m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
   UQ_FATAL_TEST_MACRO(m_env.optionsInputFileName() != "",
                       m_env.worldRank(),
@@ -429,7 +441,10 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_option_am_eta                                    (m_prefix + "am_eta"                                    ),
   m_option_am_epsilon                                (m_prefix + "am_epsilon"                                ),
   m_option_enableBrooksGelmanConvMonitor             (m_prefix + "enableBrooksGelmanConvMonitor"             ),
-  m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           )
+  m_option_BrooksGelmanLag                           (m_prefix + "BrooksGelmanLag"                           ),
+  m_option_outputLogLikelihood                       (m_prefix + "outputLogLikelihood"                       ),
+  m_option_outputLogTarget                           (m_prefix + "outputLogTarget"                           ),
+  m_option_doLogitTransform                          (m_prefix + "doLogitTransform"                          )
 {
   m_ov.m_dataOutputFileName                        = mlOptions.m_dataOutputFileName;
   m_ov.m_dataOutputAllowAll                        = mlOptions.m_dataOutputAllowAll;
@@ -483,6 +498,9 @@ MetropolisHastingsSGOptions::MetropolisHastingsSGOptions(
   m_ov.m_amEpsilon                                 = mlOptions.m_amEpsilon;
   m_ov.m_enableBrooksGelmanConvMonitor             = UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR;
   m_ov.m_BrooksGelmanLag                           = UQ_MH_SG_BROOKS_GELMAN_LAG;
+  m_ov.m_outputLogLikelihood                       = UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD;
+  m_ov.m_outputLogTarget                           = UQ_MH_SG_OUTPUT_LOG_TARGET;
+  m_ov.m_doLogitTransform                          = mlOptions.m_doLogitTransform;
 
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 //m_ov.m_alternativeRawSsOptionsValues             = mlOptions.; // dakota
@@ -625,6 +643,9 @@ MetropolisHastingsSGOptions::print(std::ostream& os) const
      << "\n" << m_option_am_epsilon                                 << " = " << m_ov.m_amEpsilon
      << "\n" << m_option_enableBrooksGelmanConvMonitor              << " = " << m_ov.m_enableBrooksGelmanConvMonitor
      << "\n" << m_option_BrooksGelmanLag                            << " = " << m_ov.m_BrooksGelmanLag
+     << "\n" << m_option_outputLogLikelihood                        << " = " << m_ov.m_outputLogLikelihood
+     << "\n" << m_option_outputLogTarget                            << " = " << m_ov.m_outputLogTarget
+     << "\n" << m_option_doLogitTransform                           << " = " << m_ov.m_doLogitTransform
      << std::endl;
 
   return;
@@ -679,7 +700,7 @@ MetropolisHastingsSGOptions::defineMyOptions(po::options_description& optionsDes
     (m_option_am_keepInitialMatrix.c_str(),                       po::value<bool        >()->default_value(UQ_MH_SG_AM_KEEP_INITIAL_MATRIX_ODV                          ), "'am' keep initial (given) matrix"                           )
     (m_option_am_initialNonAdaptInterval.c_str(),                 po::value<unsigned int>()->default_value(UQ_MH_SG_AM_INIT_NON_ADAPT_INT_ODV                           ), "'am' initial non adaptation interval"                       )
     (m_option_am_adaptInterval.c_str(),                           po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPT_INTERVAL_ODV                               ), "'am' adaptation interval"                                   )
-    (m_option_am_adaptedMatrices_dataOutputPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV          ), "period for outputting 'am' adapted matrices"                 )
+    (m_option_am_adaptedMatrices_dataOutputPeriod.c_str(),        po::value<unsigned int>()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_PERIOD_ODV          ), "period for outputting 'am' adapted matrices"                )
     (m_option_am_adaptedMatrices_dataOutputFileName.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_NAME_ODV       ), "name of output file for 'am' adapted matrices"              )
     (m_option_am_adaptedMatrices_dataOutputFileType.c_str(),      po::value<std::string >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_FILE_TYPE_ODV       ), "type of output file for 'am' adapted matrices"              )
     (m_option_am_adaptedMatrices_dataOutputAllowAll.c_str(),      po::value<bool        >()->default_value(UQ_MH_SG_AM_ADAPTED_MATRICES_DATA_OUTPUT_ALLOW_ALL_ODV       ), "type of output file for 'am' adapted matrices"              )
@@ -688,6 +709,9 @@ MetropolisHastingsSGOptions::defineMyOptions(po::options_description& optionsDes
     (m_option_am_epsilon.c_str(),                                 po::value<double      >()->default_value(UQ_MH_SG_AM_EPSILON_ODV                                      ), "'am' epsilon"                                               )
     (m_option_enableBrooksGelmanConvMonitor.c_str(),              po::value<unsigned int>()->default_value(UQ_MH_SG_ENABLE_BROOKS_GELMAN_CONV_MONITOR                   ), "assess convergence using Brooks-Gelman metric"              )
     (m_option_BrooksGelmanLag.c_str(),                            po::value<unsigned int>()->default_value(UQ_MH_SG_BROOKS_GELMAN_LAG                                   ), "number of chain positions before starting to compute metric")
+    (m_option_outputLogLikelihood.c_str(),                        po::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_LIKELIHOOD                               ), "flag to toggle output of log likelihood values"             )
+    (m_option_outputLogTarget.c_str(),                            po::value<bool        >()->default_value(UQ_MH_SG_OUTPUT_LOG_TARGET                                   ), "flag to toggle output of log target values"                 )
+    (m_option_doLogitTransform.c_str(),                           po::value<bool        >()->default_value(UQ_MH_SG_DO_LOGIT_TRANSFORM                                  ), "flag to toggle logit transform for bounded domains"         )
   ;
 
   return;
@@ -990,7 +1014,17 @@ MetropolisHastingsSGOptions::getMyOptionValues(po::options_description& optionsD
     m_ov.m_BrooksGelmanLag = ((const po::variable_value&) m_env.allOptionsMap()[m_option_BrooksGelmanLag]).as<unsigned int>();
   }
 
-  return;
+  if (m_env.allOptionsMap().count(m_option_outputLogLikelihood)) {
+    m_ov.m_outputLogLikelihood = ((const po::variable_value&) m_env.allOptionsMap()[m_option_outputLogLikelihood]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_outputLogTarget)) {
+    m_ov.m_outputLogTarget = ((const po::variable_value&) m_env.allOptionsMap()[m_option_outputLogTarget]).as<bool>();
+  }
+
+  if (m_env.allOptionsMap().count(m_option_doLogitTransform)) {
+    m_ov.m_doLogitTransform = ((const po::variable_value&) m_env.allOptionsMap()[m_option_doLogitTransform]).as<bool>();
+  }
 }
 
 // --------------------------------------------------

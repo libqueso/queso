@@ -343,6 +343,10 @@ void
 MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALANCE
   const MLSamplingLevelOptions*      currOptions,         // input
   const SequenceOfVectors<P_V,P_M>&  prevChain,           // input
+  double                                  prevExponent,                       // input
+  double                                  currExponent,                       // input
+  const ScalarSequence<double>&           prevLogLikelihoodValues,            // input
+  const ScalarSequence<double>&           prevLogTargetValues,                // input
   std::vector<ExchangeInfoStruct>&        exchangeStdVec,      // input/output
   BalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl) // output
 {
@@ -468,6 +472,10 @@ MLSampling<P_V,P_M>::prepareBalLinkedChains_inter0( // EXTRA FOR LOAD BALANCE
   // balancedLinkControl.linkedChains at each node
   //////////////////////////////////////////////////////////////////////////
   mpiExchangePositions_inter0(prevChain,
+                              prevExponent,
+                              currExponent,
+                              prevLogLikelihoodValues,
+                              prevLogTargetValues,
                               exchangeStdVec,
                               finalNumChainsPerNode,
                               finalNumPositionsPerNode, // It is already valid at all "management" nodes (not only at node 0) because of the sanity check above
@@ -673,6 +681,8 @@ MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
   }
 
   P_V auxInitialPosition(m_vectorSpace.zeroVector());
+  double auxInitialLogPrior;
+  double auxInitialLogLikelihood;
 
   unsigned int chainIdMax = 0;
   if (m_env.inter0Rank() >= 0) {
@@ -743,6 +753,8 @@ MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
     if (m_env.inter0Rank() >= 0) {
       // aqui 4
       auxInitialPosition = *(balancedLinkControl.balLinkedChains[chainId].initialPosition); // Round Rock
+      auxInitialLogPrior = balancedLinkControl.balLinkedChains[chainId].initialLogPrior;
+      auxInitialLogLikelihood = balancedLinkControl.balLinkedChains[chainId].initialLogLikelihood;
       tmpChainSize = balancedLinkControl.balLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
       if ((m_env.subDisplayFile()       ) &&
           (m_env.displayVerbosity() >= 3)) {
@@ -757,6 +769,7 @@ MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
       }
     }
     auxInitialPosition.mpiBcast(0, m_env.subComm()); // Yes, 'subComm', important // KAUST
+   
 #if 0 // For debug only
     for (int r = 0; r < m_env.subComm().NumProc(); ++r) {
       if (r == m_env.subComm().MyPID()) {
@@ -781,18 +794,37 @@ MLSampling<P_V,P_M>::generateBalLinkedChains_all( // EXTRA FOR LOAD BALANCE
     ScalarSequence<double> tmpLogLikelihoodValues(m_env,0,"");
     ScalarSequence<double> tmpLogTargetValues    (m_env,0,"");
 
-    // KAUST: all nodes should call here
-    MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
-                                                        rv,
-                                                        auxInitialPosition, // KEY new: pass logPrior and logLikelihood
-                                                        &unifiedCovMatrix);
-
-    // KAUST: all nodes should call here
-    mcSeqGenerator.generateSequence(tmpChain,
-                                    &tmpLogLikelihoodValues, // likelihood is IMPORTANT
-                                    &tmpLogTargetValues);
     MHRawChainInfoStruct mcRawInfo;
-    mcSeqGenerator.getRawChainInfo(mcRawInfo);
+    if (inputOptions.m_initialPositionUsePreviousLevelLikelihood) {  // ml_likelihood_caching
+      m_env.subComm().Bcast((void *) &auxInitialLogPrior, (int) 1, RawValue_MPI_DOUBLE, 0, // Yes, 'subComm', important
+          "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
+          "failed MPI.Bcast() for auxInitialLogPrior");
+      m_env.subComm().Bcast((void *) &auxInitialLogLikelihood, (int) 1, RawValue_MPI_DOUBLE, 0, // Yes, 'subComm', important
+          "MLSamplingClass<P_V,P_M>::generateBalLinkedChains_all()",
+          "failed MPI.Bcast() for auxInitialLogLikelihood");
+
+      MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
+                                                   rv,
+                                                   auxInitialPosition, // KEY new: pass logPrior and logLikelihood
+                                                   auxInitialLogPrior,
+                                                   auxInitialLogLikelihood,
+                                                   &unifiedCovMatrix);
+      mcSeqGenerator.generateSequence(tmpChain,
+                                      &tmpLogLikelihoodValues, // likelihood is IMPORTANT
+                                      &tmpLogTargetValues);
+      mcSeqGenerator.getRawChainInfo(mcRawInfo);
+    }
+    else {
+      MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
+          rv,
+          auxInitialPosition,
+          &unifiedCovMatrix);
+      mcSeqGenerator.generateSequence(tmpChain,
+          &tmpLogLikelihoodValues, // likelihood is IMPORTANT
+          &tmpLogTargetValues);
+      mcSeqGenerator.getRawChainInfo(mcRawInfo);
+    }
+
     cumulativeRunTime    += mcRawInfo.runTime;
     cumulativeRejections += mcRawInfo.numRejections;
 
@@ -894,6 +926,10 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
   const UnbalancedLinkedChainsPerNodeStruct& unbalancedLinkControl,   // input // Round Rock
   unsigned int                                 indexOfFirstWeight,      // input // Round Rock
   const SequenceOfVectors<P_V,P_M>&     prevChain,               // input // Round Rock
+  double                                prevExponent,            // input
+  double                                currExponent,            // input
+  const ScalarSequence<double>&         prevLogLikelihoodValues, // input
+  const ScalarSequence<double>&         prevLogTargetValues,     // input
   SequenceOfVectors      <P_V,P_M>&     workingChain,            // output
   double&                                      cumulativeRunTime,       // output
   unsigned int&                                cumulativeRejections,    // output
@@ -910,6 +946,8 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
   }
 
   P_V auxInitialPosition(m_vectorSpace.zeroVector());
+  double auxInitialLogPrior;
+  double auxInitialLogLikelihood;
 
   unsigned int chainIdMax = 0;
   if (m_env.inter0Rank() >= 0) {
@@ -972,12 +1010,18 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
       (m_currStep      == 10)) {
     //m_env.setExceptionalCircumstance(true);
   }
+  double expRatio = currExponent;
+  if (prevExponent > 0.0) {
+    expRatio /= prevExponent;
+  }
   unsigned int cumulativeNumPositions = 0;
   for (unsigned int chainId = 0; chainId < chainIdMax; ++chainId) {
     unsigned int tmpChainSize = 0;
     if (m_env.inter0Rank() >= 0) {
       unsigned int auxIndex = unbalancedLinkControl.unbLinkedChains[chainId].initialPositionIndexInPreviousChain - indexOfFirstWeight; // KAUST4 // Round Rock
       prevChain.getPositionValues(auxIndex,auxInitialPosition); // Round Rock
+      auxInitialLogPrior = prevLogTargetValues[auxIndex] - prevLogLikelihoodValues[auxIndex];
+      auxInitialLogLikelihood = expRatio * prevLogLikelihoodValues[auxIndex];
       tmpChainSize = unbalancedLinkControl.unbLinkedChains[chainId].numberOfPositions+1; // IMPORTANT: '+1' in order to discard initial position afterwards
       if ((m_env.subDisplayFile()       ) &&
           (m_env.displayVerbosity() >= 3)) {
@@ -992,6 +1036,7 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
       }
     }
     auxInitialPosition.mpiBcast(0, m_env.subComm()); // Yes, 'subComm', important // KAUST
+    
 #if 0 // For debug only
     for (int r = 0; r < m_env.subComm().NumProc(); ++r) {
       if (r == m_env.subComm().MyPID()) {
@@ -1017,17 +1062,36 @@ MLSampling<P_V,P_M>::generateUnbLinkedChains_all(
     ScalarSequence<double> tmpLogTargetValues    (m_env,0,"");
 
     // KAUST: all nodes should call here
-    MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
-                                                        rv,
-                                                        auxInitialPosition, // KEY new: pass logPrior and logLikelihood
-                                                        &unifiedCovMatrix);
-
-    // KAUST: all nodes should call here
-    mcSeqGenerator.generateSequence(tmpChain,
-                                    &tmpLogLikelihoodValues, // likelihood is IMPORTANT
-                                    &tmpLogTargetValues);
     MHRawChainInfoStruct mcRawInfo;
-    mcSeqGenerator.getRawChainInfo(mcRawInfo);
+    if (inputOptions.m_initialPositionUsePreviousLevelLikelihood) {  // ml_likelihood_caching
+      m_env.subComm().Bcast((void *) &auxInitialLogPrior, (int) 1, RawValue_MPI_DOUBLE, 0, // Yes, 'subComm', important
+          "MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all()",
+          "failed MPI.Bcast() for auxInitialLogPrior");
+      m_env.subComm().Bcast((void *) &auxInitialLogLikelihood, (int) 1, RawValue_MPI_DOUBLE, 0, // Yes, 'subComm', important
+          "MLSamplingClass<P_V,P_M>::generateUnbLinkedChains_all",
+          "failed MPI.Bcast() for auxInitialLogLikelihood");
+      MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
+          rv,
+          auxInitialPosition, // KEY new: pass logPrior and logLikelihood
+          auxInitialLogPrior,
+          auxInitialLogLikelihood,
+          &unifiedCovMatrix);
+      mcSeqGenerator.generateSequence(tmpChain,
+          &tmpLogLikelihoodValues, // likelihood is IMPORTANT
+          &tmpLogTargetValues);
+      mcSeqGenerator.getRawChainInfo(mcRawInfo);
+    }
+    else {
+      MetropolisHastingsSG<P_V,P_M> mcSeqGenerator(inputOptions,
+          rv,
+          auxInitialPosition,
+          &unifiedCovMatrix);
+      mcSeqGenerator.generateSequence(tmpChain,
+          &tmpLogLikelihoodValues, // likelihood is IMPORTANT
+          &tmpLogTargetValues);
+      mcSeqGenerator.getRawChainInfo(mcRawInfo);
+    }
+
     cumulativeRunTime    += mcRawInfo.runTime;
     cumulativeRejections += mcRawInfo.numRejections;
 
@@ -1820,15 +1884,26 @@ template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
   const SequenceOfVectors<P_V,P_M>&  prevChain,                // input
+  double                             prevExponent,             // input
+  double                             currExponent,             // input
+  const ScalarSequence<double>&      prevLogLikelihoodValues,  // input
+  const ScalarSequence<double>&      prevLogTargetValues,      // input
   const std::vector<ExchangeInfoStruct>&  exchangeStdVec,           // input
   const std::vector<unsigned int>&          finalNumChainsPerNode,    // input
   const std::vector<unsigned int>&          finalNumPositionsPerNode, // input
   BalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl)      // output
 {
-  if (m_env.inter0Rank() < 0) return;
+  if (m_env.inter0Rank() < 0) {
+    return;
+  }
 
   unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
   unsigned int Nc = exchangeStdVec.size();
+
+  double expRatio = currExponent;
+  if (prevExponent > 0.0) {
+    expRatio /= prevExponent;
+  }
 
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) {
     *m_env.subDisplayFile() << "Entering MLSampling<P_V,P_M>::mpiExchangePositions_inter0()"
@@ -1935,27 +2010,30 @@ MLSampling<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
     // Prepare counters and buffers for gatherv of initial positions
     //////////////////////////////////////////////////////////////////////////
     unsigned int dimSize = m_vectorSpace.dimLocal();
+    unsigned int nValuesPerInitialPosition = dimSize + 2;
     P_V auxInitialPosition(m_vectorSpace.zeroVector());
     std::vector<double> sendbuf(0);
     unsigned int sendcnt = 0;
     if (m_env.inter0Rank() != (int) r) {
-      sendcnt = numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()] * dimSize;
+      sendcnt = numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()] * nValuesPerInitialPosition;
       sendbuf.resize(sendcnt);
       for (unsigned int i = 0; i < numberOfInitialPositionsNodeRHasToReceiveFromNode[m_env.inter0Rank()]; ++i) {
         unsigned int auxIndex = indexesOfInitialPositionsNodeRHasToReceiveFromMe[i];
         prevChain.getPositionValues(auxIndex,auxInitialPosition);
         for (unsigned int j = 0; j < dimSize; ++j) {
-          sendbuf[i*dimSize + j] = auxInitialPosition[j];
+          sendbuf[i*nValuesPerInitialPosition + j] = auxInitialPosition[j];
         }
+      sendbuf[i*nValuesPerInitialPosition + dimSize]     = prevLogLikelihoodValues[auxIndex];
+      sendbuf[i*nValuesPerInitialPosition + dimSize + 1] = prevLogTargetValues[auxIndex];
       }
     }
 
     std::vector<double> recvbuf(0);
     std::vector<int> recvcnts(Np,0); // '0' is already the correct value for recvcnts[r]
     if (m_env.inter0Rank() == (int) r) {
-      recvbuf.resize(totalNumberOfInitialPositionsNodeRHasToReceive * dimSize);
+      recvbuf.resize(totalNumberOfInitialPositionsNodeRHasToReceive * nValuesPerInitialPosition);
       for (unsigned int nodeId = 0; nodeId < Np; ++nodeId) { // Yes, from '0' on (for 'r', numberOf...ToReceiveFromNode[r] = 0 anyway)
-        recvcnts[nodeId] = numberOfInitialPositionsNodeRHasToReceiveFromNode[nodeId/*m_env.inter0Rank()*/] * dimSize;
+        recvcnts[nodeId] = numberOfInitialPositionsNodeRHasToReceiveFromNode[nodeId/*m_env.inter0Rank()*/] * nValuesPerInitialPosition;
       }
     }
 
@@ -1997,18 +2075,25 @@ MLSampling<P_V,P_M>::mpiExchangePositions_inter0( // EXTRA FOR LOAD BALANCE
       for (unsigned int i = 0; i < Nc; ++i) {
         if ((exchangeStdVec[i].finalNodeOfInitialPosition    == (int) r) &&
             (exchangeStdVec[i].originalNodeOfInitialPosition == (int) r)) {
-          prevChain.getPositionValues(exchangeStdVec[i].originalIndexOfInitialPosition,auxInitialPosition);
+          unsigned int originalIndex = exchangeStdVec[i].originalIndexOfInitialPosition;
+          prevChain.getPositionValues(originalIndex, auxInitialPosition);
           balancedLinkControl.balLinkedChains[auxIndex].initialPosition = new P_V(auxInitialPosition);
+          balancedLinkControl.balLinkedChains[auxIndex].initialLogPrior = prevLogTargetValues[originalIndex] - prevLogLikelihoodValues[originalIndex];
+          balancedLinkControl.balLinkedChains[auxIndex].initialLogLikelihood = expRatio*prevLogLikelihoodValues[originalIndex];
           balancedLinkControl.balLinkedChains[auxIndex].numberOfPositions = exchangeStdVec[i].numberOfPositions;
           auxIndex++;
-  }
+        }
       }
 
       for (unsigned int i = 0; i < totalNumberOfInitialPositionsNodeRHasToReceive; ++i) {
         for (unsigned int j = 0; j < dimSize; ++j) {
-          auxInitialPosition[j] = recvbuf[i*dimSize + j];
+          auxInitialPosition[j] = recvbuf[i*nValuesPerInitialPosition + j];
         }
         balancedLinkControl.balLinkedChains[auxIndex].initialPosition = new P_V(auxInitialPosition);
+        double prevLogLikelihood = recvbuf[i*nValuesPerInitialPosition + dimSize];
+        double prevLogTarget     = recvbuf[i*nValuesPerInitialPosition + dimSize + 1];
+        balancedLinkControl.balLinkedChains[auxIndex].initialLogPrior = prevLogTarget - prevLogLikelihood;
+        balancedLinkControl.balLinkedChains[auxIndex].initialLogLikelihood = expRatio*prevLogLikelihood;
         balancedLinkControl.balLinkedChains[auxIndex].numberOfPositions = chainLenghtsNodeRHasToInherit[i]; // aqui 3
         auxIndex++;
       }
@@ -3200,6 +3285,10 @@ MLSampling<P_V,P_M>::generateSequence_Step07_inter0(
   UnbalancedLinkedChainsPerNodeStruct&    unbalancedLinkControl,           // (possible) output
   const MLSamplingLevelOptions*      currOptions,                     // input
   const SequenceOfVectors<P_V,P_M>&  prevChain,                       // input
+  double                                  prevExponent,               // input
+  double                                  currExponent,               // input
+  const ScalarSequence<double>&           prevLogLikelihoodValues,    // input
+  const ScalarSequence<double>&           prevLogTargetValues,        // input
   std::vector<ExchangeInfoStruct>&        exchangeStdVec,                  // (possible) input/output
   BalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl)             // (possible) output
 {
@@ -3219,6 +3308,10 @@ MLSampling<P_V,P_M>::generateSequence_Step07_inter0(
       if (useBalancedChains) {
         prepareBalLinkedChains_inter0(currOptions,                     // input
                                       prevChain,                       // input
+                                      prevExponent,                    // input
+                                      currExponent,                    // input
+                                      prevLogLikelihoodValues,         // input
+                                      prevLogTargetValues,             // input
                                       exchangeStdVec,                  // input/output
                                       balancedLinkControl);            // output
       }
@@ -3287,6 +3380,10 @@ template <class P_V,class P_M>
 void
 MLSampling<P_V,P_M>::generateSequence_Step09_all(
   const SequenceOfVectors<P_V,P_M>& prevChain,                         // input
+  double                                   prevExponent,                      // input
+  double                                   currExponent,                      // input
+  const ScalarSequence<double>&            prevLogLikelihoodValues,           // input
+  const ScalarSequence<double>&            prevLogTargetValues,               // input
   unsigned int                             indexOfFirstWeight,                // input
   unsigned int                             indexOfLastWeight,                 // input
   const std::vector<double>&               unifiedWeightStdVectorAtProc0Only, // input
@@ -3536,6 +3633,10 @@ MLSampling<P_V,P_M>::generateSequence_Step09_all(
           if (useBalancedChains) {
             prepareBalLinkedChains_inter0(currOptions,                        // input
                                           prevChain,                          // input
+                                          prevExponent,                       // input
+                                          currExponent,                       // input
+                                          prevLogLikelihoodValues,            // input
+                                          prevLogTargetValues,                // input
                                           exchangeStdVec,                     // input/output
                                           nowBalLinkControl);                 // output
           }
@@ -3603,6 +3704,10 @@ MLSampling<P_V,P_M>::generateSequence_Step09_all(
                                       nowUnbLinkControl,  // input // Round Rock
                                       indexOfFirstWeight, // input // Round Rock
                                       prevChain,          // input // Round Rock
+                                      prevExponent,             // input
+                                      currExponent,             // input
+                                      prevLogLikelihoodValues,  // input
+                                      prevLogTargetValues,      // input
                                       nowChain,           // output
                                       nowRunTime,         // output
                                       nowRejections,      // output
@@ -3763,6 +3868,10 @@ MLSampling<P_V,P_M>::generateSequence_Step10_all(
   const UnbalancedLinkedChainsPerNodeStruct&    unbalancedLinkControl,        // input // Round Rock
   unsigned int                                    indexOfFirstWeight,           // input // Round Rock
   const SequenceOfVectors<P_V,P_M>&        prevChain,                    // input // Round Rock
+  double                                   prevExponent,                       // input
+  double                                   currExponent,                       // input
+  const ScalarSequence<double>&            prevLogLikelihoodValues,            // input
+  const ScalarSequence<double>&            prevLogTargetValues,                // input
   const BalancedLinkedChainsPerNodeStruct<P_V>& balancedLinkControl,          // input // Round Rock
   SequenceOfVectors      <P_V,P_M>&        currChain,                    // output
   double&                                         cumulativeRawChainRunTime,    // output
@@ -3821,6 +3930,10 @@ MLSampling<P_V,P_M>::generateSequence_Step10_all(
                                     unbalancedLinkControl,        // input // Round Rock
                                     indexOfFirstWeight,           // input // Round Rock
                                     prevChain,                    // input // Round Rock
+                                    prevExponent,                 // input
+                                    currExponent,                 // input
+                                    prevLogLikelihoodValues,      // input
+                                    prevLogTargetValues,          // input
                                     currChain,                    // output
                                     cumulativeRawChainRunTime,    // output
                                     cumulativeRawChainRejections, // output
@@ -4314,6 +4427,9 @@ MLSampling<P_V,P_M>::generateSequence(
 
     MLSamplingLevelOptions*            currOptions           = NULL;  // step 1
     SequenceOfVectors<P_V,P_M>*        prevChain             = NULL;  // step 2
+    ScalarSequence<double> prevLogLikelihoodValues(m_env, 0, "");
+    ScalarSequence<double> prevLogTargetValues    (m_env, 0, "");
+    double                             prevExponent          = 0.;    // step 3
     unsigned int                              indexOfFirstWeight    = 0;     // step 2
     unsigned int                              indexOfLastWeight     = 0;     // step 2
     P_M*                                      unifiedCovMatrix      = NULL;  // step 4
@@ -4361,14 +4477,12 @@ MLSampling<P_V,P_M>::generateSequence(
     // Step 2 of 11: save [chain and corresponding target pdf values] from previous level
     //***********************************************************
     m_currStep = 2;
-    double       prevExponent                   = currExponent;
+    prevExponent                   = currExponent;
     double       prevEta                        = currEta;
     unsigned int prevUnifiedRequestedNumSamples = currUnifiedRequestedNumSamples;
     prevChain = new SequenceOfVectors<P_V,P_M>(m_vectorSpace,
                                                       0,
                                                       m_options.m_prefix+"prev_chain");
-    ScalarSequence<double> prevLogLikelihoodValues(m_env,0,"");
-    ScalarSequence<double> prevLogTargetValues    (m_env,0,"");
 
     indexOfFirstWeight = 0;
     indexOfLastWeight  = 0;
@@ -4378,6 +4492,7 @@ MLSampling<P_V,P_M>::generateSequence(
       generateSequence_Step02_inter0(currOptions,             // input
                                      currChain,               // input/output // restate
                                      currLogLikelihoodValues, // input/output // restate
+
                                      currLogTargetValues,     // input/output // restate
                                      *prevChain,              // output
                                      prevLogLikelihoodValues, // output
@@ -4500,6 +4615,10 @@ MLSampling<P_V,P_M>::generateSequence(
                                      *unbalancedLinkControl,          // (possible) output
                                      currOptions,                     // input
                                      *prevChain,                      // input
+                                     prevExponent,                    // input
+                                     currExponent,                    // input
+                                     prevLogLikelihoodValues,         // input
+                                     prevLogTargetValues,             // input
                                      exchangeStdVec,                  // (possible) input/output
                                      *balancedLinkControl);           // (possible) output
     }
@@ -4528,6 +4647,10 @@ MLSampling<P_V,P_M>::generateSequence(
     //***********************************************************
     m_currStep = 9;
     generateSequence_Step09_all(*prevChain,                        // input
+				prevExponent,                    // input
+				currExponent,                    // input
+				prevLogLikelihoodValues,         // input
+				prevLogTargetValues,             // input
                                 indexOfFirstWeight,                // input
                                 indexOfLastWeight,                 // input
                                 unifiedWeightStdVectorAtProc0Only, // input
@@ -4581,7 +4704,7 @@ MLSampling<P_V,P_M>::generateSequence(
       currLogTargetValues            = prevLogTargetValues;
     }
     } // while (tryExponentEta) // gpmsa1
-
+    
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 0)) { // gpmsa1
       *m_env.subDisplayFile() << "In MLSampling<P_V,P_M>::generateSequence()"
                               << ", level " << m_currLevel+LEVEL_REF_ID
@@ -4603,6 +4726,10 @@ MLSampling<P_V,P_M>::generateSequence(
                                 *unbalancedLinkControl,       // input // Round Rock
                                 indexOfFirstWeight,           // input // Round Rock
                                 *prevChain,                   // input // Round Rock
+                                prevExponent,                 // input
+                                currExponent,                 // input
+                                prevLogLikelihoodValues,      // input
+                                prevLogTargetValues,          // input
                                 *balancedLinkControl,         // input // Round Rock
                                 currChain,                    // output
                                 cumulativeRawChainRunTime,    // output

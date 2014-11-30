@@ -36,12 +36,12 @@ namespace QUESO {
 //*****************************************************
 /*! \class ScaledCovMatrixTKGroup
  *  \brief This class allows the representation of a transition kernel with a scaled covariance matrix. */
- 
+
 template<class V, class M>
 class ScaledCovMatrixTKGroup : public BaseTKGroup<V,M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   ScaledCovMatrixTKGroup(const char*                    prefix,
                                 const VectorSpace<V,M>& vectorSpace,
@@ -50,33 +50,33 @@ public:
   //! Destructor.
   ~ScaledCovMatrixTKGroup();
   //@}
-  
+
   //! @name Statistical/Mathematical methods
   //@{
   //! Whether or not the matrix is symmetric. Always 'true'.
   /*! \todo: It only returns 'true', thus a test for its symmetricity must be included.*/
   bool                          symmetric                 () const;
-  
+
   //! Gaussian increment property to construct a transition kernel.
-  const GaussianVectorRV<V,M>& rv                        (unsigned int                     stageId );
-  
+  const GaussianVectorRV<V,M>& rv                        (unsigned int                     stageId ) const;
+
   //! Gaussian increment property to construct a transition kernel.
   const GaussianVectorRV<V,M>& rv                        (const std::vector<unsigned int>& stageIds);
-  
+
   //! Scales the covariance matrix.
   /*! The covariance matrix is scaled by a factor of \f$ 1/scales^2 \f$.*/
   void                          updateLawCovMatrix        (const M& covMatrix);
   //@}
-  
+
   //! @name Misc methods
   //@{
-  //! Sets the pre-computing positions \c m_preComputingPositions[stageId] with a new vector of size \c position.  
+  //! Sets the pre-computing positions \c m_preComputingPositions[stageId] with a new vector of size \c position.
   bool                          setPreComputingPosition   (const V& position, unsigned int stageId);
-  
+
   //! Clears the pre-computing positions \c m_preComputingPositions[stageId]
   void                          clearPreComputingPositions();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the transition kernel.

@@ -30,24 +30,24 @@
 namespace QUESO {
 
 // Default constructor
-template<class V,class M>
-BaseScalarFunction<V,M>::BaseScalarFunction(const char* prefix,
-    const VectorSet<V,M>& domainSet)
+template<class V, class M>
+BaseScalarFunction<V, M>::BaseScalarFunction(const char * prefix,
+    const VectorSet<V, M> & domainSet)
   : m_env(domainSet.env()),
-    m_prefix((std::string)(prefix)+"func_"),
+    m_prefix((std::string)(prefix) + "func_"),
     m_domainSet(domainSet)
 {
 }
 
 // Destructor
-template<class V,class M>
-BaseScalarFunction<V,M>::~BaseScalarFunction()
+template<class V, class M>
+BaseScalarFunction<V, M>::~BaseScalarFunction()
 {
 }
 
 // Math methods
-template<class V,class M>
-const VectorSet<V,M>& BaseScalarFunction<V,M>::domainSet() const
+template<class V, class M>
+const VectorSet<V, M> & BaseScalarFunction<V, M>::domainSet() const
 {
   return m_domainSet;
 }

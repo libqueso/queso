@@ -1,14 +1,17 @@
 #!/bin/bash
 #----------------------------------------------------------
 # PECOS Regression tests for QUESO
-# 
+#
 # 1. Validation cycle using TGA example.
 #
 # Originally: 5-19-09
 #----------------------------------------------------------
 
+set -eu
+set -o pipefail
+
 TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)
-SAVELOG=0		                   # Log model output?
+SAVELOG=1		                   # Log model output?
 COMMONDIR="$srcdir/../common"
 
 #----------------
@@ -22,9 +25,9 @@ RUNDIR=`pwd`
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 #
-# Regresion Test #1: Validation cycle with TGA example 
+# Regresion Test #1: Validation cycle with TGA example
 
-VERIFY_DATE="07-30-2010"
+VERIFY_DATE="11-19-2014"
 SOLDIR="outputData"
 EXE="./TgaValidationCycle_gsl"   # executable name
 SOLREFS="$srcdir/regression/$VERIFY_DATE"
@@ -57,26 +60,12 @@ fi
 verify_file_exists $SOLDIR/file_val_ip_raw2.m
 verify_file_exists $SOLREFS/file_val_ip_raw2.m
 
-igot=1
-
 # Compare solutions from 4 output files.
 
 for file in file_cal_ip_raw2.m file_val_ip_raw2.m file_cal_fp_qoi2.m file_val_fp_qoi2.m ; do
-
-    $RUNDIR/$COMMONDIR/compare.pl $SOLDIR/$file $SOLREFS/$file
-    let igot="$igot * $?"
+    if ! $RUNDIR/$COMMONDIR/compare.pl $SOLDIR/$file $SOLREFS/$file; then
+      message_fail "$TESTNAME failed verification"
+    fi
 done
 
-cd - >& /dev/null
-
-if [ $igot -eq 0 ];then
-    message_passed "$TESTNAME"
-else
-  message_fail "$TESTNAME failed verification"
-fi
-
-#------------------------------------------------------------------------------
-#------------------------------------------------------------------------------
-
-
-
+message_passed "$TESTNAME"

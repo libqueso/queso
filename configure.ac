@@ -2,7 +2,12 @@
 # Process this file with autoconf to produce a configure script. 
 
 AC_PREREQ(2.65)
-AC_INIT([queso], [0.50.1], [queso-users@googlegroups.com])
+AC_INIT([queso], [0.51.0], [queso-users@googlegroups.com])
+PACKAGE_DESCRIPTION="The parallel C++ statistical library QUESO: Quantification of uncertainty for estimation, simulation and optimization"
+AC_SUBST([PACKAGE_DESCRIPTION])
+PACKAGE_URL="https://github.com/libqueso/queso"
+AC_SUBST([PACKAGE_URL])
+
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_CONFIG_HEADERS(config_queso.h.tmp)
@@ -11,7 +16,7 @@ AX_PREFIX_CONFIG_H(config_queso.h,QUESO,config_queso.h.tmp)
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CANONICAL_TARGET()
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([color-tests subdir-objects])
 
 # Release versioning
 
@@ -171,11 +176,12 @@ AX_SUMMARIZE_ENV
 # Generate makefiles
 
 AC_CONFIG_FILES([
+  queso.pc
+  queso-deps.pc
   Makefile
   inc/queso/Makefile
   src/Makefile
   src/contrib/ANN/Makefile
-  src/contrib/ANN/lib/Makefile
   src/contrib/ANN/test/Makefile
   src/core/inc/queso.h
   examples/Makefile        
@@ -190,10 +196,40 @@ AC_CONFIG_FILES([
   test/gsl_tests/input
   test/test_Environment/copy_env
   test/test_infinite/inf_options
+  test/test_Regression/GaussianMean1DRegression_options
+  test/test_Regression/gpmsa_cobra_input.txt
+  test/test_Regression/test_cobra_samples_diff.sh
+  test/test_Regression/test_gpmsa_cobra_samples.m
+  test/test_Regression/ctf_dat.txt
+  test/test_Regression/dakota_pstudy.dat
+  test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+  test/test_StatisticalInverseProblem/both_input.txt
+  test/test_StatisticalInverseProblem/llhdout_input.txt
+  test/test_StatisticalInverseProblem/neither_input.txt
+  test/test_StatisticalInverseProblem/targetout_input.txt
+  test/test_Regression/jeffreys_input.txt
+  test/test_Regression/test_jeffreys_samples_diff.sh
+  test/test_Regression/test_jeffreys_samples.m
+  test/test_Regression/adaptedcov_input.txt
   doxygen/Makefile
   doxygen/queso.dox
   doxygen/txt_common/about_vpath.page
+],
+[
+  chmod +x test/test_Regression/test_cobra_samples_diff.sh
+  chmod +x test/test_StatisticalInverseProblem/test_LlhdTargetOutput.sh
+  chmod +x test/test_Regression/test_jeffreys_samples_diff.sh
 ])
+
+dnl ----------------------------------------------
+dnl Collect files for licence header stamping here
+dnl ----------------------------------------------
+_AC_SRCDIRS(.)
+
+# We have to do this by subdirectory because otherwise distcheck breaks as we
+# start picking up files in the directories that it uses
+QUESO_STAMPED_FILES=$(find $ac_abs_top_srcdir/{src,examples,test} -name "*.h" -or -name "*.C" | tr "\n" " ")
+AC_SUBST(QUESO_STAMPED_FILES)
 
 AC_OUTPUT()
 

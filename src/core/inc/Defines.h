@@ -28,8 +28,6 @@
 #include <queso/config_queso.h>
 #include <queso/asserts.h>
 
-//! Defines available optional libraries (GLPK, HDF5, Trilinos)
-
 #ifdef QUESO_HAVE_GLPK
 #define QUESO_HAS_GLPK
 #endif
@@ -46,7 +44,11 @@
 #define QUESO_HAS_ANN
 #endif
 
+//! This define is deprecated.  Remove any #ifdef statements in user code.
 #define QUESO_HAS_MPI
+
+//! This define is deprecated.  Remove any #ifdef statements in user code.
+#define QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
 
 #include <iostream>
 #include <stdlib.h> // For exit()
@@ -64,7 +66,6 @@ int MyWorldfullRank();
 #undef  QUESO_MEMORY_DEBUGGING
 #undef  UQ_DEBUG_PARALLEL_RUNS_IN_DETAIL
 #undef  UQ_ALSO_COMPUTE_MDFS_WITHOUT_KDE
-#define QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
 #define QUESO_CLASSES_INSTANTIATE_NEW_MAPS
 #undef  QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
 #undef  QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS

@@ -1,0 +1,37 @@
+###############################################
+# UQ Environment
+###############################################
+env_numSubEnvironments   = 1
+env_subDisplayFileName   = test_jeffreys_output/display
+env_subDisplayAllowAll   = 0
+env_subDisplayAllowedSet = 0
+env_displayVerbosity     = 2
+env_syncVerbosity        = 0
+env_seed                 = 0
+
+###############################################
+# Statistical forward problem (fp)
+###############################################
+fp_help                 = 1
+fp_computeSolution      = 1
+fp_computeCovariances   = 1
+fp_computeCorrelations  = 1
+fp_dataOutputFileName   = test_jeffreys_output/sfpOutput
+fp_dataOutputAllowedSet = 0 1
+
+###############################################
+# 'fp_': information for Monte Carlo algorithm
+###############################################
+fp_mc_help                 = 1
+fp_mc_dataOutputFileName   = test_jeffreys_output/sfpOutput
+fp_mc_dataOutputAllowedSet = 0 1
+
+fp_mc_pseq_dataOutputFileName   = test_jeffreys_output/fp_p_seq
+fp_mc_pseq_dataOutputAllowedSet = 0 1
+
+fp_mc_qseq_size                 = 10 # 20000
+fp_mc_qseq_displayPeriod        = 1  #2000
+fp_mc_qseq_measureRunTimes      = 1
+fp_mc_qseq_dataOutputFileName   = test_jeffreys_output/fp_q_seq
+fp_mc_qseq_dataOutputAllowedSet = 0 1
+

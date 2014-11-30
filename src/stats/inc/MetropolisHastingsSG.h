@@ -132,16 +132,33 @@ public:
    * 'pROblem_775_ip_', then the constructor will read all options that begin with 'pROblem_775_ip_mh_'.
     Options reading is handled by class 'MetropolisHastingsOptions'.*/
   MetropolisHastingsSG(const char*                         prefix,
-                              const MhOptionsValues*       alternativeOptionsValues, // dakota
-                              const BaseVectorRV<P_V,P_M>& sourceRv,
-                              const P_V&                          initialPosition,
-                              const P_M*                          inputProposalCovMatrix);
+		       const MhOptionsValues*       alternativeOptionsValues, // dakota
+		       const BaseVectorRV<P_V,P_M>& sourceRv,
+		       const P_V&                          initialPosition,
+		       const P_M*                          inputProposalCovMatrix);
+
+  //! Constructor.
+  MetropolisHastingsSG(const char*                         prefix,
+		       const MhOptionsValues*       alternativeOptionsValues, // dakota
+		       const BaseVectorRV<P_V,P_M>& sourceRv,
+		       const P_V&                          initialPosition,
+		       double                              initialLogPrior,
+		       double                              initialLogLikelihood,
+		       const P_M*                          inputProposalCovMatrix);
 
   //! Constructor.
   MetropolisHastingsSG(const MLSamplingLevelOptions& mlOptions,
-                              const BaseVectorRV<P_V,P_M>&  sourceRv,
-                              const P_V&                           initialPosition,
-                              const P_M*                           inputProposalCovMatrix);
+		       const BaseVectorRV<P_V,P_M>&  sourceRv,
+		       const P_V&                           initialPosition,
+		       const P_M*                           inputProposalCovMatrix);
+
+  //! Constructor.
+  MetropolisHastingsSG(const MLSamplingLevelOptions& mlOptions,
+		       const BaseVectorRV<P_V,P_M>&  sourceRv,
+		       const P_V&                           initialPosition,
+		       double                               initialLogPrior,
+		       double                               initialLogLikelihood,
+		       const P_M*                           inputProposalCovMatrix);
 
   //! Destructor
   ~MetropolisHastingsSG();
@@ -177,6 +194,9 @@ public:
   void         getRawChainInfo    (MHRawChainInfoStruct& info) const;
 
    //@}
+
+  //! Returns the underlying transition kernel for this sequence generator
+  const BaseTKGroup<P_V, P_M> & transitionKernel() const;
 
   //! @name I/O methods
   //@{
@@ -251,31 +271,37 @@ private:
   int    writeInfo                (const BaseVectorSequence<P_V,P_M>&  workingChain,
                                    std::ofstream&                             ofsvar) const;
 
-  const BaseEnvironment&                     m_env;
-  const VectorSpace <P_V,P_M>&               m_vectorSpace;
-  const BaseJointPdf<P_V,P_M>&               m_targetPdf;
-        P_V                                         m_initialPosition;
-        P_M                                         m_initialProposalCovMatrix;
-        bool                                        m_nullInputProposalCovMatrix;
-        unsigned int                                m_numDisabledParameters; // gpmsa2
-        std::vector<bool>                           m_parameterEnabledStatus; // gpmsa2
-  const ScalarFunctionSynchronizer<P_V,P_M>* m_targetPdfSynchronizer;
+  const BaseEnvironment & m_env;
+  const VectorSpace <P_V,P_M> & m_vectorSpace;
+  const BaseJointPdf<P_V,P_M> & m_targetPdf;
+  P_V m_initialPosition;
+  P_M m_initialProposalCovMatrix;
+  bool m_nullInputProposalCovMatrix;
+  unsigned int m_numDisabledParameters; // gpmsa2
+  std::vector<bool> m_parameterEnabledStatus; // gpmsa2
+  const ScalarFunctionSynchronizer<P_V,P_M> * m_targetPdfSynchronizer;
 
-        BaseTKGroup<P_V,P_M>*                m_tk;
-        unsigned int                                m_positionIdForDebugging;
-        unsigned int                                m_stageIdForDebugging;
-        std::vector<unsigned int>                   m_idsOfUniquePositions;
-        std::vector<double>                         m_logTargets;
-        std::vector<double>                         m_alphaQuotients;
-        double                                      m_lastChainSize;
-        P_V*                                        m_lastMean;
-        P_M*                                        m_lastAdaptedCovMatrix;
-        unsigned int                                m_numPositionsNotSubWritten;
+  BaseTKGroup<P_V,P_M> * m_tk;
+  unsigned int m_positionIdForDebugging;
+  unsigned int m_stageIdForDebugging;
+  std::vector<unsigned int> m_idsOfUniquePositions;
+  std::vector<double> m_logTargets;
+  std::vector<double> m_alphaQuotients;
+  double m_lastChainSize;
+  P_V * m_lastMean;
+  P_M * m_lastAdaptedCovMatrix;
+  unsigned int m_numPositionsNotSubWritten;
 
-        MHRawChainInfoStruct                      m_rawChainInfo;
+  MHRawChainInfoStruct m_rawChainInfo;
 
-        MhOptionsValues                      m_alternativeOptionsValues;
-        MetropolisHastingsSGOptions*         m_optionsObj;
+  MhOptionsValues m_alternativeOptionsValues;
+  MetropolisHastingsSGOptions * m_optionsObj;
+	bool m_computeInitialPriorAndLikelihoodValues;
+	double m_initialLogPriorValue;
+	double m_initialLogLikelihoodValue;
+
+  void transformInitialCovMatrixToGaussianSpace(const BoxSubset<P_V, P_M> &
+      boxSubset);
 };
 
 }  // End namespace QUESO

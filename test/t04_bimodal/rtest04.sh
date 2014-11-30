@@ -1,14 +1,14 @@
 #!/bin/bash
 #----------------------------------------------------------
 # PECOS Regression tests for QUESO
-# 
+#
 # 1. Validation cycle using TGA example.
 #
 # Originally: 5-19-09
 #----------------------------------------------------------
 
 TOLERANCE="1e-10"	                   # solution diff tolerance (absolute)
-SAVELOG=0		                   # Log model output?
+SAVELOG=1		                   # Log model output?
 COMMONDIR="$srcdir/../common"
 
 #----------------
@@ -22,13 +22,14 @@ RUNDIR=`pwd`
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 #
-# Regresion Test #1: Validation cycle with TGA example 
+# Regresion Test #1: Validation cycle with TGA example
 
 #VERIFY_DATE="07-12-2009"
 #VERIFY_DATE="09-22-2010"
 #VERIFY_DATE="12-09-2010"
 #VERIFY_DATE="07-03-2012"
-VERIFY_DATE="07-09-2012"
+# VERIFY_DATE="07-09-2012"
+VERIFY_DATE="09-04-2014"
 SOLDIR="outputData"
 EXE="./BimodalExample_gsl"   # executable name
 SOLREFS="$srcdir/regression/$VERIFY_DATE"
@@ -64,7 +65,7 @@ fi
 verify_file_exists $SOLDIR/rawChain_ml.m
 verify_file_exists $SOLREFS/rawChain_ml.m
 
-igot=0
+igot=1
 
 # Compare outputs from 1 output file.
 
@@ -94,9 +95,3 @@ if [ $igot -eq 0 ];then
 else
   message_fail "$TESTNAME failed verification"
 fi
-
-#------------------------------------------------------------------------------
-#------------------------------------------------------------------------------
-
-
-

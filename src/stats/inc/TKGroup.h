@@ -25,6 +25,7 @@
 #ifndef UQ_TRANSITION_KERNEL_GROUP_H
 #define UQ_TRANSITION_KERNEL_GROUP_H
 
+#include <queso/VectorRV.h>
 #include <queso/GaussianVectorRV.h>
 #include <queso/ScalarFunctionSynchronizer.h>
 
@@ -66,10 +67,10 @@ public:
   virtual       bool                          symmetric                 () const = 0;
   
   //! Gaussian increment property to construct a transition kernel. See template specialization.
-  virtual const GaussianVectorRV<V,M>& rv                        (unsigned int                     stageId ) = 0;
+  virtual const BaseVectorRV<V,M>& rv                        (unsigned int                     stageId ) const = 0;
   
   //! Gaussian increment property to construct a transition kernel. See template specialization.
-  virtual const GaussianVectorRV<V,M>& rv                        (const std::vector<unsigned int>& stageIds) = 0;
+  virtual const BaseVectorRV<V,M>& rv                        (const std::vector<unsigned int>& stageIds) = 0;
   //@}
 
   //! @name Misc methods
@@ -100,7 +101,7 @@ protected:
   const   VectorSpace<V,M>*                    m_vectorSpace;
           std::vector<double>                         m_scales;
           std::vector<const V*>                       m_preComputingPositions;
-          std::vector<GaussianVectorRV<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
+          std::vector<BaseVectorRV<V,M>* > m_rvs; // Gaussian, not Base... And nothing const...
 };
 
 }  // End namespace QUESO

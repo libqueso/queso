@@ -118,7 +118,7 @@ An inverse gamma  prior was used for $\theta_1=\sigma^2$, and a 14-dimensional G
 
 To run the executable provided (available after QUESO installation), and generate figures for the chains, KDEs, CDFs, autocorrelation and scatter plots, enter the following commands:
 \begin{lstlisting}[label={},caption={}]
-$ cd $HOME/LIBRARIES/QUESO-0.50.0/examples/example
+$ cd $HOME/LIBRARIES/QUESO-0.51.0/examples/example
 $ rm outputData/*
 $ ./example_gsl example_1chain.inp    
 $ matlab
@@ -178,12 +178,12 @@ Similarly to the other examples presented in this user's manual and also availab
 
 Thus to compile, build and execute the code,  commands similar to the following should be entered:
 \begin{lstlisting}
-$ cd $HOME/LIBRARIES/QUESO-0.50.0/examples/hysteretic/
+$ cd $HOME/LIBRARIES/QUESO-0.51.0/examples/hysteretic/
 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
   $HOME/LIBRARIES/gsl-1.15/lib/:\
   $HOME/LIBRARIES/boost-1.53.0/lib/:\
   $HOME/LIBRARIES/hdf5-1.8.10/lib:\
-  $HOME/LIBRARIES/QUESO-0.50.0/lib 
+  $HOME/LIBRARIES/QUESO-0.51.0/lib 
 $ make -f Makefile_hysteretic_violeta 
 $ ./hysteretic_gsl example.inp
 \end{lstlisting}

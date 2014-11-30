@@ -1,0 +1,51 @@
+###############################################
+# UQ Environment
+###############################################
+env_numSubEnvironments   = 1
+env_subDisplayFileName   = outputData/display
+env_subDisplayAllowAll   = 1
+env_displayVerbosity     = 2
+env_syncVerbosity        = 0
+env_seed                 = 0
+
+###############################################
+# Calibration (cal) stage: statistical inverse problem (ip)
+###############################################
+ip_help                 = anything
+ip_computeSolution      = 1
+ip_dataOutputFileName   = outputData/sipOutput
+ip_dataOutputAllowedSet = 0
+
+###############################################
+# 'ip_': information for Multilevel algorithm
+###############################################
+#ip_ml_restartOutput_levelPeriod = 1
+#ip_ml_restartOutput_baseNameForFiles = outputData/quesoRestart
+#ip_ml_restartInput_baseNameForFiles = outputData/quesoRestart
+ip_ml_dataOutputFileName   = outputData/sipOutput
+
+###############################################
+# 'ip_': information for Metropolis-Hastings algorithm
+#
+###############################################
+ip_ml_default_putOutOfBoundsInChain = 0
+ip_ml_default_initialPositionUsePreviousLevelLikelihood = 0
+ip_ml_default_totallyMute = 1
+ip_ml_default_rawChain_size = 15000
+
+###############################################
+# Last level 
+###############################################
+ip_ml_last_rawChain_dataOutputFileName         = outputData/sipOutput
+ip_ml_last_filteredChain_generate = 1
+ip_ml_last_filteredChain_lag = 5
+
+###############################################
+# 'GaussianMean1DRegression_': options for gaussian regression test
+# 'GaussianMean1DRegression_dataSet': samples generated via matlab cmd randn (i.e. standard normal samples)
+###############################################
+GaussianMean1DRegression_priorMean = 5.0
+GaussianMean1DRegression_priorVar  = 1.0
+GaussianMean1DRegression_samplingVar = 1.0
+GaussianMean1DRegression_dataSet = -0.1437   -0.0982   -1.3616   -0.0171   -1.0290    0.7133   -0.5496   -0.2415   -0.0933   -0.0669   -0.2311   -1.5371   -0.7418   -0.2220    0.0209    1.6905   -0.8379    0.4233   1.7065    1.5676    0.1265    1.0728    1.8126    2.7186   -0.6680    0.5251   -0.4768    0.6027   -1.9304   -2.1159   1.8698    0.3908   -1.2513    1.2597    0.1426   -0.6527   -0.5948   -0.6698    0.3874    0.3455   -0.1988   -0.4574   0.6930    1.3184   -0.2715   -0.9510    0.3593   -0.4184   0.5243    0.2846   -0.3556   -1.4877   -0.8829    1.0829   -0.7700   -0.1138    0.6430   -0.7929   -1.6493    0.1000
+
