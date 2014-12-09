@@ -188,9 +188,50 @@ label={code:modal-input-file},]{../../examples/modal/tests/test_2013_11_22/examp
 \subsection{Create your own Makefile}\label{sec:modal-makefile}
 
 Makefiles are special format files that together with the make utility will help one to compile and automatically build and manage projects (programs).  
-Listing \ref{code:modal_makefile} presents a Makefile, named `\texttt{Makefile\_modal\_example\_margarida}', that may be used to compile the code and create the executable \verb+modal_gsl+. Naturally, it must be adapted to the user's settings, i.e., it has to have the correct paths for the user's libraries that have actually been used to compile and install QUESO  (see Sections \ref{sec:Pre_Queso}--\ref{sec:install_Queso_make}).
+Listing \ref{code:modal_makefile} presents a Makefile, named `\texttt{Makefile\_modal\_example\_violeta}', that may be used to compile the code and create the executable \verb+modal_gsl+. Naturally, it must be adapted to the user's settings, i.e., it has to have the correct paths for the user's libraries that have actually been used to compile and install QUESO  (see Sections \ref{sec:Pre_Queso}--\ref{sec:install_Queso_make}).
 
-\lstinputlisting[caption={Makefile for the application code in Listings \ref{code:modal-main-c}-\ref{code:modal-compute-c}},  label={code:modal_makefile},language={bash}]{../../examples/modal/src//Makefile_modal_violeta}
+\begin{lstlisting}[caption={Makefile for the application code in Listings
+  \ref{code:modal-main-c}-\ref{code:modal-compute-c}},
+  label={code:modal_makefile},
+  language={bash}]
+  QUESO_DIR = /path/to/queso
+  BOOST_DIR = /path/to/boost
+  GSL_DIR   = /path/to/gsl
+
+  INC_PATHS = \
+     -I. \
+     -I$(QUESO_DIR)/include \
+     -I$(BOOST_DIR)/include \
+     -I$(GSL_DIR)/include
+
+  LIBS = \
+     -L$(QUESO_DIR)/lib -lqueso \
+     -L$(BOOST_DIR)/lib -lboost_program_options \
+     -L$(GSL_DIR)/lib -lgsl
+
+  CXX = mpic++
+  CXXFLAGS += -g -Wall -c
+
+  default: all
+
+  .SUFFIXES: .o .C
+
+  all:       modal_example_gsl
+
+  clean:
+     rm -f *~
+     rm -f *.o
+     rm -f modal_gsl
+
+  modal_example_gsl: example_main.o example_likelihood.o example_compute.o
+     $(CXX) example_main.o \
+            example_likelihood.o \
+            example_compute.o \
+            -o modal_gsl $(LIBS)
+
+  %.o: %.C
+     $(CXX) $(INC_PATHS) $(CXXFLAGS) $<
+\end{lstlisting}
 
 Thus, to compile, build and execute the code, the user just needs to run the following commands in the same directory where the files are:
 \begin{lstlisting}
