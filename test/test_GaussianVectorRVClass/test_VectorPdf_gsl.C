@@ -23,7 +23,7 @@ int require_close(double a, double b, double tol) {
 
 int main(int argc, char ** argv) {
   // Initialize
-  MPI_Init(NULL, NULL);
+  MPI_Init(&argc, &argv);
 
   EnvOptionsValues envOptionsValues;
   FullEnvironment env(MPI_COMM_WORLD, "", "", &envOptionsValues);
