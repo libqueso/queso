@@ -163,9 +163,28 @@ public:
   bool                               m_rawChainComputeStats;
 #endif
 
+  //! Toggle the option to save a filtered chain.  Default is 0 (off).
+  /*!
+   * A filtered chain is one where only every k-th sample is saved.  Here k
+   * is called the 'lag' and can be set through m_filteredChainLag.
+   */
   bool                               m_filteredChainGenerate;
+
+  //! What initial fraction of the filtered chain is discarded.  Default is 0.
+  /*!
+   * For example, if set to 0.2 then the first 20% of the filtered chain is
+   * discarded.  Useful for discarding 'burn-in'.
+   */
   double                             m_filteredChainDiscardedPortion; // input or set during run time
+
+  //! Set the lag for the filtered chain.  Default is 1.
+  /*!
+   * The lag is the number of samples to compute before saving.  For example,
+   * if the lag is set to 20, then only every 20th sample is saved.
+   */
   unsigned int                       m_filteredChainLag;              // input or set during run time
+
+  //! File name to save the filtered chain to.  Default is ".".
   std::string                        m_filteredChainDataOutputFileName;
   std::string                        m_filteredChainDataOutputFileType;
   bool                               m_filteredChainDataOutputAllowAll;
