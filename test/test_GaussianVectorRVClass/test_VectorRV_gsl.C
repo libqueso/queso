@@ -72,4 +72,6 @@ int main(int argc, char ** argv) {
 
   // finalize
   MPI_Finalize();
+
+  return 0;
 }
