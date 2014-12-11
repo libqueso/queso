@@ -319,10 +319,49 @@ Moreover, for the gravity inverse problem, one may notice that QUESO will use th
 
 Listing \ref{code:makefile} presents a Makefile, named \texttt{Makefile\_example\_violeta}, that may be used to compile the code and create the executable \verb+gravity_gsl+. Naturally, it must be adapted to the user's settings, i.e., it has to have the correct paths for the user's libraries that were actually used to compile and install QUESO (see Sections \ref{sec:Pre_Queso}--\ref{sec:install_Queso_make}).
 
-\lstinputlisting[caption={Makefile for the application code in Listings \ref{code:gravity_main}-\ref{code:gravity_like_C}},  label={code:makefile},language={bash}]{../../examples/gravity/src/Makefile_example_violeta}
+\begin{lstlisting}[caption={Makefile for the application code in Listings
+  \ref{code:gravity_main}-\ref{code:gravity_like_C}},
+  label={code:makefile},
+  language={bash}]
+  QUESO_DIR = /path/to/queso
+  BOOST_DIR = /path/to/boost
+  GSL_DIR   = /path/to/gsl
 
+  INC_PATHS = \
+     -I. \
+     -I$(QUESO_DIR)/include \
+     -I$(BOOST_DIR)/include \
+     -I$(GSL_DIR)/include
 
+  LIBS = \
+     -L$(QUESO_DIR)/lib -lqueso \
+     -L$(BOOST_DIR)/lib -lboost_program_options \
+     -L$(GSL_DIR)/lib -lgsl
 
+  CXX = mpic++
+  CXXFLAGS += -g -Wall -c
+
+  default: all
+
+  .SUFFIXES: .o .C
+
+  all:       example_gravity_gsl
+
+  clean:
+     rm -f *~
+     rm -f *.o
+     rm -f gravity_gsl
+
+  example_gravity_gsl: gravity_main.o gravity_likelihood.o gravity_compute.o gravity_qoi.o
+     $(CXX) gravity_main.o \
+            gravity_likelihood.o \
+            gravity_compute.o \
+            gravity_qoi.o \
+            -o gravity_gsl $(LIBS)
+
+  %.o: %.C
+     $(CXX) $(INC_PATHS) $(CXXFLAGS) $<
+\end{lstlisting}
 
 \subsection{Running the Gravity Example with Several Processors}
 

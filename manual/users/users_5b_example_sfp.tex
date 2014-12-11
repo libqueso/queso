@@ -113,7 +113,48 @@ label={code:sfp-input-file},]{../../examples/simpleStatisticalForwardProblem/tes
  
 Listing \ref{code:makefile} presents a Makefile, named `\texttt{Makefile\_sfp\_example\_margarida}', that may be used to compile the code and create the executable \verb+simple_sfp_example+. Naturally, it must be adapted to the user's settings, i.e., it has to have the correct paths for the user's libraries that have actually been used to compile and install QUESO.
 
-\lstinputlisting[caption={Makefile for the application code in Listings \ref{code:sfp-main-c}--\ref{code:sfp-compute-c}},  label={code:sfp-makefile},language={bash}]{../../examples/simpleStatisticalForwardProblem/src/Makefile_sfp_example_margarida}
+\begin{lstlisting}[caption={Makefile for the application code in Listings
+  \ref{code:sfp-main-c}--\ref{code:sfp-compute-c}},
+  label={code:sfp-makefile},
+  language={bash}]
+  QUESO_DIR = /path/to/queso
+  BOOST_DIR = /path/to/boost
+  GSL_DIR   = /path/to/gsl
+
+  INC_PATHS = \
+     -I. \
+     -I$(QUESO_DIR)/include \
+     -I$(BOOST_DIR)/include \
+     -I$(GSL_DIR)/include
+
+  LIBS = \
+     -L$(QUESO_DIR)/lib -lqueso \
+     -L$(BOOST_DIR)/lib -lboost_program_options \
+     -L$(GSL_DIR)/lib -lgsl
+
+  CXX = mpic++
+  CXXFLAGS += -g -Wall -c
+
+  default: all
+
+  .SUFFIXES: .o .C
+
+  all:       example_sfp
+
+  clean:
+     rm -f *~
+     rm -f *.o
+     rm -f simple_sfp_example
+
+  example_sfp: simple_sfp_example_main.o simple_sfp_example_qoi.o simple_sfp_example_compute.o
+     $(CXX) simple_sfp_example_main.o \
+            simple_sfp_example_qoi.o \
+            simple_sfp_example_compute.o \
+            -o simple_sfp_example $(LIBS)
+
+  %.o: %.C
+     $(CXX) $(INC_PATHS) $(CXXFLAGS) $<
+\end{lstlisting}
 
 Thus, to compile, build and execute the code, the user just needs to run the following commands in the same directory where the files are:
 \begin{lstlisting}
