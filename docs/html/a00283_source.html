@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/misc/inc/CovCond.h Source File</title>
+<title>queso-0.51.0: src/core/src/OperatorBase.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_88826aa2a10e1882b573f502bc7f4b55.html">misc</a></li><li class="navelem"><a class="el" href="dir_c2e907ccdf1bb9500d3a3d017a89ba74.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_50643da02713768bc4ccc4077eca1147.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">CovCond.h</div>  </div>
+<div class="title">OperatorBase.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00283.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,22 +75,25 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_COV_COND_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_COV_COND_H</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/OperatorBase.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00450.html#a1f8ccd7acd730666bd114f1f3ed33f82">CovCond</a>(<span class="keywordtype">double</span> condNumber, <span class="keyword">const</span> V&amp; direction, M &amp; covMatrix,</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    M &amp; precMatrix);</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="a00126.html#ae9f848c2418f2dca590175a53be0b250">   30</a></span>&#160;<a class="code" href="a00126.html#ae9f848c2418f2dca590175a53be0b250">OperatorBase::OperatorBase</a>()</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#endif // UQ_COV_COND_H</span></div>
-<div class="ttc" id="a00450_html_a1f8ccd7acd730666bd114f1f3ed33f82"><div class="ttname"><a href="a00450.html#a1f8ccd7acd730666bd114f1f3ed33f82">QUESO::CovCond</a></div><div class="ttdeci">void CovCond(double condNumber, const V &amp;direction, M &amp;covMatrix, M &amp;precMatrix)</div><div class="ttdef"><b>Definition:</b> <a href="a00296_source.html#l00030">CovCond.C:30</a></div></div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00126.html#a2869fcba07398fa247c0095f3e5f272d">   34</a></span>&#160;<a class="code" href="a00126.html#a2869fcba07398fa247c0095f3e5f272d">OperatorBase::~OperatorBase</a>()</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00126_html_ae9f848c2418f2dca590175a53be0b250"><div class="ttname"><a href="a00126.html#ae9f848c2418f2dca590175a53be0b250">QUESO::OperatorBase::OperatorBase</a></div><div class="ttdeci">OperatorBase()</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00283_source.html#l00030">OperatorBase.C:30</a></div></div>
+<div class="ttc" id="a00126_html_a2869fcba07398fa247c0095f3e5f272d"><div class="ttname"><a href="a00126.html#a2869fcba07398fa247c0095f3e5f272d">QUESO::OperatorBase::~OperatorBase</a></div><div class="ttdeci">virtual ~OperatorBase()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00283_source.html#l00034">OperatorBase.C:34</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:12 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:44 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

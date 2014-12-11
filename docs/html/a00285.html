@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/misc/inc/Miscellaneous.h File Reference</title>
+<title>queso-0.51.0: src/core/src/OptimizerMonitor.C File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -43,27 +43,26 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_88826aa2a10e1882b573f502bc7f4b55.html">misc</a></li><li class="navelem"><a class="el" href="dir_c2e907ccdf1bb9500d3a3d017a89ba74.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_50643da02713768bc4ccc4077eca1147.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">Miscellaneous.h File Reference</div>  </div>
+<div class="title">OptimizerMonitor.C File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/Environment.h&gt;</code><br/>
-<code>#include &lt;queso/RngBase.h&gt;</code><br/>
-<code>#include &lt;string&gt;</code><br/>
-<code>#include &lt;vector&gt;</code><br/>
-<code>#include &lt;math.h&gt;</code><br/>
+<div class="textblock"><code>#include &lt;string&gt;</code><br/>
+<code>#include &lt;iomanip&gt;</code><br/>
+<code>#include &lt;queso/asserts.h&gt;</code><br/>
+<code>#include &lt;queso/Environment.h&gt;</code><br/>
+<code>#include &lt;queso/OptimizerMonitor.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for Miscellaneous.h:</div>
+Include dependency graph for OptimizerMonitor.C:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00565.png" border="0" usemap="#src_2misc_2inc_2_miscellaneous_8h" alt=""/></div>
-<map name="src_2misc_2inc_2_miscellaneous_8h" id="src_2misc_2inc_2_miscellaneous_8h">
+<div class="center"><img src="a00586.png" border="0" usemap="#src_2core_2src_2_optimizer_monitor_8_c" alt=""/></div>
+<map name="src_2core_2src_2_optimizer_monitor_8_c" id="src_2core_2src_2_optimizer_monitor_8_c">
 </map>
 </div>
 </div>
@@ -71,50 +70,12 @@ Include dependency graph for Miscellaneous.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00450"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html">QUESO</a></td></tr>
+<tr class="memitem:a00480"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ac3fab438679d1dc864f8d629881dad2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#ac3fab438679d1dc864f8d629881dad2e">QUESO::MiscReadDoublesFromString</a> (const std::string &amp;inputString, std::vector&lt; double &gt; &amp;outputDoubles)</td></tr>
-<tr class="separator:ac3fab438679d1dc864f8d629881dad2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e0f636bad9d30e3d0fa1589a61d0567"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#a9e0f636bad9d30e3d0fa1589a61d0567">QUESO::MiscReadWordsFromString</a> (const std::string &amp;inputString, std::vector&lt; std::string &gt; &amp;outputWords)</td></tr>
-<tr class="separator:a9e0f636bad9d30e3d0fa1589a61d0567"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0fc61c58d0ca592fa172eeab540d39c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#af0fc61c58d0ca592fa172eeab540d39c">QUESO::MiscReadStringAndDoubleFromFile</a> (std::ifstream &amp;ifs, std::string &amp;termString, double *termValue)</td></tr>
-<tr class="separator:af0fc61c58d0ca592fa172eeab540d39c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a575d3153d82b7df3d78ad5cfbf2b83b7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#a575d3153d82b7df3d78ad5cfbf2b83b7">QUESO::MiscReadCharsAndDoubleFromFile</a> (std::ifstream &amp;ifs, std::string &amp;termString, double *termValue, bool &amp;endOfLineAchieved)</td></tr>
-<tr class="separator:a575d3153d82b7df3d78ad5cfbf2b83b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f268914e653262df98af86aeb33285f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#a4f268914e653262df98af86aeb33285f">QUESO::MiscGammar</a> (double a, double b, const RngBase *rngObject)</td></tr>
-<tr class="separator:a4f268914e653262df98af86aeb33285f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a424bc33f2e6e287fd468408d14b772ee"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#a424bc33f2e6e287fd468408d14b772ee">QUESO::MiscGetEllapsedSeconds</a> (struct timeval *timeval0)</td></tr>
-<tr class="separator:a424bc33f2e6e287fd468408d14b772ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48c1ad47c8bebad572842726591e9d3f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#a48c1ad47c8bebad572842726591e9d3f">QUESO::MiscHammingWindow</a> (unsigned int N, unsigned int j)</td></tr>
-<tr class="separator:a48c1ad47c8bebad572842726591e9d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f94e9b1e8f415c389f180d4a75c5591"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#a0f94e9b1e8f415c389f180d4a75c5591">QUESO::MiscGaussianDensity</a> (double x, double mu, double sigma)</td></tr>
-<tr class="separator:a0f94e9b1e8f415c389f180d4a75c5591"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f606febc1ff24dc4b427c68b4bb845e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#a2f606febc1ff24dc4b427c68b4bb845e">QUESO::MiscUintDebugMessage</a> (unsigned int value, const char *message)</td></tr>
-<tr class="separator:a2f606febc1ff24dc4b427c68b4bb845e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9763e7b3ff5f5e2a19bb440f7b7bb4e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#ae9763e7b3ff5f5e2a19bb440f7b7bb4e">QUESO::MiscIntDebugMessage</a> (int value, const char *message)</td></tr>
-<tr class="separator:ae9763e7b3ff5f5e2a19bb440f7b7bb4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a976de592e2133af50b80f6aad1352165"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#a976de592e2133af50b80f6aad1352165">QUESO::MiscDoubleDebugMessage</a> (double value, const char *message)</td></tr>
-<tr class="separator:a976de592e2133af50b80f6aad1352165"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc55c11f68bb99c4eba88030f1164764"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#abc55c11f68bb99c4eba88030f1164764">QUESO::CheckFilePath</a> (const char *path)</td></tr>
-<tr class="separator:abc55c11f68bb99c4eba88030f1164764"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56d7533d2177cf02d3fd761f7a22a873"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html#a56d7533d2177cf02d3fd761f7a22a873">QUESO::GRVY_CheckDir</a> (const char *dirname)</td></tr>
-<tr class="separator:a56d7533d2177cf02d3fd761f7a22a873"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4166a375c5adbea35afaaf20775bc519"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a4166a375c5adbea35afaaf20775bc519"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00450.html#a4166a375c5adbea35afaaf20775bc519">QUESO::MiscCheckForSameValueInAllNodes</a> (T &amp;inputValue, double acceptableTreshold, const MpiComm &amp;comm, const char *whereString)</td></tr>
-<tr class="separator:a4166a375c5adbea35afaaf20775bc519"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a6b46538ead03c47f13e60542608e34"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
-<tr class="memitem:a3a6b46538ead03c47f13e60542608e34"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00450.html#a3a6b46538ead03c47f13e60542608e34">QUESO::MiscComputePositionsBetweenMinMax</a> (V minValues, V maxValues, std::vector&lt; V * &gt; &amp;positions)</td></tr>
-<tr class="separator:a3a6b46538ead03c47f13e60542608e34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57ad15be98b39ff64e0719305c639c75"><td class="memTemplParams" colspan="2">template&lt;class V1 , class V2 &gt; </td></tr>
-<tr class="memitem:a57ad15be98b39ff64e0719305c639c75"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00450.html#a57ad15be98b39ff64e0719305c639c75">QUESO::MiscCheckTheParallelEnvironment</a> (const V1 &amp;vec1, const V2 &amp;vec2)</td></tr>
-<tr class="separator:a57ad15be98b39ff64e0719305c639c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:12 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:45 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

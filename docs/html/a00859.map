@@ -1,4 +1,3 @@
-<map id="QUESO::BaseOneDGrid&lt; T &gt;" name="QUESO::BaseOneDGrid&lt; T &gt;">
-<area shape="rect" id="node3" href="$a00144.html" title="Class for accommodating standard one&#45;dimensional grids. " alt="" coords="5,83,211,112"/>
-<area shape="rect" id="node5" href="$a00151.html" title="Class for accommodating uniform one&#45;dimensional grids. " alt="" coords="235,83,469,112"/>
+<map id="QUESO::Generic1D1DFunction" name="QUESO::Generic1D1DFunction">
+<area shape="rect" id="node2" href="$a00016.html" title="Class for one&#45;dimensional functions. " alt="" coords="15,5,223,35"/>
 </map>

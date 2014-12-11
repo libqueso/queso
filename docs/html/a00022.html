@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: QUESO::BaseScalarCdf&lt; T &gt; Class Template Reference</title>
+<title>queso-0.51.0: QUESO::BaseOptimizer Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -45,167 +45,112 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00450.html">QUESO</a></li><li class="navelem"><a class="el" href="a00022.html">BaseScalarCdf</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00480.html">QUESO</a></li><li class="navelem"><a class="el" href="a00022.html">BaseOptimizer</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="a01060.html">List of all members</a>  </div>
+<a href="a00841.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::BaseScalarCdf&lt; T &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">QUESO::BaseOptimizer Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A templated (base) class for handling CDFs.  
+<p>A base class for handling optimisation of scalar functions.  
  <a href="a00022.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00352_source.html">ScalarCdf.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00251_source.html">Optimizer.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for QUESO::BaseScalarCdf&lt; T &gt;:</div>
+Inheritance diagram for QUESO::BaseOptimizer:</div>
 <div class="dyncontent">
-<div class="center"><img src="a01061.png" border="0" usemap="#_q_u_e_s_o_1_1_base_scalar_cdf_3_01_t_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_base_scalar_cdf_3_01_t_01_4_inherit__map" id="_q_u_e_s_o_1_1_base_scalar_cdf_3_01_t_01_4_inherit__map">
-<area shape="rect" id="node3" href="a00128.html" title="A class for handling sampled CDFs. " alt="" coords="5,83,243,112"/><area shape="rect" id="node5" href="a00145.html" title="A class for handling standard CDFs. " alt="" coords="267,83,469,112"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for QUESO::BaseScalarCdf&lt; T &gt;:</div>
-<div class="dyncontent">
-<div class="center"><img src="a01062.png" border="0" usemap="#_q_u_e_s_o_1_1_base_scalar_cdf_3_01_t_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_base_scalar_cdf_3_01_t_01_4_coll__map" id="_q_u_e_s_o_1_1_base_scalar_cdf_3_01_t_01_4_coll__map">
-<area shape="rect" id="node2" href="a00018.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,160,648,189"/><area shape="rect" id="node8" href="a00050.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="805,249,1024,279"/><area shape="rect" id="node14" href="a00116.html" title="The QUESO MPI Communicator Class. " alt="" coords="841,129,988,159"/><area shape="rect" id="node4" href="a00032.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,112,195,141"/><area shape="rect" id="node6" href="a00122.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,165,175,195"/><area shape="rect" id="node11" href="a00051.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,275,205,304"/></map>
+<div class="center"><img src="a00842.png" border="0" usemap="#_q_u_e_s_o_1_1_base_optimizer_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_base_optimizer_inherit__map" id="_q_u_e_s_o_1_1_base_optimizer_inherit__map">
+<area shape="rect" id="node3" href="a00086.html" title="A base class for handling optimisation of scalar functions. " alt="" coords="13,83,179,112"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:a4604dee9fe730564c52d8d925bc69b94"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a4604dee9fe730564c52d8d925bc69b94">BaseScalarCdf</a> (const <a class="el" href="a00018.html">BaseEnvironment</a> &amp;<a class="el" href="a00022.html#a70c89dd2ad294be170338a283fc58ff3">env</a>, const char *<a class="el" href="a00022.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a>)</td></tr>
-<tr class="memdesc:a4604dee9fe730564c52d8d925bc69b94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a4604dee9fe730564c52d8d925bc69b94">More...</a><br/></td></tr>
-<tr class="separator:a4604dee9fe730564c52d8d925bc69b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7bd0ba0d3719853cc24a2e12f126600"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#aa7bd0ba0d3719853cc24a2e12f126600">~BaseScalarCdf</a> ()</td></tr>
-<tr class="memdesc:aa7bd0ba0d3719853cc24a2e12f126600"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#aa7bd0ba0d3719853cc24a2e12f126600">More...</a><br/></td></tr>
-<tr class="separator:aa7bd0ba0d3719853cc24a2e12f126600"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Environment methods</div></td></tr>
-<tr class="memitem:a70c89dd2ad294be170338a283fc58ff3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00018.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a70c89dd2ad294be170338a283fc58ff3">env</a> () const </td></tr>
-<tr class="memdesc:a70c89dd2ad294be170338a283fc58ff3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Environment. Access to private attribute m_env.  <a href="#a70c89dd2ad294be170338a283fc58ff3">More...</a><br/></td></tr>
-<tr class="separator:a70c89dd2ad294be170338a283fc58ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aafb3eaf3bf1d7269073e9c77bd8c766d"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a> () const </td></tr>
-<tr class="memdesc:aafb3eaf3bf1d7269073e9c77bd8c766d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to private attribute m_prefix.  <a href="#aafb3eaf3bf1d7269073e9c77bd8c766d">More...</a><br/></td></tr>
-<tr class="separator:aafb3eaf3bf1d7269073e9c77bd8c766d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Mathematical methods</div></td></tr>
-<tr class="memitem:a887af6d62eb04f2bf3b58c12e586f20b"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a887af6d62eb04f2bf3b58c12e586f20b">value</a> (T paramValue) const =0</td></tr>
-<tr class="memdesc:a887af6d62eb04f2bf3b58c12e586f20b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the CDF at <code>paramValue</code>. See template specialization.  <a href="#a887af6d62eb04f2bf3b58c12e586f20b">More...</a><br/></td></tr>
-<tr class="separator:a887af6d62eb04f2bf3b58c12e586f20b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e1778c76a557716e74b5fc11604dd75"><td class="memItemLeft" align="right" valign="top">virtual T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a3e1778c76a557716e74b5fc11604dd75">inverse</a> (double cdfValue) const =0</td></tr>
-<tr class="memdesc:a3e1778c76a557716e74b5fc11604dd75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the position of a given value of CDF. See template specialization.  <a href="#a3e1778c76a557716e74b5fc11604dd75">More...</a><br/></td></tr>
-<tr class="separator:a3e1778c76a557716e74b5fc11604dd75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9684b285f88be8c2bafe4d2abd8a7447"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a9684b285f88be8c2bafe4d2abd8a7447">getSupport</a> (T &amp;minHorizontal, T &amp;maxHorizontal) const =0</td></tr>
-<tr class="memdesc:a9684b285f88be8c2bafe4d2abd8a7447"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the support (image) of the CDF between two horizontal values (domain). See template specialization.  <a href="#a9684b285f88be8c2bafe4d2abd8a7447">More...</a><br/></td></tr>
-<tr class="separator:a9684b285f88be8c2bafe4d2abd8a7447"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06ee4af69d1dcdcb6c5fc64337cfed16"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a06ee4af69d1dcdcb6c5fc64337cfed16">BaseOptimizer</a> ()</td></tr>
+<tr class="memdesc:a06ee4af69d1dcdcb6c5fc64337cfed16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a06ee4af69d1dcdcb6c5fc64337cfed16">More...</a><br/></td></tr>
+<tr class="separator:a06ee4af69d1dcdcb6c5fc64337cfed16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0d3914f16c9539125fdf18f72e06c1a"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#ad0d3914f16c9539125fdf18f72e06c1a">~BaseOptimizer</a> ()</td></tr>
+<tr class="memdesc:ad0d3914f16c9539125fdf18f72e06c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#ad0d3914f16c9539125fdf18f72e06c1a">More...</a><br/></td></tr>
+<tr class="separator:ad0d3914f16c9539125fdf18f72e06c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07b2d2fdb0c13aa26f10a301ec01f94c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a07b2d2fdb0c13aa26f10a301ec01f94c">minimize</a> (<a class="el" href="a00127.html">OptimizerMonitor</a> *monitor)=0</td></tr>
+<tr class="memdesc:a07b2d2fdb0c13aa26f10a301ec01f94c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimize the objective function, starting at <code>m_initialPoint</code>.  <a href="#a07b2d2fdb0c13aa26f10a301ec01f94c">More...</a><br/></td></tr>
+<tr class="separator:a07b2d2fdb0c13aa26f10a301ec01f94c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afee64fa553e2115c11e483409c005463"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#afee64fa553e2115c11e483409c005463">getMaxIterations</a> () const </td></tr>
+<tr class="memdesc:afee64fa553e2115c11e483409c005463"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum number of iterations the optimizer will do.  <a href="#afee64fa553e2115c11e483409c005463">More...</a><br/></td></tr>
+<tr class="separator:afee64fa553e2115c11e483409c005463"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31e322b52129baacf03e19278e0375f0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a31e322b52129baacf03e19278e0375f0">getTolerance</a> () const </td></tr>
+<tr class="memdesc:a31e322b52129baacf03e19278e0375f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the tolerance used to test for an extremum in the optimizer.  <a href="#a31e322b52129baacf03e19278e0375f0">More...</a><br/></td></tr>
+<tr class="separator:a31e322b52129baacf03e19278e0375f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e527eab75fab7fa43f741494fdb9f08"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a5e527eab75fab7fa43f741494fdb9f08">getFiniteDifferenceStepSize</a> () const </td></tr>
+<tr class="memdesc:a5e527eab75fab7fa43f741494fdb9f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the step size used in the finite difference formula.  <a href="#a5e527eab75fab7fa43f741494fdb9f08">More...</a><br/></td></tr>
+<tr class="separator:a5e527eab75fab7fa43f741494fdb9f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae01578ed2d1ba7e92ba4f5a51347aec2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#ae01578ed2d1ba7e92ba4f5a51347aec2">setMaxIterations</a> (unsigned int maxIterations)</td></tr>
+<tr class="memdesc:ae01578ed2d1ba7e92ba4f5a51347aec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of iterations to be used by the optimizer.  <a href="#ae01578ed2d1ba7e92ba4f5a51347aec2">More...</a><br/></td></tr>
+<tr class="separator:ae01578ed2d1ba7e92ba4f5a51347aec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a236511ca3bacfd63664d018a1b8265d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a236511ca3bacfd63664d018a1b8265d8">setTolerance</a> (double tolerance)</td></tr>
+<tr class="memdesc:a236511ca3bacfd63664d018a1b8265d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the tolerance the optimizer will use to test for an extremum.  <a href="#a236511ca3bacfd63664d018a1b8265d8">More...</a><br/></td></tr>
+<tr class="separator:a236511ca3bacfd63664d018a1b8265d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f93afc910029b6a722ef3d855cd2daf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a7f93afc910029b6a722ef3d855cd2daf">setFiniteDifferenceStepSize</a> (double h)</td></tr>
+<tr class="memdesc:a7f93afc910029b6a722ef3d855cd2daf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the step to use in the finite difference derivative.  <a href="#a7f93afc910029b6a722ef3d855cd2daf">More...</a><br/></td></tr>
+<tr class="separator:a7f93afc910029b6a722ef3d855cd2daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a3caa986ae1ccef96a28b0365fb88c86c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00018.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a></td></tr>
-<tr class="separator:a3caa986ae1ccef96a28b0365fb88c86c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66c2a1bcf0ac517013e7857c3533a187"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a></td></tr>
-<tr class="separator:a66c2a1bcf0ac517013e7857c3533a187"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab54be9623cddb0671db458d05d63f0a7"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#ab54be9623cddb0671db458d05d63f0a7">m_minHorizontal</a></td></tr>
-<tr class="separator:ab54be9623cddb0671db458d05d63f0a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33beb9b7e610a4fe1458080593982d2e"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a33beb9b7e610a4fe1458080593982d2e">m_maxHorizontal</a></td></tr>
-<tr class="separator:a33beb9b7e610a4fe1458080593982d2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-I/O methods</h2></td></tr>
-<tr class="memitem:a131a7c148188f3f70c2db44cc1a93bc8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a131a7c148188f3f70c2db44cc1a93bc8">print</a> (std::ostream &amp;os) const =0</td></tr>
-<tr class="memdesc:a131a7c148188f3f70c2db44cc1a93bc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the CDF. See template specialization.  <a href="#a131a7c148188f3f70c2db44cc1a93bc8">More...</a><br/></td></tr>
-<tr class="separator:a131a7c148188f3f70c2db44cc1a93bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdd6c6f5f8f028a6ffd30168885b6338"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#abdd6c6f5f8f028a6ffd30168885b6338">subWriteContents</a> (const std::string &amp;varNamePrefix, const std::string &amp;fileName, const std::string &amp;fileType, const std::set&lt; unsigned int &gt; &amp;allowedSubEnvIds) const </td></tr>
-<tr class="memdesc:abdd6c6f5f8f028a6ffd30168885b6338"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the CDF of an allowed sub-environment to a file.  <a href="#abdd6c6f5f8f028a6ffd30168885b6338">More...</a><br/></td></tr>
-<tr class="separator:abdd6c6f5f8f028a6ffd30168885b6338"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a474950d32c26caa1e88dbee2788cc1bf"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a474950d32c26caa1e88dbee2788cc1bf">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="a00022.html">BaseScalarCdf</a>&lt; T &gt; &amp;obj)</td></tr>
-<tr class="separator:a474950d32c26caa1e88dbee2788cc1bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f491dcc7bc4388ee8b8ff567caf4550"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a9f491dcc7bc4388ee8b8ff567caf4550">m_maxIterations</a></td></tr>
+<tr class="separator:a9f491dcc7bc4388ee8b8ff567caf4550"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a383e5c3d09fd907658f7558f14a57c25"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a383e5c3d09fd907658f7558f14a57c25">m_tolerance</a></td></tr>
+<tr class="separator:a383e5c3d09fd907658f7558f14a57c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52d7dc0a76af37c36c5e3f8d01c8ab21"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">m_finiteDifferenceStepSize</a></td></tr>
+<tr class="separator:a52d7dc0a76af37c36c5e3f8d01c8ab21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class T&gt;<br/>
-class QUESO::BaseScalarCdf&lt; T &gt;</h3>
+<div class="textblock"><p>A base class for handling optimisation of scalar functions. </p>
+<p>This class defines the interface every optimizer must adhere to. All optimizers should subclass this class. </p>
 
-<p>A templated (base) class for handling CDFs. </p>
-<p>This class allows the mathematical definition of a cumulative distribution function (CDF), which is a scalar function such as * <img class="formulaInl" alt="$ f: B \subset R \rightarrow C \subset R $" src="form_138.png"/>; ie a function of one or more variables that has always one-dimensional range, which for the specific CDF case, the image set <img class="formulaInl" alt="$ C = [0,1]$" src="form_139.png"/>. The CDF describes the probability that a real-valued random variable X with a given probability distribution will be found at a value less than or equal to x. In the case of a continuous distribution, it gives the area under the probability density function (PDF) from minus infinity to x. </p>
-
-<p>Definition at line <a class="el" href="a00352_source.html#l00056">56</a> of file <a class="el" href="a00352_source.html">ScalarCdf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00251_source.html#l00044">44</a> of file <a class="el" href="a00251_source.html">Optimizer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a4604dee9fe730564c52d8d925bc69b94"></a>
+<a class="anchor" id="a06ee4af69d1dcdcb6c5fc64337cfed16"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::<a class="el" href="a00022.html">BaseScalarCdf</a> </td>
+          <td class="memname">QUESO::BaseOptimizer::BaseOptimizer </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00018.html">BaseEnvironment</a> &amp;&#160;</td>
-          <td class="paramname"><em>env</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>prefix</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Instantiates an object of the class given a prefix and the environment. </p>
 
-<p>Definition at line <a class="el" href="a00423_source.html#l00031">31</a> of file <a class="el" href="a00423_source.html">ScalarCdf.C</a>.</p>
-
-<p>References <a class="el" href="a00252_source.html#l00436">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00352_source.html#l00106">QUESO::BaseScalarCdf&lt; T &gt;::m_env</a>, <a class="el" href="a00352_source.html#l00107">QUESO::BaseScalarCdf&lt; T &gt;::m_prefix</a>, and <a class="el" href="a00252_source.html#l00305">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  :</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="a00022.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>          (<a class="code" href="a00022.html#a70c89dd2ad294be170338a283fc58ff3">env</a>),</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <a class="code" href="a00022.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a>       ((std::string)(<a class="code" href="a00022.html#aafb3eaf3bf1d7269073e9c77bd8c766d">prefix</a>)+<span class="stringliteral">&quot;&quot;</span>),</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="a00022.html#ab54be9623cddb0671db458d05d63f0a7">m_minHorizontal</a>(-INFINITY),</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00022.html#a33beb9b7e610a4fe1458080593982d2e">m_maxHorizontal</a>( INFINITY)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00022.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00022.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    *<a class="code" href="a00022.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering BaseScalarCdf&lt;T&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00022.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00022.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00022.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    *<a class="code" href="a00022.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving BaseScalarCdf&lt;T&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00022.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                           &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00252_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00022_html_ab54be9623cddb0671db458d05d63f0a7"><div class="ttname"><a href="a00022.html#ab54be9623cddb0671db458d05d63f0a7">QUESO::BaseScalarCdf::m_minHorizontal</a></div><div class="ttdeci">T m_minHorizontal</div><div class="ttdef"><b>Definition:</b> <a href="a00352_source.html#l00108">ScalarCdf.h:108</a></div></div>
-<div class="ttc" id="a00022_html_aafb3eaf3bf1d7269073e9c77bd8c766d"><div class="ttname"><a href="a00022.html#aafb3eaf3bf1d7269073e9c77bd8c766d">QUESO::BaseScalarCdf::prefix</a></div><div class="ttdeci">const std::string &amp; prefix() const </div><div class="ttdoc">Access to private attribute m_prefix. </div><div class="ttdef"><b>Definition:</b> <a href="a00423_source.html#l00067">ScalarCdf.C:67</a></div></div>
-<div class="ttc" id="a00022_html_a33beb9b7e610a4fe1458080593982d2e"><div class="ttname"><a href="a00022.html#a33beb9b7e610a4fe1458080593982d2e">QUESO::BaseScalarCdf::m_maxHorizontal</a></div><div class="ttdeci">T m_maxHorizontal</div><div class="ttdef"><b>Definition:</b> <a href="a00352_source.html#l00109">ScalarCdf.h:109</a></div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00252_source.html#l00436">Environment.C:436</a></div></div>
-<div class="ttc" id="a00022_html_a3caa986ae1ccef96a28b0365fb88c86c"><div class="ttname"><a href="a00022.html#a3caa986ae1ccef96a28b0365fb88c86c">QUESO::BaseScalarCdf::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00352_source.html#l00106">ScalarCdf.h:106</a></div></div>
-<div class="ttc" id="a00022_html_a70c89dd2ad294be170338a283fc58ff3"><div class="ttname"><a href="a00022.html#a70c89dd2ad294be170338a283fc58ff3">QUESO::BaseScalarCdf::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdoc">Environment. Access to private attribute m_env. </div><div class="ttdef"><b>Definition:</b> <a href="a00423_source.html#l00060">ScalarCdf.C:60</a></div></div>
-<div class="ttc" id="a00022_html_a66c2a1bcf0ac517013e7857c3533a187"><div class="ttname"><a href="a00022.html#a66c2a1bcf0ac517013e7857c3533a187">QUESO::BaseScalarCdf::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00352_source.html#l00107">ScalarCdf.h:107</a></div></div>
+<p>Definition at line <a class="el" href="a00284_source.html#l00029">29</a> of file <a class="el" href="a00284_source.html">Optimizer.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  : <a class="code" href="a00022.html#a9f491dcc7bc4388ee8b8ff567caf4550">m_maxIterations</a>(100),</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="a00022.html#a383e5c3d09fd907658f7558f14a57c25">m_tolerance</a>(1e-3),</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="a00022.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">m_finiteDifferenceStepSize</a>(1e-4)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
+<div class="ttc" id="a00022_html_a9f491dcc7bc4388ee8b8ff567caf4550"><div class="ttname"><a href="a00022.html#a9f491dcc7bc4388ee8b8ff567caf4550">QUESO::BaseOptimizer::m_maxIterations</a></div><div class="ttdeci">unsigned int m_maxIterations</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00087">Optimizer.h:87</a></div></div>
+<div class="ttc" id="a00022_html_a52d7dc0a76af37c36c5e3f8d01c8ab21"><div class="ttname"><a href="a00022.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">QUESO::BaseOptimizer::m_finiteDifferenceStepSize</a></div><div class="ttdeci">double m_finiteDifferenceStepSize</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00089">Optimizer.h:89</a></div></div>
+<div class="ttc" id="a00022_html_a383e5c3d09fd907658f7558f14a57c25"><div class="ttname"><a href="a00022.html#a383e5c3d09fd907658f7558f14a57c25">QUESO::BaseOptimizer::m_tolerance</a></div><div class="ttdeci">double m_tolerance</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00088">Optimizer.h:88</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="aa7bd0ba0d3719853cc24a2e12f126600"></a>
+<a class="anchor" id="ad0d3914f16c9539125fdf18f72e06c1a"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::~<a class="el" href="a00022.html">BaseScalarCdf</a> </td>
+          <td class="memname">QUESO::BaseOptimizer::~BaseOptimizer </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -218,23 +163,21 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Virtual destructor. </p>
+<p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="a00423_source.html#l00054">54</a> of file <a class="el" href="a00423_source.html">ScalarCdf.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<p>Definition at line <a class="el" href="a00284_source.html#l00036">36</a> of file <a class="el" href="a00284_source.html">Optimizer.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a70c89dd2ad294be170338a283fc58ff3"></a>
+<a class="anchor" id="a5e527eab75fab7fa43f741494fdb9f08"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00018.html">BaseEnvironment</a> &amp; <a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::env </td>
+          <td class="memname">double QUESO::BaseOptimizer::getFiniteDifferenceStepSize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -242,43 +185,90 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Environment. Access to private attribute m_env. </p>
+<p>Returns the step size used in the finite difference formula. </p>
+<p>Default value is 1e-4 </p>
 
-<p>Definition at line <a class="el" href="a00423_source.html#l00060">60</a> of file <a class="el" href="a00423_source.html">ScalarCdf.C</a>.</p>
+<p>Definition at line <a class="el" href="a00284_source.html#l00053">53</a> of file <a class="el" href="a00284_source.html">Optimizer.C</a>.</p>
 
-<p>Referenced by <a class="el" href="a00423_source.html#l00096">QUESO::horizontalDistance()</a>, and <a class="el" href="a00432_source.html#l00031">QUESO::StdScalarCdf&lt; T &gt;::StdScalarCdf()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00022.html#a3caa986ae1ccef96a28b0365fb88c86c">m_env</a>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
-<div class="ttc" id="a00022_html_a3caa986ae1ccef96a28b0365fb88c86c"><div class="ttname"><a href="a00022.html#a3caa986ae1ccef96a28b0365fb88c86c">QUESO::BaseScalarCdf::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00352_source.html#l00106">ScalarCdf.h:106</a></div></div>
+<p>References <a class="el" href="a00251_source.html#l00089">m_finiteDifferenceStepSize</a>.</p>
+
+<p>Referenced by <a class="el" href="a00270_source.html#l00067">QUESO::c_evaluate_derivative()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00022.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">m_finiteDifferenceStepSize</a>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="ttc" id="a00022_html_a52d7dc0a76af37c36c5e3f8d01c8ab21"><div class="ttname"><a href="a00022.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">QUESO::BaseOptimizer::m_finiteDifferenceStepSize</a></div><div class="ttdeci">double m_finiteDifferenceStepSize</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00089">Optimizer.h:89</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a9684b285f88be8c2bafe4d2abd8a7447"></a>
+<a class="anchor" id="afee64fa553e2115c11e483409c005463"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int QUESO::BaseOptimizer::getMaxIterations </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the maximum number of iterations the optimizer will do. </p>
+<p>Default value is 100 </p>
+
+<p>Definition at line <a class="el" href="a00284_source.html#l00041">41</a> of file <a class="el" href="a00284_source.html">Optimizer.C</a>.</p>
+
+<p>References <a class="el" href="a00251_source.html#l00087">m_maxIterations</a>.</p>
+
+<p>Referenced by <a class="el" href="a00270_source.html#l00363">QUESO::GslOptimizer::minimize_no_gradient()</a>, and <a class="el" href="a00270_source.html#l00266">QUESO::GslOptimizer::minimize_with_gradient()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00022.html#a9f491dcc7bc4388ee8b8ff567caf4550">m_maxIterations</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
+<div class="ttc" id="a00022_html_a9f491dcc7bc4388ee8b8ff567caf4550"><div class="ttname"><a href="a00022.html#a9f491dcc7bc4388ee8b8ff567caf4550">QUESO::BaseOptimizer::m_maxIterations</a></div><div class="ttdeci">unsigned int m_maxIterations</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00087">Optimizer.h:87</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a31e322b52129baacf03e19278e0375f0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double QUESO::BaseOptimizer::getTolerance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the tolerance used to test for an extremum in the optimizer. </p>
+<p>Default value is 1e-3 </p>
+
+<p>Definition at line <a class="el" href="a00284_source.html#l00047">47</a> of file <a class="el" href="a00284_source.html">Optimizer.C</a>.</p>
+
+<p>References <a class="el" href="a00251_source.html#l00088">m_tolerance</a>.</p>
+
+<p>Referenced by <a class="el" href="a00270_source.html#l00363">QUESO::GslOptimizer::minimize_no_gradient()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordflow">return</span> this-&gt;<a class="code" href="a00022.html#a383e5c3d09fd907658f7558f14a57c25">m_tolerance</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
+<div class="ttc" id="a00022_html_a383e5c3d09fd907658f7558f14a57c25"><div class="ttname"><a href="a00022.html#a383e5c3d09fd907658f7558f14a57c25">QUESO::BaseOptimizer::m_tolerance</a></div><div class="ttdeci">double m_tolerance</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00088">Optimizer.h:88</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a07b2d2fdb0c13aa26f10a301ec01f94c"></a>
+<div class="memitem">
+<div class="memproto">
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::getSupport </td>
+          <td class="memname">virtual void QUESO::BaseOptimizer::minimize </td>
           <td>(</td>
-          <td class="paramtype">T &amp;&#160;</td>
-          <td class="paramname"><em>minHorizontal</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="a00127.html">OptimizerMonitor</a> *&#160;</td>
+          <td class="paramname"><em>monitor</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">T &amp;&#160;</td>
-          <td class="paramname"><em>maxHorizontal</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
         </tr>
       </table>
   </td>
@@ -288,249 +278,101 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the support (image) of the CDF between two horizontal values (domain). See template specialization. </p>
+<p>Minimize the objective function, starting at <code>m_initialPoint</code>. </p>
+<p>m_initialPoint is handled in the derived class </p>
 
-<p>Implemented in <a class="el" href="a00145.html#ad754f420fbfaa309d6574a0c2674f06e">QUESO::StdScalarCdf&lt; T &gt;</a>, and <a class="el" href="a00128.html#ab1d99d5dcc9dc79b50501caf80154c39">QUESO::SampledScalarCdf&lt; T &gt;</a>.</p>
+<p>Implemented in <a class="el" href="a00086.html#a47c46f655dc8513385f2678b780a5e5e">QUESO::GslOptimizer</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a3e1778c76a557716e74b5fc11604dd75"></a>
+<a class="anchor" id="a7f93afc910029b6a722ef3d855cd2daf"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual T <a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::inverse </td>
+          <td class="memname">void QUESO::BaseOptimizer::setFiniteDifferenceStepSize </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>cdfValue</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the position of a given value of CDF. See template specialization. </p>
-
-<p>Implemented in <a class="el" href="a00145.html#a0b989e6ac45b22f22951389ae4c41861">QUESO::StdScalarCdf&lt; T &gt;</a>, and <a class="el" href="a00128.html#a685b0c343b3ab320680c132c836fb1da">QUESO::SampledScalarCdf&lt; T &gt;</a>.</p>
-
-<p>Referenced by <a class="el" href="a00423_source.html#l00096">QUESO::horizontalDistance()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aafb3eaf3bf1d7269073e9c77bd8c766d"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::string &amp; <a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::prefix </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td class="paramname"><em>h</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Access to private attribute m_prefix. </p>
+<p>Sets the step to use in the finite difference derivative. </p>
 
-<p>Definition at line <a class="el" href="a00423_source.html#l00067">67</a> of file <a class="el" href="a00423_source.html">ScalarCdf.C</a>.</p>
+<p>Definition at line <a class="el" href="a00284_source.html#l00071">71</a> of file <a class="el" href="a00284_source.html">Optimizer.C</a>.</p>
 
-<p>Referenced by <a class="el" href="a00423_source.html#l00096">QUESO::horizontalDistance()</a>, and <a class="el" href="a00432_source.html#l00031">QUESO::StdScalarCdf&lt; T &gt;::StdScalarCdf()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;{</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00022.html#a66c2a1bcf0ac517013e7857c3533a187">m_prefix</a>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
-<div class="ttc" id="a00022_html_a66c2a1bcf0ac517013e7857c3533a187"><div class="ttname"><a href="a00022.html#a66c2a1bcf0ac517013e7857c3533a187">QUESO::BaseScalarCdf::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00352_source.html#l00107">ScalarCdf.h:107</a></div></div>
+<p>References <a class="el" href="a00251_source.html#l00089">m_finiteDifferenceStepSize</a>.</p>
+<div class="fragment"><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;{</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  this-&gt;<a class="code" href="a00022.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">m_finiteDifferenceStepSize</a> = h;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
+<div class="ttc" id="a00022_html_a52d7dc0a76af37c36c5e3f8d01c8ab21"><div class="ttname"><a href="a00022.html#a52d7dc0a76af37c36c5e3f8d01c8ab21">QUESO::BaseOptimizer::m_finiteDifferenceStepSize</a></div><div class="ttdeci">double m_finiteDifferenceStepSize</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00089">Optimizer.h:89</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a131a7c148188f3f70c2db44cc1a93bc8"></a>
+<a class="anchor" id="ae01578ed2d1ba7e92ba4f5a51347aec2"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::print </td>
+          <td class="memname">void QUESO::BaseOptimizer::setMaxIterations </td>
           <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>maxIterations</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Prints the CDF. See template specialization. </p>
+<p>Sets the maximum number of iterations to be used by the optimizer. </p>
 
-<p>Implemented in <a class="el" href="a00145.html#af31f2d7dfa14a23987d1d71b36d2d221">QUESO::StdScalarCdf&lt; T &gt;</a>, and <a class="el" href="a00128.html#a1ae05088dd70e2432a52577ba6dca468">QUESO::SampledScalarCdf&lt; T &gt;</a>.</p>
+<p>Definition at line <a class="el" href="a00284_source.html#l00059">59</a> of file <a class="el" href="a00284_source.html">Optimizer.C</a>.</p>
 
-</div>
-</div>
-<a class="anchor" id="abdd6c6f5f8f028a6ffd30168885b6338"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::subWriteContents </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>varNamePrefix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>fileName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>fileType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::set&lt; unsigned int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>allowedSubEnvIds</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Writes the CDF of an allowed sub-environment to a file. </p>
-<p>This function does nothing and should <br/>
- not be called by the user. </p>
-
-<p>Reimplemented in <a class="el" href="a00145.html#a9c4edf99c3d0bbd5a011b5e03c5a1bcc">QUESO::StdScalarCdf&lt; T &gt;</a>, and <a class="el" href="a00128.html#af597534e752c2974448d7fd071266c59">QUESO::SampledScalarCdf&lt; T &gt;</a>.</p>
-
-<p>Definition at line <a class="el" href="a00423_source.html#l00074">74</a> of file <a class="el" href="a00423_source.html">ScalarCdf.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  std::cerr &lt;&lt; <span class="stringliteral">&quot;WARNING: BaseScalarCdf&lt;T&gt;::subWriteContents() being used...&quot;</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}</div>
+<p>References <a class="el" href="a00251_source.html#l00087">m_maxIterations</a>.</p>
+<div class="fragment"><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  this-&gt;<a class="code" href="a00022.html#a9f491dcc7bc4388ee8b8ff567caf4550">m_maxIterations</a> = maxIterations;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
+<div class="ttc" id="a00022_html_a9f491dcc7bc4388ee8b8ff567caf4550"><div class="ttname"><a href="a00022.html#a9f491dcc7bc4388ee8b8ff567caf4550">QUESO::BaseOptimizer::m_maxIterations</a></div><div class="ttdeci">unsigned int m_maxIterations</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00087">Optimizer.h:87</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a887af6d62eb04f2bf3b58c12e586f20b"></a>
+<a class="anchor" id="a236511ca3bacfd63664d018a1b8265d8"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double <a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::value </td>
+          <td class="memname">void QUESO::BaseOptimizer::setTolerance </td>
           <td>(</td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>paramValue</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tolerance</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Returns the value of the CDF at <code>paramValue</code>. See template specialization. </p>
+<p>Sets the tolerance the optimizer will use to test for an extremum. </p>
 
-<p>Implemented in <a class="el" href="a00145.html#a03b075f858fa2a5d35515cf602283985">QUESO::StdScalarCdf&lt; T &gt;</a>, and <a class="el" href="a00128.html#a3eb93ff8c14d2b66bf692033a2a3b8b6">QUESO::SampledScalarCdf&lt; T &gt;</a>.</p>
+<p>Definition at line <a class="el" href="a00284_source.html#l00065">65</a> of file <a class="el" href="a00284_source.html">Optimizer.C</a>.</p>
 
-<p>Referenced by <a class="el" href="a00423_source.html#l00096">QUESO::horizontalDistance()</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a class="anchor" id="a474950d32c26caa1e88dbee2788cc1bf"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="a00022.html">BaseScalarCdf</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>obj</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00352_source.html#l00092">92</a> of file <a class="el" href="a00352_source.html">ScalarCdf.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                                   {</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    obj.print(os);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">return</span> os;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  }</div>
+<p>References <a class="el" href="a00251_source.html#l00088">m_tolerance</a>.</p>
+<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  this-&gt;<a class="code" href="a00022.html#a383e5c3d09fd907658f7558f14a57c25">m_tolerance</a> = tolerance;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
+<div class="ttc" id="a00022_html_a383e5c3d09fd907658f7558f14a57c25"><div class="ttname"><a href="a00022.html#a383e5c3d09fd907658f7558f14a57c25">QUESO::BaseOptimizer::m_tolerance</a></div><div class="ttdeci">double m_tolerance</div><div class="ttdef"><b>Definition:</b> <a href="a00251_source.html#l00088">Optimizer.h:88</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a3caa986ae1ccef96a28b0365fb88c86c"></a>
+<a class="anchor" id="a52d7dc0a76af37c36c5e3f8d01c8ab21"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00018.html">BaseEnvironment</a>&amp; <a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::m_env</td>
+          <td class="memname">double QUESO::BaseOptimizer::m_finiteDifferenceStepSize</td>
         </tr>
       </table>
   </td>
@@ -540,71 +382,21 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00352_source.html#l00106">106</a> of file <a class="el" href="a00352_source.html">ScalarCdf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00251_source.html#l00089">89</a> of file <a class="el" href="a00251_source.html">Optimizer.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00423_source.html#l00031">QUESO::BaseScalarCdf&lt; T &gt;::BaseScalarCdf()</a>, <a class="el" href="a00420_source.html#l00031">QUESO::SampledScalarCdf&lt; T &gt;::SampledScalarCdf()</a>, and <a class="el" href="a00432_source.html#l00031">QUESO::StdScalarCdf&lt; T &gt;::StdScalarCdf()</a>.</p>
+<p>Referenced by <a class="el" href="a00284_source.html#l00053">getFiniteDifferenceStepSize()</a>, and <a class="el" href="a00284_source.html#l00071">setFiniteDifferenceStepSize()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a33beb9b7e610a4fe1458080593982d2e"></a>
+<a class="anchor" id="a9f491dcc7bc4388ee8b8ff567caf4550"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T <a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::m_maxHorizontal</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00352_source.html#l00109">109</a> of file <a class="el" href="a00352_source.html">ScalarCdf.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab54be9623cddb0671db458d05d63f0a7"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T <a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::m_minHorizontal</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00352_source.html#l00108">108</a> of file <a class="el" href="a00352_source.html">ScalarCdf.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a66c2a1bcf0ac517013e7857c3533a187"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string <a class="el" href="a00022.html">QUESO::BaseScalarCdf</a>&lt; T &gt;::m_prefix</td>
+          <td class="memname">unsigned int QUESO::BaseOptimizer::m_maxIterations</td>
         </tr>
       </table>
   </td>
@@ -614,19 +406,43 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00352_source.html#l00107">107</a> of file <a class="el" href="a00352_source.html">ScalarCdf.h</a>.</p>
+<p>Definition at line <a class="el" href="a00251_source.html#l00087">87</a> of file <a class="el" href="a00251_source.html">Optimizer.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00423_source.html#l00031">QUESO::BaseScalarCdf&lt; T &gt;::BaseScalarCdf()</a>, <a class="el" href="a00420_source.html#l00031">QUESO::SampledScalarCdf&lt; T &gt;::SampledScalarCdf()</a>, and <a class="el" href="a00432_source.html#l00031">QUESO::StdScalarCdf&lt; T &gt;::StdScalarCdf()</a>.</p>
+<p>Referenced by <a class="el" href="a00284_source.html#l00041">getMaxIterations()</a>, and <a class="el" href="a00284_source.html#l00059">setMaxIterations()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a383e5c3d09fd907658f7558f14a57c25"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double QUESO::BaseOptimizer::m_tolerance</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00251_source.html#l00088">88</a> of file <a class="el" href="a00251_source.html">Optimizer.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00284_source.html#l00047">getTolerance()</a>, and <a class="el" href="a00284_source.html#l00065">setTolerance()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/stats/inc/<a class="el" href="a00352_source.html">ScalarCdf.h</a></li>
-<li>src/stats/src/<a class="el" href="a00423_source.html">ScalarCdf.C</a></li>
+<li>src/core/inc/<a class="el" href="a00251_source.html">Optimizer.h</a></li>
+<li>src/core/src/<a class="el" href="a00284_source.html">Optimizer.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:15 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:46 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

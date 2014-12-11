@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: Member List</title>
+<title>queso-0.51.0: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -45,33 +45,33 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00450.html">QUESO</a></li><li class="navelem"><a class="el" href="a00080.html">GenericVectorFunction</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00480.html">QUESO</a></li><li class="navelem"><a class="el" href="a00103.html">LagrangeBasis1D1DFunction</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt; Member List</div>  </div>
+<div class="title">QUESO::LagrangeBasis1D1DFunction Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="a00080.html">QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a>, including all inherited members.</p>
+<p>This is the complete list of members for <a class="el" href="a00103.html">QUESO::LagrangeBasis1D1DFunction</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="a00027.html#a6f819f1f9adcf13e9ed4a35542aeff20">BaseVectorFunction</a>(const char *prefix, const VectorSet&lt; P_V, P_M &gt; &amp;domainSet, const VectorSet&lt; Q_V, Q_M &gt; &amp;imageSet)</td><td class="entry"><a class="el" href="a00027.html">QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="a00080.html#afcc099493262b90cdace65f24bb6b98d">compute</a>(const P_V &amp;domainVector, const P_V *domainDirection, Q_V &amp;imageVector, DistArray&lt; P_V * &gt; *gradVectors, DistArray&lt; P_M * &gt; *hessianMatrices, DistArray&lt; P_V * &gt; *hessianEffects) const </td><td class="entry"><a class="el" href="a00080.html">QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00027.html#af77b709d473f253e5c56aa620d5f3cb0">domainSet</a>() const </td><td class="entry"><a class="el" href="a00027.html">QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="a00080.html#a7225557182bd694de55618dff4322d3a">GenericVectorFunction</a>(const char *prefix, const VectorSet&lt; P_V, P_M &gt; &amp;domainSet, const VectorSet&lt; Q_V, Q_M &gt; &amp;imageSet, void(*routinePtr)(const P_V &amp;domainVector, const P_V *domainDirection, const void *functionDataPtr, Q_V &amp;imageVector, DistArray&lt; P_V * &gt; *gradVectors, DistArray&lt; P_M * &gt; *hessianMatrices, DistArray&lt; P_V * &gt; *hessianEffects), const void *functionDataPtr)</td><td class="entry"><a class="el" href="a00080.html">QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00027.html#aa3a070a86f7099f53a669f1aab547619">imageSet</a>() const </td><td class="entry"><a class="el" href="a00027.html">QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="a00027.html#a485d4d016534371775bb2b00b5a9f4d3">m_domainSet</a></td><td class="entry"><a class="el" href="a00027.html">QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00027.html#abb5487a1874515b698a3d5ee82490881">m_env</a></td><td class="entry"><a class="el" href="a00027.html">QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00027.html#a442585224e86695e302757c0fad17913">m_imageSet</a></td><td class="entry"><a class="el" href="a00027.html">QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00027.html#aacf92c70a9f6d0a951943aa708b7cfa6">m_prefix</a></td><td class="entry"><a class="el" href="a00027.html">QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00080.html#a85df3216795107b164913ad339f0f813">m_routineDataPtr</a></td><td class="entry"><a class="el" href="a00080.html">QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00080.html#a1671b1c8c0d4eed14d203823af685a09">m_routinePtr</a></td><td class="entry"><a class="el" href="a00080.html">QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00027.html#a25e2bf49649abce43b9390d7cfd04164">~BaseVectorFunction</a>()</td><td class="entry"><a class="el" href="a00027.html">QUESO::BaseVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00080.html#ab125a1b6d18f7912e70d19bd80f72175">~GenericVectorFunction</a>()</td><td class="entry"><a class="el" href="a00080.html">QUESO::GenericVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00016.html#a8e8c0f8d500675e4acfd4d7043000791">Base1D1DFunction</a>(double minDomainValue, double maxDomainValue)</td><td class="entry"><a class="el" href="a00016.html">QUESO::Base1D1DFunction</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00103.html#a2c804510956c3eb8f81bf5eb6fe7939c">deriv</a>(double domainValue) const </td><td class="entry"><a class="el" href="a00103.html">QUESO::LagrangeBasis1D1DFunction</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00103.html#aff4d5f496955e2a0be280cfb15b83c0b">LagrangeBasis1D1DFunction</a>(const std::vector&lt; double &gt; &amp;positionValues, unsigned int basisIndex)</td><td class="entry"><a class="el" href="a00103.html">QUESO::LagrangeBasis1D1DFunction</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00103.html#a60019a66c1e61dd099917d84e8165d81">m_basisIndex</a></td><td class="entry"><a class="el" href="a00103.html">QUESO::LagrangeBasis1D1DFunction</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00016.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a></td><td class="entry"><a class="el" href="a00016.html">QUESO::Base1D1DFunction</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00016.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a></td><td class="entry"><a class="el" href="a00016.html">QUESO::Base1D1DFunction</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00103.html#a77fa2b4b50c630ed258c9b99b9ac056f">m_positionValues</a></td><td class="entry"><a class="el" href="a00103.html">QUESO::LagrangeBasis1D1DFunction</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00016.html#ad2b80d0c52c0cb56c89f70f30b3bb19e">maxDomainValue</a>() const </td><td class="entry"><a class="el" href="a00016.html">QUESO::Base1D1DFunction</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00016.html#a4c110e621ef1ac557bbcc60d41f5a3c2">minDomainValue</a>() const </td><td class="entry"><a class="el" href="a00016.html">QUESO::Base1D1DFunction</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00016.html#ac41e4e15b7f97c14a0389069bf8e833d">multiplyAndIntegrate</a>(const Base1D1DFunction &amp;func, unsigned int quadratureOrder, double *resultWithMultiplicationByTAsWell) const </td><td class="entry"><a class="el" href="a00016.html">QUESO::Base1D1DFunction</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00103.html#ae41dda050ae3e18f057a44fb2d64b6d2">value</a>(double domainValue) const </td><td class="entry"><a class="el" href="a00103.html">QUESO::LagrangeBasis1D1DFunction</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00016.html#a0512da686e14fe3b0544f84432ea322e">~Base1D1DFunction</a>()</td><td class="entry"><a class="el" href="a00016.html">QUESO::Base1D1DFunction</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00103.html#aaad4a1e9dbdcc7e80a521ca427b297c2">~LagrangeBasis1D1DFunction</a>()</td><td class="entry"><a class="el" href="a00103.html">QUESO::LagrangeBasis1D1DFunction</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:13 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:46 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

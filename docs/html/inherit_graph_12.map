@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00024.html" title="QUESO::BaseScalarFunction\l\&lt; P_V, P_M \&gt;" alt="" coords="5,5,216,51"/>
+<area shape="rect" id="node1" href="$a00024.html" title="A templated (base) class to accommodate scalar covariance functions (of random variables). " alt="" coords="5,39,235,86"/>
+<area shape="rect" id="node3" href="$a00055.html" title="A class for exponential covariances. " alt="" coords="300,5,513,51"/>
+<area shape="rect" id="node5" href="$a00078.html" title="A class for generic covariances. " alt="" coords="284,74,529,121"/>
 </map>

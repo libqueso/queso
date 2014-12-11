@@ -1,14 +1,14 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node1" href="$a00016.html" title="Class for one&#45;dimensional functions. " alt="" coords="7,280,215,309"/>
-<area shape="rect" id="node3" href="$a00044.html" title="Class for constant one&#45;dimensional functions. " alt="" coords="284,5,521,35"/>
-<area shape="rect" id="node5" href="$a00060.html" title="Class for addition of a one&#45;dimensional function with another. " alt="" coords="271,59,535,88"/>
-<area shape="rect" id="node7" href="$a00061.html" title="Class for multiplication of a one&#45;dimensional function by another. " alt="" coords="264,112,541,141"/>
-<area shape="rect" id="node9" href="$a00073.html" title="Class for generic one&#45;dimensional functions. " alt="" coords="289,165,516,195"/>
-<area shape="rect" id="node11" href="$a00095.html" title="Class for Lagrange polynomial basis. " alt="" coords="267,219,539,248"/>
-<area shape="rect" id="node13" href="$a00096.html" title="Class for one&#45;dimensional Lagrange polynomials. " alt="" coords="292,271,513,318"/>
-<area shape="rect" id="node15" href="$a00097.html" title="Class for linear one&#45;dimensional functions. " alt="" coords="295,341,511,371"/>
-<area shape="rect" id="node17" href="$a00119.html" title="Class for piecewise&#45;linear one&#45;dimensional functions. " alt="" coords="295,394,511,441"/>
-<area shape="rect" id="node19" href="$a00121.html" title="Class for one&#45;dimensional quadratic functions. " alt="" coords="283,464,523,493"/>
-<area shape="rect" id="node21" href="$a00127.html" title="Class for one&#45;dimensional sampled functions. " alt="" coords="287,517,519,547"/>
-<area shape="rect" id="node23" href="$a00134.html" title="Class for multiplication of a one&#45;dimensional function by a scalar. " alt="" coords="293,570,512,617"/>
+<area shape="rect" id="node3" href="$a00045.html" title="Class for constant one&#45;dimensional functions. " alt="" coords="284,5,521,35"/>
+<area shape="rect" id="node5" href="$a00061.html" title="Class for addition of a one&#45;dimensional function with another. " alt="" coords="271,59,535,88"/>
+<area shape="rect" id="node7" href="$a00062.html" title="Class for multiplication of a one&#45;dimensional function by another. " alt="" coords="264,112,541,141"/>
+<area shape="rect" id="node9" href="$a00074.html" title="Class for generic one&#45;dimensional functions. " alt="" coords="289,165,516,195"/>
+<area shape="rect" id="node11" href="$a00103.html" title="Class for Lagrange polynomial basis. " alt="" coords="267,219,539,248"/>
+<area shape="rect" id="node13" href="$a00104.html" title="Class for one&#45;dimensional Lagrange polynomials. " alt="" coords="292,271,513,318"/>
+<area shape="rect" id="node15" href="$a00105.html" title="Class for linear one&#45;dimensional functions. " alt="" coords="295,341,511,371"/>
+<area shape="rect" id="node17" href="$a00128.html" title="Class for piecewise&#45;linear one&#45;dimensional functions. " alt="" coords="295,394,511,441"/>
+<area shape="rect" id="node19" href="$a00130.html" title="Class for one&#45;dimensional quadratic functions. " alt="" coords="283,464,523,493"/>
+<area shape="rect" id="node21" href="$a00136.html" title="Class for one&#45;dimensional sampled functions. " alt="" coords="287,517,519,547"/>
+<area shape="rect" id="node23" href="$a00143.html" title="Class for multiplication of a one&#45;dimensional function by a scalar. " alt="" coords="293,570,512,617"/>
 </map>

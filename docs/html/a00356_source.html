@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/stats/inc/SequentialVectorRealizer.h Source File</title>
+<title>queso-0.51.0: src/stats/inc/JointPdf.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">SequentialVectorRealizer.h</div>  </div>
+<div class="title">JointPdf.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00356.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,64 +75,82 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_SEQUENTIAL_REALIZER_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_SEQUENTIAL_REALIZER_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_JOINT_PROB_DENSITY_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_JOINT_PROB_DENSITY_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorRealizer.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSequence.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;math.h&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Sequential class [R-nn]</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment"></span><span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00137.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00137.html">SequentialVectorRealizer</a> : <span class="keyword">public</span> <a class="code" href="a00029.html">BaseVectorRealizer</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <a class="code" href="a00137.html#a8a39a19e20c9f2e2521750b2c12f0ede">SequentialVectorRealizer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                           prefix,</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                                  <span class="keyword">const</span> <a class="code" href="a00031.html">BaseVectorSequence&lt;V,M&gt;</a>&amp; chain);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="a00137.html#a8e982c9719fb7998601d79d76fea9d4a">~SequentialVectorRealizer</a>();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">const</span> V&amp;   <a class="code" href="a00137.html#ac7c24dd2a5663d245ba1e37556a68bce">unifiedSampleExpVector</a>()              <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">const</span> V&amp;   <a class="code" href="a00137.html#a79981fe171d8596d55172f5fa600ee29">unifiedSampleVarVector</a>()              <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00137.html#a67050d12ad38147f9f0743a0e53011b2">realization</a>           (V&amp; nextValues) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="a00137.html#a4072619c7ef9d9f196bb0d70ec9e8479">   70</a></span>&#160;  <span class="keyword">const</span>   <a class="code" href="a00031.html">BaseVectorSequence&lt;V,M&gt;</a>&amp; <a class="code" href="a00137.html#a4072619c7ef9d9f196bb0d70ec9e8479">m_chain</a>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="a00137.html#aee9ff35b276862ab8aefd7f2dbe6d232">   71</a></span>&#160;  <span class="keyword">mutable</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                    <a class="code" href="a00137.html#aee9ff35b276862ab8aefd7f2dbe6d232">m_currentChainPos</a>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="a00137.html#a9419977e751efa173663218427d5f4ce">   72</a></span>&#160;          V*                              <a class="code" href="a00137.html#a9419977e751efa173663218427d5f4ce">m_unifiedSampleExpVector</a>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="a00137.html#a8c4b1311f473131c0ab55f02096b252b">   73</a></span>&#160;          V*                              <a class="code" href="a00137.html#a8c4b1311f473131c0ab55f02096b252b">m_unifiedSampleVarVector</a>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00029.html">BaseVectorRealizer&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00029.html">BaseVectorRealizer&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00029.html">BaseVectorRealizer&lt;V,M&gt;::m_unifiedImageSet</a>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00029.html">BaseVectorRealizer&lt;V,M&gt;::m_subPeriod</a>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif // UQ_SEQUENTIAL_REALIZER_H</span></div>
-<div class="ttc" id="a00137_html_aee9ff35b276862ab8aefd7f2dbe6d232"><div class="ttname"><a href="a00137.html#aee9ff35b276862ab8aefd7f2dbe6d232">QUESO::SequentialVectorRealizer::m_currentChainPos</a></div><div class="ttdeci">unsigned int m_currentChainPos</div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00071">SequentialVectorRealizer.h:71</a></div></div>
-<div class="ttc" id="a00137_html_ac7c24dd2a5663d245ba1e37556a68bce"><div class="ttname"><a href="a00137.html#ac7c24dd2a5663d245ba1e37556a68bce">QUESO::SequentialVectorRealizer::unifiedSampleExpVector</a></div><div class="ttdeci">const V &amp; unifiedSampleExpVector() const </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00069">SequentialVectorRealizer.C:69</a></div></div>
-<div class="ttc" id="a00137_html_a8a39a19e20c9f2e2521750b2c12f0ede"><div class="ttname"><a href="a00137.html#a8a39a19e20c9f2e2521750b2c12f0ede">QUESO::SequentialVectorRealizer::SequentialVectorRealizer</a></div><div class="ttdeci">SequentialVectorRealizer(const char *prefix, const BaseVectorSequence&lt; V, M &gt; &amp;chain)</div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00033">SequentialVectorRealizer.C:33</a></div></div>
-<div class="ttc" id="a00029_html"><div class="ttname"><a href="a00029.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00370_source.html#l00053">VectorRealizer.h:53</a></div></div>
-<div class="ttc" id="a00137_html_a79981fe171d8596d55172f5fa600ee29"><div class="ttname"><a href="a00137.html#a79981fe171d8596d55172f5fa600ee29">QUESO::SequentialVectorRealizer::unifiedSampleVarVector</a></div><div class="ttdeci">const V &amp; unifiedSampleVarVector() const </div><div class="ttdoc">Returns the unified variance vector; access to private attribute m_unifiedSampleVarVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00076">SequentialVectorRealizer.C:76</a></div></div>
-<div class="ttc" id="a00137_html"><div class="ttname"><a href="a00137.html">QUESO::SequentialVectorRealizer</a></div><div class="ttdoc">A class for handling sequential draws (sampling) from probability density distributions. </div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00046">SequentialVectorRealizer.h:46</a></div></div>
-<div class="ttc" id="a00137_html_a8e982c9719fb7998601d79d76fea9d4a"><div class="ttname"><a href="a00137.html#a8e982c9719fb7998601d79d76fea9d4a">QUESO::SequentialVectorRealizer::~SequentialVectorRealizer</a></div><div class="ttdeci">~SequentialVectorRealizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00051">SequentialVectorRealizer.C:51</a></div></div>
-<div class="ttc" id="a00137_html_a67050d12ad38147f9f0743a0e53011b2"><div class="ttname"><a href="a00137.html#a67050d12ad38147f9f0743a0e53011b2">QUESO::SequentialVectorRealizer::realization</a></div><div class="ttdeci">void realization(V &amp;nextValues) const </div><div class="ttdoc">Draws the next value from this chain (m_chain) and saves it in nextValues. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00059">SequentialVectorRealizer.C:59</a></div></div>
-<div class="ttc" id="a00031_html"><div class="ttname"><a href="a00031.html">QUESO::BaseVectorSequence</a></div><div class="ttdoc">Base class for handling vector and array samples (sequence of vectors or arrays). ...</div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00054">VectorSequence.h:54</a></div></div>
-<div class="ttc" id="a00137_html_a9419977e751efa173663218427d5f4ce"><div class="ttname"><a href="a00137.html#a9419977e751efa173663218427d5f4ce">QUESO::SequentialVectorRealizer::m_unifiedSampleExpVector</a></div><div class="ttdeci">V * m_unifiedSampleExpVector</div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00072">SequentialVectorRealizer.h:72</a></div></div>
-<div class="ttc" id="a00137_html_a4072619c7ef9d9f196bb0d70ec9e8479"><div class="ttname"><a href="a00137.html#a4072619c7ef9d9f196bb0d70ec9e8479">QUESO::SequentialVectorRealizer::m_chain</a></div><div class="ttdeci">const BaseVectorSequence&lt; V, M &gt; &amp; m_chain</div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00070">SequentialVectorRealizer.h:70</a></div></div>
-<div class="ttc" id="a00137_html_a8c4b1311f473131c0ab55f02096b252b"><div class="ttname"><a href="a00137.html#a8c4b1311f473131c0ab55f02096b252b">QUESO::SequentialVectorRealizer::m_unifiedSampleVarVector</a></div><div class="ttdeci">V * m_unifiedSampleVarVector</div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00073">SequentialVectorRealizer.h:73</a></div></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;boost/math/special_functions.hpp&gt;</span> <span class="comment">// for Boost isnan. Note parentheses are important in function call.</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarFunction.h&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;queso/BoxSubset.h&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// Classes to accommodate a probability density.</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// Base class [PDF-00]</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment"></span><span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="a00019.html">   60</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00019.html">BaseJointPdf</a> : <span class="keyword">public</span> <a class="code" href="a00025.html">BaseScalarFunction</a>&lt;V,M&gt; {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <a class="code" href="a00019.html#ae1f0870366a17d71e05a2f84ec49e06e">BaseJointPdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                      <span class="keyword">const</span> <a class="code" href="a00168.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00025.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00019.html#a9f41f5dc30ddfd59e149c3a748898553">~BaseJointPdf</a>();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00019.html#a3c367a0cc3fb707a136c5df47dd414c1">actualValue</a>                    (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00019.html#aaeb1d91fd791399a502f451b07bb1bfe">lnValue</a>                        (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span>   <a class="code" href="a00019.html#ab11f1d096f82cc7857cefe1b92f6b28e">setNormalizationStyle</a>          (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> value) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">void</span>   <a class="code" href="a00019.html#a2903b3f031e68907fe7422fedc83e5dc">setLogOfNormalizationFactor</a>    (<span class="keywordtype">double</span> value) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00019.html#a99d8ab490b093abffd6068b6ea5263bb">computeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> <a class="code" href="a00019.html#ae82d4191f17af8c7a26226d127bc7850">m_logOfNormalizationFactor</a>) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="comment">//const BaseScalarPdf&lt;double&gt;&amp; component(unsigned int componentId) const;</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment"></span><span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00019.html#a7b7bdd13d2de51198bf75d522e02545b">commonComputeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> updateFactorInternally) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00025.html">BaseScalarFunction&lt;V,M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00025.html">BaseScalarFunction&lt;V,M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00025.html">BaseScalarFunction&lt;V,M&gt;::m_domainSet</a>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="a00019.html#a138c99bcef7a67077d9612bddfdcb896">  103</a></span>&#160;  <span class="keyword">mutable</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00019.html#a138c99bcef7a67077d9612bddfdcb896">m_normalizationStyle</a>;</div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="a00019.html#ae82d4191f17af8c7a26226d127bc7850">  104</a></span>&#160;  <span class="keyword">mutable</span> <span class="keywordtype">double</span>       <a class="code" href="a00019.html#ae82d4191f17af8c7a26226d127bc7850">m_logOfNormalizationFactor</a>;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">//std::vector&lt;BaseScalarPdf&lt;double&gt;*&gt; m_components; // FIXME: will need to be a parallel vector in case of a very large number of components</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">//BaseScalarPdf&lt;double&gt;               m_dummyComponent;</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;};</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">#endif // UQ_JOINT_PROB_DENSITY_H</span></div>
+<div class="ttc" id="a00168_html"><div class="ttname"><a href="a00168.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00199_source.html#l00049">VectorSet.h:49</a></div></div>
+<div class="ttc" id="a00019_html_a99d8ab490b093abffd6068b6ea5263bb"><div class="ttname"><a href="a00019.html#a99d8ab490b093abffd6068b6ea5263bb">QUESO::BaseJointPdf::computeLogOfNormalizationFactor</a></div><div class="ttdeci">virtual double computeLogOfNormalizationFactor(unsigned int numSamples, bool m_logOfNormalizationFactor) const =0</div><div class="ttdoc">Computes the logarithm of the normalization factor. See template specialization. </div></div>
+<div class="ttc" id="a00019_html_a138c99bcef7a67077d9612bddfdcb896"><div class="ttname"><a href="a00019.html#a138c99bcef7a67077d9612bddfdcb896">QUESO::BaseJointPdf::m_normalizationStyle</a></div><div class="ttdeci">unsigned int m_normalizationStyle</div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00103">JointPdf.h:103</a></div></div>
+<div class="ttc" id="a00019_html_ae82d4191f17af8c7a26226d127bc7850"><div class="ttname"><a href="a00019.html#ae82d4191f17af8c7a26226d127bc7850">QUESO::BaseJointPdf::m_logOfNormalizationFactor</a></div><div class="ttdeci">double m_logOfNormalizationFactor</div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00104">JointPdf.h:104</a></div></div>
+<div class="ttc" id="a00025_html_ad0937628825249dd36ded3ce0c7959ac"><div class="ttname"><a href="a00025.html#ad0937628825249dd36ded3ce0c7959ac">QUESO::BaseScalarFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the scalar function. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00213_source.html#l00050">ScalarFunction.C:50</a></div></div>
+<div class="ttc" id="a00019_html_aaeb1d91fd791399a502f451b07bb1bfe"><div class="ttname"><a href="a00019.html#aaeb1d91fd791399a502f451b07bb1bfe">QUESO::BaseJointPdf::lnValue</a></div><div class="ttdeci">virtual double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const =0</div><div class="ttdoc">Logarithm of the value of the function. </div></div>
+<div class="ttc" id="a00019_html_ae1f0870366a17d71e05a2f84ec49e06e"><div class="ttname"><a href="a00019.html#ae1f0870366a17d71e05a2f84ec49e06e">QUESO::BaseJointPdf::BaseJointPdf</a></div><div class="ttdeci">BaseJointPdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00434_source.html#l00033">JointPdf.C:33</a></div></div>
+<div class="ttc" id="a00025_html"><div class="ttname"><a href="a00025.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00237_source.html#l00048">GslOptimizer.h:48</a></div></div>
+<div class="ttc" id="a00019_html_a2903b3f031e68907fe7422fedc83e5dc"><div class="ttname"><a href="a00019.html#a2903b3f031e68907fe7422fedc83e5dc">QUESO::BaseJointPdf::setLogOfNormalizationFactor</a></div><div class="ttdeci">void setLogOfNormalizationFactor(double value) const </div><div class="ttdoc">Sets a logarithmic value to be used in the normalization factor (stored in the protected attribute m_...</div><div class="ttdef"><b>Definition:</b> <a href="a00434_source.html#l00069">JointPdf.C:69</a></div></div>
+<div class="ttc" id="a00019_html_a9f41f5dc30ddfd59e149c3a748898553"><div class="ttname"><a href="a00019.html#a9f41f5dc30ddfd59e149c3a748898553">QUESO::BaseJointPdf::~BaseJointPdf</a></div><div class="ttdeci">virtual ~BaseJointPdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00434_source.html#l00055">JointPdf.C:55</a></div></div>
+<div class="ttc" id="a00019_html_a7b7bdd13d2de51198bf75d522e02545b"><div class="ttname"><a href="a00019.html#a7b7bdd13d2de51198bf75d522e02545b">QUESO::BaseJointPdf::commonComputeLogOfNormalizationFactor</a></div><div class="ttdeci">double commonComputeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Common method (to the derived classes) to compute the logarithm of the normalization factor...</div><div class="ttdef"><b>Definition:</b> <a href="a00434_source.html#l00077">JointPdf.C:77</a></div></div>
+<div class="ttc" id="a00019_html_a3c367a0cc3fb707a136c5df47dd414c1"><div class="ttname"><a href="a00019.html#a3c367a0cc3fb707a136c5df47dd414c1">QUESO::BaseJointPdf::actualValue</a></div><div class="ttdeci">virtual double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const =0</div><div class="ttdoc">Actual value of the PDF (scalar function). </div></div>
+<div class="ttc" id="a00019_html_ab11f1d096f82cc7857cefe1b92f6b28e"><div class="ttname"><a href="a00019.html#ab11f1d096f82cc7857cefe1b92f6b28e">QUESO::BaseJointPdf::setNormalizationStyle</a></div><div class="ttdeci">virtual void setNormalizationStyle(unsigned int value) const </div><div class="ttdoc">Sets a value to be used in the normalization style (stored in the protected attribute m_normalization...</div><div class="ttdef"><b>Definition:</b> <a href="a00434_source.html#l00061">JointPdf.C:61</a></div></div>
+<div class="ttc" id="a00019_html"><div class="ttname"><a href="a00019.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00060">JointPdf.h:60</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:12 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:45 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

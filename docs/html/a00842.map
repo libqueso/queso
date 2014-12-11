@@ -1,3 +1,3 @@
-<map id="QUESO::GaussianHermite1DQuadrature" name="QUESO::GaussianHermite1DQuadrature">
-<area shape="rect" id="node2" href="$a00017.html" title="Base class for one&#45;dimensional quadrature rules (numerical integration of functions). " alt="" coords="45,5,256,35"/>
+<map id="QUESO::BaseOptimizer" name="QUESO::BaseOptimizer">
+<area shape="rect" id="node3" href="$a00086.html" title="A base class for handling optimisation of scalar functions. " alt="" coords="13,83,179,112"/>
 </map>

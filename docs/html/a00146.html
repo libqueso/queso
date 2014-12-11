@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: QUESO::TwoDArray&lt; T &gt; Class Template Reference</title>
+<title>queso-0.51.0: QUESO::SequentialVectorRealizer&lt; V, M &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -45,85 +45,121 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00450.html">QUESO</a></li><li class="navelem"><a class="el" href="a00146.html">TwoDArray</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00480.html">QUESO</a></li><li class="navelem"><a class="el" href="a00146.html">SequentialVectorRealizer</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="a00849.html">List of all members</a>  </div>
+<a href="a01145.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::TwoDArray&lt; T &gt; Class Template Reference</div>  </div>
+<div class="title">QUESO::SequentialVectorRealizer&lt; V, M &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Class for handling arrays of generic data.  
+<p>A class for handling sequential draws (sampling) from probability density distributions.  
  <a href="a00146.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00279_source.html">2dArrayOfStuff.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00378_source.html">SequentialVectorRealizer.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for QUESO::SequentialVectorRealizer&lt; V, M &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="a01146.png" border="0" usemap="#_q_u_e_s_o_1_1_sequential_vector_realizer_3_01_v_00_01_m_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="_q_u_e_s_o_1_1_sequential_vector_realizer_3_01_v_00_01_m_01_4_inherit__map" id="_q_u_e_s_o_1_1_sequential_vector_realizer_3_01_v_00_01_m_01_4_inherit__map">
+<area shape="rect" id="node2" href="a00030.html" title="A templated (base) class for handling sampling from vector RVs. " alt="" coords="24,6,237,53"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for QUESO::SequentialVectorRealizer&lt; V, M &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="a01147.png" border="0" usemap="#_q_u_e_s_o_1_1_sequential_vector_realizer_3_01_v_00_01_m_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="_q_u_e_s_o_1_1_sequential_vector_realizer_3_01_v_00_01_m_01_4_coll__map" id="_q_u_e_s_o_1_1_sequential_vector_realizer_3_01_v_00_01_m_01_4_coll__map">
+<area shape="rect" id="node2" href="a00030.html" title="A templated (base) class for handling sampling from vector RVs. " alt="" coords="808,5,1021,51"/><area shape="rect" id="node4" href="a00018.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,168,648,197"/><area shape="rect" id="node10" href="a00051.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="805,257,1024,287"/><area shape="rect" id="node16" href="a00124.html" title="The QUESO MPI Communicator Class. " alt="" coords="841,137,988,167"/><area shape="rect" id="node6" href="a00033.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,120,195,149"/><area shape="rect" id="node8" href="a00131.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,173,175,203"/><area shape="rect" id="node13" href="a00052.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,283,205,312"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:a61198628e4a47604bf5ad7142b151372"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a61198628e4a47604bf5ad7142b151372">TwoDArray</a> (unsigned int <a class="el" href="a00146.html#a0c81a74def0364a5ddd3e1371ca48b39">numRows</a>, unsigned int <a class="el" href="a00146.html#aac40245b6f6a944d62a34d44324af5b2">numCols</a>)</td></tr>
-<tr class="memdesc:a61198628e4a47604bf5ad7142b151372"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a61198628e4a47604bf5ad7142b151372">More...</a><br/></td></tr>
-<tr class="separator:a61198628e4a47604bf5ad7142b151372"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a057af83ed31f9ca5c3b4cc52b5383f70"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a057af83ed31f9ca5c3b4cc52b5383f70">~TwoDArray</a> ()</td></tr>
-<tr class="memdesc:a057af83ed31f9ca5c3b4cc52b5383f70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a057af83ed31f9ca5c3b4cc52b5383f70">More...</a><br/></td></tr>
-<tr class="separator:a057af83ed31f9ca5c3b4cc52b5383f70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Attribute methods</div></td></tr>
-<tr class="memitem:a0c81a74def0364a5ddd3e1371ca48b39"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a0c81a74def0364a5ddd3e1371ca48b39">numRows</a> () const </td></tr>
-<tr class="memdesc:a0c81a74def0364a5ddd3e1371ca48b39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of rows in the array.  <a href="#a0c81a74def0364a5ddd3e1371ca48b39">More...</a><br/></td></tr>
-<tr class="separator:a0c81a74def0364a5ddd3e1371ca48b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac40245b6f6a944d62a34d44324af5b2"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#aac40245b6f6a944d62a34d44324af5b2">numCols</a> () const </td></tr>
-<tr class="memdesc:aac40245b6f6a944d62a34d44324af5b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of columns in the array.  <a href="#aac40245b6f6a944d62a34d44324af5b2">More...</a><br/></td></tr>
-<tr class="separator:aac40245b6f6a944d62a34d44324af5b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa204b1795ea5ba9d5583b6eec598b16e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#aa204b1795ea5ba9d5583b6eec598b16e">setLocation</a> (unsigned int i, unsigned int j, T *info)</td></tr>
-<tr class="memdesc:aa204b1795ea5ba9d5583b6eec598b16e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the data in a specific location.  <a href="#aa204b1795ea5ba9d5583b6eec598b16e">More...</a><br/></td></tr>
-<tr class="separator:aa204b1795ea5ba9d5583b6eec598b16e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Accessor methods</div></td></tr>
-<tr class="memitem:a8cf6ad7a5890835d44740aa056fc9933"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a8cf6ad7a5890835d44740aa056fc9933">operator()</a> (unsigned int i, unsigned int j)</td></tr>
-<tr class="memdesc:a8cf6ad7a5890835d44740aa056fc9933"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns data stored in a specific location (non-const).  <a href="#a8cf6ad7a5890835d44740aa056fc9933">More...</a><br/></td></tr>
-<tr class="separator:a8cf6ad7a5890835d44740aa056fc9933"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6195a83c1f1ed39349779e19421ef4bc"><td class="memItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a6195a83c1f1ed39349779e19421ef4bc">operator()</a> (unsigned int i, unsigned int j) const </td></tr>
-<tr class="memdesc:a6195a83c1f1ed39349779e19421ef4bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns data stored in a specific location (const).  <a href="#a6195a83c1f1ed39349779e19421ef4bc">More...</a><br/></td></tr>
-<tr class="separator:a6195a83c1f1ed39349779e19421ef4bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupText"><p>Default constructor. </p>
+</div></td></tr>
+<tr class="memitem:a8a39a19e20c9f2e2521750b2c12f0ede"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a8a39a19e20c9f2e2521750b2c12f0ede">SequentialVectorRealizer</a> (const char *prefix, const <a class="el" href="a00032.html">BaseVectorSequence</a>&lt; V, M &gt; &amp;chain)</td></tr>
+<tr class="separator:a8a39a19e20c9f2e2521750b2c12f0ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e982c9719fb7998601d79d76fea9d4a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a8e982c9719fb7998601d79d76fea9d4a">~SequentialVectorRealizer</a> ()</td></tr>
+<tr class="memdesc:a8e982c9719fb7998601d79d76fea9d4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a8e982c9719fb7998601d79d76fea9d4a">More...</a><br/></td></tr>
+<tr class="separator:a8e982c9719fb7998601d79d76fea9d4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Sampling-related methods</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>Returns the unified mean vector; access to private attribute m_unifiedSampleExpVector. </p>
+</div></td></tr>
+<tr class="memitem:ac7c24dd2a5663d245ba1e37556a68bce"><td class="memItemLeft" align="right" valign="top">const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#ac7c24dd2a5663d245ba1e37556a68bce">unifiedSampleExpVector</a> () const </td></tr>
+<tr class="separator:ac7c24dd2a5663d245ba1e37556a68bce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79981fe171d8596d55172f5fa600ee29"><td class="memItemLeft" align="right" valign="top">const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a79981fe171d8596d55172f5fa600ee29">unifiedSampleVarVector</a> () const </td></tr>
+<tr class="memdesc:a79981fe171d8596d55172f5fa600ee29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the unified variance vector; access to private attribute m_unifiedSampleVarVector.  <a href="#a79981fe171d8596d55172f5fa600ee29">More...</a><br/></td></tr>
+<tr class="separator:a79981fe171d8596d55172f5fa600ee29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67050d12ad38147f9f0743a0e53011b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a67050d12ad38147f9f0743a0e53011b2">realization</a> (V &amp;nextValues) const </td></tr>
+<tr class="memdesc:a67050d12ad38147f9f0743a0e53011b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the next value from this chain (<code>m_chain</code>) and saves it in <code>nextValues</code>.  <a href="#a67050d12ad38147f9f0743a0e53011b2">More...</a><br/></td></tr>
+<tr class="separator:a67050d12ad38147f9f0743a0e53011b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_a00030"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00030')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00030.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:ad77258f8737d87b5d0cd58b398939c70 inherit pub_methods_a00030"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#ad77258f8737d87b5d0cd58b398939c70">BaseVectorRealizer</a> (const char *prefix, const <a class="el" href="a00168.html">VectorSet</a>&lt; V, M &gt; &amp;<a class="el" href="a00030.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a>, unsigned int <a class="el" href="a00030.html#ad9fda59efacf5bd84c472c96dfa00613">subPeriod</a>)</td></tr>
+<tr class="memdesc:ad77258f8737d87b5d0cd58b398939c70 inherit pub_methods_a00030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ad77258f8737d87b5d0cd58b398939c70">More...</a><br/></td></tr>
+<tr class="separator:ad77258f8737d87b5d0cd58b398939c70 inherit pub_methods_a00030"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc2eda9b3cea09c559c19e349c537b91 inherit pub_methods_a00030"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#abc2eda9b3cea09c559c19e349c537b91">~BaseVectorRealizer</a> ()</td></tr>
+<tr class="memdesc:abc2eda9b3cea09c559c19e349c537b91 inherit pub_methods_a00030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <a href="#abc2eda9b3cea09c559c19e349c537b91">More...</a><br/></td></tr>
+<tr class="separator:abc2eda9b3cea09c559c19e349c537b91 inherit pub_methods_a00030"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad958991bab8d6369e8a0d66b22a237d4 inherit pub_methods_a00030"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00168.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#ad958991bab8d6369e8a0d66b22a237d4">unifiedImageSet</a> () const </td></tr>
+<tr class="memdesc:ad958991bab8d6369e8a0d66b22a237d4 inherit pub_methods_a00030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Image set where the realizations lie. Access to protected attribute m_unifiedImageSet.  <a href="#ad958991bab8d6369e8a0d66b22a237d4">More...</a><br/></td></tr>
+<tr class="separator:ad958991bab8d6369e8a0d66b22a237d4 inherit pub_methods_a00030"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9fda59efacf5bd84c472c96dfa00613 inherit pub_methods_a00030"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#ad9fda59efacf5bd84c472c96dfa00613">subPeriod</a> () const </td></tr>
+<tr class="memdesc:ad9fda59efacf5bd84c472c96dfa00613 inherit pub_methods_a00030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sub-period of the realization. Access to protected attribute m_subPeriod.  <a href="#ad9fda59efacf5bd84c472c96dfa00613">More...</a><br/></td></tr>
+<tr class="separator:ad9fda59efacf5bd84c472c96dfa00613 inherit pub_methods_a00030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a26fc2685fae9aa7aa0fecfaa52e6c617"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">m_numRows</a></td></tr>
-<tr class="separator:a26fc2685fae9aa7aa0fecfaa52e6c617"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adab8e60a3daa621f75681326478eb085"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#adab8e60a3daa621f75681326478eb085">m_numCols</a></td></tr>
-<tr class="separator:adab8e60a3daa621f75681326478eb085"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89e1d31bfba6f86f5fa9c407aba7f00e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; T * &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a></td></tr>
-<tr class="separator:a89e1d31bfba6f86f5fa9c407aba7f00e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4072619c7ef9d9f196bb0d70ec9e8479"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00032.html">BaseVectorSequence</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a4072619c7ef9d9f196bb0d70ec9e8479">m_chain</a></td></tr>
+<tr class="separator:a4072619c7ef9d9f196bb0d70ec9e8479"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee9ff35b276862ab8aefd7f2dbe6d232"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#aee9ff35b276862ab8aefd7f2dbe6d232">m_currentChainPos</a></td></tr>
+<tr class="separator:aee9ff35b276862ab8aefd7f2dbe6d232"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9419977e751efa173663218427d5f4ce"><td class="memItemLeft" align="right" valign="top">V *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a9419977e751efa173663218427d5f4ce">m_unifiedSampleExpVector</a></td></tr>
+<tr class="separator:a9419977e751efa173663218427d5f4ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c4b1311f473131c0ab55f02096b252b"><td class="memItemLeft" align="right" valign="top">V *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00146.html#a8c4b1311f473131c0ab55f02096b252b">m_unifiedSampleVarVector</a></td></tr>
+<tr class="separator:a8c4b1311f473131c0ab55f02096b252b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_a00030"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00030')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00030.html">QUESO::BaseVectorRealizer&lt; V, M &gt;</a></td></tr>
+<tr class="memitem:acde246c52f82d8ed687d91cfac14c29c inherit pro_attribs_a00030"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00018.html">BaseEnvironment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a></td></tr>
+<tr class="separator:acde246c52f82d8ed687d91cfac14c29c inherit pro_attribs_a00030"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5559b6921816ccaed7afc2d342c2a32 inherit pro_attribs_a00030"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#ac5559b6921816ccaed7afc2d342c2a32">m_prefix</a></td></tr>
+<tr class="separator:ac5559b6921816ccaed7afc2d342c2a32 inherit pro_attribs_a00030"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c705235d28a3c12641da57cde948872 inherit pro_attribs_a00030"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00168.html">VectorSet</a>&lt; V, M &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#a6c705235d28a3c12641da57cde948872">m_unifiedImageSet</a></td></tr>
+<tr class="separator:a6c705235d28a3c12641da57cde948872 inherit pro_attribs_a00030"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeddb6129f2810fef48b4e00daa5cea7b inherit pro_attribs_a00030"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html#aeddb6129f2810fef48b4e00daa5cea7b">m_subPeriod</a></td></tr>
+<tr class="separator:aeddb6129f2810fef48b4e00daa5cea7b inherit pro_attribs_a00030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class T&gt;<br/>
-class QUESO::TwoDArray&lt; T &gt;</h3>
+<div class="textblock"><h3>template&lt;class V, class M&gt;<br/>
+class QUESO::SequentialVectorRealizer&lt; V, M &gt;</h3>
 
-<p>Class for handling arrays of generic data. </p>
-<p>This class handles array of generic data (doubles, ints, strings, structs, etc.). </p>
+<p>A class for handling sequential draws (sampling) from probability density distributions. </p>
+<p>This class handles sequential sampling (it returns the next value of the chain) from a probability density distribution. </p>
 
-<p>Definition at line <a class="el" href="a00279_source.html#l00039">39</a> of file <a class="el" href="a00279_source.html">2dArrayOfStuff.h</a>.</p>
+<p>Definition at line <a class="el" href="a00378_source.html#l00046">46</a> of file <a class="el" href="a00378_source.html">SequentialVectorRealizer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a61198628e4a47604bf5ad7142b151372"></a>
+<a class="anchor" id="a8a39a19e20c9f2e2521750b2c12f0ede"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00146.html">QUESO::TwoDArray</a>&lt; T &gt;::<a class="el" href="a00146.html">TwoDArray</a> </td>
+          <td class="memname"><a class="el" href="a00146.html">QUESO::SequentialVectorRealizer</a>&lt; V, M &gt;::<a class="el" href="a00146.html">SequentialVectorRealizer</a> </td>
           <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>numRows</em>, </td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>prefix</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>numCols</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00032.html">BaseVectorSequence</a>&lt; V, M &gt; &amp;&#160;</td>
+          <td class="paramname"><em>chain</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -133,35 +169,40 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Default constructor. </p>
+<p>Definition at line <a class="el" href="a00456_source.html#l00033">33</a> of file <a class="el" href="a00456_source.html">SequentialVectorRealizer.C</a>.</p>
 
-<p>Definition at line <a class="el" href="a00291_source.html#l00032">32</a> of file <a class="el" href="a00291_source.html">2dArrayOfStuff.C</a>.</p>
-
-<p>References <a class="el" href="a00279_source.html#l00081">QUESO::TwoDArray&lt; T &gt;::m_data</a>, <a class="el" href="a00279_source.html#l00079">QUESO::TwoDArray&lt; T &gt;::m_numCols</a>, and <a class="el" href="a00279_source.html#l00078">QUESO::TwoDArray&lt; T &gt;::m_numRows</a>.</p>
-<div class="fragment"><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  : <a class="code" href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">m_numRows</a>(<a class="code" href="a00146.html#a0c81a74def0364a5ddd3e1371ca48b39">numRows</a>),</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="a00146.html#adab8e60a3daa621f75681326478eb085">m_numCols</a>(<a class="code" href="a00146.html#aac40245b6f6a944d62a34d44324af5b2">numCols</a>),</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>   (<a class="code" href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">m_numRows</a>,NULL)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">m_numRows</a>; ++i) {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>[i] = <span class="keyword">new</span> std::vector&lt;T*&gt;(<a class="code" href="a00146.html#adab8e60a3daa621f75681326478eb085">m_numCols</a>,NULL);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  }</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
-<div class="ttc" id="a00146_html_adab8e60a3daa621f75681326478eb085"><div class="ttname"><a href="a00146.html#adab8e60a3daa621f75681326478eb085">QUESO::TwoDArray::m_numCols</a></div><div class="ttdeci">unsigned int m_numCols</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00079">2dArrayOfStuff.h:79</a></div></div>
-<div class="ttc" id="a00146_html_a0c81a74def0364a5ddd3e1371ca48b39"><div class="ttname"><a href="a00146.html#a0c81a74def0364a5ddd3e1371ca48b39">QUESO::TwoDArray::numRows</a></div><div class="ttdeci">unsigned int numRows() const </div><div class="ttdoc">Number of rows in the array. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00056">2dArrayOfStuff.C:56</a></div></div>
-<div class="ttc" id="a00146_html_a89e1d31bfba6f86f5fa9c407aba7f00e"><div class="ttname"><a href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">QUESO::TwoDArray::m_data</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; T * &gt; * &gt; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00081">2dArrayOfStuff.h:81</a></div></div>
-<div class="ttc" id="a00146_html_a26fc2685fae9aa7aa0fecfaa52e6c617"><div class="ttname"><a href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">QUESO::TwoDArray::m_numRows</a></div><div class="ttdeci">unsigned int m_numRows</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00078">2dArrayOfStuff.h:78</a></div></div>
-<div class="ttc" id="a00146_html_aac40245b6f6a944d62a34d44324af5b2"><div class="ttname"><a href="a00146.html#aac40245b6f6a944d62a34d44324af5b2">QUESO::TwoDArray::numCols</a></div><div class="ttdeci">unsigned int numCols() const </div><div class="ttdoc">Number of columns in the array. </div><div class="ttdef"><b>Definition:</b> <a href="a00291_source.html#l00062">2dArrayOfStuff.C:62</a></div></div>
+<p>References <a class="el" href="a00265_source.html#l00436">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00378_source.html#l00070">QUESO::SequentialVectorRealizer&lt; V, M &gt;::m_chain</a>, <a class="el" href="a00393_source.html#l00081">QUESO::BaseVectorRealizer&lt; V, M &gt;::m_env</a>, and <a class="el" href="a00265_source.html#l00305">QUESO::BaseEnvironment::subDisplayFile()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  :</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  BaseVectorRealizer&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;seq&quot;</span>).c_str(),chain.unifiedBoxPlain(),chain.subSequenceSize()),</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="a00146.html#a4072619c7ef9d9f196bb0d70ec9e8479">m_chain</a>                 (chain),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00146.html#aee9ff35b276862ab8aefd7f2dbe6d232">m_currentChainPos</a>       (0),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="a00146.html#a9419977e751efa173663218427d5f4ce">m_unifiedSampleExpVector</a>(<span class="keyword">new</span> V(chain.unifiedMeanPlain()          )), <span class="comment">// IMPORTANT</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="a00146.html#a8c4b1311f473131c0ab55f02096b252b">m_unifiedSampleVarVector</a>(<span class="keyword">new</span> V(chain.unifiedSampleVariancePlain()))  <span class="comment">// IMPORTANT</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00030.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00030.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 0)) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    *<a class="code" href="a00030.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In SequentialVectorRealizer&lt;V,M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: m_chain.subSequenceSize() = &quot;</span> &lt;&lt; <a class="code" href="a00146.html#a4072619c7ef9d9f196bb0d70ec9e8479">m_chain</a>.subSequenceSize()</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="ttc" id="a00146_html_a4072619c7ef9d9f196bb0d70ec9e8479"><div class="ttname"><a href="a00146.html#a4072619c7ef9d9f196bb0d70ec9e8479">QUESO::SequentialVectorRealizer::m_chain</a></div><div class="ttdeci">const BaseVectorSequence&lt; V, M &gt; &amp; m_chain</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00070">SequentialVectorRealizer.h:70</a></div></div>
+<div class="ttc" id="a00146_html_aee9ff35b276862ab8aefd7f2dbe6d232"><div class="ttname"><a href="a00146.html#aee9ff35b276862ab8aefd7f2dbe6d232">QUESO::SequentialVectorRealizer::m_currentChainPos</a></div><div class="ttdeci">unsigned int m_currentChainPos</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00071">SequentialVectorRealizer.h:71</a></div></div>
+<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00265_source.html#l00305">Environment.C:305</a></div></div>
+<div class="ttc" id="a00146_html_a8c4b1311f473131c0ab55f02096b252b"><div class="ttname"><a href="a00146.html#a8c4b1311f473131c0ab55f02096b252b">QUESO::SequentialVectorRealizer::m_unifiedSampleVarVector</a></div><div class="ttdeci">V * m_unifiedSampleVarVector</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00073">SequentialVectorRealizer.h:73</a></div></div>
+<div class="ttc" id="a00146_html_a9419977e751efa173663218427d5f4ce"><div class="ttname"><a href="a00146.html#a9419977e751efa173663218427d5f4ce">QUESO::SequentialVectorRealizer::m_unifiedSampleExpVector</a></div><div class="ttdeci">V * m_unifiedSampleExpVector</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00072">SequentialVectorRealizer.h:72</a></div></div>
+<div class="ttc" id="a00030_html_acde246c52f82d8ed687d91cfac14c29c"><div class="ttname"><a href="a00030.html#acde246c52f82d8ed687d91cfac14c29c">QUESO::BaseVectorRealizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00393_source.html#l00081">VectorRealizer.h:81</a></div></div>
+<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00265_source.html#l00436">Environment.C:436</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a057af83ed31f9ca5c3b4cc52b5383f70"></a>
+<a class="anchor" id="a8e982c9719fb7998601d79d76fea9d4a"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00146.html">QUESO::TwoDArray</a>&lt; T &gt;::~<a class="el" href="a00146.html">TwoDArray</a> </td>
+          <td class="memname"><a class="el" href="a00146.html">QUESO::SequentialVectorRealizer</a>&lt; V, M &gt;::~<a class="el" href="a00146.html">SequentialVectorRealizer</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -171,55 +212,66 @@ template&lt;class T &gt; </div>
 
 <p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="a00291_source.html#l00044">44</a> of file <a class="el" href="a00291_source.html">2dArrayOfStuff.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; <a class="code" href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">m_numRows</a>; ++i) {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; <a class="code" href="a00146.html#adab8e60a3daa621f75681326478eb085">m_numCols</a>; ++j) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <span class="keywordflow">if</span> ((*(<a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>[i]))[j] != NULL) <span class="keyword">delete</span> (*(<a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>[i]))[j];</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">delete</span> <a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>[i];</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
-<div class="ttc" id="a00146_html_adab8e60a3daa621f75681326478eb085"><div class="ttname"><a href="a00146.html#adab8e60a3daa621f75681326478eb085">QUESO::TwoDArray::m_numCols</a></div><div class="ttdeci">unsigned int m_numCols</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00079">2dArrayOfStuff.h:79</a></div></div>
-<div class="ttc" id="a00146_html_a89e1d31bfba6f86f5fa9c407aba7f00e"><div class="ttname"><a href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">QUESO::TwoDArray::m_data</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; T * &gt; * &gt; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00081">2dArrayOfStuff.h:81</a></div></div>
-<div class="ttc" id="a00146_html_a26fc2685fae9aa7aa0fecfaa52e6c617"><div class="ttname"><a href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">QUESO::TwoDArray::m_numRows</a></div><div class="ttdeci">unsigned int m_numRows</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00078">2dArrayOfStuff.h:78</a></div></div>
+<p>Definition at line <a class="el" href="a00456_source.html#l00051">51</a> of file <a class="el" href="a00456_source.html">SequentialVectorRealizer.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">delete</span> <a class="code" href="a00146.html#a8c4b1311f473131c0ab55f02096b252b">m_unifiedSampleVarVector</a>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">delete</span> <a class="code" href="a00146.html#a9419977e751efa173663218427d5f4ce">m_unifiedSampleExpVector</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
+<div class="ttc" id="a00146_html_a8c4b1311f473131c0ab55f02096b252b"><div class="ttname"><a href="a00146.html#a8c4b1311f473131c0ab55f02096b252b">QUESO::SequentialVectorRealizer::m_unifiedSampleVarVector</a></div><div class="ttdeci">V * m_unifiedSampleVarVector</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00073">SequentialVectorRealizer.h:73</a></div></div>
+<div class="ttc" id="a00146_html_a9419977e751efa173663218427d5f4ce"><div class="ttname"><a href="a00146.html#a9419977e751efa173663218427d5f4ce">QUESO::SequentialVectorRealizer::m_unifiedSampleExpVector</a></div><div class="ttdeci">V * m_unifiedSampleExpVector</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00072">SequentialVectorRealizer.h:72</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="aac40245b6f6a944d62a34d44324af5b2"></a>
+<a class="anchor" id="a67050d12ad38147f9f0743a0e53011b2"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="a00146.html">QUESO::TwoDArray</a>&lt; T &gt;::numCols </td>
+          <td class="memname">void <a class="el" href="a00146.html">QUESO::SequentialVectorRealizer</a>&lt; V, M &gt;::realization </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">V &amp;&#160;</td>
+          <td class="paramname"><em>nextValues</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Number of columns in the array. </p>
+<p>Draws the next value from this chain (<code>m_chain</code>) and saves it in <code>nextValues</code>. </p>
 
-<p>Definition at line <a class="el" href="a00291_source.html#l00062">62</a> of file <a class="el" href="a00291_source.html">2dArrayOfStuff.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00146.html#adab8e60a3daa621f75681326478eb085">m_numCols</a>;</div>
+<p>Implements <a class="el" href="a00030.html#a6845173dd79a80ae11c86cde26e55817">QUESO::BaseVectorRealizer&lt; V, M &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="a00456_source.html#l00059">59</a> of file <a class="el" href="a00456_source.html">SequentialVectorRealizer.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="a00146.html#a4072619c7ef9d9f196bb0d70ec9e8479">m_chain</a>.getPositionValues(<a class="code" href="a00146.html#aee9ff35b276862ab8aefd7f2dbe6d232">m_currentChainPos</a>++,nextParamValues);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00146.html#aee9ff35b276862ab8aefd7f2dbe6d232">m_currentChainPos</a> &gt;= <a class="code" href="a00030.html#aeddb6129f2810fef48b4e00daa5cea7b">m_subPeriod</a>) <a class="code" href="a00146.html#aee9ff35b276862ab8aefd7f2dbe6d232">m_currentChainPos</a> = 0;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
-<div class="ttc" id="a00146_html_adab8e60a3daa621f75681326478eb085"><div class="ttname"><a href="a00146.html#adab8e60a3daa621f75681326478eb085">QUESO::TwoDArray::m_numCols</a></div><div class="ttdeci">unsigned int m_numCols</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00079">2dArrayOfStuff.h:79</a></div></div>
+<div class="ttc" id="a00146_html_a4072619c7ef9d9f196bb0d70ec9e8479"><div class="ttname"><a href="a00146.html#a4072619c7ef9d9f196bb0d70ec9e8479">QUESO::SequentialVectorRealizer::m_chain</a></div><div class="ttdeci">const BaseVectorSequence&lt; V, M &gt; &amp; m_chain</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00070">SequentialVectorRealizer.h:70</a></div></div>
+<div class="ttc" id="a00146_html_aee9ff35b276862ab8aefd7f2dbe6d232"><div class="ttname"><a href="a00146.html#aee9ff35b276862ab8aefd7f2dbe6d232">QUESO::SequentialVectorRealizer::m_currentChainPos</a></div><div class="ttdeci">unsigned int m_currentChainPos</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00071">SequentialVectorRealizer.h:71</a></div></div>
+<div class="ttc" id="a00030_html_aeddb6129f2810fef48b4e00daa5cea7b"><div class="ttname"><a href="a00030.html#aeddb6129f2810fef48b4e00daa5cea7b">QUESO::BaseVectorRealizer::m_subPeriod</a></div><div class="ttdeci">unsigned int m_subPeriod</div><div class="ttdef"><b>Definition:</b> <a href="a00393_source.html#l00084">VectorRealizer.h:84</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a0c81a74def0364a5ddd3e1371ca48b39"></a>
+<a class="anchor" id="ac7c24dd2a5663d245ba1e37556a68bce"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="a00146.html">QUESO::TwoDArray</a>&lt; T &gt;::numRows </td>
+          <td class="memname">const V &amp; <a class="el" href="a00146.html">QUESO::SequentialVectorRealizer</a>&lt; V, M &gt;::unifiedSampleExpVector </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -227,182 +279,51 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Number of rows in the array. </p>
-
-<p>Definition at line <a class="el" href="a00291_source.html#l00056">56</a> of file <a class="el" href="a00291_source.html">2dArrayOfStuff.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">m_numRows</a>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
-<div class="ttc" id="a00146_html_a26fc2685fae9aa7aa0fecfaa52e6c617"><div class="ttname"><a href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">QUESO::TwoDArray::m_numRows</a></div><div class="ttdeci">unsigned int m_numRows</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00078">2dArrayOfStuff.h:78</a></div></div>
+<p>Definition at line <a class="el" href="a00456_source.html#l00069">69</a> of file <a class="el" href="a00456_source.html">SequentialVectorRealizer.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordflow">return</span> *<a class="code" href="a00146.html#a9419977e751efa173663218427d5f4ce">m_unifiedSampleExpVector</a>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
+<div class="ttc" id="a00146_html_a9419977e751efa173663218427d5f4ce"><div class="ttname"><a href="a00146.html#a9419977e751efa173663218427d5f4ce">QUESO::SequentialVectorRealizer::m_unifiedSampleExpVector</a></div><div class="ttdeci">V * m_unifiedSampleExpVector</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00072">SequentialVectorRealizer.h:72</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a8cf6ad7a5890835d44740aa056fc9933"></a>
+<a class="anchor" id="a79981fe171d8596d55172f5fa600ee29"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class V , class M &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T &amp; <a class="el" href="a00146.html">QUESO::TwoDArray</a>&lt; T &gt;::operator() </td>
+          <td class="memname">const V &amp; <a class="el" href="a00146.html">QUESO::SequentialVectorRealizer</a>&lt; V, M &gt;::unifiedSampleVarVector </td>
           <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>j</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns data stored in a specific location (non-const). </p>
-<p>This non-const method returns the generic (templated) data that is stored the position <code>(i,j)</code> of the array. </p>
+<p>Returns the unified variance vector; access to private attribute m_unifiedSampleVarVector. </p>
 
-<p>Definition at line <a class="el" href="a00291_source.html#l00080">80</a> of file <a class="el" href="a00291_source.html">2dArrayOfStuff.C</a>.</p>
-
-<p>References <a class="el" href="a00219_source.html#l00222">UQ_FATAL_TEST_MACRO</a>, and <a class="el" href="a00219_source.html#l00073">QUESO::UQ_UNAVAILABLE_RANK</a>.</p>
-<div class="fragment"><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;{</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>((i &gt;= <a class="code" href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">m_numRows</a>) ||</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                      (j &gt;= <a class="code" href="a00146.html#adab8e60a3daa621f75681326478eb085">m_numCols</a>) ||</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                      (<a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>[i] == NULL) ||</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                      ((*<a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>[i])[j] == NULL),</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                      <a class="code" href="a00450.html#a7d4679800a430ae8e473c1c7bc0bfb21">UQ_UNAVAILABLE_RANK</a>,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                      <span class="stringliteral">&quot;TwoDArray&lt;T&gt;::operator(1)&quot;</span>,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                      <span class="stringliteral">&quot;invalid situation&quot;</span>);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordflow">return</span> *(*(<a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>[i]))[j];</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
-<div class="ttc" id="a00146_html_adab8e60a3daa621f75681326478eb085"><div class="ttname"><a href="a00146.html#adab8e60a3daa621f75681326478eb085">QUESO::TwoDArray::m_numCols</a></div><div class="ttdeci">unsigned int m_numCols</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00079">2dArrayOfStuff.h:79</a></div></div>
-<div class="ttc" id="a00146_html_a89e1d31bfba6f86f5fa9c407aba7f00e"><div class="ttname"><a href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">QUESO::TwoDArray::m_data</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; T * &gt; * &gt; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00081">2dArrayOfStuff.h:81</a></div></div>
-<div class="ttc" id="a00219_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00219_source.html#l00222">Defines.h:222</a></div></div>
-<div class="ttc" id="a00146_html_a26fc2685fae9aa7aa0fecfaa52e6c617"><div class="ttname"><a href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">QUESO::TwoDArray::m_numRows</a></div><div class="ttdeci">unsigned int m_numRows</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00078">2dArrayOfStuff.h:78</a></div></div>
-<div class="ttc" id="a00450_html_a7d4679800a430ae8e473c1c7bc0bfb21"><div class="ttname"><a href="a00450.html#a7d4679800a430ae8e473c1c7bc0bfb21">QUESO::UQ_UNAVAILABLE_RANK</a></div><div class="ttdeci">const int UQ_UNAVAILABLE_RANK</div><div class="ttdef"><b>Definition:</b> <a href="a00219_source.html#l00073">Defines.h:73</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a6195a83c1f1ed39349779e19421ef4bc"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const T &amp; <a class="el" href="a00146.html">QUESO::TwoDArray</a>&lt; T &gt;::operator() </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>j</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns data stored in a specific location (const). </p>
-<p>This const method returns the generic (templated) data that is stored the position <code>(i,j)</code> of the array. </p>
-
-<p>Definition at line <a class="el" href="a00291_source.html#l00093">93</a> of file <a class="el" href="a00291_source.html">2dArrayOfStuff.C</a>.</p>
-
-<p>References <a class="el" href="a00219_source.html#l00222">UQ_FATAL_TEST_MACRO</a>, and <a class="el" href="a00219_source.html#l00073">QUESO::UQ_UNAVAILABLE_RANK</a>.</p>
-<div class="fragment"><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;{</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>((i &gt;= <a class="code" href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">m_numRows</a>) ||</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                      (j &gt;= <a class="code" href="a00146.html#adab8e60a3daa621f75681326478eb085">m_numCols</a>) ||</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                      (<a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>[i] == NULL) ||</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                      ((*<a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>[i])[j] == NULL),</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                      <a class="code" href="a00450.html#a7d4679800a430ae8e473c1c7bc0bfb21">UQ_UNAVAILABLE_RANK</a>,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                      <span class="stringliteral">&quot;TwoDArray&lt;T&gt;::operator(2)&quot;</span>,</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                      <span class="stringliteral">&quot;invalid situation&quot;</span>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordflow">return</span> *(*(<a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>[i]))[j];</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;}</div>
-<div class="ttc" id="a00146_html_adab8e60a3daa621f75681326478eb085"><div class="ttname"><a href="a00146.html#adab8e60a3daa621f75681326478eb085">QUESO::TwoDArray::m_numCols</a></div><div class="ttdeci">unsigned int m_numCols</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00079">2dArrayOfStuff.h:79</a></div></div>
-<div class="ttc" id="a00146_html_a89e1d31bfba6f86f5fa9c407aba7f00e"><div class="ttname"><a href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">QUESO::TwoDArray::m_data</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; T * &gt; * &gt; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00081">2dArrayOfStuff.h:81</a></div></div>
-<div class="ttc" id="a00219_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00219_source.html#l00222">Defines.h:222</a></div></div>
-<div class="ttc" id="a00146_html_a26fc2685fae9aa7aa0fecfaa52e6c617"><div class="ttname"><a href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">QUESO::TwoDArray::m_numRows</a></div><div class="ttdeci">unsigned int m_numRows</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00078">2dArrayOfStuff.h:78</a></div></div>
-<div class="ttc" id="a00450_html_a7d4679800a430ae8e473c1c7bc0bfb21"><div class="ttname"><a href="a00450.html#a7d4679800a430ae8e473c1c7bc0bfb21">QUESO::UQ_UNAVAILABLE_RANK</a></div><div class="ttdeci">const int UQ_UNAVAILABLE_RANK</div><div class="ttdef"><b>Definition:</b> <a href="a00219_source.html#l00073">Defines.h:73</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="aa204b1795ea5ba9d5583b6eec598b16e"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="a00146.html">QUESO::TwoDArray</a>&lt; T &gt;::setLocation </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>j</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T *&#160;</td>
-          <td class="paramname"><em>info</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the data in a specific location. </p>
-<p>This method sets the generic (templated) data <code>info</code>, in the position <code>(i,j)</code> of the array. </p>
-
-<p>Definition at line <a class="el" href="a00291_source.html#l00068">68</a> of file <a class="el" href="a00291_source.html">2dArrayOfStuff.C</a>.</p>
-
-<p>References <a class="el" href="a00219_source.html#l00222">UQ_FATAL_TEST_MACRO</a>, and <a class="el" href="a00219_source.html#l00073">QUESO::UQ_UNAVAILABLE_RANK</a>.</p>
-<div class="fragment"><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;{</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>((i &gt;= <a class="code" href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">m_numRows</a>) || (j &gt;= <a class="code" href="a00146.html#adab8e60a3daa621f75681326478eb085">m_numCols</a>) || (<a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>[i] == NULL),</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                      <a class="code" href="a00450.html#a7d4679800a430ae8e473c1c7bc0bfb21">UQ_UNAVAILABLE_RANK</a>,</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                      <span class="stringliteral">&quot;TwoDArray&lt;T&gt;::setLocation()&quot;</span>,</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                      <span class="stringliteral">&quot;invalid situation&quot;</span>);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  (*(<a class="code" href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">m_data</a>[i]))[j] = info;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
-<div class="ttc" id="a00146_html_adab8e60a3daa621f75681326478eb085"><div class="ttname"><a href="a00146.html#adab8e60a3daa621f75681326478eb085">QUESO::TwoDArray::m_numCols</a></div><div class="ttdeci">unsigned int m_numCols</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00079">2dArrayOfStuff.h:79</a></div></div>
-<div class="ttc" id="a00146_html_a89e1d31bfba6f86f5fa9c407aba7f00e"><div class="ttname"><a href="a00146.html#a89e1d31bfba6f86f5fa9c407aba7f00e">QUESO::TwoDArray::m_data</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; T * &gt; * &gt; m_data</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00081">2dArrayOfStuff.h:81</a></div></div>
-<div class="ttc" id="a00219_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00219_source.html#l00222">Defines.h:222</a></div></div>
-<div class="ttc" id="a00146_html_a26fc2685fae9aa7aa0fecfaa52e6c617"><div class="ttname"><a href="a00146.html#a26fc2685fae9aa7aa0fecfaa52e6c617">QUESO::TwoDArray::m_numRows</a></div><div class="ttdeci">unsigned int m_numRows</div><div class="ttdef"><b>Definition:</b> <a href="a00279_source.html#l00078">2dArrayOfStuff.h:78</a></div></div>
-<div class="ttc" id="a00450_html_a7d4679800a430ae8e473c1c7bc0bfb21"><div class="ttname"><a href="a00450.html#a7d4679800a430ae8e473c1c7bc0bfb21">QUESO::UQ_UNAVAILABLE_RANK</a></div><div class="ttdeci">const int UQ_UNAVAILABLE_RANK</div><div class="ttdef"><b>Definition:</b> <a href="a00219_source.html#l00073">Defines.h:73</a></div></div>
+<p>Definition at line <a class="el" href="a00456_source.html#l00076">76</a> of file <a class="el" href="a00456_source.html">SequentialVectorRealizer.C</a>.</p>
+<div class="fragment"><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;{</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">return</span> *<a class="code" href="a00146.html#a8c4b1311f473131c0ab55f02096b252b">m_unifiedSampleVarVector</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
+<div class="ttc" id="a00146_html_a8c4b1311f473131c0ab55f02096b252b"><div class="ttname"><a href="a00146.html#a8c4b1311f473131c0ab55f02096b252b">QUESO::SequentialVectorRealizer::m_unifiedSampleVarVector</a></div><div class="ttdeci">V * m_unifiedSampleVarVector</div><div class="ttdef"><b>Definition:</b> <a href="a00378_source.html#l00073">SequentialVectorRealizer.h:73</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a89e1d31bfba6f86f5fa9c407aba7f00e"></a>
+<a class="anchor" id="a4072619c7ef9d9f196bb0d70ec9e8479"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;std::vector&lt;T*&gt;* &gt; <a class="el" href="a00146.html">QUESO::TwoDArray</a>&lt; T &gt;::m_data</td>
+          <td class="memname">const <a class="el" href="a00032.html">BaseVectorSequence</a>&lt;V,M&gt;&amp; <a class="el" href="a00146.html">QUESO::SequentialVectorRealizer</a>&lt; V, M &gt;::m_chain</td>
         </tr>
       </table>
   </td>
@@ -412,23 +333,47 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00279_source.html#l00081">81</a> of file <a class="el" href="a00279_source.html">2dArrayOfStuff.h</a>.</p>
+<p>Definition at line <a class="el" href="a00378_source.html#l00070">70</a> of file <a class="el" href="a00378_source.html">SequentialVectorRealizer.h</a>.</p>
 
-<p>Referenced by <a class="el" href="a00291_source.html#l00032">QUESO::TwoDArray&lt; T &gt;::TwoDArray()</a>.</p>
+<p>Referenced by <a class="el" href="a00456_source.html#l00033">QUESO::SequentialVectorRealizer&lt; V, M &gt;::SequentialVectorRealizer()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="adab8e60a3daa621f75681326478eb085"></a>
+<a class="anchor" id="aee9ff35b276862ab8aefd7f2dbe6d232"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="a00146.html">QUESO::TwoDArray</a>&lt; T &gt;::m_numCols</td>
+          <td class="memname">unsigned int <a class="el" href="a00146.html">QUESO::SequentialVectorRealizer</a>&lt; V, M &gt;::m_currentChainPos</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00378_source.html#l00071">71</a> of file <a class="el" href="a00378_source.html">SequentialVectorRealizer.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9419977e751efa173663218427d5f4ce"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class V , class M &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">V* <a class="el" href="a00146.html">QUESO::SequentialVectorRealizer</a>&lt; V, M &gt;::m_unifiedSampleExpVector</td>
         </tr>
       </table>
   </td>
@@ -438,23 +383,21 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00279_source.html#l00079">79</a> of file <a class="el" href="a00279_source.html">2dArrayOfStuff.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00291_source.html#l00032">QUESO::TwoDArray&lt; T &gt;::TwoDArray()</a>.</p>
+<p>Definition at line <a class="el" href="a00378_source.html#l00072">72</a> of file <a class="el" href="a00378_source.html">SequentialVectorRealizer.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a26fc2685fae9aa7aa0fecfaa52e6c617"></a>
+<a class="anchor" id="a8c4b1311f473131c0ab55f02096b252b"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class V , class M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="a00146.html">QUESO::TwoDArray</a>&lt; T &gt;::m_numRows</td>
+          <td class="memname">V* <a class="el" href="a00146.html">QUESO::SequentialVectorRealizer</a>&lt; V, M &gt;::m_unifiedSampleVarVector</td>
         </tr>
       </table>
   </td>
@@ -464,19 +407,17 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00279_source.html#l00078">78</a> of file <a class="el" href="a00279_source.html">2dArrayOfStuff.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00291_source.html#l00032">QUESO::TwoDArray&lt; T &gt;::TwoDArray()</a>.</p>
+<p>Definition at line <a class="el" href="a00378_source.html#l00073">73</a> of file <a class="el" href="a00378_source.html">SequentialVectorRealizer.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/misc/inc/<a class="el" href="a00279_source.html">2dArrayOfStuff.h</a></li>
-<li>src/misc/src/<a class="el" href="a00291_source.html">2dArrayOfStuff.C</a></li>
+<li>src/stats/inc/<a class="el" href="a00378_source.html">SequentialVectorRealizer.h</a></li>
+<li>src/stats/src/<a class="el" href="a00456_source.html">SequentialVectorRealizer.C</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:13 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:48 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -1,4 +1,3 @@
-<map id="QUESO::BaseTKGroup&lt; V, M &gt;" name="QUESO::BaseTKGroup&lt; V, M &gt;">
-<area shape="rect" id="node3" href="$a00086.html" title="This class allows the representation of a transition kernel with Hessians. " alt="" coords="5,102,221,149"/>
-<area shape="rect" id="node5" href="$a00135.html" title="This class allows the representation of a transition kernel with a scaled covariance matrix..." alt="" coords="245,102,493,149"/>
+<map id="QUESO::LogNormalVectorRealizer&lt; V, M &gt;" name="QUESO::LogNormalVectorRealizer&lt; V, M &gt;">
+<area shape="rect" id="node2" href="$a00030.html" title="A templated (base) class for handling sampling from vector RVs. " alt="" coords="24,6,237,53"/>
 </map>

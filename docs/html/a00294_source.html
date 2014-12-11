@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/misc/src/AsciiTable.C Source File</title>
+<title>queso-0.51.0: src/misc/inc/1DQuadrature.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_88826aa2a10e1882b573f502bc7f4b55.html">misc</a></li><li class="navelem"><a class="el" href="dir_1880c50ca7770a6465988a22e5e4ee55.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_88826aa2a10e1882b573f502bc7f4b55.html">misc</a></li><li class="navelem"><a class="el" href="dir_c2e907ccdf1bb9500d3a3d017a89ba74.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">AsciiTable.C</div>  </div>
+<div class="title">1DQuadrature.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00294.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,363 +75,204 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/AsciiTable.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Default constructor -------------------------------------------------</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00013.html#a4d856e0d046d823e906aa4448b5762f1">   31</a></span>&#160;<a class="code" href="a00013.html#a4d856e0d046d823e906aa4448b5762f1">AsciiTable&lt;V,M&gt;::AsciiTable</a>(</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; env,</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>            numRows,</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>            numExtraCols,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> std::vector&lt;bool&gt;*      extraColIsString,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> std::string&amp;            fileName)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  :</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  m_env          (env),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  m_numRows      (numRows),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_numCols      (1+numExtraCols),</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_colIsString  (1,true),</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  m_fileName     (fileName),</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  m_map          (newMap()),</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  m_stringColumns(0),</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  m_doubleColumns(0)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00013.html#a2ba907db652aa02d53d493980d7a3753">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00013.html#a2ba907db652aa02d53d493980d7a3753">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    *<a class="code" href="a00013.html#a2ba907db652aa02d53d493980d7a3753">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering AsciiTable&lt;V,M&gt;::constructor()...&quot;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  }</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_1D_1D_QUADRATURE_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_1D_1D_QUADRATURE_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;math.h&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// Base 1D quadrature class</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00017.html">   47</a></span>&#160;<span class="comment"></span><span class="keyword">class</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<a class="code" href="a00017.html">Base1DQuadrature</a> {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00013.html#ada886c8db06d2d618f2898ad2cf2bd87">m_numCols</a> &gt; 1) {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="a00013.html#a1c84e461d75e0846c156617f222c2ec3">m_colIsString</a>.resize(<a class="code" href="a00013.html#ada886c8db06d2d618f2898ad2cf2bd87">m_numCols</a>,<span class="keyword">false</span>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">if</span> (extraColIsString == NULL) {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="comment">// Nothing extra needs to be done</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> maxJ = std::min(numExtraCols,(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>) extraColIsString-&gt;size());</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; maxJ; ++j) {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="a00013.html#a1c84e461d75e0846c156617f222c2ec3">m_colIsString</a>[1+j] = (*extraColIsString)[j];</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <a class="code" href="a00013.html#a14ba55d29e9a4ddeb14cd5acd8a27268">m_stringColumns</a>.resize(<a class="code" href="a00013.html#ada886c8db06d2d618f2898ad2cf2bd87">m_numCols</a>,NULL);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="a00013.html#aa25a1d14c88cd5de341c43e052622f51">m_doubleColumns</a>.resize(<a class="code" href="a00013.html#ada886c8db06d2d618f2898ad2cf2bd87">m_numCols</a>,NULL);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <a class="code" href="a00013.html#a008557a6d782f76a51e72c77b3136322">readColumnsFromFile</a>();</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00013.html#a2ba907db652aa02d53d493980d7a3753">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00013.html#a2ba907db652aa02d53d493980d7a3753">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 5)) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    *<a class="code" href="a00013.html#a2ba907db652aa02d53d493980d7a3753">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving AsciiTable&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">// Destructor ----------------------------------------------------------</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00013.html#a2ff35b2d6920dc9e13dd8966a76beb10">   76</a></span>&#160;<a class="code" href="a00013.html#a2ff35b2d6920dc9e13dd8966a76beb10">AsciiTable&lt;V,M&gt;::~AsciiTable</a>()</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;{</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; m_doubleColumns.size(); ++j) {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">if</span> (m_doubleColumns[j]) <span class="keyword">delete</span> m_doubleColumns[j];</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; m_stringColumns.size(); ++j) {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordflow">if</span> (m_stringColumns[j]) <span class="keyword">delete</span> m_stringColumns[j];</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// Private method ------------------------------------------------------</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="a00013.html#a008557a6d782f76a51e72c77b3136322">   89</a></span>&#160;<a class="code" href="a00013.html#a008557a6d782f76a51e72c77b3136322">AsciiTable&lt;V,M&gt;::readColumnsFromFile</a>()</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;{</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> maxCharsPerLine = 512;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  std::ifstream ifs(m_fileName.c_str());</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(ifs.is_open() == <span class="keyword">false</span>,</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                      <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::readColumnsFromFile()&quot;</span>,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                      <span class="stringliteral">&quot;file was not found&quot;</span>);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="comment">// Determine number of lines</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numLines = std::count(std::istreambuf_iterator&lt;char&gt;(ifs),</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                                     std::istreambuf_iterator&lt;char&gt;(),</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                                     <span class="charliteral">&#39;\n&#39;</span>);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="comment">// Determine number of valid lines</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keywordtype">int</span> iRC;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  ifs.seekg(0,std::ios_base::beg);</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> lineId = 0;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numValidLines = 0;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  std::string tempString;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordflow">while</span> ((lineId &lt; numLines) &amp;&amp; (ifs.eof() == <span class="keyword">false</span>)) {</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    iRC = <a class="code" href="a00450.html#af0fc61c58d0ca592fa172eeab540d39c">MiscReadStringAndDoubleFromFile</a>(ifs,tempString,NULL);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(iRC,</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                        m_env.worldRank(),</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                        <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::readColumnsFromFile()&quot;</span>,</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                        <span class="stringliteral">&quot;failed reading during the determination of the number of valid lines&quot;</span>);</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="comment">//*m_env.subDisplayFile() &lt;&lt; &quot;lineId = &quot;          &lt;&lt; lineId</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="comment">//                        &lt;&lt; &quot;, numValidLines = &quot; &lt;&lt; numValidLines</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">//                        &lt;&lt; &quot;, tempString = &quot;    &lt;&lt; tempString</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="comment">//                        &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordflow">if</span> (tempString[0] != <span class="charliteral">&#39;#&#39;</span>) numValidLines++;</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    lineId++;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    ifs.ignore(maxCharsPerLine,<span class="charliteral">&#39;\n&#39;</span>);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  }</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(lineId != numLines,</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                      <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::readColumnsFromFile()&quot;</span>,</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                      <span class="stringliteral">&quot;the first number of lines read is nonconsistent&quot;</span>);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <span class="keywordflow">if</span> (m_numRows != numValidLines) {</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">char</span> errorExplanation[512];</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    sprintf(errorExplanation,<span class="stringliteral">&quot;number of valid lines (%u) in ASCII table file does not match number of rows (%u)&quot;</span>,numValidLines,m_numRows);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<span class="keyword">true</span>,</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                        m_env.worldRank(),</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                        <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::readColumnsFromFile()&quot;</span>,</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                        errorExplanation);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;  }</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <span class="keywordflow">if</span> (m_env.subDisplayFile()) {</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;ASCII table file &#39;&quot;</span>    &lt;&lt; m_fileName</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;&#39; has &quot;</span>                &lt;&lt; numLines</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot; lines and specifies &quot;</span> &lt;&lt; numValidLines</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot; valid lines.&quot;</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  }</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j=0; j &lt; m_numCols; ++j) {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordflow">if</span> (m_colIsString[j]) {</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 5)) {</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Column j = &quot;</span> &lt;&lt; j</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot; is a columns of strings&quot;</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                                &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      }</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      m_stringColumns[j] = <span class="keyword">new</span> <a class="code" href="a00048.html">DistArray&lt;std::string&gt;</a>(*m_map,1);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    }</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;      <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 5)) {</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Column j = &quot;</span> &lt;&lt; j</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                                &lt;&lt; <span class="stringliteral">&quot; is a columns of doubles&quot;</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                                &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      }</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;      m_doubleColumns[j] = <span class="keyword">new</span> V(m_env,*m_map);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    }</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  }</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;  <span class="comment">// Read file until End Of File character is reached</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  ifs.seekg(0,std::ios_base::beg);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  lineId = 0;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> validLineId = 0;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  std::string tmpString;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  <span class="keywordflow">while</span> ((lineId &lt; numLines) &amp;&amp; (ifs.eof() == <span class="keyword">false</span>)) {</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="comment">//*m_env.subDisplayFile() &lt;&lt; &quot;Beginning read of line (in ASCII table file) of id = &quot; &lt;&lt; lineId &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordtype">bool</span> endOfLineAchieved = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    iRC = <a class="code" href="a00450.html#a575d3153d82b7df3d78ad5cfbf2b83b7">MiscReadCharsAndDoubleFromFile</a>(ifs, tmpString, NULL, endOfLineAchieved);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(iRC,</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                        m_env.worldRank(),</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                        <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::readColumnsFromFile()&quot;</span>,</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                        <span class="stringliteral">&quot;failed reading a first column during the valid lines reading loop&quot;</span>);</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    lineId++;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordflow">if</span> (tmpString[0] == <span class="charliteral">&#39;#&#39;</span>) {</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;      <span class="keywordflow">if</span> (!endOfLineAchieved) ifs.ignore(maxCharsPerLine,<span class="charliteral">&#39;\n&#39;</span>);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    }</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <a class="code" href="a00048.html">DistArray&lt;std::string&gt;</a>&amp; firstColumn = *m_stringColumns[0];</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    firstColumn(validLineId,0) = tmpString;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="comment">// Check &#39;validLineId&#39; before setting one more valid line</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keywordflow">if</span> (validLineId &gt;= numValidLines) {</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;      <span class="keywordtype">char</span> errorExplanation[512];</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;      sprintf(errorExplanation,<span class="stringliteral">&quot;validLineId (%u) got too large during reading of ASCII table file&quot;</span>,validLineId);</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<span class="keyword">true</span>,</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                          m_env.worldRank(),</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                          <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::readColumnsFromFile()&quot;</span>,</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                          errorExplanation);</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    }</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 5)) {</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;      *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Just read a string: table[&quot;</span> &lt;&lt; validLineId</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;,&quot;</span>                          &lt;&lt; 0 <span class="comment">// j=0</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span>                       &lt;&lt; firstColumn(validLineId,0)</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    }</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j=1; j &lt; m_numCols; ++j) {</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;      <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(endOfLineAchieved,</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                          m_env.worldRank(),</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                          <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::readColumnsFromFile()&quot;</span>,</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                          <span class="stringliteral">&quot;failed reading all columns in a valid line&quot;</span>);</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;      <span class="keywordflow">if</span> (m_colIsString[j]) {</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <a class="code" href="a00048.html">DistArray&lt;std::string&gt;</a>&amp; arrayOfStrings = *m_stringColumns[j];</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        iRC = <a class="code" href="a00450.html#a575d3153d82b7df3d78ad5cfbf2b83b7">MiscReadCharsAndDoubleFromFile</a>(ifs, arrayOfStrings(validLineId,0), NULL, endOfLineAchieved);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(iRC,</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                            m_env.worldRank(),</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                            <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::readColumnsFromFile()&quot;</span>,</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;                            <span class="stringliteral">&quot;failed reading a string column in a valid line&quot;</span>);</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 5)) {</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;          *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Just read a string: table[&quot;</span> &lt;&lt; validLineId</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                                  &lt;&lt; <span class="stringliteral">&quot;,&quot;</span>                          &lt;&lt; j</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                                  &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span>                       &lt;&lt; arrayOfStrings(validLineId,0)</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                                  &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        }</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;      }</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;      <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        iRC = <a class="code" href="a00450.html#a575d3153d82b7df3d78ad5cfbf2b83b7">MiscReadCharsAndDoubleFromFile</a>(ifs, tmpString, &amp;(*m_doubleColumns[j])[validLineId], endOfLineAchieved);</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(iRC,</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                            m_env.worldRank(),</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;                            <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::readColumnsFromFile()&quot;</span>,</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                            <span class="stringliteral">&quot;failed reading a double column in a valid line&quot;</span>);</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keywordflow">if</span> ((m_env.subDisplayFile()) &amp;&amp; (m_env.displayVerbosity() &gt;= 5)) {</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;          *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Just read a double: table[&quot;</span> &lt;&lt; validLineId</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                                  &lt;&lt; <span class="stringliteral">&quot;,&quot;</span>                          &lt;&lt; j</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                                  &lt;&lt; <span class="stringliteral">&quot;] = &quot;</span>                       &lt;&lt; (*m_doubleColumns[j])[validLineId]</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                                  &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        }</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;      }</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    }</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordflow">if</span> (!endOfLineAchieved) ifs.ignore(maxCharsPerLine,<span class="charliteral">&#39;\n&#39;</span>);</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    validLineId++;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  }</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(lineId != numLines,</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                      <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::readColumnsFromFile()&quot;</span>,</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                      <span class="stringliteral">&quot;the second number of lines read is not consistent&quot;</span>);</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(validLineId != numValidLines,</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                      <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::readColumnsFromFile()&quot;</span>,</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                      <span class="stringliteral">&quot;the number of valid lines just read is not consistent&quot;</span>);</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  <span class="keywordflow">if</span> (m_env.displayVerbosity() &gt;= 5) {</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="keywordflow">if</span> (m_env.subDisplayFile()) {</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;      *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Finished reading table &#39;&quot;</span> &lt;&lt; m_fileName</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                              &lt;&lt; <span class="stringliteral">&quot;&#39;. Its contents per column are:&quot;</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;      *m_env.subDisplayFile() &lt;&lt; *<span class="keyword">this</span>; <span class="comment">// FIX ME: output might need to be in parallel</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;      *m_env.subDisplayFile() &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    }    </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  }</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;}</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">// Property methods-----------------------------------------------------</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno"><a class="line" href="a00013.html#aa764ef68ef1d2ed85a4b6bd4eb0d7b17">  268</a></span>&#160;<a class="code" href="a00013.html#aa764ef68ef1d2ed85a4b6bd4eb0d7b17">AsciiTable&lt;V,M&gt;::numRows</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  <span class="keywordflow">return</span> m_numRows;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;}</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a name="l00275"></a><span class="lineno"><a class="line" href="a00013.html#a428f547b9f5007e673245c8d2d0be387">  275</a></span>&#160;<a class="code" href="a00013.html#a428f547b9f5007e673245c8d2d0be387">AsciiTable&lt;V,M&gt;::numCols</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;  <span class="keywordflow">return</span> m_numCols;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;}</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="keyword">const</span> <a class="code" href="a00048.html">DistArray&lt;std::string&gt;</a>&amp;</div>
-<div class="line"><a name="l00282"></a><span class="lineno"><a class="line" href="a00013.html#a8918d88137629c62e2408c164795479c">  282</a></span>&#160;<a class="code" href="a00013.html#a8918d88137629c62e2408c164795479c">AsciiTable&lt;V,M&gt;::stringColumn</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(j &gt;= m_numCols,</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                      <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::stringColumn()&quot;</span>,</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                      <span class="stringliteral">&quot;invalid j&quot;</span>);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(m_stringColumns[j] == NULL,</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                      <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::stringColumn()&quot;</span>,</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                      <span class="stringliteral">&quot;string column is not ready&quot;</span>);</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;  <span class="keywordflow">return</span> *m_stringColumns[j];</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;}</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="keyword">const</span> V&amp;</div>
-<div class="line"><a name="l00299"></a><span class="lineno"><a class="line" href="a00013.html#a267e1834e60c5df459122b2509e4ca9d">  299</a></span>&#160;<a class="code" href="a00013.html#a267e1834e60c5df459122b2509e4ca9d">AsciiTable&lt;V,M&gt;::doubleColumn</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(j &gt;= m_numCols,</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                      <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::doubleColumn()&quot;</span>,</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                      <span class="stringliteral">&quot;invalid j&quot;</span>);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(m_doubleColumns[j] == NULL,</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                      m_env.worldRank(),</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                      <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::doubleColumn()&quot;</span>,</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                      <span class="stringliteral">&quot;double column is not ready&quot;</span>);</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;  <span class="keywordflow">return</span> *m_doubleColumns[j];</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;}</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="comment">// I/O methods----------------------------------------------------------</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno"><a class="line" href="a00013.html#a4e58f0ab57b3af3aa4333955175abcf3">  317</a></span>&#160;<a class="code" href="a00013.html#a4e58f0ab57b3af3aa4333955175abcf3">AsciiTable&lt;V,M&gt;::print</a>(std::ostream&amp; os)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; m_numCols; ++j) {</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>((m_stringColumns[j] != NULL) &amp;&amp; (m_doubleColumns[j] != NULL),</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                        m_env.worldRank(),</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                        <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::print()&quot;</span>,</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;                        <span class="stringliteral">&quot;column is not null on both possible ways&quot;</span>);</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>((m_stringColumns[j] == NULL) &amp;&amp; (m_doubleColumns[j] == NULL),</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                        m_env.worldRank(),</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;                        <span class="stringliteral">&quot;AsciiTable&lt;V,M&gt;::print()&quot;</span>,</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;                        <span class="stringliteral">&quot;column is null on both possible ways&quot;</span>);</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    os &lt;&lt; <span class="stringliteral">&quot;\nContents of table &#39;&quot;</span> &lt;&lt; m_fileName</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;       &lt;&lt; <span class="stringliteral">&quot;&#39;, column &quot;</span>            &lt;&lt; j</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;       &lt;&lt; <span class="stringliteral">&quot;:&quot;</span></div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;       &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="keywordflow">if</span> (m_stringColumns[j] != NULL) {</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;      os &lt;&lt; *m_stringColumns[j];</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;      <span class="comment">//DistArray&lt;std::string&gt;&amp; arrayOfStrings = *m_stringColumns[j];</span></div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;      <span class="comment">//for (unsigned int i = 0; i &lt; m_numRows; ++i) {</span></div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;      <span class="comment">//  os &lt;&lt; arrayOfStrings(i,0)</span></div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;      <span class="comment">//     &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;      <span class="comment">//}</span></div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    }</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;      os &lt;&lt; *m_doubleColumns[j];</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    }</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    os &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;  }</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;}</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00351"></a><span class="lineno"><a class="line" href="a00450.html#abd30e6a15a8d9117611fddd7d06c3eed">  351</a></span>&#160;std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, const AsciiTable&lt;V,M&gt;&amp; obj)</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;{</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;  obj.print(os);</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;  <span class="keywordflow">return</span> os;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;}</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00013_html_a1c84e461d75e0846c156617f222c2ec3"><div class="ttname"><a href="a00013.html#a1c84e461d75e0846c156617f222c2ec3">QUESO::AsciiTable::m_colIsString</a></div><div class="ttdeci">std::vector&lt; bool &gt; m_colIsString</div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00085">AsciiTable.h:85</a></div></div>
-<div class="ttc" id="a00013_html_a8918d88137629c62e2408c164795479c"><div class="ttname"><a href="a00013.html#a8918d88137629c62e2408c164795479c">QUESO::AsciiTable::stringColumn</a></div><div class="ttdeci">const DistArray&lt; std::string &gt; &amp; stringColumn(unsigned int j) const </div><div class="ttdoc">Returns the string stored in column j. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00282">AsciiTable.C:282</a></div></div>
-<div class="ttc" id="a00013_html_a4e58f0ab57b3af3aa4333955175abcf3"><div class="ttname"><a href="a00013.html#a4e58f0ab57b3af3aa4333955175abcf3">QUESO::AsciiTable::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints the table. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00317">AsciiTable.C:317</a></div></div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00252_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00013_html_aa764ef68ef1d2ed85a4b6bd4eb0d7b17"><div class="ttname"><a href="a00013.html#aa764ef68ef1d2ed85a4b6bd4eb0d7b17">QUESO::AsciiTable::numRows</a></div><div class="ttdeci">unsigned int numRows() const </div><div class="ttdoc">Returns the number of rows in the table. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00268">AsciiTable.C:268</a></div></div>
-<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00221_source.html#l00187">Environment.h:187</a></div></div>
-<div class="ttc" id="a00013_html_ada886c8db06d2d618f2898ad2cf2bd87"><div class="ttname"><a href="a00013.html#ada886c8db06d2d618f2898ad2cf2bd87">QUESO::AsciiTable::m_numCols</a></div><div class="ttdeci">unsigned int m_numCols</div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00084">AsciiTable.h:84</a></div></div>
-<div class="ttc" id="a00013_html_a2ba907db652aa02d53d493980d7a3753"><div class="ttname"><a href="a00013.html#a2ba907db652aa02d53d493980d7a3753">QUESO::AsciiTable::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00082">AsciiTable.h:82</a></div></div>
-<div class="ttc" id="a00013_html_a14ba55d29e9a4ddeb14cd5acd8a27268"><div class="ttname"><a href="a00013.html#a14ba55d29e9a4ddeb14cd5acd8a27268">QUESO::AsciiTable::m_stringColumns</a></div><div class="ttdeci">std::vector&lt; DistArray&lt; std::string &gt; * &gt; m_stringColumns</div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00089">AsciiTable.h:89</a></div></div>
-<div class="ttc" id="a00219_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00219_source.html#l00222">Defines.h:222</a></div></div>
-<div class="ttc" id="a00013_html_a267e1834e60c5df459122b2509e4ca9d"><div class="ttname"><a href="a00013.html#a267e1834e60c5df459122b2509e4ca9d">QUESO::AsciiTable::doubleColumn</a></div><div class="ttdeci">const V &amp; doubleColumn(unsigned int j) const </div><div class="ttdoc">Returns the value (double) stored in column j. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00299">AsciiTable.C:299</a></div></div>
-<div class="ttc" id="a00013_html_a2ff35b2d6920dc9e13dd8966a76beb10"><div class="ttname"><a href="a00013.html#a2ff35b2d6920dc9e13dd8966a76beb10">QUESO::AsciiTable::~AsciiTable</a></div><div class="ttdeci">~AsciiTable()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00076">AsciiTable.C:76</a></div></div>
-<div class="ttc" id="a00013_html_a4d856e0d046d823e906aa4448b5762f1"><div class="ttname"><a href="a00013.html#a4d856e0d046d823e906aa4448b5762f1">QUESO::AsciiTable::AsciiTable</a></div><div class="ttdeci">AsciiTable(const BaseEnvironment &amp;env, unsigned int numRows, unsigned int numExtraCols, const std::vector&lt; bool &gt; *extraColIsString, const std::string &amp;fileName)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00031">AsciiTable.C:31</a></div></div>
-<div class="ttc" id="a00450_html_af0fc61c58d0ca592fa172eeab540d39c"><div class="ttname"><a href="a00450.html#af0fc61c58d0ca592fa172eeab540d39c">QUESO::MiscReadStringAndDoubleFromFile</a></div><div class="ttdeci">int MiscReadStringAndDoubleFromFile(std::ifstream &amp;ifs, std::string &amp;termString, double *termValue)</div><div class="ttdef"><b>Definition:</b> <a href="a00299_source.html#l00165">Miscellaneous.C:165</a></div></div>
-<div class="ttc" id="a00013_html_aa25a1d14c88cd5de341c43e052622f51"><div class="ttname"><a href="a00013.html#aa25a1d14c88cd5de341c43e052622f51">QUESO::AsciiTable::m_doubleColumns</a></div><div class="ttdeci">std::vector&lt; V * &gt; m_doubleColumns</div><div class="ttdef"><b>Definition:</b> <a href="a00282_source.html#l00090">AsciiTable.h:90</a></div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00252_source.html#l00436">Environment.C:436</a></div></div>
-<div class="ttc" id="a00450_html_a575d3153d82b7df3d78ad5cfbf2b83b7"><div class="ttname"><a href="a00450.html#a575d3153d82b7df3d78ad5cfbf2b83b7">QUESO::MiscReadCharsAndDoubleFromFile</a></div><div class="ttdeci">int MiscReadCharsAndDoubleFromFile(std::ifstream &amp;ifs, std::string &amp;termString, double *termValue, bool &amp;endOfLineAchieved)</div><div class="ttdef"><b>Definition:</b> <a href="a00299_source.html#l00196">Miscellaneous.C:196</a></div></div>
-<div class="ttc" id="a00013_html_a428f547b9f5007e673245c8d2d0be387"><div class="ttname"><a href="a00013.html#a428f547b9f5007e673245c8d2d0be387">QUESO::AsciiTable::numCols</a></div><div class="ttdeci">unsigned int numCols() const </div><div class="ttdoc">Returns the number of columns in the table. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00275">AsciiTable.C:275</a></div></div>
-<div class="ttc" id="a00048_html"><div class="ttname"><a href="a00048.html">QUESO::DistArray&lt; std::string &gt;</a></div></div>
-<div class="ttc" id="a00013_html_a008557a6d782f76a51e72c77b3136322"><div class="ttname"><a href="a00013.html#a008557a6d782f76a51e72c77b3136322">QUESO::AsciiTable::readColumnsFromFile</a></div><div class="ttdeci">void readColumnsFromFile()</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00089">AsciiTable.C:89</a></div></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <a class="code" href="a00017.html">Base1DQuadrature</a>(<span class="keywordtype">double</span> minDomainValue,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                          <span class="keywordtype">double</span> maxDomainValue,</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                          <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> order);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="a00017.html">Base1DQuadrature</a>();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">double</span>                     minDomainValue() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keywordtype">double</span>                     maxDomainValue() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>               order         () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keyword">const</span> std::vector&lt;double&gt;&amp; positions     () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">const</span> std::vector&lt;double&gt;&amp; weights       () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">virtual</span>  <span class="keywordtype">void</span>                       dumbRoutine   () <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="a00017.html#a7165680498394fa2d23ac919a920fc01">   82</a></span>&#160;  <span class="keywordtype">double</span>              <a class="code" href="a00017.html#a7165680498394fa2d23ac919a920fc01">m_minDomainValue</a>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="a00017.html#ace30af8dd67b04f11ea37ebe509f256e">   83</a></span>&#160;  <span class="keywordtype">double</span>              <a class="code" href="a00017.html#ace30af8dd67b04f11ea37ebe509f256e">m_maxDomainValue</a>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="a00017.html#a78ba0750b7220b302e4cd1415c7d4c48">   84</a></span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>        <a class="code" href="a00017.html#a78ba0750b7220b302e4cd1415c7d4c48">m_order</a>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="a00017.html#aeda387c028c3ba89ea0f9637a2234212">   85</a></span>&#160;  std::vector&lt;double&gt; <a class="code" href="a00017.html#aeda387c028c3ba89ea0f9637a2234212">m_positions</a>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="a00017.html#a7117fec020a8098d1c22b604268bad93">   86</a></span>&#160;  std::vector&lt;double&gt; <a class="code" href="a00017.html#a7117fec020a8098d1c22b604268bad93">m_weights</a>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">// Generic 1D quadrature class</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="a00075.html">   97</a></span>&#160;<span class="comment"></span><span class="keyword">class </span><a class="code" href="a00075.html">Generic1DQuadrature</a> : <span class="keyword">public</span> <a class="code" href="a00017.html">Base1DQuadrature</a> {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <a class="code" href="a00075.html#a423e55f9b2f5b136cddae91a774f9cb3">Generic1DQuadrature</a>(<span class="keywordtype">double</span> <a class="code" href="a00017.html#a938187458b0069e7b3779bc3739a1cc0">minDomainValue</a>,</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                             <span class="keywordtype">double</span> <a class="code" href="a00017.html#af3d09abe6716a23f9061b8b657524547">maxDomainValue</a>,</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                             <span class="keyword">const</span> std::vector&lt;double&gt;&amp; <a class="code" href="a00017.html#a9f5d9b6e20b5105e2c17b7da1b71c259">positions</a>,</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                             <span class="keyword">const</span> std::vector&lt;double&gt;&amp; <a class="code" href="a00017.html#a5780ce2b5ef26ce0f5183e8e32358cee">weights</a>);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <a class="code" href="a00075.html#a5b2308f1d8cb6e94f0b5955b7f8ddb69">~Generic1DQuadrature</a>();</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00075.html#a365701bda9fba17fdf5498436722cdde">dumbRoutine</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a7165680498394fa2d23ac919a920fc01">Base1DQuadrature::m_minDomainValue</a>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#ace30af8dd67b04f11ea37ebe509f256e">Base1DQuadrature::m_maxDomainValue</a>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a78ba0750b7220b302e4cd1415c7d4c48">Base1DQuadrature::m_order</a>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#aeda387c028c3ba89ea0f9637a2234212">Base1DQuadrature::m_positions</a>;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a7117fec020a8098d1c22b604268bad93">Base1DQuadrature::m_weights</a>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;};</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">// Uniform/Legendre 1D quadrature class</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="a00160.html">  162</a></span>&#160;<span class="comment"></span><span class="keyword">class </span><a class="code" href="a00160.html">UniformLegendre1DQuadrature</a> : <span class="keyword">public</span> <a class="code" href="a00017.html">Base1DQuadrature</a> {</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  <a class="code" href="a00160.html#a2893373338683fa72a6bfb321e58750e">UniformLegendre1DQuadrature</a>(<span class="keywordtype">double</span>       <a class="code" href="a00017.html#a938187458b0069e7b3779bc3739a1cc0">minDomainValue</a>,</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                                     <span class="keywordtype">double</span>       <a class="code" href="a00017.html#af3d09abe6716a23f9061b8b657524547">maxDomainValue</a>,</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                                     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00017.html#a07713b5e8df24bbc8e3e9d13b707e5d0">order</a>,</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                                     <span class="keywordtype">bool</span>         densityIsNormalized);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  <a class="code" href="a00160.html#a6b6ba4d00a8865df9a3d90ab0c27f332">~UniformLegendre1DQuadrature</a>();</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  </div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00160.html#a4d63fb6517b84b37e47da5cea15bc2b1">dumbRoutine</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a7165680498394fa2d23ac919a920fc01">Base1DQuadrature::m_minDomainValue</a>;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#ace30af8dd67b04f11ea37ebe509f256e">Base1DQuadrature::m_maxDomainValue</a>;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a78ba0750b7220b302e4cd1415c7d4c48">Base1DQuadrature::m_order</a>;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#aeda387c028c3ba89ea0f9637a2234212">Base1DQuadrature::m_positions</a>;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a7117fec020a8098d1c22b604268bad93">Base1DQuadrature::m_weights</a>;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;};</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">// Gaussian/Hermite 1D quadrature class</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno"><a class="line" href="a00068.html">  219</a></span>&#160;<span class="comment"></span><span class="keyword">class </span><a class="code" href="a00068.html">GaussianHermite1DQuadrature</a> : <span class="keyword">public</span> <a class="code" href="a00017.html">Base1DQuadrature</a> {</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  <a class="code" href="a00068.html#a93622cfcdf05cb9a7961c76b4d749b55">GaussianHermite1DQuadrature</a>(<span class="keywordtype">double</span>       mean,</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;                                     <span class="keywordtype">double</span>       stddev,</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                                     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00017.html#a07713b5e8df24bbc8e3e9d13b707e5d0">order</a>);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  <a class="code" href="a00068.html#af8139b48716bd162dab8050e4b693784">~GaussianHermite1DQuadrature</a>();</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  </div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00068.html#ae622aec1b3ed4d5b1630825819322090">dumbRoutine</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a7165680498394fa2d23ac919a920fc01">Base1DQuadrature::m_minDomainValue</a>;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#ace30af8dd67b04f11ea37ebe509f256e">Base1DQuadrature::m_maxDomainValue</a>;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a78ba0750b7220b302e4cd1415c7d4c48">Base1DQuadrature::m_order</a>;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#aeda387c028c3ba89ea0f9637a2234212">Base1DQuadrature::m_positions</a>;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a7117fec020a8098d1c22b604268bad93">Base1DQuadrature::m_weights</a>;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
+<div class="line"><a name="l00246"></a><span class="lineno"><a class="line" href="a00068.html#a75f2f70f516506c0c93c64f1074cbe8f">  246</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00068.html#a75f2f70f516506c0c93c64f1074cbe8f">m_mean</a>;</div>
+<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="a00068.html#ad3114fcc967725e7cabcbba4b09a8bb7">  247</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00068.html#ad3114fcc967725e7cabcbba4b09a8bb7">m_stddev</a>;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;};</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="comment">// Wigner/Chebyshev1st 1D quadrature class</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="a00172.html">  267</a></span>&#160;<span class="comment"></span><span class="keyword">class </span><a class="code" href="a00172.html">WignerInverseChebyshev1st1DQuadrature</a> : <span class="keyword">public</span> <a class="code" href="a00017.html">Base1DQuadrature</a> {</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;  <a class="code" href="a00172.html#a8a40172427db7b72e0885c30f745ad13">WignerInverseChebyshev1st1DQuadrature</a>(<span class="keywordtype">double</span>       <a class="code" href="a00017.html#a938187458b0069e7b3779bc3739a1cc0">minDomainValue</a>,</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                                               <span class="keywordtype">double</span>       <a class="code" href="a00017.html#af3d09abe6716a23f9061b8b657524547">maxDomainValue</a>,</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                                               <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00017.html#a07713b5e8df24bbc8e3e9d13b707e5d0">order</a>);</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;  <a class="code" href="a00172.html#a0dc8250c94e72042eb233577b51a5087">~WignerInverseChebyshev1st1DQuadrature</a>();</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  </div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00172.html#aacf526849bf3bcec245d12f14d24352d">dumbRoutine</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a7165680498394fa2d23ac919a920fc01">Base1DQuadrature::m_minDomainValue</a>;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#ace30af8dd67b04f11ea37ebe509f256e">Base1DQuadrature::m_maxDomainValue</a>;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a78ba0750b7220b302e4cd1415c7d4c48">Base1DQuadrature::m_order</a>;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#aeda387c028c3ba89ea0f9637a2234212">Base1DQuadrature::m_positions</a>;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a7117fec020a8098d1c22b604268bad93">Base1DQuadrature::m_weights</a>;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;};</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">// Wigner/Chebyshev2nd 1D quadrature class</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno"><a class="line" href="a00171.html">  313</a></span>&#160;<span class="comment"></span><span class="keyword">class </span><a class="code" href="a00171.html">WignerChebyshev2nd1DQuadrature</a> : <span class="keyword">public</span> <a class="code" href="a00017.html">Base1DQuadrature</a> {</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  <a class="code" href="a00171.html#ada00887a7e9ad33a5ea4bf60a5f4ae81">WignerChebyshev2nd1DQuadrature</a>(<span class="keywordtype">double</span>       <a class="code" href="a00017.html#a938187458b0069e7b3779bc3739a1cc0">minDomainValue</a>,</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;                                        <span class="keywordtype">double</span>       <a class="code" href="a00017.html#af3d09abe6716a23f9061b8b657524547">maxDomainValue</a>,</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                                        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00017.html#a07713b5e8df24bbc8e3e9d13b707e5d0">order</a>);</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;  <a class="code" href="a00171.html#aa7013fc823f0e4ad0ab9ccaf588551f5">~WignerChebyshev2nd1DQuadrature</a>();</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;  </div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00171.html#a1be91acea2adbbaf5f61a408d66737fb">dumbRoutine</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a7165680498394fa2d23ac919a920fc01">Base1DQuadrature::m_minDomainValue</a>;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#ace30af8dd67b04f11ea37ebe509f256e">Base1DQuadrature::m_maxDomainValue</a>;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a78ba0750b7220b302e4cd1415c7d4c48">Base1DQuadrature::m_order</a>;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#aeda387c028c3ba89ea0f9637a2234212">Base1DQuadrature::m_positions</a>;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00017.html#a7117fec020a8098d1c22b604268bad93">Base1DQuadrature::m_weights</a>;</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;};</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="preprocessor">#endif // UQ_1D_1D_QUADRATURE_H</span></div>
+<div class="ttc" id="a00160_html_a2893373338683fa72a6bfb321e58750e"><div class="ttname"><a href="a00160.html#a2893373338683fa72a6bfb321e58750e">QUESO::UniformLegendre1DQuadrature::UniformLegendre1DQuadrature</a></div><div class="ttdeci">UniformLegendre1DQuadrature(double minDomainValue, double maxDomainValue, unsigned int order, bool densityIsNormalized)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00133">1DQuadrature.C:133</a></div></div>
+<div class="ttc" id="a00068_html"><div class="ttname"><a href="a00068.html">QUESO::GaussianHermite1DQuadrature</a></div><div class="ttdoc">Class for Hermite-Gauss quadrature rule for one-dimensional functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00219">1DQuadrature.h:219</a></div></div>
+<div class="ttc" id="a00075_html_a423e55f9b2f5b136cddae91a774f9cb3"><div class="ttname"><a href="a00075.html#a423e55f9b2f5b136cddae91a774f9cb3">QUESO::Generic1DQuadrature::Generic1DQuadrature</a></div><div class="ttdeci">Generic1DQuadrature(double minDomainValue, double maxDomainValue, const std::vector&lt; double &gt; &amp;positions, const std::vector&lt; double &gt; &amp;weights)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00098">1DQuadrature.C:98</a></div></div>
+<div class="ttc" id="a00017_html_a7117fec020a8098d1c22b604268bad93"><div class="ttname"><a href="a00017.html#a7117fec020a8098d1c22b604268bad93">QUESO::Base1DQuadrature::m_weights</a></div><div class="ttdeci">std::vector&lt; double &gt; m_weights</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00086">1DQuadrature.h:86</a></div></div>
+<div class="ttc" id="a00017_html_a78ba0750b7220b302e4cd1415c7d4c48"><div class="ttname"><a href="a00017.html#a78ba0750b7220b302e4cd1415c7d4c48">QUESO::Base1DQuadrature::m_order</a></div><div class="ttdeci">unsigned int m_order</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00084">1DQuadrature.h:84</a></div></div>
+<div class="ttc" id="a00160_html_a6b6ba4d00a8865df9a3d90ab0c27f332"><div class="ttname"><a href="a00160.html#a6b6ba4d00a8865df9a3d90ab0c27f332">QUESO::UniformLegendre1DQuadrature::~UniformLegendre1DQuadrature</a></div><div class="ttdeci">~UniformLegendre1DQuadrature()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00433">1DQuadrature.C:433</a></div></div>
+<div class="ttc" id="a00068_html_a93622cfcdf05cb9a7961c76b4d749b55"><div class="ttname"><a href="a00068.html#a93622cfcdf05cb9a7961c76b4d749b55">QUESO::GaussianHermite1DQuadrature::GaussianHermite1DQuadrature</a></div><div class="ttdeci">GaussianHermite1DQuadrature(double mean, double stddev, unsigned int order)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00446">1DQuadrature.C:446</a></div></div>
+<div class="ttc" id="a00068_html_a75f2f70f516506c0c93c64f1074cbe8f"><div class="ttname"><a href="a00068.html#a75f2f70f516506c0c93c64f1074cbe8f">QUESO::GaussianHermite1DQuadrature::m_mean</a></div><div class="ttdeci">double m_mean</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00246">1DQuadrature.h:246</a></div></div>
+<div class="ttc" id="a00160_html_a4d63fb6517b84b37e47da5cea15bc2b1"><div class="ttname"><a href="a00160.html#a4d63fb6517b84b37e47da5cea15bc2b1">QUESO::UniformLegendre1DQuadrature::dumbRoutine</a></div><div class="ttdeci">void dumbRoutine() const </div><div class="ttdoc">A bogus method. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00438">1DQuadrature.C:438</a></div></div>
+<div class="ttc" id="a00017_html_af3d09abe6716a23f9061b8b657524547"><div class="ttname"><a href="a00017.html#af3d09abe6716a23f9061b8b657524547">QUESO::Base1DQuadrature::maxDomainValue</a></div><div class="ttdeci">double maxDomainValue() const </div><div class="ttdoc">Returns the maximum value of the domain of the (one-dimensional) function. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00064">1DQuadrature.C:64</a></div></div>
+<div class="ttc" id="a00017_html_aeda387c028c3ba89ea0f9637a2234212"><div class="ttname"><a href="a00017.html#aeda387c028c3ba89ea0f9637a2234212">QUESO::Base1DQuadrature::m_positions</a></div><div class="ttdeci">std::vector&lt; double &gt; m_positions</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00085">1DQuadrature.h:85</a></div></div>
+<div class="ttc" id="a00017_html_a07713b5e8df24bbc8e3e9d13b707e5d0"><div class="ttname"><a href="a00017.html#a07713b5e8df24bbc8e3e9d13b707e5d0">QUESO::Base1DQuadrature::order</a></div><div class="ttdeci">unsigned int order() const </div><div class="ttdoc">Returns the order of the quadrature rule. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00070">1DQuadrature.C:70</a></div></div>
+<div class="ttc" id="a00075_html"><div class="ttname"><a href="a00075.html">QUESO::Generic1DQuadrature</a></div><div class="ttdoc">Class for one-dimensional generic quadrature rules (numerical integration of functions). </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00097">1DQuadrature.h:97</a></div></div>
+<div class="ttc" id="a00068_html_ae622aec1b3ed4d5b1630825819322090"><div class="ttname"><a href="a00068.html#ae622aec1b3ed4d5b1630825819322090">QUESO::GaussianHermite1DQuadrature::dumbRoutine</a></div><div class="ttdeci">void dumbRoutine() const </div><div class="ttdoc">A bogus method. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00670">1DQuadrature.C:670</a></div></div>
+<div class="ttc" id="a00017_html_ace30af8dd67b04f11ea37ebe509f256e"><div class="ttname"><a href="a00017.html#ace30af8dd67b04f11ea37ebe509f256e">QUESO::Base1DQuadrature::m_maxDomainValue</a></div><div class="ttdeci">double m_maxDomainValue</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00083">1DQuadrature.h:83</a></div></div>
+<div class="ttc" id="a00017_html_a938187458b0069e7b3779bc3739a1cc0"><div class="ttname"><a href="a00017.html#a938187458b0069e7b3779bc3739a1cc0">QUESO::Base1DQuadrature::minDomainValue</a></div><div class="ttdeci">double minDomainValue() const </div><div class="ttdoc">Returns the minimum value of the domain of the (one-dimensional) function. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00058">1DQuadrature.C:58</a></div></div>
+<div class="ttc" id="a00017_html"><div class="ttname"><a href="a00017.html">QUESO::Base1DQuadrature</a></div><div class="ttdoc">Base class for one-dimensional quadrature rules (numerical integration of functions). </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00047">1DQuadrature.h:47</a></div></div>
+<div class="ttc" id="a00171_html_ada00887a7e9ad33a5ea4bf60a5f4ae81"><div class="ttname"><a href="a00171.html#ada00887a7e9ad33a5ea4bf60a5f4ae81">QUESO::WignerChebyshev2nd1DQuadrature::WignerChebyshev2nd1DQuadrature</a></div><div class="ttdeci">WignerChebyshev2nd1DQuadrature(double minDomainValue, double maxDomainValue, unsigned int order)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00718">1DQuadrature.C:718</a></div></div>
+<div class="ttc" id="a00172_html_a8a40172427db7b72e0885c30f745ad13"><div class="ttname"><a href="a00172.html#a8a40172427db7b72e0885c30f745ad13">QUESO::WignerInverseChebyshev1st1DQuadrature::WignerInverseChebyshev1st1DQuadrature</a></div><div class="ttdeci">WignerInverseChebyshev1st1DQuadrature(double minDomainValue, double maxDomainValue, unsigned int order)</div><div class="ttdoc">TODO: Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00678">1DQuadrature.C:678</a></div></div>
+<div class="ttc" id="a00068_html_af8139b48716bd162dab8050e4b693784"><div class="ttname"><a href="a00068.html#af8139b48716bd162dab8050e4b693784">QUESO::GaussianHermite1DQuadrature::~GaussianHermite1DQuadrature</a></div><div class="ttdeci">~GaussianHermite1DQuadrature()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00665">1DQuadrature.C:665</a></div></div>
+<div class="ttc" id="a00075_html_a5b2308f1d8cb6e94f0b5955b7f8ddb69"><div class="ttname"><a href="a00075.html#a5b2308f1d8cb6e94f0b5955b7f8ddb69">QUESO::Generic1DQuadrature::~Generic1DQuadrature</a></div><div class="ttdeci">~Generic1DQuadrature()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00120">1DQuadrature.C:120</a></div></div>
+<div class="ttc" id="a00172_html_a0dc8250c94e72042eb233577b51a5087"><div class="ttname"><a href="a00172.html#a0dc8250c94e72042eb233577b51a5087">QUESO::WignerInverseChebyshev1st1DQuadrature::~WignerInverseChebyshev1st1DQuadrature</a></div><div class="ttdeci">~WignerInverseChebyshev1st1DQuadrature()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00705">1DQuadrature.C:705</a></div></div>
+<div class="ttc" id="a00171_html_aa7013fc823f0e4ad0ab9ccaf588551f5"><div class="ttname"><a href="a00171.html#aa7013fc823f0e4ad0ab9ccaf588551f5">QUESO::WignerChebyshev2nd1DQuadrature::~WignerChebyshev2nd1DQuadrature</a></div><div class="ttdeci">~WignerChebyshev2nd1DQuadrature()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00745">1DQuadrature.C:745</a></div></div>
+<div class="ttc" id="a00068_html_ad3114fcc967725e7cabcbba4b09a8bb7"><div class="ttname"><a href="a00068.html#ad3114fcc967725e7cabcbba4b09a8bb7">QUESO::GaussianHermite1DQuadrature::m_stddev</a></div><div class="ttdeci">double m_stddev</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00247">1DQuadrature.h:247</a></div></div>
+<div class="ttc" id="a00172_html_aacf526849bf3bcec245d12f14d24352d"><div class="ttname"><a href="a00172.html#aacf526849bf3bcec245d12f14d24352d">QUESO::WignerInverseChebyshev1st1DQuadrature::dumbRoutine</a></div><div class="ttdeci">void dumbRoutine() const </div><div class="ttdoc">A bogus method. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00710">1DQuadrature.C:710</a></div></div>
+<div class="ttc" id="a00017_html_a9f5d9b6e20b5105e2c17b7da1b71c259"><div class="ttname"><a href="a00017.html#a9f5d9b6e20b5105e2c17b7da1b71c259">QUESO::Base1DQuadrature::positions</a></div><div class="ttdeci">const std::vector&lt; double &gt; &amp; positions() const </div><div class="ttdoc">Array of the positions for the numerical integration. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00076">1DQuadrature.C:76</a></div></div>
+<div class="ttc" id="a00172_html"><div class="ttname"><a href="a00172.html">QUESO::WignerInverseChebyshev1st1DQuadrature</a></div><div class="ttdoc">Class for first type Chebyshev-Gauss quadrature rule for one-dimensional functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00267">1DQuadrature.h:267</a></div></div>
+<div class="ttc" id="a00160_html"><div class="ttname"><a href="a00160.html">QUESO::UniformLegendre1DQuadrature</a></div><div class="ttdoc">Class for Legendre-Gauss quadrature rule for one-dimensional functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00162">1DQuadrature.h:162</a></div></div>
+<div class="ttc" id="a00017_html_a5780ce2b5ef26ce0f5183e8e32358cee"><div class="ttname"><a href="a00017.html#a5780ce2b5ef26ce0f5183e8e32358cee">QUESO::Base1DQuadrature::weights</a></div><div class="ttdeci">const std::vector&lt; double &gt; &amp; weights() const </div><div class="ttdoc">Array of the weights used in the numerical integration. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00086">1DQuadrature.C:86</a></div></div>
+<div class="ttc" id="a00171_html_a1be91acea2adbbaf5f61a408d66737fb"><div class="ttname"><a href="a00171.html#a1be91acea2adbbaf5f61a408d66737fb">QUESO::WignerChebyshev2nd1DQuadrature::dumbRoutine</a></div><div class="ttdeci">void dumbRoutine() const </div><div class="ttdoc">Bogus routine. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00750">1DQuadrature.C:750</a></div></div>
+<div class="ttc" id="a00017_html_a7165680498394fa2d23ac919a920fc01"><div class="ttname"><a href="a00017.html#a7165680498394fa2d23ac919a920fc01">QUESO::Base1DQuadrature::m_minDomainValue</a></div><div class="ttdeci">double m_minDomainValue</div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00082">1DQuadrature.h:82</a></div></div>
+<div class="ttc" id="a00075_html_a365701bda9fba17fdf5498436722cdde"><div class="ttname"><a href="a00075.html#a365701bda9fba17fdf5498436722cdde">QUESO::Generic1DQuadrature::dumbRoutine</a></div><div class="ttdeci">void dumbRoutine() const </div><div class="ttdoc">Bogus routine. </div><div class="ttdef"><b>Definition:</b> <a href="a00306_source.html#l00125">1DQuadrature.C:125</a></div></div>
+<div class="ttc" id="a00171_html"><div class="ttname"><a href="a00171.html">QUESO::WignerChebyshev2nd1DQuadrature</a></div><div class="ttdoc">Class for second type Chebyshev-Gauss quadrature rule for one-dimensional functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00294_source.html#l00313">1DQuadrature.h:313</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:12 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:45 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

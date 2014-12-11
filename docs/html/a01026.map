@@ -1,25 +1,9 @@
-<map id="QUESO::MetropolisHastingsSG&lt; P_V, P_M &gt;" name="QUESO::MetropolisHastingsSG&lt; P_V, P_M &gt;">
-<area shape="rect" id="node2" href="$a00018.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,325,648,355"/>
-<area shape="rect" id="node8" href="$a00050.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="805,60,1024,89"/>
-<area shape="rect" id="node14" href="$a00116.html" title="The QUESO MPI Communicator Class. " alt="" coords="841,537,988,567"/>
-<area shape="rect" id="node17" href="$a00131.html" title="QUESO::ScalarFunctionSynchronizer\l\&lt; P_V, P_M \&gt;" alt="" coords="2145,281,2407,327"/>
-<area shape="rect" id="node20" href="$a00024.html" title="QUESO::BaseScalarFunction\l\&lt; P_V, P_M \&gt;" alt="" coords="1283,162,1493,209"/>
-<area shape="rect" id="node23" href="$a00158.html" title="QUESO::VectorSet\&lt; P\l_V, P_M \&gt;" alt="" coords="828,113,1001,159"/>
-<area shape="rect" id="node30" href="$a00024.html" title="A templated (base) class for handling scalar functions. " alt="" coords="809,247,1020,294"/>
-<area shape="rect" id="node36" href="$a00024.html" title="A templated (base) class for handling scalar functions. " alt="" coords="809,317,1020,363"/>
-<area shape="rect" id="node41" href="$a00025.html" title="QUESO::BaseTKGroup\l\&lt; P_V, P_M \&gt;" alt="" coords="2601,601,2772,647"/>
-<area shape="rect" id="node43" href="$a00049.html" title="This class sets up the environment underlying the use of the QUESO library by an executable. " alt="" coords="1048,668,1259,697"/>
-<area shape="rect" id="node49" href="$a00158.html" title="A templated class for handling sets. " alt="" coords="1517,426,1691,473"/>
-<area shape="rect" id="node60" href="$a00107.html" title="This class reads the options for the Metropolis&#45;Hastings generator of samples from an input file..." alt="" coords="2583,722,2791,769"/>
-<area shape="rect" id="node4" href="$a00032.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,352,195,381"/>
-<area shape="rect" id="node6" href="$a00122.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,299,175,328"/>
-<area shape="rect" id="node11" href="$a00051.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,161,205,191"/>
-<area shape="rect" id="node54" href="$a00102.html" title="A class for partitioning vectors and matrices. " alt="" coords="1335,537,1441,567"/>
-<area shape="rect" id="node26" href="$a00035.html" title="QUESO::BayesianJointPdf\l\&lt; P_V, P_M \&gt;" alt="" coords="1716,239,1908,286"/>
-<area shape="rect" id="node28" href="$a00019.html" title="A templated (base) class for handling joint PDFs. " alt="" coords="1305,237,1471,283"/>
-<area shape="rect" id="node34" href="$a00019.html" title="QUESO::BaseJointPdf\l\&lt; P_V, P_M \&gt;" alt="" coords="1305,306,1471,353"/>
-<area shape="rect" id="node39" href="$a00108.html" title="This class provides options for the Metropolis&#45;Hastings generator of samples if no input file is avai..." alt="" coords="2179,797,2373,827"/>
-<area shape="rect" id="node47" href="$a00159.html" title="QUESO::VectorSpace\l\&lt; P_V, P_M \&gt;" alt="" coords="2193,525,2359,571"/>
-<area shape="rect" id="node52" href="$a00048.html" title="QUESO::DistArray\&lt; std\l::string \&gt;" alt="" coords="1723,481,1901,527"/>
-<area shape="rect" id="node58" href="$a00109.html" title="A struct that represents a Metropolis&#45;Hastings sample. " alt="" coords="2569,875,2804,904"/>
+<map id="QUESO::GaussianVectorRealizer&lt; V, M &gt;" name="QUESO::GaussianVectorRealizer&lt; V, M &gt;">
+<area shape="rect" id="node2" href="$a00030.html" title="A templated (base) class for handling sampling from vector RVs. " alt="" coords="808,5,1021,51"/>
+<area shape="rect" id="node4" href="$a00018.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,168,648,197"/>
+<area shape="rect" id="node10" href="$a00051.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="805,257,1024,287"/>
+<area shape="rect" id="node16" href="$a00124.html" title="The QUESO MPI Communicator Class. " alt="" coords="841,137,988,167"/>
+<area shape="rect" id="node6" href="$a00033.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,120,195,149"/>
+<area shape="rect" id="node8" href="$a00131.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,173,175,203"/>
+<area shape="rect" id="node13" href="$a00052.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,283,205,312"/>
 </map>

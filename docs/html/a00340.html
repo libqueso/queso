@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/stats/inc/MetropolisHastingsSG.h File Reference</title>
+<title>queso-0.51.0: src/stats/inc/GenericScalarCovarianceFunction.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -51,28 +51,18 @@
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">MetropolisHastingsSG.h File Reference</div>  </div>
+<div class="title">GenericScalarCovarianceFunction.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>A templated class that represents a Metropolis-Hastings generator of samples and a struct which stores its info.  
-<a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;queso/MetropolisHastingsSGOptions.h&gt;</code><br/>
-<code>#include &lt;queso/TKGroup.h&gt;</code><br/>
-<code>#include &lt;queso/VectorRV.h&gt;</code><br/>
-<code>#include &lt;queso/VectorSpace.h&gt;</code><br/>
-<code>#include &lt;queso/MarkovChainPositionData.h&gt;</code><br/>
-<code>#include &lt;queso/ScalarFunctionSynchronizer.h&gt;</code><br/>
-<code>#include &lt;queso/SequenceOfVectors.h&gt;</code><br/>
-<code>#include &lt;queso/ArrayOfSequences.h&gt;</code><br/>
-<code>#include &lt;sys/time.h&gt;</code><br/>
-<code>#include &lt;fstream&gt;</code><br/>
-<code>#include &lt;boost/math/special_functions.hpp&gt;</code><br/>
+<div class="textblock"><code>#include &lt;queso/ScalarCovarianceFunction.h&gt;</code><br/>
+<code>#include &lt;queso/VectorSet.h&gt;</code><br/>
+<code>#include &lt;queso/Environment.h&gt;</code><br/>
+<code>#include &lt;cmath&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for MetropolisHastingsSG.h:</div>
+Include dependency graph for GenericScalarCovarianceFunction.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00620.png" border="0" usemap="#src_2stats_2inc_2_metropolis_hastings_s_g_8h" alt=""/></div>
-<map name="src_2stats_2inc_2_metropolis_hastings_s_g_8h" id="src_2stats_2inc_2_metropolis_hastings_s_g_8h">
+<div class="center"><img src="a00639.png" border="0" usemap="#src_2stats_2inc_2_generic_scalar_covariance_function_8h" alt=""/></div>
+<map name="src_2stats_2inc_2_generic_scalar_covariance_function_8h" id="src_2stats_2inc_2_generic_scalar_covariance_function_8h">
 </map>
 </div>
 </div>
@@ -80,25 +70,18 @@ Include dependency graph for MetropolisHastingsSG.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00109.html">QUESO::MHRawChainInfoStruct</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A struct that represents a Metropolis-Hastings sample.  <a href="a00109.html#details">More...</a><br/></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00106.html">QUESO::MetropolisHastingsSG&lt; P_V, P_M &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A templated class that represents a Metropolis-Hastings generator of samples.  <a href="a00106.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.html">QUESO::GenericScalarCovarianceFunction&lt; V, M &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class for generic covariances.  <a href="a00078.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00450"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html">QUESO</a></td></tr>
+<tr class="memitem:a00480"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A templated class that represents a Metropolis-Hastings generator of samples and a struct which stores its info. </p>
-
-<p>Definition in file <a class="el" href="a00340_source.html">MetropolisHastingsSG.h</a>.</p>
-</div></div><!-- contents -->
+</div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:13 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:45 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

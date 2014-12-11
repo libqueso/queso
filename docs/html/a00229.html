@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/core/inc/InfiniteDimensionalLikelihoodBase.h File Reference</title>
+<title>queso-0.51.0: src/core/inc/Defines.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -49,35 +49,462 @@
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">InfiniteDimensionalLikelihoodBase.h File Reference</div>  </div>
+<div class="title">Defines.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Abstract class representing the likelihood.  
+<p>Definitions and a class to provide default options to pass to a <a class="el" href="a00480.html">QUESO</a> environment.  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &lt;queso/config_queso.h&gt;</code><br/>
+<code>#include &lt;queso/asserts.h&gt;</code><br/>
+<code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;stdlib.h&gt;</code><br/>
+<code>#include &lt;set&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
+<code>#include &lt;mpi.h&gt;</code><br/>
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for Defines.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="a00532.png" border="0" usemap="#src_2core_2inc_2_defines_8h" alt=""/></div>
+<map name="src_2core_2inc_2_defines_8h" id="src_2core_2inc_2_defines_8h">
+</map>
+</div>
+</div>
 <p><a href="a00229_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00088.html">QUESO::InfiniteDimensionalLikelihoodBase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract class representing the likelihood. Users must subclass this.  <a href="a00088.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00052.html">QUESO::EnvOptionsValues</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class provides a suite options one can pass to a <a class="el" href="a00480.html">QUESO</a> environment.  <a href="a00052.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00450"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html">QUESO</a></td></tr>
+<tr class="memitem:a00480"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a2132addd3f6515da46092abb28dd5ac6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#a2132addd3f6515da46092abb28dd5ac6">QUESO_HAS_MPI</a></td></tr>
+<tr class="memdesc:a2132addd3f6515da46092abb28dd5ac6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This define is deprecated. Remove any #ifdef statements in user code.  <a href="#a2132addd3f6515da46092abb28dd5ac6">More...</a><br/></td></tr>
+<tr class="separator:a2132addd3f6515da46092abb28dd5ac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c52cedc66ed5e8f7b06a1d92187f0cb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#a3c52cedc66ed5e8f7b06a1d92187f0cb">QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN</a></td></tr>
+<tr class="memdesc:a3c52cedc66ed5e8f7b06a1d92187f0cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This define is deprecated. Remove any #ifdef statements in user code.  <a href="#a3c52cedc66ed5e8f7b06a1d92187f0cb">More...</a><br/></td></tr>
+<tr class="separator:a3c52cedc66ed5e8f7b06a1d92187f0cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad80372764e15a7ed434e7ad41ac27b2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#aad80372764e15a7ed434e7ad41ac27b2">ML_CODE_HAS_NEW_RESTART_CAPABILITY</a></td></tr>
+<tr class="separator:aad80372764e15a7ed434e7ad41ac27b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b6fe4b3ebfba39f78eda4818276f486"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#a2b6fe4b3ebfba39f78eda4818276f486">QUESO_CLASSES_INSTANTIATE_NEW_MAPS</a></td></tr>
+<tr class="separator:a2b6fe4b3ebfba39f78eda4818276f486"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa45d29907806c8fcdf038595b87e2e83"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#aa45d29907806c8fcdf038595b87e2e83">QUESO_USES_NEW_RNG_CLASS</a></td></tr>
+<tr class="separator:aa45d29907806c8fcdf038595b87e2e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac440026eff7deb1c1eed1eea0e8e36ba"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#ac440026eff7deb1c1eed1eea0e8e36ba">UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT</a>&#160;&#160;&#160;&quot;m&quot;</td></tr>
+<tr class="separator:ac440026eff7deb1c1eed1eea0e8e36ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ebcc075277d031eb97c90b9a45f4493"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#a4ebcc075277d031eb97c90b9a45f4493">UQ_FILE_EXTENSION_FOR_HDF_FORMAT</a>&#160;&#160;&#160;&quot;h5&quot;</td></tr>
+<tr class="separator:a4ebcc075277d031eb97c90b9a45f4493"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3b4d42ed2bf66c8c4433d314439f0be"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#aa3b4d42ed2bf66c8c4433d314439f0be">UQ_RC_MACRO</a>(macroIRc, givenRank, where, what, retValue)</td></tr>
+<tr class="memdesc:aa3b4d42ed2bf66c8c4433d314439f0be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macros.  <a href="#aa3b4d42ed2bf66c8c4433d314439f0be">More...</a><br/></td></tr>
+<tr class="separator:aa3b4d42ed2bf66c8c4433d314439f0be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab445104e0e2540384e8aaa8dbf3ae9b6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#ab445104e0e2540384e8aaa8dbf3ae9b6">UQ_TEST_MACRO</a>(test, givenRank, where, what, retValue)</td></tr>
+<tr class="separator:ab445104e0e2540384e8aaa8dbf3ae9b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9107e1a9a5197371a412db3fa349988"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#aa9107e1a9a5197371a412db3fa349988">UQ_FATAL_RC_MACRO</a>(macroIRc, givenRank, where, what)</td></tr>
+<tr class="separator:aa9107e1a9a5197371a412db3fa349988"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56d63d18d0a6d45757de47fcc06f574d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00229.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(test, givenRank, where, what)</td></tr>
+<tr class="separator:a56d63d18d0a6d45757de47fcc06f574d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a5af97e1f9320b7787efc744ef76be297"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#a5af97e1f9320b7787efc744ef76be297">QUESO::MyWorldfullRank</a> ()</td></tr>
+<tr class="memdesc:a5af97e1f9320b7787efc744ef76be297"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the rank of the calling process in the communicator.  <a href="#a5af97e1f9320b7787efc744ef76be297">More...</a><br/></td></tr>
+<tr class="separator:a5af97e1f9320b7787efc744ef76be297"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a7d4679800a430ae8e473c1c7bc0bfb21"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#a7d4679800a430ae8e473c1c7bc0bfb21">QUESO::UQ_UNAVAILABLE_RANK</a> = -1</td></tr>
+<tr class="separator:a7d4679800a430ae8e473c1c7bc0bfb21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e909502900aecf24cedba022ea84471"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#a8e909502900aecf24cedba022ea84471">QUESO::UQ_OK_RC</a> = 0</td></tr>
+<tr class="separator:a8e909502900aecf24cedba022ea84471"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5332d3ac9b246e40779ba01f19a3f0c7"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#a5332d3ac9b246e40779ba01f19a3f0c7">QUESO::UQ_INCOMPLETE_IMPLEMENTATION_RC</a> = -1</td></tr>
+<tr class="separator:a5332d3ac9b246e40779ba01f19a3f0c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a063c49e4743815cf95cde8425906b77e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#a063c49e4743815cf95cde8425906b77e">QUESO::UQ_INVALID_PARAMETER_SPEC_RC</a> = -2</td></tr>
+<tr class="separator:a063c49e4743815cf95cde8425906b77e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7184f2baf44df52d2c24409d9385c7b6"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#a7184f2baf44df52d2c24409d9385c7b6">QUESO::UQ_INVALID_OBSERVABLE_SPEC_RC</a> = -3</td></tr>
+<tr class="separator:a7184f2baf44df52d2c24409d9385c7b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62fa6d4e5314c2054707ab73c97204ca"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#a62fa6d4e5314c2054707ab73c97204ca">QUESO::UQ_INVALID_QOI_SPEC_RC</a> = -4</td></tr>
+<tr class="separator:a62fa6d4e5314c2054707ab73c97204ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd6363699eae2710081ad1642a03131e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#afd6363699eae2710081ad1642a03131e">QUESO::UQ_INVALID_INTERNAL_RESULT_RC</a> = -5</td></tr>
+<tr class="separator:afd6363699eae2710081ad1642a03131e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae093c8262be9961cc7297a84347c0c9e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#ae093c8262be9961cc7297a84347c0c9e">QUESO::UQ_INVALID_INTERNAL_STATE_RC</a> = -6</td></tr>
+<tr class="separator:ae093c8262be9961cc7297a84347c0c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaab9e69ed66f6902eb9b42879a52fac1"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#aaab9e69ed66f6902eb9b42879a52fac1">QUESO::UQ_FAILED_TO_OPEN_FILE_RC</a> = -7</td></tr>
+<tr class="separator:aaab9e69ed66f6902eb9b42879a52fac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a677863cd32092584175760250f39e8bb"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#a677863cd32092584175760250f39e8bb">QUESO::UQ_MATRIX_IS_NOT_POS_DEFINITE_RC</a> = -8</td></tr>
+<tr class="separator:a677863cd32092584175760250f39e8bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2cce05a6208cb239ef640a4ba6e5327"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#ab2cce05a6208cb239ef640a4ba6e5327">QUESO::UQ_FAILED_READING_FILE_RC</a> = -9</td></tr>
+<tr class="separator:ab2cce05a6208cb239ef640a4ba6e5327"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b5084868d81746fc7f2c0665b219812"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#a0b5084868d81746fc7f2c0665b219812">QUESO::UQ_INVALID_SPACE_COMPONENT_ID_RC</a> = -10</td></tr>
+<tr class="separator:a0b5084868d81746fc7f2c0665b219812"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7502f36b36f6ba457d2cf5004f7a7c69"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html#a7502f36b36f6ba457d2cf5004f7a7c69">QUESO::UQ_MATRIX_SVD_FAILED_RC</a> = -11</td></tr>
+<tr class="separator:a7502f36b36f6ba457d2cf5004f7a7c69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Abstract class representing the likelihood. </p>
+<div class="textblock"><p>Definitions and a class to provide default options to pass to a <a class="el" href="a00480.html">QUESO</a> environment. </p>
 
-<p>Definition in file <a class="el" href="a00229_source.html">InfiniteDimensionalLikelihoodBase.h</a>.</p>
-</div></div><!-- contents -->
+<p>Definition in file <a class="el" href="a00229_source.html">Defines.h</a>.</p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="aad80372764e15a7ed434e7ad41ac27b2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ML_CODE_HAS_NEW_RESTART_CAPABILITY</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00229_source.html#l00065">65</a> of file <a class="el" href="a00229_source.html">Defines.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00444_source.html#l00089">QUESO::MLSamplingOptions::defineMyOptions()</a>, and <a class="el" href="a00443_source.html#l00318">QUESO::MLSamplingLevelOptions::defineMyOptions()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2b6fe4b3ebfba39f78eda4818276f486"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define QUESO_CLASSES_INSTANTIATE_NEW_MAPS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00229_source.html#l00069">69</a> of file <a class="el" href="a00229_source.html">Defines.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3c52cedc66ed5e8f7b06a1d92187f0cb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This define is deprecated. Remove any #ifdef statements in user code. </p>
+
+<p>Definition at line <a class="el" href="a00229_source.html#l00051">51</a> of file <a class="el" href="a00229_source.html">Defines.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2132addd3f6515da46092abb28dd5ac6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define QUESO_HAS_MPI</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This define is deprecated. Remove any #ifdef statements in user code. </p>
+
+<p>Definition at line <a class="el" href="a00229_source.html#l00048">48</a> of file <a class="el" href="a00229_source.html">Defines.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa45d29907806c8fcdf038595b87e2e83"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define QUESO_USES_NEW_RNG_CLASS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00229_source.html#l00072">72</a> of file <a class="el" href="a00229_source.html">Defines.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa9107e1a9a5197371a412db3fa349988"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_FATAL_RC_MACRO</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">macroIRc, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">givenRank, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">where, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">what&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">if</span> (macroIRc) {                                        \</div>
+<div class="line">    int macroRank = givenRank;                           \</div>
+<div class="line">    if (macroRank &lt; 0) {                                 \</div>
+<div class="line">      macroRank = <a class="code" href="a00480.html#a5af97e1f9320b7787efc744ef76be297">QUESO::MyWorldfullRank</a>();              \</div>
+<div class="line">    }                                                    \</div>
+<div class="line">    std::cerr &lt;&lt; <span class="stringliteral">&quot;UQ RC FATAL ERROR&quot;</span>                     \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;, rank &quot;</span>  &lt;&lt; macroRank                 \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;, in &quot;</span>    &lt;&lt; where                     \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;: &quot;</span>       &lt;&lt; what                      \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;, iRC = &quot;</span> &lt;&lt; macroIRc                  \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;. Exiting...&quot;</span>                          \</div>
+<div class="line">              &lt;&lt; std::endl;                              <a class="code" href="a00225.html#a0af4fa8de607265fa3e7413ba0475a18">\</a></div>
+<div class="line"><a class="code" href="a00225.html#a0af4fa8de607265fa3e7413ba0475a18">    queso_error</a>(); \</div>
+<div class="line">  }</div>
+<div class="ttc" id="a00225_html_a0af4fa8de607265fa3e7413ba0475a18"><div class="ttname"><a href="a00225.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a></div><div class="ttdeci">#define queso_error()</div><div class="ttdef"><b>Definition:</b> <a href="a00225_source.html#l00087">asserts.h:87</a></div></div>
+<div class="ttc" id="a00480_html_a5af97e1f9320b7787efc744ef76be297"><div class="ttname"><a href="a00480.html#a5af97e1f9320b7787efc744ef76be297">QUESO::MyWorldfullRank</a></div><div class="ttdeci">int MyWorldfullRank()</div><div class="ttdoc">Returns the rank of the calling process in the communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00263_source.html#l00030">Defines.C:30</a></div></div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="a00229_source.html#l00207">207</a> of file <a class="el" href="a00229_source.html">Defines.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00271_source.html#l00329">QUESO::GslVector::copy()</a>, <a class="el" href="a00269_source.html#l00292">QUESO::GslMatrix::copy()</a>, <a class="el" href="a00216_source.html#l02120">QUESO::SequenceOfVectors&lt; V, M &gt;::estimateConvBrooksGelman()</a>, <a class="el" href="a00440_source.html#l01455">QUESO::MetropolisHastingsSG&lt; P_V, P_M &gt;::generateFullChain()</a>, <a class="el" href="a00440_source.html#l00975">QUESO::MetropolisHastingsSG&lt; P_V, P_M &gt;::generateSequence()</a>, <a class="el" href="a00269_source.html#l01878">QUESO::GslMatrix::getColumn()</a>, <a class="el" href="a00269_source.html#l01913">QUESO::GslMatrix::getRow()</a>, <a class="el" href="a00269_source.html#l01454">QUESO::GslMatrix::invertMultiply()</a>, <a class="el" href="a00269_source.html#l01635">QUESO::GslMatrix::invertMultiplyForceLU()</a>, <a class="el" href="a00269_source.html#l02026">QUESO::GslMatrix::mpiSum()</a>, <a class="el" href="a00271_source.html#l00238">QUESO::GslVector::operator*=()</a>, <a class="el" href="a00269_source.html#l00203">QUESO::GslMatrix::operator*=()</a>, <a class="el" href="a00271_source.html#l00292">QUESO::GslVector::operator+=()</a>, <a class="el" href="a00269_source.html#l00225">QUESO::GslMatrix::operator+=()</a>, <a class="el" href="a00271_source.html#l00304">QUESO::GslVector::operator-=()</a>, <a class="el" href="a00269_source.html#l00239">QUESO::GslMatrix::operator-=()</a>, <a class="el" href="a00216_source.html#l02065">QUESO::SequenceOfVectors&lt; V, M &gt;::select()</a>, <a class="el" href="a00269_source.html#l02000">QUESO::GslMatrix::setColumn()</a>, and <a class="el" href="a00269_source.html#l01974">QUESO::GslMatrix::setRow()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a56d63d18d0a6d45757de47fcc06f574d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_FATAL_TEST_MACRO</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">test, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">givenRank, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">where, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">what&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">if</span> (test) {                                           \</div>
+<div class="line">    int macroRank = givenRank;                          \</div>
+<div class="line">    if (macroRank &lt; 0) {                                \</div>
+<div class="line">      macroRank = <a class="code" href="a00480.html#a5af97e1f9320b7787efc744ef76be297">QUESO::MyWorldfullRank</a>();             \</div>
+<div class="line">    }                                                   \</div>
+<div class="line">    std::cerr &lt;&lt; <span class="stringliteral">&quot;UQ TEST FATAL ERROR&quot;</span>                  \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;, rank &quot;</span>  &lt;&lt; macroRank                \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;, in &quot;</span>    &lt;&lt; where                    \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;: &quot;</span>       &lt;&lt; what                     \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;. Exiting...&quot;</span>                         \</div>
+<div class="line">              &lt;&lt; std::endl;                             <a class="code" href="a00225.html#a0af4fa8de607265fa3e7413ba0475a18">\</a></div>
+<div class="line"><a class="code" href="a00225.html#a0af4fa8de607265fa3e7413ba0475a18">    queso_error</a>();                                      \</div>
+<div class="line">  }</div>
+<div class="ttc" id="a00225_html_a0af4fa8de607265fa3e7413ba0475a18"><div class="ttname"><a href="a00225.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a></div><div class="ttdeci">#define queso_error()</div><div class="ttdef"><b>Definition:</b> <a href="a00225_source.html#l00087">asserts.h:87</a></div></div>
+<div class="ttc" id="a00480_html_a5af97e1f9320b7787efc744ef76be297"><div class="ttname"><a href="a00480.html#a5af97e1f9320b7787efc744ef76be297">QUESO::MyWorldfullRank</a></div><div class="ttdeci">int MyWorldfullRank()</div><div class="ttdoc">Returns the rank of the calling process in the communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00263_source.html#l00030">Defines.C:30</a></div></div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="a00229_source.html#l00223">223</a> of file <a class="el" href="a00229_source.html">Defines.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00208_source.html#l00059">QUESO::GenericScalarFunction&lt; V, M &gt;::actualValue()</a>, <a class="el" href="a00464_source.html#l00060">QUESO::UniformJointPdf&lt; V, M &gt;::actualValue()</a>, <a class="el" href="a00408_source.html#l00063">QUESO::GammaJointPdf&lt; V, M &gt;::actualValue()</a>, <a class="el" href="a00425_source.html#l00063">QUESO::InverseGammaJointPdf&lt; V, M &gt;::actualValue()</a>, <a class="el" href="a00399_source.html#l00063">QUESO::BetaJointPdf&lt; V, M &gt;::actualValue()</a>, <a class="el" href="a00473_source.html#l00070">QUESO::WignerJointPdf&lt; V, M &gt;::actualValue()</a>, <a class="el" href="a00448_source.html#l00076">QUESO::PoweredJointPdf&lt; V, M &gt;::actualValue()</a>, <a class="el" href="a00435_source.html#l00088">QUESO::LogNormalJointPdf&lt; V, M &gt;::actualValue()</a>, <a class="el" href="a00398_source.html#l00082">QUESO::BayesianJointPdf&lt; V, M &gt;::actualValue()</a>, <a class="el" href="a00411_source.html#l00125">QUESO::GaussianJointPdf&lt; V, M &gt;::actualValue()</a>, <a class="el" href="a00402_source.html#l00095">QUESO::ConcatenatedJointPdf&lt; V, M &gt;::actualValue()</a>, <a class="el" href="a00265_source.html#l00368">QUESO::BaseEnvironment::allOptionsMap()</a>, <a class="el" href="a00282_source.html#l00131">QUESO::MpiComm::Allreduce()</a>, <a class="el" href="a00440_source.html#l00690">QUESO::MetropolisHastingsSG&lt; P_V, P_M &gt;::alpha()</a>, <a class="el" href="a00221_source.html#l00357">QUESO::BaseVectorSequence&lt; V, M &gt;::append()</a>, <a class="el" href="a00215_source.html#l02649">QUESO::ScalarSequence&lt; T &gt;::append()</a>, <a class="el" href="a00271_source.html#l01243">QUESO::GslVector::atLeastOneComponentBiggerOrEqualThan()</a>, <a class="el" href="a00271_source.html#l01205">QUESO::GslVector::atLeastOneComponentBiggerThan()</a>, <a class="el" href="a00271_source.html#l01224">QUESO::GslVector::atLeastOneComponentSmallerOrEqualThan()</a>, <a class="el" href="a00271_source.html#l01186">QUESO::GslVector::atLeastOneComponentSmallerThan()</a>, <a class="el" href="a00216_source.html#l00820">QUESO::SequenceOfVectors&lt; V, M &gt;::autoCorrViaDef()</a>, <a class="el" href="a00215_source.html#l01406">QUESO::ScalarSequence&lt; T &gt;::autoCorrViaDef()</a>, <a class="el" href="a00202_source.html#l00383">QUESO::ArrayOfSequences&lt; V, M &gt;::autoCorrViaFft()</a>, <a class="el" href="a00216_source.html#l00855">QUESO::SequenceOfVectors&lt; V, M &gt;::autoCorrViaFft()</a>, <a class="el" href="a00202_source.html#l00292">QUESO::ArrayOfSequences&lt; V, M &gt;::autoCovariance()</a>, <a class="el" href="a00216_source.html#l00782">QUESO::SequenceOfVectors&lt; V, M &gt;::autoCovariance()</a>, <a class="el" href="a00215_source.html#l01373">QUESO::ScalarSequence&lt; T &gt;::autoCovariance()</a>, <a class="el" href="a00282_source.html#l00143">QUESO::MpiComm::Barrier()</a>, <a class="el" href="a00305_source.html#l00033">QUESO::Base1D1DFunction::Base1D1DFunction()</a>, <a class="el" href="a00306_source.html#l00032">QUESO::Base1DQuadrature::Base1DQuadrature()</a>, <a class="el" href="a00265_source.html#l00161">QUESO::BaseEnvironment::BaseEnvironment()</a>, <a class="el" href="a00260_source.html#l00030">QUESO::BasicPdfsBase::BasicPdfsBase()</a>, <a class="el" href="a00261_source.html#l00031">QUESO::BasicPdfsBoost::BasicPdfsBoost()</a>, <a class="el" href="a00262_source.html#l00033">QUESO::BasicPdfsGsl::BasicPdfsGsl()</a>, <a class="el" href="a00282_source.html#l00157">QUESO::MpiComm::Bcast()</a>, <a class="el" href="a00261_source.html#l00056">QUESO::BasicPdfsBoost::betaPdfActualValue()</a>, <a class="el" href="a00401_source.html#l00036">QUESO::BetaVectorRV&lt; V, M &gt;::BetaVectorRV()</a>, <a class="el" href="a00203_source.html#l00034">QUESO::BoxSubset&lt; V, M &gt;::BoxSubset()</a>, <a class="el" href="a00215_source.html#l02614">QUESO::ScalarSequence&lt; T &gt;::brooksGelmanConvMeasure()</a>, <a class="el" href="a00220_source.html#l00061">QUESO::VectorFunctionSynchronizer&lt; P_V, P_M, Q_V, Q_M &gt;::callFunction()</a>, <a class="el" href="a00214_source.html#l00061">QUESO::ScalarFunctionSynchronizer&lt; V, M &gt;::callFunction()</a>, <a class="el" href="a00450_source.html#l00084">QUESO::SampledVectorCdf&lt; V, M &gt;::cdf()</a>, <a class="el" href="a00265_source.html#l00456">QUESO::BaseEnvironment::checkingLevel()</a>, <a class="el" href="a00442_source.html#l02118">QUESO::MLSampling&lt; P_V, P_M &gt;::checkpointML()</a>, <a class="el" href="a00423_source.html#l00370">QUESO::HessianCovMatricesTKGroup&lt; V, M &gt;::clearPreComputingPositions()</a>, <a class="el" href="a00265_source.html#l01117">QUESO::BaseEnvironment::closeFile()</a>, <a class="el" href="a00413_source.html#l00108">QUESO::GaussianVectorMdf&lt; V, M &gt;::commonConstructor()</a>, <a class="el" href="a00412_source.html#l00109">QUESO::GaussianVectorCdf&lt; V, M &gt;::commonConstructor()</a>, <a class="el" href="a00440_source.html#l00457">QUESO::MetropolisHastingsSG&lt; P_V, P_M &gt;::commonConstructor()</a>, <a class="el" href="a00206_source.html#l00057">QUESO::ConstantVectorFunction&lt; P_V, P_M, Q_V, Q_M &gt;::compute()</a>, <a class="el" href="a00415_source.html#l00216">QUESO::ComputeConditionalGaussianVectorRV()</a>, <a class="el" href="a00215_source.html#l04287">QUESO::ComputeCovCorrBetweenScalarSequences()</a>, <a class="el" href="a00472_source.html#l00213">QUESO::ComputeCovCorrMatricesBetweenVectorRvs()</a>, <a class="el" href="a00221_source.html#l02651">QUESO::ComputeCovCorrMatricesBetweenVectorSequences()</a>, <a class="el" href="a00221_source.html#l00613">QUESO::BaseVectorSequence&lt; V, M &gt;::computeFilterParams()</a>, <a class="el" href="a00448_source.html#l00151">QUESO::PoweredJointPdf&lt; V, M &gt;::computeLogOfNormalizationFactor()</a>, <a class="el" href="a00398_source.html#l00266">QUESO::BayesianJointPdf&lt; V, M &gt;::computeLogOfNormalizationFactor()</a>, <a class="el" href="a00215_source.html#l04166">QUESO::ComputeSubGaussian2dKde()</a>, <a class="el" href="a00215_source.html#l04231">QUESO::ComputeUnifiedGaussian2dKde()</a>, <a class="el" href="a00402_source.html#l00033">QUESO::ConcatenatedJointPdf&lt; V, M &gt;::ConcatenatedJointPdf()</a>, <a class="el" href="a00207_source.html#l00053">QUESO::DiscreteSubset&lt; V, M &gt;::contains()</a>, <a class="el" href="a00204_source.html#l00068">QUESO::ConcatenationSubset&lt; V, M &gt;::contains()</a>, <a class="el" href="a00221_source.html#l00653">QUESO::BaseVectorSequence&lt; V, M &gt;::copy()</a>, <a class="el" href="a00417_source.html#l00074">QUESO::GenericMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;::covMatrix()</a>, <a class="el" href="a00405_source.html#l00101">QUESO::ExponentialMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;::covMatrix()</a>, <a class="el" href="a00271_source.html#l00634">QUESO::GslVector::cwExtract()</a>, <a class="el" href="a00269_source.html#l00471">QUESO::GslMatrix::cwExtract()</a>, <a class="el" href="a00271_source.html#l00614">QUESO::GslVector::cwSet()</a>, <a class="el" href="a00269_source.html#l00436">QUESO::GslMatrix::cwSet()</a>, <a class="el" href="a00271_source.html#l00474">QUESO::GslVector::cwSetBeta()</a>, <a class="el" href="a00271_source.html#l00575">QUESO::GslVector::cwSetConcatenated()</a>, <a class="el" href="a00271_source.html#l00537">QUESO::GslVector::cwSetGamma()</a>, <a class="el" href="a00271_source.html#l00556">QUESO::GslVector::cwSetInverseGamma()</a>, <a class="el" href="a00442_source.html#l00147">QUESO::MLSampling&lt; P_V, P_M &gt;::decideOnBalancedChains_all()</a>, <a class="el" href="a00305_source.html#l00121">QUESO::Generic1D1DFunction::deriv()</a>, <a class="el" href="a00305_source.html#l00178">QUESO::Constant1D1DFunction::deriv()</a>, <a class="el" href="a00305_source.html#l00241">QUESO::Linear1D1DFunction::deriv()</a>, <a class="el" href="a00305_source.html#l00370">QUESO::PiecewiseLinear1D1DFunction::deriv()</a>, <a class="el" href="a00305_source.html#l00565">QUESO::Sampled1D1DFunction::deriv()</a>, <a class="el" href="a00305_source.html#l00690">QUESO::ScalarTimesFunc1D1DFunction::deriv()</a>, <a class="el" href="a00305_source.html#l00744">QUESO::FuncTimesFunc1D1DFunction::deriv()</a>, <a class="el" href="a00305_source.html#l00798">QUESO::FuncPlusFunc1D1DFunction::deriv()</a>, <a class="el" href="a00305_source.html#l00884">QUESO::LagrangePolynomial1D1DFunction::deriv()</a>, <a class="el" href="a00305_source.html#l00949">QUESO::LagrangeBasis1D1DFunction::deriv()</a>, <a class="el" href="a00207_source.html#l00032">QUESO::DiscreteSubset&lt; V, M &gt;::DiscreteSubset()</a>, <a class="el" href="a00265_source.html#l00436">QUESO::BaseEnvironment::displayVerbosity()</a>, <a class="el" href="a00264_source.html#l00036">QUESO::DistArray&lt; T &gt;::DistArray()</a>, <a class="el" href="a00310_source.html#l00299">QUESO::AsciiTable&lt; V, M &gt;::doubleColumn()</a>, <a class="el" href="a00459_source.html#l00477">QUESO::StatisticalInverseProblem&lt; P_V, P_M &gt;::eig()</a>, <a class="el" href="a00269_source.html#l01694">QUESO::GslMatrix::eigen()</a>, <a class="el" href="a00266_source.html#l00101">QUESO::EnvironmentOptions::EnvironmentOptions()</a>, <a class="el" href="a00216_source.html#l00157">QUESO::SequenceOfVectors&lt; V, M &gt;::erasePositions()</a>, <a class="el" href="a00215_source.html#l00217">QUESO::ScalarSequence&lt; T &gt;::erasePositions()</a>, <a class="el" href="a00405_source.html#l00031">QUESO::ExponentialMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;::ExponentialMatrixCovarianceFunction()</a>, <a class="el" href="a00269_source.html#l00886">QUESO::GslMatrix::fillWithBlocksDiagonally()</a>, <a class="el" href="a00269_source.html#l00982">QUESO::GslMatrix::fillWithBlocksHorizontally()</a>, <a class="el" href="a00269_source.html#l01070">QUESO::GslMatrix::fillWithBlocksVertically()</a>, <a class="el" href="a00269_source.html#l01158">QUESO::GslMatrix::fillWithTensorProduct()</a>, <a class="el" href="a00269_source.html#l01243">QUESO::GslMatrix::fillWithTranspose()</a>, <a class="el" href="a00318_source.html#l00077">QUESO::StdOneDGrid&lt; T &gt;::findIntervalId()</a>, <a class="el" href="a00319_source.html#l00084">QUESO::UniformOneDGrid&lt; T &gt;::findIntervalId()</a>, <a class="el" href="a00407_source.html#l00030">QUESO::FiniteDistribution::FiniteDistribution()</a>, <a class="el" href="a00311_source.html#l00032">QUESO::Fft&lt; T &gt;::forward()</a>, <a class="el" href="a00265_source.html#l00247">QUESO::BaseEnvironment::fullComm()</a>, <a class="el" href="a00265_source.html#l01207">QUESO::FullEnvironment::FullEnvironment()</a>, <a class="el" href="a00261_source.html#l00067">QUESO::BasicPdfsBoost::gammaPdfActualValue()</a>, <a class="el" href="a00410_source.html#l00036">QUESO::GammaVectorRV&lt; V, M &gt;::GammaVectorRV()</a>, <a class="el" href="a00282_source.html#l00168">QUESO::MpiComm::Gather()</a>, <a class="el" href="a00282_source.html#l00188">QUESO::MpiComm::Gatherv()</a>, <a class="el" href="a00306_source.html#l00446">QUESO::GaussianHermite1DQuadrature::GaussianHermite1DQuadrature()</a>, <a class="el" href="a00415_source.html#l00035">QUESO::GaussianVectorRV&lt; V, M &gt;::GaussianVectorRV()</a>, <a class="el" href="a00440_source.html#l01455">QUESO::MetropolisHastingsSG&lt; P_V, P_M &gt;::generateFullChain()</a>, <a class="el" href="a00446_source.html#l00091">QUESO::MonteCarloSG&lt; P_V, P_M, Q_V, Q_M &gt;::generateSequence()</a>, <a class="el" href="a00442_source.html#l04193">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence()</a>, <a class="el" href="a00440_source.html#l00975">QUESO::MetropolisHastingsSG&lt; P_V, P_M &gt;::generateSequence()</a>, <a class="el" href="a00442_source.html#l02429">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Level0_all()</a>, <a class="el" href="a00442_source.html#l02625">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step02_inter0()</a>, <a class="el" href="a00442_source.html#l02763">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step03_inter0()</a>, <a class="el" href="a00442_source.html#l03164">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step05_inter0()</a>, <a class="el" href="a00442_source.html#l03381">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step09_all()</a>, <a class="el" href="a00442_source.html#l03977">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step11_inter0()</a>, <a class="el" href="a00306_source.html#l00098">QUESO::Generic1DQuadrature::Generic1DQuadrature()</a>, <a class="el" href="a00269_source.html#l01878">QUESO::GslMatrix::getColumn()</a>, <a class="el" href="a00266_source.html#l00251">QUESO::EnvironmentOptions::getMyOptionValues()</a>, <a class="el" href="a00444_source.html#l00112">QUESO::MLSamplingOptions::getMyOptionValues()</a>, <a class="el" href="a00457_source.html#l00402">QUESO::StatisticalForwardProblem&lt; P_V, P_M, Q_V, Q_M &gt;::getParamChain()</a>, <a class="el" href="a00216_source.html#l00197">QUESO::SequenceOfVectors&lt; V, M &gt;::getPositionValues()</a>, <a class="el" href="a00269_source.html#l01913">QUESO::GslMatrix::getRow()</a>, <a class="el" href="a00449_source.html#l00165">QUESO::SampledScalarCdf&lt; T &gt;::getSupport()</a>, <a class="el" href="a00215_source.html#l00252">QUESO::ScalarSequence&lt; T &gt;::getUnifiedContentsAtProc0Only()</a>, <a class="el" href="a00308_source.html#l00140">QUESO::ArrayOfOneDGrids&lt; V, M &gt;::grid()</a>, <a class="el" href="a00269_source.html#l00036">QUESO::GslMatrix::GslMatrix()</a>, <a class="el" href="a00271_source.html#l00032">QUESO::GslVector::GslVector()</a>, <a class="el" href="a00202_source.html#l00432">QUESO::ArrayOfSequences&lt; V, M &gt;::histogram()</a>, <a class="el" href="a00275_source.html#l00035">QUESO::InfiniteDimensionalMCMCSamplerOptions::InfiniteDimensionalMCMCSamplerOptions()</a>, <a class="el" href="a00211_source.html#l00037">QUESO::InstantiateIntersection()</a>, <a class="el" href="a00265_source.html#l00295">QUESO::BaseEnvironment::inter0Comm()</a>, <a class="el" href="a00269_source.html#l00652">QUESO::GslMatrix::internalSvd()</a>, <a class="el" href="a00446_source.html#l00121">QUESO::MonteCarloSG&lt; P_V, P_M, Q_V, Q_M &gt;::internGenerateSequence()</a>, <a class="el" href="a00449_source.html#l00108">QUESO::SampledScalarCdf&lt; T &gt;::inverse()</a>, <a class="el" href="a00269_source.html#l00843">QUESO::GslMatrix::inverse()</a>, <a class="el" href="a00427_source.html#l00035">QUESO::InverseGammaVectorRV&lt; V, M &gt;::InverseGammaVectorRV()</a>, <a class="el" href="a00269_source.html#l01439">QUESO::GslMatrix::invertMultiply()</a>, <a class="el" href="a00269_source.html#l01620">QUESO::GslMatrix::invertMultiplyForceLU()</a>, <a class="el" href="a00430_source.html#l00035">QUESO::InvLogitGaussianVectorRV&lt; V, M &gt;::InvLogitGaussianVectorRV()</a>, <a class="el" href="a00442_source.html#l01582">QUESO::MLSampling&lt; P_V, P_M &gt;::justBalance_proc0()</a>, <a class="el" href="a00305_source.html#l00913">QUESO::LagrangeBasis1D1DFunction::LagrangeBasis1D1DFunction()</a>, <a class="el" href="a00305_source.html#l00827">QUESO::LagrangePolynomial1D1DFunction::LagrangePolynomial1D1DFunction()</a>, <a class="el" href="a00269_source.html#l01726">QUESO::GslMatrix::largestEigen()</a>, <a class="el" href="a00269_source.html#l02425">QUESO::leftDiagScaling()</a>, <a class="el" href="a00208_source.html#l00086">QUESO::GenericScalarFunction&lt; V, M &gt;::lnValue()</a>, <a class="el" href="a00425_source.html#l00086">QUESO::InverseGammaJointPdf&lt; V, M &gt;::lnValue()</a>, <a class="el" href="a00399_source.html#l00086">QUESO::BetaJointPdf&lt; V, M &gt;::lnValue()</a>, <a class="el" href="a00448_source.html#l00116">QUESO::PoweredJointPdf&lt; V, M &gt;::lnValue()</a>, <a class="el" href="a00408_source.html#l00086">QUESO::GammaJointPdf&lt; V, M &gt;::lnValue()</a>, <a class="el" href="a00435_source.html#l00142">QUESO::LogNormalJointPdf&lt; V, M &gt;::lnValue()</a>, <a class="el" href="a00402_source.html#l00151">QUESO::ConcatenatedJointPdf&lt; V, M &gt;::lnValue()</a>, <a class="el" href="a00411_source.html#l00174">QUESO::GaussianJointPdf&lt; V, M &gt;::lnValue()</a>, <a class="el" href="a00223_source.html#l00303">QUESO::VectorSpace&lt; V, M &gt;::localComponentName()</a>, <a class="el" href="a00459_source.html#l00457">QUESO::StatisticalInverseProblem&lt; P_V, P_M &gt;::logEvidence()</a>, <a class="el" href="a00437_source.html#l00035">QUESO::LogNormalVectorRV&lt; V, M &gt;::LogNormalVectorRV()</a>, <a class="el" href="a00280_source.html#l00034">QUESO::Map::Map()</a>, <a class="el" href="a00223_source.html#l00183">QUESO::VectorSpace&lt; V, M &gt;::map()</a>, <a class="el" href="a00271_source.html#l00676">QUESO::GslVector::matlabDiff()</a>, <a class="el" href="a00271_source.html#l00707">QUESO::GslVector::matlabLinearInterpExtrap()</a>, <a class="el" href="a00269_source.html#l02069">QUESO::GslMatrix::matlabLinearInterpExtrap()</a>, <a class="el" href="a00281_source.html#l00031">QUESO::Matrix::Matrix()</a>, <a class="el" href="a00308_source.html#l00099">QUESO::ArrayOfOneDGrids&lt; V, M &gt;::maxPositions()</a>, <a class="el" href="a00472_source.html#l00134">QUESO::BaseVectorRV&lt; V, M &gt;::mdf()</a>, <a class="el" href="a00202_source.html#l00172">QUESO::ArrayOfSequences&lt; V, M &gt;::mean()</a>, <a class="el" href="a00459_source.html#l00467">QUESO::StatisticalInverseProblem&lt; P_V, P_M &gt;::meanLogLikelihood()</a>, <a class="el" href="a00440_source.html#l00136">QUESO::MetropolisHastingsSG&lt; P_V, P_M &gt;::MetropolisHastingsSG()</a>, <a class="el" href="a00441_source.html#l00200">QUESO::MetropolisHastingsSGOptions::MetropolisHastingsSGOptions()</a>, <a class="el" href="a00308_source.html#l00087">QUESO::ArrayOfOneDGrids&lt; V, M &gt;::minPositions()</a>, <a class="el" href="a00315_source.html#l00484">QUESO::MiscCheckForSameValueInAllNodes()</a>, <a class="el" href="a00315_source.html#l00572">QUESO::MiscCheckTheParallelEnvironment()</a>, <a class="el" href="a00315_source.html#l00039">QUESO::MiscReadDoublesFromString()</a>, <a class="el" href="a00315_source.html#l00094">QUESO::MiscReadWordsFromString()</a>, <a class="el" href="a00446_source.html#l00033">QUESO::MonteCarloSG&lt; P_V, P_M, Q_V, Q_M &gt;::MonteCarloSG()</a>, <a class="el" href="a00447_source.html#l00127">QUESO::MonteCarloSGOptions::MonteCarloSGOptions()</a>, <a class="el" href="a00271_source.html#l00885">QUESO::GslVector::mpiAllQuantile()</a>, <a class="el" href="a00271_source.html#l00861">QUESO::GslVector::mpiAllReduce()</a>, <a class="el" href="a00271_source.html#l00797">QUESO::GslVector::mpiBcast()</a>, <a class="el" href="a00282_source.html#l00031">QUESO::MpiComm::MpiComm()</a>, <a class="el" href="a00442_source.html#l01885">QUESO::MLSampling&lt; P_V, P_M &gt;::mpiExchangePositions_inter0()</a>, <a class="el" href="a00269_source.html#l01396">QUESO::GslMatrix::multiply()</a>, <a class="el" href="a00305_source.html#l00063">QUESO::Base1D1DFunction::multiplyAndIntegrate()</a>, <a class="el" href="a00265_source.html#l00319">QUESO::BaseEnvironment::numSubEnvironments()</a>, <a class="el" href="a00309_source.html#l00080">QUESO::ArrayOfOneDTables&lt; V, M &gt;::oneDTable()</a>, <a class="el" href="a00265_source.html#l00913">QUESO::BaseEnvironment::openInputFile()</a>, <a class="el" href="a00265_source.html#l00516">QUESO::BaseEnvironment::openOutputFile()</a>, <a class="el" href="a00265_source.html#l01016">QUESO::BaseEnvironment::openUnifiedInputFile()</a>, <a class="el" href="a00265_source.html#l00733">QUESO::BaseEnvironment::openUnifiedOutputFile()</a>, <a class="el" href="a00307_source.html#l00080">QUESO::TwoDArray&lt; T &gt;::operator()()</a>, <a class="el" href="a00269_source.html#l00254">QUESO::GslMatrix::operator()()</a>, <a class="el" href="a00269_source.html#l02364">QUESO::operator*()</a>, <a class="el" href="a00281_source.html#l00082">QUESO::Matrix::operator*=()</a>, <a class="el" href="a00291_source.html#l00090">QUESO::Vector::operator*=()</a>, <a class="el" href="a00271_source.html#l00258">QUESO::GslVector::operator*=()</a>, <a class="el" href="a00281_source.html#l00094">QUESO::Matrix::operator+=()</a>, <a class="el" href="a00291_source.html#l00114">QUESO::Vector::operator+=()</a>, <a class="el" href="a00281_source.html#l00105">QUESO::Matrix::operator-=()</a>, <a class="el" href="a00291_source.html#l00125">QUESO::Vector::operator-=()</a>, <a class="el" href="a00291_source.html#l00102">QUESO::Vector::operator/=()</a>, <a class="el" href="a00271_source.html#l00275">QUESO::GslVector::operator/=()</a>, <a class="el" href="a00281_source.html#l00071">QUESO::Matrix::operator=()</a>, <a class="el" href="a00291_source.html#l00079">QUESO::Vector::operator=()</a>, <a class="el" href="a00271_source.html#l00219">QUESO::GslVector::operator=()</a>, <a class="el" href="a00265_source.html#l00219">QUESO::BaseEnvironment::operator=()</a>, <a class="el" href="a00271_source.html#l01394">QUESO::operator==()</a>, <a class="el" href="a00319_source.html#l00070">QUESO::UniformOneDGrid&lt; T &gt;::operator[]()</a>, <a class="el" href="a00318_source.html#l00065">QUESO::StdOneDGrid&lt; T &gt;::operator[]()</a>, <a class="el" href="a00215_source.html#l00068">QUESO::ScalarSequence&lt; T &gt;::operator[]()</a>, <a class="el" href="a00472_source.html#l00086">QUESO::BaseVectorRV&lt; V, M &gt;::pdf()</a>, <a class="el" href="a00305_source.html#l00263">QUESO::PiecewiseLinear1D1DFunction::PiecewiseLinear1D1DFunction()</a>, <a class="el" href="a00202_source.html#l00246">QUESO::ArrayOfSequences&lt; V, M &gt;::populationVariance()</a>, <a class="el" href="a00306_source.html#l00076">QUESO::Base1DQuadrature::positions()</a>, <a class="el" href="a00462_source.html#l00085">QUESO::BaseTKGroup&lt; V, M &gt;::preComputingPosition()</a>, <a class="el" href="a00442_source.html#l00343">QUESO::MLSampling&lt; P_V, P_M &gt;::prepareBalLinkedChains_inter0()</a>, <a class="el" href="a00442_source.html#l00489">QUESO::MLSampling&lt; P_V, P_M &gt;::prepareUnbLinkedChains_inter0()</a>, <a class="el" href="a00310_source.html#l00317">QUESO::AsciiTable&lt; V, M &gt;::print()</a>, <a class="el" href="a00310_source.html#l00089">QUESO::AsciiTable&lt; V, M &gt;::readColumnsFromFile()</a>, <a class="el" href="a00465_source.html#l00059">QUESO::UniformVectorRealizer&lt; V, M &gt;::realization()</a>, <a class="el" href="a00409_source.html#l00063">QUESO::GammaVectorRealizer&lt; V, M &gt;::realization()</a>, <a class="el" href="a00474_source.html#l00070">QUESO::WignerVectorRealizer&lt; V, M &gt;::realization()</a>, <a class="el" href="a00436_source.html#l00115">QUESO::LogNormalVectorRealizer&lt; V, M &gt;::realization()</a>, <a class="el" href="a00414_source.html#l00119">QUESO::GaussianVectorRealizer&lt; V, M &gt;::realization()</a>, <a class="el" href="a00472_source.html#l00098">QUESO::BaseVectorRV&lt; V, M &gt;::realizer()</a>, <a class="el" href="a00282_source.html#l00208">QUESO::MpiComm::Recv()</a>, <a class="el" href="a00288_source.html#l00076">QUESO::RngGsl::resetSeed()</a>, <a class="el" href="a00216_source.html#l00126">QUESO::SequenceOfVectors&lt; V, M &gt;::resetValues()</a>, <a class="el" href="a00215_source.html#l00194">QUESO::ScalarSequence&lt; T &gt;::resetValues()</a>, <a class="el" href="a00442_source.html#l02234">QUESO::MLSampling&lt; P_V, P_M &gt;::restartML()</a>, <a class="el" href="a00269_source.html#l02452">QUESO::rightDiagScaling()</a>, <a class="el" href="a00286_source.html#l00030">QUESO::RngBase::RngBase()</a>, <a class="el" href="a00287_source.html#l00031">QUESO::RngBoost::RngBoost()</a>, <a class="el" href="a00288_source.html#l00032">QUESO::RngGsl::RngGsl()</a>, <a class="el" href="a00455_source.html#l00079">QUESO::ScaledCovMatrixTKGroup&lt; V, M &gt;::rv()</a>, <a class="el" href="a00423_source.html#l00081">QUESO::HessianCovMatricesTKGroup&lt; V, M &gt;::rv()</a>, <a class="el" href="a00463_source.html#l00079">QUESO::TransformedScaledCovMatrixTKGroup&lt; V, M &gt;::rv()</a>, <a class="el" href="a00407_source.html#l00144">QUESO::FiniteDistribution::sample()</a>, <a class="el" href="a00454_source.html#l00079">QUESO::ScalarGaussianRandomField&lt; V, M &gt;::sampleFunction()</a>, <a class="el" href="a00469_source.html#l00080">QUESO::VectorGaussianRandomField&lt; P_V, P_M, Q_V, Q_M &gt;::sampleFunction()</a>, <a class="el" href="a00202_source.html#l00200">QUESO::ArrayOfSequences&lt; V, M &gt;::sampleVariance()</a>, <a class="el" href="a00271_source.html#l01360">QUESO::scalarProduct()</a>, <a class="el" href="a00265_source.html#l00378">QUESO::BaseEnvironment::scanInputFileForMyOptions()</a>, <a class="el" href="a00275_source.html#l00061">QUESO::InfiniteDimensionalMCMCSamplerOptions::scanOptionsValues()</a>, <a class="el" href="a00266_source.html#l00173">QUESO::EnvironmentOptions::scanOptionsValues()</a>, <a class="el" href="a00458_source.html#l00151">QUESO::StatisticalForwardProblemOptions::scanOptionsValues()</a>, <a class="el" href="a00460_source.html#l00143">QUESO::StatisticalInverseProblemOptions::scanOptionsValues()</a>, <a class="el" href="a00447_source.html#l00240">QUESO::MonteCarloSGOptions::scanOptionsValues()</a>, <a class="el" href="a00441_source.html#l00537">QUESO::MetropolisHastingsSGOptions::scanOptionsValues()</a>, <a class="el" href="a00265_source.html#l00279">QUESO::BaseEnvironment::selfComm()</a>, <a class="el" href="a00282_source.html#l00221">QUESO::MpiComm::Send()</a>, <a class="el" href="a00269_source.html#l02000">QUESO::GslMatrix::setColumn()</a>, <a class="el" href="a00307_source.html#l00068">QUESO::TwoDArray&lt; T &gt;::setLocation()</a>, <a class="el" href="a00309_source.html#l00059">QUESO::ArrayOfOneDTables&lt; V, M &gt;::setOneDTable()</a>, <a class="el" href="a00216_source.html#l00221">QUESO::SequenceOfVectors&lt; V, M &gt;::setPositionValues()</a>, <a class="el" href="a00423_source.html#l00170">QUESO::HessianCovMatricesTKGroup&lt; V, M &gt;::setPreComputingPosition()</a>, <a class="el" href="a00462_source.html#l00102">QUESO::BaseTKGroup&lt; V, M &gt;::setPreComputingPosition()</a>, <a class="el" href="a00269_source.html#l01974">QUESO::GslMatrix::setRow()</a>, <a class="el" href="a00455_source.html#l00233">QUESO::ScaledCovMatrixTKGroup&lt; V, M &gt;::setRVsWithZeroMean()</a>, <a class="el" href="a00463_source.html#l00247">QUESO::TransformedScaledCovMatrixTKGroup&lt; V, M &gt;::setRVsWithZeroMean()</a>, <a class="el" href="a00271_source.html#l00372">QUESO::GslVector::sizeGlobal()</a>, <a class="el" href="a00271_source.html#l00343">QUESO::GslVector::sizeLocal()</a>, <a class="el" href="a00308_source.html#l00075">QUESO::ArrayOfOneDGrids&lt; V, M &gt;::sizes()</a>, <a class="el" href="a00269_source.html#l01801">QUESO::GslMatrix::smallestEigen()</a>, <a class="el" href="a00459_source.html#l00191">QUESO::StatisticalInverseProblem&lt; P_V, P_M &gt;::solveWithBayesMetropolisHastings()</a>, <a class="el" href="a00457_source.html#l00148">QUESO::StatisticalForwardProblem&lt; P_V, P_M, Q_V, Q_M &gt;::solveWithMonteCarlo()</a>, <a class="el" href="a00457_source.html#l00034">QUESO::StatisticalForwardProblem&lt; P_V, P_M, Q_V, Q_M &gt;::StatisticalForwardProblem()</a>, <a class="el" href="a00458_source.html#l00087">QUESO::StatisticalForwardProblemOptions::StatisticalForwardProblemOptions()</a>, <a class="el" href="a00459_source.html#l00035">QUESO::StatisticalInverseProblem&lt; P_V, P_M &gt;::StatisticalInverseProblem()</a>, <a class="el" href="a00460_source.html#l00082">QUESO::StatisticalInverseProblemOptions::StatisticalInverseProblemOptions()</a>, <a class="el" href="a00310_source.html#l00282">QUESO::AsciiTable&lt; V, M &gt;::stringColumn()</a>, <a class="el" href="a00215_source.html#l01848">QUESO::ScalarSequence&lt; T &gt;::subBasicHistogram()</a>, <a class="el" href="a00472_source.html#l00110">QUESO::BaseVectorRV&lt; V, M &gt;::subCdf()</a>, <a class="el" href="a00265_source.html#l00269">QUESO::BaseEnvironment::subComm()</a>, <a class="el" href="a00305_source.html#l00977">QUESO::SubF1F2Gaussian2dKdeIntegral()</a>, <a class="el" href="a00216_source.html#l01252">QUESO::SequenceOfVectors&lt; V, M &gt;::subGaussian1dKde()</a>, <a class="el" href="a00215_source.html#l02456">QUESO::ScalarSequence&lt; T &gt;::subGaussian1dKde()</a>, <a class="el" href="a00216_source.html#l01025">QUESO::SequenceOfVectors&lt; V, M &gt;::subHistogram()</a>, <a class="el" href="a00215_source.html#l01696">QUESO::ScalarSequence&lt; T &gt;::subHistogram()</a>, <a class="el" href="a00216_source.html#l01124">QUESO::SequenceOfVectors&lt; V, M &gt;::subInterQuantileRange()</a>, <a class="el" href="a00215_source.html#l02120">QUESO::ScalarSequence&lt; T &gt;::subInterQuantileRange()</a>, <a class="el" href="a00216_source.html#l00329">QUESO::SequenceOfVectors&lt; V, M &gt;::subMeanExtra()</a>, <a class="el" href="a00215_source.html#l00862">QUESO::ScalarSequence&lt; T &gt;::subMeanExtra()</a>, <a class="el" href="a00216_source.html#l00449">QUESO::SequenceOfVectors&lt; V, M &gt;::subMedianExtra()</a>, <a class="el" href="a00215_source.html#l00987">QUESO::ScalarSequence&lt; T &gt;::subMedianExtra()</a>, <a class="el" href="a00216_source.html#l00955">QUESO::SequenceOfVectors&lt; V, M &gt;::subMinMaxExtra()</a>, <a class="el" href="a00215_source.html#l01587">QUESO::ScalarSequence&lt; T &gt;::subMinMaxExtra()</a>, <a class="el" href="a00216_source.html#l00711">QUESO::SequenceOfVectors&lt; V, M &gt;::subPopulationVariance()</a>, <a class="el" href="a00215_source.html#l01278">QUESO::ScalarSequence&lt; T &gt;::subPopulationVariance()</a>, <a class="el" href="a00221_source.html#l00386">QUESO::BaseVectorSequence&lt; V, M &gt;::subPositionsOfMaximum()</a>, <a class="el" href="a00215_source.html#l02676">QUESO::ScalarSequence&lt; T &gt;::subPositionsOfMaximum()</a>, <a class="el" href="a00271_source.html#l01029">QUESO::GslVector::subReadContents()</a>, <a class="el" href="a00269_source.html#l02187">QUESO::GslMatrix::subReadContents()</a>, <a class="el" href="a00216_source.html#l00640">QUESO::SequenceOfVectors&lt; V, M &gt;::subSampleStd()</a>, <a class="el" href="a00215_source.html#l01181">QUESO::ScalarSequence&lt; T &gt;::subSampleStd()</a>, <a class="el" href="a00216_source.html#l00569">QUESO::SequenceOfVectors&lt; V, M &gt;::subSampleVarianceExtra()</a>, <a class="el" href="a00215_source.html#l01086">QUESO::ScalarSequence&lt; T &gt;::subSampleVarianceExtra()</a>, <a class="el" href="a00215_source.html#l02336">QUESO::ScalarSequence&lt; T &gt;::subScaleForKde()</a>, <a class="el" href="a00216_source.html#l01183">QUESO::SequenceOfVectors&lt; V, M &gt;::subScalesForKde()</a>, <a class="el" href="a00215_source.html#l01893">QUESO::ScalarSequence&lt; T &gt;::subWeightHistogram()</a>, <a class="el" href="a00450_source.html#l00111">QUESO::SampledVectorCdf&lt; V, M &gt;::subWriteContents()</a>, <a class="el" href="a00449_source.html#l00240">QUESO::SampledScalarCdf&lt; T &gt;::subWriteContents()</a>, <a class="el" href="a00271_source.html#l00983">QUESO::GslVector::subWriteContents()</a>, <a class="el" href="a00216_source.html#l01357">QUESO::SequenceOfVectors&lt; V, M &gt;::subWriteContents()</a>, <a class="el" href="a00269_source.html#l02141">QUESO::GslMatrix::subWriteContents()</a>, <a class="el" href="a00215_source.html#l02742">QUESO::ScalarSequence&lt; T &gt;::subWriteContents()</a>, <a class="el" href="a00269_source.html#l00531">QUESO::GslMatrix::svd()</a>, <a class="el" href="a00269_source.html#l00561">QUESO::GslMatrix::svdSolve()</a>, <a class="el" href="a00265_source.html#l00446">QUESO::BaseEnvironment::syncVerbosity()</a>, <a class="el" href="a00269_source.html#l00822">QUESO::GslMatrix::transpose()</a>, <a class="el" href="a00472_source.html#l00122">QUESO::BaseVectorRV&lt; V, M &gt;::unifiedCdf()</a>, <a class="el" href="a00216_source.html#l01304">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedGaussian1dKde()</a>, <a class="el" href="a00215_source.html#l02489">QUESO::ScalarSequence&lt; T &gt;::unifiedGaussian1dKde()</a>, <a class="el" href="a00216_source.html#l01074">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedHistogram()</a>, <a class="el" href="a00215_source.html#l01749">QUESO::ScalarSequence&lt; T &gt;::unifiedHistogram()</a>, <a class="el" href="a00216_source.html#l01153">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedInterQuantileRange()</a>, <a class="el" href="a00215_source.html#l02239">QUESO::ScalarSequence&lt; T &gt;::unifiedInterQuantileRange()</a>, <a class="el" href="a00216_source.html#l00387">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedMeanExtra()</a>, <a class="el" href="a00215_source.html#l00903">QUESO::ScalarSequence&lt; T &gt;::unifiedMeanExtra()</a>, <a class="el" href="a00216_source.html#l00507">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedMedianExtra()</a>, <a class="el" href="a00215_source.html#l01033">QUESO::ScalarSequence&lt; T &gt;::unifiedMedianExtra()</a>, <a class="el" href="a00216_source.html#l00988">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedMinMaxExtra()</a>, <a class="el" href="a00215_source.html#l01622">QUESO::ScalarSequence&lt; T &gt;::unifiedMinMaxExtra()</a>, <a class="el" href="a00216_source.html#l00746">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedPopulationVariance()</a>, <a class="el" href="a00215_source.html#l01308">QUESO::ScalarSequence&lt; T &gt;::unifiedPopulationVariance()</a>, <a class="el" href="a00221_source.html#l00433">QUESO::BaseVectorSequence&lt; V, M &gt;::unifiedPositionsOfMaximum()</a>, <a class="el" href="a00215_source.html#l02709">QUESO::ScalarSequence&lt; T &gt;::unifiedPositionsOfMaximum()</a>, <a class="el" href="a00202_source.html#l00621">QUESO::ArrayOfSequences&lt; V, M &gt;::unifiedReadContents()</a>, <a class="el" href="a00216_source.html#l01760">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedReadContents()</a>, <a class="el" href="a00215_source.html#l03006">QUESO::ScalarSequence&lt; T &gt;::unifiedReadContents()</a>, <a class="el" href="a00216_source.html#l00675">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedSampleStd()</a>, <a class="el" href="a00215_source.html#l01212">QUESO::ScalarSequence&lt; T &gt;::unifiedSampleStd()</a>, <a class="el" href="a00216_source.html#l00604">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedSampleVarianceExtra()</a>, <a class="el" href="a00215_source.html#l01116">QUESO::ScalarSequence&lt; T &gt;::unifiedSampleVarianceExtra()</a>, <a class="el" href="a00215_source.html#l02379">QUESO::ScalarSequence&lt; T &gt;::unifiedScaleForKde()</a>, <a class="el" href="a00216_source.html#l01217">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedScalesForKde()</a>, <a class="el" href="a00221_source.html#l00070">QUESO::BaseVectorSequence&lt; V, M &gt;::unifiedSequenceSize()</a>, <a class="el" href="a00215_source.html#l00148">QUESO::ScalarSequence&lt; T &gt;::unifiedSequenceSize()</a>, <a class="el" href="a00215_source.html#l02010">QUESO::ScalarSequence&lt; T &gt;::unifiedSort()</a>, <a class="el" href="a00215_source.html#l00634">QUESO::ScalarSequence&lt; T &gt;::unifiedUniformlySampledCdf()</a>, <a class="el" href="a00202_source.html#l00600">QUESO::ArrayOfSequences&lt; V, M &gt;::unifiedWriteContents()</a>, <a class="el" href="a00216_source.html#l01485">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedWriteContents()</a>, <a class="el" href="a00215_source.html#l02799">QUESO::ScalarSequence&lt; T &gt;::unifiedWriteContents()</a>, <a class="el" href="a00306_source.html#l00133">QUESO::UniformLegendre1DQuadrature::UniformLegendre1DQuadrature()</a>, <a class="el" href="a00440_source.html#l02451">QUESO::MetropolisHastingsSG&lt; P_V, P_M &gt;::updateAdaptedCovMatrix()</a>, <a class="el" href="a00430_source.html#l00162">QUESO::InvLogitGaussianVectorRV&lt; V, M &gt;::updateLawCovMatrix()</a>, <a class="el" href="a00415_source.html#l00167">QUESO::GaussianVectorRV&lt; V, M &gt;::updateLawCovMatrix()</a>, <a class="el" href="a00418_source.html#l00072">QUESO::GenericScalarCovarianceFunction&lt; V, M &gt;::value()</a>, <a class="el" href="a00449_source.html#l00066">QUESO::SampledScalarCdf&lt; T &gt;::value()</a>, <a class="el" href="a00305_source.html#l00101">QUESO::Generic1D1DFunction::value()</a>, <a class="el" href="a00305_source.html#l00158">QUESO::Constant1D1DFunction::value()</a>, <a class="el" href="a00305_source.html#l00219">QUESO::Linear1D1DFunction::value()</a>, <a class="el" href="a00305_source.html#l00320">QUESO::PiecewiseLinear1D1DFunction::value()</a>, <a class="el" href="a00305_source.html#l00505">QUESO::Sampled1D1DFunction::value()</a>, <a class="el" href="a00451_source.html#l00060">QUESO::SampledVectorMdf&lt; V, M &gt;::values()</a>, <a class="el" href="a00450_source.html#l00071">QUESO::SampledVectorCdf&lt; V, M &gt;::values()</a>, <a class="el" href="a00413_source.html#l00088">QUESO::GaussianVectorMdf&lt; V, M &gt;::values()</a>, <a class="el" href="a00412_source.html#l00088">QUESO::GaussianVectorCdf&lt; V, M &gt;::values()</a>, <a class="el" href="a00291_source.html#l00032">QUESO::Vector::Vector()</a>, <a class="el" href="a00222_source.html#l00037">QUESO::VectorSet&lt; V, M &gt;::VectorSet()</a>, <a class="el" href="a00223_source.html#l00038">QUESO::VectorSpace&lt; V, M &gt;::VectorSpace()</a>, <a class="el" href="a00224_source.html#l00034">QUESO::VectorSubset&lt; V, M &gt;::VectorSubset()</a>, <a class="el" href="a00438_source.html#l00091">QUESO::MarkovChainPositionData&lt; V &gt;::vecValues()</a>, <a class="el" href="a00306_source.html#l00086">QUESO::Base1DQuadrature::weights()</a>, <a class="el" href="a00306_source.html#l00678">QUESO::WignerInverseChebyshev1st1DQuadrature::WignerInverseChebyshev1st1DQuadrature()</a>, <a class="el" href="a00473_source.html#l00033">QUESO::WignerJointPdf&lt; V, M &gt;::WignerJointPdf()</a>, <a class="el" href="a00474_source.html#l00033">QUESO::WignerVectorRealizer&lt; V, M &gt;::WignerVectorRealizer()</a>, <a class="el" href="a00475_source.html#l00035">QUESO::WignerVectorRV&lt; V, M &gt;::WignerVectorRV()</a>, <a class="el" href="a00269_source.html#l00714">QUESO::GslMatrix::zeroLower()</a>, <a class="el" href="a00269_source.html#l00745">QUESO::GslMatrix::zeroUpper()</a>, and <a class="el" href="a00223_source.html#l00218">QUESO::VectorSpace&lt; V, M &gt;::zeroVector()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4ebcc075277d031eb97c90b9a45f4493"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_FILE_EXTENSION_FOR_HDF_FORMAT&#160;&#160;&#160;&quot;h5&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00229_source.html#l00090">90</a> of file <a class="el" href="a00229_source.html">Defines.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00265_source.html#l01117">QUESO::BaseEnvironment::closeFile()</a>, <a class="el" href="a00265_source.html#l00913">QUESO::BaseEnvironment::openInputFile()</a>, <a class="el" href="a00265_source.html#l00516">QUESO::BaseEnvironment::openOutputFile()</a>, <a class="el" href="a00265_source.html#l01016">QUESO::BaseEnvironment::openUnifiedInputFile()</a>, <a class="el" href="a00265_source.html#l00733">QUESO::BaseEnvironment::openUnifiedOutputFile()</a>, <a class="el" href="a00216_source.html#l01408">QUESO::SequenceOfVectors&lt; V, M &gt;::subWriteContents()</a>, <a class="el" href="a00216_source.html#l01760">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedReadContents()</a>, <a class="el" href="a00215_source.html#l03006">QUESO::ScalarSequence&lt; T &gt;::unifiedReadContents()</a>, <a class="el" href="a00216_source.html#l01485">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedWriteContents()</a>, and <a class="el" href="a00215_source.html#l02799">QUESO::ScalarSequence&lt; T &gt;::unifiedWriteContents()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac440026eff7deb1c1eed1eea0e8e36ba"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_FILE_EXTENSION_FOR_MATLAB_FORMAT&#160;&#160;&#160;&quot;m&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00229_source.html#l00089">89</a> of file <a class="el" href="a00229_source.html">Defines.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00265_source.html#l01117">QUESO::BaseEnvironment::closeFile()</a>, <a class="el" href="a00442_source.html#l04193">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence()</a>, <a class="el" href="a00440_source.html#l00975">QUESO::MetropolisHastingsSG&lt; P_V, P_M &gt;::generateSequence()</a>, <a class="el" href="a00442_source.html#l02429">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Level0_all()</a>, <a class="el" href="a00442_source.html#l03977">QUESO::MLSampling&lt; P_V, P_M &gt;::generateSequence_Step11_inter0()</a>, <a class="el" href="a00446_source.html#l00121">QUESO::MonteCarloSG&lt; P_V, P_M, Q_V, Q_M &gt;::internGenerateSequence()</a>, <a class="el" href="a00265_source.html#l00913">QUESO::BaseEnvironment::openInputFile()</a>, <a class="el" href="a00265_source.html#l00516">QUESO::BaseEnvironment::openOutputFile()</a>, <a class="el" href="a00265_source.html#l01016">QUESO::BaseEnvironment::openUnifiedInputFile()</a>, <a class="el" href="a00265_source.html#l00733">QUESO::BaseEnvironment::openUnifiedOutputFile()</a>, <a class="el" href="a00457_source.html#l00148">QUESO::StatisticalForwardProblem&lt; P_V, P_M, Q_V, Q_M &gt;::solveWithMonteCarlo()</a>, <a class="el" href="a00216_source.html#l01408">QUESO::SequenceOfVectors&lt; V, M &gt;::subWriteContents()</a>, <a class="el" href="a00216_source.html#l01760">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedReadContents()</a>, <a class="el" href="a00215_source.html#l03006">QUESO::ScalarSequence&lt; T &gt;::unifiedReadContents()</a>, <a class="el" href="a00216_source.html#l01485">QUESO::SequenceOfVectors&lt; V, M &gt;::unifiedWriteContents()</a>, and <a class="el" href="a00215_source.html#l02799">QUESO::ScalarSequence&lt; T &gt;::unifiedWriteContents()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa3b4d42ed2bf66c8c4433d314439f0be"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_RC_MACRO</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">macroIRc, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">givenRank, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">where, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">what, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">retValue&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">if</span> (macroIRc) {                                           \</div>
+<div class="line">    int macroRank = givenRank;                              \</div>
+<div class="line">    if (macroRank &lt; 0) {                                    \</div>
+<div class="line">      macroRank = <a class="code" href="a00480.html#a5af97e1f9320b7787efc744ef76be297">QUESO::MyWorldfullRank</a>();                 \</div>
+<div class="line">    }                                                       \</div>
+<div class="line">    std::cerr &lt;&lt; <span class="stringliteral">&quot;UQ RC ERROR&quot;</span>                              \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;, rank &quot;</span>  &lt;&lt; macroRank                    \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;, in &quot;</span>    &lt;&lt; where                        \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;: &quot;</span>       &lt;&lt; what                         \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;, iRc = &quot;</span> &lt;&lt; macroIRc                     \</div>
+<div class="line">              &lt;&lt; std::endl;                                 \</div>
+<div class="line">    return retValue;                                        \</div>
+<div class="line">  }</div>
+<div class="ttc" id="a00480_html_a5af97e1f9320b7787efc744ef76be297"><div class="ttname"><a href="a00480.html#a5af97e1f9320b7787efc744ef76be297">QUESO::MyWorldfullRank</a></div><div class="ttdeci">int MyWorldfullRank()</div><div class="ttdoc">Returns the rank of the calling process in the communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00263_source.html#l00030">Defines.C:30</a></div></div>
+</div><!-- fragment -->
+<p>Macros. </p>
+
+<p>Definition at line <a class="el" href="a00229_source.html#l00178">178</a> of file <a class="el" href="a00229_source.html">Defines.h</a>.</p>
+
+<p>Referenced by <a class="el" href="a00269_source.html#l00506">QUESO::GslMatrix::chol()</a>, and <a class="el" href="a00269_source.html#l00652">QUESO::GslMatrix::internalSvd()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab445104e0e2540384e8aaa8dbf3ae9b6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UQ_TEST_MACRO</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">test, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">givenRank, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">where, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">what, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">retValue&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">if</span> (test) {                                             \</div>
+<div class="line">    int macroRank = givenRank;                            \</div>
+<div class="line">    if (macroRank &lt; 0) {                                  \</div>
+<div class="line">      macroRank = <a class="code" href="a00480.html#a5af97e1f9320b7787efc744ef76be297">QUESO::MyWorldfullRank</a>();               \</div>
+<div class="line">    }                                                     \</div>
+<div class="line">    std::cerr &lt;&lt; <span class="stringliteral">&quot;UQ TEST ERROR&quot;</span>                          \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;, rank &quot;</span> &lt;&lt; macroRank                   \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;, in &quot;</span>   &lt;&lt; where                       \</div>
+<div class="line">              &lt;&lt; <span class="stringliteral">&quot;: &quot;</span>      &lt;&lt; what                        \</div>
+<div class="line">              &lt;&lt; std::endl;                               \</div>
+<div class="line">    return retValue;                                      \</div>
+<div class="line">  }</div>
+<div class="ttc" id="a00480_html_a5af97e1f9320b7787efc744ef76be297"><div class="ttname"><a href="a00480.html#a5af97e1f9320b7787efc744ef76be297">QUESO::MyWorldfullRank</a></div><div class="ttdeci">int MyWorldfullRank()</div><div class="ttdoc">Returns the rank of the calling process in the communicator. </div><div class="ttdef"><b>Definition:</b> <a href="a00263_source.html#l00030">Defines.C:30</a></div></div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="a00229_source.html#l00193">193</a> of file <a class="el" href="a00229_source.html">Defines.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:12 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:45 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

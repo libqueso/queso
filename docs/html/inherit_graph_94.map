@@ -1,15 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$a00158.html" title="A templated class for handling sets. " alt="" coords="5,279,213,308"/>
-<area shape="rect" id="node3" href="$a00159.html" title="A class representing a vector space. " alt="" coords="265,97,431,143"/>
-<area shape="rect" id="node5" href="$a00160.html" title="A templated class for handling subsets. " alt="" coords="263,166,433,213"/>
-<area shape="rect" id="node19" href="$a00159.html" title="QUESO::VectorSpace\l\&lt; P_V, P_M \&gt;" alt="" coords="265,235,431,282"/>
-<area shape="rect" id="node21" href="$a00159.html" title="QUESO::VectorSpace\l\&lt; Q_V, Q_M \&gt;" alt="" coords="265,305,431,351"/>
-<area shape="rect" id="node23" href="$a00160.html" title="QUESO::VectorSubset\l\&lt; P_V, P_M \&gt;" alt="" coords="263,374,433,421"/>
-<area shape="rect" id="node25" href="$a00160.html" title="QUESO::VectorSubset\l\&lt; Q_V, Q_M \&gt;" alt="" coords="263,443,433,490"/>
-<area shape="rect" id="node7" href="$a00039.html" title="QUESO::BoxSubset\&lt; P\l_V, P_M \&gt;" alt="" coords="508,5,684,51"/>
-<area shape="rect" id="node9" href="$a00039.html" title="QUESO::BoxSubset\&lt; Q\l_V, Q_M \&gt;" alt="" coords="507,74,685,121"/>
-<area shape="rect" id="node11" href="$a00039.html" title="Class representing a subset of a vector space shaped like a hypercube. " alt="" coords="491,144,701,173"/>
-<area shape="rect" id="node13" href="$a00043.html" title="A templated class representing the concatenation of two vector subsets. " alt="" coords="483,197,709,243"/>
-<area shape="rect" id="node15" href="$a00047.html" title="A templated class representing the discrete vector subsets. " alt="" coords="503,266,689,313"/>
-<area shape="rect" id="node17" href="$a00091.html" title="A templated class representing the intersection of two vector sets. " alt="" coords="491,335,701,382"/>
+<area shape="rect" id="node1" href="$a00168.html" title="QUESO::VectorSet\&lt; P\l_V, P_M \&gt;" alt="" coords="5,5,179,51"/>
 </map>

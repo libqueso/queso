@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: Member List</title>
+<title>queso-0.51.0: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -45,32 +45,48 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00450.html">QUESO</a></li><li class="navelem"><a class="el" href="a00076.html">GenericMatrixCovarianceFunction</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00480.html">QUESO</a></li><li class="navelem"><a class="el" href="a00036.html">BayesianJointPdf</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">QUESO::GenericMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt; Member List</div>  </div>
+<div class="title">QUESO::BayesianJointPdf&lt; V, M &gt; Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="a00076.html">QUESO::GenericMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a>, including all inherited members.</p>
+<p>This is the complete list of members for <a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="a00020.html#aa19fd2a4d2cc8ce822d4712abbd45021">BaseMatrixCovarianceFunction</a>(const char *prefix, const VectorSet&lt; P_V, P_M &gt; &amp;basicDomainSet, const VectorSet&lt; Q_V, Q_M &gt; &amp;imageSet)</td><td class="entry"><a class="el" href="a00020.html">QUESO::BaseMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="a00020.html#a6ce876e4dae5ab4b165ac100e310dd45">basicDomainSet</a>() const </td><td class="entry"><a class="el" href="a00020.html">QUESO::BaseMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00076.html#ad1dc99df94d6fb77aa658fda06fd832d">covMatrix</a>(const P_V &amp;positionVector1, const P_V &amp;positionVector2, Q_M &amp;imageMatrix) const </td><td class="entry"><a class="el" href="a00076.html">QUESO::GenericMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00076.html#ade7c8ddfe0c9cfbf1ac3d3233249e0f7">GenericMatrixCovarianceFunction</a>(const char *prefix, const VectorSet&lt; P_V, P_M &gt; &amp;basicDomainSet, const VectorSet&lt; Q_V, Q_M &gt; &amp;imageSet, void(*covRoutinePtr)(const P_V &amp;positionVector1, const P_V &amp;positionVector2, const void *routineDataPtr, Q_M &amp;imageMatrix), const void *routinesDataPtr)</td><td class="entry"><a class="el" href="a00076.html">QUESO::GenericMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00020.html#a3c466742b27fc304cce106f96d8e49c7">m_basicDomainSet</a></td><td class="entry"><a class="el" href="a00020.html">QUESO::BaseMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00076.html#a6841d2f9abbc3c31e0809c18d790777c">m_covRoutinePtr</a></td><td class="entry"><a class="el" href="a00076.html">QUESO::GenericMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00020.html#a2bf98f6576db775109e240a2d828c578">m_env</a></td><td class="entry"><a class="el" href="a00020.html">QUESO::BaseMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00020.html#aa6e05a29048771a3a327b82cea09d480">m_imageSet</a></td><td class="entry"><a class="el" href="a00020.html">QUESO::BaseMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00020.html#a05865387f77ce48e71ab2448982c5616">m_prefix</a></td><td class="entry"><a class="el" href="a00020.html">QUESO::BaseMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00076.html#a54dbb7157e6a1be651d6467a00d6a8cd">m_routineDataPtr</a></td><td class="entry"><a class="el" href="a00076.html">QUESO::GenericMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00020.html#a821c7190922a832ecc4ae3bcc78b99cc">~BaseMatrixCovarianceFunction</a>()</td><td class="entry"><a class="el" href="a00020.html">QUESO::BaseMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00076.html#a148ab4380b8d299c5418b333a80c5039">~GenericMatrixCovarianceFunction</a>()</td><td class="entry"><a class="el" href="a00076.html">QUESO::GenericMatrixCovarianceFunction&lt; P_V, P_M, Q_V, Q_M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00036.html#ad67362b4ab48a722db976430cf03165e">actualValue</a>(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00019.html#ae1f0870366a17d71e05a2f84ec49e06e">BaseJointPdf</a>(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet)</td><td class="entry"><a class="el" href="a00019.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00025.html#a68ab7c82be7eba7bd5d51ce8d85c65f0">BaseScalarFunction</a>(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet)</td><td class="entry"><a class="el" href="a00025.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00036.html#a035122f1015976118ba96c9cd37edda0">BayesianJointPdf</a>(const char *prefix, const BaseJointPdf&lt; V, M &gt; &amp;priorDensity, const BaseScalarFunction&lt; V, M &gt; &amp;likelihoodFunction, double likelihoodExponent, const VectorSet&lt; V, M &gt; &amp;intersectionDomain)</td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00019.html#a7b7bdd13d2de51198bf75d522e02545b">commonComputeLogOfNormalizationFactor</a>(unsigned int numSamples, bool updateFactorInternally) const </td><td class="entry"><a class="el" href="a00019.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00036.html#a7e00d685068bcf34253e5a101b539261">computeLogOfNormalizationFactor</a>(unsigned int numSamples, bool updateFactorInternally) const </td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00025.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>() const </td><td class="entry"><a class="el" href="a00025.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00036.html#a500cbccdedf8dbc7c1f9652c262a160a">lastComputedLogLikelihood</a>() const </td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00036.html#aaae16348ff3b0ab3c1c64605fbc1d493">lastComputedLogPrior</a>() const </td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="a00036.html#a98e54ee24452e2477469a0c84eecbfca">lnValue</a>(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00025.html#ab81be32259b9764250660a035439fda8">m_domainSet</a></td><td class="entry"><a class="el" href="a00025.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00025.html#adf44141aeb765d97613286f88f235f04">m_env</a></td><td class="entry"><a class="el" href="a00025.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00036.html#af97f3ff0d65154366e31d14fd88ccb38">m_lastComputedLogLikelihood</a></td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">mutable</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00036.html#a2b1c5582be60a876a6dd08766e7e31ed">m_lastComputedLogPrior</a></td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">mutable</span><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00036.html#a511b1e403ebcab436177491ea8f21c07">m_likelihoodExponent</a></td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00036.html#a8e2506801de447f8acd187f8edfa330d">m_likelihoodFunction</a></td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00019.html#ae82d4191f17af8c7a26226d127bc7850">m_logOfNormalizationFactor</a></td><td class="entry"><a class="el" href="a00019.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">mutable</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00019.html#a138c99bcef7a67077d9612bddfdcb896">m_normalizationStyle</a></td><td class="entry"><a class="el" href="a00019.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">mutable</span><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00025.html#a6e81dc902aca6a546877da99b2f4a169">m_prefix</a></td><td class="entry"><a class="el" href="a00025.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00036.html#a3cafafe8c5ea2353eedaecee156f609a">m_priorDensity</a></td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00036.html#a686da1b57929c8b506a5e8fe8974603d">m_tmpMatrix</a></td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">mutable</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00036.html#af4252d2628298423a60335eef72136c6">m_tmpVector1</a></td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">mutable</span><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00036.html#a2c81721bddf0ffd5547751f1a8221a5d">m_tmpVector2</a></td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">mutable</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00019.html#a2903b3f031e68907fe7422fedc83e5dc">setLogOfNormalizationFactor</a>(double value) const </td><td class="entry"><a class="el" href="a00019.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00036.html#aa23751ede9ec9f2e7bdd81c5326f47d5">setNormalizationStyle</a>(unsigned int value) const </td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00019.html#a9f41f5dc30ddfd59e149c3a748898553">~BaseJointPdf</a>()</td><td class="entry"><a class="el" href="a00019.html">QUESO::BaseJointPdf&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a00025.html#a6f96de783e174cfe84682766f5957969">~BaseScalarFunction</a>()</td><td class="entry"><a class="el" href="a00025.html">QUESO::BaseScalarFunction&lt; V, M &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a00036.html#a060c1d9fcfd092dbc5501afaa9b362db">~BayesianJointPdf</a>()</td><td class="entry"><a class="el" href="a00036.html">QUESO::BayesianJointPdf&lt; V, M &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:14 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:47 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

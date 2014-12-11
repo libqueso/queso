@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/stats/src/SequentialVectorRealizer.C Source File</title>
+<title>queso-0.51.0: src/stats/src/InverseGammaVectorRV.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">SequentialVectorRealizer.C</div>  </div>
+<div class="title">InverseGammaVectorRV.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00427.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,80 +75,119 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/SequentialVectorRealizer.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/InverseGammaVectorRV.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/InverseGammaVectorRealizer.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/InverseGammaJointPdf.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00137.html#a8a39a19e20c9f2e2521750b2c12f0ede">   33</a></span>&#160;<a class="code" href="a00137.html#a8a39a19e20c9f2e2521750b2c12f0ede">SequentialVectorRealizer&lt;V,M&gt;::SequentialVectorRealizer</a>(</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                           prefix,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00031.html">BaseVectorSequence&lt;V,M&gt;</a>&amp; chain)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  :</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="a00029.html">BaseVectorRealizer</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;seq&quot;</span>).c_str(),chain.unifiedBoxPlain(),chain.subSequenceSize()),</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  m_chain                 (chain),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  m_currentChainPos       (0),</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  m_unifiedSampleExpVector(new V(chain.unifiedMeanPlain()          )), <span class="comment">// IMPORTANT</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  m_unifiedSampleVarVector(new V(chain.unifiedSampleVariancePlain()))  <span class="comment">// IMPORTANT</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// Constructor---------------------------------------</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00096.html#aff5af0a3d0a73c68d315c15c4e679fbf">   35</a></span>&#160;<a class="code" href="a00096.html#aff5af0a3d0a73c68d315c15c4e679fbf">InverseGammaVectorRV&lt;V,M&gt;::InverseGammaVectorRV</a>(</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00168.html">VectorSet&lt;V,M&gt;</a>&amp; imageSet,</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">const</span> V&amp;                     alpha,</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keyword">const</span> V&amp;                     beta)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  :</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="a00031.html">BaseVectorRV</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;uni&quot;</span>).c_str(),imageSet)</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00029.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00029.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 0)) {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    *<a class="code" href="a00029.html#acde246c52f82d8ed687d91cfac14c29c">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;In SequentialVectorRealizer&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: m_chain.subSequenceSize() = &quot;</span> &lt;&lt; <a class="code" href="a00137.html#a4072619c7ef9d9f196bb0d70ec9e8479">m_chain</a>.subSequenceSize()</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00031.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00031.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    *<a class="code" href="a00031.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering InverseGammaVectorRV&lt;V,M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00031.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                            &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// Destructor --------------------------------------</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00137.html#a8e982c9719fb7998601d79d76fea9d4a">   51</a></span>&#160;<a class="code" href="a00137.html#a8e982c9719fb7998601d79d76fea9d4a">SequentialVectorRealizer&lt;V,M&gt;::~SequentialVectorRealizer</a>()</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">delete</span> m_unifiedSampleVarVector;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">delete</span> m_unifiedSampleExpVector;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// Realization-related methods----------------------</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="a00137.html#a67050d12ad38147f9f0743a0e53011b2">   59</a></span>&#160;<a class="code" href="a00137.html#a67050d12ad38147f9f0743a0e53011b2">SequentialVectorRealizer&lt;V,M&gt;::realization</a>(V&amp; nextParamValues)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  m_chain.getPositionValues(m_currentChainPos++,nextParamValues);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">if</span> (m_currentChainPos &gt;= m_subPeriod) m_currentChainPos = 0;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// begin kemelli 2013-April-22 -------------------------- </span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// InverseGamma dist is defined only in (0,inf)</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00040.html">BoxSubset&lt;V,M&gt;</a>* imageBox = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code" href="a00040.html">BoxSubset&lt;V,M&gt;</a>* <span class="keyword">&gt;</span>(&amp;<a class="code" href="a00031.html#aa4dd2f036228eac1f945bacc7147a922">imageSet</a>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">double</span> smallerOfMaxValues = imageBox-&gt;<a class="code" href="a00040.html#a47616371623019a8c6399d5b3661d25b">maxValues</a>().getMinValue();      </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordtype">double</span> smallerOfMinValues = imageBox-&gt;<a class="code" href="a00040.html#a57d3ba7df60a38abc4c161ff78f4a567">minValues</a>().getMinValue();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; <span class="keywordflow">if</span>( smallerOfMinValues &lt; 0 ) </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; {              </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;   std::cerr &lt;&lt; <span class="stringliteral">&quot;In InverseGammaVectorRV&lt;V,M&gt;::constructor()\n&quot;</span> </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;       &lt;&lt; <span class="stringliteral">&quot;Inverse Gamma distribution is only defined in (0, infinity).\n&quot;</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;       &lt;&lt; <span class="stringliteral">&quot;The data provided is: \n&quot;</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;       &lt;&lt; *imageBox </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;         &lt;&lt; <span class="stringliteral">&quot;Sampling will not cover all interval.\n&quot;</span>   </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;         &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">const</span> V&amp;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="a00137.html#ac7c24dd2a5663d245ba1e37556a68bce">   69</a></span>&#160;<a class="code" href="a00137.html#ac7c24dd2a5663d245ba1e37556a68bce">SequentialVectorRealizer&lt;V,M&gt;::unifiedSampleExpVector</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordflow">return</span> *m_unifiedSampleExpVector;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">const</span> V&amp;</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00137.html#a79981fe171d8596d55172f5fa600ee29">   76</a></span>&#160;<a class="code" href="a00137.html#a79981fe171d8596d55172f5fa600ee29">SequentialVectorRealizer&lt;V,M&gt;::unifiedSampleVarVector</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordflow">return</span> *m_unifiedSampleVarVector;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="a00229.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(smallerOfMaxValues &lt; 0,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                      <a class="code" href="a00031.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                      <span class="stringliteral">&quot;InverseGammaVectorRealizer&lt;V,M&gt;::constructor()&quot;</span>,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                      <span class="stringliteral">&quot;invalid input: Inverse Gamma distribution is only defined in (0, infinity), and min(m_maxValues)&lt;0&quot;</span>);      </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; }      </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">// end kemelli 2013-April-22 --------------------------</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="a00031.html#a0ca926bca6fbcc688be6fc7496449e8e">m_pdf</a>        = <span class="keyword">new</span> <a class="code" href="a00094.html">InverseGammaJointPdf&lt;V,M&gt;</a>(<a class="code" href="a00031.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a>.c_str(),</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                                                      <a class="code" href="a00031.html#ad31872bb4da22d47528cb9d691b3b7ff">m_imageSet</a>,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                                                      alpha,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                                                      beta);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <a class="code" href="a00031.html#ad99bc05293c0fd0a0accb3191fb7119e">m_realizer</a>   = <span class="keyword">new</span> <a class="code" href="a00095.html">InverseGammaVectorRealizer&lt;V,M&gt;</a>(<a class="code" href="a00031.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a>.c_str(),</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                                                            <a class="code" href="a00031.html#ad31872bb4da22d47528cb9d691b3b7ff">m_imageSet</a>,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                                                            alpha,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                                                            beta);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <a class="code" href="a00031.html#a1a1117671c7fa2e572a9484463bee3a5">m_subCdf</a>     = NULL; <span class="comment">// FIX ME: complete code</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <a class="code" href="a00031.html#a31a1d44bbb6a7c030ca31a9577904252">m_unifiedCdf</a> = NULL; <span class="comment">// FIX ME: complete code</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <a class="code" href="a00031.html#a5a95d0107f66cf9b0ed3ad18a3d738df">m_mdf</a>        = NULL; <span class="comment">// FIX ME: complete code</span></div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00137.html">QUESO::SequentialVectorRealizer&lt;QUESO::GslVector, QUESO::GslMatrix&gt;</a>;</div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00252_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00137_html_ac7c24dd2a5663d245ba1e37556a68bce"><div class="ttname"><a href="a00137.html#ac7c24dd2a5663d245ba1e37556a68bce">QUESO::SequentialVectorRealizer::unifiedSampleExpVector</a></div><div class="ttdeci">const V &amp; unifiedSampleExpVector() const </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00069">SequentialVectorRealizer.C:69</a></div></div>
-<div class="ttc" id="a00137_html_a8a39a19e20c9f2e2521750b2c12f0ede"><div class="ttname"><a href="a00137.html#a8a39a19e20c9f2e2521750b2c12f0ede">QUESO::SequentialVectorRealizer::SequentialVectorRealizer</a></div><div class="ttdeci">SequentialVectorRealizer(const char *prefix, const BaseVectorSequence&lt; V, M &gt; &amp;chain)</div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00033">SequentialVectorRealizer.C:33</a></div></div>
-<div class="ttc" id="a00029_html_acde246c52f82d8ed687d91cfac14c29c"><div class="ttname"><a href="a00029.html#acde246c52f82d8ed687d91cfac14c29c">QUESO::BaseVectorRealizer::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00370_source.html#l00081">VectorRealizer.h:81</a></div></div>
-<div class="ttc" id="a00029_html"><div class="ttname"><a href="a00029.html">QUESO::BaseVectorRealizer</a></div><div class="ttdoc">A templated (base) class for handling sampling from vector RVs. </div><div class="ttdef"><b>Definition:</b> <a href="a00370_source.html#l00053">VectorRealizer.h:53</a></div></div>
-<div class="ttc" id="a00137_html_a79981fe171d8596d55172f5fa600ee29"><div class="ttname"><a href="a00137.html#a79981fe171d8596d55172f5fa600ee29">QUESO::SequentialVectorRealizer::unifiedSampleVarVector</a></div><div class="ttdeci">const V &amp; unifiedSampleVarVector() const </div><div class="ttdoc">Returns the unified variance vector; access to private attribute m_unifiedSampleVarVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00076">SequentialVectorRealizer.C:76</a></div></div>
-<div class="ttc" id="a00137_html"><div class="ttname"><a href="a00137.html">QUESO::SequentialVectorRealizer</a></div><div class="ttdoc">A class for handling sequential draws (sampling) from probability density distributions. </div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00046">SequentialVectorRealizer.h:46</a></div></div>
-<div class="ttc" id="a00137_html_a8e982c9719fb7998601d79d76fea9d4a"><div class="ttname"><a href="a00137.html#a8e982c9719fb7998601d79d76fea9d4a">QUESO::SequentialVectorRealizer::~SequentialVectorRealizer</a></div><div class="ttdeci">~SequentialVectorRealizer()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00051">SequentialVectorRealizer.C:51</a></div></div>
-<div class="ttc" id="a00137_html_a67050d12ad38147f9f0743a0e53011b2"><div class="ttname"><a href="a00137.html#a67050d12ad38147f9f0743a0e53011b2">QUESO::SequentialVectorRealizer::realization</a></div><div class="ttdeci">void realization(V &amp;nextValues) const </div><div class="ttdoc">Draws the next value from this chain (m_chain) and saves it in nextValues. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00059">SequentialVectorRealizer.C:59</a></div></div>
-<div class="ttc" id="a00031_html"><div class="ttname"><a href="a00031.html">QUESO::BaseVectorSequence</a></div><div class="ttdoc">Base class for handling vector and array samples (sequence of vectors or arrays). ...</div><div class="ttdef"><b>Definition:</b> <a href="a00188_source.html#l00054">VectorSequence.h:54</a></div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00252_source.html#l00436">Environment.C:436</a></div></div>
-<div class="ttc" id="a00137_html_a4072619c7ef9d9f196bb0d70ec9e8479"><div class="ttname"><a href="a00137.html#a4072619c7ef9d9f196bb0d70ec9e8479">QUESO::SequentialVectorRealizer::m_chain</a></div><div class="ttdeci">const BaseVectorSequence&lt; V, M &gt; &amp; m_chain</div><div class="ttdef"><b>Definition:</b> <a href="a00356_source.html#l00070">SequentialVectorRealizer.h:70</a></div></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00031.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00031.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    *<a class="code" href="a00031.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving InverseGammaVectorRV&lt;V,M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00031.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="a00096.html#a88e2325c4b2030dce7211a11420269b3">   91</a></span>&#160;<a class="code" href="a00096.html#a88e2325c4b2030dce7211a11420269b3">InverseGammaVectorRV&lt;V,M&gt;::~InverseGammaVectorRV</a>()</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;{</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">delete</span> m_mdf;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">delete</span> m_unifiedCdf;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keyword">delete</span> m_subCdf;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <span class="keyword">delete</span> m_realizer;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keyword">delete</span> m_pdf;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">// I/O methods---------------------------------------</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="a00096.html#a7c3326d0b39a69f1edd64219f286c7e7">  102</a></span>&#160;<a class="code" href="a00096.html#a7c3326d0b39a69f1edd64219f286c7e7">InverseGammaVectorRV&lt;V,M&gt;::print</a>(std::ostream&amp; os)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  os &lt;&lt; <span class="stringliteral">&quot;InverseGammaVectorRV&lt;V,M&gt;::print() says, &#39;Please implement me.&#39;&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00096.html">QUESO::InverseGammaVectorRV&lt;QUESO::GslVector,QUESO::GslMatrix&gt;</a>;</div>
+<div class="ttc" id="a00031_html_a31a1d44bbb6a7c030ca31a9577904252"><div class="ttname"><a href="a00031.html#a31a1d44bbb6a7c030ca31a9577904252">QUESO::BaseVectorRV::m_unifiedCdf</a></div><div class="ttdeci">const BaseVectorCdf&lt; V, M &gt; * m_unifiedCdf</div><div class="ttdef"><b>Definition:</b> <a href="a00394_source.html#l00118">VectorRV.h:118</a></div></div>
+<div class="ttc" id="a00168_html"><div class="ttname"><a href="a00168.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00199_source.html#l00049">VectorSet.h:49</a></div></div>
+<div class="ttc" id="a00040_html_a57d3ba7df60a38abc4c161ff78f4a567"><div class="ttname"><a href="a00040.html#a57d3ba7df60a38abc4c161ff78f4a567">QUESO::BoxSubset::minValues</a></div><div class="ttdeci">const V &amp; minValues() const </div><div class="ttdoc">Vector of the minimum values of the box subset. </div><div class="ttdef"><b>Definition:</b> <a href="a00203_source.html#l00082">BoxSubset.C:82</a></div></div>
+<div class="ttc" id="a00018_html_a78b57112bbd0e6dd0e8afec00b40ffa7"><div class="ttname"><a href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">QUESO::BaseEnvironment::worldRank</a></div><div class="ttdeci">int worldRank() const </div><div class="ttdoc">Returns the process world rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00265_source.html#l00235">Environment.C:235</a></div></div>
+<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00265_source.html#l00305">Environment.C:305</a></div></div>
+<div class="ttc" id="a00096_html"><div class="ttname"><a href="a00096.html">QUESO::InverseGammaVectorRV</a></div><div class="ttdoc">A class representing a vector RV constructed via Inverse Gamma distribution. </div><div class="ttdef"><b>Definition:</b> <a href="a00349_source.html#l00058">InverseGammaVectorRV.h:58</a></div></div>
+<div class="ttc" id="a00031_html_ad31872bb4da22d47528cb9d691b3b7ff"><div class="ttname"><a href="a00031.html#ad31872bb4da22d47528cb9d691b3b7ff">QUESO::BaseVectorRV::m_imageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_imageSet</div><div class="ttdef"><b>Definition:</b> <a href="a00394_source.html#l00114">VectorRV.h:114</a></div></div>
+<div class="ttc" id="a00031_html_a556761c50e2d171977ef5f19a63c8c73"><div class="ttname"><a href="a00031.html#a556761c50e2d171977ef5f19a63c8c73">QUESO::BaseVectorRV::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00394_source.html#l00112">VectorRV.h:112</a></div></div>
+<div class="ttc" id="a00096_html_aff5af0a3d0a73c68d315c15c4e679fbf"><div class="ttname"><a href="a00096.html#aff5af0a3d0a73c68d315c15c4e679fbf">QUESO::InverseGammaVectorRV::InverseGammaVectorRV</a></div><div class="ttdeci">InverseGammaVectorRV(const char *prefix, const VectorSet&lt; V, M &gt; &amp;imageSet, const V &amp;alpha, const V &amp;beta)</div><div class="ttdoc">Default Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00035">InverseGammaVectorRV.C:35</a></div></div>
+<div class="ttc" id="a00040_html_a47616371623019a8c6399d5b3661d25b"><div class="ttname"><a href="a00040.html#a47616371623019a8c6399d5b3661d25b">QUESO::BoxSubset::maxValues</a></div><div class="ttdeci">const V &amp; maxValues() const </div><div class="ttdoc">Vector of the maximum values of the box subset. </div><div class="ttdef"><b>Definition:</b> <a href="a00203_source.html#l00088">BoxSubset.C:88</a></div></div>
+<div class="ttc" id="a00031_html_a1a1117671c7fa2e572a9484463bee3a5"><div class="ttname"><a href="a00031.html#a1a1117671c7fa2e572a9484463bee3a5">QUESO::BaseVectorRV::m_subCdf</a></div><div class="ttdeci">const BaseVectorCdf&lt; V, M &gt; * m_subCdf</div><div class="ttdef"><b>Definition:</b> <a href="a00394_source.html#l00117">VectorRV.h:117</a></div></div>
+<div class="ttc" id="a00031_html_ad99bc05293c0fd0a0accb3191fb7119e"><div class="ttname"><a href="a00031.html#ad99bc05293c0fd0a0accb3191fb7119e">QUESO::BaseVectorRV::m_realizer</a></div><div class="ttdeci">BaseVectorRealizer&lt; V, M &gt; * m_realizer</div><div class="ttdef"><b>Definition:</b> <a href="a00394_source.html#l00116">VectorRV.h:116</a></div></div>
+<div class="ttc" id="a00095_html"><div class="ttname"><a href="a00095.html">QUESO::InverseGammaVectorRealizer</a></div><div class="ttdoc">A class for handling sampling from an Inverse Gamma probability density distribution. </div><div class="ttdef"><b>Definition:</b> <a href="a00348_source.html#l00046">InverseGammaVectorRealizer.h:46</a></div></div>
+<div class="ttc" id="a00096_html_a88e2325c4b2030dce7211a11420269b3"><div class="ttname"><a href="a00096.html#a88e2325c4b2030dce7211a11420269b3">QUESO::InverseGammaVectorRV::~InverseGammaVectorRV</a></div><div class="ttdeci">virtual ~InverseGammaVectorRV()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00091">InverseGammaVectorRV.C:91</a></div></div>
+<div class="ttc" id="a00031_html_aa4dd2f036228eac1f945bacc7147a922"><div class="ttname"><a href="a00031.html#aa4dd2f036228eac1f945bacc7147a922">QUESO::BaseVectorRV::imageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; imageSet() const </div><div class="ttdoc">Image set of the vector RV; access to private attribute m_imageSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00472_source.html#l00079">VectorRV.C:79</a></div></div>
+<div class="ttc" id="a00040_html"><div class="ttname"><a href="a00040.html">QUESO::BoxSubset</a></div><div class="ttdoc">Class representing a subset of a vector space shaped like a hypercube. </div><div class="ttdef"><b>Definition:</b> <a href="a00182_source.html#l00041">BoxSubset.h:41</a></div></div>
+<div class="ttc" id="a00031_html"><div class="ttname"><a href="a00031.html">QUESO::BaseVectorRV</a></div><div class="ttdoc">A templated base class for handling vector RV. </div><div class="ttdef"><b>Definition:</b> <a href="a00394_source.html#l00051">VectorRV.h:51</a></div></div>
+<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00265_source.html#l00436">Environment.C:436</a></div></div>
+<div class="ttc" id="a00031_html_a5a95d0107f66cf9b0ed3ad18a3d738df"><div class="ttname"><a href="a00031.html#a5a95d0107f66cf9b0ed3ad18a3d738df">QUESO::BaseVectorRV::m_mdf</a></div><div class="ttdeci">const BaseVectorMdf&lt; V, M &gt; * m_mdf</div><div class="ttdef"><b>Definition:</b> <a href="a00394_source.html#l00119">VectorRV.h:119</a></div></div>
+<div class="ttc" id="a00096_html_a7c3326d0b39a69f1edd64219f286c7e7"><div class="ttname"><a href="a00096.html#a7c3326d0b39a69f1edd64219f286c7e7">QUESO::InverseGammaVectorRV::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the vector RV. </div><div class="ttdef"><b>Definition:</b> <a href="a00427_source.html#l00102">InverseGammaVectorRV.C:102</a></div></div>
+<div class="ttc" id="a00094_html"><div class="ttname"><a href="a00094.html">QUESO::InverseGammaJointPdf</a></div><div class="ttdoc">A class for handling Inverse Gamma joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00347_source.html#l00049">InverseGammaJointPdf.h:49</a></div></div>
+<div class="ttc" id="a00229_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00229.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00229_source.html#l00223">Defines.h:223</a></div></div>
+<div class="ttc" id="a00031_html_a030ce3bc9873a9eaf6d8bf452c096ab3"><div class="ttname"><a href="a00031.html#a030ce3bc9873a9eaf6d8bf452c096ab3">QUESO::BaseVectorRV::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00394_source.html#l00113">VectorRV.h:113</a></div></div>
+<div class="ttc" id="a00031_html_a0ca926bca6fbcc688be6fc7496449e8e"><div class="ttname"><a href="a00031.html#a0ca926bca6fbcc688be6fc7496449e8e">QUESO::BaseVectorRV::m_pdf</a></div><div class="ttdeci">BaseJointPdf&lt; V, M &gt; * m_pdf</div><div class="ttdef"><b>Definition:</b> <a href="a00394_source.html#l00115">VectorRV.h:115</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:12 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:45 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

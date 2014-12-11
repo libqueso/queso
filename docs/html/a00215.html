@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/core/inc/asserts.h File Reference</title>
+<title>queso-0.51.0: src/basic/src/ScalarSequence.C File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -43,318 +43,48 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_aebb8dcc11953d78e620bbef0b9e2183.html">core</a></li><li class="navelem"><a class="el" href="dir_1df83ded4604fcab59464c552d0ec4a5.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_38cd9eca440b760dc966f21b1f8d8f41.html">basic</a></li><li class="navelem"><a class="el" href="dir_01b3a7fd54359c18da5914c7eb8b812f.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">asserts.h File Reference</div>  </div>
+<div class="title">ScalarSequence.C File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="a00223_source.html">exceptions.h</a>&quot;</code><br/>
-<code>#include &quot;queso/config_queso.h&quot;</code><br/>
-<code>#include &lt;iostream&gt;</code><br/>
-<code>#include &lt;iomanip&gt;</code><br/>
+<div class="textblock"><code>#include &lt;queso/ScalarSequence.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for asserts.h:</div>
+Include dependency graph for ScalarSequence.C:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00498.png" border="0" usemap="#src_2core_2inc_2asserts_8h" alt=""/></div>
-<map name="src_2core_2inc_2asserts_8h" id="src_2core_2inc_2asserts_8h">
-<area shape="rect" id="node3" href="a00223.html" title="exceptions.h" alt="" coords="196,83,305,112"/></map>
+<div class="center"><img src="a00518.png" border="0" usemap="#src_2basic_2src_2_scalar_sequence_8_c" alt=""/></div>
+<map name="src_2basic_2src_2_scalar_sequence_8_c" id="src_2basic_2src_2_scalar_sequence_8_c">
+</map>
 </div>
 </div>
 <p><a href="a00215_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:af14af2cef1e39fcbd1c3bcfdbc6ffe28"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00215.html#af14af2cef1e39fcbd1c3bcfdbc6ffe28">queso_here</a>()&#160;&#160;&#160;do { std::cerr &lt;&lt; __FILE__ &lt;&lt; &quot;, line &quot; &lt;&lt; __LINE__ &lt;&lt; &quot;, compiled &quot; &lt;&lt; __DATE__ &lt;&lt; &quot; at &quot; &lt;&lt; __TIME__ &lt;&lt; std::endl; } while (0)</td></tr>
-<tr class="separator:af14af2cef1e39fcbd1c3bcfdbc6ffe28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95f9887ed9b637efb5b71f1df7d6bc4d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00215.html#a95f9887ed9b637efb5b71f1df7d6bc4d">queso_assert</a>(asserted)&#160;&#160;&#160;do { if (!(asserted)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #asserted &quot;' failed.&quot; &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td></tr>
-<tr class="separator:a95f9887ed9b637efb5b71f1df7d6bc4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67de25b43faabd8d10a0827676e54a49"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00215.html#a67de25b43faabd8d10a0827676e54a49">queso_assert_equal_to</a>(expr1, expr2)&#160;&#160;&#160;do { if (!(expr1 == expr2)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #expr1 &quot; == &quot; #expr2 &quot;' failed.\n&quot; #expr1 &quot; = &quot; &lt;&lt; (expr1) &lt;&lt; &quot;\n&quot; #expr2 &quot; = &quot; &lt;&lt; (expr2) &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td></tr>
-<tr class="separator:a67de25b43faabd8d10a0827676e54a49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a256964c76b421e5187a0aa36e5907cb7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00215.html#a256964c76b421e5187a0aa36e5907cb7">queso_assert_not_equal_to</a>(expr1, expr2)&#160;&#160;&#160;do { if (!(expr1 != expr2)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #expr1 &quot; != &quot; #expr2 &quot;' failed.\n&quot; #expr1 &quot; = &quot; &lt;&lt; (expr1) &lt;&lt; &quot;\n&quot; #expr2 &quot; = &quot; &lt;&lt; (expr2) &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td></tr>
-<tr class="separator:a256964c76b421e5187a0aa36e5907cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02c59e9150c230713f39314a442e2768"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00215.html#a02c59e9150c230713f39314a442e2768">queso_assert_less</a>(expr1, expr2)&#160;&#160;&#160;do { if (!(expr1 &lt; expr2)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #expr1 &quot; &lt; &quot; #expr2 &quot;' failed.\n&quot; #expr1 &quot; = &quot; &lt;&lt; (expr1) &lt;&lt; &quot;\n&quot; #expr2 &quot; = &quot; &lt;&lt; (expr2) &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td></tr>
-<tr class="separator:a02c59e9150c230713f39314a442e2768"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85bd9423ebc33944bdef21ebaef62ea2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00215.html#a85bd9423ebc33944bdef21ebaef62ea2">queso_assert_greater</a>(expr1, expr2)&#160;&#160;&#160;do { if (!(expr1 &gt; expr2)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #expr1 &quot; &gt; &quot; #expr2 &quot;' failed.\n&quot; #expr1 &quot; = &quot; &lt;&lt; (expr1) &lt;&lt; &quot;\n&quot; #expr2 &quot; = &quot; &lt;&lt; (expr2) &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td></tr>
-<tr class="separator:a85bd9423ebc33944bdef21ebaef62ea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73fd5305f6bc49b50fa21d9d9742a157"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00215.html#a73fd5305f6bc49b50fa21d9d9742a157">queso_assert_less_equal</a>(expr1, expr2)&#160;&#160;&#160;do { if (!(expr1 &lt;= expr2)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #expr1 &quot; &lt;= &quot; #expr2 &quot;' failed.\n&quot; #expr1 &quot; = &quot; &lt;&lt; (expr1) &lt;&lt; &quot;\n&quot; #expr2 &quot; = &quot; &lt;&lt; (expr2) &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td></tr>
-<tr class="separator:a73fd5305f6bc49b50fa21d9d9742a157"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71e713c1171a8e48e343937f4e877e93"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00215.html#a71e713c1171a8e48e343937f4e877e93">queso_assert_greater_equal</a>(expr1, expr2)&#160;&#160;&#160;do { if (!(expr1 &gt;= expr2)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #expr1 &quot; &gt;= &quot; #expr2 &quot;' failed.\n&quot; #expr1 &quot; = &quot; &lt;&lt; (expr1) &lt;&lt; &quot;\n&quot; #expr2 &quot; = &quot; &lt;&lt; (expr2) &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td></tr>
-<tr class="separator:a71e713c1171a8e48e343937f4e877e93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0af4fa8de607265fa3e7413ba0475a18"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>()&#160;&#160;&#160;do { <a class="el" href="a00215.html#af14af2cef1e39fcbd1c3bcfdbc6ffe28">queso_here</a>(); <a class="el" href="a00223.html#afab7833816d1d2328ca5f890ccfc4cae">QUESO_THROW</a>(<a class="el" href="a00098.html">QUESO::LogicError</a>()); } while(0)</td></tr>
-<tr class="separator:a0af4fa8de607265fa3e7413ba0475a18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cd5266c96c8870c5d1c1e13073afb87"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00215.html#a7cd5266c96c8870c5d1c1e13073afb87">queso_not_implemented</a>()&#160;&#160;&#160;do { <a class="el" href="a00215.html#af14af2cef1e39fcbd1c3bcfdbc6ffe28">queso_here</a>(); <a class="el" href="a00223.html#afab7833816d1d2328ca5f890ccfc4cae">QUESO_THROW</a>(<a class="el" href="a00117.html">QUESO::NotImplemented</a>()); } while(0)</td></tr>
-<tr class="separator:a7cd5266c96c8870c5d1c1e13073afb87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef4406c0569a56b24d3b09fc13034fd8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00215.html#aef4406c0569a56b24d3b09fc13034fd8">queso_file_error</a>(filename)&#160;&#160;&#160;do { <a class="el" href="a00215.html#af14af2cef1e39fcbd1c3bcfdbc6ffe28">queso_here</a>(); <a class="el" href="a00223.html#afab7833816d1d2328ca5f890ccfc4cae">QUESO_THROW</a>(<a class="el" href="a00056.html">QUESO::FileError</a>(filename)); } while(0)</td></tr>
-<tr class="separator:aef4406c0569a56b24d3b09fc13034fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:a00480"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html">QUESO</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:af865210b84a63c53796aff42989c4af7"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:af865210b84a63c53796aff42989c4af7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00480.html#af865210b84a63c53796aff42989c4af7">QUESO::ComputeSubGaussian2dKde</a> (const ScalarSequence&lt; T &gt; &amp;scalarSeq1, const ScalarSequence&lt; T &gt; &amp;scalarSeq2, unsigned int initialPos, double scaleValue1, double scaleValue2, const std::vector&lt; T &gt; &amp;evaluationPositions1, const std::vector&lt; T &gt; &amp;evaluationPositions2, std::vector&lt; double &gt; &amp;densityValues)</td></tr>
+<tr class="separator:af865210b84a63c53796aff42989c4af7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7a1e5f83b5acc46b51bc87eb3dc9b28"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:af7a1e5f83b5acc46b51bc87eb3dc9b28"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00480.html#af7a1e5f83b5acc46b51bc87eb3dc9b28">QUESO::ComputeUnifiedGaussian2dKde</a> (bool useOnlyInter0Comm, const ScalarSequence&lt; T &gt; &amp;scalarSeq1, const ScalarSequence&lt; T &gt; &amp;scalarSeq2, unsigned int initialPos, double unifiedScaleValue1, double unifiedScaleValue2, const std::vector&lt; T &gt; &amp;unifiedEvaluationPositions1, const std::vector&lt; T &gt; &amp;unifiedEvaluationPositions2, std::vector&lt; double &gt; &amp;unifiedDensityValues)</td></tr>
+<tr class="separator:af7a1e5f83b5acc46b51bc87eb3dc9b28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add6823a7271447445f532bf5ce73e9b8"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:add6823a7271447445f532bf5ce73e9b8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00480.html#add6823a7271447445f532bf5ce73e9b8">QUESO::ComputeCovCorrBetweenScalarSequences</a> (const ScalarSequence&lt; T &gt; &amp;subPSeq, const ScalarSequence&lt; T &gt; &amp;subQSeq, unsigned int subNumSamples, T &amp;covValue, T &amp;corrValue)</td></tr>
+<tr class="separator:add6823a7271447445f532bf5ce73e9b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="a95f9887ed9b637efb5b71f1df7d6bc4d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define queso_assert</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">asserted</td><td>)</td>
-          <td>&#160;&#160;&#160;do { if (!(asserted)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #asserted &quot;' failed.&quot; &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00215_source.html#l00059">59</a> of file <a class="el" href="a00215_source.html">asserts.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a67de25b43faabd8d10a0827676e54a49"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define queso_assert_equal_to</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">expr1, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">expr2&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;do { if (!(expr1 == expr2)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #expr1 &quot; == &quot; #expr2 &quot;' failed.\n&quot; #expr1 &quot; = &quot; &lt;&lt; (expr1) &lt;&lt; &quot;\n&quot; #expr2 &quot; = &quot; &lt;&lt; (expr2) &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00215_source.html#l00075">75</a> of file <a class="el" href="a00215_source.html">asserts.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a85bd9423ebc33944bdef21ebaef62ea2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define queso_assert_greater</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">expr1, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">expr2&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;do { if (!(expr1 &gt; expr2)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #expr1 &quot; &gt; &quot; #expr2 &quot;' failed.\n&quot; #expr1 &quot; = &quot; &lt;&lt; (expr1) &lt;&lt; &quot;\n&quot; #expr2 &quot; = &quot; &lt;&lt; (expr2) &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00215_source.html#l00078">78</a> of file <a class="el" href="a00215_source.html">asserts.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a71e713c1171a8e48e343937f4e877e93"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define queso_assert_greater_equal</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">expr1, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">expr2&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;do { if (!(expr1 &gt;= expr2)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #expr1 &quot; &gt;= &quot; #expr2 &quot;' failed.\n&quot; #expr1 &quot; = &quot; &lt;&lt; (expr1) &lt;&lt; &quot;\n&quot; #expr2 &quot; = &quot; &lt;&lt; (expr2) &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00215_source.html#l00080">80</a> of file <a class="el" href="a00215_source.html">asserts.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a02c59e9150c230713f39314a442e2768"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define queso_assert_less</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">expr1, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">expr2&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;do { if (!(expr1 &lt; expr2)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #expr1 &quot; &lt; &quot; #expr2 &quot;' failed.\n&quot; #expr1 &quot; = &quot; &lt;&lt; (expr1) &lt;&lt; &quot;\n&quot; #expr2 &quot; = &quot; &lt;&lt; (expr2) &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00215_source.html#l00077">77</a> of file <a class="el" href="a00215_source.html">asserts.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a73fd5305f6bc49b50fa21d9d9742a157"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define queso_assert_less_equal</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">expr1, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">expr2&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;do { if (!(expr1 &lt;= expr2)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #expr1 &quot; &lt;= &quot; #expr2 &quot;' failed.\n&quot; #expr1 &quot; = &quot; &lt;&lt; (expr1) &lt;&lt; &quot;\n&quot; #expr2 &quot; = &quot; &lt;&lt; (expr2) &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00215_source.html#l00079">79</a> of file <a class="el" href="a00215_source.html">asserts.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a256964c76b421e5187a0aa36e5907cb7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define queso_assert_not_equal_to</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">expr1, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">expr2&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;do { if (!(expr1 != expr2)) { std::cerr &lt;&lt; &quot;Assertion `&quot; #expr1 &quot; != &quot; #expr2 &quot;' failed.\n&quot; #expr1 &quot; = &quot; &lt;&lt; (expr1) &lt;&lt; &quot;\n&quot; #expr2 &quot; = &quot; &lt;&lt; (expr2) &lt;&lt; std::endl; <a class="el" href="a00215.html#a0af4fa8de607265fa3e7413ba0475a18">queso_error</a>(); } } while(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00215_source.html#l00076">76</a> of file <a class="el" href="a00215_source.html">asserts.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a0af4fa8de607265fa3e7413ba0475a18"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define queso_error</td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td>&#160;&#160;&#160;do { <a class="el" href="a00215.html#af14af2cef1e39fcbd1c3bcfdbc6ffe28">queso_here</a>(); <a class="el" href="a00223.html#afab7833816d1d2328ca5f890ccfc4cae">QUESO_THROW</a>(<a class="el" href="a00098.html">QUESO::LogicError</a>()); } while(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00215_source.html#l00087">87</a> of file <a class="el" href="a00215_source.html">asserts.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00252_source.html#l01513">QUESO::FullEnvironment::readOptionsInputFile()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aef4406c0569a56b24d3b09fc13034fd8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define queso_file_error</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">filename</td><td>)</td>
-          <td>&#160;&#160;&#160;do { <a class="el" href="a00215.html#af14af2cef1e39fcbd1c3bcfdbc6ffe28">queso_here</a>(); <a class="el" href="a00223.html#afab7833816d1d2328ca5f890ccfc4cae">QUESO_THROW</a>(<a class="el" href="a00056.html">QUESO::FileError</a>(filename)); } while(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00215_source.html#l00089">89</a> of file <a class="el" href="a00215_source.html">asserts.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af14af2cef1e39fcbd1c3bcfdbc6ffe28"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define queso_here</td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td>&#160;&#160;&#160;do { std::cerr &lt;&lt; __FILE__ &lt;&lt; &quot;, line &quot; &lt;&lt; __LINE__ &lt;&lt; &quot;, compiled &quot; &lt;&lt; __DATE__ &lt;&lt; &quot; at &quot; &lt;&lt; __TIME__ &lt;&lt; std::endl; } while (0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00215_source.html#l00042">42</a> of file <a class="el" href="a00215_source.html">asserts.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7cd5266c96c8870c5d1c1e13073afb87"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define queso_not_implemented</td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td>&#160;&#160;&#160;do { <a class="el" href="a00215.html#af14af2cef1e39fcbd1c3bcfdbc6ffe28">queso_here</a>(); <a class="el" href="a00223.html#afab7833816d1d2328ca5f890ccfc4cae">QUESO_THROW</a>(<a class="el" href="a00117.html">QUESO::NotImplemented</a>()); } while(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00215_source.html#l00088">88</a> of file <a class="el" href="a00215_source.html">asserts.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00251_source.html#l00170">QUESO::DistArray&lt; T &gt;::copy()</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:12 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:45 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

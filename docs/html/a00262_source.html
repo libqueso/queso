@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/core/src/InfiniteDimensionalMeasureBase.C Source File</title>
+<title>queso-0.51.0: src/core/src/BasicPdfsGsl.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">InfiniteDimensionalMeasureBase.C</div>  </div>
+<div class="title">BasicPdfsGsl.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00262.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,25 +75,70 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/InfiniteDimensionalMeasureBase.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="a00090.html#a663782b71522112a0584b27205ac262f">   29</a></span>&#160;<a class="code" href="a00090.html#a663782b71522112a0584b27205ac262f">InfiniteDimensionalMeasureBase::InfiniteDimensionalMeasureBase</a>()</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00090.html#ac979695e339a86943ddda77d72a4a9e6">   34</a></span>&#160;<a class="code" href="a00090.html#ac979695e339a86943ddda77d72a4a9e6">InfiniteDimensionalMeasureBase::~InfiniteDimensionalMeasureBase</a>()</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="ttc" id="a00090_html_a663782b71522112a0584b27205ac262f"><div class="ttname"><a href="a00090.html#a663782b71522112a0584b27205ac262f">QUESO::InfiniteDimensionalMeasureBase::InfiniteDimensionalMeasureBase</a></div><div class="ttdeci">InfiniteDimensionalMeasureBase()</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00262_source.html#l00029">InfiniteDimensionalMeasureBase.C:29</a></div></div>
-<div class="ttc" id="a00090_html_ac979695e339a86943ddda77d72a4a9e6"><div class="ttname"><a href="a00090.html#ac979695e339a86943ddda77d72a4a9e6">QUESO::InfiniteDimensionalMeasureBase::~InfiniteDimensionalMeasureBase</a></div><div class="ttdeci">virtual ~InfiniteDimensionalMeasureBase()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00262_source.html#l00034">InfiniteDimensionalMeasureBase.C:34</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/BasicPdfsGsl.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;gsl/gsl_randist.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;mpi.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;math.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// Default constructor ------------------------------</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00035.html#a3df72eb1474638a1bb364524ff397c4d">   33</a></span>&#160;<a class="code" href="a00035.html#a3df72eb1474638a1bb364524ff397c4d">BasicPdfsGsl::BasicPdfsGsl</a>()</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  :</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <a class="code" href="a00033.html">BasicPdfsBase</a>()</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="a00229.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<span class="keyword">true</span>,</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                      <a class="code" href="a00033.html#a67e06f7bb30579581db1a7b9b3507d1c">m_worldRank</a>,</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                      <span class="stringliteral">&quot;BasicPdfsGsl::constructor(), default&quot;</span>,</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                      <span class="stringliteral">&quot;should not be used by user&quot;</span>);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00035.html#acfb4ea894ec318fe99c6afa5fe86b8fe">   44</a></span>&#160;<a class="code" href="a00035.html#a3df72eb1474638a1bb364524ff397c4d">BasicPdfsGsl::BasicPdfsGsl</a>(<span class="keywordtype">int</span> worldRank)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  :</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="a00033.html">BasicPdfsBase</a>(worldRank)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// Destructor ---------------------------------------</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00035.html#a477e6898a9ed8204f5d9d36dc0b6bf3a">   51</a></span>&#160;<a class="code" href="a00035.html#a477e6898a9ed8204f5d9d36dc0b6bf3a">BasicPdfsGsl::~BasicPdfsGsl</a>()</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00035.html#aaae1aaf761e7129c7f158a06e3ecdfc1">   57</a></span>&#160;<a class="code" href="a00035.html#aaae1aaf761e7129c7f158a06e3ecdfc1">BasicPdfsGsl::betaPdfActualValue</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> alpha, <span class="keywordtype">double</span> beta)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordtype">double</span> result = gsl_ran_beta_pdf(x,alpha,beta);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">if</span> (isinf(result)) { <span class="comment">// CSRI - 2013-aug-06, with Laura</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;In BasicPdfsGsl::betaPdfActualValue(): hitting inf&quot;</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;, x = &quot;</span>     &lt;&lt; x</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;, alpha = &quot;</span> &lt;&lt; alpha</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;, beta = &quot;</span>  &lt;&lt; beta</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;              &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="comment">//result = gsl_ran_beta_pdf(x,alpha,beta);</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    result = 0.;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">return</span> result; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">// --------------------------------------------------</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="a00035.html#a6bb250677b5c8c94bd3f690a58efaade">   74</a></span>&#160;<a class="code" href="a00035.html#a6bb250677b5c8c94bd3f690a58efaade">BasicPdfsGsl::gammaPdfActualValue</a>(<span class="keywordtype">double</span> x, <span class="keywordtype">double</span> a, <span class="keywordtype">double</span> b)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">return</span> gsl_ran_gamma_pdf(x,a,b);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00033_html_a67e06f7bb30579581db1a7b9b3507d1c"><div class="ttname"><a href="a00033.html#a67e06f7bb30579581db1a7b9b3507d1c">QUESO::BasicPdfsBase::m_worldRank</a></div><div class="ttdeci">int m_worldRank</div><div class="ttdef"><b>Definition:</b> <a href="a00226_source.html#l00068">BasicPdfsBase.h:68</a></div></div>
+<div class="ttc" id="a00035_html_a477e6898a9ed8204f5d9d36dc0b6bf3a"><div class="ttname"><a href="a00035.html#a477e6898a9ed8204f5d9d36dc0b6bf3a">QUESO::BasicPdfsGsl::~BasicPdfsGsl</a></div><div class="ttdeci">~BasicPdfsGsl()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00262_source.html#l00051">BasicPdfsGsl.C:51</a></div></div>
+<div class="ttc" id="a00035_html_aaae1aaf761e7129c7f158a06e3ecdfc1"><div class="ttname"><a href="a00035.html#aaae1aaf761e7129c7f158a06e3ecdfc1">QUESO::BasicPdfsGsl::betaPdfActualValue</a></div><div class="ttdeci">double betaPdfActualValue(double x, double alpha, double beta) const </div><div class="ttdoc">TODO: Actual value of the Beta PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00262_source.html#l00057">BasicPdfsGsl.C:57</a></div></div>
+<div class="ttc" id="a00035_html_a6bb250677b5c8c94bd3f690a58efaade"><div class="ttname"><a href="a00035.html#a6bb250677b5c8c94bd3f690a58efaade">QUESO::BasicPdfsGsl::gammaPdfActualValue</a></div><div class="ttdeci">double gammaPdfActualValue(double x, double a, double b) const </div><div class="ttdoc">TODO: Actual value of the Gamma PDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00262_source.html#l00074">BasicPdfsGsl.C:74</a></div></div>
+<div class="ttc" id="a00035_html_a3df72eb1474638a1bb364524ff397c4d"><div class="ttname"><a href="a00035.html#a3df72eb1474638a1bb364524ff397c4d">QUESO::BasicPdfsGsl::BasicPdfsGsl</a></div><div class="ttdeci">BasicPdfsGsl()</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00262_source.html#l00033">BasicPdfsGsl.C:33</a></div></div>
+<div class="ttc" id="a00033_html"><div class="ttname"><a href="a00033.html">QUESO::BasicPdfsBase</a></div><div class="ttdoc">TODO: Base class for basic PDFs (via either GSL or Boost). </div><div class="ttdef"><b>Definition:</b> <a href="a00226_source.html#l00044">BasicPdfsBase.h:44</a></div></div>
+<div class="ttc" id="a00229_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00229.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00229_source.html#l00223">Defines.h:223</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:12 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:44 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

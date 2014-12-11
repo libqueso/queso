@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/basic/inc/VectorSet.h Source File</title>
+<title>queso-0.51.0: src/basic/inc/InstantiateIntersection.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">VectorSet.h</div>  </div>
+<div class="title">InstantiateIntersection.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00189.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,77 +75,26 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_VECTOR_SET_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_VECTOR_SET_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_INSTANTIATE_INTERSECTION_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_INSTANTIATE_INTERSECTION_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/Defines.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00159.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00159.html">VectorSpace</a>;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="a00158.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00158.html">VectorSet</a></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="a00158.html#ab337553a180d670cc7a5b170387d2b4e">VectorSet</a>();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="a00158.html#ab337553a180d670cc7a5b170387d2b4e">VectorSet</a>(<span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; <a class="code" href="a00158.html#aa0ed80853d166754ba6ed83e63e737aa">env</a>, <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="a00158.html#aedcd4b0f502af4c6e6df863c13cddfec">prefix</a>, <span class="keywordtype">double</span> <a class="code" href="a00158.html#a3266f16e2672f5f3c929f22df085e545">volume</a>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00158.html#aa8887f7545631fbbb6165a503f690884">~VectorSet</a>();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp;  <a class="code" href="a00158.html#aa0ed80853d166754ba6ed83e63e737aa">env</a>        ()                 <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keyword">const</span> std::string&amp;             <a class="code" href="a00158.html#aedcd4b0f502af4c6e6df863c13cddfec">prefix</a>     ()                 <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">double</span>                   <a class="code" href="a00158.html#a3266f16e2672f5f3c929f22df085e545">volume</a>     ()                 <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="a00159.html">VectorSpace&lt;V,M&gt;</a>&amp; <a class="code" href="a00158.html#a923421590baf5bf93cf066e528f927dc">vectorSpace</a>()                 <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keyword">virtual</span>       <span class="keywordtype">bool</span>                     <a class="code" href="a00158.html#ab59fe6ca67647f58920681e05165a9d0">contains</a>   (<span class="keyword">const</span> V&amp; vec)     <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">virtual</span>       <span class="keywordtype">void</span>                     <a class="code" href="a00158.html#a913fb68533da1e2243882bd63fd2c211">print</a>      (std::ostream&amp; os) <span class="keyword">const</span>; </div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="a00158.html#a3d864293f52b81804f146952a4f3676b">   91</a></span>&#160;  <span class="keyword">friend</span> std::ostream &amp; <a class="code" href="a00158.html#a3d864293f52b81804f146952a4f3676b">operator&lt;&lt;</a>(std::ostream &amp; os,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      <span class="keyword">const</span> <a class="code" href="a00158.html">VectorSet&lt;V, M&gt;</a> &amp; obj) {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    obj.<a class="code" href="a00158.html#a913fb68533da1e2243882bd63fd2c211">print</a>(os);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">return</span> os;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="a00158.html#a77f3b57109bc1d89b4111f47458df770">   99</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; <a class="code" href="a00158.html#a77f3b57109bc1d89b4111f47458df770">m_env</a>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="a00158.html#a472995c02b59c8f3cd77230b39535cca">  100</a></span>&#160;        std::string             <a class="code" href="a00158.html#a472995c02b59c8f3cd77230b39535cca">m_prefix</a>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="a00158.html#acd5cdcdbcbbce29daec684437f511e9f">  101</a></span>&#160;        <span class="keywordtype">double</span>                  <a class="code" href="a00158.html#acd5cdcdbcbbce29daec684437f511e9f">m_volume</a>;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#endif // UQ_VECTOR_SET_H</span></div>
-<div class="ttc" id="a00158_html_ab337553a180d670cc7a5b170387d2b4e"><div class="ttname"><a href="a00158.html#ab337553a180d670cc7a5b170387d2b4e">QUESO::VectorSet::VectorSet</a></div><div class="ttdeci">VectorSet()</div><div class="ttdoc">Default Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00212_source.html#l00037">VectorSet.C:37</a></div></div>
-<div class="ttc" id="a00158_html_aa0ed80853d166754ba6ed83e63e737aa"><div class="ttname"><a href="a00158.html#aa0ed80853d166754ba6ed83e63e737aa">QUESO::VectorSet::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdoc">Environment. Access to private attribute m_env. </div><div class="ttdef"><b>Definition:</b> <a href="a00212_source.html#l00082">VectorSet.C:82</a></div></div>
-<div class="ttc" id="a00158_html_aa8887f7545631fbbb6165a503f690884"><div class="ttname"><a href="a00158.html#aa8887f7545631fbbb6165a503f690884">QUESO::VectorSet::~VectorSet</a></div><div class="ttdeci">virtual ~VectorSet()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00212_source.html#l00067">VectorSet.C:67</a></div></div>
-<div class="ttc" id="a00159_html"><div class="ttname"><a href="a00159.html">QUESO::VectorSpace</a></div><div class="ttdoc">A class representing a vector space. </div><div class="ttdef"><b>Definition:</b> <a href="a00189_source.html#l00046">VectorSet.h:46</a></div></div>
-<div class="ttc" id="a00158_html_a3266f16e2672f5f3c929f22df085e545"><div class="ttname"><a href="a00158.html#a3266f16e2672f5f3c929f22df085e545">QUESO::VectorSet::volume</a></div><div class="ttdeci">double volume() const </div><div class="ttdoc">Set volume; access to private attribute m_volume. </div><div class="ttdef"><b>Definition:</b> <a href="a00212_source.html#l00095">VectorSet.C:95</a></div></div>
-<div class="ttc" id="a00158_html_a923421590baf5bf93cf066e528f927dc"><div class="ttname"><a href="a00158.html#a923421590baf5bf93cf066e528f927dc">QUESO::VectorSet::vectorSpace</a></div><div class="ttdeci">virtual const VectorSpace&lt; V, M &gt; &amp; vectorSpace() const =0</div><div class="ttdoc">Vector space to which this set belongs to. See template specialization. </div></div>
-<div class="ttc" id="a00158_html_a472995c02b59c8f3cd77230b39535cca"><div class="ttname"><a href="a00158.html#a472995c02b59c8f3cd77230b39535cca">QUESO::VectorSet::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00189_source.html#l00100">VectorSet.h:100</a></div></div>
-<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00221_source.html#l00187">Environment.h:187</a></div></div>
-<div class="ttc" id="a00158_html_aedcd4b0f502af4c6e6df863c13cddfec"><div class="ttname"><a href="a00158.html#aedcd4b0f502af4c6e6df863c13cddfec">QUESO::VectorSet::prefix</a></div><div class="ttdeci">const std::string &amp; prefix() const </div><div class="ttdoc">Access to private attribute m_prefix. </div><div class="ttdef"><b>Definition:</b> <a href="a00212_source.html#l00088">VectorSet.C:88</a></div></div>
-<div class="ttc" id="a00158_html"><div class="ttname"><a href="a00158.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00189_source.html#l00049">VectorSet.h:49</a></div></div>
-<div class="ttc" id="a00158_html_ab59fe6ca67647f58920681e05165a9d0"><div class="ttname"><a href="a00158.html#ab59fe6ca67647f58920681e05165a9d0">QUESO::VectorSet::contains</a></div><div class="ttdeci">virtual bool contains(const V &amp;vec) const =0</div><div class="ttdoc">Checks whether a set contains vector vec. See template specialization. </div></div>
-<div class="ttc" id="a00158_html_a913fb68533da1e2243882bd63fd2c211"><div class="ttname"><a href="a00158.html#a913fb68533da1e2243882bd63fd2c211">QUESO::VectorSet::print</a></div><div class="ttdeci">virtual void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints nothing. </div><div class="ttdef"><b>Definition:</b> <a href="a00212_source.html#l00102">VectorSet.C:102</a></div></div>
-<div class="ttc" id="a00158_html_a3d864293f52b81804f146952a4f3676b"><div class="ttname"><a href="a00158.html#a3d864293f52b81804f146952a4f3676b">QUESO::VectorSet::operator&lt;&lt;</a></div><div class="ttdeci">friend std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const VectorSet&lt; V, M &gt; &amp;obj)</div><div class="ttdef"><b>Definition:</b> <a href="a00189_source.html#l00091">VectorSet.h:91</a></div></div>
-<div class="ttc" id="a00158_html_acd5cdcdbcbbce29daec684437f511e9f"><div class="ttname"><a href="a00158.html#acd5cdcdbcbbce29daec684437f511e9f">QUESO::VectorSet::m_volume</a></div><div class="ttdeci">double m_volume</div><div class="ttdef"><b>Definition:</b> <a href="a00189_source.html#l00101">VectorSet.h:101</a></div></div>
-<div class="ttc" id="a00158_html_a77f3b57109bc1d89b4111f47458df770"><div class="ttname"><a href="a00158.html#a77f3b57109bc1d89b4111f47458df770">QUESO::VectorSet::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00189_source.html#l00099">VectorSet.h:99</a></div></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSet.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;VectorSet&lt;V,M&gt;* <a class="code" href="a00480.html#aa79046437ab085c5487ae16e9a0baeec">InstantiateIntersection</a>(<span class="keyword">const</span> VectorSet&lt;V,M&gt;&amp; domain1,</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">const</span> VectorSet&lt;V,M&gt;&amp; domain2);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif // UQ_INSTANTIATE_INTERSECTION_H</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor"></span></div>
+<div class="ttc" id="a00480_html_aa79046437ab085c5487ae16e9a0baeec"><div class="ttname"><a href="a00480.html#aa79046437ab085c5487ae16e9a0baeec">QUESO::InstantiateIntersection</a></div><div class="ttdeci">VectorSet&lt; V, M &gt; * InstantiateIntersection(const VectorSet&lt; V, M &gt; &amp;domain1, const VectorSet&lt; V, M &gt; &amp;domain2)</div><div class="ttdoc">This method calculates the intersection of domain1 and domain2. </div><div class="ttdef"><b>Definition:</b> <a href="a00211_source.html#l00037">InstantiateIntersection.C:37</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:11 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:44 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

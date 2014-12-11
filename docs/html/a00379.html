@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/stats/src/ConcatenatedJointPdf.C File Reference</title>
+<title>queso-0.51.0: src/stats/inc/StatisticalForwardProblem.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -43,37 +43,54 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_85aa4481915a0d58eac2c78710df0bea.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3de45fbf08d2e79aacff2f4de113ab26.html">stats</a></li><li class="navelem"><a class="el" href="dir_d98b071537eea78ae0761911e9f6b515.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">ConcatenatedJointPdf.C File Reference</div>  </div>
+<div class="title">StatisticalForwardProblem.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;queso/ConcatenatedJointPdf.h&gt;</code><br/>
-<code>#include &lt;queso/GslVector.h&gt;</code><br/>
-<code>#include &lt;queso/GslMatrix.h&gt;</code><br/>
+
+<p>Class to solve a Statistical Forward Problem.  
+<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &lt;queso/StatisticalForwardProblemOptions.h&gt;</code><br/>
+<code>#include &lt;queso/VectorFunction.h&gt;</code><br/>
+<code>#include &lt;queso/MonteCarloSG.h&gt;</code><br/>
+<code>#include &lt;queso/VectorRV.h&gt;</code><br/>
+<code>#include &lt;queso/GenericVectorRV.h&gt;</code><br/>
+<code>#include &lt;queso/SequenceOfVectors.h&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for ConcatenatedJointPdf.C:</div>
+Include dependency graph for StatisticalForwardProblem.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="a00659.png" border="0" usemap="#src_2stats_2src_2_concatenated_joint_pdf_8_c" alt=""/></div>
-<map name="src_2stats_2src_2_concatenated_joint_pdf_8_c" id="src_2stats_2src_2_concatenated_joint_pdf_8_c">
+<div class="center"><img src="a00678.png" border="0" usemap="#src_2stats_2inc_2_statistical_forward_problem_8h" alt=""/></div>
+<map name="src_2stats_2inc_2_statistical_forward_problem_8h" id="src_2stats_2inc_2_statistical_forward_problem_8h">
 </map>
 </div>
 </div>
 <p><a href="a00379_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00149.html">QUESO::StatisticalForwardProblem&lt; P_V, P_M, Q_V, Q_M &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This templated class represents a Statistical Forward Problem.  <a href="a00149.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00450"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00450.html">QUESO</a></td></tr>
+<tr class="memitem:a00480"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00480.html">QUESO</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class to solve a Statistical Forward Problem. </p>
+
+<p>Definition in file <a class="el" href="a00379_source.html">StatisticalForwardProblem.h</a>.</p>
+</div></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:13 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:45 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

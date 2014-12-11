@@ -123,37 +123,42 @@
 \form#122:\[ f(x| \mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}} e^{ -\frac{(x-\mu)^2}{2\sigma^2} }. \]
 \form#123:$ \sigma $
 \form#124:\[ y=f(x| a,b)= \frac{b^a}{\Gamma(a)} x^{-a - 1}\exp\left(-\frac{b}{x}\right)\]
-\form#125:\[ lnValue =- \sum_i \frac{1}{domainVector_i * \sqrt{2 \pi * lawVarVector_i}} exp(-\frac{(\ln( domainVector_i) - lawExpVector_i)^2}{2 lawVarVector_i}) \]
-\form#126:$ domainVector_i > 0 $
-\form#127:\[ f(x|\mu,\sigma) = \frac{1}{x \sigma \sqrt{2 \pi}}\, e^{-\frac{(\ln x - \mu)^2}{2\sigma^2}}, x>0 \]
-\form#128:$ ln( \pi(D|M) ) = E[ln( \pi(D|\theta,M) )] - E[ln( \pi(\theta|D,M) / \pi(\theta|M) )] $
-\form#129:\[ \pi (\theta|D, M_j) = \frac{f(D|\theta, M_j) \cdot \pi (\theta | M_j)}{\pi(D, M_j)} \]
-\form#130:$ \pi (\theta|D, M_j) $
-\form#131:$ \pi (\theta | M_j) $
-\form#132:$ f(D|\theta, M_j)$
-\form#133:$ \pi(D, M_j) $
-\form#134:$ \theta $
-\form#135:$ D $
-\form#136:$ M_j $
-\form#137:\[ EIG = log \left(\frac{ \pi (\theta|D, M_j)}{\pi (\theta | M_j) } \right) = log \left(\frac{f(D|\theta, M_j) }{\pi(D, M_j)} \right) = log \left(\frac{f(D|\theta, M_j) }{\pi(D, M_j)} \right) = log \left(f(D|\theta, M_j)\right) - log\left(f(D|\theta, M_j) \right) \]
-\form#138:$ f: B \subset R \rightarrow C \subset R $
-\form#139:$ C = [0,1]$
-\form#140:$ X $
-\form#141:$ Y $
-\form#142:$ cov (X,Y) = <(X-\mu_X)(Y-\mu_Y)> = < X Y > - \mu_X \mu_Y $
-\form#143:$ \mu_X $
-\form#144:$ \mu_Y $
-\form#145:\[ cov (X,Y) = \sum_{i=1}^{N} \frac{(x_i - \bar{x})(y_i - \bar{y})}{N}\]
-\form#146:$ 1/scales^2 $
-\form#147:$ q() $
-\form#148:$ x $
-\form#149:$ q(x) $
-\form#150:$ \pi()$
-\form#151:$ \pi(x) $
-\form#152:$ \ln[\pi(x)] $
-\form#153:$ x \in R^n $
-\form#154:$ A \in B $
-\form#155:$ P(x,R^n)=1 $
-\form#156:$ P(x, {x}) $
-\form#157:$ X_1, X_2, ..., X_n $
-\form#158:$ X_i $
+\form#125:\[ p(x) = \frac{1}{2 \sigma^2 \pi} \exp \left( - \frac12 (\mbox{logit} x - \mu)^2 \right) \mbox{logit}'(x), \quad x \in [a, b], \]
+\form#126:\[ \mbox{logit}(x) = \log \left( \frac{x - a}{b - x} \right), \quad x \in [a, b]. \]
+\form#127:\[ lnValue =- \sum_i \frac{1}{\sqrt{|covMatrix|} \sqrt{2 \pi}} exp(-\frac{(domainVector_i - lawExpVector_i) * covMatrix^{-1} * (domainVector_i - lawExpVector_i) }{2} + \log \mbox{logit}'(domainVector_i), \]
+\form#128:$ f(X) $
+\form#129:$ X $
+\form#130:\[ f(x) = \frac{b \exp(x) + a}{1 + \exp(x)}. \]
+\form#131:\[ lnValue =- \sum_i \frac{1}{domainVector_i * \sqrt{2 \pi * lawVarVector_i}} exp(-\frac{(\ln( domainVector_i) - lawExpVector_i)^2}{2 lawVarVector_i}) \]
+\form#132:$ domainVector_i > 0 $
+\form#133:\[ f(x|\mu,\sigma) = \frac{1}{x \sigma \sqrt{2 \pi}}\, e^{-\frac{(\ln x - \mu)^2}{2\sigma^2}}, x>0 \]
+\form#134:$ ln( \pi(D|M) ) = E[ln( \pi(D|\theta,M) )] - E[ln( \pi(\theta|D,M) / \pi(\theta|M) )] $
+\form#135:\[ \pi (\theta|D, M_j) = \frac{f(D|\theta, M_j) \cdot \pi (\theta | M_j)}{\pi(D, M_j)} \]
+\form#136:$ \pi (\theta|D, M_j) $
+\form#137:$ \pi (\theta | M_j) $
+\form#138:$ f(D|\theta, M_j)$
+\form#139:$ \pi(D, M_j) $
+\form#140:$ \theta $
+\form#141:$ D $
+\form#142:$ M_j $
+\form#143:\[ EIG = log \left(\frac{ \pi (\theta|D, M_j)}{\pi (\theta | M_j) } \right) = log \left(\frac{f(D|\theta, M_j) }{\pi(D, M_j)} \right) = log \left(\frac{f(D|\theta, M_j) }{\pi(D, M_j)} \right) = log \left(f(D|\theta, M_j)\right) - log\left(f(D|\theta, M_j) \right) \]
+\form#144:$ f: B \subset R \rightarrow C \subset R $
+\form#145:$ C = [0,1]$
+\form#146:$ Y $
+\form#147:$ cov (X,Y) = <(X-\mu_X)(Y-\mu_Y)> = < X Y > - \mu_X \mu_Y $
+\form#148:$ \mu_X $
+\form#149:$ \mu_Y $
+\form#150:\[ cov (X,Y) = \sum_{i=1}^{N} \frac{(x_i - \bar{x})(y_i - \bar{y})}{N}\]
+\form#151:$ 1/scales^2 $
+\form#152:$ q() $
+\form#153:$ x $
+\form#154:$ q(x) $
+\form#155:$ \pi()$
+\form#156:$ \pi(x) $
+\form#157:$ \ln[\pi(x)] $
+\form#158:$ x \in R^n $
+\form#159:$ A \in B $
+\form#160:$ P(x,R^n)=1 $
+\form#161:$ P(x, {x}) $
+\form#162:$ X_1, X_2, ..., X_n $
+\form#163:$ X_i $

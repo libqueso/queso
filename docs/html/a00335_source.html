@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/stats/inc/LogNormalJointPdf.h Source File</title>
+<title>queso-0.51.0: src/stats/inc/GaussianVectorMdf.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">LogNormalJointPdf.h</div>  </div>
+<div class="title">GaussianVectorMdf.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00335.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,80 +75,70 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_LOGNORM_JOINT_PROB_DENSITY_H</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_LOGNORM_JOINT_PROB_DENSITY_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_GAUSSIAN_VECTOR_MARGINAL_DENSITY_FUNCTION_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_GAUSSIAN_VECTOR_MARGINAL_DENSITY_FUNCTION_H</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;boost/math/special_functions.hpp&gt;</span> <span class="comment">// for Boost isnan. Note parentheses are important in function call.</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;queso/JointPdf.h&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;queso/ScalarFunction.h&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;queso/BoxSubset.h&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// LogNormal probability density class [PDF-10]</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//*****************************************************</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment"></span><span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="a00099.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00099.html">LogNormalJointPdf</a> : <span class="keyword">public</span> <a class="code" href="a00019.html">BaseJointPdf</a>&lt;V,M&gt; {</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <a class="code" href="a00099.html#ac8a9ad5414281317dfe22731c672a9ca">LogNormalJointPdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                           <span class="keyword">const</span> <a class="code" href="a00158.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00024.html#ad0937628825249dd36ded3ce0c7959ac">domainSet</a>,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                           <span class="keyword">const</span> V&amp;                     <a class="code" href="a00099.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a>,</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                           <span class="keyword">const</span> V&amp;                     <a class="code" href="a00099.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; <a class="code" href="a00099.html#abba5c75de7f88fcf51e56aec03f35ffc">~LogNormalJointPdf</a>();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00099.html#a87729cb9d59b73baefcbecb03e753cb9">actualValue</a> (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/VectorMdf.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/ArrayOfOneDGrids.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;queso/ArrayOfOneDTables.h&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;math.h&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// Gaussian marginal density function class</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//*****************************************************</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment"></span><span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00071.html">   47</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00071.html">GaussianVectorMdf</a> : <span class="keyword">public</span> <a class="code" href="a00029.html">BaseVectorMdf</a>&lt;V,M&gt; {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="a00071.html#a015d3be8f9b52f811cd643294b6f1239">GaussianVectorMdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                    prefix,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                           <span class="keyword">const</span> <a class="code" href="a00168.html">VectorSet&lt;V,M&gt;</a>&amp; <a class="code" href="a00029.html#ab060724f092b6623df50c0d0d725174c">domainSet</a>,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                           <span class="keyword">const</span> V&amp;                       domainExpectedValues,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                           <span class="keyword">const</span> V&amp;                       domainVarianceValues);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <a class="code" href="a00071.html#a015d3be8f9b52f811cd643294b6f1239">GaussianVectorMdf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*                    prefix,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                           <span class="keyword">const</span> <a class="code" href="a00168.html">VectorSet&lt;V,M&gt;</a>&amp; domainSet,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                           <span class="keyword">const</span> V&amp;                       domainExpectedValues,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                           <span class="keyword">const</span> M&amp;                       covMatrix);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <a class="code" href="a00071.html#afe3ec2c44fa9c133e825cecd29c1664c">~GaussianVectorMdf</a>();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00099.html#a9c31e89ee4abe8f1747e50c8d472a94d">lnValue</a>     (<span class="keyword">const</span> V&amp; domainVector, <span class="keyword">const</span> V* domainDirection, V* gradVector, M* hessianMatrix, V* hessianEffect) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00071.html#a4b842d80858175ead566bd57aa334c0a">values</a>(<span class="keyword">const</span> V&amp; paramValues, V&amp; mdfVec) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">double</span>   <a class="code" href="a00099.html#a373e37c21ce8acf05fe72f4ec9deef9c">computeLogOfNormalizationFactor</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numSamples, <span class="keywordtype">bool</span> updateFactorInternally) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">const</span> V&amp; <a class="code" href="a00099.html#a2ca856981ab03d0c84d19715da581c83">lawExpVector</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keyword">const</span> V&amp; <a class="code" href="a00099.html#afa9f7634ae6e54973cfe14463740171e">lawVarVector</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00024.html">BaseScalarFunction&lt;V,M&gt;::m_env</a>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00024.html">BaseScalarFunction&lt;V,M&gt;::m_prefix</a>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00024.html">BaseScalarFunction&lt;V,M&gt;::m_domainSet</a>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00019.html">BaseJointPdf&lt;V,M&gt;::m_normalizationStyle</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00019.html">BaseJointPdf&lt;V,M&gt;::m_logOfNormalizationFactor</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="a00099.html#a1373e1737c3198b852fab05c77abea35">   94</a></span>&#160;  V*   <a class="code" href="a00099.html#a1373e1737c3198b852fab05c77abea35">m_lawExpVector</a>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="a00099.html#abb84bcddf99dc15b4432baac0fc29122">   95</a></span>&#160;  V*   <a class="code" href="a00099.html#abb84bcddf99dc15b4432baac0fc29122">m_lawVarVector</a>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="a00099.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">   96</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="a00099.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">m_diagonalCovMatrix</a>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif // UQ_LOGNORM_JOINT_PROB_DENSITY_H</span></div>
-<div class="ttc" id="a00024_html"><div class="ttname"><a href="a00024.html">QUESO::BaseScalarFunction</a></div><div class="ttdoc">A templated (base) class for handling scalar functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00181_source.html#l00048">ScalarFunction.h:48</a></div></div>
-<div class="ttc" id="a00099_html_afa9f7634ae6e54973cfe14463740171e"><div class="ttname"><a href="a00099.html#afa9f7634ae6e54973cfe14463740171e">QUESO::LogNormalJointPdf::lawVarVector</a></div><div class="ttdeci">const V &amp; lawVarVector() const </div><div class="ttdoc">Access to the vector of variance values and private attribute: m_lawVarVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00406_source.html#l00081">LogNormalJointPdf.C:81</a></div></div>
-<div class="ttc" id="a00099_html_a373e37c21ce8acf05fe72f4ec9deef9c"><div class="ttname"><a href="a00099.html#a373e37c21ce8acf05fe72f4ec9deef9c">QUESO::LogNormalJointPdf::computeLogOfNormalizationFactor</a></div><div class="ttdeci">double computeLogOfNormalizationFactor(unsigned int numSamples, bool updateFactorInternally) const </div><div class="ttdoc">Computes the logarithm of the normalization factor. </div><div class="ttdef"><b>Definition:</b> <a href="a00406_source.html#l00209">LogNormalJointPdf.C:209</a></div></div>
-<div class="ttc" id="a00099_html_abba5c75de7f88fcf51e56aec03f35ffc"><div class="ttname"><a href="a00099.html#abba5c75de7f88fcf51e56aec03f35ffc">QUESO::LogNormalJointPdf::~LogNormalJointPdf</a></div><div class="ttdeci">~LogNormalJointPdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00406_source.html#l00066">LogNormalJointPdf.C:66</a></div></div>
-<div class="ttc" id="a00099_html"><div class="ttname"><a href="a00099.html">QUESO::LogNormalJointPdf</a></div><div class="ttdoc">A class for handling Log-Normal joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00335_source.html#l00049">LogNormalJointPdf.h:49</a></div></div>
-<div class="ttc" id="a00099_html_a1373e1737c3198b852fab05c77abea35"><div class="ttname"><a href="a00099.html#a1373e1737c3198b852fab05c77abea35">QUESO::LogNormalJointPdf::m_lawExpVector</a></div><div class="ttdeci">V * m_lawExpVector</div><div class="ttdef"><b>Definition:</b> <a href="a00335_source.html#l00094">LogNormalJointPdf.h:94</a></div></div>
-<div class="ttc" id="a00158_html"><div class="ttname"><a href="a00158.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00189_source.html#l00049">VectorSet.h:49</a></div></div>
-<div class="ttc" id="a00099_html_ac8a9ad5414281317dfe22731c672a9ca"><div class="ttname"><a href="a00099.html#ac8a9ad5414281317dfe22731c672a9ca">QUESO::LogNormalJointPdf::LogNormalJointPdf</a></div><div class="ttdeci">LogNormalJointPdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;lawExpVector, const V &amp;lawVarVector)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00406_source.html#l00033">LogNormalJointPdf.C:33</a></div></div>
-<div class="ttc" id="a00099_html_a8c85380b9a7c7ab746b2c8cc9c9cf5ee"><div class="ttname"><a href="a00099.html#a8c85380b9a7c7ab746b2c8cc9c9cf5ee">QUESO::LogNormalJointPdf::m_diagonalCovMatrix</a></div><div class="ttdeci">bool m_diagonalCovMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00335_source.html#l00096">LogNormalJointPdf.h:96</a></div></div>
-<div class="ttc" id="a00099_html_abb84bcddf99dc15b4432baac0fc29122"><div class="ttname"><a href="a00099.html#abb84bcddf99dc15b4432baac0fc29122">QUESO::LogNormalJointPdf::m_lawVarVector</a></div><div class="ttdeci">V * m_lawVarVector</div><div class="ttdef"><b>Definition:</b> <a href="a00335_source.html#l00095">LogNormalJointPdf.h:95</a></div></div>
-<div class="ttc" id="a00024_html_ad0937628825249dd36ded3ce0c7959ac"><div class="ttname"><a href="a00024.html#ad0937628825249dd36ded3ce0c7959ac">QUESO::BaseScalarFunction::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Access to the protected attribute m_domainSet: domain set of the scalar function. ...</div><div class="ttdef"><b>Definition:</b> <a href="a00203_source.html#l00050">ScalarFunction.C:50</a></div></div>
-<div class="ttc" id="a00099_html_a87729cb9d59b73baefcbecb03e753cb9"><div class="ttname"><a href="a00099.html#a87729cb9d59b73baefcbecb03e753cb9">QUESO::LogNormalJointPdf::actualValue</a></div><div class="ttdeci">double actualValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Actual value of the Log-Normal PDF (scalar function). </div><div class="ttdef"><b>Definition:</b> <a href="a00406_source.html#l00088">LogNormalJointPdf.C:88</a></div></div>
-<div class="ttc" id="a00099_html_a2ca856981ab03d0c84d19715da581c83"><div class="ttname"><a href="a00099.html#a2ca856981ab03d0c84d19715da581c83">QUESO::LogNormalJointPdf::lawExpVector</a></div><div class="ttdeci">const V &amp; lawExpVector() const </div><div class="ttdoc">Access to the vector of mean values and private attribute: m_lawExpVector. </div><div class="ttdef"><b>Definition:</b> <a href="a00406_source.html#l00074">LogNormalJointPdf.C:74</a></div></div>
-<div class="ttc" id="a00099_html_a9c31e89ee4abe8f1747e50c8d472a94d"><div class="ttname"><a href="a00099.html#a9c31e89ee4abe8f1747e50c8d472a94d">QUESO::LogNormalJointPdf::lnValue</a></div><div class="ttdeci">double lnValue(const V &amp;domainVector, const V *domainDirection, V *gradVector, M *hessianMatrix, V *hessianEffect) const </div><div class="ttdoc">Logarithm of the value of the Log-Normal PDF (scalar function). </div><div class="ttdef"><b>Definition:</b> <a href="a00406_source.html#l00142">LogNormalJointPdf.C:142</a></div></div>
-<div class="ttc" id="a00019_html"><div class="ttname"><a href="a00019.html">QUESO::BaseJointPdf</a></div><div class="ttdoc">A templated (base) class for handling joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00334_source.html#l00060">JointPdf.h:60</a></div></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00071.html#aae69a5b89169542b47de4b0dfa2e60e5">print</a> (std::ostream&amp; os)                <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="a00071.html#ad87107b4a431d4bb7b8a2c1409b71e14">   86</a></span>&#160;  <span class="keyword">const</span> M*                         <a class="code" href="a00071.html#ad87107b4a431d4bb7b8a2c1409b71e14">m_covMatrix</a>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00029.html">BaseVectorMdf&lt;V,M&gt;::m_env</a>;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00029.html">BaseVectorMdf&lt;V,M&gt;::m_prefix</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">using</span> <a class="code" href="a00029.html">BaseVectorMdf&lt;V,M&gt;::m_domainSet</a>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="a00071.html#ab1f0a239a1e16282909db1e02e8fb1cb">commonConstructor</a>();</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;};</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#endif // UQ_GAUSSIAN_VECTOR_MARGINAL_DENSITY_FUNCTION_H</span></div>
+<div class="ttc" id="a00029_html_ab060724f092b6623df50c0d0d725174c"><div class="ttname"><a href="a00029.html#ab060724f092b6623df50c0d0d725174c">QUESO::BaseVectorMdf::domainSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; domainSet() const </div><div class="ttdoc">Returns the domain set; access to protected attribute m_domainSet. </div><div class="ttdef"><b>Definition:</b> <a href="a00470_source.html#l00059">VectorMdf.C:59</a></div></div>
+<div class="ttc" id="a00168_html"><div class="ttname"><a href="a00168.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00199_source.html#l00049">VectorSet.h:49</a></div></div>
+<div class="ttc" id="a00071_html_a4b842d80858175ead566bd57aa334c0a"><div class="ttname"><a href="a00071.html#a4b842d80858175ead566bd57aa334c0a">QUESO::GaussianVectorMdf::values</a></div><div class="ttdeci">void values(const V &amp;paramValues, V &amp;mdfVec) const </div><div class="ttdoc">TODO: Returns the values of the vector CDF at each element of paramValues. </div><div class="ttdef"><b>Definition:</b> <a href="a00413_source.html#l00088">GaussianVectorMdf.C:88</a></div></div>
+<div class="ttc" id="a00071_html_a015d3be8f9b52f811cd643294b6f1239"><div class="ttname"><a href="a00071.html#a015d3be8f9b52f811cd643294b6f1239">QUESO::GaussianVectorMdf::GaussianVectorMdf</a></div><div class="ttdeci">GaussianVectorMdf(const char *prefix, const VectorSet&lt; V, M &gt; &amp;domainSet, const V &amp;domainExpectedValues, const V &amp;domainVarianceValues)</div><div class="ttdoc">TODO: Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00413_source.html#l00031">GaussianVectorMdf.C:31</a></div></div>
+<div class="ttc" id="a00071_html_afe3ec2c44fa9c133e825cecd29c1664c"><div class="ttname"><a href="a00071.html#afe3ec2c44fa9c133e825cecd29c1664c">QUESO::GaussianVectorMdf::~GaussianVectorMdf</a></div><div class="ttdeci">~GaussianVectorMdf()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00413_source.html#l00081">GaussianVectorMdf.C:81</a></div></div>
+<div class="ttc" id="a00071_html_ab1f0a239a1e16282909db1e02e8fb1cb"><div class="ttname"><a href="a00071.html#ab1f0a239a1e16282909db1e02e8fb1cb">QUESO::GaussianVectorMdf::commonConstructor</a></div><div class="ttdeci">void commonConstructor()</div><div class="ttdef"><b>Definition:</b> <a href="a00413_source.html#l00108">GaussianVectorMdf.C:108</a></div></div>
+<div class="ttc" id="a00029_html"><div class="ttname"><a href="a00029.html">QUESO::BaseVectorMdf</a></div><div class="ttdoc">A templated (base) class for handling MDFs of vector functions. </div><div class="ttdef"><b>Definition:</b> <a href="a00392_source.html#l00056">VectorMdf.h:56</a></div></div>
+<div class="ttc" id="a00071_html_aae69a5b89169542b47de4b0dfa2e60e5"><div class="ttname"><a href="a00071.html#aae69a5b89169542b47de4b0dfa2e60e5">QUESO::GaussianVectorMdf::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the vector CDF. </div><div class="ttdef"><b>Definition:</b> <a href="a00413_source.html#l00101">GaussianVectorMdf.C:101</a></div></div>
+<div class="ttc" id="a00071_html_ad87107b4a431d4bb7b8a2c1409b71e14"><div class="ttname"><a href="a00071.html#ad87107b4a431d4bb7b8a2c1409b71e14">QUESO::GaussianVectorMdf::m_covMatrix</a></div><div class="ttdeci">const M * m_covMatrix</div><div class="ttdef"><b>Definition:</b> <a href="a00335_source.html#l00086">GaussianVectorMdf.h:86</a></div></div>
+<div class="ttc" id="a00071_html"><div class="ttname"><a href="a00071.html">QUESO::GaussianVectorMdf</a></div><div class="ttdoc">TODO: A class for handling Gaussian MDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00335_source.html#l00047">GaussianVectorMdf.h:47</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:12 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:45 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/misc/src/Fft.C Source File</title>
+<title>queso-0.51.0: src/misc/inc/ArrayOfOneDTables.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -43,12 +43,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_88826aa2a10e1882b573f502bc7f4b55.html">misc</a></li><li class="navelem"><a class="el" href="dir_1880c50ca7770a6465988a22e5e4ee55.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_88826aa2a10e1882b573f502bc7f4b55.html">misc</a></li><li class="navelem"><a class="el" href="dir_c2e907ccdf1bb9500d3a3d017a89ba74.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Fft.C</div>  </div>
+<div class="title">ArrayOfOneDTables.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00297.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,33 +75,58 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/Fft.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Constructor-------------------------------------------</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00055.html#a04fa27a65066c50e029c842fa1e3fe78">   31</a></span>&#160;<a class="code" href="a00055.html#a04fa27a65066c50e029c842fa1e3fe78">Fft&lt;T&gt;::Fft</a>(<span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; env)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  :</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  m_env(env)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Destructor--------------------------------------------</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="a00055.html#a3dac972e69f606d201dee17db1e9216b">   38</a></span>&#160;<a class="code" href="a00055.html#a3dac972e69f606d201dee17db1e9216b">Fft&lt;T&gt;::~Fft</a>()</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00055.html">QUESO::Fft&lt;double&gt;</a>;</div>
-<div class="ttc" id="a00055_html_a3dac972e69f606d201dee17db1e9216b"><div class="ttname"><a href="a00055.html#a3dac972e69f606d201dee17db1e9216b">QUESO::Fft::~Fft</a></div><div class="ttdeci">~Fft()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00038">Fft.C:38</a></div></div>
-<div class="ttc" id="a00055_html"><div class="ttname"><a href="a00055.html">QUESO::Fft&lt; double &gt;</a></div></div>
-<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00221_source.html#l00187">Environment.h:187</a></div></div>
-<div class="ttc" id="a00055_html_a04fa27a65066c50e029c842fa1e3fe78"><div class="ttname"><a href="a00055.html#a04fa27a65066c50e029c842fa1e3fe78">QUESO::Fft::Fft</a></div><div class="ttdeci">Fft(const BaseEnvironment &amp;env)</div><div class="ttdoc">Default Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00031">Fft.C:31</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#ifndef UQ_ARRAY_OF_ONE_D_TABLES_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UQ_ARRAY_OF_ONE_D_TABLES_H</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;queso/Environment.h&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;queso/VectorSpace.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00011.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00011.html">ArrayOfOneDTables</a></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <a class="code" href="a00011.html#ae36f0c33595a2d46d08eced253d1eef3">ArrayOfOneDTables</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* prefix, <span class="keyword">const</span> <a class="code" href="a00169.html">VectorSpace&lt;V,M&gt;</a>&amp; rowSpace);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <a class="code" href="a00011.html#a233bf24beaf3adabca4735eb7a88c966">~ArrayOfOneDTables</a>();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">void</span>                       <a class="code" href="a00011.html#ad52be35568cf8c325569b4ae272acab9">setOneDTable</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> rowId, <span class="keyword">const</span> std::vector&lt;double&gt;&amp; values);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keyword">const</span> std::vector&lt;double&gt;&amp; <a class="code" href="a00011.html#ade48785a66524243c5a22ec39bc6de2d">oneDTable</a>   (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> rowId) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">void</span>                       <a class="code" href="a00011.html#aec66e8a1e7f0baf3adc29332590ea1af">print</a>       (std::ostream&amp; os)   <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="a00011.html#a51d23742e1c418efc4e829cb06fcda76">   75</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp;          <a class="code" href="a00011.html#a51d23742e1c418efc4e829cb06fcda76">m_env</a>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00011.html#ae9bfd81e226ee5712cd160031f96d4d2">   76</a></span>&#160;        std::string                      <a class="code" href="a00011.html#ae9bfd81e226ee5712cd160031f96d4d2">m_prefix</a>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00011.html#a476632866ae0eebc389f19b8b83cc324">   77</a></span>&#160;  <span class="keyword">const</span> <a class="code" href="a00169.html">VectorSpace&lt;V,M&gt;</a>&amp;         <a class="code" href="a00011.html#a476632866ae0eebc389f19b8b83cc324">m_rowSpace</a>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00011.html#ad5e13befcb2e58dde1c13e396388a696">   78</a></span>&#160;  <a class="code" href="a00049.html">DistArray&lt;std::vector&lt;double&gt;</a>*&gt; <a class="code" href="a00011.html#ad5e13befcb2e58dde1c13e396388a696">m_oneDTables</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif // UQ_ARRAY_OF_ONE_D_TABLES_H</span></div>
+<div class="ttc" id="a00011_html_ad5e13befcb2e58dde1c13e396388a696"><div class="ttname"><a href="a00011.html#ad5e13befcb2e58dde1c13e396388a696">QUESO::ArrayOfOneDTables::m_oneDTables</a></div><div class="ttdeci">DistArray&lt; std::vector&lt; double &gt; * &gt; m_oneDTables</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00078">ArrayOfOneDTables.h:78</a></div></div>
+<div class="ttc" id="a00011_html_ade48785a66524243c5a22ec39bc6de2d"><div class="ttname"><a href="a00011.html#ade48785a66524243c5a22ec39bc6de2d">QUESO::ArrayOfOneDTables::oneDTable</a></div><div class="ttdeci">const std::vector&lt; double &gt; &amp; oneDTable(unsigned int rowId) const </div><div class="ttdoc">Returns the array located at position rowId of the one-dimensional table. </div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00080">ArrayOfOneDTables.C:80</a></div></div>
+<div class="ttc" id="a00011_html_a51d23742e1c418efc4e829cb06fcda76"><div class="ttname"><a href="a00011.html#a51d23742e1c418efc4e829cb06fcda76">QUESO::ArrayOfOneDTables::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00075">ArrayOfOneDTables.h:75</a></div></div>
+<div class="ttc" id="a00011_html_ae9bfd81e226ee5712cd160031f96d4d2"><div class="ttname"><a href="a00011.html#ae9bfd81e226ee5712cd160031f96d4d2">QUESO::ArrayOfOneDTables::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00076">ArrayOfOneDTables.h:76</a></div></div>
+<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00231_source.html#l00187">Environment.h:187</a></div></div>
+<div class="ttc" id="a00011_html_ae36f0c33595a2d46d08eced253d1eef3"><div class="ttname"><a href="a00011.html#ae36f0c33595a2d46d08eced253d1eef3">QUESO::ArrayOfOneDTables::ArrayOfOneDTables</a></div><div class="ttdeci">ArrayOfOneDTables(const char *prefix, const VectorSpace&lt; V, M &gt; &amp;rowSpace)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00033">ArrayOfOneDTables.C:33</a></div></div>
+<div class="ttc" id="a00011_html_a233bf24beaf3adabca4735eb7a88c966"><div class="ttname"><a href="a00011.html#a233bf24beaf3adabca4735eb7a88c966">QUESO::ArrayOfOneDTables::~ArrayOfOneDTables</a></div><div class="ttdeci">~ArrayOfOneDTables()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00049">ArrayOfOneDTables.C:49</a></div></div>
+<div class="ttc" id="a00011_html_a476632866ae0eebc389f19b8b83cc324"><div class="ttname"><a href="a00011.html#a476632866ae0eebc389f19b8b83cc324">QUESO::ArrayOfOneDTables::m_rowSpace</a></div><div class="ttdeci">const VectorSpace&lt; V, M &gt; &amp; m_rowSpace</div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00077">ArrayOfOneDTables.h:77</a></div></div>
+<div class="ttc" id="a00011_html_ad52be35568cf8c325569b4ae272acab9"><div class="ttname"><a href="a00011.html#ad52be35568cf8c325569b4ae272acab9">QUESO::ArrayOfOneDTables::setOneDTable</a></div><div class="ttdeci">void setOneDTable(unsigned int rowId, const std::vector&lt; double &gt; &amp;values)</div><div class="ttdoc">Sets the one-dimensional table. </div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00059">ArrayOfOneDTables.C:59</a></div></div>
+<div class="ttc" id="a00049_html"><div class="ttname"><a href="a00049.html">QUESO::DistArray</a></div><div class="ttdoc">A class for partitioning vectors and matrices. </div><div class="ttdef"><b>Definition:</b> <a href="a00230_source.html#l00056">DistArray.h:56</a></div></div>
+<div class="ttc" id="a00011_html"><div class="ttname"><a href="a00011.html">QUESO::ArrayOfOneDTables</a></div><div class="ttdoc">Class to accommodate arrays of one-dimensional tables. </div><div class="ttdef"><b>Definition:</b> <a href="a00297_source.html#l00046">ArrayOfOneDTables.h:46</a></div></div>
+<div class="ttc" id="a00169_html"><div class="ttname"><a href="a00169.html">QUESO::VectorSpace</a></div><div class="ttdoc">A class representing a vector space. </div><div class="ttdef"><b>Definition:</b> <a href="a00199_source.html#l00046">VectorSet.h:46</a></div></div>
+<div class="ttc" id="a00011_html_aec66e8a1e7f0baf3adc29332590ea1af"><div class="ttname"><a href="a00011.html#aec66e8a1e7f0baf3adc29332590ea1af">QUESO::ArrayOfOneDTables::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">Prints the values in this array of tables. </div><div class="ttdef"><b>Definition:</b> <a href="a00309_source.html#l00100">ArrayOfOneDTables.C:100</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:12 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:45 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

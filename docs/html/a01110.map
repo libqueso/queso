@@ -1,12 +1,21 @@
-<map id="QUESO::BaseVectorRealizer&lt; V, M &gt;" name="QUESO::BaseVectorRealizer&lt; V, M &gt;">
-<area shape="rect" id="node3" href="$a00037.html" title="A class for handling sampling from a Beta probability density distribution. " alt="" coords="285,5,499,51"/>
-<area shape="rect" id="node5" href="$a00041.html" title="A class for handling sampling from concatenated probability density distributions. " alt="" coords="281,74,503,121"/>
-<area shape="rect" id="node7" href="$a00065.html" title="A class for handling sampling from a Gamma probability density distribution. " alt="" coords="277,143,507,190"/>
-<area shape="rect" id="node9" href="$a00071.html" title="A class for handling sampling from Gaussian probability density distributions. " alt="" coords="273,213,511,259"/>
-<area shape="rect" id="node11" href="$a00082.html" title="A class for handling sampling from generic probability density distributions. " alt="" coords="277,282,507,329"/>
-<area shape="rect" id="node13" href="$a00093.html" title="A class for handling sampling from an Inverse Gamma probability density distribution. " alt="" coords="279,351,505,398"/>
-<area shape="rect" id="node15" href="$a00100.html" title="A class for handling sampling from a Log&#45;Normal probability density distribution. ..." alt="" coords="267,421,517,467"/>
-<area shape="rect" id="node17" href="$a00137.html" title="A class for handling sequential draws (sampling) from probability density distributions. " alt="" coords="267,490,517,537"/>
-<area shape="rect" id="node19" href="$a00152.html" title="A class for handling sampling from a Uniform probability density distribution. " alt="" coords="277,559,507,606"/>
-<area shape="rect" id="node21" href="$a00164.html" title="A class for handling sampling from a Wigner probability density distribution. " alt="" coords="280,629,504,675"/>
+<map id="QUESO::MLSampling&lt; P_V, P_M &gt;" name="QUESO::MLSampling&lt; P_V, P_M &gt;">
+<area shape="rect" id="node2" href="$a00018.html" title="This (virtual) class sets up the environment underlying the use of the QUESO library by an executable..." alt="" coords="448,540,648,569"/>
+<area shape="rect" id="node8" href="$a00051.html" title="This class reads options one can pass to a QUESO environment through an input file. " alt="" coords="805,855,1024,884"/>
+<area shape="rect" id="node14" href="$a00124.html" title="The QUESO MPI Communicator Class. " alt="" coords="841,673,988,703"/>
+<area shape="rect" id="node17" href="$a00025.html" title="QUESO::BaseScalarFunction\l\&lt; P_V, P_M \&gt;" alt="" coords="1247,114,1457,161"/>
+<area shape="rect" id="node20" href="$a00168.html" title="QUESO::VectorSet\&lt; P\l_V, P_M \&gt;" alt="" coords="828,245,1001,291"/>
+<area shape="rect" id="node23" href="$a00120.html" title="This class provides options for the Multilevel sequence generator if no input file is available..." alt="" coords="1483,67,1693,96"/>
+<area shape="rect" id="node27" href="$a00031.html" title="QUESO::BaseVectorRV\l\&lt; P_V, P_M \&gt;" alt="" coords="1720,378,1896,425"/>
+<area shape="rect" id="node29" href="$a00027.html" title="QUESO::BaseVectorCdf\l\&lt; P_V, P_M \&gt;" alt="" coords="1261,378,1443,425"/>
+<area shape="rect" id="node33" href="$a00030.html" title="QUESO::BaseVectorRealizer\l\&lt; P_V, P_M \&gt;" alt="" coords="1245,517,1459,563"/>
+<area shape="rect" id="node38" href="$a00029.html" title="QUESO::BaseVectorMdf\l\&lt; P_V, P_M \&gt;" alt="" coords="1260,309,1444,355"/>
+<area shape="rect" id="node45" href="$a00025.html" title="A templated (base) class for handling scalar functions. " alt="" coords="809,467,1020,514"/>
+<area shape="rect" id="node50" href="$a00168.html" title="A templated class for handling sets. " alt="" coords="1048,754,1221,801"/>
+<area shape="rect" id="node4" href="$a00033.html" title="TODO: Base class for basic PDFs (via either GSL or Boost). " alt="" coords="16,513,195,543"/>
+<area shape="rect" id="node6" href="$a00131.html" title="Class for random number generation (base class for either GSL or Boost RNG). " alt="" coords="36,567,175,596"/>
+<area shape="rect" id="node11" href="$a00052.html" title="This class provides a suite options one can pass to a QUESO environment. " alt="" coords="5,773,205,803"/>
+<area shape="rect" id="node55" href="$a00110.html" title="A class for partitioning vectors and matrices. " alt="" coords="1299,673,1405,703"/>
+<area shape="rect" id="node43" href="$a00019.html" title="QUESO::BaseJointPdf\l\&lt; P_V, P_M \&gt;" alt="" coords="1269,447,1435,494"/>
+<area shape="rect" id="node48" href="$a00169.html" title="QUESO::VectorSpace\l\&lt; P_V, P_M \&gt;" alt="" coords="2135,658,2300,705"/>
+<area shape="rect" id="node53" href="$a00049.html" title="QUESO::DistArray\&lt; std\l::string \&gt;" alt="" coords="1719,697,1897,743"/>
 </map>

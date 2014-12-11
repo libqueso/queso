@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/core/inc/queso.h Source File</title>
+<title>queso-0.51.0: src/core/inc/InfiniteDimensionalLikelihoodBase.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -48,70 +48,70 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">queso.h</div>  </div>
+<div class="title">InfiniteDimensionalLikelihoodBase.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="a00240.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// Public License as published by the Free Software Foundation.</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// This library is distributed in the hope that it will be useful,</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">// Lesser General Public License for more details.</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// You should have received a copy of the GNU Lesser General Public</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// License along with this library; if not, write to the Free Software</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Foundation, Inc. 51 Franklin Street, Fifth Floor,</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// grvy.h: Basic API Definitions</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
+<a href="a00240.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//--------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// </span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">// QUESO - a library to support the Quantification of Uncertainty</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// for Estimation, Simulation and Optimization</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// This library is free software; you can redistribute it and/or</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// modify it under the terms of the Version 2.1 GNU Lesser General</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// Public License as published by the Free Software Foundation.</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// This library is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// Lesser General Public License for more details.</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// You should have received a copy of the GNU Lesser General Public</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// License along with this library; if not, write to the Free Software</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// Foundation, Inc. 51 Franklin Street, Fifth Floor, </span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Boston, MA  02110-1301  USA</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#ifndef QUESO_INFINITE_LIKELIHOOD_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_INFINITE_LIKELIHOOD_H</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#ifndef QUESO_H_</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_H_</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// Library version/build info</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="a00240.html#af8f8eb612ce429b5b52d7fd5e412f2dd">   34</a></span>&#160;<span class="preprocessor">#define QUESO_MAJOR_VERSION  0</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00240.html#a8aa8d2fc44e6edc52b2baa17c5001bae">   35</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_MINOR_VERSION  50</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="a00240.html#a73b7d04c533087e0000140cc9e19dc71">   36</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_MICRO_VERSION  1</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="a00240.html#ac220e0baec88681f8270678badb7bcb9">   38</a></span>&#160;<span class="preprocessor">#define QUESO_BUILD_USER     &quot;damon&quot;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="a00240.html#aef2d7f6fe2a604b6dc962d9c53fbccad">   39</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_ARCH     &quot;x86_64-unknown-linux-gnu&quot;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="a00240.html#a82f0d319c13988e6ce0abfc3e5acfafd">   40</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_HOST     &quot;zoidberg.ices.utexas.edu&quot;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="a00240.html#ad3f2a2a9e1a0507319ca48e4a171d7c6">   41</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_DATE     &quot;2014-05-15 15:10&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="a00240.html#a8b36b33f2429f166778a0a9410259f1d">   42</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_BUILD_VERSION  &quot;28c5a5a&quot;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00240.html#a4ade4ed888e8e8984634ec507e08dcf4">   44</a></span>&#160;<span class="preprocessor">#define QUESO_LIB_VERSION    &quot;0.50.1&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00240.html#a200372295aca6277053dc3198acd1fa2">   45</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_LIB_RELEASE    &quot;Development Build&quot;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00240.html#a5473b76f2474d904b914586f0e85575d">   47</a></span>&#160;<span class="preprocessor">#define QUESO_CXX            &quot;/opt/apps/ossw/libraries/mpich2/mpich2-1.4.1p1/sl6/gcc-4.7/bin/mpicxx&quot;</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00240.html#a0733ab68bd215a3d12bc6aea1d80a7e5">   48</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_CXXFLAGS       &quot;-g -O2 -Wall&quot;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// External libraries</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00240.html#a735dae31e72a24c63c02e5ed8868fcac">   52</a></span>&#160;<span class="preprocessor">#define QUESO_TRILINOS_DIR  &quot;&quot;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="a00240.html#aad144bff960096e3e55ea946a529dc9f">   53</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_GSL_DIR       &quot;-L/opt/apps/ossw/libraries/gsl/gsl-1.15/sl6/gcc-4.7/lib -lgsl -lgslcblas -lm&quot;</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="a00240.html#ae762ff926acfd3095751bf812077f02d">   54</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_GRVY_DIR      &quot;/opt/apps/ossw/libraries/grvy/grvy-0.32.0/sl6/gcc-4.7/boost-1.51.0/hdf5-1.8.9&quot;</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00240.html#ace4c8bf4a22ac49477823be20179d3d7">   55</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_GLPK_DIR      &quot;&quot;</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00240.html#a204aeda021989ea37fbc54f1861cbfef">   56</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define QUESO_HDF5_DIR      &quot;&quot;</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">class </span>FunctionBase;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="a00090.html">   42</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00090.html">InfiniteDimensionalLikelihoodBase</a></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <a class="code" href="a00090.html#a6f1c2bc9c09977be76b19e98d949a031">InfiniteDimensionalLikelihoodBase</a>(<span class="keywordtype">double</span> <a class="code" href="a00090.html#a99c973f23406360fee6aad332eade3c1">obs_stddev</a>);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="a00090.html#ac27b56bd19349fc4a44caa9ee3e10af5">~InfiniteDimensionalLikelihoodBase</a>();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00090.html#a54a923baa674e9ee7282d145a53d1823">set_obs_stddev</a>(<span class="keywordtype">double</span> stddev);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00090.html#a99c973f23406360fee6aad332eade3c1">obs_stddev</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="a00090.html#aa93ddb8c6ccc2f357d5046ffb142be14">evaluate</a>(<a class="code" href="a00063.html">FunctionBase</a> &amp; flow) = 0;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="a00090.html#aa98ee3e521c8ab194c091f64257e7423">   61</a></span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00090.html#aa98ee3e521c8ab194c091f64257e7423">_obs_stddev</a>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif // QUESO_INFINITE_LIKELIHOOD_H</span></div>
+<div class="ttc" id="a00090_html_a6f1c2bc9c09977be76b19e98d949a031"><div class="ttname"><a href="a00090.html#a6f1c2bc9c09977be76b19e98d949a031">QUESO::InfiniteDimensionalLikelihoodBase::InfiniteDimensionalLikelihoodBase</a></div><div class="ttdeci">InfiniteDimensionalLikelihoodBase(double obs_stddev)</div><div class="ttdoc">Construct a likelihood functional with obs_stddev as the observational error standard deviation...</div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00028">InfiniteDimensionalLikelihoodBase.C:28</a></div></div>
+<div class="ttc" id="a00090_html_ac27b56bd19349fc4a44caa9ee3e10af5"><div class="ttname"><a href="a00090.html#ac27b56bd19349fc4a44caa9ee3e10af5">QUESO::InfiniteDimensionalLikelihoodBase::~InfiniteDimensionalLikelihoodBase</a></div><div class="ttdeci">virtual ~InfiniteDimensionalLikelihoodBase()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00034">InfiniteDimensionalLikelihoodBase.C:34</a></div></div>
+<div class="ttc" id="a00090_html_aa98ee3e521c8ab194c091f64257e7423"><div class="ttname"><a href="a00090.html#aa98ee3e521c8ab194c091f64257e7423">QUESO::InfiniteDimensionalLikelihoodBase::_obs_stddev</a></div><div class="ttdeci">double _obs_stddev</div><div class="ttdef"><b>Definition:</b> <a href="a00240_source.html#l00061">InfiniteDimensionalLikelihoodBase.h:61</a></div></div>
+<div class="ttc" id="a00063_html"><div class="ttname"><a href="a00063.html">QUESO::FunctionBase</a></div><div class="ttdoc">Abstract base class for function objects. </div><div class="ttdef"><b>Definition:</b> <a href="a00234_source.html#l00046">FunctionBase.h:46</a></div></div>
+<div class="ttc" id="a00090_html"><div class="ttname"><a href="a00090.html">QUESO::InfiniteDimensionalLikelihoodBase</a></div><div class="ttdoc">Abstract class representing the likelihood. Users must subclass this. </div><div class="ttdef"><b>Definition:</b> <a href="a00240_source.html#l00042">InfiniteDimensionalLikelihoodBase.h:42</a></div></div>
+<div class="ttc" id="a00090_html_aa93ddb8c6ccc2f357d5046ffb142be14"><div class="ttname"><a href="a00090.html#aa93ddb8c6ccc2f357d5046ffb142be14">QUESO::InfiniteDimensionalLikelihoodBase::evaluate</a></div><div class="ttdeci">virtual double evaluate(FunctionBase &amp;flow)=0</div><div class="ttdoc">Evaluate the likelihood functional at flow. Subclasses must implement this method. </div></div>
+<div class="ttc" id="a00090_html_a54a923baa674e9ee7282d145a53d1823"><div class="ttname"><a href="a00090.html#a54a923baa674e9ee7282d145a53d1823">QUESO::InfiniteDimensionalLikelihoodBase::set_obs_stddev</a></div><div class="ttdeci">virtual void set_obs_stddev(double stddev)</div><div class="ttdoc">Set the observation standard deviation. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00038">InfiniteDimensionalLikelihoodBase.C:38</a></div></div>
+<div class="ttc" id="a00090_html_a99c973f23406360fee6aad332eade3c1"><div class="ttname"><a href="a00090.html#a99c973f23406360fee6aad332eade3c1">QUESO::InfiniteDimensionalLikelihoodBase::obs_stddev</a></div><div class="ttdeci">virtual double obs_stddev() const </div><div class="ttdoc">Return the observation standard deviation. </div><div class="ttdef"><b>Definition:</b> <a href="a00273_source.html#l00043">InfiniteDimensionalLikelihoodBase.C:43</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:12 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:44 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

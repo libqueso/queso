@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: QUESO::ScalarTimesFunc1D1DFunction Class Reference</title>
+<title>queso-0.51.0: RngGsl Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -43,315 +43,26 @@
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="a00450.html">QUESO</a></li><li class="navelem"><a class="el" href="a00134.html">ScalarTimesFunc1D1DFunction</a></li>  </ul>
-</div>
 </div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="a00817.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">QUESO::ScalarTimesFunc1D1DFunction Class Reference</div>  </div>
+<div class="title">RngGsl Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Class for multiplication of a one-dimensional function by a scalar.  
+<p>Class for random number generation using GSL library.  
  <a href="a00134.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00277_source.html">1D1DFunction.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for QUESO::ScalarTimesFunc1D1DFunction:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00818.png" border="0" usemap="#_q_u_e_s_o_1_1_scalar_times_func1_d1_d_function_inherit__map" alt="Inheritance graph"/></div>
-<map name="_q_u_e_s_o_1_1_scalar_times_func1_d1_d_function_inherit__map" id="_q_u_e_s_o_1_1_scalar_times_func1_d1_d_function_inherit__map">
-<area shape="rect" id="node2" href="a00016.html" title="Class for one&#45;dimensional functions. " alt="" coords="11,5,219,35"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for QUESO::ScalarTimesFunc1D1DFunction:</div>
-<div class="dyncontent">
-<div class="center"><img src="a00819.png" border="0" usemap="#_q_u_e_s_o_1_1_scalar_times_func1_d1_d_function_coll__map" alt="Collaboration graph"/></div>
-<map name="_q_u_e_s_o_1_1_scalar_times_func1_d1_d_function_coll__map" id="_q_u_e_s_o_1_1_scalar_times_func1_d1_d_function_coll__map">
-<area shape="rect" id="node2" href="a00016.html" title="Class for one&#45;dimensional functions. " alt="" coords="11,5,219,35"/></map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Constructor/Destructor methods</div></td></tr>
-<tr class="memitem:a8c70bff103932b5907b8f43c080d5af2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#a8c70bff103932b5907b8f43c080d5af2">ScalarTimesFunc1D1DFunction</a> (double scalar, const <a class="el" href="a00016.html">Base1D1DFunction</a> &amp;func)</td></tr>
-<tr class="memdesc:a8c70bff103932b5907b8f43c080d5af2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a8c70bff103932b5907b8f43c080d5af2">More...</a><br/></td></tr>
-<tr class="separator:a8c70bff103932b5907b8f43c080d5af2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2775892943455ed641bcbc6b336a0865"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#a2775892943455ed641bcbc6b336a0865">~ScalarTimesFunc1D1DFunction</a> ()</td></tr>
-<tr class="memdesc:a2775892943455ed641bcbc6b336a0865"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a2775892943455ed641bcbc6b336a0865">More...</a><br/></td></tr>
-<tr class="separator:a2775892943455ed641bcbc6b336a0865"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Mathematical methods</div></td></tr>
-<tr class="memitem:af3ff65dedf376a0acde1df1f70fdfd51"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#af3ff65dedf376a0acde1df1f70fdfd51">value</a> (double domainValue) const </td></tr>
-<tr class="memdesc:af3ff65dedf376a0acde1df1f70fdfd51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the (one-dimensional) function at point <code>domainValue</code>, already multiplied by the scalar (given during construction).  <a href="#af3ff65dedf376a0acde1df1f70fdfd51">More...</a><br/></td></tr>
-<tr class="separator:af3ff65dedf376a0acde1df1f70fdfd51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60d05664b27b5b40cb31d38dc61c74ee"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#a60d05664b27b5b40cb31d38dc61c74ee">deriv</a> (double domainValue) const </td></tr>
-<tr class="memdesc:a60d05664b27b5b40cb31d38dc61c74ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Returns the value of the derivative of the function multiplied by the given scalar at point <code>domainValue</code>.  <a href="#a60d05664b27b5b40cb31d38dc61c74ee">More...</a><br/></td></tr>
-<tr class="separator:a60d05664b27b5b40cb31d38dc61c74ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00016"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00016')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00016.html">QUESO::Base1D1DFunction</a></td></tr>
-<tr class="memitem:a8e8c0f8d500675e4acfd4d7043000791 inherit pub_methods_a00016"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#a8e8c0f8d500675e4acfd4d7043000791">Base1D1DFunction</a> (double <a class="el" href="a00016.html#a4c110e621ef1ac557bbcc60d41f5a3c2">minDomainValue</a>, double <a class="el" href="a00016.html#ad2b80d0c52c0cb56c89f70f30b3bb19e">maxDomainValue</a>)</td></tr>
-<tr class="memdesc:a8e8c0f8d500675e4acfd4d7043000791 inherit pub_methods_a00016"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a8e8c0f8d500675e4acfd4d7043000791">More...</a><br/></td></tr>
-<tr class="separator:a8e8c0f8d500675e4acfd4d7043000791 inherit pub_methods_a00016"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0512da686e14fe3b0544f84432ea322e inherit pub_methods_a00016"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#a0512da686e14fe3b0544f84432ea322e">~Base1D1DFunction</a> ()</td></tr>
-<tr class="memdesc:a0512da686e14fe3b0544f84432ea322e inherit pub_methods_a00016"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a0512da686e14fe3b0544f84432ea322e">More...</a><br/></td></tr>
-<tr class="separator:a0512da686e14fe3b0544f84432ea322e inherit pub_methods_a00016"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c110e621ef1ac557bbcc60d41f5a3c2 inherit pub_methods_a00016"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#a4c110e621ef1ac557bbcc60d41f5a3c2">minDomainValue</a> () const </td></tr>
-<tr class="memdesc:a4c110e621ef1ac557bbcc60d41f5a3c2 inherit pub_methods_a00016"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the minimum value of the domain of the (one-dimensional) function.  <a href="#a4c110e621ef1ac557bbcc60d41f5a3c2">More...</a><br/></td></tr>
-<tr class="separator:a4c110e621ef1ac557bbcc60d41f5a3c2 inherit pub_methods_a00016"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2b80d0c52c0cb56c89f70f30b3bb19e inherit pub_methods_a00016"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#ad2b80d0c52c0cb56c89f70f30b3bb19e">maxDomainValue</a> () const </td></tr>
-<tr class="memdesc:ad2b80d0c52c0cb56c89f70f30b3bb19e inherit pub_methods_a00016"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum value of the domain of the (one-dimensional) function.  <a href="#ad2b80d0c52c0cb56c89f70f30b3bb19e">More...</a><br/></td></tr>
-<tr class="separator:ad2b80d0c52c0cb56c89f70f30b3bb19e inherit pub_methods_a00016"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac41e4e15b7f97c14a0389069bf8e833d inherit pub_methods_a00016"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#ac41e4e15b7f97c14a0389069bf8e833d">multiplyAndIntegrate</a> (const <a class="el" href="a00016.html">Base1D1DFunction</a> &amp;func, unsigned int quadratureOrder, double *resultWithMultiplicationByTAsWell) const </td></tr>
-<tr class="memdesc:ac41e4e15b7f97c14a0389069bf8e833d inherit pub_methods_a00016"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Multiplies <code>this</code> function with <code>function</code>, and integrates it numerically. See template specialization.  <a href="#ac41e4e15b7f97c14a0389069bf8e833d">More...</a><br/></td></tr>
-<tr class="separator:ac41e4e15b7f97c14a0389069bf8e833d inherit pub_methods_a00016"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a8e7e6ee4d186d901156d47c11231c81c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#a8e7e6ee4d186d901156d47c11231c81c">m_scalar</a></td></tr>
-<tr class="separator:a8e7e6ee4d186d901156d47c11231c81c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89766736ee9cdf03a6ead0fa5fe8bd83"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00016.html">Base1D1DFunction</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00134.html#a89766736ee9cdf03a6ead0fa5fe8bd83">m_func</a></td></tr>
-<tr class="separator:a89766736ee9cdf03a6ead0fa5fe8bd83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_a00016"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00016')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00016.html">QUESO::Base1D1DFunction</a></td></tr>
-<tr class="memitem:a7b18b3854ee74ef5befbc67b75ebbdc5 inherit pro_attribs_a00016"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a></td></tr>
-<tr class="separator:a7b18b3854ee74ef5befbc67b75ebbdc5 inherit pro_attribs_a00016"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0025999ccab2145cd46c0a81e260e8f inherit pro_attribs_a00016"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00016.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a></td></tr>
-<tr class="separator:aa0025999ccab2145cd46c0a81e260e8f inherit pro_attribs_a00016"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
+<p><code>#include &lt;<a class="el" href="a00256_source.html">RngGsl.h</a>&gt;</code></p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class for multiplication of a one-dimensional function by a scalar. </p>
-<p>This class implements the multiplication of a generic one-dimensional function (implemented through any class derived from <a class="el" href="a00016.html" title="Class for one-dimensional functions. ">Base1D1DFunction</a>) by a given scalar. </p>
-
-<p>Definition at line <a class="el" href="a00277_source.html#l00421">421</a> of file <a class="el" href="a00277_source.html">1D1DFunction.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a8c70bff103932b5907b8f43c080d5af2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QUESO::ScalarTimesFunc1D1DFunction::ScalarTimesFunc1D1DFunction </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>scalar</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="a00016.html">Base1D1DFunction</a> &amp;&#160;</td>
-          <td class="paramname"><em>func</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Default constructor. </p>
-
-<p>Definition at line <a class="el" href="a00289_source.html#l00665">665</a> of file <a class="el" href="a00289_source.html">1D1DFunction.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;  :</div>
-<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;  <a class="code" href="a00016.html#a8e8c0f8d500675e4acfd4d7043000791">Base1D1DFunction</a>(func.minDomainValue(),func.maxDomainValue()),</div>
-<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;  <a class="code" href="a00134.html#a8e7e6ee4d186d901156d47c11231c81c">m_scalar</a>(scalar),</div>
-<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;  <a class="code" href="a00134.html#a89766736ee9cdf03a6ead0fa5fe8bd83">m_func</a>  (func)</div>
-<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;{</div>
-<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;}</div>
-<div class="ttc" id="a00016_html_a8e8c0f8d500675e4acfd4d7043000791"><div class="ttname"><a href="a00016.html#a8e8c0f8d500675e4acfd4d7043000791">QUESO::Base1D1DFunction::Base1D1DFunction</a></div><div class="ttdeci">Base1D1DFunction(double minDomainValue, double maxDomainValue)</div><div class="ttdoc">Default constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00289_source.html#l00033">1D1DFunction.C:33</a></div></div>
-<div class="ttc" id="a00134_html_a89766736ee9cdf03a6ead0fa5fe8bd83"><div class="ttname"><a href="a00134.html#a89766736ee9cdf03a6ead0fa5fe8bd83">QUESO::ScalarTimesFunc1D1DFunction::m_func</a></div><div class="ttdeci">const Base1D1DFunction &amp; m_func</div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00449">1D1DFunction.h:449</a></div></div>
-<div class="ttc" id="a00134_html_a8e7e6ee4d186d901156d47c11231c81c"><div class="ttname"><a href="a00134.html#a8e7e6ee4d186d901156d47c11231c81c">QUESO::ScalarTimesFunc1D1DFunction::m_scalar</a></div><div class="ttdeci">double m_scalar</div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00448">1D1DFunction.h:448</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="a2775892943455ed641bcbc6b336a0865"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QUESO::ScalarTimesFunc1D1DFunction::~ScalarTimesFunc1D1DFunction </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Destructor. </p>
-
-<p>Definition at line <a class="el" href="a00289_source.html#l00675">675</a> of file <a class="el" href="a00289_source.html">1D1DFunction.C</a>.</p>
-<div class="fragment"><div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;{</div>
-<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a60d05664b27b5b40cb31d38dc61c74ee"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double QUESO::ScalarTimesFunc1D1DFunction::deriv </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>domainValue</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>TODO: Returns the value of the derivative of the function multiplied by the given scalar at point <code>domainValue</code>. </p>
-<dl class="todo"><dt><b><a class="el" href="a00451.html#_todo000005">Todo:</a></b></dt><dd>Please, implement me! </dd></dl>
-
-<p>Implements <a class="el" href="a00016.html#a6b8de03f2099f31735dcaf15c24bca32">QUESO::Base1D1DFunction</a>.</p>
-
-<p>Definition at line <a class="el" href="a00289_source.html#l00690">690</a> of file <a class="el" href="a00289_source.html">1D1DFunction.C</a>.</p>
-
-<p>References <a class="el" href="a00277_source.html#l00086">QUESO::Base1D1DFunction::m_maxDomainValue</a>, <a class="el" href="a00277_source.html#l00085">QUESO::Base1D1DFunction::m_minDomainValue</a>, <a class="el" href="a00219_source.html#l00222">UQ_FATAL_TEST_MACRO</a>, <a class="el" href="a00219_source.html#l00073">QUESO::UQ_UNAVAILABLE_RANK</a>, and <a class="el" href="a00289_source.html#l00680">value()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;{</div>
-<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00134.html#af3ff65dedf376a0acde1df1f70fdfd51">value</a> = 0.;</div>
-<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;</div>
-<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;  <span class="keywordflow">if</span> ((domainValue &lt; <a class="code" href="a00016.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a>) || (domainValue &gt; <a class="code" href="a00016.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a>)) {</div>
-<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;In ScalarTimes1D1DFunction::deriv()&quot;</span></div>
-<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;: requested x (&quot;</span>            &lt;&lt; domainValue</div>
-<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;) is out of the interval (&quot;</span> &lt;&lt; <a class="code" href="a00016.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a></div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>                         &lt;&lt; <a class="code" href="a00016.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a></div>
-<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;              &lt;&lt; <span class="stringliteral">&quot;)&quot;</span></div>
-<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;              &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;  }</div>
-<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;</div>
-<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(((domainValue &lt; <a class="code" href="a00016.html#a7b18b3854ee74ef5befbc67b75ebbdc5">m_minDomainValue</a>) || (domainValue &gt; <a class="code" href="a00016.html#aa0025999ccab2145cd46c0a81e260e8f">m_maxDomainValue</a>)),</div>
-<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;                      <a class="code" href="a00450.html#a7d4679800a430ae8e473c1c7bc0bfb21">UQ_UNAVAILABLE_RANK</a>,</div>
-<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;                      <span class="stringliteral">&quot;ScalarTimes1D1DFunction::deriv()&quot;</span>,</div>
-<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;                      <span class="stringliteral">&quot;x out of range&quot;</span>);</div>
-<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;</div>
-<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(<span class="keyword">true</span>,</div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;                      <a class="code" href="a00450.html#a7d4679800a430ae8e473c1c7bc0bfb21">UQ_UNAVAILABLE_RANK</a>,</div>
-<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;                      <span class="stringliteral">&quot;ScalarTimesFunc1D1DFunction::deriv()&quot;</span>,</div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;                      <span class="stringliteral">&quot;not implemented yet&quot;</span>);</div>
-<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;</div>
-<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00134.html#af3ff65dedf376a0acde1df1f70fdfd51">value</a>;</div>
-<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;}</div>
-<div class="ttc" id="a00134_html_af3ff65dedf376a0acde1df1f70fdfd51"><div class="ttname"><a href="a00134.html#af3ff65dedf376a0acde1df1f70fdfd51">QUESO::ScalarTimesFunc1D1DFunction::value</a></div><div class="ttdeci">double value(double domainValue) const </div><div class="ttdoc">Returns the value of the (one-dimensional) function at point domainValue, already multiplied by the s...</div><div class="ttdef"><b>Definition:</b> <a href="a00289_source.html#l00680">1D1DFunction.C:680</a></div></div>
-<div class="ttc" id="a00016_html_aa0025999ccab2145cd46c0a81e260e8f"><div class="ttname"><a href="a00016.html#aa0025999ccab2145cd46c0a81e260e8f">QUESO::Base1D1DFunction::m_maxDomainValue</a></div><div class="ttdeci">double m_maxDomainValue</div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00086">1D1DFunction.h:86</a></div></div>
-<div class="ttc" id="a00219_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00219_source.html#l00222">Defines.h:222</a></div></div>
-<div class="ttc" id="a00016_html_a7b18b3854ee74ef5befbc67b75ebbdc5"><div class="ttname"><a href="a00016.html#a7b18b3854ee74ef5befbc67b75ebbdc5">QUESO::Base1D1DFunction::m_minDomainValue</a></div><div class="ttdeci">double m_minDomainValue</div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00085">1D1DFunction.h:85</a></div></div>
-<div class="ttc" id="a00450_html_a7d4679800a430ae8e473c1c7bc0bfb21"><div class="ttname"><a href="a00450.html#a7d4679800a430ae8e473c1c7bc0bfb21">QUESO::UQ_UNAVAILABLE_RANK</a></div><div class="ttdeci">const int UQ_UNAVAILABLE_RANK</div><div class="ttdef"><b>Definition:</b> <a href="a00219_source.html#l00073">Defines.h:73</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a class="anchor" id="af3ff65dedf376a0acde1df1f70fdfd51"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double QUESO::ScalarTimesFunc1D1DFunction::value </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>domainValue</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the value of the (one-dimensional) function at point <code>domainValue</code>, already multiplied by the scalar (given during construction). </p>
-<p>This function calls the <a class="el" href="a00134.html#af3ff65dedf376a0acde1df1f70fdfd51" title="Returns the value of the (one-dimensional) function at point domainValue, already multiplied by the s...">value()</a> method of the given function and multiplies its return value by the scalar passed to the constructor. </p>
-
-<p>Implements <a class="el" href="a00016.html#a1042dfd930c30a35d6dbf70f94e8dfe5">QUESO::Base1D1DFunction</a>.</p>
-
-<p>Definition at line <a class="el" href="a00289_source.html#l00680">680</a> of file <a class="el" href="a00289_source.html">1D1DFunction.C</a>.</p>
-
-<p>References <a class="el" href="a00277_source.html#l00449">m_func</a>, <a class="el" href="a00277_source.html#l00448">m_scalar</a>, and <a class="el" href="a00016.html#a1042dfd930c30a35d6dbf70f94e8dfe5">QUESO::Base1D1DFunction::value()</a>.</p>
-
-<p>Referenced by <a class="el" href="a00289_source.html#l00690">deriv()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;{</div>
-<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="a00134.html#af3ff65dedf376a0acde1df1f70fdfd51">value</a> = 0.;</div>
-<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;</div>
-<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;  value += <a class="code" href="a00134.html#a8e7e6ee4d186d901156d47c11231c81c">m_scalar</a>*<a class="code" href="a00134.html#a89766736ee9cdf03a6ead0fa5fe8bd83">m_func</a>.<a class="code" href="a00016.html#a1042dfd930c30a35d6dbf70f94e8dfe5">value</a>(domainValue);</div>
-<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;</div>
-<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="a00134.html#af3ff65dedf376a0acde1df1f70fdfd51">value</a>;</div>
-<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;}</div>
-<div class="ttc" id="a00016_html_a1042dfd930c30a35d6dbf70f94e8dfe5"><div class="ttname"><a href="a00016.html#a1042dfd930c30a35d6dbf70f94e8dfe5">QUESO::Base1D1DFunction::value</a></div><div class="ttdeci">virtual double value(double domainValue) const =0</div><div class="ttdoc">Returns the value of the (one-dimensional) function. See template specialization. ...</div></div>
-<div class="ttc" id="a00134_html_af3ff65dedf376a0acde1df1f70fdfd51"><div class="ttname"><a href="a00134.html#af3ff65dedf376a0acde1df1f70fdfd51">QUESO::ScalarTimesFunc1D1DFunction::value</a></div><div class="ttdeci">double value(double domainValue) const </div><div class="ttdoc">Returns the value of the (one-dimensional) function at point domainValue, already multiplied by the s...</div><div class="ttdef"><b>Definition:</b> <a href="a00289_source.html#l00680">1D1DFunction.C:680</a></div></div>
-<div class="ttc" id="a00134_html_a89766736ee9cdf03a6ead0fa5fe8bd83"><div class="ttname"><a href="a00134.html#a89766736ee9cdf03a6ead0fa5fe8bd83">QUESO::ScalarTimesFunc1D1DFunction::m_func</a></div><div class="ttdeci">const Base1D1DFunction &amp; m_func</div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00449">1D1DFunction.h:449</a></div></div>
-<div class="ttc" id="a00134_html_a8e7e6ee4d186d901156d47c11231c81c"><div class="ttname"><a href="a00134.html#a8e7e6ee4d186d901156d47c11231c81c">QUESO::ScalarTimesFunc1D1DFunction::m_scalar</a></div><div class="ttdeci">double m_scalar</div><div class="ttdef"><b>Definition:</b> <a href="a00277_source.html#l00448">1D1DFunction.h:448</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a89766736ee9cdf03a6ead0fa5fe8bd83"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="a00016.html">Base1D1DFunction</a>&amp; QUESO::ScalarTimesFunc1D1DFunction::m_func</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00277_source.html#l00449">449</a> of file <a class="el" href="a00277_source.html">1D1DFunction.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00289_source.html#l00680">value()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a8e7e6ee4d186d901156d47c11231c81c"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double QUESO::ScalarTimesFunc1D1DFunction::m_scalar</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00277_source.html#l00448">448</a> of file <a class="el" href="a00277_source.html">1D1DFunction.h</a>.</p>
-
-<p>Referenced by <a class="el" href="a00289_source.html#l00680">value()</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/misc/inc/<a class="el" href="a00277_source.html">1D1DFunction.h</a></li>
-<li>src/misc/src/<a class="el" href="a00289_source.html">1D1DFunction.C</a></li>
+<div class="textblock"><p>Class for random number generation using GSL library. </p>
+<p>This class is class of random number generator, using GSL library. The GSL library provides a large collection of random number generators which can be accessed through a uniform interface. </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
+<li>src/core/inc/<a class="el" href="a00256_source.html">RngGsl.h</a></li>
 </ul>
 </div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:13 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:46 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>

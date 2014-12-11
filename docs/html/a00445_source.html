@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.5"/>
-<title>queso-0.50.1: src/stats/src/WignerVectorRV.C Source File</title>
+<title>queso-0.51.0: src/stats/src/ModelValidation.C Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -17,7 +17,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">queso-0.50.1
+   <div id="projectname">queso-0.51.0
    </div>
   </td>
  </tr>
@@ -48,7 +48,7 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">WignerVectorRV.C</div>  </div>
+<div class="title">ModelValidation.C</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00445.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//-----------------------------------------------------------------------bl-</span></div>
@@ -75,96 +75,80 @@
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">//-----------------------------------------------------------------------el-</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/WignerVectorRV.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;queso/GslVector.h&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;queso/GslMatrix.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;queso/ModelValidation.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span>QUESO {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// Default constructor -----------------------------</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="a00165.html#ac2167c95fba84b2a3b9eff451bc2f64e">   33</a></span>&#160;<a class="code" href="a00165.html#ac2167c95fba84b2a3b9eff451bc2f64e">WignerVectorRV&lt;V,M&gt;::WignerVectorRV</a>(</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                  prefix,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00158.html">VectorSet&lt;V,M&gt;</a>&amp; imageSet,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> V&amp;                     centerPos,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordtype">double</span>                       radius)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  :</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="a00030.html">BaseVectorRV</a>&lt;V,M&gt;(((std::string)(prefix)+<span class="stringliteral">&quot;uni&quot;</span>).c_str(),imageSet)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00030.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00030.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    *<a class="code" href="a00030.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering WignerVectorRV&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00030.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <a class="code" href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a>(radius &lt;= 0.,</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                      <a class="code" href="a00030.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">worldRank</a>(),</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                      <span class="stringliteral">&quot;WignerVectorRV&lt;V,M&gt;::constructor()&quot;</span>,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                      <span class="stringliteral">&quot;invalid radius&quot;</span>);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <a class="code" href="a00030.html#a0ca926bca6fbcc688be6fc7496449e8e">m_pdf</a>        = <span class="keyword">new</span> <a class="code" href="a00163.html">WignerJointPdf&lt;V,M&gt;</a>(<a class="code" href="a00030.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a>.c_str(),</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                                                <a class="code" href="a00030.html#ad31872bb4da22d47528cb9d691b3b7ff">m_imageSet</a>,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                                                centerPos,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                                                radius);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <a class="code" href="a00030.html#ad99bc05293c0fd0a0accb3191fb7119e">m_realizer</a>   = <span class="keyword">new</span> <a class="code" href="a00164.html">WignerVectorRealizer&lt;V,M&gt;</a>(<a class="code" href="a00030.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a>.c_str(),</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                                                      <a class="code" href="a00030.html#ad31872bb4da22d47528cb9d691b3b7ff">m_imageSet</a>,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                                      centerPos,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                                                      radius);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="a00030.html#a1a1117671c7fa2e572a9484463bee3a5">m_subCdf</a>     = NULL; <span class="comment">// FIX ME: complete code</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <a class="code" href="a00030.html#a31a1d44bbb6a7c030ca31a9577904252">m_unifiedCdf</a> = NULL; <span class="comment">// FIX ME: complete code</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <a class="code" href="a00030.html#a5a95d0107f66cf9b0ed3ad18a3d738df">m_mdf</a>        = NULL; <span class="comment">// FIX ME: complete code</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordflow">if</span> ((<a class="code" href="a00030.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) &amp;&amp; (<a class="code" href="a00030.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">displayVerbosity</a>() &gt;= 54)) {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    *<a class="code" href="a00030.html#a556761c50e2d171977ef5f19a63c8c73">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving WignerVectorRV&lt;V,M&gt;::constructor()&quot;</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                            &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00030.html#a030ce3bc9873a9eaf6d8bf452c096ab3">m_prefix</a></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="a00165.html#ae3c14eb7f4b940dc5312d004eea3c832">   72</a></span>&#160;<a class="code" href="a00165.html#ae3c14eb7f4b940dc5312d004eea3c832">WignerVectorRV&lt;V,M&gt;::~WignerVectorRV</a>()</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;{</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">delete</span> m_mdf;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keyword">delete</span> m_unifiedCdf;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keyword">delete</span> m_subCdf;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keyword">delete</span> m_realizer;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keyword">delete</span> m_pdf;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> V, <span class="keyword">class</span> M&gt;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keywordtype">void</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="a00165.html#a6658542aa6a551c1b92de93558cb67fa">   83</a></span>&#160;<a class="code" href="a00165.html#a6658542aa6a551c1b92de93558cb67fa">WignerVectorRV&lt;V,M&gt;::print</a>(std::ostream&amp; os)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  os &lt;&lt; <span class="stringliteral">&quot;WignerVectorRV&lt;V,M&gt;::print() says, &#39;Please implement me.&#39;&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">template</span> <span class="keyword">class </span><a class="code" href="a00165.html">QUESO::WignerVectorRV&lt;QUESO::GslVector,QUESO::GslMatrix&gt;</a>;</div>
-<div class="ttc" id="a00165_html_a6658542aa6a551c1b92de93558cb67fa"><div class="ttname"><a href="a00165.html#a6658542aa6a551c1b92de93558cb67fa">QUESO::WignerVectorRV::print</a></div><div class="ttdeci">void print(std::ostream &amp;os) const </div><div class="ttdoc">TODO: Prints the vector RV. </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00083">WignerVectorRV.C:83</a></div></div>
-<div class="ttc" id="a00030_html_a31a1d44bbb6a7c030ca31a9577904252"><div class="ttname"><a href="a00030.html#a31a1d44bbb6a7c030ca31a9577904252">QUESO::BaseVectorRV::m_unifiedCdf</a></div><div class="ttdeci">const BaseVectorCdf&lt; V, M &gt; * m_unifiedCdf</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00136">VectorRV.h:136</a></div></div>
-<div class="ttc" id="a00030_html"><div class="ttname"><a href="a00030.html">QUESO::BaseVectorRV</a></div><div class="ttdoc">A templated base class for handling vector RV. </div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00069">VectorRV.h:69</a></div></div>
-<div class="ttc" id="a00018_html_a78b57112bbd0e6dd0e8afec00b40ffa7"><div class="ttname"><a href="a00018.html#a78b57112bbd0e6dd0e8afec00b40ffa7">QUESO::BaseEnvironment::worldRank</a></div><div class="ttdeci">int worldRank() const </div><div class="ttdoc">Returns the process world rank. </div><div class="ttdef"><b>Definition:</b> <a href="a00252_source.html#l00235">Environment.C:235</a></div></div>
-<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00252_source.html#l00305">Environment.C:305</a></div></div>
-<div class="ttc" id="a00164_html"><div class="ttname"><a href="a00164.html">QUESO::WignerVectorRealizer</a></div><div class="ttdoc">A class for handling sampling from a Wigner probability density distribution. </div><div class="ttdef"><b>Definition:</b> <a href="a00373_source.html#l00049">WignerVectorRealizer.h:49</a></div></div>
-<div class="ttc" id="a00030_html_a556761c50e2d171977ef5f19a63c8c73"><div class="ttname"><a href="a00030.html#a556761c50e2d171977ef5f19a63c8c73">QUESO::BaseVectorRV::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00130">VectorRV.h:130</a></div></div>
-<div class="ttc" id="a00165_html_ae3c14eb7f4b940dc5312d004eea3c832"><div class="ttname"><a href="a00165.html#ae3c14eb7f4b940dc5312d004eea3c832">QUESO::WignerVectorRV::~WignerVectorRV</a></div><div class="ttdeci">virtual ~WignerVectorRV()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00072">WignerVectorRV.C:72</a></div></div>
-<div class="ttc" id="a00030_html_ad31872bb4da22d47528cb9d691b3b7ff"><div class="ttname"><a href="a00030.html#ad31872bb4da22d47528cb9d691b3b7ff">QUESO::BaseVectorRV::m_imageSet</a></div><div class="ttdeci">const VectorSet&lt; V, M &gt; &amp; m_imageSet</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00132">VectorRV.h:132</a></div></div>
-<div class="ttc" id="a00030_html_a1a1117671c7fa2e572a9484463bee3a5"><div class="ttname"><a href="a00030.html#a1a1117671c7fa2e572a9484463bee3a5">QUESO::BaseVectorRV::m_subCdf</a></div><div class="ttdeci">const BaseVectorCdf&lt; V, M &gt; * m_subCdf</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00135">VectorRV.h:135</a></div></div>
-<div class="ttc" id="a00163_html"><div class="ttname"><a href="a00163.html">QUESO::WignerJointPdf</a></div><div class="ttdoc">A class for handling Wigner joint PDFs. </div><div class="ttdef"><b>Definition:</b> <a href="a00372_source.html#l00049">WignerJointPdf.h:49</a></div></div>
-<div class="ttc" id="a00030_html_ad99bc05293c0fd0a0accb3191fb7119e"><div class="ttname"><a href="a00030.html#ad99bc05293c0fd0a0accb3191fb7119e">QUESO::BaseVectorRV::m_realizer</a></div><div class="ttdeci">BaseVectorRealizer&lt; V, M &gt; * m_realizer</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00134">VectorRV.h:134</a></div></div>
-<div class="ttc" id="a00219_html_a56d63d18d0a6d45757de47fcc06f574d"><div class="ttname"><a href="a00219.html#a56d63d18d0a6d45757de47fcc06f574d">UQ_FATAL_TEST_MACRO</a></div><div class="ttdeci">#define UQ_FATAL_TEST_MACRO(test, givenRank, where, what)</div><div class="ttdef"><b>Definition:</b> <a href="a00219_source.html#l00222">Defines.h:222</a></div></div>
-<div class="ttc" id="a00158_html"><div class="ttname"><a href="a00158.html">QUESO::VectorSet</a></div><div class="ttdoc">A templated class for handling sets. </div><div class="ttdef"><b>Definition:</b> <a href="a00189_source.html#l00049">VectorSet.h:49</a></div></div>
-<div class="ttc" id="a00030_html_a5a95d0107f66cf9b0ed3ad18a3d738df"><div class="ttname"><a href="a00030.html#a5a95d0107f66cf9b0ed3ad18a3d738df">QUESO::BaseVectorRV::m_mdf</a></div><div class="ttdeci">const BaseVectorMdf&lt; V, M &gt; * m_mdf</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00137">VectorRV.h:137</a></div></div>
-<div class="ttc" id="a00165_html_ac2167c95fba84b2a3b9eff451bc2f64e"><div class="ttname"><a href="a00165.html#ac2167c95fba84b2a3b9eff451bc2f64e">QUESO::WignerVectorRV::WignerVectorRV</a></div><div class="ttdeci">WignerVectorRV(const char *prefix, const VectorSet&lt; V, M &gt; &amp;imageSet, const V &amp;centerPos, double radius)</div><div class="ttdoc">Default Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00033">WignerVectorRV.C:33</a></div></div>
-<div class="ttc" id="a00030_html_a030ce3bc9873a9eaf6d8bf452c096ab3"><div class="ttname"><a href="a00030.html#a030ce3bc9873a9eaf6d8bf452c096ab3">QUESO::BaseVectorRV::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00131">VectorRV.h:131</a></div></div>
-<div class="ttc" id="a00030_html_a0ca926bca6fbcc688be6fc7496449e8e"><div class="ttname"><a href="a00030.html#a0ca926bca6fbcc688be6fc7496449e8e">QUESO::BaseVectorRV::m_pdf</a></div><div class="ttdeci">BaseJointPdf&lt; V, M &gt; * m_pdf</div><div class="ttdef"><b>Definition:</b> <a href="a00371_source.html#l00133">VectorRV.h:133</a></div></div>
-<div class="ttc" id="a00018_html_a1fe5f244fc0316a0ab3e37463f108b96"><div class="ttname"><a href="a00018.html#a1fe5f244fc0316a0ab3e37463f108b96">QUESO::BaseEnvironment::displayVerbosity</a></div><div class="ttdeci">unsigned int displayVerbosity() const </div><div class="ttdef"><b>Definition:</b> <a href="a00252_source.html#l00436">Environment.C:436</a></div></div>
-<div class="ttc" id="a00165_html"><div class="ttname"><a href="a00165.html">QUESO::WignerVectorRV</a></div><div class="ttdoc">A class representing a vector RV constructed via Wigner distribution. </div><div class="ttdef"><b>Definition:</b> <a href="a00374_source.html#l00054">WignerVectorRV.h:54</a></div></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// Constructor -------------------------------------</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="a00121.html#a4745b3be6aaaeab5c904b2b4fe9f25f8">   31</a></span>&#160;<a class="code" href="a00121.html#a4745b3be6aaaeab5c904b2b4fe9f25f8">ModelValidation&lt;P_V,P_M,Q_V,Q_M&gt;::ModelValidation</a>(</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp; env,</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span>*                   prefix)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  :</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  m_env   (env),</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  m_prefix((std::string)(prefix) + <span class="stringliteral">&quot;&quot;</span>),</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  m_cycle (NULL)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00121.html#a357832c31f58c1bd11c10733317437ae">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    *<a class="code" href="a00121.html#a357832c31f58c1bd11c10733317437ae">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Entering ModelValidation&lt;P_V,P_M,Q_V,Q_M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00121.html#aa239eb12478d1904e18ffe2ed712630f">m_prefix</a></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="a00121.html#a357832c31f58c1bd11c10733317437ae">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>()) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    *<a class="code" href="a00121.html#a357832c31f58c1bd11c10733317437ae">m_env</a>.<a class="code" href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">subDisplayFile</a>() &lt;&lt; <span class="stringliteral">&quot;Leaving ModelValidation&lt;P_V,P_M,Q_V,Q_M&gt;::constructor()&quot;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; <a class="code" href="a00121.html#aa239eb12478d1904e18ffe2ed712630f">m_prefix</a></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// Destructor---------------------------------------</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="a00121.html#aa840badb782acf1a02e0c46c84bcdfe4">   55</a></span>&#160;<a class="code" href="a00121.html#aa840badb782acf1a02e0c46c84bcdfe4">ModelValidation&lt;P_V,P_M,Q_V,Q_M&gt;::~ModelValidation</a>()</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">if</span> (m_env.subDisplayFile()) {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Entering ModeValidation::destructor()&quot;</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; m_prefix</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordflow">if</span> (m_cycle) <span class="keyword">delete</span> m_cycle;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">if</span> (m_env.subDisplayFile()) {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    *m_env.subDisplayFile() &lt;&lt; <span class="stringliteral">&quot;Leaving ModeValidation::destructor()&quot;</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                           &lt;&lt; <span class="stringliteral">&quot;: prefix = &quot;</span> &lt;&lt; m_prefix</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                           &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">// Misc methods-------------------------------------</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">const</span> <a class="code" href="a00018.html">BaseEnvironment</a>&amp;</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="a00121.html#a8da12a6dfe30feba5e3319031049a93f">   74</a></span>&#160;<a class="code" href="a00121.html#a8da12a6dfe30feba5e3319031049a93f">ModelValidation&lt;P_V,P_M,Q_V,Q_M&gt;::env</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">return</span> m_env;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">//--------------------------------------------------</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> P_V,<span class="keyword">class</span> P_M,<span class="keyword">class</span> Q_V,<span class="keyword">class</span> Q_M&gt;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">const</span> <a class="code" href="a00164.html">ValidationCycle&lt;P_V,P_M,Q_V,Q_M&gt;</a>&amp;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="a00121.html#a3ea30ea21d361878e5aea12f6aff8e0f">   81</a></span>&#160;<a class="code" href="a00121.html#a3ea30ea21d361878e5aea12f6aff8e0f">ModelValidation&lt;P_V,P_M,Q_V,Q_M&gt;::cycle</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keywordflow">return</span> *m_cycle;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}  <span class="comment">// End namespace QUESO</span></div>
+<div class="ttc" id="a00121_html_aa239eb12478d1904e18ffe2ed712630f"><div class="ttname"><a href="a00121.html#aa239eb12478d1904e18ffe2ed712630f">QUESO::ModelValidation::m_prefix</a></div><div class="ttdeci">std::string m_prefix</div><div class="ttdef"><b>Definition:</b> <a href="a00367_source.html#l00069">ModelValidation.h:69</a></div></div>
+<div class="ttc" id="a00121_html_a357832c31f58c1bd11c10733317437ae"><div class="ttname"><a href="a00121.html#a357832c31f58c1bd11c10733317437ae">QUESO::ModelValidation::m_env</a></div><div class="ttdeci">const BaseEnvironment &amp; m_env</div><div class="ttdef"><b>Definition:</b> <a href="a00367_source.html#l00068">ModelValidation.h:68</a></div></div>
+<div class="ttc" id="a00121_html_a8da12a6dfe30feba5e3319031049a93f"><div class="ttname"><a href="a00121.html#a8da12a6dfe30feba5e3319031049a93f">QUESO::ModelValidation::env</a></div><div class="ttdeci">const BaseEnvironment &amp; env() const </div><div class="ttdoc">Access to the environment variable (m_env). </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00074">ModelValidation.C:74</a></div></div>
+<div class="ttc" id="a00018_html_a8a0064746ae8dddfece4229b9ad374d6"><div class="ttname"><a href="a00018.html#a8a0064746ae8dddfece4229b9ad374d6">QUESO::BaseEnvironment::subDisplayFile</a></div><div class="ttdeci">std::ofstream * subDisplayFile() const </div><div class="ttdoc">Access function for m_subDisplayFile (displays file on stream). </div><div class="ttdef"><b>Definition:</b> <a href="a00265_source.html#l00305">Environment.C:305</a></div></div>
+<div class="ttc" id="a00164_html"><div class="ttname"><a href="a00164.html">QUESO::ValidationCycle</a></div><div class="ttdoc">A templated class for validation cycle of the examples validationCycle and validationCycle2. </div><div class="ttdef"><b>Definition:</b> <a href="a00389_source.html#l00051">ValidationCycle.h:51</a></div></div>
+<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">QUESO::BaseEnvironment</a></div><div class="ttdoc">This (virtual) class sets up the environment underlying the use of the QUESO library by an executable...</div><div class="ttdef"><b>Definition:</b> <a href="a00231_source.html#l00187">Environment.h:187</a></div></div>
+<div class="ttc" id="a00121_html_a4745b3be6aaaeab5c904b2b4fe9f25f8"><div class="ttname"><a href="a00121.html#a4745b3be6aaaeab5c904b2b4fe9f25f8">QUESO::ModelValidation::ModelValidation</a></div><div class="ttdeci">ModelValidation(const BaseEnvironment &amp;env, const char *prefix)</div><div class="ttdoc">Constructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00031">ModelValidation.C:31</a></div></div>
+<div class="ttc" id="a00121_html_aa840badb782acf1a02e0c46c84bcdfe4"><div class="ttname"><a href="a00121.html#aa840badb782acf1a02e0c46c84bcdfe4">QUESO::ModelValidation::~ModelValidation</a></div><div class="ttdeci">virtual ~ModelValidation()</div><div class="ttdoc">Virtual destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00055">ModelValidation.C:55</a></div></div>
+<div class="ttc" id="a00121_html_a3ea30ea21d361878e5aea12f6aff8e0f"><div class="ttname"><a href="a00121.html#a3ea30ea21d361878e5aea12f6aff8e0f">QUESO::ModelValidation::cycle</a></div><div class="ttdeci">const ValidationCycle&lt; P_V, P_M, Q_V, Q_M &gt; &amp; cycle() const </div><div class="ttdoc">Access to the cycle (m_cycle). </div><div class="ttdef"><b>Definition:</b> <a href="a00445_source.html#l00081">ModelValidation.C:81</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <hr size="1"/><address style="text-align: right;"><small>
-Generated on Thu May 15 2014 16:26:12 for queso-0.50.1
+Generated on Thu Dec 11 2014 13:07:45 for queso-0.51.0
 by&nbsp;<a href="http://www.doxygen.org/index.html">
 <em>doxygen</em></a>
 1.8.5</small></address>
