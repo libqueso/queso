@@ -1,23 +1,32 @@
 
 \section{\texttt{gravity}}\label{sec:example_gravity}
 
-This section presents an example of how to use QUESO in order to develop an application that solves a statistical inverse problem and
-a statistical forward problem, where the solution of the former serves as input to the later. During the SIP, the acceleration due to gravity for an object in free fall near the surface of the Earth is inferred. During the SFP, the distance traveled by a projectile launched at a given angle and altitude is calculated using the calibrated magnitude of the acceleration of gravity.
+This section presents an example of how to use QUESO in order to develop an application that solves a 
+statistical inverse problem (SIP) and a statistical forward problem (SFP), where the solution of the former 
+serves as input to the later. During the SIP, the acceleration due to gravity for an object in free 
+fall near the surface of the Earth is inferred. During the SFP, the distance traveled by a projectile 
+launched at a given angle and altitude is calculated using the calibrated magnitude of the acceleration of gravity.
 
 
-In this section we describe a statistical forward problem  of predicting the  described in Section \ref{sec:gravity-ip}.
+In this section we describe a statistical forward problem  of predicting the described in Section 
+\ref{sec:gravity-ip}.
 
 \subsection{Statistical Inverse Problem}\label{sec:gravity-ip}
 
-% Near the surface of the Earth, an object in free fall in a vacuum will accelerate at approximately $9.8 m/s^2$, independent of its mass.
-% With air resistance acting upon an object that has been dropped, mass, drag coefficient and even relative surface may become important
+% Near the surface of the Earth, an object in free fall in a vacuum will accelerate at approximately 
+% $9.8 m/s^2$, independent of its mass.
+% With air resistance acting upon an object that has been dropped, mass, drag coefficient and even 
+% relative surface may become important
 % (if the fall is from sufficient altitude) in the calculation of gravity.
 
-%The vertical motion of an object falling a small distance close to the surface of the planet can be approximated to have
-%uniform gravitational field without air resistance, as long as the force of gravity on the object is much greater than the force of air resistance.
+%The vertical motion of an object falling a small distance close to the surface of the planet can be 
+% approximated to have
+%uniform gravitational field without air resistance, as long as the force of gravity on the object 
+% is much greater than the force of air resistance.
 
 %Therefore a convenient, simplified 
-A possible deterministic mathematical model for the vertical motion of an object in free fall near the surface of the Earth is given by
+A possible deterministic mathematical model for the vertical motion of an object in free fall near the 
+surface of the Earth is given by
 \begin{equation}\label{eq:gravity01}
 h(t)=-\frac{1}{2} g t^2 + v_0 t + h_0.
 \end{equation}
@@ -26,14 +35,16 @@ $v_0$ [$m/s$] is the initial velocity,
 $h_0$ [$m$] is the initial altitude,
 $h(t)$ [$m$] is the altitude with respect to time,
 $t$ [$s$] is the elapsed time, and
-$g$ [$m/s^2$] is the magnitude of the acceleration due to gravity (the parameter which cannot be directly measured and will be statistically inferred).
+$g$ [$m/s^2$] is the magnitude of the acceleration due to gravity 
+(the parameter which cannot be directly measured and will be statistically inferred).
 
 
 
 \subsubsection{Experimental Data}
-We assume that the experiment of allowing an object to fall from different altitudes with zero initial velocity has been repeatedly conducted (See Figure \ref{fig:free_fall}). The data collected, e.g.  $\mathbf{d}$, is displayed in Table \ref{table:data}; the standard deviations, $\sigma$'s, refer to the uncertainties in the measured times during the experiment execution~\cite{interactagram}. 
-
-
+We assume that the experiment of allowing an object to fall from different altitudes with zero initial 
+velocity has been repeatedly conducted (See Figure \ref{fig:free_fall}). The data collected, 
+e.g.  $\mathbf{d}$, is displayed in Table \ref{table:data}; the standard deviations, $\sigma$'s, 
+refer to the uncertainties in the measured times during the experiment execution~\cite{interactagram}. 
 
 \begin{figure}[!ht]
 \centering
@@ -45,7 +56,8 @@ We assume that the experiment of allowing an object to fall from different altit
 
 \begin{table}[htp]%% Data from data02.dat 
 \caption{Measurement data $\mathbf{d}$ of size $n_d=14$.
-The object falls from altitude $h_0$ in $t$ seconds, with standard deviation of $\sigma$ seconds in the time measurement~\cite{interactagram}.
+The object falls from altitude $h_0$ in $t$ seconds, with standard deviation of $\sigma$ 
+seconds in the time measurement~\cite{interactagram}.
 }
 % \specialrule{.4pt}{10pt}{4pt}
 \vspace{-8pt}
@@ -80,8 +92,10 @@ $~$90	&	4.32	&	0.03	\\
 
 \subsubsection{The Prior RV, Likelihood and Posterior RV}
 
-In a straightforward classical interpretation of Bayesian inference, the prior signifies the modeler's honest opinion about the unknown.
-For the gravity inference problem, let's assume that gravity varies uniformly in the interval [8,11], or, in other words, we chose uniform prior distribution in that interval:
+In a straightforward classical interpretation of Bayesian inference, the prior signifies the 
+modeler's honest opinion about the unknown.
+For the gravity inference problem, let's assume that gravity varies uniformly in the 
+interval [8,11], or, in other words, we chose uniform prior distribution in that interval:
 
 \begin{equation}\label{eq-g-prior}
 \pi_{\text{prior}}=\mathcal{U}(8,11).
@@ -100,9 +114,13 @@ We choose the usual likelihood function:
 [\mathbf{y}(\boldsymbol{\theta})-\mathbf{d}]
 \right\},
 \end{equation}
-where $\mathbf{C}(\boldsymbol{\theta})$ is a given covariance matrix, $\mathbf{d}$ denotes experimental data, $\mathbf{y}(\boldsymbol{\theta})$ is the model output data.
+where $\mathbf{C}(\boldsymbol{\theta})$ is a given covariance matrix, $\mathbf{d}$ denotes 
+experimental data, $\mathbf{y}(\boldsymbol{\theta})$ is the model output data.
 
-Recalling the deterministic model for the acceleration of gravity (\ref{eq:gravity01}) with zero initial velocity,  the information provided in Table \ref{table:data}, and Equation (\ref{eq:like02}); and, additionally, invoking the nomenclature used in Section \ref{sec:statistical_concepts}, we have:
+Recalling the deterministic model for the acceleration of gravity (\ref{eq:gravity01}) 
+with zero initial velocity,  the information provided in Table \ref{table:data}, and 
+Equation (\ref{eq:like02}); and, additionally, invoking the nomenclature used in Section 
+\ref{sec:statistical_concepts}, we have:
 \begin{equation}\label{eq:like03}
 \boldsymbol{\theta} \stackrel{\text{\small{def.}}}{=} g,
 %------------ 
@@ -141,7 +159,8 @@ t_{n_d}
 \end{equation}
 where $n_d=14$ is the number of data points in Table \ref{table:data}.
 
-Now we are ready to evoke Bayes' formula in order to obtain the posterior PDF $\pi_{\text{post}}(\boldsymbol{\theta})$:
+Now we are ready to evoke Bayes' formula in order to obtain the posterior PDF 
+$\pi_{\text{post}}(\boldsymbol{\theta})$:
 \begin{equation}\label{eq-Bayes-g}
 \pi_{\text{post}}(\boldsymbol{\theta}|\mathbf{d})\varpropto  \pi_{\text{like}}(\mathbf{d}|\boldsymbol{\theta}) \, \pi_{\text{prior}}(\boldsymbol{\theta}).
 \end{equation}
@@ -149,11 +168,14 @@ Now we are ready to evoke Bayes' formula in order to obtain the posterior PDF $\
 
 \subsection{Statistical Forward Problem}
 
+Projectile motion refers to the motion of an object projected into the air at an angle, e.g. a soccer ball 
+being kicked, a baseball being thrown, or an athlete long jumping. Supposing the object does not have a 
+propulsion system and neglecting air resistance, then the only force acting on the object is a 
+constant gravitational acceleration $g$.
 
-Projectile motion refers to the motion of an object projected into the air at an angle, e.g. a soccer ball being kicked, a baseball being thrown, or an athlete long jumping. Supposing the object does not have a propulsion system and neglecting air resistance, then the only force acting on the object is a constant gravitational acceleration $g$.
 
-
-A possible deterministic two-dimensional mathematical model for the vertical motion of an object projected from near the surface of the Earth is given by
+A possible deterministic two-dimensional mathematical model for the vertical motion of an object projected 
+from near the surface of the Earth is given by
 \begin{align}\label{eq:fwd01}
 v_x &= v_{0x} \\ %&= v_{0} \cos(\alpha), \\
 v_y &= v_{0y} - gt \\ %&= v_{0} \sin(\alpha) - gt,\\
@@ -161,8 +183,8 @@ v_y &= v_{0y} - gt \\ %&= v_{0} \sin(\alpha) - gt,\\
   h &= h_0 + v_{0y}t - \frac{1}{2} g t^2  %&= v_{0} \sin(\alpha) t - \frac{1}{2} g t^2.
 \end{align}
 where
-$h_0$ is the initial height, $x=x(t)$ is the distance traveled by the object, $\bv{v_0}=(v_{0x},v_{0y})$ is the initial velocity,
-$v_{0x} = v_{0} \cos(\alpha)$, $v_{0y} = v_{0} \sin(\alpha)$, and $v_0=\|\bv{v_0}\|^2$.
+$h_0$ is the initial height, $x=x(t)$ is the distance traveled by the object, $\bv{v_0}=(v_{0x},v_{0y})$ 
+is the initial velocity, $v_{0x} = v_{0} \cos(\alpha)$, $v_{0y} = v_{0} \sin(\alpha)$, and $v_0=\|\bv{v_0}\|^2$.
 %
 Figure \ref{fig:projectile} displays the projectile motion of an object in these conditions.
 \begin{figure}[!ht]
@@ -174,25 +196,27 @@ Figure \ref{fig:projectile} displays the projectile motion of an object in these
 \end{figure}
 
 
-%Assume that we want to describe the motion of such an object, starting at time $t = 0$, ... and velocity that makes an angle $\alpha$ with the $x$-axis.
+For this example, we assume that $h_0 =0$ m, $\alpha = \pi/4$ radians, $v_0 = 5$ m/s, all 
+deterministic variables; and $g$ is the solution of the SIP described in Section \ref{sec:gravity-ip}.
 
-
-For this example, we assume that $h_0 =0$ m, $\alpha = \pi/4$ radians, $v_0 = 5$ m/s, all deterministic variables; and $g$ is the solution of the SIP described in Section \ref{sec:gravity-ip}.
-
-Since a PDF is assigned to parameter $g$; thus, the output of the mathematical model (\ref{eq:fwd01}) becomes a random variable, thus we have a statistical forward problem. 
+Since a PDF is assigned to parameter $g$; thus, the output of the mathematical model (\ref{eq:fwd01}) 
+becomes a random variable, thus we have a statistical forward problem. 
 
 \subsubsection{The Input RV, QoI Function and Output RV}
  
-The input random variable for the statistical forward problem is the acceleration of gravity $g$, which is also the solution (posterior PDF) of the inverse problem described in Section \ref{sec:gravity-ip}. The output random variable for this example is the distance $x$ traveled by an object in projectile motion. Note that, since there is uncertainty in the parameter $g$ ($g$ is given as a PDF), one can expect that this uncertainty will be propagated to $x$, which will also be given as a PDF.
+The input random variable for the statistical forward problem is the acceleration of gravity $g$, 
+which is also the solution (posterior PDF) of the inverse problem described in Section \ref{sec:gravity-ip}. 
+The output random variable for this example is the distance $x$ traveled by an object in projectile motion. 
+Note that, since there is uncertainty in the parameter $g$ ($g$ is given as a PDF), one can 
+expect that this uncertainty will be propagated to $x$, which will also be given as a PDF.
 
-Combining the expressions in Equation \ref{eq:fwd01} and rearranging them, we have that QoI function for $x$ %(i.e. the final model for the distance traveled by an object in projectile motion) 
+Combining the expressions in Equation \ref{eq:fwd01} and rearranging them, we have that QoI 
+function for $x$ %(i.e. the final model for the distance traveled by an object in projectile motion) 
 is: 
 \begin{equation}\label{eq:fp_deterministic}
 x=\dfrac{ v_0 \cos \alpha }{g} \left( v_0  \sin \alpha  + \sqrt{ ( v_0  \sin \alpha)^2 + 2g\, y_0 }\right).                                                                                        
 \end{equation}
 where $y$ is the distance traveled and our quantity of interest (QoI). 
-
-
 
 \subsection{Running the Example}\label{sec:gravity-run}
  
@@ -255,7 +279,8 @@ kemelli@violeta:~/LIBRARIES/QUESO-0.51.0/examples/gravity$
 \end{lstlisting}
 
 
-In order to generate chain plots, histograms, KDEs, etc., the user may use Matlab/GNU Octave and call the following command lines:
+In order to generate chain plots, histograms, KDEs, etc., the user may use Matlab/GNU Octave and call 
+the following command lines:
 \begin{lstlisting}
 $ matlab
    $ gravity_plots_ip      # inside matlab
