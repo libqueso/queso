@@ -296,15 +296,23 @@ $ ls -l outputData/*.png
   sip_gravity_kde_filt.png         sip_gravity_kde_raw.png
 \end{lstlisting}
 
-As a result, the user should have created several of PNG figures containing marginal posterior PDF, chain positions of the parameters and the QoI, histogram, cumulative density distribution and autocorrelation. The name of the figure files have been chosen to be informative, as shown in the Listing above.
+As a result, the user should have created several of PNG figures containing marginal posterior PDF, 
+chain positions of the parameters and the QoI, histogram, cumulative density distribution and 
+autocorrelation. The name of the figure files have been chosen to be informative, as shown in the listing above.
 
 
 
 \subsection{Example Code}\label{sec:gravity_code}
 
 The source code for the SIP and the SFP is composed of 7 files.
-Three of them are common for both problems: \texttt{gravity\_main.C, gravity\_compute.h} and \texttt{gravity\_compute.C}; they combine both problems and use the solution of the SIP (the posterior PDF for the gravity) as an input for the SFP and are presented, respectively, in Listings \ref{code:gravity_main}, \ref{code:gravity_compute_h} and \ref{code:gravity_compute_C}.
-Two of files specifically  handle the SIP: \texttt{gravity\_likelihood.h}, and \texttt{gravity\_likelihood.C}, and are displayed in Listings \ref{code:gravity_like_h} and \ref{code:gravity_like_C}. Finally, the files specific for the SFP are \texttt{gravity\_qoi.h} and \texttt{gravity\_qoi.C}, and they are presented in Listings \ref{code:gravity_qoi_h} and \ref{code:gravity_qoi_C}.
+Three of them are common for both problems: \texttt{gravity\_main.C, gravity\_compute.h} and 
+\texttt{gravity\_compute.C}; they combine both problems and use the solution of the SIP 
+(the posterior PDF for the gravity) as an input for the SFP and are presented, respectively, 
+in Listings \ref{code:gravity_main}, \ref{code:gravity_compute_h} and \ref{code:gravity_compute_C}.
+Two of files specifically  handle the SIP: \texttt{gravity\_likelihood.h}, and \texttt{gravity\_likelihood.C}, 
+and are displayed in Listings \ref{code:gravity_like_h} and \ref{code:gravity_like_C}. Finally, the files 
+specific for the SFP are \texttt{gravity\_qoi.h} and \texttt{gravity\_qoi.C}, and they are presented in 
+Listings \ref{code:gravity_qoi_h} and \ref{code:gravity_qoi_C}.
 
 \lstinputlisting[caption=File \texttt{gravity\_main.C.}, label=code:gravity_main, linerange={25-1000}]{../../examples/gravity/src/gravity_main.C}
  
@@ -323,26 +331,32 @@ Two of files specifically  handle the SIP: \texttt{gravity\_likelihood.h}, and \
 \subsection{Input File}\label{sec:gravity-input-file}
 
 QUESO reads an input file for solving statistical problems.
-In the case of a SIP, it expects a list of options for MCMC, while in case of SFP it expects a list of options for Monte Carlo. The  input file `\texttt{gravity\_inv\_fwd.inp} used in this example is presented in Listing \ref{code:gravity_inv_fwd}.
+In the case of a SIP, it expects a list of options for MCMC, while in case of SFP it expects a list of 
+options for Monte Carlo. The  input file `\texttt{gravity\_inv\_fwd.inp} used in this example is 
+presented in Listing \ref{code:gravity_inv_fwd}.
 
 \lstinputlisting[caption=Some options for QUESO library used in application code (Listings \ref{code:gravity_main}-\ref{code:gravity_like_C})., label={code:gravity_inv_fwd},]{../../examples/gravity/tests/test_2013_01_22/gravity_inv_fwd.inp}
 
 
  
 
-Moreover, for the gravity inverse problem, one may notice that QUESO will use the Metropolis-Hastings algorithm to sample the posterior PDF
+Moreover, for the gravity inverse problem, one may notice that QUESO will use the Metropolis-Hastings algorithm 
+to sample the posterior PDF
 (indicated by the prefix \texttt{mh\_}in the variable names) without adaptive steps
-(indicated by the zero value assigned to the variable \linebreak \texttt{ip\_mh\_am\_initialNonAdaptInterval}, which can also be achieved by setting zero to \linebreak
-\verb+ip_mh_am_adaptInterval+) and with delayed rejection (indicated by the one-value assigned to the variable \texttt{ip\_mh\_dr\_maxNumExtraStages}).
+(indicated by the zero value assigned to the variable \linebreak \texttt{ip\_mh\_am\_initialNonAdaptInterval}, 
+which can also be achieved by setting zero to \linebreak
+\verb+ip_mh_am_adaptInterval+) and with delayed rejection (indicated by the one-value assigned to the 
+variable \texttt{ip\_mh\_dr\_maxNumExtraStages}).
 
 
 
  
 \subsection{Create your own Makefile}\label{sec:gravity-makefile}
 
-
-
-Listing \ref{code:makefile} presents a Makefile, named \texttt{Makefile\_example\_violeta}, that may be used to compile the code and create the executable \verb+gravity_gsl+. Naturally, it must be adapted to the user's settings, i.e., it has to have the correct paths for the user's libraries that were actually used to compile and install QUESO (see Sections \ref{sec:Pre_Queso}--\ref{sec:install_Queso_make}).
+Listing \ref{code:makefile} presents a Makefile, named \texttt{Makefile\_example\_violeta}, that may be 
+used to compile the code and create the executable \verb+gravity_gsl+. Naturally, it must be adapted 
+to the user's settings, i.e., it has to have the correct paths for the user's libraries that were actually 
+used to compile and install QUESO (see Sections \ref{sec:Pre_Queso}--\ref{sec:install_Queso_make}).
 
 \begin{lstlisting}[caption={Makefile for the application code in Listings
   \ref{code:gravity_main}-\ref{code:gravity_like_C}},
@@ -390,10 +404,15 @@ Listing \ref{code:makefile} presents a Makefile, named \texttt{Makefile\_example
 
 \subsection{Running the Gravity Example with Several Processors}
 
-Even though the application described in Section \ref{sec:gravity_code} is a serial code, it is possible to run it using more than one processor, i.e., in parallel mode. 
-Supposing the user's workstation has $N_p=8$ processors, then, the user my choose to have $N_s =$ 8, 4 or 2 subenvironments. This complies with the requirement that the total number of processors in the environment must be a multiple of the specified number of subenvironments.
+Even though the application described in Section \ref{sec:gravity_code} is a serial code, it is 
+possible to run it using more than one processor, i.e., in parallel mode. 
+Supposing the user's workstation has $N_p=8$ processors, then, the user my choose to have $N_s =$ 
+8, 4 or 2 subenvironments. This complies with the requirement that the total number of processors 
+in the environment must be a multiple of the specified number of subenvironments.
 
-Thus, to build and run the application code with $N_p = 8$, and $N_s=8$ subenvironments, the must set the variable \texttt{env\_numSubEnvironments = 8} in the input file (Listing~\ref{code:gravity_inv_fwd}) and enter the following command lines: 
+Thus, to build and run the application code with $N_p = 8$, and $N_s=8$ subenvironments, the must 
+set the variable \texttt{env\_numSubEnvironments = 8} in the input file 
+(Listing~\ref{code:gravity_inv_fwd}) and enter the following command lines: 
 
 
 
@@ -416,7 +435,8 @@ QUESO also provides the user with the option of writing each chain -- handled by
 
  
 
-According to the specifications of the input file in Listing~\ref{code:gravity_inv_fwd}, both a folder named \verb+outputData+ and a the following files should be generated:
+According to the specifications of the input file in Listing~\ref{code:gravity_inv_fwd}, 
+both a folder named \verb+outputData+ and a the following files should be generated:
 \begin{verbatim}
 sfp_gravity_sub0.m,         sip_gravity_sub0.m, 
 sfp_gravity_p_seq.m,        sip_gravity_filtered_chain.m,,
@@ -426,24 +446,30 @@ sfp_gravity_qoi_seq_sub0.m  sip_gravity_raw_chain_sub0.m,
 display_env_sub0.txt 
 \end{verbatim}
 
-%The names of the files have been chosen to be informative.
-
-
-%In this case, only one sub-environment (processor) has been used, thus, only one file of the type \verb+display_env_sub*+ is generated.
-%
-
-In this section, a convenient capability of QUESO of internally handling possible conflicts in chain size is presented. Recalling the input file \verb+gravity_inv_fwd.inp+ presented in Listing~\ref{code:gravity_inv_fwd}, one may notice that  the raw chain size for the SIP is chosen to have 20000 positions (\verb+ip_mh_rawChain_size = 20000+); the lag of the filtered chain is chosen to be 20 (\verb+ip_mh_filteredChain_lag = 20+) and the chain size for the SFP has 16384 positions (\verb+fp_mc_qseq_size = 16384+). Because the solution of the SIP, ie, the posterior PDF, is used as input PDF for the SFP, QUESO internally sets \verb+fp_mc_qseq_size = 20000+, as can be seen in the file \verb+display_env_sub0.txt+.  The file \verb+display_env_sub0.txt+ contains information from the subenvironment `0' that was generated during the run of the application code.
+In this section, a convenient capability of QUESO of internally handling possible conflicts in 
+chain size is presented. Recalling the input file \verb+gravity_inv_fwd.inp+ presented in 
+Listing~\ref{code:gravity_inv_fwd}, one may notice that  the raw chain size for the SIP is 
+chosen to have 20000 positions (\verb+ip_mh_rawChain_size = 20000+); the lag of the filtered chain 
+is chosen to be 20 (\verb+ip_mh_filteredChain_lag = 20+) and the chain size for the SFP has 16384 
+positions (\verb+fp_mc_qseq_size = 16384+). Because the solution of the SIP, ie, the posterior PDF, 
+is used as input PDF for the SFP, QUESO internally sets \verb+fp_mc_qseq_size = 20000+, as can be 
+seen in the file \verb+display_env_sub0.txt+.  The file \verb+display_env_sub0.txt+ contains information 
+from the subenvironment `0' that was generated during the run of the application code.
 
 \subsubsection{Statistical Inverse Problem}
 
-There are a few Matlab-ready commands that are very helpful tools for post-processing the data generated by QUESO when solving statistical inverse problems.
-This section discusses the results computed by QUESO with the code of Section \ref{sec:gravity_code}, and shows how to use Matlab for the post-processing of such results.
+There are a few Matlab-ready commands that are very helpful tools for post-processing the data 
+generated by QUESO when solving statistical inverse problems.
+This section discusses the results computed by QUESO with the code of Section 
+\ref{sec:gravity_code}, and shows how to use Matlab for the post-processing of such results.
 
 \paragraph{Chain Plots}\
 
-It is quite simple to plot, using Matlab, the chain of positions used in the DRAM algorithm implemented within QUESO. 
-The sequence of Matlab commands presented in Listing \ref{matlab:chain} generates the graphic depicted in Figure \ref{fig:sip_gravity_chain_pos_raw}.
-Figure~\ref{fig:sip_gravity_chain_pos_filtered} is obtained analogously. % by loading \verb+sip_gravity_filtered_chain+ and using  \verb+ip_mh_filtChain_unified+ inside \verb+plot+.
+It is quite simple to plot, using Matlab, the chain of positions used in the DRAM algorithm 
+implemented within QUESO. 
+The sequence of Matlab commands presented in Listing \ref{matlab:chain} generates the 
+graphic depicted in Figure \ref{fig:sip_gravity_chain_pos_raw}.
+Figure~\ref{fig:sip_gravity_chain_pos_filtered} is obtained analogously. 
 
 \begin{lstlisting}[label=matlab:chain,caption={Matlab code for the chain plot.}]
 % inside Matlab
@@ -464,10 +490,9 @@ Figure~\ref{fig:sip_gravity_chain_pos_filtered} is obtained analogously. % by lo
 
 \paragraph{Histogram Plots}\
 
-In order to plot histograms of the parameter using either the raw chain or the filtered chain, you simply have to use the pre-defined Matlab function \verb+hist+.
-%The Matlab code presented in Listing \ref{matlab:hist} below shows how to create the Figure \ref{fig:sip_gravity_hist_raw};
-%once more, Figure \ref{fig:sip_gravity_hist_filtered} is obtained by making suitable adjustments on that code.
-%
+In order to plot histograms of the parameter using either the raw chain or the filtered chain, 
+you simply have to use the pre-defined Matlab function \verb+hist+.
+
 \begin{lstlisting}[label=matlab:hist,caption={Matlab code for the histogram plot.}]
 % inside Matlab
 >> sip_gravity_raw_chain
@@ -489,7 +514,8 @@ In order to plot histograms of the parameter using either the raw chain or the f
 
 \paragraph{KDE Plots} \
 
-Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together with the option \verb+'pdf'+ may be used for plotting the KDE of the parameter.
+Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together with the 
+option \verb+'pdf'+ may be used for plotting the KDE of the parameter.
 \begin{lstlisting}[label=matlab:kde,caption={Matlab code for the KDE plot.}]
 % inside Matlab
 >> sip_gravity_raw_chain
@@ -556,8 +582,8 @@ Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together wi
 
 \paragraph{CDF Plots} \
 
-Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) with \verb+'cdf'+ option may also be used for plotting the Cumulative Distribution Function of the parameter.
-
+Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) with \verb+'cdf'+ option 
+may also be used for plotting the Cumulative Distribution Function of the parameter.
 
 \begin{lstlisting}[label=matlab:cdf,caption={Matlab code for the CDF plot.}]
 % inside Matlab
@@ -581,7 +607,8 @@ Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) with \verb+
 
 \paragraph{Autocorrelation Plots}\
 
-The code presented in Listing \ref{matlab:autocorr} uses matlab function \verb+autocorr+ to generate Figure \ref{fig:sip_gravity_autocorrelation_raw_filt}
+The code presented in Listing \ref{matlab:autocorr} uses matlab function \verb+autocorr+ to generate 
+Figure \ref{fig:sip_gravity_autocorrelation_raw_filt}
 which presents the autocorrelation of the parameter $g$ in both cases: raw and filtered chain.
 
 \begin{lstlisting}[label=matlab:autocorr,caption={Matlab code for the autocorrelation plots.}]
@@ -611,8 +638,10 @@ Autocorrelation plots. }
 
 \paragraph{Covariance and Correlation Matrices}\
 
-Matlab function \verb+cov+ calculates the covariance matrix for a data matrix (where each column represents a separate quantity), and \verb+corr+ calculates the correlation matrix.
-Since our statistical inverse problem has only one parameter (the acceleration $g$ due to gravity), both covariance and correlation matrices have dimension $1 \times 1$, i.e., they are scalars.
+Matlab function \verb+cov+ calculates the covariance matrix for a data matrix 
+(where each column represents a separate quantity), and \verb+corr+ calculates the correlation matrix.
+Since our statistical inverse problem has only one parameter (the acceleration $g$ due to gravity), 
+both covariance and correlation matrices have dimension $1 \times 1$, i.e., they are scalars.
 
 \begin{lstlisting}[label=matlab:cov_matrix,caption={Matlab code for finding the covariance matrix.}]
 % inside Matlab
@@ -637,8 +666,10 @@ corr_matrix_g =
 
 \paragraph{Chain Plots} \
 
-It is quite simple to plot, using Matlab, the chain of positions generated by the Monte Carlo algorithm implemented within QUESO and called during the solution of the statistical forward problem. 
-The sequence of Matlab commands presented bellow generates the graphic depicted in Figure~\ref{fig:sfp_gravity_chain}. 
+It is quite simple to plot, using Matlab, the chain of positions generated by the Monte Carlo algorithm 
+implemented within QUESO and called during the solution of the statistical forward problem. 
+The sequence of Matlab commands presented bellow generates the graphic depicted in 
+Figure~\ref{fig:sfp_gravity_chain}. 
 
 \begin{lstlisting}[label=matlab:chain_qoi,caption={Matlab code for the chain plot.}]
 % inside Matlab
@@ -682,7 +713,8 @@ The Matlab code presented in below shows how to create the Figure~\ref{fig:sfp_g
 
 \paragraph{KDE Plots} \
 
-Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together with the option \verb+'pdf'+ may be used for plotting the KDE of the he QoI, displayed in Figure \ref{fig:sfp_gravity_kde}.
+Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together with the 
+option \verb+'pdf'+ may be used for plotting the KDE of the he QoI, displayed in Figure \ref{fig:sfp_gravity_kde}.
 
 \begin{lstlisting}[label=matlab:kde_qoi,caption={Matlab code for the QoI KDE plot.}]
 % inside Matlab
@@ -707,7 +739,8 @@ Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) together wi
 
 \paragraph{CDF Plots} \
 
-Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) with \verb+'cdf'+ option may also be used for plotting the Cumulative Distribution Function of the QoI, displayed in Figure~\ref{fig:sfp_gravity_cdf}.
+Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) with \verb+'cdf'+ option may also be 
+used for plotting the Cumulative Distribution Function of the QoI, displayed in Figure~\ref{fig:sfp_gravity_cdf}.
 
 \begin{lstlisting}[label=matlab:cdf_qoi,caption={Matlab code for the QoI CDF plot.}]
 % inside Matlab
@@ -737,7 +770,8 @@ Matlab function \verb+ksdensity+ (Kernel smoothing density estimate) with \verb+
 \end{figure}
 \paragraph{Autocorrelation Plots} \
 
-The code presented in Listing \ref{matlab:autocorr_qoi} uses Matlab function \verb+autocorr+ to generate Figure~\ref{fig:sfp_gravity_autocorrelation}, which presents the autocorrelation of the QoI $d$.
+The code presented in Listing \ref{matlab:autocorr_qoi} uses Matlab function \verb+autocorr+ 
+to generate Figure~\ref{fig:sfp_gravity_autocorrelation}, which presents the autocorrelation of the QoI $d$.
 
 \begin{lstlisting}[label=matlab:autocorr_qoi,caption={Matlab code for the QoI autocorrelation plot.}]
 % inside Matlab
@@ -761,10 +795,12 @@ The code presented in Listing \ref{matlab:autocorr_qoi} uses Matlab function \ve
 
 \paragraph{Covariance and Correlation Matrices} \
 
-For a matrix input \verb+X+, where each row is an observation, and each column is a variable, the Matlab function \verb+cov(X)+ may be used to calculate the covariance matrix.
+For a matrix input \verb+X+, where each row is an observation, and each column is a 
+variable, the Matlab function \verb+cov(X)+ may be used to calculate the covariance matrix.
 %The command \verb+diag(cov(X))+ is a vector of variances for each column, and, therefore, \verb+sqrt(diag(cov(X)))+ is a vector of standard deviations.  
 
-Thus,  in order to calculated the covariance matrix between the parameter and the quantity of interest sequences generated by Monte Carlo sampler with QUESO,
+Thus,  in order to calculated the covariance matrix between the parameter and the quantity of interest 
+sequences generated by Monte Carlo sampler with QUESO,
 one may simply define \verb+X=[fp_mc_ParamSeq_unified fp_mc_QoiSeq_unified]+.
 The code presented in Listing \ref{matlab:cov_pqoi} shows the usage of Matlab commands for finding such the matrix.
 
@@ -781,8 +817,10 @@ cov_p_QoI =
 
 \end{lstlisting}
 
-Analogously, the Matlab function \verb+corrcoef(X)+ returns a matrix of correlation coefficients calculated from an input matrix \verb+X+ whose rows are observations and whose columns are variables.
-In order to calculated the correlation matrix between the parameter and the QoI sequences, one may simply define \verb+X=[fp_mc_ParamSeq_unified fp_mc_QoiSeq_unified]+.
+Analogously, the Matlab function \verb+corrcoef(X)+ returns a matrix of correlation coefficients 
+calculated from an input matrix \verb+X+ whose rows are observations and whose columns are variables.
+In order to calculated the correlation matrix between the parameter and the QoI sequences, 
+one may simply define \verb+X=[fp_mc_ParamSeq_unified fp_mc_QoiSeq_unified]+.
 % The matrix R = corrcoef(X) is related to the covariance matrix C = cov(X) b
 
 \begin{lstlisting}[label=matlab:corr_param_qoi,caption={Matlab code for the matrix of correlation between parameter $g$ and quantity of interest $d$.}]
