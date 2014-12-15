@@ -12,7 +12,7 @@ class Likelihood : public QUESO::BaseScalarFunction<V, M>
 public:
 
   Likelihood(const char * prefix, const QUESO::VectorSet<V, M> & domain)
-  : QUESO::BaseScalarFunction<V, M>(prefix, domain)
+    : QUESO::BaseScalarFunction<V, M>(prefix, domain)
   {
     // Setup here
   }
@@ -80,7 +80,7 @@ int main(int argc, char ** argv) {
 
   // Step 3 of 5: Set up the likelihood using the class above
   Likelihood<QUESO::GslVector, QUESO::GslMatrix> lhood("llhd_", paramDomain);
-  
+
   // Step 4 of 5: Instantiate the inverse problem
   QUESO::GenericVectorRV<QUESO::GslVector, QUESO::GslMatrix>
     postRv("post_", paramSpace);
@@ -94,17 +94,17 @@ int main(int argc, char ** argv) {
   // Initial condition of the chain
   paramInitials[0] = 0.0;
   paramInitials[1] = 0.0;
-  
+
   QUESO::GslMatrix proposalCovMatrix(paramSpace.zeroVector());
 
-  for (unsigned int i = 0; i < 2; i++) {
+  for (unsigned int i = 0; i < 1; i++) {
     // Might need to tweak this
     proposalCovMatrix(i, i) = 0.1;
   }
-  
+
   ip.solveWithBayesMetropolisHastings(NULL, paramInitials, &proposalCovMatrix);
 
   MPI_Finalize();
- 
+
   return 0;
 }
