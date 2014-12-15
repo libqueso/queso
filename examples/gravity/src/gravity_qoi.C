@@ -1,85 +1,70 @@
-/*------------------------------------------------------------------------
+//-----------------------------------------------------------------------bl-
+//--------------------------------------------------------------------------
+//
+// QUESO - a library to support the Quantification of Uncertainty
+// for Estimation, Simulation and Optimization
+//
+// Copyright (C) 2008,2009,2010,2011,2012,2013 The PECOS Development Team
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the Version 2.1 GNU Lesser General
+// Public License as published by the Free Software Foundation.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
+// Boston, MA  02110-1301  USA
+//
+//-----------------------------------------------------------------------el-
+
+/*
+ * Brief description of this file:
  *
- * Copyright (C) 2012 The PECOS Development Team
- *
- * Please see http://pecos.ices.utexas.edu for more information.
- *
- * This file is part of the QUESO Library (Quantification of Uncertainty
- * for Estimation, Simulation and Optimization).
- *
- * QUESO is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * QUESO is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with QUESO. If not, see <http://www.gnu.org/licenses/>.
- *
- *------------------------------------------------------------------------
- *
- */
- /*------------------------------------------------------------------
- * Brief description of this file: 
- * 
  * This file contains the code for the user defined qoi routine.
- *-----------------------------------------------------------------*/
+ */
 
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
 #include <gravity_qoi.h>
-#include <cmath>
 
-//------------------------------------------------------
-/// The actual (user-defined) qoi routine
-//------------------------------------------------------
-void
-qoiRoutine(
-  const QUESO::GslVector&                    paramValues,
-  const QUESO::GslVector*                    paramDirection,
-  const void*                                functionDataPtr,
-        QUESO::GslVector&                    qoiValues,
-        QUESO::DistArray<QUESO::GslVector*>* gradVectors,
-        QUESO::DistArray<QUESO::GslMatrix*>* hessianMatrices,
-        QUESO::DistArray<QUESO::GslVector*>* hessianEffects)
+template<class P_V, class P_M, class Q_V, class Q_M>
+Qoi<P_V, P_M, Q_V, Q_M>::Qoi(const char * prefix,
+    const QUESO::VectorSet<P_V, P_M> & domainSet,
+    const QUESO::VectorSet<Q_V, Q_M> & imageSet)
+  : QUESO::BaseVectorFunction<P_V, P_M, Q_V, Q_M>(prefix, domainSet, imageSet),
+    m_angle(M_PI / 4.0),
+    m_initialVelocity(5.0),
+    m_initialHeight(0.0)
 {
-  const QUESO::BaseEnvironment& env = paramValues.env();
-
-  if (paramDirection && 
-      gradVectors    &&
-      hessianEffects &&
-      hessianMatrices) {
-    // Logic just to avoid warnings from INTEL compiler
-  }
-
-  // The user, at the application level, should have set
-  // the vector 'paramValues' to have size 1 and
-  // the vector 'qoiValues' to have size 1.
-  UQ_FATAL_TEST_MACRO(paramValues.sizeGlobal() != 1,
-                      env.fullRank(),
-                      "qoiRoutine()",
-                      "paramValues vector does not have size 1");
-
-  UQ_FATAL_TEST_MACRO(qoiValues.sizeGlobal() != 1,
-                      env.fullRank(),
-                      "qoiRoutine()",
-                      "qoiValues vector does not have size 1");
-  
-  // Compute qoi(s)
-  double g = paramValues[0]; // Sample of the RV 'gravity acceleration'
-  double distanceTraveled = 0.;
-  if (env.subRank() == 0) {
-    double velocity = ((qoiRoutine_Data *) functionDataPtr)->m_initialVelocity;
-    double heights  = ((qoiRoutine_Data *) functionDataPtr)->m_initialHeight;
-    double alpha    = ((qoiRoutine_Data *) functionDataPtr)->m_angle;
-    
-    double aux       = velocity * sin(alpha);
-    distanceTraveled = (velocity * cos(alpha) / g) * ( aux + sqrt(pow(aux,2) + 2.*g*heights) );
-  }
-
-  qoiValues[0] = distanceTraveled;
-    
-  return;  
 }
+
+template<class P_V, class P_M, class Q_V, class Q_M>
+Qoi<P_V, P_M, Q_V, Q_M>::~Qoi()
+{
+  // Deconstruct here
+}
+
+template<class P_V, class P_M, class Q_V, class Q_M>
+void
+Qoi<P_V, P_M, Q_V, Q_M>::compute(const P_V & domainVector,
+    const P_V * domainDirection,
+    Q_V & imageVector, QUESO::DistArray<P_V *> * gradVectors,
+    QUESO::DistArray<P_M *> * hessianMatrices,
+    QUESO::DistArray<P_V *> * hessianEffects) const
+{
+  double g = domainVector[0];  // Sample of the RV 'gravity acceleration'
+  double distanceTraveled = 0.0;
+  double aux = m_initialVelocity * std::sin(m_angle);
+  distanceTraveled = (m_initialVelocity * std::cos(m_angle) / g) *
+    (aux + std::sqrt(std::pow(aux, 2) + 2.0 * g * m_initialHeight));
+
+  imageVector[0] = distanceTraveled;
+}
+
+template class Qoi<QUESO::GslVector, QUESO::GslMatrix, QUESO::GslVector,
+                   QUESO::GslMatrix>;
