@@ -57,6 +57,13 @@ Qoi<P_V, P_M, Q_V, Q_M>::compute(const P_V & domainVector,
     QUESO::DistArray<P_M *> * hessianMatrices,
     QUESO::DistArray<P_V *> * hessianEffects) const
 {
+  if (domainVector.sizeLocal() != 1) {
+    queso_error_msg("domainVector does not have size 1");
+  }
+  if (imageVector.sizeLocal() != 1) {
+    queso_error_msg("imageVector does not have size 1");
+  }
+
   double g = domainVector[0];  // Sample of the RV 'gravity acceleration'
   double distanceTraveled = 0.0;
   double aux = m_initialVelocity * std::sin(m_angle);
