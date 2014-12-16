@@ -10,17 +10,17 @@ QUESO_CPPFLAGS += $(ANN_CFLAGS)
 LIBS += $(GSL_LIBS)
 
 if TRILINOS_ENABLED
-  QUESO_CPPFLAGS += -I$(TRILINOS_INCLUDE) 
+  QUESO_CPPFLAGS += -I$(TRILINOS_INCLUDE)
   LIBS += -lteuchoscore -lteuchoscomm -lteuchosnumerics -lteuchosparameterlist -lteuchosremainder -lepetra
 endif
 
-if GLPK_ENABLED	
+if GLPK_ENABLED
   QUESO_CPPFLAGS += $(GLPK_CFLAGS)
   LIBS += $(GLPK_LIBS)
 endif
 
-if HDF5_ENABLED	
-  QUESO_CPPFLAGS += $(HDF5_CFLAGS) 
+if HDF5_ENABLED
+  QUESO_CPPFLAGS += $(HDF5_CFLAGS)
   LIBS += $(HDF5_LIBS)
 endif
 
@@ -98,11 +98,11 @@ exSimpleStatisticalInverseProblem_gsl_LDADD = $(top_builddir)/src/libqueso.la
 exSimpleStatisticalInverseProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simpleStatisticalInverseProblem/src $(QUESO_CPPFLAGS)
 
 # Make sure everything relevant gets added when doing 'make dist'
-dist_exSimpleStatisticalInverseProblem_gsl_DATA =	
+dist_exSimpleStatisticalInverseProblem_gsl_DATA =
 dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseProblem_gsl_DATA}
 dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseProblem_gsl_HEADERS}
 dist_exSimpleStatisticalInverseProblem_gsl_DATA += ${exSimpleStatisticalInverseProblem_gsl_SOURCES}
-		
+
 ###################################
 # simpleStatisticalForwardProblem #
 ###################################
@@ -127,9 +127,9 @@ exSimpleStatisticalForwardProblem_gsl_CPPFLAGS = -I$(top_srcdir)/examples/simple
 dist_exSimpleStatisticalForwardProblem_gsl_DATA = ${exSimpleStatisticalForwardProblem_gsl_DATA}
 dist_exSimpleStatisticalForwardProblem_gsl_DATA += ${exSimpleStatisticalForwardProblem_gsl_HEADERS}
 dist_exSimpleStatisticalForwardProblem_gsl_DATA += ${exSimpleStatisticalForwardProblem_gsl_SOURCES}
-																						
+
 ####################################
-# statisticalForwardProblemExample # 
+# statisticalForwardProblemExample #
 ####################################
 # Kemelli, 8/26/13: removing this example from the distro
 # exStatisticalForwardProblem_gsldir = $(prefix)/examples/statisticalForwardProblem
@@ -293,7 +293,7 @@ dist_gravity_gsl_DATA =
 dist_gravity_gsl_DATA += $(gravity_gsl_DATA)
 dist_gravity_gsl_DATA += ${gravity_gsl_HEADERS}
 dist_gravity_gsl_DATA += ${gravity_gsl_SOURCES}
-					
+
 ####################
 # bimodal          #
 ####################
