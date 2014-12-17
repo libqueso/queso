@@ -12,6 +12,8 @@
 Makefile.in
 Makefile
 !manual/Makefile
+manual/mixed_effects/*.pdf
+manual/mixed_effects/*.aux
 libtool
 sl6-config
 stamp-h1
