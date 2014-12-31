@@ -72,7 +72,7 @@ public:
                     POLAK_RIBIERE_CG,
                     BFGS,
                     BFGS2,
-                    STEEPEST_DECENT,
+                    STEEPEST_DESCENT,
                     NELDER_MEAD,
                     NELDER_MEAD2,
                     NELDER_MEAD2_RAND };
