@@ -112,7 +112,7 @@ UniformJointPdf<V,M>::lnValue(
     volume = 1.;
   }
 
-  return log(volume); // No need to add m_logOfNormalizationFactor [PDF-04]
+  return -log(volume);
 }
 //--------------------------------------------------
 template<class V, class M>
