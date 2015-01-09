@@ -242,7 +242,7 @@ GslOptimizer::minimizer() const
       case(POLAK_RIBIERE_CG):
       case(BFGS):
       case(BFGS2):
-      case(STEEPEST_DECENT):
+      case(STEEPEST_DESCENT):
         {
           gradient_needed = true;
           break;
@@ -288,7 +288,7 @@ GslOptimizer::minimizer() const
       case(BFGS2):
         type = gsl_multimin_fdfminimizer_vector_bfgs2;
         break;
-      case(STEEPEST_DECENT):
+      case(STEEPEST_DESCENT):
         type = gsl_multimin_fdfminimizer_steepest_descent;
         break;
       case(NELDER_MEAD):
@@ -386,7 +386,7 @@ GslOptimizer::minimizer() const
       case(POLAK_RIBIERE_CG):
       case(BFGS):
       case(BFGS2):
-      case(STEEPEST_DECENT):
+      case(STEEPEST_DESCENT):
       default:
         // Wat?!
         queso_error();
@@ -485,7 +485,7 @@ GslOptimizer::minimizer() const
     else if( solver == std::string("bfgs2") )
       solver_type = BFGS2;
     else if( solver == std::string("steepest_decent") )
-      solver_type = STEEPEST_DECENT;
+      solver_type = STEEPEST_DESCENT;
     else if( solver == std::string("nelder_mead") )
       solver_type = NELDER_MEAD;
     else if( solver == std::string("nelder_mead2") )

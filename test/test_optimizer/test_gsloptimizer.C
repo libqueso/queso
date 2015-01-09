@@ -76,7 +76,7 @@ int main(int argc, char ** argv) {
 
   double tol = 1.0e-10;
   optimizer.setTolerance(tol);
-  optimizer.set_solver_type(QUESO::GslOptimizer::STEEPEST_DECENT);
+  optimizer.set_solver_type(QUESO::GslOptimizer::STEEPEST_DESCENT);
 
   QUESO::OptimizerMonitor monitor(env);
   monitor.set_display_output(true,true);
