@@ -9,12 +9,12 @@ if GRVY_ENABLED
   AM_CPPFLAGS += $(GRVY_CFLAGS)
 endif
 
-if GLPK_ENABLED	
+if GLPK_ENABLED
   AM_CPPFLAGS += $(GLPK_CFLAGS)
 endif
 
-if HDF5_ENABLED	
-  AM_CPPFLAGS += $(HDF5_CFLAGS) 
+if HDF5_ENABLED
+  AM_CPPFLAGS += $(HDF5_CFLAGS)
 endif
 
 if LIBMESH_ENABLED
@@ -31,16 +31,16 @@ endif
 lib_LTLIBRARIES      = libqueso.la
 libqueso_includedir  = $(prefix)/include/queso
 libqueso_la_LDFLAGS  = $(all_libraries) -release $(GENERIC_RELEASE)
-libqueso_la_LDFLAGS += $(GSL_LIBS) 
+libqueso_la_LDFLAGS += $(GSL_LIBS)
 libqueso_la_LDFLAGS += $(BOOST_PROGRAM_OPTIONS_LDFLAGS) $(BOOST_PROGRAM_OPTIONS_LIBS)
 libqueso_la_LDFLAGS += $(ANN_LIBS)
 libqueso_la_LDFLAGS += $(HDF5_LIBS) $(HDF5_CXXLIBS)
 
-if GRVY_ENABLED	
+if GRVY_ENABLED
   libqueso_la_LDFLAGS += $(GRVY_LIBS)
 endif
 
-if GLPK_ENABLED	
+if GLPK_ENABLED
   libqueso_la_LDFLAGS += $(GLPK_LIBS)
 endif
 
@@ -94,7 +94,7 @@ libqueso_la_SOURCES += core/src/InfiniteDimensionalLikelihoodBase.C
 libqueso_la_SOURCES += core/src/FunctionOperatorBuilder.C
 
 
-# Sources from core/src with gsl conditional 
+# Sources from core/src with gsl conditional
 
 if UQBT_GSL
 libqueso_la_SOURCES += core/src/GslVector.C
@@ -340,7 +340,7 @@ libqueso_include_HEADERS += basic/inc/IntersectionSubset.h
 libqueso_include_HEADERS += basic/inc/GenericVectorFunction.h
 libqueso_include_HEADERS += basic/inc/ConstantVectorFunction.h
 
-# Headers to install from stats/inc 
+# Headers to install from stats/inc
 
 libqueso_include_HEADERS += stats/inc/FiniteDistribution.h
 libqueso_include_HEADERS += stats/inc/JointPdf.h
@@ -423,7 +423,7 @@ libqueso_include_HEADERS += stats/inc/VectorGaussianRandomField.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihood.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodScalarCovariance.h
 
-# Headers to install from gp/inc 
+# Headers to install from gp/inc
 
 libqueso_include_HEADERS += gp/inc/ExperimentModel.h
 libqueso_include_HEADERS += gp/inc/ExperimentModelOptions.h
