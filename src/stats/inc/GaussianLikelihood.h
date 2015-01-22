@@ -72,7 +72,7 @@ public:
       V * hessianEffect) const = 0;
 
 protected:
-  double * m_modelOutput;
+  std::vector<double> m_modelOutput;
   const std::vector<double> & m_observations;
 };
 
