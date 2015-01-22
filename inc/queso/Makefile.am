@@ -105,6 +105,8 @@ BUILT_SOURCES += GammaJointPdf.h
 BUILT_SOURCES += GammaVectorRV.h
 BUILT_SOURCES += GammaVectorRealizer.h
 BUILT_SOURCES += GaussianJointPdf.h
+BUILT_SOURCES += GaussianLikelihood.h
+BUILT_SOURCES += GaussianLikelihoodScalarCovariance.h
 BUILT_SOURCES += GaussianVectorCdf.h
 BUILT_SOURCES += GaussianVectorMdf.h
 BUILT_SOURCES += GaussianVectorRV.h
@@ -373,6 +375,10 @@ GammaVectorRV.h: $(top_srcdir)/src/stats/inc/GammaVectorRV.h
 GammaVectorRealizer.h: $(top_srcdir)/src/stats/inc/GammaVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianJointPdf.h: $(top_srcdir)/src/stats/inc/GaussianJointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianLikelihood.h: $(top_srcdir)/src/stats/inc/GaussianLikelihood.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GaussianLikelihoodScalarCovariance.h: $(top_srcdir)/src/stats/inc/GaussianLikelihoodScalarCovariance.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GaussianVectorCdf.h: $(top_srcdir)/src/stats/inc/GaussianVectorCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
