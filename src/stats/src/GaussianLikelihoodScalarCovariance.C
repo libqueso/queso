@@ -62,10 +62,11 @@ GaussianLikelihoodScalarCovariance<V, M>::lnValue(const V & domainVector,
   double misfit = 0.0;
 
   for (unsigned int i = 0; i < this->m_observations.size(); i++) {
-    misfit += this->m_modelOutput[i] - this->m_observations[i];
+    double diff = this->m_modelOutput[i] - this->m_observations[i];
+    misfit += diff * diff;
   }
 
-  return -0.5 * misfit * misfit / m_variance;
+  return -0.5 * misfit / m_variance;
 }
 
 }  // End namespace QUESO
