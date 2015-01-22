@@ -67,12 +67,11 @@ public:
    * synthetic observations that will be to compare to actual observations when
    * computing the likelihood functional.
    */
-  virtual double * evaluateModel(const V & domainVector,
+  virtual const std::vector<double> & evaluateModel(const V & domainVector,
       const V * domainDirection, V * gradVector, M * hessianMatrix,
       V * hessianEffect) const = 0;
 
 protected:
-  std::vector<double> m_modelOutput;
   const std::vector<double> & m_observations;
 };
 

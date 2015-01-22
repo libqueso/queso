@@ -61,8 +61,11 @@ GaussianLikelihoodScalarCovariance<V, M>::lnValue(const V & domainVector,
 {
   double misfit = 0.0;
 
+  const std::vector<double> & modelOutput = this->evaluateModel(domainVector,
+    domainDirection, gradVector, hessianMatrix, hessianEffect);
+
   for (unsigned int i = 0; i < this->m_observations.size(); i++) {
-    double diff = this->m_modelOutput[i] - this->m_observations[i];
+    double diff = modelOutput[i] - this->m_observations[i];
     misfit += diff * diff;
   }
 

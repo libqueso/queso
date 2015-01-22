@@ -34,7 +34,6 @@ BaseGaussianLikelihood<V, M>::BaseGaussianLikelihood(
     const char * prefix, const VectorSet<V, M> & domainSet,
     const std::vector<double> & observations)
   : BaseScalarFunction<V, M>(prefix, domainSet),
-    m_modelOutput(observations.size()),
     m_observations(observations)
 {
 }
