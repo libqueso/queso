@@ -25,6 +25,7 @@
 #ifndef UQ_GAUSSIAN_LLHD_H
 #define UQ_GAUSSIAN_LLHD_H
 
+#include <vector>
 #include <queso/ScalarFunction.h>
 
 namespace QUESO {
@@ -51,7 +52,8 @@ public:
    * evaluating the likelihood functional
    */
   BaseGaussianLikelihood(const char * prefix,
-      const VectorSet<V, M> & domainSet, const double * observations);
+      const VectorSet<V, M> & domainSet,
+      const std::vector<double> & observations);
 
   //! Destructor
   virtual ~BaseGaussianLikelihood();
@@ -69,9 +71,9 @@ public:
       const V * domainDirection, V * gradVector, M * hessianMatrix,
       V * hessianEffect) const = 0;
 
-//protected:
+protected:
   double * m_modelOutput;
-  const double * m_observations;
+  const std::vector<double> & m_observations;
 };
 
 }  // End namespace QUESO

@@ -47,8 +47,8 @@ public:
    * a set of observations and a scalar variance
    */
   GaussianLikelihoodScalarCovariance(const char * prefix,
-      const VectorSet<V, M> & domainSet, const double * observations,
-      double variance);
+      const VectorSet<V, M> & domainSet,
+      const std::vector<double> & observations, double variance);
 
   //! Destructor
   virtual ~GaussianLikelihoodScalarCovariance();
