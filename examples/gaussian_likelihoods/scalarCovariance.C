@@ -37,10 +37,9 @@ class Likelihood : public QUESO::GaussianLikelihoodScalarCovariance<V, M>
 public:
 
   Likelihood(const char * prefix, const QUESO::VectorSet<V, M> & domain,
-      const std::vector<double> & observations, double variance)
+      const V & observations, double variance)
     : QUESO::GaussianLikelihoodScalarCovariance<V, M>(prefix, domain,
-        observations, variance),
-      m_modelOutput(observations.size())
+        observations, variance)
   {
   }
 
@@ -48,20 +47,15 @@ public:
   {
   }
 
-  virtual const std::vector<double> & evaluateModel(const V & domainVector,
-      const V * domainDirection, V * gradVector, M * hessianMatrix,
+  virtual void evaluateModel(const V & domainVector, const V * domainDirection,
+      V & modelOutput, V * gradVector, M * hessianMatrix,
       V * hessianEffect) const
   {
     // Evaluate model and fill up the m_modelOutput member variable
-    for (unsigned int i = 0; i < this->m_modelOutput.size(); i++) {
-      this->m_modelOutput[i] = 1.0;
+    for (unsigned int i = 0; i < modelOutput.sizeLocal(); i++) {
+      modelOutput[i] = 1.0;
     }
-
-    return this->m_modelOutput;
   }
-
-private:
-  mutable std::vector<double> m_modelOutput;
 };
 
 int main(int argc, char ** argv) {
@@ -86,9 +80,16 @@ int main(int argc, char ** argv) {
   QUESO::UniformVectorRV<QUESO::GslVector, QUESO::GslMatrix> priorRv("prior_",
       paramDomain);
 
-  std::vector<double> observations(2);
+  // Set up observation space
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> obsSpace(env,
+      "obs_", 2, NULL);
+
+  // Fill up observation vector
+  QUESO::GslVector observations(obsSpace.zeroVector());
   observations[0] = 1.0;
   observations[1] = 1.0;
+
+  // Pass in observations to Gaussian likelihood object
   Likelihood<QUESO::GslVector, QUESO::GslMatrix> lhood("llhd_", paramDomain,
       observations, 1.0);
 

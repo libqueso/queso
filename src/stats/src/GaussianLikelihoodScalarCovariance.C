@@ -32,7 +32,7 @@ namespace QUESO {
 template<class V, class M>
 GaussianLikelihoodScalarCovariance<V, M>::GaussianLikelihoodScalarCovariance(
     const char * prefix, const VectorSet<V, M> & domainSet,
-    const std::vector<double> & observations, double variance)
+    const V & observations, double variance)
   : BaseGaussianLikelihood<V, M>(prefix, domainSet, observations),
     m_variance(variance)
 {
@@ -59,17 +59,15 @@ GaussianLikelihoodScalarCovariance<V, M>::lnValue(const V & domainVector,
     const V * domainDirection, V * gradVector, M * hessianMatrix,
     V * hessianEffect) const
 {
-  double misfit = 0.0;
+  V modelOutput(this->m_observations, 0, 0);  // At least it's not a copy
 
-  const std::vector<double> & modelOutput = this->evaluateModel(domainVector,
-    domainDirection, gradVector, hessianMatrix, hessianEffect);
+  this->evaluateModel(domainVector, domainDirection, modelOutput, gradVector,
+      hessianMatrix, hessianEffect);
 
-  for (unsigned int i = 0; i < this->m_observations.size(); i++) {
-    double diff = modelOutput[i] - this->m_observations[i];
-    misfit += diff * diff;
-  }
+  modelOutput -= this->m_observations;  // Compute misfit
+  double norm2_squared = modelOutput.norm2Sq();  // Compute square of 2-norm
 
-  return -0.5 * misfit / m_variance;
+  return -0.5 * norm2_squared / m_variance;
 }
 
 }  // End namespace QUESO

@@ -53,7 +53,7 @@ public:
    */
   BaseGaussianLikelihood(const char * prefix,
       const VectorSet<V, M> & domainSet,
-      const std::vector<double> & observations);
+      const V & observations);
 
   //! Destructor
   virtual ~BaseGaussianLikelihood();
@@ -67,12 +67,12 @@ public:
    * synthetic observations that will be to compare to actual observations when
    * computing the likelihood functional.
    */
-  virtual const std::vector<double> & evaluateModel(const V & domainVector,
-      const V * domainDirection, V * gradVector, M * hessianMatrix,
+  virtual void evaluateModel(const V & domainVector, const V * domainDirection,
+      V & modelOutput, V * gradVector, M * hessianMatrix,
       V * hessianEffect) const = 0;
 
 protected:
-  const std::vector<double> & m_observations;
+  const V & m_observations;
 };
 
 }  // End namespace QUESO
