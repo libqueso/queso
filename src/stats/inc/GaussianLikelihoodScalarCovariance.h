@@ -44,11 +44,11 @@ public:
   //! Default constructor.
   /*!
    * Instantiates a Gaussian likelihood function, given a prefix, its domain,
-   * a set of observations and a scalar variance
+   * a set of observations and a scalar covariance matrix.
    */
   GaussianLikelihoodScalarCovariance(const char * prefix,
       const VectorSet<V, M> & domainSet, const V & observations,
-      double variance);
+      double covariance);
 
   //! Destructor
   virtual ~GaussianLikelihoodScalarCovariance();
@@ -63,7 +63,7 @@ public:
       V * gradVector, M * hessianMatrix, V * hessianEffect) const;
 
 private:
-  double m_variance;
+  double m_covariance;
 };
 
 }  // End namespace QUESO
