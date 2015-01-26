@@ -371,11 +371,16 @@ gpmsa_scalar_CPPFLAGS = -I$(top_srcdir)/examples/gp/scalar $(QUESO_CPPFLAGS)
 # Canned Gaussian likelihood examples #
 #######################################
 scalarCovariancedir = $(prefix)/examples/gaussian_likelihoods
-
 scalarCovariance_PROGRAMS = scalarCovariance
 scalarCovariance_SOURCES = gaussian_likelihoods/scalarCovariance.C
 scalarCovariance_LDADD = $(top_builddir)/src/libqueso.la
 scalarCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/scalarCovariance $(QUESO_CPPFLAGS)
+
+diagonalCovariancedir = $(prefix)/examples/gaussian_likelihoods
+diagonalCovariance_PROGRAMS = diagonalCovariance
+diagonalCovariance_SOURCES = gaussian_likelihoods/diagonalCovariance.C
+diagonalCovariance_LDADD = $(top_builddir)/src/libqueso.la
+diagonalCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/diagonalCovariance $(QUESO_CPPFLAGS)
 
 dist_gpmsa_scalar_DATA =
 dist_gpmsa_scalar_DATA += ${gpmsa_scalar_SOURCES}

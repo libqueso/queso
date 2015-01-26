@@ -238,6 +238,7 @@ libqueso_la_SOURCES += stats/src/UniformVectorRV.C
 libqueso_la_SOURCES += stats/src/WignerVectorRV.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihood.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodScalarCovariance.C
+libqueso_la_SOURCES += stats/src/GaussianLikelihoodDiagonalCovariance.C
 
 # Sources from gp/src
 
@@ -422,6 +423,7 @@ libqueso_include_HEADERS += stats/inc/ScalarGaussianRandomField.h
 libqueso_include_HEADERS += stats/inc/VectorGaussianRandomField.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihood.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodScalarCovariance.h
+libqueso_include_HEADERS += stats/inc/GaussianLikelihoodDiagonalCovariance.h
 
 # Headers to install from gp/inc
 
