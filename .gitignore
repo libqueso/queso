@@ -83,6 +83,9 @@ examples/outputData
 examples/template_eg
 examples/template_example/outputData
 examples/template_example/template_example
+examples/scalarCovariance
+examples/diagonalCovariance
+examples/fullCovariance
 
 src/core/inc/queso.h
 src/libqueso.la
