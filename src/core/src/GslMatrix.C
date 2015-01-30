@@ -666,7 +666,7 @@ GslMatrix::internalSvd() const
     m_svdSvec   = new GslVector(m_env,*m_svdColMap);
     m_svdVmat   = new GslMatrix(*m_svdSvec);
     m_svdVTmat  = new GslMatrix(*m_svdSvec);
-    
+
     //std::cout << "In GslMatrix::internalSvd()"
     //          << ", calling gsl_linalg_SV_decomp_jacobi()..."
     //          << ": nRows = " << nRows
@@ -784,11 +784,11 @@ GslMatrix::filterSmallValues(double thresholdValue)
       if ((aux             < 0. ) &&
           (-thresholdValue < aux)) {
         (*this)(i,j) = 0.;
-      }      
+      }
       if ((aux            > 0. ) &&
           (thresholdValue > aux)) {
         (*this)(i,j) = 0.;
-      }      
+      }
     }
   }
 
@@ -807,11 +807,11 @@ GslMatrix::filterLargeValues(double thresholdValue)
       if ((aux             < 0. ) &&
           (-thresholdValue > aux)) {
         (*this)(i,j) = 0.;
-      }      
+      }
       if ((aux            > 0. ) &&
           (thresholdValue < aux)) {
         (*this)(i,j) = 0.;
-      }      
+      }
     }
   }
 
@@ -970,7 +970,7 @@ GslMatrix::fillWithBlocksDiagonally(
       for (unsigned int colId = 0; colId < nCols; ++colId) {
         (*this)(initialTargetRowId + cumulativeRowId + rowId, initialTargetColId + cumulativeColId + colId) = (*(matrices[i]))(rowId,colId);
       }
-    } 
+    }
     cumulativeRowId += nRows;
     cumulativeColId += nCols;
   }
@@ -1191,7 +1191,7 @@ GslMatrix::fillWithTensorProduct(
         }
       }
     }
-  } 
+  }
 
   return;
 }
@@ -1233,7 +1233,7 @@ GslMatrix::fillWithTensorProduct(
         }
       }
     }
-  } 
+  }
 
 
   return;
@@ -1299,7 +1299,7 @@ GslMatrix::determinant() const
                               << ": before 'gsl_linalg_LU_det()'"
                               << std::endl;
     }
-    m_determinant   = gsl_linalg_LU_det(m_LU,m_signum); 
+    m_determinant   = gsl_linalg_LU_det(m_LU,m_signum);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In GslMatrix::determinant()"
                               << ": after 'gsl_linalg_LU_det()'"
@@ -1340,7 +1340,7 @@ GslMatrix::lnDeterminant() const
                               << ": before 'gsl_linalg_LU_det()'"
                               << std::endl;
     }
-    m_determinant   = gsl_linalg_LU_det(m_LU,m_signum); 
+    m_determinant   = gsl_linalg_LU_det(m_LU,m_signum);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In GslMatrix::lnDeterminant()"
                               << ": after 'gsl_linalg_LU_det()'"
@@ -1504,14 +1504,14 @@ GslMatrix::invertMultiply(
                               << ": before 'gsl_linalg_LU_decomp()'"
                               << std::endl;
     }
-    iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&m_signum); 
+    iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&m_signum);
     if (iRC != 0) {
       std::cerr << "In GslMatrix::invertMultiply()"
                 << ", after gsl_linalg_LU_decomp()"
                 << ": iRC = " << iRC
                 << ", gsl error message = " << gsl_strerror(iRC)
                 << std::endl;
-    } 
+    }
     gsl_set_error_handler(oldHandler);
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
       *m_env.subDisplayFile() << "In GslMatrix::invertMultiply()"
@@ -1539,7 +1539,7 @@ GslMatrix::invertMultiply(
                             << ": before 'gsl_linalg_LU_solve()'"
                             << std::endl;
   }
-  iRC = gsl_linalg_LU_solve(m_LU,m_permutation,b.data(),x.data()); 
+  iRC = gsl_linalg_LU_solve(m_LU,m_permutation,b.data(),x.data());
   if (iRC != 0) {
     m_isSingular = true;
     std::cerr << "In GslMatrix::invertMultiply()"
@@ -1547,7 +1547,7 @@ GslMatrix::invertMultiply(
               << ": iRC = " << iRC
               << ", gsl error message = " << gsl_strerror(iRC)
               << std::endl;
-  } 
+  }
   gsl_set_error_handler(oldHandler);
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 99)) {
     *m_env.subDisplayFile() << "In GslMatrix::invertMultiply()"
@@ -1581,10 +1581,10 @@ GslMatrix::invertMultiply(const GslMatrix& B) const
   return X;
 }
 
-void              
+void
 GslMatrix::invertMultiply(const GslMatrix& B, GslMatrix& X) const
 {
-  
+
   // Sanity Checks
   UQ_FATAL_RC_MACRO(((B.numRowsLocal() != X.numRowsLocal()) ||
 		     (B.numCols()      != X.numCols()     )),
@@ -1592,7 +1592,7 @@ GslMatrix::invertMultiply(const GslMatrix& B, GslMatrix& X) const
 		    "GslMatrix::invertMultiply()",
 		    "Matrices B and X are incompatible");
 
-  
+
   UQ_FATAL_RC_MACRO((this->numRowsLocal() != X.numRowsLocal()),
                     m_env.worldRank(),
 		    "GslMatrix::invertMultiply()",
@@ -1659,26 +1659,26 @@ GslMatrix::invertMultiplyForceLU(
 		      m_env.worldRank(),
 		      "GslMatrix::invertMultiplyForceLU()",
 		      "gsl_matrix_calloc() failed");
-  
+
   iRC = gsl_matrix_memcpy(m_LU, m_mat);
   UQ_FATAL_RC_MACRO(iRC,
 		    m_env.worldRank(),
 		    "GslMatrix::invertMultiplyForceLU()",
 		    "gsl_matrix_memcpy() failed");
-  
+
   if( m_permutation == NULL ) m_permutation = gsl_permutation_calloc(numCols());
   UQ_FATAL_TEST_MACRO((m_permutation == NULL),
 		      m_env.worldRank(),
 		      "GslMatrix::invertMultiplyForceLU()",
 		      "gsl_permutation_calloc() failed");
-  
-  iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&m_signum); 
+
+  iRC = gsl_linalg_LU_decomp(m_LU,m_permutation,&m_signum);
   UQ_FATAL_RC_MACRO(iRC,
 		    m_env.worldRank(),
 		    "GslMatrix::invertMultiplyForceLU()",
 		    "gsl_linalg_LU_decomp() failed");
 
-  iRC = gsl_linalg_LU_solve(m_LU,m_permutation,b.data(),x.data()); 
+  iRC = gsl_linalg_LU_solve(m_LU,m_permutation,b.data(),x.data());
   if (iRC != 0) {
     m_isSingular = true;
   }
@@ -1772,7 +1772,7 @@ GslMatrix::largestEigen(double& eigenValue, GslVector& eigenVector) const
       // Here we use the norm of the residual as our convergence check:
       // norm( A*x - \lambda*x )
       residual = ( (*this)*z - lambda*z ).norm2();
-      
+
       if( residual < tolerance )
 	{
 	  eigenValue = lambda;
@@ -1781,7 +1781,7 @@ GslMatrix::largestEigen(double& eigenValue, GslVector& eigenVector) const
 	  eigenVector = z;
 	  return;
 	}
-	
+
     }
 
   // If we reach this point, then we didn't converge. Print error message
@@ -1793,7 +1793,7 @@ GslMatrix::largestEigen(double& eigenValue, GslVector& eigenVector) const
                       "GslMatrix::largestEigen()",
                       "Maximum num iterations exceeded");
 
-  
+
   return;
 }
 
@@ -1844,13 +1844,13 @@ GslMatrix::smallestEigen(double& eigenValue, GslVector& eigenVector) const
       one_over_lambda = w[index];
 
       lambda = 1.0/one_over_lambda;
-      
+
       z = lambda * w;
 
       // Here we use the norm of the residual as our convergence check:
       // norm( A*x - \lambda*x )
       residual = ( (*this)*z - lambda*z ).norm2();
-      
+
       if( residual < tolerance )
 	{
 	  eigenValue = lambda;
@@ -1859,7 +1859,7 @@ GslMatrix::smallestEigen(double& eigenValue, GslVector& eigenVector) const
 	  eigenVector = z;
 	  return;
 	}
-	
+
     }
 
   // If we reach this point, then we didn't converge. Print error message
@@ -1953,7 +1953,7 @@ GslMatrix::getRow(unsigned int row_num ) const
   GslVector row(m_env, m_map);
 
   this->getRow( row_num, row );
-  
+
   return row;
 }
 
@@ -1966,7 +1966,7 @@ GslMatrix::getColumn(unsigned int column_num ) const
   GslVector column(m_env, m_map);
 
   this->getColumn( column_num, column );
-  
+
   return column;
 }
 
@@ -2043,7 +2043,7 @@ GslMatrix::mpiSum( const MpiComm& comm, GslMatrix& M_global ) const
       for( unsigned int j = 0; j < this->numCols(); j++ )
 	{
 	  k = i + j*M_global.numCols();
-	  
+
 	  local[k] = (*this)(i,j);
 	}
     }
@@ -2057,7 +2057,7 @@ GslMatrix::mpiSum( const MpiComm& comm, GslMatrix& M_global ) const
       for( unsigned int j = 0; j < this->numCols(); j++ )
 	{
 	  k = i + j*M_global.numCols();
-	  
+
 	  M_global(i,j) = global[k];
 	}
     }
