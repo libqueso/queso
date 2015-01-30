@@ -86,6 +86,7 @@ examples/template_example/template_example
 examples/scalarCovariance
 examples/diagonalCovariance
 examples/fullCovariance
+examples/blockDiagonalCovariance
 
 src/core/inc/queso.h
 src/libqueso.la
