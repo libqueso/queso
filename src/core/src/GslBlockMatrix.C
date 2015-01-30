@@ -26,18 +26,15 @@
 
 namespace QUESO {
 
-GslBlockMatrix::GslBlockMatrix()
-{
-}
-
-GslBlockMatrix::GslBlockMatrix(const std::vector<unsigned int> & blockSizes,
-    double diagValue)
-  : m_vectorSpaces(blockSizes.size()),
+GslBlockMatrix::GslBlockMatrix(const FullEnvironment & env,
+    const std::vector<unsigned int> & blockSizes, double diagValue)
+  : m_env(env),
+    m_vectorSpaces(blockSizes.size()),
     m_blocks(blockSizes.size())
 {
   for (unsigned int i = 0; i < this->m_vectorSpaces.size(); i++) {
-    this->m_vectorSpaces[i] = new VectorSpace<GslVector, GslMatrix> paramSpace(
-        env, "block_param_", blockSizes[i], NULL);
+    this->m_vectorSpaces[i] = new VectorSpace<GslVector, GslMatrix>(m_env,
+        "block_param_", blockSizes[i], NULL);
     this->m_blocks[i] = new GslMatrix(this->m_vectorSpaces[i]->zeroVector(),
         diagValue);
   }
@@ -51,16 +48,28 @@ GslBlockMatrix::~GslBlockMatrix()
   }
 }
 
+GslMatrix &
+GslBlockMatrix::getBlock(unsigned int i) const
+{
+  return *(this->m_blocks[i]);
+}
+
+unsigned int
+GslBlockMatrix::numBlocks() const
+{
+  return this->m_blocks.size();
+}
+
 void
 GslBlockMatrix::invertMultiply(const GslVector & b, GslVector & x) const
 {
   unsigned int totalCols = 0;
 
   for (unsigned int i = 0; i < this->m_blocks.size(); i++) {
-    totalCols += this->m_blocks[i].numCols();
+    totalCols += this->m_blocks[i]->numCols();
   }
 
-  if (this->numCols() != b.sizeLocal()) {
+  if (totalCols != b.sizeLocal()) {
     queso_error_msg("block matrix and rhs have incompatible sizes");
   }
 
@@ -69,57 +78,56 @@ GslBlockMatrix::invertMultiply(const GslVector & b, GslVector & x) const
   }
 
   unsigned int blockOffset = 0;
-  double totalMisfit = 0.0;
 
   // Do an invertMultiply for each block
   for (unsigned int i = 0; i < this->m_blocks.size(); i++) {
-    GslVector blockRHS(this->m_vectorSpaces[i].zeroVector());
-    GslVector blockSol(this->m_vectorSpaces[i].zeroVector());
+    GslVector blockRHS(this->m_vectorSpaces[i]->zeroVector());
+    GslVector blockSol(this->m_vectorSpaces[i]->zeroVector());
 
     // Be sure to copy over the RHS to the right sized vector
-    for (unsigned int j = 0; j < this->m_blocks[i].numCols(); j++) {
+    for (unsigned int j = 0; j < this->m_blocks[i]->numCols(); j++) {
       blockRHS[j] = b[blockOffset + j];
     }
 
     // Solve
-    this->m_block[i].invertMultiply(blockRHS, blockSol);
+    this->m_blocks[i]->invertMultiply(blockRHS, blockSol);
 
     // Be sure to copy the block solution back to the global solution vector
-    for (unsigned int j = 0; j < this->m_blocks[i].numCols(); j++) {
+    for (unsigned int j = 0; j < this->m_blocks[i]->numCols(); j++) {
       x[blockOffset + j] = blockSol[j];
     }
 
     // Remember to increment the offset so we don't lose our place for the next
     // block
-    blockOffset += this->m_blocks[i].numCols();
+    blockOffset += this->m_blocks[i]->numCols();
   }
 }
 
 void
 GslBlockMatrix::print(std::ostream& os) const
 {
-  unsigned int nRows = this->numRowsLocal();
-  unsigned int nCols = this->numCols();
-
-  if (m_printHorizontally) {
-    for (unsigned int i = 0; i < nRows; ++i) {
-      for (unsigned int j = 0; j < nCols; ++j) {
-        os << (*this)(i,j)
-           << " ";
-      }
-      if (i != (nRows-1)) os << "; ";
-    }
-    //os << std::endl;
-  }
-  else {
-    for (unsigned int i = 0; i < nRows; ++i) {
-      for (unsigned int j = 0; j < nCols; ++j) {
-        os << (*this)(i,j)
-           << " ";
-      }
-      os << std::endl;
-    }
-  }
+  // unsigned int nRows = this->numRowsLocal();
+  // unsigned int nCols = this->numCols();
+  //
+  // if (m_printHorizontally) {
+  //   for (unsigned int i = 0; i < nRows; ++i) {
+  //     for (unsigned int j = 0; j < nCols; ++j) {
+  //       os << (*this)(i,j)
+  //          << " ";
+  //     }
+  //     if (i != (nRows-1)) os << "; ";
+  //   }
+  //   //os << std::endl;
+  // }
+  // else {
+  //   for (unsigned int i = 0; i < nRows; ++i) {
+  //     for (unsigned int j = 0; j < nCols; ++j) {
+  //       os << (*this)(i,j)
+  //          << " ";
+  //     }
+  //     os << std::endl;
+  //   }
+  // }
 
   return;
 }

@@ -92,6 +92,7 @@ libqueso_la_SOURCES += core/src/InfiniteDimensionalMCMCSampler.C
 libqueso_la_SOURCES += core/src/InfiniteDimensionalMCMCSamplerOptions.C
 libqueso_la_SOURCES += core/src/InfiniteDimensionalLikelihoodBase.C
 libqueso_la_SOURCES += core/src/FunctionOperatorBuilder.C
+libqueso_la_SOURCES += core/src/GslBlockMatrix.C
 
 
 # Sources from core/src with gsl conditional
@@ -302,6 +303,7 @@ libqueso_include_HEADERS += core/inc/InfiniteDimensionalMCMCSampler.h
 libqueso_include_HEADERS += core/inc/InfiniteDimensionalMCMCSamplerOptions.h
 libqueso_include_HEADERS += core/inc/InfiniteDimensionalLikelihoodBase.h
 libqueso_include_HEADERS += core/inc/FunctionOperatorBuilder.h
+libqueso_include_HEADERS += core/inc/GslBlockMatrix.h
 
 # Headers to install from misc/inc
 

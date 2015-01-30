@@ -30,7 +30,11 @@
  * \brief QUESO matrix class using GSL.
  */
 
-#include <queso/Matrix.h>
+#include <vector>
+#include <queso/Environment.h>
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
+#include <queso/VectorSpace.h>
 
 namespace QUESO {
 
@@ -43,21 +47,21 @@ namespace QUESO {
  * by an encapsulated gsl_matrix structure.
  */
 
-class GslBlockMatrix : public Matrix
+class GslBlockMatrix
 {
 public:
   //! @name Constructor/Destructor methods
   //@{
   //! Shaped Constructor: creates a square matrix with size \c v.sizeLocal() and diagonal values all equal to \c diagValue.
-  GslBlockMatrix(const std::vector<unsigned int> & blockSizes,
-      double diagValue);
+  GslBlockMatrix(const FullEnvironment & env,
+      const std::vector<unsigned int> & blockSizes, double diagValue);
 
   //! Destructor
   ~GslBlockMatrix();
   //@}
 
   //! Return block \c i in the block diagonal matrix
-  GslBlockMatrix & getBlock(unsigned int i) const;
+  GslMatrix & getBlock(unsigned int i) const;
 
   //! Return the number of blocks in the block diagonal matrix
   unsigned int numBlocks() const;
@@ -67,7 +71,7 @@ public:
    * It checks for a previous LU decomposition of \c this matrix and does not
    * recompute it if m_MU != NULL.
    */
-  void invertMultiply (const GslVector & b, GslVector & x) const;
+  void invertMultiply(const GslVector & b, GslVector & x) const;
 
   //! @name I/O methods
   //@{
@@ -76,10 +80,9 @@ public:
   //@}
 
 private:
-
-  //! Default Constructor
-  /*! Creates an empty matrix vector of no dimension. It should not be used by user.*/
-  GslBlockMatrix();
+  const FullEnvironment & m_env;
+  std::vector<VectorSpace<GslVector, GslMatrix> *> m_vectorSpaces;
+  std::vector<GslMatrix *> m_blocks;
 };
 
 std::ostream & operator<<(std::ostream & os, const GslBlockMatrix & obj);

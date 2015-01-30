@@ -36,6 +36,7 @@ BUILT_SOURCES += Environment.h
 BUILT_SOURCES += EnvironmentOptions.h
 BUILT_SOURCES += FunctionBase.h
 BUILT_SOURCES += FunctionOperatorBuilder.h
+BUILT_SOURCES += GslBlockMatrix.h
 BUILT_SOURCES += GslMatrix.h
 BUILT_SOURCES += GslOptimizer.h
 BUILT_SOURCES += GslVector.h
@@ -239,6 +240,8 @@ EnvironmentOptions.h: $(top_srcdir)/src/core/inc/EnvironmentOptions.h
 FunctionBase.h: $(top_srcdir)/src/core/inc/FunctionBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 FunctionOperatorBuilder.h: $(top_srcdir)/src/core/inc/FunctionOperatorBuilder.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GslBlockMatrix.h: $(top_srcdir)/src/core/inc/GslBlockMatrix.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GslMatrix.h: $(top_srcdir)/src/core/inc/GslMatrix.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
