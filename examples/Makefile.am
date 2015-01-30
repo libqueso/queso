@@ -388,6 +388,12 @@ fullCovariance_SOURCES = gaussian_likelihoods/fullCovariance.C
 fullCovariance_LDADD = $(top_builddir)/src/libqueso.la
 fullCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/fullCovariance $(QUESO_CPPFLAGS)
 
+blockDiagonalCovariancedir = $(prefix)/examples/gaussian_likelihoods
+blockDiagonalCovariance_PROGRAMS = blockDiagonalCovariance
+blockDiagonalCovariance_SOURCES = gaussian_likelihoods/blockDiagonalCovariance.C
+blockDiagonalCovariance_LDADD = $(top_builddir)/src/libqueso.la
+blockDiagonalCovariance_CPPFLAGS = -I$(top_srcdir)/examples/gaussian_likelihoods/blockDiagonalCovariance $(QUESO_CPPFLAGS)
+
 dist_gpmsa_scalar_DATA =
 dist_gpmsa_scalar_DATA += ${gpmsa_scalar_SOURCES}
 
