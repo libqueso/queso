@@ -106,30 +106,9 @@ GslBlockMatrix::invertMultiply(const GslVector & b, GslVector & x) const
 void
 GslBlockMatrix::print(std::ostream& os) const
 {
-  // unsigned int nRows = this->numRowsLocal();
-  // unsigned int nCols = this->numCols();
-  //
-  // if (m_printHorizontally) {
-  //   for (unsigned int i = 0; i < nRows; ++i) {
-  //     for (unsigned int j = 0; j < nCols; ++j) {
-  //       os << (*this)(i,j)
-  //          << " ";
-  //     }
-  //     if (i != (nRows-1)) os << "; ";
-  //   }
-  //   //os << std::endl;
-  // }
-  // else {
-  //   for (unsigned int i = 0; i < nRows; ++i) {
-  //     for (unsigned int j = 0; j < nCols; ++j) {
-  //       os << (*this)(i,j)
-  //          << " ";
-  //     }
-  //     os << std::endl;
-  //   }
-  // }
-
-  return;
+  for (unsigned int i = 0; i < this->numBlocks(); i++) {
+    this->getBlock(i).print(os);
+  }
 }
 
 std::ostream&
