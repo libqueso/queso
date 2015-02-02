@@ -26,18 +26,18 @@
 #include <queso/GslMatrix.h>
 #include <queso/VectorSet.h>
 #include <queso/BoxSubset.h>
-#include <queso/GaussianLikelihoodDiagonalCovariance.h>
+#include <queso/GaussianLikelihoodFullCovariance.h>
 
 #define TOL 1e-8
 
 template<class V, class M>
-class Likelihood : public QUESO::GaussianLikelihoodDiagonalCovariance<V, M>
+class Likelihood : public QUESO::GaussianLikelihoodFullCovariance<V, M>
 {
 public:
 
   Likelihood(const char * prefix, const QUESO::VectorSet<V, M> & domain,
-      const V & observations, const V & covariance)
-    : QUESO::GaussianLikelihoodDiagonalCovariance<V, M>(prefix, domain,
+      const V & observations, const M & covariance)
+    : QUESO::GaussianLikelihoodFullCovariance<V, M>(prefix, domain,
         observations, covariance)
   {
   }
@@ -50,8 +50,6 @@ public:
       V & modelOutput, V * gradVector, M * hessianMatrix,
       V * hessianEffect) const
   {
-    // Model is a map from R to R^2
-
     // Evaluate model and fill up the m_modelOutput member variable
     for (unsigned int i = 0; i < modelOutput.sizeLocal(); i++) {
       modelOutput[i] = domainVector[0] + 3.0;
@@ -88,9 +86,11 @@ int main(int argc, char ** argv) {
   observations[1] = 1.0;
 
   // Fill up covariance 'matrix'
-  QUESO::GslVector covariance(obsSpace.zeroVector());
-  covariance[0] = 1.0;
-  covariance[1] = 2.0;
+  QUESO::GslMatrix covariance(obsSpace.zeroVector());
+  covariance(0, 0) = 1.0;
+  covariance(0, 1) = 2.0;
+  covariance(1, 0) = 2.0;
+  covariance(1, 1) = 8.0;
 
   // Pass in observations to Gaussian likelihood object
   Likelihood<QUESO::GslVector, QUESO::GslMatrix> lhood("llhd_", paramDomain,
@@ -101,7 +101,7 @@ int main(int argc, char ** argv) {
   QUESO::GslVector point(paramSpace.zeroVector());
   point[0] = 0.0;
   lhood_value = lhood.actualValue(point, NULL, NULL, NULL, NULL);
-  truth_value = std::exp(-3.0);
+  truth_value = std::exp(-2.5);
 
   if (std::abs(lhood_value - truth_value) > TOL) {
     std::cerr << "Scalar Gaussian test case failure." << std::endl;
@@ -125,4 +125,3 @@ int main(int argc, char ** argv) {
 
   return 0;
 }
-
