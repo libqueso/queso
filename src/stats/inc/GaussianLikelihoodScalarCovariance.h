@@ -44,7 +44,8 @@ public:
   //! Default constructor.
   /*!
    * Instantiates a Gaussian likelihood function, given a prefix, its domain,
-   * a set of observations and a scalar covariance matrix.
+   * a set of observations and a scalar covariance matrix.  The scalar
+   * 'covariance matrix' is just passed as a \c double.
    */
   GaussianLikelihoodScalarCovariance(const char * prefix,
       const VectorSet<V, M> & domainSet, const V & observations,
