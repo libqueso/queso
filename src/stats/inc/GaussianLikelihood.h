@@ -62,10 +62,10 @@ public:
   //! Evaluates the user's model at the point \c domainVector
   /*!
    * This is pure virtual, so the user must implement this when subclassing a
-   * Gaussian likelihood class.  Note that, what is returned is not an object
-   * of type \c V, but an array of type \c double.  This represents a vector of
-   * synthetic observations that will be to compare to actual observations when
-   * computing the likelihood functional.
+   * Gaussian likelihood class.  Note that, what is returned is void.  The user
+   * will fill up the \c modelOutput vector with output from the model.
+   * This represents a vector of synthetic observations that will be to compare
+   * to actual observations when computing the likelihood functional.
    */
   virtual void evaluateModel(const V & domainVector, const V * domainDirection,
       V & modelOutput, V * gradVector, M * hessianMatrix,
