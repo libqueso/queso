@@ -33,7 +33,7 @@ namespace QUESO {
  * \file GaussianLikelihoodDiagonalCovariance.h
  *
  * \class GaussianLikelihoodDiagonalCovariance
- * \brief A class that represents a Gaussian likelihood with scalar covariance
+ * \brief A class that represents a Gaussian likelihood with diagonal covariance matrix
  */
 
 template<class V, class M>
