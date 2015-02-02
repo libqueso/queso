@@ -34,7 +34,7 @@ namespace QUESO {
  * \file GaussianLikelihoodBlockDiagonalCovariance.h
  *
  * \class GaussianLikelihoodBlockDiagonalCovariance
- * \brief A class representing a Gaussian likelihood with block-diagonal cov
+ * \brief A class representing a Gaussian likelihood with block-diagonal covariance matrix
  */
 
 template<class V, class M>
@@ -45,9 +45,9 @@ public:
   //! Default constructor.
   /*!
    * Instantiates a Gaussian likelihood function, given a prefix, its domain, a
-   * set of observations and a block diagonal covariance matrix.  The diagonal
-   * covariance matrix is stored as a \c std::vector of \c GslMatrix objects
-   * representing each block matrix.
+   * vector of observations and a block diagonal covariance matrix.
+   * The diagonal covariance matrix is of type \c GslBlockMatrix.  Each block
+   * in the block diagonal matrix is an object of type \c GslMatrix.
    */
   GaussianLikelihoodBlockDiagonalCovariance(const char * prefix,
       const VectorSet<V, M> & domainSet, const V & observations,
