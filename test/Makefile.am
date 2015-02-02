@@ -36,6 +36,7 @@ check_PROGRAMS += test_seedwithmap
 check_PROGRAMS += test_seedwithmap_fd
 check_PROGRAMS += test_logitadaptedcov
 check_PROGRAMS += test_scalarCovariance
+check_PROGRAMS += test_diagonalCovariance
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -97,6 +98,7 @@ test_seedwithmap_SOURCES = test_optimizer/test_seedwithmap.C
 test_seedwithmap_fd_SOURCES = test_optimizer/test_seedwithmap_fd.C
 test_logitadaptedcov_SOURCES = test_Regression/test_logitadaptedcov.C
 test_scalarCovariance_SOURCES = test_gaussian_likelihoods/test_scalarCovariance.C
+test_diagonalCovariance_SOURCES = test_gaussian_likelihoods/test_diagonalCovariance.C
 
 # Files to freedom stamp
 srcstamp =
@@ -130,6 +132,7 @@ srcstamp += $(test_seedwithmap_SOURCES)
 srcstamp += $(test_seedwithmap_fd_SOURCES)
 srcstamp += $(test_logitadaptedcov_SOURCES)
 srcstamp += $(test_scalarCovariance_SOURCES)
+srcstamp += $(test_diagonalCovariance_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
@@ -163,6 +166,7 @@ TESTS += $(top_builddir)/test/test_seedwithmap
 TESTS += $(top_builddir)/test/test_seedwithmap_fd
 TESTS += $(top_builddir)/test/test_logitadaptedcov
 TESTS += $(top_builddir)/test/test_scalarCovariance
+TESTS += $(top_builddir)/test/test_diagonalCovariance
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 

@@ -168,4 +168,6 @@ test/test_adaptedcov_output/
 test/test_gpmsa_cobra_output/
 test/test_logitadaptedcov
 test/test_scalarCovariance
+test/test_diagonalCovariance
 test/test_output_gaussian_likelihoods
+test/test_gaussian_likelihoods/queso_input.txt
