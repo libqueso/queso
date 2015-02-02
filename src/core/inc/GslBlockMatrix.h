@@ -27,7 +27,7 @@
 
 /*!
  * \file GslBlockMatrix.h
- * \brief QUESO matrix class using GSL.
+ * \brief QUESO block matrix class using GSL.
  */
 
 #include <vector>
@@ -40,11 +40,10 @@ namespace QUESO {
 
 /*!
  * \class GslBlockMatrix
- * \brief Class for matrix operations using GSL library.
+ * \brief Class for representing block matrices using GSL library.
  *
- * This class creates and provides basic support for matrices of templated
- * type as a specialization of Matrix using GSL matrices, which are defined
- * by an encapsulated gsl_matrix structure.
+ * This class provides basic 'invertMultiply' support for matrices of block
+ * diagonal structure.  Each block is implemented as a GslMatrix object.
  */
 
 class GslBlockMatrix
@@ -52,7 +51,10 @@ class GslBlockMatrix
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Shaped Constructor: creates a square matrix with size \c v.sizeLocal() and diagonal values all equal to \c diagValue.
+  //! Creates a square matrix with size defined by \c blockSizes and diagonal values all equal to \c diagValue.
+  /*!
+   * The \c blockSizes array must contain the sizes of each (square) block.
+   */
   GslBlockMatrix(const FullEnvironment & env,
       const std::vector<unsigned int> & blockSizes, double diagValue);
 
@@ -68,8 +70,8 @@ public:
 
   //! This function calculates the inverse of \c this matrix, multiplies it with vector \c b and stores the result in vector \c x.
   /*!
-   * It checks for a previous LU decomposition of \c this matrix and does not
-   * recompute it if m_MU != NULL.
+   * It checks for a previous LU decomposition of each block matrix and does
+   * not recompute it if m_MU != NULL for each block.
    */
   void invertMultiply(const GslVector & b, GslVector & x) const;
 
