@@ -569,6 +569,11 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
       unifiedPositionsOfMaximum.setPositionValues(i,tmpVec);
     }
   }
+  else {
+    // Process zero has all the states that attain maxima, so let's nuke the
+    // others rather than letting them contain NULL pointers
+    unifiedPositionsOfMaximum.resizeSequence(0);
+  }
 
   if (m_env.subDisplayFile()) {
     *m_env.subDisplayFile() << "Leaving BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()"
