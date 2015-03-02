@@ -37,7 +37,7 @@ PeriodicBoxSubset<V,M>::PeriodicBoxSubset(const char* prefix,
     const V& maxValues)
   : VectorSubset<V,M>(prefix,vectorSpace,0.),
     m_minValues(minValues),
-    m_maxValues(maxValues),
+    m_maxValues(maxValues)
 {
   UQ_FATAL_TEST_MACRO(minValues.sizeLocal() != maxValues.sizeLocal(),
                       m_env.worldRank(),
@@ -57,7 +57,7 @@ PeriodicBoxSubset<V,M>::PeriodicBoxSubset(const char* prefix,
   m_volume = 1.;
   for (unsigned int i = 0; i < m_vectorSpace->dimLocal(); ++i) {
     m_volume *= (m_maxValues[i] - m_minValues[i]);
-    m_periods[i] = m_maxValues[i] - m_minvalues[i];
+    m_periods[i] = m_maxValues[i] - m_minValues[i];
   }
 }
 
