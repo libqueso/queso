@@ -146,6 +146,16 @@ public:
 							BaseVectorSequence<V,M>&      subPositionsOfMaximum);
    
   //! Finds the positions where the maximum element occurs in the unified sequence.
+  /*!
+   * \param this The underlying sequence of vectors
+   * \param subCorrespondingScalarValues For a given process, a scalar sequence
+   * where element \c i corresponds to element \c i of \c this.
+   * \param unifiedPositionsOfMaximum Upon returning, on process 0 on chain 0,
+   * this will contain states that correspond to the unique maximum value in
+   * \c subCorrespondingScalarValues over *all* processes.
+   * \return Maximum element of \c subCorrespondingScalarValues over all
+   * processes.
+   */
   double                   unifiedPositionsOfMaximum   (const ScalarSequence<double>& subCorrespondingScalarValues,
 							BaseVectorSequence<V,M>&      unifiedPositionsOfMaximum);
   
