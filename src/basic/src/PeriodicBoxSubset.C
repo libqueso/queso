@@ -26,6 +26,7 @@
 #include <queso/PeriodicBoxSubset.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/asserts.h>
 
 namespace QUESO {
 
@@ -37,7 +38,8 @@ PeriodicBoxSubset<V,M>::PeriodicBoxSubset(const char* prefix,
     const V& maxValues)
   : VectorSubset<V,M>(prefix,vectorSpace,0.),
     m_minValues(minValues),
-    m_maxValues(maxValues)
+    m_maxValues(maxValues),
+    m_periods(maxValues)
 {
   UQ_FATAL_TEST_MACRO(minValues.sizeLocal() != maxValues.sizeLocal(),
                       m_env.worldRank(),
@@ -47,6 +49,17 @@ PeriodicBoxSubset<V,M>::PeriodicBoxSubset(const char* prefix,
                       m_env.worldRank(),
                       "PeriodicBoxSubset<V,M>::PeriodicBoxSubset()",
                       "sizes of vectors 'minValues' and 'maxValues' should be equal to dimension of the vector space");
+  
+  // Should test here for if max or min vals is infinite.
+  
+  
+  if ( ! boost::math::isfinite( m_minValues.abs().getMaxValue() ) ){
+    queso_error_msg("You can't have an infinite bound on a periodic domain.");
+  }
+  if ( ! boost::math::isfinite( m_maxValues.abs().getMaxValue() ) ){
+    queso_error_msg("You can't have an infinite bound on a periodic domain.");
+  }
+
   for (unsigned int i = 0; i < m_vectorSpace->dimLocal(); ++i) {
     UQ_FATAL_TEST_MACRO(minValues[i] > maxValues[i],
                         m_env.worldRank(),
@@ -56,8 +69,8 @@ PeriodicBoxSubset<V,M>::PeriodicBoxSubset(const char* prefix,
 
   m_volume = 1.;
   for (unsigned int i = 0; i < m_vectorSpace->dimLocal(); ++i) {
-    m_volume *= (m_maxValues[i] - m_minValues[i]);
-    m_periods[i] = m_maxValues[i] - m_minValues[i];
+    m_periods[i] -= m_minValues[i];
+    m_volume *= m_periods[i];
   }
 }
 
