@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------Bl-
 //--------------------------------------------------------------------------
-// 
+//
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
@@ -17,7 +17,7 @@
 //
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
-// Foundation, Inc. 51 Franklin Street, Fifth Floor, 
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
@@ -745,7 +745,7 @@ BaseVectorSequence<V,M>::computeStatistics(
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if ((statisticalOptions.bmmRun()               ) &&
       (initialPosForStatistics.size()         > 0) &&
-      (statisticalOptions.bmmLengths().size() > 0)) { 
+      (statisticalOptions.bmmLengths().size() > 0)) {
     this->computeBMM(statisticalOptions,
                      initialPosForStatistics,
                      passedOfs);
@@ -779,7 +779,7 @@ BaseVectorSequence<V,M>::computeStatistics(
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if ((statisticalOptions.psdAtZeroCompute()             ) &&
       (initialPosForStatistics.size()                 > 0) &&
-      (statisticalOptions.psdAtZeroNumBlocks().size() > 0)) { 
+      (statisticalOptions.psdAtZeroNumBlocks().size() > 0)) {
     this->computePSDAtZero(statisticalOptions,
                            initialPosForStatistics,
                            passedOfs);
@@ -818,7 +818,7 @@ BaseVectorSequence<V,M>::computeStatistics(
   //****************************************************
   if ((statisticalOptions.autoCorrComputeViaDef()) &&
       (initialPosForStatistics.size() > 0        ) &&
-      (lagsForCorrs.size()            > 0        )) { 
+      (lagsForCorrs.size()            > 0        )) {
     this->computeAutoCorrViaDef(statisticalOptions,
                                 initialPosForStatistics,
                                 lagsForCorrs,
@@ -830,7 +830,7 @@ BaseVectorSequence<V,M>::computeStatistics(
   //****************************************************
   if ((statisticalOptions.autoCorrComputeViaFft()) &&
       (initialPosForStatistics.size() > 0    ) &&
-      (lagsForCorrs.size()            > 0    )) { 
+      (lagsForCorrs.size()            > 0    )) {
     this->computeAutoCorrViaFFT(statisticalOptions,
                                 initialPosForStatistics,
                                 lagsForCorrs,
@@ -1195,7 +1195,7 @@ BaseVectorSequence<V,M>::computeAutoCorrViaDef(
         }
       }
     }
-  } 
+  }
 
   return;
 }
@@ -1367,7 +1367,7 @@ BaseVectorSequence<V,M>::computeAutoCorrViaFFT(
         }
       }
     }
-  } 
+  }
 
   return;
 }
@@ -2470,7 +2470,7 @@ BaseVectorSequence<V,M>::computePSDAtZero(
 
   tmpRunTime += MiscGetEllapsedSeconds(&timevalTmp);
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Chain PSD at frequency zero took " << tmpRunTime 
+    *m_env.subDisplayFile() << "Chain PSD at frequency zero took " << tmpRunTime
                             << " seconds"
                             << std::endl;
   }
@@ -2505,7 +2505,7 @@ BaseVectorSequence<V,M>::computePSDAtZero(
         }
       }
     }
-  } 
+  }
 
   return;
 }
