@@ -57,6 +57,8 @@ int main(int argc, char ** argv) {
   try{
   QUESO::PeriodicBoxSubset<QUESO::GslVector, QUESO::GslMatrix> infiniteDomain("param_",
      paramSpace, paramMins, paramMaxs);
+  printf("Error for infinite maximum value in domain was not caught by PeriodicBoxSubset.C\n");
+  return 1;
   }
   catch(...){
     printf("\nSuccessfully caught error for infinite maximum value in domain.\n");
@@ -68,6 +70,8 @@ int main(int argc, char ** argv) {
   try{
   QUESO::PeriodicBoxSubset<QUESO::GslVector, QUESO::GslMatrix> infiniteDomain("param_",
      paramSpace, paramMins, paramMaxs);
+  printf("Error for infinite minimum value in domain was not caught by PeriodicBoxSubset.C\n"); 
+    return 1;
   }
   catch(...){
     printf("\nSuccessfully caught error for infinite minimum value in domain.\n");
