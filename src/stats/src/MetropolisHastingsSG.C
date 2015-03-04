@@ -1222,23 +1222,25 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
     // Compute raw unified MLE
     if (workingLogLikelihoodValues) {
       SequenceOfVectors<P_V,P_M> rawUnifiedMLEpositions(m_vectorSpace,0,m_optionsObj->m_prefix+"rawUnifiedMLEseq");
+
       double rawUnifiedMLEvalue = workingChain.unifiedPositionsOfMaximum(*workingLogLikelihoodValues,
                                                                          rawUnifiedMLEpositions);
-      UQ_FATAL_TEST_MACRO(rawUnifiedMLEpositions.subSequenceSize() == 0,
-                          m_env.worldRank(),
-                          "MetropolisHastingsSG<P_V,P_M>::generateSequence()",
-                          "rawUnifiedMLEpositions.subSequenceSize() = 0");
 
       if ((m_env.subDisplayFile()                   ) &&
           (m_optionsObj->m_ov.m_totallyMute == false)) {
         P_V tmpVec(m_vectorSpace.zeroVector());
-        rawUnifiedMLEpositions.getPositionValues(0,tmpVec);
-        *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateSequence()"
-                                << ": just computed MLE"
-                                << ", rawUnifiedMLEvalue = "                       << rawUnifiedMLEvalue
-                                << ", rawUnifiedMLEpositions.subSequenceSize() = " << rawUnifiedMLEpositions.subSequenceSize()
-                                << ", rawUnifiedMLEpositions[0] = "                << tmpVec
-                                << std::endl;
+
+        // Make sure the positions vector (which only contains stuff on process
+        // zero) actually contains positions
+        if (rawUnifiedMLEpositions.subSequenceSize() > 0) {
+          rawUnifiedMLEpositions.getPositionValues(0,tmpVec);
+          *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateSequence()"
+                                  << ": just computed MLE"
+                                  << ", rawUnifiedMLEvalue = "                       << rawUnifiedMLEvalue
+                                  << ", rawUnifiedMLEpositions.subSequenceSize() = " << rawUnifiedMLEpositions.subSequenceSize()
+                                  << ", rawUnifiedMLEpositions[0] = "                << tmpVec
+                                  << std::endl;
+        }
       }
     }
 
@@ -1248,21 +1250,21 @@ MetropolisHastingsSG<P_V,P_M>::generateSequence(
       double rawUnifiedMAPvalue = workingChain.unifiedPositionsOfMaximum(*workingLogTargetValues,
                                                                          rawUnifiedMAPpositions);
 
-      UQ_FATAL_TEST_MACRO(rawUnifiedMAPpositions.subSequenceSize() == 0,
-                          m_env.worldRank(),
-                          "MetropolisHastingsSG<P_V,P_M>::generateSequence()",
-                          "rawUnifiedMAPpositions.subSequenceSize() = 0");
-
       if ((m_env.subDisplayFile()                   ) &&
           (m_optionsObj->m_ov.m_totallyMute == false)) {
         P_V tmpVec(m_vectorSpace.zeroVector());
-        rawUnifiedMAPpositions.getPositionValues(0,tmpVec);
-        *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateSequence()"
-                                << ": just computed MAP"
-                                << ", rawUnifiedMAPvalue = "                       << rawUnifiedMAPvalue
-                                << ", rawUnifiedMAPpositions.subSequenceSize() = " << rawUnifiedMAPpositions.subSequenceSize()
-                                << ", rawUnifiedMAPpositions[0] = "                << tmpVec
-                                << std::endl;
+
+        // Make sure the positions vector (which only contains stuff on process
+        // zero) actually contains positions
+        if (rawUnifiedMAPpositions.subSequenceSize() > 0) {
+          rawUnifiedMAPpositions.getPositionValues(0,tmpVec);
+          *m_env.subDisplayFile() << "In MetropolisHastingsSG<P_V,P_M>::generateSequence()"
+                                  << ": just computed MAP"
+                                  << ", rawUnifiedMAPvalue = "                       << rawUnifiedMAPvalue
+                                  << ", rawUnifiedMAPpositions.subSequenceSize() = " << rawUnifiedMAPpositions.subSequenceSize()
+                                  << ", rawUnifiedMAPpositions[0] = "                << tmpVec
+                                  << std::endl;
+        }
       }
     }
   }
