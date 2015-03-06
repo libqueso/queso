@@ -1,0 +1,134 @@
+//-----------------------------------------------------------------------bl-
+//--------------------------------------------------------------------------
+//
+// QUESO - a library to support the Quantification of Uncertainty
+// for Estimation, Simulation and Optimization
+//
+// Copyright (C) 2008-2015 The PECOS Development Team
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the Version 2.1 GNU Lesser General
+// Public License as published by the Free Software Foundation.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
+// Boston, MA  02110-1301  USA
+//
+//-----------------------------------------------------------------------el-
+
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
+#include <queso/VectorSet.h>
+#include <queso/BoxSubset.h>
+#include <queso/GaussianLikelihoodFullCovarianceRandomCoefficient.h>
+
+#define TOL 1e-8
+
+template<class V, class M>
+class Likelihood : public QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>
+{
+public:
+
+  Likelihood(const char * prefix, const QUESO::VectorSet<V, M> & domain,
+      const V & observations, const M & covariance)
+    : QUESO::GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>(prefix, domain,
+        observations, covariance)
+  {
+  }
+
+  virtual ~Likelihood()
+  {
+  }
+
+  virtual void evaluateModel(const V & domainVector, const V * domainDirection,
+      V & modelOutput, V * gradVector, M * hessianMatrix,
+      V * hessianEffect) const
+  {
+    // Evaluate model and fill up the m_modelOutput member variable
+    for (unsigned int i = 0; i < modelOutput.sizeLocal(); i++) {
+      // Only handle element 0.  Element 1 is the hyperparameter
+      modelOutput[i] = domainVector[0] + 3.0;
+    }
+  }
+};
+
+int main(int argc, char ** argv) {
+  MPI_Init(&argc, &argv);
+
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, "test_gaussian_likelihoods/queso_input.txt", "", NULL);
+
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
+      "param_", 2, NULL);
+
+  QUESO::GslVector paramMins(paramSpace.zeroVector());
+  QUESO::GslVector paramMaxs(paramSpace.zeroVector());
+
+  // Bounds for model parameter
+  paramMins[0] = 0.0;
+  paramMaxs[0] = 1.0;
+
+  // Bounds for hyperparameter (multiplicative coefficient of observational
+  // error covariance matrix)
+  paramMins[1] = 0.0;
+  paramMaxs[1] = INFINITY;
+
+  QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix> paramDomain("param_",
+      paramSpace, paramMins, paramMaxs);
+
+  // Set up observation space
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> obsSpace(env,
+      "obs_", 2, NULL);
+
+  // Fill up observation vector
+  QUESO::GslVector observations(obsSpace.zeroVector());
+  observations[0] = 1.0;
+  observations[1] = 1.0;
+
+  // Fill up covariance 'matrix'
+  QUESO::GslMatrix covariance(obsSpace.zeroVector());
+  covariance(0, 0) = 1.0;
+  covariance(0, 1) = 2.0;
+  covariance(1, 0) = 2.0;
+  covariance(1, 1) = 8.0;
+
+  // Pass in observations to Gaussian likelihood object
+  Likelihood<QUESO::GslVector, QUESO::GslMatrix> lhood("llhd_", paramDomain,
+      observations, covariance);
+
+  double lhood_value;
+  double truth_value;
+  QUESO::GslVector point(paramSpace.zeroVector());
+  point[0] = 0.0;
+  point[1] = 2.0;  // Multiplicative coefficient of obs matrix
+  lhood_value = lhood.actualValue(point, NULL, NULL, NULL, NULL);
+  truth_value = std::exp(-5.0/4.0);
+
+  if (std::abs(lhood_value - truth_value) > TOL) {
+    std::cerr << "Random coefficient Gaussian test case failure." << std::endl;
+    std::cerr << "Computed likelihood value is: " << lhood_value << std::endl;
+    std::cerr << "Likelihood value should be: " << truth_value << std::endl;
+    queso_error();
+  }
+
+  point[0] = -2.0;
+  point[1] = 1.0;
+  lhood_value = lhood.actualValue(point, NULL, NULL, NULL, NULL);
+  truth_value = 1.0;
+
+  if (std::abs(lhood_value - truth_value) > TOL) {
+    std::cerr << "Random coefficient Gaussian test case failure." << std::endl;
+    std::cerr << "Computed likelihood value is: " << lhood_value << std::endl;
+    std::cerr << "Likelihood value should be: " << truth_value << std::endl;
+    queso_error();
+  }
+
+  MPI_Finalize();
+
+  return 0;
+}
