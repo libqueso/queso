@@ -40,6 +40,7 @@ public:
     : QUESO::GaussianLikelihoodFullCovariance<V, M>(prefix, domain,
         observations, covariance)
   {
+    // Default covariance coefficient is 1.0
   }
 
   virtual ~Likelihood()

@@ -35,12 +35,12 @@ template<class V, class M>
 class Likelihood : public QUESO::GaussianLikelihoodFullCovariance<V, M>
 {
 public:
-
   Likelihood(const char * prefix, const QUESO::VectorSet<V, M> & domain,
       const V & observations, const M & covariance)
     : QUESO::GaussianLikelihoodFullCovariance<V, M>(prefix, domain,
         observations, covariance)
   {
+    // Default covariance coefficient is 1.0
   }
 
   virtual ~Likelihood()
