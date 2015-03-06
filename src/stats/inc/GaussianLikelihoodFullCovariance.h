@@ -46,10 +46,14 @@ public:
    * Instantiates a Gaussian likelihood function, given a prefix, its domain,
    * a set of observations and a full covariance matrix.  The full
    * covariance matrix is stored as a matrix in the \c covariance parameter.
+   *
+   * The parameter \c covarianceCoefficient is a multiplying factor of
+   * \c covaraince and is fixed (i.e. not solved for in a statistical
+   * inversion).
    */
   GaussianLikelihoodFullCovariance(const char * prefix,
       const VectorSet<V, M> & domainSet, const V & observations,
-      const M & covariance);
+      const M & covariance, double covarianceCoefficient=1.0);
 
   //! Destructor
   virtual ~GaussianLikelihoodFullCovariance();
@@ -64,6 +68,7 @@ public:
       V * gradVector, M * hessianMatrix, V * hessianEffect) const;
 
 private:
+  double m_covarianceCoefficient;
   const M & m_covariance;
 };
 

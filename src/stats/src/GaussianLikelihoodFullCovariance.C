@@ -32,8 +32,9 @@ namespace QUESO {
 template<class V, class M>
 GaussianLikelihoodFullCovariance<V, M>::GaussianLikelihoodFullCovariance(
     const char * prefix, const VectorSet<V, M> & domainSet,
-    const V & observations, const M & covariance)
+    const V & observations, const M & covariance, double covarianceCoefficient)
   : BaseGaussianLikelihood<V, M>(prefix, domainSet, observations),
+    m_covarianceCoefficient(covarianceCoefficient),
     m_covariance(covariance)
 {
   if (covariance.numRowsLocal() != observations.sizeLocal()) {
@@ -80,7 +81,7 @@ GaussianLikelihoodFullCovariance<V, M>::lnValue(const V & domainVector,
   // This is square of 2-norm
   double norm2_squared = modelOutput.sumOfComponents();
 
-  return -0.5 * norm2_squared;
+  return -0.5 * norm2_squared / (this->m_covarianceCoefficient);
 }
 
 }  // End namespace QUESO
