@@ -115,7 +115,7 @@ public:
   
   //! @name Mathematical methods.
   //@{ 
-  //! Returns the norm of the vector, as the square root of 2-norm of this vector.
+  //! Returns the 2-norm squared of this vector.
   double       norm2Sq          () const;
   
   //! Returns the 2-norm (Euclidean norm) of the vector.
