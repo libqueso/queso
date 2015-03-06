@@ -19,13 +19,19 @@ int main(int argc, char **argv) {
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
       "param_", 3, NULL);
 
+  // Example RHS
+  QUESO::GslVector b(paramSpace.zeroVector());
+  b[0] = 1.0;
+  b[1] = 2.0;
+  b[2] = 3.0;
+
   // Set up block sizes for observation covariance matrix
   std::vector<unsigned int> blockSizes(2);
   blockSizes[0] = 1;  // First block is 1x1 (scalar)
   blockSizes[1] = 2;  // Second block is 2x2
 
-  // Set up block matrix with specified block sizes
-  QUESO::GslBlockMatrix covariance(env, blockSizes, 1.0);  // Identity matrix
+  // Set up block (identity) matrix with specified block sizes
+  QUESO::GslBlockMatrix covariance(blockSizes, b, 1.0);
 
   // The matrix [[1, 0, 0], [0, 1, 2], [0, 2, 8]]
   // has inverse 0.25 * [[1, 0, 0], [0, 2, -0.5], [0, -0.5, 0.25]]
@@ -34,12 +40,6 @@ int main(int argc, char **argv) {
   covariance.getBlock(1)(0, 1) = 2.0;
   covariance.getBlock(1)(1, 0) = 2.0;
   covariance.getBlock(1)(1, 1) = 8.0;
-
-  // Example RHS
-  QUESO::GslVector b(paramSpace.zeroVector());
-  b[0] = 1.0;
-  b[1] = 2.0;
-  b[2] = 3.0;
 
   // Compute solution
   QUESO::GslVector x(paramSpace.zeroVector());

@@ -26,9 +26,10 @@
 
 namespace QUESO {
 
-GslBlockMatrix::GslBlockMatrix(const FullEnvironment & env,
-    const std::vector<unsigned int> & blockSizes, double diagValue)
-  : m_env(env),
+GslBlockMatrix::GslBlockMatrix(const std::vector<unsigned int> & blockSizes,
+    const GslVector & v, double diagValue)
+  : Matrix(v.env(), v.map()),
+    m_env(v.env()),
     m_vectorSpaces(blockSizes.size()),
     m_blocks(blockSizes.size())
 {
@@ -47,6 +48,47 @@ GslBlockMatrix::~GslBlockMatrix()
     delete this->m_vectorSpaces[i];
   }
 }
+
+
+unsigned int
+GslBlockMatrix::numRowsLocal() const
+{
+  queso_not_implemented();
+}
+
+unsigned int
+GslBlockMatrix::numRowsGlobal() const
+{
+  queso_not_implemented();
+  return 0;
+}
+
+unsigned int
+GslBlockMatrix::numCols() const
+{
+  queso_not_implemented();
+  return 0;
+}
+
+int
+GslBlockMatrix::chol()
+{
+  queso_not_implemented();
+  return 0;
+}
+
+void
+GslBlockMatrix::zeroLower(bool includeDiagonal)
+{
+  queso_not_implemented();
+}
+
+void
+GslBlockMatrix::zeroUpper(bool includeDiagonal)
+{
+  queso_not_implemented();
+}
+
 
 GslMatrix &
 GslBlockMatrix::getBlock(unsigned int i) const

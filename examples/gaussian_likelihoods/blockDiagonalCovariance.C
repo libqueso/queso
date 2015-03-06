@@ -81,14 +81,6 @@ int main(int argc, char ** argv) {
   QUESO::UniformVectorRV<QUESO::GslVector, QUESO::GslMatrix> priorRv("prior_",
       paramDomain);
 
-  // Set up block sizes for observation covariance matrix
-  std::vector<unsigned int> blockSizes(2);
-  blockSizes[0] = 1;  // First block is 1x1 (scalar)
-  blockSizes[1] = 2;  // Second block is 2x2
-
-  // Set up block matrix with specified block sizes
-  QUESO::GslBlockMatrix covariance(env, blockSizes, 1.0);  // Identity matrix
-
   // Set up observation space
   QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> obsSpace(env,
       "obs_", 3, NULL);
@@ -98,6 +90,14 @@ int main(int argc, char ** argv) {
   observations[0] = 1.0;
   observations[1] = 1.0;
   observations[2] = 1.0;
+
+  // Set up block sizes for observation covariance matrix
+  std::vector<unsigned int> blockSizes(2);
+  blockSizes[0] = 1;  // First block is 1x1 (scalar)
+  blockSizes[1] = 2;  // Second block is 2x2
+
+  // Set up block matrix (identity matrix) with specified block sizes
+  QUESO::GslBlockMatrix covariance(blockSizes, observations, 1.0);
 
   // Pass in observations to Gaussian likelihood object
   Likelihood<QUESO::GslVector, QUESO::GslMatrix> lhood("llhd_", paramDomain,

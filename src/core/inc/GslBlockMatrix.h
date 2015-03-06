@@ -32,6 +32,7 @@
 
 #include <vector>
 #include <queso/Environment.h>
+#include <queso/Matrix.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/VectorSpace.h>
@@ -46,21 +47,39 @@ namespace QUESO {
  * diagonal structure.  Each block is implemented as a GslMatrix object.
  */
 
-class GslBlockMatrix
+class GslBlockMatrix : Matrix
 {
 public:
   //! @name Constructor/Destructor methods
   //@{
-  //! Creates a square matrix with size defined by \c blockSizes and diagonal values all equal to \c diagValue.
+  //! Creates a square matrix with size defined by \c v and diagonal values all equal to \c diagValue.
   /*!
-   * The \c blockSizes array must contain the sizes of each (square) block.
+   * The \c blockSizes array determines the sizes of each (square) block.
    */
-  GslBlockMatrix(const FullEnvironment & env,
-      const std::vector<unsigned int> & blockSizes, double diagValue);
+  GslBlockMatrix(const std::vector<unsigned int> & blockSizes,
+      const GslVector & v, double diagValue);
 
   //! Destructor
   ~GslBlockMatrix();
   //@}
+
+  //! Not implemented yet
+  virtual unsigned int numRowsLocal() const;
+
+  //! Not implemented yet
+  virtual unsigned int numRowsGlobal() const;
+
+  //! Not implemented yet
+  virtual unsigned int numCols() const;
+
+  //! Not implemented yet
+  virtual int chol();
+
+  //! Not implemented yet
+  virtual void zeroLower(bool includeDiagonal=false);
+
+  //! Not implemented yet
+  virtual void zeroUpper(bool includeDiagonal=false);
 
   //! Return block \c i in the block diagonal matrix
   GslMatrix & getBlock(unsigned int i) const;
@@ -78,11 +97,11 @@ public:
   //! @name I/O methods
   //@{
   //! Print method. Defines the behavior of operator<< inherited from the Object class.
-  void print (std::ostream & os) const;
+  virtual void print (std::ostream & os) const;
   //@}
 
 private:
-  const FullEnvironment & m_env;
+  const BaseEnvironment & m_env;
   std::vector<VectorSpace<GslVector, GslMatrix> *> m_vectorSpaces;
   std::vector<GslMatrix *> m_blocks;
 };
