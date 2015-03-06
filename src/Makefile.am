@@ -242,6 +242,7 @@ libqueso_la_SOURCES += stats/src/GaussianLikelihoodScalarCovariance.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodDiagonalCovariance.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodFullCovariance.C
 libqueso_la_SOURCES += stats/src/GaussianLikelihoodBlockDiagonalCovariance.C
+libqueso_la_SOURCES += stats/src/GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.C
 
 # Sources from gp/src
 
@@ -430,6 +431,7 @@ libqueso_include_HEADERS += stats/inc/GaussianLikelihoodScalarCovariance.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodDiagonalCovariance.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodFullCovariance.h
 libqueso_include_HEADERS += stats/inc/GaussianLikelihoodBlockDiagonalCovariance.h
+libqueso_include_HEADERS += stats/inc/GaussianLikelihoodBlockDiagonalCovarianceRandomCoefficients.h
 
 # Headers to install from gp/inc
 
