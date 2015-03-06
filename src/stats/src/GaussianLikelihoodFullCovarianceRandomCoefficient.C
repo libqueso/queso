@@ -40,10 +40,6 @@ GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::GaussianLikelihoodFullC
   if (covariance.numRowsLocal() != observations.sizeLocal()) {
     queso_error_msg("Covariance matrix not same size as observation vector");
   }
-
-  if (domainSet.vectorSpace().dimLocal() != observations.sizeLocal() + 1) {
-    queso_error_msg("Vector space must have dimension one larger than observation vector");
-  }
 }
 
 template<class V, class M>
@@ -53,9 +49,9 @@ GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::~GaussianLikelihoodFull
 
 template<class V, class M>
 double
-GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::actualValue(const V & domainVector,
-    const V * domainDirection, V * gradVector, M * hessianMatrix,
-    V * hessianEffect) const
+GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::actualValue(
+    const V & domainVector, const V * domainDirection, V * gradVector,
+    M * hessianMatrix, V * hessianEffect) const
 {
   return std::exp(this->lnValue(domainVector, domainDirection, gradVector,
         hessianMatrix, hessianEffect));
@@ -63,9 +59,9 @@ GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::actualValue(const V & d
 
 template<class V, class M>
 double
-GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::lnValue(const V & domainVector,
-    const V * domainDirection, V * gradVector, M * hessianMatrix,
-    V * hessianEffect) const
+GaussianLikelihoodFullCovarianceRandomCoefficient<V, M>::lnValue(
+    const V & domainVector, const V * domainDirection, V * gradVector,
+    M * hessianMatrix, V * hessianEffect) const
 {
   V modelOutput(this->m_observations, 0, 0);  // At least it's not a copy
   V weightedMisfit(this->m_observations, 0, 0);  // At least it's not a copy
