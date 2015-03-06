@@ -1,0 +1,119 @@
+//-----------------------------------------------------------------------bl-
+//--------------------------------------------------------------------------
+//
+// QUESO - a library to support the Quantification of Uncertainty
+// for Estimation, Simulation and Optimization
+//
+// Copyright (C) 2008-2015 The PECOS Development Team
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the Version 2.1 GNU Lesser General
+// Public License as published by the Free Software Foundation.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
+// Boston, MA  02110-1301  USA
+//
+//-----------------------------------------------------------------------el-
+
+#include <queso/GslVector.h>
+#include <queso/GslMatrix.h>
+#include <queso/VectorSet.h>
+#include <queso/BoxSubset.h>
+#include <queso/GaussianLikelihoodScalarCovariance.h>
+
+#define TOL 1e-8
+
+template<class V, class M>
+class Likelihood : public QUESO::GaussianLikelihoodScalarCovariance<V, M>
+{
+public:
+
+  Likelihood(const char * prefix, const QUESO::VectorSet<V, M> & domain,
+      const V & observations, double variance)
+    : QUESO::GaussianLikelihoodScalarCovariance<V, M>(prefix, domain,
+        observations, variance)
+  {
+  }
+
+  virtual ~Likelihood()
+  {
+  }
+
+  virtual void evaluateModel(const V & domainVector, const V * domainDirection,
+      V & modelOutput, V * gradVector, M * hessianMatrix,
+      V * hessianEffect) const
+  {
+    // Evaluate model and fill up the m_modelOutput member variable
+    for (unsigned int i = 0; i < modelOutput.sizeLocal(); i++) {
+      modelOutput[i] = domainVector[i] + 3.0;
+    }
+  }
+};
+
+int main(int argc, char ** argv) {
+  MPI_Init(&argc, &argv);
+
+  QUESO::FullEnvironment env(MPI_COMM_WORLD, "test_gaussian_likelihoods/queso_input.txt", "", NULL);
+
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> paramSpace(env,
+      "param_", 1, NULL);
+
+  double min_val = -INFINITY;
+  double max_val = INFINITY;
+
+  QUESO::GslVector paramMins(paramSpace.zeroVector());
+  paramMins.cwSet(min_val);
+  QUESO::GslVector paramMaxs(paramSpace.zeroVector());
+  paramMaxs.cwSet(max_val);
+
+  QUESO::BoxSubset<QUESO::GslVector, QUESO::GslMatrix> paramDomain("param_",
+      paramSpace, paramMins, paramMaxs);
+
+  // Set up observation space
+  QUESO::VectorSpace<QUESO::GslVector, QUESO::GslMatrix> obsSpace(env,
+      "obs_", 1, NULL);
+
+  // Fill up observation vector
+  QUESO::GslVector observations(obsSpace.zeroVector());
+  observations[0] = 1.0;
+
+  // Pass in observations to Gaussian likelihood object
+  Likelihood<QUESO::GslVector, QUESO::GslMatrix> lhood("llhd_", paramDomain,
+      observations, 1.0);
+
+  double lhood_value;
+  double truth_value;
+  QUESO::GslVector point(paramSpace.zeroVector());
+  point[0] = 0.0;
+  lhood_value = lhood.actualValue(point, NULL, NULL, NULL, NULL);
+  truth_value = std::exp(-2.0);
+
+  if (std::abs(lhood_value - truth_value) > TOL) {
+    std::cerr << "Scalar Gaussian test case failure." << std::endl;
+    std::cerr << "Computed likelihood value is: " << lhood_value << std::endl;
+    std::cerr << "Likelihood value should be: " << truth_value << std::endl;
+    queso_error();
+  }
+
+  point[0] = -2.0;
+  lhood_value = lhood.actualValue(point, NULL, NULL, NULL, NULL);
+  truth_value = 1.0;
+
+  if (std::abs(lhood_value - truth_value) > TOL) {
+    std::cerr << "Scalar Gaussian test case failure." << std::endl;
+    std::cerr << "Computed likelihood value is: " << lhood_value << std::endl;
+    std::cerr << "Likelihood value should be: " << truth_value << std::endl;
+    queso_error();
+  }
+
+  MPI_Finalize();
+
+  return 0;
+}

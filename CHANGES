@@ -3,6 +3,9 @@ QUESO: Quantification of Uncertainty for Estimation,
 Simulation, and Optimization.
 -----------------------------------------------------
 
+Version 0.52.0
+  * Add canned Gaussian likelihoods
+
 Version 0.51.0
   * Add canned likelihood for scalar GPMSA use-case a la Higdon et al
   * Add a logit-transformed transition kernel for more efficient proposals
