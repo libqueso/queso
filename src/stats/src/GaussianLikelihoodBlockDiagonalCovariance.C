@@ -43,7 +43,7 @@ GaussianLikelihoodBlockDiagonalCovariance<V, M>::GaussianLikelihoodBlockDiagonal
   }
 
   if (totalDim != observations.sizeLocal()) {
-    queso_error_msg("Covariance matrix not same size as observation vector");
+    queso_error_msg("Covariance matrix not same dimension as observation vector");
   }
 }
 
