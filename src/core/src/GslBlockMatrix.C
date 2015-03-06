@@ -29,7 +29,6 @@ namespace QUESO {
 GslBlockMatrix::GslBlockMatrix(const std::vector<unsigned int> & blockSizes,
     const GslVector & v, double diagValue)
   : Matrix(v.env(), v.map()),
-    m_env(v.env()),
     m_vectorSpaces(blockSizes.size()),
     m_blocks(blockSizes.size())
 {

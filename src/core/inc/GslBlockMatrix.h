@@ -101,7 +101,6 @@ public:
   //@}
 
 private:
-  const BaseEnvironment & m_env;
   std::vector<VectorSpace<GslVector, GslMatrix> *> m_vectorSpaces;
   std::vector<GslMatrix *> m_blocks;
 };
