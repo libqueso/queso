@@ -39,6 +39,7 @@ check_PROGRAMS += test_scalarCovariance
 check_PROGRAMS += test_diagonalCovariance
 check_PROGRAMS += test_fullCovariance
 check_PROGRAMS += test_blockDiagonalCovariance
+check_PROGRAMS += test_GslBlockMatrixInvertMultiply
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -103,6 +104,7 @@ test_scalarCovariance_SOURCES = test_gaussian_likelihoods/test_scalarCovariance.
 test_diagonalCovariance_SOURCES = test_gaussian_likelihoods/test_diagonalCovariance.C
 test_fullCovariance_SOURCES = test_gaussian_likelihoods/test_fullCovariance.C
 test_blockDiagonalCovariance_SOURCES = test_gaussian_likelihoods/test_blockDiagonalCovariance.C
+test_GslBlockMatrixInvertMultiply_SOURCES = test_GslBlockMatrix/test_GslBlockMatrixInvertMultiply.C
 
 # Files to freedom stamp
 srcstamp =
@@ -139,6 +141,7 @@ srcstamp += $(test_scalarCovariance_SOURCES)
 srcstamp += $(test_diagonalCovariance_SOURCES)
 srcstamp += $(test_fullCovariance_SOURCES)
 srcstamp += $(test_blockDiagonalCovariance_SOURCES)
+srcstamp += $(test_GslBlockMatrixInvertMultiply_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
@@ -175,6 +178,7 @@ TESTS += $(top_builddir)/test/test_scalarCovariance
 TESTS += $(top_builddir)/test/test_diagonalCovariance
 TESTS += $(top_builddir)/test/test_fullCovariance
 TESTS += $(top_builddir)/test/test_blockDiagonalCovariance
+TESTS += $(top_builddir)/test/test_GslBlockMatrixInvertMultiply
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 

@@ -173,3 +173,4 @@ test/test_fullCovariance
 test/test_blockDiagonalCovariance
 test/test_output_gaussian_likelihoods
 test/test_gaussian_likelihoods/queso_input.txt
+test/test_GslBlockMatrixInvertMultiply
