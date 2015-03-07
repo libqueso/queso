@@ -105,26 +105,32 @@ int main(int argc, char ** argv) {
   Likelihood<QUESO::GslVector, QUESO::GslMatrix> lhood("llhd_", paramDomain,
       observations, covariance);
 
+  lhood.blockCoefficient(0) = 4.0;
+  lhood.blockCoefficient(1) = 2.0;
+
   double lhood_value;
   double truth_value;
   QUESO::GslVector point(paramSpace.zeroVector());
   point[0] = 0.0;
   lhood_value = lhood.actualValue(point, NULL, NULL, NULL, NULL);
-  truth_value = std::exp(-4.5);
+  truth_value = std::exp(-1.75);
 
   if (std::abs(lhood_value - truth_value) > TOL) {
-    std::cerr << "Scalar Gaussian test case failure." << std::endl;
+    std::cerr << "Block diagonal Gaussian test case failure." << std::endl;
     std::cerr << "Computed likelihood value is: " << lhood_value << std::endl;
     std::cerr << "Likelihood value should be: " << truth_value << std::endl;
     queso_error();
   }
+
+  lhood.blockCoefficient(0) = 1.0;
+  lhood.blockCoefficient(1) = 1.0;
 
   point[0] = -2.0;
   lhood_value = lhood.actualValue(point, NULL, NULL, NULL, NULL);
   truth_value = 1.0;
 
   if (std::abs(lhood_value - truth_value) > TOL) {
-    std::cerr << "Scalar Gaussian test case failure." << std::endl;
+    std::cerr << "Block diagonal Gaussian test case failure." << std::endl;
     std::cerr << "Computed likelihood value is: " << lhood_value << std::endl;
     std::cerr << "Likelihood value should be: " << truth_value << std::endl;
     queso_error();
