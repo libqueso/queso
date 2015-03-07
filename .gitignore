@@ -87,6 +87,7 @@ examples/scalarCovariance
 examples/diagonalCovariance
 examples/fullCovariance
 examples/blockDiagonalCovariance
+examples/blockDiagonalCovarianceRandomCoefficients
 
 src/core/inc/queso.h
 src/libqueso.la
