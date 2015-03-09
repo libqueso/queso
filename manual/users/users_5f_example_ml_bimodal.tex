@@ -35,7 +35,7 @@ where $f(\theta)= \dfrac{1}{2} f_1(\theta) + \dfrac{1}{2} f_2(\theta)$ is the li
 
 To run the executable provided (available after QUESO installation), and generate figures for the chains, PDFs, CDFs, etc., enter the following commands:
 \begin{lstlisting}[label={},caption={}]
-$ cd $HOME/LIBRARIES/QUESO-0.50.0/examples/bimodal
+$ cd $HOME/LIBRARIES/QUESO-0.51.0/examples/bimodal
 $ rm outputData/*
 $ ./bimodal_gsl bimodal_1chain.inp    
 $ matlab
@@ -113,12 +113,12 @@ Similarly to the other examples presented in this user's manual and also availab
 
 Thus, to compile, build and execute the code, the user just needs to run the following commands in the same directory where the files are:
 \begin{lstlisting}
-$ cd $HOME/LIBRARIES/QUESO-0.50.0/examples/bimodal/
+$ cd $HOME/LIBRARIES/QUESO-0.51.0/examples/bimodal/
 $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
   $HOME/LIBRARIES/gsl-1.15/lib/:\
   $HOME/LIBRARIES/boost-1.53.0/lib/:\
   $HOME/LIBRARIES/hdf5-1.8.10/lib:\
-  $HOME/LIBRARIES/QUESO-0.50.0/lib 
+  $HOME/LIBRARIES/QUESO-0.51.0/lib 
 $ make -f Makefile_bimodal_violeta 
 $ ./bimodal_gsl example.inp
 \end{lstlisting}

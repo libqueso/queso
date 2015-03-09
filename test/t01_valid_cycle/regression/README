@@ -9,3 +9,5 @@ Notes:
    automatic regression testing. 
 -> July 2010: new reference solution checked in (basically, it is printed
    out to the output file with more precision)
+-> September 2014: new samples are drawn as a result of a change in transition
+   kernel, so the reference solution is being updated

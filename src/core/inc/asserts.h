@@ -84,8 +84,12 @@
 #endif // NDEBUG
 
 
-#define queso_error()    do { queso_here(); QUESO_THROW(QUESO::LogicError()); } while(0)
-#define queso_not_implemented()    do { queso_here(); QUESO_THROW(QUESO::NotImplemented()); } while(0)
-#define queso_file_error(filename)    do { queso_here(); QUESO_THROW(QUESO::FileError(filename)); } while(0)
+#define queso_error() do { queso_here(); QUESO_THROW(QUESO::LogicError()); } while(0)
+#define queso_not_implemented() do { queso_here(); QUESO_THROW(QUESO::NotImplemented()); } while(0)
+#define queso_file_error(filename) do { queso_here(); QUESO_THROW(QUESO::FileError(filename)); } while(0)
+
+#define queso_error_msg(msg) do { queso_here(); std::cerr << msg << std::endl; QUESO_THROW(QUESO::LogicError()); } while(0)
+#define queso_not_implemented_msg(msg) do { queso_here(); std::cerr << msg << std::endl; QUESO_THROW(QUESO::NotImplemented()); } while(0)
+#define queso_file_error_msg(filename, msg) do { queso_here(); std::cerr << msg << std::endl; QUESO_THROW(QUESO::FileError(filename)); } while(0)
 
 #endif // QUESO_ASSERTS_H

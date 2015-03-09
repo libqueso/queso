@@ -77,9 +77,5 @@ double likelihoodRoutine(
     // Do nothing;
   }
 
-#ifdef QUESO_EXPECTS_LN_LIKELIHOOD_INSTEAD_OF_MINUS_2_LN
   return -.5*result;
-#else
-  return result;
-#endif
 }

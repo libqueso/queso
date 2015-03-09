@@ -25,6 +25,8 @@
 #include <queso/StatisticalInverseProblem.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
+#include <queso/GPMSA.h>
+#include <queso/GslOptimizer.h>
 
 namespace QUESO {
 
@@ -52,7 +54,8 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
   m_logLikelihoodValues     (NULL),
   m_logTargetValues         (NULL),
   m_alternativeOptionsValues(),
-  m_optionsObj              (NULL)
+  m_optionsObj              (NULL),
+  m_seedWithMAPEstimator    (false)
 {
 #ifdef QUESO_MEMORY_DEBUGGING
   std::cout << "Entering Sip" << std::endl;
@@ -83,6 +86,67 @@ StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
                       "'priorRv' and 'likelihoodFunction' are related to vector spaces of different dimensions");
 
   UQ_FATAL_TEST_MACRO(priorRv.imageSet().vectorSpace().dimLocal() != postRv.imageSet().vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "StatisticalInverseProblem<P_V,P_M>::constructor()",
+                      "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
+
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Leaving StatisticalInverseProblem<P_V,P_M>::constructor()"
+                            << ": prefix = " << m_optionsObj->m_prefix
+                            << std::endl;
+  }
+
+  return;
+}
+
+template <class P_V,class P_M>
+StatisticalInverseProblem<P_V,P_M>::StatisticalInverseProblem(
+    const char * prefix,
+    const SipOptionsValues * alternativeOptionsValues,
+    const GPMSAFactory<P_V, P_M> & gpmsaFactory,
+    GenericVectorRV <P_V,P_M> & postRv)
+  :
+  m_env                     (gpmsaFactory.m_totalPrior->env()),
+  m_priorRv                 (*(gpmsaFactory.m_totalPrior)),
+  m_likelihoodFunction      (gpmsaFactory.getGPMSAEmulator()),
+  m_postRv                  (postRv),
+  m_solutionDomain          (NULL),
+  m_solutionPdf             (NULL),
+  m_subSolutionMdf          (NULL),
+  m_subSolutionCdf          (NULL),
+  m_solutionRealizer        (NULL),
+  m_mhSeqGenerator          (NULL),
+  m_mlSampler               (NULL),
+  m_chain                   (NULL),
+  m_logLikelihoodValues     (NULL),
+  m_logTargetValues         (NULL),
+  m_alternativeOptionsValues(),
+  m_optionsObj              (NULL),
+  m_seedWithMAPEstimator    (false)
+{
+  if (m_env.subDisplayFile()) {
+    *m_env.subDisplayFile() << "Entering StatisticalInverseProblem<P_V,P_M>::constructor()"
+                            << ": prefix = " << prefix
+                            << ", alternativeOptionsValues = " << alternativeOptionsValues
+                            << ", m_env.optionsInputFileName() = " << m_env.optionsInputFileName()
+                            << std::endl;
+  }
+
+  if (alternativeOptionsValues) m_alternativeOptionsValues = *alternativeOptionsValues;
+  if (m_env.optionsInputFileName() == "") {
+    m_optionsObj = new StatisticalInverseProblemOptions(m_env,prefix,m_alternativeOptionsValues);
+  }
+  else {
+    m_optionsObj = new StatisticalInverseProblemOptions(m_env,prefix);
+    m_optionsObj->scanOptionsValues();
+  }
+
+  UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != m_likelihoodFunction.domainSet().vectorSpace().dimLocal(),
+                      m_env.worldRank(),
+                      "StatisticalInverseProblem<P_V,P_M>::constructor()",
+                      "'priorRv' and 'likelihoodFunction' are related to vector spaces of different dimensions");
+
+  UQ_FATAL_TEST_MACRO(m_priorRv.imageSet().vectorSpace().dimLocal() != postRv.imageSet().vectorSpace().dimLocal(),
                       m_env.worldRank(),
                       "StatisticalInverseProblem<P_V,P_M>::constructor()",
                       "'priorRv' and 'postRv' are related to vector spaces of different dimensions");
@@ -186,20 +250,42 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
                                                        *m_solutionDomain);
 
   m_postRv.setPdf(*m_solutionPdf);
+  m_chain = new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
 
-  // Compute output realizer: Metropolis-Hastings approach
-  m_chain               = new SequenceOfVectors<P_V,P_M>(m_postRv.imageSet().vectorSpace(),0,m_optionsObj->m_prefix+"chain");
-  m_logLikelihoodValues = new ScalarSequence<double>    (m_env,0,m_optionsObj->m_prefix+"logLike"  );
-  m_logTargetValues     = new ScalarSequence<double>    (m_env,0,m_optionsObj->m_prefix+"logTarget");
-  m_mhSeqGenerator = new MetropolisHastingsSG<P_V,P_M>(m_optionsObj->m_prefix.c_str(), // dakota
-                                                              alternativeOptionsValues,
-                                                              m_postRv,
-                                                              initialValues,
-                                                              initialProposalCovMatrix);
+  // Decide whether or not to create a MetropolisHastingsSG instance from the
+  // user-provided initial seed, or use the user-provided seed for a
+  // deterministic optimisation instead and seed the chain with the result of
+  // the optimisation
+  if (this->m_seedWithMAPEstimator) {
+    // Do optimisation before sampling
+    GslOptimizer optimizer(*m_solutionPdf);
+    optimizer.setInitialPoint(dynamic_cast<const GslVector &>(initialValues));
+    optimizer.minimize();
 
-  m_mhSeqGenerator->generateSequence(*m_chain,
-                                     NULL, //m_logLikelihoodValues,
-                                     NULL);//m_logTargetValues);
+    // Compute output realizer: Metropolis-Hastings approach
+    m_mhSeqGenerator = new MetropolisHastingsSG<P_V, P_M>(
+        m_optionsObj->m_prefix.c_str(), alternativeOptionsValues,
+        m_postRv, optimizer.minimizer(), initialProposalCovMatrix);
+  }
+  else {
+    // Compute output realizer: Metropolis-Hastings approach
+    m_mhSeqGenerator = new MetropolisHastingsSG<P_V, P_M>(
+        m_optionsObj->m_prefix.c_str(), alternativeOptionsValues, m_postRv,
+        initialValues, initialProposalCovMatrix);
+  }
+
+
+  m_logLikelihoodValues = new ScalarSequence<double>(m_env, 0,
+                                                     m_optionsObj->m_prefix +
+                                                     "logLike");
+
+  m_logTargetValues = new ScalarSequence<double>(m_env, 0,
+                                                 m_optionsObj->m_prefix +
+                                                 "logTarget");
+
+  // m_logLikelihoodValues and m_logTargetValues may be NULL
+  m_mhSeqGenerator->generateSequence(*m_chain, m_logLikelihoodValues,
+                                     m_logTargetValues);
 
   m_solutionRealizer = new SequentialVectorRealizer<P_V,P_M>(m_optionsObj->m_prefix.c_str(),
                                                                     *m_chain);
@@ -266,7 +352,14 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMetropolisHastings(
   // grvy_timer_end("BayesMetropolisHastings"); TODO: revisit timers
   return;
 }
-//--------------------------------------------------
+
+template <class P_V, class P_M>
+void
+StatisticalInverseProblem<P_V, P_M>::seedWithMAPEstimator()
+{
+  this->m_seedWithMAPEstimator = true;
+}
+
 template <class P_V,class P_M>
 void
 StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
@@ -337,16 +430,24 @@ StatisticalInverseProblem<P_V,P_M>::solveWithBayesMLSampling()
 
   return;
 }
+
+template <class P_V, class P_M>
+const MetropolisHastingsSG<P_V, P_M> &
+StatisticalInverseProblem<P_V, P_M>::sequenceGenerator() const
+{
+  return *m_mhSeqGenerator;
+}
+
 //--------------------------------------------------
 template <class P_V,class P_M>
-const BaseVectorRV<P_V,P_M>& 
+const BaseVectorRV<P_V,P_M>&
 StatisticalInverseProblem<P_V,P_M>::priorRv() const
 {
   return m_priorRv;
 }
 //--------------------------------------------------
 template <class P_V,class P_M>
-const GenericVectorRV<P_V,P_M>& 
+const GenericVectorRV<P_V,P_M>&
 StatisticalInverseProblem<P_V,P_M>::postRv() const
 {
   return m_postRv;

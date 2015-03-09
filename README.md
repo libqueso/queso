@@ -83,3 +83,21 @@ feel free to ask questions on one of the mailing lists:
   list for questions regarding usage and reporting bugs
 - [queso-dev](https://groups.google.com/forum/#!forum/queso-dev) mailing list
   for discussion regarding development of `QUESO`
+
+Citing QUESO
+-------
+Please add the following citation to any paper, technical report or
+article describing the use of the `QUESO` library:
+
+```bibtex
+@inproceedings{Prudencio2012,
+  author = {Prudencio, Ernesto E and Schulz, Karl W},
+  booktitle = {Euro-Par 2011: Parallel Processing Workshops},
+  pages = {398--407},
+  publisher = {Springer},
+  title = {{The parallel C++ statistical library ‘QUESO’: Quantification of
+    Uncertainty for Estimation, Simulation and Optimization}},
+  url = {http://dx.doi.org/10.1007/978-3-642-29737-3\_44},
+  year = {2012}
+}
+```

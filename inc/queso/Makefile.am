@@ -37,6 +37,7 @@ BUILT_SOURCES += EnvironmentOptions.h
 BUILT_SOURCES += FunctionBase.h
 BUILT_SOURCES += FunctionOperatorBuilder.h
 BUILT_SOURCES += GslMatrix.h
+BUILT_SOURCES += GslOptimizer.h
 BUILT_SOURCES += GslVector.h
 BUILT_SOURCES += InfiniteDimensionalGaussian.h
 BUILT_SOURCES += InfiniteDimensionalLikelihoodBase.h
@@ -50,6 +51,8 @@ BUILT_SOURCES += Map.h
 BUILT_SOURCES += Matrix.h
 BUILT_SOURCES += MpiComm.h
 BUILT_SOURCES += OperatorBase.h
+BUILT_SOURCES += Optimizer.h
+BUILT_SOURCES += OptimizerMonitor.h
 BUILT_SOURCES += RngBase.h
 BUILT_SOURCES += RngBoost.h
 BUILT_SOURCES += RngGsl.h
@@ -61,6 +64,8 @@ BUILT_SOURCES += exceptions.h
 BUILT_SOURCES += ExperimentModel.h
 BUILT_SOURCES += ExperimentModelOptions.h
 BUILT_SOURCES += ExperimentStorage.h
+BUILT_SOURCES += GPMSA.h
+BUILT_SOURCES += GPMSAOptions.h
 BUILT_SOURCES += GcmExperimentInfo.h
 BUILT_SOURCES += GcmJointInfo.h
 BUILT_SOURCES += GcmJointTildeInfo.h
@@ -113,9 +118,15 @@ BUILT_SOURCES += GenericVectorRV.h
 BUILT_SOURCES += GenericVectorRealizer.h
 BUILT_SOURCES += HessianCovMatricesTKGroup.h
 BUILT_SOURCES += InfoTheory.h
+BUILT_SOURCES += InvLogitGaussianJointPdf.h
+BUILT_SOURCES += InvLogitGaussianVectorRV.h
+BUILT_SOURCES += InvLogitGaussianVectorRealizer.h
 BUILT_SOURCES += InverseGammaJointPdf.h
 BUILT_SOURCES += InverseGammaVectorRV.h
 BUILT_SOURCES += InverseGammaVectorRealizer.h
+BUILT_SOURCES += JeffreysJointPdf.h
+BUILT_SOURCES += JeffreysVectorRV.h
+BUILT_SOURCES += JeffreysVectorRealizer.h
 BUILT_SOURCES += JointPdf.h
 BUILT_SOURCES += LogNormalJointPdf.h
 BUILT_SOURCES += LogNormalVectorRV.h
@@ -145,6 +156,7 @@ BUILT_SOURCES += StatisticalInverseProblem.h
 BUILT_SOURCES += StatisticalInverseProblemOptions.h
 BUILT_SOURCES += StdScalarCdf.h
 BUILT_SOURCES += TKGroup.h
+BUILT_SOURCES += TransformedScaledCovMatrixTKGroup.h
 BUILT_SOURCES += UniformJointPdf.h
 BUILT_SOURCES += UniformVectorRV.h
 BUILT_SOURCES += UniformVectorRealizer.h
@@ -226,6 +238,8 @@ FunctionOperatorBuilder.h: $(top_srcdir)/src/core/inc/FunctionOperatorBuilder.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GslMatrix.h: $(top_srcdir)/src/core/inc/GslMatrix.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GslOptimizer.h: $(top_srcdir)/src/core/inc/GslOptimizer.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GslVector.h: $(top_srcdir)/src/core/inc/GslVector.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InfiniteDimensionalGaussian.h: $(top_srcdir)/src/core/inc/InfiniteDimensionalGaussian.h
@@ -252,6 +266,10 @@ MpiComm.h: $(top_srcdir)/src/core/inc/MpiComm.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 OperatorBase.h: $(top_srcdir)/src/core/inc/OperatorBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+Optimizer.h: $(top_srcdir)/src/core/inc/Optimizer.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+OptimizerMonitor.h: $(top_srcdir)/src/core/inc/OptimizerMonitor.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngBase.h: $(top_srcdir)/src/core/inc/RngBase.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 RngBoost.h: $(top_srcdir)/src/core/inc/RngBoost.h
@@ -273,6 +291,10 @@ ExperimentModel.h: $(top_srcdir)/src/gp/inc/ExperimentModel.h
 ExperimentModelOptions.h: $(top_srcdir)/src/gp/inc/ExperimentModelOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 ExperimentStorage.h: $(top_srcdir)/src/gp/inc/ExperimentStorage.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GPMSA.h: $(top_srcdir)/src/gp/inc/GPMSA.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+GPMSAOptions.h: $(top_srcdir)/src/gp/inc/GPMSAOptions.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 GcmExperimentInfo.h: $(top_srcdir)/src/gp/inc/GcmExperimentInfo.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -378,11 +400,23 @@ HessianCovMatricesTKGroup.h: $(top_srcdir)/src/stats/inc/HessianCovMatricesTKGro
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InfoTheory.h: $(top_srcdir)/src/stats/inc/InfoTheory.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InvLogitGaussianJointPdf.h: $(top_srcdir)/src/stats/inc/InvLogitGaussianJointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InvLogitGaussianVectorRV.h: $(top_srcdir)/src/stats/inc/InvLogitGaussianVectorRV.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+InvLogitGaussianVectorRealizer.h: $(top_srcdir)/src/stats/inc/InvLogitGaussianVectorRealizer.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InverseGammaJointPdf.h: $(top_srcdir)/src/stats/inc/InverseGammaJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InverseGammaVectorRV.h: $(top_srcdir)/src/stats/inc/InverseGammaVectorRV.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 InverseGammaVectorRealizer.h: $(top_srcdir)/src/stats/inc/InverseGammaVectorRealizer.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+JeffreysJointPdf.h: $(top_srcdir)/src/stats/inc/JeffreysJointPdf.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+JeffreysVectorRV.h: $(top_srcdir)/src/stats/inc/JeffreysVectorRV.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+JeffreysVectorRealizer.h: $(top_srcdir)/src/stats/inc/JeffreysVectorRealizer.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 JointPdf.h: $(top_srcdir)/src/stats/inc/JointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
@@ -441,6 +475,8 @@ StatisticalInverseProblemOptions.h: $(top_srcdir)/src/stats/inc/StatisticalInver
 StdScalarCdf.h: $(top_srcdir)/src/stats/inc/StdScalarCdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 TKGroup.h: $(top_srcdir)/src/stats/inc/TKGroup.h
+	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
+TransformedScaledCovMatrixTKGroup.h: $(top_srcdir)/src/stats/inc/TransformedScaledCovMatrixTKGroup.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@
 UniformJointPdf.h: $(top_srcdir)/src/stats/inc/UniformJointPdf.h
 	$(AM_V_GEN)rm -f $@ && $(LN_S) $< $@

@@ -25,36 +25,17 @@
 #ifndef UQ_VECTOR_RV_H
 #define UQ_VECTOR_RV_H
 
+#include <queso/Environment.h>
+#include <queso/VectorSet.h>
 #include <queso/VectorSpace.h>
 #include <queso/JointPdf.h>
-#include <queso/GaussianJointPdf.h>
-#include <queso/BetaJointPdf.h>
-#include <queso/GammaJointPdf.h>
-#include <queso/UniformJointPdf.h>
-#include <queso/InverseGammaJointPdf.h>
-#include <queso/WignerJointPdf.h>
-#include <queso/LogNormalJointPdf.h>
-#include <queso/ConcatenatedJointPdf.h>
 #include <queso/VectorRealizer.h>
-#include <queso/GaussianVectorRealizer.h>
-#include <queso/UniformVectorRealizer.h>
-#include <queso/BetaVectorRealizer.h>
-#include <queso/GammaVectorRealizer.h>
-#include <queso/InverseGammaVectorRealizer.h>
-#include <queso/WignerVectorRealizer.h>
-#include <queso/LogNormalVectorRealizer.h>
-#include <queso/ConcatenatedVectorRealizer.h>
 #include <queso/VectorCdf.h>
 #include <queso/VectorMdf.h>
 #include <queso/SequenceOfVectors.h>
 #include <queso/InfoTheory.h>
-#include <gsl/gsl_sf_psi.h> // todo: take specificity of gsl_, i.e., make it general (gsl or boost or etc)
 
 namespace QUESO {
-
-//*****************************************************
-// Base class [RV-00]
-//*****************************************************
 
 /*! \file VectorRV.h
  * \brief A templated class for handling vector random variables (RV).
@@ -63,7 +44,8 @@ namespace QUESO {
  * \brief A templated base class for handling vector RV.
  *
  * This class allows two basic but quite crucial functionalities: to compute the value of the
- * PDF of a random variable (RV) at a point and to generate realizations (samples) from such PDF. */
+ * PDF of a random variable (RV) at a point and to generate realizations (samples) from such PDF.
+ */
 
 template<class V, class M>
 class BaseVectorRV {

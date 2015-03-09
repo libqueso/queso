@@ -42,15 +42,19 @@
 
 namespace QUESO {
 
-/*! \file uqStatisticalInverseProblemOptions.h
-    \brief Classes to allow options to be passed to a Statistical Inverse Problem.
-*/
+/*!
+ * \file StatisticalInverseProblemOptions.h
+ * \brief Classes to allow options to be passed to a Statistical Inverse Problem
+ */
 
-/*! \class SipOptionsValues
- *  \brief This class provides options for a Statistical Inverse Problem if no input file is available.
- * 
- *  In order to solve a Statistical Inverse Problem (SIP), QUESO expects some options for its methods to be 
- * fully defined. This class provides default values for such options if no input file is available. */
+/*!
+ * \class SipOptionsValues
+ * \brief This class provides options for a Statistical Inverse Problem if no input file is available.
+ *
+ * In order to solve a Statistical Inverse Problem (SIP), QUESO expects some
+ * options for its methods to be fully defined.  This class provides default
+ * values for such options if no input file is available.
+ */
 
 class SipOptionsValues
 {

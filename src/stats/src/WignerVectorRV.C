@@ -23,6 +23,8 @@
 //-----------------------------------------------------------------------el-
 
 #include <queso/WignerVectorRV.h>
+#include <queso/WignerJointPdf.h>
+#include <queso/WignerVectorRealizer.h>
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
