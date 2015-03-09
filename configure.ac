@@ -221,6 +221,13 @@ AC_CONFIG_FILES([
   chmod +x test/test_Regression/test_jeffreys_samples_diff.sh
 ])
 
+AC_CONFIG_FILES([
+  test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+],
+[
+  chmod +x test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+])
+
 dnl ----------------------------------------------
 dnl Collect files for licence header stamping here
 dnl ----------------------------------------------

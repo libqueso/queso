@@ -35,6 +35,7 @@ check_PROGRAMS += test_gsloptimizer
 check_PROGRAMS += test_seedwithmap
 check_PROGRAMS += test_seedwithmap_fd
 check_PROGRAMS += test_logitadaptedcov
+check_PROGRAMS += test_unifiedPositionsOfMaximum
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -95,6 +96,7 @@ test_gsloptimizer_SOURCES = test_optimizer/test_gsloptimizer.C
 test_seedwithmap_SOURCES = test_optimizer/test_seedwithmap.C
 test_seedwithmap_fd_SOURCES = test_optimizer/test_seedwithmap_fd.C
 test_logitadaptedcov_SOURCES = test_Regression/test_logitadaptedcov.C
+test_unifiedPositionsOfMaximum_SOURCES = test_SequenceOfVectors/test_unifiedPositionsOfMaximum.C
 
 # Files to freedom stamp
 srcstamp =
@@ -127,6 +129,7 @@ srcstamp += $(test_gsloptimizer_SOURCES)
 srcstamp += $(test_seedwithmap_SOURCES)
 srcstamp += $(test_seedwithmap_fd_SOURCES)
 srcstamp += $(test_logitadaptedcov_SOURCES)
+srcstamp += $(test_unifiedPositionsOfMaximum_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
@@ -159,6 +162,7 @@ TESTS += $(top_builddir)/test/test_gsloptimizer
 TESTS += $(top_builddir)/test/test_seedwithmap
 TESTS += $(top_builddir)/test/test_seedwithmap_fd
 TESTS += $(top_builddir)/test/test_logitadaptedcov
+TESTS += $(top_builddir)/test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
@@ -183,6 +187,7 @@ EXTRA_DIST += test_Regression/jeffreys_input.txt.in
 EXTRA_DIST += test_Regression/test_jeffreys_samples_diff.sh.in
 EXTRA_DIST += test_Regression/test_jeffreys_samples.m.in
 EXTRA_DIST += test_Regression/adaptedcov_input.txt.in
+EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh.in
 
 DISTCLEANFILES =
 DISTCLEANFILES += test_gpmsa_cobra_output/display_sub0.txt

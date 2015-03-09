@@ -161,3 +161,5 @@ test/test_Regression/test_jeffreys_samples_diff.sh
 test/test_adaptedcov_output/
 test/test_gpmsa_cobra_output/
 test/test_logitadaptedcov
+test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
+test/test_unifiedPositionsOfMaximum
