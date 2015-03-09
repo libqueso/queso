@@ -40,6 +40,7 @@ check_PROGRAMS += test_diagonalCovariance
 check_PROGRAMS += test_fullCovariance
 check_PROGRAMS += test_blockDiagonalCovariance
 check_PROGRAMS += test_GslBlockMatrixInvertMultiply
+check_PROGRAMS += test_unifiedPositionsOfMaximum
 
 LDADD       = $(top_builddir)/src/libqueso.la
 
@@ -105,6 +106,7 @@ test_diagonalCovariance_SOURCES = test_gaussian_likelihoods/test_diagonalCovaria
 test_fullCovariance_SOURCES = test_gaussian_likelihoods/test_fullCovariance.C
 test_blockDiagonalCovariance_SOURCES = test_gaussian_likelihoods/test_blockDiagonalCovariance.C
 test_GslBlockMatrixInvertMultiply_SOURCES = test_GslBlockMatrix/test_GslBlockMatrixInvertMultiply.C
+test_unifiedPositionsOfMaximum_SOURCES = test_SequenceOfVectors/test_unifiedPositionsOfMaximum.C
 
 # Files to freedom stamp
 srcstamp =
@@ -142,6 +144,7 @@ srcstamp += $(test_diagonalCovariance_SOURCES)
 srcstamp += $(test_fullCovariance_SOURCES)
 srcstamp += $(test_blockDiagonalCovariance_SOURCES)
 srcstamp += $(test_GslBlockMatrixInvertMultiply_SOURCES)
+srcstamp += $(test_unifiedPositionsOfMaximum_SOURCES)
 
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
@@ -179,6 +182,7 @@ TESTS += $(top_builddir)/test/test_diagonalCovariance
 TESTS += $(top_builddir)/test/test_fullCovariance
 TESTS += $(top_builddir)/test/test_blockDiagonalCovariance
 TESTS += $(top_builddir)/test/test_GslBlockMatrixInvertMultiply
+TESTS += $(top_builddir)/test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
 
 XFAIL_TESTS = $(top_builddir)/test/test_SequenceOfVectorsErase
 
@@ -204,6 +208,7 @@ EXTRA_DIST += test_Regression/test_jeffreys_samples_diff.sh.in
 EXTRA_DIST += test_Regression/test_jeffreys_samples.m.in
 EXTRA_DIST += test_Regression/adaptedcov_input.txt.in
 EXTRA_DIST += test_gaussian_likelihoods/queso_input.txt.in
+EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh.in
 
 DISTCLEANFILES =
 DISTCLEANFILES += test_gpmsa_cobra_output/display_sub0.txt
