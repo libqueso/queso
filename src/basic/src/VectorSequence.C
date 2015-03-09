@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------Bl-
 //--------------------------------------------------------------------------
-// 
+//
 // QUESO - a library to support the Quantification of Uncertainty
 // for Estimation, Simulation and Optimization
 //
@@ -17,7 +17,7 @@
 //
 // You should have received a copy of the GNU Lesser General Public
 // License along with this library; if not, write to the Free Software
-// Foundation, Inc. 51 Franklin Street, Fifth Floor, 
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301  USA
 //
 //-----------------------------------------------------------------------el-
@@ -446,6 +446,7 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
                       "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
                       "invalid input");
 
+  // Compute the max on each process
   double subMaxValue = subCorrespondingScalarValues.subMaxPlain();
 
   //******************************************************************
@@ -460,6 +461,8 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
                                "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
                                "failed MPI.Allreduce() for max");
 
+  // Find number of elements (subNumPos) on each process that attain the
+  // global max.  This could be zero.
   unsigned int iMax = subCorrespondingScalarValues.subSequenceSize();
   int subNumPos = 0; // Yes, 'int', due to MPI to be used soon
   for (unsigned int i = 0; i < iMax; ++i) {
@@ -468,10 +471,13 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
     }
   }
 
+  // Fill up unifiedPositionsOfMaximum with the states that attain maxima
+  // (if they exist)
   V tmpVec(this->vectorSpace().zeroVector());
-  unifiedPositionsOfMaximum.resizeSequence(subNumPos);
+  unifiedPositionsOfMaximum.resizeSequence(subNumPos);  // subNumPos could be 0
   unsigned int j = 0;
   for (unsigned int i = 0; i < iMax; ++i) {
+    // This 'if' statement is false if subNumPos == 0
     if (subCorrespondingScalarValues[i] == unifiedMaxValue) {
       this->getPositionValues                    (i,tmpVec);
       unifiedPositionsOfMaximum.setPositionValues(j,tmpVec);
@@ -479,17 +485,21 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
     }
   }
 
+  // Compute total (over all processes) number of elements that attain maxima
   std::vector<int> auxBuf(1,0);
   int unifiedNumPos = 0; // Yes, 'int', due to MPI to be used soon
   auxBuf[0] = subNumPos;
   m_env.inter0Comm().Allreduce((void *) &auxBuf[0], (void *) &unifiedNumPos, (int) auxBuf.size(), RawValue_MPI_INT, RawValue_MPI_SUM,
                                "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
                                "failed MPI.Allreduce() for sum");
+
+  // Resize positions to hold all elements that attain maxima
   unifiedPositionsOfMaximum.resizeSequence(unifiedNumPos);
 
   //******************************************************************
   // Use MPI_Gatherv for number of positions
   //******************************************************************
+  // Gather up *number* of maxima on each chain and store in recvcntsPos
   unsigned int Np = (unsigned int) m_env.inter0Comm().NumProc();
 
   std::vector<int> recvcntsPos(Np,0); // '0' is NOT the correct value for recvcntsPos[0]
@@ -503,6 +513,7 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
                         "failed MPI.Gather() result at proc 0 (recvcntsPos[0])");
   }
 
+  // Construct offset indices based on number of maxima
   std::vector<int> displsPos(Np,0);
   for (unsigned int nodeId = 1; nodeId < Np; ++nodeId) { // Yes, from '1' on
     displsPos[nodeId] = displsPos[nodeId-1] + recvcntsPos[nodeId-1];
@@ -517,6 +528,11 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
   //******************************************************************
   // Use MPI_Gatherv for number of doubles
   //******************************************************************
+  // Gather up number of states that attain maxima multiplied by the size of
+  // the state (on each process).  Store this in recvcntsDbs.
+  // So recvcntsDbs[i] is the number of states that attain maxima on chain i
+  // multiplied by the size of the state (a state could be a vector of length
+  // > 1).
   unsigned int dimSize = m_vectorSpace.dimLocal();
   int subNumDbs = subNumPos * dimSize; // Yes, 'int', due to MPI to be used soon
   std::vector<int> recvcntsDbs(Np,0); // '0' is NOT the correct value for recvcntsDbs[0]
@@ -530,6 +546,8 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
                         "failed MPI.Gather() result at proc 0 (recvcntsDbs[0])");
   }
 
+  // Now gather up the offsets based on the number of states (mulitplied by the
+  // size of the state)
   std::vector<int> displsDbs(Np,0);
   for (unsigned int nodeId = 1; nodeId < Np; ++nodeId) { // Yes, from '1' on
     displsDbs[nodeId] = displsDbs[nodeId-1] + recvcntsDbs[nodeId-1];
@@ -544,6 +562,8 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
   //******************************************************************
   // Prepare counters and buffers for gatherv of maximum positions
   //******************************************************************
+  // Take all the states on all chains that attain maxima, and put them in a
+  // send buffer ready for MPI
   std::vector<double> sendbufDbs(subNumDbs,0.);
   for (unsigned int i = 0; i < (unsigned int) subNumPos; ++i) {
     unifiedPositionsOfMaximum.getPositionValues(i,tmpVec);
@@ -554,6 +574,7 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
 
   std::vector<double> recvbufDbs(unifiedNumPos * dimSize);
 
+  // Gather up all states that attain maxima and store then in recvbufDbs
   m_env.inter0Comm().Gatherv((void *) &sendbufDbs[0], (int) subNumDbs, RawValue_MPI_DOUBLE, (void *) &recvbufDbs[0], (int *) &recvcntsDbs[0], (int *) &displsDbs[0], RawValue_MPI_DOUBLE, 0,
                              "BaseVectorSequence<V,M>::unifiedPositionsOfMaximum()",
                              "failed MPI.Gatherv()");
@@ -561,6 +582,8 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
   //******************************************************************
   // Transfer data from 'recvbuf' to 'unifiedPositionsOfMaximum'
   //******************************************************************
+  // Copy over all the gathered states to the unifiedPositionsOfMaximum
+  // variable on process 0.  Process 0 now contains everything.
   if (m_env.inter0Rank() == (int) 0) {
     for (unsigned int i = 0; i < (unsigned int) unifiedNumPos; ++i) {
       for (unsigned int j = 0; j < dimSize; ++j) {
@@ -568,6 +591,11 @@ BaseVectorSequence<V,M>::unifiedPositionsOfMaximum( // rr0
       }
       unifiedPositionsOfMaximum.setPositionValues(i,tmpVec);
     }
+  }
+  else {
+    // Process zero has all the states that attain maxima, so let's nuke the
+    // others rather than letting them contain NULL pointers
+    unifiedPositionsOfMaximum.resizeSequence(0);
   }
 
   if (m_env.subDisplayFile()) {
@@ -740,7 +768,7 @@ BaseVectorSequence<V,M>::computeStatistics(
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if ((statisticalOptions.bmmRun()               ) &&
       (initialPosForStatistics.size()         > 0) &&
-      (statisticalOptions.bmmLengths().size() > 0)) { 
+      (statisticalOptions.bmmLengths().size() > 0)) {
     this->computeBMM(statisticalOptions,
                      initialPosForStatistics,
                      passedOfs);
@@ -774,7 +802,7 @@ BaseVectorSequence<V,M>::computeStatistics(
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   if ((statisticalOptions.psdAtZeroCompute()             ) &&
       (initialPosForStatistics.size()                 > 0) &&
-      (statisticalOptions.psdAtZeroNumBlocks().size() > 0)) { 
+      (statisticalOptions.psdAtZeroNumBlocks().size() > 0)) {
     this->computePSDAtZero(statisticalOptions,
                            initialPosForStatistics,
                            passedOfs);
@@ -813,7 +841,7 @@ BaseVectorSequence<V,M>::computeStatistics(
   //****************************************************
   if ((statisticalOptions.autoCorrComputeViaDef()) &&
       (initialPosForStatistics.size() > 0        ) &&
-      (lagsForCorrs.size()            > 0        )) { 
+      (lagsForCorrs.size()            > 0        )) {
     this->computeAutoCorrViaDef(statisticalOptions,
                                 initialPosForStatistics,
                                 lagsForCorrs,
@@ -825,7 +853,7 @@ BaseVectorSequence<V,M>::computeStatistics(
   //****************************************************
   if ((statisticalOptions.autoCorrComputeViaFft()) &&
       (initialPosForStatistics.size() > 0    ) &&
-      (lagsForCorrs.size()            > 0    )) { 
+      (lagsForCorrs.size()            > 0    )) {
     this->computeAutoCorrViaFFT(statisticalOptions,
                                 initialPosForStatistics,
                                 lagsForCorrs,
@@ -1190,7 +1218,7 @@ BaseVectorSequence<V,M>::computeAutoCorrViaDef(
         }
       }
     }
-  } 
+  }
 
   return;
 }
@@ -1362,7 +1390,7 @@ BaseVectorSequence<V,M>::computeAutoCorrViaFFT(
         }
       }
     }
-  } 
+  }
 
   return;
 }
@@ -2465,7 +2493,7 @@ BaseVectorSequence<V,M>::computePSDAtZero(
 
   tmpRunTime += MiscGetEllapsedSeconds(&timevalTmp);
   if (m_env.subDisplayFile()) {
-    *m_env.subDisplayFile() << "Chain PSD at frequency zero took " << tmpRunTime 
+    *m_env.subDisplayFile() << "Chain PSD at frequency zero took " << tmpRunTime
                             << " seconds"
                             << std::endl;
   }
@@ -2500,7 +2528,7 @@ BaseVectorSequence<V,M>::computePSDAtZero(
         }
       }
     }
-  } 
+  }
 
   return;
 }
