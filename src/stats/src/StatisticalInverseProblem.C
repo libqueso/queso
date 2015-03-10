@@ -454,6 +454,39 @@ StatisticalInverseProblem<P_V,P_M>::postRv() const
 }
 //--------------------------------------------------
 template <class P_V,class P_M>
+const BaseVectorSequence<P_V,P_M>&
+StatisticalInverseProblem<P_V,P_M>::chain() const
+{
+  UQ_FATAL_TEST_MACRO(m_chain == NULL,
+                      m_env.worldRank(),
+                      "StatisticalInverseProblem<P_V,P_M>::chain()",
+                      "m_chain is NULL");
+  return *m_chain;
+}
+//--------------------------------------------------
+template <class P_V,class P_M>
+const ScalarSequence<double>&
+StatisticalInverseProblem<P_V,P_M>::logLikelihoodValues() const
+{
+  UQ_FATAL_TEST_MACRO(m_logLikelihoodValues == NULL,
+                      m_env.worldRank(),
+                      "StatisticalInverseProblem<P_V,P_M>::logLikelihoodValues()",
+                      "m_logLikelihoodValues is NULL");
+  return *m_logLikelihoodValues;
+}
+//--------------------------------------------------
+template <class P_V,class P_M>
+const ScalarSequence<double>&
+StatisticalInverseProblem<P_V,P_M>::logTargetValues() const
+{
+  UQ_FATAL_TEST_MACRO(m_logTargetValues == NULL,
+                      m_env.worldRank(),
+                      "StatisticalInverseProblem<P_V,P_M>::logTargetValues()",
+                      "m_logTargetValues is NULL");
+  return *m_logTargetValues;
+}
+//--------------------------------------------------
+template <class P_V,class P_M>
 double StatisticalInverseProblem<P_V,P_M>::logEvidence() const
 {
   UQ_FATAL_TEST_MACRO(m_mlSampler == NULL,
