@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------el-
 
+#include <cmath>
+
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <queso/VectorSet.h>
