@@ -176,3 +176,6 @@ test/test_gaussian_likelihoods/queso_input.txt
 test/test_GslBlockMatrixInvertMultiply
 test/test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh
 test/test_unifiedPositionsOfMaximum
+test/test_VectorPdf_gsl
+test/test_VectorRV_gsl
+test/test_VectorRealizer_gsl
