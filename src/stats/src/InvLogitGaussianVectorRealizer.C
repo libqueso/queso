@@ -28,6 +28,8 @@
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 
+#include <boost/math/special_functions/fpclassify.hpp>
+
 namespace QUESO {
 
 template<class V, class M>

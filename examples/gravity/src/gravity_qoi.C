@@ -28,6 +28,8 @@
  * This file contains the code for the user defined qoi routine.
  */
 
+#include <cmath>
+
 #include <queso/GslVector.h>
 #include <queso/GslMatrix.h>
 #include <gravity_qoi.h>
