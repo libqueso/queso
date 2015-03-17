@@ -222,24 +222,15 @@ EXTRA_DIST += test_Regression/adaptedcov_input.txt.in
 EXTRA_DIST += test_gaussian_likelihoods/queso_input.txt.in
 EXTRA_DIST += test_SequenceOfVectors/test_unifiedPositionsOfMaximum.sh.in
 
-DISTCLEANFILES =
-DISTCLEANFILES += test_gpmsa_cobra_output/display_sub0.txt
-DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain.m
-DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_loglikelihood.m
-DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_loglikelihood_sub0.m
-DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_logtarget.m
-DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_logtarget_sub0.m
-DISTCLEANFILES += test_gpmsa_cobra_output/ip_raw_chain_sub0.m
-DISTCLEANFILES += test_gpmsa_cobra_output/sipOutput_sub0.m
-DISTCLEANFILES += test_output_gaussian_likelihoods/display_sub0.txt
-
 CLEANFILES =
-CLEANFILES += $(top_srcdir)/test/test_Environment/debug_output_sub0.txt
-CLEANFILES += $(top_srcdir)/test/gslvector_out_sub0.m
+CLEANFILES += test_Environment/debug_output_sub0.txt
+CLEANFILES += gslvector_out_sub0.m
 
 clean-local:
 	rm -rf $(top_builddir)/test/chain0
 	rm -rf $(top_builddir)/test/outputData
+	rm -rf $(top_builddir)/test/test_output_gaussian_likelihoods
+	rm -rf $(top_builddir)/test/test_gpmsa_cobra_output
 
 if CODE_COVERAGE_ENABLED
   CLEANFILES += *.gcda *.gcno
