@@ -32,12 +32,6 @@
 
 namespace QUESO {
 
-template<typename T>
-DistArray<T>::DistArray()
-  : m_Map()
-{
-}
-
 // Constructor for a given inputMap and inputRowSize.
 template<typename T>
 DistArray<T>::DistArray(const Map& inputMap, const int inputRowSize)
