@@ -28,13 +28,7 @@
 namespace QUESO {
 
 BasicPdfsBase::BasicPdfsBase()
-  :
-  m_worldRank(UQ_UNAVAILABLE_RANK)
 {
-  UQ_FATAL_TEST_MACRO(true,
-                      m_worldRank,
-                      "BasicPdfsBase::constructor(), default",
-                      "should not be used by user");
 }
 
 BasicPdfsBase::BasicPdfsBase(int worldRank)
