@@ -5,8 +5,6 @@ BUILT_SOURCES = .license.stamp
 endif
 
 check_PROGRAMS = # Append below
-check_PROGRAMS += test_uqEnvironmentCopy
-check_PROGRAMS += test_uqEnvironmentEquals
 check_PROGRAMS += test_uqEnvironmentNonFatal
 check_PROGRAMS += test_uqEnvironmentOptionsPrint
 check_PROGRAMS += test_uqGslVectorConstructorFatal
@@ -71,8 +69,6 @@ if LIBMESH_ENABLED
   AM_CPPFLAGS += $(LIBMESH_CPPFLAGS)
 endif
 
-test_uqEnvironmentCopy_SOURCES = test_Environment/test_uqEnvironmentCopy.C
-test_uqEnvironmentEquals_SOURCES = test_Environment/test_uqEnvironmentEquals.C
 test_uqEnvironmentNonFatal_SOURCES = test_Environment/test_uqEnvironmentNonFatal.C
 test_uqEnvironmentOptionsPrint_SOURCES = test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.C
 test_uqGslVectorConstructorFatal_SOURCES = test_GslVector/test_uqGslVectorConstructorFatal.C
@@ -112,8 +108,6 @@ test_unifiedPositionsOfMaximum_SOURCES = test_SequenceOfVectors/test_unifiedPosi
 
 # Files to freedom stamp
 srcstamp =
-srcstamp += $(test_uqEnvironmentCopy_SOURCES)
-srcstamp += $(test_uqEnvironmentEquals_SOURCES)
 srcstamp += $(test_uqEnvironmentNonFatal_SOURCES)
 srcstamp += $(test_uqEnvironmentOptionsPrint_SOURCES)
 srcstamp += $(test_uqGslVectorConstructorFatal_SOURCES)
@@ -151,8 +145,6 @@ srcstamp += $(test_GslBlockMatrixInvertMultiply_SOURCES)
 srcstamp += $(test_unifiedPositionsOfMaximum_SOURCES)
 
 TESTS =
-TESTS += $(top_builddir)/test/test_uqEnvironmentCopy
-TESTS += $(top_builddir)/test/test_uqEnvironmentEquals
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
 TESTS += $(top_builddir)/test/test_uqEnvironmentOptionsPrint
 TESTS += $(top_builddir)/test/test_uqGslVectorConstructorFatal
@@ -195,7 +187,6 @@ EXTRA_DIST =
 EXTRA_DIST += common/compare.pl
 EXTRA_DIST += common/verify.sh
 EXTRA_DIST += test_uqEnvironmentOptions/test.inp
-EXTRA_DIST += test_Environment/copy_env
 EXTRA_DIST += test_infinite/inf_options
 EXTRA_DIST += test_Regression/GaussianMean1DRegression_options.in
 EXTRA_DIST += test_Regression/gpmsa_cobra_input.txt.in
