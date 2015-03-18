@@ -33,18 +33,6 @@ namespace QUESO {
 using std:: cout;
 using std:: endl;
 
-// ---------------------------------------------------
-// default constructor ------------------------------- 
-TeuchosVector::TeuchosVector()  :
-  Vector()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "TeuchosVector::constructor(), default",
-                      "should not be used by user");  
-};
-
-
 // constructor with dimension ----------------------- 
 TeuchosVector::TeuchosVector(const BaseEnvironment& env, const Map& map)
   :
