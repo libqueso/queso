@@ -29,18 +29,6 @@
 
 namespace QUESO {
 
-// Default constructor
-template <class V, class M>
-VectorSubset<V,M>::VectorSubset()
-  : VectorSet<V,M>(),
-    m_vectorSpace(NULL)
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "VectorSubset<V,M>::constructor(), default",
-                      "should not be used by user");
-}
-
 // Shaped constructor
 template <class V, class M>
 VectorSubset<V,M>::VectorSubset(const char* prefix,

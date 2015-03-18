@@ -33,17 +33,6 @@
 
 namespace QUESO {
 
-// Default constructor
-template <class V, class M>
-VectorSpace<V,M>::VectorSpace()
-  : VectorSet<V,M>()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "VectorSpace<V,M>::constructor(), default",
-                      "should not be used by user");
-}
-
 // Shaped constructor
 template <class V, class M>
 VectorSpace<V,M>::VectorSpace(const BaseEnvironment& env, const char* prefix,
