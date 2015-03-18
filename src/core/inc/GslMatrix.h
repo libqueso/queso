@@ -50,10 +50,6 @@ public:
  //! @name Constructor/Destructor methods
   //@{
 
-  //! Default Constructor
-  /*! Creates an empty matrix vector of no dimension. It should not be used by user.*/
-  GslMatrix();
-
   //! Shaped Constructor: creates a shaped matrix with \c numCols columns.
   GslMatrix(const BaseEnvironment& env,
                    const Map&             map,
@@ -370,6 +366,10 @@ GslVector& x) internally.*/
  //@}
 
 private:
+  //! Default Constructor
+  /*! Creates an empty matrix vector of no dimension. It should not be used by user.*/
+  GslMatrix();
+
   //! In this function \c this matrix receives a copy of matrix \c src.
   void              copy                      (const GslMatrix& src);
 
