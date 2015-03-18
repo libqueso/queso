@@ -40,14 +40,14 @@ namespace QUESO {
 
 /*! \class DistArray
     \brief A class for partitioning vectors and matrices.
-    
-    Class DistArray allows the construction and usage of multi-vectors. 
-    These vectors contain element of type T, and the storage is row-oriented 
-    (instead of and not column-oriented; thus his class should be used as a container 
-    for data, on which no BLAS-like operations are performed). 
-      
+
+    Class DistArray allows the construction and usage of multi-vectors.
+    These vectors contain element of type T, and the storage is row-oriented
+    (instead of and not column-oriented; thus his class should be used as a container
+    for data, on which no BLAS-like operations are performed).
+
     DistArray objects are identified by an Map and a RowSize. The map specifies
-    the distribution of the elements across the processors and therefore the number 
+    the distribution of the elements across the processors and therefore the number
     of local elements, while the RowSize gives the total number of data assigned to
     each node. RowSize is constant for all elements.
 */
@@ -57,12 +57,9 @@ class DistArray
 {
 public:
   
-    //! @name Constructor/Destructor methods
+  //! @name Constructor/Destructor methods
   //@{
 
-  //! Default constructor. Do not call this directly.
-  DistArray();
-  
   //! Constructor for a given inputMap and inputRowSize. 
   DistArray(const Map& inputMap,
                    const int         inputRowSize);
@@ -112,9 +109,11 @@ public:
   //@}
 
 private:
-//! Copies the array.
+  //! Default constructor. Do not call this directly.
+  DistArray();
 
-        void copy        (const DistArray<T>& src);
+  //! Copies the array.
+  void copy        (const DistArray<T>& src);
 
   Map                   m_Map;
 #ifdef QUESO_HAS_TRILINOS
