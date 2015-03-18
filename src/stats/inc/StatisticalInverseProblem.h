@@ -134,7 +134,7 @@ public:
    * </list>
    *
    * If the requirements are satisfied, this methods checks the member flag
-   * 'm_computeSolution' (one of the options read from the input file during 
+   * 'm_computeSolution' (one of the options read from the input file during
    * construction). If the flag is 'false', the operation returns immediately,
    * computing nothing; otherwise, the operation sets the member variable
    * 'm_postRv' accordingly. The operation:

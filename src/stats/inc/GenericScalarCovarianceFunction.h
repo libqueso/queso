@@ -35,24 +35,24 @@ namespace QUESO {
 //*****************************************************
 // Generic class
 //*****************************************************
-/*! 
+/*!
  * \class GenericScalarCovarianceFunction
  * \brief A class for generic covariances.
- *  
+ *
  * This class implements a generic covariance functions, by calling a routine (via pointer).*/
 
 template<class V,class M>
 class GenericScalarCovarianceFunction : public BaseScalarCovarianceFunction<V,M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   /*! Instantiates an object of the class given a prefix, the domain set, the pointer to the routine. */
   GenericScalarCovarianceFunction(const char*                  prefix,
            const VectorSet<V,M>& domainSet,
            double (*covRoutinePtr)(const V& positionVector1, const V& positionVector2, const void* routineDataPtr),
            const void*                  routinesDataPtr);
-  
+
   //! Virtual destructor
   virtual ~GenericScalarCovarianceFunction();
   //@}

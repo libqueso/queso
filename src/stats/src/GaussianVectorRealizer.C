@@ -151,7 +151,7 @@ GaussianVectorRealizer<V,M>::updateLawExpVector(const V& newLawExpVector)
   delete m_unifiedLawExpVector;
 
   m_unifiedLawExpVector = new V(newLawExpVector);
- 
+
   return;
 }
 //--------------------------------------------------

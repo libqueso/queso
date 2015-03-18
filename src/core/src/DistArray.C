@@ -42,7 +42,7 @@ DistArray<T>::DistArray()
                       "should not be called");
 }
 
-// Constructor for a given inputMap and inputRowSize. 
+// Constructor for a given inputMap and inputRowSize.
 template<typename T>
 DistArray<T>::DistArray(const Map& inputMap, const int inputRowSize)
   : m_Map(inputMap),

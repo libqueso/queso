@@ -33,47 +33,47 @@ namespace QUESO {
 
 /*! \file MatrixCovarianceFunction.h
  * \brief Classes to accommodate covariance matrix of random vector functions.
- * 
+ *
  * \class BaseMatrixCovarianceFunction
  * \brief A templated (base) class to accommodate covariance matrix of (random) vector functions.
  *
  * This class allows the mathematical definition of a multivariate covariance function, i.e.
- * a covariance matrix of random vector functions. 
- * Sometimes the covariance matrix of a multivariate random variable is not known but has 
- * to be estimated. Estimation of covariance matrices then deals with the question of how 
- * to approximate the actual covariance matrix on the basis of a sample from the multivariate 
+ * a covariance matrix of random vector functions.
+ * Sometimes the covariance matrix of a multivariate random variable is not known but has
+ * to be estimated. Estimation of covariance matrices then deals with the question of how
+ * to approximate the actual covariance matrix on the basis of a sample from the multivariate
  * distribution. */
- 
- /* The covariance for two random variates \f$ X \f$ and \f$ Y \f$, 
+
+ /* The covariance for two random variates \f$ X \f$ and \f$ Y \f$,
  * each with sample size \f$ N \f$, is defined by the expectation value:
- * \f$ cov (X,Y) = <(X-\mu_X)(Y-\mu_Y)> = < X Y > - \mu_X \mu_Y \f$ 
- * where \f$ \mu_X \f$ and \f$ \mu_Y \f$ are the respective means, which can be written out 
+ * \f$ cov (X,Y) = <(X-\mu_X)(Y-\mu_Y)> = < X Y > - \mu_X \mu_Y \f$
+ * where \f$ \mu_X \f$ and \f$ \mu_Y \f$ are the respective means, which can be written out
  * explicitly as \f[ cov (X,Y) = \sum_{i=1}^{N} \frac{(x_i - \bar{x})(y_i - \bar{y})}{N}\f] */
 
 template<class P_V, class P_M, class Q_V, class Q_M>
 class BaseMatrixCovarianceFunction {
 public:
     //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   /*! Instantiates an object of the class  given a prefix, the domain set and the image set.*/
   BaseMatrixCovarianceFunction(const char*                      prefix,
 				      const VectorSet<P_V,P_M>& basicDomainSet,
 				      const VectorSet<Q_V,Q_M>& imageSet);
-  
+
   //! Virtual destructor
   virtual ~BaseMatrixCovarianceFunction();
   //@}
-  
+
   //! @name Math methods
   //@{
   //! Domain set; access to private attribute m_basicDomainSet.
   const VectorSet<P_V,P_M>& basicDomainSet()             const;
-  
+
   //! Calculates the covariance matrix. See template specialization.
   virtual void                     covMatrix     (const P_V& domainVector1, const P_V& domainVector2, Q_M& imageMatrix) const = 0;
   //@}
-  
+
 protected:
   const BaseEnvironment&    m_env;
         std::string                m_prefix;

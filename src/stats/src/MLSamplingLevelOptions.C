@@ -280,7 +280,7 @@ MLSamplingLevelOptions::~MLSamplingLevelOptions()
   if (m_rawChainStatOptsInstantiated     ) delete m_rawChainStatisticalOptionsObj;
 #endif
   if (m_optionsDesc                      ) delete m_optionsDesc;
-} 
+}
 
 void
 MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultOptions)
@@ -317,7 +317,7 @@ MLSamplingLevelOptions::scanOptionsValues(const MLSamplingLevelOptions* defaultO
 void
 MLSamplingLevelOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
-  optionsDesc.add_options()     
+  optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                              "produce help message for Bayesian Markov chain distr. calculator")
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
 #else
@@ -962,7 +962,7 @@ MLSamplingLevelOptions::print(std::ostream& os) const
   return;
 }
 
-const BaseEnvironment& 
+const BaseEnvironment&
 MLSamplingLevelOptions::env() const
 {
   return m_env;

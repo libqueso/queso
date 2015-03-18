@@ -39,7 +39,7 @@ namespace QUESO {
 
 /*! \file VectorRV.h
  * \brief A templated class for handling vector random variables (RV).
- * 
+ *
  * \class BaseVectorRV
  * \brief A templated base class for handling vector RV.
  *
@@ -58,35 +58,35 @@ public:
    */
   BaseVectorRV(const char*                  prefix,
                       const VectorSet<V,M>& imageSet);
-  
+
   //! Virtual destructor.
   virtual ~BaseVectorRV();
   //@}
-  
+
   //! @name Random variable-handling methods
   //@{
   //! QUESO environment; access to private attribute m_env.
   const   BaseEnvironment&         env       () const;
-  
+
   //! Image set of the vector RV; access to private attribute m_imageSet.
   const   VectorSet         <V,M>& imageSet  () const;
-  
+
   //! Posterior Density Function of the vector RV; access to private attribute m_pdf.
   const   BaseJointPdf      <V,M>& pdf       () const;
-  
+
   //! Finds a realization (sample) of the PDF of this vector RV; access to private attribute m_realizer.
   const   BaseVectorRealizer<V,M>& realizer  () const;
-  
+
   //! Finds the Cumulative Distribution Function of this vector RV, considering only the sub-sequence of data; access to private attribute m_subCdf.
   const   BaseVectorCdf     <V,M>& subCdf    () const;
-  
+
   //! Finds the Cumulative Distribution Function of this vector RV, considering the unified sequence of data; access to private attribute m_unifiedCdf.
   const   BaseVectorCdf     <V,M>& unifiedCdf() const;
-  
+
   //! Finds the Mass Density Function of this vector RV; access to private attribute m_mdf.
   const   BaseVectorMdf     <V,M>& mdf       () const;
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the vector RV.
@@ -98,7 +98,7 @@ public:
     return os;
   }
   //@}
-  
+
 #ifdef QUESO_HAS_ANN
   virtual double                          estimateENT_ANN() const;
   /*

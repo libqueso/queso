@@ -33,7 +33,7 @@ ExponentialScalarCovarianceFunction<V,M>::ExponentialScalarCovarianceFunction(
   const VectorSet<V,M>& basicDomainSet,
   double                       sigma,
   double                       a)
-  : 
+  :
   BaseScalarCovarianceFunction<V,M>(prefix,basicDomainSet),
   m_sigma(sigma),
   m_a    (a)

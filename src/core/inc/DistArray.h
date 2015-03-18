@@ -40,14 +40,14 @@ namespace QUESO {
 
 /*! \class DistArray
     \brief A class for partitioning vectors and matrices.
-    
-    Class DistArray allows the construction and usage of multi-vectors. 
-    These vectors contain element of type T, and the storage is row-oriented 
-    (instead of and not column-oriented; thus his class should be used as a container 
-    for data, on which no BLAS-like operations are performed). 
-      
+
+    Class DistArray allows the construction and usage of multi-vectors.
+    These vectors contain element of type T, and the storage is row-oriented
+    (instead of and not column-oriented; thus his class should be used as a container
+    for data, on which no BLAS-like operations are performed).
+
     DistArray objects are identified by an Map and a RowSize. The map specifies
-    the distribution of the elements across the processors and therefore the number 
+    the distribution of the elements across the processors and therefore the number
     of local elements, while the RowSize gives the total number of data assigned to
     each node. RowSize is constant for all elements.
 */
@@ -56,52 +56,52 @@ template<typename T>
 class DistArray
 {
 public:
-  
+
     //! @name Constructor/Destructor methods
   //@{
 
   //! Default constructor. Do not call this directly.
   DistArray();
-  
-  //! Constructor for a given inputMap and inputRowSize. 
+
+  //! Constructor for a given inputMap and inputRowSize.
   DistArray(const Map& inputMap,
                    const int         inputRowSize);
-  
+
   //! Copy constructor
   DistArray(const DistArray<T>& src);
-  
+
   //! Destructor
  ~DistArray();
  //@}
- 
+
   //! @name Set methods
   //@{
   //! Assignment operator.
   DistArray<T>& operator= (const DistArray<T>& rhs);
   //@}
-    
+
   //! @name Query methods
   //@{
-    
-  //! Returns a reference to the colId column component of the localElementId local element. 
+
+  //! Returns a reference to the colId column component of the localElementId local element.
         T&   operator    ()(int localElementId, int colId);
-	
+
   //! Returns a reference to the colId column component of the localElementId local element.(const)
   const T&   operator    ()(int localElementId, int colId) const;
- 
-  //! Returns the global length of the array. 
+
+  //! Returns the global length of the array.
   int  GlobalLength() const;
-  
-  //! Returns the length of the locally owned array. 
+
+  //! Returns the length of the locally owned array.
   int  MyLength    () const;
-  
-  //! Returns the row size, that is, the amount of data associated with each element. 
+
+  //! Returns the row size, that is, the amount of data associated with each element.
   int  RowSize     () const;
-	
+
   //@}
-	
+
   //! @name I/O methods
-  //@{	
+  //@{
   void print       (std::ostream& os) const;
   friend std::ostream & operator<<(std::ostream& os, const DistArray<T>& obj)
   {

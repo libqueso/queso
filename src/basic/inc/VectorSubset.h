@@ -31,7 +31,7 @@ namespace QUESO {
 
 /*! \file uqVectorSubset.h
  * \brief A templated class for handling subsets.
- * 
+ *
  * \class VectorSubset
  * \brief A templated class for handling subsets.
  *
@@ -45,33 +45,33 @@ class VectorSubset : public VectorSet<V,M>
 {
 public:
   //! @name Constructor/Destructor methods.
-  //@{ 
+  //@{
   //! Default Constructor
   /*! It should not be used by the user.*/
   VectorSubset();
-  
+
   //! Shaped constructor (with volume).
   VectorSubset(const char* prefix, const VectorSpace<V,M>& vectorSpace, double volume);
-  
+
   //! Destructor.
   virtual ~VectorSubset();
   //@}
-  
+
     //! @name Mathematical methods.
   //@{
   //!  Vector space to which \c this set belongs to. See template specialization.
   const VectorSpace<V,M>& vectorSpace()                 const;
-  
+
   //! Returns whether \c this contains vector \c vec. See template specialization.
   virtual        bool                     contains   (const V& vec)     const = 0;
   //@}
-  
+
   //! @name I/O methods.
   //@{
   //! Prints nothing.
   virtual        void                     print      (std::ostream& os) const;
   //@}
-  
+
 protected:
   using VectorSet<V,M>::m_env;
   using VectorSet<V,M>::m_prefix;

@@ -101,7 +101,7 @@ namespace QUESO {
 /*!
  * \class MhOptionsValues
  * \brief This class provides options for the Metropolis-Hastings generator of samples if no input file is available.
- * 
+ *
  * Metropolis-Hastings generator of samples expects some options for its
  * methods to be fully defined.  This class provides default values for such
  * options if no input file is available.
@@ -110,20 +110,20 @@ namespace QUESO {
 class MhOptionsValues
 {
 public:
-  
+
   //! @name Constructor/Destructor methods
   //@{
-    
+
 #ifdef QUESO_USES_SEQUENCE_STATISTICAL_OPTIONS
   MhOptionsValues            (const SsOptionsValues* alternativeRawSsOptionsValues,
                                      const SsOptionsValues* alternativeFilteredSsOptionsValues);
 #else
-  
+
   //! Default constructor.
   /*! Assigns the default suite of options to the Metropolis-Hastings generator of samples.*/
   MhOptionsValues            ();
 #endif
-  
+
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
   MhOptionsValues            (const MhOptionsValues& src);
@@ -131,13 +131,13 @@ public:
   //! Destructor
   ~MhOptionsValues            ();
   //@}
-   
+
   //! @name Set methods
-  //@{ 
-  //! Assignment operator; it copies \c rhs to \c this. 
+  //@{
+  //! Assignment operator; it copies \c rhs to \c this.
   MhOptionsValues& operator= (const MhOptionsValues& rhs);
   //@}
-  
+
   std::string                        m_dataOutputFileName;
   bool                               m_dataOutputAllowAll;
   std::set<unsigned int>             m_dataOutputAllowedSet;
@@ -255,7 +255,7 @@ private:
 
 /*! \class MetropolisHastingsSGOptions
  *  \brief This class reads the options for the Metropolis-Hastings generator of samples from an input file.
- * 
+ *
  * This class implements a Metropolis-Hastings generator of samples.  'SG'
  * stands for 'Sequence Generator'.  Metropolis-Hastings generator of samples
  * expects some options to be fully defined.  This class reads the options for
@@ -271,30 +271,30 @@ class MetropolisHastingsSGOptions
 {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Constructor: reads options from the input file.
   MetropolisHastingsSGOptions(const BaseEnvironment& env, const char* prefix);
-  
+
   //! Constructor: with alternative option values.
   /*! In this constructor, the input options are given by \c alternativeOptionsValues.*/
   MetropolisHastingsSGOptions(const BaseEnvironment& env, const char* prefix, const MhOptionsValues& alternativeOptionsValues);
-  
+
   //! Copy constructor
   MetropolisHastingsSGOptions(const MLSamplingLevelOptions& mlOptions);
-  
+
   //! Destructor
   ~MetropolisHastingsSGOptions();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! It scans the option values from the options input file.
   void scanOptionsValues();
-  
+
   //!  It prints the option values.
   void print            (std::ostream& os) const;
   //@}
-  
+
   //! This class is where the actual options are stored
   MhOptionsValues             m_ov;
 
@@ -309,7 +309,7 @@ public:
 private:
   //! Defines the options for the Metropolis-Hastings generator of samples as the default options.
   void   defineMyOptions  (po::options_description& optionsDesc) const;
-  
+
   //! Gets the sequence options defined to the  Metropolis-Hastings algorithm.
   void   getMyOptionValues(po::options_description& optionsDesc);
 

@@ -40,7 +40,7 @@ template<class V, class M>
 class ConcatenationSubset : public VectorSubset<V,M> {
 public:
    //! @name Constructor/Destructor methods.
-  //@{ 
+  //@{
   //! Constructor - two sets only
   /*! It concatenates set1 and set2 into a new set, m_set, of volume given by
    * set1.volume()*set2.volume(). */
@@ -48,7 +48,7 @@ public:
                              const VectorSpace<V,M>& vectorSpace,
                              const VectorSet<V,M>&   set1,
                              const VectorSet<V,M>&   set2);
-  
+
   //! Constructor - collection of sets
   /*! It concatenates a collection of n subsets (using the std::vector to represent such collection)
    * into a new set, m_set, of volume given by sets[0].volume()*sets[1].volume()*...*sets[n-1].volume(). */
@@ -59,15 +59,15 @@ public:
   //! Destructor
   ~ConcatenationSubset();
   //@}
-  
+
   //! @name Mathematical methods.
-  //@{ 
+  //@{
   //! Determines whether each one of the subsets m_sets (class' private attributes) contains vector \c vec.
   bool contains(const V& vec)     const;
   //@}
-  
+
   //! @name I/O methods.
-  //@{ 
+  //@{
   //! Prints the subsets (via protected attribute m_sets).
   void print   (std::ostream& os) const;
   //@}

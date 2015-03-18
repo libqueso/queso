@@ -60,23 +60,23 @@ void compute(const QUESO::FullEnvironment& env) {
                    (void *) &qoiRoutine_Data);
 
   // Step 5 of 6: Instantiate the forward problem
-  // Parameters are Gaussian RV 
-  QUESO::GslVector meanVector( paramSpace.zeroVector() ); 
+  // Parameters are Gaussian RV
+  QUESO::GslVector meanVector( paramSpace.zeroVector() );
   meanVector[0] = -1;
   meanVector[1] = 2;
-   
-  QUESO::GslMatrix covMatrix = QUESO::GslMatrix(paramSpace.zeroVector());  
-  covMatrix(0,0) = 4.; 
-  covMatrix(0,1) = 0.; 
-  covMatrix(1,0) = 0.; 
-  covMatrix(1,1) = 1.; 
-  
-  QUESO::GaussianVectorRV<QUESO::GslVector,QUESO::GslMatrix> 
+
+  QUESO::GslMatrix covMatrix = QUESO::GslMatrix(paramSpace.zeroVector());
+  covMatrix(0,0) = 4.;
+  covMatrix(0,1) = 0.;
+  covMatrix(1,0) = 0.;
+  covMatrix(1,1) = 1.;
+
+  QUESO::GaussianVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     paramRv("param_",paramDomain,meanVector,covMatrix);
-      
+
   QUESO::GenericVectorRV<QUESO::GslVector,QUESO::GslMatrix>
     qoiRv("qoi_", qoiSpace);
-    
+
   QUESO::StatisticalForwardProblem<QUESO::GslVector,QUESO::GslMatrix,
                                    QUESO::GslVector,QUESO::GslMatrix>
     fp("", NULL, paramRv, qoiFunctionObj, qoiRv);

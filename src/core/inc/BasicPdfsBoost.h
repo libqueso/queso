@@ -27,7 +27,7 @@
 
 #include <queso/BasicPdfsBase.h>
 #include <boost/random.hpp>
-#include <boost/math/distributions.hpp> 
+#include <boost/math/distributions.hpp>
 
 namespace QUESO {
 
@@ -36,8 +36,8 @@ namespace QUESO {
 */
 
 /*! \class BasicPdfsBoost
-    \brief TODO: Base class for basic PDFs using Boost library. 
-    
+    \brief TODO: Base class for basic PDFs using Boost library.
+
     \todo This class \b will acommodate the definition of a Joint PDF using distributions
     available in the Boost library. It will ultimately be called by BaseJointPdf and/or its
     derived classes (via m_env.basicPdfs()) during the construction of Joint PDFs.
@@ -46,27 +46,27 @@ class BasicPdfsBoost : public BasicPdfsBase
 {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   BasicPdfsBoost();
-  
+
   //! Constructor.
   BasicPdfsBoost(int worldRank);
-  
+
   //! Destructor.
  ~BasicPdfsBoost();
   //@}
 
   //! @name Mathematical methods
-  //@{  
+  //@{
   //! TODO: Actual value of the Beta PDF.
   double betaPdfActualValue (double x, double alpha, double beta) const;
-  
+
   //! TODO: Actual value of the Gamma PDF.
   double gammaPdfActualValue(double x, double a,     double b   ) const;
   //@}
-	
-private:  
+
+private:
 };
 
 }  // End namespace QUESO

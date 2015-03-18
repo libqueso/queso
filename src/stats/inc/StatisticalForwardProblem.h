@@ -40,10 +40,10 @@ namespace QUESO {
 
 /*! \class StatisticalForwardProblem
  *  \brief This templated class represents a Statistical Forward Problem.
- * 
+ *
  * This templated class represents a statistical forward problem. It is templated on the types
- * 'P_V' and 'Q_V' of vectors and types 'P_M' and 'Q_M' of matrices, where 'P_' stands for 
- * 'parameter' and 'Q_' stands for 'quantities of interest'. Conceptually, a statistical forward 
+ * 'P_V' and 'Q_V' of vectors and types 'P_M' and 'Q_M' of matrices, where 'P_' stands for
+ * 'parameter' and 'Q_' stands for 'quantities of interest'. Conceptually, a statistical forward
  * problem has two input entities and one output entity.\n
  *
  * The input entities of a statistical forward problem are:
@@ -51,22 +51,22 @@ namespace QUESO {
 <item> the input (parameter) RV, an instance of class 'BaseVectorRV<P_V,P_M>', and
 <item> the QoI function, an instance of class 'BaseVectorFunction<P_V,P_M,Q_V,Q_M>'.
 </list>
-  * Let \f$ q() \f$  denote the mathematical QoI function and  \f$ x \f$  denote a vector of 
-  * parameters. The QoI function object stores the routine that computes  \f$ q(x) \f$  and 
-  * whatever data necessary by such routine. See file 'libs/basic/inc/VectorFunction.h' 
+  * Let \f$ q() \f$  denote the mathematical QoI function and  \f$ x \f$  denote a vector of
+  * parameters. The QoI function object stores the routine that computes  \f$ q(x) \f$  and
+  * whatever data necessary by such routine. See file 'libs/basic/inc/VectorFunction.h'
   * for more details.\n
   *
   * The output entity of a statistical forward problem is:
 <list type=number>
 <item> the QoI RV, another instance of class 'BaseVectorRV<P_V,P_M>'.
-</list>   
-  * The QoI RV stores the solution according to the Bayesian approach. The solution of a SPF 
-  * is computed by calling 'solveWithMonteCarlo()'. More operations, with different methods, 
+</list>
+  * The QoI RV stores the solution according to the Bayesian approach. The solution of a SPF
+  * is computed by calling 'solveWithMonteCarlo()'. More operations, with different methods,
   * will be available in the future.\n
   *
-  * The solution process might demand extra objects to be passed through the chosen solution 
-  * operation interface. This distinction is important: this class separates 'what the problem 
-  * is' from 'how the problem is solved'. Upon return from a solution operation, the QoI RV is 
+  * The solution process might demand extra objects to be passed through the chosen solution
+  * operation interface. This distinction is important: this class separates 'what the problem
+  * is' from 'how the problem is solved'. Upon return from a solution operation, the QoI RV is
   * available through the operation 'qoiRv()'. Such QoI RV is able to provide:
 <list type=number>
 <item> a vector realizer through the operation 'qoiRv().realizer()', which returns an
@@ -80,33 +80,33 @@ public:
  //! @name Constructor/Destructor methods
  //@{
  //! Constructor.
- /*! Requirements: 1) the image set of the vector random variable 'paramRv' and the domain set of 
-  * the QoI function 'qoiFunction' should belong to vector spaces of equal dimensions and 2) the 
-  * image set of the QoI function 'qoiFunction' and the image set of the vector random variable 
-  * 'qoiRv' should belong to vector spaces of equal dimensions. If the requirements are satisfied, 
-  * the constructor then reads input options that begin with the string '\<prefix\>fp_'. Options 
-  * reading is handled by class 'StatisticalForwardProblemOptions'. If no options input file 
+ /*! Requirements: 1) the image set of the vector random variable 'paramRv' and the domain set of
+  * the QoI function 'qoiFunction' should belong to vector spaces of equal dimensions and 2) the
+  * image set of the QoI function 'qoiFunction' and the image set of the vector random variable
+  * 'qoiRv' should belong to vector spaces of equal dimensions. If the requirements are satisfied,
+  * the constructor then reads input options that begin with the string '\<prefix\>fp_'. Options
+  * reading is handled by class 'StatisticalForwardProblemOptions'. If no options input file
   * is provided, the construction assigns \c alternativeOptionsValues to the options of the SFP.*/
   StatisticalForwardProblem(const char*                                       prefix,
                                    const SfpOptionsValues*                    alternativeOptionsValues, // dakota
                                    const BaseVectorRV      <P_V,P_M>&         paramRv,
                                    const BaseVectorFunction<P_V,P_M,Q_V,Q_M>& qoiFunction,
                                    GenericVectorRV         <Q_V,Q_M>&         qoiRv);
- 
+
   //! Destructor
   ~StatisticalForwardProblem();
   //@}
 
   //! @name Statistical methods
   //@{
-  //! Whether or not compute the solution.  
+  //! Whether or not compute the solution.
   bool                                   computeSolutionFlag() const;
-  
+
   //! Solves the problem through Monte Carlo algorithm.
   /*! Requirements: none at this moment. If the requirements are satisfied, this operation checks
-   * the member flag 'm_computeSolution' (one of the options read from the input file during 
+   * the member flag 'm_computeSolution' (one of the options read from the input file during
    * construction). If the flag is 'false', the operation returns immediately, computing nothing.
-   * If the flag is 'true', the operation sets the member variable 'm_qoiRv' accordingly. 
+   * If the flag is 'true', the operation sets the member variable 'm_qoiRv' accordingly.
    * The operation:
 <list type=number>
 <item> instantiates 'SequenceOfVectors<P_V,P_M>' (the input sequence of vectors),
@@ -117,22 +117,22 @@ public:
 </list>*/
 //<item> computes the CDFs of the components of 'm_qoiRv' as instances of 'SampledVectorCdf<Q_V,Q_M>'
   void                                   solveWithMonteCarlo(const McOptionsValues* alternativeOptionsValues); // dakota
-  
+
   //! Returns the QoI RV; access to private attribute m_qoiRv.
   const GenericVectorRV<Q_V,Q_M>& qoiRv              () const;
 
   //! Returns the parameter chain; access to private attribute m_paramChain.
   const BaseVectorSequence<Q_V,Q_M>& getParamChain   () const;
-  
+
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
-  
+
   //<item> CDFs of QoI components through the operation 'qoiRv().unifiedCdf()',
   //     which returns an instance of the class 'BaseVectorCdf<Q_V,Q_M>'
   const BaseVectorCdf  <Q_V,Q_M>& qoiRv_unifiedCdf   () const;
-  
+
 #endif
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the sequence.
@@ -161,7 +161,7 @@ private:
         MonteCarloSG      <P_V,P_M,Q_V,Q_M>* m_mcSeqGenerator;
 
         BaseVectorRealizer<Q_V,Q_M>*         m_solutionRealizer;
- 
+
         BaseJointPdf      <Q_V,Q_M>*         m_solutionPdf;
 
         SfpOptionsValues                     m_alternativeOptionsValues;

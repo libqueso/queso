@@ -257,7 +257,7 @@ GcmSimulationTildeInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationTildeInfo(
                               << ", etaVec_transformed.sizeLocal() = "      << etaVec_transformed.sizeLocal()
                               << std::endl;
     }
-    m_Zvec_tilde_hat_w = m_Ktildet_Ktilde_inv * (Ktildet * etaVec_transformed); 
+    m_Zvec_tilde_hat_w = m_Ktildet_Ktilde_inv * (Ktildet * etaVec_transformed);
     Q_V tmpVec1(etaVec_transformed - (m_Kmat_tilde * m_Zvec_tilde_hat_w));
     m_b_eta_modifier_tilde = scalarProduct(etaVec_transformed,tmpVec1) / 2.;
 

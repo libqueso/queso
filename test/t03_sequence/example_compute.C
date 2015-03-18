@@ -91,13 +91,13 @@ void compute(const QUESO::FullEnvironment& env) {
     dataout << "plot( index, data, 'b-', 'LineWidth', 2 )" << std::endl;
     dataout << "xlabel( 'Iteration', 'FontSize', 16 )" << std::endl;
     dataout << "ylabel( 'BG-Convergence', 'FontSize', 16 )" << std::endl;
-    dataout << "title( 'Brooks-Gelman Convergence, Gaussian RV, " 
+    dataout << "title( 'Brooks-Gelman Convergence, Gaussian RV, "
 	    << env.numSubEnvironments() << " Sequences', 'FontSize', 16 )" << std::endl;
     dataout << "print -depsc BGConv" << env.numSubEnvironments() << ".eps" << std::endl;
     std::cout <<"convMeasure = " << convMeasure[numSamples-1] << std::endl;
   }
 #endif
-  
+
   // Step 7 of 9: Compute min, max, mean, covariance and correlation matrices
   QUESO::GslVector minVec (paramSpace.zeroVector());
   QUESO::GslVector maxVec (paramSpace.zeroVector());
@@ -122,7 +122,7 @@ void compute(const QUESO::FullEnvironment& env) {
               << "\n corrMat = " << correlationMatrix
               << std::endl;
   }
-  
+
 #ifdef QUESO_COMPUTES_EXTRA_POST_PROCESSING_STATISTICS
   // Step 8 of 9: Compute cdf accuracy
   std::vector<QUESO::GslVector*> cdfStaccVecs   (numSamples,NULL);

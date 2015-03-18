@@ -33,7 +33,7 @@ GenericScalarCovarianceFunction<V,M>::GenericScalarCovarianceFunction(
   const VectorSet<V,M>& domainSet,
   double (*covRoutinePtr)(const V& positionVector1, const V& positionVector2, const void* routineDataPtr),
   const void*                  routinesDataPtr)
-  : 
+  :
   BaseScalarCovarianceFunction<V,M>(prefix,domainSet),
   m_covRoutinePtr                         (covRoutinePtr),
   m_routineDataPtr                        (routinesDataPtr)

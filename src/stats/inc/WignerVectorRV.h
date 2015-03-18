@@ -43,18 +43,18 @@ namespace QUESO {
 /*!
  * \class WignerVectorRV
  * \brief A class representing a vector RV constructed via Wigner distribution.
- * 
+ *
  * This class allows the user to compute the value of a Wigner PDF and to generate realizations
  * (samples) from it.\n
- * 
- * \todo: WignerVectorRealizer.realization() is not yet available, thus this class does 
+ *
+ * \todo: WignerVectorRealizer.realization() is not yet available, thus this class does
  * nothing. */
- 
+
 template<class V, class M>
 class WignerVectorRV : public BaseVectorRV<V,M> {
 public:
-  
-    
+
+
   //! @name Constructor/Destructor methods
   //@{
   //! Default Constructor
@@ -65,14 +65,14 @@ public:
   //! Virtual destructor
   virtual ~WignerVectorRV();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the vector RV.
   /*! \todo: implement me!*/
   void print(std::ostream& os) const;
   //@}
-  
+
 private:
   using BaseVectorRV<V,M>::m_env;
   using BaseVectorRV<V,M>::m_prefix;

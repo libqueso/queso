@@ -66,7 +66,7 @@ BasicPdfsGsl::betaPdfActualValue(double x, double alpha, double beta) const
     //result = gsl_ran_beta_pdf(x,alpha,beta);
     result = 0.;
   }
-  return result; 
+  return result;
 }
 
 // --------------------------------------------------

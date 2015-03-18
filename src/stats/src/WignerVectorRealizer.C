@@ -38,7 +38,7 @@ WignerVectorRealizer<V,M>::WignerVectorRealizer(
   :
   BaseVectorRealizer<V,M>(((std::string)(prefix)+"gen").c_str(),unifiedImageSet,std::numeric_limits<unsigned int>::max()),
   m_centerPos(new V(centerPos)),
-  m_radius   (radius)    
+  m_radius   (radius)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 5)) {
     *m_env.subDisplayFile() << "Entering WignerVectorRealizer<V,M>::constructor()"
@@ -73,7 +73,7 @@ WignerVectorRealizer<V,M>::realization(V& nextValues) const
                       m_env.worldRank(),
                       "WignerVectorRealizer<V,M>::realization()",
                       "not implemented yet");
-  
+
   nextValues.cwSet(0.);
   return;
 }

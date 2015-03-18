@@ -25,8 +25,8 @@
  *
  * $Id$
  *
- * Brief description of this file: 
- * 
+ * Brief description of this file:
+ *
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
@@ -40,9 +40,9 @@ int main(int argc, char* argv[])
     new QUESO::FullEnvironment(MPI_COMM_WORLD,argv[1],"",NULL);
 
   // Compute
-#if 1 
+#if 1
   compute(*env);
-#else  
+#else
   debug_hyst(*env);
 #endif
 

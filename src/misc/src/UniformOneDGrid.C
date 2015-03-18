@@ -90,7 +90,7 @@ UniformOneDGrid<T>::findIntervalId(const T& paramValue) const
 
   T ratio = (paramValue - m_minPosition)/(m_maxPosition - m_minPosition);
   unsigned int i = (unsigned int) (ratio*(m_size-1.));
-  if ((i > 0                  ) && 
+  if ((i > 0                  ) &&
       ((*this)[i] > paramValue)) {
     i--;
   }

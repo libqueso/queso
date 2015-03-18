@@ -48,12 +48,12 @@ namespace QUESO {
 template<class V, class M>
 class GenericJointPdf : public BaseJointPdf<V,M> {
 public:
-  
+
   //! @name Constructor/Destructor methods
   //@{
-  //! Default constructor. 
+  //! Default constructor.
   /*! Instantiates an object of this class given a prefix and a scalar function.
-   * The domain of the scalar function is assigned to the protected attribute m_domainSet, 
+   * The domain of the scalar function is assigned to the protected attribute m_domainSet,
    * and the scalar function is also itself copied to the protected attribute m_scalarFunction.*/
   GenericJointPdf(const char*                           prefix,
                          const BaseScalarFunction<V,M>& scalarFunction);

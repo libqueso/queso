@@ -33,8 +33,8 @@ namespace QUESO {
 /*! \class DiscreteSubset
  * \brief A templated class representing the discrete vector subsets.
  *
- * This class is used to represent the a discrete vector subset. Here the 
- * notion of volume does not apply, instead there is the total number of 
+ * This class is used to represent the a discrete vector subset. Here the
+ * notion of volume does not apply, instead there is the total number of
  * elements (vectors) that belongs to the subset.
  */
 
@@ -42,7 +42,7 @@ template<class V, class M>
 class DiscreteSubset : public VectorSubset<V,M> {
 public:
   //! @name Constructor/Destructor methods.
-  //@{ 
+  //@{
   //! Default Constructor
   /*! It constructs a class object given the prefix, vector space to which it
    * belongs  and its number of elements.*/
@@ -52,16 +52,16 @@ public:
   //! Destructor
   ~DiscreteSubset();
   //@}
-  
+
   //! @name Mathematical methods.
-  //@{ 
+  //@{
   //! Checks whether this discrete subset contains vector \c vec. TODO: incomplete code.
   bool contains (const V& vec)     const;
   //@}
-  
+
   //! @name I/O methods.
-  //@{ 
-  //! Prints nothing.  
+  //@{
+  //! Prints nothing.
   void print    (std::ostream& os) const;
   //@}
 protected:
@@ -69,7 +69,7 @@ protected:
   using VectorSet   <V,M>::m_prefix;
   using VectorSet   <V,M>::m_volume;
   using VectorSubset<V,M>::m_vectorSpace;
- 
+
   //! Number of elements in the discrete vector subset.
   std::vector<V*> m_elements;
 };

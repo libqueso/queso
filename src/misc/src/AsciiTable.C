@@ -256,7 +256,7 @@ AsciiTable<V,M>::readColumnsFromFile()
                               << std::endl;
       *m_env.subDisplayFile() << *this; // FIX ME: output might need to be in parallel
       *m_env.subDisplayFile() << std::endl;
-    }    
+    }
   }
 
   return;

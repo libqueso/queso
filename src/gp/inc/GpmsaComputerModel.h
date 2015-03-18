@@ -209,7 +209,7 @@ private:
                                                                                    const P_V&                      rho_w_vec,
                                                                                          D_M&                      Rmat,
                                                                                          unsigned int              outerCounter);
- 
+
         // This routine is called by formSigma_z()
         // This routine is called by formSigma_w_hat()
         void                             fillR_formula1_for_Sigma_w               (const std::vector<const S_V* >& xVecs, // ppp: does multiple Gs affect this routine?

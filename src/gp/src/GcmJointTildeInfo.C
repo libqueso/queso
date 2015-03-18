@@ -329,7 +329,7 @@ template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,
                               << ", yVec_transformed.sizeLocal() = "           << yVec_transformed.sizeLocal()
                               << std::endl;
     }
-    m_Zvec_tilde_hat_vu = m_Btildet_Wy_Btilde_inv * (Btildet * (*e.m_Wy * yVec_transformed)); 
+    m_Zvec_tilde_hat_vu = m_Btildet_Wy_Btilde_inv * (Btildet * (*e.m_Wy * yVec_transformed));
     D_V tmpVec2(yVec_transformed - (m_Bmat_tilde * m_Zvec_tilde_hat_vu));
     tmpVec2 = *e.m_Wy * tmpVec2;
     m_b_y_modifier_tilde = scalarProduct(yVec_transformed,tmpVec2) / 2.;

@@ -34,8 +34,8 @@ namespace QUESO {
 */
 
 /*! \class BasicPdfsGsl
-    \brief TODO: Base class for basic PDFs using Gsl library. 
-    
+    \brief TODO: Base class for basic PDFs using Gsl library.
+
     \todo This class \b will acommodate the definition of a Joint PDF using distributions
     available in the Gsl library. It will ultimately be called by BaseJointPdf and/or its
     derived classes (via m_env.basicPdfs()) during the construction of Joint PDFs.
@@ -44,10 +44,10 @@ class BasicPdfsGsl : public BasicPdfsBase
 {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   BasicPdfsGsl();
-  
+
   //! Constructor.
   BasicPdfsGsl(int worldRank);
 
@@ -56,10 +56,10 @@ public:
   //@}
 
   //! @name Mathematical methods
-  //@{  
+  //@{
   //! TODO: Actual value of the Beta PDF.
   double betaPdfActualValue (double x, double alpha, double beta) const;
-  
+
   //! TODO: Actual value of the Gamma PDF.
   double gammaPdfActualValue(double x, double a,     double b   ) const;
   //@}

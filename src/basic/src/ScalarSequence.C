@@ -2140,7 +2140,7 @@ ScalarSequence<T>::subInterQuantileRange(unsigned int initialPos) const
 
   // pos1 = (dataSize+1)/4 - 1
   // pos1 >= 0            <==> dataSize   >= 3
-  // pos1 <  (dataSize-1) <==> 3*dataSize >  1 
+  // pos1 <  (dataSize-1) <==> 3*dataSize >  1
   unsigned int pos1 = (unsigned int) ( (((double) dataSize) + 1.)*1./4. - 1. );
   if (pos1 > (dataSize-1)) {
     pos1 = 0;
@@ -2154,7 +2154,7 @@ ScalarSequence<T>::subInterQuantileRange(unsigned int initialPos) const
 
   // pos3 = (dataSize+1)*3/4 - 1
   // pos3 >= 0            <==> dataSize >= 1/3
-  // pos3 <  (dataSize-1) <==> dataSize >  3 
+  // pos3 <  (dataSize-1) <==> dataSize >  3
   unsigned int pos3 = (unsigned int) ( (((double) dataSize) + 1.)*3./4. - 1. );
   if (pos3 > (dataSize-1)) {
     pos3 = 0;
@@ -2257,7 +2257,7 @@ ScalarSequence<T>::unifiedInterQuantileRange(
                         initialPos,
                         unifiedSortedSequence);
       unsigned int unifiedDataSize = unifiedSortedSequence.subSequenceSize();
-    
+
       unsigned int localDataSize = this->subSequenceSize() - initialPos;
       unsigned int sumOfLocalSizes = 0;
       m_env.inter0Comm().Allreduce((void *) &localDataSize, (void *) &sumOfLocalSizes, (int) 1, RawValue_MPI_UNSIGNED, RawValue_MPI_SUM,
@@ -2891,7 +2891,7 @@ ScalarSequence<T>::unifiedWriteContents(
                                          dataspace,
                                          H5P_DEFAULT,  // Link creation property list
                                          H5P_DEFAULT,  // Dataset creation property list
-                                         H5P_DEFAULT); // Dataset access property list 
+                                         H5P_DEFAULT); // Dataset access property list
               //std::cout << "In ScalarSequence<T>::unifiedWriteContents(): h5 case, data set created" << std::endl;
 
               struct timeval timevalBegin;
@@ -3185,7 +3185,7 @@ ScalarSequence<T>::unifiedReadContents(
             if (r == 0) {
               hid_t dataset = H5Dopen2(unifiedFilePtrSet.h5Var,
                                        "seq_of_vectors",
-                                       H5P_DEFAULT); // Dataset access property list 
+                                       H5P_DEFAULT); // Dataset access property list
               hid_t datatype  = H5Dget_type(dataset);
               H5T_class_t t_class = H5Tget_class(datatype);
               UQ_FATAL_TEST_MACRO(t_class != H5T_FLOAT,
@@ -3513,7 +3513,7 @@ ScalarSequence<T>::parallelMerge(
       *m_env.subDisplayFile() << "In ScalarSequence<T>::parallelMerge()"
                               << ": tree node "                                          << m_env.inter0Rank()
                               << " is sending "                                          << sortedBuffer.size()
-                              << " doubles to tree node "                                << parentNode 
+                              << " doubles to tree node "                                << parentNode
                               << ", with sortedBuffer[0] = "                             << sortedBuffer[0]
                               << " and sortedBuffer[" << sortedBuffer.size()-1 << "] = " << sortedBuffer[sortedBuffer.size()-1]
                               << std::endl;
@@ -3932,7 +3932,7 @@ void
 ScalarSequence<T>::subCdfPercentageRange(
   unsigned int initialPos,
   unsigned int numPos,
-  double       range, // \in [0,1]                    
+  double       range, // \in [0,1]
   T&           lowerValue,
   T&           upperValue) const
 {
@@ -3976,7 +3976,7 @@ ScalarSequence<T>::unifiedCdfPercentageRange(
   bool         useOnlyInter0Comm,
   unsigned int initialPos,
   unsigned int numPos,
-  double       range, // \in [0,1]                    
+  double       range, // \in [0,1]
   T&           unifiedLowerValue,
   T&           unifiedUpperValue) const
 {
@@ -4055,10 +4055,10 @@ ScalarSequence<T>::subCdfStacc(
     double p = ( ((double) pointId) + 1.0 )/auxNumPoints;
     double ro0 = p*(1.0-p);
     cdfStaccValues[pointId] = p;
-       
+
     //std::cout << "x-data" << data[pointId]
-    //          << std::endl;       
-       
+    //          << std::endl;
+
     for (unsigned int k = 0; k < numPoints; k++) {
       if (m_seq[k] <= sortedDataValues[pointId]) {
         Isam_mat[k] = 1;
@@ -4066,7 +4066,7 @@ ScalarSequence<T>::subCdfStacc(
       else {
         Isam_mat[k] = 0;
       }
-    }  
+    }
 
     for (unsigned int tau = 0; tau < (numPoints-1); tau++) {
       ro[tau] = 0.;
@@ -4132,7 +4132,7 @@ ScalarSequence<T>::subCdfStacc(
                       "ScalarSequence<V>::subCdfStacc()",
                       "invalid input data");
 
-  // For Joseph: 
+  // For Joseph:
   // Maybe sort first
   // For each of the evaluation positions:
   // --> 1) form temporary scalar seq that contains only 0 and 1

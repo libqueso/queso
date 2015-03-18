@@ -25,8 +25,8 @@
  *
  * $Id$
  *
- * Brief description of this file: 
- * 
+ * Brief description of this file:
+ *
  *--------------------------------------------------------------------------
  *-------------------------------------------------------------------------- */
 
@@ -68,7 +68,7 @@ void restoringForce(
   }
 
   double xu      = inpParam->xu;
-  double yu      = inpParam->yu;  
+  double yu      = inpParam->yu;
   double k       = inpParam->k;
   double r       = inpParam->r;
   double inter_y = inpParam->inter_y;
@@ -162,7 +162,7 @@ void ckmatrix(const QUESO::GslVector& vec, QUESO::GslMatrix& mat)
 //------------------------------------------------------
 // The hysteretic model.
 // function [u,ud,udd,ru,resfor,a]=hysteretic_model_example3(thi,a);
-// a is the total acceleration at the base of the building 
+// a is the total acceleration at the base of the building
 //------------------------------------------------------
 void hystereticModel(
   const QUESO::BaseEnvironment& env,
@@ -225,7 +225,7 @@ void hystereticModel(
   ckmatrix(kInputVec,tmp_mat);
   QUESO::GslMatrix C(rho*M + gamma*tmp_mat);
 
-  double gammaHere = 0.5; 
+  double gammaHere = 0.5;
   double beta      = 0.25; // Average acceleration method
 
   double bdt      = beta*dt;
@@ -275,7 +275,7 @@ void hystereticModel(
   }
   QUESO::GslMatrix invM (invMvec);
   auxUddPosition=invM*(auxPPosition-C*ud0-auxFsPosition);
-   
+
   udd.setPositionValues(0,auxUddPosition);
 
   QUESO::GslMatrix A  ((1./bdt)*M + g_b*C);
@@ -302,7 +302,7 @@ void hystereticModel(
     p.getPositionValues  (i+1,auxVec2);
     dpi  = auxVec2 - auxVec1;
     dpgi = dpi + A*udi + B*uddi;
-	
+
     // Solve for duj from kgi and dpgi using Newton-Raphson
     // BEGIN NEWTON RAPHSON
     resfor.getPositionValues(i,resfor0);
@@ -310,23 +310,23 @@ void hystereticModel(
     QUESO::GslVector dR(dpgi);
     unsigned int j = 0;
     QUESO::GslVector duj(dofSpace.zeroVector());
-   
+
     QUESO::GslVector ru0(dofSpace.zeroVector());
     QUESO::GslVector rv0(dofSpace.zeroVector());
     ui.matlabDiff (1,ui[0], ru0); //ru0 = [ui(1);  diff(ui) ];
-    udi.matlabDiff(1,udi[0],rv0); //rv0 = [udi(1); diff(udi)];   
-   
-    unsigned int aOutput = 1; 
+    udi.matlabDiff(1,udi[0],rv0); //rv0 = [udi(1); diff(udi)];
+
+    unsigned int aOutput = 1;
     QUESO::GslVector ruj(dofSpace.zeroVector());
     QUESO::GslVector rvj(dofSpace.zeroVector());
     QUESO::GslVector uj (dofSpace.zeroVector());
     QUESO::GslVector vj (dofSpace.zeroVector());
-   
+
     while (true) {
       j = j + 1;
       if (j > 10000) {
         // error('Newton Raphson is not converging');
-        aOutput=0; 
+        aOutput=0;
         break;
       }
       if (aOutput == 0) {
@@ -350,12 +350,12 @@ void hystereticModel(
       if (useLinear == false) {
         uj.matlabDiff(1,uj[0],ruj); //ruj = [uj(1); diff(uj)];
         vj.matlabDiff(1,vj[0],rvj); //rvj = [vj(1); diff(vj)];
-          
+
         for (unsigned int w = 0; w < ndof; ++w) {
           restoringForce(ruj[w],ru0[w],rvj[w],rv0[w],resfor0[w],&param[w],
                          NULL, &auxResforPosition[w], &kTdiag[w], &param[w]);
         }
-        
+
         resfor.setPositionValues(i+1,auxResforPosition);
         auxResforPosition.matlabDiff(0,-auxResforPosition[ndof-1],fsj); //fsj = [-diff(resfor(:,i+1)); resfor(ndof,i+1)];
         fsj *= -1.;
@@ -375,7 +375,7 @@ void hystereticModel(
         break;
       }
     } // end while
- 
+
     fs.setPositionValues(i+1,fsj);
     if (useLinear == false) {
       ru.setPositionValues(i+1,ruj);

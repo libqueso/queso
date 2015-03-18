@@ -35,17 +35,17 @@ namespace QUESO {
 //*****************************************************
 // Generic class
 //*****************************************************
-/*! 
+/*!
  * \class GenericMatrixCovarianceFunction
  * \brief A class for generic covariance matrices.
- *  
+ *
  * This class implements a generic covariance matrices by calling a routine (via pointer).*/
 
 template<class P_V, class P_M, class Q_V, class Q_M>
 class GenericMatrixCovarianceFunction : public BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   /*! Instantiates an object of the class given a prefix, the domain set, the pointer to the routine. */
   GenericMatrixCovarianceFunction(const char*                      prefix,
@@ -56,7 +56,7 @@ public:
   //! Virtual destructor
   virtual ~GenericMatrixCovarianceFunction();
   //@}
-  
+
   //! @name Math methods
   //@{
   //! Calculates the value of the generic covariance matrix.

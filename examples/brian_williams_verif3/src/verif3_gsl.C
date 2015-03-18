@@ -94,10 +94,10 @@ void solveSips(const uqFullEnvironmentClass& env)
   epsCovMat(0,0) = sigmaEps*sigmaEps;
   uqGslVectorClass epsSample (paramSpace.zeroVector());
   uqGaussianVectorRVClass<uqGslVectorClass,uqGslMatrixClass> epsRv("eps_", paramSpace, epsMeanVec, epsCovMat);
- 
+
   unsigned int n = 5;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> dataSpace(env, "data_", n, NULL);
-  
+
   uqGslMatrixClass zMat         (env,paramSpace.map(),n);
   uqGslMatrixClass zMatTranspose(env,dataSpace.map (),p);
 
@@ -355,7 +355,7 @@ double likelihoodRoutineForX0(
     // Just to eliminate INTEL compiler warnings
   }
 
-  struct likelihoodDataStructForX0* likelihoodDataForX0 = (likelihoodDataStructForX0 *) functionDataPtr; 
+  struct likelihoodDataStructForX0* likelihoodDataForX0 = (likelihoodDataStructForX0 *) functionDataPtr;
   uqGslMatrixClass zMat(*(likelihoodDataForX0->zMat));
   unsigned int p = zMat.numRowsLocal();
   double sigmaEps = likelihoodDataForX0->sigmaEps;
@@ -501,7 +501,7 @@ double likelihoodRoutineForX(
     // Just to eliminate INTEL compiler warnings
   }
 
-  struct likelihoodDataStructForX* likelihoodDataForX = (likelihoodDataStructForX *) functionDataPtr; 
+  struct likelihoodDataStructForX* likelihoodDataForX = (likelihoodDataStructForX *) functionDataPtr;
   uqGslMatrixClass zMat(*(likelihoodDataForX->zMat));
   unsigned int p = zMat.numRowsLocal();
   double sigmaEps = likelihoodDataForX->sigmaEps;

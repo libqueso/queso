@@ -43,16 +43,16 @@ namespace QUESO {
 /*!
  * \class BetaVectorRV
  * \brief A class representing a vector RV constructed via Beta distribution.
- * 
+ *
  * This class allows the user to compute the value of a Beta PDF and to generate realizations
  * (samples) from it.\n
- * 
- * The beta probability density function for a given value x and given pair of parameters 
- * \b a and \b b is: 
+ *
+ * The beta probability density function for a given value x and given pair of parameters
+ * \b a and \b b is:
  *  \f[ y=f(x|a,b)= \frac{1}{B(a,b)} x^{a-1}(1-x)^{b-1}, \f]
  * where <b>B(·)</b> is the Beta function:
- * \f[  B(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}=\frac{(a-1)!(b-1)!}{(a+b-1)!}.\f] 
- * The parameters \b a and \b b must all be positive, and the values \c x  must lie on the 
+ * \f[  B(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}=\frac{(a-1)!(b-1)!}{(a+b-1)!}.\f]
+ * The parameters \b a and \b b must all be positive, and the values \c x  must lie on the
  * interval [0, 1].
  */
 
@@ -65,17 +65,17 @@ public:
   //! Default Constructor
   /*! Construct a Beta vector RV with parameters \c a>0  and \c b>0, whose variates live in \c imageSet.
    * The constructor will check whether or not the data provided via \c imageSet belongs to [0,1], which
-   * is a requirement imposed by the Beta distribution. If this condition is not satisfied, an error 
+   * is a requirement imposed by the Beta distribution. If this condition is not satisfied, an error
    * message will be displayed and the program will exit. */
   BetaVectorRV(const char*                  prefix,
                       const VectorSet<V,M>& imageSet,
                       const V&                     alpha,
                       const V&                     beta);
-  
+
   //! Virtual destructor
   virtual ~BetaVectorRV();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the vector RV.

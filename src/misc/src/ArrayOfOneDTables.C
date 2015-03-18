@@ -31,7 +31,7 @@ namespace QUESO {
 // Default constructor -------------------------------------------------
 template <class V, class M>
 ArrayOfOneDTables<V,M>::ArrayOfOneDTables(
-  const char* prefix, 
+  const char* prefix,
   const VectorSpace<V,M>& rowSpace)
   :
   m_env       (rowSpace.env()),

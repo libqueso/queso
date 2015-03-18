@@ -53,14 +53,14 @@
 #define UQ_ML_SAMPLING_DATA_OUTPUT_ALLOWED_SET_ODV             ""
 
 namespace QUESO {
-  
+
 /*! \file MLSamplingOptions.h
     \brief Classes to allow options to be passed to the Multilevel algorithm.
 */
 
 /*! \class MLSamplingOptions
  *  \brief This class provides options for the Multilevel sequence generator if no input file is available.
- * 
+ *
  *  Multilevel sequence generator expects options for its methods. This class provides default
  *  values for such options if no input file is available. */
 
@@ -72,51 +72,51 @@ public:
   //! Default constructor.
   /*! Assigns the default suite of options to the Multilevel sequence generator.*/
   MLSamplingOptions(const BaseEnvironment& env, const char* prefix);
-  
+
   //! Destructor
   ~MLSamplingOptions();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! It scans the option values from the options input file.
   void scanOptionsValues();
-  
+
   //!  It prints the option values.
   void print            (std::ostream& os) const;
   //@}
-  
+
   //! Class prefix. (ml)
   std::string            m_prefix;
 
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
   //! Period of restart output file (level).
   unsigned int           m_restartOutput_levelPeriod;
-  
+
   //! Base name of restart output file.
   std::string            m_restartOutput_baseNameForFiles;
-  
+
   //! Type of restart output file.
   std::string            m_restartOutput_fileType;
-  
+
   //! Base name of restart input file.
   std::string            m_restartInput_baseNameForFiles;
-  
+
   //! Type of restart input file
   std::string            m_restartInput_fileType;
 #else
   //! Name of restart input file.
   std::string            m_restartInputFileName;
-  
+
   //! Type of restart input file
   std::string            m_restartInputFileType;
-  
+
   //! Size of restart chain
   unsigned int           m_restartChainSize;
 #endif
   //! Name of generic output file
   std::string            m_dataOutputFileName;
-  
+
   //! subEnvs that will write to generic output file
   bool                   m_dataOutputAllowAll;
   std::set<unsigned int> m_dataOutputAllowedSet;
@@ -124,7 +124,7 @@ public:
 private:
   //! Defines the options for the Multilevel generator of samples as the default options.
   void   defineMyOptions  (po::options_description& optionsDesc) const;
-  
+
   //! Gets the sequence options defined to the Multilevel algorithm.
   void   getMyOptionValues(po::options_description& optionsDesc);
 

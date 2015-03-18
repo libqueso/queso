@@ -30,7 +30,7 @@
 
 using std::fabs;
 
-int main(int argc, char* argv[]) 
+int main(int argc, char* argv[])
 {
   int return_flag = 0;
 

@@ -37,55 +37,55 @@ namespace QUESO {
 
 /*! \file uqVectorFunction.h
  * \brief Set of classes for handling vector functions.
- * 
+ *
  * \class BaseVectorFunction
  * \brief A templated (base) class for handling vector functions.
  *
  * This class allows the mathematical definition of a vector function such as:
- * \f$ \mathbf{q}: B \subset R^n \rightarrow R^m \f$. It requires the specification 
+ * \f$ \mathbf{q}: B \subset R^n \rightarrow R^m \f$. It requires the specification
  * of the domain \f$ B \f$, which is a subset of the vector space (set) \f$ R^n \f$,
- * (and have already been introduced by the class VectorSet) and  of the 
+ * (and have already been introduced by the class VectorSet) and  of the
  * image set \f$ R^m \f$.*/
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 class BaseVectorFunction {
 public:
   //! @name Constructor/Destructor methods.
-  //@{ 
+  //@{
   //! Default Constructor
   /*! Instantiates an object of the class, i.e. a vector function, given a prefix, its domain and image.*/
   BaseVectorFunction(const char*                      prefix,
 			    const VectorSet<P_V,P_M>& domainSet,
 			    const VectorSet<Q_V,Q_M>& imageSet);
-  //! Destructor	   
+  //! Destructor
   virtual ~BaseVectorFunction();
   //@}
-  
+
   //! @name Mathematical methods.
-  //@{  
-  //! Access to the protected attribute \c m_domainSet: domain set of the vector function. It is an instance of the class VectorSet.  
-  /*! This is one example of the advantage of how QUESO represents mathematical 
+  //@{
+  //! Access to the protected attribute \c m_domainSet: domain set of the vector function. It is an instance of the class VectorSet.
+  /*! This is one example of the advantage of how QUESO represents mathematical
    * identities in a straightforward manner. */
   const VectorSet<P_V,P_M>& domainSet() const;
-  
-  //! Access to the protected attribute \c m_imageSet: image set of the vector function/ It is an instance of the class VectorSet.   
+
+  //! Access to the protected attribute \c m_imageSet: image set of the vector function/ It is an instance of the class VectorSet.
   const VectorSet<Q_V,Q_M>& imageSet () const;
-  
+
   //! Computes the image vector. See template specialization.
   virtual void  compute  (const P_V&              domainVector,
 			  const P_V*              domainDirection,
 			  Q_V&                    imageVector,
 			  DistArray<P_V*>* gradVectors,     // Yes, 'P_V'
-			  DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'	
+			  DistArray<P_M*>* hessianMatrices, // Yes, 'P_M'
 			  DistArray<P_V*>* hessianEffects) const = 0;
   //@}
 protected:
   const BaseEnvironment&    m_env;
         std::string                m_prefix;
-	
-  //! Domain set of the vector function.	
+
+  //! Domain set of the vector function.
   const VectorSet<P_V,P_M>& m_domainSet;
-  
+
   //! Image set of the vector function.
   const VectorSet<Q_V,Q_M>& m_imageSet;
 };

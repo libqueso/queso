@@ -39,7 +39,7 @@ WignerJointPdf<V,M>::WignerJointPdf(
   BaseJointPdf<V,M>(((std::string)(prefix)+"uni").c_str(),
          domainSet),
   m_centerPos(new V(centerPos)),
-  m_radius   (radius)    
+  m_radius   (radius)
 {
   if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 54)) {
     *m_env.subDisplayFile() << "Entering WignerJointPdf<V,M>::constructor()"

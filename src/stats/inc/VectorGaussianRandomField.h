@@ -31,14 +31,14 @@
 
 namespace QUESO {
 
-/*! 
+/*!
  * \file VectorGaussianRandomField.h
  * \brief A class for handling Gaussian random fields (GRF).
- * 
+ *
  * \class VectorGaussianRandomField
  * \brief A class for handling vector Gaussian random fields (GRF).
  *
- * This class implements a vector Gaussian random field (GRF); i.e. a random field involving 
+ * This class implements a vector Gaussian random field (GRF); i.e. a random field involving
  * vector Gaussian probability density functions (PDFs) of the variables. */
 
 template <class P_V, class P_M, class Q_V, class Q_M>
@@ -48,22 +48,22 @@ class VectorGaussianRandomField
    //! @name Constructor/Destructor methods
   //@{
   //! Constructor.
-  /*! Constructs a new object, given a prefix, an index set, and both a mean and a 
-   * covariance function. This method deletes the previous saved positions. */ 
+  /*! Constructs a new object, given a prefix, an index set, and both a mean and a
+   * covariance function. This method deletes the previous saved positions. */
   VectorGaussianRandomField(const char*                                                 prefix,
                                    const VectorSet<P_V,P_M>&                            indexSet,
                                    const VectorSet<Q_V,Q_M>&                            imageSetPerIndex,
-                                   const BaseVectorFunction<P_V,P_M,Q_V,Q_M>&           meanFunction, 
+                                   const BaseVectorFunction<P_V,P_M,Q_V,Q_M>&           meanFunction,
                                    const BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>& covarianceFunction);
-  
+
   //! TODO: Copy constructor.
   /*! \todo: implement me!*/
   VectorGaussianRandomField(const VectorGaussianRandomField&                     obj);
- 
+
   //! Destructor.
   ~VectorGaussianRandomField();
   //@}
- 
+
   //! @name Set methods
   //@{
   //! TODO: Assignment operator; it copies \c rhs to \c this.
@@ -75,16 +75,16 @@ class VectorGaussianRandomField
   //@{
   //! Index set; access to protected attribute m_indexSet.
   const VectorSet<P_V,P_M>&                   indexSet          () const;
-  
+
   //! Mean function; access to protected attribute m_meanFunction.
   const BaseVectorFunction<P_V,P_M,Q_V,Q_M>&  meanFunction      () const;
-  
+
   //! Covariance function; access to protected attribute m_covarianceFunction.
   const BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>& covarianceFunction() const;
-  
+
   //! Function that samples from a Gaussian PDF.
   /*! Given the field positions, this method performs a number of tests, calculates the mean vector,
-   * the covariance matrix and then it samples from a Gaussian random vector as 
+   * the covariance matrix and then it samples from a Gaussian random vector as
    * many positions as required.*/
   void                                              sampleFunction(const std::vector<P_V*>& fieldPositions, Q_V& sampleValues);
   //@}
@@ -94,34 +94,34 @@ protected:
 
   //! Environment.
   const BaseEnvironment&                     m_env;
-  
+
   //! Prefix.
   std::string                                       m_prefix;
- 
-  //! Index set.	
+
+  //! Index set.
   const VectorSet<P_V,P_M>&                  m_indexSet;
-    
+
   //! Image set of the RV, per index.
   const VectorSet<Q_V,Q_M>&                  m_imageSetPerIndex;
-  
+
   //! Mean function.
   const BaseVectorFunction<P_V,P_M,Q_V,Q_M>& m_meanFunction;
-  
+
   //! Covariance function.
   const BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>& m_covarianceFunction;
 
   //! Saved positions.
   std::vector<P_V*>                                 m_savedPositions;
-  
+
   //! Image set of the RV.
   VectorSpace<Q_V,Q_M>*                      m_savedRvImageSpace;
-  
+
   //! Vector of the mean value of the RV.
   Q_V*                                              m_savedRvLawExpVector;
-  
+
   //! Covariance matrix of the RV.
   Q_M*                                              m_savedRvLawCovMatrix;
-  
+
   //! My RV.
   GaussianVectorRV<Q_V,Q_M>*                 m_savedRv;
 };

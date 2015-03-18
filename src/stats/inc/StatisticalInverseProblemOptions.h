@@ -64,18 +64,18 @@ public:
   //! Default constructor.
   /*! Assigns the default suite of options to the Statistical Inverse Problem.*/
   SipOptionsValues            ();
-  
+
   //! Copy constructor.
   /*! It assigns the same options values from  \c src to \c this.*/
   SipOptionsValues            (const SipOptionsValues& src);
-  
+
   //! Destructor
-  ~SipOptionsValues            (); 
+  ~SipOptionsValues            ();
   //@}
-  
+
   //! @name Set methods
-  //@{ 
-  //! Assignment operator; it copies \c rhs to \c this. 
+  //@{
+  //! Assignment operator; it copies \c rhs to \c this.
   SipOptionsValues& operator= (const SipOptionsValues& rhs);
   //@}
 
@@ -99,47 +99,47 @@ private:
 
 /*! \class StatisticalInverseProblemOptions
  *  \brief This class reads option values for a Statistical Inverse Problem from an input file.
- * 
- *  This class reads the option values for the Statistical Inverse Problem (SIP) from an input file 
- * provided by the user. The class expects the prefix '\<prefix\>_ip_'. For instance, if 'prefix' 
- * is 'foo_775_', then the constructor will read all options that begin with 'foo_775_ip_'. If the 
+ *
+ *  This class reads the option values for the Statistical Inverse Problem (SIP) from an input file
+ * provided by the user. The class expects the prefix '\<prefix\>_ip_'. For instance, if 'prefix'
+ * is 'foo_775_', then the constructor will read all options that begin with 'foo_775_ip_'. If the
  * options request data to be written in the output file (MATLAB .m format only, for now), the user
- * can run 'grep zeros \<OUTPUT FILE NAME\>' after the solution procedure ends in order to check 
+ * can run 'grep zeros \<OUTPUT FILE NAME\>' after the solution procedure ends in order to check
  * which MATLAB variables are defined and set. The names of the variables are self explanatory.*/
 
 class StatisticalInverseProblemOptions
 {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Constructor: reads options from the input file.
   StatisticalInverseProblemOptions(const BaseEnvironment& env, const char* prefix);
-  
+
   //! Constructor: with alternative option values.
-  /*! In this constructor, the input options are given by \c alternativeOptionsValues, rather than the 
+  /*! In this constructor, the input options are given by \c alternativeOptionsValues, rather than the
    * options input file*/
   StatisticalInverseProblemOptions(const BaseEnvironment& env, const char* prefix, const SipOptionsValues& alternativeOptionsValues);
- 
+
   //! Destructor
   ~StatisticalInverseProblemOptions();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! It scans the option values from the options input file.
-  void scanOptionsValues();  
-  
+  void scanOptionsValues();
+
   //!  It prints the option values.
   void print            (std::ostream& os) const;
   //@}
-  
+
   SipOptionsValues       m_ov;
   std::string                   m_prefix;
 
 private:
   //! Define my SIP options as the default options.
   void   defineMyOptions  (po::options_description& optionsDesc) const;
-  
+
   //! Gets the option values of the SIP.
   void   getMyOptionValues(po::options_description& optionsDesc);
 

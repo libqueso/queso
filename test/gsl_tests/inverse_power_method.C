@@ -30,7 +30,7 @@
 
 using std::fabs;
 
-int main(int argc, char* argv[]) 
+int main(int argc, char* argv[])
 {
   int return_flag = 0;
 
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
   QUESO::FullEnvironment* env = new QUESO::FullEnvironment(MPI_COMM_WORLD,"input","",NULL);
 
   return_flag = actualChecking(env);
-  
+
   delete env;
   MPI_Finalize();
 

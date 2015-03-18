@@ -41,8 +41,8 @@ namespace QUESO {
  *
  * This class \b will handle sampling from an Wigner probability density distribution, with a
  * given center position and a radius.
- * 
- * \todo: The method WignerVectorRealizer:realization() is not yet available, 
+ *
+ * \todo: The method WignerVectorRealizer:realization() is not yet available,
  * thus this class does  nothing. */
 
 template<class V, class M>
@@ -52,23 +52,23 @@ public:
   //@{
   //! Constructor
   /*! Constructs a new object, given a prefix, the image set of the vector realizer, the
-   * center position \c centerPos, and a radius \c radius.*/  
+   * center position \c centerPos, and a radius \c radius.*/
   WignerVectorRealizer(const char*                  prefix,
                               const VectorSet<V,M>& unifiedImageSet,
                               const V&                     centerPos,
                               double                       radius);
-  
+
   //! Destructor
  ~WignerVectorRealizer();
  //@}
-  
+
   //! @name Realization-related methods
   //@{
   //! TODO: Draws a realization.
   /*! \todo: implement and explain me!*/
   void realization(V& nextValues) const;
   //@}
- 
+
 private:
   using BaseVectorRealizer<V,M>::m_env;
   using BaseVectorRealizer<V,M>::m_prefix;

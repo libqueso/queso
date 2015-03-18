@@ -36,16 +36,16 @@ namespace QUESO {
 //*****************************************************
 /*!\class StdOneDGrid
  * \brief Class for accommodating standard one-dimensional grids.
- * 
+ *
  * This class implements a standard one-dimensional grid, which is required, for instance,
- * in the evaluation of the cumulative distribution function (CDF) of a random variable. 
+ * in the evaluation of the cumulative distribution function (CDF) of a random variable.
  */
 
 template<class T>
 class StdOneDGrid : public BaseOneDGrid<T> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   StdOneDGrid(const BaseEnvironment& env,
                      const char*                   prefix,
@@ -53,20 +53,20 @@ public:
  //! Destructor.
   ~StdOneDGrid();
   //@}
-  
+
   //! @name Accessor methods
   //@{
   //! Returns the position of the i-th point in the grid.
   T            operator[]    (unsigned int i)      const;
   //@}
-  
+
   //! @name Mathematical methods
   //@{
   //! Grid size; the amount of points which defines the grid.
   unsigned int size          ()                    const;
-  
+
   //! Finds the ID of an interval. See template specialization.
-  unsigned int findIntervalId(const T& paramValue) const; 
+  unsigned int findIntervalId(const T& paramValue) const;
   //@}
 
 protected:

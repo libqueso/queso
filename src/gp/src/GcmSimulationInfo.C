@@ -35,7 +35,7 @@ GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfo(
   const SimulationStorage<S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationStorage,
   const SimulationModel  <S_V,S_M,P_V,P_M,Q_V,Q_M>& simulationModel)
   :
-  m_env                                            (simulationStorage.env()),  
+  m_env                                            (simulationStorage.env()),
   m_simulationStorage                              (simulationStorage),
   m_simulationModel                                (simulationModel),
   m_paper_p_x                                      (simulationStorage.scenarioSpace().dimLocal()),
@@ -158,7 +158,7 @@ GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfo(
   }
 
   if (allOutputsAreScalar) {
-    m_Zvec_hat_w = etaVec_transformed; 
+    m_Zvec_hat_w = etaVec_transformed;
   }
   else {
     //********************************************************************************
@@ -275,7 +275,7 @@ GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>::GcmSimulationInfo(
                               << std::endl;
     }
 
-    m_Zvec_hat_w = (*m_Kt_K_inv) * (Kt * etaVec_transformed); 
+    m_Zvec_hat_w = (*m_Kt_K_inv) * (Kt * etaVec_transformed);
     if (gcmOptionsObj.m_ov.m_dataOutputAllowedSet.find(m_env.subId()) != gcmOptionsObj.m_ov.m_dataOutputAllowedSet.end()) {
       m_Zvec_hat_w.subWriteContents("Zvec_hat_w",
                                     "vec_Zvec_hat_w",

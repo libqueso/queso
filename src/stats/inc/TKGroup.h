@@ -36,23 +36,23 @@ namespace QUESO {
 //*****************************************************
 /*! \file TKGroup.h
  *  \brief Class to set up a Transition Kernel.
- * 
+ *
  *  \class BaseTKGroup
  *  \brief This base class allows the representation of a transition kernel.
- * 
- * The transition kernel is a conditional distribution function that represents the probability of 
- * moving from a point \f$ x \in R^n \f$ to a point in the set \f$ A \in B \f$, where \f$ B \f$ is 
- * a Borel set over \f$ R^n \f$. Since it is a distribution function, \f$ P(x,R^n)=1 \f$, where it 
- * is permitted that the chain can make a transition from the point \f$ x \f$ to \f$ x \f$, that is 
+ *
+ * The transition kernel is a conditional distribution function that represents the probability of
+ * moving from a point \f$ x \in R^n \f$ to a point in the set \f$ A \in B \f$, where \f$ B \f$ is
+ * a Borel set over \f$ R^n \f$. Since it is a distribution function, \f$ P(x,R^n)=1 \f$, where it
+ * is permitted that the chain can make a transition from the point \f$ x \f$ to \f$ x \f$, that is
  * \f$ P(x, {x}) \f$ is not necessarily zero. */
 template<class V, class M>
 class BaseTKGroup {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   BaseTKGroup();
-  
+
   //! Constructor.
   BaseTKGroup(const char*                    prefix,
                      const VectorSpace<V,M>& vectorSpace,
@@ -65,10 +65,10 @@ public:
   //@{
   //! Whether or not the matrix is symmetric. See template specialization.
   virtual       bool                          symmetric                 () const = 0;
-  
+
   //! Gaussian increment property to construct a transition kernel. See template specialization.
   virtual const BaseVectorRV<V,M>& rv                        (unsigned int                     stageId ) const = 0;
-  
+
   //! Gaussian increment property to construct a transition kernel. See template specialization.
   virtual const BaseVectorRV<V,M>& rv                        (const std::vector<unsigned int>& stageIds) = 0;
   //@}
@@ -78,16 +78,16 @@ public:
   //! QUESO's environment.
   const BaseEnvironment& env() const;
 
-  //! Pre-computing position; access to protected attribute *m_preComputingPositions[stageId]. 
+  //! Pre-computing position; access to protected attribute *m_preComputingPositions[stageId].
   const V&                                    preComputingPosition      (unsigned int stageId) const;
-  
+
   //! Sets the pre-computing positions \c m_preComputingPositions[stageId] with a new vector of size \c position.
   virtual       bool                          setPreComputingPosition   (const V& position, unsigned int stageId);
-  
+
   //! Clears the pre-computing positions \c m_preComputingPositions[stageId]
   virtual       void                          clearPreComputingPositions();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the transition kernel.

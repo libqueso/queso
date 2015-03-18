@@ -39,14 +39,14 @@ namespace QUESO {
 /*!\class ConstantVectorFunction
  * \brief A class for handling vector functions which image is constant.
  *
- * This class allows the mathematical definition of a vector-valued function which image 
+ * This class allows the mathematical definition of a vector-valued function which image
  * set is constant vector. */
 
 template<class P_V,class P_M,class Q_V,class Q_M>
 class ConstantVectorFunction : public BaseVectorFunction<P_V,P_M,Q_V,Q_M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default Constructor
   /*! Instantiates an object of the class, i.e. a vector function, given a prefix, its domain and constant image.*/
   ConstantVectorFunction(const char*                      prefix,
@@ -56,10 +56,10 @@ public:
   //! Destructor
   virtual ~ConstantVectorFunction();
   //@}
-  
+
   //! @name Mathematical method
-  //@{ 
-  //! Calculates the image vector: assigns to the protected attribute \c m_constantImageVector the value of the constant vector \c imageVector. 
+  //@{
+  //! Calculates the image vector: assigns to the protected attribute \c m_constantImageVector the value of the constant vector \c imageVector.
   void compute  (const P_V&                    domainVector,
                  const P_V*                    domainDirection,
                        Q_V&                    imageVector,

@@ -164,22 +164,22 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
   // --> Uses page 576-b
   // --> Uses R(all x's;\rho_v_i[size p_x]) and formula (2) to "each pair" of experimental input settings
   // --> \Sigma_v_i = (1/\lambda_v_i).I_|G_i| [X] R(...) is (n.|G_i|) x (n.|G_i|), i = 1,...,F
-  // --> \Sigma_v is (n.p_delta) x (n.p_delta) 
+  // --> \Sigma_v is (n.p_delta) x (n.p_delta)
   // \Sigma_u:
   // --> Uses page 576-b
   // --> Uses R(all x's,one \theta;\rho_w_i[size p_x+p_t]) and formula (1) to "each pair" of experimental input settings (correlations depend only on x dimensions)
   // --> \Sigma_u_i = (1/\lambda_w_i).R(...) is n x n, i = 1,...,p_eta
-  // --> \Sigma_u is (n.p_eta) x (n.p_eta) 
+  // --> \Sigma_u is (n.p_eta) x (n.p_eta)
   // \Sigma_w:
   // --> Uses page 575-a
   // --> Uses R(all x^*'s,all t^*'s;\rho_w_i[size p_x+p_t]) and formula (1) to "each pair" of input settings in the design
   // --> \Sigma_w_i = (1/\lambda_w_i).R(...) is m x m, i = 1,...,p_eta
-  // --> \Sigma_w is (m.p_eta) x (m.p_eta) 
+  // --> \Sigma_w is (m.p_eta) x (m.p_eta)
   // \Sigma_u,w:
   // --> Uses page 577-a
   // --> Uses R(all x's,one \theta,all x^*'s,all t^*'s;\rho_w_i[size p_x+p_t]) and formula (1)
   // --> \Sigma_u,w_i = (1/\lambda_w_i).R(...) is n x m, i = 1,...,p_eta
-  // --> \Sigma_u,w is (n.p_eta) x (m.p_eta) 
+  // --> \Sigma_u,w is (n.p_eta) x (m.p_eta)
   //********************************************************************************
   m_s = new GcmSimulationInfo<S_V,S_M,P_V,P_M,Q_V,Q_M>(*m_optionsObj,
                                                               m_allOutputsAreScalar, // csri (new GcmSimulationInfo)
@@ -293,7 +293,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::GpmsaComputerModel(
 
     if ((m_env.subDisplayFile()) && (m_env.displayVerbosity() >= 3)) {
       *m_env.subDisplayFile() << "In GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::constructor()"
-                              << ": m_z->m_Cmat_rank = "       << m_z->m_Cmat_rank 
+                              << ": m_z->m_Cmat_rank = "       << m_z->m_Cmat_rank
                               << ", m_z->m_Cmat = "            << m_z->m_Cmat
                               << ", m_z->m_Cmat->numCols() = " << m_z->m_Cmat->numCols()
                               << ", m_cMatIsRankDefficient = " << m_cMatIsRankDefficient
@@ -958,7 +958,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::predictVUsAtGridPoint(
       m_e->m_Smat_v_hat_v_asterisk.fillWithBlocksDiagonally(0,0,m_e->m_Smat_v_hat_v_asterisk_is,true,true);
       m_e->m_Smat_v_hat_v_asterisk_t.fillWithTranspose(0,0,m_e->m_Smat_v_hat_v_asterisk,true,true);
 
-      here_Smat_z_hat_v_asterisk.cwSet(0.); 
+      here_Smat_z_hat_v_asterisk.cwSet(0.);
       here_Smat_z_hat_v_asterisk.cwSet(0,0,m_e->m_Smat_v_hat_v_asterisk); // checar
       here_Smat_z_hat_v_asterisk_t.fillWithTranspose(0,0,here_Smat_z_hat_v_asterisk,true,true);
 
@@ -1542,7 +1542,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::unique_vu_space() const
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-const BaseVectorRV<P_V,P_M>& 
+const BaseVectorRV<P_V,P_M>&
 GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPriorRv() const
 {
   UQ_FATAL_TEST_MACRO(m_t == NULL,
@@ -1553,7 +1553,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPriorRv() const
 }
 
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
-const GenericVectorRV<P_V,P_M>& 
+const GenericVectorRV<P_V,P_M>&
 GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::totalPostRv() const
 {
   UQ_FATAL_TEST_MACRO(m_t == NULL,
@@ -1950,7 +1950,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::likelihoodRoutine(
     // Then fill m_tmp_Smat_z
     // Fill m_Rmat_extra
     // Then fill m_tmp_Smat_z_hat
-    
+
     if (m_thereIsExperimentalData) {
       this->formSigma_z_hat(m_s->m_tmp_1lambdaEtaVec,
                             m_s->m_tmp_2lambdaWVec,
@@ -2294,7 +2294,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
 
   return;
 }
-                  
+
 // Case with no experimental data // checar
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
@@ -2426,7 +2426,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_hat(
 
   return;
 }
-                  
+
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
 GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
@@ -2594,7 +2594,7 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z_tilde_hat(
 
   return;
 }
-                  
+
 template <class S_V,class S_M,class D_V,class D_M,class P_V,class P_M,class Q_V,class Q_M>
 void
 GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
@@ -2627,22 +2627,22 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::formSigma_z(
   // --> Uses page 576-b
   // --> Uses R(all x's;\rho_v_i[size p_x]) and formula (2) to "each pair" of experimental input settings
   // --> \Sigma_v_i = (1/\lambda_v_i).I_|G_i| [X] R(...) is (n.|G_i|) x (n.|G_i|), i = 1,...,F
-  // --> \Sigma_v is (n.p_delta) x (n.p_delta) 
+  // --> \Sigma_v is (n.p_delta) x (n.p_delta)
   // \Sigma_u:
   // --> Uses page 576-b
   // --> Uses R(all x's,one \theta;\rho_w_i[size p_x+p_t]) and formula (1) to "each pair" of experimental input settings (correlations depend only on x dimensions)
   // --> \Sigma_u_i = (1/\lambda_w_i).R(...) is n x n, i = 1,...,p_eta
-  // --> \Sigma_u is (n.p_eta) x (n.p_eta) 
+  // --> \Sigma_u is (n.p_eta) x (n.p_eta)
   // \Sigma_w:
   // --> Uses page 575-a
   // --> Uses R(all x^*'s,all t^*'s;\rho_w_i[size p_x+p_t]) and formula (1) to "each pair" of input settings in the design
   // --> \Sigma_w_i = (1/\lambda_w_i).R(...) is m x m, i = 1,...,p_eta
-  // --> \Sigma_w is (m.p_eta) x (m.p_eta) 
+  // --> \Sigma_w is (m.p_eta) x (m.p_eta)
   // \Sigma_u,w:
   // --> Uses page 577-a
   // --> Uses R(all x's,one \theta,all x^*'s,all t^*'s;\rho_w_i[size p_x+p_t]) and formula (1)
   // --> \Sigma_u,w_i = (1/\lambda_w_i).R(...) is n x m, i = 1,...,p_eta
-  // --> \Sigma_u,w is (n.p_eta) x (m.p_eta) 
+  // --> \Sigma_u,w is (n.p_eta) x (m.p_eta)
   //********************************************************************************
   unsigned int initialPos = 0;
   for (unsigned int i = 0; i < m_e->m_Smat_v_i_spaces.size(); ++i) {
@@ -2902,22 +2902,22 @@ void
   // --> Uses page 576-b
   // --> Uses R(all x's;\rho_v_i[size p_x]) and formula (2) to "each pair" of experimental input settings
   // --> \Sigma_v_i = (1/\lambda_v_i).I_|G_i| [X] R(...) is (n.|G_i|) x (n.|G_i|), i = 1,...,F
-  // --> \Sigma_v is (n.p_delta) x (n.p_delta) 
+  // --> \Sigma_v is (n.p_delta) x (n.p_delta)
   // \Sigma_u:
   // --> Uses page 576-b
   // --> Uses R(all x's,one \theta;\rho_w_i[size p_x+p_t]) and formula (1) to "each pair" of experimental input settings (correlations depend only on x dimensions)
   // --> \Sigma_u_i = (1/\lambda_w_i).R(...) is n x n, i = 1,...,p_eta
-  // --> \Sigma_u is (n.p_eta) x (n.p_eta) 
+  // --> \Sigma_u is (n.p_eta) x (n.p_eta)
   // \Sigma_w:
   // --> Uses page 575-a
   // --> Uses R(all x^*'s,all t^*'s;\rho_w_i[size p_x+p_t]) and formula (1) to "each pair" of input settings in the design
   // --> \Sigma_w_i = (1/\lambda_w_i).R(...) is m x m, i = 1,...,p_eta
-  // --> \Sigma_w is (m.p_eta) x (m.p_eta) 
+  // --> \Sigma_w is (m.p_eta) x (m.p_eta)
   // \Sigma_u,w:
   // --> Uses page 577-a
   // --> Uses R(all x's,one \theta,all x^*'s,all t^*'s;\rho_w_i[size p_x+p_t]) and formula (1)
   // --> \Sigma_u,w_i = (1/\lambda_w_i).R(...) is n x m, i = 1,...,p_eta
-  // --> \Sigma_u,w is (n.p_eta) x (m.p_eta) 
+  // --> \Sigma_u,w is (n.p_eta) x (m.p_eta)
   //********************************************************************************
 #if 0 // Case with no experimental data // checar
   unsigned int initialPos = 0;
@@ -3203,8 +3203,8 @@ GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v(
                       "GpmsaComputerModel<S_V,S_M,D_V,D_M,P_V,P_M,Q_V,Q_M>::fillR_formula2_for_Sigma_v()",
                       "Rmat.numCols() is wrong");
 
-  S_V vecI(*(xVecs[0]));  
-  S_V vecJ(*(xVecs[0]));  
+  S_V vecI(*(xVecs[0]));
+  S_V vecJ(*(xVecs[0]));
   for (unsigned int i = 0; i < m_e->m_paper_n; ++i) {
     vecI = *(xVecs[i]);
     for (unsigned int j = 0; j < m_e->m_paper_n; ++j) {

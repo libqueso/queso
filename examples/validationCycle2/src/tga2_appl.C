@@ -245,7 +245,7 @@ uqAppl(const QUESO::BaseEnvironment& env)
 //********************************************************
 // The 'local comparison stage' of the driving routine "uqAppl()"
 //********************************************************
-void 
+void
 uqAppl_LocalComparisonStage(QUESO::ValidationCycle<QUESO::GslVector,QUESO::GslMatrix,QUESO::GslVector,QUESO::GslMatrix>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&
@@ -333,7 +333,7 @@ uqAppl_LocalComparisonStage(QUESO::ValidationCycle<QUESO::GslVector,QUESO::GslMa
 //********************************************************
 // The 'unified comparison stage' of the driving routine "uqAppl()"
 //********************************************************
-void 
+void
 uqAppl_UnifiedComparisonStage(QUESO::ValidationCycle<QUESO::GslVector,QUESO::GslMatrix,QUESO::GslVector,QUESO::GslMatrix>& cycle)
 {
   if (cycle.calFP().computeSolutionFlag() &&

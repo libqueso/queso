@@ -38,14 +38,14 @@ namespace QUESO {
 /*!
  * \class JeffreysVectorRV
  * \brief A class representing a jeffreys vector RV.
- * 
+ *
  * This class allows the user to compute the value of a jeffreys PDF and to generate realizations
  * (samples) from it. It is used, for instance, to create a jeffreys prior PDF. */
 
 template<class V, class M>
 class JeffreysVectorRV : public BaseVectorRV<V,M> {
 public:
-  
+
   //! @name Constructor/Destructor methods
   //@{
   //! Default constructor
@@ -55,7 +55,7 @@ public:
   //! Virtual destructor
   virtual ~JeffreysVectorRV();
   //@}
-  
+
   //! @name I/O methods
   //@{
   //! TODO: Prints the vector RV.

@@ -46,29 +46,29 @@ LogNormalVectorRV<V,M>::LogNormalVectorRV(
                             << std::endl;
   }
 
-// begin kemelli 2013-April-23 -------------------------- 
+// begin kemelli 2013-April-23 --------------------------
 // LogNormal dist is defined only in (0,inf)
 
   const BoxSubset<V,M>* imageBox = dynamic_cast<const BoxSubset<V,M>* >(&imageSet);
-  double smallerOfMaxValues = imageBox->maxValues().getMinValue();	
+  double smallerOfMaxValues = imageBox->maxValues().getMinValue();
   double smallerOfMinValues = imageBox->minValues().getMinValue();
-    
- if( smallerOfMinValues < 0 ) 
- {		
-   std::cerr << "In LogNormalVectorRV<V,M>::constructor()\n" 
+
+ if( smallerOfMinValues < 0 )
+ {
+   std::cerr << "In LogNormalVectorRV<V,M>::constructor()\n"
        << "LogNormal distribution is only defined in (0, infinity).\n"
        << "The data provided is: \n"
-       << *imageBox 
-         << "Sampling will not cover all interval.\n"   
+       << *imageBox
+         << "Sampling will not cover all interval.\n"
          << std::endl;
 
 
     UQ_FATAL_TEST_MACRO(smallerOfMaxValues < 0,
                       m_env.worldRank(),
                       "LogNormalVectorRealizer<V,M>::constructor()",
-                      "invalid input: LogNormal distribution is only defined in (0, infinity), and min(m_maxValues)<0");      
-              
- }	
+                      "invalid input: LogNormal distribution is only defined in (0, infinity), and min(m_maxValues)<0");
+
+ }
 // end kemelli 2013-April-23 --------------------------
 
   m_pdf = new LogNormalJointPdf<V,M>(m_prefix.c_str(),

@@ -580,25 +580,25 @@ GaussianHermite1DQuadrature::GaussianHermite1DQuadrature(
 
     case 9:
       m_weights   [0] = 7.64043285523e-6;
-      m_weights   [1] = 0.00134364574678; 
-      m_weights   [2] = 0.0338743944555; 
-      m_weights   [3] = 0.240138611082; 
-      m_weights   [4] = 0.610862633735; 
-      m_weights   [5] = 0.610862633735; 
-      m_weights   [6] = 0.240138611082; 
-      m_weights   [7] = 0.0338743944555; 
-      m_weights   [8] = 0.00134364574678; 
+      m_weights   [1] = 0.00134364574678;
+      m_weights   [2] = 0.0338743944555;
+      m_weights   [3] = 0.240138611082;
+      m_weights   [4] = 0.610862633735;
+      m_weights   [5] = 0.610862633735;
+      m_weights   [6] = 0.240138611082;
+      m_weights   [7] = 0.0338743944555;
+      m_weights   [8] = 0.00134364574678;
       m_weights   [9] = 7.64043285523e-6;
 
       m_positions [0] = -3.43615911884;
-      m_positions [1] = -2.53273167423; 
-      m_positions [2] = -1.7566836493; 
-      m_positions [3] = -1.03661082979; 
-      m_positions [4] = -0.342901327224; 
-      m_positions [5] =  0.342901327224; 
-      m_positions [6] =  1.03661082979; 
-      m_positions [7] =  1.7566836493; 
-      m_positions [8] =  2.53273167423; 
+      m_positions [1] = -2.53273167423;
+      m_positions [2] = -1.7566836493;
+      m_positions [3] = -1.03661082979;
+      m_positions [4] = -0.342901327224;
+      m_positions [5] =  0.342901327224;
+      m_positions [6] =  1.03661082979;
+      m_positions [7] =  1.7566836493;
+      m_positions [8] =  2.53273167423;
       m_positions [9] =  3.43615911884;
     break;
 

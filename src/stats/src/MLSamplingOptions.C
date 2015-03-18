@@ -65,7 +65,7 @@ MLSamplingOptions::MLSamplingOptions(const BaseEnvironment& env, const char* pre
 MLSamplingOptions::~MLSamplingOptions()
 {
   if (m_optionsDesc) delete m_optionsDesc;
-} 
+}
 
 void
 MLSamplingOptions::scanOptionsValues()
@@ -88,7 +88,7 @@ MLSamplingOptions::scanOptionsValues()
 void
 MLSamplingOptions::defineMyOptions(po::options_description& optionsDesc) const
 {
-  optionsDesc.add_options()     
+  optionsDesc.add_options()
     (m_option_help.c_str(),                                                                                                                            "produce help msg for ML sampling options"      )
 #ifdef ML_CODE_HAS_NEW_RESTART_CAPABILITY
     (m_option_restartOutput_levelPeriod.c_str(),      po::value<unsigned int>()->default_value(UQ_ML_SAMPLING_RESTART_OUTPUT_LEVEL_PERIOD_ODV),        "restartOutput_levelPeriod"                     )

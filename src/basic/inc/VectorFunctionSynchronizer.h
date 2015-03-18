@@ -31,12 +31,12 @@ namespace QUESO {
 
 /*! \file VectorFunctionSynchronizer.h
  * \brief Class for synchronizing the calls of vector-valued functions
- * 
+ *
  * \class VectorFunctionSynchronizer
  * \brief A templated class for synchronizing the calls of vector-valued functions.
  *
- * This class creates a synchronization point among processes which call vector-valued 
- * functions. This means that all processes must reach a point in their code before they 
+ * This class creates a synchronization point among processes which call vector-valued
+ * functions. This means that all processes must reach a point in their code before they
  * can all begin executing again. */
 
 template <class P_V, class P_M, class Q_V, class Q_M>
@@ -44,7 +44,7 @@ class VectorFunctionSynchronizer
 {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   VectorFunctionSynchronizer(const BaseVectorFunction<P_V,P_M,Q_V,Q_M>& inputFunction,
                                     const P_V&                                        auxPVec,
@@ -52,17 +52,17 @@ public:
   //! Destructor
  ~VectorFunctionSynchronizer();
   //@}
- 
+
   //! @name Mathematical methods
-  //@{  
+  //@{
   //! Access to the domain set of the vector-valued function which will be synchronized.
   const VectorSet<P_V,P_M>& domainSet() const;
   //@}
-  
+
   //! @name Sync method
-  //@{  
+  //@{
   //! Calls the vector-valued function which will be synchronized.
-  /*! This procedure  forms a barrier, and no processes in the communicator can pass the 
+  /*! This procedure  forms a barrier, and no processes in the communicator can pass the
    * barrier until all of them call the function. */
   void callFunction(const P_V*                    vecValues,
                     const P_V*                    vecDirection,

@@ -365,7 +365,7 @@ void ArrayOfSequences<V,M>::autoCorrViaDef(unsigned int initialPos,
                        subChainMean,
                        lag,
                        corrVec);
-  corrVec /= subChainAutoCovarianceLag0; 
+  corrVec /= subChainAutoCovarianceLag0;
 
   return;
 }

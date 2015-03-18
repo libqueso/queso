@@ -32,7 +32,7 @@ namespace QUESO {
 template <>
 void
 Fft<double>::forward(
-  const std::vector<double>&                data, 
+  const std::vector<double>&                data,
         unsigned int                        fftSize,
         std::vector<std::complex<double> >& forwardResult)
 {
@@ -100,7 +100,7 @@ Fft<double>::forward(
 template <>
 void
 Fft<double>::inverse(
-  const std::vector<double>&                data, 
+  const std::vector<double>&                data,
         unsigned int                        fftSize,
         std::vector<std::complex<double> >& inverseResult)
 {

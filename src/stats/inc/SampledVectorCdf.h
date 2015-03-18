@@ -37,20 +37,20 @@ namespace QUESO {
 //*****************************************************
 // Sampled cumulative distribution function class
 //*****************************************************
-/*! 
+/*!
  * \class SampledVectorCdf
  * \brief A class for handling sampled vector CDFs.
  *
- * This class implements a sampled vector cumulative distribution function (CDF), given 
+ * This class implements a sampled vector cumulative distribution function (CDF), given
  * the grid points where it will be sampled and it returns its values.*/
 
 template<class V, class M>
 class SampledVectorCdf : public BaseVectorCdf<V,M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
-  /*! Instantiates an object of the class given a prefix and the grid points 
+  /*! Instantiates an object of the class given a prefix and the grid points
    * where it will be sampled/evaluated.*/
   SampledVectorCdf(const char*                          prefix,
                           const ArrayOfOneDGrids <V,M>& oneDGrids,
@@ -58,28 +58,28 @@ public:
   //! Destructor
   ~SampledVectorCdf();
   //@}
-  
+
   //! @name Mathematical methods
   //@{
-  //! TODO: Returns the values of the vector CDF at each element of \c paramValues. 
+  //! TODO: Returns the values of the vector CDF at each element of \c paramValues.
   /*! \todo: implement me!*/
   void                          values(const V& paramValues, V& cdfVec) const;
-  
+
   //! Returns a scalar CDF stored at row \c rowId of the vector CDF.
   const BaseScalarCdf<double>& cdf   (unsigned int rowId)              const;
   //@}
-  
+
     //! @name I/O methods
-  //@{ 
-  //! Prints the vector CDF (values of the grid points and of the CDF at such grid points). 
+  //@{
+  //! Prints the vector CDF (values of the grid points and of the CDF at such grid points).
   void                          print (std::ostream& os)                const;
-  
-  //!Writes the CDF of an allowed sub-environment to a file. 
+
+  //!Writes the CDF of an allowed sub-environment to a file.
   void                          subWriteContents(const std::string&            varNamePrefix,
              const std::string&            fileName,
              const std::string&            fileType,
              const std::set<unsigned int>& allowedSubEnvIds) const;
-  //@}						 
+  //@}
 protected:
   using BaseVectorCdf<V,M>::m_env;
   using BaseVectorCdf<V,M>::m_prefix;

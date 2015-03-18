@@ -36,12 +36,12 @@ namespace QUESO {
 //*****************************************************
 /*!\class UniformOneDGrid
  * \brief Class for accommodating uniform one-dimensional grids.*/
- 
+
 template<class T>
 class UniformOneDGrid : public BaseOneDGrid<T> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   /*! Constructs a uniform 1D grid between \c minPosition and \c maxPosition, with \c size points.*/
   UniformOneDGrid(const BaseEnvironment& env,
@@ -52,21 +52,21 @@ public:
  //! Destructor
   ~UniformOneDGrid();
   //@}
-  
+
   //! @name Accessor methods
   //@{
-  //! Returns the position of the i-th point in the grid.  
+  //! Returns the position of the i-th point in the grid.
   T    operator[]    (unsigned int i)      const;
   //@}
-  
+
   //! @name Mathematical methods
   //@{
-  //! Grid size; the amount of points that defines the grid.    
+  //! Grid size; the amount of points that defines the grid.
   unsigned int size          ()                    const;
-  
+
   //! Finds the ID of an interval. See template specialization.
   /*! This function finds to which interval the parameter value belongs to.*/
-  unsigned int findIntervalId(const T& paramValue) const; 
+  unsigned int findIntervalId(const T& paramValue) const;
   //@}
 
 protected:

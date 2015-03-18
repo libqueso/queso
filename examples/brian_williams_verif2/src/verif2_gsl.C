@@ -73,7 +73,7 @@ void solveSip(const uqFullEnvironmentClass& env)
   ////////////////////////////////////////////////////////
   unsigned int n = 5;
   uqVectorSpaceClass<uqGslVectorClass,uqGslMatrixClass> dataSpace(env, "data_", n, NULL);
-  
+
   uqGslVectorClass yMeanVec(dataSpace.zeroVector());
   double tmp = scalarProduct(aVec,xGiven);
   for (unsigned int i = 0; i < n; ++i) {
@@ -229,7 +229,7 @@ double likelihoodRoutine(
     // Just to eliminate INTEL compiler warnings
   }
 
-  struct likelihoodDataStruct* likelihoodData = (likelihoodDataStruct *) functionDataPtr; 
+  struct likelihoodDataStruct* likelihoodData = (likelihoodDataStruct *) functionDataPtr;
   uqGslVectorClass aVec(*(likelihoodData->aVec));
   unsigned int p = aVec.sizeLocal();
   double sigmaEps = likelihoodData->sigmaEps;

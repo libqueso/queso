@@ -26,7 +26,7 @@
 #include <queso/GslMatrix.h>
 #include <queso/VectorRV.h>
 
-int main(int argc, char* argv[]) 
+int main(int argc, char* argv[])
 {
   int return_flag = 0;
 
@@ -93,7 +93,7 @@ int actualChecking(const QUESO::FullEnvironment* env)
     {
       return_flag = 1;
     }
-  
+
   Matrix->setColumn( 1, row );
   column = Matrix->getColumn(1);
   if( column[0] != (*Matrix)(0,1) || column[1] != (*Matrix)(1,1) )

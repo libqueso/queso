@@ -36,7 +36,7 @@ namespace QUESO {
 //*****************************************************
 // Std cumulative distribution function class
 //*****************************************************
-/*! 
+/*!
  * \class StdScalarCdf
  * \brief A class for handling standard CDFs.
  *
@@ -48,9 +48,9 @@ template<class T>
 class StdScalarCdf : public BaseScalarCdf<T> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
-  /*! Instantiates an object of the class given a prefix, the environment, the grid points 
+  /*! Instantiates an object of the class given a prefix, the environment, the grid points
    * where it will be evaluated and its resulting values.*/
   StdScalarCdf(const BaseEnvironment& env,
                       const char*                   prefix,
@@ -59,25 +59,25 @@ public:
   //! Destructor
   ~StdScalarCdf();
   //@}
- 
+
   //! @name Mathematical methods
   //@{
   //! Returns the value of the CDF at \c paramValue.
   double value           (T                       paramValue) const;
-  
-  //! Returns the position of a given value of CDF. 
+
+  //! Returns the position of a given value of CDF.
   T      inverse         (double                  cdfValue  ) const;
-  
-  //! Returns the support (image) of the CDF between two horizontal values (domain). 
+
+  //! Returns the support (image) of the CDF between two horizontal values (domain).
   void   getSupport      (T& minHorizontal, T& maxHorizontal) const;
   //@}
-  
+
   //! @name I/O methods
-  //@{ 
-  //! Prints the CDF (values of the grid points and of the CDF at such grid points). 
+  //@{
+  //! Prints the CDF (values of the grid points and of the CDF at such grid points).
   void   print           (std::ostream&           os        ) const;
-  
-  //!Writes the CDF of an allowed sub-environment to a file. 
+
+  //!Writes the CDF of an allowed sub-environment to a file.
   /*! It will write the data in  Octave/Matlab compatible format.*/
   void   subWriteContents(const std::string&            varNamePrefix,
                           const std::string&            fileName,

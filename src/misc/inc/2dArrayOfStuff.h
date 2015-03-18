@@ -29,7 +29,7 @@ namespace QUESO {
 
 /*! \file uq2dArrayOfStuff.h
  * \brief A templated class for handling arrays of data
- * 
+ *
  * \class TwoDArray
  * \brief Class for handling arrays of generic data.
  *
@@ -40,22 +40,22 @@ class TwoDArray
 {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   TwoDArray(unsigned int numRows, unsigned int numCols);
-  
+
   //! Destructor.
  ~TwoDArray();
   //@}
 
   //! @name Attribute methods
-  //@{ 
+  //@{
   //! Number of rows in the array.
   unsigned int numRows    ()                                 const;
-  
+
   //! Number of columns in the array.
   unsigned int numCols    ()                                 const;
-  
+
   //! Sets the data in a specific location.
   /*! This method sets the generic (templated) data \c info, in the position <c>(i,j)</c>
    * of the array. */
@@ -63,14 +63,14 @@ public:
   //@}
 
   //! @name Accessor methods
-  //@{ 
+  //@{
   //! Returns data stored in a specific location (non-const).
-  /*! This non-const method returns the generic (templated) data that is stored the 
+  /*! This non-const method returns the generic (templated) data that is stored the
    * position  <c>(i,j)</c> of the array. */
   T&           operator   ()(unsigned int i, unsigned int j);
-  
+
   //! Returns data stored in a specific location (const).
-  /*! This const method returns the generic (templated) data that is stored the 
+  /*! This const method returns the generic (templated) data that is stored the
    * position  <c>(i,j)</c> of the array. */
   const T&     operator   ()(unsigned int i, unsigned int j) const;
   //@}

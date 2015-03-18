@@ -346,7 +346,7 @@ double MiscDoubleDebugMessage(
   return value;
 }
 
-///int CheckFilePath(const char *path) 
+///int CheckFilePath(const char *path)
 ///{
 ///
 ///  // verify parent directories in path exist (and create if not).
@@ -374,7 +374,7 @@ int CheckFilePath(const char *pathname)
 #else
 
     const int MAX_DEPTH = 50;
-    
+
     char *pathlocal;
     char *parents;
     char *dirstring;

@@ -38,16 +38,16 @@ namespace QUESO {
 /*!
  * \class ExponentialMatrixCovarianceFunction
  * \brief A class for exponential covariance matrices.
- *  
+ *
  * This class implements squared exponential covariance matrices of the form:
- * \f[ cov = a \exp{(-d^2/\sigma^2)}\f], where \f$ d=d(x,y) \f$ is the distance between two vectors, 
+ * \f[ cov = a \exp{(-d^2/\sigma^2)}\f], where \f$ d=d(x,y) \f$ is the distance between two vectors,
  * \f$ \sigma^2 \f$ is the variance matrix and \f$ a \f$ is the length scale ().*/
- 
+
 template<class P_V, class P_M, class Q_V, class Q_M>
 class ExponentialMatrixCovarianceFunction : public BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M> {
 public:
   //! @name Constructor/Destructor methods
-  //@{ 
+  //@{
   //! Default constructor.
   /*! Instantiates an object of the class given a prefix, the domain and image sets, the variances scale factors.*/
   ExponentialMatrixCovarianceFunction(const char*                      prefix,
@@ -55,17 +55,17 @@ public:
                const VectorSet<Q_V,Q_M>& imageSet,
                const Q_M&                       sigmas,
                const Q_M&                       as);
-  
+
   //! Virtual destructor
   virtual ~ExponentialMatrixCovarianceFunction();
   //@}
-  
+
   //!@ \name Math methods
   //@{
   //! Calculates the covariance matrix, given two parameter domains.
   void covMatrix(const P_V& domainVector1, const P_V& domainVector2, Q_M& imageMatrix) const;
   //@}
-  
+
 protected:
   using BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::m_env;
   using BaseMatrixCovarianceFunction<P_V,P_M,Q_V,Q_M>::m_prefix;

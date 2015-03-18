@@ -818,7 +818,7 @@ GslVector::mpiBcast(int srcRank, const MpiComm& bcastComm)
 
   // Check that all participant nodes have the same vector size
   double localVectorSize  = this->sizeLocal();
-  double sumOfVectorSizes = 0.; 
+  double sumOfVectorSizes = 0.;
   bcastComm.Allreduce((void *) &localVectorSize, (void *) &sumOfVectorSizes, (int) 1, RawValue_MPI_DOUBLE, RawValue_MPI_SUM,
                       "GslVector::mpiBcast()",
                       "failed MPI.Allreduce() for vectorSize");
