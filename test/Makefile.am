@@ -7,7 +7,6 @@ endif
 check_PROGRAMS = # Append below
 check_PROGRAMS += test_uqEnvironmentNonFatal
 check_PROGRAMS += test_uqEnvironmentOptionsPrint
-check_PROGRAMS += test_uqGslVectorConstructorFatal
 check_PROGRAMS += test_uqGslVector
 check_PROGRAMS += test_uqGaussianVectorRVClass
 check_PROGRAMS += test_VectorPdf_gsl
@@ -70,7 +69,6 @@ endif
 
 test_uqEnvironmentNonFatal_SOURCES = test_Environment/test_uqEnvironmentNonFatal.C
 test_uqEnvironmentOptionsPrint_SOURCES = test_uqEnvironmentOptions/test_uqEnvironmentOptionsPrint.C
-test_uqGslVectorConstructorFatal_SOURCES = test_GslVector/test_uqGslVectorConstructorFatal.C
 test_uqGslVector_SOURCES = test_GslVector/test_uqGslVector.C
 test_uqGaussianVectorRVClass_SOURCES = test_GaussianVectorRVClass/test_uqGaussianVectorRVClass.C
 test_VectorPdf_gsl_SOURCES = test_GaussianVectorRVClass/test_VectorPdf_gsl.C
@@ -145,7 +143,6 @@ srcstamp += $(test_unifiedPositionsOfMaximum_SOURCES)
 TESTS =
 TESTS += $(top_builddir)/test/test_uqEnvironmentNonFatal
 TESTS += $(top_builddir)/test/test_uqEnvironmentOptionsPrint
-TESTS += $(top_builddir)/test/test_uqGslVectorConstructorFatal
 TESTS += $(top_builddir)/test/test_uqGslVector
 TESTS += $(top_builddir)/test/test_uqGaussianVectorRVClass
 TESTS += $(top_builddir)/test/test_VectorPdf_gsl

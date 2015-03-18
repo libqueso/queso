@@ -29,16 +29,6 @@
 
 namespace QUESO {
 
-GslVector::GslVector()
-  :
-  Vector()
-{
-  UQ_FATAL_TEST_MACRO(true,
-                      m_env.worldRank(),
-                      "GslVector::constructor(), default",
-                      "should not be used by user");
-}
-
 GslVector::GslVector(const BaseEnvironment& env, const Map& map)
   :
   Vector(env,map),
